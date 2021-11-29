@@ -1,0 +1,31 @@
+target_sources(${library_name} PRIVATE
+  appsettings.cpp
+  appsettings.h
+  collapsiblewidget.cpp
+  collapsiblewidget.h
+  explorernarrowtoolbar.cpp
+  explorernarrowtoolbar.h
+  explorertoolbar.cpp
+  explorertoolbar.h
+  explorerview.cpp
+  explorerview.h
+  filetreeview.cpp
+  filetreeview.h
+  mainwindow.cpp
+  mainwindow.h
+  opendocumentswidget.cpp
+  opendocumentswidget.h
+  proceduretreeswidget.cpp
+  proceduretreeswidget.h
+  sequencerxmlview.cpp
+  sequencerxmlview.h
+  settingsview.cpp
+  settingsview.h
+  styleutils.cpp
+  styleutils.h
+  xmleditor.cpp
+  xmleditor.h
+  xmlsyntaxhighlighter.cpp
+  xmlsyntaxhighlighter.h
+)
+

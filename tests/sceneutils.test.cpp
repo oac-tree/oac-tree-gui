@@ -1,0 +1,205 @@
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov <gennady.pospelov@gmail.com>
+ *
+ *****************************************************************************/
+
+#include "sequencergui/nodeeditor/sceneutils.h"
+
+#include "sequencergui/model/sequenceritems.h"
+
+#include "mvvm/utils/numericutils.h"
+
+#include <gtest/gtest.h>
+
+#include <QDebug>
+#include <QPointF>
+#include <QRectF>
+
+using namespace sequi;
+
+namespace
+{
+bool operator==(const std::vector<QPointF>& lhs, const std::vector<QPointF>& rhs)
+{
+  using ModelView::Utils::AreAlmostEqual;
+  if (lhs.size() != rhs.size())
+  {
+    return false;
+  }
+  for (size_t i = 0; i < lhs.size(); ++i)
+  {
+    if (lhs[i] != rhs[i])
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace
+
+//! Tests for items from instructionitems.h
+
+class SceneUtilsTest : public ::testing::Test
+{
+public:
+  using points_t = std::vector<QPointF>;
+};
+
+TEST_F(SceneUtilsTest, VectorOfPointsEquality)
+{
+  using points_t = std::vector<QPointF>;
+  EXPECT_TRUE(points_t{} == points_t{});
+  EXPECT_FALSE(points_t{QPointF(1.0, 2.0)} == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)}));
+  EXPECT_TRUE(points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)})
+              == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)}));
+  EXPECT_FALSE(points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.0)})
+               == points_t({QPointF(1.0, 2.0), QPointF(1.0, 2.01)}));
+}
+
+TEST_F(SceneUtilsTest, GetPositions)
+{
+  const double width{10};
+  auto positions = GetPositions(QPointF(1.0, 2.0), 1, width);
+  EXPECT_TRUE(positions == points_t({QPointF(1.0, 2.0)}));
+
+  positions = GetPositions(QPointF(1.0, 2.0), 2, width);
+  ASSERT_EQ(positions.size(), 2);
+  EXPECT_EQ(positions[0], QPointF(-4.0, 2.0));
+  EXPECT_EQ(positions[1], QPointF(6.0, 2.0));
+
+  positions = GetPositions(QPointF(1.0, 2.0), 3, width);
+  ASSERT_EQ(positions.size(), 3);
+  EXPECT_EQ(positions[0], QPointF(-9.0, 2.0));
+  EXPECT_EQ(positions[1], QPointF(1.0, 2.0));
+  EXPECT_EQ(positions[2], QPointF(11.0, 2.0));
+}
+
+TEST_F(SceneUtilsTest, AlignTreeWithSingleInstruction)
+{
+  InstructionContainerItem container;
+  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  AlignTree(QPointF(1, 2), &container);
+  EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
+  EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
+}
+
+TEST_F(SceneUtilsTest, AlignTreeWithTwoInstructions)
+{
+  InstructionContainerItem container;
+  auto instruction0 = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto instruction1 = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+
+  // number used in scenutils.cpp
+  const double step_width = GetAlignmentGridWidth();
+
+  AlignTree(QPointF(1, 2), &container);
+  EXPECT_FLOAT_EQ(instruction0->GetX(), 1.0 - step_width / 2.0);
+  EXPECT_FLOAT_EQ(instruction0->GetY(), 2.0);
+  EXPECT_FLOAT_EQ(instruction1->GetX(), 1.0 + step_width / 2.0);
+  EXPECT_FLOAT_EQ(instruction1->GetY(), 2.0);
+}
+
+TEST_F(SceneUtilsTest, AlignTreeWithParentAndChild)
+{
+  InstructionContainerItem container;
+  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto wait = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+
+  // number used in scenutils.cpp
+  const double step_width = GetAlignmentGridWidth();
+  const double step_height = GetAlignmentGridHeight();
+
+  AlignTree(QPointF(1, 2), &container);
+  EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
+  EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
+  EXPECT_FLOAT_EQ(wait->GetX(), 1.0);
+  EXPECT_FLOAT_EQ(wait->GetY(), 2.0 + step_height);
+}
+
+TEST_F(SceneUtilsTest, AlignTreeWithParentAndTwoChildren)
+{
+  InstructionContainerItem container;
+  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto wait0 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto wait1 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+
+  // number used in scenutils.cpp
+  const double step_width = GetAlignmentGridWidth();
+  const double step_height = GetAlignmentGridHeight();
+
+  AlignTree(QPointF(1, 2), &container);
+  EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
+  EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
+  EXPECT_FLOAT_EQ(wait0->GetX(), 1.0 - step_width / 2.);
+  EXPECT_FLOAT_EQ(wait0->GetY(), 2.0 + step_height);
+  EXPECT_FLOAT_EQ(wait1->GetX(), 1.0 + step_width / 2.);
+  EXPECT_FLOAT_EQ(wait1->GetY(), 2.0 + step_height);
+}
+
+//! Alignment in force mode when items have already some coordinates
+
+TEST_F(SceneUtilsTest, NonForceAlignTreeWithParentAndTwoChildren)
+{
+  InstructionContainerItem container;
+  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto wait0 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto wait1 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+
+  // giving non-default coordinates
+  wait0->SetX(1.1);
+  wait0->SetY(1.2);
+  wait1->SetX(2.1);
+  wait1->SetY(2.2);
+
+  // number used in scenutils.cpp
+  const double step_width = GetAlignmentGridWidth();
+  const double step_height = GetAlignmentGridHeight();
+
+  AlignInstructionTree(QPointF(1, 2), instruction, /*force*/ false);
+  // position of parent instruction remains unchanged
+  EXPECT_FLOAT_EQ(instruction->GetX(), 0.0);
+  EXPECT_FLOAT_EQ(instruction->GetY(), 0.0);
+
+  // checking that ncoordinates remained unchanged
+  EXPECT_FLOAT_EQ(wait0->GetX(), 1.1);
+  EXPECT_FLOAT_EQ(wait0->GetY(), 1.2);
+  EXPECT_FLOAT_EQ(wait1->GetX(), 2.1);
+  EXPECT_FLOAT_EQ(wait1->GetY(), 2.2);
+}
+
+//! Alignment in force mode when items have already some coordinates
+
+TEST_F(SceneUtilsTest, ForceAlignTreeWithParentAndTwoChildren)
+{
+  InstructionContainerItem container;
+  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto wait0 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto wait1 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+
+  // giving non-default coordinates
+  wait0->SetX(1.0);
+  wait1->SetX(1.1);
+  wait0->SetY(2.1);
+  wait1->SetY(2.2);
+
+  // number used in scenutils.cpp
+  const double step_width = GetAlignmentGridWidth();
+  const double step_height = GetAlignmentGridHeight();
+
+  AlignInstructionTree(QPointF(1, 2), instruction, /*force*/ true);
+  // position of parent instruction remains unchanged
+  EXPECT_FLOAT_EQ(instruction->GetX(), 0.0);
+  EXPECT_FLOAT_EQ(instruction->GetY(), 0.0);
+
+  // checking that non-default coordinates have been overwritten
+  EXPECT_FLOAT_EQ(wait0->GetX(), 1.0 - step_width / 2.);
+  EXPECT_FLOAT_EQ(wait0->GetY(), 2.0 + step_height);
+  EXPECT_FLOAT_EQ(wait1->GetX(), 1.0 + step_width / 2.);
+  EXPECT_FLOAT_EQ(wait1->GetY(), 2.0 + step_height);
+}

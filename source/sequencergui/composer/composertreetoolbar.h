@@ -1,0 +1,58 @@
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov <gennady.pospelov@gmail.com>
+ *
+ *****************************************************************************/
+
+#ifndef SEQUENCERGUI_MAINWINDOW_COMPOSERTREETOOLBAR_H
+#define SEQUENCERGUI_MAINWINDOW_COMPOSERTREETOOLBAR_H
+
+#include <QToolBar>
+#include <memory>
+
+class QToolButton;
+class QLabel;
+class QMenu;
+class QPushButton;
+
+namespace sequi
+{
+//! A toolbar on top of ComposerTreeWidget with control elements to add/remove instructions or
+//! variables.
+
+class ComposerTreeToolBar : public QToolBar
+{
+  Q_OBJECT
+
+public:
+  ComposerTreeToolBar(QWidget* parent = nullptr);
+  ~ComposerTreeToolBar();
+
+signals:
+  void insertIntoRequest(const QString& name);
+  void insertAfterRequest(const QString& name);
+  void removeSelectedRequest();
+
+private:
+  void AddDotsMenu();
+  void InsertStrech();
+  void SetupMenu();
+
+  std::unique_ptr<QMenu> CreateInsertAfterMenu();
+  std::unique_ptr<QMenu> CreateInsertIntoMenu();
+
+  QToolButton* m_insert_after_button{nullptr};
+  QToolButton* m_insert_into_button{nullptr};
+  QToolButton* m_remove_button{nullptr};
+
+  std::unique_ptr<QMenu> m_insert_into_menu;
+  std::unique_ptr<QMenu> m_insert_after_menu;
+};
+
+}  // namespace sequi
+
+#endif  // SEQUENCERGUI_MAINWINDOW_COMPOSERTREETOOLBAR_H

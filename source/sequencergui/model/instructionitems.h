@@ -1,0 +1,180 @@
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov <gennady.pospelov@gmail.com>
+ *
+ *****************************************************************************/
+
+#ifndef SEQUENCERGUI_MODEL_INSTRUCTIONITEMS_H
+#define SEQUENCERGUI_MODEL_INSTRUCTIONITEMS_H
+
+//! @file instructionitems.h
+//! Collection of classes to represent Sequencer instructions.
+
+#include "sequencergui/model/sequencer_types.h"
+
+#include "mvvm/model/compounditem.h"
+
+namespace sequi
+{
+//! Base class for all instruction items.
+class InstructionItem : public ModelView::CompoundItem
+{
+public:
+  InstructionItem(const std::string& item_type);
+
+  //! Init given item from the domain instruction.
+  virtual void InitFromDomain(const instruction_t* instruction);
+
+  //! Creates domain instruction corresponding to given item.
+  virtual std::unique_ptr<instruction_t> CreateDomainInstruction() const;
+
+  std::vector<InstructionItem*> GetInstructions() const;
+
+  void SetStatus(const std::string& status);
+
+  std::string GetStatus() const;
+
+  double GetX() const;
+
+  void SetX(double value);
+
+  double GetY() const;
+
+  void SetY(double value);
+
+  SessionItem* GetStatusItem() const;
+
+  SessionItem* GetNameItem() const;
+};
+
+//! Represent Copy instruction.
+class CopyItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Copy";
+  CopyItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  std::string GetInput() const;
+
+  void SetInput(const std::string& value);
+
+  std::string GetOutput() const;
+
+  void SetOutput(const std::string& value);
+};
+
+//! Represent Fallback instruction.
+class FallbackItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Fallback";
+  FallbackItem();
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+};
+
+//! Represent Input instruction.
+class InputItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Input";
+  InputItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  std::string GetTargetVariableName() const;
+
+  void SetTargetVariableName(const std::string& value);
+
+  std::string GetDescription() const;
+
+  void SetDescription(const std::string& value);
+};
+
+//! Represent Inverter instruction.
+class InverterItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Inverter";
+  InverterItem();
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+};
+
+//! Represent Output instruction.
+class OutputItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Output";
+  OutputItem();
+
+  void InitFromDomain(const instruction_t *instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  std::string GetSourceVariableName() const;
+
+  void SetSourceVariableName(const std::string& value);
+
+  std::string GetDescription() const;
+
+  void SetDescription(const std::string& value);
+};
+
+//! Represent Repeat instruction.
+class RepeatItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Repeat";
+  RepeatItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  int GetRepeatCount() const;
+
+  void SetRepeatCount(int value);
+};
+
+//! Represent Sequencer instruction.
+class SequenceItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Sequence";
+  SequenceItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+};
+
+//! Represent Wait instruction.
+class WaitItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Wait";
+  WaitItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  void SetTimeout(double value);
+
+  double GetTimeout() const;
+};
+
+}  // namespace sequi
+
+#endif  // SEQUENCERGUI_MODEL_INSTRUCTIONITEMS_H

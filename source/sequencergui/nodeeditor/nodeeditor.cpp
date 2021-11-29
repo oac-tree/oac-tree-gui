@@ -1,0 +1,115 @@
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov <gennady.pospelov@gmail.com>
+ *
+ *****************************************************************************/
+
+#include "sequencergui/nodeeditor/nodeeditor.h"
+
+#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/nodeeditor/connectableinstructionadapter.h"
+#include "sequencergui/nodeeditor/connectableview.h"
+#include "sequencergui/nodeeditor/graphicsscene.h"
+#include "sequencergui/nodeeditor/graphicsscenecontroller.h"
+#include "sequencergui/nodeeditor/graphicsview.h"
+#include "sequencergui/nodeeditor/nodeeditortoolbar.h"
+#include "sequencergui/nodeeditor/sceneutils.h"
+
+#include <QDebug>
+#include <QPointF>
+#include <QToolBar>
+#include <QVBoxLayout>
+
+namespace sequi
+{
+
+NodeEditor::NodeEditor(QWidget *parent)
+    : QWidget(parent)
+    , m_tool_bar(new NodeEditorToolBar)
+    , m_graphics_scene(new GraphicsScene)
+    , m_graphics_view(new GraphicsView(m_graphics_scene, this))
+{
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setMargin(0);
+
+  layout->addWidget(m_tool_bar);
+  layout->addWidget(m_graphics_view);
+
+  SetupConnections();
+}
+
+NodeEditor::~NodeEditor() = default;
+
+void NodeEditor::SetModel(SequencerModel *model, ProcedureItem *procedure)
+{
+  qDebug() << "NodeEditor" << model << procedure;
+  m_model = model;
+  if (procedure)
+  {
+    auto instruction_container = procedure->GetInstructionContainer();
+    m_graphics_scene->SetContext(model, instruction_container);
+    m_scene_controller = std::make_unique<GraphicsSceneController>(model, m_graphics_scene);
+
+    auto scene_rect = m_graphics_scene->sceneRect();
+    const QPointF reference_point = m_graphics_scene->sceneRect().center();
+    auto align_strategy = [reference_point](auto container)
+    { AlignTree(reference_point, container); };
+    m_scene_controller->SetAlignStrategy(align_strategy);
+
+    m_scene_controller->Init(instruction_container);
+
+    m_graphics_view->onCenterView();
+  }
+}
+
+void NodeEditor::SetupConnections()
+{
+  // Propagates delete request from the graphics view to the scene.
+  connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
+          &GraphicsScene::onDeleteSelectedRequest);
+
+  // Forward instruction selection from graphics scene
+  connect(m_graphics_scene, &GraphicsScene::InstructionSelected, this,
+          &NodeEditor::InstructionSelected);
+
+  // Propagate selection mode change from GraphicsView to a toolBar
+  connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_tool_bar,
+          &NodeEditorToolBar::onViewSelectionMode);
+
+  // Propagate selection mode change from toolbar to GraphicsView
+  connect(m_tool_bar, &NodeEditorToolBar::selectionMode, m_graphics_view,
+          &GraphicsView::onSelectionMode);
+
+  // Center view from toolBar to GraphicsView
+  connect(m_tool_bar, &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
+
+  // Propagate zoom request from a toolbar to GraphicsView
+  connect(m_tool_bar, &NodeEditorToolBar::changeScale, m_graphics_view,
+          &GraphicsView::onChangeScale);
+
+  // Propagate selection request from GraphicsScene to GraphicsView
+  connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
+          &GraphicsView::onSelectionMode);
+
+  // Propagate align request from toolBar to GraphicsScene. All children of currently selected
+  // parent will be aligned.
+  auto on_align = [this]()
+  {
+    auto selected = m_graphics_scene->selectedViewItems<ConnectableView>();
+    for (auto view : selected)
+    {
+      auto item = view->connectableItem()->GetInstruction();
+      AlignInstructionTree(view->pos(), item, /*force*/ true);
+    }
+  };
+  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
+}
+
+}  // namespace sequi

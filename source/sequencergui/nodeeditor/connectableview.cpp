@@ -1,0 +1,209 @@
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov <gennady.pospelov@gmail.com>
+ *
+ *****************************************************************************/
+
+#include "sequencergui/nodeeditor/connectableview.h"
+
+#include "sequencergui/nodeeditor/connectableinstructionadapter.h"
+#include "sequencergui/nodeeditor/nodeconnection.h"
+#include "sequencergui/nodeeditor/nodeport.h"
+#include "sequencergui/nodeeditor/positionstrategy.h"
+#include "sequencergui/nodeeditor/sceneutils.h"
+
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
+
+namespace
+{
+const int round_par = 5;
+
+//! Returns rectangle to display ConnectableView label. Takes bounding box of a view as input
+//! parameter.
+QRectF label_rectangle(const QRectF& rect)
+{
+  return QRectF(rect.x(), rect.y(), rect.width(), rect.height() / 4);
+}
+
+}  // namespace
+
+namespace sequi
+{
+ConnectableView::ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> item)
+    : m_item(std::move(item))
+{
+  setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
+  m_rect = ConnectableViewRectangle();
+
+  setFlag(QGraphicsItem::ItemIsSelectable);
+  setFlag(QGraphicsItem::ItemIsMovable);
+  setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+
+  updateViewFromItem();
+  update();
+}
+
+void ConnectableView::SetPositionStrategy(std::unique_ptr<PositionStrategyInterface> strategy)
+{
+  m_strategy = std::move(strategy);
+  SetupPorts();
+}
+
+ConnectableView::~ConnectableView() = default;
+
+QRectF ConnectableView::boundingRect() const
+{
+  return m_rect;
+}
+
+void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*)
+{
+  painter->setPen(Qt::gray);
+  if (option->state & (QStyle::State_Selected | QStyle::State_HasFocus))
+  {
+    painter->setPen(Qt::DashLine);
+  }
+
+  painter->setBrush(ConnectableViewGradient(color(), boundingRect()));
+  painter->drawRoundedRect(boundingRect(), round_par, round_par);
+
+  painter->setPen(Qt::black);
+  QFont serifFont("Monospace", 8, QFont::Normal);
+  painter->setFont(serifFont);
+  painter->drawText(label_rectangle(boundingRect()), Qt::AlignCenter, label());
+}
+
+//! Connects children's output port to appropriate input port.
+
+void ConnectableView::makeChildConnected(ConnectableView* childView)
+{
+  if (!childView)
+  {
+    throw std::runtime_error("Error in ConnectableView: wrong child");
+  }
+
+  auto child_port = childView->childPort();
+  if (!child_port)
+  {
+    return;
+  }
+
+  auto parent_port = parentPort();
+  if (parent_port->isConnectable(child_port))
+  {
+    auto connection = new NodeConnection(scene());  // ownership to scene
+    connection->setPort2(child_port);
+    connection->setPort1(parent_port);
+    connection->updatePath();
+  }
+}
+
+//! Returns list of input ports of given
+
+QList<ChildPort*> ConnectableView::childPorts() const
+{
+  return ports<ChildPort>();
+}
+
+ChildPort* ConnectableView::childPort() const
+{
+  auto child_ports = childPorts();
+  return child_ports.empty() ? nullptr : child_ports.front();
+}
+
+ParentPort* ConnectableView::parentPort() const
+{
+  auto parent_ports = ports<ParentPort>();
+  return parent_ports.empty() ? nullptr : parent_ports.front();
+}
+
+ConnectableInstructionAdapter* ConnectableView::connectableItem() const
+{
+  return m_item.get();
+}
+
+QList<NodeConnection*> ConnectableView::outputConnections() const
+{
+  QList<NodeConnection*> result;
+  if (auto parent_port = parentPort(); parent_port)
+  {
+    result.append(parent_port->connections());
+  }
+  return result;
+}
+
+void ConnectableView::updateItemFromView()
+{
+  m_item->SetX(x());
+  m_item->SetY(y());
+}
+
+void ConnectableView::updateViewFromItem()
+{
+  if (m_block_view_update)
+  {
+    return;
+  }
+
+  setX(m_item->GetX());
+  setY(m_item->GetY());
+}
+
+void ConnectableView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+  QGraphicsItem::mouseMoveEvent(event);
+}
+
+QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& value)
+{
+  if (change == ItemScenePositionHasChanged)
+  {
+    m_block_view_update = true;
+    updateItemFromView();
+    m_block_view_update = false;
+  }
+  return value;
+}
+
+//! Returns base color of this item.
+
+QColor ConnectableView::color() const
+{
+  return m_item ? m_item->GetColor() : QColor(Qt::red);
+}
+
+//! Returns label of this item.
+
+QString ConnectableView::label() const
+{
+  return m_item ? m_item->GetDisplayName() : QString("Unnamed");
+}
+
+//! Init ports to connect.
+
+void ConnectableView::SetupPorts()
+{
+  int portIndex{0};
+  for (const auto& info : m_item->GetInputPorts())
+  {
+    auto inputPort = new ChildPort(this, info);
+  }
+
+  portIndex = 0;
+  for (const auto& info : m_item->GetOutputPorts())
+  {
+    auto outputPort = new ParentPort(this, info);
+  }
+
+  if (m_strategy)
+  {
+    m_strategy->UpdatePosition(this);
+  }
+}
+
+}  // namespace sequi
