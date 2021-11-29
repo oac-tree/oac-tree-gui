@@ -10,11 +10,12 @@
 
 #include "sequencergui/model/transformfromdomain.h"
 
+#include "Instruction.h"
 #include "InstructionRegistry.h"
-#include "LocalVariable.h"
 #include "Procedure.h"
-#include "Sequence.h"
+#include "Variable.h"
 #include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
 
 #include <gtest/gtest.h>
@@ -62,8 +63,7 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
 
 TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::CopyItem>(DomainConstants::kCopyInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequi::CopyItem>(DomainConstants::kCopyInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequi::FallbackItem>(DomainConstants::kFallbackInstructionType));
   EXPECT_TRUE(
@@ -119,7 +119,7 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithSequence)
       ::sup::sequencer::GlobalInstructionRegistry().Create(DomainConstants::kWaitInstructionType);
   wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
 
-  auto sequence = std::make_unique<sup::sequencer::Sequence>();
+  auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
   sequence->InsertInstruction(wait.release(), 0);
 
   procedure.PushInstruction(sequence.release());
@@ -152,7 +152,7 @@ TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromProcedureWithLocalVaria
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto local_variable = std::make_unique<::sup::sequencer::LocalVariable>();
+  auto local_variable = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
   local_variable->AddAttribute(DomainConstants::kTypeAttribute, expected_type);
   local_variable->AddAttribute(DomainConstants::kValueAttribute, expected_value);
 
