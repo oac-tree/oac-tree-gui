@@ -4,15 +4,15 @@
 //
 // ************************************************************************** //
 
-#ifndef MVVM_CORE_VERSION_H
-#define MVVM_CORE_VERSION_H
+#ifndef SEQUENCERGUI_CORE_VERSION_H
+#define SEQUENCERGUI_CORE_VERSION_H
 
 //! @file version.h
-//! Automatically generated from mvvm_version.h.in
+//! Automatically generated from sequencergui_version.h.in
 
 #include <string>
 
-namespace ModelView
+namespace sequi
 {
 
 //! Returns major project version.
@@ -43,6 +43,6 @@ inline std::string ProjectVersion()
     return project_version;
 }
 
-} // namespace ModelView
+} // namespace sequi
 
-#endif // MVVM_CORE_VERSION_H
+#endif // SEQUENCERGUI_CORE_VERSION_H

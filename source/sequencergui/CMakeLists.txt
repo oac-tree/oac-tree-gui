@@ -3,7 +3,7 @@ set(library_name sequencerguicore)
 set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} STATIC "")
-target_link_libraries(${library_name} PUBLIC pthread mvvm_view sequencer-shared)
+target_link_libraries(${library_name} PUBLIC pthread MVVM::View sequencer-shared)
 
 add_subdirectory(composer)
 add_subdirectory(mainwindow)
