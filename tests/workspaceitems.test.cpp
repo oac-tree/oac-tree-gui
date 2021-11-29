@@ -13,6 +13,8 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/transformfromdomain.h"
 
+#include "Variable.h"
+
 #include <gtest/gtest.h>
 
 using namespace sequi;

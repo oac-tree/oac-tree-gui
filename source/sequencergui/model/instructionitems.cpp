@@ -10,6 +10,8 @@
 
 #include "sequencergui/model/instructionitems.h"
 
+#include "Instruction.h"
+
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
 

@@ -19,9 +19,6 @@
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/sequencer_types.h"
 
-#include "Variable.h"
-#include "Instruction.h"
-
 #include <memory>
 #include <string>
 #include <vector>

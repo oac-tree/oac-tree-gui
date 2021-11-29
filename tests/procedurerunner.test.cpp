@@ -13,6 +13,7 @@
 #include "ExecutionStatus.h"
 #include "Instruction.h"
 #include "Procedure.h"
+#include "Variable.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequencer_types.h"
 
