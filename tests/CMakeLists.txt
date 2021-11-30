@@ -15,5 +15,5 @@ target_link_libraries(${test} PRIVATE sequencerguicore pthread gtest gmock Qt5::
 
 target_include_directories(${test} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../source)
 
-gtest_discover_tests(${test} TEST_PREFIX "SequencerGUI.")
+gtest_discover_tests(${test} DISCOVERY_TIMEOUT 30)
 
