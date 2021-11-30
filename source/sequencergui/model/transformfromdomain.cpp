@@ -51,10 +51,14 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateInstructionItemCatalogue()
   using ModelView::ItemFactoryFunction;
   auto result = std::make_unique<ModelView::ItemCatalogue>();
 
+  result->RegisterItem(sequi::DomainConstants::kConditionInstructionType,
+                       ItemFactoryFunction<sequi::ConditionItem>());
   result->RegisterItem(sequi::DomainConstants::kCopyInstructionType,
                        ItemFactoryFunction<sequi::CopyItem>());
   result->RegisterItem(sequi::DomainConstants::kFallbackInstructionType,
                        ItemFactoryFunction<sequi::FallbackItem>());
+  result->RegisterItem(sequi::DomainConstants::kIncludeInstructionType,
+                       ItemFactoryFunction<sequi::IncludeItem>());
   result->RegisterItem(sequi::DomainConstants::kInputInstructionType,
                        ItemFactoryFunction<sequi::InputItem>());
   result->RegisterItem(sequi::DomainConstants::kInverterInstructionType,
@@ -67,6 +71,8 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateInstructionItemCatalogue()
                        ItemFactoryFunction<sequi::SequenceItem>());
   result->RegisterItem(sequi::DomainConstants::kWaitInstructionType,
                        ItemFactoryFunction<sequi::WaitItem>());
+  result->RegisterItem(sequi::DomainConstants::kParallelInstructionType,
+                       ItemFactoryFunction<sequi::ParallelSequenceItem>());
 
   return result;
 }

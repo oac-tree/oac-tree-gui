@@ -28,11 +28,14 @@ namespace sequi
 {
 SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
 {
+  RegisterItem<ConditionItem>();
   RegisterItem<CopyItem>();
   RegisterItem<FallbackItem>();
+  RegisterItem<IncludeItem>();
   RegisterItem<InputItem>();
   RegisterItem<InverterItem>();
   RegisterItem<OutputItem>();
+  RegisterItem<ParallelSequenceItem>();
   RegisterItem<RepeatItem>();
   RegisterItem<SequenceItem>();
   RegisterItem<WaitItem>();

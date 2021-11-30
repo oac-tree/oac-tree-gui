@@ -30,32 +30,41 @@
 namespace sequi::DomainConstants
 {
 // instructions
+const std::string kConditionInstructionType = "Condition";
 const std::string kCopyInstructionType = "Copy";
 const std::string kFallbackInstructionType = "Fallback";
+const std::string kIncludeInstructionType = "Include";
 const std::string kInputInstructionType = "Input";
 const std::string kInverterInstructionType = "Inverter";
 const std::string kOutputInstructionType = "Output";
+const std::string kParallelInstructionType = "ParallelSequence";
+const std::string kRepeatInstructionType = "Repeat";
 const std::string kSequenceInstructionType = "Sequence";
 const std::string kWaitInstructionType = "Wait";
-const std::string kRepeatInstructionType = "Repeat";
 
 // variables
 const std::string kLocalVariableType = "Local";
 
 // attributes
-const std::string kNameAttribute = "name";
 const std::string kDescriptionAttribute = "description";
+const std::string kFailureThresholdAttribute = "failureThreshold";
+const std::string kFileAttribute = "file";
+const std::string kInputAttribute = "input";
+const std::string kMaxCountAttribute = "maxCount";
+const std::string kNameAttribute = "name";
+const std::string kOutputAttribute = "output";
+const std::string kPathAttribute = "path";
+const std::string kSuccessThresholdAttribute = "successThreshold";
+const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
-const std::string kMaxCountAttribute = "maxCount";
-const std::string kInputAttribute = "input";
-const std::string kOutputAttribute = "output";
-const std::string kTickTimeOutAttribute = "tickTimeout";
 
 // attributes (instruction specific)
-const std::string kWaitTimeoutAttribute = "timeout";
+const std::string kConditionVarNameAttribute = "var_name";
 const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
+const std::string kWaitTimeoutAttribute = "timeout";
+
 
 }  // namespace sequi::DomainConstants
 

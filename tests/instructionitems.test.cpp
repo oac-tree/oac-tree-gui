@@ -34,6 +34,41 @@ class InstructionItemsTest : public ::testing::Test
 };
 
 // ----------------------------------------------------------------------------
+// ConditionItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(InstructionItemsTest, ConditionItem)
+{
+  // Correctly initialised item
+  ConditionItem item;
+  EXPECT_EQ(item.GetVariableName(), std::string());
+
+  item.SetVariableName("abc");
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(InstructionItemsTest, ConditionItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kConditionInstructionType);
+  input->AddAttribute(DomainConstants::kConditionVarNameAttribute, "abc");
+
+  ConditionItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(InstructionItemsTest, ConditionItemToDomain)
+{
+  ConditionItem item;
+  item.SetVariableName("abc");
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kConditionInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
+}
+
+// ----------------------------------------------------------------------------
 // CopyItem tests
 // ----------------------------------------------------------------------------
 
@@ -86,6 +121,49 @@ TEST_F(InstructionItemsTest, FallbackItem)
   auto wait = item.InsertItem<WaitItem>({"", -1});
   auto sequence = item.InsertItem<SequenceItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
+}
+
+// ----------------------------------------------------------------------------
+// IncludeItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(InstructionItemsTest, IncludeItem)
+{
+  // Correctly initialised item
+  IncludeItem item;
+  EXPECT_EQ(item.GetFileName(), std::string());
+  EXPECT_EQ(item.GetPath(), std::string());
+
+  item.SetFileName("abc");
+  EXPECT_EQ(item.GetFileName(), std::string("abc"));
+
+  item.SetPath("def");
+  EXPECT_EQ(item.GetPath(), std::string("def"));
+}
+
+TEST_F(InstructionItemsTest, IncludeItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kIncludeInstructionType);
+  input->AddAttribute(DomainConstants::kFileAttribute, "abc");
+  input->AddAttribute(DomainConstants::kPathAttribute, "def");
+
+  IncludeItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetFileName(), std::string("abc"));
+  EXPECT_EQ(item.GetPath(), std::string("def"));
+}
+
+TEST_F(InstructionItemsTest, IncludeItemToDomain)
+{
+  IncludeItem item;
+  item.SetFileName("abc");
+  item.SetPath("def");
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kIncludeInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFileAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kPathAttribute), "def");
 }
 
 // ----------------------------------------------------------------------------
@@ -188,6 +266,53 @@ TEST_F(InstructionItemsTest, OutputItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
+// ParallelSequenceItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(InstructionItemsTest, ParallelSequenceItem)
+{
+  // Correctly initialised item
+  ParallelSequenceItem item;
+  EXPECT_EQ(item.GetSuccessThreshold(), 0);
+  EXPECT_EQ(item.GetFailureThreshold(), 0);
+
+  item.SetSuccessThreshold(42);
+  EXPECT_EQ(item.GetSuccessThreshold(), 42);
+
+  item.SetFailureThreshold(43);
+  EXPECT_EQ(item.GetFailureThreshold(), 43);
+
+  auto wait0 = item.InsertItem<WaitItem>({"", -1});
+  auto wait1 = item.InsertItem<WaitItem>({"", -1});
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
+}
+
+TEST_F(InstructionItemsTest, ParallelSequenceFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kParallelInstructionType);
+  input->AddAttribute(DomainConstants::kSuccessThresholdAttribute, "42");
+  input->AddAttribute(DomainConstants::kFailureThresholdAttribute, "1");
+
+  ParallelSequenceItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetSuccessThreshold(), 42);
+  EXPECT_EQ(item.GetFailureThreshold(), 1);
+}
+
+TEST_F(InstructionItemsTest, ParallelSequenceToDomain)
+{
+  ParallelSequenceItem item;
+  item.SetSuccessThreshold(42);
+  item.SetFailureThreshold(43);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kParallelInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kSuccessThresholdAttribute), "42");
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFailureThresholdAttribute), "43");
+}
+
+// ----------------------------------------------------------------------------
 // RepeatItem tests
 // ----------------------------------------------------------------------------
 
@@ -204,7 +329,6 @@ TEST_F(InstructionItemsTest, RepeatItem)
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to repeater
   EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
-
 }
 
 TEST_F(InstructionItemsTest, RepeatItemFromDomain)

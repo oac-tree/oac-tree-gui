@@ -255,3 +255,27 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithVariable)
   EXPECT_EQ(builder.FindVariableItemIdentifier(domain_var0), var_item0->GetIdentifier());
   EXPECT_EQ(builder.FindVariableItemIdentifier(domain_var1), var_item1->GetIdentifier());
 }
+
+TEST_F(DomainObjectBuilderTest, ProcedureWithParallelSequence)
+{
+  ProcedureItem procedure_item;
+  auto container = procedure_item.GetInstructionContainer();
+
+  auto sequence = container->InsertItem<ParallelSequenceItem>(ModelView::TagIndex::Append());
+  auto wait0 = sequence->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto wait1 = sequence->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+
+  DomainObjectBuilder builder;
+  auto procedure = builder.CreateProcedure(&procedure_item);
+
+  // Empty instruction list
+  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  ASSERT_EQ(procedure->GetInstructionCount(), 1);
+  auto domain_sequence = procedure->GetInstructions().at(0);
+  EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kParallelInstructionType);
+  ASSERT_EQ(domain_sequence->ChildrenCount(), 2);
+  EXPECT_EQ(domain_sequence->ChildInstructions().at(0)->GetType(),
+            DomainConstants::kWaitInstructionType);
+  EXPECT_EQ(domain_sequence->ChildInstructions().at(1)->GetType(),
+            DomainConstants::kWaitInstructionType);
+}

@@ -60,6 +60,22 @@ public:
   SessionItem* GetNameItem() const;
 };
 
+//! Represent Condition instruction.
+class ConditionItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Condition";
+  ConditionItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  std::string GetVariableName() const;
+
+  void SetVariableName(const std::string &value);
+};
+
 //! Represent Copy instruction.
 class CopyItem : public InstructionItem
 {
@@ -88,6 +104,26 @@ public:
   FallbackItem();
 
   std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+};
+
+//! Represent IncludeItem instruction.
+class IncludeItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Include";
+  IncludeItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  std::string GetFileName() const;
+
+  void SetFileName(const std::string& value);
+
+  std::string GetPath() const;
+
+  void SetPath(const std::string& value);
 };
 
 //! Represent Input instruction.
@@ -127,7 +163,7 @@ public:
   static inline const std::string Type = "Output";
   OutputItem();
 
-  void InitFromDomain(const instruction_t *instruction) override;
+  void InitFromDomain(const instruction_t* instruction) override;
 
   std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
 
@@ -138,6 +174,26 @@ public:
   std::string GetDescription() const;
 
   void SetDescription(const std::string& value);
+};
+
+//! Represent ParallelSequence instruction.
+class ParallelSequenceItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "ParallelSequence";
+  ParallelSequenceItem();
+
+  void InitFromDomain(const instruction_t* instruction) override;
+
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+
+  int GetSuccessThreshold() const;
+
+  void SetSuccessThreshold(int value);
+
+  int GetFailureThreshold() const;
+
+  void SetFailureThreshold(int value);
 };
 
 //! Represent Repeat instruction.

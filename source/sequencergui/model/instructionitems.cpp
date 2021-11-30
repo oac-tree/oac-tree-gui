@@ -20,7 +20,6 @@
 #include "sequencergui/model/instructionitems.h"
 
 #include "Instruction.h"
-
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
 
@@ -109,6 +108,52 @@ ModelView::SessionItem *InstructionItem::GetNameItem() const
 }
 
 // ----------------------------------------------------------------------------
+// ConditionItem
+// ----------------------------------------------------------------------------
+
+static inline const std::string kVariableName = "kVariableName";
+
+ConditionItem::ConditionItem() : InstructionItem(Type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+}
+
+void ConditionItem::InitFromDomain(const instruction_t *instruction)
+{
+  InstructionItem::InitFromDomain(instruction);
+
+  if (instruction->GetType() != DomainConstants::kConditionInstructionType)
+  {
+    throw std::runtime_error(
+        "Error in ConditionItem: instruction doesn't match presentation item.");
+  }
+
+  if (instruction->HasAttribute(DomainConstants::kConditionVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(DomainConstants::kConditionVarNameAttribute));
+  }
+}
+
+std::unique_ptr<instruction_t> ConditionItem::CreateDomainInstruction() const
+{
+  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kConditionInstructionType);
+
+  result->AddAttribute(DomainConstants::kConditionVarNameAttribute, GetVariableName());
+
+  return result;
+}
+
+std::string ConditionItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void ConditionItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
+}
+
+// ----------------------------------------------------------------------------
 // CopyItem
 // ----------------------------------------------------------------------------
 static inline const std::string kInput = "kInput";
@@ -181,6 +226,69 @@ FallbackItem::FallbackItem() : InstructionItem(Type)
 std::unique_ptr<instruction_t> FallbackItem::CreateDomainInstruction() const
 {
   return DomainUtils::CreateDomainInstruction(DomainConstants::kFallbackInstructionType);
+}
+
+// ----------------------------------------------------------------------------
+// InputItem
+// ----------------------------------------------------------------------------
+
+static inline const std::string kFile = "kFile";
+static inline const std::string kPath = "kPath";
+
+IncludeItem::IncludeItem() : InstructionItem(Type)
+{
+  AddProperty(kFile, std::string())->SetDisplayName("File name");
+  AddProperty(kPath, std::string())->SetDisplayName("Path");
+}
+
+void IncludeItem::InitFromDomain(const instruction_t *instruction)
+{
+  InstructionItem::InitFromDomain(instruction);
+
+  if (instruction->GetType() != DomainConstants::kIncludeInstructionType)
+  {
+    throw std::runtime_error("Error in IncludeItem: instruction doesn't match presentation item.");
+  }
+
+  if (instruction->HasAttribute(DomainConstants::kFileAttribute))
+  {
+    SetFileName(instruction->GetAttribute(DomainConstants::kFileAttribute));
+  }
+
+  if (instruction->HasAttribute(DomainConstants::kPathAttribute))
+  {
+    SetPath(instruction->GetAttribute(DomainConstants::kPathAttribute));
+  }
+}
+
+std::unique_ptr<instruction_t> IncludeItem::CreateDomainInstruction() const
+{
+  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kIncludeInstructionType);
+
+  result->AddAttribute(DomainConstants::kFileAttribute, GetFileName());
+  result->AddAttribute(DomainConstants::kPathAttribute, GetPath());
+
+  return result;
+}
+
+std::string IncludeItem::GetFileName() const
+{
+  return Property<std::string>(kFile);
+}
+
+void IncludeItem::SetFileName(const std::string &value)
+{
+  SetProperty(kFile, value);
+}
+
+std::string IncludeItem::GetPath() const
+{
+  return Property<std::string>(kPath);
+}
+
+void IncludeItem::SetPath(const std::string &value)
+{
+  SetProperty(kPath, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -276,7 +384,7 @@ void OutputItem::InitFromDomain(const instruction_t *instruction)
 
   if (instruction->GetType() != DomainConstants::kOutputInstructionType)
   {
-    throw std::runtime_error("Error in InpuItem: instruction doesn't match presentation item.");
+    throw std::runtime_error("Error in OutputItem: instruction doesn't match presentation item.");
   }
 
   if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
@@ -318,6 +426,75 @@ std::string OutputItem::GetDescription() const
 void OutputItem::SetDescription(const std::string &value)
 {
   SetProperty(kDescription, value);
+}
+
+// ----------------------------------------------------------------------------
+// ParallelSequenceItem
+// ----------------------------------------------------------------------------
+
+static inline const std::string kSuccessThreshold = "kSuccessThreshold";
+static inline const std::string kFailureThreshold = "kFailureThreshold";
+
+ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
+{
+  AddProperty(kSuccessThreshold, 0)->SetDisplayName("Success threshold");
+  AddProperty(kFailureThreshold, 0)->SetDisplayName("Failure threshold");
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+}
+
+void ParallelSequenceItem::InitFromDomain(const instruction_t *instruction)
+{
+  InstructionItem::InitFromDomain(instruction);
+
+  if (instruction->GetType() != DomainConstants::kParallelInstructionType)
+  {
+    throw std::runtime_error(
+        "Error in ParallelSequenceItem: instruction doesn't match presentation item.");
+  }
+
+  if (instruction->HasAttribute(DomainConstants::kSuccessThresholdAttribute))
+  {
+    SetSuccessThreshold(
+        std::stoi(instruction->GetAttribute(DomainConstants::kSuccessThresholdAttribute)));
+  }
+
+  if (instruction->HasAttribute(DomainConstants::kFailureThresholdAttribute))
+  {
+    SetFailureThreshold(
+        std::stoi(instruction->GetAttribute(DomainConstants::kFailureThresholdAttribute)));
+  }
+}
+
+std::unique_ptr<instruction_t> ParallelSequenceItem::CreateDomainInstruction() const
+{
+  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kParallelInstructionType);
+
+  result->AddAttribute(DomainConstants::kSuccessThresholdAttribute,
+                       std::to_string(GetSuccessThreshold()));
+  result->AddAttribute(DomainConstants::kFailureThresholdAttribute,
+                       std::to_string(GetFailureThreshold()));
+
+  return result;
+}
+
+int ParallelSequenceItem::GetSuccessThreshold() const
+{
+  return Property<int>(kSuccessThreshold);
+}
+
+void ParallelSequenceItem::SetSuccessThreshold(int value)
+{
+  SetProperty(kSuccessThreshold, value);
+}
+
+int ParallelSequenceItem::GetFailureThreshold() const
+{
+  return Property<int>(kFailureThreshold);
+}
+
+void ParallelSequenceItem::SetFailureThreshold(int value)
+{
+  SetProperty(kFailureThreshold, value);
 }
 
 // ----------------------------------------------------------------------------
