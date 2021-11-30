@@ -57,7 +57,7 @@ SettingsView::SettingsView(QWidget *parent)
   m_stacked_widget->setCurrentIndex(0);
 
   auto layout = new QVBoxLayout(this);
-//  layout->addWidget(m_tool_bar);
+  //  layout->addWidget(m_tool_bar);
   layout->addLayout(hlayout);
 }
 
@@ -87,10 +87,10 @@ void SettingsView::SetupListSelector()
   m_list_widget->setIconSize(
       QSize(ModelView::Utils::WidthOfLetterM() * 1.2, ModelView::Utils::WidthOfLetterM() * 1.2));
 
-  auto item = new QListWidgetItem(QIcon(":/icons/card-bulleted-outline.svg"), "All models");
+  auto item = new QListWidgetItem(StyleUtils::GetIcon("card-bulleted-outline.svg"), "All models");
   m_list_widget->addItem(item);
 
-  item = new QListWidgetItem(QIcon(":/icons/cog-outline.svg"), "Miscellaneous");
+  item = new QListWidgetItem(StyleUtils::GetIcon("cog-outline.svg"), "Miscellaneous");
   m_list_widget->addItem(item);
 
   connect(m_list_widget, &QListWidget::currentRowChanged,

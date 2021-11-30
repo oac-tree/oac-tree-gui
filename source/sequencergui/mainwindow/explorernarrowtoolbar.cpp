@@ -48,7 +48,7 @@ ExplorerNarrowToolBar::ExplorerNarrowToolBar(QWidget *parent)
       "QToolBar { padding-bottom: 0px; margin-bottom: 0px; } QToolButton { padding: 0px; margin: "
       "0px; }");
 
-  m_expand_button->setIcon(QIcon(":/icons/chevron-down.svg"));
+  m_expand_button->setIcon(StyleUtils::GetIcon("chevron-down.svg"));
   auto on_expand_click = [this]()
   {
     m_expanded = !m_expanded;
@@ -113,12 +113,12 @@ void ExplorerNarrowToolBar::UpdateIcon()
 {
   if (m_expanded)
   {
-    m_expand_button->setIcon(QIcon(":/icons/chevron-down.svg"));
+    m_expand_button->setIcon(StyleUtils::GetIcon("chevron-down.svg"));
     setFrameStyle(QFrame::StyledPanel);
   }
   else
   {
-    m_expand_button->setIcon(QIcon(":/icons/chevron-right.svg"));
+    m_expand_button->setIcon(StyleUtils::GetIcon("chevron-right.svg"));
     setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
   }
 }

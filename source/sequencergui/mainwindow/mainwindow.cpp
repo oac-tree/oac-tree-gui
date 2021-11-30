@@ -21,6 +21,7 @@
 
 #include "sequencergui/composer/sequencercomposerview.h"
 #include "sequencergui/mainwindow/sequencerxmlview.h"
+#include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -88,19 +89,19 @@ void MainWindow::InitApplication()
 void MainWindow::InitComponents()
 {
   m_xml_view = new SequencerXMLView;
-  m_tab_widget->addWidget(m_xml_view, "Explore", QIcon(":/icons/file-search-outline-light.svg"));
+  m_tab_widget->addWidget(m_xml_view, "Explore", StyleUtils::GetIcon("file-search-outline-light.svg"));
 
   m_composer_view = new SequencerComposerView;
-  m_tab_widget->addWidget(m_composer_view, "Compose", QIcon(":/icons/graph-outline-light.svg"));
+  m_tab_widget->addWidget(m_composer_view, "Compose", StyleUtils::GetIcon("graph-outline-light.svg"));
 
   m_monitor_view = new SequencerMonitorView;
   m_tab_widget->addWidget(m_monitor_view, "Run",
-                          QIcon(":/icons/chevron-right-circle-outline-light.svg"));
+                          StyleUtils::GetIcon("chevron-right-circle-outline-light.svg"));
 
   m_tab_widget->addSpacer();
 
   m_settings_view = new SettingsView;
-  m_tab_widget->addWidget(m_settings_view, "", QIcon(":/icons/cog-outline-light.svg"));
+  m_tab_widget->addWidget(m_settings_view, "", StyleUtils::GetIcon("cog-outline-light.svg"));
 
   m_tab_widget->setCurrentIndex(0);
 }

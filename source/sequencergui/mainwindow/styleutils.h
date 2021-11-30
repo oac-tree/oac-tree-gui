@@ -23,6 +23,7 @@
 #include <QWidget>
 
 class QToolBar;
+class QIcon;
 
 namespace sequi::StyleUtils
 {
@@ -33,6 +34,7 @@ QSize ToolBarIconSize();
 //! Size of tolbar icons.
 QSize NarrowToolBarIconSize();
 
+QIcon GetIcon(const std::string& icon_name);
 }  // namespace sequi
 
 #endif  // SEQUENCERGUI_MAINWINDOW_STYLEUTILS_H

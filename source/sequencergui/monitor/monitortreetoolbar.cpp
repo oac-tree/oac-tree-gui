@@ -55,28 +55,28 @@ MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
   setIconSize(StyleUtils::ToolBarIconSize());
 
   m_run_button->setText("Run");
-  m_run_button->setIcon(QIcon(":/icons/arrow-right-drop-circle-outline.svg"));
+  m_run_button->setIcon(StyleUtils::GetIcon("arrow-right-drop-circle-outline.svg"));
   m_run_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_run_button->setToolTip("Run procedure");
   connect(m_run_button, &QToolButton::clicked, this, &MonitorTreeToolBar::runRequest);
   addWidget(m_run_button);
 
   m_pause_button->setText("Pause");
-  m_pause_button->setIcon(QIcon(":/icons/pause-circle-outline.svg"));
+  m_pause_button->setIcon(StyleUtils::GetIcon("pause-circle-outline.svg"));
   m_pause_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pause_button->setToolTip("Pause sequence at the next occasion");
   connect(m_pause_button, &QToolButton::clicked, this, &MonitorTreeToolBar::pauseRequest);
   addWidget(m_pause_button);
 
   m_step_button->setText("Step");
-  m_step_button->setIcon(QIcon(":/icons/play-pause.svg"));
+  m_step_button->setIcon(StyleUtils::GetIcon("play-pause.svg"));
   m_step_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_step_button->setToolTip("Pause sequence at the next occasion");
   connect(m_step_button, &QToolButton::clicked, this, &MonitorTreeToolBar::stepRequest);
   addWidget(m_step_button);
 
   m_stop_button->setText("Stop");
-  m_stop_button->setIcon(QIcon(":/icons/stop-circle-outline.svg"));
+  m_stop_button->setIcon(StyleUtils::GetIcon("stop-circle-outline.svg"));
   m_stop_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_stop_button->setToolTip("Stop procedure");
   connect(m_stop_button, &QToolButton::clicked, this, &MonitorTreeToolBar::stopRequest);
@@ -85,7 +85,7 @@ MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
   addSeparator();
 
   m_delay_button->setText(GetDelayText(default_delay));
-  m_delay_button->setIcon(QIcon(":/icons/speedometer-slow.svg"));
+  m_delay_button->setIcon(StyleUtils::GetIcon("speedometer-slow.svg"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
   m_delay_button->setMenu(m_delay_menu.get());
@@ -108,7 +108,7 @@ void MonitorTreeToolBar::AddDotsMenu()
   InsertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(QIcon(":/icons/dots-horizontal.svg"));
+  button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
   button->setIconSize(StyleUtils::ToolBarIconSize());
   addWidget(button);
 }

@@ -101,13 +101,13 @@ void OpenDocumentsWidget::SetupToolBar()
   auto tool_bar = GetToolBar();
 
   auto new_procedure_button = new QToolButton;
-  new_procedure_button->setIcon(QIcon(":/icons/file-plus-outline.svg"));
+  new_procedure_button->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
   connect(new_procedure_button, &QToolButton::clicked, this,
           &OpenDocumentsWidget::createNewProcedureRequest);
   tool_bar->AddWidget(new_procedure_button);
 
   auto remove_selected_button = new QToolButton;
-  remove_selected_button->setIcon(QIcon(":/icons/beaker-remove-outline.svg"));
+  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
   connect(remove_selected_button, &QToolButton::clicked, this,
           &OpenDocumentsWidget::onRemoveSelectedRequest);
   tool_bar->AddWidget(remove_selected_button);

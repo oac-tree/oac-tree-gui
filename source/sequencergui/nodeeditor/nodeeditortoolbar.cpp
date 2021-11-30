@@ -47,14 +47,14 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
 {
   setIconSize(StyleUtils::ToolBarIconSize());
 
-  m_pointer_button->setIcon(QIcon(":/icons/arrow-top-left.svg"));
+  m_pointer_button->setIcon(StyleUtils::GetIcon("arrow-top-left.svg"));
   m_pointer_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pointer_button->setToolTip("Scene in edit mode");
   m_pointer_button->setCheckable(true);
   m_pointer_button->setChecked(true);
   addWidget(m_pointer_button);
 
-  m_pan_button->setIcon(QIcon(":/icons/hand-back-right-outline.svg"));
+  m_pan_button->setIcon(StyleUtils::GetIcon("hand-back-right-outline.svg"));
   m_pan_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pan_button->setToolTip("Scene in pan mode (space)");
   m_pan_button->setCheckable(true);
@@ -69,14 +69,14 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
 
   m_zoom_menu = CreateZoomMenu();
   m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
-  m_zoom_button->setIcon(QIcon(":/icons/magnify-plus-outline.svg"));
+  m_zoom_button->setIcon(StyleUtils::GetIcon("magnify-plus-outline.svg"));
   m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_zoom_button->setPopupMode(QToolButton::InstantPopup);
   m_zoom_button->setMenu(m_zoom_menu.get());
   m_zoom_button->setToolTip("Zoom");
   addWidget(m_zoom_button);
 
-  m_center_button->setIcon(QIcon(":/icons/camera-metering-center.svg"));
+  m_center_button->setIcon(StyleUtils::GetIcon("camera-metering-center.svg"));
   m_center_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_center_button->setToolTip("Center view");
   connect(m_center_button, &QToolButton::clicked, this, &NodeEditorToolBar::centerView);
@@ -85,7 +85,7 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
 
   addSeparator();
 
-  m_align_button->setIcon(QIcon(":/icons/dots-triangle.svg"));
+  m_align_button->setIcon(StyleUtils::GetIcon("dots-triangle.svg"));
   m_align_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_align_button->setToolTip("Align children of currently selected item");
   connect(m_align_button, &QToolButton::clicked, this, &NodeEditorToolBar::alignSelectedRequest);
@@ -109,7 +109,7 @@ void NodeEditorToolBar::AddDotsMenu()
   InsertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(QIcon(":/icons/dots-horizontal.svg"));
+  button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
   button->setIconSize(StyleUtils::ToolBarIconSize());
   addWidget(button);
 }

@@ -43,7 +43,7 @@ void MonitorWorkspaceToolBar::AddDotsMenu()
   InsertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(QIcon(":/icons/dots-horizontal.svg"));
+  button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
   button->setIconSize(StyleUtils::ToolBarIconSize());
   addWidget(button);
 }
