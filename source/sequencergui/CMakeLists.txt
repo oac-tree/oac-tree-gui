@@ -2,7 +2,7 @@ set(library_name sequencerguicore)
 
 set(CMAKE_AUTOMOC ON)
 
-add_library(${library_name} STATIC "")
+add_library(${library_name} SHARED "")
 target_link_libraries(${library_name} PUBLIC pthread MVVM::View sequencer ccs-core)
 
 # --- CODAC dependencies
