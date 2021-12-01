@@ -31,6 +31,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <map>
 
 namespace sequi::DomainUtils
 {
@@ -40,6 +41,9 @@ std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain
 std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name);
 
 std::vector<std::string> GetDomainInstructionNames();
+
+std::map<std::string, std::string> GetAttributes(const instruction_t* instruction);
+
 
 }  // namespace sequi::DomainUtils
 

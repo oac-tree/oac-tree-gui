@@ -19,6 +19,7 @@
 
 #include "sequencergui/model/domainutils.h"
 
+#include "AttributeMap.h"
 #include "Instruction.h"
 #include "InstructionRegistry.h"
 #include "Variable.h"
@@ -51,6 +52,17 @@ std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name)
 std::vector<std::string> GetDomainInstructionNames()
 {
   return ::sup::sequencer::GlobalInstructionRegistry().RegisteredInstructionNames();
+}
+
+std::map<std::string, std::string> GetAttributes(const instruction_t* instruction)
+{
+  std::map<std::string, std::string> result;
+  auto attributes = instruction->GetAttributes();
+  for (const auto& it : instruction->GetAttributes())
+  {
+    result.insert(it);
+  }
+  return result;
 }
 
 }  // namespace sequi::DomainUtils

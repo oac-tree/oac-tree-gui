@@ -19,9 +19,11 @@
 
 #include "sequencergui/model/sequenceritems.h"
 
+#include "Instruction.h"
+#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/instructionitems.h"
 
-#include "Instruction.h"
+#include "mvvm/model/itemutils.h"
 
 namespace sequi
 {
@@ -35,10 +37,39 @@ UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
   RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
 }
 
+//! Initialise instruction from domain item.
+//! This is temporarily implementation which is used for all instructions, yet unknown for the  GUI.
+
 void UnknownInstructionItem::InitFromDomain(const instruction_t *instruction)
 {
   InstructionItem::InitFromDomain(instruction);
+
+  m_domain_name = instruction->GetType();
+
   SetDisplayName(instruction->GetType() + " (unknown)");
+
+  // creating string properties for every domain attribute found
+  for (auto [name, value] : DomainUtils::GetAttributes(instruction))
+  {
+    if (name
+        != DomainConstants::kNameAttribute)  // already processed by InstructionItem::InitFromDomain
+    {
+      m_domain_attributes.push_back(name);
+      AddProperty(name, value);
+    }
+  }
+}
+
+std::unique_ptr<instruction_t> UnknownInstructionItem::CreateDomainInstruction() const
+{
+  auto result = DomainUtils::CreateDomainInstruction(m_domain_name);
+
+  for (auto name : m_domain_attributes)
+  {
+    result->AddAttribute(name, Property<std::string>(name));
+  }
+
+  return result;
 }
 
 // ----------------------------------------------------------------------------
