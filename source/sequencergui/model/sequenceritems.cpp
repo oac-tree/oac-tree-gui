@@ -40,10 +40,8 @@ UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
 //! Initialise instruction from domain item.
 //! This is temporarily implementation which is used for all instructions, yet unknown for the  GUI.
 
-void UnknownInstructionItem::InitFromDomain(const instruction_t *instruction)
+void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  InstructionItem::InitFromDomain(instruction);
-
   m_domain_name = instruction->GetType();
 
   SetDisplayName(instruction->GetType() + " (unknown)");

@@ -40,12 +40,12 @@ public:
   static inline const std::string Type = "UnknownInstruction";
   UnknownInstructionItem();
 
-  void InitFromDomain(const instruction_t* instruction);
-
   //! Creates domain instruction corresponding to given item.
   virtual std::unique_ptr<instruction_t> CreateDomainInstruction() const;
 
 private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+
   std::string m_domain_name;
   std::vector<std::string> m_domain_attributes;
 };

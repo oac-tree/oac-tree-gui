@@ -31,7 +31,42 @@ using namespace sequi;
 
 class InstructionItemsTest : public ::testing::Test
 {
+public:
+  class TestItem : public InstructionItem
+  {
+  public:
+    TestItem() : InstructionItem("test") {}
+
+  private:
+    void InitFromDomainImpl(const instruction_t* instruction) override {};
+  };
 };
+
+// ----------------------------------------------------------------------------
+// InstructionItem test
+// ----------------------------------------------------------------------------
+
+TEST_F(InstructionItemsTest, TestItem)
+{
+  // Correctly initialised item
+  TestItem item;
+  EXPECT_EQ(item.GetType(), "test");
+
+  EXPECT_EQ(item.GetX(), 0);
+  EXPECT_EQ(item.GetY(), 0);
+
+  item.SetX(1.1);
+  item.SetY(1.2);
+  EXPECT_EQ(item.GetX(), 1.1);
+  EXPECT_EQ(item.GetY(), 1.2);
+
+  EXPECT_EQ(item.GetStatus(), "");
+  EXPECT_TRUE(item.GetInstructions().empty());
+
+  EXPECT_FALSE(item.IsRoot());
+  item.SetIsRootFlag(true);
+  EXPECT_TRUE(item.IsRoot());
+}
 
 // ----------------------------------------------------------------------------
 // ConditionItem tests
