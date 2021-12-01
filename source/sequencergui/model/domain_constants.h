@@ -58,6 +58,7 @@ const std::string kSuccessThresholdAttribute = "successThreshold";
 const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
+const std::string kIsRootAttribute = "isRoot";
 
 // attributes (instruction specific)
 const std::string kConditionVarNameAttribute = "var_name";
