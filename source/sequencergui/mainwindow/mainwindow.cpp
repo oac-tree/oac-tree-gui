@@ -120,9 +120,9 @@ void MainWindow::InitMenu()
   auto file_menu = menuBar()->addMenu("&File");
 
   // open file
-  auto openAction = new QAction("&Open...", this);
-  file_menu->addAction(openAction);
-  auto onOpenAction = [&]()
+  auto open_action = new QAction("&Open...", this);
+  file_menu->addAction(open_action);
+  auto on_open_action = [&]()
   {
     QString file_name = QFileDialog::getOpenFileName(this);
     if (!file_name.isEmpty())
@@ -130,7 +130,15 @@ void MainWindow::InitMenu()
       m_xml_view->SetXMLFile(file_name);
     }
   };
-  connect(openAction, &QAction::triggered, onOpenAction);
+  connect(open_action, &QAction::triggered, on_open_action);
+
+  file_menu->addSeparator();
+
+  auto exit_action = new QAction("E&xit Application", this);
+  file_menu->addAction(exit_action);
+  exit_action->setShortcuts(QKeySequence::Quit);
+  exit_action->setStatusTip("Exit the application");
+  connect(exit_action, &QAction::triggered, this, &QMainWindow::close);
 
   menuBar()->addMenu("&Analyse");
   menuBar()->addMenu("&Tools");
@@ -186,6 +194,11 @@ void MainWindow::PopulateModel()
     var_const0->SetName("var_const0");
     var_const0->SetJsonType(R"({"type":"uint32"})");
     var_const0->SetJsonValue("0");
+
+    // adding second branch
+    sequence = m_model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+    m_model->InsertItem<WaitItem>(sequence);
+    m_model->InsertItem<WaitItem>(sequence);
   }
 
   // second procedure
