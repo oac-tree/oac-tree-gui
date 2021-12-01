@@ -17,11 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/instructionitems.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "Instruction.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/model/taginfo.h"
@@ -51,6 +52,12 @@ InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(it
 
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
 {
+  if (instruction->GetType() != GetDomainType()
+      && GetType() != UnknownInstructionItem::Type)
+  {
+    throw std::runtime_error("Error in InstructionItem: domain instruction doesn't match.");
+  }
+
   if (instruction->HasAttribute(DomainConstants::kNameAttribute))
   {
     SetProperty(kName, instruction->GetAttribute(DomainConstants::kNameAttribute));
@@ -63,7 +70,9 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
 
 std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 {
-  throw std::runtime_error("Error in InstructionItem: method is not implemented");
+  auto result = DomainUtils::CreateDomainInstruction(GetDomainType());
+  SetupDomainImpl(result.get());
+  return result;
 }
 
 //! Returns all children instruction, if exist.
@@ -136,27 +145,22 @@ ConditionItem::ConditionItem() : InstructionItem(Type)
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
 }
 
+std::string ConditionItem::GetDomainType() const
+{
+  return DomainConstants::kConditionInstructionType;
+}
+
 void ConditionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kConditionInstructionType)
-  {
-    throw std::runtime_error(
-        "Error in ConditionItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kConditionVarNameAttribute))
   {
     SetVariableName(instruction->GetAttribute(DomainConstants::kConditionVarNameAttribute));
   }
 }
 
-std::unique_ptr<instruction_t> ConditionItem::CreateDomainInstruction() const
+void ConditionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kConditionInstructionType);
-
-  result->AddAttribute(DomainConstants::kConditionVarNameAttribute, GetVariableName());
-
-  return result;
+  instruction->AddAttribute(DomainConstants::kConditionVarNameAttribute, GetVariableName());
 }
 
 std::string ConditionItem::GetVariableName() const
@@ -181,13 +185,13 @@ CopyItem::CopyItem() : InstructionItem(Type)
   AddProperty(kOutput, std::string())->SetDisplayName("Output");
 }
 
+std::string CopyItem::GetDomainType() const
+{
+  return DomainConstants::kCopyInstructionType;
+}
+
 void CopyItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kCopyInstructionType)
-  {
-    throw std::runtime_error("Error in CopyItem: instruction doesn't match presentation item.");
-  }
-
   if (!instruction->HasAttribute(DomainConstants::kInputAttribute))
   {
     throw std::runtime_error("Error in CopyItem: no `input` attribute provided");
@@ -201,12 +205,10 @@ void CopyItem::InitFromDomainImpl(const instruction_t *instruction)
   SetOutput(instruction->GetAttribute(DomainConstants::kOutputAttribute));
 }
 
-std::unique_ptr<instruction_t> CopyItem::CreateDomainInstruction() const
+void CopyItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kCopyInstructionType);
-  result->AddAttribute(DomainConstants::kInputAttribute, GetInput());
-  result->AddAttribute(DomainConstants::kOutputAttribute, GetOutput());
-  return result;
+  instruction->AddAttribute(DomainConstants::kInputAttribute, GetInput());
+  instruction->AddAttribute(DomainConstants::kOutputAttribute, GetOutput());
 }
 
 std::string CopyItem::GetInput() const
@@ -237,14 +239,16 @@ FallbackItem::FallbackItem() : InstructionItem(Type)
   RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
 }
 
-std::unique_ptr<instruction_t> FallbackItem::CreateDomainInstruction() const
+std::string FallbackItem::GetDomainType() const
 {
-  return DomainUtils::CreateDomainInstruction(DomainConstants::kFallbackInstructionType);
+  return DomainConstants::kFallbackInstructionType;
 }
 
-void FallbackItem::InitFromDomainImpl(const instruction_t *instruction)
-{
+void FallbackItem::InitFromDomainImpl(const instruction_t *instruction) {}
 
+void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  (void)instruction;
 }
 
 // ----------------------------------------------------------------------------
@@ -260,13 +264,13 @@ IncludeItem::IncludeItem() : InstructionItem(Type)
   AddProperty(kPath, std::string())->SetDisplayName("Path");
 }
 
+std::string IncludeItem::GetDomainType() const
+{
+  return DomainConstants::kIncludeInstructionType;
+}
+
 void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kIncludeInstructionType)
-  {
-    throw std::runtime_error("Error in IncludeItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kFileAttribute))
   {
     SetFileName(instruction->GetAttribute(DomainConstants::kFileAttribute));
@@ -278,14 +282,10 @@ void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-std::unique_ptr<instruction_t> IncludeItem::CreateDomainInstruction() const
+void IncludeItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kIncludeInstructionType);
-
-  result->AddAttribute(DomainConstants::kFileAttribute, GetFileName());
-  result->AddAttribute(DomainConstants::kPathAttribute, GetPath());
-
-  return result;
+  instruction->AddAttribute(DomainConstants::kFileAttribute, GetFileName());
+  instruction->AddAttribute(DomainConstants::kPathAttribute, GetPath());
 }
 
 std::string IncludeItem::GetFileName() const
@@ -319,13 +319,13 @@ InputItem::InputItem() : InstructionItem(Type)
   AddProperty(kTarget, std::string())->SetDisplayName("Target");
 }
 
+std::string InputItem::GetDomainType() const
+{
+  return DomainConstants::kInputInstructionType;
+}
+
 void InputItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kInputInstructionType)
-  {
-    throw std::runtime_error("Error in InputItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
   {
     SetDescription(instruction->GetAttribute(DomainConstants::kDescriptionAttribute));
@@ -337,14 +337,10 @@ void InputItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-std::unique_ptr<instruction_t> InputItem::CreateDomainInstruction() const
+void InputItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kInputInstructionType);
-
-  result->AddAttribute(DomainConstants::kInputTargetAttribute, GetTargetVariableName());
-  result->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
-
-  return result;
+  instruction->AddAttribute(DomainConstants::kInputTargetAttribute, GetTargetVariableName());
+  instruction->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
 }
 
 std::string InputItem::GetTargetVariableName() const
@@ -376,14 +372,16 @@ InverterItem::InverterItem() : InstructionItem(Type)
   RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
-std::unique_ptr<instruction_t> InverterItem::CreateDomainInstruction() const
+std::string InverterItem::GetDomainType() const
 {
-  return DomainUtils::CreateDomainInstruction(DomainConstants::kInverterInstructionType);
+  return DomainConstants::kInverterInstructionType;
 }
 
-void InverterItem::InitFromDomainImpl(const instruction_t *instruction)
-{
+void InverterItem::InitFromDomainImpl(const instruction_t *instruction) {}
 
+void InverterItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  (void)instruction;
 }
 
 // ----------------------------------------------------------------------------
@@ -398,13 +396,13 @@ OutputItem::OutputItem() : InstructionItem(Type)
   AddProperty(kSource, std::string())->SetDisplayName("Source");
 }
 
+std::string OutputItem::GetDomainType() const
+{
+  return DomainConstants::kOutputInstructionType;
+}
+
 void OutputItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kOutputInstructionType)
-  {
-    throw std::runtime_error("Error in OutputItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
   {
     SetDescription(instruction->GetAttribute(DomainConstants::kDescriptionAttribute));
@@ -416,14 +414,10 @@ void OutputItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-std::unique_ptr<instruction_t> OutputItem::CreateDomainInstruction() const
+void OutputItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kOutputInstructionType);
-
-  result->AddAttribute(DomainConstants::kOutputSourceAttribute, GetSourceVariableName());
-  result->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
-
-  return result;
+  instruction->AddAttribute(DomainConstants::kOutputSourceAttribute, GetSourceVariableName());
+  instruction->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
 }
 
 std::string OutputItem::GetSourceVariableName() const
@@ -460,14 +454,13 @@ ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
   RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
 }
 
+std::string ParallelSequenceItem::GetDomainType() const
+{
+  return DomainConstants::kParallelInstructionType;
+}
+
 void ParallelSequenceItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kParallelInstructionType)
-  {
-    throw std::runtime_error(
-        "Error in ParallelSequenceItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kSuccessThresholdAttribute))
   {
     SetSuccessThreshold(
@@ -481,16 +474,12 @@ void ParallelSequenceItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-std::unique_ptr<instruction_t> ParallelSequenceItem::CreateDomainInstruction() const
+void ParallelSequenceItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kParallelInstructionType);
-
-  result->AddAttribute(DomainConstants::kSuccessThresholdAttribute,
-                       std::to_string(GetSuccessThreshold()));
-  result->AddAttribute(DomainConstants::kFailureThresholdAttribute,
-                       std::to_string(GetFailureThreshold()));
-
-  return result;
+  instruction->AddAttribute(DomainConstants::kSuccessThresholdAttribute,
+                            std::to_string(GetSuccessThreshold()));
+  instruction->AddAttribute(DomainConstants::kFailureThresholdAttribute,
+                            std::to_string(GetFailureThreshold()));
 }
 
 int ParallelSequenceItem::GetSuccessThreshold() const
@@ -524,13 +513,13 @@ RepeatItem::RepeatItem() : InstructionItem(Type)
   RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*default*/ true);
 }
 
+std::string RepeatItem::GetDomainType() const
+{
+  return DomainConstants::kRepeatInstructionType;
+}
+
 void RepeatItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kRepeatInstructionType)
-  {
-    throw std::runtime_error("Error in RepeatItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kMaxCountAttribute))
   {
     SetRepeatCount(std::stoi(instruction->GetAttribute(DomainConstants::kMaxCountAttribute)));
@@ -541,12 +530,9 @@ void RepeatItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-std::unique_ptr<instruction_t> RepeatItem::CreateDomainInstruction() const
+void RepeatItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kRepeatInstructionType);
-  result->AddAttribute(DomainConstants::kMaxCountAttribute, std::to_string(GetRepeatCount()));
-
-  return result;
+  instruction->AddAttribute(DomainConstants::kMaxCountAttribute, std::to_string(GetRepeatCount()));
 }
 
 int RepeatItem::GetRepeatCount() const
@@ -567,17 +553,16 @@ SequenceItem::SequenceItem() : InstructionItem(Type)
   RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
 }
 
-void SequenceItem::InitFromDomainImpl(const instruction_t *instruction)
+std::string SequenceItem::GetDomainType() const
 {
-  if (instruction->GetType() != DomainConstants::kSequenceInstructionType)
-  {
-    throw std::runtime_error("Error in SequenceItem: instruction doesn't match presentation item.");
-  }
+  return DomainConstants::kSequenceInstructionType;
 }
 
-std::unique_ptr<instruction_t> SequenceItem::CreateDomainInstruction() const
+void SequenceItem::InitFromDomainImpl(const instruction_t *instruction) {}
+
+void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  return DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
+  (void)instruction;
 }
 
 // ----------------------------------------------------------------------------
@@ -590,13 +575,13 @@ WaitItem::WaitItem() : InstructionItem(Type)
   AddProperty(kTimeout, 0.0)->SetDisplayName("Timeout");
 }
 
+std::string WaitItem::GetDomainType() const
+{
+  return DomainConstants::kWaitInstructionType;
+}
+
 void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->GetType() != DomainConstants::kWaitInstructionType)
-  {
-    throw std::runtime_error("Error in WaitItem: instruction doesn't match presentation item.");
-  }
-
   if (instruction->HasAttribute(DomainConstants::kWaitTimeoutAttribute))
   {
     SetTimeout(std::stod(instruction->GetAttribute(DomainConstants::kWaitTimeoutAttribute)));
@@ -607,13 +592,10 @@ void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-std::unique_ptr<instruction_t> WaitItem::CreateDomainInstruction() const
+void WaitItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-
-  result->AddAttribute(DomainConstants::kWaitTimeoutAttribute,
-                       ModelView::Utils::DoubleToString(GetTimeout()));
-  return result;
+  instruction->AddAttribute(DomainConstants::kWaitTimeoutAttribute,
+                            ModelView::Utils::DoubleToString(GetTimeout()));
 }
 
 void WaitItem::SetTimeout(double value)

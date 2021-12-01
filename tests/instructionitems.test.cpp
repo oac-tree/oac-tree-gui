@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/instructionitems.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "Instruction.h"
 #include "sequencergui/model/domainutils.h"
@@ -37,8 +37,11 @@ public:
   public:
     TestItem() : InstructionItem("test") {}
 
+    std::string GetDomainType() const override { return "domain_name"; }
+
   private:
-    void InitFromDomainImpl(const instruction_t* instruction) override {};
+    void InitFromDomainImpl(const instruction_t* instruction) override{};
+    void SetupDomainImpl(instruction_t* instruction) const override{};
   };
 };
 

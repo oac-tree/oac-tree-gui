@@ -23,7 +23,7 @@
 //! @file sequenceritems.h
 //! Collection of classes defining main components of SequencerModel.
 
-#include "sequencergui/model/instructionitems.h"
+#include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/workspaceitems.h"
 
 #include "mvvm/standarditems/standarditemincludes.h"
@@ -40,11 +40,11 @@ public:
   static inline const std::string Type = "UnknownInstruction";
   UnknownInstructionItem();
 
-  //! Creates domain instruction corresponding to given item.
-  virtual std::unique_ptr<instruction_t> CreateDomainInstruction() const;
+  std::string GetDomainType() const override;
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 
   std::string m_domain_name;
   std::vector<std::string> m_domain_attributes;

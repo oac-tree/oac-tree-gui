@@ -6,8 +6,8 @@ target_sources(${library_name} PRIVATE
   domainutils.h
   importutils.cpp
   importutils.h
-  instructionitems.cpp
-  instructionitems.h
+  instructionitem.cpp
+  instructionitem.h
   sequenceritems.cpp
   sequenceritems.h
   sequencermodel.cpp

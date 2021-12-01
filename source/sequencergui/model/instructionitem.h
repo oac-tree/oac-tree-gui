@@ -39,7 +39,7 @@ public:
   void InitFromDomain(const instruction_t* instruction);
 
   //! Creates domain instruction corresponding to given item.
-  virtual std::unique_ptr<instruction_t> CreateDomainInstruction() const;
+  std::unique_ptr<instruction_t> CreateDomainInstruction() const;
 
   std::vector<InstructionItem*> GetInstructions() const;
 
@@ -63,8 +63,11 @@ public:
 
   SessionItem* GetNameItem() const;
 
+  virtual std::string GetDomainType() const = 0;
+
 private:
   virtual void InitFromDomainImpl(const instruction_t* instruction) = 0;
+  virtual void SetupDomainImpl(instruction_t* instruction) const = 0;
 };
 
 //! Represent Condition instruction.
@@ -74,14 +77,15 @@ public:
   static inline const std::string Type = "Condition";
   ConditionItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   std::string GetVariableName() const;
 
-  void SetVariableName(const std::string &value);
+  void SetVariableName(const std::string& value);
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Copy instruction.
@@ -91,7 +95,7 @@ public:
   static inline const std::string Type = "Copy";
   CopyItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   std::string GetInput() const;
 
@@ -103,6 +107,7 @@ public:
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Fallback instruction.
@@ -112,10 +117,11 @@ public:
   static inline const std::string Type = "Fallback";
   FallbackItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
 private:
   virtual void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent IncludeItem instruction.
@@ -125,7 +131,7 @@ public:
   static inline const std::string Type = "Include";
   IncludeItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   std::string GetFileName() const;
 
@@ -136,7 +142,8 @@ public:
   void SetPath(const std::string& value);
 
 private:
-  void InitFromDomainImpl(const instruction_t* instruction);
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Input instruction.
@@ -146,7 +153,7 @@ public:
   static inline const std::string Type = "Input";
   InputItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   std::string GetTargetVariableName() const;
 
@@ -158,6 +165,7 @@ public:
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Inverter instruction.
@@ -167,10 +175,11 @@ public:
   static inline const std::string Type = "Inverter";
   InverterItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Output instruction.
@@ -180,7 +189,7 @@ public:
   static inline const std::string Type = "Output";
   OutputItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   std::string GetSourceVariableName() const;
 
@@ -192,6 +201,7 @@ public:
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent ParallelSequence instruction.
@@ -201,7 +211,7 @@ public:
   static inline const std::string Type = "ParallelSequence";
   ParallelSequenceItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   int GetSuccessThreshold() const;
 
@@ -213,6 +223,7 @@ public:
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Repeat instruction.
@@ -222,7 +233,7 @@ public:
   static inline const std::string Type = "Repeat";
   RepeatItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   int GetRepeatCount() const;
 
@@ -230,6 +241,7 @@ public:
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Sequencer instruction.
@@ -239,10 +251,11 @@ public:
   static inline const std::string Type = "Sequence";
   SequenceItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Wait instruction.
@@ -252,7 +265,7 @@ public:
   static inline const std::string Type = "Wait";
   WaitItem();
 
-  std::unique_ptr<instruction_t> CreateDomainInstruction() const override;
+  std::string GetDomainType() const override;
 
   void SetTimeout(double value);
 
@@ -260,6 +273,7 @@ public:
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 }  // namespace sequi

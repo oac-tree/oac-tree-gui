@@ -19,7 +19,6 @@
 
 #include "sequencergui/nodeeditor/sceneutils.h"
 
-#include "sequencergui/model/instructionitems.h"
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/widgets/widgetutils.h"

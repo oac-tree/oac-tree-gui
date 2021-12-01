@@ -21,7 +21,7 @@
 
 #include "Instruction.h"
 #include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/instructionitems.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/model/itemutils.h"
 
@@ -35,6 +35,11 @@ static inline const std::string kChildInstructions = "kChildInstructions";
 UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
 {
   RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+}
+
+std::string UnknownInstructionItem::GetDomainType() const
+{
+  return m_domain_name;
 }
 
 //! Initialise instruction from domain item.
@@ -58,16 +63,12 @@ void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction
   }
 }
 
-std::unique_ptr<instruction_t> UnknownInstructionItem::CreateDomainInstruction() const
+void UnknownInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  auto result = DomainUtils::CreateDomainInstruction(m_domain_name);
-
   for (auto name : m_domain_attributes)
   {
-    result->AddAttribute(name, Property<std::string>(name));
+    instruction->AddAttribute(name, Property<std::string>(name));
   }
-
-  return result;
 }
 
 // ----------------------------------------------------------------------------
