@@ -28,6 +28,44 @@ namespace sequi
 // ----------------------------------------------------------------------------
 // LocalVariableItem
 // ----------------------------------------------------------------------------
+static inline const std::string kFileName = "kFileName";
+
+FileVariableItem::FileVariableItem() : VariableItem(Type)
+{
+  AddProperty(kFileName, std::string())->SetDisplayName("File name");
+}
+
+std::string FileVariableItem::GetDomainType() const
+{
+  return DomainConstants::kFileVariableType;
+}
+
+std::string FileVariableItem::GetFileName() const
+{
+  return Property<std::string>(kFileName);
+}
+
+void FileVariableItem::SetFileName(const std::string &name)
+{
+  SetProperty(kFileName, name);
+}
+
+void FileVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  if (variable->HasAttribute(DomainConstants::kFileAttribute))
+  {
+    SetProperty(kFileName, variable->GetAttribute(DomainConstants::kFileAttribute));
+  }
+}
+
+void FileVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  variable->AddAttribute(DomainConstants::kFileAttribute, GetFileName());
+}
+
+// ----------------------------------------------------------------------------
+// LocalVariableItem
+// ----------------------------------------------------------------------------
 
 static inline const std::string kType = "kType";
 static inline const std::string kValue = "kValue";

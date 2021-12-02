@@ -37,6 +37,52 @@ class StandardVariableItemsItemsTest : public ::testing::Test
 
 //! LocalVariable Item
 
+TEST_F(StandardVariableItemsItemsTest, FileVariableItem)
+{
+  FileVariableItem item;
+  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_TRUE(item.GetFileName().empty());
+
+  item.SetName("abc");
+  EXPECT_EQ(item.GetName(), std::string("abc"));
+
+  item.SetFileName("edf");
+  EXPECT_EQ(item.GetFileName(), std::string("edf"));
+}
+
+TEST_F(StandardVariableItemsItemsTest, FileVariableItemFromDomain)
+{
+  const std::string expected_name("abc");
+  const std::string expected_file_name("edf");
+
+  auto local_variable = DomainUtils::CreateDomainVariable(DomainConstants::kFileVariableType);
+  local_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
+  local_variable->AddAttribute(DomainConstants::kFileAttribute, expected_file_name);
+
+  sequi::FileVariableItem local_variable_item;
+  local_variable_item.InitFromDomain(local_variable.get());
+
+  EXPECT_EQ(local_variable_item.GetName(), expected_name);
+  EXPECT_EQ(local_variable_item.GetFileName(), expected_file_name);
+}
+
+TEST_F(StandardVariableItemsItemsTest, FileVariableItemToDomain)
+{
+  const std::string expected_name("abc");
+  const std::string expected_file_name("edf");
+
+  sequi::FileVariableItem item;
+  item.SetName(expected_name);
+  item.SetFileName(expected_file_name);
+
+  auto domain_item = item.CreateDomainVariable();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kFileVariableType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFileAttribute), expected_file_name);
+}
+
+//! LocalVariable Item
+
 TEST_F(StandardVariableItemsItemsTest, LocalVariableItem)
 {
   sequi::LocalVariableItem item;

@@ -66,6 +66,8 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
 {
   EXPECT_TRUE(
       CanCreateVariableForType<sequi::LocalVariableItem>(DomainConstants::kLocalVariableType));
+  EXPECT_TRUE(
+      CanCreateVariableForType<sequi::FileVariableItem>(DomainConstants::kFileVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
@@ -81,7 +83,8 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       CanCreateInstructionForType<sequi::InverterItem>(DomainConstants::kInverterInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequi::OutputItem>(DomainConstants::kOutputInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequi::ParallelSequenceItem>(DomainConstants::kParallelInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequi::ParallelSequenceItem>(
+      DomainConstants::kParallelInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequi::RepeatItem>(DomainConstants::kRepeatInstructionType));
   EXPECT_TRUE(

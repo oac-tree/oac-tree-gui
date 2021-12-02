@@ -27,6 +27,24 @@
 
 namespace sequi
 {
+//! Represent unknown Variable.
+class FileVariableItem : public VariableItem
+{
+public:
+  static inline const std::string Type = "FileVariable";
+  FileVariableItem();
+
+  std::string GetDomainType() const override;
+
+  std::string GetFileName() const;
+
+  void SetFileName(const std::string& name);
+
+private:
+  virtual void InitFromDomainImpl(const variable_t* variable) override;
+  virtual void SetupDomainImpl(variable_t* variable) const override;
+};
+
 //! Represent LocalVariable.
 class LocalVariableItem : public VariableItem
 {

@@ -31,19 +31,20 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
   RegisterItem<ConditionItem>();
   RegisterItem<CopyItem>();
   RegisterItem<FallbackItem>();
+  RegisterItem<FileVariableItem>();
   RegisterItem<IncludeItem>();
   RegisterItem<InputItem>();
+  RegisterItem<InstructionContainerItem>();
   RegisterItem<InverterItem>();
+  RegisterItem<LocalVariableItem>();
   RegisterItem<OutputItem>();
   RegisterItem<ParallelSequenceItem>();
+  RegisterItem<ProcedureItem>();
   RegisterItem<RepeatItem>();
   RegisterItem<SequenceItem>();
-  RegisterItem<WaitItem>();
-
-  RegisterItem<InstructionContainerItem>();
-  RegisterItem<LocalVariableItem>();
-  RegisterItem<ProcedureItem>();
   RegisterItem<UnknownInstructionItem>();
+  RegisterItem<UnknownVariableItem>();
+  RegisterItem<WaitItem>();
   RegisterItem<WorkspaceItem>();
 
   SetupModel();

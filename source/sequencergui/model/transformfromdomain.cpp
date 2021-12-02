@@ -19,8 +19,8 @@
 
 #include "sequencergui/model/transformfromdomain.h"
 
-#include "Procedure.h"
 #include "Instruction.h"
+#include "Procedure.h"
 #include "Workspace.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/sequenceritems.h"
@@ -40,6 +40,8 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateVariableItemCatalogue()
 
   result->RegisterItem(sequi::DomainConstants::kLocalVariableType,
                        ItemFactoryFunction<sequi::LocalVariableItem>());
+  result->RegisterItem(sequi::DomainConstants::kFileVariableType,
+                       ItemFactoryFunction<sequi::FileVariableItem>());
 
   return result;
 }

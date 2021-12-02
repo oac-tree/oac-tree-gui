@@ -44,6 +44,7 @@ const std::string kWaitInstructionType = "Wait";
 
 // variables
 const std::string kLocalVariableType = "Local";
+const std::string kFileVariableType = "FileVariable";
 
 // attributes
 const std::string kDescriptionAttribute = "description";

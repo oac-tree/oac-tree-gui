@@ -237,7 +237,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithVariable)
 
   auto var_item0 = workspace->InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
   var_item0->SetName("var0");
-  auto var_item1 = workspace->InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
+  auto var_item1 = workspace->InsertItem<FileVariableItem>(ModelView::TagIndex::Append());
   var_item1->SetName("var1");
 
   DomainObjectBuilder builder;
