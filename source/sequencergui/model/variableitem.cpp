@@ -56,7 +56,9 @@ void VariableItem::InitFromDomain(const variable_t *variable)
   {
     if (variable->GetType() != GetDomainType())
     {
-      throw std::runtime_error("Error in VariableItem: domain instruction doesn't match.");
+      throw std::runtime_error("Error in VariableItem: domain instruction type '"
+                               + variable->GetType() + "' doesn't match expected '"
+                               + GetDomainType() + "' type.");
     }
 
     if (variable->HasAttribute(DomainConstants::kNameAttribute))
