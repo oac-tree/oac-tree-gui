@@ -86,6 +86,21 @@ std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
 }
 
 // ----------------------------------------------------------------------------
+// WorkspaceItem
+// ----------------------------------------------------------------------------
+static inline const std::string kVariableItems = "kVariableItems";
+
+WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
+{
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
+}
+
+std::vector<VariableItem *> WorkspaceItem::GetVariables() const
+{
+  return GetItems<VariableItem>(kVariableItems);
+}
+
+// ----------------------------------------------------------------------------
 // ProcedureItem
 // ----------------------------------------------------------------------------
 

@@ -16,9 +16,11 @@ target_sources(${library_name} PRIVATE
   shallnotbenamedvalueutils.h
   standardinstructionitems.cpp
   standardinstructionitems.h
+  standardvariableitems.cpp
+  standardvariableitems.h
   transformfromdomain.cpp
   transformfromdomain.h
-  workspaceitems.cpp
-  workspaceitems.h
+  variableitem.cpp
+  variableitem.h
 )
 

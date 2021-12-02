@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/workspaceitems.h"
+#include "sequencergui/model/standardvariableitems.h"
 
 #include "Variable.h"
 #include "sequencergui/model/domain_constants.h"
@@ -25,39 +25,7 @@
 
 namespace sequi
 {
-// ----------------------------------------------------------------------------
-// VariableItem
-// ----------------------------------------------------------------------------
-
 static inline const std::string kName = "kName";
-
-VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
-{
-  AddProperty(kName, std::string())->SetDisplayName("name");
-}
-
-std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
-{
-  throw std::runtime_error("Error in VariableItem: method is not implemented");
-}
-
-void VariableItem::InitFromDomain(const variable_t *variable)
-{
-  if (variable->HasAttribute(DomainConstants::kNameAttribute))
-  {
-    SetProperty(kName, variable->GetAttribute(DomainConstants::kNameAttribute));
-  }
-}
-
-std::string VariableItem::GetName() const
-{
-  return Property<std::string>(kName);
-}
-
-void VariableItem::SetName(const std::string &value)
-{
-  SetProperty(kName, value);
-}
 
 // ----------------------------------------------------------------------------
 // LocalVariableItem
@@ -129,21 +97,6 @@ UnknownVariableItem::UnknownVariableItem() : VariableItem(Type) {}
 void UnknownVariableItem::InitFromDomain(const variable_t *variable)
 {
   SetDisplayName(variable->GetType() + " (unknown)");
-}
-
-// ----------------------------------------------------------------------------
-// WorkspaceItem
-// ----------------------------------------------------------------------------
-static inline const std::string kVariableItems = "kVariableItems";
-
-WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
-{
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
-}
-
-std::vector<VariableItem *> WorkspaceItem::GetVariables() const
-{
-  return GetItems<VariableItem>(kVariableItems);
 }
 
 }  // namespace sequi

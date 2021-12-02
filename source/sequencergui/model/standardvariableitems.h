@@ -17,35 +17,16 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_WORKSPACEITEMS_H
-#define SEQUENCERGUI_MODEL_WORKSPACEITEMS_H
+#ifndef SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H
+#define SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H
 
-//! @file workspaceitems.h
-//! Collection of classes to represent Sequencer workspace and variables.
+//! @file standardvariableitems.h
+//! Collection of classes to represent Sequencer variables.
 
-#include "mvvm/model/compounditem.h"
-#include "mvvm/model/sessionmodel.h"
-#include "sequencergui/model/sequencer_types.h"
+#include "sequencergui/model/variableitem.h"
 
 namespace sequi
 {
-//! Base class for all variable items.
-class VariableItem : public ModelView::CompoundItem
-{
-public:
-  VariableItem(const std::string& item_type);
-
-  virtual std::unique_ptr<variable_t> CreateDomainVariable() const;
-
-  //! Init given item from the domain variable.
-  virtual void InitFromDomain(const variable_t* variable);
-
-  std::string GetName() const;
-
-  void SetName(const std::string& value);
-
-};
-
 //! Represent LocalVariable.
 class LocalVariableItem : public VariableItem
 {
@@ -78,18 +59,6 @@ public:
   void InitFromDomain(const variable_t* variable) override;
 };
 
-//! Represents a Workspace.
-
-class WorkspaceItem : public ModelView::CompoundItem
-{
-public:
-  static inline const std::string Type = "Workspace";
-  WorkspaceItem();
-
-  std::vector<VariableItem*> GetVariables() const;
-
-};
-
 }  // namespace sequi
 
-#endif // SEQUENCERGUI_MODEL_WORKSPACEITEMS_H
+#endif  // SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H

@@ -17,8 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/workspaceitems.h"
+#include "sequencergui/model/standardvariableitems.h"
 
+#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/transformfromdomain.h"
 
@@ -30,25 +31,13 @@ using namespace sequi;
 
 //! Tests for items from workspaceitems.h
 
-class WorkspaceItemsTest : public ::testing::Test
+class StandardVariableItemsItemsTest : public ::testing::Test
 {
 };
 
-//! Validate Workspace
-
-TEST_F(WorkspaceItemsTest, WorkspaceItem)
-{
-  WorkspaceItem item;
-  EXPECT_TRUE(item.GetVariables().empty());
-
-  auto var0 = item.InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
-  auto var1 = item.InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
-  EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
-}
-
 //! LocalVariable Item
 
-TEST_F(WorkspaceItemsTest, LocalVariableItem)
+TEST_F(StandardVariableItemsItemsTest, LocalVariableItem)
 {
   sequi::LocalVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
@@ -65,7 +54,7 @@ TEST_F(WorkspaceItemsTest, LocalVariableItem)
   EXPECT_EQ(item.GetJsonValue(), std::string("fjk"));
 }
 
-TEST_F(WorkspaceItemsTest, LocalVariableItemFromDomain)
+TEST_F(StandardVariableItemsItemsTest, LocalVariableItemFromDomain)
 {
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
@@ -84,7 +73,7 @@ TEST_F(WorkspaceItemsTest, LocalVariableItemFromDomain)
   EXPECT_EQ(local_variable_item.GetJsonValue(), expected_value);
 }
 
-TEST_F(WorkspaceItemsTest, LocalVariableItemToDomain)
+TEST_F(StandardVariableItemsItemsTest, LocalVariableItemToDomain)
 {
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");

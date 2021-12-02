@@ -25,7 +25,7 @@
 
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/workspaceitems.h"
+#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/compounditem.h"
 #include "mvvm/standarditems/standarditemincludes.h"
@@ -59,6 +59,17 @@ public:
   InstructionContainerItem();
 
   std::vector<InstructionItem*> GetInstructions() const;
+};
+
+//! Represents a Workspace.
+
+class WorkspaceItem : public ModelView::CompoundItem
+{
+public:
+  static inline const std::string Type = "Workspace";
+  WorkspaceItem();
+
+  std::vector<VariableItem*> GetVariables() const;
 };
 
 //! Represents Procedure.

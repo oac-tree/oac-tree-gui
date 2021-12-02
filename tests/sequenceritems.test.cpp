@@ -33,9 +33,19 @@ class SequencerItemsTest : public ::testing::Test
 {
 };
 
-// ----------------------------------------------------------------------------
-// ConditionItem tests
-// ----------------------------------------------------------------------------
+//! Validate Workspace
+
+TEST_F(SequencerItemsTest, WorkspaceItem)
+{
+  WorkspaceItem item;
+  EXPECT_TRUE(item.GetVariables().empty());
+
+  auto var0 = item.InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
+  auto var1 = item.InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
+  EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
+}
+
+//! UnknownInstructionItem tests
 
 TEST_F(SequencerItemsTest, UnknownInstructionFromConditionItem)
 {
