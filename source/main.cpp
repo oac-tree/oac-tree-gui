@@ -19,6 +19,8 @@
 
 #include "sequencergui/mainwindow/mainwindow.h"
 
+#include "sequencergui/model/domainutils.h"
+
 #include <QApplication>
 #include <QLocale>
 #include <QMetaType>
@@ -33,7 +35,12 @@ int main(int argc, char** argv)
 
   Q_INIT_RESOURCE(sequencericons);
 
+#ifdef SEQUENCERGUI_CODAC
+  sequi::DomainUtils::LoadPlugins();
+#endif
+
   sequi::MainWindow win;
+
   win.show();
 
   return app.exec();
