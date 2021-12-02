@@ -25,6 +25,7 @@
 
 namespace sequi
 {
+static inline const std::string kValue = "kValue";
 
 // ----------------------------------------------------------------------------
 // LocalVariableItem
@@ -36,6 +37,7 @@ ChannelAccessVariableItem::ChannelAccessVariableItem() : VariableItem(Type)
 {
   AddProperty(kDataType, std::string())->SetDisplayName("datatype");
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kValue, std::string())->SetDisplayName("value");
 }
 
 std::string ChannelAccessVariableItem::GetDomainType() const
@@ -61,6 +63,12 @@ std::string ChannelAccessVariableItem::GetChannel() const
 void ChannelAccessVariableItem::SetChannel(const std::string &value)
 {
   SetProperty(kChannel, value);
+}
+
+// Temporary method to update value from SequencerObserver
+void ChannelAccessVariableItem::SetJsonValue(const std::string &value)
+{
+  SetProperty(kValue, value);
 }
 
 void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
@@ -125,7 +133,6 @@ void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 // ----------------------------------------------------------------------------
 
 static inline const std::string kType = "kType";
-static inline const std::string kValue = "kValue";
 
 LocalVariableItem::LocalVariableItem() : VariableItem(Type)
 {

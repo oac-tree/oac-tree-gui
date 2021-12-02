@@ -113,6 +113,10 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
     {
       local_var->SetJsonValue(value.toStdString());
     }
+    else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(item); local_var)
+    {
+      local_var->SetJsonValue(value.toStdString());
+    }
   }
 }
 
