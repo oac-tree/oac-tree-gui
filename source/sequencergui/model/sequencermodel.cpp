@@ -21,13 +21,14 @@
 
 #include "sequencergui/model/sequenceritems.h"
 
-#include "mvvm/viewmodel/applicationmodel.h"
 #include "mvvm/standarditems/containeritem.h"
+#include "mvvm/viewmodel/applicationmodel.h"
 
 namespace sequi
 {
 SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
 {
+  RegisterItem<ChannelAccessVariableItem>();
   RegisterItem<ConditionItem>();
   RegisterItem<CopyItem>();
   RegisterItem<FallbackItem>();

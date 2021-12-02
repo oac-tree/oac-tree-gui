@@ -29,15 +29,78 @@
 
 using namespace sequi;
 
-//! Tests for items from workspaceitems.h
+//! Tests for items in standardvariableitems.h
 
-class StandardVariableItemsItemsTest : public ::testing::Test
+class StandardVariableItemsTest : public ::testing::Test
 {
 };
 
-//! LocalVariable Item
+//! ChannelAccessItem
 
-TEST_F(StandardVariableItemsItemsTest, FileVariableItem)
+TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
+{
+  ChannelAccessVariableItem item;
+  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_TRUE(item.GetChannel().empty());
+  EXPECT_TRUE(item.GetDataType().empty());
+
+  item.SetName("abc");
+  EXPECT_EQ(item.GetName(), std::string("abc"));
+
+  item.SetChannel("def");
+  EXPECT_EQ(item.GetChannel(), std::string("def"));
+
+  item.SetDataType("jkl");
+  EXPECT_EQ(item.GetDataType(), std::string("jkl"));
+}
+
+TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
+{
+  const std::string expected_name("expected_name");
+  const std::string expected_channel("expected_channel");
+  const std::string expected_datatype("expected_datatype");
+
+  if (DomainUtils::IsChannelAccessAvailable())
+  {
+    auto ca_variable =
+        DomainUtils::CreateDomainVariable(DomainConstants::kChannelAccessVariableType);
+    ca_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
+    ca_variable->AddAttribute(DomainConstants::kChannelAttribute, expected_channel);
+    ca_variable->AddAttribute(DomainConstants::kDataTypeAttribute, expected_datatype);
+
+    ChannelAccessVariableItem ca_variable_item;
+    ca_variable_item.InitFromDomain(ca_variable.get());
+
+    EXPECT_EQ(ca_variable_item.GetName(), expected_name);
+    EXPECT_EQ(ca_variable_item.GetChannel(), expected_channel);
+    EXPECT_EQ(ca_variable_item.GetDataType(), expected_datatype);
+  }
+}
+
+TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
+{
+  const std::string expected_name("expected_name");
+  const std::string expected_channel("expected_channel");
+  const std::string expected_datatype("expected_datatype");
+
+  if (DomainUtils::IsChannelAccessAvailable())
+  {
+    ChannelAccessVariableItem item;
+    item.SetName(expected_name);
+    item.SetChannel(expected_channel);
+    item.SetDataType(expected_datatype);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), DomainConstants::kChannelAccessVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDataTypeAttribute), expected_datatype);
+  }
+}
+
+//! FileVariableItem
+
+TEST_F(StandardVariableItemsTest, FileVariableItem)
 {
   FileVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
@@ -50,7 +113,7 @@ TEST_F(StandardVariableItemsItemsTest, FileVariableItem)
   EXPECT_EQ(item.GetFileName(), std::string("edf"));
 }
 
-TEST_F(StandardVariableItemsItemsTest, FileVariableItemFromDomain)
+TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
 {
   const std::string expected_name("abc");
   const std::string expected_file_name("edf");
@@ -66,7 +129,7 @@ TEST_F(StandardVariableItemsItemsTest, FileVariableItemFromDomain)
   EXPECT_EQ(local_variable_item.GetFileName(), expected_file_name);
 }
 
-TEST_F(StandardVariableItemsItemsTest, FileVariableItemToDomain)
+TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
 {
   const std::string expected_name("abc");
   const std::string expected_file_name("edf");
@@ -81,9 +144,9 @@ TEST_F(StandardVariableItemsItemsTest, FileVariableItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFileAttribute), expected_file_name);
 }
 
-//! LocalVariable Item
+//! LocalVariableItem
 
-TEST_F(StandardVariableItemsItemsTest, LocalVariableItem)
+TEST_F(StandardVariableItemsTest, LocalVariableItem)
 {
   sequi::LocalVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
@@ -100,7 +163,7 @@ TEST_F(StandardVariableItemsItemsTest, LocalVariableItem)
   EXPECT_EQ(item.GetJsonValue(), std::string("fjk"));
 }
 
-TEST_F(StandardVariableItemsItemsTest, LocalVariableItemFromDomain)
+TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
 {
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
@@ -119,7 +182,7 @@ TEST_F(StandardVariableItemsItemsTest, LocalVariableItemFromDomain)
   EXPECT_EQ(local_variable_item.GetJsonValue(), expected_value);
 }
 
-TEST_F(StandardVariableItemsItemsTest, LocalVariableItemToDomain)
+TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
 {
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
@@ -142,7 +205,7 @@ TEST_F(StandardVariableItemsItemsTest, LocalVariableItemToDomain)
 //! Here we pretend that LocalVariableItem is unknown for a GUI, and check how UnknownVariableItem
 //! behaves in the way from/to domain.
 
-TEST_F(StandardVariableItemsItemsTest, UnknownVariableItemFromLocalVariable)
+TEST_F(StandardVariableItemsTest, UnknownVariableItemFromLocalVariable)
 {
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");

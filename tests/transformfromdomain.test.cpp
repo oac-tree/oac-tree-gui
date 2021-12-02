@@ -68,6 +68,11 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
       CanCreateVariableForType<sequi::LocalVariableItem>(DomainConstants::kLocalVariableType));
   EXPECT_TRUE(
       CanCreateVariableForType<sequi::FileVariableItem>(DomainConstants::kFileVariableType));
+  if (DomainUtils::IsChannelAccessAvailable())
+  {
+    EXPECT_TRUE(CanCreateVariableForType<sequi::ChannelAccessVariableItem>(
+        DomainConstants::kChannelAccessVariableType));
+  }
 }
 
 //! Validate CreateInstructionItem factory function.

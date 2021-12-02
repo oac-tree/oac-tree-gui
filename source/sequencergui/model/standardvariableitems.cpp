@@ -25,6 +25,63 @@
 
 namespace sequi
 {
+
+// ----------------------------------------------------------------------------
+// LocalVariableItem
+// ----------------------------------------------------------------------------
+
+static inline const std::string kDataType = "kDataType";
+static inline const std::string kChannel = "kChannel";
+ChannelAccessVariableItem::ChannelAccessVariableItem() : VariableItem(Type)
+{
+  AddProperty(kDataType, std::string())->SetDisplayName("datatype");
+  AddProperty(kChannel, std::string())->SetDisplayName("channel");
+}
+
+std::string ChannelAccessVariableItem::GetDomainType() const
+{
+  return DomainConstants::kChannelAccessVariableType;
+}
+
+std::string ChannelAccessVariableItem::GetDataType() const
+{
+  return Property<std::string>(kDataType);
+}
+
+void ChannelAccessVariableItem::SetDataType(const std::string &value)
+{
+  SetProperty(kDataType, value);
+}
+
+std::string ChannelAccessVariableItem::GetChannel() const
+{
+  return Property<std::string>(kChannel);
+}
+
+void ChannelAccessVariableItem::SetChannel(const std::string &value)
+{
+  SetProperty(kChannel, value);
+}
+
+void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  if (variable->HasAttribute(DomainConstants::kDataTypeAttribute))
+  {
+    SetDataType(variable->GetAttribute(DomainConstants::kDataTypeAttribute));
+  }
+
+  if (variable->HasAttribute(DomainConstants::kChannelAttribute))
+  {
+    SetChannel(variable->GetAttribute(DomainConstants::kChannelAttribute));
+  }
+}
+
+void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  variable->AddAttribute(DomainConstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(DomainConstants::kChannelAttribute, GetChannel());
+}
+
 // ----------------------------------------------------------------------------
 // LocalVariableItem
 // ----------------------------------------------------------------------------
@@ -105,12 +162,12 @@ void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(DomainConstants::kTypeAttribute))
   {
-    SetProperty(kType, variable->GetAttribute(DomainConstants::kTypeAttribute));
+    SetJsonType(variable->GetAttribute(DomainConstants::kTypeAttribute));
   }
 
   if (variable->HasAttribute(DomainConstants::kValueAttribute))
   {
-    SetProperty(kValue, variable->GetAttribute(DomainConstants::kValueAttribute));
+    SetJsonValue(variable->GetAttribute(DomainConstants::kValueAttribute));
   }
 }
 

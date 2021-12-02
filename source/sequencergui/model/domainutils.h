@@ -42,11 +42,15 @@ std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name)
 
 std::vector<std::string> GetDomainInstructionNames();
 
+std::vector<std::string> GetDomainVariableNames();
+
 std::map<std::string, std::string> GetAttributes(const instruction_t* instruction);
 
 std::map<std::string, std::string> GetAttributes(const variable_t* variable);
 
 bool IsRootInstruction(const instruction_t* instruction);
+
+bool IsChannelAccessAvailable();
 
 }  // namespace sequi::DomainUtils
 

@@ -45,6 +45,7 @@ const std::string kWaitInstructionType = "Wait";
 // variables
 const std::string kLocalVariableType = "Local";
 const std::string kFileVariableType = "FileVariable";
+const std::string kChannelAccessVariableType = "ChannelAccessVariable";
 
 // attributes
 const std::string kDescriptionAttribute = "description";
@@ -60,6 +61,8 @@ const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
 const std::string kIsRootAttribute = "isRoot";
+const std::string kDataTypeAttribute = "datatype";
+const std::string kChannelAttribute = "channel";
 
 // attributes (instruction specific)
 const std::string kConditionVarNameAttribute = "var_name";

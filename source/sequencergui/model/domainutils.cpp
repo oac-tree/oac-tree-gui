@@ -57,6 +57,11 @@ std::vector<std::string> GetDomainInstructionNames()
   return ::sup::sequencer::GlobalInstructionRegistry().RegisteredInstructionNames();
 }
 
+std::vector<std::string> GetDomainVariableNames()
+{
+  return ::sup::sequencer::GlobalVariableRegistry().RegisteredVariableNames();
+}
+
 //! Returns map of current instruction attributes.
 
 std::map<std::string, std::string> GetAttributes(const instruction_t* instruction)
@@ -95,6 +100,13 @@ bool IsRootInstruction(const instruction_t* instruction)
   std::transform(value.begin(), value.end(), value.begin(), ::tolower);
 
   return std::find(expected_values.begin(), expected_values.end(), value) != expected_values.end();
+}
+
+bool IsChannelAccessAvailable()
+{
+  static const std::vector<std::string> names = GetDomainVariableNames();
+  return std::find(names.begin(), names.end(), DomainConstants::kChannelAccessVariableType)
+         != names.end();
 }
 
 }  // namespace sequi::DomainUtils
