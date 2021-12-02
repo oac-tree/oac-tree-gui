@@ -19,11 +19,11 @@
 
 #include "sequencergui/model/standardvariableitems.h"
 
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/transformfromdomain.h"
-
+#include "AttributeMap.h"
 #include "Variable.h"
+#include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/transformfromdomain.h"
 
 #include <gtest/gtest.h>
 
@@ -89,4 +89,35 @@ TEST_F(StandardVariableItemsItemsTest, LocalVariableItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kTypeAttribute), expected_type);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kValueAttribute), expected_value);
+  EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
+}
+
+//! UnknownVariableItem tests.
+//! Here we pretend that LocalVariableItem is unknown for a GUI, and check how UnknownVariableItem
+//! behaves in the way from/to domain.
+
+TEST_F(StandardVariableItemsItemsTest, UnknownVariableItemFromLocalVariable)
+{
+  const std::string expected_name("abc");
+  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
+
+  auto domain_variable = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
+  domain_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
+  domain_variable->AddAttribute(DomainConstants::kTypeAttribute, expected_type);
+  domain_variable->AddAttribute(DomainConstants::kValueAttribute, expected_value);
+
+  // from domain
+  UnknownVariableItem item;
+  item.InitFromDomain(domain_variable.get());
+  EXPECT_EQ(item.Property<std::string>(DomainConstants::kNameAttribute), expected_name);
+  EXPECT_EQ(item.Property<std::string>(DomainConstants::kTypeAttribute), expected_type);
+  EXPECT_EQ(item.Property<std::string>(DomainConstants::kValueAttribute), expected_value);
+
+  // to domain
+  auto new_domain_item = item.CreateDomainVariable();
+  EXPECT_EQ(new_domain_item->GetType(), DomainConstants::kLocalVariableType);
+  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
+  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kTypeAttribute), expected_type);
+  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kValueAttribute), expected_value);
 }

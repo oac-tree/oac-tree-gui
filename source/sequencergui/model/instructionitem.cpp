@@ -52,14 +52,18 @@ InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(it
 
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
 {
-  if (instruction->GetType() != GetDomainType() && GetType() != UnknownInstructionItem::Type)
+  // Initialise from common attributes (which exist in every Instruction).
+  if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
   {
-    throw std::runtime_error("Error in InstructionItem: domain instruction doesn't match.");
-  }
+    if (instruction->GetType() != GetDomainType())
+    {
+      throw std::runtime_error("Error in InstructionItem: domain instruction doesn't match.");
+    }
 
-  if (instruction->HasAttribute(DomainConstants::kNameAttribute))
-  {
-    SetProperty(kName, instruction->GetAttribute(DomainConstants::kNameAttribute));
+    if (instruction->HasAttribute(DomainConstants::kNameAttribute))
+    {
+      SetProperty(kName, instruction->GetAttribute(DomainConstants::kNameAttribute));
+    }
   }
 
   SetIsRootFlag(DomainUtils::IsRootInstruction(instruction));
@@ -71,7 +75,11 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 {
   auto result = DomainUtils::CreateDomainInstruction(GetDomainType());
 
-  result->AddAttribute(DomainConstants::kNameAttribute, Property<std::string>(kName));
+  // Set common attributes (that exist in every instruction)
+  if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
+  {
+    result->AddAttribute(DomainConstants::kNameAttribute, Property<std::string>(kName));
+  }
   result->AddAttribute(DomainConstants::kIsRootAttribute,
                        ModelView::Utils::FromBool(Property<bool>(kIsRoot)));
   SetupDomainImpl(result.get());

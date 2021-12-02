@@ -22,6 +22,7 @@
 #include "Variable.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/sequenceritems.h"
 
 namespace sequi
 {
@@ -38,15 +39,33 @@ VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_typ
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
-  throw std::runtime_error("Error in VariableItem: method is not implemented");
+  auto result = DomainUtils::CreateDomainVariable(GetDomainType());
+
+  if (GetType() != UnknownVariableItem::Type)
+  {
+    result->AddAttribute(DomainConstants::kNameAttribute, Property<std::string>(kName));
+  }
+
+  SetupDomainImpl(result.get());
+  return result;
 }
 
 void VariableItem::InitFromDomain(const variable_t *variable)
 {
-  if (variable->HasAttribute(DomainConstants::kNameAttribute))
+  if (GetType() != UnknownVariableItem::Type)
   {
-    SetProperty(kName, variable->GetAttribute(DomainConstants::kNameAttribute));
+    if (variable->GetType() != GetDomainType())
+    {
+      throw std::runtime_error("Error in VariableItem: domain instruction doesn't match.");
+    }
+
+    if (variable->HasAttribute(DomainConstants::kNameAttribute))
+    {
+      SetProperty(kName, variable->GetAttribute(DomainConstants::kNameAttribute));
+    }
   }
+
+  InitFromDomainImpl(variable);
 }
 
 std::string VariableItem::GetName() const

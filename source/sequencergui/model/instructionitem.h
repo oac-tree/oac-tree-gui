@@ -32,6 +32,8 @@ class InstructionItem : public ModelView::CompoundItem
 public:
   InstructionItem(const std::string& item_type);
 
+  virtual std::string GetDomainType() const = 0;
+
   //! Init given item from the domain instruction.
   void InitFromDomain(const instruction_t* instruction);
 
@@ -59,8 +61,6 @@ public:
   SessionItem* GetStatusItem() const;
 
   SessionItem* GetNameItem() const;
-
-  virtual std::string GetDomainType() const = 0;
 
 private:
   virtual void InitFromDomainImpl(const instruction_t* instruction) = 0;

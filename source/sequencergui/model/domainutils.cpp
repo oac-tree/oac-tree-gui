@@ -62,8 +62,19 @@ std::vector<std::string> GetDomainInstructionNames()
 std::map<std::string, std::string> GetAttributes(const instruction_t* instruction)
 {
   std::map<std::string, std::string> result;
-  auto attributes = instruction->GetAttributes();
   for (const auto& it : instruction->GetAttributes())
+  {
+    result.insert(it);
+  }
+  return result;
+}
+
+//! Returns map of current variable attributes.
+
+std::map<std::string, std::string> GetAttributes(const variable_t* variable)
+{
+  std::map<std::string, std::string> result;
+  for (const auto& it : variable->GetAttributes())
   {
     result.insert(it);
   }

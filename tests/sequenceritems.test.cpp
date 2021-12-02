@@ -45,7 +45,9 @@ TEST_F(SequencerItemsTest, WorkspaceItem)
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
 }
 
-//! UnknownInstructionItem tests
+//! UnknownInstructionItem tests.
+//! Here we pretend that Condition insrtuction is uknown for a GUI, and check how
+//! UnknownInstructionItem behaves on the way from/to domain.
 
 TEST_F(SequencerItemsTest, UnknownInstructionFromConditionItem)
 {
@@ -61,6 +63,6 @@ TEST_F(SequencerItemsTest, UnknownInstructionFromConditionItem)
 
   // to domain
   auto new_domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), DomainConstants::kConditionInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
+  EXPECT_EQ(new_domain_item->GetType(), DomainConstants::kConditionInstructionType);
+  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
 }

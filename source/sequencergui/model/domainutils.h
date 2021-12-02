@@ -44,6 +44,8 @@ std::vector<std::string> GetDomainInstructionNames();
 
 std::map<std::string, std::string> GetAttributes(const instruction_t* instruction);
 
+std::map<std::string, std::string> GetAttributes(const variable_t* variable);
+
 bool IsRootInstruction(const instruction_t* instruction);
 
 }  // namespace sequi::DomainUtils

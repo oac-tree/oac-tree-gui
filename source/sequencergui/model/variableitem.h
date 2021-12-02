@@ -32,14 +32,21 @@ class VariableItem : public ModelView::CompoundItem
 public:
   VariableItem(const std::string& item_type);
 
-  virtual std::unique_ptr<variable_t> CreateDomainVariable() const;
+  virtual std::string GetDomainType() const = 0;
 
   //! Init given item from the domain variable.
-  virtual void InitFromDomain(const variable_t* variable);
+  void InitFromDomain(const variable_t* variable);
+
+  //! Creates domain variable corresponding to given item.
+  std::unique_ptr<variable_t> CreateDomainVariable() const;
 
   std::string GetName() const;
 
   void SetName(const std::string& value);
+
+private:
+  virtual void InitFromDomainImpl(const variable_t* variable) = 0;
+  virtual void SetupDomainImpl(variable_t* variable) const = 0;
 };
 }  // namespace sequi
 

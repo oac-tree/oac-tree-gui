@@ -25,8 +25,6 @@
 
 namespace sequi
 {
-static inline const std::string kName = "kName";
-
 // ----------------------------------------------------------------------------
 // LocalVariableItem
 // ----------------------------------------------------------------------------
@@ -40,32 +38,9 @@ LocalVariableItem::LocalVariableItem() : VariableItem(Type)
   AddProperty(kValue, std::string())->SetDisplayName("value");
 }
 
-std::unique_ptr<variable_t> LocalVariableItem::CreateDomainVariable() const
+std::string LocalVariableItem::GetDomainType() const
 {
-  auto result = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-  result->AddAttribute(DomainConstants::kNameAttribute, GetName());
-  result->AddAttribute(DomainConstants::kTypeAttribute, GetJsonType());
-  result->AddAttribute(DomainConstants::kValueAttribute, GetJsonValue());
-  return result;
-}
-
-void LocalVariableItem::InitFromDomain(const variable_t *variable)
-{
-  VariableItem::InitFromDomain(variable);
-  if (variable->HasAttribute(DomainConstants::kNameAttribute))
-  {
-    SetProperty(kName, variable->GetAttribute(DomainConstants::kNameAttribute));
-  }
-
-  if (variable->HasAttribute(DomainConstants::kTypeAttribute))
-  {
-    SetProperty(kType, variable->GetAttribute(DomainConstants::kTypeAttribute));
-  }
-
-  if (variable->HasAttribute(DomainConstants::kValueAttribute))
-  {
-    SetProperty(kValue, variable->GetAttribute(DomainConstants::kValueAttribute));
-  }
+  return DomainConstants::kLocalVariableType;
 }
 
 std::string LocalVariableItem::GetJsonType() const
@@ -88,15 +63,56 @@ void LocalVariableItem::SetJsonValue(const std::string &value)
   SetProperty(kValue, value);
 }
 
+void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  if (variable->HasAttribute(DomainConstants::kTypeAttribute))
+  {
+    SetProperty(kType, variable->GetAttribute(DomainConstants::kTypeAttribute));
+  }
+
+  if (variable->HasAttribute(DomainConstants::kValueAttribute))
+  {
+    SetProperty(kValue, variable->GetAttribute(DomainConstants::kValueAttribute));
+  }
+}
+
+void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  variable->AddAttribute(DomainConstants::kTypeAttribute, GetJsonType());
+  variable->AddAttribute(DomainConstants::kValueAttribute, GetJsonValue());
+}
+
 // ----------------------------------------------------------------------------
 // UnknownVariableItem
 // ----------------------------------------------------------------------------
 
 UnknownVariableItem::UnknownVariableItem() : VariableItem(Type) {}
 
-void UnknownVariableItem::InitFromDomain(const variable_t *variable)
+std::string UnknownVariableItem::GetDomainType() const
 {
+  return m_domain_name;
+}
+
+void UnknownVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  m_domain_name = variable->GetType();
+
   SetDisplayName(variable->GetType() + " (unknown)");
+
+  // creating string properties for every domain attribute found
+  for (auto [name, value] : DomainUtils::GetAttributes(variable))
+  {
+    m_domain_attributes.push_back(name);
+    AddProperty(name, value);
+  }
+}
+
+void UnknownVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  for (const auto &name : m_domain_attributes)
+  {
+    variable->AddAttribute(name, Property<std::string>(name));
+  }
 }
 
 }  // namespace sequi

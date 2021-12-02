@@ -34,10 +34,7 @@ public:
   static inline const std::string Type = "Local";
   LocalVariableItem();
 
-  std::unique_ptr<variable_t> CreateDomainVariable() const override;
-
-  //! Init given item from the domain variable.
-  void InitFromDomain(const variable_t* variable) override;
+  std::string GetDomainType() const override;
 
   std::string GetJsonType() const;
 
@@ -46,6 +43,10 @@ public:
   std::string GetJsonValue() const;
 
   void SetJsonValue(const std::string& value);
+
+private:
+  virtual void InitFromDomainImpl(const variable_t* variable) override;
+  virtual void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent unknown Variable.
@@ -55,8 +56,14 @@ public:
   static inline const std::string Type = "UnknownVariable";
   UnknownVariableItem();
 
-  //! Init given item from the domain variable.
-  void InitFromDomain(const variable_t* variable) override;
+  std::string GetDomainType() const override;
+
+private:
+  virtual void InitFromDomainImpl(const variable_t* variable) override;
+  virtual void SetupDomainImpl(variable_t* variable) const override;
+
+  std::string m_domain_name;
+  std::vector<std::string> m_domain_attributes;
 };
 
 }  // namespace sequi

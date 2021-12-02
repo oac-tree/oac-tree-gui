@@ -54,18 +54,14 @@ void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction
   // creating string properties for every domain attribute found
   for (auto [name, value] : DomainUtils::GetAttributes(instruction))
   {
-    if (name
-        != DomainConstants::kNameAttribute)  // already processed by InstructionItem::InitFromDomain
-    {
-      m_domain_attributes.push_back(name);
-      AddProperty(name, value);
-    }
+    m_domain_attributes.push_back(name);
+    AddProperty(name, value);
   }
 }
 
 void UnknownInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  for (auto name : m_domain_attributes)
+  for (const auto &name : m_domain_attributes)
   {
     instruction->AddAttribute(name, Property<std::string>(name));
   }
