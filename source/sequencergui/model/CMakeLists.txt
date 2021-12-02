@@ -14,6 +14,8 @@ target_sources(${library_name} PRIVATE
   sequencermodel.h
   shallnotbenamedvalueutils.cpp
   shallnotbenamedvalueutils.h
+  standardinstructionitems.cpp
+  standardinstructionitems.h
   transformfromdomain.cpp
   transformfromdomain.h
   workspaceitems.cpp

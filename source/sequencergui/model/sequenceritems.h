@@ -24,10 +24,11 @@
 //! Collection of classes defining main components of SequencerModel.
 
 #include "sequencergui/model/instructionitem.h"
+#include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/workspaceitems.h"
 
-#include "mvvm/standarditems/standarditemincludes.h"
 #include "mvvm/model/compounditem.h"
+#include "mvvm/standarditems/standarditemincludes.h"
 
 #include <string>
 

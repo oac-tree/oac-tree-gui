@@ -19,7 +19,7 @@
 
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 
-#include "sequencergui/model/instructionitem.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include <gtest/gtest.h>
 

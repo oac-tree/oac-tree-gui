@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/instructionitem.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include "Instruction.h"
 #include "sequencergui/model/domainutils.h"
@@ -29,53 +29,15 @@ using namespace sequi;
 
 //! Tests for items from instructionitems.h
 
-class InstructionItemsTest : public ::testing::Test
+class StandardInstructionItemsTest : public ::testing::Test
 {
-public:
-  class TestItem : public InstructionItem
-  {
-  public:
-    TestItem() : InstructionItem("test") {}
-
-    std::string GetDomainType() const override { return "domain_name"; }
-
-  private:
-    void InitFromDomainImpl(const instruction_t* instruction) override{};
-    void SetupDomainImpl(instruction_t* instruction) const override{};
-  };
 };
-
-// ----------------------------------------------------------------------------
-// InstructionItem test
-// ----------------------------------------------------------------------------
-
-TEST_F(InstructionItemsTest, TestItem)
-{
-  // Correctly initialised item
-  TestItem item;
-  EXPECT_EQ(item.GetType(), "test");
-
-  EXPECT_EQ(item.GetX(), 0);
-  EXPECT_EQ(item.GetY(), 0);
-
-  item.SetX(1.1);
-  item.SetY(1.2);
-  EXPECT_EQ(item.GetX(), 1.1);
-  EXPECT_EQ(item.GetY(), 1.2);
-
-  EXPECT_EQ(item.GetStatus(), "");
-  EXPECT_TRUE(item.GetInstructions().empty());
-
-  EXPECT_FALSE(item.IsRoot());
-  item.SetIsRootFlag(true);
-  EXPECT_TRUE(item.IsRoot());
-}
 
 // ----------------------------------------------------------------------------
 // ConditionItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, ConditionItem)
+TEST_F(StandardInstructionItemsTest, ConditionItem)
 {
   // Correctly initialised item
   ConditionItem item;
@@ -85,32 +47,36 @@ TEST_F(InstructionItemsTest, ConditionItem)
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
 }
 
-TEST_F(InstructionItemsTest, ConditionItemFromDomain)
+TEST_F(StandardInstructionItemsTest, ConditionItemFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kConditionInstructionType);
   input->AddAttribute(DomainConstants::kConditionVarNameAttribute, "abc");
+  input->AddAttribute(DomainConstants::kIsRootAttribute, "true");
 
   ConditionItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+  EXPECT_TRUE(item.IsRoot());
 }
 
-TEST_F(InstructionItemsTest, ConditionItemToDomain)
+TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
 {
   ConditionItem item;
   item.SetVariableName("abc");
+  item.SetIsRootFlag(true);
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kConditionInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kIsRootAttribute), "true");
 }
 
 // ----------------------------------------------------------------------------
 // CopyItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, CopyItem)
+TEST_F(StandardInstructionItemsTest, CopyItem)
 {
   // Correctly initialised item
   sequi::CopyItem item;
@@ -123,7 +89,7 @@ TEST_F(InstructionItemsTest, CopyItem)
   EXPECT_EQ(item.GetOutput(), std::string("cde"));
 }
 
-TEST_F(InstructionItemsTest, CopyItemFromDomain)
+TEST_F(StandardInstructionItemsTest, CopyItemFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kCopyInstructionType);
   input->AddAttribute(DomainConstants::kInputAttribute, "abc");
@@ -136,7 +102,7 @@ TEST_F(InstructionItemsTest, CopyItemFromDomain)
   EXPECT_EQ(item.GetOutput(), std::string("cde"));
 }
 
-TEST_F(InstructionItemsTest, CopyItemToDomain)
+TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 {
   CopyItem item;
   item.SetInput("abc");
@@ -152,7 +118,7 @@ TEST_F(InstructionItemsTest, CopyItemToDomain)
 // FallbackItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, FallbackItem)
+TEST_F(StandardInstructionItemsTest, FallbackItem)
 {
   // Correctly initialised item
   sequi::FallbackItem item;
@@ -165,7 +131,7 @@ TEST_F(InstructionItemsTest, FallbackItem)
 // IncludeItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, IncludeItem)
+TEST_F(StandardInstructionItemsTest, IncludeItem)
 {
   // Correctly initialised item
   IncludeItem item;
@@ -179,7 +145,7 @@ TEST_F(InstructionItemsTest, IncludeItem)
   EXPECT_EQ(item.GetPath(), std::string("def"));
 }
 
-TEST_F(InstructionItemsTest, IncludeItemFromDomain)
+TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kIncludeInstructionType);
   input->AddAttribute(DomainConstants::kFileAttribute, "abc");
@@ -192,7 +158,7 @@ TEST_F(InstructionItemsTest, IncludeItemFromDomain)
   EXPECT_EQ(item.GetPath(), std::string("def"));
 }
 
-TEST_F(InstructionItemsTest, IncludeItemToDomain)
+TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 {
   IncludeItem item;
   item.SetFileName("abc");
@@ -208,7 +174,7 @@ TEST_F(InstructionItemsTest, IncludeItemToDomain)
 // InputItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, InputItem)
+TEST_F(StandardInstructionItemsTest, InputItem)
 {
   // Correctly initialised item
   sequi::InputItem item;
@@ -216,7 +182,7 @@ TEST_F(InstructionItemsTest, InputItem)
   EXPECT_TRUE(item.GetTargetVariableName().empty());
 }
 
-TEST_F(InstructionItemsTest, InputItemFromDomain)
+TEST_F(StandardInstructionItemsTest, InputItemFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kInputInstructionType);
   input->AddAttribute(DomainConstants::kDescriptionAttribute, "abc");
@@ -229,7 +195,7 @@ TEST_F(InstructionItemsTest, InputItemFromDomain)
   EXPECT_EQ(item.GetTargetVariableName(), "var");
 }
 
-TEST_F(InstructionItemsTest, InputItemToDomain)
+TEST_F(StandardInstructionItemsTest, InputItemToDomain)
 {
   InputItem item;
   item.SetDescription("abc");
@@ -245,7 +211,7 @@ TEST_F(InstructionItemsTest, InputItemToDomain)
 // InverterItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, InverterItem)
+TEST_F(StandardInstructionItemsTest, InverterItem)
 {
   // Correctly initialised item
   sequi::InverterItem item;
@@ -257,7 +223,7 @@ TEST_F(InstructionItemsTest, InverterItem)
 
 //! Validate SequenceItem convertion to the domain object.
 
-TEST_F(InstructionItemsTest, InverterItemToDomain)
+TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
 {
   // Correctly initialised item
   sequi::InverterItem item;
@@ -270,7 +236,7 @@ TEST_F(InstructionItemsTest, InverterItemToDomain)
 // OutputItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, OutputItem)
+TEST_F(StandardInstructionItemsTest, OutputItem)
 {
   // Correctly initialised item
   sequi::OutputItem item;
@@ -278,7 +244,7 @@ TEST_F(InstructionItemsTest, OutputItem)
   EXPECT_TRUE(item.GetSourceVariableName().empty());
 }
 
-TEST_F(InstructionItemsTest, OutputItemFromDomain)
+TEST_F(StandardInstructionItemsTest, OutputItemFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kOutputInstructionType);
   input->AddAttribute(DomainConstants::kDescriptionAttribute, "abc");
@@ -291,7 +257,7 @@ TEST_F(InstructionItemsTest, OutputItemFromDomain)
   EXPECT_EQ(item.GetSourceVariableName(), "var");
 }
 
-TEST_F(InstructionItemsTest, OutputItemToDomain)
+TEST_F(StandardInstructionItemsTest, OutputItemToDomain)
 {
   OutputItem item;
   item.SetDescription("abc");
@@ -307,7 +273,7 @@ TEST_F(InstructionItemsTest, OutputItemToDomain)
 // ParallelSequenceItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, ParallelSequenceItem)
+TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
 {
   // Correctly initialised item
   ParallelSequenceItem item;
@@ -325,7 +291,7 @@ TEST_F(InstructionItemsTest, ParallelSequenceItem)
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
 }
 
-TEST_F(InstructionItemsTest, ParallelSequenceFromDomain)
+TEST_F(StandardInstructionItemsTest, ParallelSequenceFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kParallelInstructionType);
   input->AddAttribute(DomainConstants::kSuccessThresholdAttribute, "42");
@@ -338,7 +304,7 @@ TEST_F(InstructionItemsTest, ParallelSequenceFromDomain)
   EXPECT_EQ(item.GetFailureThreshold(), 1);
 }
 
-TEST_F(InstructionItemsTest, ParallelSequenceToDomain)
+TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
 {
   ParallelSequenceItem item;
   item.SetSuccessThreshold(42);
@@ -354,7 +320,7 @@ TEST_F(InstructionItemsTest, ParallelSequenceToDomain)
 // RepeatItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(InstructionItemsTest, RepeatItem)
+TEST_F(StandardInstructionItemsTest, RepeatItem)
 {
   // Correctly initialised item
   sequi::RepeatItem item;
@@ -369,7 +335,7 @@ TEST_F(InstructionItemsTest, RepeatItem)
   EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
 }
 
-TEST_F(InstructionItemsTest, RepeatItemFromDomain)
+TEST_F(StandardInstructionItemsTest, RepeatItemFromDomain)
 {
   auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kRepeatInstructionType);
   input->AddAttribute(DomainConstants::kMaxCountAttribute, "42");
@@ -380,7 +346,7 @@ TEST_F(InstructionItemsTest, RepeatItemFromDomain)
   EXPECT_EQ(item.GetRepeatCount(), 42);
 }
 
-TEST_F(InstructionItemsTest, RepeatItemToDomain)
+TEST_F(StandardInstructionItemsTest, RepeatItemToDomain)
 {
   RepeatItem item;
   item.SetRepeatCount(42);
@@ -396,10 +362,13 @@ TEST_F(InstructionItemsTest, RepeatItemToDomain)
 
 //! Sequence item.
 
-TEST_F(InstructionItemsTest, SequenceItem)
+TEST_F(StandardInstructionItemsTest, SequenceItem)
 {
   // Correctly initialised item
   sequi::SequenceItem item;
+
+  EXPECT_FALSE(item.IsRoot());
+
   auto wait0 = item.InsertItem<WaitItem>({"", -1});
   auto wait1 = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
@@ -407,7 +376,7 @@ TEST_F(InstructionItemsTest, SequenceItem)
 
 //! Validate SequenceItem convertion to the domain object.
 
-TEST_F(InstructionItemsTest, SequenceItemToDomain)
+TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 {
   // Correctly initialised item
   sequi::SequenceItem item;
@@ -422,7 +391,7 @@ TEST_F(InstructionItemsTest, SequenceItemToDomain)
 
 //! Validate WaitItem creation from the domain object.
 
-TEST_F(InstructionItemsTest, WaitItemFromDomain)
+TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 {
   // Correctly initialised item
   WaitItem wait_item;
@@ -461,7 +430,7 @@ TEST_F(InstructionItemsTest, WaitItemFromDomain)
 
 //! Validate WaitItem convertion to the domain object.
 
-TEST_F(InstructionItemsTest, WaitItemToDomain)
+TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 {
   // Correctly initialised item
   sequi::WaitItem wait_item;
