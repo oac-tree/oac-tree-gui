@@ -22,11 +22,13 @@
 #include "AttributeMap.h"
 #include "Instruction.h"
 #include "InstructionRegistry.h"
+#include "SequenceParser.h"
 #include "Variable.h"
 #include "VariableRegistry.h"
 #include "sequencergui/model/domain_constants.h"
 
 #include <algorithm>
+#include <iostream>
 
 namespace sequi::DomainUtils
 {
@@ -107,6 +109,21 @@ bool IsChannelAccessAvailable()
   static const std::vector<std::string> names = GetDomainVariableNames();
   return std::find(names.begin(), names.end(), DomainConstants::kChannelAccessVariableType)
          != names.end();
+}
+
+//! Loads plugins.
+
+void LoadPlugins()
+{
+  static const std::vector<std::string> plugins = {
+      "libsequencer-sup-config.so", "libsequencer-sup-pcs.so", "libsequencer-sup-pulsecounter.so",
+      "libsequencer-sup-timing.so", "libsequencer-ca.so"};
+
+  for (const auto& name : plugins)
+  {
+    auto result = ::sup::sequencer::LoadPlugin(name);
+    std::cout << "Loading " + name + " plugin, result:" << result << std::endl;
+  }
 }
 
 }  // namespace sequi::DomainUtils

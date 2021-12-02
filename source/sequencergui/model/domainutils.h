@@ -52,6 +52,8 @@ bool IsRootInstruction(const instruction_t* instruction);
 
 bool IsChannelAccessAvailable();
 
+void LoadPlugins();
+
 }  // namespace sequi::DomainUtils
 
 #endif  // SEQUENCERGUI_MODEL_DOMAINUTILS_H
