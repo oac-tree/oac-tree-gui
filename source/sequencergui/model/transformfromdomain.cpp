@@ -43,7 +43,7 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateVariableItemCatalogue()
   result->RegisterItem(sequi::DomainConstants::kFileVariableType,
                        ItemFactoryFunction<sequi::FileVariableItem>());
   result->RegisterItem(sequi::DomainConstants::kChannelAccessVariableType,
-                       ItemFactoryFunction<sequi::FileVariableItem>());
+                       ItemFactoryFunction<sequi::ChannelAccessVariableItem>());
 
   return result;
 }
