@@ -3,11 +3,14 @@ set(library_name sequencerguicore)
 set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} SHARED "")
-target_link_libraries(${library_name} PUBLIC pthread MVVM::View sequencer ccs-core)
 
-# --- CODAC dependencies
-target_include_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/include $ENV{CODAC_ROOT}/include/sup)
-target_link_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/lib)
+if (SEQUENCERGUI_CODAC)
+  target_link_libraries(${library_name} PUBLIC pthread MVVM::View sequencer ccs-core)
+  target_include_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/include $ENV{CODAC_ROOT}/include/sup)
+  target_link_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/lib)
+else()
+  target_link_libraries(${library_name} PUBLIC pthread mvvm_view sequencer-shared)
+endif()
 
 add_subdirectory(composer)
 add_subdirectory(mainwindow)
