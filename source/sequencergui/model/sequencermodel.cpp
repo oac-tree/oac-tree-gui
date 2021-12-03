@@ -54,12 +54,7 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
 //! Returns InstructionItem corresponding to the given identifier.
 InstructionItem *SequencerModel::GetInstruction(const std::string &identifier) const
 {
-  auto result = dynamic_cast<InstructionItem *>(FindItem(identifier));
-  if (!result)
-  {
-    throw std::runtime_error("Error in SequencerModel: can't find instruction");
-  }
-  return result;
+  return dynamic_cast<InstructionItem *>(FindItem(identifier));
 }
 
 ModelView::ContainerItem *SequencerModel::GetProcedureContainer() const

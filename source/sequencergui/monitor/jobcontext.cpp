@@ -27,6 +27,8 @@
 #include "sequencergui/monitor/joblog.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
+#include <iostream>
+
 namespace
 {
 std::string GetStatus(const instruction_t *instruction)
@@ -90,13 +92,18 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction)
   }
   auto instruction_item =
       m_model->GetInstruction(m_domain_builder->FindInstructionIdentifier(instruction));
+  std::cout << instruction->GetType() << std::endl;
   if (!instruction_item)
   {
-    throw std::runtime_error("Error in JobManager: can't find InstructionItem");
+//    throw std::runtime_error("Error in JobManager: can't find InstructionItem");
+    std::cout << "Error in JobManager: can't find InstructionItem" << std::endl;
   }
-  instruction_item->SetStatus(GetStatus(instruction));
+  else
+  {
+    instruction_item->SetStatus(GetStatus(instruction));
 
-  emit InstructionStatusChanged(instruction_item);
+    emit InstructionStatusChanged(instruction_item);
+  }
 }
 
 void JobContext::onLogMessage(const QString &message)
