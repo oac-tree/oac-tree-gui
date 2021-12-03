@@ -24,9 +24,10 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
+#include "mvvm/model/itemutils.h"
+#include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/propertytreeview.h"
 #include "mvvm/widgets/topitemstreeview.h"
-#include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QSplitter>
@@ -85,11 +86,35 @@ void ComposerTreeWidget::SetSelected(InstructionItem* instruction)
   m_instruction_tree->SetSelected(instruction);
 }
 
+void ComposerTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions)
+{
+  std::vector<ModelView::SessionItem*> items;
+  std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
+  m_instruction_tree->SetSelectedItems(items);
+}
+
+std::vector<InstructionItem*> ComposerTreeWidget::GetSelectedInstructions() const
+{
+  auto selected_items = m_instruction_tree->GetSelectedItems();
+  return ModelView::Utils::CastedItems<InstructionItem>(selected_items);
+}
+
+InstructionItem* ComposerTreeWidget::GetSelectedInstruction() const
+{
+  auto selected = GetSelectedInstructions();
+  return selected.empty() ? nullptr : selected.front();
+}
+
 void ComposerTreeWidget::SetupConnections()
 {
-  auto on_selection_changed = [this](auto item) { m_property_tree->SetItem(item); };
+  auto on_selection_changed = [this](auto item)
+  {
+    m_property_tree->SetItem(item);
+    emit InstructionSelected(GetSelectedInstruction());
+  };
   connect(m_instruction_tree, &ModelView::TopItemsTreeView::itemSelected, on_selection_changed);
 
+  // insert after
   auto on_insert_after = [this](auto name)
   {
     if (auto item = m_instruction_tree->GetSelectedItem(); item)
@@ -103,6 +128,7 @@ void ComposerTreeWidget::SetupConnections()
   };
   connect(m_tool_bar, &ComposerTreeToolBar::insertAfterRequest, this, on_insert_after);
 
+  // Insert into
   auto on_insert_into = [this](auto name)
   {
     if (auto item = m_instruction_tree->GetSelectedItem(); item)
@@ -112,6 +138,7 @@ void ComposerTreeWidget::SetupConnections()
   };
   connect(m_tool_bar, &ComposerTreeToolBar::insertIntoRequest, this, on_insert_into);
 
+  // Remove instruction
   auto on_remove = [this]()
   {
     if (auto item = m_instruction_tree->GetSelectedItem(); item)

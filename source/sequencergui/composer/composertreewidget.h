@@ -57,6 +57,13 @@ public:
   void SetModel(SequencerModel* model, ProcedureItem* procedure);
 
   void SetSelected(InstructionItem* instruction);
+  void SetSelectedInstructions(const std::vector<InstructionItem *>& instructions);
+
+  std::vector<InstructionItem *> GetSelectedInstructions() const;
+  InstructionItem* GetSelectedInstruction() const;
+
+signals:
+  void InstructionSelected(InstructionItem* instruction);
 
 private:
   void SetupConnections();

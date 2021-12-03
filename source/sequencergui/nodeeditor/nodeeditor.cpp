@@ -78,6 +78,16 @@ void NodeEditor::SetModel(SequencerModel *model, ProcedureItem *procedure)
   }
 }
 
+std::vector<InstructionItem *> NodeEditor::GetSelectedInstructions() const
+{
+  return m_graphics_scene->GetSelectedInstructions();
+}
+
+void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions) const
+{
+  m_graphics_scene->SetSelectedInstructions(instructions);
+}
+
 void NodeEditor::SetupConnections()
 {
   // Propagates delete request from the graphics view to the scene.
@@ -111,7 +121,7 @@ void NodeEditor::SetupConnections()
   // parent will be aligned.
   auto on_align = [this]()
   {
-    auto selected = m_graphics_scene->selectedViewItems<ConnectableView>();
+    auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
     for (auto view : selected)
     {
       auto item = view->connectableItem()->GetInstruction();

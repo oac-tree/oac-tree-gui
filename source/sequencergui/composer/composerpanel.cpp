@@ -19,12 +19,12 @@
 
 #include "sequencergui/composer/composerpanel.h"
 
-#include "sequencergui/model/sequenceritems.h"
-#include "sequencergui/mainwindow/explorertoolbar.h"
-#include "sequencergui/mainwindow/opendocumentswidget.h"
-#include "sequencergui/nodeeditor/instructionlistwidget.h"
 #include "sequencergui/composer/instructionpanel.h"
 #include "sequencergui/composer/workspacepanel.h"
+#include "sequencergui/mainwindow/explorertoolbar.h"
+#include "sequencergui/mainwindow/opendocumentswidget.h"
+#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/nodeeditor/instructionlistwidget.h"
 
 #include <QLabel>
 #include <QSplitter>
@@ -57,10 +57,10 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   m_instruction_panel->AddToSplitter(m_splitter);
   m_workspace_panel->AddToSplitter(m_splitter);
 
-//  m_splitter->setSizes(QList<int>() << 400 << 200);
+  //  m_splitter->setSizes(QList<int>() << 400 << 200);
 
   connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
-          &ComposerPanel::sratchpadProcedureSelected);
+          &ComposerPanel::procedureSelected);
 }
 
 ComposerPanel::~ComposerPanel() = default;

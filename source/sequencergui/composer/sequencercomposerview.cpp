@@ -64,16 +64,30 @@ SequencerComposerView::~SequencerComposerView() = default;
 
 void SequencerComposerView::SetupConnections()
 {
-  connect(m_node_editor, &NodeEditor::InstructionSelected, this,
-          [this](auto instruction) { m_composer_tree_widget->SetSelected(instruction); });
+  auto on_scene_instruction_selected = [this](auto)
+  {
+    m_block_selection_to_scene = true;
+    m_composer_tree_widget->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
+    m_block_selection_to_scene = false;
+  };
+  connect(m_node_editor, &NodeEditor::InstructionSelected, this, on_scene_instruction_selected);
+
+  auto on_tree_instruction_selected = [this](auto)
+  {
+    if (!m_block_selection_to_scene)
+    {
+      m_node_editor->SetSelectedInstructions(m_composer_tree_widget->GetSelectedInstructions());
+    }
+  };
+  connect(m_composer_tree_widget, &ComposerTreeWidget::InstructionSelected, this,
+          on_tree_instruction_selected);
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
     m_node_editor->SetModel(m_model, procedure_item);
     m_composer_tree_widget->SetModel(m_model, procedure_item);
   };
-  connect(m_composer_panel, &ComposerPanel::sratchpadProcedureSelected, this,
-          on_procedure_selected);
+  connect(m_composer_panel, &ComposerPanel::procedureSelected, this, on_procedure_selected);
 }
 
 //! Returns first procedure from the procedure container, if exist.

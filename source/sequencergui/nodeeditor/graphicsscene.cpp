@@ -111,24 +111,23 @@ void GraphicsScene::onDeleteSelectedRequest()
   }
 
   // Break explicitely selected connections.
-  for (auto connection : selectedViewItems<NodeConnection>())
+  for (auto connection : GetSelectedViewItems<NodeConnection>())
   {
     disconnectConnectedViews(connection);
   }
 
-  for (auto view : selectedViewItems<ConnectableView>())
+  for (auto view : GetSelectedViewItems<ConnectableView>())
   {
     // If the parent is intended to the deletion and has input connections, they have to be
     // disconnected first. This will prevent child item to be deleted when the parent is gone.
     for (auto connection : view->outputConnections())
     {
-        disconnectConnectedViews(connection);
+      disconnectConnectedViews(connection);
     }
 
     auto instruction = view->connectableItem()->GetInstruction();
     m_model->RemoveItem(instruction);
   }
-
 }
 
 void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
@@ -142,6 +141,28 @@ void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
   m_model->MoveItem(instruction, m_root_item, {"", -1});
   // No need to delete the connection explicitly. It will be done by ConnectableView via its
   // ports.
+}
+
+void GraphicsScene::SetSelectedInstructions(const std::vector<InstructionItem *> &to_select)
+{
+  clearSelection();
+  for (auto instruction : to_select)
+  {
+    if (auto view = FindViewForInstruction(instruction); view)
+    {
+      view->setSelected(true);
+    }
+  }
+}
+
+std::vector<InstructionItem *> GraphicsScene::GetSelectedInstructions() const
+{
+  std::vector<InstructionItem *> result;
+  for (const auto view : GetSelectedViewItems<ConnectableView>())
+  {
+    result.push_back(view->connectableItem()->GetInstruction());
+  }
+  return result;
 }
 
 void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
@@ -194,7 +215,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableV
 
 void GraphicsScene::onSelectionChanged()
 {
-  auto selected = selectedViewItems<ConnectableView>();
+  auto selected = GetSelectedViewItems<ConnectableView>();
   if (selected.empty())
   {
     return;

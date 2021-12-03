@@ -57,7 +57,11 @@ public:
   void disconnectConnectedViews(NodeConnection* connection);
 
   template <typename T>
-  std::vector<T*> selectedViewItems();
+  std::vector<T*> GetSelectedViewItems() const;
+
+  void SetSelectedInstructions(const std::vector<InstructionItem *> &to_select);
+
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
 
 signals:
   void InstructionSelected(InstructionItem* selected);
@@ -83,7 +87,7 @@ private:
 };
 
 template <typename T>
-inline std::vector<T*> GraphicsScene::selectedViewItems()
+inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
 {
   std::vector<T*> result;
   for (auto item : selectedItems())

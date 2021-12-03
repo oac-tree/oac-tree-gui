@@ -29,6 +29,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
+
 using namespace sequi;
 
 //! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
@@ -39,10 +41,10 @@ public:
   GraphicsSceneTest()
   {
     m_model.InsertItem<ProcedureItem>();
-    m_scene.SetContext(&m_model, GetContainer());
+    m_scene.SetContext(&m_model, GetInstructionContainer());
   }
 
-  InstructionContainerItem* GetContainer()
+  InstructionContainerItem* GetInstructionContainer()
   {
     return m_model.GetTopItem<ProcedureItem>()->GetInstructionContainer();
   }
@@ -60,7 +62,15 @@ public:
   std::unique_ptr<GraphicsSceneController> CreateController()
   {
     auto result = std::make_unique<GraphicsSceneController>(&m_model, &m_scene);
-    result->Init(GetContainer());
+    result->Init(GetInstructionContainer());
+    return result;
+  }
+
+  template <typename C>
+  C Sorted(const C& container)
+  {
+    C result = container;
+    std::sort(result.begin(), result.end());
     return result;
   }
 
@@ -72,7 +82,7 @@ public:
 
 TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
 {
-  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
 
   auto controller = CreateController();
 
@@ -85,7 +95,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
   EXPECT_TRUE(m_scene.FindViewForInstruction(sequence) == nullptr);
 
   // the model should be empty too
-  EXPECT_EQ(GetContainer()->GetTotalItemCount(), 0);
+  EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 0);
 }
 
 //! Scene with two instructions. One gets connected with another.
@@ -94,8 +104,8 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 {
   auto controller = CreateController();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
-  auto wait = m_model.InsertItem<WaitItem>(GetContainer());
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
+  auto wait = m_model.InsertItem<WaitItem>(GetInstructionContainer());
 
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
 
@@ -122,7 +132,7 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
   EXPECT_EQ(children_views, std::vector<ConnectableView*>({new_wait_view}));
 
   // the model should have sequence as a top instruciton, and wait into it
-  EXPECT_EQ(GetContainer()->GetTotalItemCount(), 1);
+  EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 1);
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait}));
 }
 
@@ -133,7 +143,7 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
 {
   auto controller = CreateController();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
@@ -163,8 +173,9 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
   EXPECT_EQ(GetConnectedChildren(sequence_view).size(), 0);
 
   // procedure contains two instructions
-  EXPECT_EQ(GetContainer()->GetTotalItemCount(), 2);
-  EXPECT_EQ(GetContainer()->GetInstructions(), std::vector<InstructionItem*>({sequence, wait}));
+  EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 2);
+  EXPECT_EQ(GetInstructionContainer()->GetInstructions(),
+            std::vector<InstructionItem*>({sequence, wait}));
 }
 
 //! Scene with two instructions. One connected with the another, when we delete child.
@@ -173,7 +184,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
 {
   auto controller = CreateController();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
@@ -212,7 +223,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
 {
   auto controller = CreateController();
 
-  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
@@ -239,4 +250,74 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   ASSERT_NE(wait_view, new_wait_view);
 
   EXPECT_EQ(new_wait_view->connectableItem()->GetInstruction(), wait);
+}
+
+TEST_F(GraphicsSceneTest, GetSelectedInstructions)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto controller = CreateController();
+
+  EXPECT_TRUE(m_scene.GetSelectedViewItems<QGraphicsItem>().empty());
+  EXPECT_TRUE(m_scene.GetSelectedInstructions().empty());
+
+  auto sequence_view = m_scene.FindViewForInstruction(sequence);
+  sequence_view->setSelected(true);
+  EXPECT_EQ(m_scene.GetSelectedInstructions(), std::vector<InstructionItem*>({sequence}));
+
+  auto wait1_view = m_scene.FindViewForInstruction(wait1);
+  wait1_view->setSelected(true);
+  EXPECT_EQ(Sorted(m_scene.GetSelectedInstructions()),
+            Sorted(std::vector<InstructionItem*>({sequence, wait1})));
+}
+
+TEST_F(GraphicsSceneTest, SetSelectedInstructions)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto controller = CreateController();
+
+  EXPECT_TRUE(m_scene.GetSelectedViewItems<QGraphicsItem>().empty());
+  EXPECT_TRUE(m_scene.GetSelectedInstructions().empty());
+
+  QSignalSpy spy_selected(&m_scene, &QGraphicsScene::selectionChanged);
+
+  m_scene.SetSelectedInstructions(std::vector<InstructionItem*>({sequence, wait1}));
+
+  EXPECT_EQ(spy_selected.count(), 2);
+
+  EXPECT_EQ(Sorted(m_scene.GetSelectedInstructions()),
+            Sorted(std::vector<InstructionItem*>({sequence, wait1})));
+
+  EXPECT_TRUE(m_scene.FindViewForInstruction(sequence)->isSelected());
+  EXPECT_TRUE(m_scene.FindViewForInstruction(wait1)->isSelected());
+}
+
+//! Check selection after the removal
+
+TEST_F(GraphicsSceneTest, SelectionAfterRemoval)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(GetInstructionContainer());
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto controller = CreateController();
+
+  m_scene.SetSelectedInstructions(std::vector<InstructionItem*>({wait1, wait2}));
+
+  QSignalSpy spy_selected(&m_scene, &QGraphicsScene::selectionChanged);
+
+  m_model.RemoveItem(wait1);
+
+  EXPECT_EQ(spy_selected.count(), 1);
+
+  EXPECT_EQ(Sorted(m_scene.GetSelectedInstructions()),
+            Sorted(std::vector<InstructionItem*>({wait2})));
 }

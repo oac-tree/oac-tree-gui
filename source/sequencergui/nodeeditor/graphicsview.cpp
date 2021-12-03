@@ -50,6 +50,16 @@ GraphicsView::ESelectionModes GraphicsView::GetSelectionModes()
   return it == mode_map.end() ? kUnknownSelection : it->second;
 }
 
+QSize GraphicsView::sizeHint() const
+{
+  return {800, 600};
+}
+
+QSize GraphicsView::minimumSizeHint() const
+{
+  return {400, 300};
+}
+
 void GraphicsView::onSelectionMode(int mode)
 {
   switch (mode)
@@ -112,10 +122,10 @@ void GraphicsView::keyReleaseEvent(QKeyEvent* event)
     }
     break;
   case Qt::Key_Delete:
-      deleteSelectedRequest();
+      emit deleteSelectedRequest();
       break;
   case Qt::Key_Backspace:
-      deleteSelectedRequest();
+      emit deleteSelectedRequest();
       break;
   default:
     QGraphicsView::keyPressEvent(event);

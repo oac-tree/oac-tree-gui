@@ -194,11 +194,6 @@ void MainWindow::PopulateModel()
     var_const0->SetName("var_const0");
     var_const0->SetJsonType(R"({"type":"uint32"})");
     var_const0->SetJsonValue("0");
-
-    // adding second branch
-    sequence = m_model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
-    m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
   }
 
   // second procedure

@@ -34,7 +34,7 @@ class ProcedureItem;
 class WorkspacePanel;
 
 //! Left panel on SequencerComposerView.
-//! Contains scratchpad, list of available instruction, and list of available variables.
+//! Contains list of opened procedures, list of available instruction, and list of available variables.
 
 class ComposerPanel : public QWidget
 {
@@ -47,7 +47,7 @@ public:
   void SetModel(SequencerModel* model);
 
 signals:
-  void sratchpadProcedureSelected(ProcedureItem* procedureItem);
+  void procedureSelected(ProcedureItem* procedureItem);
 
 private:
   ExplorerToolBar* m_tool_bar{nullptr};
