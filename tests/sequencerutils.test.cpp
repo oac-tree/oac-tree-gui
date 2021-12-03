@@ -17,25 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_PORTINFO_H
-#define SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+#include "sequencergui/model/sequencerutils.h"
 
-#include <string>
+#include "sequencergui/model/sequenceritems.h"
 
-namespace sequi
+#include <gtest/gtest.h>
+
+using namespace sequi;
+
+//! Tests for SequencerObserver class.
+
+class SequencerUtilsTest : public ::testing::Test
 {
-//! Aggregate to hold basic port information (i.e. type and color) for NodePort class.
-//! Colors must be what QColor understands (i.e. https://www.w3.org/TR/css-color-3/#svg-color).
-
-struct PortInfo
-{
-  std::string m_type;
-  std::string m_color;
 };
 
-const static PortInfo kBasicPortInfo = {"BasicPort", "navajowhite"};
-const static PortInfo kRootPortInfo = {"BasicPort", "indianred"};
+TEST_F(SequencerUtilsTest, IsCompountInstruction)
+{
+  SequenceItem sequence;
+  EXPECT_TRUE(IsCompoundInstruction(&sequence));
 
-}  // namespace sequi
-
-#endif  // SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+  WaitItem wait;
+  EXPECT_FALSE(IsCompoundInstruction(&wait));
+}

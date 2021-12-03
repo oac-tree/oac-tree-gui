@@ -58,6 +58,8 @@ public:
 
   void SetY(double value);
 
+  bool IsRoot() const;
+
 private:
   InstructionItem* m_instruction{nullptr};
 };

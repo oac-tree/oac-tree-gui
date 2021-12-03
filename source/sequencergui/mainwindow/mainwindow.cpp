@@ -153,6 +153,7 @@ void MainWindow::PopulateModel()
     auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
     auto repeat = m_model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
     repeat->SetRepeatCount(-1);
+    repeat->SetIsRootFlag(true);
     auto sequence = m_model->InsertItem<SequenceItem>(repeat);
 
     auto copy0 = m_model->InsertItem<CopyItem>(sequence);

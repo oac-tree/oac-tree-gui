@@ -65,6 +65,13 @@ NodePort::~NodePort()
   }
 }
 
+void NodePort::SetPortInfo(const PortInfo& info)
+{
+  m_portInfo = info;
+  setBrush(QColor(QString::fromStdString(info.m_color)));
+  update();
+}
+
 //! Returns port type. Input and output ports of the same type are compatible.
 
 QString NodePort::portType() const

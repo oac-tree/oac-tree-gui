@@ -17,25 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_PORTINFO_H
-#define SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+#ifndef SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+#define SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
 
-#include <string>
+//! @file sequencerutils.h
+//! Various utils for GUI items
 
 namespace sequi
 {
-//! Aggregate to hold basic port information (i.e. type and color) for NodePort class.
-//! Colors must be what QColor understands (i.e. https://www.w3.org/TR/css-color-3/#svg-color).
 
-struct PortInfo
-{
-  std::string m_type;
-  std::string m_color;
-};
+class InstructionItem;
 
-const static PortInfo kBasicPortInfo = {"BasicPort", "navajowhite"};
-const static PortInfo kRootPortInfo = {"BasicPort", "indianred"};
+bool IsCompoundInstruction(const InstructionItem* instruction);
 
 }  // namespace sequi
 
-#endif  // SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+#endif  // SEQUENCERGUI_MODEL_SEQUENCERUTILS_H

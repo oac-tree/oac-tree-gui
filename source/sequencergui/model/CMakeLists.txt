@@ -22,5 +22,7 @@ target_sources(${library_name} PRIVATE
   transformfromdomain.h
   variableitem.cpp
   variableitem.h
+  sequencerutils.cpp
+  sequencerutils.h
 )
 

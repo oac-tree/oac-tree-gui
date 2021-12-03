@@ -44,6 +44,8 @@ public:
   NodePort(QGraphicsItem* parent, const PortInfo& info);
   virtual ~NodePort() override;
 
+  void SetPortInfo(const PortInfo& info);
+
   QString portType() const;
 
   virtual bool isChildPort() const = 0;

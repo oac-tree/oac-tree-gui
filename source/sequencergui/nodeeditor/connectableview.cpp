@@ -27,6 +27,7 @@
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QDebug>
 
 namespace
 {
@@ -154,6 +155,7 @@ void ConnectableView::updateItemFromView()
 
 void ConnectableView::updateViewFromItem()
 {
+
   if (m_block_view_update)
   {
     return;
@@ -161,6 +163,10 @@ void ConnectableView::updateViewFromItem()
 
   setX(m_item->GetX());
   setY(m_item->GetY());
+  if (auto child_port = childPort(); child_port)
+  {
+    child_port->SetPortInfo(m_item->GetInputPorts().at(0));
+  }
 }
 
 void ConnectableView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
