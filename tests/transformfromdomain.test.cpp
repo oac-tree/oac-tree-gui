@@ -87,6 +87,8 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
   EXPECT_TRUE(
       CanCreateInstructionForType<sequi::InverterItem>(DomainConstants::kInverterInstructionType));
   EXPECT_TRUE(
+      CanCreateInstructionForType<sequi::MessageItem>(DomainConstants::kMessageInstructionType));
+  EXPECT_TRUE(
       CanCreateInstructionForType<sequi::OutputItem>(DomainConstants::kOutputInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequi::ParallelSequenceItem>(
       DomainConstants::kParallelInstructionType));

@@ -61,7 +61,7 @@ public:
 
   void onInstructionStatusChange(const instruction_t* instruction);
 
-  void onLogMessage(const QString& message);
+  void onLogMessage(const QString& message, int message_type);
 
   void onVariableChange(const QString& variable_name, const QString& value);
 

@@ -21,12 +21,27 @@
 
 #include "sequencergui/monitor/messagepanel.h"
 
+namespace
+{
+QColor GetColor(sequi::MessageType message_type)
+{
+  static const std::map<sequi::MessageType, std::string> message_to_colorname = {
+      {sequi::MessageType::kDefault, "gray"},
+      {sequi::MessageType::kSuccess, "dodgerblue"},
+      {sequi::MessageType::kHighlight, "darkorchid"},
+      {sequi::MessageType::kWarning, "orange"},
+      {sequi::MessageType::kError, "firebrick"}};
+  auto it = message_to_colorname.find(message_type);
+  return it == message_to_colorname.end() ? QColor(Qt::red) : QColor(it->second.c_str());
+}
+}  // namespace
+
 namespace sequi
 {
 
 JobLog::JobLog() : m_message_panel(nullptr) {}
 
-void JobLog::setMessagePanel(MessagePanel* message_panel)
+void JobLog::SetMessagePanel(MessagePanel* message_panel)
 {
   m_message_panel = message_panel;
   if (!m_message_panel)
@@ -36,24 +51,24 @@ void JobLog::setMessagePanel(MessagePanel* message_panel)
 
   m_message_panel->onClearLog();
 
+  // Write all accumulated messages to MessagePanel
   for (auto& record : m_records)
   {
-        m_message_panel->onMessage(QString::fromStdString(record.m_text),
-                                  QColor(Qt::gray));
+    m_message_panel->onMessage(QString::fromStdString(record.m_text), QColor(Qt::gray));
   }
 }
 
-void JobLog::append(const std::string& text, EMessageType type)
+void JobLog::Append(const std::string& text, MessageType type)
 {
   m_records.push_back({text, type});
 
   if (m_message_panel)
   {
-    m_message_panel->onMessage(QString::fromStdString(text), QColor(Qt::gray));
+    m_message_panel->onMessage(QString::fromStdString(text), GetColor(type));
   }
 }
 
-void JobLog::clearLog()
+void JobLog::ClearLog()
 {
   m_records.clear();
   if (m_message_panel)

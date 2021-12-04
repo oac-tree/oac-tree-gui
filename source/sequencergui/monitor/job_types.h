@@ -26,6 +26,7 @@
 namespace sequi
 {
 
+//! Defines possible execution modes of ProcedureRunner.
 enum class WaitingMode
 {
   kProceed,         //! proceed without waiting
@@ -33,6 +34,7 @@ enum class WaitingMode
   kSleepFor         //! sleep certain amount of time
 };
 
+//! Defines possible states that runner can have during job execution.
 enum class RunnerStatus
 {
   kIdle,       //! wasn't started yet
@@ -41,6 +43,16 @@ enum class RunnerStatus
   kCanceling,  //! in the process of canceling (performed Halt of procedure)
   kCanceled,   //! was canceled
   kFailed      //! something went wrong in the domain runner
+};
+
+//! Defines message types that JobLog is aware of.
+enum class MessageType
+{
+  kDefault,
+  kSuccess,
+  kHighlight,
+  kWarning,
+  kError
 };
 
 }  // namespace sequi

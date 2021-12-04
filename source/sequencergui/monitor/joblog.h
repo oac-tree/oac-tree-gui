@@ -20,6 +20,8 @@
 #ifndef MVVM_MONITOR_JOBLOG_H
 #define MVVM_MONITOR_JOBLOG_H
 
+#include "sequencergui/monitor/job_types.h"
+
 #include <string>
 #include <vector>
 
@@ -28,29 +30,22 @@ namespace sequi
 
 class MessagePanel;
 
+//! Holds all messages of running job in chronological order.
+//! When MessagePanel is set, updates it with arriving messages.
 class JobLog
 {
 public:
-  enum EMessageType
-  {
-    kDefault,
-    kSuccess,
-    kHighlight,
-    kWarning,
-    kError
-  };
-
   JobLog();
 
-  void setMessagePanel(MessagePanel* message_panel);
-  void append(const std::string& text, EMessageType type);
-  void clearLog();
+  void SetMessagePanel(MessagePanel* message_panel);
+  void Append(const std::string& text, MessageType type);
+  void ClearLog();
 
 private:
   struct Record
   {
     std::string m_text;
-    EMessageType m_type;
+    MessageType m_type;
   };
 
   std::vector<Record> m_records;

@@ -139,6 +139,24 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Represent Message instruction.
+class MessageItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Message";
+  MessageItem();
+
+  std::string GetDomainType() const override;
+
+  std::string GetText() const;
+
+  void SetText(const std::string& text);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 //! Represent Output instruction.
 class OutputItem : public InstructionItem
 {

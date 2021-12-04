@@ -38,6 +38,7 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
   RegisterItem<InstructionContainerItem>();
   RegisterItem<InverterItem>();
   RegisterItem<LocalVariableItem>();
+  RegisterItem<MessageItem>();
   RegisterItem<OutputItem>();
   RegisterItem<ParallelSequenceItem>();
   RegisterItem<ProcedureItem>();

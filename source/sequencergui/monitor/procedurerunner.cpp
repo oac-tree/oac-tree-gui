@@ -88,7 +88,7 @@ void ProcedureRunner::onMakeStepRequest()
 
 void ProcedureRunner::Terminate()
 {
-  emit LogMessageRequest("ProcedureRunner::Terminate()");
+  onLogMessage("ProcedureRunner::Terminate()", MessageType::kWarning);
 
   SetRunnerStatus(RunnerStatus::kCanceling);
 
@@ -152,9 +152,9 @@ void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction
 
 //! Propagate log message from observer up in the form of signals.
 
-void ProcedureRunner::onLogMessage(const std::string &message)
+void ProcedureRunner::onLogMessage(const std::string &message, MessageType message_type)
 {
-  emit LogMessageRequest(QString::fromStdString(message));
+  emit LogMessageRequest(QString::fromStdString(message), static_cast<int>(message_type));
 }
 
 void ProcedureRunner::onVariableChange(const std::string &variable_name, const std::string &value)

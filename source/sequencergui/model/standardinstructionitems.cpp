@@ -21,6 +21,7 @@
 
 #include "Instruction.h"
 #include "sequencergui/model/domain_constants.h"
+
 #include "mvvm/utils/stringutils.h"
 
 namespace sequi
@@ -277,6 +278,45 @@ void InverterItem::InitFromDomainImpl(const instruction_t *instruction) {}
 void InverterItem::SetupDomainImpl(instruction_t *instruction) const
 {
   (void)instruction;
+}
+
+// ----------------------------------------------------------------------------
+// MessageItem
+// ----------------------------------------------------------------------------
+
+static inline const std::string kText = "kText";
+
+MessageItem::MessageItem() : InstructionItem(Type)
+{
+  AddProperty(kText, std::string())->SetDisplayName("text");
+}
+
+std::string MessageItem::GetDomainType() const
+{
+  return DomainConstants::kMessageInstructionType;
+}
+
+void MessageItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(DomainConstants::kTextAttribute))
+  {
+    SetText(instruction->GetAttribute(DomainConstants::kTextAttribute));
+  }
+}
+
+void MessageItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(DomainConstants::kTextAttribute, GetText());
+}
+
+std::string MessageItem::GetText() const
+{
+  return Property<std::string>(kText);
+}
+
+void MessageItem::SetText(const std::string &value)
+{
+  SetProperty(kText, value);
 }
 
 // ----------------------------------------------------------------------------

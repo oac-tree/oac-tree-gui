@@ -60,7 +60,7 @@ void JobContext::onStartRequest()
     return;
   }
 
-  m_job_log->clearLog();
+  m_job_log->ClearLog();
 
   m_domain_builder->BuildProcedure(m_procedure_item);
   m_procedure_runner->ExecuteProcedure(m_domain_builder->GetProcedure());
@@ -95,7 +95,7 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction)
   std::cout << instruction->GetType() << std::endl;
   if (!instruction_item)
   {
-//    throw std::runtime_error("Error in JobManager: can't find InstructionItem");
+    //    throw std::runtime_error("Error in JobManager: can't find InstructionItem");
     std::cout << "Error in JobManager: can't find InstructionItem" << std::endl;
   }
   else
@@ -106,9 +106,9 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction)
   }
 }
 
-void JobContext::onLogMessage(const QString &message)
+void JobContext::onLogMessage(const QString &message, int message_type)
 {
-  m_job_log->append(message.toStdString(), JobLog::kDefault);
+  m_job_log->Append(message.toStdString(), static_cast<MessageType>(message_type));
 }
 
 void JobContext::onVariableChange(const QString &variable_name, const QString &value)
@@ -144,7 +144,7 @@ bool JobContext::IsRunning() const
 
 void JobContext::SetMessagePanel(MessagePanel *panel)
 {
-  m_job_log->setMessagePanel(panel);
+  m_job_log->SetMessagePanel(panel);
 }
 
 bool JobContext::WaitForCompletion(double timeout_sec)

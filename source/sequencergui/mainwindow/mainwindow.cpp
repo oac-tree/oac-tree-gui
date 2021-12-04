@@ -159,11 +159,16 @@ void MainWindow::PopulateModel()
     auto copy0 = m_model->InsertItem<CopyItem>(sequence);
     copy0->SetInput("var_const42");
     copy0->SetOutput("var0");
+
     m_model->InsertItem<WaitItem>(sequence);
+
+    auto message = m_model->InsertItem<MessageItem>(sequence);
+    message->SetText("Hello World");
 
     auto copy1 = m_model->InsertItem<CopyItem>(sequence);
     copy1->SetInput("var_const0");
     copy1->SetOutput("var1");
+
     m_model->InsertItem<WaitItem>(sequence);
 
     auto copy2 = m_model->InsertItem<CopyItem>(sequence);

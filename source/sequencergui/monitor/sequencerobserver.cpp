@@ -62,12 +62,15 @@ int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &, const
 
 void SequencerObserver::StartSingleStepImpl()
 {
-  m_procedure_runner->onLogMessage("StartSingleStepImpl");
 }
 
 void SequencerObserver::EndSingleStepImpl()
 {
-  m_procedure_runner->onLogMessage("EndSingleStepImpl");
+}
+
+void SequencerObserver::MessageImpl(const std::string &message)
+{
+  m_procedure_runner->onLogMessage(message, MessageType::kHighlight);
 }
 
 }  // namespace sequi

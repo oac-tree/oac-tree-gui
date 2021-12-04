@@ -18,13 +18,14 @@
  *****************************************************************************/
 
 #include "sequencergui/monitor/messagepanel.h"
+
 #include "sequencergui/mainwindow/explorernarrowtoolbar.h"
 #include "sequencergui/mainwindow/styleutils.h"
 
 #include <QScrollBar>
 #include <QTextEdit>
-#include <QVBoxLayout>
 #include <QToolButton>
+#include <QVBoxLayout>
 
 namespace sequi
 {
@@ -49,7 +50,6 @@ MessagePanel::MessagePanel(QWidget *parent) : CollapsibleWidget(parent), m_text_
   auto remove_selected_button = new QToolButton;
   remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
   tool_bar->AddWidget(remove_selected_button);
-
 }
 
 void MessagePanel::onClearLog()

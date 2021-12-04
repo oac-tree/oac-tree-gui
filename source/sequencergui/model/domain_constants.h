@@ -36,6 +36,7 @@ const std::string kFallbackInstructionType = "Fallback";
 const std::string kIncludeInstructionType = "Include";
 const std::string kInputInstructionType = "Input";
 const std::string kInverterInstructionType = "Inverter";
+const std::string kMessageInstructionType = "Message";
 const std::string kOutputInstructionType = "Output";
 const std::string kParallelInstructionType = "ParallelSequence";
 const std::string kRepeatInstructionType = "Repeat";
@@ -50,21 +51,22 @@ const std::string kFileVariableType = "FileVariable";
 const std::string kChannelAccessVariableType = "ChannelAccessVariable";
 
 // attributes
+const std::string kChannelAttribute = "channel";
+const std::string kDataTypeAttribute = "datatype";
 const std::string kDescriptionAttribute = "description";
 const std::string kFailureThresholdAttribute = "failureThreshold";
 const std::string kFileAttribute = "file";
 const std::string kInputAttribute = "input";
+const std::string kIsRootAttribute = "isRoot";
 const std::string kMaxCountAttribute = "maxCount";
 const std::string kNameAttribute = "name";
 const std::string kOutputAttribute = "output";
 const std::string kPathAttribute = "path";
 const std::string kSuccessThresholdAttribute = "successThreshold";
+const std::string kTextAttribute = "text";
 const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
-const std::string kIsRootAttribute = "isRoot";
-const std::string kDataTypeAttribute = "datatype";
-const std::string kChannelAttribute = "channel";
 
 // attributes (instruction specific)
 const std::string kConditionVarNameAttribute = "var_name";

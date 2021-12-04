@@ -48,6 +48,8 @@ public:
   void StartSingleStepImpl() override;
   void EndSingleStepImpl() override;
 
+  void MessageImpl(const std::string& message) override;
+
 private:
   ProcedureRunner* m_procedure_runner{nullptr};
 };

@@ -66,13 +66,13 @@ public:
 public slots:
   void onInstructionStatusChange(const instruction_t* instruction);
 
-  void onLogMessage(const std::string& message);
+  void onLogMessage(const std::string& message, MessageType message_type = MessageType::kDefault);
 
   void onVariableChange(const std::string& variable_name, const std::string& value);
 
 signals:
   void InstructionStatusChanged(const instruction_t* instruction);
-  void LogMessageRequest(const QString& message);
+  void LogMessageRequest(const QString& message, int message_type);
   void RunnerStatusChanged();
   void VariableChanged(const QString& variable_name, const QString& value);
 
