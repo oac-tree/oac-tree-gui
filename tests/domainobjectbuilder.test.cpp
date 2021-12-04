@@ -52,7 +52,7 @@ TEST_F(DomainObjectBuilderTest, EmptyProcedure)
   EXPECT_TRUE(procedure->GetFilename().empty());
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
-  // Empty instruction list
+  // Empty instructions and variables
   EXPECT_EQ(procedure->RootInstrunction(), nullptr);
   auto instructions = procedure->GetInstructions();
   EXPECT_EQ(instructions.size(), 0);

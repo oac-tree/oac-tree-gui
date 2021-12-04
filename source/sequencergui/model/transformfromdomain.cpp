@@ -23,6 +23,7 @@
 #include "Procedure.h"
 #include "Workspace.h"
 #include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/guiobjectbuilder.h"
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/model/itemcatalogue.h"
@@ -83,52 +84,10 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateInstructionItemCatalogue()
   return result;
 }
 
-//! Creates SessionItem (presentation) corresponding to given instruction, and inserts it as a child
-//! to given parent. Returns this item to the user.
-ModelView::SessionItem* ProcessInstruction(const instruction_t* instruction,
-                                           ModelView::SessionItem* parent)
-{
-  auto item = sequi::CreateInstructionItem(instruction->GetType());
-  item->InitFromDomain(instruction);
-  // method InsertItem returns just raw pointer to item
-  auto next_parent = parent->InsertItem(std::move(item), {"", -1});
-  return next_parent;
-}
-
-void Iterate(const instruction_t* instruction, ModelView::SessionItem* parent)
-{
-  for (auto& instruction : instruction->ChildInstructions())
-  {
-    auto next_parent_item = ProcessInstruction(instruction, parent);
-    if (next_parent_item)
-    {
-      Iterate(instruction, next_parent_item);
-    }
-  }
-}
-
 }  // namespace
 
 namespace sequi
 {
-void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                      InstructionContainerItem* container)
-{
-  if (container->GetTotalItemCount() > 0)
-  {
-    throw std::runtime_error("Error: InstructionContainerItem is not empty.");
-  }
-
-  for (auto instruction : procedure->GetInstructions())
-  {
-    auto next_parent_item = ProcessInstruction(instruction, container);
-    if (next_parent_item)
-    {
-      Iterate(instruction, next_parent_item);
-    }
-  }
-}
-
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 {
   static const auto catalogue = CreateVariableItemCatalogue();
@@ -159,23 +118,15 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace)
 {
-  if (workspace->GetTotalItemCount() > 0)
-  {
-    throw std::runtime_error("Error: WorkspaceItem is not empty.");
-  }
-
-  for (auto variable : procedure->GetWorkspace()->GetVariables())
-  {
-    auto item = sequi::CreateVariableItem(variable->GetType());
-    item->InitFromDomain(variable);
-    workspace->InsertItem(std::move(item), {"", -1});
-  }
+  GUIObjectBuilder builder;
+  builder.PopulateWorkspaceItem(procedure, workspace);
 }
 
-std::string GetInstructionItemType(const std::string& domain_type)
+void PopulateInstructionContainerItem(const procedure_t* procedure,
+                                      InstructionContainerItem* container)
 {
-  auto item = CreateInstructionItem(domain_type);
-  return item->GetType();
+  GUIObjectBuilder builder;
+  builder.PopulateInstructionContainerItem(procedure, container);
 }
 
 }  // namespace sequi

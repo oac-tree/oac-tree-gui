@@ -4,6 +4,8 @@ target_sources(${library_name} PRIVATE
   domainobjectbuilder.h
   domainutils.cpp
   domainutils.h
+  guiobjectbuilder.cpp
+  guiobjectbuilder.h
   importutils.cpp
   importutils.h
   instructionitem.cpp

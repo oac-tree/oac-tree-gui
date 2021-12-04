@@ -38,9 +38,6 @@ class VariableItem;
 //! Creates VariableItem from string representing Type of sup::sequencer::Variable.
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
 
-//! Returns item's type corresponding to given domain type
-std::string GetInstructionItemType(const std::string& domain_type);
-
 //! Creates InstructionItem from string representing Type of sup::sequencer::Instruction.
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type);
 
