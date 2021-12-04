@@ -44,7 +44,7 @@ const QRectF default_scene_rect{QPointF{scene_origin_x, scene_origin_y}, QSizeF{
 
 sequi::InstructionItem *GetInstruction(sequi::ConnectableView *view)
 {
-  return view ? const_cast<sequi::InstructionItem *>(view->connectableItem()->GetInstruction())
+  return view ? const_cast<sequi::InstructionItem *>(view->GetConnectableItem()->GetInstruction())
               : nullptr;
 }
 
@@ -95,7 +95,7 @@ ConnectableView *GraphicsScene::FindViewForInstruction(InstructionItem *instruct
   auto views = GetConnectableViews();
   for (auto view : views)
   {
-    if (view->connectableItem()->GetInstruction() == instruction)
+    if (view->GetConnectableItem()->GetInstruction() == instruction)
     {
       return view;
     }
@@ -120,12 +120,12 @@ void GraphicsScene::onDeleteSelectedRequest()
   {
     // If the parent is intended to the deletion and has input connections, they have to be
     // disconnected first. This will prevent child item to be deleted when the parent is gone.
-    for (auto connection : view->outputConnections())
+    for (auto connection : view->GetOutputConnections())
     {
       disconnectConnectedViews(connection);
     }
 
-    auto instruction = view->connectableItem()->GetInstruction();
+    auto instruction = view->GetConnectableItem()->GetInstruction();
     m_model->RemoveItem(instruction);
   }
 }
@@ -160,7 +160,7 @@ std::vector<InstructionItem *> GraphicsScene::GetSelectedInstructions() const
   std::vector<InstructionItem *> result;
   for (const auto view : GetSelectedViewItems<ConnectableView>())
   {
-    result.push_back(view->connectableItem()->GetInstruction());
+    result.push_back(view->GetConnectableItem()->GetInstruction());
   }
   return result;
 }

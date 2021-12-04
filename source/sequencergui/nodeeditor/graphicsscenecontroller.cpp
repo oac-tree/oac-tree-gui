@@ -85,7 +85,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 
     if (parent_view)
     {
-      parent_view->makeChildConnected(instruction_view);
+      parent_view->MakeChildConnected(instruction_view);
     }
 
     return instruction_view;
@@ -161,7 +161,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
     {
       if (auto instruction_view = FindView(instruction); instruction_view)
       {
-        instruction_view->updateViewFromItem();
+        instruction_view->UpdateViewFromItem();
       }
     }
     m_block_update = false;

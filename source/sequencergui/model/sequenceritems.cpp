@@ -49,7 +49,7 @@ void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction
 {
   m_domain_name = instruction->GetType();
 
-  SetDisplayName(instruction->GetType() + " (unknown)");
+  SetDisplayName(instruction->GetType());
 
   // creating string properties for every domain attribute found
   for (auto [name, value] : DomainUtils::GetAttributes(instruction))

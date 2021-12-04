@@ -46,7 +46,7 @@ public:
   std::vector<ConnectableView*> GetConnectedChildren(ConnectableView* parent)
   {
     std::vector<ConnectableView*> result;
-    for (auto connection : parent->parentPort()->connections())
+    for (auto connection : parent->GetParentPort()->connections())
     {
       result.push_back(connection->childView());
     }
@@ -157,14 +157,14 @@ TEST_F(GraphicsSceneControllerTest, ParentWithChildRemoveChild)
 
   auto sequence_view = m_scene.FindViewForInstruction(sequence);
   auto wait_view = m_scene.FindViewForInstruction(wait);
-  EXPECT_EQ(sequence_view->connectableItem()->GetInstruction(), sequence);
-  EXPECT_EQ(wait_view->connectableItem()->GetInstruction(), wait);
+  EXPECT_EQ(sequence_view->GetConnectableItem()->GetInstruction(), sequence);
+  EXPECT_EQ(wait_view->GetConnectableItem()->GetInstruction(), wait);
 
   m_model.RemoveItem(wait);
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 1);
 
   auto sequence_view2 = m_scene.FindViewForInstruction(sequence);
-  EXPECT_EQ(sequence_view2->connectableItem()->GetInstruction(), sequence);
+  EXPECT_EQ(sequence_view2->GetConnectableItem()->GetInstruction(), sequence);
 }
 
 ////! Scene is looking to the procedure with sequence and single child in it.

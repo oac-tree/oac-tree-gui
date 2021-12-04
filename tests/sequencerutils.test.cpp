@@ -31,11 +31,26 @@ class SequencerUtilsTest : public ::testing::Test
 {
 };
 
-TEST_F(SequencerUtilsTest, IsCompountInstruction)
+TEST_F(SequencerUtilsTest, IsCompoundInstruction)
 {
   SequenceItem sequence;
   EXPECT_TRUE(IsCompoundInstruction(&sequence));
 
+  RepeatItem repeat;
+  EXPECT_TRUE(IsCompoundInstruction(&repeat));
+
   WaitItem wait;
   EXPECT_FALSE(IsCompoundInstruction(&wait));
+}
+
+TEST_F(SequencerUtilsTest, IsDecoratorInstruction)
+{
+  SequenceItem sequence;
+  EXPECT_FALSE(IsDecoratorInstruction(&sequence));
+
+  RepeatItem repeat;
+  EXPECT_TRUE(IsDecoratorInstruction(&repeat));
+
+  WaitItem wait;
+  EXPECT_FALSE(IsDecoratorInstruction(&wait));
 }

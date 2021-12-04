@@ -54,7 +54,7 @@ ConnectableView::ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> 
   setFlag(QGraphicsItem::ItemIsMovable);
   setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 
-  updateViewFromItem();
+  UpdateViewFromItem();
   update();
 }
 
@@ -79,31 +79,31 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
     painter->setPen(Qt::DashLine);
   }
 
-  painter->setBrush(ConnectableViewGradient(color(), boundingRect()));
+  painter->setBrush(ConnectableViewGradient(GetColor(), boundingRect()));
   painter->drawRoundedRect(boundingRect(), round_par, round_par);
 
   painter->setPen(Qt::black);
   QFont serifFont("Monospace", 8, QFont::Normal);
   painter->setFont(serifFont);
-  painter->drawText(label_rectangle(boundingRect()), Qt::AlignCenter, label());
+  painter->drawText(label_rectangle(boundingRect()), Qt::AlignCenter, GetLabel());
 }
 
 //! Connects children's output port to appropriate input port.
 
-void ConnectableView::makeChildConnected(ConnectableView* childView)
+void ConnectableView::MakeChildConnected(ConnectableView* childView)
 {
   if (!childView)
   {
     throw std::runtime_error("Error in ConnectableView: wrong child");
   }
 
-  auto child_port = childView->childPort();
+  auto child_port = childView->GetChildPort();
   if (!child_port)
   {
     return;
   }
 
-  auto parent_port = parentPort();
+  auto parent_port = GetParentPort();
   if (parent_port->isConnectable(child_port))
   {
     auto connection = new NodeConnection(scene());  // ownership to scene
@@ -115,45 +115,45 @@ void ConnectableView::makeChildConnected(ConnectableView* childView)
 
 //! Returns list of input ports of given
 
-QList<ChildPort*> ConnectableView::childPorts() const
+QList<ChildPort*> ConnectableView::GetChildPorts() const
 {
-  return ports<ChildPort>();
+  return GetPorts<ChildPort>();
 }
 
-ChildPort* ConnectableView::childPort() const
+ChildPort* ConnectableView::GetChildPort() const
 {
-  auto child_ports = childPorts();
+  auto child_ports = GetChildPorts();
   return child_ports.empty() ? nullptr : child_ports.front();
 }
 
-ParentPort* ConnectableView::parentPort() const
+ParentPort* ConnectableView::GetParentPort() const
 {
-  auto parent_ports = ports<ParentPort>();
+  auto parent_ports = GetPorts<ParentPort>();
   return parent_ports.empty() ? nullptr : parent_ports.front();
 }
 
-ConnectableInstructionAdapter* ConnectableView::connectableItem() const
+ConnectableInstructionAdapter* ConnectableView::GetConnectableItem() const
 {
   return m_item.get();
 }
 
-QList<NodeConnection*> ConnectableView::outputConnections() const
+QList<NodeConnection*> ConnectableView::GetOutputConnections() const
 {
   QList<NodeConnection*> result;
-  if (auto parent_port = parentPort(); parent_port)
+  if (auto parent_port = GetParentPort(); parent_port)
   {
     result.append(parent_port->connections());
   }
   return result;
 }
 
-void ConnectableView::updateItemFromView()
+void ConnectableView::UpdateItemFromView()
 {
   m_item->SetX(x());
   m_item->SetY(y());
 }
 
-void ConnectableView::updateViewFromItem()
+void ConnectableView::UpdateViewFromItem()
 {
 
   if (m_block_view_update)
@@ -163,7 +163,7 @@ void ConnectableView::updateViewFromItem()
 
   setX(m_item->GetX());
   setY(m_item->GetY());
-  if (auto child_port = childPort(); child_port)
+  if (auto child_port = GetChildPort(); child_port)
   {
     child_port->SetPortInfo(m_item->GetInputPorts().at(0));
   }
@@ -179,7 +179,7 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
   if (change == ItemScenePositionHasChanged)
   {
     m_block_view_update = true;
-    updateItemFromView();
+    UpdateItemFromView();
     m_block_view_update = false;
   }
   return value;
@@ -187,14 +187,14 @@ QVariant ConnectableView::itemChange(GraphicsItemChange change, const QVariant& 
 
 //! Returns base color of this item.
 
-QColor ConnectableView::color() const
+QColor ConnectableView::GetColor() const
 {
   return m_item ? m_item->GetColor() : QColor(Qt::red);
 }
 
 //! Returns label of this item.
 
-QString ConnectableView::label() const
+QString ConnectableView::GetLabel() const
 {
   return m_item ? m_item->GetDisplayName() : QString("Unnamed");
 }

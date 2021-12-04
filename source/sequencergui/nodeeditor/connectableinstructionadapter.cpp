@@ -20,6 +20,7 @@
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 
 #include "sequencergui/model/sequencerutils.h"
+#include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/utils/containerutils.h"
@@ -44,7 +45,7 @@ ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *in
 
 QColor ConnectableInstructionAdapter::GetColor() const
 {
-  return QColor(Qt::lightGray);
+  return GetBaseColor(m_instruction);
 }
 
 QString ConnectableInstructionAdapter::GetDisplayName() const

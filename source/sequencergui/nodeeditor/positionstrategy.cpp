@@ -37,13 +37,13 @@ namespace sequi
 void LeftRightPositionStrategy::UpdatePosition(ConnectableView *view)
 {
   int index{0};
-  for (auto port : view->ports<ChildPort>())
+  for (auto port : view->GetPorts<ChildPort>())
   {
     SetPositionToLeft(view->boundingRect(), port, index++);
   }
 
   index = 0;
-  for (auto port : view->ports<ParentPort>())
+  for (auto port : view->GetPorts<ParentPort>())
   {
     SetPositionToRight(view->boundingRect(), port, index);
   }
@@ -86,13 +86,13 @@ void LeftRightPositionStrategy::SetPositionToRight(const QRectF &rect, NodePort 
 void TopBottomPositionStrategy::UpdatePosition(ConnectableView *view)
 {
   int index{0};
-  for (auto port : view->ports<ChildPort>())
+  for (auto port : view->GetPorts<ChildPort>())
   {
     SetPositionToTop(view->boundingRect(), port, index++);
   }
 
   index = 0;
-  for (auto port : view->ports<ParentPort>())
+  for (auto port : view->GetPorts<ParentPort>())
   {
     SetPositionToBottom(view->boundingRect(), port, index);
   }

@@ -124,7 +124,7 @@ void NodeEditor::SetupConnections()
     auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
     for (auto view : selected)
     {
-      auto item = view->connectableItem()->GetInstruction();
+      auto item = view->GetConnectableItem()->GetInstruction();
       AlignInstructionTree(view->pos(), item, /*force*/ true);
     }
   };

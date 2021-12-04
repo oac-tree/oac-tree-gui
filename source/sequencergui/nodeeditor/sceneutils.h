@@ -60,6 +60,9 @@ void AlignTree(const QPointF& reference, InstructionContainerItem* container, bo
 //! The position of parent `instruction` remains unchanged.
 void AlignInstructionTree(const QPointF& reference, InstructionItem* instruction, bool force);
 
+//! Returns base color of given instruction
+QColor GetBaseColor(const InstructionItem* instruction);
+
 }  // namespace sequi
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H

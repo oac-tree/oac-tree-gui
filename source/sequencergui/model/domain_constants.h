@@ -42,6 +42,8 @@ const std::string kRepeatInstructionType = "Repeat";
 const std::string kSequenceInstructionType = "Sequence";
 const std::string kWaitInstructionType = "Wait";
 
+const std::string kForceSuccessInstructionType = "ForceSuccess";
+
 // variables
 const std::string kLocalVariableType = "Local";
 const std::string kFileVariableType = "FileVariable";

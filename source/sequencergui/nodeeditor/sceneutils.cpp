@@ -20,6 +20,7 @@
 #include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencerutils.h"
 
 #include "mvvm/widgets/widgetutils.h"
 
@@ -122,6 +123,26 @@ void AlignInstructionTree(const QPointF& reference, sequi::InstructionItem* inst
     AlignInstructionTree(child_pos, child, force);
     ++index;
   }
+}
+
+QColor GetBaseColor(const InstructionItem* instruction)
+{
+  if (instruction->GetType() == UnknownInstructionItem::Type)
+  {
+    return {"chartreuse"};
+  }
+
+  if (IsDecoratorInstruction(instruction))
+  {
+    return {"lightseagreen"};
+  }
+
+  if (IsCompoundInstruction(instruction))
+  {
+    return {"royalblue"};
+  }
+
+  return {Qt::lightGray};
 }
 
 }  // namespace sequi

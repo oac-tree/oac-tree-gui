@@ -52,7 +52,7 @@ public:
   std::vector<ConnectableView*> GetConnectedChildren(ConnectableView* parent)
   {
     std::vector<ConnectableView*> result;
-    for (auto connection : parent->parentPort()->connections())
+    for (auto connection : parent->GetParentPort()->connections())
     {
       result.push_back(connection->childView());
     }
@@ -158,7 +158,7 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
   EXPECT_EQ(children_views, std::vector<ConnectableView*>({wait_view}));
 
   // selecting and deleting connection
-  auto connections = sequence_view->parentPort()->connections();
+  auto connections = sequence_view->GetParentPort()->connections();
   ASSERT_EQ(connections.size(), 1);
 
   // deleting connection
@@ -194,8 +194,8 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
   auto wait_view = m_scene.FindViewForInstruction(wait);
   ASSERT_TRUE(wait_view != nullptr);
 
-  EXPECT_EQ(sequence_view->connectableItem()->GetInstruction(), sequence);
-  EXPECT_EQ(wait_view->connectableItem()->GetInstruction(), wait);
+  EXPECT_EQ(sequence_view->GetConnectableItem()->GetInstruction(), sequence);
+  EXPECT_EQ(wait_view->GetConnectableItem()->GetInstruction(), wait);
 
   // sequence now connected with new wait_view
   auto children_views = GetConnectedChildren(sequence_view);
@@ -206,7 +206,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
 
   ASSERT_NO_FATAL_FAILURE(m_scene.onDeleteSelectedRequest());
 
-  auto connections = sequence_view->parentPort()->connections();
+  auto connections = sequence_view->GetParentPort()->connections();
   ASSERT_EQ(connections.size(), 0);
 
   // new sequence view is the same, wait view is different
@@ -233,8 +233,8 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   auto wait_view = m_scene.FindViewForInstruction(wait);
   ASSERT_TRUE(wait_view != nullptr);
 
-  EXPECT_EQ(sequence_view->connectableItem()->GetInstruction(), sequence);
-  EXPECT_EQ(wait_view->connectableItem()->GetInstruction(), wait);
+  EXPECT_EQ(sequence_view->GetConnectableItem()->GetInstruction(), sequence);
+  EXPECT_EQ(wait_view->GetConnectableItem()->GetInstruction(), wait);
 
   // sequence now connected with new wait_view
   auto children_views = GetConnectedChildren(sequence_view);
@@ -249,7 +249,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
   ASSERT_NE(wait_view, new_wait_view);
 
-  EXPECT_EQ(new_wait_view->connectableItem()->GetInstruction(), wait);
+  EXPECT_EQ(new_wait_view->GetConnectableItem()->GetInstruction(), wait);
 }
 
 TEST_F(GraphicsSceneTest, GetSelectedInstructions)

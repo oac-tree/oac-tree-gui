@@ -30,6 +30,8 @@ class InstructionItem;
 
 bool IsCompoundInstruction(const InstructionItem* instruction);
 
+bool IsDecoratorInstruction(const InstructionItem* instruction);
+
 }  // namespace sequi
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCERUTILS_H

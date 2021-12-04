@@ -48,32 +48,32 @@ public:
 
   void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*) override;
 
-  virtual void makeChildConnected(ConnectableView* childView);
+  void MakeChildConnected(ConnectableView* child_view);
 
-  QList<ChildPort*> childPorts() const;
+  QList<ChildPort*> GetChildPorts() const;
 
-  ChildPort* childPort() const;
+  ChildPort* GetChildPort() const;
 
-  ParentPort* parentPort() const;
+  ParentPort* GetParentPort() const;
 
-  ConnectableInstructionAdapter* connectableItem() const;
+  ConnectableInstructionAdapter* GetConnectableItem() const;
 
-  QList<NodeConnection*> outputConnections() const;
+  QList<NodeConnection*> GetOutputConnections() const;
 
-  void updateItemFromView();
+  void UpdateItemFromView();
 
-  void updateViewFromItem();
+  void UpdateViewFromItem();
 
   template <typename T>
-  QList<T*> ports() const;
+  QList<T*> GetPorts() const;
 
 protected:
   void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
   QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
 private:
-  QColor color() const;
-  QString label() const;
+  QColor GetColor() const;
+  QString GetLabel() const;
   void SetupPorts();
 
   QRectF m_rect;                                          //!< Bounding rectangle.
@@ -85,7 +85,7 @@ private:
 //! Return list of ports of required type.
 
 template <typename T>
-QList<T*> ConnectableView::ports() const
+QList<T*> ConnectableView::GetPorts() const
 {
   QList<T*> result;
   for (auto child : childItems())
