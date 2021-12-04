@@ -20,7 +20,6 @@
 #include "sequencergui/model/transformfromdomain.h"
 
 #include "Instruction.h"
-#include "InstructionRegistry.h"
 #include "Procedure.h"
 #include "Variable.h"
 #include "sequencergui/model/domain_constants.h"
@@ -117,8 +116,7 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait =
-      ::sup::sequencer::GlobalInstructionRegistry().Create(DomainConstants::kWaitInstructionType);
+  auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
   wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
   procedure.PushInstruction(wait.release());
 
@@ -135,8 +133,7 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait =
-      ::sup::sequencer::GlobalInstructionRegistry().Create(DomainConstants::kWaitInstructionType);
+  auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
   wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
 
   auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);

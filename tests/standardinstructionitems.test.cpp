@@ -143,6 +143,12 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
 
   item.SetPath("def");
   EXPECT_EQ(item.GetPath(), std::string("def"));
+
+  auto wait = item.InsertItem<WaitItem>({"", -1});
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
+  // it's not possible to add second item to inverter
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
+
 }
 
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)

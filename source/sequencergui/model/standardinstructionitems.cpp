@@ -158,6 +158,7 @@ IncludeItem::IncludeItem() : InstructionItem(Type)
 {
   AddProperty(kFile, std::string())->SetDisplayName("File name");
   AddProperty(kPath, std::string())->SetDisplayName("Path");
+  RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string IncludeItem::GetDomainType() const
