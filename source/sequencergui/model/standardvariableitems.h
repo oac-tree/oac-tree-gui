@@ -92,6 +92,31 @@ private:
   virtual void SetupDomainImpl(variable_t* variable) const override;
 };
 
+//! Represent PVClientVariable.
+class PVClientVariableItem : public VariableItem
+{
+public:
+  static inline const std::string Type = "PVClientVariable";
+  PVClientVariableItem();
+
+  std::string GetDomainType() const override;
+
+  std::string GetDataType() const;
+
+  void SetDataType(const std::string& value);
+
+  std::string GetChannel() const;
+
+  void SetChannel(const std::string& value);
+
+  void SetJsonValue(const std::string& value);
+
+private:
+  virtual void InitFromDomainImpl(const variable_t* variable) override;
+  virtual void SetupDomainImpl(variable_t* variable) const override;
+};
+
+
 //! Represent unknown Variable.
 class UnknownVariableItem : public VariableItem
 {

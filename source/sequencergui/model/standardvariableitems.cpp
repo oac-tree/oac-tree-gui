@@ -185,6 +185,66 @@ void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 }
 
 // ----------------------------------------------------------------------------
+// PVClientVariableItem
+// ----------------------------------------------------------------------------
+
+PVClientVariableItem::PVClientVariableItem() : VariableItem(Type)
+{
+  AddProperty(kDataType, std::string())->SetDisplayName("datatype");
+  AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kValue, std::string())->SetDisplayName("value");
+}
+
+std::string PVClientVariableItem::GetDomainType() const
+{
+  return DomainConstants::kPVClientVariableType;
+}
+
+std::string PVClientVariableItem::GetDataType() const
+{
+  return Property<std::string>(kDataType);
+}
+
+void PVClientVariableItem::SetDataType(const std::string &value)
+{
+  SetProperty(kDataType, value);
+}
+
+std::string PVClientVariableItem::GetChannel() const
+{
+  return Property<std::string>(kChannel);
+}
+
+void PVClientVariableItem::SetChannel(const std::string &value)
+{
+  SetProperty(kChannel, value);
+}
+
+void PVClientVariableItem::SetJsonValue(const std::string &value)
+{
+  SetProperty(kValue, value);
+}
+
+void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  if (variable->HasAttribute(DomainConstants::kDataTypeAttribute))
+  {
+    SetDataType(variable->GetAttribute(DomainConstants::kDataTypeAttribute));
+  }
+
+  if (variable->HasAttribute(DomainConstants::kChannelAttribute))
+  {
+    SetChannel(variable->GetAttribute(DomainConstants::kChannelAttribute));
+  }
+}
+
+void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  variable->AddAttribute(DomainConstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(DomainConstants::kChannelAttribute, GetChannel());
+}
+
+// ----------------------------------------------------------------------------
 // UnknownVariableItem
 // ----------------------------------------------------------------------------
 

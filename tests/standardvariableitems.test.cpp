@@ -201,6 +201,68 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
 }
 
+//! PVClientVariableItem
+
+TEST_F(StandardVariableItemsTest, PVClientVariableItem)
+{
+  PVClientVariableItem item;
+  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_TRUE(item.GetChannel().empty());
+  EXPECT_TRUE(item.GetDataType().empty());
+
+  item.SetName("abc");
+  EXPECT_EQ(item.GetName(), std::string("abc"));
+
+  item.SetChannel("def");
+  EXPECT_EQ(item.GetChannel(), std::string("def"));
+
+  item.SetDataType("jkl");
+  EXPECT_EQ(item.GetDataType(), std::string("jkl"));
+}
+
+TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
+{
+  const std::string expected_name("expected_name");
+  const std::string expected_channel("expected_channel");
+  const std::string expected_datatype("expected_datatype");
+
+  if (DomainUtils::IsChannelAccessAvailable())
+  {
+    auto ca_variable = DomainUtils::CreateDomainVariable(DomainConstants::kPVClientVariableType);
+    ca_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
+    ca_variable->AddAttribute(DomainConstants::kChannelAttribute, expected_channel);
+    ca_variable->AddAttribute(DomainConstants::kDataTypeAttribute, expected_datatype);
+
+    PVClientVariableItem ca_variable_item;
+    ca_variable_item.InitFromDomain(ca_variable.get());
+
+    EXPECT_EQ(ca_variable_item.GetName(), expected_name);
+    EXPECT_EQ(ca_variable_item.GetChannel(), expected_channel);
+    EXPECT_EQ(ca_variable_item.GetDataType(), expected_datatype);
+  }
+}
+
+TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
+{
+  const std::string expected_name("expected_name");
+  const std::string expected_channel("expected_channel");
+  const std::string expected_datatype("expected_datatype");
+
+  if (DomainUtils::IsChannelAccessAvailable())
+  {
+    PVClientVariableItem item;
+    item.SetName(expected_name);
+    item.SetChannel(expected_channel);
+    item.SetDataType(expected_datatype);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), DomainConstants::kPVClientVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDataTypeAttribute), expected_datatype);
+  }
+}
+
 //! UnknownVariableItem tests.
 //! Here we pretend that LocalVariableItem is unknown for a GUI, and check how UnknownVariableItem
 //! behaves in the way from/to domain.

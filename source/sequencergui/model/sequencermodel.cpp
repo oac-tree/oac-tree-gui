@@ -42,6 +42,7 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
   RegisterItem<LocalVariableItem>();
   RegisterItem<MessageItem>();
   RegisterItem<OutputItem>();
+  RegisterItem<PVClientVariableItem>();
   RegisterItem<ParallelSequenceItem>();
   RegisterItem<ProcedureItem>();
   RegisterItem<RepeatItem>();

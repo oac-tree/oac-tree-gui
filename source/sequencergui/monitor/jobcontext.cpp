@@ -85,7 +85,7 @@ void JobContext::onStartRequest()
 
   m_job_log->ClearLog();
 
-  m_procedure_runner->ExecuteProcedure(m_domain_procedure.get(), false); // do not setup
+  m_procedure_runner->ExecuteProcedure(m_domain_procedure.get(), false);  // do not setup
 }
 
 void JobContext::onPauseRequest()
@@ -170,6 +170,10 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
       local_var->SetJsonValue(value.toStdString());
     }
     else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(variable_item))
+    {
+      local_var->SetJsonValue(value.toStdString());
+    }
+    else if (auto local_var = dynamic_cast<PVClientVariableItem *>(variable_item))
     {
       local_var->SetJsonValue(value.toStdString());
     }

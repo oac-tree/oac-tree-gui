@@ -71,6 +71,8 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
   {
     EXPECT_TRUE(CanCreateVariableForType<sequi::ChannelAccessVariableItem>(
         DomainConstants::kChannelAccessVariableType));
+    EXPECT_TRUE(CanCreateVariableForType<sequi::PVClientVariableItem>(
+        DomainConstants::kPVClientVariableType));
   }
 }
 
