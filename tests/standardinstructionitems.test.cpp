@@ -169,6 +169,45 @@ TEST_F(StandardInstructionItemsTest, FallbackItem)
 }
 
 // ----------------------------------------------------------------------------
+// ForceSuccess tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, ForceSuccessItem)
+{
+  // Correctly initialised item
+  ForceSuccessItem item;
+  auto wait = item.InsertItem<WaitItem>({"", -1});
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
+  // it's not possible to add second item to inverter
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
+}
+
+//! Validate SequenceItem convertion to the domain object.
+
+TEST_F(StandardInstructionItemsTest, ForceSuccessItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kForceSuccessInstructionType);
+  input->AddAttribute(DomainConstants::kNameAttribute, "abc");
+
+  // Correctly initialised item
+  ForceSuccessItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetName(), std::string("abc"));
+}
+
+//! Validate SequenceItem convertion to the domain object.
+
+TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
+{
+  // Correctly initialised item
+  ForceSuccessItem item;
+
+  auto domain_instruction = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_instruction->GetType(), sequi::DomainConstants::kForceSuccessInstructionType);
+}
+
+// ----------------------------------------------------------------------------
 // IncludeItem tests
 // ----------------------------------------------------------------------------
 

@@ -82,6 +82,8 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateInstructionItemCatalogue()
                        ItemFactoryFunction<sequi::MessageItem>());
   result->RegisterItem(sequi::DomainConstants::kEqualsInstructionType,
                        ItemFactoryFunction<sequi::EqualsItem>());
+  result->RegisterItem(sequi::DomainConstants::kForceSuccessInstructionType,
+                       ItemFactoryFunction<sequi::ForceSuccessItem>());
 
   return result;
 }

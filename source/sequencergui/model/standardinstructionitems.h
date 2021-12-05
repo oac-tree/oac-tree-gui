@@ -101,6 +101,20 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Represent ForceSuccess instruction.
+class ForceSuccessItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "ForceSuccess";
+  ForceSuccessItem();
+
+  std::string GetDomainType() const override;
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 //! Represent IncludeItem instruction.
 class IncludeItem : public InstructionItem
 {

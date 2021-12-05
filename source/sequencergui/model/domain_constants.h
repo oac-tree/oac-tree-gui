@@ -43,7 +43,6 @@ const std::string kRepeatInstructionType = "Repeat";
 const std::string kSequenceInstructionType = "Sequence";
 const std::string kWaitInstructionType = "Wait";
 const std::string kEqualsInstructionType = "Equals";
-
 const std::string kForceSuccessInstructionType = "ForceSuccess";
 
 // variables

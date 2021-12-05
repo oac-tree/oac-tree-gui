@@ -31,8 +31,10 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
   RegisterItem<ChannelAccessVariableItem>();
   RegisterItem<ConditionItem>();
   RegisterItem<CopyItem>();
+  RegisterItem<EqualsItem>();
   RegisterItem<FallbackItem>();
   RegisterItem<FileVariableItem>();
+  RegisterItem<ForceSuccessItem>();
   RegisterItem<IncludeItem>();
   RegisterItem<InputItem>();
   RegisterItem<InstructionContainerItem>();
@@ -48,7 +50,6 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
   RegisterItem<UnknownVariableItem>();
   RegisterItem<WaitItem>();
   RegisterItem<WorkspaceItem>();
-  RegisterItem<EqualsItem>();
 
   SetupModel();
 }

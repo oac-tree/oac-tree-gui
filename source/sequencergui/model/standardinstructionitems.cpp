@@ -204,7 +204,31 @@ void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
 }
 
 // ----------------------------------------------------------------------------
-// InputItem
+// ForceSuccess
+// ----------------------------------------------------------------------------
+
+ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
+{
+  RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*as_default*/ true);
+}
+
+std::string ForceSuccessItem::GetDomainType() const
+{
+  return DomainConstants::kForceSuccessInstructionType;
+}
+
+void ForceSuccessItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  (void)instruction;
+}
+
+void ForceSuccessItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  (void)instruction;
+}
+
+// ----------------------------------------------------------------------------
+// IncludeItem
 // ----------------------------------------------------------------------------
 
 static inline const std::string kFile = "kFile";
@@ -330,7 +354,10 @@ std::string InverterItem::GetDomainType() const
   return DomainConstants::kInverterInstructionType;
 }
 
-void InverterItem::InitFromDomainImpl(const instruction_t *instruction) {}
+void InverterItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  (void)instruction;
+}
 
 void InverterItem::SetupDomainImpl(instruction_t *instruction) const
 {

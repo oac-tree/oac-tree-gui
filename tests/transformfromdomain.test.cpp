@@ -98,6 +98,8 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
   EXPECT_TRUE(
       CanCreateInstructionForType<sequi::SequenceItem>(DomainConstants::kSequenceInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequi::WaitItem>(DomainConstants::kWaitInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequi::ForceSuccessItem>(
+      DomainConstants::kForceSuccessInstructionType));
 }
 
 //! Populate InstructionContainerItem from empty Procedure.
