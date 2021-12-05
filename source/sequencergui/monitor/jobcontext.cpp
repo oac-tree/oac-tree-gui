@@ -22,6 +22,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "sequencergui/model/domainobjectbuilder.h"
+#include "sequencergui/model/guiobjectbuilder.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/joblog.h"
@@ -40,15 +41,32 @@ std::string GetStatus(const instruction_t *instruction)
 namespace sequi
 {
 
-JobContext::JobContext(SequencerModel *model, ProcedureItem *procedure_item, QObject *parent)
+JobContext::JobContext(ProcedureItem *procedure_item, QObject *parent)
     : QObject(parent)
-    , m_domain_builder(std::make_unique<DomainObjectBuilder>())
+    , m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
     , m_procedure_runner(std::make_unique<ProcedureRunner>())
     , m_job_log(new JobLog)
     , m_procedure_item{procedure_item}
-    , m_model(model)
+    , m_job_model(std::make_unique<SequencerModel>())
 {
   SetupConnections();
+}
+
+void JobContext::onPrepareJobRequest()
+{
+  // building domain procedure
+  DomainObjectBuilder builder;
+  m_domain_procedure = builder.CreateProcedure(m_procedure_item);
+  m_domain_procedure->Setup();  // to perform all necessary internal clones
+
+  // creating ProcedureItem corresponding to the domain procedure after the setup
+  if (!m_job_model->GetProcedureContainer()->IsEmpty())
+  {
+    throw std::runtime_error("Error non empty container");
+  }
+  m_expanded_procedure_item =
+      m_job_model->InsertItem<ProcedureItem>(m_job_model->GetProcedureContainer());
+  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), m_expanded_procedure_item);
 }
 
 JobContext::~JobContext() = default;
@@ -60,10 +78,14 @@ void JobContext::onStartRequest()
     return;
   }
 
+  if (!m_domain_procedure)
+  {
+    throw std::runtime_error("Error in JobContext: procedure is not ready");
+  }
+
   m_job_log->ClearLog();
 
-  m_domain_builder->BuildProcedure(m_procedure_item);
-  m_procedure_runner->ExecuteProcedure(m_domain_builder->GetProcedure());
+  m_procedure_runner->ExecuteProcedure(m_domain_procedure.get(), false); // do not setup
 }
 
 void JobContext::onPauseRequest()
@@ -84,49 +106,6 @@ void JobContext::onStopRequest()
   }
 }
 
-void JobContext::onInstructionStatusChange(const instruction_t *instruction)
-{
-  if (!m_model)
-  {
-    throw std::runtime_error("Error in JobModel: uninitialised model.");
-  }
-  auto instruction_item =
-      m_model->GetInstruction(m_domain_builder->FindInstructionIdentifier(instruction));
-  std::cout << instruction->GetType() << std::endl;
-  if (!instruction_item)
-  {
-    //    throw std::runtime_error("Error in JobManager: can't find InstructionItem");
-    std::cout << "Error in JobManager: can't find InstructionItem" << std::endl;
-  }
-  else
-  {
-    instruction_item->SetStatus(GetStatus(instruction));
-
-    emit InstructionStatusChanged(instruction_item);
-  }
-}
-
-void JobContext::onLogMessage(const QString &message, int message_type)
-{
-  m_job_log->Append(message.toStdString(), static_cast<MessageType>(message_type));
-}
-
-void JobContext::onVariableChange(const QString &variable_name, const QString &value)
-{
-  auto id = m_domain_builder->FindVariableItemIdentifier(variable_name.toStdString());
-  if (auto item = m_model->FindItem(id); item)
-  {
-    if (auto local_var = dynamic_cast<LocalVariableItem *>(item); local_var)
-    {
-      local_var->SetJsonValue(value.toStdString());
-    }
-    else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(item); local_var)
-    {
-      local_var->SetJsonValue(value.toStdString());
-    }
-  }
-}
-
 void JobContext::SetWaitingMode(WaitingMode waiting_mode)
 {
   m_procedure_runner->SetWaitingMode(waiting_mode);
@@ -135,6 +114,16 @@ void JobContext::SetWaitingMode(WaitingMode waiting_mode)
 void JobContext::SetSleepTime(int time_msec)
 {
   m_procedure_runner->SetSleepTime(time_msec);
+}
+
+ProcedureItem *JobContext::GetExpandedProcedure() const
+{
+  return m_expanded_procedure_item;
+}
+
+SequencerModel *JobContext::GetExpandedModel()
+{
+  return m_job_model.get();
 }
 
 bool JobContext::IsRunning() const
@@ -150,6 +139,45 @@ void JobContext::SetMessagePanel(MessagePanel *panel)
 bool JobContext::WaitForCompletion(double timeout_sec)
 {
   return m_procedure_runner->WaitForCompletion(timeout_sec);
+}
+
+void JobContext::onInstructionStatusChange(const instruction_t *instruction)
+{
+  auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
+  if (instruction_item)
+  {
+    instruction_item->SetStatus(GetStatus(instruction));
+    emit InstructionStatusChanged(instruction_item);
+  }
+  else
+  {
+    std::cout << "Error in JobManager: can't find InstructionItem" << std::endl;
+  }
+}
+
+void JobContext::onLogMessage(const QString &message, int message_type)
+{
+  m_job_log->Append(message.toStdString(), static_cast<MessageType>(message_type));
+}
+
+void JobContext::onVariableChange(const QString &variable_name, const QString &value)
+{
+  auto variable_item = m_guiobject_builder->FindVariableItem(variable_name.toStdString());
+  if (variable_item)
+  {
+    if (auto local_var = dynamic_cast<LocalVariableItem *>(variable_item); local_var)
+    {
+      local_var->SetJsonValue(value.toStdString());
+    }
+    else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(variable_item))
+    {
+      local_var->SetJsonValue(value.toStdString());
+    }
+  }
+  else
+  {
+    std::cout << "Error in JobManager: can't find VariableItem" << std::endl;
+  }
 }
 
 void JobContext::SetupConnections()

@@ -67,7 +67,8 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
 
   auto item = procedure_item.GetInstructionContainer()->GetItem<sequi::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 42.0);
-  EXPECT_EQ(builder.FindInstructionIdentifier(wait_ptr), item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(wait_ptr), item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItem(wait_ptr), item);
 }
 
 //! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
@@ -95,8 +96,10 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
   auto wait_item = sequence_item->GetItem<sequi::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 
-  EXPECT_EQ(builder.FindInstructionIdentifier(wait_ptr), wait_item->GetIdentifier());
-  EXPECT_EQ(builder.FindInstructionIdentifier(sequence_ptr), sequence_item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(wait_ptr), wait_item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(sequence_ptr), sequence_item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItem(wait_ptr), wait_item);
+  EXPECT_EQ(builder.FindInstructionItem(sequence_ptr), sequence_item);
 }
 
 //! Populate WorkspaceItem from empty procedure.
@@ -127,8 +130,10 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   EXPECT_EQ(variable_item->GetJsonValue(), expected_value);
 
   EXPECT_EQ(builder.FindVariableItemIdentifier(local_variable_ptr), variable_item->GetIdentifier());
+  EXPECT_EQ(builder.FindVariableItem(local_variable_ptr), variable_item);
   EXPECT_EQ(builder.FindVariableItemIdentifier(local_variable_ptr->GetName()),
             variable_item->GetIdentifier());
+  EXPECT_EQ(builder.FindVariableItem(local_variable_ptr->GetName()), variable_item);
 }
 
 //! Named Sequence and Include instruction
@@ -184,19 +189,23 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   auto wait_item = sequence_item->GetItem<sequi::WaitItem>("");
 
   // Repeat and Include instructions corresponds to their domain counterpart
-  EXPECT_EQ(builder.FindInstructionIdentifier(repeat_ptr), repeat_item->GetIdentifier());
-  EXPECT_EQ(builder.FindInstructionIdentifier(include_ptr), include_item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(repeat_ptr), repeat_item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(include_ptr), include_item->GetIdentifier());
 
   // However SequenceItem and WaitItem have been made from cloned versions of Sequence and Wait
-  EXPECT_EQ(builder.FindInstructionIdentifier(sequence_ptr), std::string());
-  EXPECT_EQ(builder.FindInstructionIdentifier(wait_ptr), std::string());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(sequence_ptr), std::string());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(wait_ptr), std::string());
 
   // Domain clones should lead to constructed SequenceItem and WaitItem
   EXPECT_EQ(procedure.RootInstrunction(), repeat_ptr);
   EXPECT_EQ(repeat_ptr->ChildInstructions().at(0), include_ptr);
+
   auto cloned_domain_sequence = include_ptr->ChildInstructions().at(0);
   auto cloned_domain_wait = cloned_domain_sequence->ChildInstructions().at(0);
-  EXPECT_EQ(builder.FindInstructionIdentifier(cloned_domain_sequence),
+  EXPECT_NE(cloned_domain_sequence, sequence_ptr);
+  EXPECT_NE(cloned_domain_wait, wait_ptr);
+
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(cloned_domain_sequence),
             sequence_item->GetIdentifier());
-  EXPECT_EQ(builder.FindInstructionIdentifier(cloned_domain_wait), wait_item->GetIdentifier());
+  EXPECT_EQ(builder.FindInstructionItemIdentifier(cloned_domain_wait), wait_item->GetIdentifier());
 }

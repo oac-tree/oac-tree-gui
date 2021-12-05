@@ -43,47 +43,61 @@ class JobContextTest : public ::testing::Test
 public:
   JobContextTest() {}
 
-  using test_data_t = std::tuple<std::unique_ptr<SequencerModel>, ProcedureItem*>;
-
-  test_data_t CreateSingleWaitProcedure()
+  ProcedureItem* CreateSingleWaitProcedure()
   {
-    auto model = std::make_unique<SequencerModel>();
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
+    auto procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+    auto wait = m_model.InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
     wait->SetTimeout(0.01);
-    return std::make_tuple(std::move(model), procedure_item);
+    return procedure_item;
   }
 
-  test_data_t CreateCopyProcedure()
+  ProcedureItem* CreateCopyProcedure()
   {
-    auto model = std::make_unique<SequencerModel>();
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto copy = model->InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
+    auto procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+    auto copy = m_model.InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
     copy->SetInput("var0");
     copy->SetOutput("var1");
 
-    auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    auto var0 = m_model.InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
     var0->SetName("var0");
     var0->SetJsonType(R"({"type":"uint32"})");
     var0->SetJsonValue("42");
 
-    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    auto var1 = m_model.InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
     var1->SetName("var1");
     var1->SetJsonType(R"({"type":"uint32"})");
     var1->SetJsonValue("43");
 
-    return std::make_tuple(std::move(model), procedure_item);
+    return procedure_item;
   }
+
+  ProcedureItem* CreateIncludeProcedure()
+  {
+    auto procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
+    auto sequence = m_model.InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+    sequence->SetName("MySequence");
+    m_model.InsertItem<WaitItem>(sequence);
+
+    auto repeat = m_model.InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
+    repeat->SetRepeatCount(1);
+    repeat->SetIsRootFlag(true);
+    auto include = m_model.InsertItem<IncludeItem>(repeat);
+    include->SetPath("MySequence");
+
+    return procedure_item;
+  }
+
+  SequencerModel m_model;
 };
 
 //! Normal execution of the procedure with single wait instruction.
 
 TEST_F(JobContextTest, PrematureDeletion)
 {
-  auto [model, procedure] = CreateSingleWaitProcedure();
-
+  auto procedure = CreateSingleWaitProcedure();
   {
-    JobContext job(model.get(), procedure);
+    JobContext job(procedure);
+    job.onPrepareJobRequest();
     job.onStartRequest();
   }
 
@@ -92,9 +106,10 @@ TEST_F(JobContextTest, PrematureDeletion)
 
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
-  auto [model, procedure] = CreateSingleWaitProcedure();
+  auto procedure = CreateSingleWaitProcedure();
 
-  JobContext job(model.get(), procedure);
+  JobContext job(procedure);
+  job.onPrepareJobRequest();
 
   QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
 
@@ -105,54 +120,49 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   EXPECT_FALSE(job.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = ModelView::Utils::FindItems<WaitItem>(model.get());
+  auto instructions = ModelView::Utils::FindItems<WaitItem>(job.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
-  auto [model, procedure] = CreateCopyProcedure();
+  auto procedure = CreateCopyProcedure();
 
-  auto vars = ModelView::Utils::FindItems<LocalVariableItem>(model.get());
+  auto vars = ModelView::Utils::FindItems<LocalVariableItem>(&m_model);
   ASSERT_EQ(vars.size(), 2);
   EXPECT_EQ(vars.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(vars.at(1)->GetJsonValue(), std::string("43"));
 
-  JobContext job(model.get(), procedure);
+  JobContext job(procedure);
+  job.onPrepareJobRequest();
+
+  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
 
   job.onStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 
-  EXPECT_EQ(vars.at(0)->GetJsonValue(), std::string("42"));
-  EXPECT_EQ(vars.at(1)->GetJsonValue(), std::string("42"));
+  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
+  EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 }
 
-TEST_F(JobContextTest, ExecutionInStepMode)
+TEST_F(JobContextTest, LocalIncludeScenario)
 {
-  auto [model, procedure] = CreateSingleWaitProcedure();
+  auto procedure = CreateIncludeProcedure();
 
-  JobContext job(model.get(), procedure);
-  job.SetWaitingMode(WaitingMode::kWaitForRelease);
+  JobContext job(procedure);
+  job.onPrepareJobRequest();
 
   QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
 
   job.onStartRequest();
   // We are testing here queued signals, need special waiting
-  QTest::qWait(50);
-
-  EXPECT_TRUE(job.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 1);
-
-  job.onMakeStepRequest();
-  QTest::qWait(50);
-
-  EXPECT_TRUE(job.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 2);
-
-  job.onMakeStepRequest();
-  QTest::qWait(50);
+  QTest::qWait(100);
 
   EXPECT_FALSE(job.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 8); // Repeat, Include, Sequence, Wait x 2
+
+  auto instructions = ModelView::Utils::FindItems<WaitItem>(job.GetExpandedModel());
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 

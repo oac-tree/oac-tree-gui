@@ -35,15 +35,17 @@ class DomainObjectBuilder;
 class SequencerModel;
 class MessagePanel;
 class InstructionItem;
+class GUIObjectBuilder;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
 class JobContext : public QObject
 {
   Q_OBJECT
 public:
-  explicit JobContext(SequencerModel* model, ProcedureItem* procedure_item,
-                      QObject* parent = nullptr);
+  explicit JobContext(ProcedureItem* procedure_item, QObject* parent = nullptr);
   ~JobContext() override;
+
+  void onPrepareJobRequest();
 
   void onStartRequest();
 
@@ -59,28 +61,37 @@ public:
 
   bool WaitForCompletion(double timeout_sec);
 
-  void onInstructionStatusChange(const instruction_t* instruction);
-
-  void onLogMessage(const QString& message, int message_type);
-
-  void onVariableChange(const QString& variable_name, const QString& value);
-
   void SetWaitingMode(WaitingMode waiting_mode);
 
   void SetSleepTime(int time_msec);
 
+  ProcedureItem* GetExpandedProcedure() const;  
+  SequencerModel* GetExpandedModel();
+
+
 signals:
   void InstructionStatusChanged(sequi::InstructionItem* instruction);
+
+private slots:
+  void onInstructionStatusChange(const instruction_t* instruction);
+  void onLogMessage(const QString& message, int message_type);
+  void onVariableChange(const QString& variable_name, const QString& value);
 
 private:
   void SetupConnections();
 
-  std::unique_ptr<DomainObjectBuilder> m_domain_builder; // builder should live longer than the runner
+  std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
+
+  //!< domain procedure should live longer than the runner
+  std::unique_ptr<procedure_t> m_domain_procedure;
+
   std::unique_ptr<ProcedureRunner> m_procedure_runner;
   JobLog* m_job_log{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
-  SequencerModel* m_model{nullptr};
+  ProcedureItem* m_expanded_procedure_item{nullptr};
+
+  std::unique_ptr<SequencerModel> m_job_model;
 };
 
 }  // namespace sequi

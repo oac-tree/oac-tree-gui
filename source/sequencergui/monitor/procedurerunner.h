@@ -47,7 +47,7 @@ public:
 
   // control flow
 
-  void ExecuteProcedure(procedure_t* procedure);
+  void ExecuteProcedure(procedure_t* procedure, bool make_setup = true);
 
   void onMakeStepRequest();
 

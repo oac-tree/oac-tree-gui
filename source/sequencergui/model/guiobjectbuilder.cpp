@@ -39,7 +39,7 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  m_instruction_to_id.clear();
+  m_to_instruction_item.clear();
   m_variable_to_id.clear();
   m_variablename_to_id.clear();
 
@@ -68,24 +68,41 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
   }
 }
 
-std::string GUIObjectBuilder::FindInstructionIdentifier(const instruction_t *instruction) const
+std::string GUIObjectBuilder::FindInstructionItemIdentifier(const instruction_t *instruction) const
 {
-  auto it = m_instruction_to_id.find(instruction);
-  return it == m_instruction_to_id.end() ? std::string() : it->second;
+  auto it = m_to_instruction_item.find(instruction);
+  return it == m_to_instruction_item.end() ? std::string() : it->second->GetIdentifier();
 }
 
-std::string GUIObjectBuilder::FindVariableItemIdentifier(const variable_t* variable) const
+InstructionItem *GUIObjectBuilder::FindInstructionItem(const instruction_t *instruction) const
+{
+  auto it = m_to_instruction_item.find(instruction);
+  return it == m_to_instruction_item.end() ? nullptr : it->second;
+}
+
+std::string GUIObjectBuilder::FindVariableItemIdentifier(const variable_t *variable) const
 {
   auto it = m_variable_to_id.find(variable);
-  return it == m_variable_to_id.end() ? std::string() : it->second;
+  return it == m_variable_to_id.end() ? std::string() : it->second->GetIdentifier();
 }
 
-std::string GUIObjectBuilder::FindVariableItemIdentifier(const std::string& variable_name) const
+VariableItem *GUIObjectBuilder::FindVariableItem(const variable_t *variable) const
+{
+  auto it = m_variable_to_id.find(variable);
+  return it == m_variable_to_id.end() ? nullptr : it->second;
+}
+
+std::string GUIObjectBuilder::FindVariableItemIdentifier(const std::string &variable_name) const
 {
   auto it = m_variablename_to_id.find(variable_name);
-  return it == m_variablename_to_id.end() ? std::string() : it->second;
+  return it == m_variablename_to_id.end() ? std::string() : it->second->GetIdentifier();
 }
 
+VariableItem *GUIObjectBuilder::FindVariableItem(const std::string &variable_name) const
+{
+  auto it = m_variablename_to_id.find(variable_name);
+  return it == m_variablename_to_id.end() ? nullptr : it->second;
+}
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
 
@@ -149,12 +166,12 @@ void GUIObjectBuilder::Iterate(const instruction_t *instruction, ModelView::Sess
 
 void GUIObjectBuilder::Save(const instruction_t *instruction, InstructionItem *item)
 {
-  auto it = m_instruction_to_id.find(instruction);
-  if (it != m_instruction_to_id.end())
+  auto it = m_to_instruction_item.find(instruction);
+  if (it != m_to_instruction_item.end())
   {
     throw std::runtime_error("Error in GUIObjectBuilder: domain instruction already present");
   }
-  m_instruction_to_id.insert({instruction, item->GetIdentifier()});
+  m_to_instruction_item.insert({instruction, item});
 }
 
 void GUIObjectBuilder::Save(const variable_t *variable, VariableItem *item)
@@ -165,8 +182,8 @@ void GUIObjectBuilder::Save(const variable_t *variable, VariableItem *item)
     throw std::runtime_error("Error in GUIObjectBuilder: domain variable already present");
   }
 
-  m_variable_to_id.insert({variable, item->GetIdentifier()});
-  m_variablename_to_id.insert({variable->GetName(), item->GetIdentifier()});
+  m_variable_to_id.insert({variable, item});
+  m_variablename_to_id.insert({variable->GetName(), item});
 }
 
 }  // namespace sequi

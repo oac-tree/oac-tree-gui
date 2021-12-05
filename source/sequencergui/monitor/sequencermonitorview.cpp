@@ -21,6 +21,7 @@
 
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/jobmanager.h"
 #include "sequencergui/monitor/monitorpanel.h"
 #include "sequencergui/monitor/monitortreewidget.h"
@@ -65,13 +66,15 @@ SequencerMonitorView::~SequencerMonitorView() = default;
 void SequencerMonitorView::SetModel(SequencerModel *model)
 {
   m_model = model;
-  m_job_manager->setModel(model);
-  m_job_manager->setCurrentProcedure(GetFirstProcedure());
+  m_job_manager->SetModel(model);
+  m_job_manager->SetCurrentProcedure(GetFirstProcedure());
   m_monitor_panel->SetModel(model);
   m_monitor_panel->SetSelectedProcedure(GetFirstProcedure());
-  m_tree_widget->SetModel(model, GetFirstProcedure());
-  m_workspace_widget->SetModel(model, GetFirstProcedure());
 
+  m_tree_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
+                          m_job_manager->GetCurrentContext()->GetExpandedProcedure());
+  m_workspace_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
+                               m_job_manager->GetCurrentContext()->GetExpandedProcedure());
 }
 
 void SequencerMonitorView::SetupConnections()
@@ -99,9 +102,11 @@ void SequencerMonitorView::SetupConnections()
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
-    m_job_manager->setCurrentProcedure(procedure_item);
-    m_tree_widget->SetModel(m_model, procedure_item);
-    m_workspace_widget->SetModel(m_model, procedure_item);
+    m_job_manager->SetCurrentProcedure(procedure_item);
+    m_tree_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
+                            m_job_manager->GetCurrentContext()->GetExpandedProcedure());
+    m_workspace_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
+                                 m_job_manager->GetCurrentContext()->GetExpandedProcedure());
   };
   connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);
 

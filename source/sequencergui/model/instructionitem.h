@@ -46,6 +46,10 @@ public:
 
   void SetIsRootFlag(bool value);
 
+  std::string GetName() const;
+
+  void SetName(const std::string& name);
+
   void SetStatus(const std::string& status);
 
   std::string GetStatus() const;

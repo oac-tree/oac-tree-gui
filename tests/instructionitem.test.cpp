@@ -53,6 +53,7 @@ TEST_F(InstructionItemsTest, TestItem)
   // Correctly initialised item
   TestItem item;
   EXPECT_EQ(item.GetType(), "test");
+  EXPECT_EQ(item.GetName(), std::string());
 
   EXPECT_EQ(item.GetX(), 0);
   EXPECT_EQ(item.GetY(), 0);
@@ -61,6 +62,9 @@ TEST_F(InstructionItemsTest, TestItem)
   item.SetY(1.2);
   EXPECT_EQ(item.GetX(), 1.1);
   EXPECT_EQ(item.GetY(), 1.2);
+
+  item.SetName("MyName");
+  EXPECT_EQ(item.GetName(), std::string("MyName"));
 
   EXPECT_EQ(item.GetStatus(), "");
   EXPECT_TRUE(item.GetInstructions().empty());

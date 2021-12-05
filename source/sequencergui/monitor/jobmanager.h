@@ -43,9 +43,11 @@ public:
   JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
-  void setModel(SequencerModel* model);
+  void SetModel(SequencerModel* model);
 
-  void setCurrentProcedure(ProcedureItem* procedure);
+  void SetCurrentProcedure(ProcedureItem* procedure);
+
+  JobContext* GetCurrentContext();
 
   void onStartProcedureRequest(ProcedureItem* procedure);
   void onPauseProcedureRequest();
@@ -59,9 +61,6 @@ signals:
   void InstructionStatusChanged(InstructionItem* instruction);
 
 private:
-  void SetupConnections();
-
-  JobContext* GetCurrentContext();
   JobContext* CreateContext();
 
   ProcedureItem* m_current_procedure{nullptr};

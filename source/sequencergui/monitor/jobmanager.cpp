@@ -37,14 +37,14 @@ JobManager::JobManager(QObject *parent)
 
 JobManager::~JobManager() = default;
 
-void JobManager::setModel(SequencerModel *model)
+void JobManager::SetModel(SequencerModel *model)
 {
   m_model = model;
 }
 
 //! Set JobManager to display the status of given procedure.
 
-void JobManager::setCurrentProcedure(ProcedureItem *procedure)
+void JobManager::SetCurrentProcedure(ProcedureItem *procedure)
 {
   if (m_current_procedure == procedure)
   {
@@ -53,7 +53,7 @@ void JobManager::setCurrentProcedure(ProcedureItem *procedure)
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
-    // previos context, if exists,  will be detached from the message panel
+    // previous context, if exists,  will be detached from the message panel
     current_context->SetMessagePanel(nullptr);
     m_message_panel->onClearLog();
   }
@@ -65,9 +65,17 @@ void JobManager::setCurrentProcedure(ProcedureItem *procedure)
     // new context will be attached to the message panel
     current_context->SetMessagePanel(m_message_panel);
   }
+  else
+  {
+    auto context = CreateContext();
+    context->SetWaitingMode(WaitingMode::kSleepFor);
+  }
+}
 
-  // If no context was created yet for the given procedure, do nothing.
-  // The context is created onStartProcedure request.
+JobContext *JobManager::GetCurrentContext()
+{
+  auto it = m_context_map.find(m_current_procedure);
+  return it == m_context_map.end() ? nullptr : it->second;
 }
 
 void JobManager::onStartProcedureRequest(ProcedureItem *procedure)
@@ -77,13 +85,7 @@ void JobManager::onStartProcedureRequest(ProcedureItem *procedure)
     return;
   }
 
-  setCurrentProcedure(procedure);
-
-  if (!GetCurrentContext())
-  {
-    auto context = CreateContext();
-    context->SetWaitingMode(WaitingMode::kSleepFor);
-  }
+  SetCurrentProcedure(procedure);
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
@@ -144,22 +146,15 @@ void JobManager::onChangeDelayRequest(int msec)
   }
 }
 
-void JobManager::SetupConnections() {}
-
-JobContext *JobManager::GetCurrentContext()
-{
-  auto it = m_context_map.find(m_current_procedure);
-  return it == m_context_map.end() ? nullptr : it->second;
-}
-
 JobContext *JobManager::CreateContext()
 {
-  auto context = new JobContext(m_model, m_current_procedure, this);
+  auto context = new JobContext(m_current_procedure, this);
   context->SetSleepTime(m_current_delay);
   context->SetMessagePanel(m_message_panel);
   connect(context, &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
   m_context_map[m_current_procedure] = context;
+  context->onPrepareJobRequest();
   return context;
 }
 

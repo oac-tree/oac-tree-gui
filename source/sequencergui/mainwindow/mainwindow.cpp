@@ -21,8 +21,8 @@
 
 #include "sequencergui/composer/sequencercomposerview.h"
 #include "sequencergui/mainwindow/sequencerxmlview.h"
-#include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/mainwindow/settingsview.h"
+#include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
@@ -89,10 +89,12 @@ void MainWindow::InitApplication()
 void MainWindow::InitComponents()
 {
   m_xml_view = new SequencerXMLView;
-  m_tab_widget->addWidget(m_xml_view, "Explore", StyleUtils::GetIcon("file-search-outline-light.svg"));
+  m_tab_widget->addWidget(m_xml_view, "Explore",
+                          StyleUtils::GetIcon("file-search-outline-light.svg"));
 
   m_composer_view = new SequencerComposerView;
-  m_tab_widget->addWidget(m_composer_view, "Compose", StyleUtils::GetIcon("graph-outline-light.svg"));
+  m_tab_widget->addWidget(m_composer_view, "Compose",
+                          StyleUtils::GetIcon("graph-outline-light.svg"));
 
   m_monitor_view = new SequencerMonitorView;
   m_tab_widget->addWidget(m_monitor_view, "Run",
@@ -206,13 +208,17 @@ void MainWindow::PopulateModel()
   {
     auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
     auto sequence = m_model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+    sequence->SetName("MySequence");
     m_model->InsertItem<WaitItem>(sequence);
     m_model->InsertItem<WaitItem>(sequence);
     m_model->InsertItem<WaitItem>(sequence);
     m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
+
+    auto repeat = m_model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
+    repeat->SetRepeatCount(-1);
+    repeat->SetIsRootFlag(true);
+    auto include = m_model->InsertItem<IncludeItem>(repeat);
+    include->SetPath("MySequence");
   }
 }
 

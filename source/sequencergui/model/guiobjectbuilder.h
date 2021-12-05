@@ -56,10 +56,13 @@ public:
 
   void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
 
-  std::string FindInstructionIdentifier(const instruction_t* instruction) const;
-
+  // FIXME remove unused methods
+  std::string FindInstructionItemIdentifier(const instruction_t* instruction) const;
+  InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
   std::string FindVariableItemIdentifier(const variable_t* variable) const;
+  VariableItem* FindVariableItem(const variable_t* variable) const;
   std::string FindVariableItemIdentifier(const std::string& variable_name) const;
+  VariableItem* FindVariableItem(const std::string& variable_name) const;
 
 private:
   ModelView::SessionItem* ProcessInstruction(const instruction_t* instruction,
@@ -69,9 +72,10 @@ private:
   void Save(const instruction_t* instruction, InstructionItem* item);
   void Save(const variable_t* variable, VariableItem* item);
 
-  std::map<const instruction_t*, std::string> m_instruction_to_id;
-  std::map<const variable_t*, std::string> m_variable_to_id;
-  std::map<std::string, std::string> m_variablename_to_id;
+  std::map<const instruction_t*, InstructionItem*> m_to_instruction_item;
+
+  std::map<const variable_t*, VariableItem*> m_variable_to_id;
+  std::map<std::string, VariableItem*> m_variablename_to_id;
 };
 
 }  // namespace sequi

@@ -105,6 +105,16 @@ void InstructionItem::SetIsRootFlag(bool value)
   SetProperty(kIsRoot, value);
 }
 
+std::string InstructionItem::GetName() const
+{
+  return Property<std::string>(kName);
+}
+
+void InstructionItem::SetName(const std::string &name)
+{
+  SetProperty(kName, name);
+}
+
 void InstructionItem::SetStatus(const std::string &status)
 {
   SetProperty(kStatus, status);
