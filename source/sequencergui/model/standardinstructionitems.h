@@ -67,6 +67,26 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Represent Equals instruction.
+class EqualsItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Equals";
+  EqualsItem();
+
+  std::string GetDomainType() const override;
+
+  std::string GetLeftHandSide() const;
+  void SetLeftHandSide(const std::string& value);
+
+  std::string GetRightHandSide() const;
+  void SetRightHandSide(const std::string& value);
+
+private:
+  virtual void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 //! Represent Fallback instruction.
 class FallbackItem : public InstructionItem
 {

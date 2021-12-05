@@ -42,6 +42,7 @@ const std::string kParallelInstructionType = "ParallelSequence";
 const std::string kRepeatInstructionType = "Repeat";
 const std::string kSequenceInstructionType = "Sequence";
 const std::string kWaitInstructionType = "Wait";
+const std::string kEqualsInstructionType = "Equals";
 
 const std::string kForceSuccessInstructionType = "ForceSuccess";
 
@@ -67,6 +68,8 @@ const std::string kTextAttribute = "text";
 const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
+const std::string kLeftHandAttribute = "lhs";
+const std::string kRightHandAttribute = "rhs";
 
 // attributes (instruction specific)
 const std::string kConditionVarNameAttribute = "var_name";

@@ -128,6 +128,62 @@ void CopyItem::SetOutput(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
+// EqualsItem
+// ----------------------------------------------------------------------------
+
+static inline const std::string kLeftHandSide = "kLeftHandSide";
+static inline const std::string kRightHandSide = "kRightHandSide";
+
+EqualsItem::EqualsItem() : InstructionItem(Type)
+{
+  AddProperty(kLeftHandSide, std::string())->SetDisplayName("lhs");
+  AddProperty(kRightHandSide, std::string())->SetDisplayName("rhs");
+}
+
+std::string EqualsItem::GetDomainType() const
+{
+  return DomainConstants::kEqualsInstructionType;
+}
+
+std::string EqualsItem::GetLeftHandSide() const
+{
+  return Property<std::string>(kLeftHandSide);
+}
+
+void EqualsItem::SetLeftHandSide(const std::string &value)
+{
+  SetProperty(kLeftHandSide, value);
+}
+
+std::string EqualsItem::GetRightHandSide() const
+{
+  return Property<std::string>(kRightHandSide);
+}
+
+void EqualsItem::SetRightHandSide(const std::string &value)
+{
+  SetProperty(kRightHandSide, value);
+}
+
+void EqualsItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(DomainConstants::kLeftHandAttribute))
+  {
+    SetLeftHandSide(instruction->GetAttribute(DomainConstants::kLeftHandAttribute));
+  }
+  if (instruction->HasAttribute(DomainConstants::kRightHandAttribute))
+  {
+    SetRightHandSide(instruction->GetAttribute(DomainConstants::kRightHandAttribute));
+  }
+}
+
+void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(DomainConstants::kLeftHandAttribute, GetLeftHandSide());
+  instruction->AddAttribute(DomainConstants::kRightHandAttribute, GetRightHandSide());
+}
+
+// ----------------------------------------------------------------------------
 // FallbackItem
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : InstructionItem(Type)

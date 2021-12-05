@@ -48,6 +48,7 @@ SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
   RegisterItem<UnknownVariableItem>();
   RegisterItem<WaitItem>();
   RegisterItem<WorkspaceItem>();
+  RegisterItem<EqualsItem>();
 
   SetupModel();
 }

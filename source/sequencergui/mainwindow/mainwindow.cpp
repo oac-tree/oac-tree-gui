@@ -183,6 +183,10 @@ void MainWindow::PopulateModel()
     copy3->SetOutput("var0");
     m_model->InsertItem<WaitItem>(sequence);
 
+//    auto equals = m_model->InsertItem<EqualsItem>(sequence);
+//    equals->SetLeftHandSide("var_const42");
+//    equals->SetRightHandSide("var_const0");
+
     auto var0 = m_model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
     var0->SetName("var0");
     var0->SetJsonType(R"({"type":"uint32"})");

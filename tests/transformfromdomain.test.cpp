@@ -80,6 +80,8 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
   EXPECT_TRUE(CanCreateInstructionForType<sequi::CopyItem>(DomainConstants::kCopyInstructionType));
   EXPECT_TRUE(
+      CanCreateInstructionForType<sequi::EqualsItem>(DomainConstants::kEqualsInstructionType));
+  EXPECT_TRUE(
       CanCreateInstructionForType<sequi::FallbackItem>(DomainConstants::kFallbackInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequi::InputItem>(DomainConstants::kInputInstructionType));

@@ -115,6 +115,47 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
+// EqualsItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, EqualsItem)
+{
+  EqualsItem item;
+  EXPECT_EQ(item.GetLeftHandSide(), std::string());
+  item.SetLeftHandSide("abc");
+  EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
+
+  EXPECT_EQ(item.GetRightHandSide(), std::string());
+  item.SetRightHandSide("cde");
+  EXPECT_EQ(item.GetRightHandSide(), std::string("cde"));
+}
+
+TEST_F(StandardInstructionItemsTest, EqualsItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kEqualsInstructionType);
+  input->AddAttribute(DomainConstants::kLeftHandAttribute, "abc");
+  input->AddAttribute(DomainConstants::kRightHandAttribute, "cde");
+
+  EqualsItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
+  EXPECT_EQ(item.GetRightHandSide(), std::string("cde"));
+}
+
+TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
+{
+  EqualsItem item;
+  item.SetLeftHandSide("abc");
+  item.SetRightHandSide("cde");
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kEqualsInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kLeftHandAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kRightHandAttribute), "cde");
+}
+
+// ----------------------------------------------------------------------------
 // FallbackItem tests
 // ----------------------------------------------------------------------------
 
@@ -148,7 +189,6 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to inverter
   EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
-
 }
 
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
