@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_NODEEDITOR_H
 #define SEQUENCERGUI_NODEEDITOR_NODEEDITOR_H
 
-#include <QWidget>
+#include <QMainWindow>
 
 class QKeyEvent;
 class QToolBar;
@@ -37,12 +37,12 @@ class ProcedureItem;
 
 //! NodeEditor widget (central part of SequencerComposerView).
 
-class NodeEditor : public QWidget
+class NodeEditor : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  NodeEditor(QWidget* parent = nullptr);
+  NodeEditor(Qt::ToolBarArea area = Qt::TopToolBarArea, QWidget* parent = nullptr);
   ~NodeEditor();
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure);

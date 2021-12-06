@@ -42,7 +42,7 @@ MonitorTreeWidget::MonitorTreeWidget(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_stacked_widget(new QStackedWidget)
     , m_instruction_tree(new ModelView::ItemsTreeView)
-    , m_node_editor(new NodeEditor)
+    , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
 {
   auto layout = new QVBoxLayout(this);
@@ -79,7 +79,9 @@ void MonitorTreeWidget::SetModel(SequencerModel *model, ProcedureItem *procedure
 
 void MonitorTreeWidget::SetSelected(const InstructionItem *item)
 {
-  m_instruction_tree->SetSelected(const_cast<InstructionItem *>(item));
+  auto instruction = const_cast<InstructionItem *>(item);
+  m_instruction_tree->SetSelected(instruction);
+  m_node_editor->SetSelectedInstructions({instruction});
 }
 
 MessagePanel *MonitorTreeWidget::GetMessagePanel()

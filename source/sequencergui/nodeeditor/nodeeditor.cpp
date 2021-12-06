@@ -37,19 +37,24 @@
 namespace sequi
 {
 
-NodeEditor::NodeEditor(QWidget *parent)
-    : QWidget(parent)
+NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
+    : QMainWindow(parent)
     , m_tool_bar(new NodeEditorToolBar)
     , m_graphics_scene(new GraphicsScene)
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
 {
-  auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(0, 0, 0, 0);
-  layout->setSpacing(0);
-  layout->setMargin(0);
+//  auto layout = new QVBoxLayout(this);
+//  layout->setContentsMargins(0, 0, 0, 0);
+//  layout->setSpacing(0);
+//  layout->setMargin(0);
 
-  layout->addWidget(m_tool_bar);
-  layout->addWidget(m_graphics_view);
+//  layout->addWidget(m_tool_bar);
+//  layout->addWidget(m_graphics_view);
+
+  m_tool_bar->setMovable(false);
+
+  addToolBar(area, m_tool_bar);
+  setCentralWidget(m_graphics_view);
 
   SetupConnections();
 }

@@ -70,7 +70,10 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_zoom_menu = CreateZoomMenu();
   m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
   m_zoom_button->setIcon(StyleUtils::GetIcon("magnify-plus-outline.svg"));
-  m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+
+//  m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_zoom_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+
   m_zoom_button->setPopupMode(QToolButton::InstantPopup);
   m_zoom_button->setMenu(m_zoom_menu.get());
   m_zoom_button->setToolTip("Zoom");

@@ -25,9 +25,11 @@
 #include "sequencergui/nodeeditor/positionstrategy.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 
+#include "mvvm/widgets/widgetutils.h"
+
+#include <QDebug>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <QDebug>
 
 namespace
 {
@@ -73,6 +75,11 @@ QRectF ConnectableView::boundingRect() const
 
 void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*)
 {
+  static QPixmap pixmap(QString(":/icons/map-marker-outline.png"));
+
+  painter->setRenderHint(QPainter::SmoothPixmapTransform);
+  painter->setRenderHint(QPainter::Antialiasing);
+
   painter->setPen(Qt::gray);
   if (option->state & (QStyle::State_Selected | QStyle::State_HasFocus))
   {
@@ -86,6 +93,14 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
   QFont serifFont("Monospace", 8, QFont::Normal);
   painter->setFont(serifFont);
   painter->drawText(label_rectangle(boundingRect()), Qt::AlignCenter, GetLabel());
+
+  if (option->state & (QStyle::State_Selected | QStyle::State_HasFocus))
+  {
+    auto rect =
+        QRectF(boundingRect().width() * 0.4, boundingRect().height() * 0.7,
+               ModelView::Utils::WidthOfLetterM() * 1.75, ModelView::Utils::WidthOfLetterM() * 1.75);
+    painter->drawPixmap(rect, pixmap, QRectF(0.0, 0.0, pixmap.width(), pixmap.height()));
+  }
 }
 
 //! Connects children's output port to appropriate input port.
@@ -155,7 +170,6 @@ void ConnectableView::UpdateItemFromView()
 
 void ConnectableView::UpdateViewFromItem()
 {
-
   if (m_block_view_update)
   {
     return;

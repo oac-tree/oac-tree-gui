@@ -61,6 +61,9 @@
         <file>icons/speedometer.png</file>
         <file>icons/stop-circle-outline.png</file>
         <file>icons/view-dashboard-edit-outline-light.png</file>
-
+        <file>icons/chevron-triple-right.svg</file>
+        <file>icons/chevron-triple-right.png</file>
+        <file>icons/map-marker-outline.png</file>
+        <file>icons/map-marker-outline.svg</file>
     </qresource>
 </RCC>
