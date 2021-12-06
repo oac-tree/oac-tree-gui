@@ -25,6 +25,7 @@
 
 #include <string>
 
+#include "sequencergui/model/sequencer_types.h"
 namespace ccs::types
 {
 class AnyValue;
@@ -36,6 +37,8 @@ namespace sequi::DomainUtils
 {
 
 std::string GetJsonString(const anyvalue_t* value);
+
+std::string GetValueJsonString(const variable_t* value);
 
 }  // namespace sequi::DomainUtils
 

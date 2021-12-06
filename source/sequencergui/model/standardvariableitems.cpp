@@ -22,6 +22,7 @@
 #include "Variable.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/shallnotbenamedvalueutils.h"
 
 namespace sequi
 {
@@ -82,6 +83,7 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
   {
     SetChannel(variable->GetAttribute(DomainConstants::kChannelAttribute));
   }
+  SetJsonValue(DomainUtils::GetValueJsonString(variable));
 }
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -236,6 +238,8 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
   {
     SetChannel(variable->GetAttribute(DomainConstants::kChannelAttribute));
   }
+
+  SetJsonValue(DomainUtils::GetValueJsonString(variable));
 }
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
