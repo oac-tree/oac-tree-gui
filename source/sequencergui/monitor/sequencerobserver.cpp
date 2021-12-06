@@ -45,8 +45,11 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
   m_procedure_runner->onVariableChange(name, value_string);
 }
 
-bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &, const std::string &)
+bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &value,
+                                     const std::string &description)
 {
+  auto value_string = DomainUtils::GetJsonString(&value);
+  m_procedure_runner->onLogMessage(description + value_string, MessageType::kHighlight);
   return true;
 }
 
@@ -60,13 +63,9 @@ int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &, const
   return 0;
 }
 
-void SequencerObserver::StartSingleStepImpl()
-{
-}
+void SequencerObserver::StartSingleStepImpl() {}
 
-void SequencerObserver::EndSingleStepImpl()
-{
-}
+void SequencerObserver::EndSingleStepImpl() {}
 
 void SequencerObserver::MessageImpl(const std::string &message)
 {
