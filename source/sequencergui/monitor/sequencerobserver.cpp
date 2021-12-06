@@ -47,7 +47,7 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
 
 bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &, const std::string &)
 {
-  return false;
+  return true;
 }
 
 bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &, const std::string &)
