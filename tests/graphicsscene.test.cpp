@@ -30,6 +30,7 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
+#include <QTest>
 
 using namespace sequi;
 
@@ -116,6 +117,7 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
   // connecting two views
   m_scene.onConnectionRequest(wait_view, sequence_view);
+  QTest::qWait(100);
 
   // still two connectable view
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
@@ -244,6 +246,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   sequence_view->setSelected(true);
 
   ASSERT_NO_FATAL_FAILURE(m_scene.onDeleteSelectedRequest());
+  QTest::qWait(100);
 
   // WaitView vas regenerated on the move of ViewItem on top.
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
