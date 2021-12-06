@@ -24,6 +24,7 @@
 
 class QSplitter;
 class QTreeView;
+class QStackedWidget;
 
 namespace ModelView
 {
@@ -38,6 +39,7 @@ class InstructionItem;
 class ProcedureItem;
 class InstructionViewModel;
 class MessagePanel;
+class NodeEditor;
 
 //! Central panel on SequencerMonitorView.
 
@@ -55,6 +57,8 @@ public:
 
   MessagePanel* GetMessagePanel();
 
+  void onAppChangeRequest(int id);
+
 signals:
   void runRequest();
   void pauseRequest();
@@ -68,7 +72,10 @@ private:
   MonitorTreeToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
 
+  QStackedWidget* m_stacked_widget{nullptr};
   ModelView::ItemsTreeView* m_instruction_tree{nullptr};
+  NodeEditor* m_node_editor{nullptr};
+
   MessagePanel* m_message_panel{nullptr};
 };
 

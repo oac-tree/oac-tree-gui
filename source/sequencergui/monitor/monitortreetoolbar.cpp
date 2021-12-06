@@ -51,6 +51,7 @@ MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
     , m_stop_button(new QToolButton)
     , m_delay_button(new QToolButton)
     , m_delay_menu(CreateDelayMenu())
+    , m_app_menu(CreateAppMenu())
 {
   setIconSize(StyleUtils::ToolBarIconSize());
 
@@ -110,6 +111,9 @@ void MonitorTreeToolBar::AddDotsMenu()
   auto button = new QToolButton;
   button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
   button->setIconSize(StyleUtils::ToolBarIconSize());
+  button->setMenu(m_app_menu.get());
+  button->setPopupMode(QToolButton::InstantPopup);
+
   addWidget(button);
 }
 
@@ -136,6 +140,25 @@ std::unique_ptr<QMenu> MonitorTreeToolBar::CreateDelayMenu()
       emit changeDelayRequest(delay);
     };
     connect(action, &QAction::triggered, this, on_action);
+  }
+
+  return result;
+}
+
+//! Returns menu for "dots" button for widget selection.
+
+std::unique_ptr<QMenu> MonitorTreeToolBar::CreateAppMenu()
+{
+  auto result = std::make_unique<QMenu>();
+  QStringList app_names = {"Tree", "NodeEditor"};
+
+  int index{0};
+  for (const auto &name : app_names)
+  {
+    auto action = result->addAction(name);
+    auto on_action = [this, index]() { emit appChangeRequest(index); };
+    connect(action, &QAction::triggered, this, on_action);
+    ++index;
   }
 
   return result;

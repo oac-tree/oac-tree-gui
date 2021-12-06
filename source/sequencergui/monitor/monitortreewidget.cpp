@@ -24,10 +24,12 @@
 #include "sequencergui/monitor/instructionviewmodel.h"
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitortreetoolbar.h"
+#include "sequencergui/nodeeditor/nodeeditor.h"
 
 #include "mvvm/widgets/topitemstreeview.h"
 
 #include <QSplitter>
+#include <QStackedWidget>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -38,14 +40,20 @@ MonitorTreeWidget::MonitorTreeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorTreeToolBar)
     , m_splitter(new QSplitter)
+    , m_stacked_widget(new QStackedWidget)
     , m_instruction_tree(new ModelView::ItemsTreeView)
+    , m_node_editor(new NodeEditor)
     , m_message_panel(new MessagePanel)
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
   m_splitter->setOrientation(Qt::Vertical);
 
-  m_splitter->addWidget(m_instruction_tree);
+  m_stacked_widget->addWidget(m_instruction_tree);
+
+  m_splitter->addWidget(m_stacked_widget);
+  m_stacked_widget->addWidget(m_node_editor);
+
   m_message_panel->AddToSplitter(m_splitter);
 
   layout->addWidget(m_splitter);
@@ -66,6 +74,7 @@ void MonitorTreeWidget::SetModel(SequencerModel *model, ProcedureItem *procedure
   {
     m_instruction_tree->SetRootSessionItem(procedure_item->GetInstructionContainer());
   }
+  m_node_editor->SetModel(model, procedure_item);
 }
 
 void MonitorTreeWidget::SetSelected(const InstructionItem *item)
@@ -78,6 +87,11 @@ MessagePanel *MonitorTreeWidget::GetMessagePanel()
   return m_message_panel;
 }
 
+void MonitorTreeWidget::onAppChangeRequest(int id)
+{
+  m_stacked_widget->setCurrentIndex(id);
+}
+
 void MonitorTreeWidget::SetupConnections()
 {
   connect(m_tool_bar, &MonitorTreeToolBar::runRequest, this, &MonitorTreeWidget::runRequest);
@@ -86,6 +100,8 @@ void MonitorTreeWidget::SetupConnections()
   connect(m_tool_bar, &MonitorTreeToolBar::stopRequest, this, &MonitorTreeWidget::stopRequest);
   connect(m_tool_bar, &MonitorTreeToolBar::changeDelayRequest, this,
           &MonitorTreeWidget::changeDelayRequest);
+  connect(m_tool_bar, &MonitorTreeToolBar::appChangeRequest, this,
+          &MonitorTreeWidget::onAppChangeRequest);
 }
 
 }  // namespace sequi
