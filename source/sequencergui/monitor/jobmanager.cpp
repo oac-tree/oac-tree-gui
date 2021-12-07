@@ -46,6 +46,11 @@ void JobManager::SetModel(SequencerModel *model)
 
 void JobManager::SetCurrentProcedure(ProcedureItem *procedure)
 {
+  if (!procedure)
+  {
+    return;
+  }
+
   if (m_current_procedure == procedure)
   {
     return;

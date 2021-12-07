@@ -71,10 +71,11 @@ void SequencerMonitorView::SetModel(SequencerModel *model)
   m_monitor_panel->SetModel(model);
   m_monitor_panel->SetSelectedProcedure(GetFirstProcedure());
 
-  m_tree_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
-                          m_job_manager->GetCurrentContext()->GetExpandedProcedure());
-  m_workspace_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
-                               m_job_manager->GetCurrentContext()->GetExpandedProcedure());
+  if (auto context = m_job_manager->GetCurrentContext(); context)
+  {
+    m_tree_widget->SetModel(context->GetExpandedModel(), context->GetExpandedProcedure());
+    m_workspace_widget->SetModel(context->GetExpandedModel(), context->GetExpandedProcedure());
+  }
 }
 
 void SequencerMonitorView::SetupConnections()
