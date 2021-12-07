@@ -151,8 +151,8 @@ void MainWindow::InitMenu()
 
 void MainWindow::PopulateModel()
 {
-  AddCopyExampleProcedure(m_model.get());
-  AddLocalIncludeExampleProcedure(m_model.get());
+//  AddCopyExampleProcedure(m_model.get());
+//  AddLocalIncludeExampleProcedure(m_model.get());
   AddUserInputExampleProcedure(m_model.get());
 }
 

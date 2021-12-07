@@ -147,7 +147,7 @@ void AddUserInputExampleProcedure(SequencerModel *model)
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
   var1->SetJsonType(R"({"type":"string"})");
-  var1->SetJsonValue("abc");
+  var1->SetJsonValue(R"("abc")");
 }
 
 }  // namespace sequi
