@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 
 namespace sequi
@@ -160,6 +161,11 @@ void ProcedureRunner::onLogMessage(const std::string &message, MessageType messa
 void ProcedureRunner::onVariableChange(const std::string &variable_name, const std::string &value)
 {
   emit VariableChanged(QString::fromStdString(variable_name), QString::fromStdString(value));
+}
+
+void ProcedureRunner::onUserInput(const std::string &current_value, const std::string &description)
+{
+  std::cout << "ProcedureRunner::onUserInput " << description << " " << current_value << std::endl;
 }
 
 void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)

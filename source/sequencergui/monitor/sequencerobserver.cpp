@@ -52,9 +52,12 @@ bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &value,
   return true;
 }
 
-bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &, const std::string &)
+bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
+                                         const std::string &description)
 {
-  return false;
+  auto value_string = DomainUtils::GetJsonString(&value);
+  m_procedure_runner->onUserInput(value_string, description);
+  return true;
 }
 
 int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &, const std::string &)

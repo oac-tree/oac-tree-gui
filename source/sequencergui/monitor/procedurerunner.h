@@ -70,6 +70,8 @@ public slots:
 
   void onVariableChange(const std::string& variable_name, const std::string& value);
 
+  void onUserInput(const std::string& current_value, const std::string& description);
+
 signals:
   void InstructionStatusChanged(const instruction_t* instruction);
   void LogMessageRequest(const QString& message, int message_type);
