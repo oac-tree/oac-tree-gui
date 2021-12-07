@@ -28,6 +28,7 @@
 #include "sequencergui/monitor/joblog.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
+#include <QMessageBox>
 #include <iostream>
 
 namespace
@@ -184,6 +185,18 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
   }
 }
 
+void JobContext::onInputRequest()
+{
+  QMessageBox msgBox;
+
+  QString message = QString("User interface request");
+  msgBox.setText(message);
+  msgBox.setIcon(msgBox.Critical);
+  msgBox.exec();
+
+  m_procedure_runner->SetAsUserInput("OOO");
+}
+
 void JobContext::SetupConnections()
 {
   connect(m_procedure_runner.get(), &ProcedureRunner::InstructionStatusChanged, this,
@@ -194,6 +207,9 @@ void JobContext::SetupConnections()
 
   connect(m_procedure_runner.get(), &ProcedureRunner::VariableChanged, this,
           &JobContext::onVariableChange, Qt::QueuedConnection);
+
+  connect(m_procedure_runner.get(), &ProcedureRunner::InputRequest, this,
+          &JobContext::onInputRequest, Qt::QueuedConnection);
 }
 
 }  // namespace sequi

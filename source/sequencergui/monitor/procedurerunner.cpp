@@ -143,6 +143,11 @@ bool ProcedureRunner::WaitForCompletion(double timeout_sec)
   return false;
 }
 
+void ProcedureRunner::SetAsUserInput(const std::string &value)
+{
+  m_input_data.update_top(value);
+}
+
 //! Performs necessary activity on domain instruction status change.
 //! This is the place where we pause execution, if necessary.
 void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction)
@@ -163,9 +168,15 @@ void ProcedureRunner::onVariableChange(const std::string &variable_name, const s
   emit VariableChanged(QString::fromStdString(variable_name), QString::fromStdString(value));
 }
 
-void ProcedureRunner::onUserInput(const std::string &current_value, const std::string &description)
+std::string ProcedureRunner::onUserInput(const std::string &current_value,
+                                         const std::string &description)
 {
   std::cout << "ProcedureRunner::onUserInput " << description << " " << current_value << std::endl;
+
+  emit InputRequest();
+
+  auto result = m_input_data.wait_and_pop();
+  return *result.get();
 }
 
 void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)

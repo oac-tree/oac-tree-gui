@@ -65,9 +65,8 @@ public:
 
   void SetSleepTime(int time_msec);
 
-  ProcedureItem* GetExpandedProcedure() const;  
+  ProcedureItem* GetExpandedProcedure() const;
   SequencerModel* GetExpandedModel();
-
 
 signals:
   void InstructionStatusChanged(sequi::InstructionItem* instruction);
@@ -76,6 +75,8 @@ private slots:
   void onInstructionStatusChange(const instruction_t* instruction);
   void onLogMessage(const QString& message, int message_type);
   void onVariableChange(const QString& variable_name, const QString& value);
+
+  void onInputRequest();
 
 private:
   void SetupConnections();

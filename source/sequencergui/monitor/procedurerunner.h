@@ -24,6 +24,8 @@
 #include "sequencergui/monitor/flowcontroller.h"
 #include "sequencergui/monitor/job_types.h"
 
+#include "mvvm/utils/threadsafestack.h"
+
 #include <QObject>
 #include <memory>
 #include <mutex>
@@ -63,6 +65,8 @@ public:
 
   bool WaitForCompletion(double timeout_sec);
 
+  void SetAsUserInput(const std::string& value);
+
 public slots:
   void onInstructionStatusChange(const instruction_t* instruction);
 
@@ -70,13 +74,14 @@ public slots:
 
   void onVariableChange(const std::string& variable_name, const std::string& value);
 
-  void onUserInput(const std::string& current_value, const std::string& description);
+  std::string onUserInput(const std::string& current_value, const std::string& description);
 
 signals:
   void InstructionStatusChanged(const instruction_t* instruction);
   void LogMessageRequest(const QString& message, int message_type);
   void RunnerStatusChanged();
   void VariableChanged(const QString& variable_name, const QString& value);
+  void InputRequest();
 
 private:
   void LaunchDomainRunner(procedure_t* procedure);
@@ -87,6 +92,7 @@ private:
   RunnerStatus m_runner_status;
   std::unique_ptr<runner_t> m_domain_runner;
   FlowController m_flow_controller;
+  ModelView::threadsafe_stack<std::string> m_input_data;
   mutable std::mutex m_mutex;
 };
 

@@ -56,7 +56,8 @@ bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
                                          const std::string &description)
 {
   auto value_string = DomainUtils::GetJsonString(&value);
-  m_procedure_runner->onUserInput(value_string, description);
+  auto result = m_procedure_runner->onUserInput(value_string, description);
+  std::cout << "QQQQQ " << result << std::endl;
   return true;
 }
 
