@@ -53,7 +53,7 @@ public:
     return result;
   }
 
-  //! Returns procedure
+  //! Returns procedure which makes a single copy
   std::unique_ptr<procedure_t> CreateProcedureWithCopy() const
   {
     auto result = std::make_unique<procedure_t>();
@@ -78,6 +78,7 @@ public:
     return result;
   }
 
+  //! Creates
   std::unique_ptr<procedure_t> CreateNestedProcedure() const
   {
     auto result = std::make_unique<procedure_t>();
@@ -221,4 +222,31 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
   EXPECT_EQ(arguments.size(), 2);
   EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
   EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+}
+
+//! Stepwise procedure execution.
+
+TEST_F(ProcedureRunnerTest, StepwiseExecution)
+{
+  auto procedure = CreateNestedProcedure();
+
+  auto runner = std::make_unique<ProcedureRunner>();
+  runner->SetWaitingMode(WaitingMode::kWaitForRelease);
+
+  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+
+  runner->ExecuteProcedure(procedure.get());
+  std::this_thread::sleep_for(msec(50));
+
+  // Making 6 steps (3 instructions, 2 status change per each)
+  for (size_t i = 0; i < 6; ++i)
+  {
+    EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+    runner->onMakeStepRequest();
+    std::this_thread::sleep_for(msec(50));
+  }
+  std::this_thread::sleep_for(msec(50));
+
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
 }

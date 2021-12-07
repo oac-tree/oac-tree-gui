@@ -25,9 +25,11 @@
 #include "sequencergui/monitor/messagepanel.h"
 
 #include "mvvm/model/modelutils.h"
+
 #include <gtest/gtest.h>
-#include <QTest>
+
 #include <QSignalSpy>
+#include <QTest>
 
 using namespace sequi;
 
@@ -132,5 +134,4 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
   auto inside = ModelView::Utils::FindItems<LocalVariableItem>(m_model.get());
   EXPECT_EQ(inside.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(inside.at(1)->GetJsonValue(), std::string("43"));
-
 }

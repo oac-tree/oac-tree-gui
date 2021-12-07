@@ -34,7 +34,6 @@ SequencerObserver::~SequencerObserver() {}
 
 void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instruction *instruction)
 {
-  m_procedure_runner->onLogMessage("UpdateInstructionStatusImpl");
   m_procedure_runner->onInstructionStatusChange(instruction);
 }
 
