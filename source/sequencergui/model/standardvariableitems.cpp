@@ -183,7 +183,10 @@ void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   variable->AddAttribute(DomainConstants::kTypeAttribute, GetJsonType());
-  variable->AddAttribute(DomainConstants::kValueAttribute, GetJsonValue());
+  if (!GetJsonValue().empty())
+  {
+    variable->AddAttribute(DomainConstants::kValueAttribute, GetJsonValue());
+  }
 }
 
 // ----------------------------------------------------------------------------
