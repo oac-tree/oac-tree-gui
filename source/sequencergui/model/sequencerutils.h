@@ -27,10 +27,22 @@ namespace sequi
 {
 
 class InstructionItem;
+class SequencerModel;
 
 bool IsCompoundInstruction(const InstructionItem* instruction);
 
 bool IsDecoratorInstruction(const InstructionItem* instruction);
+
+// Collection of example procedures to populate the model for debugging purposes.
+
+//! Variable copying example.
+void AddCopyExampleProcedure(SequencerModel* model);
+
+//! Local include example.
+void AddLocalIncludeExampleProcedure(SequencerModel* model);
+
+//! User input example.
+void AddUserInputExampleProcedure(SequencerModel* model);
 
 }  // namespace sequi
 

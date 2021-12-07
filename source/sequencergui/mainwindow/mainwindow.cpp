@@ -25,6 +25,7 @@
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/sequencerutils.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
 
 #include "mvvm/widgets/mainverticalbarwidget.h"
@@ -150,80 +151,9 @@ void MainWindow::InitMenu()
 
 void MainWindow::PopulateModel()
 {
-  // first procedure
-  {
-    auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-    auto repeat = m_model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
-    repeat->SetRepeatCount(-1);
-    repeat->SetIsRootFlag(true);
-    auto sequence = m_model->InsertItem<SequenceItem>(repeat);
-
-    auto copy0 = m_model->InsertItem<CopyItem>(sequence);
-    copy0->SetInput("var_const42");
-    copy0->SetOutput("var0");
-
-    m_model->InsertItem<WaitItem>(sequence);
-
-    auto message = m_model->InsertItem<MessageItem>(sequence);
-    message->SetText("Hello World");
-
-    auto copy1 = m_model->InsertItem<CopyItem>(sequence);
-    copy1->SetInput("var_const0");
-    copy1->SetOutput("var1");
-
-    m_model->InsertItem<WaitItem>(sequence);
-
-    auto copy2 = m_model->InsertItem<CopyItem>(sequence);
-    copy2->SetInput("var_const42");
-    copy2->SetOutput("var1");
-    m_model->InsertItem<WaitItem>(sequence);
-
-    auto copy3 = m_model->InsertItem<CopyItem>(sequence);
-    copy3->SetInput("var_const0");
-    copy3->SetOutput("var0");
-    m_model->InsertItem<WaitItem>(sequence);
-
-//    auto equals = m_model->InsertItem<EqualsItem>(sequence);
-//    equals->SetLeftHandSide("var_const42");
-//    equals->SetRightHandSide("var_const0");
-
-    auto var0 = m_model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var0->SetName("var0");
-    var0->SetJsonType(R"({"type":"uint32"})");
-    var0->SetJsonValue("0");
-
-    auto var1 = m_model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var1->SetName("var1");
-    var1->SetJsonType(R"({"type":"uint32"})");
-    var1->SetJsonValue("0");
-
-    auto var_const42 = m_model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var_const42->SetName("var_const42");
-    var_const42->SetJsonType(R"({"type":"uint32"})");
-    var_const42->SetJsonValue("42");
-
-    auto var_const0 = m_model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var_const0->SetName("var_const0");
-    var_const0->SetJsonType(R"({"type":"uint32"})");
-    var_const0->SetJsonValue("0");
-  }
-
-  // second procedure
-  {
-    auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-    auto sequence = m_model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
-    sequence->SetName("MySequence");
-    m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
-    m_model->InsertItem<WaitItem>(sequence);
-
-    auto repeat = m_model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
-    repeat->SetRepeatCount(-1);
-    repeat->SetIsRootFlag(true);
-    auto include = m_model->InsertItem<IncludeItem>(repeat);
-    include->SetPath("MySequence");
-  }
+  AddCopyExampleProcedure(m_model.get());
+  AddLocalIncludeExampleProcedure(m_model.get());
+  AddUserInputExampleProcedure(m_model.get());
 }
 
 }  // namespace sequi
