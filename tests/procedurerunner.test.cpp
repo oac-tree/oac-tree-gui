@@ -29,6 +29,7 @@
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
+#include <QDebug>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -53,7 +54,7 @@ public:
     return result;
   }
 
-  //! Returns procedure which makes a single copy
+  //! Returns procedure that makes a single copy.
   std::unique_ptr<procedure_t> CreateProcedureWithCopy() const
   {
     auto result = std::make_unique<procedure_t>();
@@ -78,7 +79,7 @@ public:
     return result;
   }
 
-  //! Creates
+  //! Creates sequence with two waits.
   std::unique_ptr<procedure_t> CreateNestedProcedure() const
   {
     auto result = std::make_unique<procedure_t>();
@@ -92,6 +93,26 @@ public:
     sequence->InsertInstruction(wait1.release(), 1);
 
     result->PushInstruction(sequence.release());
+    return result;
+  }
+
+  //! Creates procedure with one variable and input instruction.
+  std::unique_ptr<procedure_t> CreateInputProcedure() const
+  {
+    auto result = std::make_unique<procedure_t>();
+    auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
+    auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kInputInstructionType);
+    input->AddAttribute(DomainConstants::kInputTargetAttribute, "var0");
+    input->AddAttribute(DomainConstants::kDescriptionAttribute, "description");
+    sequence->InsertInstruction(input.release(), 0);
+    result->PushInstruction(sequence.release());
+
+    auto var0 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
+    var0->AddAttribute(DomainConstants::kNameAttribute, "var0");
+    var0->AddAttribute(DomainConstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+    var0->AddAttribute(DomainConstants::kValueAttribute, "0");
+    result->AddVariable("var0", var0.release());
+
     return result;
   }
 };
@@ -249,4 +270,37 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
   std::this_thread::sleep_for(msec(50));
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+}
+
+//! Waiting for user input.
+
+TEST_F(ProcedureRunnerTest, UserInput)
+{
+  auto procedure = CreateInputProcedure();
+
+  auto runner = std::make_unique<ProcedureRunner>();
+  runner->SetWaitingMode(WaitingMode::kProceed);
+
+  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+  QSignalSpy spy_input_request(runner.get(), &ProcedureRunner::InputRequest);
+  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
+
+  runner->ExecuteProcedure(procedure.get());
+  std::this_thread::sleep_for(msec(50));
+
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+  runner->SetAsUserInput("42");
+  std::this_thread::sleep_for(msec(50));
+
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(spy_input_request.count(), 1);
+  EXPECT_EQ(spy_runner_status.count(), 2);
+  EXPECT_EQ(spy_variable_changed.count(), 1);
+
+  auto arguments = spy_variable_changed.takeFirst();
+  EXPECT_EQ(arguments.size(), 2);
+  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var0"));
+  qDebug() << arguments.at(1).value<QString>();
+  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
 }

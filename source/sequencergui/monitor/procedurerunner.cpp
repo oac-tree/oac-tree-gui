@@ -26,7 +26,6 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
-#include <iostream>
 #include <stdexcept>
 
 namespace sequi
@@ -171,10 +170,7 @@ void ProcedureRunner::onVariableChange(const std::string &variable_name, const s
 std::string ProcedureRunner::onUserInput(const std::string &current_value,
                                          const std::string &description)
 {
-  std::cout << "ProcedureRunner::onUserInput " << description << " " << current_value << std::endl;
-
   emit InputRequest();
-
   auto result = m_input_data.wait_and_pop();
   return *result.get();
 }

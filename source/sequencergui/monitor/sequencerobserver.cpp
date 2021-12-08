@@ -56,8 +56,12 @@ bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
                                          const std::string &description)
 {
   auto value_string = DomainUtils::GetJsonString(&value);
-  auto result = m_procedure_runner->onUserInput(value_string, description);
-  std::cout << "QQQQQ " << result << std::endl;
+  auto user_input = m_procedure_runner->onUserInput(value_string, description);
+  if (!DomainUtils::ParseStringToScalarAnyvalue(user_input, value))
+  {
+    throw std::runtime_error(
+        "Error in SequencerObserver::GetUserValueImpl: can't parse user intput");
+  }
   return true;
 }
 

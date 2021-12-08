@@ -23,9 +23,9 @@
 //! @file shallnotbenamedvalueutils.h
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
 
-#include <string>
-
 #include "sequencergui/model/sequencer_types.h"
+
+#include <string>
 namespace ccs::types
 {
 class AnyValue;
@@ -39,6 +39,8 @@ namespace sequi::DomainUtils
 std::string GetJsonString(const anyvalue_t* value);
 
 std::string GetValueJsonString(const variable_t* value);
+
+bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
 
 }  // namespace sequi::DomainUtils
 
