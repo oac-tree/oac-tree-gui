@@ -489,7 +489,7 @@ TEST_F(StandardInstructionItemsTest, RepeatItemToDomain)
 TEST_F(StandardInstructionItemsTest, SequenceItem)
 {
   // Correctly initialised item
-  sequi::SequenceItem item;
+  SequenceItem item;
 
   EXPECT_FALSE(item.IsRoot());
 
@@ -503,10 +503,49 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
 TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 {
   // Correctly initialised item
-  sequi::SequenceItem item;
+  SequenceItem item;
 
   auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), sequi::DomainConstants::kSequenceInstructionType);
+  EXPECT_EQ(domain_instruction->GetType(), DomainConstants::kSequenceInstructionType);
+}
+
+// ----------------------------------------------------------------------------
+// UserChoiceItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, UserChoiceItem)
+{
+  // Correctly initialised item
+  UserChoiceItem item;
+  EXPECT_TRUE(item.GetDescription().empty());
+
+  auto wait0 = item.InsertItem<WaitItem>({"", -1});
+  auto wait1 = item.InsertItem<WaitItem>({"", -1});
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
+
+  item.SetDescription("abc");
+  EXPECT_EQ(item.GetDescription(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, UserChoiceItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kUserChoiceInstructionType);
+  input->AddAttribute(DomainConstants::kDescriptionAttribute, "abc");
+
+  UserChoiceItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetDescription(), "abc");
+}
+
+TEST_F(StandardInstructionItemsTest, UserChoiceItemToDomain)
+{
+  UserChoiceItem item;
+  item.SetDescription("abc");
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kUserChoiceInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDescriptionAttribute), "abc");
 }
 
 // ----------------------------------------------------------------------------
@@ -525,7 +564,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
   // wait with timeout attribute
   {
     auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
+    wait->AddAttribute(DomainConstants::kWaitTimeoutAttribute, "42");
 
     wait_item.InitFromDomain(wait.get());
     EXPECT_EQ(wait_item.GetTimeout(), 42.0);
@@ -541,7 +580,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
   // Wait instruction with name
   {
     auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait->AddAttribute(sequi::DomainConstants::kNameAttribute, "First");
+    wait->AddAttribute(DomainConstants::kNameAttribute, "First");
 
     WaitItem wait_item;
     wait_item.InitFromDomain(wait.get());
@@ -557,11 +596,11 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 {
   // Correctly initialised item
-  sequi::WaitItem wait_item;
+  WaitItem wait_item;
   EXPECT_EQ(wait_item.GetTimeout(), 0.0);
 
   auto domain_instruction = wait_item.CreateDomainInstruction();
-  EXPECT_TRUE(domain_instruction->HasAttribute(sequi::DomainConstants::kWaitTimeoutAttribute));
-  EXPECT_EQ(domain_instruction->GetAttribute(sequi::DomainConstants::kWaitTimeoutAttribute), "0.0");
-  EXPECT_EQ(domain_instruction->GetType(), sequi::DomainConstants::kWaitInstructionType);
+  EXPECT_TRUE(domain_instruction->HasAttribute(DomainConstants::kWaitTimeoutAttribute));
+  EXPECT_EQ(domain_instruction->GetAttribute(DomainConstants::kWaitTimeoutAttribute), "0.0");
+  EXPECT_EQ(domain_instruction->GetType(), DomainConstants::kWaitInstructionType);
 }

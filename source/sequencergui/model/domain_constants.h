@@ -32,7 +32,9 @@ namespace sequi::DomainConstants
 // instructions
 const std::string kConditionInstructionType = "Condition";
 const std::string kCopyInstructionType = "Copy";
+const std::string kEqualsInstructionType = "Equals";
 const std::string kFallbackInstructionType = "Fallback";
+const std::string kForceSuccessInstructionType = "ForceSuccess";
 const std::string kIncludeInstructionType = "Include";
 const std::string kInputInstructionType = "Input";
 const std::string kInverterInstructionType = "Inverter";
@@ -41,9 +43,8 @@ const std::string kOutputInstructionType = "Output";
 const std::string kParallelInstructionType = "ParallelSequence";
 const std::string kRepeatInstructionType = "Repeat";
 const std::string kSequenceInstructionType = "Sequence";
+const std::string kUserChoiceInstructionType = "UserChoice";
 const std::string kWaitInstructionType = "Wait";
-const std::string kEqualsInstructionType = "Equals";
-const std::string kForceSuccessInstructionType = "ForceSuccess";
 
 // variables
 const std::string kLocalVariableType = "Local";

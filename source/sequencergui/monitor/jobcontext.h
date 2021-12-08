@@ -32,7 +32,6 @@ namespace sequi
 class ProcedureItem;
 class ProcedureRunner;
 class JobLog;
-class DomainObjectBuilder;
 class SequencerModel;
 class MessagePanel;
 class InstructionItem;

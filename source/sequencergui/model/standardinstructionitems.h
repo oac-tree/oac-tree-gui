@@ -267,6 +267,24 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Represent UserChoice instruction.
+class UserChoiceItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "UserChoice";
+  UserChoiceItem();
+
+  std::string GetDomainType() const override;
+
+  std::string GetDescription() const;
+
+  void SetDescription(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 //! Represent Wait instruction.
 class WaitItem : public InstructionItem
 {

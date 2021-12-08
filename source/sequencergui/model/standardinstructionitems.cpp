@@ -585,6 +585,44 @@ void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
 }
 
 // ----------------------------------------------------------------------------
+// UserChoiceItem
+// ----------------------------------------------------------------------------
+
+UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
+{
+  AddProperty(kDescription, std::string())->SetDisplayName("Description");
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+}
+
+std::string UserChoiceItem::GetDomainType() const
+{
+  return DomainConstants::kUserChoiceInstructionType;
+}
+
+std::string UserChoiceItem::GetDescription() const
+{
+  return Property<std::string>(kDescription);
+}
+
+void UserChoiceItem::SetDescription(const std::string &value)
+{
+  SetProperty(kDescription, value);
+}
+
+void UserChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
+  {
+    SetDescription(instruction->GetAttribute(DomainConstants::kDescriptionAttribute));
+  }
+}
+
+void UserChoiceItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
+}
+
+// ----------------------------------------------------------------------------
 // WaitItem
 // ----------------------------------------------------------------------------
 static inline const std::string kTimeout = "kTimeout";
