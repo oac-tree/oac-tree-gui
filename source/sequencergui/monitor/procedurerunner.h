@@ -44,7 +44,7 @@ class ProcedureRunner : public QObject
   Q_OBJECT
 
 public:
-  ProcedureRunner(QObject* parent = nullptr);
+  explicit ProcedureRunner(QObject* parent = nullptr);
   ~ProcedureRunner() override;
 
   // control flow
@@ -68,6 +68,9 @@ public:
   void SetAsUserInput(const std::string& value);
 
 public slots:
+
+  // Methods used to report domain activity.
+
   void onInstructionStatusChange(const instruction_t* instruction);
 
   void onLogMessage(const std::string& message, MessageType message_type = MessageType::kDefault);

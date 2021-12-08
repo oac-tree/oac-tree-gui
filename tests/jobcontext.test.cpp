@@ -20,6 +20,7 @@
 #include "sequencergui/monitor/jobcontext.h"
 
 #include "Instruction.h"
+#include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
@@ -43,27 +44,29 @@ class JobContextTest : public ::testing::Test
 public:
   JobContextTest() {}
 
-  ProcedureItem* CreateSingleWaitProcedure()
+  //! Creates procedure with single wait instruction.
+  ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model)
   {
-    auto procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
-    auto wait = m_model.InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
+    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+    auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
     wait->SetTimeout(0.01);
     return procedure_item;
   }
 
-  ProcedureItem* CreateCopyProcedure()
+  //! Creates procedure with two variables and single Copy instruction.
+  ProcedureItem* CreateCopyProcedure(SequencerModel* model)
   {
-    auto procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
-    auto copy = m_model.InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
+    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+    auto copy = model->InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
     copy->SetInput("var0");
     copy->SetOutput("var1");
 
-    auto var0 = m_model.InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
     var0->SetName("var0");
     var0->SetJsonType(R"({"type":"uint32"})");
     var0->SetJsonValue("42");
 
-    auto var1 = m_model.InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
     var1->SetName("var1");
     var1->SetJsonType(R"({"type":"uint32"})");
     var1->SetJsonValue("43");
@@ -71,18 +74,38 @@ public:
     return procedure_item;
   }
 
-  ProcedureItem* CreateIncludeProcedure()
+  //! Creates procedure with local include.
+  static ProcedureItem* CreateIncludeProcedure(SequencerModel* model)
   {
-    auto procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
-    auto sequence = m_model.InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+    auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
     sequence->SetName("MySequence");
-    m_model.InsertItem<WaitItem>(sequence);
+    model->InsertItem<WaitItem>(sequence);
 
-    auto repeat = m_model.InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
+    auto repeat = model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
     repeat->SetRepeatCount(1);
     repeat->SetIsRootFlag(true);
-    auto include = m_model.InsertItem<IncludeItem>(repeat);
+    auto include = model->InsertItem<IncludeItem>(repeat);
     include->SetPath("MySequence");
+
+    return procedure_item;
+  }
+
+  static ProcedureItem* AddInputProcedure(SequencerModel* model)
+  {
+    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+    auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+    sequence->SetName("MySequence");
+    auto input0 = model->InsertItem<InputItem>(sequence);
+    input0->SetTargetVariableName("var1");
+    input0->SetDescription("Your ID");
+
+    auto wait0 = model->InsertItem<WaitItem>(sequence);
+
+    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    var1->SetName("var1");
+    var1->SetJsonType(R"({"type":"uint32"})");
+    var1->SetJsonValue(R"(0)");
 
     return procedure_item;
   }
@@ -94,7 +117,7 @@ public:
 
 TEST_F(JobContextTest, PrematureDeletion)
 {
-  auto procedure = CreateSingleWaitProcedure();
+  auto procedure = CreateSingleWaitProcedure(&m_model);
   {
     JobContext job(procedure);
     job.onPrepareJobRequest();
@@ -106,7 +129,7 @@ TEST_F(JobContextTest, PrematureDeletion)
 
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
-  auto procedure = CreateSingleWaitProcedure();
+  auto procedure = CreateSingleWaitProcedure(&m_model);
 
   JobContext job(procedure);
   job.onPrepareJobRequest();
@@ -126,7 +149,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
-  auto procedure = CreateCopyProcedure();
+  auto procedure = CreateCopyProcedure(&m_model);
 
   auto vars = ModelView::Utils::FindItems<LocalVariableItem>(&m_model);
   ASSERT_EQ(vars.size(), 2);
@@ -148,7 +171,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
 
 TEST_F(JobContextTest, LocalIncludeScenario)
 {
-  auto procedure = CreateIncludeProcedure();
+  auto procedure = CreateIncludeProcedure(&m_model);
 
   JobContext job(procedure);
   job.onPrepareJobRequest();
@@ -160,9 +183,30 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   QTest::qWait(100);
 
   EXPECT_FALSE(job.IsRunning());
-  EXPECT_EQ(spy_instruction_status.count(), 8); // Repeat, Include, Sequence, Wait x 2
+  EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
   auto instructions = ModelView::Utils::FindItems<WaitItem>(job.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 
+TEST_F(JobContextTest, UserInputScenario)
+{
+  auto procedure = AddInputProcedure(&m_model);
+
+  JobContext job(procedure);
+
+  auto on_user_input = []() { return std::string("42"); };
+  job.SetUserInputCallback(on_user_input);
+
+  job.onPrepareJobRequest();
+
+  QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
+
+  job.onStartRequest();
+  QTest::qWait(100);
+
+  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
+
+  EXPECT_FALSE(job.IsRunning());
+}

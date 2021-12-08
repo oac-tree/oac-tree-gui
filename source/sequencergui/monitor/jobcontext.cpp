@@ -28,7 +28,6 @@
 #include "sequencergui/monitor/joblog.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
-#include <QMessageBox>
 #include <iostream>
 
 namespace
@@ -107,6 +106,23 @@ void JobContext::onStopRequest()
   }
 }
 
+bool JobContext::WaitForCompletion(double timeout_sec)
+{
+  return m_procedure_runner->WaitForCompletion(timeout_sec);
+}
+
+bool JobContext::IsRunning() const
+{
+  return m_procedure_runner->IsBusy();
+}
+
+//! Sets message panel to report text information.
+
+void JobContext::SetMessagePanel(MessagePanel *panel)
+{
+  m_job_log->SetMessagePanel(panel);
+}
+
 void JobContext::SetWaitingMode(WaitingMode waiting_mode)
 {
   m_procedure_runner->SetWaitingMode(waiting_mode);
@@ -117,6 +133,11 @@ void JobContext::SetSleepTime(int time_msec)
   m_procedure_runner->SetSleepTime(time_msec);
 }
 
+void JobContext::SetUserInputCallback(const userinput_callback_t &callback)
+{
+  m_user_input_callback = callback;
+}
+
 ProcedureItem *JobContext::GetExpandedProcedure() const
 {
   return m_expanded_procedure_item;
@@ -125,21 +146,6 @@ ProcedureItem *JobContext::GetExpandedProcedure() const
 SequencerModel *JobContext::GetExpandedModel()
 {
   return m_job_model.get();
-}
-
-bool JobContext::IsRunning() const
-{
-  return m_procedure_runner->IsBusy();
-}
-
-void JobContext::SetMessagePanel(MessagePanel *panel)
-{
-  m_job_log->SetMessagePanel(panel);
-}
-
-bool JobContext::WaitForCompletion(double timeout_sec)
-{
-  return m_procedure_runner->WaitForCompletion(timeout_sec);
 }
 
 void JobContext::onInstructionStatusChange(const instruction_t *instruction)
@@ -187,14 +193,20 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
 
 void JobContext::onInputRequest()
 {
-  QMessageBox msgBox;
+  if (m_user_input_callback)
+  {
+    m_procedure_runner->SetAsUserInput(m_user_input_callback());
+  }
+  else
+  {
+    // This is an abnormal case when the user input is required from the runner thread, but a
+    // callback to ask the user wasn't set. Seems that throwing is not the right choice here, since
+    // the call was done in queued connection and nobody knows where throwing will end up.
+    // std::terminate() would cure everything, but we opt for more sneaky solution.
 
-  QString message = QString("User interface request");
-  msgBox.setText(message);
-  msgBox.setIcon(msgBox.Critical);
-  msgBox.exec();
-
-  m_procedure_runner->SetAsUserInput("OOO");
+    // Let's provide the runner with some input and see if Input instruction can swallow it.
+    m_procedure_runner->SetAsUserInput("No user input was provided");
+  }
 }
 
 void JobContext::SetupConnections()

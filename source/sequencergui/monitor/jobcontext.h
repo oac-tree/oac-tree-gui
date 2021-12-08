@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <memory>
+#include <functional>
 
 namespace sequi
 {
@@ -45,6 +46,8 @@ public:
   explicit JobContext(ProcedureItem* procedure_item, QObject* parent = nullptr);
   ~JobContext() override;
 
+  // Methods to control procedure execution.
+
   void onPrepareJobRequest();
 
   void onStartRequest();
@@ -55,15 +58,21 @@ public:
 
   void onStopRequest();
 
+  bool WaitForCompletion(double timeout_sec);
+
   bool IsRunning() const;
 
-  void SetMessagePanel(MessagePanel* panel);
+  // Methods to setup procedure execution.
 
-  bool WaitForCompletion(double timeout_sec);
+  void SetMessagePanel(MessagePanel* panel);
 
   void SetWaitingMode(WaitingMode waiting_mode);
 
   void SetSleepTime(int time_msec);
+
+  void SetUserInputCallback(const userinput_callback_t& callback);
+
+  // Access to internals
 
   ProcedureItem* GetExpandedProcedure() const;
   SequencerModel* GetExpandedModel();
@@ -71,14 +80,13 @@ public:
 signals:
   void InstructionStatusChanged(sequi::InstructionItem* instruction);
 
-private slots:
+private:
   void onInstructionStatusChange(const instruction_t* instruction);
   void onLogMessage(const QString& message, int message_type);
   void onVariableChange(const QString& variable_name, const QString& value);
 
   void onInputRequest();
 
-private:
   void SetupConnections();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
@@ -93,6 +101,7 @@ private:
   ProcedureItem* m_expanded_procedure_item{nullptr};
 
   std::unique_ptr<SequencerModel> m_job_model;
+  userinput_callback_t m_user_input_callback;
 };
 
 }  // namespace sequi

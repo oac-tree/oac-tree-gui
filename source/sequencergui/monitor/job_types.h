@@ -23,6 +23,9 @@
 //! @file job_types.h
 //! Provide conveniece types for procedure execution in the JobManager.
 
+#include <functional>
+#include <string>
+
 namespace sequi
 {
 
@@ -54,6 +57,8 @@ enum class MessageType
   kWarning,
   kError
 };
+
+using userinput_callback_t = std::function<std::string()>;
 
 }  // namespace sequi
 

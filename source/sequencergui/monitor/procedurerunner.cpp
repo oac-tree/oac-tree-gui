@@ -172,7 +172,7 @@ std::string ProcedureRunner::onUserInput(const std::string &current_value,
 {
   emit InputRequest();
   auto result = m_input_data.wait_and_pop();
-  return *result.get();
+  return *result;
 }
 
 void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)
