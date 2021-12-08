@@ -17,22 +17,32 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
-#define SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+#ifndef MVVM_MODEL_PROCEDUREEXAMPLES_H
+#define MVVM_MODEL_PROCEDUREEXAMPLES_H
 
-//! @file sequencerutils.h
-//! Various utils for GUI items
+//! @file procedureexamples.h
+//! Collection of example procedures to populate the model for debugging purposes.
+
+#include <memory>
 
 namespace sequi
 {
-
-class InstructionItem;
 class SequencerModel;
+class ProcedureItem;
 
-bool IsCompoundInstruction(const InstructionItem* instruction);
+namespace Examples
+{
 
-bool IsDecoratorInstruction(const InstructionItem* instruction);
+//! Variable copying example.
+ProcedureItem*  AddCopyProcedure(SequencerModel* model);
 
+//! Local include example.
+ProcedureItem*  AddLocalIncludeProcedure(SequencerModel* model);
+
+//! User input example.
+ProcedureItem* AddInputProcedure(SequencerModel* model);
+
+}
 }  // namespace sequi
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+#endif  // MVVM_MODEL_PROCEDUREEXAMPLES_H

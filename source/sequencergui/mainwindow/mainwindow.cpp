@@ -23,9 +23,9 @@
 #include "sequencergui/mainwindow/sequencerxmlview.h"
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/sequencerutils.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
 
 #include "mvvm/widgets/mainverticalbarwidget.h"
@@ -151,9 +151,9 @@ void MainWindow::InitMenu()
 
 void MainWindow::PopulateModel()
 {
-//  AddCopyExampleProcedure(m_model.get());
-//  AddLocalIncludeExampleProcedure(m_model.get());
-  AddUserInputExampleProcedure(m_model.get());
+  //  Examples::AddCopyProcedure(m_model.get());
+  //  Examples::AddLocalIncludeProcedure(m_model.get());
+  Examples::AddInputProcedure(m_model.get());
 }
 
 }  // namespace sequi

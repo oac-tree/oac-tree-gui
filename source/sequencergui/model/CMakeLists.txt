@@ -10,10 +10,14 @@ target_sources(${library_name} PRIVATE
   importutils.h
   instructionitem.cpp
   instructionitem.h
+  procedureexamples.cpp
+  procedureexamples.h
   sequenceritems.cpp
   sequenceritems.h
   sequencermodel.cpp
   sequencermodel.h
+  sequencerutils.cpp
+  sequencerutils.h
   shallnotbenamedvalueutils.cpp
   shallnotbenamedvalueutils.h
   standardinstructionitems.cpp
@@ -24,7 +28,5 @@ target_sources(${library_name} PRIVATE
   transformfromdomain.h
   variableitem.cpp
   variableitem.h
-  sequencerutils.cpp
-  sequencerutils.h
 )
 
