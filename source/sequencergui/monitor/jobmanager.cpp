@@ -26,6 +26,7 @@
 #include "sequencergui/monitor/monitortreetoolbar.h"
 
 #include <QDebug>
+#include <QInputDialog>
 
 namespace sequi
 {
@@ -151,14 +152,25 @@ void JobManager::onChangeDelayRequest(int msec)
   }
 }
 
+QString JobManager::onUserInputRequest(const QString &current_value, const QString &description)
+{
+  return QInputDialog::getText(nullptr, "Input request", description, QLineEdit::Normal,
+                               current_value);
+}
+
 JobContext *JobManager::CreateContext()
 {
+  auto on_user_input = [this](auto value, auto description)
+  { return onUserInputRequest(value, description); };
+
   auto context = new JobContext(m_current_procedure, this);
   context->SetSleepTime(m_current_delay);
   context->SetMessagePanel(m_message_panel);
   connect(context, &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
   m_context_map[m_current_procedure] = context;
+
+  context->SetUserInputCallback(on_user_input);
   context->onPrepareJobRequest();
   return context;
 }

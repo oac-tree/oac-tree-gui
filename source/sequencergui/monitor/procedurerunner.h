@@ -84,7 +84,7 @@ signals:
   void LogMessageRequest(const QString& message, int message_type);
   void RunnerStatusChanged();
   void VariableChanged(const QString& variable_name, const QString& value);
-  void InputRequest();
+  void InputRequest(const QString& current_value, const QString& description);
 
 private:
   void LaunchDomainRunner(procedure_t* procedure);

@@ -170,7 +170,7 @@ void ProcedureRunner::onVariableChange(const std::string &variable_name, const s
 std::string ProcedureRunner::onUserInput(const std::string &current_value,
                                          const std::string &description)
 {
-  emit InputRequest();
+  emit InputRequest(QString::fromStdString(current_value), QString::fromStdString(description));
   auto result = m_input_data.wait_and_pop();
   return *result;
 }

@@ -57,6 +57,8 @@ public:
   void SetMessagePanel(MessagePanel* panel);
   void onChangeDelayRequest(int msec);
 
+  QString onUserInputRequest(const QString& current_value, const QString& description);
+
 signals:
   void InstructionStatusChanged(InstructionItem* instruction);
 

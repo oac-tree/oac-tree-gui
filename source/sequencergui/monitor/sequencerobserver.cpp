@@ -60,7 +60,7 @@ bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
   if (!DomainUtils::ParseStringToScalarAnyvalue(user_input, value))
   {
     throw std::runtime_error(
-        "Error in SequencerObserver::GetUserValueImpl: can't parse user intput");
+        "Error in SequencerObserver::GetUserValueImpl: can't parse user input");
   }
   return true;
 }

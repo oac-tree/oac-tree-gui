@@ -191,11 +191,12 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
   }
 }
 
-void JobContext::onInputRequest()
+void JobContext::onInputRequest(const QString &current_value, const QString &description)
 {
   if (m_user_input_callback)
   {
-    m_procedure_runner->SetAsUserInput(m_user_input_callback());
+    m_procedure_runner->SetAsUserInput(
+        m_user_input_callback(current_value, description).toStdString());
   }
   else
   {

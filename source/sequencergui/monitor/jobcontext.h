@@ -85,7 +85,7 @@ private:
   void onLogMessage(const QString& message, int message_type);
   void onVariableChange(const QString& variable_name, const QString& value);
 
-  void onInputRequest();
+  void onInputRequest(const QString& current_value, const QString& description);
 
   void SetupConnections();
 

@@ -42,10 +42,8 @@ using msec = std::chrono::milliseconds;
 class JobContextTest : public ::testing::Test
 {
 public:
-  JobContextTest() {}
-
   //! Creates procedure with single wait instruction.
-  ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model)
+  static ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model)
   {
     auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
     auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
@@ -54,7 +52,7 @@ public:
   }
 
   //! Creates procedure with two variables and single Copy instruction.
-  ProcedureItem* CreateCopyProcedure(SequencerModel* model)
+  static ProcedureItem* CreateCopyProcedure(SequencerModel* model)
   {
     auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
     auto copy = model->InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
@@ -195,7 +193,7 @@ TEST_F(JobContextTest, UserInputScenario)
 
   JobContext job(procedure);
 
-  auto on_user_input = []() { return std::string("42"); };
+  auto on_user_input = [](auto value, auto description) { return "42"; };
   job.SetUserInputCallback(on_user_input);
 
   job.onPrepareJobRequest();

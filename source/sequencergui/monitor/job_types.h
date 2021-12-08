@@ -24,7 +24,7 @@
 //! Provide conveniece types for procedure execution in the JobManager.
 
 #include <functional>
-#include <string>
+#include <QString>
 
 namespace sequi
 {
@@ -58,7 +58,9 @@ enum class MessageType
   kError
 };
 
-using userinput_callback_t = std::function<std::string()>;
+//! Returns user input as a text. Initial vaue, and the description are provided as callback
+//! parameters.
+using userinput_callback_t = std::function<QString(QString, QString)>;
 
 }  // namespace sequi
 
