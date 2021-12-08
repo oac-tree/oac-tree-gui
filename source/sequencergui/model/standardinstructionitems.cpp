@@ -21,15 +21,12 @@
 
 #include "Instruction.h"
 #include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/item_constants.h"
 
 #include "mvvm/utils/stringutils.h"
 
 namespace sequi
 {
-// FIXME remove dublication here in the favor of instructionitem.cpp
-static inline const std::string kDescription = "kDescription";
-static inline const std::string kChildInstructions = "kChildInstructions";
-
 // ----------------------------------------------------------------------------
 // ConditionItem
 // ----------------------------------------------------------------------------
@@ -188,7 +185,8 @@ void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::string FallbackItem::GetDomainType() const
@@ -209,7 +207,7 @@ void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
 
 ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string ForceSuccessItem::GetDomainType() const
@@ -238,7 +236,7 @@ IncludeItem::IncludeItem() : InstructionItem(Type)
 {
   AddProperty(kFile, std::string())->SetDisplayName("File name");
   AddProperty(kPath, std::string())->SetDisplayName("Path");
-  RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string IncludeItem::GetDomainType() const
@@ -292,7 +290,7 @@ static inline const std::string kTarget = "kTarget";
 
 InputItem::InputItem() : InstructionItem(Type)
 {
-  AddProperty(kDescription, std::string())->SetDisplayName("Description");
+  AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kTarget, std::string())->SetDisplayName("Target");
 }
 
@@ -332,12 +330,12 @@ void InputItem::SetTargetVariableName(const std::string &value)
 
 std::string InputItem::GetDescription() const
 {
-  return Property<std::string>(kDescription);
+  return Property<std::string>(ItemConstants::kDescription);
 }
 
 void InputItem::SetDescription(const std::string &value)
 {
-  SetProperty(kDescription, value);
+  SetProperty(ItemConstants::kDescription, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -346,7 +344,7 @@ void InputItem::SetDescription(const std::string &value)
 
 InverterItem::InverterItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string InverterItem::GetDomainType() const
@@ -411,7 +409,7 @@ static inline const std::string kSource = "kSource";
 
 OutputItem::OutputItem() : InstructionItem(Type)
 {
-  AddProperty(kDescription, std::string())->SetDisplayName("Description");
+  AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kSource, std::string())->SetDisplayName("Source");
 }
 
@@ -451,12 +449,12 @@ void OutputItem::SetSourceVariableName(const std::string &value)
 
 std::string OutputItem::GetDescription() const
 {
-  return Property<std::string>(kDescription);
+  return Property<std::string>(ItemConstants::kDescription);
 }
 
 void OutputItem::SetDescription(const std::string &value)
 {
-  SetProperty(kDescription, value);
+  SetProperty(ItemConstants::kDescription, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -470,7 +468,8 @@ ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
   AddProperty(kSuccessThreshold, 0)->SetDisplayName("Success threshold");
   AddProperty(kFailureThreshold, 0)->SetDisplayName("Failure threshold");
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::string ParallelSequenceItem::GetDomainType() const
@@ -529,7 +528,7 @@ static inline const std::string kMaxCount = "kRepeatCount";
 RepeatItem::RepeatItem() : InstructionItem(Type)
 {
   AddProperty(kMaxCount, -1)->SetDisplayName("maxCount");
-  RegisterTag(ModelView::TagInfo(kChildInstructions, 0, 1, {}), /*default*/ true);
+  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*default*/ true);
 }
 
 std::string RepeatItem::GetDomainType() const
@@ -569,7 +568,8 @@ void RepeatItem::SetRepeatCount(int value)
 // ----------------------------------------------------------------------------
 SequenceItem::SequenceItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::string SequenceItem::GetDomainType() const
@@ -590,8 +590,9 @@ void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
 
 UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
 {
-  AddProperty(kDescription, std::string())->SetDisplayName("Description");
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+  AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
+  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::string UserChoiceItem::GetDomainType() const
@@ -601,12 +602,12 @@ std::string UserChoiceItem::GetDomainType() const
 
 std::string UserChoiceItem::GetDescription() const
 {
-  return Property<std::string>(kDescription);
+  return Property<std::string>(ItemConstants::kDescription);
 }
 
 void UserChoiceItem::SetDescription(const std::string &value)
 {
-  SetProperty(kDescription, value);
+  SetProperty(ItemConstants::kDescription, value);
 }
 
 void UserChoiceItem::InitFromDomainImpl(const instruction_t *instruction)

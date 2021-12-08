@@ -10,6 +10,7 @@ target_sources(${library_name} PRIVATE
   importutils.h
   instructionitem.cpp
   instructionitem.h
+  item_constants.h
   procedureexamples.cpp
   procedureexamples.h
   sequenceritems.cpp
