@@ -23,8 +23,8 @@
 //! @file job_types.h
 //! Provide conveniece types for procedure execution in the JobManager.
 
-#include <functional>
 #include <QString>
+#include <functional>
 
 namespace sequi
 {
@@ -57,10 +57,6 @@ enum class MessageType
   kWarning,
   kError
 };
-
-//! Returns user input as a text. Initial vaue, and the description are provided as callback
-//! parameters.
-using userinput_callback_t = std::function<QString(QString, QString)>;
 
 }  // namespace sequi
 

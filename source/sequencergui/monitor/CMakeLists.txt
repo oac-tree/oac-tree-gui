@@ -28,4 +28,5 @@ target_sources(${library_name} PRIVATE
   sequencermonitorview.h
   sequencerobserver.cpp
   sequencerobserver.h
+  usercontext.h
   )

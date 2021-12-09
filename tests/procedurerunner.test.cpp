@@ -28,8 +28,8 @@
 
 #include <gtest/gtest.h>
 
-#include <QSignalSpy>
 #include <QDebug>
+#include <QSignalSpy>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -113,6 +113,26 @@ public:
     var0->AddAttribute(DomainConstants::kValueAttribute, "0");
     result->AddVariable("var0", var0.release());
 
+    return result;
+  }
+
+  //! Creates procedure with two waits and possibility to select what to execute.
+  std::unique_ptr<procedure_t> CreateUserChoiceProcedure() const
+  {
+    auto result = std::make_unique<procedure_t>();
+    auto userchoice =
+        DomainUtils::CreateDomainInstruction(DomainConstants::kUserChoiceInstructionType);
+    userchoice->AddAttribute(DomainConstants::kDescriptionAttribute, "it's your choice");
+
+    auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
+    wait0->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "0.01");
+    auto wait1 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
+    wait1->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "0.01");
+
+    userchoice->InsertInstruction(wait0.release(), 0);
+    userchoice->InsertInstruction(wait1.release(), 1);
+
+    result->PushInstruction(userchoice.release());
     return result;
   }
 };
@@ -303,4 +323,37 @@ TEST_F(ProcedureRunnerTest, UserInput)
   EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var0"));
   qDebug() << arguments.at(1).value<QString>();
   EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+}
+
+//! Waiting for user choice.
+
+TEST_F(ProcedureRunnerTest, UserChoice)
+{
+//  auto procedure = CreateUserChoiceProcedure();
+
+//  auto runner = std::make_unique<ProcedureRunner>();
+//  runner->SetWaitingMode(WaitingMode::kProceed);
+
+//  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+//  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+//  QSignalSpy spy_input_request(runner.get(), &ProcedureRunner::InputRequest);
+//  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
+
+//  runner->ExecuteProcedure(procedure.get());
+//  std::this_thread::sleep_for(msec(50));
+
+//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+//  runner->SetAsUserInput("42");
+//  std::this_thread::sleep_for(msec(50));
+
+//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+//  EXPECT_EQ(spy_input_request.count(), 1);
+//  EXPECT_EQ(spy_runner_status.count(), 2);
+//  EXPECT_EQ(spy_variable_changed.count(), 1);
+
+//  auto arguments = spy_variable_changed.takeFirst();
+//  EXPECT_EQ(arguments.size(), 2);
+//  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var0"));
+//  qDebug() << arguments.at(1).value<QString>();
+//  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
 }

@@ -117,11 +117,22 @@ ProcedureItem* AddInputProcedure(SequencerModel* model)
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
-//  var1->SetJsonType(R"({"type":"string"})");
-//  var1->SetJsonValue(R"("abc")");
+  //  var1->SetJsonType(R"({"type":"string"})");
+  //  var1->SetJsonValue(R"("abc")");
   var1->SetJsonType(R"({"type":"uint32"})");
   var1->SetJsonValue(R"(42)");
 
+  return procedure_item;
+}
+
+ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
+{
+  auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+  auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
+  auto wait0 = model->InsertItem<WaitItem>(userchoice);
+  auto wait1 = model->InsertItem<WaitItem>(userchoice);
+
+  procedure_item->SetDisplayName("UserChoice");
   return procedure_item;
 }
 

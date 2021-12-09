@@ -22,6 +22,7 @@
 
 #include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/monitor/job_types.h"
+#include "sequencergui/monitor/usercontext.h"
 
 #include <QObject>
 #include <memory>
@@ -69,7 +70,7 @@ public:
 
   void SetSleepTime(int time_msec);
 
-  void SetUserInputCallback(const userinput_callback_t& callback);
+  void SetUserInputCallback(const UserContext& user_context);
 
   // Access to internals
 
@@ -100,7 +101,7 @@ private:
   ProcedureItem* m_expanded_procedure_item{nullptr};
 
   std::unique_ptr<SequencerModel> m_job_model;
-  userinput_callback_t m_user_input_callback;
+  UserContext m_user_context;
 };
 
 }  // namespace sequi

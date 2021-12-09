@@ -24,6 +24,7 @@
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitortreetoolbar.h"
+#include "sequencergui/monitor/usercontext.h"
 
 #include <QDebug>
 #include <QInputDialog>
@@ -170,7 +171,7 @@ JobContext *JobManager::CreateContext()
           &JobManager::InstructionStatusChanged);
   m_context_map[m_current_procedure] = context;
 
-  context->SetUserInputCallback(on_user_input);
+  context->SetUserInputCallback({on_user_input});
   context->onPrepareJobRequest();
   return context;
 }

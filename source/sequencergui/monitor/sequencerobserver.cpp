@@ -65,7 +65,7 @@ bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
   return true;
 }
 
-int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &, const std::string &)
+int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices, const std::string &description)
 {
   return 0;
 }

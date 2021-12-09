@@ -116,17 +116,6 @@ void ProcedureRunner::SetSleepTime(int time_msec)
   m_flow_controller.SetSleepTime(time_msec);
 }
 
-bool ProcedureRunner::IsBusy() const
-{
-  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling;
-}
-
-RunnerStatus ProcedureRunner::GetRunnerStatus() const
-{
-  std::lock_guard lock(m_mutex);
-  return m_runner_status;
-}
-
 bool ProcedureRunner::WaitForCompletion(double timeout_sec)
 {
   auto timeout =
@@ -145,6 +134,17 @@ bool ProcedureRunner::WaitForCompletion(double timeout_sec)
 void ProcedureRunner::SetAsUserInput(const std::string &value)
 {
   m_input_data.update_top(value);
+}
+
+bool ProcedureRunner::IsBusy() const
+{
+  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling;
+}
+
+RunnerStatus ProcedureRunner::GetRunnerStatus() const
+{
+  std::lock_guard lock(m_mutex);
+  return m_runner_status;
 }
 
 //! Performs necessary activity on domain instruction status change.

@@ -194,7 +194,7 @@ TEST_F(JobContextTest, UserInputScenario)
   JobContext job(procedure);
 
   auto on_user_input = [](auto value, auto description) { return "42"; };
-  job.SetUserInputCallback(on_user_input);
+  job.SetUserInputCallback({on_user_input});
 
   job.onPrepareJobRequest();
 

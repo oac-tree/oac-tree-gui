@@ -133,9 +133,9 @@ void JobContext::SetSleepTime(int time_msec)
   m_procedure_runner->SetSleepTime(time_msec);
 }
 
-void JobContext::SetUserInputCallback(const userinput_callback_t &callback)
+void JobContext::SetUserInputCallback(const UserContext &user_context)
 {
-  m_user_input_callback = callback;
+  m_user_context = user_context;
 }
 
 ProcedureItem *JobContext::GetExpandedProcedure() const
@@ -193,10 +193,10 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
 
 void JobContext::onInputRequest(const QString &current_value, const QString &description)
 {
-  if (m_user_input_callback)
+  if (m_user_context.m_user_input_callback)
   {
     m_procedure_runner->SetAsUserInput(
-        m_user_input_callback(current_value, description).toStdString());
+        m_user_context.m_user_input_callback(current_value, description).toStdString());
   }
   else
   {

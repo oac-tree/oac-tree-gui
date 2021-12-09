@@ -47,7 +47,7 @@ public:
   explicit ProcedureRunner(QObject* parent = nullptr);
   ~ProcedureRunner() override;
 
-  // control flow
+  // Methods to control flow.
 
   void ExecuteProcedure(procedure_t* procedure, bool make_setup = true);
 
@@ -59,17 +59,17 @@ public:
 
   void SetSleepTime(int time_msec);
 
-  bool IsBusy() const;
-
-  RunnerStatus GetRunnerStatus() const;
-
   bool WaitForCompletion(double timeout_sec);
 
   void SetAsUserInput(const std::string& value);
 
-public slots:
+  // Methods to retrieve status
 
-  // Methods used to report domain activity.
+  bool IsBusy() const;
+
+  RunnerStatus GetRunnerStatus() const;
+
+  // Methods used by the domain to to report the activity.
 
   void onInstructionStatusChange(const instruction_t* instruction);
 

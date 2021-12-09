@@ -17,36 +17,26 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_MODEL_PROCEDUREEXAMPLES_H
-#define MVVM_MODEL_PROCEDUREEXAMPLES_H
+#ifndef MVVM_MONITOR_USERCONTEXT_H
+#define MVVM_MONITOR_USERCONTEXT_H
 
-//! @file procedureexamples.h
-//! Collection of example procedures to populate the model for debugging purposes.
-
-#include <memory>
+#include <QString>
+#include <functional>
 
 namespace sequi
 {
-class SequencerModel;
-class ProcedureItem;
 
-namespace Examples
+//! Aggregates necessary information to communicate with the user.
+//!
+struct UserContext
 {
+  //! Returns user input as a text. Initial vaue, and the description are provided as callback
+  //! parameters.
+  using userinput_callback_t = std::function<QString(QString, QString)>;
 
-//! Variable copying example.
-ProcedureItem* AddCopyProcedure(SequencerModel* model);
+  userinput_callback_t m_user_input_callback;
+};
 
-//! Local include example.
-ProcedureItem* AddLocalIncludeProcedure(SequencerModel* model);
-
-//! User input example.
-ProcedureItem* AddInputProcedure(SequencerModel* model);
-
-//! User choice example.
-ProcedureItem* AddUserChoiceProcedure(SequencerModel* model);
-
-
-}  // namespace Examples
 }  // namespace sequi
 
-#endif  // MVVM_MODEL_PROCEDUREEXAMPLES_H
+#endif  // MVVM_MONITOR_USERCONTEXT_H
