@@ -45,16 +45,23 @@ public:
 
   std::string GetUserInput(const std::string& current_value, const std::string& description);
 
+  int GetUserChoice(const std::vector<std::string> &choices, const std::string &description);
+
   void SetAsUserInput(const std::string& value);
+
+  void SetAsUserChoice(int value);
 
 signals:
   void InputRequest(const QString& current_value, const QString& description);
+  void ChoiceRequest(const QStringList& choices, const QString& description);
 
 private:
   void OnInputRequest(const QString& current_value, const QString& description);
-  void SetupConnections();
+  void OnUserChoiceRequest(const QStringList& choices, const QString& description);
+  void SetupConnections() const;
 
   ModelView::threadsafe_stack<std::string> m_input_data;
+  ModelView::threadsafe_stack<int> m_choice_data;
   UserContext m_user_context;
 };
 

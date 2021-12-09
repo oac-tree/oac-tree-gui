@@ -19,6 +19,8 @@
 
 #include "sequencergui/monitor/usercontroller.h"
 
+#include "mvvm/widgets/widgetutils.h"
+
 namespace sequi
 {
 
@@ -45,12 +47,28 @@ std::string UserController::GetUserInput(const std::string &current_value,
   return *result;
 }
 
+//! Method to request the user one of the given option.
+
+int UserController::GetUserChoice(const std::vector<std::string> &choices,
+                                  const std::string &description)
+{
+  // queued connection
+  emit ChoiceRequest(ModelView::Utils::GetStringList(choices), QString::fromStdString(description));
+
+  auto result = m_choice_data.wait_and_pop();  // wait for the result
+  return *result;
+}
+
 //! Set given value as used input.
 void UserController::SetAsUserInput(const std::string &value)
 {
-  m_input_data.update_top(value); // will release waiting in GetUserInput
+  m_input_data.update_top(value);  // will release waiting in GetUserInput
 }
 
+void UserController::SetAsUserChoice(int value)
+{
+  m_choice_data.update_top(value);  // will release waiting in GetUserChoice
+}
 
 //! Processes user input. Expected to be called from the GUI thread
 void UserController::OnInputRequest(const QString &current_value, const QString &description)
@@ -71,10 +89,34 @@ void UserController::OnInputRequest(const QString &current_value, const QString 
   }
 }
 
-void UserController::SetupConnections()
+//! Processes user choice. Expected to be called from the GUI thread
+void UserController::OnUserChoiceRequest(const QStringList &choices, const QString &description)
 {
-  // Connects input request (issued from the runner thread), with GUI thread (queued connection)
+  if (m_user_context.m_user_choice_callback)
+  {
+    SetAsUserChoice(m_user_context.m_user_choice_callback(choices, description));
+  }
+  else
+  {
+    // This is an abnormal case when the user input is required from the runner thread, but a
+    // callback to ask the user wasn't set. Seems that throwing is not the right choice here, since
+    // the call was done in queued connection and nobody knows where throwing will end up.
+    // std::terminate() would cure everything, but we opt for more sneaky solution.
+
+    // Let's provide the runner with some input and see if it can swallow it.
+    SetAsUserInput("No user input was provided");
+  }
+}
+
+//! Connects requests issued from the runner thread, with the GUI thread.
+void UserController::SetupConnections() const
+{
+  // Connects input request.
   connect(this, &UserController::InputRequest, this, &UserController::OnInputRequest,
+          Qt::QueuedConnection);
+
+  // Connects choice request.
+  connect(this, &UserController::ChoiceRequest, this, &UserController::OnUserChoiceRequest,
           Qt::QueuedConnection);
 }
 
