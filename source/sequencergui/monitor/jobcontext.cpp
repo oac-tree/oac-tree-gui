@@ -133,7 +133,7 @@ void JobContext::SetSleepTime(int time_msec)
   m_procedure_runner->SetSleepTime(time_msec);
 }
 
-void JobContext::SetUserInputCallback(const UserContext &user_context)
+void JobContext::SetUserContext(const UserContext &user_context)
 {
   m_user_context = user_context;
 }

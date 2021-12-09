@@ -70,7 +70,7 @@ public:
 
   void SetSleepTime(int time_msec);
 
-  void SetUserInputCallback(const UserContext& user_context);
+  void SetUserContext(const UserContext& user_context);
 
   // Access to internals
 

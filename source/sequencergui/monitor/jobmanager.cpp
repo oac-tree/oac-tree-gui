@@ -171,7 +171,7 @@ JobContext *JobManager::CreateContext()
           &JobManager::InstructionStatusChanged);
   m_context_map[m_current_procedure] = context;
 
-  context->SetUserInputCallback({on_user_input});
+  context->SetUserContext({on_user_input});
   context->onPrepareJobRequest();
   return context;
 }

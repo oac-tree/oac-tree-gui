@@ -29,4 +29,6 @@ target_sources(${library_name} PRIVATE
   sequencerobserver.cpp
   sequencerobserver.h
   usercontext.h
+  usercontroller.cpp
+  usercontroller.h
   )

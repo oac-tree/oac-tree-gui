@@ -1,0 +1,78 @@
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2020 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "sequencergui/monitor/usercontroller.h"
+
+#include <gtest/gtest.h>
+#include <QTest>
+
+#include <chrono>
+#include <future>
+#include <iostream>
+
+using namespace sequi;
+
+//! Tests for UserController class.
+
+class UserControllerTest : public ::testing::Test
+{
+};
+
+//! Testing UserController::GetUserInput method.
+//! - Create a callback mimicking user responce.
+//! - Run a thread with blocking call GetUserInput().
+//! - Wait with QTest::qWait to make event loop rolling.
+//! - Checking user input as reported by runner thread.
+
+TEST_F(UserControllerTest, SetUserInput)
+{
+  const std::string value("value");
+  const std::string description("description");
+
+  // User input callback.
+  auto on_user_input = [](auto value, auto description) {
+    return value + description; // Concatenates two input parameters.
+  };
+
+  UserController controller;
+  controller.SetUserContext({on_user_input});
+
+  std::promise<void> ready_for_test;
+  // runner to ask for user input (blocking)
+  auto runner = [&controller, par1 = value, par2 = description, &ready_for_test]()
+  {
+    ready_for_test.set_value();
+    return controller.GetUserInput(par1, par2);
+  };
+
+  // launching runner in a thread
+  std::future<std::string> result_obtained = std::async(std::launch::async, runner);
+
+  // waiting for threads being prepared for racing
+  ready_for_test.get_future().wait();
+
+  // processing event loop to make queued connection passing in UserController
+  QTest::qWait(100);
+
+  // making sure the thread has finished
+  auto result = result_obtained.get();
+
+  // result from the thread should contain the result of concatenation
+  EXPECT_EQ(result, std::string("valuedescription"));
+}

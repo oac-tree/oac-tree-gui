@@ -20,7 +20,7 @@
 #ifndef MVVM_MONITOR_USERCONTEXT_H
 #define MVVM_MONITOR_USERCONTEXT_H
 
-#include <QString>
+#include <QStringList>
 #include <functional>
 
 namespace sequi
@@ -30,11 +30,15 @@ namespace sequi
 //!
 struct UserContext
 {
-  //! Returns user input as a text. Initial vaue, and the description are provided as callback
-  //! parameters.
+  //!< A callback to returns user input as a text.
+  //! Initial vaue, and the description are provided as callback parameters.
   using userinput_callback_t = std::function<QString(QString, QString)>;
-
   userinput_callback_t m_user_input_callback;
+
+  //!< A callback to returns user choice as an integer.
+  //! Initial vaues, and the description are provided as callback parameters.
+  using userchoice_callback_t = std::function<int(QStringList, QString)>;
+  userchoice_callback_t m_user_choice_callback;
 };
 
 }  // namespace sequi
