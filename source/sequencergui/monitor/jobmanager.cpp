@@ -159,10 +159,25 @@ QString JobManager::onUserInputRequest(const QString &current_value, const QStri
                                current_value);
 }
 
+int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &description)
+{
+  QStringList with_index_added;
+  int index{0};
+  for (const auto str : choices)
+  {
+    with_index_added.push_back(QString("%1 %2").arg(index++).arg(str));
+  }
+  auto selection = QInputDialog::getItem(nullptr, "Input request", description, with_index_added);
+  return with_index_added.indexOf(selection);
+}
+
 JobContext *JobManager::CreateContext()
 {
   auto on_user_input = [this](auto value, auto description)
   { return onUserInputRequest(value, description); };
+
+  auto on_user_choice = [this](auto choices, auto description)
+  { return onUserChoiceRequest(choices, description); };
 
   auto context = new JobContext(m_current_procedure, this);
   context->SetSleepTime(m_current_delay);
@@ -171,7 +186,7 @@ JobContext *JobManager::CreateContext()
           &JobManager::InstructionStatusChanged);
   m_context_map[m_current_procedure] = context;
 
-  context->SetUserContext({on_user_input});
+  context->SetUserContext({on_user_input, on_user_choice});
   context->onPrepareJobRequest();
   return context;
 }

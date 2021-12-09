@@ -58,6 +58,7 @@ public:
   void onChangeDelayRequest(int msec);
 
   QString onUserInputRequest(const QString& current_value, const QString& description);
+  int onUserChoiceRequest(const QStringList& choices, const QString& description);
 
 signals:
   void InstructionStatusChanged(InstructionItem* instruction);
