@@ -173,6 +173,12 @@ std::string ProcedureRunner::onUserInput(const std::string &current_value,
   return m_user_controller.GetUserInput(current_value, description);
 }
 
+int ProcedureRunner::onUserChoice(const std::vector<std::string> &choices,
+                                  const std::string &description)
+{
+  return m_user_controller.GetUserChoice(choices, description);
+}
+
 void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)
 {
   //  SetRunnerStatus(RunnerStatus::kRunning);

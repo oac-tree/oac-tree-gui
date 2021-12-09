@@ -65,9 +65,10 @@ bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
   return true;
 }
 
-int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices, const std::string &description)
+int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices,
+                                         const std::string &description)
 {
-  return 0;
+  return m_procedure_runner->onUserChoice(choices, description);
 }
 
 void SequencerObserver::StartSingleStepImpl() {}

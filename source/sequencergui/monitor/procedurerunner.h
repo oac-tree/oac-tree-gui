@@ -80,6 +80,8 @@ public:
 
   std::string onUserInput(const std::string& current_value, const std::string& description);
 
+  int onUserChoice(const std::vector<std::string>& choices, const std::string& description);
+
 signals:
   void InstructionStatusChanged(const instruction_t* instruction);
   void LogMessageRequest(const QString& message, int message_type);
