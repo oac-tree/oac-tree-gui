@@ -89,7 +89,7 @@ public:
     return procedure_item;
   }
 
-  static ProcedureItem* AddInputProcedure(SequencerModel* model)
+  static ProcedureItem* CreateInputProcedure(SequencerModel* model)
   {
     auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
     auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
@@ -104,6 +104,30 @@ public:
     var1->SetName("var1");
     var1->SetJsonType(R"({"type":"uint32"})");
     var1->SetJsonValue(R"(0)");
+
+    return procedure_item;
+  }
+
+  static ProcedureItem* CreateUserChoiceProcedure(SequencerModel* model)
+  {
+    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+    auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
+    auto wait0 = model->InsertItem<WaitItem>(userchoice);
+    wait0->SetTimeout(10.0);
+
+    auto copy = model->InsertItem<CopyItem>(userchoice);
+    copy->SetInput("var0");
+    copy->SetOutput("var1");
+
+    auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    var0->SetName("var0");
+    var0->SetJsonType(R"({"type":"uint32"})");
+    var0->SetJsonValue("42");
+
+    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+    var1->SetName("var1");
+    var1->SetJsonType(R"({"type":"uint32"})");
+    var1->SetJsonValue("0");
 
     return procedure_item;
   }
@@ -189,11 +213,11 @@ TEST_F(JobContextTest, LocalIncludeScenario)
 
 TEST_F(JobContextTest, UserInputScenario)
 {
-  auto procedure = AddInputProcedure(&m_model);
+  auto procedure = CreateInputProcedure(&m_model);
 
   JobContext job(procedure);
 
-  auto on_user_input = [](auto value, auto description) { return "42"; };
+  auto on_user_input = [](auto, auto) { return "42"; };
   job.SetUserContext({on_user_input});
 
   job.onPrepareJobRequest();
@@ -205,6 +229,31 @@ TEST_F(JobContextTest, UserInputScenario)
 
   auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
   EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
+
+  EXPECT_FALSE(job.IsRunning());
+}
+
+TEST_F(JobContextTest, UserChoiceScenario)
+{
+  auto procedure = CreateUserChoiceProcedure(&m_model);
+
+  JobContext job(procedure);
+
+  // callback to select Copy instruction
+  auto on_user_choice = [](auto, auto) { return 1; };
+  job.SetUserContext({{}, on_user_choice});
+
+  job.onPrepareJobRequest();
+
+  QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
+
+  job.onStartRequest();
+  QTest::qWait(100);
+
+  EXPECT_EQ(spy_instruction_status.count(), 4);
+
+  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 
   EXPECT_FALSE(job.IsRunning());
 }

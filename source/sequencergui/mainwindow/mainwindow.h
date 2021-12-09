@@ -48,10 +48,10 @@ class MainWindow : public QMainWindow
 
 public:
   MainWindow();
-  ~MainWindow();
+  ~MainWindow() override;
 
 protected:
-  void closeEvent(QCloseEvent* event);
+  void closeEvent(QCloseEvent* event) override;
 
 private:
   void InitApplication();
@@ -71,4 +71,4 @@ private:
 
 }  // namespace sequi
 
-#endif // SEQUENCERGUI_MAINWINDOW_MAINWINDOW_H
+#endif  // SEQUENCERGUI_MAINWINDOW_MAINWINDOW_H

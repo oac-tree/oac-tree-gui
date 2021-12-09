@@ -122,6 +122,7 @@ ProcedureItem* AddInputProcedure(SequencerModel* model)
   var1->SetJsonType(R"({"type":"uint32"})");
   var1->SetJsonValue(R"(42)");
 
+  procedure_item->SetDisplayName("UserInput");
   return procedure_item;
 }
 
