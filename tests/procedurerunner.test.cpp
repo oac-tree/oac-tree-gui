@@ -30,6 +30,8 @@
 
 #include <QDebug>
 #include <QSignalSpy>
+#include <QTest>
+
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -296,25 +298,29 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
 
 TEST_F(ProcedureRunnerTest, UserInput)
 {
+  // User input callback.
+  auto on_user_input = [](auto, auto) {
+    return "42";
+  };
+
   auto procedure = CreateInputProcedure();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kProceed);
+  runner->SetUserContext({on_user_input});
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-  QSignalSpy spy_input_request(runner.get(), &ProcedureRunner::InputRequest);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
   runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(50));
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-  runner->SetAsUserInput("42");
-  std::this_thread::sleep_for(msec(50));
+
+  QTest::qWait(100); // to make queued connection in UserController succeed
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-  EXPECT_EQ(spy_input_request.count(), 1);
   EXPECT_EQ(spy_runner_status.count(), 2);
   EXPECT_EQ(spy_variable_changed.count(), 1);
 

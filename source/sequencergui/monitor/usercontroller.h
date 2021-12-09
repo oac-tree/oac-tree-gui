@@ -45,12 +45,13 @@ public:
 
   std::string GetUserInput(const std::string& current_value, const std::string& description);
 
+  void SetAsUserInput(const std::string& value);
+
 signals:
   void InputRequest(const QString& current_value, const QString& description);
 
 private:
   void OnInputRequest(const QString& current_value, const QString& description);
-  void SetAsUserInput(const std::string& value);
   void SetupConnections();
 
   ModelView::threadsafe_stack<std::string> m_input_data;

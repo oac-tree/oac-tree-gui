@@ -45,6 +45,13 @@ std::string UserController::GetUserInput(const std::string &current_value,
   return *result;
 }
 
+//! Set given value as used input.
+void UserController::SetAsUserInput(const std::string &value)
+{
+  m_input_data.update_top(value); // will release waiting in GetUserInput
+}
+
+
 //! Processes user input. Expected to be called from the GUI thread
 void UserController::OnInputRequest(const QString &current_value, const QString &description)
 {
@@ -62,12 +69,6 @@ void UserController::OnInputRequest(const QString &current_value, const QString 
     // Let's provide the runner with some input and see if it can swallow it.
     SetAsUserInput("No user input was provided");
   }
-}
-
-//! Set given value as used input.
-void UserController::SetAsUserInput(const std::string &value)
-{
-  m_input_data.update_top(value); // will release waiting in GetUserInput
 }
 
 void UserController::SetupConnections()

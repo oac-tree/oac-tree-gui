@@ -131,9 +131,9 @@ bool ProcedureRunner::WaitForCompletion(double timeout_sec)
   return false;
 }
 
-void ProcedureRunner::SetAsUserInput(const std::string &value)
+void ProcedureRunner::SetUserContext(const UserContext &user_context)
 {
-  m_input_data.update_top(value);
+  m_user_controller.SetUserContext(user_context);
 }
 
 bool ProcedureRunner::IsBusy() const
@@ -170,9 +170,7 @@ void ProcedureRunner::onVariableChange(const std::string &variable_name, const s
 std::string ProcedureRunner::onUserInput(const std::string &current_value,
                                          const std::string &description)
 {
-  emit InputRequest(QString::fromStdString(current_value), QString::fromStdString(description));
-  auto result = m_input_data.wait_and_pop();
-  return *result;
+  return m_user_controller.GetUserInput(current_value, description);
 }
 
 void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)

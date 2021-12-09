@@ -85,8 +85,6 @@ private:
   void onLogMessage(const QString& message, int message_type);
   void onVariableChange(const QString& variable_name, const QString& value);
 
-  void onInputRequest(const QString& current_value, const QString& description);
-
   void SetupConnections();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
@@ -101,7 +99,6 @@ private:
   ProcedureItem* m_expanded_procedure_item{nullptr};
 
   std::unique_ptr<SequencerModel> m_job_model;
-  UserContext m_user_context;
 };
 
 }  // namespace sequi

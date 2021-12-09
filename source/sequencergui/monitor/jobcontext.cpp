@@ -135,7 +135,7 @@ void JobContext::SetSleepTime(int time_msec)
 
 void JobContext::SetUserContext(const UserContext &user_context)
 {
-  m_user_context = user_context;
+  m_procedure_runner->SetUserContext(user_context);
 }
 
 ProcedureItem *JobContext::GetExpandedProcedure() const
@@ -191,25 +191,6 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
   }
 }
 
-void JobContext::onInputRequest(const QString &current_value, const QString &description)
-{
-  if (m_user_context.m_user_input_callback)
-  {
-    m_procedure_runner->SetAsUserInput(
-        m_user_context.m_user_input_callback(current_value, description).toStdString());
-  }
-  else
-  {
-    // This is an abnormal case when the user input is required from the runner thread, but a
-    // callback to ask the user wasn't set. Seems that throwing is not the right choice here, since
-    // the call was done in queued connection and nobody knows where throwing will end up.
-    // std::terminate() would cure everything, but we opt for more sneaky solution.
-
-    // Let's provide the runner with some input and see if Input instruction can swallow it.
-    m_procedure_runner->SetAsUserInput("No user input was provided");
-  }
-}
-
 void JobContext::SetupConnections()
 {
   connect(m_procedure_runner.get(), &ProcedureRunner::InstructionStatusChanged, this,
@@ -220,9 +201,6 @@ void JobContext::SetupConnections()
 
   connect(m_procedure_runner.get(), &ProcedureRunner::VariableChanged, this,
           &JobContext::onVariableChange, Qt::QueuedConnection);
-
-  connect(m_procedure_runner.get(), &ProcedureRunner::InputRequest, this,
-          &JobContext::onInputRequest, Qt::QueuedConnection);
 }
 
 }  // namespace sequi

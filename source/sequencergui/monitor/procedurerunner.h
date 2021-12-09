@@ -22,6 +22,7 @@
 
 #include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/monitor/flowcontroller.h"
+#include "sequencergui/monitor/usercontroller.h"
 #include "sequencergui/monitor/job_types.h"
 
 #include "mvvm/utils/threadsafestack.h"
@@ -61,7 +62,7 @@ public:
 
   bool WaitForCompletion(double timeout_sec);
 
-  void SetAsUserInput(const std::string& value);
+  void SetUserContext(const UserContext& user_context);
 
   // Methods to retrieve status
 
@@ -84,7 +85,6 @@ signals:
   void LogMessageRequest(const QString& message, int message_type);
   void RunnerStatusChanged();
   void VariableChanged(const QString& variable_name, const QString& value);
-  void InputRequest(const QString& current_value, const QString& description);
 
 private:
   void LaunchDomainRunner(procedure_t* procedure);
@@ -95,7 +95,7 @@ private:
   RunnerStatus m_runner_status;
   std::unique_ptr<runner_t> m_domain_runner;
   FlowController m_flow_controller;
-  ModelView::threadsafe_stack<std::string> m_input_data;
+  UserController m_user_controller;
   mutable std::mutex m_mutex;
 };
 
