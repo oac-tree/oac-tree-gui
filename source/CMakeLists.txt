@@ -1,4 +1,5 @@
 set(executable_name sequencer-gui)
+
 add_subdirectory(sequencergui)
 
 if (SEQUENCERGUI_CODAC)

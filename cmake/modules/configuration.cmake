@@ -39,9 +39,14 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_AUTOGEN_DIR})
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 5.12 COMPONENTS Widgets Core Gui REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Widgets Core Gui Test REQUIRED)
 find_package(Threads)
+
 find_package(MVVM REQUIRED)
+
+if (NOT SEQUENCERGUI_CODAC)
+  find_package(COACompact REQUIRED)
+endif()
 
 get_target_property(Qt5Widgets_location Qt5::Widgets LOCATION_Release)
 message(STATUS " Qt5 libraries : ${Qt5Widgets_LIBRARIES} ${Qt5Widgets_location}")
