@@ -35,7 +35,7 @@ namespace sequencergui
 MonitorWorkspaceWidget::MonitorWorkspaceWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWorkspaceToolBar)
-    , m_instruction_tree(new ModelView::AllItemsTreeView)
+    , m_instruction_tree(new mvvm::AllItemsTreeView)
     , m_splitter(new QSplitter)
 
 {

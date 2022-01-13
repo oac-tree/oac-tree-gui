@@ -92,7 +92,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   }
 
   //! Inserts view(s) for the child instruction with a given index.
-  void InsertView(ModelView::SessionItem* parent, const ModelView::TagIndex& tag_index)
+  void InsertView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
     auto new_child = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
     auto parent_view = FindView(dynamic_cast<InstructionItem*>(parent));
@@ -105,7 +105,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 
   //! Removes a view corresponding to the instruction.
 
-  void RemoveView(ModelView::SessionItem* parent, const ModelView::TagIndex& tag_index)
+  void RemoveView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
     auto to_remove = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
     auto it = m_instruction_to_view.find(to_remove);
@@ -143,12 +143,12 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   }
 
   // Returns true if given item is either our root item, or is one of its descendant
-  bool IsInScope(ModelView::SessionItem* item) const
+  bool IsInScope(mvvm::SessionItem* item) const
   {
-    return item == m_root_item || ModelView::Utils::IsItemAncestor(item, m_root_item);
+    return item == m_root_item || mvvm::utils::IsItemAncestor(item, m_root_item);
   }
 
-  void OnDataChanged(ModelView::SessionItem* item, int role)
+  void OnDataChanged(mvvm::SessionItem* item, int role)
   {
     if (m_block_update)
     {
@@ -182,8 +182,8 @@ void GraphicsSceneController::SetAlignStrategy(std::function<void (InstructionCo
 
 GraphicsSceneController::~GraphicsSceneController() = default;
 
-void GraphicsSceneController::OnItemInserted(ModelView::SessionItem* parent,
-                                             const ModelView::TagIndex& tag_index)
+void GraphicsSceneController::OnItemInserted(mvvm::SessionItem* parent,
+                                             const mvvm::TagIndex& tag_index)
 {
   if (p_impl->IsInScope(parent))
   {
@@ -191,8 +191,8 @@ void GraphicsSceneController::OnItemInserted(ModelView::SessionItem* parent,
   }
 }
 
-void GraphicsSceneController::OnAboutToRemoveItem(ModelView::SessionItem* parent,
-                                                  const ModelView::TagIndex& tag_index)
+void GraphicsSceneController::OnAboutToRemoveItem(mvvm::SessionItem* parent,
+                                                  const mvvm::TagIndex& tag_index)
 {
   if (p_impl->IsInScope(parent))
   {
@@ -200,7 +200,7 @@ void GraphicsSceneController::OnAboutToRemoveItem(ModelView::SessionItem* parent
   }
 }
 
-void GraphicsSceneController::OnDataChanged(ModelView::SessionItem* item, int role)
+void GraphicsSceneController::OnDataChanged(mvvm::SessionItem* item, int role)
 {
   p_impl->OnDataChanged(item, role);
 }

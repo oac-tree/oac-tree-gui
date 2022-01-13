@@ -22,7 +22,7 @@
 
 #include "mvvm/viewmodel/viewmodel.h"
 
-namespace ModelView
+namespace mvvm
 {
 class ApplicationModel;
 }
@@ -32,12 +32,12 @@ namespace sequencergui
 
 //! View model to show instruction tree with three columns: type, name, status
 
-class MVVM_VIEWMODEL_EXPORT InstructionViewModel : public ModelView::ViewModel
+class MVVM_VIEWMODEL_EXPORT InstructionViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 
 public:
-  InstructionViewModel(ModelView::ApplicationModel* model, QObject* parent = nullptr);
+  InstructionViewModel(mvvm::ApplicationModel* model, QObject* parent = nullptr);
 };
 
 }  // namespace sequi

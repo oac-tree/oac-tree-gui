@@ -75,7 +75,7 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
     result->AddAttribute(DomainConstants::kNameAttribute, Property<std::string>(ItemConstants::kName));
   }
   result->AddAttribute(DomainConstants::kIsRootAttribute,
-                       ModelView::Utils::FromBool(Property<bool>(ItemConstants::kIsRoot)));
+                       mvvm::utils::FromBool(Property<bool>(ItemConstants::kIsRoot)));
   SetupDomainImpl(result.get());
   return result;
 }
@@ -139,12 +139,12 @@ void InstructionItem::SetY(double value)
   SetProperty(ItemConstants::kYpos, value);
 }
 
-ModelView::SessionItem *InstructionItem::GetStatusItem() const
+mvvm::SessionItem *InstructionItem::GetStatusItem() const
 {
   return GetItem(ItemConstants::kStatus);
 }
 
-ModelView::SessionItem *InstructionItem::GetNameItem() const
+mvvm::SessionItem *InstructionItem::GetNameItem() const
 {
   return GetItem(ItemConstants::kName);
 }

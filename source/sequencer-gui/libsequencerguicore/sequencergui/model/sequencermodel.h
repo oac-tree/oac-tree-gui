@@ -22,7 +22,7 @@
 
 #include "mvvm/viewmodel/applicationmodel.h"
 
-namespace ModelView
+namespace mvvm
 {
 class ContainerItem;
 }
@@ -32,19 +32,19 @@ namespace sequencergui
 class InstructionItem;
 
 //! The model containing pulse schedule definition.
-class SequencerModel : public ModelView::ApplicationModel
+class SequencerModel : public mvvm::ApplicationModel
 {
 public:
   SequencerModel();
 
   InstructionItem* GetInstruction(const std::string& identifier) const;
 
-  ModelView::ContainerItem* GetProcedureContainer() const;
+  mvvm::ContainerItem* GetProcedureContainer() const;
 
 private:
   void SetupModel();
 
-  ModelView::ContainerItem* m_procedure_container{nullptr};
+  mvvm::ContainerItem* m_procedure_container{nullptr};
 };
 
 }  // namespace sequi

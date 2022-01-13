@@ -22,7 +22,7 @@
 
 #include "sequencergui/mainwindow/collapsiblewidget.h"
 
-namespace ModelView
+namespace mvvm
 {
 class ViewModel;
 }
@@ -63,7 +63,7 @@ private:
 
   QListView* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};
-  std::unique_ptr<ModelView::ViewModel> m_view_model;
+  std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 
 }  // namespace sequi

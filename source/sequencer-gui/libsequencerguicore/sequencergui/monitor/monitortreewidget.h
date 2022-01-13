@@ -26,7 +26,7 @@ class QSplitter;
 class QTreeView;
 class QStackedWidget;
 
-namespace ModelView
+namespace mvvm
 {
 class ItemsTreeView;
 }
@@ -73,7 +73,7 @@ private:
   QSplitter* m_splitter{nullptr};
 
   QStackedWidget* m_stacked_widget{nullptr};
-  ModelView::ItemsTreeView* m_instruction_tree{nullptr};
+  mvvm::ItemsTreeView* m_instruction_tree{nullptr};
   NodeEditor* m_node_editor{nullptr};
 
   MessagePanel* m_message_panel{nullptr};

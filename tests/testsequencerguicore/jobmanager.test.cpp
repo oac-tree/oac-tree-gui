@@ -128,12 +128,12 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
   // variables inside are changed
-  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(context->GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(context->GetExpandedModel());
   EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 
   // variables at original model remained unchanged
-  auto inside = ModelView::Utils::FindItems<LocalVariableItem>(m_model.get());
+  auto inside = mvvm::utils::FindItems<LocalVariableItem>(m_model.get());
   EXPECT_EQ(inside.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(inside.at(1)->GetJsonValue(), std::string("43"));
 }

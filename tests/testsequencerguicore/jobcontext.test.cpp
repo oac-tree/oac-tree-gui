@@ -167,7 +167,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   EXPECT_FALSE(job.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = ModelView::Utils::FindItems<WaitItem>(job.GetExpandedModel());
+  auto instructions = mvvm::utils::FindItems<WaitItem>(job.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 
@@ -175,7 +175,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
   auto procedure = CreateCopyProcedure(&m_model);
 
-  auto vars = ModelView::Utils::FindItems<LocalVariableItem>(&m_model);
+  auto vars = mvvm::utils::FindItems<LocalVariableItem>(&m_model);
   ASSERT_EQ(vars.size(), 2);
   EXPECT_EQ(vars.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(vars.at(1)->GetJsonValue(), std::string("43"));
@@ -183,7 +183,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
   JobContext job(procedure);
   job.onPrepareJobRequest();
 
-  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
 
   job.onStartRequest();
   // We are testing here queued signals, need special waiting
@@ -209,7 +209,7 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   EXPECT_FALSE(job.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
-  auto instructions = ModelView::Utils::FindItems<WaitItem>(job.GetExpandedModel());
+  auto instructions = mvvm::utils::FindItems<WaitItem>(job.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 
@@ -229,7 +229,7 @@ TEST_F(JobContextTest, UserInputScenario)
   job.onStartRequest();
   QTest::qWait(100);
 
-  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
   EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
 
   EXPECT_FALSE(job.IsRunning());
@@ -254,7 +254,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 
-  auto vars_inside = ModelView::Utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
   EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 
   EXPECT_FALSE(job.IsRunning());

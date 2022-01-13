@@ -37,7 +37,7 @@ namespace
 {
 bool operator==(const std::vector<QPointF>& lhs, const std::vector<QPointF>& rhs)
 {
-  using ModelView::Utils::AreAlmostEqual;
+  using mvvm::utils::AreAlmostEqual;
   if (lhs.size() != rhs.size())
   {
     return false;
@@ -94,7 +94,7 @@ TEST_F(SceneUtilsTest, GetPositions)
 TEST_F(SceneUtilsTest, AlignTreeWithSingleInstruction)
 {
   InstructionContainerItem container;
-  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
   AlignTree(QPointF(1, 2), &container);
   EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
   EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
@@ -103,8 +103,8 @@ TEST_F(SceneUtilsTest, AlignTreeWithSingleInstruction)
 TEST_F(SceneUtilsTest, AlignTreeWithTwoInstructions)
 {
   InstructionContainerItem container;
-  auto instruction0 = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
-  auto instruction1 = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
+  auto instruction0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto instruction1 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
 
   // number used in scenutils.cpp
   const double step_width = GetAlignmentGridWidth();
@@ -119,8 +119,8 @@ TEST_F(SceneUtilsTest, AlignTreeWithTwoInstructions)
 TEST_F(SceneUtilsTest, AlignTreeWithParentAndChild)
 {
   InstructionContainerItem container;
-  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
-  auto wait = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   // number used in scenutils.cpp
   const double step_width = GetAlignmentGridWidth();
@@ -136,9 +136,9 @@ TEST_F(SceneUtilsTest, AlignTreeWithParentAndChild)
 TEST_F(SceneUtilsTest, AlignTreeWithParentAndTwoChildren)
 {
   InstructionContainerItem container;
-  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
-  auto wait0 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
-  auto wait1 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait0 = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   // number used in scenutils.cpp
   const double step_width = GetAlignmentGridWidth();
@@ -158,9 +158,9 @@ TEST_F(SceneUtilsTest, AlignTreeWithParentAndTwoChildren)
 TEST_F(SceneUtilsTest, NonForceAlignTreeWithParentAndTwoChildren)
 {
   InstructionContainerItem container;
-  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
-  auto wait0 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
-  auto wait1 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait0 = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   // giving non-default coordinates
   wait0->SetX(1.1);
@@ -189,9 +189,9 @@ TEST_F(SceneUtilsTest, NonForceAlignTreeWithParentAndTwoChildren)
 TEST_F(SceneUtilsTest, ForceAlignTreeWithParentAndTwoChildren)
 {
   InstructionContainerItem container;
-  auto instruction = container.InsertItem<SequenceItem>(ModelView::TagIndex::Append());
-  auto wait0 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
-  auto wait1 = instruction->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait0 = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = instruction->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   // giving non-default coordinates
   wait0->SetX(1.0);

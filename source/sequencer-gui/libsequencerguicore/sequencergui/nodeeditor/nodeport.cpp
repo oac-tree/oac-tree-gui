@@ -31,7 +31,7 @@ namespace
 {
 double port_radius()
 {
-  return ModelView::Utils::WidthOfLetterM() * 0.4;
+  return mvvm::utils::WidthOfLetterM() * 0.4;
 }
 
 }  // namespace

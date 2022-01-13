@@ -34,7 +34,7 @@ static inline const std::string kChildInstructions = "kChildInstructions";
 
 UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
 }
 
 std::string UnknownInstructionItem::GetDomainType() const
@@ -73,7 +73,7 @@ void UnknownInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 
 InstructionContainerItem::InstructionContainerItem() : CompoundItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildInstructions), /*as_default*/ true);
 }
 
 std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
@@ -88,7 +88,7 @@ static inline const std::string kVariableItems = "kVariableItems";
 
 WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
 }
 
 std::vector<VariableItem *> WorkspaceItem::GetVariables() const
@@ -113,11 +113,11 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   // we create it via universal tag to let recursive iteration via childrenstrategy in
   // TopItemsTreeView
   RegisterTag(
-      ModelView::TagInfo::CreateUniversalTag(kInstructions, {InstructionContainerItem::Type}));
+      mvvm::TagInfo::CreateUniversalTag(kInstructions, {InstructionContainerItem::Type}));
   auto instructions = InsertItem<InstructionContainerItem>({kInstructions, 0});
   instructions->SetDisplayName("Instructions");
 
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(kWorkspace, {WorkspaceItem::Type}));
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kWorkspace, {WorkspaceItem::Type}));
   auto workspace = InsertItem<WorkspaceItem>({kWorkspace, 0});
   workspace->SetDisplayName("Workspace");
 }

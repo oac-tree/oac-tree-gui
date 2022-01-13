@@ -26,7 +26,7 @@
 
 namespace sequencergui
 {
-SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
+SequencerModel::SequencerModel() : mvvm::ApplicationModel("SequencerModel")
 {
   RegisterItem<ChannelAccessVariableItem>();
   RegisterItem<ConditionItem>();
@@ -62,7 +62,7 @@ InstructionItem *SequencerModel::GetInstruction(const std::string &identifier) c
   return dynamic_cast<InstructionItem *>(FindItem(identifier));
 }
 
-ModelView::ContainerItem *SequencerModel::GetProcedureContainer() const
+mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 {
   return m_procedure_container;
 }
@@ -71,7 +71,7 @@ ModelView::ContainerItem *SequencerModel::GetProcedureContainer() const
 
 void SequencerModel::SetupModel()
 {
-  m_procedure_container = InsertItem<ModelView::ContainerItem>();
+  m_procedure_container = InsertItem<mvvm::ContainerItem>();
   m_procedure_container->SetDisplayName("Procedure container");
 }
 

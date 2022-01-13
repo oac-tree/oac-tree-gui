@@ -34,7 +34,7 @@ namespace
 QPixmap createPixmap()
 {
   QRect rect =
-      QRect(0, 0, ModelView::Utils::WidthOfLetterM() * 4, ModelView::Utils::HeightOfLetterM() * 4);
+      QRect(0, 0, mvvm::utils::WidthOfLetterM() * 4, mvvm::utils::HeightOfLetterM() * 4);
   QPixmap pixmap(rect.width() + 1, rect.height() + 1);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
@@ -86,7 +86,7 @@ void InstructionListWidget::startDrag(Qt::DropActions)
   QStringList dataToGo = QStringList() << item->data(Qt::UserRole).toString();
 
   auto mimeData = new QMimeData;
-  mimeData->setData(piecesMimeType(), ModelView::Utils::GetByteArray(dataToGo));
+  mimeData->setData(piecesMimeType(), mvvm::utils::GetByteArray(dataToGo));
 
   auto drag = new QDrag(this);
   drag->setMimeData(mimeData);

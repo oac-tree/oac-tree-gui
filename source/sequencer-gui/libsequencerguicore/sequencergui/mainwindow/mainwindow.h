@@ -25,7 +25,7 @@
 
 class QCloseEvent;
 
-namespace ModelView
+namespace mvvm
 {
 class MainVerticalBarWidget;
 }
@@ -66,7 +66,7 @@ private:
   SequencerMonitorView* m_monitor_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
   SettingsView* m_settings_view{nullptr};
-  ModelView::MainVerticalBarWidget* m_tab_widget{nullptr};
+  mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 };
 
 }  // namespace sequi

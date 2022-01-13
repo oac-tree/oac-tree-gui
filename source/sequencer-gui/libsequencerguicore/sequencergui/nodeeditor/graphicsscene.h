@@ -25,7 +25,7 @@
 #include <QGraphicsScene>
 #include <map>
 
-namespace ModelView
+namespace mvvm
 {
 class ViewItem;
 }  // namespace ModelView

@@ -69,7 +69,7 @@ ExplorerNarrowToolBar::ExplorerNarrowToolBar(QWidget *parent)
 
 void ExplorerNarrowToolBar::SetText(const QString &text)
 {
-  ModelView::Utils::ScaleLabelFont(m_label, 0.9);
+  mvvm::utils::ScaleLabelFont(m_label, 0.9);
   m_label->setText(text);
 }
 

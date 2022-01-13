@@ -47,7 +47,7 @@ public:
   void SetSleepTime(int msec);
 
 private:
-  ModelView::threadsafe_stack<int> m_step_request;
+  mvvm::threadsafe_stack<int> m_step_request;
   WaitingMode m_waiting_mode{WaitingMode::kProceed};
   int m_wait_msec{0};
 };

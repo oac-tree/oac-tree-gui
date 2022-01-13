@@ -40,8 +40,8 @@ TEST_F(SequencerItemsTest, WorkspaceItem)
   WorkspaceItem item;
   EXPECT_TRUE(item.GetVariables().empty());
 
-  auto var0 = item.InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
-  auto var1 = item.InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
+  auto var0 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
 }
 

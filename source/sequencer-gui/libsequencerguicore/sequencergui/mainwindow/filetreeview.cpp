@@ -84,7 +84,7 @@ FileTreeView::~FileTreeView()
 
 void FileTreeView::SetCurrentDir(const QString &dirname)
 {
-  m_path_label->setText(ModelView::Utils::CreatePathPresentation(dirname));
+  m_path_label->setText(mvvm::utils::CreatePathPresentation(dirname));
   m_file_system_model->setRootPath(dirname);
   const QModelIndex root_index = m_file_system_model->index(dirname);
   m_tree_view->setRootIndex(root_index);

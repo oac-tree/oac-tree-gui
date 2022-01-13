@@ -235,9 +235,9 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithVariable)
   ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
 
-  auto var_item0 = workspace->InsertItem<LocalVariableItem>(ModelView::TagIndex::Append());
+  auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
-  auto var_item1 = workspace->InsertItem<FileVariableItem>(ModelView::TagIndex::Append());
+  auto var_item1 = workspace->InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
 
   DomainObjectBuilder builder;
@@ -261,9 +261,9 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParallelSequence)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto sequence = container->InsertItem<ParallelSequenceItem>(ModelView::TagIndex::Append());
-  auto wait0 = sequence->InsertItem<WaitItem>(ModelView::TagIndex::Append());
-  auto wait1 = sequence->InsertItem<WaitItem>(ModelView::TagIndex::Append());
+  auto sequence = container->InsertItem<ParallelSequenceItem>(mvvm::TagIndex::Append());
+  auto wait0 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto wait1 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   DomainObjectBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);

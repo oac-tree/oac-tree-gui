@@ -47,7 +47,7 @@ namespace sequencergui
 {
 MainWindow::MainWindow()
     : m_model(std::make_unique<SequencerModel>())
-    , m_tab_widget(new ModelView::MainVerticalBarWidget)
+    , m_tab_widget(new mvvm::MainVerticalBarWidget)
 {
   InitApplication();
   InitComponents();

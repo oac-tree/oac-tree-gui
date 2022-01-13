@@ -35,10 +35,10 @@ using namespace sequencergui;
 class InstructionViewModelTest : public ::testing::Test
 {
 public:
-  class TestModel : public ModelView::ApplicationModel
+  class TestModel : public mvvm::ApplicationModel
   {
   public:
-    TestModel() : ModelView::ApplicationModel("TestModel")
+    TestModel() : mvvm::ApplicationModel("TestModel")
     {
       RegisterItem<SequenceItem>();
       RegisterItem<WaitItem>();

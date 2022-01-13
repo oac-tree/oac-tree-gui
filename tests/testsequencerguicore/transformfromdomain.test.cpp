@@ -37,7 +37,7 @@ class TransformFromDomainTest : public ::testing::Test
 public:
   //! Returns true if given Instruction can be casted to specified type.
   template <typename T>
-  bool IsCorrectType(const ModelView::SessionItem* item)
+  bool IsCorrectType(const mvvm::SessionItem* item)
   {
     return dynamic_cast<const T*>(item) != nullptr;
   }
@@ -63,8 +63,8 @@ public:
 
 TEST_F(TransformFromDomainTest, CreateVariableItem)
 {
-  EXPECT_TRUE(
-      CanCreateVariableForType<sequencergui::LocalVariableItem>(DomainConstants::kLocalVariableType));
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::LocalVariableItem>(
+      DomainConstants::kLocalVariableType));
   EXPECT_TRUE(
       CanCreateVariableForType<sequencergui::FileVariableItem>(DomainConstants::kFileVariableType));
   if (DomainUtils::IsChannelAccessAvailable())
@@ -80,26 +80,28 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
 
 TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::CopyItem>(DomainConstants::kCopyInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::EqualsItem>(DomainConstants::kEqualsInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::FallbackItem>(DomainConstants::kFallbackInstructionType));
+      CanCreateInstructionForType<sequencergui::CopyItem>(DomainConstants::kCopyInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(
+      DomainConstants::kEqualsInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::FallbackItem>(
+      DomainConstants::kFallbackInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::InputItem>(DomainConstants::kInputInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::InverterItem>(DomainConstants::kInverterInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::MessageItem>(DomainConstants::kMessageInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::OutputItem>(DomainConstants::kOutputInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::InverterItem>(
+      DomainConstants::kInverterInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::MessageItem>(
+      DomainConstants::kMessageInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::OutputItem>(
+      DomainConstants::kOutputInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ParallelSequenceItem>(
       DomainConstants::kParallelInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RepeatItem>(
+      DomainConstants::kRepeatInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SequenceItem>(
+      DomainConstants::kSequenceInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::RepeatItem>(DomainConstants::kRepeatInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::SequenceItem>(DomainConstants::kSequenceInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::WaitItem>(DomainConstants::kWaitInstructionType));
+      CanCreateInstructionForType<sequencergui::WaitItem>(DomainConstants::kWaitInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ForceSuccessItem>(
       DomainConstants::kForceSuccessInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::UserChoiceItem>(

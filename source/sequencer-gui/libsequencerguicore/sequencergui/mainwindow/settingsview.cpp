@@ -51,7 +51,7 @@ SettingsView::SettingsView(QWidget *parent)
   //  hlayout->setContentsMargins(0, 0, 0, 0);
 
   hlayout->addWidget(m_list_widget);
-  //  layout->addSpacing(ModelView::Utils::WidthOfLetterM() / 2);
+  //  layout->addSpacing(mvvm::Utils::WidthOfLetterM() / 2);
   hlayout->addWidget(m_stacked_widget);
 
   m_stacked_widget->setCurrentIndex(0);
@@ -74,7 +74,7 @@ void SettingsView::SetModel(SequencerModel *model)
 
 void SettingsView::SetupModelSettings()
 {
-  auto view = new ModelView::AllItemsTreeView(m_model);
+  auto view = new mvvm::AllItemsTreeView(m_model);
   view->GetTreeView()->setAlternatingRowColors(true);
   m_tab_widget->addTab(view, QString::fromStdString(m_model->GetType()));
   m_stacked_widget->addWidget(m_tab_widget);
@@ -82,10 +82,10 @@ void SettingsView::SetupModelSettings()
 
 void SettingsView::SetupListSelector()
 {
-  const int width = ModelView::Utils::WidthOfLetterM() * 15;
+  const int width = mvvm::utils::WidthOfLetterM() * 15;
   m_list_widget->setFixedWidth(width);
   m_list_widget->setIconSize(
-      QSize(ModelView::Utils::WidthOfLetterM() * 1.2, ModelView::Utils::WidthOfLetterM() * 1.2));
+      QSize(mvvm::utils::WidthOfLetterM() * 1.2, mvvm::utils::WidthOfLetterM() * 1.2));
 
   auto item = new QListWidgetItem(StyleUtils::GetIcon("card-bulleted-outline.svg"), "All models");
   m_list_widget->addItem(item);

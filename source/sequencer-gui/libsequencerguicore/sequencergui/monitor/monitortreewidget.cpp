@@ -41,7 +41,7 @@ MonitorTreeWidget::MonitorTreeWidget(QWidget *parent)
     , m_tool_bar(new MonitorTreeToolBar)
     , m_splitter(new QSplitter)
     , m_stacked_widget(new QStackedWidget)
-    , m_instruction_tree(new ModelView::ItemsTreeView)
+    , m_instruction_tree(new mvvm::ItemsTreeView)
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
 {

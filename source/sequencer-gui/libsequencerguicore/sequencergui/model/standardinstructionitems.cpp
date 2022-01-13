@@ -185,7 +185,7 @@ void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
               /*as_default*/ true);
 }
 
@@ -207,7 +207,7 @@ void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
 
 ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string ForceSuccessItem::GetDomainType() const
@@ -236,7 +236,7 @@ IncludeItem::IncludeItem() : InstructionItem(Type)
 {
   AddProperty(kFile, std::string())->SetDisplayName("File name");
   AddProperty(kPath, std::string())->SetDisplayName("Path");
-  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string IncludeItem::GetDomainType() const
@@ -344,7 +344,7 @@ void InputItem::SetDescription(const std::string &value)
 
 InverterItem::InverterItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string InverterItem::GetDomainType() const
@@ -468,7 +468,7 @@ ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
   AddProperty(kSuccessThreshold, 0)->SetDisplayName("Success threshold");
   AddProperty(kFailureThreshold, 0)->SetDisplayName("Failure threshold");
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
               /*as_default*/ true);
 }
 
@@ -528,7 +528,7 @@ static inline const std::string kMaxCount = "kRepeatCount";
 RepeatItem::RepeatItem() : InstructionItem(Type)
 {
   AddProperty(kMaxCount, -1)->SetDisplayName("maxCount");
-  RegisterTag(ModelView::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*default*/ true);
+  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*default*/ true);
 }
 
 std::string RepeatItem::GetDomainType() const
@@ -568,7 +568,7 @@ void RepeatItem::SetRepeatCount(int value)
 // ----------------------------------------------------------------------------
 SequenceItem::SequenceItem() : InstructionItem(Type)
 {
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
               /*as_default*/ true);
 }
 
@@ -591,7 +591,7 @@ void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
 UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
 {
   AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
-  RegisterTag(ModelView::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
               /*as_default*/ true);
 }
 
@@ -653,7 +653,7 @@ void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 void WaitItem::SetupDomainImpl(instruction_t *instruction) const
 {
   instruction->AddAttribute(DomainConstants::kWaitTimeoutAttribute,
-                            ModelView::Utils::DoubleToString(GetTimeout()));
+                            mvvm::utils::DoubleToString(GetTimeout()));
 }
 
 void WaitItem::SetTimeout(double value)

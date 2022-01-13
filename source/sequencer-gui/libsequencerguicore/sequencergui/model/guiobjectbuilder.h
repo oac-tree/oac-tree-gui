@@ -25,7 +25,7 @@
 #include <map>
 #include <string>
 
-namespace ModelView
+namespace mvvm
 {
 class SessionItem;
 }
@@ -65,9 +65,9 @@ public:
   VariableItem* FindVariableItem(const std::string& variable_name) const;
 
 private:
-  ModelView::SessionItem* ProcessInstruction(const instruction_t* instruction,
-                                             ModelView::SessionItem* parent);
-  void Iterate(const instruction_t* instruction, ModelView::SessionItem* parent);
+  mvvm::SessionItem* ProcessInstruction(const instruction_t* instruction,
+                                             mvvm::SessionItem* parent);
+  void Iterate(const instruction_t* instruction, mvvm::SessionItem* parent);
 
   void Save(const instruction_t* instruction, InstructionItem* item);
   void Save(const variable_t* variable, VariableItem* item);

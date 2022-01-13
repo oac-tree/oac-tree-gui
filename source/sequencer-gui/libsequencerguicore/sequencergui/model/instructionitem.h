@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 //! Base class for all instruction items.
-class InstructionItem : public ModelView::CompoundItem
+class InstructionItem : public mvvm::CompoundItem
 {
 public:
   InstructionItem(const std::string& item_type);

@@ -28,7 +28,7 @@ class QSplitter;
 class QTreeView;
 class QTabWidget;
 
-namespace ModelView
+namespace mvvm
 {
 class TopItemsTreeView;
 class PropertyTreeView;
@@ -70,9 +70,9 @@ private:
 
   ComposerTreeToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
-  ModelView::TopItemsTreeView* m_instruction_tree{nullptr};
-  ModelView::AllItemsTreeView* m_workspace_tree{nullptr};
-  ModelView::PropertyTreeView* m_property_tree{nullptr};
+  mvvm::TopItemsTreeView* m_instruction_tree{nullptr};
+  mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
+  mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
 
   SequencerModel* m_model{nullptr};

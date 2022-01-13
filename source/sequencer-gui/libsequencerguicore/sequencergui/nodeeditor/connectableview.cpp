@@ -98,7 +98,7 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
   {
     auto rect =
         QRectF(boundingRect().width() * 0.4, boundingRect().height() * 0.7,
-               ModelView::Utils::WidthOfLetterM() * 1.75, ModelView::Utils::WidthOfLetterM() * 1.75);
+               mvvm::utils::WidthOfLetterM() * 1.75, mvvm::utils::WidthOfLetterM() * 1.75);
     painter->drawPixmap(rect, pixmap, QRectF(0.0, 0.0, pixmap.width(), pixmap.height()));
   }
 }

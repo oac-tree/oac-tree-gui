@@ -60,8 +60,8 @@ private:
   void OnUserChoiceRequest(const QStringList& choices, const QString& description);
   void SetupConnections() const;
 
-  ModelView::threadsafe_stack<std::string> m_input_data;
-  ModelView::threadsafe_stack<int> m_choice_data;
+  mvvm::threadsafe_stack<std::string> m_input_data;
+  mvvm::threadsafe_stack<int> m_choice_data;
   UserContext m_user_context;
 };
 

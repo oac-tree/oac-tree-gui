@@ -33,7 +33,7 @@ class InstructionContainerItem;
 
 //! Listens for changes in SequencerModel and updates GraphicsScene.
 
-class GraphicsSceneController : public ModelView::AbstractViewModelController
+class GraphicsSceneController : public mvvm::AbstractViewModelController
 {
 public:
   GraphicsSceneController(SequencerModel *model, GraphicsScene *graphics_scene);
@@ -41,13 +41,13 @@ public:
 
   void SetAlignStrategy(std::function<void(InstructionContainerItem*)> strategy);
 
-  void OnItemInserted(ModelView::SessionItem *parent,
-                      const ModelView::TagIndex &tag_index) override;
+  void OnItemInserted(mvvm::SessionItem *parent,
+                      const mvvm::TagIndex &tag_index) override;
 
-  void OnAboutToRemoveItem(ModelView::SessionItem *parent,
-                           const ModelView::TagIndex &tag_index) override;
+  void OnAboutToRemoveItem(mvvm::SessionItem *parent,
+                           const mvvm::TagIndex &tag_index) override;
 
-  void OnDataChanged(ModelView::SessionItem *item, int role) override;
+  void OnDataChanged(mvvm::SessionItem *item, int role) override;
 
   void Init(InstructionContainerItem *root_item);
 

@@ -41,9 +41,9 @@ ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
     : QWidget(parent)
     , m_tool_bar(new ComposerTreeToolBar)
     , m_tab_widget(new QTabWidget)
-    , m_instruction_tree(new ModelView::TopItemsTreeView)
-    , m_workspace_tree(new ModelView::AllItemsTreeView)
-    , m_property_tree(new ModelView::PropertyTreeView)
+    , m_instruction_tree(new mvvm::TopItemsTreeView)
+    , m_workspace_tree(new mvvm::AllItemsTreeView)
+    , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
@@ -88,7 +88,7 @@ void ComposerTreeWidget::SetSelected(InstructionItem* instruction)
 
 void ComposerTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions)
 {
-  std::vector<ModelView::SessionItem*> items;
+  std::vector<mvvm::SessionItem*> items;
   std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
   m_instruction_tree->SetSelectedItems(items);
 }
@@ -96,7 +96,7 @@ void ComposerTreeWidget::SetSelectedInstructions(const std::vector<InstructionIt
 std::vector<InstructionItem*> ComposerTreeWidget::GetSelectedInstructions() const
 {
   auto selected_items = m_instruction_tree->GetSelectedItems();
-  return ModelView::Utils::CastedItems<InstructionItem>(selected_items);
+  return mvvm::utils::CastedItems<InstructionItem>(selected_items);
 }
 
 InstructionItem* ComposerTreeWidget::GetSelectedInstruction() const
@@ -112,7 +112,7 @@ void ComposerTreeWidget::SetupConnections()
     m_property_tree->SetItem(item);
     emit InstructionSelected(GetSelectedInstruction());
   };
-  connect(m_instruction_tree, &ModelView::TopItemsTreeView::itemSelected, on_selection_changed);
+  connect(m_instruction_tree, &mvvm::TopItemsTreeView::itemSelected, on_selection_changed);
 
   // insert after
   auto on_insert_after = [this](auto name)

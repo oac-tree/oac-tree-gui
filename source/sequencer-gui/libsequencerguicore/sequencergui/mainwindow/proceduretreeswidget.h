@@ -22,7 +22,7 @@
 
 #include <QWidget>
 
-namespace ModelView
+namespace mvvm
 {
 class TopItemsTreeView;
 class PropertyTreeView;
@@ -49,8 +49,8 @@ public:
 
 private:
   ExplorerToolBar* m_tool_bar{nullptr};
-  ModelView::TopItemsTreeView* m_procedure_tree{nullptr};
-  ModelView::PropertyTreeView* m_property_tree{nullptr};
+  mvvm::TopItemsTreeView* m_procedure_tree{nullptr};
+  mvvm::PropertyTreeView* m_property_tree{nullptr};
 };
 
 }  // namespace sequi

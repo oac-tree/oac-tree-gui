@@ -57,7 +57,7 @@ OpenDocumentsWidget::~OpenDocumentsWidget() = default;
 void OpenDocumentsWidget::SetModel(SequencerModel *model)
 {
   m_model = model;
-  m_view_model = std::make_unique<ModelView::TopItemsViewModel>(model);
+  m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
   m_view_model->SetRootSessionItem(model->GetProcedureContainer());
   m_list_view->setModel(m_view_model.get());
 }
@@ -79,7 +79,7 @@ void OpenDocumentsWidget::SetSelectedProcedure(ProcedureItem *procedure)
 
 std::vector<ProcedureItem *> OpenDocumentsWidget::GetSelectedProcedures() const
 {
-  std::vector<ModelView::SessionItem *> result;
+  std::vector<mvvm::SessionItem *> result;
 
   if (!m_list_view->selectionModel())
   {
@@ -88,10 +88,10 @@ std::vector<ProcedureItem *> OpenDocumentsWidget::GetSelectedProcedures() const
   for (auto index : m_list_view->selectionModel()->selectedIndexes())
   {
     auto procedure_item =
-        ModelView::Utils::GetContext<ModelView::SessionItem>(m_view_model->itemFromIndex(index));
-    result.push_back(const_cast<ModelView::SessionItem *>(procedure_item));
+        mvvm::utils::GetContext<mvvm::SessionItem>(m_view_model->itemFromIndex(index));
+    result.push_back(const_cast<mvvm::SessionItem *>(procedure_item));
   }
-  return ModelView::Utils::CastedItems<ProcedureItem>(result);
+  return mvvm::utils::CastedItems<ProcedureItem>(result);
 }
 
 void OpenDocumentsWidget::SetupToolBar()
@@ -120,7 +120,7 @@ void OpenDocumentsWidget::onTreeSingleClick(const QModelIndex &index)
     return;
   }
 
-  if (auto item = ModelView::Utils::GetItem<ProcedureItem>(m_view_model->itemFromIndex(index));
+  if (auto item = mvvm::utils::GetItem<ProcedureItem>(m_view_model->itemFromIndex(index));
       item)
   {
     emit procedureSelected(const_cast<ProcedureItem *>(item));

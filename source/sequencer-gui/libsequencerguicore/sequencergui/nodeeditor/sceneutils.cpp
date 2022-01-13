@@ -68,8 +68,8 @@ QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
 QRectF ConnectableViewRectangle()
 {
   // make size of rectangle depending on 'M'-letter size to address scaling issues
-  static QRectF result = QRectF(0, 0, ModelView::Utils::WidthOfLetterM() * 8.2,
-                                ModelView::Utils::HeightOfLetterM() * 8.2);
+  static QRectF result = QRectF(0, 0, mvvm::utils::WidthOfLetterM() * 8.2,
+                                mvvm::utils::HeightOfLetterM() * 8.2);
   return result;
 }
 

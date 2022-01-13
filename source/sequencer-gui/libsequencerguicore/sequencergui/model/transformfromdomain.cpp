@@ -34,10 +34,10 @@ namespace
 {
 //! Creates catalogue where VariableItem factory functions are registered against "Type"
 //! name strings known by the sequencer.
-std::unique_ptr<ModelView::ItemCatalogue> CreateVariableItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue> CreateVariableItemCatalogue()
 {
-  using ModelView::ItemFactoryFunction;
-  auto result = std::make_unique<ModelView::ItemCatalogue>();
+  using mvvm::ItemFactoryFunction;
+  auto result = std::make_unique<mvvm::ItemCatalogue>();
 
   result->RegisterItem(sequencergui::DomainConstants::kLocalVariableType,
                        ItemFactoryFunction<sequencergui::LocalVariableItem>());
@@ -53,10 +53,10 @@ std::unique_ptr<ModelView::ItemCatalogue> CreateVariableItemCatalogue()
 
 //! Creates catalogue where InstructionItem factory functions are registered against "Type"
 //! name strings known by the sequencer.
-std::unique_ptr<ModelView::ItemCatalogue> CreateInstructionItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue> CreateInstructionItemCatalogue()
 {
-  using ModelView::ItemFactoryFunction;
-  auto result = std::make_unique<ModelView::ItemCatalogue>();
+  using mvvm::ItemFactoryFunction;
+  auto result = std::make_unique<mvvm::ItemCatalogue>();
 
   result->RegisterItem(sequencergui::DomainConstants::kConditionInstructionType,
                        ItemFactoryFunction<sequencergui::ConditionItem>());

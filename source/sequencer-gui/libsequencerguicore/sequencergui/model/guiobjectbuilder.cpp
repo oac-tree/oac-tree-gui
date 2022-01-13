@@ -139,8 +139,8 @@ void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *proce
   }
 }
 
-ModelView::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *instruction,
-                                                             ModelView::SessionItem *parent)
+mvvm::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *instruction,
+                                                             mvvm::SessionItem *parent)
 {
   auto item = sequencergui::CreateInstructionItem(instruction->GetType());
 
@@ -152,7 +152,7 @@ ModelView::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t
   return next_parent;
 }
 
-void GUIObjectBuilder::Iterate(const instruction_t *instruction, ModelView::SessionItem *parent)
+void GUIObjectBuilder::Iterate(const instruction_t *instruction, mvvm::SessionItem *parent)
 {
   for (auto &instruction : instruction->ChildInstructions())
   {

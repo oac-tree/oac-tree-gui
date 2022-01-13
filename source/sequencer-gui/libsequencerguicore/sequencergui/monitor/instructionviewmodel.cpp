@@ -33,10 +33,10 @@
 namespace sequencergui
 {
 
-class InstructionRowStrategy : public ModelView::RowStrategyInterface
+class InstructionRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
-  explicit InstructionRowStrategy(const ModelView::item_setdata_function_t &set_func)
+  explicit InstructionRowStrategy(const mvvm::item_setdata_function_t &set_func)
       : m_set_func(set_func)
   {
   }
@@ -47,10 +47,10 @@ public:
     return result;
   }
 
-  std::vector<std::unique_ptr<ModelView::ViewItem>> ConstructRow(
-      ModelView::SessionItem *item) override
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(
+      mvvm::SessionItem *item) override
   {
-    std::vector<std::unique_ptr<ModelView::ViewItem>> result;
+    std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
     // For one SessionItem the row consisting of two ViewItems will be generated: one for
     // displayName, another for SessionItem's data (if defined).
@@ -60,27 +60,27 @@ public:
       return result;
     }
 
-    result.emplace_back(ModelView::CreateDisplayNameViewItem(item));
+    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
     if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
     {
-      result.emplace_back(ModelView::CreateDataViewItem(instruction->GetNameItem(), {}));
-      result.emplace_back(ModelView::CreateDataViewItem(instruction->GetStatusItem(), {}));
+      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetNameItem(), {}));
+      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetStatusItem(), {}));
     }
     return result;
   }
 
 private:
-  ModelView::item_setdata_function_t m_set_func;
+  mvvm::item_setdata_function_t m_set_func;
 };
 
-InstructionViewModel::InstructionViewModel(ModelView::ApplicationModel *model, QObject *parent)
+InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObject *parent)
     : ViewModel(parent)
 {
   // FIXME remove code duplications from PropertyViewModel, TopItemsViewModel
-  auto controller = std::make_unique<ModelView::ViewModelController>(model, this);
+  auto controller = std::make_unique<mvvm::ViewModelController>(model, this);
   model->Subscribe(controller.get());
-  controller->SetChildrenStrategy(std::make_unique<ModelView::TopItemsStrategy>());
+  controller->SetChildrenStrategy(std::make_unique<mvvm::TopItemsStrategy>());
 
   auto set_data = [model](auto item, auto data, auto role)
   { return model->SetData(item, data, role); };

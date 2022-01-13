@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 //! Base class for all variable items.
-class VariableItem : public ModelView::CompoundItem
+class VariableItem : public mvvm::CompoundItem
 {
 public:
   VariableItem(const std::string& item_type);

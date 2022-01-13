@@ -53,7 +53,7 @@ int UserController::GetUserChoice(const std::vector<std::string> &choices,
                                   const std::string &description)
 {
   // queued connection
-  emit ChoiceRequest(ModelView::Utils::GetStringList(choices), QString::fromStdString(description));
+  emit ChoiceRequest(mvvm::utils::GetStringList(choices), QString::fromStdString(description));
 
   auto result = m_choice_data.wait_and_pop();  // wait for the result
   return *result;

@@ -22,7 +22,7 @@
 
 #include <QWidget>
 
-namespace ModelView
+namespace mvvm
 {
 class AllItemsTreeView;
 class PropertyTreeView;
@@ -52,7 +52,7 @@ private:
   MonitorWorkspaceToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
 
-  ModelView::AllItemsTreeView* m_instruction_tree{nullptr};
+  mvvm::AllItemsTreeView* m_instruction_tree{nullptr};
 };
 
 }  // namespace sequi

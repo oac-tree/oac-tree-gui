@@ -52,7 +52,7 @@ private:
 };
 
 //! Represents Instructions.
-class InstructionContainerItem : public ModelView::CompoundItem
+class InstructionContainerItem : public mvvm::CompoundItem
 {
 public:
   static inline const std::string Type = "InstructionContainer";
@@ -63,7 +63,7 @@ public:
 
 //! Represents a Workspace.
 
-class WorkspaceItem : public ModelView::CompoundItem
+class WorkspaceItem : public mvvm::CompoundItem
 {
 public:
   static inline const std::string Type = "Workspace";
@@ -73,7 +73,7 @@ public:
 };
 
 //! Represents Procedure.
-class ProcedureItem : public ModelView::CompoundItem
+class ProcedureItem : public mvvm::CompoundItem
 {
 public:
   static inline const std::string Type = "Procedure";

@@ -16,12 +16,13 @@ yum install codac-core-7.0-qt5.x86_64
 git clone https://git.iter.org/scm/coa/cpp-mvvm.git
 
 # compile
-mkdir build; cd build
+mkdir <build>; cd <build>
 PATH=/opt/codac/qt5/bin:$PATH cmake <source>
 make -j4 && ctest
 ```
 
-It is perfectly fine not to install the library after the build. Thanks to CMake magic it will be discovered and used right from the `build` directory.
+Please note, that thanks to CMake magic (the magic is located in $HOME/.cmake directory), installation is optional. 
+Without installation, libraries will be discoverable right from the build directory.
 
 ### Build sequencer-gui
 

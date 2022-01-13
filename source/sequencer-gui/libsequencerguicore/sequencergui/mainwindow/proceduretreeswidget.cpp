@@ -35,8 +35,8 @@ namespace sequencergui
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new ExplorerToolBar)
-    , m_procedure_tree(new ModelView::TopItemsTreeView)
-    , m_property_tree(new ModelView::PropertyTreeView)
+    , m_procedure_tree(new mvvm::TopItemsTreeView)
+    , m_property_tree(new mvvm::PropertyTreeView)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -52,7 +52,7 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(splitter);
 
-  connect(m_procedure_tree, &ModelView::TopItemsTreeView::itemSelected,
+  connect(m_procedure_tree, &mvvm::TopItemsTreeView::itemSelected,
           [this](auto item) { m_property_tree->SetItem(item); });
 }
 

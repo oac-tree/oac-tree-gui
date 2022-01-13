@@ -189,7 +189,7 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
   }
 
   auto requested_types =
-      ModelView::Utils::GetStringList(mimeData->data(InstructionListWidget::piecesMimeType()));
+      mvvm::utils::GetStringList(mimeData->data(InstructionListWidget::piecesMimeType()));
 
   for (const auto &item_type : requested_types)
   {

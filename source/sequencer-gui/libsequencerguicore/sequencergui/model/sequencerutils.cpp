@@ -55,7 +55,7 @@ bool IsCompoundInstruction(const InstructionItem *instruction)
 bool IsDecoratorInstruction(const InstructionItem *instruction)
 {
   static const std::vector<std::string> domain_names = GetDomainDecoratorNames();
-  return ModelView::Utils::Contains(domain_names, instruction->GetDomainType());
+  return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
 }  // namespace sequi
