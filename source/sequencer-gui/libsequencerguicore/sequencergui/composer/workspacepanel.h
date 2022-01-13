@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Project       : Operational Applications UI Foundation
+ * Project       : Graphical User Interface for SUP Sequencer
  *
- * Description   : The model-view-viewmodel library of generic UI components
+ * Description   : Creation, execution and monitoring of the Sequencer procedures
  *
  * Author        : Gennady Pospelov (IO)
  *
