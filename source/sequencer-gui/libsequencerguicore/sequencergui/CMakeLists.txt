@@ -1,0 +1,6 @@
+add_subdirectory(composer)
+add_subdirectory(mainwindow)
+add_subdirectory(model)
+add_subdirectory(monitor)
+add_subdirectory(nodeeditor)
+add_subdirectory(resources)
