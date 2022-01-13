@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_ITEMCONSTANTS_H
-#define SEQUENCERGUI_MODEL_ITEMCONSTANTS_H
+#ifndef SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H
+#define SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H
 
 //! @file item_constants.h
 //! Collection of constants for sequencer items.
@@ -39,4 +39,4 @@ const std::string kIsRoot = "kIsRoot";
 
 }  // namespace sequi::ItemConstants
 
-#endif  // SEQUENCERGUI_MODEL_ITEMCONSTANTS_H
+#endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H

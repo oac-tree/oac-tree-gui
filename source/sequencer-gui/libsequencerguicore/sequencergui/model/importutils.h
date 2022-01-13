@@ -36,4 +36,4 @@ void ImportFromFile(const std::string& file_name, ProcedureItem* procedure_item)
 
 }  // namespace sequi
 
-#endif // SEQUENCERGUI_MODEL_IMPORTUTILS_H
+#endif  // SEQUENCERGUI_MODEL_IMPORTUTILS_H

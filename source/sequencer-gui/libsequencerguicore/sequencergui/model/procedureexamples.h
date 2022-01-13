@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_MODEL_PROCEDUREEXAMPLES_H
-#define MVVM_MODEL_PROCEDUREEXAMPLES_H
+#ifndef SEQUENCERGUI_MODEL_PROCEDUREEXAMPLES_H
+#define SEQUENCERGUI_MODEL_PROCEDUREEXAMPLES_H
 
 //! @file procedureexamples.h
 //! Collection of example procedures to populate the model for debugging purposes.
@@ -49,4 +49,4 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model);
 }  // namespace Examples
 }  // namespace sequi
 
-#endif  // MVVM_MODEL_PROCEDUREEXAMPLES_H
+#endif  // SEQUENCERGUI_MODEL_PROCEDUREEXAMPLES_H

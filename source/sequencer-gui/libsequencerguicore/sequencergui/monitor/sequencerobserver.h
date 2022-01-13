@@ -18,7 +18,7 @@
  *****************************************************************************/
 
 #ifndef SEQUENCERGUI_MONITOR_SEQUENCEROBSERVER_H
-#define SEQUENCERMONITORCORE_SEQUENCEROBSERVER_H
+#define SEQUENCERGUI_MONITOR_SEQUENCEROBSERVER_H
 
 #include "UserInterface.h"
 

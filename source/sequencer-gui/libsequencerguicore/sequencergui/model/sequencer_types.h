@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_SEQUENCER_SEQUENCER_TYPES_H
-#define MVVM_SEQUENCER_SEQUENCER_TYPES_H
+#ifndef SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H
+#define SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H
 
 //! @file sequencer_types.h
 //! Type aliases for main Sequencer types.
@@ -36,4 +36,4 @@ using instruction_t = sup::sequencer::Instruction;
 using variable_t = sup::sequencer::Variable;
 using runner_t = sup::sequencer::Runner;
 
-#endif  // MVVM_SEQUENCER_SEQUENCER_TYPES_H
+#endif  // SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H

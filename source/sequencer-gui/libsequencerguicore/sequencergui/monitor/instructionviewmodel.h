@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_VIEWMODEL_INSTRUCTIONVIEWMODEL_H
-#define MVVM_VIEWMODEL_INSTRUCTIONVIEWMODEL_H
+#ifndef SEQUENCERGUI_MONITOR_INSTRUCTIONVIEWMODEL_H
+#define SEQUENCERGUI_MONITOR_INSTRUCTIONVIEWMODEL_H
 
 #include "mvvm/viewmodel/viewmodel.h"
 
@@ -42,4 +42,4 @@ public:
 
 }  // namespace sequi
 
-#endif  // MVVM_VIEWMODEL_INSTRUCTIONVIEWMODEL_H
+#endif  // SEQUENCERGUI_MONITOR_INSTRUCTIONVIEWMODEL_H

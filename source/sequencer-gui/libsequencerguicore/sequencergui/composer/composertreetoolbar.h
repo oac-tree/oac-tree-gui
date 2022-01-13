@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_COMPOSERTREETOOLBAR_H
-#define SEQUENCERGUI_MAINWINDOW_COMPOSERTREETOOLBAR_H
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H
+#define SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H
 
 #include <QToolBar>
 #include <memory>
@@ -64,4 +64,4 @@ private:
 
 }  // namespace sequi
 
-#endif  // SEQUENCERGUI_MAINWINDOW_COMPOSERTREETOOLBAR_H
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H

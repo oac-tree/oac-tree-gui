@@ -64,4 +64,4 @@ public:
 
 }  // namespace sequi
 
-#endif  // SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+#endif  // SEQUENCERGUI_NODEEDITOR_POSITIONSTRATEGY_H

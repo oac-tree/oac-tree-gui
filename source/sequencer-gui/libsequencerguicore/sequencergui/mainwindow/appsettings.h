@@ -43,4 +43,4 @@ private:
 };
 }  // namespace sequi
 
-#endif  // SEQUENCERGUI_MAINWINDOW_COLLAPSIBLEWIDGET_H
+#endif  // SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H

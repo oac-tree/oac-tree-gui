@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_MONITOR_MESSAGEPANEL_H
-#define MVVM_MONITOR_MESSAGEPANEL_H
+#ifndef SEQUENCERGUI_MONITOR_MESSAGEPANEL_H
+#define SEQUENCERGUI_MONITOR_MESSAGEPANEL_H
 
 #include "sequencergui/mainwindow/collapsiblewidget.h"
 
@@ -42,4 +42,4 @@ private:
 
 }  // namespace sequi
 
-#endif  // MVVM_MONITOR_MESSAGEPANEL_H
+#endif  // SEQUENCERGUI_MONITOR_MESSAGEPANEL_H

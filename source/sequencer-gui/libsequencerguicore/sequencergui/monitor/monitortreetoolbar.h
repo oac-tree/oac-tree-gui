@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_MONITORTREETOOLBAR_H
-#define SEQUENCERGUI_MAINWINDOW_MONITORTREETOOLBAR_H
+#ifndef SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H
+#define SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H
 
 #include <QToolBar>
 #include <memory>
@@ -66,4 +66,4 @@ private:
 
 }  // namespace sequi
 
-#endif  // SEQUENCERGUI_MAINWINDOW_MONITORTREETOOLBAR_H
+#endif  // SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H

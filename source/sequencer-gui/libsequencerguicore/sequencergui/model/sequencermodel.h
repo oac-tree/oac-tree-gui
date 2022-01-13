@@ -49,4 +49,4 @@ private:
 
 }  // namespace sequi
 
-#endif // SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
+#endif  // SEQUENCERGUI_MODEL_SEQUENCERMODEL_H

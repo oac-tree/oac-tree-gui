@@ -65,4 +65,4 @@ private:
 
 }  // namespace NodeEditor
 
-#endif // SEQUENCERGUI_NODEEDITOR_NODECONTROLLER_H
+#endif  // SEQUENCERGUI_NODEEDITOR_NODECONTROLLER_H

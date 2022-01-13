@@ -81,4 +81,4 @@ const std::string kWaitTimeoutAttribute = "timeout";
 
 }  // namespace sequi::DomainConstants
 
-#endif // SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H
+#endif  // SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H

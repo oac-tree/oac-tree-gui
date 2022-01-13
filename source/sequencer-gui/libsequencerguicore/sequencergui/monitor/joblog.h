@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_MONITOR_JOBLOG_H
-#define MVVM_MONITOR_JOBLOG_H
+#ifndef SEQUENCERGUI_MONITOR_JOBLOG_H
+#define SEQUENCERGUI_MONITOR_JOBLOG_H
 
 #include "sequencergui/monitor/job_types.h"
 
@@ -54,4 +54,4 @@ private:
 
 }  // namespace sequi
 
-#endif  // MVVM_MONITOR_JOBLOG_H
+#endif  // SEQUENCERGUI_MONITOR_JOBLOG_H

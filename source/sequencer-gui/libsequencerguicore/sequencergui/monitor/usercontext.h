@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_MONITOR_USERCONTEXT_H
-#define MVVM_MONITOR_USERCONTEXT_H
+#ifndef SEQUENCERGUI_MONITOR_USERCONTEXT_H
+#define SEQUENCERGUI_MONITOR_USERCONTEXT_H
 
 #include <QStringList>
 #include <functional>
@@ -43,4 +43,4 @@ struct UserContext
 
 }  // namespace sequi
 
-#endif  // MVVM_MONITOR_USERCONTEXT_H
+#endif  // SEQUENCERGUI_MONITOR_USERCONTEXT_H

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MVVM_MONITOR_JOB_TYPES_H
-#define MVVM_MONITOR_JOB_TYPES_H
+#ifndef SEQUENCERGUI_MONITOR_JOB_TYPES_H
+#define SEQUENCERGUI_MONITOR_JOB_TYPES_H
 
 //! @file job_types.h
 //! Provide conveniece types for procedure execution in the JobManager.
@@ -60,4 +60,4 @@ enum class MessageType
 
 }  // namespace sequi
 
-#endif  // MVVM_MONITOR_JOB_TYPES_H
+#endif  // SEQUENCERGUI_MONITOR_JOB_TYPES_H
