@@ -32,7 +32,7 @@ namespace
 {
 //! Creates domain instruction corresponding to a given InstructionItem, and pushes it
 //! to a given parent. Return newly created domain instruction to a user.
-instruction_t* ProcessInstruction(const sequi::InstructionItem* instruction, instruction_t* parent)
+instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instruction, instruction_t* parent)
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
   auto ptr = domain_instruction.get();
@@ -45,7 +45,7 @@ instruction_t* ProcessInstruction(const sequi::InstructionItem* instruction, ins
 
 //! Creates domain instruction corresponding to a given InstructionItem, and pushes it
 //! to a given procedure. Return newly created domain instruction to a user.
-instruction_t* ProcessInstruction(const sequi::InstructionItem* instruction, procedure_t* procedure)
+instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instruction, procedure_t* procedure)
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
   auto ptr = domain_instruction.get();
@@ -58,11 +58,11 @@ instruction_t* ProcessInstruction(const sequi::InstructionItem* instruction, pro
 
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 DomainObjectBuilder::~DomainObjectBuilder() = default;
 
-void DomainObjectBuilder::Iterate(const sequi::InstructionItem* instruction, instruction_t* parent)
+void DomainObjectBuilder::Iterate(const sequencergui::InstructionItem* instruction, instruction_t* parent)
 {
   for (auto& instruction : instruction->GetInstructions())
   {

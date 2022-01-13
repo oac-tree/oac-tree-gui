@@ -33,7 +33,7 @@ namespace
 {
 
 //! Returns true if instruction has not been positioned yet.
-bool HasNoPosition(sequi::InstructionItem* instruction)
+bool HasNoPosition(sequencergui::InstructionItem* instruction)
 {
   const bool zero_x = std::abs(instruction->GetX()) < std::numeric_limits<double>::epsilon();
   const bool zero_y = std::abs(instruction->GetY()) < std::numeric_limits<double>::epsilon();
@@ -42,17 +42,17 @@ bool HasNoPosition(sequi::InstructionItem* instruction)
 
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 
 double GetAlignmentGridWidth()
 {
-  return sequi::ConnectableViewRectangle().width() * 1.4;
+  return sequencergui::ConnectableViewRectangle().width() * 1.4;
 }
 
 double GetAlignmentGridHeight()
 {
-  return sequi::ConnectableViewRectangle().height() * 1.4;
+  return sequencergui::ConnectableViewRectangle().height() * 1.4;
 }
 
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
@@ -107,14 +107,14 @@ void AlignTree(const QPointF& reference, InstructionContainerItem* container, bo
   }
 }
 
-void AlignInstructionTree(const QPointF& reference, sequi::InstructionItem* instruction, bool force)
+void AlignInstructionTree(const QPointF& reference, sequencergui::InstructionItem* instruction, bool force)
 {
-  auto positions = sequi::GetPositions(reference, instruction->GetInstructions().size(),
-                                       sequi::GetAlignmentGridWidth());
+  auto positions = sequencergui::GetPositions(reference, instruction->GetInstructions().size(),
+                                       sequencergui::GetAlignmentGridWidth());
   int index{0};
   for (const auto child : instruction->GetInstructions())
   {
-    QPointF child_pos(positions[index].x(), positions[index].y() + sequi::GetAlignmentGridHeight());
+    QPointF child_pos(positions[index].x(), positions[index].y() + sequencergui::GetAlignmentGridHeight());
     if (HasNoPosition(child) || force)
     {
       child->SetX(child_pos.x());

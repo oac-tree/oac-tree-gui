@@ -23,7 +23,7 @@
 #include <QStringList>
 #include <functional>
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Aggregates necessary information to communicate with the user.

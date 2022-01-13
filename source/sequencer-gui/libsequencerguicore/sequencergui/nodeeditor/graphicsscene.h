@@ -30,7 +30,7 @@ namespace ModelView
 class ViewItem;
 }  // namespace ModelView
 
-namespace sequi
+namespace sequencergui
 {
 class ConnectableView;
 class NodeController;

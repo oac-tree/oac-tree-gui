@@ -24,7 +24,7 @@
 
 #include "mvvm/utils/threadsafestack.h"
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Provides waiting logic for ProcedureRunner.

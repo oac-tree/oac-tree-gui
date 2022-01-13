@@ -24,7 +24,7 @@
 
 class QListWidget;
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Collapsible list with types of workspace variables.

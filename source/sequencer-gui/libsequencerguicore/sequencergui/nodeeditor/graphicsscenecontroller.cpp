@@ -31,7 +31,7 @@
 #include <QDebug>
 #include <map>
 
-namespace sequi
+namespace sequencergui
 {
 struct GraphicsSceneController::GraphicsSceneControllerImpl
 {

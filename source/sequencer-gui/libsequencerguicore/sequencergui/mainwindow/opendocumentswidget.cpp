@@ -36,7 +36,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 OpenDocumentsWidget::OpenDocumentsWidget(QWidget *parent)
     : CollapsibleWidget(parent), m_list_view(new QListView)

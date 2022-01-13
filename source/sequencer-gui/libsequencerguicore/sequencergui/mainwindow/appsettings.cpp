@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/appsettings.h"
 
-namespace sequi
+namespace sequencergui
 {
 
 AppSettings::AppSettings() : m_tree_style(BehaviorTreeStyle::kTopToBottom)

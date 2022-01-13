@@ -26,7 +26,7 @@ class QToolBar;
 class QLabel;
 class QAction;
 
-namespace sequi
+namespace sequencergui
 {
 //! Instrument tool bar with menu selector.
 

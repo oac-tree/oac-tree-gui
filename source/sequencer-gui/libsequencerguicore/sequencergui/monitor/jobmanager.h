@@ -25,7 +25,7 @@
 #include <QObject>
 #include <memory>
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 class InstructionItem;

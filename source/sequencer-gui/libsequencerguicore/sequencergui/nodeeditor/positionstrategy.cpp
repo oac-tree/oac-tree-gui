@@ -32,7 +32,7 @@ double port_radius()
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 void LeftRightPositionStrategy::UpdatePosition(ConnectableView *view)
 {

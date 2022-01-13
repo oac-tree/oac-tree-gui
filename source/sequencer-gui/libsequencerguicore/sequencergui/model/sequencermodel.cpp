@@ -24,7 +24,7 @@
 #include "mvvm/standarditems/containeritem.h"
 #include "mvvm/viewmodel/applicationmodel.h"
 
-namespace sequi
+namespace sequencergui
 {
 SequencerModel::SequencerModel() : ModelView::ApplicationModel("SequencerModel")
 {

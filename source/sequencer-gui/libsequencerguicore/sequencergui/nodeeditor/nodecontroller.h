@@ -29,7 +29,7 @@
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 
-namespace sequi
+namespace sequencergui
 {
 class NodeConnection;
 class NodePort;

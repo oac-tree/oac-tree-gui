@@ -23,20 +23,20 @@
 
 namespace
 {
-QColor GetColor(sequi::MessageType message_type)
+QColor GetColor(sequencergui::MessageType message_type)
 {
-  static const std::map<sequi::MessageType, std::string> message_to_colorname = {
-      {sequi::MessageType::kDefault, "gray"},
-      {sequi::MessageType::kSuccess, "dodgerblue"},
-      {sequi::MessageType::kHighlight, "darkorchid"},
-      {sequi::MessageType::kWarning, "orange"},
-      {sequi::MessageType::kError, "firebrick"}};
+  static const std::map<sequencergui::MessageType, std::string> message_to_colorname = {
+      {sequencergui::MessageType::kDefault, "gray"},
+      {sequencergui::MessageType::kSuccess, "dodgerblue"},
+      {sequencergui::MessageType::kHighlight, "darkorchid"},
+      {sequencergui::MessageType::kWarning, "orange"},
+      {sequencergui::MessageType::kError, "firebrick"}};
   auto it = message_to_colorname.find(message_type);
   return it == message_to_colorname.end() ? QColor(Qt::red) : QColor(it->second.c_str());
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 
 JobLog::JobLog() : m_message_panel(nullptr) {}

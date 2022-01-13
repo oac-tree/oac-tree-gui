@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for items from instructionitems.h
 
@@ -79,7 +79,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
 TEST_F(StandardInstructionItemsTest, CopyItem)
 {
   // Correctly initialised item
-  sequi::CopyItem item;
+  sequencergui::CopyItem item;
   EXPECT_EQ(item.GetInput(), std::string());
   item.SetInput("abc");
   EXPECT_EQ(item.GetInput(), std::string("abc"));
@@ -162,7 +162,7 @@ TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
 TEST_F(StandardInstructionItemsTest, FallbackItem)
 {
   // Correctly initialised item
-  sequi::FallbackItem item;
+  sequencergui::FallbackItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   auto sequence = item.InsertItem<SequenceItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
@@ -204,7 +204,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
   ForceSuccessItem item;
 
   auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), sequi::DomainConstants::kForceSuccessInstructionType);
+  EXPECT_EQ(domain_instruction->GetType(), sequencergui::DomainConstants::kForceSuccessInstructionType);
 }
 
 // ----------------------------------------------------------------------------
@@ -262,7 +262,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 TEST_F(StandardInstructionItemsTest, InputItem)
 {
   // Correctly initialised item
-  sequi::InputItem item;
+  sequencergui::InputItem item;
   EXPECT_TRUE(item.GetDescription().empty());
   EXPECT_TRUE(item.GetTargetVariableName().empty());
 }
@@ -299,7 +299,7 @@ TEST_F(StandardInstructionItemsTest, InputItemToDomain)
 TEST_F(StandardInstructionItemsTest, InverterItem)
 {
   // Correctly initialised item
-  sequi::InverterItem item;
+  sequencergui::InverterItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to inverter
@@ -311,10 +311,10 @@ TEST_F(StandardInstructionItemsTest, InverterItem)
 TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
 {
   // Correctly initialised item
-  sequi::InverterItem item;
+  sequencergui::InverterItem item;
 
   auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), sequi::DomainConstants::kInverterInstructionType);
+  EXPECT_EQ(domain_instruction->GetType(), sequencergui::DomainConstants::kInverterInstructionType);
 }
 
 // ----------------------------------------------------------------------------
@@ -363,7 +363,7 @@ TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
 TEST_F(StandardInstructionItemsTest, OutputItem)
 {
   // Correctly initialised item
-  sequi::OutputItem item;
+  sequencergui::OutputItem item;
   EXPECT_TRUE(item.GetDescription().empty());
   EXPECT_TRUE(item.GetSourceVariableName().empty());
 }
@@ -447,7 +447,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
 TEST_F(StandardInstructionItemsTest, RepeatItem)
 {
   // Correctly initialised item
-  sequi::RepeatItem item;
+  sequencergui::RepeatItem item;
   EXPECT_EQ(item.GetRepeatCount(), -1);
 
   item.SetRepeatCount(42);

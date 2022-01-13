@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Testing methods from ShallNotBeNamedValueUtils
 

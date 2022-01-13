@@ -30,7 +30,7 @@
 #include <QPushButton>
 #include <QToolButton>
 
-namespace sequi
+namespace sequencergui
 {
 ComposerTreeToolBar::ComposerTreeToolBar(QWidget *parent)
     : QToolBar(parent)
@@ -106,7 +106,7 @@ std::unique_ptr<QMenu> ComposerTreeToolBar::CreateInsertAfterMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = ModelView::Utils::GetStringList(sequi::DomainUtils::GetDomainInstructionNames());
+  auto names = ModelView::Utils::GetStringList(sequencergui::DomainUtils::GetDomainInstructionNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);
@@ -122,7 +122,7 @@ std::unique_ptr<QMenu> ComposerTreeToolBar::CreateInsertIntoMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = ModelView::Utils::GetStringList(sequi::DomainUtils::GetDomainInstructionNames());
+  auto names = ModelView::Utils::GetStringList(sequencergui::DomainUtils::GetDomainInstructionNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);

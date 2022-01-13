@@ -43,7 +43,7 @@ const QString size_key = "size";
 const QString pos_key = "pos";
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 MainWindow::MainWindow()
     : m_model(std::make_unique<SequencerModel>())

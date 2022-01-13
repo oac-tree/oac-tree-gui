@@ -36,7 +36,7 @@
 #include <thread>
 #include <tuple>
 
-using namespace sequi;
+using namespace sequencergui;
 using msec = std::chrono::milliseconds;
 
 //! Tests for JobContext class.

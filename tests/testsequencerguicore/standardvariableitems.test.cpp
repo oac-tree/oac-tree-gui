@@ -27,7 +27,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for items in standardvariableitems.h
 
@@ -122,7 +122,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   local_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(DomainConstants::kFileAttribute, expected_file_name);
 
-  sequi::FileVariableItem local_variable_item;
+  sequencergui::FileVariableItem local_variable_item;
   local_variable_item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(local_variable_item.GetName(), expected_name);
@@ -134,7 +134,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   const std::string expected_name("abc");
   const std::string expected_file_name("edf");
 
-  sequi::FileVariableItem item;
+  sequencergui::FileVariableItem item;
   item.SetName(expected_name);
   item.SetFileName(expected_file_name);
 
@@ -148,7 +148,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
 
 TEST_F(StandardVariableItemsTest, LocalVariableItem)
 {
-  sequi::LocalVariableItem item;
+  sequencergui::LocalVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetJsonType().empty());
   EXPECT_TRUE(item.GetJsonValue().empty());
@@ -174,7 +174,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   local_variable->AddAttribute("type", expected_type);
   local_variable->AddAttribute("value", expected_value);
 
-  sequi::LocalVariableItem local_variable_item;
+  sequencergui::LocalVariableItem local_variable_item;
   local_variable_item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(local_variable_item.GetName(), expected_name);
@@ -188,7 +188,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  sequi::LocalVariableItem item;
+  sequencergui::LocalVariableItem item;
   item.SetName(expected_name);
   item.SetJsonType(expected_type);
   item.SetJsonValue(expected_value);
@@ -210,7 +210,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomainMissedValue)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("");
 
-  sequi::LocalVariableItem item;
+  sequencergui::LocalVariableItem item;
   item.SetName(expected_name);
   item.SetJsonType(expected_type);
   item.SetJsonValue(expected_value);

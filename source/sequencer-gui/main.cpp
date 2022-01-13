@@ -39,7 +39,7 @@ int main(int argc, char** argv)
   sequi::DomainUtils::LoadPlugins();
 #endif
 
-  sequi::MainWindow win;
+  sequencergui::MainWindow win;
 
   win.show();
 

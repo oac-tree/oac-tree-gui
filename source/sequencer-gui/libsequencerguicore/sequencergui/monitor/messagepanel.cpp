@@ -27,7 +27,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 MessagePanel::MessagePanel(QWidget *parent) : CollapsibleWidget(parent), m_text_edit(new QTextEdit)

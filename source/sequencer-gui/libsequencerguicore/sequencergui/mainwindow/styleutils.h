@@ -25,7 +25,7 @@
 class QToolBar;
 class QIcon;
 
-namespace sequi::StyleUtils
+namespace sequencergui::StyleUtils
 {
 
 //! Size of tolbar icons.

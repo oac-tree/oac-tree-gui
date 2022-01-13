@@ -27,7 +27,7 @@ class QToolButton;
 class QLineEdit;
 class QMenu;
 
-namespace sequi
+namespace sequencergui
 {
 //! A toolbar on top of MonitorTreeWidget with control elements to start/stop execution.
 

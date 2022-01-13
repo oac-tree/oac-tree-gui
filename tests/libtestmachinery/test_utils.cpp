@@ -40,7 +40,7 @@ namespace TestUtils
 {
 std::string GetTestOutputDir()
 {
-  return sequi::TestConfig::TestOutputDir();  // defined in auto-generated testconfig.h
+  return sequencergui::TestConfig::TestOutputDir();  // defined in auto-generated testconfig.h
 }
 
 std::string CreateXMLDocumentString(const std::string &body)

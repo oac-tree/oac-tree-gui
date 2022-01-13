@@ -33,7 +33,7 @@
 #include <QToolBar>
 #include <QTreeView>
 
-namespace sequi
+namespace sequencergui
 {
 
 SettingsView::SettingsView(QWidget *parent)

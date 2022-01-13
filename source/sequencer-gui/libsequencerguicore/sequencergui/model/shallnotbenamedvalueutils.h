@@ -33,7 +33,7 @@ class AnyValue;
 
 using anyvalue_t = ccs::types::AnyValue;
 
-namespace sequi::DomainUtils
+namespace sequencergui::DomainUtils
 {
 
 std::string GetJsonString(const anyvalue_t* value);

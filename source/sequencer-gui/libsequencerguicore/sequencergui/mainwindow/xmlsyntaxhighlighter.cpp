@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/xmlsyntaxhighlighter.h"
 
-namespace sequi
+namespace sequencergui
 {
 XmlSyntaxHighlighter::XmlSyntaxHighlighter(QObject* parent) : QSyntaxHighlighter(parent)
 {

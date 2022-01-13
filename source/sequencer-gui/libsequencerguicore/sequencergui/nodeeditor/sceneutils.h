@@ -30,7 +30,7 @@ class QColor;
 class QRectF;
 class QPointF;
 
-namespace sequi
+namespace sequencergui
 {
 class InstructionContainerItem;
 class InstructionItem;

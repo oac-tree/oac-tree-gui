@@ -22,7 +22,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
-namespace sequi::Examples
+namespace sequencergui::Examples
 {
 
 ProcedureItem* AddCopyProcedure(SequencerModel* model)

@@ -45,7 +45,7 @@ bool IsProcedureFile(const QFileInfo &info)
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 FileTreeView::FileTreeView(QWidget *parent)
     : QWidget(parent)

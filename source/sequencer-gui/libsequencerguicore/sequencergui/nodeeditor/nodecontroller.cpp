@@ -33,7 +33,7 @@ const bool event_was_handled = true;
 const bool event_was_ignored = false;
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 NodeController::NodeController(QGraphicsScene* scene) : m_scene(scene)
 {

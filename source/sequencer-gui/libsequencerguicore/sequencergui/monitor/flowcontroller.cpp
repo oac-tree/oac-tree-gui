@@ -27,7 +27,7 @@ namespace
 const int kMakeStepFlag{42};
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 
 void FlowController::SetWaitingMode(WaitingMode waiting_mode)

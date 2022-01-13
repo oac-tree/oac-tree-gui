@@ -21,7 +21,7 @@
 
 #include "mvvm/widgets/widgetutils.h"
 
-namespace sequi
+namespace sequencergui
 {
 
 UserController::UserController(QObject *parent) : QObject(parent)

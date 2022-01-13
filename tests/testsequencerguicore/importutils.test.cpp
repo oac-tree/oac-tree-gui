@@ -57,11 +57,11 @@ TEST_F(ImportUtilsTest, ProcedureWithSingleWait)
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
   TestUtils::CreateTextFile(file_name, CreateProcedureString(body));
 
-  sequi::ProcedureItem procedure_item;
-  sequi::ImportFromFile(file_name, &procedure_item);
+  sequencergui::ProcedureItem procedure_item;
+  sequencergui::ImportFromFile(file_name, &procedure_item);
 
   auto container = procedure_item.GetInstructionContainer();
-  auto wait_item = container->GetItem<sequi::WaitItem>("");
+  auto wait_item = container->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
 
@@ -79,10 +79,10 @@ TEST_F(ImportUtilsTest, ProcedureWithSingleVariable)
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
   TestUtils::CreateTextFile(file_name, CreateProcedureString(body));
 
-  sequi::ProcedureItem procedure_item;
-  sequi::ImportFromFile(file_name, &procedure_item);
+  sequencergui::ProcedureItem procedure_item;
+  sequencergui::ImportFromFile(file_name, &procedure_item);
 
-  auto variable_item = procedure_item.GetWorkspace()->GetItem<sequi::LocalVariableItem>("");
+  auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
   EXPECT_EQ(variable_item->GetJsonType(), std::string(R"({"type":"uint32"})"));
   EXPECT_EQ(variable_item->GetJsonValue(), std::string("7"));
 }

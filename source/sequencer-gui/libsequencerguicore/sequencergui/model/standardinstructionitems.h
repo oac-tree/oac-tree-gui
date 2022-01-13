@@ -25,7 +25,7 @@
 
 #include "sequencergui/model/instructionitem.h"
 
-namespace sequi
+namespace sequencergui
 {
 //! Represent Condition instruction.
 class ConditionItem : public InstructionItem

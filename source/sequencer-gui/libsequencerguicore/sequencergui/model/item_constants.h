@@ -25,7 +25,7 @@
 
 #include <string>
 
-namespace sequi::ItemConstants
+namespace sequencergui::ItemConstants
 {
 
 //! Constants to register property items.

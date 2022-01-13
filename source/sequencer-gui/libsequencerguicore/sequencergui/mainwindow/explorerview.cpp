@@ -29,7 +29,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 ExplorerView::ExplorerView(QWidget *parent)
     : QWidget(parent)

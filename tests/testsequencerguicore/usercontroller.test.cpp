@@ -28,7 +28,7 @@
 #include <future>
 #include <iostream>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for UserController class.
 

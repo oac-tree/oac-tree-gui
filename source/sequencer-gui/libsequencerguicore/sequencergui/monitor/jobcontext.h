@@ -28,7 +28,7 @@
 #include <memory>
 #include <functional>
 
-namespace sequi
+namespace sequencergui
 {
 class ProcedureItem;
 class ProcedureRunner;
@@ -78,7 +78,7 @@ public:
   SequencerModel* GetExpandedModel();
 
 signals:
-  void InstructionStatusChanged(sequi::InstructionItem* instruction);
+  void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
   void onInstructionStatusChange(const instruction_t* instruction);

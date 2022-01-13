@@ -31,7 +31,7 @@
 #include <QPointF>
 #include <QRectF>
 
-using namespace sequi;
+using namespace sequencergui;
 
 namespace
 {

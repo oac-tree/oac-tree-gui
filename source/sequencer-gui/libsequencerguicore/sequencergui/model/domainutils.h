@@ -33,7 +33,7 @@
 #include <vector>
 #include <map>
 
-namespace sequi::DomainUtils
+namespace sequencergui::DomainUtils
 {
 
 std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain_name);

@@ -32,7 +32,7 @@
 #include <mutex>
 #include <thread>
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerObserver;
 

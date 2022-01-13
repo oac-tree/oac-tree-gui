@@ -26,7 +26,7 @@
 
 #include <iostream>
 #include <stdexcept>
-namespace sequi
+namespace sequencergui
 {
 void ImportFromFile(const std::string &file_name, ProcedureItem *procedure_item)
 {

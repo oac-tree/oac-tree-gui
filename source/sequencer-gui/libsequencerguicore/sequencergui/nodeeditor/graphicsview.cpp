@@ -23,7 +23,7 @@
 
 #include <QKeyEvent>
 
-namespace sequi
+namespace sequencergui
 {
 GraphicsView::GraphicsView(GraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent)
 {

@@ -29,7 +29,7 @@
 #include "mvvm/model/taginfo.h"
 #include "mvvm/utils/stringutils.h"
 
-namespace sequi
+namespace sequencergui
 {
 // ----------------------------------------------------------------------------
 // InstructionItem

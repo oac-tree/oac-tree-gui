@@ -34,7 +34,7 @@ namespace
 const int kDefaultZoomLevel = 100;
 }
 
-namespace sequi
+namespace sequencergui
 {
 NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
     : QToolBar(parent)

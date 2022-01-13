@@ -30,7 +30,7 @@ namespace ModelView
 class MainVerticalBarWidget;
 }
 
-namespace sequi
+namespace sequencergui
 {
 
 class SequencerXMLView;

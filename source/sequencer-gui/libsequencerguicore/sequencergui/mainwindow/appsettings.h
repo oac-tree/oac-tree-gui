@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H
 #define SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H
 
-namespace sequi
+namespace sequencergui
 {
 
 enum class BehaviorTreeStyle

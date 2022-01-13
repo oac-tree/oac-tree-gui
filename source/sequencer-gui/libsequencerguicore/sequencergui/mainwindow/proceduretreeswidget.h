@@ -28,7 +28,7 @@ class TopItemsTreeView;
 class PropertyTreeView;
 }  // namespace ModelView
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 class ExplorerToolBar;

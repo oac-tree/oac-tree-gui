@@ -30,7 +30,7 @@ class PropertyTreeView;
 
 class QSplitter;
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 class MonitorWorkspaceToolBar;

@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace sequi
+namespace sequencergui
 {
 
 class MessagePanel;

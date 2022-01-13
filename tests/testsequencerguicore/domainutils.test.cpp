@@ -26,7 +26,7 @@
 #include <chrono>
 #include <future>
 
-using namespace sequi;
+using namespace sequencergui;
 
 class DomainUtilsTest : public ::testing::Test
 {

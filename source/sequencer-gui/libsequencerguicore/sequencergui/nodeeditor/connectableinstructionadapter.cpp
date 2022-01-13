@@ -36,7 +36,7 @@ const std::string ypos_attr = "ypos";
 
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 ConnectableInstructionAdapter::ConnectableInstructionAdapter(InstructionItem *instruction)
     : m_instruction(instruction)

@@ -34,7 +34,7 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)

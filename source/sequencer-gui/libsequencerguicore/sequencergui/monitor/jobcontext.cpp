@@ -38,7 +38,7 @@ std::string GetStatus(const instruction_t *instruction)
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 
 JobContext::JobContext(ProcedureItem *procedure_item, QObject *parent)

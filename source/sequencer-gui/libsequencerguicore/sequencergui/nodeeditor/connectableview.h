@@ -23,7 +23,7 @@
 #include <QGraphicsItem>
 #include <memory>
 
-namespace sequi
+namespace sequencergui
 {
 class ConnectableInstructionAdapter;
 class ChildPort;

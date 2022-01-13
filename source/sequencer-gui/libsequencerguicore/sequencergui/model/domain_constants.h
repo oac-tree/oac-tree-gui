@@ -27,7 +27,7 @@
 
 #include <string>
 
-namespace sequi::DomainConstants
+namespace sequencergui::DomainConstants
 {
 // instructions
 const std::string kConditionInstructionType = "Condition";

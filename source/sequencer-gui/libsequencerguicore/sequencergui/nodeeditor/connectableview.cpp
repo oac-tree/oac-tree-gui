@@ -44,7 +44,7 @@ QRectF label_rectangle(const QRectF& rect)
 
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 ConnectableView::ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> item)
     : m_item(std::move(item))

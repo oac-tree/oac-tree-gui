@@ -24,7 +24,7 @@
 
 class QSplitter;
 
-namespace sequi
+namespace sequencergui
 {
 class ExplorerToolBar;
 class OpenDocumentsWidget;

@@ -24,7 +24,7 @@
 
 #include "mvvm/model/compounditem.h"
 
-namespace sequi
+namespace sequencergui
 {
 //! Base class for all instruction items.
 class InstructionItem : public ModelView::CompoundItem

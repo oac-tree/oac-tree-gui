@@ -40,7 +40,7 @@ QPixmap createPixmap()
   QPainter painter(&pixmap);
   painter.setRenderHint(QPainter::Antialiasing);
   painter.setPen(Qt::white);
-  painter.setBrush(sequi::ConnectableViewGradient(QColor(Qt::gray), rect));
+  painter.setBrush(sequencergui::ConnectableViewGradient(QColor(Qt::gray), rect));
   painter.drawRoundedRect(rect, 5, 5);
   return pixmap;
 }
@@ -51,7 +51,7 @@ const int PixmapRole = Qt::UserRole + 1;
 const int column_width = 160;
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 InstructionListWidget::InstructionListWidget(QWidget* parent) : QListWidget(parent)
 {

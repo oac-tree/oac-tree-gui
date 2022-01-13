@@ -27,7 +27,7 @@ namespace ModelView
 class ContainerItem;
 }
 
-namespace sequi
+namespace sequencergui
 {
 class InstructionItem;
 

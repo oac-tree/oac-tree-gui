@@ -26,7 +26,7 @@ class QTreeView;
 class QFileSystemModel;
 class QLabel;
 
-namespace sequi
+namespace sequencergui
 {
 //! Simple file browser with bread crumb on top, and tree view at the bottom.
 class FileTreeView : public QWidget

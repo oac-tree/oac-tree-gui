@@ -24,7 +24,7 @@
 #include <QSyntaxHighlighter>
 #include <QVector>
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Borrowed from https://github.com/d1vanov/basic-xml-syntax-highlighter

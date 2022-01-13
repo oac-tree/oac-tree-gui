@@ -28,7 +28,7 @@
 
 #include <stdexcept>
 
-namespace sequi
+namespace sequencergui
 {
 
 void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
@@ -61,7 +61,7 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
 
   for (auto variable : procedure->GetWorkspace()->GetVariables())
   {
-    auto item = sequi::CreateVariableItem(variable->GetType());
+    auto item = sequencergui::CreateVariableItem(variable->GetType());
     Save(variable, item.get());
     item->InitFromDomain(variable);
     workspace->InsertItem(std::move(item), {"", -1});
@@ -142,7 +142,7 @@ void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *proce
 ModelView::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *instruction,
                                                              ModelView::SessionItem *parent)
 {
-  auto item = sequi::CreateInstructionItem(instruction->GetType());
+  auto item = sequencergui::CreateInstructionItem(instruction->GetType());
 
   Save(instruction, item.get());
 

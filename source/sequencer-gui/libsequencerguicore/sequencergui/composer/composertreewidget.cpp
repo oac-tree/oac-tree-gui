@@ -35,7 +35,7 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
     : QWidget(parent)

@@ -23,7 +23,7 @@
 #include "sequencergui/model/shallnotbenamedvalueutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
-namespace sequi
+namespace sequencergui
 {
 SequencerObserver::SequencerObserver(ProcedureRunner *procedure_runner)
     : m_procedure_runner(procedure_runner)

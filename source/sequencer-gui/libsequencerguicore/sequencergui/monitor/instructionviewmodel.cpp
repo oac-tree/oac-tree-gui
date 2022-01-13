@@ -30,7 +30,7 @@
 #include "mvvm/viewmodel/viewmodelcontroller.h"
 #include "mvvm/viewmodelbase/viewitem.h"
 
-namespace sequi
+namespace sequencergui
 {
 
 class InstructionRowStrategy : public ModelView::RowStrategyInterface

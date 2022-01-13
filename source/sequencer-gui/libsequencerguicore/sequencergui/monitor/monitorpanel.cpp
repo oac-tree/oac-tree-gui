@@ -28,7 +28,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 MonitorPanel::MonitorPanel(QWidget *parent)

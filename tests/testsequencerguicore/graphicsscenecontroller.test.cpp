@@ -31,7 +31,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for GraphicsSceneController class.
 

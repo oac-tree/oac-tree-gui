@@ -30,7 +30,7 @@ const auto duration = [](auto time_interval)
 { return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
 }
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for FlowController class.
 

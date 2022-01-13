@@ -25,7 +25,7 @@
 #include <memory>
 #include <functional>
 
-namespace sequi
+namespace sequencergui
 {
 class GraphicsScene;
 class SequencerModel;

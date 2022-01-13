@@ -32,7 +32,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 ComposerPanel::ComposerPanel(QWidget *parent)

@@ -36,15 +36,15 @@ const std::string kChildInstructions = "kChildInstructions";
 
 std::vector<std::string> GetDomainDecoratorNames()
 {
-  std::vector<std::string> result{sequi::DomainConstants::kForceSuccessInstructionType,
-                                  sequi::DomainConstants::kIncludeInstructionType,
-                                  sequi::DomainConstants::kRepeatInstructionType,
-                                  sequi::DomainConstants::kInverterInstructionType};
+  std::vector<std::string> result{sequencergui::DomainConstants::kForceSuccessInstructionType,
+                                  sequencergui::DomainConstants::kIncludeInstructionType,
+                                  sequencergui::DomainConstants::kRepeatInstructionType,
+                                  sequencergui::DomainConstants::kInverterInstructionType};
   return result;
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 
 bool IsCompoundInstruction(const InstructionItem *instruction)

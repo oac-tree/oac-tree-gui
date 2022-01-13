@@ -27,7 +27,7 @@ namespace ModelView
 class ApplicationModel;
 }
 
-namespace sequi
+namespace sequencergui
 {
 
 //! View model to show instruction tree with three columns: type, name, status

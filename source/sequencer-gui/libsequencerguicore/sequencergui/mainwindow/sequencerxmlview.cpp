@@ -64,7 +64,7 @@ bool invoke_and_catch(T method)
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 SequencerXMLView::SequencerXMLView(QWidget *parent)
     : QWidget(parent)

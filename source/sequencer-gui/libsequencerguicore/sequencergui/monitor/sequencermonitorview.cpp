@@ -33,7 +33,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 SequencerMonitorView::SequencerMonitorView(QWidget *parent)

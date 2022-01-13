@@ -22,7 +22,7 @@
 
 #include "sequencergui/mainwindow/collapsiblewidget.h"
 
-namespace sequi
+namespace sequencergui
 {
 class InstructionListWidget;
 

@@ -41,7 +41,7 @@ QString GetDelayText(int delay)
 }
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
     : QToolBar(parent)

@@ -36,7 +36,7 @@ double port_radius()
 
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 NodePort::NodePort(QGraphicsItem* parent, const PortInfo& info)
     : QGraphicsPathItem(parent), m_label(new QGraphicsTextItem(this)), m_portInfo(info)

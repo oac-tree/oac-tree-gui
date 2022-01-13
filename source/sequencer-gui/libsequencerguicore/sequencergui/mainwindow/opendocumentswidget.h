@@ -29,7 +29,7 @@ class ViewModel;
 
 class QListView;
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 class ProcedureItem;

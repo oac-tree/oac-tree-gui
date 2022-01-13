@@ -23,7 +23,7 @@
 
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 

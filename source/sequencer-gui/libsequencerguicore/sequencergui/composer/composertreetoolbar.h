@@ -28,7 +28,7 @@ class QLabel;
 class QMenu;
 class QPushButton;
 
-namespace sequi
+namespace sequencergui
 {
 //! A toolbar on top of ComposerTreeWidget with control elements to add/remove instructions or
 //! variables.

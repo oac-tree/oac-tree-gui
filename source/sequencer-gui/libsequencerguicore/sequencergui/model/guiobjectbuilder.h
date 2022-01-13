@@ -30,7 +30,7 @@ namespace ModelView
 class SessionItem;
 }
 
-namespace sequi
+namespace sequencergui
 {
 class ProcedureItem;
 class InstructionContainerItem;

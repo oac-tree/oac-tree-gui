@@ -29,7 +29,7 @@
 #include <QGraphicsObject>
 #include <QList>
 
-namespace sequi
+namespace sequencergui
 {
 class NodeConnection;
 class ConnectableView;

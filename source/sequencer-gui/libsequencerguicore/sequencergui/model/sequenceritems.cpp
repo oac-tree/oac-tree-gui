@@ -25,7 +25,7 @@
 
 #include "mvvm/model/itemutils.h"
 
-namespace sequi
+namespace sequencergui
 {
 // ----------------------------------------------------------------------------
 // UnknownInstructionItem

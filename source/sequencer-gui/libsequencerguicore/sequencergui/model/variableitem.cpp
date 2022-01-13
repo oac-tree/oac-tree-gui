@@ -24,7 +24,7 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
 
-namespace sequi
+namespace sequencergui
 {
 // ----------------------------------------------------------------------------
 // VariableItem

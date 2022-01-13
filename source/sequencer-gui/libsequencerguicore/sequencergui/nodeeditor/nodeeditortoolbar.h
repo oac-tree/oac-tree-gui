@@ -27,7 +27,7 @@ class QButtonGroup;
 class QToolButton;
 class QMenu;
 
-namespace sequi
+namespace sequencergui
 {
 //! Instrument tool bar on top of NodeEditor
 

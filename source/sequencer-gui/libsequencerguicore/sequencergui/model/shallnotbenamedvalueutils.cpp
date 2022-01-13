@@ -101,7 +101,7 @@ std::map<std::string, ParseFunction> &GetParserMap()
 
 }  // namespace
 
-namespace sequi::DomainUtils
+namespace sequencergui::DomainUtils
 {
 
 std::string GetJsonString(const anyvalue_t *value)

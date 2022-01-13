@@ -29,7 +29,7 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 MonitorWorkspaceWidget::MonitorWorkspaceWidget(QWidget *parent)

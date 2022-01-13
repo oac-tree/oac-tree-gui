@@ -24,7 +24,7 @@
 
 class QKeyEvent;
 
-namespace sequi
+namespace sequencergui
 {
 class GraphicsScene;
 

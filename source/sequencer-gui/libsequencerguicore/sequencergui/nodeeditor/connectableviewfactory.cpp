@@ -24,7 +24,7 @@
 #include "sequencergui/nodeeditor/connectableview.h"
 #include "sequencergui/nodeeditor/positionstrategy.h"
 
-namespace sequi
+namespace sequencergui
 {
 
 ConnectableViewFactory::ConnectableViewFactory() : m_app_settings(std::make_unique<AppSettings>())

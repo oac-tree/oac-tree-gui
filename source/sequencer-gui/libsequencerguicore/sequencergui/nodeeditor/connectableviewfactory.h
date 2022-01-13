@@ -24,7 +24,7 @@
 
 #include <memory>
 
-namespace sequi
+namespace sequencergui
 {
 
 class AppSettings;

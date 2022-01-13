@@ -24,7 +24,7 @@
 
 class QTextEdit;
 
-namespace sequi
+namespace sequencergui
 {
 class XmlSyntaxHighlighter;
 class ExplorerToolBar;

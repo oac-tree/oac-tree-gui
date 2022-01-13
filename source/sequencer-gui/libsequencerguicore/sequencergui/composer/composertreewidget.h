@@ -35,7 +35,7 @@ class PropertyTreeView;
 class AllItemsTreeView;
 }  // namespace ModelView
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 class InstructionItem;

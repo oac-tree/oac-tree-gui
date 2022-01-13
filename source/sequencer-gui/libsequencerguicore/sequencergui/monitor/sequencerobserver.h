@@ -22,7 +22,7 @@
 
 #include "UserInterface.h"
 
-namespace sequi
+namespace sequencergui
 {
 class ProcedureRunner;
 

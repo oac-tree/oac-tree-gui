@@ -25,7 +25,7 @@
 class QKeyEvent;
 class QToolBar;
 
-namespace sequi
+namespace sequencergui
 {
 class GraphicsView;
 class GraphicsScene;

@@ -32,7 +32,7 @@
 
 #include <string>
 
-namespace sequi
+namespace sequencergui
 {
 //! Represents unknown instruction.
 class UnknownInstructionItem : public InstructionItem

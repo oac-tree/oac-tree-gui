@@ -33,7 +33,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for JobManager.
 

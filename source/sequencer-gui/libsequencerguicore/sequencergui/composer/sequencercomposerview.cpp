@@ -28,7 +28,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 SequencerComposerView::SequencerComposerView(QWidget *parent)
     : QWidget(parent)

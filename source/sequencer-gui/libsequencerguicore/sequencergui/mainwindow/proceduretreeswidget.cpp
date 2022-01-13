@@ -30,7 +30,7 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)

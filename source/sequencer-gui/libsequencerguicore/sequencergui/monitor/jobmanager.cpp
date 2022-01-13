@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QInputDialog>
 
-namespace sequi
+namespace sequencergui
 {
 
 JobManager::JobManager(QObject *parent)

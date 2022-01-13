@@ -26,7 +26,7 @@
 
 #include <QObject>
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Provides user response for ProcedureRunner using callbacks.

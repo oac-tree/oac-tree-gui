@@ -27,7 +27,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 ExplorerNarrowToolBar::ExplorerNarrowToolBar(QWidget *parent)
     : QFrame(parent)

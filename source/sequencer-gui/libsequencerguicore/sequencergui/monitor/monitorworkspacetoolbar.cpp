@@ -27,7 +27,7 @@
 #include <QPushButton>
 #include <QToolButton>
 
-namespace sequi
+namespace sequencergui
 {
 MonitorWorkspaceToolBar::MonitorWorkspaceToolBar(QWidget *parent) : QToolBar(parent)
 {

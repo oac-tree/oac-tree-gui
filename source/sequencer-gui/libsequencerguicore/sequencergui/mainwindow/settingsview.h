@@ -27,7 +27,7 @@ class QListWidget;
 class QStackedWidget;
 class QTabWidget;
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 

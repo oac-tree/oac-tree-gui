@@ -25,7 +25,7 @@
 
 #include "sequencergui/model/variableitem.h"
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Represent ChannelAccessVariable.

@@ -42,15 +42,15 @@ const double scene_origin_y{0.0};
 
 const QRectF default_scene_rect{QPointF{scene_origin_x, scene_origin_y}, QSizeF{6000, 6000}};
 
-sequi::InstructionItem *GetInstruction(sequi::ConnectableView *view)
+sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *view)
 {
-  return view ? const_cast<sequi::InstructionItem *>(view->GetConnectableItem()->GetInstruction())
+  return view ? const_cast<sequencergui::InstructionItem *>(view->GetConnectableItem()->GetInstruction())
               : nullptr;
 }
 
 }  // namespace
 
-namespace sequi
+namespace sequencergui
 {
 GraphicsScene::GraphicsScene(QObject *parent)
     : QGraphicsScene(parent), m_node_controller(new NodeController(this))

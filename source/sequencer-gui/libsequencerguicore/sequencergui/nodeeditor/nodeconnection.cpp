@@ -26,7 +26,7 @@
 #include <QPainter>
 #include <QPen>
 
-namespace sequi
+namespace sequencergui
 {
 NodeConnection::NodeConnection(QGraphicsScene* scene)
 {

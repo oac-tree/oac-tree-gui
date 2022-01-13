@@ -30,7 +30,7 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 XMLEditor::XMLEditor(QWidget *parent)
     : QWidget(parent)

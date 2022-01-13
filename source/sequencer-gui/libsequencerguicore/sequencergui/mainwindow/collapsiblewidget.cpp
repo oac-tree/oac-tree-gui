@@ -23,7 +23,7 @@
 
 #include <QSplitter>
 
-namespace sequi
+namespace sequencergui
 {
 
 CollapsibleWidget::CollapsibleWidget(QWidget *parent)

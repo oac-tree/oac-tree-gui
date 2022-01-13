@@ -23,7 +23,7 @@
 //! @file sequencerutils.h
 //! Various utils for GUI items
 
-namespace sequi
+namespace sequencergui
 {
 
 class InstructionItem;

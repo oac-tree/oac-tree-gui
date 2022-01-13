@@ -28,7 +28,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace sequi
+namespace sequencergui
 {
 ProcedureRunner::ProcedureRunner(QObject *parent)
     : QObject(parent)

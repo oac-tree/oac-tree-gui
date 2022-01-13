@@ -28,7 +28,7 @@ class QLabel;
 class QToolButton;
 class QAction;
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Instrument tool bar with possibility to collapse/expand attached widget.

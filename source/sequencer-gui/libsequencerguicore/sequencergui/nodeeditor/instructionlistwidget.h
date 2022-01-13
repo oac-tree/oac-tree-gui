@@ -22,7 +22,7 @@
 
 #include <QListWidget>
 
-namespace sequi
+namespace sequencergui
 {
 //! The list widget with all pieces, representing connectable elements of the node editor.
 //! Located at the left-hand side of the NodeEditorWidget.

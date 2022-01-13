@@ -24,7 +24,7 @@
 #include <QLabel>
 #include <QToolButton>
 
-namespace sequi
+namespace sequencergui
 {
 ExplorerToolBar::ExplorerToolBar(QWidget *parent) : QToolBar(parent), m_label(new QLabel)
 {

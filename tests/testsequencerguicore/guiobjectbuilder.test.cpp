@@ -30,7 +30,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
@@ -43,7 +43,7 @@ class GUIObjectBuilderTest : public WidgetBasedTest
 TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromEmptyProcedure)
 {
   ::sup::sequencer::Procedure procedure;
-  sequi::ProcedureItem procedure_item;
+  sequencergui::ProcedureItem procedure_item;
 
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item);
@@ -59,15 +59,15 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
   ::sup::sequencer::Procedure procedure;
 
   auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-  wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
   auto wait_ptr = wait.get();
   procedure.PushInstruction(wait.release());
 
-  sequi::ProcedureItem procedure_item;
+  sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item);
 
-  auto item = procedure_item.GetInstructionContainer()->GetItem<sequi::WaitItem>("");
+  auto item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 42.0);
   EXPECT_EQ(builder.FindInstructionItemIdentifier(wait_ptr), item->GetIdentifier());
   EXPECT_EQ(builder.FindInstructionItem(wait_ptr), item);
@@ -81,7 +81,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 
   auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
-  wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
 
   auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
@@ -90,12 +90,12 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
   procedure.PushInstruction(sequence.release());
   procedure.Setup();
 
-  sequi::ProcedureItem procedure_item;
+  sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item);
 
-  auto sequence_item = procedure_item.GetInstructionContainer()->GetItem<sequi::SequenceItem>("");
-  auto wait_item = sequence_item->GetItem<sequi::WaitItem>("");
+  auto sequence_item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
+  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 
   EXPECT_EQ(builder.FindInstructionItemIdentifier(wait_ptr), wait_item->GetIdentifier());
@@ -121,13 +121,13 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   procedure.AddVariable("abc", local_variable.release());
   procedure.Setup();
 
-  sequi::ProcedureItem procedure_item;
+  sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item);
 
   EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 1);
 
-  auto variable_item = procedure_item.GetWorkspace()->GetItem<sequi::LocalVariableItem>("");
+  auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
   EXPECT_EQ(variable_item->GetJsonType(), expected_type);
   EXPECT_EQ(variable_item->GetJsonValue(), expected_value);
 
@@ -153,23 +153,23 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   // Sequence with wait instruction
   auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
-  wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
 
   auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
-  sequence->AddAttribute(sequi::DomainConstants::kNameAttribute, "MySequence");
+  sequence->AddAttribute(sequencergui::DomainConstants::kNameAttribute, "MySequence");
   sequence->InsertInstruction(wait.release(), 0);
 
   // Repeat with include instruction
   auto include = DomainUtils::CreateDomainInstruction(DomainConstants::kIncludeInstructionType);
   auto include_ptr = include.get();
-  include->AddAttribute(sequi::DomainConstants::kNameAttribute, "MyInclude");
-  include->AddAttribute(sequi::DomainConstants::kPathAttribute, "MySequence");
+  include->AddAttribute(sequencergui::DomainConstants::kNameAttribute, "MyInclude");
+  include->AddAttribute(sequencergui::DomainConstants::kPathAttribute, "MySequence");
 
   auto repeat = DomainUtils::CreateDomainInstruction(DomainConstants::kRepeatInstructionType);
   auto repeat_ptr = repeat.get();
-  repeat->AddAttribute(sequi::DomainConstants::kIsRootAttribute, "true");
-  repeat->AddAttribute(sequi::DomainConstants::kMaxCountAttribute, "10");
+  repeat->AddAttribute(sequencergui::DomainConstants::kIsRootAttribute, "true");
+  repeat->AddAttribute(sequencergui::DomainConstants::kMaxCountAttribute, "10");
   repeat->InsertInstruction(include.release(), 0);
 
   // procedure with two instructions
@@ -178,17 +178,17 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   procedure.Setup();
 
   // Building ProcedureItem
-  sequi::ProcedureItem procedure_item;
+  sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item);
 
   // only one root instruction has been processed
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 1);
 
-  auto repeat_item = procedure_item.GetInstructionContainer()->GetItem<sequi::RepeatItem>("");
-  auto include_item = repeat_item->GetItem<sequi::IncludeItem>("");
-  auto sequence_item = include_item->GetItem<sequi::SequenceItem>("");
-  auto wait_item = sequence_item->GetItem<sequi::WaitItem>("");
+  auto repeat_item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("");
+  auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>("");
+  auto sequence_item = include_item->GetItem<sequencergui::SequenceItem>("");
+  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
 
   // Repeat and Include instructions corresponds to their domain counterpart
   EXPECT_EQ(builder.FindInstructionItemIdentifier(repeat_ptr), repeat_item->GetIdentifier());

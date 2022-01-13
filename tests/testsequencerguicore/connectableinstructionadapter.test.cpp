@@ -25,7 +25,7 @@
 
 #include <QString>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Testing ConnectableInstructionAdapter class.
 

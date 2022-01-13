@@ -22,7 +22,7 @@
 #include <QListWidget>
 #include <QVBoxLayout>
 
-namespace sequi
+namespace sequencergui
 {
 
 WorkspacePanel::WorkspacePanel(QWidget *parent)

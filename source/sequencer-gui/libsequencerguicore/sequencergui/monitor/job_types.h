@@ -26,7 +26,7 @@
 #include <QString>
 #include <functional>
 
-namespace sequi
+namespace sequencergui
 {
 
 //! Defines possible execution modes of ProcedureRunner.

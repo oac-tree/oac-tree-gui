@@ -26,7 +26,7 @@
 #include <memory>
 #include <string>
 
-namespace sequi
+namespace sequencergui
 {
 class ProcedureItem;
 

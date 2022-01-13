@@ -26,7 +26,7 @@
 #include <memory>
 #include <string>
 
-namespace sequi
+namespace sequencergui
 {
 class ProcedureItem;
 class InstructionItem;
@@ -52,7 +52,7 @@ public:
   std::string FindVariableItemIdentifier(const std::string& variable_name) const;
 
 private:
-  void Iterate(const sequi::InstructionItem* instruction, instruction_t* parent);
+  void Iterate(const sequencergui::InstructionItem* instruction, instruction_t* parent);
   void PopulateDomainInstructions(const InstructionContainerItem* container, procedure_t* procedure);
   void PopulateDomainWorkspace(const WorkspaceItem* workspace, procedure_t* procedure);
 

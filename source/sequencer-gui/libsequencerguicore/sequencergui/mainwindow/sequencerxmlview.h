@@ -24,7 +24,7 @@
 
 class QSplitter;
 
-namespace sequi
+namespace sequencergui
 {
 class SequencerModel;
 class XMLEditor;

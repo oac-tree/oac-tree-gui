@@ -28,7 +28,7 @@
 
 #include "sequencergui/mainwindow/appsettings.h"
 
-namespace sequi
+namespace sequencergui
 {
 class NodePort;
 class ConnectableView;

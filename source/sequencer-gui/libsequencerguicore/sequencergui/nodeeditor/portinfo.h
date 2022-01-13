@@ -22,7 +22,7 @@
 
 #include <string>
 
-namespace sequi
+namespace sequencergui
 {
 //! Aggregate to hold basic port information (i.e. type and color) for NodePort class.
 //! Colors must be what QColor understands (i.e. https://www.w3.org/TR/css-color-3/#svg-color).

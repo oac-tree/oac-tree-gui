@@ -27,7 +27,7 @@
 class QColor;
 class QString;
 
-namespace sequi
+namespace sequencergui
 {
 class InstructionItem;
 

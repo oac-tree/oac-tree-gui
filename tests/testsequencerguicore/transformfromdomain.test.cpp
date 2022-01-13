@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequi;
+using namespace sequencergui;
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
@@ -47,7 +47,7 @@ public:
   template <typename T>
   bool CanCreateInstructionForType(const std::string& seq_type)
   {
-    return IsCorrectType<T>(sequi::CreateInstructionItem(seq_type).get());
+    return IsCorrectType<T>(sequencergui::CreateInstructionItem(seq_type).get());
   }
 
   //! Returns true if we can create VariableItem of proper type for string representing
@@ -55,7 +55,7 @@ public:
   template <typename T>
   bool CanCreateVariableForType(const std::string& seq_type)
   {
-    return IsCorrectType<T>(sequi::CreateVariableItem(seq_type).get());
+    return IsCorrectType<T>(sequencergui::CreateVariableItem(seq_type).get());
   }
 };
 
@@ -64,14 +64,14 @@ public:
 TEST_F(TransformFromDomainTest, CreateVariableItem)
 {
   EXPECT_TRUE(
-      CanCreateVariableForType<sequi::LocalVariableItem>(DomainConstants::kLocalVariableType));
+      CanCreateVariableForType<sequencergui::LocalVariableItem>(DomainConstants::kLocalVariableType));
   EXPECT_TRUE(
-      CanCreateVariableForType<sequi::FileVariableItem>(DomainConstants::kFileVariableType));
+      CanCreateVariableForType<sequencergui::FileVariableItem>(DomainConstants::kFileVariableType));
   if (DomainUtils::IsChannelAccessAvailable())
   {
-    EXPECT_TRUE(CanCreateVariableForType<sequi::ChannelAccessVariableItem>(
+    EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
         DomainConstants::kChannelAccessVariableType));
-    EXPECT_TRUE(CanCreateVariableForType<sequi::PVClientVariableItem>(
+    EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
         DomainConstants::kPVClientVariableType));
   }
 }
@@ -80,29 +80,29 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
 
 TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
-  EXPECT_TRUE(CanCreateInstructionForType<sequi::CopyItem>(DomainConstants::kCopyInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::CopyItem>(DomainConstants::kCopyInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::EqualsItem>(DomainConstants::kEqualsInstructionType));
+      CanCreateInstructionForType<sequencergui::EqualsItem>(DomainConstants::kEqualsInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::FallbackItem>(DomainConstants::kFallbackInstructionType));
+      CanCreateInstructionForType<sequencergui::FallbackItem>(DomainConstants::kFallbackInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::InputItem>(DomainConstants::kInputInstructionType));
+      CanCreateInstructionForType<sequencergui::InputItem>(DomainConstants::kInputInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::InverterItem>(DomainConstants::kInverterInstructionType));
+      CanCreateInstructionForType<sequencergui::InverterItem>(DomainConstants::kInverterInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::MessageItem>(DomainConstants::kMessageInstructionType));
+      CanCreateInstructionForType<sequencergui::MessageItem>(DomainConstants::kMessageInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::OutputItem>(DomainConstants::kOutputInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequi::ParallelSequenceItem>(
+      CanCreateInstructionForType<sequencergui::OutputItem>(DomainConstants::kOutputInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ParallelSequenceItem>(
       DomainConstants::kParallelInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::RepeatItem>(DomainConstants::kRepeatInstructionType));
+      CanCreateInstructionForType<sequencergui::RepeatItem>(DomainConstants::kRepeatInstructionType));
   EXPECT_TRUE(
-      CanCreateInstructionForType<sequi::SequenceItem>(DomainConstants::kSequenceInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequi::WaitItem>(DomainConstants::kWaitInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequi::ForceSuccessItem>(
+      CanCreateInstructionForType<sequencergui::SequenceItem>(DomainConstants::kSequenceInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::WaitItem>(DomainConstants::kWaitInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ForceSuccessItem>(
       DomainConstants::kForceSuccessInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequi::UserChoiceItem>(
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::UserChoiceItem>(
       DomainConstants::kUserChoiceInstructionType));
 }
 
@@ -112,8 +112,8 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromEmptyProcedure)
 {
   ::sup::sequencer::Procedure procedure;
 
-  sequi::InstructionContainerItem container;
-  sequi::PopulateInstructionContainerItem(&procedure, &container);
+  sequencergui::InstructionContainerItem container;
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container);
 
   EXPECT_EQ(container.GetTotalItemCount(), 0);
 }
@@ -125,13 +125,13 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithWait)
   ::sup::sequencer::Procedure procedure;
 
   auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-  wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
   procedure.PushInstruction(wait.release());
 
-  sequi::InstructionContainerItem container;
-  sequi::PopulateInstructionContainerItem(&procedure, &container);
+  sequencergui::InstructionContainerItem container;
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container);
 
-  auto item = container.GetItem<sequi::WaitItem>("");
+  auto item = container.GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 42.0);
 }
 
@@ -142,18 +142,18 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithSequence)
   ::sup::sequencer::Procedure procedure;
 
   auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-  wait->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
 
   auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
   sequence->InsertInstruction(wait.release(), 0);
 
   procedure.PushInstruction(sequence.release());
 
-  sequi::InstructionContainerItem container;
-  sequi::PopulateInstructionContainerItem(&procedure, &container);
+  sequencergui::InstructionContainerItem container;
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container);
 
-  auto sequence_item = container.GetItem<sequi::SequenceItem>("");
-  auto wait_item = sequence_item->GetItem<sequi::WaitItem>("");
+  auto sequence_item = container.GetItem<sequencergui::SequenceItem>("");
+  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
 
@@ -163,8 +163,8 @@ TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromEmtpyProcedure)
 {
   ::sup::sequencer::Procedure procedure;
 
-  sequi::WorkspaceItem workspace_item;
-  sequi::PopulateWorkspaceItem(&procedure, &workspace_item);
+  sequencergui::WorkspaceItem workspace_item;
+  sequencergui::PopulateWorkspaceItem(&procedure, &workspace_item);
   EXPECT_EQ(workspace_item.GetTotalItemCount(), 0);
 }
 
@@ -183,11 +183,11 @@ TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromProcedureWithLocalVaria
 
   procedure.AddVariable("abc", local_variable.release());
 
-  sequi::WorkspaceItem workspace_item;
-  sequi::PopulateWorkspaceItem(&procedure, &workspace_item);
+  sequencergui::WorkspaceItem workspace_item;
+  sequencergui::PopulateWorkspaceItem(&procedure, &workspace_item);
   EXPECT_EQ(workspace_item.GetTotalItemCount(), 1);
 
-  auto variable_item = workspace_item.GetItem<sequi::LocalVariableItem>("");
+  auto variable_item = workspace_item.GetItem<sequencergui::LocalVariableItem>("");
   EXPECT_EQ(variable_item->GetJsonType(), expected_type);
   EXPECT_EQ(variable_item->GetJsonValue(), expected_value);
 }

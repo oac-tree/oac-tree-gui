@@ -24,7 +24,7 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/shallnotbenamedvalueutils.h"
 
-namespace sequi
+namespace sequencergui
 {
 static inline const std::string kValue = "kValue";
 

@@ -37,7 +37,7 @@
 #include <memory>
 #include <thread>
 
-using namespace sequi;
+using namespace sequencergui;
 
 using msec = std::chrono::milliseconds;
 //! Tests for ProcedureRunner.
@@ -50,7 +50,7 @@ public:
   {
     auto result = std::make_unique<procedure_t>();
     auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait0->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute,
+    wait0->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute,
                         std::to_string(double(msec_to_wait) / 1000));  // expects in sec
     result->PushInstruction(wait0.release());
     result->AddAttribute(DomainConstants::kTickTimeOutAttribute, "0.01");  // 10 msec
@@ -63,8 +63,8 @@ public:
     auto result = std::make_unique<procedure_t>();
 
     auto copy = DomainUtils::CreateDomainInstruction(DomainConstants::kCopyInstructionType);
-    copy->AddAttribute(sequi::DomainConstants::kInputAttribute, "var0");
-    copy->AddAttribute(sequi::DomainConstants::kOutputAttribute, "var1");
+    copy->AddAttribute(sequencergui::DomainConstants::kInputAttribute, "var0");
+    copy->AddAttribute(sequencergui::DomainConstants::kOutputAttribute, "var1");
     result->PushInstruction(copy.release());
 
     auto var0 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
@@ -88,9 +88,9 @@ public:
     auto result = std::make_unique<procedure_t>();
     auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
     auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait0->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "0.01");
+    wait0->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "0.01");
     auto wait1 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait1->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "0.01");
+    wait1->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "0.01");
 
     sequence->InsertInstruction(wait0.release(), 0);
     sequence->InsertInstruction(wait1.release(), 1);
@@ -128,11 +128,11 @@ public:
     userchoice->AddAttribute(DomainConstants::kDescriptionAttribute, "it's your choice");
 
     auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait0->AddAttribute(sequi::DomainConstants::kWaitTimeoutAttribute, "10");  // 10 sec
+    wait0->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "10");  // 10 sec
 
     auto copy = DomainUtils::CreateDomainInstruction(DomainConstants::kCopyInstructionType);
-    copy->AddAttribute(sequi::DomainConstants::kInputAttribute, "var0");
-    copy->AddAttribute(sequi::DomainConstants::kOutputAttribute, "var1");
+    copy->AddAttribute(sequencergui::DomainConstants::kInputAttribute, "var0");
+    copy->AddAttribute(sequencergui::DomainConstants::kOutputAttribute, "var1");
 
     userchoice->InsertInstruction(wait0.release(), 0);
     userchoice->InsertInstruction(copy.release(), 1);

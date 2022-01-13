@@ -25,7 +25,7 @@
 
 #include "mvvm/utils/stringutils.h"
 
-namespace sequi
+namespace sequencergui
 {
 // ----------------------------------------------------------------------------
 // ConditionItem

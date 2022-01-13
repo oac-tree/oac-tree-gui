@@ -24,7 +24,7 @@
 
 class QRectF;
 
-namespace sequi
+namespace sequencergui
 {
 
 class ConnectableView;
