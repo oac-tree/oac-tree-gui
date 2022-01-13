@@ -19,6 +19,8 @@
 
 #include "sequencergui/model/guiobjectbuilder.h"
 
+#include "widgetbasedtest.h"
+
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
@@ -32,7 +34,7 @@ using namespace sequi;
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
-class GUIObjectBuilderTest : public ::testing::Test
+class GUIObjectBuilderTest : public WidgetBasedTest
 {
 };
 

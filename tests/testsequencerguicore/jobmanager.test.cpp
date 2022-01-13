@@ -19,6 +19,8 @@
 
 #include "sequencergui/monitor/jobmanager.h"
 
+#include "widgetbasedtest.h"
+
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"
@@ -35,7 +37,7 @@ using namespace sequi;
 
 //! Tests for JobManager.
 
-class JobManagerTest : public ::testing::Test
+class JobManagerTest : public WidgetBasedTest
 {
 public:
   JobManagerTest() : m_model(std::make_unique<SequencerModel>())

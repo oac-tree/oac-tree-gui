@@ -19,6 +19,8 @@
 
 #include "sequencergui/monitor/usercontroller.h"
 
+#include "widgetbasedtest.h"
+
 #include <gtest/gtest.h>
 
 #include <QTest>
@@ -30,7 +32,7 @@ using namespace sequi;
 
 //! Tests for UserController class.
 
-class UserControllerTest : public ::testing::Test
+class UserControllerTest : public WidgetBasedTest
 {
 };
 

@@ -29,8 +29,6 @@ class QApplication;
 class WidgetBasedTest : public ::testing::Test
 {
 public:
-  WidgetBasedTest();
-
   static void SetUpTestSuite();
 
   static void TearDownTestSuite();

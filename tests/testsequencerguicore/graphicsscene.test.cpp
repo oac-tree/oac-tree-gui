@@ -19,6 +19,8 @@
 
 #include "sequencergui/nodeeditor/graphicsscene.h"
 
+#include "widgetbasedtest.h"
+
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -36,7 +38,7 @@ using namespace sequi;
 
 //! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
 
-class GraphicsSceneTest : public ::testing::Test
+class GraphicsSceneTest : public WidgetBasedTest
 {
 public:
   GraphicsSceneTest()

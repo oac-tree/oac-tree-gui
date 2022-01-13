@@ -24,16 +24,12 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <QApplication>
 #include <QMetaType>
 
 int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
-
-  QApplication app(argc, argv);
-  Q_UNUSED(app)
 
   qRegisterMetaType<sequi::InstructionItem*>("sequi::InstructionItem*");
   qRegisterMetaType<const sequi::InstructionItem*>("const sequi::InstructionItem*");
