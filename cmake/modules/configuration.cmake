@@ -6,6 +6,18 @@ include(CTest)
 include(GNUInstallDirs)
 
 # -----------------------------------------------------------------------------
+# Find if we are on CODAC infrastructure
+# -----------------------------------------------------------------------------
+
+if (DEFINED ENV{CODAC_ROOT})
+  message(STATUS "CODAC environment detected at $ENV{CODAC_ROOT}")
+  set(SEQUENCERGUI_CODAC ON)
+else()
+  message(STATUS "No CODAC environment detected - expecting COACompact installed")
+  set(SEQUENCERGUI_CODAC OFF)
+endif()
+
+# -----------------------------------------------------------------------------
 # Variables
 # -----------------------------------------------------------------------------
 
