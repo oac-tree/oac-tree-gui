@@ -31,7 +31,7 @@ Without installation, libraries will be discoverable right from the build direct
 git clone -b develop https://git.iter.org/scm/coa/sequencer-gui.git
 
 # Compile
-mkdir build; cd build
+<build>mkdir build; cd build
 PATH=/opt/codac/qt5/bin:$PATH cmake <source>
 make -j4 && ctest
 
@@ -46,21 +46,22 @@ It is possible to develop Sequencer GUI on custom Linux distributive. Tested on 
 `cpp-mvvm` library and `coa-compact` must be compiled before.
 It is perfectly fine not to install libraries after the build. 
 Thanks to CMake magic they will be discovered and used right from the `build` directories.
+Make sure that `build` directories are different.
 
 ```
 # build cpp-mvvm library
 git clone https://git.iter.org/scm/coa/cpp-mvvm.git
-mkdir build; cd build
+mkdir <build>; cd <build>
 cmake <source> && make -j4 && ctest
 
 # build coa-compact library
 git clone https://git.iter.org/scm/coa/coa-compact.git
-mkdir build; cd build
+mkdir <build>; cd <build>
 cmake <source> && make -j4
 
 # build Sequencer GUI
 git clone -b develop https://git.iter.org/scm/coa/sequencer-gui.git
-mkdir build; cd build
+mkdir <build>; cd <build>
 cmake <source> && make -j4 && ctest
 
 # Run
