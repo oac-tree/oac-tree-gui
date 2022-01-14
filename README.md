@@ -1,6 +1,8 @@
 # Sequencer graphical user interface
 
-This is a prototype of Sequencer Graphical User Interface.
+![Node editor](./doc/nodeeditor.png)
+
+Prototype of Sequencer Graphical User Interface.
 
 ## Installation on CODAC machines
 
@@ -21,7 +23,7 @@ PATH=/opt/codac/qt5/bin:$PATH cmake <source>
 make -j4 && ctest
 ```
 
-Please note, that thanks to CMake magic (the magic is located in $HOME/.cmake directory), installation is optional. 
+Please note, that thanks to CMake magic (the magic is located in $HOME/.cmake directory), installation is optional.
 Without installation, libraries will be discoverable right from the build directory.
 
 ### Build sequencer-gui
