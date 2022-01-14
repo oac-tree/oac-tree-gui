@@ -19,8 +19,6 @@
 
 #include "sequencergui/nodeeditor/sceneutils.h"
 
-#include "widgetbasedtest.h"
-
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/utils/numericutils.h"
@@ -56,7 +54,7 @@ bool operator==(const std::vector<QPointF>& lhs, const std::vector<QPointF>& rhs
 
 //! Tests for items from instructionitems.h
 
-class SceneUtilsTest : public WidgetBasedTest
+class SceneUtilsTest : public ::testing::Test
 {
 public:
   using points_t = std::vector<QPointF>;

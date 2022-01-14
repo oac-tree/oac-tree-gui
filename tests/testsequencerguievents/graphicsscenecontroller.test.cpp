@@ -19,8 +19,6 @@
 
 #include "sequencergui/nodeeditor/graphicsscenecontroller.h"
 
-#include "widgetbasedtest.h"
-
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -35,7 +33,7 @@ using namespace sequencergui;
 
 //! Tests for GraphicsSceneController class.
 
-class GraphicsSceneControllerTest : public WidgetBasedTest
+class GraphicsSceneControllerTest : public ::testing::Test
 {
 public:
   GraphicsSceneControllerTest() { m_model.InsertItem<ProcedureItem>(); }

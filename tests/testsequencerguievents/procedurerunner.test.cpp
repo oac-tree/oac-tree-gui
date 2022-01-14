@@ -19,8 +19,6 @@
 
 #include "sequencergui/monitor/procedurerunner.h"
 
-#include "widgetbasedtest.h"
-
 #include "ExecutionStatus.h"
 #include "Instruction.h"
 #include "Procedure.h"
@@ -42,7 +40,7 @@ using namespace sequencergui;
 using msec = std::chrono::milliseconds;
 //! Tests for ProcedureRunner.
 
-class ProcedureRunnerTest : public WidgetBasedTest
+class ProcedureRunnerTest : public ::testing::Test
 {
 public:
   //! Retuns domain procedure that contain only a single wait instruction.

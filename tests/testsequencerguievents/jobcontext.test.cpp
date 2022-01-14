@@ -19,8 +19,6 @@
 
 #include "sequencergui/monitor/jobcontext.h"
 
-#include "widgetbasedtest.h"
-
 #include "Instruction.h"
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/sequenceritems.h"
@@ -41,7 +39,7 @@ using msec = std::chrono::milliseconds;
 
 //! Tests for JobContext class.
 
-class JobContextTest : public WidgetBasedTest
+class JobContextTest : public ::testing::Test
 {
 public:
   //! Creates procedure with single wait instruction.
