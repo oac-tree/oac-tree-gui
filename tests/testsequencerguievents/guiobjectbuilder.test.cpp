@@ -92,7 +92,8 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item);
 
-  auto sequence_item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
+  auto sequence_item =
+      procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 
@@ -183,7 +184,8 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   // only one root instruction has been processed
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 1);
 
-  auto repeat_item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("");
+  auto repeat_item =
+      procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("");
   auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>("");
   auto sequence_item = include_item->GetItem<sequencergui::SequenceItem>("");
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");

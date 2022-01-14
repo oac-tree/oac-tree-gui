@@ -22,8 +22,8 @@
 #include "Instruction.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/item_constants.h"
+#include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/model/taginfo.h"
@@ -72,7 +72,8 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   // Set common attributes (that exist in every instruction)
   if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
   {
-    result->AddAttribute(DomainConstants::kNameAttribute, Property<std::string>(ItemConstants::kName));
+    result->AddAttribute(DomainConstants::kNameAttribute,
+                         Property<std::string>(ItemConstants::kName));
   }
   result->AddAttribute(DomainConstants::kIsRootAttribute,
                        mvvm::utils::FromBool(Property<bool>(ItemConstants::kIsRoot)));
@@ -149,4 +150,4 @@ mvvm::SessionItem *InstructionItem::GetNameItem() const
   return GetItem(ItemConstants::kName);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

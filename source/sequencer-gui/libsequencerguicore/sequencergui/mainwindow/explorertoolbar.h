@@ -50,6 +50,6 @@ private:
   QAction* m_spacer_action{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERTOOLBAR_H

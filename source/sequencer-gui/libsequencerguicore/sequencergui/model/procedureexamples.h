@@ -45,8 +45,7 @@ ProcedureItem* AddInputProcedure(SequencerModel* model);
 //! User choice example.
 ProcedureItem* AddUserChoiceProcedure(SequencerModel* model);
 
-
 }  // namespace Examples
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDUREEXAMPLES_H

@@ -22,8 +22,8 @@
 
 #include "mvvm/viewmodel/abstractviewmodelcontroller.h"
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 namespace sequencergui
 {
@@ -39,13 +39,11 @@ public:
   GraphicsSceneController(SequencerModel *model, GraphicsScene *graphics_scene);
   ~GraphicsSceneController() override;
 
-  void SetAlignStrategy(std::function<void(InstructionContainerItem*)> strategy);
+  void SetAlignStrategy(std::function<void(InstructionContainerItem *)> strategy);
 
-  void OnItemInserted(mvvm::SessionItem *parent,
-                      const mvvm::TagIndex &tag_index) override;
+  void OnItemInserted(mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index) override;
 
-  void OnAboutToRemoveItem(mvvm::SessionItem *parent,
-                           const mvvm::TagIndex &tag_index) override;
+  void OnAboutToRemoveItem(mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index) override;
 
   void OnDataChanged(mvvm::SessionItem *item, int role) override;
 
@@ -56,6 +54,6 @@ private:
   std::unique_ptr<GraphicsSceneControllerImpl> p_impl;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENECONTROLLER_H

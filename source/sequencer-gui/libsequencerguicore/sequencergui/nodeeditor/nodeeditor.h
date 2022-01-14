@@ -65,6 +65,6 @@ private:
   SequencerModel* m_model{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODEEDITOR_H

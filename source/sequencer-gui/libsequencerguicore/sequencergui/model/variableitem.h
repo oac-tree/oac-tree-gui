@@ -48,6 +48,6 @@ private:
   virtual void InitFromDomainImpl(const variable_t* variable) = 0;
   virtual void SetupDomainImpl(variable_t* variable) const = 0;
 };
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_VARIABLEITEM_H

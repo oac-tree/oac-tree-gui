@@ -69,6 +69,6 @@ private:
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_MAINWINDOW_H

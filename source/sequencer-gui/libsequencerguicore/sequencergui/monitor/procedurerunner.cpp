@@ -200,4 +200,4 @@ void ProcedureRunner::SetRunnerStatus(RunnerStatus value)
   emit RunnerStatusChanged();
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

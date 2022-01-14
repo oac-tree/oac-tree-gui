@@ -37,6 +37,6 @@ const std::string kYpos = "kYpos";
 const std::string kChildInstructions = "kChildInstructions";
 const std::string kIsRoot = "kIsRoot";
 
-}  // namespace sequi::ItemConstants
+}  // namespace sequencergui::ItemConstants
 
 #endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H

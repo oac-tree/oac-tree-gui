@@ -71,4 +71,4 @@ void MessagePanel::onMessage(const QString &message, const QColor &color)
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

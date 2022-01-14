@@ -120,4 +120,4 @@ void UserController::SetupConnections() const
           Qt::QueuedConnection);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

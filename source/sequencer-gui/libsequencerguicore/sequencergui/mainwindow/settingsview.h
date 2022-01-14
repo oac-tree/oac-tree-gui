@@ -54,6 +54,6 @@ private:
   SequencerModel* m_model;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_SETTINGSVIEW_H

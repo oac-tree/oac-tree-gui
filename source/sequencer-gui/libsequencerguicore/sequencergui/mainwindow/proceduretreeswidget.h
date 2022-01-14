@@ -26,7 +26,7 @@ namespace mvvm
 {
 class TopItemsTreeView;
 class PropertyTreeView;
-}  // namespace ModelView
+}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -53,6 +53,6 @@ private:
   mvvm::PropertyTreeView* m_property_tree{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURETREESWIDGET_H

@@ -28,10 +28,10 @@
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/sequencer_types.h"
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
-#include <map>
 
 namespace sequencergui::DomainUtils
 {
@@ -54,6 +54,6 @@ bool IsChannelAccessAvailable();
 
 void LoadPlugins();
 
-}  // namespace sequi::DomainUtils
+}  // namespace sequencergui::DomainUtils
 
 #endif  // SEQUENCERGUI_MODEL_DOMAINUTILS_H

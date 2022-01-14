@@ -20,6 +20,7 @@
 #include "sequencergui/mainwindow/explorernarrowtoolbar.h"
 
 #include "sequencergui/mainwindow/styleutils.h"
+
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QLabel>
@@ -130,4 +131,4 @@ void ExplorerNarrowToolBar::InsertStrech()
   m_tool_bar->addWidget(empty);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

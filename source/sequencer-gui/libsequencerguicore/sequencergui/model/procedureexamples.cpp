@@ -137,4 +137,4 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
   return procedure_item;
 }
 
-}  // namespace sequi::Examples
+}  // namespace sequencergui::Examples

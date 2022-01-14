@@ -52,4 +52,4 @@ void CollapsibleWidget::SetText(const QString &text)
   m_tool_bar->SetText(text);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

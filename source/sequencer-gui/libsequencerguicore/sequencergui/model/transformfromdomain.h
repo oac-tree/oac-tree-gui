@@ -48,6 +48,6 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_TRANSFORMFROMDOMAIN_H

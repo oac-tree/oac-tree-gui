@@ -118,4 +118,4 @@ void TopBottomPositionStrategy::SetPositionToBottom(const QRectF &rect, NodePort
   port->setPos(rect.width() / 2, rect.height());
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

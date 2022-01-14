@@ -61,6 +61,6 @@ private:
   JobManager* m_job_manager{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_SEQUENCERMONITORVIEW_H

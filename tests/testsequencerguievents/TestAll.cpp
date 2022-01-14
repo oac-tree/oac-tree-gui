@@ -24,8 +24,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <QMetaType>
 #include <QApplication>
+#include <QMetaType>
 
 int main(int argc, char** argv)
 {

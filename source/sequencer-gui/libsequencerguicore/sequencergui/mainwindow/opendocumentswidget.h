@@ -47,7 +47,7 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  std::vector<ProcedureItem *> GetSelectedProcedures() const;
+  std::vector<ProcedureItem*> GetSelectedProcedures() const;
   ProcedureItem* GetSelectedProcedure();
 
   void SetSelectedProcedure(ProcedureItem* procedure);
@@ -66,6 +66,6 @@ private:
   std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_OPENDOCUMENTSWIDGET_H

@@ -90,4 +90,4 @@ void FlowController::SetSleepTime(int msec)
   m_wait_msec = msec;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

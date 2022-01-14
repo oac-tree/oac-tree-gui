@@ -41,6 +41,6 @@ public:
 private:
   BehaviorTreeStyle m_tree_style;
 };
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H

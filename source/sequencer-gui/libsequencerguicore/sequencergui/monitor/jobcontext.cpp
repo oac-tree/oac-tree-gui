@@ -203,4 +203,4 @@ void JobContext::SetupConnections()
           &JobContext::onVariableChange, Qt::QueuedConnection);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

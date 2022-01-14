@@ -39,6 +39,6 @@ private:
   InstructionListWidget* m_list_widget{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPOSER_INSTRUCTIONPANEL_H

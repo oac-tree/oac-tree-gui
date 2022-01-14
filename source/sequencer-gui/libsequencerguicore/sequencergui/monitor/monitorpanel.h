@@ -57,6 +57,6 @@ private:
   OpenDocumentsWidget* m_open_documents_widget{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MONITORPANEL_H

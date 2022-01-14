@@ -34,6 +34,6 @@ class ProcedureItem;
 //! ProcedureItem must be empty.
 void ImportFromFile(const std::string& file_name, ProcedureItem* procedure_item);
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_IMPORTUTILS_H

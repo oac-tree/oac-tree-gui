@@ -77,4 +77,4 @@ void JobLog::ClearLog()
   }
 }
 
-};  // namespace sequi
+};  // namespace sequencergui

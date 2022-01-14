@@ -71,6 +71,6 @@ private:
   virtual void SetupDomainImpl(instruction_t* instruction) const = 0;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_INSTRUCTIONITEM_H

@@ -58,10 +58,10 @@ private:
   XMLEditor* m_xml_editor{nullptr};
   QSplitter* m_splitter{nullptr};
 
-  std::unique_ptr<SequencerModel> m_temp_model; //!< temporary model for disk browsing
+  std::unique_ptr<SequencerModel> m_temp_model;  //!< temporary model for disk browsing
   SequencerModel* m_model{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_SEQUENCERXMLVIEW_H

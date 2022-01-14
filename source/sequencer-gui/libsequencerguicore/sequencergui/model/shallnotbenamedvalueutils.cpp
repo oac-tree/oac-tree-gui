@@ -131,4 +131,4 @@ bool ParseStringToScalarAnyvalue(const std::string &str, anyvalue_t &value)
   return parse_function(value, str);
 }
 
-}  // namespace sequi::DomainUtils
+}  // namespace sequencergui::DomainUtils

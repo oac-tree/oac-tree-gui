@@ -126,4 +126,4 @@ void LoadPlugins()
   }
 }
 
-}  // namespace sequi::DomainUtils
+}  // namespace sequencergui::DomainUtils

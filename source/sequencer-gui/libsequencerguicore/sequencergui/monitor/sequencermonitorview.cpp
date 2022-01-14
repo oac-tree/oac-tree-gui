@@ -121,4 +121,4 @@ ProcedureItem *SequencerMonitorView::GetFirstProcedure()
   return procedure_container->IsEmpty() ? nullptr : procedure_container->GetItem<ProcedureItem>("");
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

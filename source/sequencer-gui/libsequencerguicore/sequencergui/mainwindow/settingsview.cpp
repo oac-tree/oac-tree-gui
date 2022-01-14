@@ -102,4 +102,4 @@ void SettingsView::SetupOtherSettings()
   m_stacked_widget->addWidget(new QWidget);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

@@ -80,4 +80,4 @@ void SequencerObserver::MessageImpl(const std::string &message)
   m_procedure_runner->onLogMessage(message, MessageType::kHighlight);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

@@ -666,4 +666,4 @@ double WaitItem::GetTimeout() const
   return Property<double>(kTimeout);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

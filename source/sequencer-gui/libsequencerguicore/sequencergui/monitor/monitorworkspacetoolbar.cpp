@@ -55,4 +55,4 @@ void MonitorWorkspaceToolBar::InsertStrech()
   addWidget(empty);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

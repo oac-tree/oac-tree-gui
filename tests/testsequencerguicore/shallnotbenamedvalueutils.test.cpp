@@ -19,10 +19,9 @@
 
 #include "sequencergui/model/shallnotbenamedvalueutils.h"
 
-#include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/domain_constants.h"
-
 #include "Variable.h"
+#include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/domainutils.h"
 
 #include <gtest/gtest.h>
 
@@ -33,7 +32,6 @@ using namespace sequencergui;
 class ShallNotBeNamedValueUtilsTest : public ::testing::Test
 {
 public:
-
 };
 
 //! Importing xml Procedure containing a single instruction.

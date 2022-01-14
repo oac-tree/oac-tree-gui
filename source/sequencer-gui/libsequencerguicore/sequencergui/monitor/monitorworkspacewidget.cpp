@@ -63,4 +63,4 @@ void MonitorWorkspaceWidget::SetModel(SequencerModel *model, ProcedureItem *proc
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

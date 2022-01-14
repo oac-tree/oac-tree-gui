@@ -60,6 +60,6 @@ private:
   bool m_block_selection_to_scene{false};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPOSER_SEQUENCERCOMPOSERVIEW_H

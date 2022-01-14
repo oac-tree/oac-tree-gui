@@ -120,8 +120,7 @@ void OpenDocumentsWidget::onTreeSingleClick(const QModelIndex &index)
     return;
   }
 
-  if (auto item = mvvm::utils::GetItem<ProcedureItem>(m_view_model->itemFromIndex(index));
-      item)
+  if (auto item = mvvm::utils::GetItem<ProcedureItem>(m_view_model->itemFromIndex(index)); item)
   {
     emit procedureSelected(const_cast<ProcedureItem *>(item));
   }
@@ -135,4 +134,4 @@ void OpenDocumentsWidget::onRemoveSelectedRequest()
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

@@ -140,7 +140,7 @@ void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *proce
 }
 
 mvvm::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *instruction,
-                                                             mvvm::SessionItem *parent)
+                                                        mvvm::SessionItem *parent)
 {
   auto item = sequencergui::CreateInstructionItem(instruction->GetType());
 
@@ -186,4 +186,4 @@ void GUIObjectBuilder::Save(const variable_t *variable, VariableItem *item)
   m_variablename_to_id.insert({variable->GetName(), item});
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

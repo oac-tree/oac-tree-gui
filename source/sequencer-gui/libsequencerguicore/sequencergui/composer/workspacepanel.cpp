@@ -37,4 +37,4 @@ WorkspacePanel::WorkspacePanel(QWidget *parent)
   layout->addWidget(m_list_widget);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

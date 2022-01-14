@@ -73,6 +73,6 @@ private:
   int m_current_delay{0};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_JOBMANAGER_H

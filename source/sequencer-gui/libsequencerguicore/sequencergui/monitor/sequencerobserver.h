@@ -54,6 +54,6 @@ private:
   ProcedureRunner* m_procedure_runner{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_SEQUENCEROBSERVER_H

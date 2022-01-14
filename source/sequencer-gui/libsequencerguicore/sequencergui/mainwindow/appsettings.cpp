@@ -22,10 +22,7 @@
 namespace sequencergui
 {
 
-AppSettings::AppSettings() : m_tree_style(BehaviorTreeStyle::kTopToBottom)
-{
-
-}
+AppSettings::AppSettings() : m_tree_style(BehaviorTreeStyle::kTopToBottom) {}
 
 BehaviorTreeStyle AppSettings::GetTreeStyle() const
 {
@@ -37,4 +34,4 @@ bool AppSettings::IsTopToBottomStyle() const
   return m_tree_style == BehaviorTreeStyle::kTopToBottom;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

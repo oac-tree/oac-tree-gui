@@ -62,6 +62,6 @@ private:
   std::unique_ptr<QMenu> m_insert_after_menu;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H

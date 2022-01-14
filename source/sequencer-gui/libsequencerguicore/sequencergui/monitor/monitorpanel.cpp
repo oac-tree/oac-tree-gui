@@ -69,4 +69,4 @@ void MonitorPanel::SetSelectedProcedure(ProcedureItem *procedure)
   m_open_documents_widget->SetSelectedProcedure(procedure);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

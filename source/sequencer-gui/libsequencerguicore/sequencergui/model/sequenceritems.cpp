@@ -112,8 +112,7 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
 
   // we create it via universal tag to let recursive iteration via childrenstrategy in
   // TopItemsTreeView
-  RegisterTag(
-      mvvm::TagInfo::CreateUniversalTag(kInstructions, {InstructionContainerItem::Type}));
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kInstructions, {InstructionContainerItem::Type}));
   auto instructions = InsertItem<InstructionContainerItem>({kInstructions, 0});
   instructions->SetDisplayName("Instructions");
 
@@ -132,4 +131,4 @@ WorkspaceItem *ProcedureItem::GetWorkspace() const
   return GetItem<WorkspaceItem>(kWorkspace);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

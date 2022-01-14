@@ -41,6 +41,6 @@ struct UserContext
   userchoice_callback_t m_user_choice_callback;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_USERCONTEXT_H

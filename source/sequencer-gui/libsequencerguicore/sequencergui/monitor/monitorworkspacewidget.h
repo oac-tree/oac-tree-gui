@@ -26,7 +26,7 @@ namespace mvvm
 {
 class AllItemsTreeView;
 class PropertyTreeView;
-}  // namespace ModelView
+}  // namespace mvvm
 
 class QSplitter;
 
@@ -46,7 +46,7 @@ public:
   MonitorWorkspaceWidget(QWidget* parent = nullptr);
   ~MonitorWorkspaceWidget();
 
-  void SetModel(SequencerModel* model, ProcedureItem *procedure_item);
+  void SetModel(SequencerModel* model, ProcedureItem* procedure_item);
 
 private:
   MonitorWorkspaceToolBar* m_tool_bar{nullptr};
@@ -55,6 +55,6 @@ private:
   mvvm::AllItemsTreeView* m_instruction_tree{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MONITORWORKSPACEWIDGET_H

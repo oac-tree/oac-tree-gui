@@ -63,6 +63,6 @@ private:
   QList<QAction*> m_toolbar_actions;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERNARROWTOOLBAR_H

@@ -204,7 +204,8 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
   ForceSuccessItem item;
 
   auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), sequencergui::DomainConstants::kForceSuccessInstructionType);
+  EXPECT_EQ(domain_instruction->GetType(),
+            sequencergui::DomainConstants::kForceSuccessInstructionType);
 }
 
 // ----------------------------------------------------------------------------

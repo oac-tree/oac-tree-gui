@@ -43,4 +43,4 @@ void ImportFromFile(const std::string &file_name, ProcedureItem *procedure_item)
   PopulateWorkspaceItem(procedure.get(), workspace_item);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

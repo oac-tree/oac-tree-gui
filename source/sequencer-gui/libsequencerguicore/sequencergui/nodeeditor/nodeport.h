@@ -96,6 +96,6 @@ public:
   bool isChildPort() const override;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODEPORT_H

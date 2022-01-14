@@ -45,7 +45,7 @@ public:
 
   std::string GetUserInput(const std::string& current_value, const std::string& description);
 
-  int GetUserChoice(const std::vector<std::string> &choices, const std::string &description);
+  int GetUserChoice(const std::vector<std::string>& choices, const std::string& description);
 
   void SetAsUserInput(const std::string& value);
 
@@ -65,6 +65,6 @@ private:
   UserContext m_user_context;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_USERCONTROLLER_H

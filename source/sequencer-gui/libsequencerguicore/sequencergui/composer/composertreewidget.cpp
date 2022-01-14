@@ -86,7 +86,7 @@ void ComposerTreeWidget::SetSelected(InstructionItem* instruction)
   m_instruction_tree->SetSelected(instruction);
 }
 
-void ComposerTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions)
+void ComposerTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
 {
   std::vector<mvvm::SessionItem*> items;
   std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
@@ -149,4 +149,4 @@ void ComposerTreeWidget::SetupConnections()
   connect(m_tool_bar, &ComposerTreeToolBar::removeSelectedRequest, this, on_remove);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

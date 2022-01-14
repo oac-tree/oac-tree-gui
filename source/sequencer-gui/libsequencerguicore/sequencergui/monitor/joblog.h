@@ -52,6 +52,6 @@ private:
   MessagePanel* m_message_panel;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_JOBLOG_H

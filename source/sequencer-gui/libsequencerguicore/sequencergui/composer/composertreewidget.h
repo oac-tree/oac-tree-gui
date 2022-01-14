@@ -33,7 +33,7 @@ namespace mvvm
 class TopItemsTreeView;
 class PropertyTreeView;
 class AllItemsTreeView;
-}  // namespace ModelView
+}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -57,9 +57,9 @@ public:
   void SetModel(SequencerModel* model, ProcedureItem* procedure);
 
   void SetSelected(InstructionItem* instruction);
-  void SetSelectedInstructions(const std::vector<InstructionItem *>& instructions);
+  void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
-  std::vector<InstructionItem *> GetSelectedInstructions() const;
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
 signals:
@@ -79,6 +79,6 @@ private:
   ProcedureItem* m_procedure{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPOSER_COMPOSERTREEWIDGET_H

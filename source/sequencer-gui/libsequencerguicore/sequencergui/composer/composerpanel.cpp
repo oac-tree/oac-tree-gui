@@ -70,4 +70,4 @@ void ComposerPanel::SetModel(SequencerModel *model)
   m_open_documents_widget->SetModel(model);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

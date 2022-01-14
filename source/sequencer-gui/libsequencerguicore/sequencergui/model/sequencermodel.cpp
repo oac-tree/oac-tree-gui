@@ -75,4 +75,4 @@ void SequencerModel::SetupModel()
   m_procedure_container->SetDisplayName("Procedure container");
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

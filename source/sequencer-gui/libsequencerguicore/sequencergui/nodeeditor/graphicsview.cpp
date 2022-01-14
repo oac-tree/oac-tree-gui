@@ -122,14 +122,14 @@ void GraphicsView::keyReleaseEvent(QKeyEvent* event)
     }
     break;
   case Qt::Key_Delete:
-      emit deleteSelectedRequest();
-      break;
+    emit deleteSelectedRequest();
+    break;
   case Qt::Key_Backspace:
-      emit deleteSelectedRequest();
-      break;
+    emit deleteSelectedRequest();
+    break;
   default:
     QGraphicsView::keyPressEvent(event);
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

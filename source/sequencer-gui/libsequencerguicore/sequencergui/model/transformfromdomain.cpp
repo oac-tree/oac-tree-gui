@@ -137,4 +137,4 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
   builder.PopulateInstructionContainerItem(procedure, container);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

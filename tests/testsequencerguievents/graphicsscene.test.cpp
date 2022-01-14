@@ -127,7 +127,7 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
   // but the wait view was regenerated
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
-//  EXPECT_NE(wait_view, new_wait_view); // FIXME failing in the container
+  //  EXPECT_NE(wait_view, new_wait_view); // FIXME failing in the container
 
   // sequence now connected with new wait_view
   auto children_views = GetConnectedChildren(sequence_view);
@@ -170,7 +170,7 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
   // new sequence view is the same, wait view is different
   EXPECT_EQ(sequence_view, m_scene.FindViewForInstruction(sequence));
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
-//  ASSERT_NE(wait_view, new_wait_view); // FIXME failing in the container
+  //  ASSERT_NE(wait_view, new_wait_view); // FIXME failing in the container
 
   // there is no connections anymore
   EXPECT_EQ(GetConnectedChildren(sequence_view).size(), 0);
@@ -252,7 +252,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
 
   // WaitView vas regenerated on the move of ViewItem on top.
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
-//  ASSERT_NE(wait_view, new_wait_view); // failing in the container
+  //  ASSERT_NE(wait_view, new_wait_view); // failing in the container
 
   EXPECT_EQ(new_wait_view->GetConnectableItem()->GetInstruction(), wait);
 }

@@ -78,7 +78,6 @@ const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
 const std::string kWaitTimeoutAttribute = "timeout";
 
-
-}  // namespace sequi::DomainConstants
+}  // namespace sequencergui::DomainConstants
 
 #endif  // SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H

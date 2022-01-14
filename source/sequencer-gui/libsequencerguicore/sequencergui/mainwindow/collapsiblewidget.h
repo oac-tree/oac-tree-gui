@@ -44,9 +44,9 @@ public:
   void SetText(const QString& text);
 
 private:
-  ExplorerNarrowToolBar* m_tool_bar{nullptr}; // ToolBar intended to go to splitter separately
+  ExplorerNarrowToolBar* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_COLLAPSIBLEWIDGET_H

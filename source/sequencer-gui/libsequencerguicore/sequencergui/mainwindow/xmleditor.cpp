@@ -78,4 +78,4 @@ void XMLEditor::ClearText()
   m_text_edit->clear();
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

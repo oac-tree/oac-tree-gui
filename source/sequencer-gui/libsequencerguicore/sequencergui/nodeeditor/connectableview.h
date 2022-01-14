@@ -94,6 +94,6 @@ QList<T*> ConnectableView::GetPorts() const
   return result;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEW_H

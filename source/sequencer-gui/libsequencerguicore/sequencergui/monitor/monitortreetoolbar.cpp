@@ -164,4 +164,4 @@ std::unique_ptr<QMenu> MonitorTreeToolBar::CreateAppMenu()
   return result;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

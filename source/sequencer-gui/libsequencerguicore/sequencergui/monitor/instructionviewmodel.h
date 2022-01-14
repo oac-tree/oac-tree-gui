@@ -40,6 +40,6 @@ public:
   InstructionViewModel(mvvm::ApplicationModel* model, QObject* parent = nullptr);
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_INSTRUCTIONVIEWMODEL_H

@@ -25,8 +25,8 @@
 #include "sequencergui/monitor/usercontext.h"
 
 #include <QObject>
-#include <memory>
 #include <functional>
+#include <memory>
 
 namespace sequencergui
 {
@@ -101,6 +101,6 @@ private:
   std::unique_ptr<SequencerModel> m_job_model;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_JOBCONTEXT_H

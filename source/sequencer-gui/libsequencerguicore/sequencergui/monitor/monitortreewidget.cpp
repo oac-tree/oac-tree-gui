@@ -106,4 +106,4 @@ void MonitorTreeWidget::SetupConnections()
           &MonitorTreeWidget::onAppChangeRequest);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

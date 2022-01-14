@@ -40,6 +40,6 @@ private:
   QTextEdit* m_text_edit{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MESSAGEPANEL_H

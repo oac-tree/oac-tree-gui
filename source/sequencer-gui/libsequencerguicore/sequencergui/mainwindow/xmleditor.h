@@ -47,6 +47,6 @@ private:
   XmlSyntaxHighlighter* m_syntax_highlighter{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_XMLEDITOR_H

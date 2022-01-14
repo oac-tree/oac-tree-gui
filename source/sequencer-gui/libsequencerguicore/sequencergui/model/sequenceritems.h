@@ -83,6 +83,6 @@ public:
   WorkspaceItem* GetWorkspace() const;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMS_H

@@ -144,7 +144,6 @@ TEST_F(GraphicsSceneControllerTest, RemoveInstruction)
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
 }
 
-
 //! Scene is looking to the procedure with sequence and single child in it.
 //! Sequence is deleted, thish should lead to the disappearance of two vews.
 
@@ -170,10 +169,10 @@ TEST_F(GraphicsSceneControllerTest, ParentWithChildRemoveChild)
 ////! Scene is looking to the procedure with sequence and single child in it.
 ////! Sequence is deleted, thish should lead to the disappearance of two vews.
 
-//TEST_F(GraphicsSceneControllerTest, RemoveParentWithChild)
+// TEST_F(GraphicsSceneControllerTest, RemoveParentWithChild)
 //{
-//  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
-//  auto wait = m_model.InsertItem<WaitItem>(sequence);
+//   auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+//   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
 //  auto controller = CreateController();
 

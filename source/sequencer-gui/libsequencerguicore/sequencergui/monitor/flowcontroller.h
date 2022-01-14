@@ -35,7 +35,6 @@ namespace sequencergui
 class FlowController
 {
 public:
-
   void SetWaitingMode(WaitingMode waiting_mode);
 
   void WaitIfNecessary();
@@ -52,6 +51,6 @@ private:
   int m_wait_msec{0};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_FLOWCONTROLLER_H

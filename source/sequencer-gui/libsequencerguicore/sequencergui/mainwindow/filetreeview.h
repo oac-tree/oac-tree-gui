@@ -57,6 +57,6 @@ private:
   QString m_current_xml_file;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_FILETREEVIEW_H

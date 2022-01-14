@@ -43,7 +43,7 @@ ExplorerView::ExplorerView(QWidget *parent)
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_file_tree_view);
 
-//  m_splitter->addWidget(m_open_documents_widget);
+  //  m_splitter->addWidget(m_open_documents_widget);
   m_open_documents_widget->SetText("OPEN PROCEDURES");
   m_open_documents_widget->AddToSplitter(m_splitter);
 
@@ -75,4 +75,4 @@ void ExplorerView::SetModel(SequencerModel *model)
 
 ExplorerView::~ExplorerView() = default;
 
-}  // namespace sequi
+}  // namespace sequencergui

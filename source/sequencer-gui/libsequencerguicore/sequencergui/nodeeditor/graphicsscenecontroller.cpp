@@ -41,7 +41,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   std::map<const InstructionItem*, ConnectableView*> m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
-  std::function<void (InstructionContainerItem *)> m_align_strategy;
+  std::function<void(InstructionContainerItem*)> m_align_strategy;
 
   GraphicsSceneControllerImpl(SequencerModel* model, GraphicsScene* graphics_scene)
       : m_model(model), m_graphics_scene(graphics_scene)
@@ -175,7 +175,8 @@ GraphicsSceneController::GraphicsSceneController(SequencerModel* model,
   model->Subscribe(this);
 }
 
-void GraphicsSceneController::SetAlignStrategy(std::function<void (InstructionContainerItem *)> strategy)
+void GraphicsSceneController::SetAlignStrategy(
+    std::function<void(InstructionContainerItem*)> strategy)
 {
   p_impl->m_align_strategy = strategy;
 }
@@ -210,4 +211,4 @@ void GraphicsSceneController::Init(InstructionContainerItem* root_item)
   p_impl->InitScene(root_item);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

@@ -63,6 +63,6 @@ private:
   NodeConnection* m_conn{nullptr};  //! Currently processed connection.
 };
 
-}  // namespace NodeEditor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODECONTROLLER_H

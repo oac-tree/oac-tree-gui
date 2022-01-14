@@ -191,4 +191,4 @@ JobContext *JobManager::CreateContext()
   return context;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

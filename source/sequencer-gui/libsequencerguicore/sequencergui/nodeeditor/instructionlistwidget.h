@@ -47,6 +47,6 @@ private:
   void addEntry(const QString& name);
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_INSTRUCTIONLISTWIDGET_H

@@ -22,8 +22,8 @@
 
 #include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/monitor/flowcontroller.h"
-#include "sequencergui/monitor/usercontroller.h"
 #include "sequencergui/monitor/job_types.h"
+#include "sequencergui/monitor/usercontroller.h"
 
 #include "mvvm/utils/threadsafestack.h"
 
@@ -101,6 +101,6 @@ private:
   mutable std::mutex m_mutex;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_PROCEDURERUNNER_H

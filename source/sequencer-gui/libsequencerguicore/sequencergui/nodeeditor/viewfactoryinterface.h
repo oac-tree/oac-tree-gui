@@ -34,6 +34,6 @@ public:
   virtual std::unique_ptr<ConnectableView> CreateView(InstructionItem*) = 0;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_VIEWFACTORYINTERFACE_H

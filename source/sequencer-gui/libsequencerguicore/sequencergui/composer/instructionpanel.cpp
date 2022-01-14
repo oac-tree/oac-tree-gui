@@ -26,7 +26,6 @@
 namespace sequencergui
 {
 
-
 InstructionPanel::InstructionPanel(QWidget *parent)
     : CollapsibleWidget(parent), m_list_widget(new InstructionListWidget)
 {
@@ -37,8 +36,6 @@ InstructionPanel::InstructionPanel(QWidget *parent)
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_list_widget);
-
-
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

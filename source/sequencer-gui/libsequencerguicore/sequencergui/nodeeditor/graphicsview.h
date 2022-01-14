@@ -54,8 +54,8 @@ public:
   QSize minimumSizeHint() const override;
 
 public slots:
-    void onSelectionMode(int);
-    void onChangeScale(double new_scale);
+  void onSelectionMode(int);
+  void onChangeScale(double new_scale);
 
 signals:
   void deleteSelectedRequest();
@@ -66,6 +66,6 @@ protected:
   void keyReleaseEvent(QKeyEvent* event);
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSVIEW_H

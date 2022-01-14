@@ -56,7 +56,7 @@ void ExplorerToolBar::AddDotsMenu()
 
 void ExplorerToolBar::InsertElement(QWidget *widget)
 {
- insertWidget(m_spacer_action, widget);
+  insertWidget(m_spacer_action, widget);
 }
 
 void ExplorerToolBar::insertStrech()
@@ -66,4 +66,4 @@ void ExplorerToolBar::insertStrech()
   m_spacer_action = addWidget(empty);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

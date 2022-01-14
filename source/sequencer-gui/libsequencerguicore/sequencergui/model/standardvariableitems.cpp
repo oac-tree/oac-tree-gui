@@ -284,4 +284,4 @@ void UnknownVariableItem::SetupDomainImpl(variable_t *variable) const
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

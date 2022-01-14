@@ -47,8 +47,7 @@ public:
     return result;
   }
 
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(
-      mvvm::SessionItem *item) override
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override
   {
     std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
@@ -89,4 +88,4 @@ InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObjec
   SetController(std::move(controller));
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

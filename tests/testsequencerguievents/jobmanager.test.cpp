@@ -35,7 +35,7 @@ using namespace sequencergui;
 
 //! Tests for JobManager.
 
-class JobManagerTest : public::testing::Test
+class JobManagerTest : public ::testing::Test
 {
 public:
   JobManagerTest() : m_model(std::make_unique<SequencerModel>())

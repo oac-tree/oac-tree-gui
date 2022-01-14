@@ -53,7 +53,8 @@ public:
 
 private:
   void Iterate(const sequencergui::InstructionItem* instruction, instruction_t* parent);
-  void PopulateDomainInstructions(const InstructionContainerItem* container, procedure_t* procedure);
+  void PopulateDomainInstructions(const InstructionContainerItem* container,
+                                  procedure_t* procedure);
   void PopulateDomainWorkspace(const WorkspaceItem* workspace, procedure_t* procedure);
 
   std::unique_ptr<procedure_t> m_procedure;        //!< domain procedure
@@ -63,6 +64,6 @@ private:
   std::map<std::string, std::string> m_variablename_to_id;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_DOMAINOBJECTBUILDER_H

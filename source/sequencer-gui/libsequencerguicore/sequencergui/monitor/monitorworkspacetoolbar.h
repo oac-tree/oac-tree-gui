@@ -45,6 +45,6 @@ private:
   void InsertStrech();
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MONITORWORKSPACETOOLBAR_H

@@ -64,6 +64,6 @@ private:
   std::unique_ptr<QMenu> m_app_menu;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H

@@ -71,7 +71,7 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
   m_zoom_button->setIcon(StyleUtils::GetIcon("magnify-plus-outline.svg"));
 
-//  m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  //  m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_zoom_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
 
   m_zoom_button->setPopupMode(QToolButton::InstantPopup);
@@ -148,4 +148,4 @@ std::unique_ptr<QMenu> NodeEditorToolBar::CreateZoomMenu()
   return result;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

@@ -162,4 +162,4 @@ void SequencerXMLView::SetupConnections()
           &SequencerXMLView::onSratchpadProcedureSelected);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

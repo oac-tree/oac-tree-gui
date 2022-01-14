@@ -46,8 +46,7 @@ const QString pos_key = "pos";
 namespace sequencergui
 {
 MainWindow::MainWindow()
-    : m_model(std::make_unique<SequencerModel>())
-    , m_tab_widget(new mvvm::MainVerticalBarWidget)
+    : m_model(std::make_unique<SequencerModel>()), m_tab_widget(new mvvm::MainVerticalBarWidget)
 {
   InitApplication();
   InitComponents();
@@ -157,4 +156,4 @@ void MainWindow::PopulateModel()
   Examples::AddInputProcedure(m_model.get());
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

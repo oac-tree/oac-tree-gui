@@ -61,6 +61,6 @@ private:
   std::unique_ptr<QMenu> m_zoom_menu;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_NODEEDITORTOOLBAR_H

@@ -19,9 +19,9 @@
 
 #include "sequencergui/nodeeditor/nodecontroller.h"
 
+#include "sequencergui/nodeeditor/graphicsview.h"
 #include "sequencergui/nodeeditor/nodeconnection.h"
 #include "sequencergui/nodeeditor/nodeport.h"
-#include "sequencergui/nodeeditor/graphicsview.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -146,4 +146,4 @@ void NodeController::resetConnection()
   m_conn = nullptr;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

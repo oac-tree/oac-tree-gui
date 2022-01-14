@@ -102,4 +102,4 @@ void XmlSyntaxHighlighter::setFormats()
 
   m_xmlCommentFormat.setForeground(Qt::gray);
 }
-}  // namespace sequi
+}  // namespace sequencergui

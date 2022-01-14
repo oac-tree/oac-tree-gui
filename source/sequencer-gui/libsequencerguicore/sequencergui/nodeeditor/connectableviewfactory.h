@@ -29,7 +29,7 @@ namespace sequencergui
 
 class AppSettings;
 
-//!Factory to construct ConnectableViews from corre
+//! Factory to construct ConnectableViews from corre
 
 class ConnectableViewFactory : public ViewFactoryInterface
 {
@@ -43,6 +43,6 @@ private:
   std::unique_ptr<AppSettings> m_app_settings;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWFACTORY_H

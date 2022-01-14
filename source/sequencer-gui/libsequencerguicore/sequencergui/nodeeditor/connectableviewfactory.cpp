@@ -49,4 +49,4 @@ std::unique_ptr<ConnectableView> ConnectableViewFactory::CreateView(InstructionI
   return result;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

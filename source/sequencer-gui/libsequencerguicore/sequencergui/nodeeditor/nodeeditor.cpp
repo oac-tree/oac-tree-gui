@@ -43,13 +43,13 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
     , m_graphics_scene(new GraphicsScene)
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
 {
-//  auto layout = new QVBoxLayout(this);
-//  layout->setContentsMargins(0, 0, 0, 0);
-//  layout->setSpacing(0);
-//  layout->setMargin(0);
+  //  auto layout = new QVBoxLayout(this);
+  //  layout->setContentsMargins(0, 0, 0, 0);
+  //  layout->setSpacing(0);
+  //  layout->setMargin(0);
 
-//  layout->addWidget(m_tool_bar);
-//  layout->addWidget(m_graphics_view);
+  //  layout->addWidget(m_tool_bar);
+  //  layout->addWidget(m_graphics_view);
 
   m_tool_bar->setMovable(false);
 
@@ -136,4 +136,4 @@ void NodeEditor::SetupConnections()
   connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

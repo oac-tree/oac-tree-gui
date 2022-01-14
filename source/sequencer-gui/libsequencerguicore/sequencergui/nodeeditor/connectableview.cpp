@@ -96,9 +96,8 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
   if (option->state & (QStyle::State_Selected | QStyle::State_HasFocus))
   {
-    auto rect =
-        QRectF(boundingRect().width() * 0.4, boundingRect().height() * 0.7,
-               mvvm::utils::WidthOfLetterM() * 1.75, mvvm::utils::WidthOfLetterM() * 1.75);
+    auto rect = QRectF(boundingRect().width() * 0.4, boundingRect().height() * 0.7,
+                       mvvm::utils::WidthOfLetterM() * 1.75, mvvm::utils::WidthOfLetterM() * 1.75);
     painter->drawPixmap(rect, pixmap, QRectF(0.0, 0.0, pixmap.width(), pixmap.height()));
   }
 }
@@ -235,4 +234,4 @@ void ConnectableView::SetupPorts()
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

@@ -70,4 +70,4 @@ void ProcedureTreesWidget::SetModel(SequencerModel *model, ProcedureItem *proced
   m_property_tree->GetTreeView()->setAlternatingRowColors(true);
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

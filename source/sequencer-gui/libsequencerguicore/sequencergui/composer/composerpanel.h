@@ -34,7 +34,8 @@ class ProcedureItem;
 class WorkspacePanel;
 
 //! Left panel on SequencerComposerView.
-//! Contains list of opened procedures, list of available instruction, and list of available variables.
+//! Contains list of opened procedures, list of available instruction, and list of available
+//! variables.
 
 class ComposerPanel : public QWidget
 {
@@ -57,6 +58,6 @@ private:
   WorkspacePanel* m_workspace_panel{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPOSER_COMPOSERPANEL_H

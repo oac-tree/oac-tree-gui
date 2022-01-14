@@ -44,7 +44,8 @@ const QRectF default_scene_rect{QPointF{scene_origin_x, scene_origin_y}, QSizeF{
 
 sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *view)
 {
-  return view ? const_cast<sequencergui::InstructionItem *>(view->GetConnectableItem()->GetInstruction())
+  return view ? const_cast<sequencergui::InstructionItem *>(
+             view->GetConnectableItem()->GetInstruction())
               : nullptr;
 }
 
@@ -223,4 +224,4 @@ void GraphicsScene::onSelectionChanged()
   emit InstructionSelected(GetInstruction(selected.at(0)));
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

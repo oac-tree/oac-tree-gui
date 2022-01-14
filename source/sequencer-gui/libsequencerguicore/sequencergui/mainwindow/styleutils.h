@@ -35,6 +35,6 @@ QSize ToolBarIconSize();
 QSize NarrowToolBarIconSize();
 
 QIcon GetIcon(const std::string& icon_name);
-}  // namespace sequi
+}  // namespace sequencergui::StyleUtils
 
 #endif  // SEQUENCERGUI_MAINWINDOW_STYLEUTILS_H

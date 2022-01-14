@@ -58,4 +58,4 @@ bool IsDecoratorInstruction(const InstructionItem *instruction)
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

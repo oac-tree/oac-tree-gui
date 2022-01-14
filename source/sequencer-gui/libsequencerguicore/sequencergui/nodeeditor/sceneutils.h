@@ -63,6 +63,6 @@ void AlignInstructionTree(const QPointF& reference, InstructionItem* instruction
 //! Returns base color of given instruction
 QColor GetBaseColor(const InstructionItem* instruction);
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H

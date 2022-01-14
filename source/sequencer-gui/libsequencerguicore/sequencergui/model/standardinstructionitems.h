@@ -303,6 +303,6 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_STANDARDINSTRUCTIONITEMS_H

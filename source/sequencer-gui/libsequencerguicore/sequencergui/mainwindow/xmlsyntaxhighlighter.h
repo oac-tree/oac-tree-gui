@@ -59,6 +59,6 @@ private:
   QRegExp m_xmlCommentRegex;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_XMLSYNTAXHIGHLIGHTER_H

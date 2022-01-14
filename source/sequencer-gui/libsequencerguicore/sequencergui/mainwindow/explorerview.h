@@ -54,10 +54,10 @@ private:
   ExplorerToolBar* m_tool_bar{nullptr};
 
   QSplitter* m_splitter{nullptr};
-  FileTreeView* m_file_tree_view{nullptr};  
+  FileTreeView* m_file_tree_view{nullptr};
   OpenDocumentsWidget* m_open_documents_widget{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERVIEW_H

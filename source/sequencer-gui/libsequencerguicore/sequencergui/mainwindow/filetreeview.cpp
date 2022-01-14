@@ -111,7 +111,7 @@ void FileTreeView::onTreeDoubleClick(const QModelIndex &index)
   }
   else
   {
-    SetCurrentDir(info.filePath()); // directory which was clicked
+    SetCurrentDir(info.filePath());  // directory which was clicked
   }
 
   if (IsProcedureFile(info))
@@ -155,4 +155,4 @@ void FileTreeView::readSettings()
   }
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

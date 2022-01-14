@@ -64,6 +64,6 @@ private:
   InstructionItem* m_instruction{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLEINSTRUCTIONADAPTER_H

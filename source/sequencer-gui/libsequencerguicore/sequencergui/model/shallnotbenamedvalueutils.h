@@ -42,6 +42,6 @@ std::string GetValueJsonString(const variable_t* value);
 
 bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
 
-}  // namespace sequi::DomainUtils
+}  // namespace sequencergui::DomainUtils
 
 #endif  // SEQUENCERGUI_MODEL_SHALLNOTBENAMEDVALUEUTILS_H

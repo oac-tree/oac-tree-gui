@@ -79,6 +79,6 @@ private:
   MessagePanel* m_message_panel{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MONITORTREEWIDGET_H

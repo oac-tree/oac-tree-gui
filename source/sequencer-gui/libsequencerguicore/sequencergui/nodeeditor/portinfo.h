@@ -36,6 +36,6 @@ struct PortInfo
 const static PortInfo kBasicPortInfo = {"BasicPort", "navajowhite"};
 const static PortInfo kRootPortInfo = {"BasicPort", "indianred"};
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_PORTINFO_H

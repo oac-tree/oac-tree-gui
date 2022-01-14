@@ -28,7 +28,7 @@
 namespace mvvm
 {
 class ViewItem;
-}  // namespace ModelView
+}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -59,7 +59,7 @@ public:
   template <typename T>
   std::vector<T*> GetSelectedViewItems() const;
 
-  void SetSelectedInstructions(const std::vector<InstructionItem *> &to_select);
+  void SetSelectedInstructions(const std::vector<InstructionItem*>& to_select);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
@@ -78,7 +78,6 @@ private slots:
   void onSelectionChanged();
 
 private:
-
   SequencerModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
 
@@ -96,6 +95,6 @@ inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
   return result;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENE_H

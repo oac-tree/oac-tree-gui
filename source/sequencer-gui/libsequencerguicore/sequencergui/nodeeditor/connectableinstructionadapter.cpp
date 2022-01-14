@@ -20,8 +20,8 @@
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 
 #include "sequencergui/model/sequencerutils.h"
-#include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "mvvm/utils/containerutils.h"
 
@@ -59,8 +59,8 @@ QString ConnectableInstructionAdapter::GetDisplayName() const
 
 std::vector<PortInfo> ConnectableInstructionAdapter::GetInputPorts() const
 {
-    return IsRoot() ? std::vector<PortInfo>({kRootPortInfo})
-                    : std::vector<PortInfo>({kBasicPortInfo});
+  return IsRoot() ? std::vector<PortInfo>({kRootPortInfo})
+                  : std::vector<PortInfo>({kBasicPortInfo});
 }
 
 //! Returns output ports of connectable view. This port is located on an instruction playing the
@@ -103,4 +103,4 @@ bool ConnectableInstructionAdapter::IsRoot() const
   return m_instruction->IsRoot();
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

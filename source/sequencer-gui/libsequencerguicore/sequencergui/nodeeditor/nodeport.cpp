@@ -170,4 +170,4 @@ bool ParentPort::isChildPort() const
   return false;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

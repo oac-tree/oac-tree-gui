@@ -116,7 +116,6 @@ private:
   virtual void SetupDomainImpl(variable_t* variable) const override;
 };
 
-
 //! Represent unknown Variable.
 class UnknownVariableItem : public VariableItem
 {
@@ -134,6 +133,6 @@ private:
   std::vector<std::string> m_domain_attributes;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H

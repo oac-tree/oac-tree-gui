@@ -47,6 +47,6 @@ private:
   mvvm::ContainerItem* m_procedure_container{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCERMODEL_H

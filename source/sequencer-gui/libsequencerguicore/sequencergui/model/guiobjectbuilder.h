@@ -66,7 +66,7 @@ public:
 
 private:
   mvvm::SessionItem* ProcessInstruction(const instruction_t* instruction,
-                                             mvvm::SessionItem* parent);
+                                        mvvm::SessionItem* parent);
   void Iterate(const instruction_t* instruction, mvvm::SessionItem* parent);
 
   void Save(const instruction_t* instruction, InstructionItem* item);
@@ -78,6 +78,6 @@ private:
   std::map<std::string, VariableItem*> m_variablename_to_id;
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_GUIOBJECTBUILDER_H

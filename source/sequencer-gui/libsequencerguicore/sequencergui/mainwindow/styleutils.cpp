@@ -26,7 +26,7 @@ namespace
 {
 //! Flag if to use svg versions of icons.
 const bool kSvgIcons = false;
-}
+}  // namespace
 
 namespace sequencergui::StyleUtils
 {
@@ -52,4 +52,4 @@ QIcon GetIcon(const std::string &icon_name)
   return QIcon(name);
 }
 
-}  // namespace sequi::StyleUtils
+}  // namespace sequencergui::StyleUtils

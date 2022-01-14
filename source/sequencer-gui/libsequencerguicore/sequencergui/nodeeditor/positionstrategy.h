@@ -62,6 +62,6 @@ public:
   void SetPositionToBottom(const QRectF& rect, NodePort* port, int index);
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_POSITIONSTRATEGY_H

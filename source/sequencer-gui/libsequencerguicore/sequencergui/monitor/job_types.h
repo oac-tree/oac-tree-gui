@@ -58,6 +58,6 @@ enum class MessageType
   kError
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_JOB_TYPES_H

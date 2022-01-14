@@ -79,4 +79,4 @@ void VariableItem::SetName(const std::string &value)
 {
   SetProperty(kName, value);
 }
-}  // namespace sequi
+}  // namespace sequencergui

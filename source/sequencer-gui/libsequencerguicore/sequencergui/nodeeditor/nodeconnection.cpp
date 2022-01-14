@@ -158,4 +158,4 @@ ConnectableView* NodeConnection::childView() const
   return child_port->connectableView();
 }
 
-}  // namespace sequi
+}  // namespace sequencergui

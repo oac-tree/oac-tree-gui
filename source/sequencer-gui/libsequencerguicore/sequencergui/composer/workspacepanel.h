@@ -40,6 +40,6 @@ private:
   QListWidget* m_list_widget{nullptr};
 };
 
-}  // namespace sequi
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPOSER_WORKSPACEPANEL_H

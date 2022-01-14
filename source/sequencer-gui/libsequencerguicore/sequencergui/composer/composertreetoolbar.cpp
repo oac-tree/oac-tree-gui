@@ -133,4 +133,4 @@ std::unique_ptr<QMenu> ComposerTreeToolBar::CreateInsertIntoMenu()
   return result;
 }
 
-}  // namespace sequi
+}  // namespace sequencergui
