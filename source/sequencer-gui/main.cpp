@@ -36,7 +36,7 @@ int main(int argc, char** argv)
   Q_INIT_RESOURCE(sequencericons);
 
 #ifdef SEQUENCERGUI_CODAC
-  sequi::DomainUtils::LoadPlugins();
+  sequencergui::DomainUtils::LoadPlugins();
 #endif
 
   sequencergui::MainWindow win;
