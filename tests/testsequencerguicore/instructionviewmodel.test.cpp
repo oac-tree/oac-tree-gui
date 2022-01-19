@@ -22,7 +22,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
-#include "mvvm/viewmodel/applicationmodel.h"
+#include "mvvm/model/applicationmodel.h"
 
 #include <gtest/gtest.h>
 

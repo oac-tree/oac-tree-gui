@@ -21,8 +21,8 @@
 
 #include "sequencergui/model/sequenceritems.h"
 
+#include "mvvm/model/applicationmodel.h"
 #include "mvvm/standarditems/containeritem.h"
-#include "mvvm/viewmodel/applicationmodel.h"
 
 namespace sequencergui
 {

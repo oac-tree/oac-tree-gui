@@ -23,7 +23,7 @@
 
 #include "mvvm/interfaces/rowstrategyinterface.h"
 #include "mvvm/model/function_types.h"
-#include "mvvm/viewmodel/applicationmodel.h"
+#include "mvvm/model/applicationmodel.h"
 #include "mvvm/viewmodel/standardchildrenstrategies.h"
 #include "mvvm/viewmodel/standardrowstrategies.h"
 #include "mvvm/viewmodel/viewitemfactory.h"
