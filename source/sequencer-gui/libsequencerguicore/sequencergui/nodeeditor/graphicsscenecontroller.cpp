@@ -172,7 +172,7 @@ GraphicsSceneController::GraphicsSceneController(SequencerModel* model,
                                                  GraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {
-  model->Subscribe(this);
+  SubscribeTo(model->GetSubscriber());
 }
 
 void GraphicsSceneController::SetAlignStrategy(
