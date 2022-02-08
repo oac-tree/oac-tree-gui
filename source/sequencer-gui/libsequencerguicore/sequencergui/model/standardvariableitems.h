@@ -48,8 +48,8 @@ public:
   void SetJsonValue(const std::string& value);
 
 private:
-  virtual void InitFromDomainImpl(const variable_t* variable) override;
-  virtual void SetupDomainImpl(variable_t* variable) const override;
+  void InitFromDomainImpl(const variable_t* variable) override;
+  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent FileVariable.
@@ -66,8 +66,8 @@ public:
   void SetFileName(const std::string& name);
 
 private:
-  virtual void InitFromDomainImpl(const variable_t* variable) override;
-  virtual void SetupDomainImpl(variable_t* variable) const override;
+  void InitFromDomainImpl(const variable_t* variable) override;
+  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent LocalVariable.
@@ -88,8 +88,8 @@ public:
   void SetJsonValue(const std::string& value);
 
 private:
-  virtual void InitFromDomainImpl(const variable_t* variable) override;
-  virtual void SetupDomainImpl(variable_t* variable) const override;
+  void InitFromDomainImpl(const variable_t* variable) override;
+  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent PVClientVariable.
@@ -112,8 +112,8 @@ public:
   void SetJsonValue(const std::string& value);
 
 private:
-  virtual void InitFromDomainImpl(const variable_t* variable) override;
-  virtual void SetupDomainImpl(variable_t* variable) const override;
+  void InitFromDomainImpl(const variable_t* variable) override;
+  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent unknown Variable.
@@ -126,8 +126,8 @@ public:
   std::string GetDomainType() const override;
 
 private:
-  virtual void InitFromDomainImpl(const variable_t* variable) override;
-  virtual void SetupDomainImpl(variable_t* variable) const override;
+  void InitFromDomainImpl(const variable_t* variable) override;
+  void SetupDomainImpl(variable_t* variable) const override;
 
   std::string m_domain_name;
   std::vector<std::string> m_domain_attributes;
