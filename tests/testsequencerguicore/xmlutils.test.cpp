@@ -31,29 +31,22 @@ class XmlUtilsTest : public FolderBasedTest
 public:
   XmlUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}
 
-  std::string CreateProcedureString(const std::string& body)
+  static std::string CreateProcedureString(const std::string& body, bool schema = true)
   {
-    static const std::string header{
+    static const std::string header_with_schema{
         R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
            name="Trivial procedure for testing purposes"
            xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
            xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">)RAW"};
 
-    static const std::string footer{R"RAW(</Procedure>)RAW"};
-
-    return header + body + footer;
-  }
-
-  //! Returns multi-line XML string with Sequencer procedure, where user body
-  //! is wrapped into necessary elements. Procedure tag deliberately doesn't contain any schema.
-  std::string CreateProcedureStringV2(const std::string& body)
-  {
     static const std::string header{R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure>)RAW"};
+
     static const std::string footer{R"RAW(</Procedure>
 )RAW"};
-    return header + body + footer;
+
+    return (schema ? header_with_schema : header) + body + footer;
   }
 };
 
@@ -114,6 +107,7 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   <Workspace/>
 )"};
 
-  auto expected_string = CreateProcedureStringV2(body);
+  auto expected_string = CreateProcedureString(
+      body, /*schema*/ false);  // current ExportToXMLString doesn't know how export with schema
   EXPECT_EQ(sequencergui::ExportToXMLString(&procedure_item), expected_string);
 }
