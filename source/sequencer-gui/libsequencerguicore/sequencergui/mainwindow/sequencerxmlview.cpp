@@ -22,10 +22,11 @@
 #include "sequencergui/mainwindow/explorerview.h"
 #include "sequencergui/mainwindow/proceduretreeswidget.h"
 #include "sequencergui/mainwindow/xmleditor.h"
-#include "sequencergui/model/xmlutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/xmlutils.h"
 
+#include "mvvm/interfaces/modeleventsubscriberinterface.h"
 #include "mvvm/standarditems/standarditemincludes.h"
 
 #include <QApplication>
@@ -93,6 +94,15 @@ void SequencerXMLView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_explorer_view->SetModel(model);
+
+  auto on_data_change = [this](auto, auto)
+  {
+    if (auto procedure_item = m_explorer_view->GetCurrentScratchpadProcedure(); procedure_item)
+    {
+      m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
+    }
+  };
+  m_model->GetSubscriber()->SetOnDataChanged(on_data_change);
 }
 
 void SequencerXMLView::SetXMLFile(const QString &file_name)

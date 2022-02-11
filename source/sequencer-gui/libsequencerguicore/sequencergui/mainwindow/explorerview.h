@@ -39,10 +39,12 @@ class ExplorerView : public QWidget
   Q_OBJECT
 
 public:
-  ExplorerView(QWidget* parent = nullptr);
-  ~ExplorerView();
+  explicit ExplorerView(QWidget* parent = nullptr);
+  ~ExplorerView() override;
 
   void SetModel(SequencerModel* model);
+
+  ProcedureItem* GetCurrentScratchpadProcedure();
 
 signals:
   void procedureFileClicked(const QString& filename);

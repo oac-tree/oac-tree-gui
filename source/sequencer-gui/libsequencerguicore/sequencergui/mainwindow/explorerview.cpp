@@ -73,6 +73,11 @@ void ExplorerView::SetModel(SequencerModel *model)
   m_open_documents_widget->SetModel(model);
 }
 
+ProcedureItem *ExplorerView::GetCurrentScratchpadProcedure()
+{
+  return m_open_documents_widget->GetSelectedProcedure();
+}
+
 ExplorerView::~ExplorerView() = default;
 
 }  // namespace sequencergui
