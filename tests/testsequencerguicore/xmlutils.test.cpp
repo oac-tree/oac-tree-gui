@@ -21,6 +21,7 @@
 
 #include "folderbasedtest.h"
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/standardinstructionitems.h"
 #include "test_utils.h"
 
 //! Testing methods from importutils.h
@@ -30,7 +31,7 @@ class XmlUtilsTest : public FolderBasedTest
 public:
   XmlUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}
 
-  std::string CreateProcedureString(const std::string &body)
+  std::string CreateProcedureString(const std::string& body)
   {
     static const std::string header{
         R"RAW(<?xml version="1.0" encoding="UTF-8"?>
@@ -43,11 +44,22 @@ public:
 
     return header + body + footer;
   }
+
+  //! Returns multi-line XML string with Sequencer procedure, where user body
+  //! is wrapped into necessary elements. Procedure tag deliberately doesn't contain any schema.
+  std::string CreateProcedureStringV2(const std::string& body)
+  {
+    static const std::string header{R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>)RAW"};
+    static const std::string footer{R"RAW(</Procedure>
+)RAW"};
+    return header + body + footer;
+  }
 };
 
 //! Importing xml Procedure containing a single instruction.
 
-TEST_F(XmlUtilsTest, ProcedureWithSingleWait)
+TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 {
   const std::string body{R"(
   <Wait name="Only" timeout="42" />
@@ -67,7 +79,7 @@ TEST_F(XmlUtilsTest, ProcedureWithSingleWait)
 
 //! Importing xml Procedure containing a single instruction.
 
-TEST_F(XmlUtilsTest, ProcedureWithSingleVariable)
+TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 {
   const std::string body{R"(
   <Workspace>
@@ -85,4 +97,23 @@ TEST_F(XmlUtilsTest, ProcedureWithSingleVariable)
   auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
   EXPECT_EQ(variable_item->GetJsonType(), std::string(R"({"type":"uint32"})"));
   EXPECT_EQ(variable_item->GetJsonValue(), std::string("7"));
+}
+
+//! Exporting xml Procedure containing a single instruction.
+
+TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
+{
+  sequencergui::ProcedureItem procedure_item;
+  auto container = procedure_item.GetInstructionContainer();
+
+  auto wait0 = container->InsertItem<sequencergui::WaitItem>({"", -1});
+  wait0->SetTimeout(42.0);
+
+  const std::string body{R"(
+  <Wait isRoot="false" name="" timeout="42.0"/>
+  <Workspace/>
+)"};
+
+  auto expected_string = CreateProcedureStringV2(body);
+  EXPECT_EQ(sequencergui::ExportToXMLString(&procedure_item), expected_string);
 }
