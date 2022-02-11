@@ -59,9 +59,6 @@ void XMLEditor::SetXMLFile(const QString &file_name)
     return;
   }
 
-  const int old_scrollbar_value = m_text_edit->verticalScrollBar()->value();
-  m_text_edit->clear();
-
   QTextStream in(&file);
   QString text;
   while (!in.atEnd())
@@ -69,7 +66,15 @@ void XMLEditor::SetXMLFile(const QString &file_name)
     text.append(in.readLine() + "\n");
   }
 
-  m_text_edit->setText(text);
+  SetXMLContent(text);
+}
+
+void XMLEditor::SetXMLContent(const QString &content)
+{
+  const int old_scrollbar_value = m_text_edit->verticalScrollBar()->value();
+  m_text_edit->clear();
+
+  m_text_edit->setText(content);
   m_text_edit->verticalScrollBar()->setValue(old_scrollbar_value);
 }
 

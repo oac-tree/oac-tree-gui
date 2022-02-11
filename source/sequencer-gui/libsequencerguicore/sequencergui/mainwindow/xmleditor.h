@@ -39,6 +39,8 @@ public:
 
   void SetXMLFile(const QString& file_name);
 
+  void SetXMLContent(const QString& content);
+
   void ClearText();
 
 private:
