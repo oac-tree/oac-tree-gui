@@ -17,30 +17,26 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/importutils.h"
+#ifndef SEQUENCERGUI_MODEL_XMLUTILS_H
+#define SEQUENCERGUI_MODEL_XMLUTILS_H
 
-#include "Procedure.h"
-#include "SequenceParser.h"
-#include "sequencergui/model/sequenceritems.h"
-#include "sequencergui/model/transformfromdomain.h"
+//! @file importutils.h
+//! Collection of utility functions to import xml files from disk into SessionModel.
 
-#include <iostream>
-#include <stdexcept>
+#include <memory>
+#include <string>
+
 namespace sequencergui
 {
-void ImportFromFile(const std::string &file_name, ProcedureItem *procedure_item)
-{
-  auto procedure = sup::sequencer::ParseProcedureFile(file_name);
-  if (!procedure)
-  {
-    throw std::runtime_error("Error: uninitialised procedure");
-  }
+class ProcedureItem;
 
-  auto instruction_container = procedure_item->GetInstructionContainer();
-  PopulateInstructionContainerItem(procedure.get(), instruction_container);
+//! Imports content of xml file with Sequencer Procedure into ProcedureItem.
+//! ProcedureItem must be empty.
+void ImportFromFile(const std::string& file_name, ProcedureItem* procedure_item);
 
-  auto workspace_item = procedure_item->GetWorkspace();
-  PopulateWorkspaceItem(procedure.get(), workspace_item);
-}
+//! Exports procedure to XML string.
+std::string ExportToXMLString(const ProcedureItem* procedure_item);
 
 }  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_MODEL_XMLUTILS_H

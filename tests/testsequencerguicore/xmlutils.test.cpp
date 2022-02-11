@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/importutils.h"
+#include "sequencergui/model/xmlutils.h"
 
 #include "folderbasedtest.h"
 #include "sequencergui/model/sequenceritems.h"
@@ -25,10 +25,10 @@
 
 //! Testing methods from importutils.h
 
-class ImportUtilsTest : public FolderBasedTest
+class XmlUtilsTest : public FolderBasedTest
 {
 public:
-  ImportUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}
+  XmlUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}
 
   std::string CreateProcedureString(const std::string &body)
   {
@@ -47,7 +47,7 @@ public:
 
 //! Importing xml Procedure containing a single instruction.
 
-TEST_F(ImportUtilsTest, ProcedureWithSingleWait)
+TEST_F(XmlUtilsTest, ProcedureWithSingleWait)
 {
   const std::string body{R"(
   <Wait name="Only" timeout="42" />
@@ -67,7 +67,7 @@ TEST_F(ImportUtilsTest, ProcedureWithSingleWait)
 
 //! Importing xml Procedure containing a single instruction.
 
-TEST_F(ImportUtilsTest, ProcedureWithSingleVariable)
+TEST_F(XmlUtilsTest, ProcedureWithSingleVariable)
 {
   const std::string body{R"(
   <Workspace>

@@ -17,17 +17,34 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/model/xmlutils.h"
+
+#include "Procedure.h"
 #include "SequenceParser.h"
 #include "sequencergui/model/domainobjectbuilder.h"
-#include "sequencergui/model/importutils.h"
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/transformfromdomain.h"
 
 #include <iostream>
 #include <stdexcept>
-
 namespace sequencergui
 {
-std::string ExportToXMLString(const ProcedureItem* procedure_item)
+void ImportFromFile(const std::string &file_name, ProcedureItem *procedure_item)
+{
+  auto procedure = sup::sequencer::ParseProcedureFile(file_name);
+  if (!procedure)
+  {
+    throw std::runtime_error("Error: uninitialised procedure");
+  }
+
+  auto instruction_container = procedure_item->GetInstructionContainer();
+  PopulateInstructionContainerItem(procedure.get(), instruction_container);
+
+  auto workspace_item = procedure_item->GetWorkspace();
+  PopulateWorkspaceItem(procedure.get(), workspace_item);
+}
+
+std::string ExportToXMLString(const ProcedureItem *procedure_item)
 {
   DomainObjectBuilder builder;
   auto domain_procedure = builder.CreateProcedure(procedure_item);

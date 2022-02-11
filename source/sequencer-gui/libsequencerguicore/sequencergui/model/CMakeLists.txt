@@ -4,12 +4,8 @@ target_sources(${library_name} PRIVATE
   domainobjectbuilder.h
   domainutils.cpp
   domainutils.h
-  exportutils.cpp
-  exportutils.h
   guiobjectbuilder.cpp
   guiobjectbuilder.h
-  importutils.cpp
-  importutils.h
   instructionitem.cpp
   instructionitem.h
   item_constants.h
@@ -31,5 +27,7 @@ target_sources(${library_name} PRIVATE
   transformfromdomain.h
   variableitem.cpp
   variableitem.h
+  xmlutils.cpp
+  xmlutils.h
 )
 
