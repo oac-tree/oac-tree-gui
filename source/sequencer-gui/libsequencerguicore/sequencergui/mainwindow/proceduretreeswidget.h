@@ -43,7 +43,7 @@ class ProcedureTreesWidget : public QWidget
   Q_OBJECT
 
 public:
-  ProcedureTreesWidget(QWidget* parent = nullptr);
+  explicit ProcedureTreesWidget(QWidget* parent = nullptr);
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure_item = nullptr);
 

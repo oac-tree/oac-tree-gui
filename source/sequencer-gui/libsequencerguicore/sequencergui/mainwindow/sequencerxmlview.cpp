@@ -22,6 +22,7 @@
 #include "sequencergui/mainwindow/explorerview.h"
 #include "sequencergui/mainwindow/proceduretreeswidget.h"
 #include "sequencergui/mainwindow/xmleditor.h"
+#include "sequencergui/model/exportutils.h"
 #include "sequencergui/model/importutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -136,13 +137,14 @@ void SequencerXMLView::onCreateNewProcedure()
 void SequencerXMLView::onSratchpadProcedureSelected(ProcedureItem *procedure_item)
 {
   qDebug() << "onSratchpadProcedureSelected" << procedure_item;
-  m_xml_editor->ClearText();
   if (procedure_item)
   {
     m_trees_widget->SetModel(m_model, procedure_item);
+    m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
   }
   else
   {
+    m_xml_editor->ClearText();
     m_trees_widget->SetModel(nullptr, nullptr);
   }
 }
