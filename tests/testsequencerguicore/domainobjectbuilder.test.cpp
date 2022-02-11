@@ -53,7 +53,7 @@ TEST_F(DomainObjectBuilderTest, EmptyProcedure)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   // Empty instructions and variables
-  EXPECT_EQ(procedure->RootInstrunction(), nullptr);
+  EXPECT_EQ(procedure->RootInstruction(), nullptr);
   auto instructions = procedure->GetInstructions();
   EXPECT_EQ(instructions.size(), 0);
   EXPECT_EQ(procedure->GetInstructionCount(), 0);
@@ -73,7 +73,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithSingleInstruction)
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
-  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   ASSERT_EQ(procedure->GetInstructions().at(0)->GetType(),
             DomainConstants::kSequenceInstructionType);
@@ -96,7 +96,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithTwoInstructions)
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
-  EXPECT_EQ(procedure->RootInstrunction(), nullptr);
+  EXPECT_EQ(procedure->RootInstruction(), nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 2);
   auto instructions = procedure->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), DomainConstants::kWaitInstructionType);
@@ -120,7 +120,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParentAndChild)
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
-  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
   EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kSequenceInstructionType);
@@ -148,7 +148,7 @@ TEST_F(DomainObjectBuilderTest, BuildProcedureWithParentAndChild)
   ASSERT_TRUE(procedure != nullptr);
 
   // Empty instruction list
-  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
 
@@ -180,7 +180,7 @@ TEST_F(DomainObjectBuilderTest, InverterWithSequence)
   ASSERT_TRUE(procedure != nullptr);
 
   // Empty instruction list
-  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_inverter = procedure->GetInstructions().at(0);
 
@@ -215,7 +215,7 @@ TEST_F(DomainObjectBuilderTest, RepeatWithSingleInstruction)
   ASSERT_TRUE(procedure != nullptr);
 
   // Empty instruction list
-  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_repeat = procedure->GetInstructions().at(0);
 
@@ -269,7 +269,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParallelSequence)
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
-  EXPECT_TRUE(procedure->RootInstrunction() != nullptr);
+  EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
   EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kParallelInstructionType);

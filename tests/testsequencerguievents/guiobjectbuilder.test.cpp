@@ -199,7 +199,7 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   EXPECT_EQ(builder.FindInstructionItemIdentifier(wait_ptr), std::string());
 
   // Domain clones should lead to constructed SequenceItem and WaitItem
-  EXPECT_EQ(procedure.RootInstrunction(), repeat_ptr);
+  EXPECT_EQ(procedure.RootInstruction(), repeat_ptr);
   EXPECT_EQ(repeat_ptr->ChildInstructions().at(0), include_ptr);
 
   auto cloned_domain_sequence = include_ptr->ChildInstructions().at(0);

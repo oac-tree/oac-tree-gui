@@ -117,7 +117,7 @@ void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *proce
 
   if (root_only)
   {
-    if (auto instruction = procedure->RootInstrunction(); instruction)
+    if (auto instruction = procedure->RootInstruction(); instruction)
     {
       auto next_parent_item = ProcessInstruction(instruction, container);
       if (next_parent_item)
