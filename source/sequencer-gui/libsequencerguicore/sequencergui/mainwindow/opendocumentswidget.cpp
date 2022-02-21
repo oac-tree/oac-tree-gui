@@ -27,7 +27,7 @@
 #include "mvvm/model/itemutils.h"
 #include "mvvm/standarditems/standarditemincludes.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
-#include "mvvm/viewmodelbase/viewmodelbaseutils.h"
+#include "mvvm/viewmodel/viewmodelutils.h"
 
 #include <QLabel>
 #include <QListView>
@@ -87,8 +87,8 @@ std::vector<ProcedureItem *> OpenDocumentsWidget::GetSelectedProcedures() const
   }
   for (auto index : m_list_view->selectionModel()->selectedIndexes())
   {
-    auto procedure_item =
-        mvvm::utils::GetContext<mvvm::SessionItem>(m_view_model->itemFromIndex(index));
+    auto procedure_item = m_view_model->GetSessionItemFromIndex(index);
+
     result.push_back(const_cast<mvvm::SessionItem *>(procedure_item));
   }
   return mvvm::utils::CastedItems<ProcedureItem>(result);
@@ -120,7 +120,8 @@ void OpenDocumentsWidget::onTreeSingleClick(const QModelIndex &index)
     return;
   }
 
-  if (auto item = mvvm::utils::GetItem<ProcedureItem>(m_view_model->itemFromIndex(index)); item)
+  if (auto item = mvvm::utils::GetItemFromView<ProcedureItem>(m_view_model->itemFromIndex(index));
+      item)
   {
     emit procedureSelected(const_cast<ProcedureItem *>(item));
   }

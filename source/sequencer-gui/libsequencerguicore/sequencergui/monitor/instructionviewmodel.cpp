@@ -22,8 +22,8 @@
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/interfaces/rowstrategyinterface.h"
-#include "mvvm/model/function_types.h"
 #include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/function_types.h"
 #include "mvvm/viewmodel/standardchildrenstrategies.h"
 #include "mvvm/viewmodel/standardrowstrategies.h"
 #include "mvvm/viewmodel/viewitemfactory.h"
@@ -36,11 +36,6 @@ namespace sequencergui
 class InstructionRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
-  explicit InstructionRowStrategy(const mvvm::item_setdata_function_t &set_func)
-      : m_set_func(set_func)
-  {
-  }
-
   QStringList GetHorizontalHeaderLabels() const override
   {
     static QStringList result = {"Type", "Name", "Status"};
@@ -63,14 +58,11 @@ public:
 
     if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetNameItem(), {}));
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetStatusItem(), {}));
+      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetNameItem()));
+      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetStatusItem()));
     }
     return result;
   }
-
-private:
-  mvvm::item_setdata_function_t m_set_func;
 };
 
 InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObject *parent)
@@ -80,11 +72,7 @@ InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObjec
   auto controller = std::make_unique<mvvm::ViewModelController>(model, this);
   controller->SubscribeTo(model->GetSubscriber());
   controller->SetChildrenStrategy(std::make_unique<mvvm::TopItemsStrategy>());
-
-  auto set_data = [model](auto item, auto data, auto role)
-  { return model->SetData(item, data, role); };
-
-  controller->SetRowStrategy(std::make_unique<InstructionRowStrategy>(set_data));
+  controller->SetRowStrategy(std::make_unique<InstructionRowStrategy>());
   SetController(std::move(controller));
 }
 
