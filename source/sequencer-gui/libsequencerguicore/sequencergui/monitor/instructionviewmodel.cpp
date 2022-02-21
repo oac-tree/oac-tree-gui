@@ -21,13 +21,11 @@
 
 #include "sequencergui/model/sequenceritems.h"
 
-#include "mvvm/interfaces/rowstrategyinterface.h"
+#include "mvvm/factories/viewmodelcontrollerfactory.h"
 #include "mvvm/model/applicationmodel.h"
-#include "mvvm/model/function_types.h"
 #include "mvvm/viewmodel/standardchildrenstrategies.h"
 #include "mvvm/viewmodel/standardrowstrategies.h"
 #include "mvvm/viewmodel/viewitemfactory.h"
-#include "mvvm/viewmodel/viewmodelcontroller.h"
 #include "mvvm/viewmodelbase/viewitem.h"
 
 namespace sequencergui
@@ -68,12 +66,8 @@ public:
 InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObject *parent)
     : ViewModel(parent)
 {
-  // FIXME remove code duplications from PropertyViewModel, TopItemsViewModel
-  auto controller = std::make_unique<mvvm::ViewModelController>(model, this);
-  controller->SubscribeTo(model->GetSubscriber());
-  controller->SetChildrenStrategy(std::make_unique<mvvm::TopItemsStrategy>());
-  controller->SetRowStrategy(std::make_unique<InstructionRowStrategy>());
-  SetController(std::move(controller));
+  SetController(
+      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionRowStrategy>(model, this));
 }
 
 }  // namespace sequencergui
