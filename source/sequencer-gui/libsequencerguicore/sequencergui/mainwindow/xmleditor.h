@@ -35,7 +35,7 @@ class XMLEditor : public QWidget
   Q_OBJECT
 
 public:
-  XMLEditor(QWidget* parent = nullptr);
+  explicit XMLEditor(QWidget* parent = nullptr);
 
   void SetXMLFile(const QString& file_name);
 
