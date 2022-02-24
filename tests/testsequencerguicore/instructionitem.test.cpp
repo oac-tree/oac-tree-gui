@@ -17,16 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "Instruction.h"
-#include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/transformfromdomain.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
 
-//! Tests for items from instructionitems.h
+//! Tests for InstructionItem base class.
 
 class InstructionItemsTest : public ::testing::Test
 {
@@ -43,10 +40,6 @@ public:
     void SetupDomainImpl(instruction_t* instruction) const override{};
   };
 };
-
-// ----------------------------------------------------------------------------
-// InstructionItem test
-// ----------------------------------------------------------------------------
 
 TEST_F(InstructionItemsTest, TestItem)
 {
