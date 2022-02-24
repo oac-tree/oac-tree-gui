@@ -105,20 +105,8 @@ static inline const std::string kWorkspace = "kWorkspace";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
 {
-  // FIXME return simplified way of constructing properties, after kPropertyEditor Appearance flag
-  // is there
-  //  AddProperty<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
-  //  AddProperty<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
-
-  // we create it via universal tag to let recursive iteration via childrenstrategy in
-  // TopItemsTreeView
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kInstructions, {InstructionContainerItem::Type}));
-  auto instructions = InsertItem<InstructionContainerItem>({kInstructions, 0});
-  instructions->SetDisplayName("Instructions");
-
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kWorkspace, {WorkspaceItem::Type}));
-  auto workspace = InsertItem<WorkspaceItem>({kWorkspace, 0});
-  workspace->SetDisplayName("Workspace");
+  AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
+  AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
