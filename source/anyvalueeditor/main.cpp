@@ -1,0 +1,38 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2022 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "anyvalueeditor/mainwindow.h"
+
+#include <QApplication>
+#include <QLocale>
+
+int main(int argc, char** argv)
+{
+  QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
+
+  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+  QApplication app(argc, argv);
+
+  anyvalueeditor::MainWindow win;
+
+  win.show();
+
+  return app.exec();
+}
