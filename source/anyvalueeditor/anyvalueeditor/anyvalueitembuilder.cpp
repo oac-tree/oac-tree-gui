@@ -19,6 +19,8 @@
 
 #include "anyvalueeditor/anyvalueitembuilder.h"
 
+#include "anyvalueeditor/transformutils.h"
+
 namespace anyvalueeditor
 {
 
@@ -52,7 +54,10 @@ void AnyValueItemBuilder::AddArrayEpilog(const anyvalue_t *anyvalue) {}
 
 void AnyValueItemBuilder::AddScalarProlog(const anyvalue_t *anyvalue) {}
 
-void AnyValueItemBuilder::AddScalarEpilog(const anyvalue_t *anyvalue) {}
+void AnyValueItemBuilder::AddScalarEpilog(const anyvalue_t *anyvalue)
+{
+  ScalarToItem(*anyvalue, *m_item);
+}
 
 }  // namespace anyvalueeditor
 

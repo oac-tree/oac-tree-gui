@@ -19,15 +19,46 @@
 
 #include "anyvalueeditor/anyvalueitembuilder.h"
 
+#include "AnyValue.h"
+#include "AnyValueHelper.h"
+#include "anyvalueeditor/anyvalueitem.h"
+
 #include <gtest/gtest.h>
 
-//! Testing ConnectableInstructionAdapter class.
+using namespace anyvalueeditor;
 
 class AnyValueItemBuilderTest : public ::testing::Test
 {
+public:
+  void ProcessValue(const sup::dto::AnyValue& value, AnyValueItem& item)
+  {
+    AnyValueItemBuilder m_builder(&item);
+    sup::dto::SerializeAnyValue(value, m_builder);
+  }
 };
 
-TEST_F(AnyValueItemBuilderTest, EmptyValue)
+//! Building AnyValueItem from scalar based AnyValues.
+//! More similar tests in transformutils.test.cpp
+
+TEST_F(AnyValueItemBuilderTest, ScalarValues)
 {
-  EXPECT_EQ(1, 1);
+  { // bool
+    AnyValueItem item;
+    sup::dto::AnyValue anyvalue{sup::dto::Boolean};
+    anyvalue = true;
+    ProcessValue(anyvalue, item);
+    EXPECT_EQ(item.GetTotalItemCount(), 0);
+    EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
+    EXPECT_TRUE(item.Data<bool>());
+  }
+
+  { // int
+    AnyValueItem item;
+    sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
+    anyvalue = 42;
+    ProcessValue(anyvalue, item);
+    EXPECT_EQ(item.GetTotalItemCount(), 0);
+    EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
+    EXPECT_EQ(item.Data<int>(), 42);
+  }
 }
