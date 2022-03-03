@@ -19,6 +19,8 @@
 
 #include "anyvalueeditor/mainwindow.h"
 
+#include "anyvalueeditor/editorwidget.h"
+
 #include <QCoreApplication>
 #include <QSettings>
 
@@ -37,7 +39,6 @@ MainWindow::MainWindow()
 {
   InitApplication();
   InitComponents();
-  setCentralWidget(new QWidget);
 
   sup::dto::AnyValue two_scalars = {{
     {"signed", {sup::dto::SignedInteger8, 1}},
@@ -70,7 +71,11 @@ void MainWindow::InitApplication()
   }
 }
 
-void MainWindow::InitComponents() {}
+void MainWindow::InitComponents()
+{
+  m_editor_widget = new EditorWidget;
+  setCentralWidget(m_editor_widget);
+}
 
 void MainWindow::WriteSettings()
 {

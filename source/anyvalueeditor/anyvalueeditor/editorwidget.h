@@ -17,40 +17,26 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_MAINWINDOW_H
-#define ANYVALUEEDITOR_MAINWINDOW_H
+#ifndef ANYVALUEEDITOR_EDITORWIDGET_H
+#define ANYVALUEEDITOR_EDITORWIDGET_H
 
-#include <QMainWindow>
-#include <memory>
+#include <QWidget>
 
-class QCloseEvent;
+class QTreeView;
 
 namespace anyvalueeditor
 {
 
-class EditorWidget;
-
-//! The main window of this application.
-
-class MainWindow : public QMainWindow
+class EditorWidget : public QWidget
 {
   Q_OBJECT
-
 public:
-  MainWindow();
-  ~MainWindow() override;
-
-protected:
-  void closeEvent(QCloseEvent* event) override;
+  explicit EditorWidget(QWidget* parent = nullptr);
 
 private:
-  void InitApplication();
-  void InitComponents();
-  void WriteSettings();
-
-  EditorWidget* m_editor_widget{nullptr};
+  QTreeView* m_tree_view{nullptr};
 };
 
-}  // namespace anyvalueeditor
+}  // namespace anyvalueditor
 
-#endif  // ANYVALUEEDITOR_MAINWINDOW_H
+#endif  // ANYVALUEEDITOR_EDITORWIDGET_H
