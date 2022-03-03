@@ -7,6 +7,8 @@ add_library(${library_name} SHARED "")
 target_link_libraries(${library_name} PUBLIC pthread MVVM::View COACompact::sup-dto)
 
 target_sources(${library_name} PRIVATE
+  anyvalueitem.cpp
+  anyvalueitem.h
   mainwindow.cpp
   mainwindow.h
 )
