@@ -11,6 +11,7 @@ target_sources(${library_name} PRIVATE
   anyvalueitem.h
   anyvalueitembuilder.cpp
   anyvalueitembuilder.h
+  anyvalue_type.h
   editorwidget.cpp
   editorwidget.h
   mainwindow.cpp

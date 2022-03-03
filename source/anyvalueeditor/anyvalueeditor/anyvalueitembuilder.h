@@ -22,11 +22,7 @@
 
 #include "BasicScalarTypes.h"
 #include "IAnySerializer.h"
-
-namespace sup::dto
-{
-class AnyValue;
-}
+#include "anyvalue_type.h"
 
 namespace anyvalueeditor
 {
@@ -37,6 +33,23 @@ class AnyValueItemBuilder : public sup::dto::IAnySerializer<sup::dto::AnyValue>
 {
 public:
   explicit AnyValueItemBuilder(AnyValueItem* item);
+
+  void AddEmptyProlog(const anyvalue_t* anyvalue) override;
+  void AddEmptyEpilog(const anyvalue_t* anyvalue) override;
+
+  void AddStructProlog(const anyvalue_t* anyvalue) override;
+  void AddStructMemberSeparator() override;
+  void AddStructEpilog(const anyvalue_t* anyvalue) override;
+
+  void AddMemberProlog(const anyvalue_t* anyvalue, const std::string& member_name) override;
+  void AddMemberEpilog(const anyvalue_t* anyvalue, const std::string& member_name) override;
+
+  void AddArrayProlog(const anyvalue_t* anyvalue) override;
+  void AddArrayElementSeparator() override;
+  void AddArrayEpilog(const anyvalue_t* anyvalue) override;
+
+  void AddScalarProlog(const anyvalue_t* anyvalue) override;
+  void AddScalarEpilog(const anyvalue_t* anyvalue) override;
 
 private:
   AnyValueItem* m_item{nullptr};

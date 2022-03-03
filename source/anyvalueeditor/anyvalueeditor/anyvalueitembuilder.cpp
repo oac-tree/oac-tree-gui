@@ -24,6 +24,36 @@ namespace anyvalueeditor
 
 AnyValueItemBuilder::AnyValueItemBuilder(AnyValueItem *item) : m_item(item) {}
 
+void AnyValueItemBuilder::AddEmptyProlog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddEmptyEpilog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddStructProlog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddStructMemberSeparator() {}
+
+void AnyValueItemBuilder::AddStructEpilog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddMemberProlog(const anyvalue_t *anyvalue,
+                                          const std::string &member_name)
+{
+}
+
+void AnyValueItemBuilder::AddMemberEpilog(const anyvalue_t *anyvalue,
+                                          const std::string &member_name)
+{
+}
+
+void AnyValueItemBuilder::AddArrayProlog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddArrayElementSeparator() {}
+
+void AnyValueItemBuilder::AddArrayEpilog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddScalarProlog(const anyvalue_t *anyvalue) {}
+
+void AnyValueItemBuilder::AddScalarEpilog(const anyvalue_t *anyvalue) {}
+
 }  // namespace anyvalueeditor
 
 #include "anyvalueeditor/anyvalueitembuilder.h"
