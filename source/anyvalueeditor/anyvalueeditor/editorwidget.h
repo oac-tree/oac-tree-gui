@@ -22,7 +22,16 @@
 
 #include <QWidget>
 
+#include <memory>
+
 class QTreeView;
+
+namespace mvvm
+{
+class ApplicationModel;
+class ViewModel;
+class ViewModelDelegate;
+}
 
 namespace anyvalueeditor
 {
@@ -32,11 +41,17 @@ class EditorWidget : public QWidget
   Q_OBJECT
 public:
   explicit EditorWidget(QWidget* parent = nullptr);
+  ~EditorWidget() override;
 
 private:
   QTreeView* m_tree_view{nullptr};
+  void PopulateModel();
+
+  std::unique_ptr<mvvm::ApplicationModel> m_model;
+  std::unique_ptr<mvvm::ViewModel> m_view_model;
+  std::unique_ptr<mvvm::ViewModelDelegate> m_delegate;
 };
 
-}  // namespace anyvalueditor
+}  // namespace anyvalueeditor
 
 #endif  // ANYVALUEEDITOR_EDITORWIDGET_H
