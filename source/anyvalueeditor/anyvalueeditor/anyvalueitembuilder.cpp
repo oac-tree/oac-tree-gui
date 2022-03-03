@@ -19,7 +19,12 @@
 
 #include "anyvalueeditor/anyvalueitembuilder.h"
 
+#include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/transformutils.h"
+
+#include "mvvm/model/tagindex.h"
+
+#include <iostream>
 
 namespace anyvalueeditor
 {
@@ -39,11 +44,17 @@ void AnyValueItemBuilder::AddStructEpilog(const anyvalue_t *anyvalue) {}
 void AnyValueItemBuilder::AddMemberProlog(const anyvalue_t *anyvalue,
                                           const std::string &member_name)
 {
+  std::cout << "AddMemberProlog() " << m_item << " " << member_name << std::endl;
+  auto child = m_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
+  child->SetDisplayName(member_name);
+  m_item = child;
 }
 
 void AnyValueItemBuilder::AddMemberEpilog(const anyvalue_t *anyvalue,
                                           const std::string &member_name)
 {
+  std::cout << "AddMemberEpilog() " << m_item << " " << member_name << std::endl;
+  m_item = static_cast<AnyValueItem *>(m_item->GetParent());
 }
 
 void AnyValueItemBuilder::AddArrayProlog(const anyvalue_t *anyvalue) {}

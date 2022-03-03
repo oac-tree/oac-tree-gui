@@ -42,7 +42,7 @@ public:
 
 TEST_F(AnyValueItemBuilderTest, ScalarValues)
 {
-  { // bool
+  {  // bool
     AnyValueItem item;
     sup::dto::AnyValue anyvalue{sup::dto::Boolean};
     anyvalue = true;
@@ -52,7 +52,7 @@ TEST_F(AnyValueItemBuilderTest, ScalarValues)
     EXPECT_TRUE(item.Data<bool>());
   }
 
-  { // int
+  {  // int
     AnyValueItem item;
     sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
     anyvalue = 42;
@@ -61,4 +61,28 @@ TEST_F(AnyValueItemBuilderTest, ScalarValues)
     EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
     EXPECT_EQ(item.Data<int>(), 42);
   }
+}
+
+//! Building AnyValueItem from AnyValue with two named scalars.
+
+TEST_F(AnyValueItemBuilderTest, TwoScalars)
+{
+  AnyValueItem item;
+
+  sup::dto::AnyValue anyvalue = {
+      {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+
+  ProcessValue(anyvalue, item);
+  EXPECT_EQ(item.GetTotalItemCount(), 2);
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+
+  auto child = item.GetItem("", 0);
+  EXPECT_EQ(child->GetTotalItemCount(), 0);
+  EXPECT_EQ(child->GetDisplayName(), "signed");
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
+
+  child = item.GetItem("", 1);
+  EXPECT_EQ(child->GetTotalItemCount(), 0);
+  EXPECT_EQ(child->GetDisplayName(), "bool");
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
 }
