@@ -20,8 +20,10 @@
 #include "anyvalueeditor/transformutils.h"
 
 #include "AnyValue.h"
+#include "AnyValueHelper.h"
 #include "BasicScalarTypes.h"
 #include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/anyvalueitembuilder.h"
 
 #include <functional>
 #include <map>
@@ -70,6 +72,12 @@ void ScalarToItem(const anyvalue_t &value, AnyValueItem &item)
     throw std::runtime_error("Not a known scalar type code");
   }
   return it->second(value, item);
+}
+
+void PopulateItem(const sup::dto::AnyValue *domain, AnyValueItem *item)
+{
+  AnyValueItemBuilder m_builder(item);
+  sup::dto::SerializeAnyValue(*domain, m_builder);
 }
 
 }  // namespace anyvalueeditor

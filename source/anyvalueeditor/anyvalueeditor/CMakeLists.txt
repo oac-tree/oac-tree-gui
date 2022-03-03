@@ -16,8 +16,6 @@ target_sources(${library_name} PRIVATE
   editorwidget.h
   mainwindow.cpp
   mainwindow.h
-  transformfromdomain.cpp
-  transformfromdomain.h
   transformutils.cpp
   transformutils.h
 )

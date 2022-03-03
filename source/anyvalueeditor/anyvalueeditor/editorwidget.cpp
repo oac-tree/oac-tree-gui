@@ -19,7 +19,9 @@
 
 #include "anyvalueeditor/editorwidget.h"
 
+#include "AnyValue.h"
 #include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/transformutils.h"
 
 #include "mvvm/delegates/viewmodeldelegate.h"
 #include "mvvm/model/applicationmodel.h"
@@ -53,7 +55,11 @@ void EditorWidget::PopulateModel()
 {
   m_model->RegisterItem<AnyValueItem>();
 
-  m_model->InsertItem<AnyValueItem>();
+  auto item = m_model->InsertItem<AnyValueItem>();
+
+  sup::dto::AnyValue anyvalue = {
+      {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+  PopulateItem(&anyvalue, item);
 }
 
 }  // namespace anyvalueeditor

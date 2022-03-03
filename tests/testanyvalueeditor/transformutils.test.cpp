@@ -53,3 +53,28 @@ TEST_F(TransformUtilsTest, TransformScalar)
     EXPECT_EQ(item.Data<int>(), 42);
   }
 }
+
+//! Building AnyValueItem from AnyValue with two named scalars.
+//! More tests in anyvalueitembuilder.test.cpp
+
+TEST_F(TransformUtilsTest, TwoScalars)
+{
+  AnyValueItem item;
+
+  sup::dto::AnyValue anyvalue = {
+      {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+
+  PopulateItem(&anyvalue, &item);
+  EXPECT_EQ(item.GetTotalItemCount(), 2);
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+
+  auto child = item.GetItem("", 0);
+  EXPECT_EQ(child->GetTotalItemCount(), 0);
+  EXPECT_EQ(child->GetDisplayName(), "signed");
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
+
+  child = item.GetItem("", 1);
+  EXPECT_EQ(child->GetTotalItemCount(), 0);
+  EXPECT_EQ(child->GetDisplayName(), "bool");
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
+}
