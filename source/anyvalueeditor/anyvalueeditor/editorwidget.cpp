@@ -42,6 +42,7 @@ EditorWidget::EditorWidget(QWidget *parent)
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tree_view);
 
+  m_model->RegisterItem<AnyValueItem>();
   PopulateModel();
 
   m_view_model = std::make_unique<mvvm::AllItemsViewModel>(m_model.get());
@@ -53,12 +54,13 @@ EditorWidget::~EditorWidget() = default;
 
 void EditorWidget::PopulateModel()
 {
-  m_model->RegisterItem<AnyValueItem>();
-
   auto item = m_model->InsertItem<AnyValueItem>();
 
   sup::dto::AnyValue anyvalue = {
-      {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+      {{"signed", {sup::dto::SignedInteger32, 42}},
+       {"bool", {sup::dto::Boolean, true}}}
+  };
+
   PopulateItem(&anyvalue, item);
 }
 
