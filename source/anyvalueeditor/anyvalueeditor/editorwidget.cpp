@@ -54,14 +54,22 @@ EditorWidget::~EditorWidget() = default;
 
 void EditorWidget::PopulateModel()
 {
-  auto item = m_model->InsertItem<AnyValueItem>();
+  {
+    sup::dto::AnyValue anyvalue = {
+        {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+    auto item = m_model->InsertItem<AnyValueItem>();
+    PopulateItem(&anyvalue, item);
+  }
 
-  sup::dto::AnyValue anyvalue = {
-      {{"signed", {sup::dto::SignedInteger32, 42}},
-       {"bool", {sup::dto::Boolean, true}}}
-  };
-
-  PopulateItem(&anyvalue, item);
+  { // Nested structure
+    sup::dto::AnyValue two_scalars = {
+        {{"signed", {sup::dto::SignedInteger8, 1}}, {"bool", {sup::dto::Boolean, 12}}}};
+    sup::dto::AnyValue anyvalue{{
+        {"scalars", two_scalars},
+    }};
+    auto item = m_model->InsertItem<AnyValueItem>();
+    PopulateItem(&anyvalue, item);
+  }
 }
 
 }  // namespace anyvalueeditor

@@ -41,9 +41,13 @@ void AnyValueItemBuilder::AddStructMemberSeparator() {}
 
 void AnyValueItemBuilder::AddStructEpilog(const anyvalue_t *anyvalue) {}
 
+//! Append new child with the display name corresponding to `member_name`.
+//! Update
+
 void AnyValueItemBuilder::AddMemberProlog(const anyvalue_t *anyvalue,
                                           const std::string &member_name)
 {
+  (void) anyvalue;
   std::cout << "AddMemberProlog() " << m_item << " " << member_name << std::endl;
   auto child = m_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
   child->SetDisplayName(member_name);
@@ -53,6 +57,7 @@ void AnyValueItemBuilder::AddMemberProlog(const anyvalue_t *anyvalue,
 void AnyValueItemBuilder::AddMemberEpilog(const anyvalue_t *anyvalue,
                                           const std::string &member_name)
 {
+  (void) anyvalue;
   std::cout << "AddMemberEpilog() " << m_item << " " << member_name << std::endl;
   m_item = static_cast<AnyValueItem *>(m_item->GetParent());
 }
