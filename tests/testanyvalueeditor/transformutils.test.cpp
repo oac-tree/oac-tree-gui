@@ -112,3 +112,54 @@ TEST_F(TransformUtilsTest, NestedStruct)
   EXPECT_EQ(grandchild1->GetDisplayName(), "bool");
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kBoolTypeName);
 }
+
+TEST_F(TransformUtilsTest, TwoNestedStruct)
+{
+  AnyValueItem item;
+
+  const std::string nested_name = "nested_struct";
+  sup::dto::AnyValue two_scalars = {
+      {{"signed", {sup::dto::SignedInteger8, 1}}, {"unsigned", {sup::dto::UnsignedInteger8, 12}}}};
+  sup::dto::AnyValue anyvalue{
+      {{"scalars", two_scalars},
+       {"single",
+        {{"first", {sup::dto::SignedInteger8, 0}}, {"second", {sup::dto::SignedInteger8, 5}}}}},
+      nested_name};
+
+  PopulateItem(&anyvalue, &item);
+  EXPECT_EQ(item.GetTotalItemCount(), 2);
+  EXPECT_EQ(item.GetDisplayName(), "AnyValue");
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+
+  // first branch
+  auto child0 = item.GetItem("", 0);
+  EXPECT_EQ(child0->GetTotalItemCount(), 2);
+  EXPECT_EQ(child0->GetDisplayName(), "scalars");
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+
+  auto grandchild0 = child0->GetItem("", 0);
+  EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild0->GetDisplayName(), "signed");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntTypeName);
+
+  auto grandchild1 = child0->GetItem("", 1);
+  EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild1->GetDisplayName(), "unsigned");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
+
+  // second branch
+  auto child1 = item.GetItem("", 1);
+  EXPECT_EQ(child1->GetTotalItemCount(), 2);
+  EXPECT_EQ(child1->GetDisplayName(), "single");
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+
+  grandchild0 = child1->GetItem("", 0);
+  EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild0->GetDisplayName(), "first");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntTypeName);
+
+  grandchild1 = child1->GetItem("", 1);
+  EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild1->GetDisplayName(), "second");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
+}

@@ -54,19 +54,32 @@ EditorWidget::~EditorWidget() = default;
 
 void EditorWidget::PopulateModel()
 {
-  {
+  {  // two members
     sup::dto::AnyValue anyvalue = {
         {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
     auto item = m_model->InsertItem<AnyValueItem>();
     PopulateItem(&anyvalue, item);
   }
 
-  { // Nested structure
+  {  // Nested structure
     sup::dto::AnyValue two_scalars = {
         {{"signed", {sup::dto::SignedInteger8, 1}}, {"bool", {sup::dto::Boolean, 12}}}};
     sup::dto::AnyValue anyvalue{{
         {"scalars", two_scalars},
     }};
+    auto item = m_model->InsertItem<AnyValueItem>();
+    PopulateItem(&anyvalue, item);
+  }
+
+  {  // Two nested structures
+    const std::string nested_name = "nested_struct";
+    sup::dto::AnyValue two_scalars = {{{"signed", {sup::dto::SignedInteger8, 1}},
+                                       {"unsigned", {sup::dto::UnsignedInteger8, 12}}}};
+    sup::dto::AnyValue anyvalue{
+        {{"scalars", two_scalars},
+         {"single",
+          {{"first", {sup::dto::SignedInteger8, 0}}, {"second", {sup::dto::SignedInteger8, 5}}}}},
+        nested_name};
     auto item = m_model->InsertItem<AnyValueItem>();
     PopulateItem(&anyvalue, item);
   }
