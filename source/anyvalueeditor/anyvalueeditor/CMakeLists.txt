@@ -16,8 +16,8 @@ target_sources(${library_name} PRIVATE
   editorwidget.h
   mainwindow.cpp
   mainwindow.h
-  transformutils.cpp
-  transformutils.h
+  transformfromanyvalue.cpp
+  transformfromanyvalue.h
 )
 
 target_include_directories(${library_name} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..$<SEMICOLON>${SEQUENCERGUI_AUTOGEN_DIR}>)

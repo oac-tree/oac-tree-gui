@@ -20,7 +20,7 @@
 #include "anyvalueeditor/anyvalueitembuilder.h"
 
 #include "anyvalueeditor/anyvalueitem.h"
-#include "anyvalueeditor/transformutils.h"
+#include "anyvalueeditor/transformfromanyvalue.h"
 
 #include "mvvm/model/tagindex.h"
 

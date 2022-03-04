@@ -21,7 +21,7 @@
 
 #include "AnyValue.h"
 #include "anyvalueeditor/anyvalueitem.h"
-#include "anyvalueeditor/transformutils.h"
+#include "anyvalueeditor/transformfromanyvalue.h"
 
 #include "mvvm/delegates/viewmodeldelegate.h"
 #include "mvvm/model/applicationmodel.h"

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/transformutils.h"
+#include "anyvalueeditor/transformfromanyvalue.h"
 
 #include "AnyValue.h"
 #include "AnyValueHelper.h"

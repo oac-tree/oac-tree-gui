@@ -19,12 +19,12 @@
 
 #include "anyvalueeditor/mainwindow.h"
 
+#include "AnyValue.h"
 #include "anyvalueeditor/editorwidget.h"
 
 #include <QCoreApplication>
+#include <QMenuBar>
 #include <QSettings>
-
-#include "AnyValue.h"
 
 namespace
 {
@@ -40,11 +40,8 @@ MainWindow::MainWindow()
   InitApplication();
   InitComponents();
 
-  sup::dto::AnyValue two_scalars = {{
-    {"signed", {sup::dto::SignedInteger8, 1}},
-    {"unsigned", {sup::dto::UnsignedInteger8, 12}}
-  }};
-
+  sup::dto::AnyValue two_scalars = {
+      {{"signed", {sup::dto::SignedInteger8, 1}}, {"unsigned", {sup::dto::UnsignedInteger8, 12}}}};
 }
 
 MainWindow::~MainWindow() = default;
@@ -69,6 +66,17 @@ void MainWindow::InitApplication()
     move(settings.value(pos_key, QPoint(200, 200)).toPoint());
     settings.endGroup();
   }
+
+  InitMenu();
+}
+
+void MainWindow::InitMenu()
+{
+  auto file_menu = menuBar()->addMenu("&File");
+
+  // open file
+  auto open_action = new QAction("&Open...", this);
+  file_menu->addAction(open_action);
 }
 
 void MainWindow::InitComponents()
