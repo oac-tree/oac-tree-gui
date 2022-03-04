@@ -38,8 +38,8 @@ class ComposerTreeToolBar : public QToolBar
   Q_OBJECT
 
 public:
-  ComposerTreeToolBar(QWidget* parent = nullptr);
-  ~ComposerTreeToolBar();
+  explicit ComposerTreeToolBar(QWidget* parent = nullptr);
+  ~ComposerTreeToolBar() override;
 
 signals:
   void insertIntoRequest(const QString& name);

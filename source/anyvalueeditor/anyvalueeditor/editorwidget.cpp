@@ -20,6 +20,7 @@
 #include "anyvalueeditor/editorwidget.h"
 
 #include "AnyValue.h"
+#include "anyvalueeditor/anyvalueeditortoolbar.h"
 #include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/transformfromanyvalue.h"
 
@@ -35,12 +36,17 @@ namespace anyvalueeditor
 
 EditorWidget::EditorWidget(QWidget *parent)
     : QWidget(parent)
+    , m_tool_bar(new AnyValueEditorToolBar)
     , m_tree_view(new QTreeView)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_delegate(std::make_unique<mvvm::ViewModelDelegate>())
 {
   auto layout = new QVBoxLayout(this);
+  layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setMargin(0);
 
   m_model->RegisterItem<AnyValueItem>();
   PopulateModel();

@@ -51,8 +51,8 @@ class ComposerTreeWidget : public QWidget
   Q_OBJECT
 
 public:
-  ComposerTreeWidget(QWidget* parent = nullptr);
-  ~ComposerTreeWidget();
+  explicit ComposerTreeWidget(QWidget* parent = nullptr);
+  virtual ~ComposerTreeWidget();
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure);
 

@@ -8,6 +8,8 @@ target_link_libraries(${library_name} PUBLIC pthread MVVM::View COACompact::sup-
 
 target_sources(${library_name} PRIVATE
   anyvalue_type.h
+  anyvalueeditortoolbar.cpp
+  anyvalueeditortoolbar.h
   anyvalueitem.cpp
   anyvalueitem.h
   anyvalueitembuilder.cpp

@@ -17,45 +17,40 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_EDITORWIDGET_H
-#define ANYVALUEEDITOR_EDITORWIDGET_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
+#define ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
 
-#include <QWidget>
-
+#include <QToolBar>
 #include <memory>
 
-class QTreeView;
-
-namespace mvvm
-{
-class ApplicationModel;
-class ViewModel;
-class ViewModelDelegate;
-}
+class QToolButton;
 
 namespace anyvalueeditor
 {
 
-class AnyValueEditorToolBar;
+//! A toolbar on top of AnyValueEditor.
 
-class EditorWidget : public QWidget
+class AnyValueEditorToolBar : public QToolBar
 {
   Q_OBJECT
+
 public:
-  explicit EditorWidget(QWidget* parent = nullptr);
-  ~EditorWidget() override;
+  explicit AnyValueEditorToolBar(QWidget* parent = nullptr);
+  ~AnyValueEditorToolBar() override;
+
+signals:
+  void insertIntoRequest(const QString& name);
+  void insertAfterRequest(const QString& name);
+  void removeSelectedRequest();
 
 private:
-  void PopulateModel();
+  void InsertStrech();
 
-  AnyValueEditorToolBar* m_tool_bar{nullptr};
-  QTreeView* m_tree_view{nullptr};
-
-  std::unique_ptr<mvvm::ApplicationModel> m_model;
-  std::unique_ptr<mvvm::ViewModel> m_view_model;
-  std::unique_ptr<mvvm::ViewModelDelegate> m_delegate;
+  QToolButton* m_insert_after_button{nullptr};
+  QToolButton* m_insert_into_button{nullptr};
+  QToolButton* m_remove_button{nullptr};
 };
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_EDITORWIDGET_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
