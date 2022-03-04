@@ -45,6 +45,8 @@ public:
   explicit EditorWidget(QWidget* parent = nullptr);
   ~EditorWidget() override;
 
+  void ImportAnyValueFromFile(const QString& filename);
+
 private:
   void PopulateModel();
 

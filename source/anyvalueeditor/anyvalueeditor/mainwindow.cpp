@@ -23,6 +23,7 @@
 #include "anyvalueeditor/editorwidget.h"
 
 #include <QCoreApplication>
+#include <QFileDialog>
 #include <QMenuBar>
 #include <QSettings>
 
@@ -38,10 +39,6 @@ namespace anyvalueeditor
 MainWindow::MainWindow()
 {
   InitApplication();
-  InitComponents();
-
-  sup::dto::AnyValue two_scalars = {
-      {{"signed", {sup::dto::SignedInteger8, 1}}, {"unsigned", {sup::dto::UnsignedInteger8, 12}}}};
 }
 
 MainWindow::~MainWindow() = default;
@@ -68,6 +65,7 @@ void MainWindow::InitApplication()
   }
 
   InitMenu();
+  InitComponents();
 }
 
 void MainWindow::InitMenu()
@@ -77,6 +75,16 @@ void MainWindow::InitMenu()
   // open file
   auto open_action = new QAction("&Open...", this);
   file_menu->addAction(open_action);
+
+  auto on_open_action = [&]()
+  {
+    QString file_name = QFileDialog::getOpenFileName(this);
+    if (!file_name.isEmpty())
+    {
+      m_editor_widget->ImportAnyValueFromFile(file_name);
+    }
+  };
+  connect(open_action, &QAction::triggered, on_open_action);
 }
 
 void MainWindow::InitComponents()

@@ -20,6 +20,7 @@
 #include "anyvalueeditor/editorwidget.h"
 
 #include "AnyValue.h"
+#include "AnyValueHelper.h"
 #include "anyvalueeditor/anyvalueeditortoolbar.h"
 #include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/transformfromanyvalue.h"
@@ -28,6 +29,7 @@
 #include "mvvm/model/applicationmodel.h"
 #include "mvvm/viewmodel/allitemsviewmodel.h"
 
+#include <QDebug>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -54,6 +56,14 @@ EditorWidget::EditorWidget(QWidget *parent)
   m_view_model = std::make_unique<mvvm::AllItemsViewModel>(m_model.get());
   m_tree_view->setModel(m_view_model.get());
   m_tree_view->setItemDelegate(m_delegate.get());
+}
+
+void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
+{
+  qDebug() << file_name;
+  auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
+  auto item = m_model->InsertItem<AnyValueItem>();
+  PopulateItem(&anyvalue, item);
 }
 
 EditorWidget::~EditorWidget() = default;

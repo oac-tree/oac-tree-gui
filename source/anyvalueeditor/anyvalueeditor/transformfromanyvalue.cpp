@@ -39,13 +39,26 @@ void ScalarToItemT(const sup::dto::AnyValue &anyvalue, AnyValueItem &item)
   item.SetData(val);
 }
 
-// template <>
-// void ScalarToItemT<(const sup::dto::AnyValue &anyvalue, AnyValueItem *item)
-//{
-//   T val = anyvalue.As<T>();
-//   item->SetData(val);
-//   throw std::runtime_error("Error in ScalarToItemT: not implemented");
-// }
+template <>
+void ScalarToItemT<sup::dto::int64>(const sup::dto::AnyValue &anyvalue, AnyValueItem &item)
+{
+  auto val = anyvalue.As<sup::dto::int64>();
+  item.SetData(static_cast<int>(val));
+}
+
+template <>
+void ScalarToItemT<sup::dto::uint32>(const sup::dto::AnyValue &anyvalue, AnyValueItem &item)
+{
+  auto val = anyvalue.As<sup::dto::uint32>();
+  item.SetData(static_cast<int>(val));
+}
+
+template <>
+void ScalarToItemT<sup::dto::uint64>(const sup::dto::AnyValue &anyvalue, AnyValueItem &item)
+{
+  auto val = anyvalue.As<sup::dto::uint64>();
+  item.SetData(static_cast<int>(val));
+}
 
 void ScalarToItem(const anyvalue_t &value, AnyValueItem &item)
 {
@@ -59,9 +72,9 @@ void ScalarToItem(const anyvalue_t &value, AnyValueItem &item)
       {TypeCode::Int16, ScalarToItemT<sup::dto::int16>},
       {TypeCode::UInt16, ScalarToItemT<sup::dto::uint16>},
       {TypeCode::Int32, ScalarToItemT<sup::dto::int32>},
-      //      {TypeCode::UInt32, ScalarToItemT<sup::dto::uint32>},
-      //      {TypeCode::Int64, ScalarToItemT<sup::dto::int64>},
-      //      {TypeCode::UInt64, ScalarToItemT<sup::dto::uint64>},
+      {TypeCode::UInt32, ScalarToItemT<sup::dto::uint32>},
+      {TypeCode::Int64, ScalarToItemT<sup::dto::int64>},
+      {TypeCode::UInt64, ScalarToItemT<sup::dto::uint64>},
       {TypeCode::Float32, ScalarToItemT<sup::dto::float32>},
       {TypeCode::Float64, ScalarToItemT<sup::dto::float64>},
       {TypeCode::String, ScalarToItemT<std::string>}};
