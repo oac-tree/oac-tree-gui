@@ -19,6 +19,8 @@ target_sources(${library_name} PRIVATE
   opendocumentswidget.h
   proceduretreeswidget.cpp
   proceduretreeswidget.h
+  recentprojectsettings.cpp
+  recentprojectsettings.h
   sequencerxmlview.cpp
   sequencerxmlview.h
   settingsview.cpp
