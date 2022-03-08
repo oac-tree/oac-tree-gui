@@ -25,17 +25,13 @@
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/procedureexamples.h"
-#include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
 
 #include "mvvm/widgets/mainverticalbarwidget.h"
 
 #include <QCoreApplication>
-#include <QFileDialog>
-#include <QMenuBar>
 #include <QSettings>
-#include <QTabWidget>
 
 namespace
 {
@@ -49,8 +45,6 @@ namespace sequencergui
 MainWindow::MainWindow() : m_model(std::make_unique<SequencerModel>())
 {
   InitApplication();
-  InitComponents();
-  setCentralWidget(m_tab_widget);
 
   PopulateModel();
 
@@ -83,7 +77,7 @@ void MainWindow::InitApplication()
     settings.endGroup();
   }
 
-  InitMenu();
+  InitComponents();
 }
 
 void MainWindow::InitComponents()
@@ -110,6 +104,8 @@ void MainWindow::InitComponents()
   m_tab_widget->addWidget(m_settings_view, "", StyleUtils::GetIcon("cog-outline-light.svg"));
 
   m_tab_widget->setCurrentIndex(0);
+
+  setCentralWidget(m_tab_widget);
 }
 
 void MainWindow::WriteSettings()
@@ -119,37 +115,6 @@ void MainWindow::WriteSettings()
   settings.setValue(size_key, size());
   settings.setValue(pos_key, pos());
   settings.endGroup();
-}
-
-void MainWindow::InitMenu()
-{
-  auto file_menu = menuBar()->addMenu("&File");
-
-  // open file
-  auto open_action = new QAction("&Open...", this);
-  file_menu->addAction(open_action);
-  auto on_open_action = [&]()
-  {
-    QString file_name = QFileDialog::getOpenFileName(this);
-    if (!file_name.isEmpty())
-    {
-      m_xml_view->SetXMLFile(file_name);
-    }
-  };
-  connect(open_action, &QAction::triggered, on_open_action);
-
-  file_menu->addSeparator();
-
-  auto exit_action = new QAction("E&xit Application", this);
-  file_menu->addAction(exit_action);
-  exit_action->setShortcuts(QKeySequence::Quit);
-  exit_action->setStatusTip("Exit the application");
-  connect(exit_action, &QAction::triggered, this, &QMainWindow::close);
-
-  menuBar()->addMenu("&Analyse");
-  menuBar()->addMenu("&Tools");
-  menuBar()->addMenu("&Window");
-  menuBar()->addMenu("&Help");
 }
 
 void MainWindow::PopulateModel()

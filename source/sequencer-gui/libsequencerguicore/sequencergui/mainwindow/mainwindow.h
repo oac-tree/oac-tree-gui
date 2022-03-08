@@ -58,7 +58,6 @@ private:
   void InitApplication();
   void InitComponents();
   void WriteSettings();
-  void InitMenu();
   void PopulateModel();
 
   std::unique_ptr<SequencerModel> m_model;
