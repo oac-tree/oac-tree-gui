@@ -27,6 +27,8 @@ target_sources(${library_name} PRIVATE
   settingsview.h
   styleutils.cpp
   styleutils.h
+  userinteractor.cpp
+  userinteractor.h
   xmleditor.cpp
   xmleditor.h
   xmlsyntaxhighlighter.cpp
