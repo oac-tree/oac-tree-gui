@@ -21,7 +21,6 @@
 
 #include "mvvm/widgets/widgetutils.h"
 
-#include <QDebug>
 #include <QFileSystemModel>
 #include <QLabel>
 #include <QSettings>
@@ -33,7 +32,7 @@ namespace
 const QString kGroupKey = "filetreeview";
 const QString kCurrentWorkdirKey = "currentworkdir";
 
-const QString GetWorkdirSettingName()
+QString GetWorkdirSettingName()
 {
   return kGroupKey + "/" + kCurrentWorkdirKey;
 }
@@ -102,7 +101,6 @@ void FileTreeView::onLabelClick(const QString &link)
 
 void FileTreeView::onTreeDoubleClick(const QModelIndex &index)
 {
-  qDebug() << "onTreeDoubleClick";
   QFileInfo info(m_file_system_model->filePath(index));
 
   if (info.isFile())
@@ -123,13 +121,11 @@ void FileTreeView::onTreeDoubleClick(const QModelIndex &index)
 void FileTreeView::onTreeSingleClick(const QModelIndex &index)
 {
   QFileInfo info(m_file_system_model->filePath(index));
-  qDebug() << "onTreeSingleClick" << info.fileName() << info.filePath();
 
   if (info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml"))
   {
     if (m_current_xml_file != info.filePath())
     {
-      qDebug() << "onTreeSingleClick -> XML file";
       m_current_xml_file = info.filePath();
       emit procedureFileClicked(m_current_xml_file);
     }

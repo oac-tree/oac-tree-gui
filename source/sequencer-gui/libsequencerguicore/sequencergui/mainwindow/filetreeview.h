@@ -28,14 +28,16 @@ class QLabel;
 
 namespace sequencergui
 {
+
 //! Simple file browser with bread crumb on top, and tree view at the bottom.
+
 class FileTreeView : public QWidget
 {
   Q_OBJECT
 
 public:
-  FileTreeView(QWidget* parent = nullptr);
-  ~FileTreeView();
+  explicit FileTreeView(QWidget* parent = nullptr);
+  ~FileTreeView() override;
 
   void SetCurrentDir(const QString& dirname);
 
