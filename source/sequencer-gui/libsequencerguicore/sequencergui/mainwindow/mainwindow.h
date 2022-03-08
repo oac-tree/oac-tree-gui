@@ -39,6 +39,7 @@ class SequencerModel;
 class SequencerMonitorView;
 class SequencerComposerView;
 class SettingsView;
+class ActionManager;
 
 //! The main window of this application.
 
@@ -62,11 +63,14 @@ private:
 
   std::unique_ptr<SequencerModel> m_model;
 
+  ActionManager* m_action_manager{nullptr};
+  mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
+
   SequencerXMLView* m_xml_view{nullptr};
   SequencerMonitorView* m_monitor_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
   SettingsView* m_settings_view{nullptr};
-  mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
+
 };
 
 }  // namespace sequencergui

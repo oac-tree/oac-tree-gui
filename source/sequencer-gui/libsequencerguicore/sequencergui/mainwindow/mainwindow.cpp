@@ -20,6 +20,7 @@
 #include "sequencergui/mainwindow/mainwindow.h"
 
 #include "sequencergui/composer/sequencercomposerview.h"
+#include "sequencergui/mainwindow/actionmanager.h"
 #include "sequencergui/mainwindow/sequencerxmlview.h"
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/mainwindow/styleutils.h"
@@ -45,8 +46,7 @@ const QString pos_key = "pos";
 
 namespace sequencergui
 {
-MainWindow::MainWindow()
-    : m_model(std::make_unique<SequencerModel>()), m_tab_widget(new mvvm::MainVerticalBarWidget)
+MainWindow::MainWindow() : m_model(std::make_unique<SequencerModel>())
 {
   InitApplication();
   InitComponents();
@@ -88,6 +88,10 @@ void MainWindow::InitApplication()
 
 void MainWindow::InitComponents()
 {
+  m_action_manager = new ActionManager(this);
+
+  m_tab_widget = new mvvm::MainVerticalBarWidget;
+
   m_xml_view = new SequencerXMLView;
   m_tab_widget->addWidget(m_xml_view, "Explore",
                           StyleUtils::GetIcon("file-search-outline-light.svg"));

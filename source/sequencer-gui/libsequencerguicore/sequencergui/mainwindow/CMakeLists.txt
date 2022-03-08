@@ -1,4 +1,6 @@
 target_sources(${library_name} PRIVATE
+  actionmanager.cpp
+  actionmanager.h
   appsettings.cpp
   appsettings.h
   collapsiblewidget.cpp
