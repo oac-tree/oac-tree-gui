@@ -44,9 +44,9 @@ namespace sequencergui
 {
 MainWindow::MainWindow() : m_model(std::make_unique<SequencerModel>())
 {
-  InitApplication();
-
   PopulateModel();
+
+  InitApplication();
 
   m_xml_view->SetModel(m_model.get());
   m_settings_view->SetModel(m_model.get());
@@ -121,8 +121,8 @@ void MainWindow::PopulateModel()
 {
   //  Examples::AddCopyProcedure(m_model.get());
   //  Examples::AddLocalIncludeProcedure(m_model.get());
-  Examples::AddUserChoiceProcedure(m_model.get());
-  Examples::AddInputProcedure(m_model.get());
+//  Examples::AddUserChoiceProcedure(m_model.get());
+//  Examples::AddInputProcedure(m_model.get());
 }
 
 }  // namespace sequencergui

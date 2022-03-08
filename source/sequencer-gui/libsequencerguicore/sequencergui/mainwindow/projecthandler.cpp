@@ -39,7 +39,7 @@ ProjectHandler::ProjectHandler(mvvm::ApplicationModel* model, QWidget *parent)
     , m_model(model)
 {
   InitProjectManager();
-  UpdateRecentProjectNames();
+  UpdateNames();
 }
 
 ProjectHandler::~ProjectHandler() = default;
@@ -63,13 +63,17 @@ bool ProjectHandler::CanCloseProject() const
 void ProjectHandler::OnCreateNewProject()
 {
   if (m_project_manager->CreateNewProject({}))
+  {
     UpdateNames();
+  }
 }
 
 void ProjectHandler::OnOpenExistingProject(const QString& dirname)
 {
   if (m_project_manager->OpenExistingProject(dirname.toStdString()))
+  {
     UpdateNames();
+  }
 }
 
 void ProjectHandler::OnSaveCurrentProject()
