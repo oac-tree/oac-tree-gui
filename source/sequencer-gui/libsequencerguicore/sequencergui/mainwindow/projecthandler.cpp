@@ -94,6 +94,11 @@ void ProjectHandler::ClearRecentProjectsList()
   UpdateNames();
 }
 
+QStringList ProjectHandler::GetRecentProjectList() const
+{
+  return m_recent_project_settings->GetRecentProjects();
+}
+
 void ProjectHandler::InitProjectManager()
 {
   auto modified_callback = [this]() { UpdateCurrentProjectName(); };

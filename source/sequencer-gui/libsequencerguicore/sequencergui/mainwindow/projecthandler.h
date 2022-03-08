@@ -60,6 +60,8 @@ public:
 
   void ClearRecentProjectsList();
 
+  QStringList GetRecentProjectList() const;
+
 signals:
   void CurrentProjectModified(const QString& project_dir, bool is_modified);
   void RecentProjectsListModified(const QStringList& projects);
