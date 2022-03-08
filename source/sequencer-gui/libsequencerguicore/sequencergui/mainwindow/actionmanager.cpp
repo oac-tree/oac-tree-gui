@@ -19,6 +19,9 @@
 
 #include "sequencergui/mainwindow/actionmanager.h"
 
+#include "sequencergui/mainwindow/projecthandler.h"
+#include "sequencergui/model/sequencermodel.h"
+
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QAction>
@@ -29,7 +32,9 @@
 namespace sequencergui
 {
 
-ActionManager::ActionManager(QMainWindow *mainwindow) : QObject(mainwindow)
+ActionManager::ActionManager(SequencerModel *model, QMainWindow *mainwindow)
+    : QObject(mainwindow), m_project_handler(new ProjectHandler(model, mainwindow))
+
 {
   CreateActions(mainwindow);
   SetupMenus(mainwindow->menuBar());

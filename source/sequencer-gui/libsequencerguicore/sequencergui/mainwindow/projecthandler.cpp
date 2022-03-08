@@ -32,101 +32,107 @@
 namespace sequencergui
 {
 
-ProjectHandler::ProjectHandler(mvvm::ApplicationModel* model, QWidget* parent)
+ProjectHandler::ProjectHandler(mvvm::ApplicationModel* model, QWidget *parent)
     : QObject(parent)
-    , m_recentProjectSettings(std::make_unique<RecentProjectSettings>())
-    , m_userInteractor(std::make_unique<UserInteractor>(m_recentProjectSettings.get(), parent))
+    , m_recent_project_settings(std::make_unique<RecentProjectSettings>())
+    , m_user_interactor(std::make_unique<UserInteractor>(m_recent_project_settings.get(), parent))
     , m_model(model)
 {
-  initProjectManager();
-  updateRecentProjectNames();
+  InitProjectManager();
+  UpdateRecentProjectNames();
 }
 
 ProjectHandler::~ProjectHandler() = default;
 
 //! Update names (name of the current project, recent project name list, notifies the world).
 
-void ProjectHandler::updateNames()
+void ProjectHandler::UpdateNames()
 {
-  updateCurrentProjectName();
-  updateRecentProjectNames();
+  UpdateCurrentProjectName();
+  UpdateRecentProjectNames();
 }
 
 //! Returns 'true' if current project can be closed.
 //! Internally will perform check for unsaved data, and proceed via save/discard/cancel dialog.
 
-bool ProjectHandler::canCloseProject() const
+bool ProjectHandler::CanCloseProject() const
 {
-  return m_projectManager->CloseCurrentProject();
+  return m_project_manager->CloseCurrentProject();
 }
 
-void ProjectHandler::onCreateNewProject()
+void ProjectHandler::OnCreateNewProject()
 {
-  if (m_projectManager->CreateNewProject({}))
-    updateNames();
+  if (m_project_manager->CreateNewProject({}))
+    UpdateNames();
 }
 
-void ProjectHandler::onOpenExistingProject(const QString& dirname)
+void ProjectHandler::OnOpenExistingProject(const QString& dirname)
 {
-  if (m_projectManager->OpenExistingProject(dirname.toStdString()))
-    updateNames();
+  if (m_project_manager->OpenExistingProject(dirname.toStdString()))
+    UpdateNames();
 }
 
-void ProjectHandler::onSaveCurrentProject()
+void ProjectHandler::OnSaveCurrentProject()
 {
-  if (m_projectManager->SaveCurrentProject())
-    updateNames();
+  if (m_project_manager->SaveCurrentProject())
+  {
+    UpdateNames();
+  }
 }
 
-void ProjectHandler::onSaveProjectAs()
+void ProjectHandler::OnSaveProjectAs()
 {
-  if (m_projectManager->SaveProjectAs({}))
-    updateNames();
+  if (m_project_manager->SaveProjectAs({}))
+  {
+    UpdateNames();
+  }
 }
 
-void ProjectHandler::clearRecentProjectsList()
+void ProjectHandler::ClearRecentProjectsList()
 {
-  m_recentProjectSettings->ClearRecentProjectsList();
-  updateNames();
+  m_recent_project_settings->ClearRecentProjectsList();
+  UpdateNames();
 }
 
-void ProjectHandler::initProjectManager()
+void ProjectHandler::InitProjectManager()
 {
-  auto modified_callback = [this]() { updateCurrentProjectName(); };
+  auto modified_callback = [this]() { UpdateCurrentProjectName(); };
   auto models_callback = [this]() { return std::vector<mvvm::ApplicationModel*>({m_model}); };
   mvvm::ProjectContext project_context{modified_callback, models_callback};
 
-  auto select_dir_callback = [this]() { return m_userInteractor->OnSelectDirRequest(); };
-  auto create_dir_callback = [this]() { return m_userInteractor->OnCreateDirRequest(); };
-  auto answer_callback = [this]() { return m_userInteractor->OnSaveChangesRequest(); };
+  auto select_dir_callback = [this]() { return m_user_interactor->OnSelectDirRequest(); };
+  auto create_dir_callback = [this]() { return m_user_interactor->OnCreateDirRequest(); };
+  auto answer_callback = [this]() { return m_user_interactor->OnSaveChangesRequest(); };
   mvvm::UserInteractionContext user_context{select_dir_callback, create_dir_callback,
                                             answer_callback};
 
-  m_projectManager = CreateProjectManager(project_context, user_context);
+  m_project_manager = CreateProjectManager(project_context, user_context);
 }
 
 //! Updates the name of the current project on main window, notifies the world.
 
-void ProjectHandler::updateCurrentProjectName()
+void ProjectHandler::UpdateCurrentProjectName()
 {
-  const auto current_project_dir = QString::fromStdString(m_projectManager->CurrentProjectDir());
-  const auto is_modified = m_projectManager->IsModified();
+  const auto current_project_dir = QString::fromStdString(m_project_manager->CurrentProjectDir());
+  const auto is_modified = m_project_manager->IsModified();
 
   // set main window title
   auto title = mvvm::utils::ProjectWindowTitle(current_project_dir, is_modified);
   if (auto main_window = mvvm::utils::FindMainWindow(); main_window)
+  {
     main_window->setWindowTitle(title);
+  }
 
-  currentProjectModified(current_project_dir, is_modified);
+  emit CurrentProjectModified(current_project_dir, is_modified);
 }
 
 //! Update recent project list in settings, notifies the world.
 
-void ProjectHandler::updateRecentProjectNames()
+void ProjectHandler::UpdateRecentProjectNames()
 {
-  m_recentProjectSettings->AddToRecentProjects(
-      QString::fromStdString(m_projectManager->CurrentProjectDir()));
-  recentProjectsListModified(m_recentProjectSettings->GetRecentProjects());
+  m_recent_project_settings->AddToRecentProjects(
+      QString::fromStdString(m_project_manager->CurrentProjectDir()));
+  emit RecentProjectsListModified(m_recent_project_settings->GetRecentProjects());
 }
 
 }  // namespace sequencergui

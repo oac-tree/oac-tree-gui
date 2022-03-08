@@ -30,6 +30,9 @@ class QMenu;
 namespace sequencergui
 {
 
+class ProjectHandler;
+class SequencerModel;
+
 //! Vertical panel located on the left of XMLTreeView
 
 class ActionManager : public QObject
@@ -37,7 +40,7 @@ class ActionManager : public QObject
   Q_OBJECT
 
 public:
-  explicit ActionManager(QMainWindow* mainwindow);
+  explicit ActionManager(SequencerModel* model, QMainWindow* mainwindow);
   ~ActionManager() override;
 
 private:
@@ -52,6 +55,8 @@ private:
   QAction* m_exit_action{nullptr};
 
   QMenu* m_recent_project_menu{nullptr};
+
+  ProjectHandler* m_project_handler{nullptr};
 };
 
 }  // namespace sequencergui

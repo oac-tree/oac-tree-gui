@@ -82,7 +82,7 @@ void MainWindow::InitApplication()
 
 void MainWindow::InitComponents()
 {
-  m_action_manager = new ActionManager(this);
+  m_action_manager = new ActionManager(m_model.get(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
 

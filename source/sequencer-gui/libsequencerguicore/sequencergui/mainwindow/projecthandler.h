@@ -51,27 +51,27 @@ public:
   explicit ProjectHandler(mvvm::ApplicationModel* model, QWidget* parent);
   ~ProjectHandler() override;
 
-  bool canCloseProject() const;
-  void updateNames();
-  void onCreateNewProject();
-  void onOpenExistingProject(const QString& dirname = {});
-  void onSaveCurrentProject();
-  void onSaveProjectAs();
+  bool CanCloseProject() const;
+  void UpdateNames();
+  void OnCreateNewProject();
+  void OnOpenExistingProject(const QString& dirname = {});
+  void OnSaveCurrentProject();
+  void OnSaveProjectAs();
 
-  void clearRecentProjectsList();
+  void ClearRecentProjectsList();
 
 signals:
-  void currentProjectModified(const QString& project_dir, bool is_modified);
-  void recentProjectsListModified(const QStringList& projects);
+  void CurrentProjectModified(const QString& project_dir, bool is_modified);
+  void RecentProjectsListModified(const QStringList& projects);
 
 private:
-  void initProjectManager();
-  void updateCurrentProjectName();
-  void updateRecentProjectNames();
+  void InitProjectManager();
+  void UpdateCurrentProjectName();
+  void UpdateRecentProjectNames();
 
-  std::unique_ptr<RecentProjectSettings> m_recentProjectSettings;
-  std::unique_ptr<UserInteractor> m_userInteractor;
-  std::unique_ptr<mvvm::ProjectManagerInterface> m_projectManager;
+  std::unique_ptr<RecentProjectSettings> m_recent_project_settings;
+  std::unique_ptr<UserInteractor> m_user_interactor;
+  std::unique_ptr<mvvm::ProjectManagerInterface> m_project_manager;
   mvvm::ApplicationModel* m_model{nullptr};
 };
 
