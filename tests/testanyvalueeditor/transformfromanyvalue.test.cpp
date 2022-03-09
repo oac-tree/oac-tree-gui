@@ -33,33 +33,45 @@ class TransformFromAnyValueTest : public ::testing::Test
 {
 };
 
-TEST_F(TransformFromAnyValueTest, TransformScalar)
+TEST_F(TransformFromAnyValueTest, BoolScalarToItem)
 {
-  {  // bool
-    sup::dto::AnyValue anyvalue_value{sup::dto::Boolean};
-    anyvalue_value = true;
-    AnyValueItem item;
-    ScalarToItem(anyvalue_value, item);
-    EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
-    EXPECT_TRUE(item.Data<bool>());
-    EXPECT_EQ(item.GetTotalItemCount(), 0);
-  }
+  sup::dto::AnyValue anyvalue{sup::dto::Boolean};
+  anyvalue = true;
+  AnyValueItem item;
+  ScalarToItem(anyvalue, item);
+  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
+  EXPECT_TRUE(item.Data<bool>());
+  EXPECT_EQ(item.GetTotalItemCount(), 0);
+}
 
-  {  // int32
-    sup::dto::AnyValue anyvalue_value{sup::dto::SignedInteger32};
-    anyvalue_value = 42;
-    AnyValueItem item;
-    ScalarToItem(anyvalue_value, item);
-    EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
-    EXPECT_EQ(item.Data<int>(), 42);
-    EXPECT_EQ(item.GetTotalItemCount(), 0);
-  }
+TEST_F(TransformFromAnyValueTest, IntScalarToItem)
+{
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
+  anyvalue = 42;
+  AnyValueItem item;
+  ScalarToItem(anyvalue, item);
+  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(item.Data<int>(), 42);
+  EXPECT_EQ(item.GetTotalItemCount(), 0);
+}
+
+TEST_F(TransformFromAnyValueTest, PopulateFromIntScalar)
+{
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
+  anyvalue = 42;
+  AnyValueItem item;
+
+  PopulateItem(&anyvalue, &item);
+
+  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(item.Data<int>(), 42);
+  EXPECT_EQ(item.GetTotalItemCount(), 0);
 }
 
 //! Building AnyValueItem from AnyValue with two named scalars.
 //! More tests in anyvalueitembuilder.test.cpp
 
-TEST_F(TransformFromAnyValueTest, TwoScalars)
+TEST_F(TransformFromAnyValueTest, PopulateFromTwoScalars)
 {
   AnyValueItem item;
 
@@ -82,7 +94,7 @@ TEST_F(TransformFromAnyValueTest, TwoScalars)
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
 }
 
-TEST_F(TransformFromAnyValueTest, NestedStruct)
+TEST_F(TransformFromAnyValueTest, PopulateFromNestedStruct)
 {
   AnyValueItem item;
 
@@ -113,7 +125,7 @@ TEST_F(TransformFromAnyValueTest, NestedStruct)
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kBoolTypeName);
 }
 
-TEST_F(TransformFromAnyValueTest, TwoNestedStruct)
+TEST_F(TransformFromAnyValueTest, PopulateFromTwoNestedStruct)
 {
   AnyValueItem item;
 
@@ -162,4 +174,33 @@ TEST_F(TransformFromAnyValueTest, TwoNestedStruct)
   EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild1->GetDisplayName(), "second");
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
+}
+
+TEST_F(TransformFromAnyValueTest, PopulateFromArrayOfIntegers)
+{
+  AnyValueItem item;
+
+  sup::dto::AnyValue anyvalue =
+      sup::dto::ArrayValue({{sup::dto::SignedInteger64, 1}, 2}, "my_array_t");
+
+  PopulateItem(&anyvalue, &item);
+
+  EXPECT_EQ(item.GetTotalItemCount(), 2);
+  EXPECT_EQ(item.GetDisplayName(), "AnyValue");
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+
+  // first branch
+  auto child0 = item.GetItem("", 0);
+  EXPECT_EQ(child0->GetTotalItemCount(), 0);
+  EXPECT_EQ(child0->GetDisplayName(), "index0");
+  EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(child0->Data<int>(), 1);
+
+  // second branch
+  auto child1 = item.GetItem("", 1);
+  EXPECT_EQ(child1->GetTotalItemCount(), 0);
+  EXPECT_EQ(child1->GetDisplayName(), "index1");
+  EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(child1->Data<int>(), 2);
+
 }

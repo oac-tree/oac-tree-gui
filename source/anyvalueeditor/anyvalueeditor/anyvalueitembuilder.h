@@ -53,6 +53,7 @@ public:
 
 private:
   AnyValueItem* m_item{nullptr};
+  int m_index{0};
 };
 
 }  // namespace anyvalueeditor
