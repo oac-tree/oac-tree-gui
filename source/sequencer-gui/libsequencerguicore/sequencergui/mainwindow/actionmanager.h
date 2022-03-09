@@ -43,6 +43,8 @@ public:
   explicit ActionManager(SequencerModel* model, QMainWindow* mainwindow);
   ~ActionManager() override;
 
+  bool CanCloseApplication() const;
+
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);

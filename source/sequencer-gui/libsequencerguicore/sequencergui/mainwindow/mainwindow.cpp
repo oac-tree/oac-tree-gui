@@ -30,6 +30,7 @@
 
 #include "mvvm/widgets/mainverticalbarwidget.h"
 
+#include <QCloseEvent>
 #include <QCoreApplication>
 #include <QSettings>
 
@@ -58,8 +59,15 @@ MainWindow::~MainWindow() = default;
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-  WriteSettings();
-  QMainWindow::closeEvent(event);
+  if (m_action_manager->CanCloseApplication())
+  {
+    WriteSettings();
+    QMainWindow::closeEvent(event);
+  }
+  else
+  {
+    event->ignore();
+  }
 }
 
 void MainWindow::InitApplication()
@@ -121,8 +129,8 @@ void MainWindow::PopulateModel()
 {
   //  Examples::AddCopyProcedure(m_model.get());
   //  Examples::AddLocalIncludeProcedure(m_model.get());
-//  Examples::AddUserChoiceProcedure(m_model.get());
-//  Examples::AddInputProcedure(m_model.get());
+  //  Examples::AddUserChoiceProcedure(m_model.get());
+  //  Examples::AddInputProcedure(m_model.get());
 }
 
 }  // namespace sequencergui

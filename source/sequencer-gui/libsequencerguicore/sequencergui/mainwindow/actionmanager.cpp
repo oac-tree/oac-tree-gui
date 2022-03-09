@@ -40,6 +40,14 @@ ActionManager::ActionManager(SequencerModel *model, QMainWindow *mainwindow)
   SetupMenus(mainwindow->menuBar());
 }
 
+//! Returns 'true' if application can be closed.
+//! Internally will perform check for unsaved data, and proceed via save/discard/cancel dialog.
+
+bool ActionManager::CanCloseApplication() const
+{
+  return m_project_handler->CanCloseProject();
+}
+
 ActionManager::~ActionManager() = default;
 
 //! Create main actions.
