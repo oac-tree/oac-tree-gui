@@ -8,5 +8,7 @@ include(GoogleTest)
 add_subdirectory(libtestmachinery)
 add_subdirectory(testsequencerguicore)
 add_subdirectory(testsequencerguievents)
-add_subdirectory(testanyvalueeditor)
+if (NOT SEQUENCERGUI_CODAC)
+  add_subdirectory(testanyvalueeditor)
+endif()
 
