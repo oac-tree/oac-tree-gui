@@ -22,9 +22,28 @@
 #include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/transformfromanyvalue.h"
 
+#include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/sessionitem.h"
 #include "mvvm/model/tagindex.h"
 
 #include <iostream>
+
+namespace
+{
+template <typename T>
+T *InsertItem(mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
+{
+  if (auto model = parent->GetModel(); model)
+  {
+    return model->InsertItem<T>(parent, tag_index);
+  }
+  else
+  {
+    return parent->InsertItem<T>(tag_index);
+  }
+}
+
+}  // namespace
 
 namespace anyvalueeditor
 {
@@ -65,7 +84,7 @@ void AnyValueItemBuilder::AddMemberProlog(const anyvalue_t *anyvalue,
 {
   (void)anyvalue;
   std::cout << "AddMemberProlog() " << m_item << " " << member_name << std::endl;
-  auto child = m_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
+  auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
   child->SetDisplayName(member_name);
   m_item = child;
 }
@@ -81,7 +100,7 @@ void AnyValueItemBuilder::AddMemberEpilog(const anyvalue_t *anyvalue,
 void AnyValueItemBuilder::AddArrayProlog(const anyvalue_t *anyvalue)
 {
   std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_item << std::endl;
-  auto child = m_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
+  auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
   m_item = child;
   m_index = 0;
   child->SetDisplayName("index" + std::to_string(m_index++));
@@ -93,7 +112,7 @@ void AnyValueItemBuilder::AddArrayElementSeparator()
             << " item:" << m_item << std::endl;
   m_item = static_cast<AnyValueItem *>(m_item->GetParent());
 
-  auto child = m_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
+  auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
   child->SetDisplayName("index" + std::to_string(m_index++));
   m_item = child;
 }
