@@ -29,11 +29,11 @@
 
 using namespace anyvalueeditor;
 
-class TransformUtilsTest : public ::testing::Test
+class TransformFromAnyValueTest : public ::testing::Test
 {
 };
 
-TEST_F(TransformUtilsTest, TransformScalar)
+TEST_F(TransformFromAnyValueTest, TransformScalar)
 {
   {  // bool
     sup::dto::AnyValue anyvalue_value{sup::dto::Boolean};
@@ -59,7 +59,7 @@ TEST_F(TransformUtilsTest, TransformScalar)
 //! Building AnyValueItem from AnyValue with two named scalars.
 //! More tests in anyvalueitembuilder.test.cpp
 
-TEST_F(TransformUtilsTest, TwoScalars)
+TEST_F(TransformFromAnyValueTest, TwoScalars)
 {
   AnyValueItem item;
 
@@ -82,7 +82,7 @@ TEST_F(TransformUtilsTest, TwoScalars)
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
 }
 
-TEST_F(TransformUtilsTest, NestedStruct)
+TEST_F(TransformFromAnyValueTest, NestedStruct)
 {
   AnyValueItem item;
 
@@ -113,7 +113,7 @@ TEST_F(TransformUtilsTest, NestedStruct)
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kBoolTypeName);
 }
 
-TEST_F(TransformUtilsTest, TwoNestedStruct)
+TEST_F(TransformFromAnyValueTest, TwoNestedStruct)
 {
   AnyValueItem item;
 
