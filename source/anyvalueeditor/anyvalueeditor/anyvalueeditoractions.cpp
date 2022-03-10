@@ -44,14 +44,11 @@ void AnyValueEditorActions::OnInsertField() {}
 
 void AnyValueEditorActions::OnRemoveSelected()
 {
-  qDebug() << "OnRemoveSelected " << m_selected_item;
   if (!m_selected_item)
   {
     return;
   }
   m_model->RemoveItem(m_selected_item);
-//  m_selected_item = nullptr;
-//  qDebug() << "OnRemoveSelected -> to nullptr" << m_selected_item;
 }
 
 void AnyValueEditorActions::SetViewModel(mvvm::ViewModel* view_model)
@@ -67,7 +64,6 @@ void AnyValueEditorActions::SetSelectionModel(QItemSelectionModel* selection_mod
 void AnyValueEditorActions::SetSelectedItem(AnyValueItem* item)
 {
   m_selected_item = item;
-  qDebug() << "SetSelectedItem " << m_selected_item;
 }
 
 }  // namespace anyvalueeditor
