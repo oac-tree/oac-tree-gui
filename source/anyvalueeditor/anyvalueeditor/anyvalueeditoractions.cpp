@@ -23,8 +23,28 @@ namespace anyvalueeditor
 {
 
 AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent)
-    : QObject(parent)
+    : QObject(parent), m_model(model)
 {
+}
+
+void AnyValueEditorActions::OnAddAnyValue()
+{
+
+}
+
+void AnyValueEditorActions::OnAddField()
+{
+
+}
+
+void AnyValueEditorActions::OnInsertField()
+{
+
+}
+
+void AnyValueEditorActions::OnRemoveSelected()
+{
+
 }
 
 }  // namespace anyvalueeditor

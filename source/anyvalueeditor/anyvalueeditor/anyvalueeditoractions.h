@@ -38,6 +38,17 @@ class AnyValueEditorActions : public QObject
 
 public:
   explicit AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent = nullptr);
+
+  void OnAddAnyValue();
+
+  void OnAddField();
+
+  void OnInsertField();
+
+  void OnRemoveSelected();
+
+private:
+  mvvm::ApplicationModel* m_model{nullptr};
 };
 
 }  // namespace anyvalueeditor

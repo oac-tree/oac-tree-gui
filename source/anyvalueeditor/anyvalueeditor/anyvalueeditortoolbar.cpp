@@ -19,6 +19,8 @@
 
 #include "anyvalueeditor/anyvalueeditortoolbar.h"
 
+#include "anyvalueeditor/anyvalueeditoractions.h"
+
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QPushButton>
@@ -26,34 +28,48 @@
 
 namespace anyvalueeditor
 {
-AnyValueEditorToolBar::AnyValueEditorToolBar(QWidget *parent)
+AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWidget *parent)
     : QToolBar(parent)
     , m_add_anyvalue_button(new QToolButton)
     , m_add_field_button(new QToolButton)
+    , m_insert_field_button(new QToolButton)
     , m_remove_button(new QToolButton)
 {
   setIconSize(QSize(24, 24));
 
   m_add_anyvalue_button->setText("Create AnyValue");
   m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_add_anyvalue_button->setToolTip("Creates new top level AnyValue. \nIt will be appended to the list of existing anyvalues");
+  m_add_anyvalue_button->setToolTip(
+      "Creates new top level AnyValue. \nIt will be appended to the list of existing anyvalues");
+  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+          &AnyValueEditorActions::OnAddAnyValue);
   addWidget(m_add_anyvalue_button);
+
+  addSeparator();
 
   m_add_field_button->setText("Add field");
   m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_add_field_button->setToolTip("Add field to the selected AnyValue. \nField will be added currently selected field.");
+  m_add_field_button->setToolTip(
+      "Add field to the selected AnyValue. \nField will be added currently selected field.");
+  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+          &AnyValueEditorActions::OnAddField);
   addWidget(m_add_field_button);
 
   m_insert_field_button->setText("Insert field");
   m_insert_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_insert_field_button->setToolTip("Insert field into the selected field. \nApplicable if selected item is a struct of array");
-  addWidget(m_add_field_button);
+  m_insert_field_button->setToolTip(
+      "Insert field into the selected field. \nApplicable if selected item is a struct of array");
+  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+          &AnyValueEditorActions::OnInsertField);
+  addWidget(m_insert_field_button);
+
+  addSeparator();
 
   m_remove_button->setText("Remove");
   m_remove_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_remove_button->setToolTip("Remove selected item and all it's children");
-  connect(m_remove_button, &QToolButton::clicked, this,
-          &AnyValueEditorToolBar::removeSelectedRequest);
+  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+          &AnyValueEditorActions::OnRemoveSelected);
   addWidget(m_remove_button);
 }
 

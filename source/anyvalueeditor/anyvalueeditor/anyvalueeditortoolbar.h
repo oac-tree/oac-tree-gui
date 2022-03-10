@@ -28,6 +28,8 @@ class QToolButton;
 namespace anyvalueeditor
 {
 
+class AnyValueEditorActions;
+
 //! A toolbar on top of AnyValueEditor.
 
 class AnyValueEditorToolBar : public QToolBar
@@ -35,7 +37,7 @@ class AnyValueEditorToolBar : public QToolBar
   Q_OBJECT
 
 public:
-  explicit AnyValueEditorToolBar(QWidget* parent = nullptr);
+  explicit AnyValueEditorToolBar(AnyValueEditorActions* actions, QWidget* parent = nullptr);
   ~AnyValueEditorToolBar() override;
 
 signals:
