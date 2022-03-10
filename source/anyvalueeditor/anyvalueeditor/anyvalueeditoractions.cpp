@@ -23,8 +23,6 @@
 
 #include "mvvm/model/applicationmodel.h"
 
-#include <QDebug>
-
 namespace anyvalueeditor
 {
 
@@ -49,16 +47,6 @@ void AnyValueEditorActions::OnRemoveSelected()
     return;
   }
   m_model->RemoveItem(m_selected_item);
-}
-
-void AnyValueEditorActions::SetViewModel(mvvm::ViewModel* view_model)
-{
-  m_view_model = view_model;
-}
-
-void AnyValueEditorActions::SetSelectionModel(QItemSelectionModel* selection_model)
-{
-  m_selection_model = selection_model;
 }
 
 void AnyValueEditorActions::SetSelectedItem(AnyValueItem* item)

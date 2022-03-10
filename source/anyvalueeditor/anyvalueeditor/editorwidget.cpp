@@ -26,12 +26,9 @@
 #include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/transformfromanyvalue.h"
 
-#include "mvvm/delegates/viewmodeldelegate.h"
 #include "mvvm/model/applicationmodel.h"
-#include "mvvm/viewmodel/allitemsviewmodel.h"
 #include "mvvm/widgets/allitemstreeview.h"
 
-#include <QDebug>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -43,9 +40,7 @@ EditorWidget::EditorWidget(QWidget *parent)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_actions(new AnyValueEditorActions(m_model.get(), this))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
-    , m_tree_view(new QTreeView)
     , m_all_items_tree_view(new mvvm::AllItemsTreeView)
-    , m_delegate(std::make_unique<mvvm::ViewModelDelegate>())
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -57,13 +52,6 @@ EditorWidget::EditorWidget(QWidget *parent)
   m_model->RegisterItem<AnyValueItem>();
   PopulateModel();
 
-  //  m_view_model = std::make_unique<mvvm::AllItemsViewModel>(m_model.get());
-  //  m_tree_view->setModel(m_view_model.get());
-  //  m_tree_view->setItemDelegate(m_delegate.get());
-
-  //  m_actions->SetSelectionModel(m_tree_view->selectionModel());
-  //  m_actions->SetViewModel(m_view_model.get());
-
   m_all_items_tree_view->SetApplicationModel(m_model.get());
   auto on_selected = [this](auto item)
   { m_actions->SetSelectedItem(dynamic_cast<AnyValueItem *>(item)); };
@@ -72,7 +60,6 @@ EditorWidget::EditorWidget(QWidget *parent)
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
-  qDebug() << file_name;
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
   auto item = m_model->InsertItem<AnyValueItem>();
   PopulateItem(&anyvalue, item);

@@ -22,12 +22,9 @@
 
 #include <QObject>
 
-class QItemSelectionModel;
-
 namespace mvvm
 {
 class ApplicationModel;
-class ViewModel;
 }
 
 namespace anyvalueeditor
@@ -52,17 +49,10 @@ public:
 
   void OnRemoveSelected();
 
-  void SetViewModel(mvvm::ViewModel* view_model);
-
-  void SetSelectionModel(QItemSelectionModel* selection_model);
-
   void SetSelectedItem(AnyValueItem* item);
-
 
 private:
   mvvm::ApplicationModel* m_model{nullptr};
-  mvvm::ViewModel* m_view_model{nullptr};
-  QItemSelectionModel* m_selection_model{nullptr};
   AnyValueItem* m_selected_item{nullptr};
 };
 
