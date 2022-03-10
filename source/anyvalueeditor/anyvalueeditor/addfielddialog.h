@@ -17,44 +17,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
-#define ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
+#ifndef ANYVALUEEDITOR_ADDFIELDDIALOG_H
+#define ANYVALUEEDITOR_ADDFIELDDIALOG_H
 
-#include <QObject>
+#include <QDialog>
 
-namespace mvvm
-{
-class ApplicationModel;
-}
+class QLineEdit;
+class QComboBox;
 
 namespace anyvalueeditor
 {
 
-class AnyValueItem;
-
-//! Actions for AnyValueEditor
-
-class AnyValueEditorActions : public QObject
+class AddFieldDialog : public QDialog
 {
   Q_OBJECT
-
 public:
-  explicit AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent = nullptr);
+  explicit AddFieldDialog(QWidget* parent = nullptr);
 
-  void OnAddAnyValue();
-
-  void OnAddField();
-
-  void OnInsertField();
-
-  void OnRemoveSelected();
-
-  void SetSelectedItem(AnyValueItem* item);
 private:
-  mvvm::ApplicationModel* m_model{nullptr};
-  AnyValueItem* m_selected_item{nullptr};
+  QLineEdit* m_name_field;
+  QComboBox* m_type_combo;
+  QComboBox* m_scalar_type_combo;
+
 };
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
+#endif  // ANYVALUEEDITOR_ADDFIELDDIALOG_H

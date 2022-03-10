@@ -20,8 +20,12 @@
 #include "anyvalueeditor/anyvalueeditoractions.h"
 
 #include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/addfielddialog.h"
 
 #include "mvvm/model/applicationmodel.h"
+#include "mvvm/widgets/widgetutils.h"
+
+#include <QMainWindow>
 
 namespace anyvalueeditor
 {
@@ -36,7 +40,14 @@ void AnyValueEditorActions::OnAddAnyValue()
   m_model->InsertItem<AnyValueItem>();
 }
 
-void AnyValueEditorActions::OnAddField() {}
+void AnyValueEditorActions::OnAddField()
+{
+  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
+  if (dialog.exec() == QDialog::Accepted) {
+
+  }
+
+}
 
 void AnyValueEditorActions::OnInsertField() {}
 
