@@ -28,17 +28,25 @@ class QComboBox;
 namespace anyvalueeditor
 {
 
+struct FieldContext
+{
+  std::string name;     //! Name of the field
+  std::string type;     //! Major type (scalar, array, struct)
+  std::string subtype;  //! Scalae type
+};
+
 class AddFieldDialog : public QDialog
 {
   Q_OBJECT
 public:
   explicit AddFieldDialog(QWidget* parent = nullptr);
 
+  FieldContext GetFieldContext() const;
+
 private:
   QLineEdit* m_name_field;
   QComboBox* m_type_combo;
   QComboBox* m_scalar_type_combo;
-
 };
 
 }  // namespace anyvalueeditor
