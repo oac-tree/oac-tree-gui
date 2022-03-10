@@ -58,6 +58,9 @@ EditorWidget::EditorWidget(QWidget *parent)
   m_view_model = std::make_unique<mvvm::AllItemsViewModel>(m_model.get());
   m_tree_view->setModel(m_view_model.get());
   m_tree_view->setItemDelegate(m_delegate.get());
+
+  m_actions->SetSelectionModel(m_tree_view->selectionModel());
+  m_actions->SetViewModel(m_view_model.get());
 }
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
@@ -85,19 +88,6 @@ void EditorWidget::PopulateModel()
     sup::dto::AnyValue anyvalue{{
         {"scalars", two_scalars},
     }};
-    auto item = m_model->InsertItem<AnyValueItem>();
-    PopulateItem(&anyvalue, item);
-  }
-
-  {  // Two nested structures
-    const std::string nested_name = "nested_struct";
-    sup::dto::AnyValue two_scalars = {{{"signed", {sup::dto::SignedInteger8, 1}},
-                                       {"unsigned", {sup::dto::UnsignedInteger8, 12}}}};
-    sup::dto::AnyValue anyvalue{
-        {{"scalars", two_scalars},
-         {"single",
-          {{"first", {sup::dto::SignedInteger8, 0}}, {"second", {sup::dto::SignedInteger8, 5}}}}},
-        nested_name};
     auto item = m_model->InsertItem<AnyValueItem>();
     PopulateItem(&anyvalue, item);
   }

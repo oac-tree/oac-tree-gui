@@ -18,7 +18,9 @@
  *****************************************************************************/
 
 #include "anyvalueeditor/anyvalueeditoractions.h"
+
 #include "anyvalueeditor/anyvalueitem.h"
+
 #include "mvvm/model/applicationmodel.h"
 
 namespace anyvalueeditor
@@ -34,19 +36,20 @@ void AnyValueEditorActions::OnAddAnyValue()
   m_model->InsertItem<AnyValueItem>();
 }
 
-void AnyValueEditorActions::OnAddField()
-{
+void AnyValueEditorActions::OnAddField() {}
 
+void AnyValueEditorActions::OnInsertField() {}
+
+void AnyValueEditorActions::OnRemoveSelected() {}
+
+void AnyValueEditorActions::SetViewModel(mvvm::ViewModel* view_model)
+{
+  m_view_model = view_model;
 }
 
-void AnyValueEditorActions::OnInsertField()
+void AnyValueEditorActions::SetSelectionModel(QItemSelectionModel* selection_model)
 {
-
-}
-
-void AnyValueEditorActions::OnRemoveSelected()
-{
-
+  m_selection_model = selection_model;
 }
 
 }  // namespace anyvalueeditor
