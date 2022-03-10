@@ -31,6 +31,7 @@ namespace mvvm
 class ApplicationModel;
 class ViewModel;
 class ViewModelDelegate;
+class AllItemsTreeView;
 }
 
 namespace anyvalueeditor
@@ -56,6 +57,7 @@ private:
   AnyValueEditorActions* m_actions{nullptr};
   AnyValueEditorToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};
+  mvvm::AllItemsTreeView* m_all_items_tree_view{nullptr};
 
   std::unique_ptr<mvvm::ViewModel> m_view_model;
   std::unique_ptr<mvvm::ViewModelDelegate> m_delegate;

@@ -23,6 +23,8 @@
 
 #include "mvvm/model/applicationmodel.h"
 
+#include <QDebug>
+
 namespace anyvalueeditor
 {
 
@@ -40,7 +42,17 @@ void AnyValueEditorActions::OnAddField() {}
 
 void AnyValueEditorActions::OnInsertField() {}
 
-void AnyValueEditorActions::OnRemoveSelected() {}
+void AnyValueEditorActions::OnRemoveSelected()
+{
+  qDebug() << "OnRemoveSelected " << m_selected_item;
+  if (!m_selected_item)
+  {
+    return;
+  }
+  m_model->RemoveItem(m_selected_item);
+//  m_selected_item = nullptr;
+//  qDebug() << "OnRemoveSelected -> to nullptr" << m_selected_item;
+}
 
 void AnyValueEditorActions::SetViewModel(mvvm::ViewModel* view_model)
 {
@@ -50,6 +62,12 @@ void AnyValueEditorActions::SetViewModel(mvvm::ViewModel* view_model)
 void AnyValueEditorActions::SetSelectionModel(QItemSelectionModel* selection_model)
 {
   m_selection_model = selection_model;
+}
+
+void AnyValueEditorActions::SetSelectedItem(AnyValueItem* item)
+{
+  m_selected_item = item;
+  qDebug() << "SetSelectedItem " << m_selected_item;
 }
 
 }  // namespace anyvalueeditor

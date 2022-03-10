@@ -33,6 +33,8 @@ class ViewModel;
 namespace anyvalueeditor
 {
 
+class AnyValueItem;
+
 //! Actions for AnyValueEditor
 
 class AnyValueEditorActions : public QObject
@@ -54,10 +56,14 @@ public:
 
   void SetSelectionModel(QItemSelectionModel* selection_model);
 
+  void SetSelectedItem(AnyValueItem* item);
+
+
 private:
   mvvm::ApplicationModel* m_model{nullptr};
   mvvm::ViewModel* m_view_model{nullptr};
   QItemSelectionModel* m_selection_model{nullptr};
+  AnyValueItem* m_selected_item{nullptr};
 };
 
 }  // namespace anyvalueeditor
