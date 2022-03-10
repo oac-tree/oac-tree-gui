@@ -17,41 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
-#define ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
-
-#include <QToolBar>
-#include <memory>
-
-class QToolButton;
+#include "anyvalueeditor/anyvalueeditoractions.h"
 
 namespace anyvalueeditor
 {
 
-//! A toolbar on top of AnyValueEditor.
-
-class AnyValueEditorToolBar : public QToolBar
+AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent)
+    : QObject(parent)
 {
-  Q_OBJECT
-
-public:
-  explicit AnyValueEditorToolBar(QWidget* parent = nullptr);
-  ~AnyValueEditorToolBar() override;
-
-signals:
-  void insertIntoRequest(const QString& name);
-  void insertAfterRequest(const QString& name);
-  void removeSelectedRequest();
-
-private:
-  void InsertStrech();
-
-  QToolButton* m_add_anyvalue_button{nullptr};
-  QToolButton* m_add_field_button{nullptr};
-  QToolButton* m_insert_field_button{nullptr};
-  QToolButton* m_remove_button{nullptr};
-};
+}
 
 }  // namespace anyvalueeditor
-
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
