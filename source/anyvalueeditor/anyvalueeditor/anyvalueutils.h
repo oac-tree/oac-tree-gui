@@ -20,6 +20,8 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEUTILS_H
 #define ANYVALUEEDITOR_ANYVALUEUTILS_H
 
+#include "mvvm/core/variant.h"
+
 #include <vector>
 #include <string>
 
@@ -34,6 +36,10 @@ struct FieldContext
 };
 
 std::vector<std::string> GetScalarTypeNames();
+
+//! Returns variant carrying defaut constructed type corresponding to AnyValue type name.
+//!
+variant_t GetVariantForAnyValueTypeName(const std::string& type_name);
 
 }  // namespace anyvalueeditor
 

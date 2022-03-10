@@ -30,7 +30,10 @@ class AnyValueItem : public mvvm::CompoundItem
 {
 public:
   static inline const std::string Type = "AnyValue";
+
   AnyValueItem();
+
+  void SetFieldTypeName(const std::string& type_name);
 
 };
 

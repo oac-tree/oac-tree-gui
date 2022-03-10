@@ -29,4 +29,10 @@ AnyValueItem::AnyValueItem() : CompoundItem(Type)
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
 
+//!
+void AnyValueItem::SetFieldTypeName(const std::string &type_name)
+{
+
+}
+
 }  // namespace anyvalueeditor
