@@ -28,12 +28,7 @@ class QComboBox;
 namespace anyvalueeditor
 {
 
-struct FieldContext
-{
-  std::string name;     //! Name of the field
-  std::string type;     //! Major type (scalar, array, struct)
-  std::string subtype;  //! Scalae type
-};
+struct FieldContext;
 
 class AddFieldDialog : public QDialog
 {

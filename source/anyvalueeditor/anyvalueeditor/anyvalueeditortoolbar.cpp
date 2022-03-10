@@ -50,7 +50,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_add_field_button->setText("Add field");
   m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_add_field_button->setToolTip(
-      "Add field to the selected AnyValue. \nField will be added currently selected field.");
+      "Add field after current selection.");
   connect(m_add_field_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnAddField);
   addWidget(m_add_field_button);
@@ -58,7 +58,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_insert_field_button->setText("Insert field");
   m_insert_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_insert_field_button->setToolTip(
-      "Insert field into the selected field. \nApplicable if selected item is a struct of array");
+      "Insert field into the selection. \nApplicable if selected item is a struct of array");
   connect(m_insert_field_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnInsertField);
   addWidget(m_insert_field_button);

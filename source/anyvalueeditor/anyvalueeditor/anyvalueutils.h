@@ -26,6 +26,13 @@
 namespace anyvalueeditor
 {
 
+struct FieldContext
+{
+  std::string name;     //! Name of the field
+  std::string type;     //! Major type (scalar, array, struct)
+  std::string subtype;  //! Scalae type
+};
+
 std::vector<std::string> GetScalarTypeNames();
 
 }  // namespace anyvalueeditor

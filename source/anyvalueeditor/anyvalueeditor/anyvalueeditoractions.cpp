@@ -19,8 +19,9 @@
 
 #include "anyvalueeditor/anyvalueeditoractions.h"
 
-#include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/addfielddialog.h"
+#include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/anyvalueutils.h"
 
 #include "mvvm/model/applicationmodel.h"
 #include "mvvm/widgets/widgetutils.h"
@@ -42,11 +43,19 @@ void AnyValueEditorActions::OnAddAnyValue()
 
 void AnyValueEditorActions::OnAddField()
 {
-  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
-  if (dialog.exec() == QDialog::Accepted) {
-
+  if (!m_selected_item)
+  {
+    return;
   }
 
+  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
+  if (dialog.exec() == QDialog::Accepted)
+  {
+    auto context = dialog.GetFieldContext();
+    auto parent = m_selected_item->GetParent();
+    auto field = m_model->InsertItem<AnyValueItem>(parent, m_selected_item->GetTagIndex().Next());
+    field->SetDisplayName(context.name);
+  }
 }
 
 void AnyValueEditorActions::OnInsertField() {}

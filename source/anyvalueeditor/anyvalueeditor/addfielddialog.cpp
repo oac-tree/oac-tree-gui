@@ -19,12 +19,24 @@
 
 #include "anyvalueeditor/addfielddialog.h"
 
+#include "anyvalueeditor/anyvalueutils.h"
+
+#include "mvvm/widgets/widgetutils.h"
+
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+
+namespace
+{
+QStringList CreateListOfScalars()
+{
+  return mvvm::utils::GetStringList(anyvalueeditor::GetScalarTypeNames());
+}
+}  // namespace
 
 namespace anyvalueeditor
 {
@@ -50,7 +62,7 @@ AddFieldDialog::AddFieldDialog(QWidget* parent)
   // combos setup
   m_type_combo->addItems({"scalar", "array", "struct"});
   m_type_combo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-  m_scalar_type_combo->addItems({"int", "bool"});
+  m_scalar_type_combo->addItems(CreateListOfScalars());
   m_scalar_type_combo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
   // grid
@@ -72,6 +84,7 @@ AddFieldDialog::AddFieldDialog(QWidget* parent)
 
 FieldContext AddFieldDialog::GetFieldContext() const
 {
-  return {};
+  return {m_name_field->text().toStdString(), m_type_combo->currentText().toStdString(),
+          m_scalar_type_combo->currentText().toStdString()};
 }
 }  // namespace anyvalueeditor
