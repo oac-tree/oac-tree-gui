@@ -55,6 +55,7 @@ void AnyValueEditorActions::OnAddField()
     auto parent = m_selected_item->GetParent();
     auto field = m_model->InsertItem<AnyValueItem>(parent, m_selected_item->GetTagIndex().Next());
     field->SetDisplayName(context.name);
+    field->SetFieldTypeName(context.subtype);
   }
 }
 

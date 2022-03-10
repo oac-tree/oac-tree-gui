@@ -20,16 +20,19 @@
 #include "anyvalueeditor/anyvalueutils.h"
 
 #include "AnyType.h"
+#include "BasicScalarTypes.h"
 
 #include <algorithm>
+#include <functional>
 #include <map>
+#include <stdexcept>
 
 namespace
 {
 
 const std::string kStructTypeName = "struct";
-const std::string kScalarTypeName = "scalar";
 const std::string kArrayTypeName = "array";
+const std::string kScalarTypeName = "scalar";
 
 const std::string kEmptyTypeName = "empty";
 const std::string kBooleanTypeName = "bool";
@@ -46,7 +49,7 @@ const std::string kFloat32TypeName = "float32";
 const std::string kFloat64TypeName = "float64";
 const std::string kStringTypeName = "string";
 
-const std::map<sup::dto::TypeCode, std::string> kTypeMap = {
+const std::map<sup::dto::TypeCode, std::string> kTypeCodeNameMap = {
     {sup::dto::TypeCode::Empty, kEmptyTypeName},
     {sup::dto::TypeCode::Struct, kStructTypeName},
     {sup::dto::TypeCode::Array, kArrayTypeName},
@@ -71,22 +74,92 @@ const std::vector<sup::dto::TypeCode> kScalars = {
     sup::dto::TypeCode::UInt64, sup::dto::TypeCode::Float32, sup::dto::TypeCode::Float64,
     sup::dto::TypeCode::String};
 
+std::string GetName(sup::dto::TypeCode code)
+{
+  auto it = kTypeCodeNameMap.find(code);
+  return it == kTypeCodeNameMap.end() ? std::string() : it->second;
+}
+
+sup::dto::TypeCode GetTypeCode(const std::string& name)
+{
+  auto it = std::find_if(kTypeCodeNameMap.begin(), kTypeCodeNameMap.end(),
+                         [name](auto item) { return item.second == name; });
+  if (it == kTypeCodeNameMap.end())
+  {
+    throw std::runtime_error("Error in TypeCode");
+  }
+  return it->first;
+}
+
+template <typename T>
+variant_t ScalarToItemT(sup::dto::TypeCode code)
+{
+  T val{};
+  return variant_t(val);
+}
+
+template <>
+variant_t ScalarToItemT<sup::dto::int64>(sup::dto::TypeCode code)
+{
+  return {0};
+}
+
+template <>
+variant_t ScalarToItemT<sup::dto::uint64>(sup::dto::TypeCode code)
+{
+  return {0};
+}
+
+template <>
+variant_t ScalarToItemT<sup::dto::uint32>(sup::dto::TypeCode code)
+{
+  return {0};
+}
+
 }  // namespace
 
 namespace anyvalueeditor
 {
 
+std::vector<std::string> GetMainTypeNames()
+{
+  return {kStructTypeName, kArrayTypeName, kScalarTypeName};
+}
+
 std::vector<std::string> GetScalarTypeNames()
 {
   std::vector<std::string> result;
-  std::transform(kScalars.begin(), kScalars.end(), std::back_inserter(result),
-                 [](auto t)
-                 {
-                   auto it = kTypeMap.find(t);
-                   return it == kTypeMap.end() ? std::string() : it->second;
-                 });
-
+  auto on_code = [](auto code) { return GetName(code); };
+  std::transform(kScalars.begin(), kScalars.end(), std::back_inserter(result), on_code);
   return result;
+}
+
+variant_t GetVariantForAnyValueTypeName(const std::string& type_name)
+{
+  using sup::dto::TypeCode;
+  using function_t = std::function<variant_t(sup::dto::TypeCode code)>;
+  static std::map<TypeCode, function_t> conversion_map{
+      {TypeCode::Bool, ScalarToItemT<sup::dto::boolean>},
+      {TypeCode::Char8, ScalarToItemT<sup::dto::char8>},
+      {TypeCode::Int8, ScalarToItemT<sup::dto::int8>},
+      {TypeCode::UInt8, ScalarToItemT<sup::dto::uint8>},
+      {TypeCode::Int16, ScalarToItemT<sup::dto::int16>},
+      {TypeCode::UInt16, ScalarToItemT<sup::dto::uint16>},
+      {TypeCode::Int32, ScalarToItemT<sup::dto::int32>},
+      {TypeCode::UInt32, ScalarToItemT<sup::dto::uint32>},
+      {TypeCode::Int64, ScalarToItemT<sup::dto::int64>},
+      {TypeCode::UInt64, ScalarToItemT<sup::dto::uint64>},
+      {TypeCode::Float32, ScalarToItemT<sup::dto::float32>},
+      {TypeCode::Float64, ScalarToItemT<sup::dto::float64>},
+      {TypeCode::String, ScalarToItemT<std::string>}};
+
+  auto code = GetTypeCode(type_name);
+  auto it = conversion_map.find(GetTypeCode(type_name));
+  if (it == conversion_map.end())
+  {
+    throw std::runtime_error("Not a known scalar type code");
+  }
+  return it->second(code);
 }
 
 }  // namespace anyvalueeditor

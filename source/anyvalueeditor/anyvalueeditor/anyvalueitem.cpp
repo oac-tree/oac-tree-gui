@@ -19,6 +19,8 @@
 
 #include "anyvalueeditor/anyvalueitem.h"
 
+#include "anyvalueeditor/anyvalueutils.h"
+
 namespace anyvalueeditor
 {
 
@@ -32,7 +34,7 @@ AnyValueItem::AnyValueItem() : CompoundItem(Type)
 //!
 void AnyValueItem::SetFieldTypeName(const std::string &type_name)
 {
-
+  SetData(GetVariantForAnyValueTypeName(type_name));
 }
 
 }  // namespace anyvalueeditor
