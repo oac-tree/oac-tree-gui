@@ -18,6 +18,8 @@
  *****************************************************************************/
 
 #include "anyvalueeditor/anyvalueeditoractions.h"
+#include "anyvalueeditor/anyvalueitem.h"
+#include "mvvm/model/applicationmodel.h"
 
 namespace anyvalueeditor
 {
@@ -29,7 +31,7 @@ AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObj
 
 void AnyValueEditorActions::OnAddAnyValue()
 {
-
+  m_model->InsertItem<AnyValueItem>();
 }
 
 void AnyValueEditorActions::OnAddField()

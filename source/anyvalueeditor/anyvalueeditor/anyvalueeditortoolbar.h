@@ -40,11 +40,6 @@ public:
   explicit AnyValueEditorToolBar(AnyValueEditorActions* actions, QWidget* parent = nullptr);
   ~AnyValueEditorToolBar() override;
 
-signals:
-  void insertIntoRequest(const QString& name);
-  void insertAfterRequest(const QString& name);
-  void removeSelectedRequest();
-
 private:
   void InsertStrech();
 

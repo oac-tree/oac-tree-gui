@@ -51,7 +51,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_add_field_button->setToolTip(
       "Add field to the selected AnyValue. \nField will be added currently selected field.");
-  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+  connect(m_add_field_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnAddField);
   addWidget(m_add_field_button);
 
@@ -59,7 +59,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_insert_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_insert_field_button->setToolTip(
       "Insert field into the selected field. \nApplicable if selected item is a struct of array");
-  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+  connect(m_insert_field_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnInsertField);
   addWidget(m_insert_field_button);
 
@@ -68,7 +68,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_remove_button->setText("Remove");
   m_remove_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_remove_button->setToolTip("Remove selected item and all it's children");
-  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
+  connect(m_remove_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnRemoveSelected);
   addWidget(m_remove_button);
 }
