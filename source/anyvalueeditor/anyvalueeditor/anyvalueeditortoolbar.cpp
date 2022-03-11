@@ -23,6 +23,7 @@
 
 #include "mvvm/widgets/widgetutils.h"
 
+#include <QMenu>
 #include <QPushButton>
 #include <QToolButton>
 
@@ -32,8 +33,10 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
     : QToolBar(parent)
     , m_add_anyvalue_button(new QToolButton)
     , m_add_field_button(new QToolButton)
+    , m_add_field_button_v2(new QToolButton)
     , m_insert_field_button(new QToolButton)
     , m_remove_button(new QToolButton)
+    , m_insert_after_menu(CreateInsertAfterMenu())
 {
   setIconSize(QSize(24, 24));
 
@@ -49,11 +52,18 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
 
   m_add_field_button->setText("Add field");
   m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_add_field_button->setToolTip(
-      "Add field after current selection.");
-  connect(m_add_field_button, &QToolButton::clicked, actions,
-          &AnyValueEditorActions::OnAddField);
+  m_add_field_button->setToolTip("Add field after current selection.");
+  connect(m_add_field_button, &QToolButton::clicked, actions, &AnyValueEditorActions::OnAddField);
   addWidget(m_add_field_button);
+
+  m_add_field_button_v2->setText("Add field");
+  m_add_field_button_v2->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_add_field_button_v2->setToolTip("Add field after current selection.");
+  m_add_field_button_v2->setPopupMode(QToolButton::InstantPopup);
+  m_add_field_button_v2->setMenu(m_insert_after_menu.get());
+  //  connect(m_add_field_button_v2, &QToolButton::clicked, actions,
+  //          &AnyValueEditorActions::OnAddField);
+  addWidget(m_add_field_button_v2);
 
   m_insert_field_button->setText("Insert field");
   m_insert_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
@@ -80,6 +90,19 @@ void AnyValueEditorToolBar::InsertStrech()
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   addWidget(empty);
+}
+
+std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateInsertAfterMenu()
+{
+  auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
+
+  auto on_about_to_show = [this, &result]() {
+
+  };
+  connect(result.get(), &QMenu::aboutToShow, this, on_about_to_show);
+
+  return result;
 }
 
 }  // namespace anyvalueeditor

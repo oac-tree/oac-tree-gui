@@ -24,6 +24,7 @@
 #include <memory>
 
 class QToolButton;
+class QMenu;
 
 namespace anyvalueeditor
 {
@@ -42,11 +43,15 @@ public:
 
 private:
   void InsertStrech();
+  std::unique_ptr<QMenu> CreateInsertAfterMenu();
 
   QToolButton* m_add_anyvalue_button{nullptr};
   QToolButton* m_add_field_button{nullptr};
+  QToolButton* m_add_field_button_v2{nullptr};
   QToolButton* m_insert_field_button{nullptr};
   QToolButton* m_remove_button{nullptr};
+
+  std::unique_ptr<QMenu> m_insert_after_menu;
 };
 
 }  // namespace anyvalueeditor
