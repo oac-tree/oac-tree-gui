@@ -21,20 +21,40 @@
 
 #include "anyvalueeditor/anyvalueutils.h"
 
+namespace
+{
+bool IsScalar(const std::string& name)
+{
+  return name != anyvalueeditor::kStructTypeName && name != anyvalueeditor::kArrayTypeName;
+}
+}  // namespace
+
 namespace anyvalueeditor
 {
 
 static inline const std::string kChildren = "kChildren";
+static inline const int kAnyTypeNameRole = 10;  // role to store type name
 
 AnyValueItem::AnyValueItem() : CompoundItem(Type)
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
 
-//!
-void AnyValueItem::SetFieldTypeName(const std::string &type_name)
+void AnyValueItem::SetAnyTypeName(const std::string& type_name)
 {
-  SetData(GetVariantForAnyValueTypeName(type_name));
+  if (IsScalar(type_name))
+  {
+    // for scalars we set variant initialised to the underlying type
+    SetData(GetVariantForAnyValueTypeName(type_name));
+  }
+
+  // saving type_name under own role
+  SetData(type_name, kAnyTypeNameRole);
+}
+
+std::string AnyValueItem::GetAnyTypeName() const
+{
+  return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
 }
 
 }  // namespace anyvalueeditor

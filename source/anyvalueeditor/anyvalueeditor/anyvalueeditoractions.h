@@ -50,6 +50,7 @@ public:
   void OnRemoveSelected();
 
   void SetSelectedItem(AnyValueItem* item);
+
 private:
   mvvm::ApplicationModel* m_model{nullptr};
   AnyValueItem* m_selected_item{nullptr};

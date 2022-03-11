@@ -33,7 +33,9 @@ public:
 
   AnyValueItem();
 
-  void SetFieldTypeName(const std::string& type_name);
+  void SetAnyTypeName(const std::string& type_name);
+
+  std::string GetAnyTypeName() const;
 
 };
 
