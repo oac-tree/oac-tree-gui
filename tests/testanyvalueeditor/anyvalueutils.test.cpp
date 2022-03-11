@@ -19,10 +19,6 @@
 
 #include "anyvalueeditor/anyvalueutils.h"
 
-#include "AnyValue.h"
-#include "AnyValueHelper.h"
-#include "anyvalueeditor/anyvalueitem.h"
-
 #include <gtest/gtest.h>
 
 using namespace anyvalueeditor;

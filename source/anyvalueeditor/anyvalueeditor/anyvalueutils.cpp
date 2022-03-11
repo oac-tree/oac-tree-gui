@@ -76,25 +76,25 @@ template <typename T>
 variant_t ScalarToItemT()
 {
   T val{};
-  return variant_t(val);
+  return variant_t(val);  // construct variant from given type
 }
 
 template <>
 variant_t ScalarToItemT<sup::dto::int64>()
 {
-  return {0};
+  return {0};  // returns variant based on `int` instead
 }
 
 template <>
 variant_t ScalarToItemT<sup::dto::uint64>()
 {
-  return {0};
+  return {0};  // returns variant based on `int` instead
 }
 
 template <>
 variant_t ScalarToItemT<sup::dto::uint32>()
 {
-  return {0};
+  return {0};  // returns variant based on `int` instead
 }
 
 }  // namespace
@@ -117,6 +117,11 @@ std::vector<std::string> GetScalarTypeNames()
 
 variant_t GetVariantForAnyValueTypeName(const std::string& type_name)
 {
+  // The variant is intended for editing in cells of Qt trees and tables.
+  // The concret type stored in it might be different from the AnyType as given by `type_name`.
+  // For example, we are going to use `int` to edit `uint8` in GUI widgets. Necessary
+  // limits will be provided by cell editors.
+
   using sup::dto::TypeCode;
   using function_t = std::function<variant_t()>;
   static std::map<TypeCode, function_t> conversion_map{

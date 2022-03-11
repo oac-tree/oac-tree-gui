@@ -58,7 +58,8 @@ std::vector<std::string> GetMainTypeNames();
 
 std::vector<std::string> GetScalarTypeNames();
 
-//! Returns variant carrying defaut constructed type corresponding to AnyValue type name.
+//! Returns variant carrying type corresponding to AnyValue type name. The value of the variant will
+//! be default initialized. See implementation for more explanations.
 variant_t GetVariantForAnyValueTypeName(const std::string& type_name);
 
 }  // namespace anyvalueeditor
