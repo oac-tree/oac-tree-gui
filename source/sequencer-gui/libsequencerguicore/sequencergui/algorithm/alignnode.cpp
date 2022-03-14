@@ -141,4 +141,14 @@ AlignNode *AlignNode::GetLeftMostSibling()
   return GetParent()->GetChildren().at(0);
 }
 
+AlignNode *AlignNode::GetLeftMostChild() const
+{
+  return GetSize() == 0 ? nullptr : GetChildren().front();
+}
+
+AlignNode *AlignNode::GetRightMostChild() const
+{
+  return GetSize() == 0 ? nullptr : GetChildren().back();
+}
+
 }  // namespace sequencergui::algorithm

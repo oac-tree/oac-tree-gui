@@ -56,6 +56,9 @@ TEST_F(AlignNodeTest, InitialState)
   EXPECT_EQ(node.GetNextSibling(), nullptr);
 
   EXPECT_EQ(node.GetLeftMostSibling(), nullptr);
+
+  EXPECT_EQ(node.GetLeftMostChild(), nullptr);
+  EXPECT_EQ(node.GetRightMostChild(), nullptr);
 }
 
 TEST_F(AlignNodeTest, GetAndSet)
@@ -137,4 +140,15 @@ TEST_F(AlignNodeTest, GetLeftMostSibling)
   EXPECT_EQ(child0->GetLeftMostSibling(), child0);
   EXPECT_EQ(child1->GetLeftMostSibling(), child0);
   EXPECT_EQ(child2->GetLeftMostSibling(), child0);
+}
+
+TEST_F(AlignNodeTest, GetLeftMostChildGetRightMostChild)
+{
+  AlignNode node;
+  auto child0 = node.Add<AlignNode>();
+  auto child1 = node.Add<AlignNode>();
+  auto child2 = node.Add<AlignNode>();
+
+  EXPECT_EQ(node.GetLeftMostChild(), child0);
+  EXPECT_EQ(node.GetRightMostChild(), child2);
 }
