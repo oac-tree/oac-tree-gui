@@ -145,7 +145,7 @@ void NodeEditor::SetupConnections()
       algorithm::AlignInstructionTreeWalker(view->pos(), item, /*force*/ true);
     }
   };
-  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
+  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequestV2, this, on_align_v2);
 
 }
 
