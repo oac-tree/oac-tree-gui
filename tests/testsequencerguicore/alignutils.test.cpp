@@ -61,6 +61,24 @@ public:
 
     return result;
   }
+
+  // Creates testing tree with `mod` parameter accumulated.
+  std::unique_ptr<AlignNode> CreateGreenTreeWithMod()
+  {
+    auto result = std::make_unique<AlignNode>();
+    result->SetPos(0.5, 1.0);
+    result->SetMod(1.0);
+    auto node_A = result->Add<AlignNode>();
+    node_A->SetPos(0.0, 2.0);
+    auto node_D = result->Add<AlignNode>();
+    node_D->SetPos(1.0, 2.0);
+    node_D->SetMod(2.0);
+
+    node_D->Add<AlignNode>()->SetPos(0.5, 3.0);
+    node_D->Add<AlignNode>()->SetPos(1.5, 3.0);
+
+    return result;
+  }
 };
 
 TEST_F(AlignUtilsTest, InitializeNodes)
@@ -93,7 +111,6 @@ TEST_F(AlignUtilsTest, GetLeftContour)
 {
   auto node = CreateBlueTree();
   auto contour = GetLeftCountour(*node);
-
   // expected left countour of the tree (level .vs. x-pos)
   std::map<int, double> expected = {{1, 1.5}, {2, 1.0}, {3, 0.0}};
   EXPECT_EQ(contour, expected);
@@ -104,7 +121,18 @@ TEST_F(AlignUtilsTest, GetRightContour)
   auto node = CreateGreenTree();
   auto contour = GetRightCountour(*node);
 
-  // expected left countour of the tree (level .vs. x-pos)
+  // expected right countour of the tree (level .vs. x-pos)
   std::map<int, double> expected = {{1, 0.5}, {2, 1.0}, {3, 1.5}};
   EXPECT_EQ(contour, expected);
+}
+
+TEST_F(AlignUtilsTest, GetRightContourV2)
+{
+  auto node = CreateGreenTreeWithMod();
+  auto contour = GetRightCountour(*node);
+
+  EXPECT_EQ(contour.size(), 3);
+  EXPECT_DOUBLE_EQ(contour[1], 0.5);
+  EXPECT_DOUBLE_EQ(contour[2], 2.0);  // parent mod + own position
+  EXPECT_DOUBLE_EQ(contour[3], 4.5);  // sum of parent mods + own position
 }

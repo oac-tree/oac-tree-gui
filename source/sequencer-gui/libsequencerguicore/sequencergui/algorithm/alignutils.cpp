@@ -26,6 +26,12 @@
 #include <algorithm>
 #include <stack>
 
+namespace
+{
+
+}
+
+
 namespace sequencergui::algorithm
 {
 
