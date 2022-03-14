@@ -47,9 +47,11 @@ void InitializeNodes(AlignNode& node)
     node->SetY(depth);
     node->SetMod(0.0);
 
-    for (auto child : node->GetChildren())
+    auto children = node->GetChildren();
+    // reverse iteration to get preorder
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
     {
-      node_stack.push({child, depth += 1.0});
+      node_stack.push({*it, depth + 1.0});
     }
   }
 }

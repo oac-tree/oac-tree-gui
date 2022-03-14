@@ -47,10 +47,10 @@ TEST_F(AlignUtilsTest, InitializeNodes)
   EXPECT_EQ(child0->GetMod(), 0.0);
 
   EXPECT_EQ(child1->GetX(), -1.0);
-  EXPECT_EQ(child1->GetY(), 2.0);
+  EXPECT_EQ(child1->GetY(), 1.0);
   EXPECT_EQ(child1->GetMod(), 0.0);
 
   EXPECT_EQ(grandchild0->GetX(), -1.0);
-  EXPECT_EQ(grandchild0->GetY(), 3.0);
+  EXPECT_EQ(grandchild0->GetY(), 2.0);
   EXPECT_EQ(grandchild0->GetMod(), 0.0);
 }
