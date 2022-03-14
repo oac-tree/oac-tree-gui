@@ -28,9 +28,49 @@
 
 namespace
 {
+template <typename T>
+std::map<int, double> GetCountour(sequencergui::algorithm::AlignNode& node, double mod_sum,
+                                  T comparator)
+{
+  std::map<int, double> result;
 
+  struct Data
+  {
+    sequencergui::algorithm::AlignNode* node{nullptr};
+    double mod_sum{0.0};
+  };
+
+  std::stack<Data> node_stack;
+
+  node_stack.push({&node, mod_sum});
+
+  while (!node_stack.empty())
+  {
+    auto [node, mod_sum] = node_stack.top();
+    node_stack.pop();
+
+    int level = static_cast<int>(node->GetY());
+    if (auto it = result.find(level); it == result.end())
+    {
+      result.insert({level, node->GetX() + mod_sum});
+    }
+    else
+    {
+      it->second = comparator(it->second, node->GetX() + mod_sum);
+    }
+
+    auto children = node->GetChildren();
+    // reverse iteration to get preorder
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      node_stack.push({*it, mod_sum + node->GetMod()});
+    }
+  }
+
+  return result;
 }
 
+}  // namespace
 
 namespace sequencergui::algorithm
 {
@@ -68,54 +108,12 @@ void InitializeNodes(AlignNode& node)
 
 std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum)
 {
-  std::map<int, double> result;
-  GetLeftCountour(node, mod_sum, result);
-  return result;
-}
-
-void GetLeftCountour(AlignNode& node, double mod_sum, std::map<int, double>& values)
-{
-  int level = static_cast<int>(node.GetY());
-  if (auto it = values.find(level); it == values.end())
-  {
-    values.insert({level, node.GetX() + mod_sum});
-  }
-  else
-  {
-    it->second = std::min(it->second, node.GetX() + mod_sum);
-  }
-
-  mod_sum += node.GetMod();
-  for (auto child : node.GetChildren())
-  {
-    GetLeftCountour(*child, mod_sum, values);
-  }
+  return GetCountour(node, mod_sum, [](auto x, auto y) { return std::min(x, y); });
 }
 
 std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum)
 {
-  std::map<int, double> result;
-  GetRightCountour(node, mod_sum, result);
-  return result;
-}
-
-void GetRightCountour(AlignNode& node, double mod_sum, std::map<int, double>& values)
-{
-  int level = static_cast<int>(node.GetY());
-  if (auto it = values.find(level); it == values.end())
-  {
-    values.insert({level, node.GetX() + mod_sum});
-  }
-  else
-  {
-    it->second = std::max(it->second, node.GetX() + mod_sum);
-  }
-
-  mod_sum += node.GetMod();
-  for (auto child : node.GetChildren())
-  {
-    GetRightCountour(*child, mod_sum, values);
-  }
+  return GetCountour(node, mod_sum, [](auto x, auto y) { return std::max(x, y); });
 }
 
 }  // namespace sequencergui::algorithm
