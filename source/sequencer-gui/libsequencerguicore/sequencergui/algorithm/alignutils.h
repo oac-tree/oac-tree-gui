@@ -28,13 +28,20 @@
 //! closely follows implementation given at
 //! https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees algorithm
 
+#include <map>
+
 namespace sequencergui::algorithm
 {
 
 class AlignNode;
 
+
 //! Visit node hierarchy and set initial values to node parameters.
 void InitializeNodes(AlignNode& node);
+
+//! Returns left contour of the tree.
+std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum = 0.0);
+void GetLeftCountour(AlignNode& node, double mod_sum, std::map<int, double>& values);
 
 }  // namespace sequencergui::algorithm
 

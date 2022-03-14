@@ -21,11 +21,15 @@
 
 #include "sequencergui/algorithm/alignnode.h"
 
+#include "mvvm/utils/containerutils.h"
+
+#include <algorithm>
 #include <stack>
 
 namespace sequencergui::algorithm
 {
 
+// Visits tree in preorder and sets initial values to the node parameters.
 void InitializeNodes(AlignNode& node)
 {
   struct Data
@@ -53,6 +57,32 @@ void InitializeNodes(AlignNode& node)
     {
       node_stack.push({*it, depth + 1.0});
     }
+  }
+}
+
+std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum)
+{
+  std::map<int, double> result;
+  GetLeftCountour(node, mod_sum, result);
+  return result;
+}
+
+void GetLeftCountour(AlignNode& node, double mod_sum, std::map<int, double>& values)
+{
+  int level = static_cast<int>(node.GetY());
+  if (auto it = values.find(level); it == values.end())
+  {
+    values.insert({level, node.GetX() + mod_sum});
+  }
+  else
+  {
+    it->second = std::min(it->second, node.GetX() + mod_sum);
+  }
+
+  mod_sum += node.GetMod();
+  for (auto child : node.GetChildren())
+  {
+    GetLeftCountour(*child, mod_sum, values);
   }
 }
 

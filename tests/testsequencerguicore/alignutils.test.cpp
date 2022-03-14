@@ -27,6 +27,24 @@ using namespace sequencergui::algorithm;
 
 class AlignUtilsTest : public ::testing::Test
 {
+public:
+  // Creates testing tree
+  std::unique_ptr<AlignNode> CreateBlueTree()
+  {
+    auto result = std::make_unique<AlignNode>();
+    result->SetPos(1.5, 1.0);
+    auto node_G = result->Add<AlignNode>();
+    node_G->SetPos(1.0, 2.0);
+    auto node_M = result->Add<AlignNode>();
+    node_M->SetPos(2.0, 2.0);
+
+    node_M->Add<AlignNode>()->SetPos(0.0, 3.0);
+    node_M->Add<AlignNode>()->SetPos(1.0, 3.0);
+    node_M->Add<AlignNode>()->SetPos(2.0, 3.0);
+    node_M->Add<AlignNode>()->SetPos(3.0, 3.0);
+
+    return result;
+  }
 };
 
 TEST_F(AlignUtilsTest, InitializeNodes)
@@ -53,4 +71,14 @@ TEST_F(AlignUtilsTest, InitializeNodes)
   EXPECT_EQ(grandchild0->GetX(), -1.0);
   EXPECT_EQ(grandchild0->GetY(), 2.0);
   EXPECT_EQ(grandchild0->GetMod(), 0.0);
+}
+
+TEST_F(AlignUtilsTest, GetLeftContour)
+{
+  auto node = CreateBlueTree();
+  auto contour = GetLeftCountour(*node);
+
+  // expected left countour of the tree (level .vs. x-pos)
+  std::map<int, double> expected = {{1, 1.5}, {2, 1.0}, {3, 0.0}};
+  EXPECT_EQ(contour, expected);
 }
