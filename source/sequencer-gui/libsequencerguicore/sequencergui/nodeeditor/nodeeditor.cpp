@@ -28,7 +28,7 @@
 #include "sequencergui/nodeeditor/graphicsview.h"
 #include "sequencergui/nodeeditor/nodeeditortoolbar.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
-#include "sequencergui/algorithm/alignutils.h"
+#include "sequencergui/algorithm/sequenceralignutils.h"
 
 #include <QDebug>
 #include <QPointF>

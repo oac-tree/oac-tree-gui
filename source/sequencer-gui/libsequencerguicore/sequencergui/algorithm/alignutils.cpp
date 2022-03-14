@@ -19,14 +19,12 @@
 
 #include "sequencergui/algorithm/alignutils.h"
 
-#include <QDebug>
-
 namespace sequencergui::algorithm
 {
 
-void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction, bool force)
+void InitializeNodes(AlignNode &node)
 {
-  qDebug() << "Hello world";
+
 }
 
 }  // namespace sequencergui::algorithm

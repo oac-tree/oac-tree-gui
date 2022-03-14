@@ -17,24 +17,16 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_ALGORITHM_ALIGNUTILS_H
-#define SEQUENCERGUI_ALGORITHM_ALIGNUTILS_H
+#include "sequencergui/algorithm/sequenceralignutils.h"
 
-//! @file alignutils.h
-//! Collection of utility function for node positioning of the general tree.
-//! The tree is implemented with the help of AlignTree and AlignNode classes.
-
-//! Relies on Reingold-Tilford algorithm, as given in https://www.cs.unc.edu/techreports/89-034.pdf
-//! closely follows implementation given at
-//! https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees algorithm
+#include <QDebug>
 
 namespace sequencergui::algorithm
 {
 
-class AlignNode;
-
-void InitializeNodes(AlignNode& node);
+void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction, bool force)
+{
+  qDebug() << "Hello world";
+}
 
 }  // namespace sequencergui::algorithm
-
-#endif

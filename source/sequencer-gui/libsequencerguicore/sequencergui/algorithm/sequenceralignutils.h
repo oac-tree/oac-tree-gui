@@ -17,24 +17,27 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_ALGORITHM_ALIGNUTILS_H
-#define SEQUENCERGUI_ALGORITHM_ALIGNUTILS_H
+#ifndef SEQUENCERGUI_ALGORITHM_SEQUENCERALIGNUTILS_H
+#define SEQUENCERGUI_ALGORITHM_SEQUENCERALIGNUTILS_H
 
-//! @file alignutils.h
-//! Collection of utility function for node positioning of the general tree.
-//! The tree is implemented with the help of AlignTree and AlignNode classes.
+//! @file sequenceralignutils.h
+//! Collection of utility functions to align Sequencer instruction tree on the graphics scene.
 
-//! Relies on Reingold-Tilford algorithm, as given in https://www.cs.unc.edu/techreports/89-034.pdf
-//! closely follows implementation given at
-//! https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees algorithm
+class QPointF;
+
+namespace sequencergui
+{
+class InstructionItem;
+}
 
 namespace sequencergui::algorithm
 {
 
-class AlignNode;
-
-void InitializeNodes(AlignNode& node);
+//! Align children of given instruction on graphics scene.  When `force` is false allignment is
+//! performed only for instructions with unitialised coordinates.
+//! The position of parent `instruction` remains unchanged.
+void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instruction, bool force);
 
 }  // namespace sequencergui::algorithm
 
-#endif
+#endif  // SEQUENCERGUI_ALGORITHM_SEQUENCERALIGNUTILS_H
