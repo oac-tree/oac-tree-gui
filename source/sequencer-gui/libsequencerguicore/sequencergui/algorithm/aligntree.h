@@ -20,15 +20,27 @@
 #ifndef SEQUENCERGUI_ALGORITHM_ALIGNTREE_H
 #define SEQUENCERGUI_ALGORITHM_ALIGNTREE_H
 
+#include <memory>
+
 namespace sequencergui::algorithm
 {
 
 class AlignNode;
 
+//! The tree of AlignNode's.
+//! Part of the machinery for general tree alignment.
+
 class AlignTree
 {
 public:
+  AlignTree();
 
+  AlignNode* GetRootNode();
+
+  AlignNode* Add(AlignNode* parent);
+
+private:
+  std::unique_ptr<AlignNode> m_root_node;
 };
 
 }  // namespace sequencergui::algorithm

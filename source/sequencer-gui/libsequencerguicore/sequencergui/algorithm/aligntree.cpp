@@ -19,7 +19,22 @@
 
 #include "sequencergui/algorithm/aligntree.h"
 
+#include "sequencergui/algorithm/alignnode.h"
+
 namespace sequencergui::algorithm
 {
 
+AlignTree::AlignTree() : m_root_node(std::make_unique<AlignNode>()) {}
+
+AlignNode *AlignTree::GetRootNode()
+{
+  return m_root_node.get();
 }
+
+AlignNode *AlignTree::Add(AlignNode *parent)
+{
+  auto actual_parent = parent ? parent : GetRootNode();
+  return actual_parent->Add(std::make_unique<AlignNode>());
+}
+
+}  // namespace sequencergui::algorithm
