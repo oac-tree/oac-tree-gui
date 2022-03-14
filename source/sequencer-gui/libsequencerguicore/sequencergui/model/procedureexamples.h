@@ -45,6 +45,10 @@ ProcedureItem* AddInputProcedure(SequencerModel* model);
 //! User choice example.
 ProcedureItem* AddUserChoiceProcedure(SequencerModel* model);
 
+//! Example to test algorithm for complex alignment.
+ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model);
+
+
 }  // namespace Examples
 }  // namespace sequencergui
 

@@ -137,4 +137,33 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
   return procedure_item;
 }
 
+ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model)
+{
+  // creating sequence representing same alignment as in article
+  // https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/
+
+  auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+  auto sequence_O = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer())
+                        ->SetDisplayName("O");
+
+  auto sequence_E = model->InsertItem<SequenceItem>(sequence_O)->SetDisplayName("E");
+  auto wait_A = model->InsertItem<WaitItem>(sequence_E)->SetDisplayName("A");
+  auto sequence_D = model->InsertItem<SequenceItem>(sequence_E)->SetDisplayName("D");
+  auto wait_B = model->InsertItem<WaitItem>(sequence_D)->SetDisplayName("B");
+  auto wait_C = model->InsertItem<WaitItem>(sequence_D)->SetDisplayName("C");
+
+  auto wait_F = model->InsertItem<WaitItem>(sequence_O)->SetDisplayName("F");
+
+  auto sequence_N = model->InsertItem<SequenceItem>(sequence_O)->SetDisplayName("N");
+  auto wait_G = model->InsertItem<WaitItem>(sequence_N)->SetDisplayName("G");
+  auto sequence_M = model->InsertItem<SequenceItem>(sequence_N)->SetDisplayName("M");
+  auto wait_H = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("H");
+  auto wait_I = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("I");
+  auto wait_J = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("J");
+  auto wait_K = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("K");
+  auto wait_L = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("L");
+
+  return procedure_item;
+}
+
 }  // namespace sequencergui::Examples
