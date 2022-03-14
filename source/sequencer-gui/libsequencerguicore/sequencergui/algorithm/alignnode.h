@@ -44,6 +44,9 @@ public:
   double GetX() const;
   void SetX(double value);
 
+  double GetY() const;
+  void SetY(double value);
+
 private:
   AlignNode* m_parent{nullptr};
   std::vector<std::unique_ptr<AlignNode>> m_children;

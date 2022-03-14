@@ -65,4 +65,14 @@ void AlignNode::SetX(double value)
   m_xpos = value;
 }
 
+double AlignNode::GetY() const
+{
+  return m_ypos;
+}
+
+void AlignNode::SetY(double value)
+{
+  m_ypos = value;
+}
+
 }  // namespace sequencergui::algorithm
