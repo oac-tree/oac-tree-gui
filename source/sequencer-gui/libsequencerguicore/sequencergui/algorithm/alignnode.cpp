@@ -87,6 +87,12 @@ void AlignNode::SetMod(double value)
   m_mod = value;
 }
 
+void AlignNode::SetPos(double x, double y)
+{
+  SetX(x);
+  SetY(y);
+}
+
 bool AlignNode::IsLeaf() const
 {
   return GetSize() == 0;

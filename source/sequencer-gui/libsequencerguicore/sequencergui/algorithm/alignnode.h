@@ -53,6 +53,8 @@ public:
   double GetMod() const;
   void SetMod(double value);
 
+  void SetPos(double x, double y);
+
   bool IsLeaf() const;
 
   bool IsLeftMost() const;

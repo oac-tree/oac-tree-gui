@@ -77,6 +77,10 @@ TEST_F(AlignNodeTest, GetAndSet)
 
   node.SetMod(42.3);
   EXPECT_EQ(node.GetMod(), 42.3);
+
+  node.SetPos(1.0, 2.0);
+  EXPECT_EQ(node.GetX(), 1.0);
+  EXPECT_EQ(node.GetY(), 2.0);
 }
 
 TEST_F(AlignNodeTest, Add)
