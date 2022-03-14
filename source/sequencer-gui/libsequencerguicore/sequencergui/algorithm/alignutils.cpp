@@ -28,6 +28,10 @@
 
 namespace
 {
+
+//! Iterates over all nodes in a tree and build a contour map of `depth` .vs. `edge`.
+//! `depth` is a position in the hierarchy (o - root node, 1 - direct children, etc)
+//! `edge` is most left, or most right node coordinate at given level, depending on comparator
 template <typename T>
 std::map<int, double> GetCountour(sequencergui::algorithm::AlignNode& node, double mod_sum,
                                   T comparator)
@@ -108,12 +112,71 @@ void InitializeNodes(AlignNode& node)
 
 std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum)
 {
-  return GetCountour(node, mod_sum, [](auto x, auto y) { return std::min(x, y); });
+  return GetCountour(node, mod_sum, [](auto x1, auto x2) { return std::min(x1, x2); });
 }
 
 std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum)
 {
-  return GetCountour(node, mod_sum, [](auto x, auto y) { return std::max(x, y); });
+  return GetCountour(node, mod_sum, [](auto x1, auto x2) { return std::max(x1, x2); });
+}
+
+void CalculateInitialX(AlignNode& node)
+{
+  for (auto child : node.GetChildren())
+  {
+    CalculateInitialX(*child);
+  }
+
+  // if no children
+  if (node.IsLeaf())
+  {
+    // if there is a previous sibling in this set, set X to prevous sibling + designated distance
+    if (!node.IsLeftMost())
+    {
+      node.SetX(node.GetPreviousSibling()->GetX() + node.GetNodeSize() + node.GetSiblingDistance());
+    }
+    else
+    {
+      // if this is the first node in a set, set X to 0
+      node.SetX(0.0);
+    }
+  }
+  // if there is only one child
+  else if (node.GetSize() == 1)
+  {
+    // if this is the first node in a set, set it's X value equal to it's child's X value
+    if (node.IsLeftMost())
+    {
+      node.SetX(node.GetChildren().at(0)->GetX());
+    }
+    else
+    {
+      node.SetX(node.GetPreviousSibling()->GetX() + node.GetNodeSize() + node.GetSiblingDistance());
+      node.SetMod(node.GetX() - node.GetChildren().at(0)->GetX());
+    }
+  }
+  else
+  {
+    auto leftChild = node.GetLeftMostChild();
+    auto rightChild = node.GetRightMostChild();
+    auto mid = (leftChild->GetX() + rightChild->GetX()) / 2;
+
+    if (node.IsLeftMost())
+    {
+      node.SetX(mid);
+    }
+    else
+    {
+      node.SetX(node.GetPreviousSibling()->GetX() + node.GetNodeSize() + node.GetSiblingDistance());
+      node.SetMod(node.GetX() - mid);
+    }
+  }
+
+  //  if (node.Children.Count > 0 && !node.IsLeftMost())
+  //  {
+  //      // Since subtrees can overlap, check for conflicts and shift tree right if needed
+  //      CheckForConflicts(node);
+  //  }
 }
 
 }  // namespace sequencergui::algorithm

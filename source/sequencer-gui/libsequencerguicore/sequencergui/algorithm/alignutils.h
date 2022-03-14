@@ -25,7 +25,7 @@
 //! The tree is implemented with the help of AlignTree and AlignNode classes.
 
 //! Relies on Reingold-Tilford algorithm, as given in https://www.cs.unc.edu/techreports/89-034.pdf
-//! closely follows implementation given at
+//! closely follows C# Rachel Lim's implementation given at
 //! https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees algorithm
 
 #include <map>
@@ -43,6 +43,8 @@ std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum = 0.0);
 
 //! Returns right contour of the tree.
 std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum = 0.0);
+
+void CalculateInitialX(AlignNode& node);
 
 }  // namespace sequencergui::algorithm
 
