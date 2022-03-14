@@ -126,4 +126,19 @@ AlignNode *AlignNode::GetNextSibling() const
   return children.at(index + 1);
 }
 
+AlignNode *AlignNode::GetLeftMostSibling()
+{
+  if (!GetParent())
+  {
+    return nullptr;
+  }
+
+  if (IsLeftMost())
+  {
+    return this;
+  }
+
+  return GetParent()->GetChildren().at(0);
+}
+
 }  // namespace sequencergui::algorithm

@@ -63,6 +63,8 @@ public:
 
   AlignNode* GetNextSibling() const;
 
+  AlignNode* GetLeftMostSibling();
+
 private:
   AlignNode* m_parent{nullptr};
   std::vector<std::unique_ptr<AlignNode>> m_children;
