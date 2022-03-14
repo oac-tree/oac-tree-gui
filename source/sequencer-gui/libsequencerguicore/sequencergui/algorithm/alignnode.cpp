@@ -157,4 +157,16 @@ AlignNode *AlignNode::GetRightMostChild() const
   return GetSize() == 0 ? nullptr : GetChildren().back();
 }
 
+double AlignNode::GetNodeSize() const
+{
+  const double arbitrary_node_size = 1.0;
+  return arbitrary_node_size;
+}
+
+double AlignNode::GetSiblingDistance() const
+{
+  const double arbitrary_sibling_distance = 0.0;
+  return arbitrary_sibling_distance;
+}
+
 }  // namespace sequencergui::algorithm
