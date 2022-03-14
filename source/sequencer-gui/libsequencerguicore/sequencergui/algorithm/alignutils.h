@@ -43,6 +43,10 @@ void InitializeNodes(AlignNode& node);
 std::map<int, double> GetLeftCountour(AlignNode& node, double mod_sum = 0.0);
 void GetLeftCountour(AlignNode& node, double mod_sum, std::map<int, double>& values);
 
+//! Returns right contour of the tree.
+std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum = 0.0);
+void GetRightCountour(AlignNode& node, double mod_sum, std::map<int, double>& values);
+
 }  // namespace sequencergui::algorithm
 
 #endif

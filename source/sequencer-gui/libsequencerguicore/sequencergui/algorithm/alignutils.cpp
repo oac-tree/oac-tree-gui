@@ -86,4 +86,30 @@ void GetLeftCountour(AlignNode& node, double mod_sum, std::map<int, double>& val
   }
 }
 
+std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum)
+{
+  std::map<int, double> result;
+  GetRightCountour(node, mod_sum, result);
+  return result;
+}
+
+void GetRightCountour(AlignNode& node, double mod_sum, std::map<int, double>& values)
+{
+  int level = static_cast<int>(node.GetY());
+  if (auto it = values.find(level); it == values.end())
+  {
+    values.insert({level, node.GetX() + mod_sum});
+  }
+  else
+  {
+    it->second = std::max(it->second, node.GetX() + mod_sum);
+  }
+
+  mod_sum += node.GetMod();
+  for (auto child : node.GetChildren())
+  {
+    GetRightCountour(*child, mod_sum, values);
+  }
+}
+
 }  // namespace sequencergui::algorithm
