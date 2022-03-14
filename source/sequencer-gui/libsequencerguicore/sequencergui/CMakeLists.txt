@@ -1,3 +1,4 @@
+add_subdirectory(algorithm)
 add_subdirectory(composer)
 add_subdirectory(mainwindow)
 add_subdirectory(model)

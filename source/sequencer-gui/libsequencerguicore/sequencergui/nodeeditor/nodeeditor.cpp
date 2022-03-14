@@ -28,6 +28,7 @@
 #include "sequencergui/nodeeditor/graphicsview.h"
 #include "sequencergui/nodeeditor/nodeeditortoolbar.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
+#include "sequencergui/algorithm/alignutils.h"
 
 #include <QDebug>
 #include <QPointF>
@@ -134,6 +135,18 @@ void NodeEditor::SetupConnections()
     }
   };
   connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
+
+  auto on_align_v2 = [this]()
+  {
+    auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
+    for (auto view : selected)
+    {
+      auto item = view->GetConnectableItem()->GetInstruction();
+      algorithm::AlignInstructionTreeWalker(view->pos(), item, /*force*/ true);
+    }
+  };
+  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
+
 }
 
 }  // namespace sequencergui
