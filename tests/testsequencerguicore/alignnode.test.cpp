@@ -47,6 +47,7 @@ TEST_F(AlignNodeTest, InitialState)
   EXPECT_EQ(node.GetX(), 0.0);
   EXPECT_EQ(node.GetY(), 0.0);
   EXPECT_EQ(node.GetMod(), 0.0);
+  EXPECT_TRUE(node.IsLeaf());
 }
 
 TEST_F(AlignNodeTest, GetAndSet)

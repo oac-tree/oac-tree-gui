@@ -85,4 +85,9 @@ void AlignNode::SetMod(double value)
   m_mod = value;
 }
 
+bool AlignNode::IsLeaf() const
+{
+  return GetSize() == 0;
+}
+
 }  // namespace sequencergui::algorithm
