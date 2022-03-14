@@ -19,6 +19,8 @@
 
 #include "sequencergui/algorithm/alignnode.h"
 
+#include "mvvm/utils/containerutils.h"
+
 #include <algorithm>
 
 namespace sequencergui::algorithm
@@ -98,6 +100,30 @@ bool AlignNode::IsLeftMost() const
 bool AlignNode::IsRightMost() const
 {
   return GetParent() ? GetParent()->GetChildren().back() == this : true;
+}
+
+AlignNode *AlignNode::GetPreviousSibling() const
+{
+  if (!GetParent() || IsLeftMost())
+  {
+    return nullptr;
+  }
+
+  auto children = GetParent()->GetChildren();
+  auto index = mvvm::utils::IndexOfItem(children, this);
+  return children.at(index - 1);
+}
+
+AlignNode *AlignNode::GetNextSibling() const
+{
+  if (!GetParent() || IsRightMost())
+  {
+    return nullptr;
+  }
+
+  auto children = GetParent()->GetChildren();
+  auto index = mvvm::utils::IndexOfItem(children, this);
+  return children.at(index + 1);
 }
 
 }  // namespace sequencergui::algorithm
