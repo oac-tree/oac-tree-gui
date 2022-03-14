@@ -41,6 +41,9 @@ public:
 
   AlignNode* Add(std::unique_ptr<AlignNode> child);
 
+  template <typename T>
+  T* Add();
+
   double GetX() const;
   void SetX(double value);
 
@@ -57,6 +60,12 @@ private:
   double m_ypos{0.0};
   double m_mod{0.0};
 };
+
+template <typename T>
+inline T* AlignNode::Add()
+{
+  return Add(std::make_unique<T>());
+}
 
 }  // namespace sequencergui::algorithm
 

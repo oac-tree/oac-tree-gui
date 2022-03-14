@@ -33,6 +33,7 @@ namespace sequencergui::algorithm
 
 class AlignNode;
 
+//! Visit node hierarchy and set initial values to node parameters.
 void InitializeNodes(AlignNode& node);
 
 }  // namespace sequencergui::algorithm

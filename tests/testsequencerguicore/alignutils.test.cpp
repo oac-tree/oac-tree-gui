@@ -21,37 +21,36 @@
 
 #include "sequencergui/algorithm/alignnode.h"
 
-#include <stack>
+#include <gtest/gtest.h>
 
-namespace sequencergui::algorithm
+using namespace sequencergui::algorithm;
+
+class AlignUtilsTest : public ::testing::Test
 {
+};
 
-void InitializeNodes(AlignNode& node)
+TEST_F(AlignUtilsTest, InitializeNodes)
 {
-  struct Data
-  {
-    AlignNode* node{nullptr};
-    double depth{0.0};
-  };
+  AlignNode node;
+  auto child0 = node.Add<AlignNode>();
+  auto child1 = node.Add<AlignNode>();
+  auto grandchild0 = child0->Add<AlignNode>();
 
-  std::stack<Data> node_stack;
+  InitializeNodes(node);
 
-  node_stack.push({&node, 0.0});
+  EXPECT_EQ(node.GetX(), -1.0);
+  EXPECT_EQ(node.GetY(), 0.0);
+  EXPECT_EQ(node.GetMod(), 0.0);
 
-  while (!node_stack.empty())
-  {
-    auto [node, depth] = node_stack.top();
-    node_stack.pop();
+  EXPECT_EQ(child0->GetX(), -1.0);
+  EXPECT_EQ(child0->GetY(), 1.0);
+  EXPECT_EQ(child0->GetMod(), 0.0);
 
-    node->SetX(-1.0);
-    node->SetY(depth);
-    node->SetMod(0.0);
+  EXPECT_EQ(child1->GetX(), -1.0);
+  EXPECT_EQ(child1->GetY(), 2.0);
+  EXPECT_EQ(child1->GetMod(), 0.0);
 
-    for (auto child : node->GetChildren())
-    {
-      node_stack.push({child, depth += 1.0});
-    }
-  }
+  EXPECT_EQ(grandchild0->GetX(), -1.0);
+  EXPECT_EQ(grandchild0->GetY(), 3.0);
+  EXPECT_EQ(grandchild0->GetMod(), 0.0);
 }
-
-}  // namespace sequencergui::algorithm
