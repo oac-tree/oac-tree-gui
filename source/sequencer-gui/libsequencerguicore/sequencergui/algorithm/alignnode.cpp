@@ -90,4 +90,14 @@ bool AlignNode::IsLeaf() const
   return GetSize() == 0;
 }
 
+bool AlignNode::IsLeftMost() const
+{
+  return GetParent() ? GetParent()->GetChildren().front() == this : true;
+}
+
+bool AlignNode::IsRightMost() const
+{
+  return GetParent() ? GetParent()->GetChildren().back() == this : true;
+}
+
 }  // namespace sequencergui::algorithm

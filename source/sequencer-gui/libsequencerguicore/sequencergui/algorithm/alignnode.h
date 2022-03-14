@@ -27,7 +27,7 @@ namespace sequencergui::algorithm
 {
 
 //! The node of the AlignTree.
-//! Part of the machinery for general tree alignment.
+//! Part of the machinery for node positioning of the general trees.
 
 class AlignNode
 {
@@ -54,6 +54,10 @@ public:
   void SetMod(double value);
 
   bool IsLeaf() const;
+
+  bool IsLeftMost() const;
+
+  bool IsRightMost() const;
 
 private:
   AlignNode* m_parent{nullptr};
