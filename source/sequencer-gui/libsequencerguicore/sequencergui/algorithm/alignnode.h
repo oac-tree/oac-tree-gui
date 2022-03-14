@@ -47,11 +47,15 @@ public:
   double GetY() const;
   void SetY(double value);
 
+  double GetMod() const;
+  void SetMod(double value);
+
 private:
   AlignNode* m_parent{nullptr};
   std::vector<std::unique_ptr<AlignNode>> m_children;
   double m_xpos{0.0};
   double m_ypos{0.0};
+  double m_mod{0.0};
 };
 
 }  // namespace sequencergui::algorithm
