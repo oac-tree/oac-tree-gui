@@ -209,7 +209,8 @@ void CheckForConflicts(AlignNode& node)
       double distance = nodeContour[level] - siblingContour[level];
       if (distance + shiftValue < minDistance)
       {
-        shiftValue = minDistance - distance;
+//        shiftValue = minDistance - distance;
+        shiftValue = std::max(minDistance - distance, shiftValue);
       }
     }
 
@@ -229,8 +230,8 @@ void CheckForConflicts(AlignNode& node)
 
 void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
 {
-  int leftIndex = rightNode.GetIndex();  // FIXME deliberate swap
-  int rightIndex = leftNode.GetIndex();  // FIXME deliberate swap
+  int leftIndex = leftNode.GetIndex();
+  int rightIndex = rightNode.GetIndex();
 
   int numNodesBetween = (rightIndex - leftIndex) - 1;
 
