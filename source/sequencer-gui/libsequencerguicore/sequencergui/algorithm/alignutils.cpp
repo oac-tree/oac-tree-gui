@@ -177,11 +177,11 @@ void CalculateInitialX(AlignNode& node)
     }
   }
 
-  //  if (node.Children.Count > 0 && !node.IsLeftMost())
-  //  {
-  //      // Since subtrees can overlap, check for conflicts and shift tree right if needed
-  //      CheckForConflicts(node);
-  //  }
+  if (node.GetSize() > 0 && !node.IsLeftMost())
+  {
+    // Since subtrees can overlap, check for conflicts and shift tree right if needed
+    CheckForConflicts(node);
+  }
 }
 
 void AlignNodes(AlignNode& node)
@@ -227,48 +227,32 @@ void CheckForConflicts(AlignNode& node)
   }
 }
 
-/*
+void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
+{
+  int leftIndex = rightNode.GetIndex();  // FIXME deliberate swap
+  int rightIndex = leftNode.GetIndex();  // FIXME deliberate swap
 
-        private static void CheckForConflicts(TreeNodeModel<T> node)
-        {
-            var minDistance = treeDistance + nodeSize;
-            var shiftValue = 0F;
+  int numNodesBetween = (rightIndex - leftIndex) - 1;
 
-            var nodeContour = new Dictionary<int, float>();
-            GetLeftContour(node, 0, ref nodeContour);
+  if (numNodesBetween > 0)
+  {
+    double distanceBetweenNodes = (leftNode.GetX() - rightNode.GetX()) / (numNodesBetween + 1);
 
-            var sibling = node.GetLeftMostSibling();
-            while (sibling != null && sibling != node)
-            {
-                var siblingContour = new Dictionary<int, float>();
-                GetRightContour(sibling, 0, ref siblingContour);
+    int count = 1;
+    for (int i = leftIndex + 1; i < rightIndex; i++)
+    {
+      auto middleNode = leftNode.GetParent()->GetChildren().at(i);
 
-                for (int level = node.Y + 1; level <= Math.Min(siblingContour.Keys.Max(),
-   nodeContour.Keys.Max()); level++)
-                {
-                    var distance = nodeContour[level] - siblingContour[level];
-                    if (distance + shiftValue < minDistance)
-                    {
-                        shiftValue = minDistance - distance;
-                    }
-                }
+      double desiredX = rightNode.GetX() + (distanceBetweenNodes * count);
+      double offset = desiredX - middleNode->GetX();
+      middleNode->SetX(middleNode->GetX() + offset);
+      middleNode->SetMod(middleNode->GetMod() + offset);
 
-                if (shiftValue > 0)
-                {
-                    node.X += shiftValue;
-                    node.Mod += shiftValue;
+      count++;
+    }
 
-                    CenterNodesBetween(node, sibling);
-
-                    shiftValue = 0;
-                }
-
-                sibling = sibling.GetNextSibling();
-            }
-        }
-
-  */
-
-void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode) {}
+    CheckForConflicts(leftNode);
+  }
+}
 
 }  // namespace sequencergui::algorithm
