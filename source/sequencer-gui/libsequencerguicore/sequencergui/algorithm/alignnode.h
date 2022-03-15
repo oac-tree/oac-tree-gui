@@ -22,6 +22,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace sequencergui::algorithm
 {
@@ -75,12 +76,16 @@ public:
 
   double GetSiblingDistance() const;
 
+  std::string GetIdentifier() const;
+  void SetIdentifier(const std::string& identifier);
+
 private:
   AlignNode* m_parent{nullptr};
   std::vector<std::unique_ptr<AlignNode>> m_children;
   double m_xpos{0.0};
   double m_ypos{0.0};
   double m_mod{0.0};
+  std::string m_identifier;
 };
 
 template <typename T>

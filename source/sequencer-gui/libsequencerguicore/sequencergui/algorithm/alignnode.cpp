@@ -169,4 +169,14 @@ double AlignNode::GetSiblingDistance() const
   return arbitrary_sibling_distance;
 }
 
+std::string AlignNode::GetIdentifier() const
+{
+  return m_identifier;
+}
+
+void AlignNode::SetIdentifier(const std::string &identifier)
+{
+  m_identifier = identifier;
+}
+
 }  // namespace sequencergui::algorithm
