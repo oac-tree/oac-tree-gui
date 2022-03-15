@@ -136,3 +136,69 @@ TEST_F(AlignUtilsTest, GetRightContourV2)
   EXPECT_DOUBLE_EQ(contour[2], 2.0);  // parent mod + own position
   EXPECT_DOUBLE_EQ(contour[3], 4.5);  // sum of parent mods + own position
 }
+
+TEST_F(AlignUtilsTest, CalculateInitialXSingleChild)
+{
+  AlignNode node;
+  node.SetX(42);
+
+  auto child = node.Add<AlignNode>();
+  child->SetX(42);
+
+  CalculateInitialX(node);
+
+  EXPECT_EQ(child->GetX(), 0.0);
+  EXPECT_EQ(child->GetMod(), 0.0);
+  EXPECT_EQ(node.GetX(), 0.0);
+  EXPECT_EQ(node.GetMod(), 0.0);
+}
+
+TEST_F(AlignUtilsTest, CalculateInitialXTwoChildren)
+{
+  AlignNode node;
+  node.SetX(42);
+
+  auto child0 = node.Add<AlignNode>();
+  auto child1 = node.Add<AlignNode>();
+
+  CalculateInitialX(node);
+
+  EXPECT_EQ(child0->GetX(), 0.0);
+  EXPECT_EQ(child0->GetMod(), 0.0);
+  EXPECT_EQ(child1->GetX(), 1.0);
+  EXPECT_EQ(child1->GetMod(), 0.0);
+  EXPECT_DOUBLE_EQ(node.GetX(), 0.5);
+  EXPECT_EQ(node.GetMod(), 0.0);
+}
+
+TEST_F(AlignUtilsTest, CalculateInitialXTwoGrandChildren)
+{
+  AlignNode node;
+  node.SetX(42);
+
+  auto child0 = node.Add<AlignNode>();
+  auto grandchild0 = child0->Add<AlignNode>();
+  auto grandchild1 = child0->Add<AlignNode>();
+
+  auto child1 = node.Add<AlignNode>();
+  auto grandchild2 = child1->Add<AlignNode>();
+  auto grandchild3 = child1->Add<AlignNode>();
+
+  CalculateInitialX(node);
+
+  EXPECT_EQ(grandchild0->GetX(), 0.0);
+  EXPECT_EQ(grandchild1->GetX(), 1.0);
+  EXPECT_EQ(grandchild2->GetX(), 0.0);
+  EXPECT_EQ(grandchild3->GetX(), 1.0);
+
+  EXPECT_EQ(grandchild0->GetMod(), 0.0);
+  EXPECT_EQ(grandchild1->GetMod(), 0.0);
+  EXPECT_EQ(grandchild2->GetMod(), 0.0);
+  EXPECT_EQ(grandchild3->GetMod(), 0.0);
+
+  EXPECT_EQ(child0->GetX(), 0.5);
+  EXPECT_EQ(child1->GetX(), 1.5);
+
+  EXPECT_EQ(child0->GetMod(), 0.0);
+  EXPECT_EQ(child1->GetMod(), 1.0);
+}
