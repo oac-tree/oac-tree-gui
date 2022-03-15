@@ -46,6 +46,9 @@ std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum = 0.0);
 
 void CalculateInitialX(AlignNode& node);
 
+//! Align nodes.
+void AlignNodes(AlignNode& node);
+
 }  // namespace sequencergui::algorithm
 
 #endif

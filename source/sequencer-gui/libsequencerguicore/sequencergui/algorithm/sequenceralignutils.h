@@ -38,14 +38,20 @@ namespace sequencergui::algorithm
 
 class AlignNode;
 
+
 //! Creates AlignTree representing instruction hierarchy. The tree will
 //! be used by the align algorithm to nicely position instructions on the graphics scene.
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem* container);
+
+//! Creates AlignTree representing instruction hierarchy. The tree will
+void UpdatePositions(const AlignNode* node, InstructionContainerItem* container);
 
 //! Align children of given instruction on graphics scene.  When `force` is false allignment is
 //! performed only for instructions with unitialised coordinates.
 //! The position of parent `instruction` remains unchanged.
 void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instruction, bool force);
+
+void AlignInstructionTreeWalker(const QPointF& reference, InstructionContainerItem* container, bool force);
 
 }  // namespace sequencergui::algorithm
 

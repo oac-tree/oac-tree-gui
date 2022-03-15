@@ -179,4 +179,10 @@ void CalculateInitialX(AlignNode& node)
   //  }
 }
 
+void AlignNodes(AlignNode &node)
+{
+  InitializeNodes(node);
+  CalculateInitialX(node);
+}
+
 }  // namespace sequencergui::algorithm

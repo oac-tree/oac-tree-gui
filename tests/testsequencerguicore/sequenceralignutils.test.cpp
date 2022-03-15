@@ -34,6 +34,8 @@ class SequencerAlignUtilsTest : public ::testing::Test
 {
 };
 
+//! Validate CreateAlignTree method on empty container.
+
 TEST_F(SequencerAlignUtilsTest, CreateAlignTreeEmptyContainer)
 {
   InstructionContainerItem container;
@@ -42,8 +44,11 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeEmptyContainer)
   EXPECT_EQ(node->GetSize(), 0);
 }
 
+//! Validate CreateAlignTree method using sequence with 3 children.
+
 TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
 {
+  // creating test instruction tree
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
   auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
@@ -51,6 +56,7 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
   auto wait1 = model.InsertItem<WaitItem>(sequence);
   auto wait2 = model.InsertItem<WaitItem>(sequence);
 
+  // creating corresponding AlignTree
   auto node = algorithm::CreateAlignTree(procedure->GetInstructionContainer());
 
   // root node
@@ -62,6 +68,7 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
   EXPECT_EQ(sequence_node->GetSize(), 3);
   EXPECT_EQ(sequence_node->GetIdentifier(), sequence->GetIdentifier());
 
+  // nodes corresponding to wait instructions
   auto wait0_node = sequence_node->GetChildren().at(0);
   auto wait1_node = sequence_node->GetChildren().at(1);
   auto wait2_node = sequence_node->GetChildren().at(2);
@@ -72,4 +79,41 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
   EXPECT_EQ(wait1_node->GetIdentifier(), wait1->GetIdentifier());
   EXPECT_EQ(wait2_node->GetSize(), 0);
   EXPECT_EQ(wait2_node->GetIdentifier(), wait2->GetIdentifier());
+}
+
+TEST_F(SequencerAlignUtilsTest, UpdatePositions)
+{
+  // creating test instruction tree
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
+  auto wait0 = model.InsertItem<WaitItem>(sequence);
+  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  auto wait2 = model.InsertItem<WaitItem>(sequence);
+
+  // creating corresponding AlignTree
+  auto node = algorithm::CreateAlignTree(procedure->GetInstructionContainer());
+
+  // manually setting  coordinates to nodes
+  auto sequence_node = node->GetChildren().at(0);
+  sequence_node->SetPos(1.0, 2.0);
+  auto wait0_node = sequence_node->GetChildren().at(0);
+  wait0_node->SetPos(3.0, 4.0);
+  auto wait1_node = sequence_node->GetChildren().at(1);
+  wait1_node->SetPos(5.0, 6.0);
+  auto wait2_node = sequence_node->GetChildren().at(2);
+  wait2_node->SetPos(7.0, 8.0);
+
+  // updating positions of the instruction tree from the AlignmentTree
+  algorithm::UpdatePositions(node.get(), procedure->GetInstructionContainer());
+
+  // validationg coordinates of instructions
+  EXPECT_EQ(sequence->GetX(), 1.0);
+  EXPECT_EQ(sequence->GetY(), 2.0);
+  EXPECT_EQ(wait0->GetX(), 3.0);
+  EXPECT_EQ(wait0->GetY(), 4.0);
+  EXPECT_EQ(wait1->GetX(), 5.0);
+  EXPECT_EQ(wait1->GetY(), 6.0);
+  EXPECT_EQ(wait2->GetX(), 7.0);
+  EXPECT_EQ(wait2->GetY(), 8.0);
 }
