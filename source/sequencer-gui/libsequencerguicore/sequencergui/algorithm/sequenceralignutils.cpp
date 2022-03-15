@@ -132,7 +132,7 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instr
   qDebug() << "Hello world";
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
-  //  UpdatePositions(align_tree.get(), instruction);
+  UpdatePositions(align_tree.get(), instruction);
 }
 
 void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container,

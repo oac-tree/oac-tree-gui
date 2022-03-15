@@ -74,6 +74,11 @@ std::map<int, double> GetCountour(sequencergui::algorithm::AlignNode& node, doub
   return result;
 }
 
+int GetMaxKey(const std::map<int, double>& map)
+{
+  return map.rbegin()->first;
+}
+
 }  // namespace
 
 namespace sequencergui::algorithm
@@ -179,10 +184,91 @@ void CalculateInitialX(AlignNode& node)
   //  }
 }
 
-void AlignNodes(AlignNode &node)
+void AlignNodes(AlignNode& node)
 {
   InitializeNodes(node);
   CalculateInitialX(node);
 }
+
+void CheckForConflicts(AlignNode& node)
+{
+  const double treeDistance = 0.0;
+  const double minDistance = treeDistance + node.GetNodeSize();
+  double shiftValue = 0.0;
+
+  auto nodeContour = GetLeftCountour(node, 0.0);
+  auto sibling = node.GetLeftMostSibling();
+
+  while (sibling != nullptr && sibling != &node)
+  {
+    auto siblingContour = GetRightCountour(*sibling, 0.0);
+
+    for (int level = static_cast<int>(node.GetY()) + 1;
+         level <= std::min(GetMaxKey(siblingContour), GetMaxKey(nodeContour)); level++)
+    {
+      double distance = nodeContour[level] - siblingContour[level];
+      if (distance + shiftValue < minDistance)
+      {
+        shiftValue = minDistance - distance;
+      }
+    }
+
+    if (shiftValue > 0)
+    {
+      node.SetX(node.GetX() + shiftValue);
+      node.SetMod(node.GetMod() + shiftValue);
+
+      CenterNodesBetween(node, *sibling);
+
+      shiftValue = 0;
+    }
+
+    sibling = sibling->GetNextSibling();
+  }
+}
+
+/*
+
+        private static void CheckForConflicts(TreeNodeModel<T> node)
+        {
+            var minDistance = treeDistance + nodeSize;
+            var shiftValue = 0F;
+
+            var nodeContour = new Dictionary<int, float>();
+            GetLeftContour(node, 0, ref nodeContour);
+
+            var sibling = node.GetLeftMostSibling();
+            while (sibling != null && sibling != node)
+            {
+                var siblingContour = new Dictionary<int, float>();
+                GetRightContour(sibling, 0, ref siblingContour);
+
+                for (int level = node.Y + 1; level <= Math.Min(siblingContour.Keys.Max(),
+   nodeContour.Keys.Max()); level++)
+                {
+                    var distance = nodeContour[level] - siblingContour[level];
+                    if (distance + shiftValue < minDistance)
+                    {
+                        shiftValue = minDistance - distance;
+                    }
+                }
+
+                if (shiftValue > 0)
+                {
+                    node.X += shiftValue;
+                    node.Mod += shiftValue;
+
+                    CenterNodesBetween(node, sibling);
+
+                    shiftValue = 0;
+                }
+
+                sibling = sibling.GetNextSibling();
+            }
+        }
+
+  */
+
+void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode) {}
 
 }  // namespace sequencergui::algorithm

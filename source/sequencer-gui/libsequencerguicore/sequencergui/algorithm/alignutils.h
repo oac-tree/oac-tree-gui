@@ -46,6 +46,10 @@ std::map<int, double> GetRightCountour(AlignNode& node, double mod_sum = 0.0);
 
 void CalculateInitialX(AlignNode& node);
 
+void CheckForConflicts(AlignNode& node);
+
+void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode);
+
 //! Align nodes.
 void AlignNodes(AlignNode& node);
 
