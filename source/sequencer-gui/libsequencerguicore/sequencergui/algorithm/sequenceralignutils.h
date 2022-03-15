@@ -23,15 +23,24 @@
 //! @file sequenceralignutils.h
 //! Collection of utility functions to align Sequencer instruction tree on the graphics scene.
 
+#include <memory>
+
 class QPointF;
 
 namespace sequencergui
 {
 class InstructionItem;
+class InstructionContainerItem;
 }
 
 namespace sequencergui::algorithm
 {
+
+class AlignNode;
+
+//! Creates AlignTree representing instruction hierarchy. The tree will
+//! be used by the align algorithm to nicely position instructions on the graphics scene.
+std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem* container);
 
 //! Align children of given instruction on graphics scene.  When `force` is false allignment is
 //! performed only for instructions with unitialised coordinates.
