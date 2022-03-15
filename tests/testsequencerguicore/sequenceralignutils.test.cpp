@@ -95,7 +95,7 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
   // creating corresponding AlignTree
   auto sequence_node = algorithm::CreateAlignTree(sequence);
 
-  // root node
+  // node corresponding to sequence
   EXPECT_EQ(sequence_node->GetSize(), 3);
   EXPECT_EQ(sequence_node->GetIdentifier(), sequence->GetIdentifier());
 
@@ -112,7 +112,7 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
   EXPECT_EQ(wait2_node->GetIdentifier(), wait2->GetIdentifier());
 }
 
-TEST_F(SequencerAlignUtilsTest, UpdatePositions)
+TEST_F(SequencerAlignUtilsTest, UpdatePositionsInTheContainer)
 {
   // creating test instruction tree
   SequencerModel model;
@@ -137,6 +137,41 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositions)
 
   // updating positions of the instruction tree from the AlignmentTree
   algorithm::UpdatePositions(node.get(), procedure->GetInstructionContainer());
+
+  // validationg coordinates of instructions
+  EXPECT_EQ(sequence->GetX(), 1.0);
+  EXPECT_EQ(sequence->GetY(), 2.0);
+  EXPECT_EQ(wait0->GetX(), 3.0);
+  EXPECT_EQ(wait0->GetY(), 4.0);
+  EXPECT_EQ(wait1->GetX(), 5.0);
+  EXPECT_EQ(wait1->GetY(), 6.0);
+  EXPECT_EQ(wait2->GetX(), 7.0);
+  EXPECT_EQ(wait2->GetY(), 8.0);
+}
+
+TEST_F(SequencerAlignUtilsTest, UpdatePositionsOfInstructionTree)
+{
+  // creating test instruction tree
+  SequencerModel model;
+  auto sequence = model.InsertItem<SequenceItem>();
+  auto wait0 = model.InsertItem<WaitItem>(sequence);
+  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  auto wait2 = model.InsertItem<WaitItem>(sequence);
+
+  // creating corresponding AlignTree
+  auto sequence_node = algorithm::CreateAlignTree(sequence);
+
+  // manually setting  coordinates to nodes
+  sequence_node->SetPos(1.0, 2.0);
+  auto wait0_node = sequence_node->GetChildren().at(0);
+  wait0_node->SetPos(3.0, 4.0);
+  auto wait1_node = sequence_node->GetChildren().at(1);
+  wait1_node->SetPos(5.0, 6.0);
+  auto wait2_node = sequence_node->GetChildren().at(2);
+  wait2_node->SetPos(7.0, 8.0);
+
+  // updating positions of the instruction tree from the AlignmentTree
+  algorithm::UpdatePositions(sequence_node.get(), sequence);
 
   // validationg coordinates of instructions
   EXPECT_EQ(sequence->GetX(), 1.0);

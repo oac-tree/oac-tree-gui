@@ -119,9 +119,41 @@ void UpdatePositions(const AlignNode *node, InstructionContainerItem *container)
   }
 }
 
+void UpdatePositions(const AlignNode *node, InstructionItem *item)
+{
+  auto model = item->GetModel();
+
+  std::stack<const AlignNode *> node_stack;
+  node_stack.push(node);
+
+  while (!node_stack.empty())
+  {
+    auto node = node_stack.top();
+    node_stack.pop();
+
+    // instructions are found using identifier stored on board of node
+    if (auto instruction = dynamic_cast<InstructionItem *>(model->FindItem(node->GetIdentifier()));
+        instruction)
+    {
+      instruction->SetX(node->GetX());
+      instruction->SetY(node->GetY());
+    }
+
+    auto children = node->GetChildren();
+    // reverse iteration to get preorder
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      node_stack.push(*it);
+    }
+  }
+}
+
 void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction, bool force)
 {
   qDebug() << "Hello world";
+  auto align_tree = CreateAlignTree(instruction);
+  AlignNodes(*align_tree);
+  //  UpdatePositions(align_tree.get(), instruction);
 }
 
 void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container,

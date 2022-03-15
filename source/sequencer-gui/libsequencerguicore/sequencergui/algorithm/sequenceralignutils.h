@@ -46,6 +46,7 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* container);
 
 //! Creates AlignTree representing instruction hierarchy. The tree will
 void UpdatePositions(const AlignNode* node, InstructionContainerItem* container);
+void UpdatePositions(const AlignNode* node, InstructionItem* item);
 
 //! Align children of given instruction on graphics scene.  When `force` is false allignment is
 //! performed only for instructions with unitialised coordinates.
