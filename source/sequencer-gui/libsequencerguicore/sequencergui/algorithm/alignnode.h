@@ -79,6 +79,8 @@ public:
   std::string GetIdentifier() const;
   void SetIdentifier(const std::string& identifier);
 
+  int GetIndex() const;
+
 private:
   AlignNode* m_parent{nullptr};
   std::vector<std::unique_ptr<AlignNode>> m_children;

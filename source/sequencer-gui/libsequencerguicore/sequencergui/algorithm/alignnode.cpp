@@ -179,4 +179,10 @@ void AlignNode::SetIdentifier(const std::string &identifier)
   m_identifier = identifier;
 }
 
+//! Returns index of given item in the array of its parent
+int AlignNode::GetIndex() const
+{
+  return GetParent() ? mvvm::utils::IndexOfItem(GetParent()->GetChildren(), this) : -1;
+}
+
 }  // namespace sequencergui::algorithm
