@@ -42,6 +42,7 @@ class AlignNode;
 //! Creates AlignTree representing instruction hierarchy. The tree will
 //! be used by the align algorithm to nicely position instructions on the graphics scene.
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem* container);
+std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* container);
 
 //! Creates AlignTree representing instruction hierarchy. The tree will
 void UpdatePositions(const AlignNode* node, InstructionContainerItem* container);

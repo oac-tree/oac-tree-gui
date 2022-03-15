@@ -49,7 +49,7 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *conta
 
   struct Data
   {
-    InstructionItem *instruction{nullptr};
+    const InstructionItem *instruction{nullptr};
     AlignNode *parent_node{nullptr};
   };
 
@@ -60,6 +60,36 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *conta
   {
     node_stack.push({*it, result.get()});
   }
+
+  while (!node_stack.empty())
+  {
+    auto [instruction, node] = node_stack.top();
+    node_stack.pop();
+
+    auto new_parent = PopulateNode(*instruction, *node);
+
+    auto children = instruction->GetInstructions();
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      node_stack.push({*it, new_parent});
+    }
+  }
+
+  return result;
+}
+
+std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
+{
+  auto result = std::make_unique<AlignNode>();
+
+  struct Data
+  {
+    const InstructionItem *instruction{nullptr};
+    AlignNode *parent_node{nullptr};
+  };
+
+  std::stack<Data> node_stack;
+  node_stack.push({item, result.get()});
 
   while (!node_stack.empty())
   {
