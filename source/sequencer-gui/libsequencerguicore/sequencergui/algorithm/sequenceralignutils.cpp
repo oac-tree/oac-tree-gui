@@ -81,6 +81,7 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *conta
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
 {
   auto result = std::make_unique<AlignNode>();
+  result->SetIdentifier(item->GetIdentifier());
 
   struct Data
   {
@@ -89,7 +90,11 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
   };
 
   std::stack<Data> node_stack;
-  node_stack.push({item, result.get()});
+  auto children = item->GetInstructions();
+  for (auto it = children.rbegin(); it != children.rend(); ++it)
+  {
+    node_stack.push({*it, result.get()});
+  }
 
   while (!node_stack.empty())
   {

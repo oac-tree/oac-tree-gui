@@ -93,14 +93,9 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeSequenceWithChildren)
   auto wait2 = model.InsertItem<WaitItem>(sequence);
 
   // creating corresponding AlignTree
-  auto node = algorithm::CreateAlignTree(sequence);
+  auto sequence_node = algorithm::CreateAlignTree(sequence);
 
   // root node
-  EXPECT_EQ(node->GetSize(), 1);
-  EXPECT_TRUE(node->GetIdentifier().empty());
-
-  // node corresponding to sequence
-  auto sequence_node = node->GetChildren().at(0);
   EXPECT_EQ(sequence_node->GetSize(), 3);
   EXPECT_EQ(sequence_node->GetIdentifier(), sequence->GetIdentifier());
 
