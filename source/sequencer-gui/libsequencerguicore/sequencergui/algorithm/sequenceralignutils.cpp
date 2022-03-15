@@ -47,32 +47,9 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *conta
 {
   auto result = std::make_unique<AlignNode>();
 
-  struct Data
+  for (auto child : container->GetInstructions())
   {
-    const InstructionItem *instruction{nullptr};
-    AlignNode *parent_node{nullptr};
-  };
-
-  std::stack<Data> node_stack;
-
-  auto children = container->GetInstructions();
-  for (auto it = children.rbegin(); it != children.rend(); ++it)
-  {
-    node_stack.push({*it, result.get()});
-  }
-
-  while (!node_stack.empty())
-  {
-    auto [instruction, node] = node_stack.top();
-    node_stack.pop();
-
-    auto new_parent = PopulateNode(*instruction, *node);
-
-    auto children = instruction->GetInstructions();
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
-    {
-      node_stack.push({*it, new_parent});
-    }
+    result->Add(CreateAlignTree(child));
   }
 
   return result;
