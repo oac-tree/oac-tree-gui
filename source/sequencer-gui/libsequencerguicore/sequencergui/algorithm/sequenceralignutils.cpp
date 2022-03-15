@@ -92,30 +92,9 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
 
 void UpdatePositions(const AlignNode *node, InstructionContainerItem *container)
 {
-  auto model = container->GetModel();
-
-  std::stack<const AlignNode *> node_stack;
-  node_stack.push(node);
-
-  while (!node_stack.empty())
+  for (auto child : container->GetInstructions())
   {
-    auto node = node_stack.top();
-    node_stack.pop();
-
-    // instructions are found using identifier stored on board of node
-    if (auto instruction = dynamic_cast<InstructionItem *>(model->FindItem(node->GetIdentifier()));
-        instruction)
-    {
-      instruction->SetX(node->GetX());
-      instruction->SetY(node->GetY());
-    }
-
-    auto children = node->GetChildren();
-    // reverse iteration to get preorder
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
-    {
-      node_stack.push(*it);
-    }
+    UpdatePositions(node, child);
   }
 }
 
