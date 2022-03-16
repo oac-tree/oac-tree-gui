@@ -171,17 +171,16 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
   }
 }
 
-void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction, bool force)
+void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction)
 {
   qDebug() << "Hello world";
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
-  UpdatePositions(align_tree.get(), instruction);
+//  UpdatePositions(align_tree.get(), instruction);
 }
 
-void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container,
-                                bool force)
+void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container)
 {
   auto align_tree = CreateAlignTree(container);
   AlignNodes(*align_tree);
@@ -190,7 +189,7 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerIt
 }
 
 void AlignInstructionTreeWalker(const QPointF &reference,
-                                std::vector<InstructionItem *> instructions, bool force)
+                                std::vector<InstructionItem *> instructions)
 {
   auto align_tree = CreateAlignTree(instructions);
   AlignNodes(*align_tree);

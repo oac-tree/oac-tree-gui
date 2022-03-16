@@ -26,6 +26,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QPointF>
+
 using namespace sequencergui;
 
 //! Tests for SequencerObserver class.
@@ -182,4 +184,14 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsOfInstructionTree)
   EXPECT_EQ(wait1->GetY(), 6.0);
   EXPECT_EQ(wait2->GetX(), 7.0);
   EXPECT_EQ(wait2->GetY(), 8.0);
+}
+
+TEST_F(SequencerAlignUtilsTest, AlignTreeWithSingleInstruction)
+{
+//  InstructionContainerItem container;
+//  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+//  algorithm::AlignInstructionTreeWalker(QPointF(1, 2), instruction);
+//  EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
+//  EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
+
 }

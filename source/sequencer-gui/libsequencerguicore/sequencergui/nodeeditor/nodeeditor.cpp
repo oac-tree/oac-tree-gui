@@ -148,7 +148,7 @@ void NodeEditor::SetupConnections()
     {
       auto view = selected.front();
       auto item = view->GetConnectableItem()->GetInstruction();
-      algorithm::AlignInstructionTreeWalker(view->pos(), item, /*force*/ true);
+      algorithm::AlignInstructionTreeWalker(view->pos(), item);
     }
     else
     {
@@ -159,7 +159,7 @@ void NodeEditor::SetupConnections()
         rect = rect.united(view->sceneBoundingRect());
         items.push_back(view->GetConnectableItem()->GetInstruction());
       }
-      algorithm::AlignInstructionTreeWalker(rect.center(), items, /*force*/ true);
+      algorithm::AlignInstructionTreeWalker(rect.center(), items);
     }
   };
   connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequestV2, this, on_align_v2);
