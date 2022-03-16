@@ -117,7 +117,7 @@ void LoadPlugins()
 {
   static const std::vector<std::string> plugins = {
       "libsequencer-sup-config.so", "libsequencer-sup-pcs.so", "libsequencer-sup-pulsecounter.so",
-      "libsequencer-sup-timing.so", "libsequencer-ca.so"};
+      "libsequencer-sup-timing.so", "libsequencer-ca.so", "libsequencer-pvxs.so", "libsequencer-misc.so"};
 
   for (const auto& name : plugins)
   {
