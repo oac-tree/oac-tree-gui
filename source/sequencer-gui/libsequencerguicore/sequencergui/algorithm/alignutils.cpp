@@ -209,22 +209,23 @@ void CheckForConflicts(AlignNode& node)
       double distance = nodeContour[level] - siblingContour[level];
       if (distance + shiftValue < minDistance)
       {
-//        shiftValue = minDistance - distance;
         shiftValue = std::max(minDistance - distance, shiftValue);
       }
     }
 
     if (shiftValue > 0)
     {
-      node.SetX(node.GetX() + shiftValue);
-      node.SetMod(node.GetMod() + shiftValue);
-
       CenterNodesBetween(node, *sibling);
-
-      shiftValue = 0;
     }
 
     sibling = sibling->GetNextSibling();
+  }
+
+  if (shiftValue > 0)
+  {
+    node.SetX(node.GetX() + shiftValue);
+    node.SetMod(node.GetMod() + shiftValue);
+    shiftValue = 0;
   }
 }
 
