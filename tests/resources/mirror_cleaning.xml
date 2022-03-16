@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="SUP procedure for mirror cleaning"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Plugin>libsequencer-ca.so</Plugin>
+    <Plugin>libsequencer-pvxs.so</Plugin>
+    <Sequence isRoot="True">
+        <Copy input="false" output="Operator-start-MC.value"/>
+        <Include name="Preprocedure tests" path="TestProcedure"/>
+        <Listen varNames="Operator-start-MC" forceSuccess="yes">
+            <Sequence>
+                <Equals lhs="Operator-start-MC.value" rhs="true"/>
+                <Include name="Main Procedure" path="MainProcedure"/>
+            </Sequence>
+        </Listen>
+    </Sequence>
+    <Sequence name="TestProcedure">
+        <Message text="Testing procedure..."/>
+        <Output from="Operator-start-MC" description="Operator-start-MC"/>
+        <Output from="MC-start" description="MC-start"/>
+        <Output from="MC-time-remaining" description="MC-time-remaining"/>
+        <Output from="D1-stop-request" description="D1-stop-request"/>
+        <Output from="MC-stop-other" description="MC-stop-other"/>
+        <Output from="MC-finished" description="MC-finished"/>
+        <Output from="MC-abort" description="MC-abort"/>
+        <Output from="MC-state" description="MC-state"/>
+        <Output from="D1-state" description="D1-state"/>
+        <Output from="System-state" description="System-state"/>
+        <Output from="Operator-stop" description="Operator-stop"/>
+        <Output from="Stop-time-remaining" description="Stop-time-remaining"/>
+    </Sequence>
+    <Sequence name="MainProcedure">
+        <Include name="MC Preparation" path="MCPreparation"/>
+        <Fallback>
+            <Sequence>
+                <Include name="MC Start" path="MCStart"/>
+                <!-- MCRun always ends with a failure status, such that MCEnd will always be executed -->
+                <Include name="MC Run" path="MCRun"/>
+            </Sequence>
+            <Include name="MC End" path="MCEnd"/>
+        </Fallback>
+    </Sequence>
+    <Sequence name="MCPreparation">
+        <Copy input="false" output="Operator-start-MC.value"/>
+        <Copy input="time-reset" output="MC-time-remaining"/>
+        <Copy input="false" output="D1-stop-request"/>
+        <Copy input="false" output="MC-stop-other"/>
+        <Copy input="false" output="MC-finished"/>
+        <Copy input="abort-reset" output="MC-abort"/>
+        <Copy input="two" output="MC-state"/>
+    </Sequence>
+    <Fallback name="MCStart">
+        <Listen varNames="D1-state,Operator-stop">
+            <Inverter>
+                <Fallback>
+                    <Equals lhs="D1-state" rhs="two"/>
+                    <Equals lhs="D1-state" rhs="three"/>
+                    <Equals lhs="Operator-stop" rhs="true"/>
+                </Fallback>
+            </Inverter>
+        </Listen>
+        <Sequence>
+            <Inverter>
+                <!-- Exit with failure operator requested stop -->
+                <Equals lhs="Operator-stop" rhs="true"/>
+            </Inverter>
+            <Fallback>
+                <Listen varNames="System-state,Operator-stop">
+                    <Inverter>
+                        <Fallback>
+                            <Equals lhs="System-state" rhs="two"/>
+                            <Equals lhs="System-state" rhs="three"/>
+                            <Equals lhs="Operator-stop" rhs="true"/>
+                        </Fallback>
+                    </Inverter>
+                </Listen>
+                <Sequence>
+                    <!-- Only proceed without failure if system state is running -->
+                    <Equals lhs="System-state" rhs="two"/>
+                    <Copy input="three" output="MC-state"/>
+                </Sequence>
+            </Fallback>
+        </Sequence>
+    </Fallback>
+    <Sequence name="MCRun">
+        <!-- TODO: initialize and start timer -->
+        <Listen varNames="Operator-stop,D1-stop-request,D1-state,System-state">
+            <Inverter>
+                <Fallback>
+                    <!-- Fail if any of these conditions is true -->
+                    <!-- TODO: add 'time elapsed?'-->
+                    <Equals lhs="Operator-stop" rhs="true"/>
+                    <Equals lhs="D1-stop-request" rhs="true"/>
+                    <Equals lhs="D1-state" rhs="one"/>
+                    <Equals lhs="System-state" rhs="zero"/>
+                    <Equals lhs="System-state" rhs="one"/>
+                    <Equals lhs="System-state" rhs="three"/>
+                    <Equals lhs="D1-state" rhs="five"/>
+                </Fallback>
+            </Inverter>
+        </Listen>
+    </Sequence>
+    <Sequence name="MCEnd">
+        <Copy input="four" output="MC-state"/>
+        <Copy input="true" output="D1-stop-request"/>
+        <!-- TODO: initialize and start end timer -->
+        <Fallback>
+            <Listen varNames="Stop-time-remaining,D1-state">
+                <Inverter>
+                    <Fallback>
+                        <!-- Proceed if any of these conditions is true -->
+                        <Equals lhs="Stop-time-remaining" rhs="time-reset"/>
+                        <Equals lhs="D1-state" rhs="five"/>
+                    </Fallback>
+                </Inverter>
+            </Listen>
+            <Sequence>
+                <ForceSuccess>
+                    <Sequence>
+                        <Equals lhs="Stop-time-remaining" rhs="time-reset"/>
+                        <Copy input="abort-set" output="MC-abort"/>
+                    </Sequence>
+                </ForceSuccess>
+                <Copy input="true" output="MC-stop-other"/>
+                <Copy input="true" output="MC-finished"/>
+            </Sequence>
+        </Fallback>
+    </Sequence>
+    <Workspace>
+        <!-- Expose start trigger to operator -->
+        <PVServerVariable name="Operator-start-MC" channel="CTRL-SUP-AUTO:MC-START"
+                          datatype='{"type":"operator_start_mc_t","attributes":[{"value":{"type":"bool"}}]}'/>
+        <!-- Preparation phase variables -->
+        <ChannelAccessVariable name="MC-start" channel="D1-SU-1001-OPR-MEP:SM-START" datatype='{"type":"int32"}'/>
+        <ChannelAccessVariable name="MC-time-remaining" channel="D1-SU-1001-OPR-MEP:LM-PG-SF-0000-CG000000SC" datatype='{"type":"float64"}'/>
+        <ChannelAccessVariable name="D1-stop-request" channel="D1-MC-1001-OPR-MEP:LM-PC-ST-0000-COREPNNPVL" datatype='{"type":"bool"}'/>
+        <ChannelAccessVariable name="MC-stop-other" channel="D1-SU-1001-OPR-MEP:LM-PC-SC-OTHER" datatype='{"type":"bool"}'/>
+        <ChannelAccessVariable name="MC-finished" channel="D1-SU-1001-OPR-MEP:EM-RN-00-0000-COWRPNNPVL" datatype='{"type":"bool"}'/>
+        <ChannelAccessVariable name="MC-abort" channel="D1-SU-1001-OPR-MEP:EM-ABORT" datatype='{"type":"int32"}'/>
+        <ChannelAccessVariable name="MC-state" channel="D1-SU-1001-OPR-MEP:LM-PG-PF-0000-COREPNNPSC" datatype='{"type":"uint16"}'/>
+        <!-- Start phase variables -->
+        <ChannelAccessVariable name="D1-state" channel="D1-MC-1001-OPR-MEP:LM-PF-SF-0000-CGREPNNPVC" datatype='{"type":"uint16"}'/>
+        <ChannelAccessVariable name="System-state" channel="UTIL-CABA-MCFU:MC-STATE" datatype='{"type":"uint16"}'/>
+        <ChannelAccessVariable name="Operator-stop" channel="D1-SU-1001-OPR-MEP:LM-PC-SC-0000-COWRPNNPVL" datatype='{"type":"bool"}'/>
+        <!-- Running phase variables -->
+        <!-- End phase variables -->
+        <ChannelAccessVariable name="Stop-time-remaining" channel="D1-SU-1001-OPR-MEP:LM-PG-SF-STOP" datatype='{"type":"float64"}'/>
+        <!-- Local constants -->
+        <Local name="false" type='{"type":"bool"}' value="0"/>
+        <Local name="true" type='{"type":"bool"}' value="1"/>
+        <Local name="zero" type='{"type":"uint16"}' value="0"/>
+        <Local name="one" type='{"type":"uint16"}' value="1"/>
+        <Local name="two" type='{"type":"uint16"}' value="2"/>
+        <Local name="three" type='{"type":"uint16"}' value="3"/>
+        <Local name="four" type='{"type":"uint16"}' value="4"/>
+        <Local name="five" type='{"type":"uint16"}' value="5"/>
+        <Local name="time-reset" type='{"type":"float64"}' value="0.0"/>
+        <Local name="abort-reset" type='{"type":"int32"}' value="0"/>
+        <Local name="abort-set" type='{"type":"int32"}' value="1"/>
+    </Workspace>
+</Procedure>
