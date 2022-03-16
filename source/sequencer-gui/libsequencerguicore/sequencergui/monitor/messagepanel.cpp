@@ -43,7 +43,7 @@ MessagePanel::MessagePanel(QWidget *parent) : CollapsibleWidget(parent), m_text_
   f.setStyleHint(QFont::Monospace);
   m_text_edit->setFont(f);
 
-  SetText("LOGBOOK");
+  SetText("LOG");
 
   auto tool_bar = GetToolBar();
 
