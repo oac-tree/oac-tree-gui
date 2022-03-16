@@ -144,7 +144,16 @@ void UpdatePositions(const AlignNode *node, std::vector<InstructionItem *> instr
 
 void UpdatePositions(const AlignNode *node, InstructionItem *item)
 {
+  // Current implementation relies on the instruction identifier, that has been stored
+  // in AlignNode on previous steps (while building AlignNodes from items). Identifier
+  // is used to retrieve instruction items back from the model. Thus, InstructionItem must
+  // be the part of some model.
   auto model = item->GetModel();
+
+  if (!model)
+  {
+    throw std::runtime_error("Item must be the part of some model");
+  }
 
   std::stack<const AlignNode *> node_stack;
   node_stack.push(node);
@@ -177,7 +186,7 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instr
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
-//  UpdatePositions(align_tree.get(), instruction);
+  UpdatePositions(align_tree.get(), instruction);
 }
 
 void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container)

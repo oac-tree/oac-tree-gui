@@ -188,10 +188,9 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsOfInstructionTree)
 
 TEST_F(SequencerAlignUtilsTest, AlignTreeWithSingleInstruction)
 {
-//  InstructionContainerItem container;
-//  auto instruction = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
-//  algorithm::AlignInstructionTreeWalker(QPointF(1, 2), instruction);
-//  EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
-//  EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
-
+  SequencerModel model;
+  auto instruction = model.InsertItem<SequenceItem>();
+  algorithm::AlignInstructionTreeWalker(QPointF(1, 2), instruction);
+  EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
+  EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
 }
