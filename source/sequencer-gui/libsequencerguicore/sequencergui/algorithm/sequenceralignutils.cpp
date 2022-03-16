@@ -47,9 +47,14 @@ namespace sequencergui::algorithm
 
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *container)
 {
+  return CreateAlignTree(container->GetInstructions());
+}
+
+std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instructions)
+{
   auto result = std::make_unique<AlignNode>();
 
-  for (auto child : container->GetInstructions())
+  for (auto child : instructions)
   {
     result->Add(CreateAlignTree(child));
   }
@@ -57,10 +62,10 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *conta
   return result;
 }
 
-std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
+std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *instruction)
 {
   auto result = std::make_unique<AlignNode>();
-  result->SetIdentifier(item->GetIdentifier());
+  result->SetIdentifier(instruction->GetIdentifier());
 
   struct Data
   {
@@ -69,7 +74,7 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
   };
 
   std::stack<Data> node_stack;
-  auto children = item->GetInstructions();
+  auto children = instruction->GetInstructions();
   for (auto it = children.rbegin(); it != children.rend(); ++it)
   {
     node_stack.push({*it, result.get()});
@@ -90,14 +95,6 @@ std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem *item)
   }
 
   return result;
-}
-
-void UpdatePositions(const AlignNode *node, InstructionContainerItem *container)
-{
-  for (auto child : container->GetInstructions())
-  {
-    UpdatePositions(node, child);
-  }
 }
 
 void TranslatePositions(const QPointF &reference, AlignNode &root_node)
@@ -129,6 +126,19 @@ void TranslatePositions(const QPointF &reference, AlignNode &root_node)
     {
       node_stack.push(*it);
     }
+  }
+}
+
+void UpdatePositions(const AlignNode *node, InstructionContainerItem *container)
+{
+  UpdatePositions(node, container->GetInstructions());
+}
+
+void UpdatePositions(const AlignNode *node, std::vector<InstructionItem *> instructions)
+{
+  for (auto child : instructions)
+  {
+    UpdatePositions(node, child);
   }
 }
 
@@ -177,6 +187,15 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerIt
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
   UpdatePositions(align_tree.get(), container);
+}
+
+void AlignInstructionTreeWalker(const QPointF &reference,
+                                std::vector<InstructionItem *> instructions, bool force)
+{
+  auto align_tree = CreateAlignTree(instructions);
+  AlignNodes(*align_tree);
+  TranslatePositions(reference, *align_tree);
+  UpdatePositions(align_tree.get(), instructions);
 }
 
 }  // namespace sequencergui::algorithm

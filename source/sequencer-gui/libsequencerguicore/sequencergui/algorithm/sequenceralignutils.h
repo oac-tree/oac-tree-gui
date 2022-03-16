@@ -24,6 +24,7 @@
 //! Collection of utility functions to align Sequencer instruction tree on the graphics scene.
 
 #include <memory>
+#include <vector>
 
 class QPointF;
 
@@ -42,7 +43,8 @@ class AlignNode;
 //! Creates AlignTree representing instruction hierarchy. The tree will
 //! be used by the align algorithm to nicely position instructions on the graphics scene.
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem* container);
-std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* container);
+std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instructions);
+std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* instruction);
 
 //! Translate positions of node to the coordinates of the graphics scene
 void TranslatePositions(const QPointF& reference, AlignNode& root_node);
@@ -50,6 +52,7 @@ void TranslatePositions(const QPointF& reference, AlignNode& root_node);
 //! Creates AlignTree representing instruction hierarchy. The tree will
 void UpdatePositions(const AlignNode* node, InstructionContainerItem* container);
 void UpdatePositions(const AlignNode* node, InstructionItem* item);
+void UpdatePositions(const AlignNode* node, std::vector<InstructionItem *> instructions);
 
 //! Align children of given instruction on graphics scene.  When `force` is false allignment is
 //! performed only for instructions with unitialised coordinates.
@@ -57,6 +60,8 @@ void UpdatePositions(const AlignNode* node, InstructionItem* item);
 void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instruction, bool force);
 
 void AlignInstructionTreeWalker(const QPointF& reference, InstructionContainerItem* container, bool force);
+
+void AlignInstructionTreeWalker(const QPointF& reference, std::vector<InstructionItem *> instructions, bool force);
 
 }  // namespace sequencergui::algorithm
 
