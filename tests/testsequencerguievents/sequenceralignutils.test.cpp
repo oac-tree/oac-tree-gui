@@ -23,6 +23,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/nodeeditor/sceneutils.h"
 
 #include <gtest/gtest.h>
 
@@ -193,4 +194,27 @@ TEST_F(SequencerAlignUtilsTest, AlignTreeWithSingleInstruction)
   algorithm::AlignInstructionTreeWalker(QPointF(1, 2), instruction);
   EXPECT_FLOAT_EQ(instruction->GetX(), 1.0);
   EXPECT_FLOAT_EQ(instruction->GetY(), 2.0);
+}
+
+TEST_F(SequencerAlignUtilsTest, AlignTreeWithTwoInstructions)
+{
+  SequencerModel model;
+  auto sequence = model.InsertItem<SequenceItem>();
+
+  auto instruction0 = sequence->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto instruction1 = sequence->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  // number used in scenutils.cpp
+  const double step_width = GetAlignmentGridWidth();
+  const double step_height = GetAlignmentGridHeight();
+
+  algorithm::AlignInstructionTreeWalker(QPointF(1, 2), sequence);
+
+  EXPECT_FLOAT_EQ(sequence->GetX(), 1.0);
+  EXPECT_FLOAT_EQ(sequence->GetY(), 2.0);
+
+  EXPECT_FLOAT_EQ(instruction0->GetX(), 1.0 - step_width / 2.0);
+  EXPECT_FLOAT_EQ(instruction0->GetY(), 2.0 + step_height);
+  EXPECT_FLOAT_EQ(instruction1->GetX(), 1.0 + step_width / 2.0);
+  EXPECT_FLOAT_EQ(instruction1->GetY(), 2.0 + step_height);
 }
