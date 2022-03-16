@@ -26,6 +26,8 @@
 #include <algorithm>
 #include <stack>
 
+#include <QDebug>
+
 namespace
 {
 
