@@ -19,6 +19,7 @@
 
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
+#include "sequencergui/algorithm/sequenceralignutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -28,7 +29,6 @@
 #include "sequencergui/nodeeditor/graphicsview.h"
 #include "sequencergui/nodeeditor/nodeeditortoolbar.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
-#include "sequencergui/algorithm/sequenceralignutils.h"
 
 #include <QDebug>
 #include <QPointF>
@@ -139,14 +139,30 @@ void NodeEditor::SetupConnections()
   auto on_align_v2 = [this]()
   {
     auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
-    for (auto view : selected)
+    if (selected.empty())
     {
+      return;
+    }
+
+    if (selected.size() == 1)
+    {
+      auto view = selected.front();
       auto item = view->GetConnectableItem()->GetInstruction();
       algorithm::AlignInstructionTreeWalker(view->pos(), item, /*force*/ true);
     }
+    else
+    {
+      QRectF rect = selected.front()->sceneBoundingRect();
+      std::vector<InstructionItem *> items;
+      for (auto view : selected)
+      {
+        rect = rect.united(view->sceneBoundingRect());
+        items.push_back(view->GetConnectableItem()->GetInstruction());
+      }
+      algorithm::AlignInstructionTreeWalker(rect.center(), items, /*force*/ true);
+    }
   };
   connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequestV2, this, on_align_v2);
-
 }
 
 }  // namespace sequencergui
