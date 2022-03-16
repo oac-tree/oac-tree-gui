@@ -44,6 +44,9 @@ class AlignNode;
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem* container);
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionItem* container);
 
+//! Translate positions of node to the coordinates of the graphics scene
+void TranslatePositions(const QPointF& reference, AlignNode& root_node);
+
 //! Creates AlignTree representing instruction hierarchy. The tree will
 void UpdatePositions(const AlignNode* node, InstructionContainerItem* container);
 void UpdatePositions(const AlignNode* node, InstructionItem* item);

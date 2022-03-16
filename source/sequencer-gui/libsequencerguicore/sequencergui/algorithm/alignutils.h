@@ -50,6 +50,8 @@ void CheckForConflicts(AlignNode& node);
 
 void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode);
 
+void CalculateFinalPositions(AlignNode& node, double mod_sum = 0.0);
+
 //! Align nodes.
 void AlignNodes(AlignNode& node);
 

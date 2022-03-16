@@ -23,8 +23,10 @@
 #include "sequencergui/algorithm/alignutils.h"
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/nodeeditor/sceneutils.h"
 
 #include <QDebug>
+#include <QPointF>
 #include <stack>
 #include <stdexcept>
 
@@ -98,6 +100,38 @@ void UpdatePositions(const AlignNode *node, InstructionContainerItem *container)
   }
 }
 
+void TranslatePositions(const QPointF &reference, AlignNode &root_node)
+{
+  std::stack<AlignNode *> node_stack;
+  node_stack.push(&root_node);
+
+  double scale_x = GetAlignmentGridWidth() / root_node.GetNodeSize();
+  auto translate_x = [x0 = root_node.GetX(), new_x0 = reference.x(), scale_x](auto x)
+  { return (x - x0) * scale_x + new_x0; };
+
+  double scale_y = GetAlignmentGridHeight() / root_node.GetNodeSize();
+  auto translate_y = [y0 = root_node.GetY(), new_y0 = reference.y(), scale_y](auto y)
+  { return (y - y0) * scale_y + new_y0; };
+
+  while (!node_stack.empty())
+  {
+    auto node = node_stack.top();
+    node_stack.pop();
+
+    double x = node->GetX() * scale_x + reference.x();
+    double y = node->GetY() * scale_x + reference.y();
+
+    node->SetPos(translate_x(node->GetX()), translate_y(node->GetY()));
+
+    auto children = node->GetChildren();
+    // reverse iteration to get preorder
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      node_stack.push(*it);
+    }
+  }
+}
+
 void UpdatePositions(const AlignNode *node, InstructionItem *item)
 {
   auto model = item->GetModel();
@@ -132,6 +166,7 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instr
   qDebug() << "Hello world";
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
+  TranslatePositions(reference, *align_tree);
   UpdatePositions(align_tree.get(), instruction);
 }
 
@@ -140,6 +175,7 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerIt
 {
   auto align_tree = CreateAlignTree(container);
   AlignNodes(*align_tree);
+  TranslatePositions(reference, *align_tree);
   UpdatePositions(align_tree.get(), container);
 }
 

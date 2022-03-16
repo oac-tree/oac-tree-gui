@@ -184,12 +184,6 @@ void CalculateInitialX(AlignNode& node)
   }
 }
 
-void AlignNodes(AlignNode& node)
-{
-  InitializeNodes(node);
-  CalculateInitialX(node);
-}
-
 void CheckForConflicts(AlignNode& node)
 {
   const double treeDistance = 0.0;
@@ -256,5 +250,24 @@ void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
     CheckForConflicts(leftNode);
   }
 }
+
+void CalculateFinalPositions(AlignNode &node, double mod_sum)
+{
+  node.SetX(node.GetX()+mod_sum);
+  mod_sum += node.GetMod();
+
+  for(auto child : node.GetChildren())
+  {
+    CalculateFinalPositions(*child, mod_sum);
+  }
+}
+
+void AlignNodes(AlignNode& node)
+{
+  InitializeNodes(node);
+  CalculateInitialX(node);
+  CalculateFinalPositions(node);
+}
+
 
 }  // namespace sequencergui::algorithm
