@@ -128,35 +128,5 @@
         </Fallback>
     </Sequence>
     <Workspace>
-        <!-- Expose start trigger to operator -->
-        <PVServerVariable name="Operator-start-MC" channel="CTRL-SUP-AUTO:MC-START"
-                          datatype='{"type":"operator_start_mc_t","attributes":[{"value":{"type":"bool"}}]}'/>
-        <!-- Preparation phase variables -->
-        <ChannelAccessVariable name="MC-start" channel="D1-SU-1001-OPR-MEP:SM-START" datatype='{"type":"int32"}'/>
-        <ChannelAccessVariable name="MC-time-remaining" channel="D1-SU-1001-OPR-MEP:LM-PG-SF-0000-CG000000SC" datatype='{"type":"float64"}'/>
-        <ChannelAccessVariable name="D1-stop-request" channel="D1-MC-1001-OPR-MEP:LM-PC-ST-0000-COREPNNPVL" datatype='{"type":"bool"}'/>
-        <ChannelAccessVariable name="MC-stop-other" channel="D1-SU-1001-OPR-MEP:LM-PC-SC-OTHER" datatype='{"type":"bool"}'/>
-        <ChannelAccessVariable name="MC-finished" channel="D1-SU-1001-OPR-MEP:EM-RN-00-0000-COWRPNNPVL" datatype='{"type":"bool"}'/>
-        <ChannelAccessVariable name="MC-abort" channel="D1-SU-1001-OPR-MEP:EM-ABORT" datatype='{"type":"int32"}'/>
-        <ChannelAccessVariable name="MC-state" channel="D1-SU-1001-OPR-MEP:LM-PG-PF-0000-COREPNNPSC" datatype='{"type":"uint16"}'/>
-        <!-- Start phase variables -->
-        <ChannelAccessVariable name="D1-state" channel="D1-MC-1001-OPR-MEP:LM-PF-SF-0000-CGREPNNPVC" datatype='{"type":"uint16"}'/>
-        <ChannelAccessVariable name="System-state" channel="UTIL-CABA-MCFU:MC-STATE" datatype='{"type":"uint16"}'/>
-        <ChannelAccessVariable name="Operator-stop" channel="D1-SU-1001-OPR-MEP:LM-PC-SC-0000-COWRPNNPVL" datatype='{"type":"bool"}'/>
-        <!-- Running phase variables -->
-        <!-- End phase variables -->
-        <ChannelAccessVariable name="Stop-time-remaining" channel="D1-SU-1001-OPR-MEP:LM-PG-SF-STOP" datatype='{"type":"float64"}'/>
-        <!-- Local constants -->
-        <Local name="false" type='{"type":"bool"}' value="0"/>
-        <Local name="true" type='{"type":"bool"}' value="1"/>
-        <Local name="zero" type='{"type":"uint16"}' value="0"/>
-        <Local name="one" type='{"type":"uint16"}' value="1"/>
-        <Local name="two" type='{"type":"uint16"}' value="2"/>
-        <Local name="three" type='{"type":"uint16"}' value="3"/>
-        <Local name="four" type='{"type":"uint16"}' value="4"/>
-        <Local name="five" type='{"type":"uint16"}' value="5"/>
-        <Local name="time-reset" type='{"type":"float64"}' value="0.0"/>
-        <Local name="abort-reset" type='{"type":"int32"}' value="0"/>
-        <Local name="abort-set" type='{"type":"int32"}' value="1"/>
     </Workspace>
 </Procedure>
