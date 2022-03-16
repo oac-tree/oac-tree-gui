@@ -137,11 +137,11 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
   return procedure_item;
 }
 
+// creating sequence representing same alignment as in article
+// https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/
+
 ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model)
 {
-  // creating sequence representing same alignment as in article
-  // https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/
-
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto sequence_O = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer())
                         ->SetDisplayName("O");
@@ -162,6 +162,33 @@ ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model)
   auto wait_J = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("J");
   auto wait_K = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("K");
   auto wait_L = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("L");
+
+  return procedure_item;
+}
+
+ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
+{
+  auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+
+  auto sequence0 = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  auto copy0 = model->InsertItem<CopyItem>(sequence0);
+  auto copy1 = model->InsertItem<CopyItem>(sequence0);
+  auto fallback0 = model->InsertItem<FallbackItem>(sequence0);
+
+  auto listen0 = model->InsertItem<UnknownInstructionItem>(fallback0)->SetDisplayName("Listen");
+  auto inverter0 = model->InsertItem<InverterItem>(listen0);
+  auto fallback1 = model->InsertItem<FallbackItem>(inverter0);
+  auto equals0 = model->InsertItem<EqualsItem>(fallback1);
+  auto equals1 = model->InsertItem<EqualsItem>(fallback1);
+
+  auto sequence1 = model->InsertItem<SequenceItem>(fallback0);
+  auto force0 = model->InsertItem<ForceSuccessItem>(sequence1);
+  auto copy2 = model->InsertItem<CopyItem>(sequence1);
+  auto copy3 = model->InsertItem<CopyItem>(sequence1);
+
+  auto sequence2 = model->InsertItem<SequenceItem>(force0);
+  auto equals2 = model->InsertItem<EqualsItem>(sequence2);
+  auto equals3 = model->InsertItem<EqualsItem>(sequence2);
 
   return procedure_item;
 }

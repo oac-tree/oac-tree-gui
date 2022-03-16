@@ -132,6 +132,7 @@ void MainWindow::PopulateModel()
   //  Examples::AddUserChoiceProcedure(m_model.get());
   //  Examples::AddInputProcedure(m_model.get());
   Examples::AddComplexAlignmentProcedure(m_model.get());
+  Examples::AddComplexAlignmentProcedureV2(m_model.get());
 }
 
 }  // namespace sequencergui
