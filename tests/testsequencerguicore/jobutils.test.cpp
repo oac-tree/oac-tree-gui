@@ -31,5 +31,20 @@ class JobUtilsTest : public ::testing::Test
 
 TEST_F(JobUtilsTest, RunnerStatusToString)
 {
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kIdle), "Idle");
   EXPECT_EQ(RunnerStatusToString(RunnerStatus::kRunning), "Running");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kCompleted), "Completed");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kCanceling), "Canceling");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kCanceled), "Canceled");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kFailed), "Failed");
+}
+
+TEST_F(JobUtilsTest, GetRunnerStatus)
+{
+  EXPECT_EQ(GetRunnerStatus("Idle"), RunnerStatus::kIdle);
+  EXPECT_EQ(GetRunnerStatus("Running"), RunnerStatus::kRunning);
+  EXPECT_EQ(GetRunnerStatus("Completed"), RunnerStatus::kCompleted);
+  EXPECT_EQ(GetRunnerStatus("Canceling"), RunnerStatus::kCanceling);
+  EXPECT_EQ(GetRunnerStatus("Canceled"), RunnerStatus::kCanceled);
+  EXPECT_EQ(GetRunnerStatus("Failed"), RunnerStatus::kFailed);
 }

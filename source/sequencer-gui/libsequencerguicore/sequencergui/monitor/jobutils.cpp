@@ -19,7 +19,9 @@
 
 #include "sequencergui/monitor/jobutils.h"
 
+#include <algorithm>
 #include <map>
+#include <stdexcept>
 
 namespace
 {
@@ -31,7 +33,7 @@ const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     {sequencergui::RunnerStatus::kCanceling, "Canceling"},
     {sequencergui::RunnerStatus::kCanceled, "Canceled"},
     {sequencergui::RunnerStatus::kFailed, "Failed"}};
-} // namespace
+}  // namespace
 
 namespace sequencergui
 {
@@ -40,6 +42,18 @@ std::string RunnerStatusToString(RunnerStatus status)
 {
   auto it = kRunnerStatusMap.find(status);
   return it == kRunnerStatusMap.end() ? std::string("Unknown") : it->second;
+}
+
+RunnerStatus GetRunnerStatus(const std::string &status_name)
+{
+  auto it = std::find_if(kRunnerStatusMap.begin(), kRunnerStatusMap.end(),
+                         [status_name](auto element) { return element.second == status_name; });
+
+  if (it == kRunnerStatusMap.end())
+  {
+    throw std::runtime_error("Can't convert name to RunnerStatus");
+  }
+  return it->first;
 }
 
 }  // namespace sequencergui

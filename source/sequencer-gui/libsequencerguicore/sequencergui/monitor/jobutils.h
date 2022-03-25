@@ -30,7 +30,11 @@
 namespace sequencergui
 {
 
+//! Returns string representation of the RunerStatus.
 std::string RunnerStatusToString(RunnerStatus status);
+
+//! Get RunnerStatus from string representation.
+RunnerStatus GetRunnerStatus(const std::string& status_name);
 
 }  // namespace sequencergui
 
