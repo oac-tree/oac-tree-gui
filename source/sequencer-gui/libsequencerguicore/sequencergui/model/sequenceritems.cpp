@@ -107,8 +107,6 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
-
-  SetStatus("xxx");
 }
 
 std::string ProcedureItem::GetStatus() const

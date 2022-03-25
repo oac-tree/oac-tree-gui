@@ -54,6 +54,7 @@ JobListView::JobListView(QWidget *parent)
   connect(m_tree_view, &QTreeView::clicked, this, &JobListView::onTreeSingleClick);
 
   m_tree_view->setRootIsDecorated(false);
+  m_tree_view->setHeaderHidden(true);
 }
 
 JobListView::~JobListView() = default;

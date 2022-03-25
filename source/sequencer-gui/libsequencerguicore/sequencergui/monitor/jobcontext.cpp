@@ -26,6 +26,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/joblog.h"
+#include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
 #include <iostream>
@@ -191,6 +192,13 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
   }
 }
 
+void JobContext::onRunnerStatusChanged()
+{
+  // FIXME consider setting status of expanded procedure
+  auto status = m_procedure_runner->GetRunnerStatus();
+  m_procedure_item->SetStatus(RunnerStatusToString(status));
+}
+
 void JobContext::SetupConnections()
 {
   connect(m_procedure_runner.get(), &ProcedureRunner::InstructionStatusChanged, this,
@@ -201,6 +209,9 @@ void JobContext::SetupConnections()
 
   connect(m_procedure_runner.get(), &ProcedureRunner::VariableChanged, this,
           &JobContext::onVariableChange, Qt::QueuedConnection);
+
+  connect(m_procedure_runner.get(), &ProcedureRunner::RunnerStatusChanged, this,
+          &JobContext::onRunnerStatusChanged, Qt::QueuedConnection);
 }
 
 }  // namespace sequencergui
