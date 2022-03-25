@@ -35,7 +35,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new ExplorerToolBar)
     , m_splitter(new QSplitter)
-    , m_open_documents_widget(new JobListView)
+    , m_job_list_view(new JobListView)
 {
   m_splitter->setOrientation(Qt::Vertical);
 
@@ -46,27 +46,26 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  m_open_documents_widget->AddToSplitter(m_splitter);
+  m_job_list_view->AddToSplitter(m_splitter);
 
-  connect(m_open_documents_widget, &JobListView::procedureSelected, this,
-          &MonitorPanel::procedureSelected);
+  connect(m_job_list_view, &JobListView::procedureSelected, this, &MonitorPanel::procedureSelected);
 }
 
 MonitorPanel::~MonitorPanel() = default;
 
 void MonitorPanel::SetModel(SequencerModel *model)
 {
-  m_open_documents_widget->SetModel(model);
+  m_job_list_view->SetModel(model);
 }
 
 ProcedureItem *MonitorPanel::GetSelectedProcedure() const
 {
-  return m_open_documents_widget->GetSelectedProcedure();
+  return m_job_list_view->GetSelectedProcedure();
 }
 
 void MonitorPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  m_open_documents_widget->SetSelectedProcedure(procedure);
+  m_job_list_view->SetSelectedProcedure(procedure);
 }
 
 }  // namespace sequencergui

@@ -49,12 +49,12 @@ public:
   void SetSelectedProcedure(ProcedureItem* procedure);
 
 signals:
-  void procedureSelected(ProcedureItem* procedureItem);
+  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   ExplorerToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
-  JobListView* m_open_documents_widget{nullptr};
+  JobListView* m_job_list_view{nullptr};
 };
 
 }  // namespace sequencergui

@@ -52,9 +52,9 @@ public:
 
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
-    if (auto instruction = dynamic_cast<ProcedureItem *>(item); instruction)
+    if (auto procedure = dynamic_cast<ProcedureItem *>(item); procedure)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetItem(ItemConstants::kStatus)));
+      result.emplace_back(mvvm::CreateDataViewItem(procedure->GetItem(ItemConstants::kStatus)));
     }
     return result;
   }

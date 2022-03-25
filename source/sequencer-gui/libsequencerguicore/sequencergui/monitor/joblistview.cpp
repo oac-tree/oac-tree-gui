@@ -29,6 +29,8 @@
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
+#include "sequencergui/monitor/procedureviewmodel.h"
+
 #include <QLabel>
 #include <QListView>
 #include <QSplitter>
@@ -57,7 +59,7 @@ JobListView::~JobListView() = default;
 void JobListView::SetModel(SequencerModel *model)
 {
   m_model = model;
-  m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
+  m_view_model = std::make_unique<ProcedureViewModel>(model);
   m_view_model->SetRootSessionItem(model->GetProcedureContainer());
   m_list_view->setModel(m_view_model.get());
 }
