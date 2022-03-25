@@ -27,7 +27,7 @@ class QSplitter;
 namespace sequencergui
 {
 class ExplorerToolBar;
-class OpenDocumentsWidget;
+class JobListView;
 class ProcedureItem;
 class SequencerModel;
 
@@ -54,7 +54,7 @@ signals:
 private:
   ExplorerToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
-  OpenDocumentsWidget* m_open_documents_widget{nullptr};
+  JobListView* m_open_documents_widget{nullptr};
 };
 
 }  // namespace sequencergui

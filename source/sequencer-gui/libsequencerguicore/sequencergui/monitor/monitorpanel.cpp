@@ -20,8 +20,8 @@
 #include "sequencergui/monitor/monitorpanel.h"
 
 #include "sequencergui/mainwindow/explorertoolbar.h"
-#include "sequencergui/mainwindow/opendocumentswidget.h"
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/monitor/joblistview.h"
 
 #include <QSplitter>
 #include <QToolBar>
@@ -35,7 +35,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new ExplorerToolBar)
     , m_splitter(new QSplitter)
-    , m_open_documents_widget(new OpenDocumentsWidget)
+    , m_open_documents_widget(new JobListView)
 {
   m_splitter->setOrientation(Qt::Vertical);
 
@@ -48,7 +48,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
 
   m_open_documents_widget->AddToSplitter(m_splitter);
 
-  connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
+  connect(m_open_documents_widget, &JobListView::procedureSelected, this,
           &MonitorPanel::procedureSelected);
 }
 

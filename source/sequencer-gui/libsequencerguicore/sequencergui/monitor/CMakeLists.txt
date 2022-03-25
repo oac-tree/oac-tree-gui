@@ -35,4 +35,6 @@ target_sources(${library_name} PRIVATE
   usercontext.h
   usercontroller.cpp
   usercontroller.h
+  joblistview.cpp
+  joblistview.h
   )

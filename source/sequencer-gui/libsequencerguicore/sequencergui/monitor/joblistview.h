@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_OPENDOCUMENTSWIDGET_H
-#define SEQUENCERGUI_MAINWINDOW_OPENDOCUMENTSWIDGET_H
+#ifndef SEQUENCERGUI_MAINWINDOW_JOBLISTVIEW_H
+#define SEQUENCERGUI_MAINWINDOW_JOBLISTVIEW_H
 
 #include "sequencergui/mainwindow/collapsiblewidget.h"
 
@@ -34,15 +34,17 @@ namespace sequencergui
 class SequencerModel;
 class ProcedureItem;
 
-//! Vertical panel located on the left of XMLTreeView
+//! List view with top-level ProcedureItem's.
+//! Occupy upper left corner of SequencerMonitorView.
+//! FIXME almost full duplication of OpenDocumentsWidget
 
-class OpenDocumentsWidget : public CollapsibleWidget
+class JobListView : public CollapsibleWidget
 {
   Q_OBJECT
 
 public:
-  explicit OpenDocumentsWidget(QWidget* parent = nullptr);
-  ~OpenDocumentsWidget() override;
+  explicit JobListView(QWidget* parent = nullptr);
+  ~JobListView() override;
 
   void SetModel(SequencerModel* model);
 
@@ -67,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_OPENDOCUMENTSWIDGET_H
+#endif  // SEQUENCERGUI_MAINWINDOW_JOBLISTVIEW_H
