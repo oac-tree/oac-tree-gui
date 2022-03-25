@@ -79,6 +79,10 @@ public:
   static inline const std::string Type = "Procedure";
   ProcedureItem();
 
+  std::string GetStatus() const;
+
+  void SetStatus(const std::string& status);
+
   InstructionContainerItem* GetInstructionContainer() const;
   WorkspaceItem* GetWorkspace() const;
 };

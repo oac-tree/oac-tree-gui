@@ -104,8 +104,19 @@ static inline const std::string kWorkspace = "kWorkspace";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
 {
+  AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
+}
+
+std::string ProcedureItem::GetStatus() const
+{
+  return Property<std::string>(ItemConstants::kStatus);
+}
+
+void ProcedureItem::SetStatus(const std::string &status)
+{
+  SetProperty(ItemConstants::kStatus, status);
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const

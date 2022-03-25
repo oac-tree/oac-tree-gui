@@ -66,3 +66,13 @@ TEST_F(SequencerItemsTest, UnknownInstructionFromConditionItem)
   EXPECT_EQ(new_domain_item->GetType(), DomainConstants::kConditionInstructionType);
   EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
 }
+
+//! Validate Workspace
+
+TEST_F(SequencerItemsTest, ProcedureItem)
+{
+  ProcedureItem item;
+
+  item.SetStatus("abc");
+  EXPECT_EQ(item.GetStatus(), "abc");
+}

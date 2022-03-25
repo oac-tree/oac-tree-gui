@@ -31,8 +31,7 @@ const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     {sequencergui::RunnerStatus::kCanceling, "Canceling"},
     {sequencergui::RunnerStatus::kCanceled, "Canceled"},
     {sequencergui::RunnerStatus::kFailed, "Failed"}};
-
-}
+} // namespace
 
 namespace sequencergui
 {
