@@ -23,8 +23,9 @@
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/factories/viewmodelcontrollerfactory.h"
+#include "mvvm/interfaces/childrenstrategyinterface.h"
 #include "mvvm/model/applicationmodel.h"
-#include "mvvm/viewmodel/standardchildrenstrategies.h"
+#include "mvvm/model/itemutils.h"
 #include "mvvm/viewmodel/standardrowstrategies.h"
 #include "mvvm/viewmodel/viewitemfactory.h"
 #include "mvvm/viewmodelbase/viewitem.h"
@@ -60,11 +61,24 @@ public:
   }
 };
 
+class TopProcedureStrategy : public mvvm::ChildrenStrategyInterface
+{
+public:
+  std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override
+  {
+    if (item && item->GetType() == ProcedureItem::Type)
+    {
+      return {};
+    }
+    return item ? mvvm::utils::TopLevelItems(*item) : std::vector<mvvm::SessionItem *>();
+  }
+};
+
 ProcedureViewModel::ProcedureViewModel(mvvm::ApplicationModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::TopItemsStrategy, ProcedureRowStrategy>(model, this));
+      mvvm::factory::CreateController<TopProcedureStrategy, ProcedureRowStrategy>(model, this));
 }
 
 }  // namespace sequencergui

@@ -27,7 +27,7 @@ namespace mvvm
 class ViewModel;
 }
 
-class QListView;
+class QTreeView;
 
 namespace sequencergui
 {
@@ -62,7 +62,7 @@ private:
   void onTreeSingleClick(const QModelIndex& index);
   void onRemoveSelectedRequest();
 
-  QListView* m_list_view{nullptr};
+  QTreeView* m_tree_view{nullptr};
   SequencerModel* m_model{nullptr};
   std::unique_ptr<mvvm::ViewModel> m_view_model;
 };

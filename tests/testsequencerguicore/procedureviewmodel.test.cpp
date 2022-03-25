@@ -22,6 +22,7 @@
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/model/applicationmodel.h"
 
@@ -43,7 +44,7 @@ public:
   };
 };
 
-TEST_F(ProcedureViewModelTest, SingleInstruction)
+TEST_F(ProcedureViewModelTest, SingleProcedure)
 {
   TestModel model;
 
@@ -68,6 +69,10 @@ TEST_F(ProcedureViewModelTest, SingleInstruction)
             std::string("Procedure"));
   EXPECT_EQ(viewmodel.data(status_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
+
+  // there shouldn't be children below
+  EXPECT_EQ(viewmodel.rowCount(displayname_index), 0);
+  EXPECT_EQ(viewmodel.rowCount(status_index), 0);
 }
 
 TEST_F(ProcedureViewModelTest, NotificationOnStatusChange)

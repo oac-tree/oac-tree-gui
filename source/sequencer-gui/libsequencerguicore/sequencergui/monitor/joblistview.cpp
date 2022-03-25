@@ -32,7 +32,7 @@
 #include "sequencergui/monitor/procedureviewmodel.h"
 
 #include <QLabel>
-#include <QListView>
+#include <QTreeView>
 #include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
@@ -41,17 +41,19 @@
 namespace sequencergui
 {
 JobListView::JobListView(QWidget *parent)
-    : CollapsibleWidget(parent), m_list_view(new QListView)
+    : CollapsibleWidget(parent), m_tree_view(new QTreeView)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
-  layout->addWidget(m_list_view);
+  layout->addWidget(m_tree_view);
 
   SetupToolBar();
 
-  connect(m_list_view, &QListView::clicked, this, &JobListView::onTreeSingleClick);
+  connect(m_tree_view, &QTreeView::clicked, this, &JobListView::onTreeSingleClick);
+
+  m_tree_view->setRootIsDecorated(false);
 }
 
 JobListView::~JobListView() = default;
@@ -61,7 +63,7 @@ void JobListView::SetModel(SequencerModel *model)
   m_model = model;
   m_view_model = std::make_unique<ProcedureViewModel>(model);
   m_view_model->SetRootSessionItem(model->GetProcedureContainer());
-  m_list_view->setModel(m_view_model.get());
+  m_tree_view->setModel(m_view_model.get());
 }
 
 ProcedureItem *JobListView::GetSelectedProcedure()
@@ -75,7 +77,7 @@ void JobListView::SetSelectedProcedure(ProcedureItem *procedure)
   auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
   if (!indexes.empty())
   {
-    m_list_view->selectionModel()->select(indexes.at(0), QItemSelectionModel::SelectCurrent);
+    m_tree_view->selectionModel()->select(indexes.at(0), QItemSelectionModel::SelectCurrent);
   }
 }
 
@@ -83,11 +85,11 @@ std::vector<ProcedureItem *> JobListView::GetSelectedProcedures() const
 {
   std::vector<mvvm::SessionItem *> result;
 
-  if (!m_list_view->selectionModel())
+  if (!m_tree_view->selectionModel())
   {
     return {};
   }
-  for (auto index : m_list_view->selectionModel()->selectedIndexes())
+  for (auto index : m_tree_view->selectionModel()->selectedIndexes())
   {
     auto procedure_item = m_view_model->GetSessionItemFromIndex(index);
 
