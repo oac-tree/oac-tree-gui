@@ -42,7 +42,7 @@ class ExplorerNarrowToolBar : public QFrame
   Q_OBJECT
 
 public:
-  ExplorerNarrowToolBar(QWidget* parent = nullptr);
+  explicit ExplorerNarrowToolBar(QWidget* parent = nullptr);
 
   void SetText(const QString& text);
 

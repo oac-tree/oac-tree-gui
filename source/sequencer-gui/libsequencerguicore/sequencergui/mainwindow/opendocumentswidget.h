@@ -42,8 +42,8 @@ class OpenDocumentsWidget : public CollapsibleWidget
   Q_OBJECT
 
 public:
-  OpenDocumentsWidget(QWidget* parent = nullptr);
-  ~OpenDocumentsWidget();
+  explicit OpenDocumentsWidget(QWidget* parent = nullptr);
+  ~OpenDocumentsWidget() override;
 
   void SetModel(SequencerModel* model);
 

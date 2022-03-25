@@ -39,8 +39,8 @@ class MonitorPanel : public QWidget
   Q_OBJECT
 
 public:
-  MonitorPanel(QWidget* parent = nullptr);
-  ~MonitorPanel();
+  explicit MonitorPanel(QWidget* parent = nullptr);
+  ~MonitorPanel() override;
 
   void SetModel(SequencerModel* model);
 

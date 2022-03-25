@@ -37,7 +37,6 @@ class SequencerModel;
 class MonitorTreeToolBar;
 class InstructionItem;
 class ProcedureItem;
-class InstructionViewModel;
 class MessagePanel;
 class NodeEditor;
 
