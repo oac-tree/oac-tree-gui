@@ -23,9 +23,6 @@
 //! @file job_types.h
 //! Provide conveniece types for procedure execution in the JobManager.
 
-#include <QString>
-#include <functional>
-
 namespace sequencergui
 {
 

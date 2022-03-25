@@ -42,8 +42,8 @@ class SequencerMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  SequencerMonitorView(QWidget* parent = nullptr);
-  ~SequencerMonitorView();
+  explicit SequencerMonitorView(QWidget* parent = nullptr);
+  ~SequencerMonitorView() override;
 
   void SetModel(SequencerModel* model);
 

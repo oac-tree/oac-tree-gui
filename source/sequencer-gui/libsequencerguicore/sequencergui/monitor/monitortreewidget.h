@@ -48,8 +48,8 @@ class MonitorTreeWidget : public QWidget
   Q_OBJECT
 
 public:
-  MonitorTreeWidget(QWidget* parent = nullptr);
-  ~MonitorTreeWidget();
+  explicit MonitorTreeWidget(QWidget* parent = nullptr);
+  ~MonitorTreeWidget() override;
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure_item);
 
