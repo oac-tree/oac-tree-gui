@@ -23,6 +23,7 @@
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/monitor/jobutils.h"
 
 #include "mvvm/model/modelutils.h"
 
@@ -146,12 +147,13 @@ TEST_F(JobContextTest, PrematureDeletion)
     job.onStartRequest();
   }
 
-  // FIXME add tests for ProcedureItem status
+  EXPECT_EQ(procedure->GetStatus(), std::string());
 }
 
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
   auto procedure = CreateSingleWaitProcedure(&m_model);
+  EXPECT_EQ(procedure->GetStatus(), std::string());
 
   JobContext job(procedure);
   job.onPrepareJobRequest();
@@ -167,6 +169,8 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
 
   auto instructions = mvvm::utils::FindItems<WaitItem>(job.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
+
+  EXPECT_EQ(GetRunnerStatus(procedure->GetStatus()), RunnerStatus::kCompleted);
 }
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
