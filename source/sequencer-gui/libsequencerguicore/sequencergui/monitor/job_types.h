@@ -39,6 +39,7 @@ enum class RunnerStatus
 {
   kIdle,       //! wasn't started yet
   kRunning,    //! running
+  kPaused,     //! paused
   kCompleted,  //! completed
   kCanceling,  //! in the process of canceling (performed Halt of procedure)
   kCanceled,   //! was canceled

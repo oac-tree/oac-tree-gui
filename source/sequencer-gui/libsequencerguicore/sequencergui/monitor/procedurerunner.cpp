@@ -21,11 +21,13 @@
 
 #include "Procedure.h"
 #include "Runner.h"
+#include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/sequencerobserver.h"
 
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 
 namespace sequencergui
@@ -197,6 +199,7 @@ void ProcedureRunner::SetRunnerStatus(RunnerStatus value)
 {
   std::lock_guard lock(m_mutex);
   m_runner_status = value;
+  std::cout << "xxxx " << RunnerStatusToString(value) << std::endl;
   emit RunnerStatusChanged();
 }
 
