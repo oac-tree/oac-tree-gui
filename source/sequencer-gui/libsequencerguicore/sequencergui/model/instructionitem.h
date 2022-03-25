@@ -50,9 +50,9 @@ public:
 
   void SetName(const std::string& name);
 
-  void SetStatus(const std::string& status);
-
   std::string GetStatus() const;
+
+  void SetStatus(const std::string& status);
 
   double GetX() const;
 

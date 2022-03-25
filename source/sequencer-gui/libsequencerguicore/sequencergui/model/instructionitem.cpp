@@ -110,14 +110,14 @@ void InstructionItem::SetName(const std::string &name)
   SetProperty(ItemConstants::kName, name);
 }
 
-void InstructionItem::SetStatus(const std::string &status)
-{
-  SetProperty(ItemConstants::kStatus, status);
-}
-
 std::string InstructionItem::GetStatus() const
 {
   return Property<std::string>(ItemConstants::kStatus);
+}
+
+void InstructionItem::SetStatus(const std::string &status)
+{
+  SetProperty(ItemConstants::kStatus, status);
 }
 
 double InstructionItem::GetX() const
