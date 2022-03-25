@@ -17,8 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/instructionviewmodel.h"
+#include "sequencergui/monitor/procedureviewmodel.h"
 
+#include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/factories/viewmodelcontrollerfactory.h"
@@ -31,12 +32,12 @@
 namespace sequencergui
 {
 
-class InstructionRowStrategy : public mvvm::RowStrategyInterface
+class ProcedureRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Type", "Name", "Status"};
+    static QStringList result = {"Type", "Status"};
     return result;
   }
 
@@ -51,20 +52,19 @@ public:
 
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
-    if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
+    if (auto instruction = dynamic_cast<ProcedureItem *>(item); instruction)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetNameItem()));
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetStatusItem()));
+      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetItem(ItemConstants::kStatus)));
     }
     return result;
   }
 };
 
-InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObject *parent)
+ProcedureViewModel::ProcedureViewModel(mvvm::ApplicationModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionRowStrategy>(model, this));
+      mvvm::factory::CreateController<mvvm::TopItemsStrategy, ProcedureRowStrategy>(model, this));
 }
 
 }  // namespace sequencergui
