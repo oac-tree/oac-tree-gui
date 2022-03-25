@@ -34,8 +34,8 @@ class CollapsibleWidget : public QWidget
   Q_OBJECT
 
 public:
-  CollapsibleWidget(QWidget* parent = nullptr);
-  ~CollapsibleWidget();
+  explicit CollapsibleWidget(QWidget* parent = nullptr);
+  ~CollapsibleWidget() override;
 
   void AddToSplitter(QSplitter* splitter);
 

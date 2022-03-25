@@ -54,7 +54,7 @@ public:
 
 signals:
   void createNewProcedureRequest();
-  void procedureSelected(ProcedureItem* procedureItem);
+  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   void SetupToolBar();
