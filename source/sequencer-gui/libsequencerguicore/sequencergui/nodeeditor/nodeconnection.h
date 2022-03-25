@@ -38,8 +38,8 @@ class ConnectableView;
 class NodeConnection : public QGraphicsPathItem
 {
 public:
-  NodeConnection(QGraphicsScene* scene);
-  virtual ~NodeConnection();
+  explicit NodeConnection(QGraphicsScene* scene);
+  virtual ~NodeConnection() override;
 
   void setPos1(const QPointF& pos);
   void setPos2(const QPointF& pos);

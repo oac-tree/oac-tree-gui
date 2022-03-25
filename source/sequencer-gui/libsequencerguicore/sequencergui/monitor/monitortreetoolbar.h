@@ -36,8 +36,8 @@ class MonitorTreeToolBar : public QToolBar
   Q_OBJECT
 
 public:
-  MonitorTreeToolBar(QWidget* parent = nullptr);
-  ~MonitorTreeToolBar();
+  explicit MonitorTreeToolBar(QWidget* parent = nullptr);
+  ~MonitorTreeToolBar() override;
 
   static int GetDefaultDelay();
 

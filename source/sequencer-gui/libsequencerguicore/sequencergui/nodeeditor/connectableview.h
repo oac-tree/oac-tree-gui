@@ -39,7 +39,7 @@ class PositionStrategyInterface;
 class ConnectableView : public QGraphicsItem
 {
 public:
-  ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> item);
+  explicit ConnectableView(std::unique_ptr<ConnectableInstructionAdapter> item);
   ~ConnectableView() override;
 
   void SetPositionStrategy(std::unique_ptr<PositionStrategyInterface> strategy);

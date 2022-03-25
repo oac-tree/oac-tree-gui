@@ -38,7 +38,7 @@ class SequencerXMLView : public QWidget
 
 public:
   explicit SequencerXMLView(QWidget* parent = nullptr);
-  ~SequencerXMLView();
+  ~SequencerXMLView() override;
 
   void SetModel(SequencerModel* model);
 

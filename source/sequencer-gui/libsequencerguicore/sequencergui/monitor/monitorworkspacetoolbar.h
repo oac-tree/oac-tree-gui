@@ -37,8 +37,8 @@ class MonitorWorkspaceToolBar : public QToolBar
   Q_OBJECT
 
 public:
-  MonitorWorkspaceToolBar(QWidget* parent = nullptr);
-  ~MonitorWorkspaceToolBar();
+  explicit MonitorWorkspaceToolBar(QWidget* parent = nullptr);
+  ~MonitorWorkspaceToolBar() override;
 
 private:
   void AddDotsMenu();

@@ -32,8 +32,8 @@ class ProcedureRunner;
 class SequencerObserver : public ::sup::sequencer::UserInterface
 {
 public:
-  SequencerObserver(ProcedureRunner* procedure_runner);
-  ~SequencerObserver();
+  explicit SequencerObserver(ProcedureRunner* procedure_runner);
+  ~SequencerObserver() override;
 
   void UpdateInstructionStatusImpl(const ::sup::sequencer::Instruction* instruction) override;
 

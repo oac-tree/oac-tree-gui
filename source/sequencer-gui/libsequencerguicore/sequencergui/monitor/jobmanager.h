@@ -40,7 +40,7 @@ class JobManager : public QObject
   Q_OBJECT
 
 public:
-  JobManager(QObject* parent = nullptr);
+  explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
   void SetModel(SequencerModel* model);

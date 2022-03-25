@@ -53,7 +53,6 @@ public:
 
   QSize minimumSizeHint() const override;
 
-public slots:
   void onSelectionMode(int);
   void onChangeScale(double new_scale);
 
@@ -62,8 +61,8 @@ signals:
   void selectionModeChanged(int);
 
 protected:
-  void keyPressEvent(QKeyEvent* event);
-  void keyReleaseEvent(QKeyEvent* event);
+  void keyPressEvent(QKeyEvent* event) override;
+  void keyReleaseEvent(QKeyEvent* event) override;
 };
 
 }  // namespace sequencergui

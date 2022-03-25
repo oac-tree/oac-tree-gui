@@ -42,8 +42,8 @@ class SequencerComposerView : public QWidget
   Q_OBJECT
 
 public:
-  SequencerComposerView(QWidget* parent = nullptr);
-  ~SequencerComposerView();
+  explicit SequencerComposerView(QWidget* parent = nullptr);
+  ~SequencerComposerView() override;
 
   void SetModel(SequencerModel* model);
 

@@ -42,8 +42,8 @@ class NodeEditor : public QMainWindow
   Q_OBJECT
 
 public:
-  NodeEditor(Qt::ToolBarArea area = Qt::TopToolBarArea, QWidget* parent = nullptr);
-  ~NodeEditor();
+  explicit NodeEditor(Qt::ToolBarArea area = Qt::TopToolBarArea, QWidget* parent = nullptr);
+  ~NodeEditor() override;
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure);
 

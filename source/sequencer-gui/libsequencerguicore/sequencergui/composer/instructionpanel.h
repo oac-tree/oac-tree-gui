@@ -33,7 +33,7 @@ class InstructionPanel : public CollapsibleWidget
   Q_OBJECT
 
 public:
-  InstructionPanel(QWidget* parent = nullptr);
+  explicit InstructionPanel(QWidget* parent = nullptr);
 
 private:
   InstructionListWidget* m_list_widget{nullptr};

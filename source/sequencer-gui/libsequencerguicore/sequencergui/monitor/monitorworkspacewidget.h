@@ -43,8 +43,8 @@ class MonitorWorkspaceWidget : public QWidget
   Q_OBJECT
 
 public:
-  MonitorWorkspaceWidget(QWidget* parent = nullptr);
-  ~MonitorWorkspaceWidget();
+  explicit MonitorWorkspaceWidget(QWidget* parent = nullptr);
+  ~MonitorWorkspaceWidget() override;
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure_item);
 

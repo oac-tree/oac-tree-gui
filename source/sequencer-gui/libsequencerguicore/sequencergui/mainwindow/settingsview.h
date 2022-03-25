@@ -37,7 +37,7 @@ class SettingsView : public QWidget
   Q_OBJECT
 
 public:
-  SettingsView(QWidget* parent = nullptr);
+  explicit SettingsView(QWidget* parent = nullptr);
 
   void SetModel(SequencerModel* model);
 

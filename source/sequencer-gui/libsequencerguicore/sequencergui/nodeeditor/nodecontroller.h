@@ -43,7 +43,7 @@ class NodeController : public QObject
   Q_OBJECT
 
 public:
-  NodeController(QGraphicsScene* scene);
+  explicit NodeController(QGraphicsScene* scene);
 
   bool eventFilter(QObject* object, QEvent* event);
 

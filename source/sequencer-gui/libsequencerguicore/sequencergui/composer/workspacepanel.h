@@ -34,7 +34,7 @@ class WorkspacePanel : public CollapsibleWidget
   Q_OBJECT
 
 public:
-  WorkspacePanel(QWidget* parent = nullptr);
+  explicit WorkspacePanel(QWidget* parent = nullptr);
 
 private:
   QListWidget* m_list_widget{nullptr};

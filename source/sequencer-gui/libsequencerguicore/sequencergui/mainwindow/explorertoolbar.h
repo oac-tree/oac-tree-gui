@@ -35,7 +35,7 @@ class ExplorerToolBar : public QToolBar
   Q_OBJECT
 
 public:
-  ExplorerToolBar(QWidget* parent = nullptr);
+  explicit ExplorerToolBar(QWidget* parent = nullptr);
 
   void setText(const QString& text);
 

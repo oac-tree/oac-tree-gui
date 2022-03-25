@@ -33,7 +33,7 @@ class InstructionListWidget : public QListWidget
   Q_OBJECT
 
 public:
-  InstructionListWidget(QWidget* parent = nullptr);
+  explicit InstructionListWidget(QWidget* parent = nullptr);
 
   static QString piecesMimeType();
 
