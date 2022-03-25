@@ -22,6 +22,7 @@
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/item_constants.h"
 
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/utils/containerutils.h"
@@ -30,9 +31,6 @@
 
 namespace
 {
-
-// FIXME remove duplication with InstructionItem.cpp
-const std::string kChildInstructions = "kChildInstructions";
 
 std::vector<std::string> GetDomainDecoratorNames()
 {
@@ -49,7 +47,7 @@ namespace sequencergui
 
 bool IsCompoundInstruction(const InstructionItem *instruction)
 {
-  return instruction->GetTaggedItems()->HasTag(kChildInstructions);
+  return instruction->GetTaggedItems()->HasTag(ItemConstants::kChildInstructions);
 }
 
 bool IsDecoratorInstruction(const InstructionItem *instruction)
