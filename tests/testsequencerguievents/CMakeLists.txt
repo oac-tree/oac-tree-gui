@@ -7,4 +7,4 @@ add_executable(${test} ${source_files} ${include_files})
 
 target_link_libraries(${test} PRIVATE sequencerguicore testmachinery)
 
-gtest_discover_tests(${test} DISCOVERY_TIMEOUT 5)
+gtest_discover_tests(${test} DISCOVERY_TIMEOUT 10)
