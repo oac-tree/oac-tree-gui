@@ -147,13 +147,21 @@ public:
   SequencerModel m_model;
 };
 
+TEST_F(JobContextTest, InitialState)
+{
+  ProcedureItem procedure;
+  JobContext job_context(&procedure);
+  EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
+  EXPECT_NE(job_context.GetExpandedModel(), nullptr);
+}
+
 //! Attempt to use JobContext with invalid procedure.
 
 TEST_F(JobContextTest, InvalidProcedure)
 {
   auto procedure = CreateInvalidProcedure(&m_model);
-  JobContext context(procedure);
-  EXPECT_THROW(context.onPrepareJobRequest(), TransformToDomainException);
+  JobContext job_context(procedure);
+  EXPECT_THROW(job_context.onPrepareJobRequest(), TransformToDomainException);
 }
 
 //! Normal execution of the procedure with single wait instruction.
@@ -162,9 +170,9 @@ TEST_F(JobContextTest, PrematureDeletion)
 {
   auto procedure = CreateSingleWaitProcedure(&m_model);
   {
-    JobContext job(procedure);
-    job.onPrepareJobRequest();
-    job.onStartRequest();
+    JobContext job_context(procedure);
+    job_context.onPrepareJobRequest();
+    job_context.onStartRequest();
   }
 
   EXPECT_EQ(procedure->GetStatus(), std::string());
@@ -175,19 +183,19 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   auto procedure = CreateSingleWaitProcedure(&m_model);
   EXPECT_EQ(procedure->GetStatus(), std::string());
 
-  JobContext job(procedure);
-  job.onPrepareJobRequest();
+  JobContext job_context(procedure);
+  job_context.onPrepareJobRequest();
 
-  QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
-  job.onStartRequest();
+  job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 
-  EXPECT_FALSE(job.IsRunning());
+  EXPECT_FALSE(job_context.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(job.GetExpandedModel());
+  auto instructions = mvvm::utils::FindItems<WaitItem>(job_context.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 
   EXPECT_EQ(GetRunnerStatus(procedure->GetStatus()), RunnerStatus::kCompleted);
@@ -202,12 +210,12 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
   EXPECT_EQ(vars.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(vars.at(1)->GetJsonValue(), std::string("43"));
 
-  JobContext job(procedure);
-  job.onPrepareJobRequest();
+  JobContext job_context(procedure);
+  job_context.onPrepareJobRequest();
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job_context.GetExpandedModel());
 
-  job.onStartRequest();
+  job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 
@@ -219,19 +227,19 @@ TEST_F(JobContextTest, LocalIncludeScenario)
 {
   auto procedure = CreateIncludeProcedure(&m_model);
 
-  JobContext job(procedure);
-  job.onPrepareJobRequest();
+  JobContext job_context(procedure);
+  job_context.onPrepareJobRequest();
 
-  QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
-  job.onStartRequest();
+  job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 
-  EXPECT_FALSE(job.IsRunning());
+  EXPECT_FALSE(job_context.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(job.GetExpandedModel());
+  auto instructions = mvvm::utils::FindItems<WaitItem>(job_context.GetExpandedModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 
@@ -239,45 +247,45 @@ TEST_F(JobContextTest, UserInputScenario)
 {
   auto procedure = CreateInputProcedure(&m_model);
 
-  JobContext job(procedure);
+  JobContext job_context(procedure);
 
   auto on_user_input = [](auto, auto) { return "42"; };
-  job.SetUserContext({on_user_input});
+  job_context.SetUserContext({on_user_input});
 
-  job.onPrepareJobRequest();
+  job_context.onPrepareJobRequest();
 
-  QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
-  job.onStartRequest();
+  job_context.onStartRequest();
   QTest::qWait(100);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job_context.GetExpandedModel());
   EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
 
-  EXPECT_FALSE(job.IsRunning());
+  EXPECT_FALSE(job_context.IsRunning());
 }
 
 TEST_F(JobContextTest, UserChoiceScenario)
 {
   auto procedure = CreateUserChoiceProcedure(&m_model);
 
-  JobContext job(procedure);
+  JobContext job_context(procedure);
 
   // callback to select Copy instruction
   auto on_user_choice = [](auto, auto) { return 1; };
-  job.SetUserContext({{}, on_user_choice});
+  job_context.SetUserContext({{}, on_user_choice});
 
-  job.onPrepareJobRequest();
+  job_context.onPrepareJobRequest();
 
-  QSignalSpy spy_instruction_status(&job, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
-  job.onStartRequest();
+  job_context.onStartRequest();
   QTest::qWait(100);
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job_context.GetExpandedModel());
   EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 
-  EXPECT_FALSE(job.IsRunning());
+  EXPECT_FALSE(job_context.IsRunning());
 }
