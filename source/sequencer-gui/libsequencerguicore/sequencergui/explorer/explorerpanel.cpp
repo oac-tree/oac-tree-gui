@@ -33,7 +33,7 @@ namespace sequencergui
 {
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new ExplorerToolBar)
+    , m_tool_bar(new PanelToolBar)
     , m_splitter(new QSplitter)
     , m_file_tree_view(new FileTreeView)
     , m_open_documents_widget(new OpenDocumentsWidget)

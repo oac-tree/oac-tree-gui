@@ -34,7 +34,7 @@ namespace sequencergui
 {
 XMLEditor::XMLEditor(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new ExplorerToolBar)
+    , m_tool_bar(new PanelToolBar)
     , m_text_edit(new QTextEdit)
     , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
 {

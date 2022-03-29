@@ -30,12 +30,12 @@ namespace sequencergui
 {
 //! Instrument tool bar with menu selector.
 
-class ExplorerToolBar : public QToolBar
+class PanelToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
-  explicit ExplorerToolBar(QWidget* parent = nullptr);
+  explicit PanelToolBar(QWidget* parent = nullptr);
 
   void setText(const QString& text);
 

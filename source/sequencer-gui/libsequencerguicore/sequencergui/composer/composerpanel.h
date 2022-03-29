@@ -28,7 +28,7 @@ namespace sequencergui
 {
 class InstructionPanel;
 class OpenDocumentsWidget;
-class ExplorerToolBar;
+class PanelToolBar;
 class SequencerModel;
 class ProcedureItem;
 class WorkspacePanel;
@@ -51,7 +51,7 @@ signals:
   void procedureSelected(ProcedureItem* procedureItem);
 
 private:
-  ExplorerToolBar* m_tool_bar{nullptr};
+  PanelToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
   OpenDocumentsWidget* m_open_documents_widget{nullptr};
   InstructionPanel* m_instruction_panel{nullptr};

@@ -26,7 +26,7 @@
 
 namespace sequencergui
 {
-ExplorerToolBar::ExplorerToolBar(QWidget *parent) : QToolBar(parent), m_label(new QLabel)
+PanelToolBar::PanelToolBar(QWidget *parent) : QToolBar(parent), m_label(new QLabel)
 {
   setIconSize(StyleUtils::ToolBarIconSize());
   //  setStyleSheet("QToolButton:!hover {background-color:#eff6fc} QToolBar {background: #eff6fc}");
@@ -36,12 +36,12 @@ ExplorerToolBar::ExplorerToolBar(QWidget *parent) : QToolBar(parent), m_label(ne
   AddDotsMenu();
 }
 
-void ExplorerToolBar::setText(const QString &text)
+void PanelToolBar::setText(const QString &text)
 {
   m_label->setText(text);
 }
 
-void ExplorerToolBar::AddDotsMenu()
+void PanelToolBar::AddDotsMenu()
 {
   insertStrech();
 
@@ -54,12 +54,12 @@ void ExplorerToolBar::AddDotsMenu()
 //! Insert element after the label, or last insert element.
 //! Push button representing dots and spacer will always stay at the right.
 
-void ExplorerToolBar::InsertElement(QWidget *widget)
+void PanelToolBar::InsertElement(QWidget *widget)
 {
   insertWidget(m_spacer_action, widget);
 }
 
-void ExplorerToolBar::insertStrech()
+void PanelToolBar::insertStrech()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

@@ -34,7 +34,7 @@ namespace sequencergui
 {
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new ExplorerToolBar)
+    , m_tool_bar(new PanelToolBar)
     , m_procedure_tree(new mvvm::TopItemsTreeView)
     , m_property_tree(new mvvm::PropertyTreeView)
 {

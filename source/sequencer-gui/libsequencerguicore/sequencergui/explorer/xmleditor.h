@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_XMLEDITOR_H
-#define SEQUENCERGUI_MAINWINDOW_XMLEDITOR_H
+#ifndef SEQUENCERGUI_EXPLORER_XMLEDITOR_H
+#define SEQUENCERGUI_EXPLORER_XMLEDITOR_H
 
 #include <QWidget>
 
@@ -27,7 +27,7 @@ class QTextEdit;
 namespace sequencergui
 {
 class XmlSyntaxHighlighter;
-class ExplorerToolBar;
+class PanelToolBar;
 
 //! Simple XML viewer with syntax highlight.
 class XMLEditor : public QWidget
@@ -44,11 +44,11 @@ public:
   void ClearText();
 
 private:
-  ExplorerToolBar* m_tool_bar{nullptr};
+  PanelToolBar* m_tool_bar{nullptr};
   QTextEdit* m_text_edit{nullptr};
   XmlSyntaxHighlighter* m_syntax_highlighter{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_XMLEDITOR_H
+#endif  // SEQUENCERGUI_EXPLORER_XMLEDITOR_H

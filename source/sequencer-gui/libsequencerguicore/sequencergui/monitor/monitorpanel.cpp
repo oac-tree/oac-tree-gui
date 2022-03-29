@@ -33,7 +33,7 @@ namespace sequencergui
 
 MonitorPanel::MonitorPanel(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new ExplorerToolBar)
+    , m_tool_bar(new PanelToolBar)
     , m_splitter(new QSplitter)
     , m_job_list_view(new JobListView)
 {

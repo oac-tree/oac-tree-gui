@@ -26,7 +26,7 @@ class QSplitter;
 
 namespace sequencergui
 {
-class ExplorerToolBar;
+class PanelToolBar;
 class JobListView;
 class ProcedureItem;
 class SequencerModel;
@@ -52,7 +52,7 @@ signals:
   void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
-  ExplorerToolBar* m_tool_bar{nullptr};
+  PanelToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
   JobListView* m_job_list_view{nullptr};
 };

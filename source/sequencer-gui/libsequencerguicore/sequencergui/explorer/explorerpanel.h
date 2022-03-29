@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_EXPLORERPANEL_H
-#define SEQUENCERGUI_MAINWINDOW_EXPLORERPANEL_H
+#ifndef SEQUENCERGUI_EXPLORER_EXPLORERPANEL_H
+#define SEQUENCERGUI_EXPLORER_EXPLORERPANEL_H
 
 #include <QWidget>
 
@@ -27,7 +27,7 @@ class QSplitter;
 namespace sequencergui
 {
 class FileTreeView;
-class ExplorerToolBar;
+class PanelToolBar;
 class OpenDocumentsWidget;
 class SequencerModel;
 class ProcedureItem;
@@ -53,7 +53,7 @@ signals:
   void sratchpadProcedureSelected(ProcedureItem* procedureItem);
 
 private:
-  ExplorerToolBar* m_tool_bar{nullptr};
+  PanelToolBar* m_tool_bar{nullptr};
 
   QSplitter* m_splitter{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
@@ -62,4 +62,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERPANEL_H
+#endif  // SEQUENCERGUI_EXPLORER_EXPLORERPANEL_H

@@ -31,7 +31,7 @@ class PropertyTreeView;
 namespace sequencergui
 {
 class SequencerModel;
-class ExplorerToolBar;
+class PanelToolBar;
 class ProcedureItem;
 
 //! The panel with two trees in the middle of SequencerXMLView.
@@ -48,7 +48,7 @@ public:
   void SetModel(SequencerModel* model, ProcedureItem* procedure_item = nullptr);
 
 private:
-  ExplorerToolBar* m_tool_bar{nullptr};
+  PanelToolBar* m_tool_bar{nullptr};
   mvvm::TopItemsTreeView* m_procedure_tree{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
 };
