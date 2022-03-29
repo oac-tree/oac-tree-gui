@@ -52,7 +52,7 @@ public:
   std::vector<ConnectableView*> GetConnectableViews();
   ConnectableView* FindViewForInstruction(InstructionItem* instruction);
 
-  void onDeleteSelectedRequest();
+  void OnDeleteSelectedRequest();
 
   void disconnectConnectedViews(NodeConnection* connection);
 
@@ -63,6 +63,8 @@ public:
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
+  void onConnectionRequest(ConnectableView* childView, ConnectableView* parentView);
+
 signals:
   void InstructionSelected(InstructionItem* selected);
   void selectionModeChangeRequest(int);
@@ -71,16 +73,11 @@ protected:
   void dragMoveEvent(QGraphicsSceneDragDropEvent* event) override;
   void dropEvent(QGraphicsSceneDragDropEvent* event) override;
 
-public slots:
-  void onConnectionRequest(ConnectableView* childView, ConnectableView* parentView);
-
-private slots:
+private:
   void onSelectionChanged();
 
-private:
   SequencerModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
-
   std::unique_ptr<NodeController> m_node_controller;
   qreal m_vertical_pos;
 };
@@ -90,8 +87,12 @@ inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
 {
   std::vector<T*> result;
   for (auto item : selectedItems())
+  {
     if (auto casted = dynamic_cast<T*>(item); casted)
+    {
       result.push_back(casted);
+    }
+  }
   return result;
 }
 

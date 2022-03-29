@@ -98,7 +98,7 @@ void NodeEditor::SetupConnections()
 {
   // Propagates delete request from the graphics view to the scene.
   connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
-          &GraphicsScene::onDeleteSelectedRequest);
+          &GraphicsScene::OnDeleteSelectedRequest);
 
   // Forward instruction selection from graphics scene
   connect(m_graphics_scene, &GraphicsScene::InstructionSelected, this,

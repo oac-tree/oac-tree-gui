@@ -104,7 +104,7 @@ ConnectableView *GraphicsScene::FindViewForInstruction(InstructionItem *instruct
   return nullptr;
 }
 
-void GraphicsScene::onDeleteSelectedRequest()
+void GraphicsScene::OnDeleteSelectedRequest()
 {
   if (!m_model || !m_root_item)
   {
@@ -166,6 +166,13 @@ std::vector<InstructionItem *> GraphicsScene::GetSelectedInstructions() const
   return result;
 }
 
+void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableView *parentView)
+{
+  auto child_instruction = GetInstruction(childView);
+  auto parent_instruction = GetInstruction(parentView);
+  m_model->MoveItem(child_instruction, parent_instruction, {"", -1});
+}
+
 void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
   if (event->mimeData()->hasFormat(InstructionListWidget::piecesMimeType()))
@@ -205,13 +212,6 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
       item->SetY(drop_pos.y());
     }
   }
-}
-
-void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableView *parentView)
-{
-  auto child_instruction = GetInstruction(childView);
-  auto parent_instruction = GetInstruction(parentView);
-  m_model->MoveItem(child_instruction, parent_instruction, {"", -1});
 }
 
 void GraphicsScene::onSelectionChanged()

@@ -92,7 +92,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)
   sequence_view->setSelected(true);
 
   // deleting view
-  m_scene.onDeleteSelectedRequest();
+  m_scene.OnDeleteSelectedRequest();
   EXPECT_TRUE(m_scene.FindViewForInstruction(sequence) == nullptr);
 
   // the model should be empty too
@@ -207,7 +207,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
   // selecting and deleting connection
   wait_view->setSelected(true);
 
-  ASSERT_NO_FATAL_FAILURE(m_scene.onDeleteSelectedRequest());
+  ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
   QTest::qWait(200);
 
   auto connections = sequence_view->GetParentPort()->connections();
@@ -247,7 +247,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   // selecting and deleting connection
   sequence_view->setSelected(true);
 
-  ASSERT_NO_FATAL_FAILURE(m_scene.onDeleteSelectedRequest());
+  ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
   QTest::qWait(200);
 
   // WaitView vas regenerated on the move of ViewItem on top.
