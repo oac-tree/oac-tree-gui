@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/explorer/sequencerxmlview.h"
+#include "sequencergui/explorer/sequencerexplorerview.h"
 
 #include "sequencergui/explorer/explorerpanel.h"
 #include "sequencergui/explorer/xmleditor.h"
@@ -67,7 +67,7 @@ bool invoke_and_catch(T method)
 
 namespace sequencergui
 {
-SequencerXMLView::SequencerXMLView(QWidget *parent)
+SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     : QWidget(parent)
     , m_explorer_view(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
@@ -88,9 +88,9 @@ SequencerXMLView::SequencerXMLView(QWidget *parent)
   SetupConnections();
 }
 
-SequencerXMLView::~SequencerXMLView() = default;
+SequencerExplorerView::~SequencerExplorerView() = default;
 
-void SequencerXMLView::SetModel(SequencerModel *model)
+void SequencerExplorerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_explorer_view->SetModel(model);
@@ -105,7 +105,7 @@ void SequencerXMLView::SetModel(SequencerModel *model)
   m_model->GetSubscriber()->SetOnDataChanged(on_data_change);
 }
 
-void SequencerXMLView::SetXMLFile(const QString &file_name)
+void SequencerExplorerView::SetXMLFile(const QString &file_name)
 {
   m_xml_editor->SetXMLFile(file_name);
 
@@ -127,7 +127,7 @@ void SequencerXMLView::SetXMLFile(const QString &file_name)
 
 //! The procedure with given name with be added to procedure container.
 
-void SequencerXMLView::OnAddToScratchpad(const QString &file_name)
+void SequencerExplorerView::OnAddToScratchpad(const QString &file_name)
 {
   auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
   qDebug() << "inserting new procedure" << procedure_item;
@@ -137,13 +137,13 @@ void SequencerXMLView::OnAddToScratchpad(const QString &file_name)
   invoke_and_catch(on_import);
 }
 
-void SequencerXMLView::onCreateNewProcedure()
+void SequencerExplorerView::onCreateNewProcedure()
 {
   auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
   qDebug() << "inserting new procedure" << procedure_item;
 }
 
-void SequencerXMLView::onSratchpadProcedureSelected(ProcedureItem *procedure_item)
+void SequencerExplorerView::onSratchpadProcedureSelected(ProcedureItem *procedure_item)
 {
   qDebug() << "onSratchpadProcedureSelected" << procedure_item;
   if (procedure_item)
@@ -158,19 +158,19 @@ void SequencerXMLView::onSratchpadProcedureSelected(ProcedureItem *procedure_ite
   }
 }
 
-void SequencerXMLView::SetupConnections()
+void SequencerExplorerView::SetupConnections()
 {
   connect(m_explorer_view, &ExplorerPanel::procedureFileClicked, this,
-          &SequencerXMLView::SetXMLFile);
+          &SequencerExplorerView::SetXMLFile);
 
   connect(m_explorer_view, &ExplorerPanel::procedureFileDoubleClicked, this,
-          &SequencerXMLView::OnAddToScratchpad);
+          &SequencerExplorerView::OnAddToScratchpad);
 
   connect(m_explorer_view, &ExplorerPanel::createNewProcedureRequest, this,
-          &SequencerXMLView::onCreateNewProcedure);
+          &SequencerExplorerView::onCreateNewProcedure);
 
   connect(m_explorer_view, &ExplorerPanel::sratchpadProcedureSelected, this,
-          &SequencerXMLView::onSratchpadProcedureSelected);
+          &SequencerExplorerView::onSratchpadProcedureSelected);
 }
 
 }  // namespace sequencergui

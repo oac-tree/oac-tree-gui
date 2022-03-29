@@ -20,7 +20,7 @@
 #include "sequencergui/mainwindow/mainwindow.h"
 
 #include "sequencergui/composer/sequencercomposerview.h"
-#include "sequencergui/explorer/sequencerxmlview.h"
+#include "sequencergui/explorer/sequencerexplorerview.h"
 #include "sequencergui/mainwindow/actionmanager.h"
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/mainwindow/styleutils.h"
@@ -94,7 +94,7 @@ void MainWindow::InitComponents()
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
 
-  m_xml_view = new SequencerXMLView;
+  m_xml_view = new SequencerExplorerView;
   m_tab_widget->addWidget(m_xml_view, "Explore",
                           StyleUtils::GetIcon("file-search-outline-light.svg"));
 

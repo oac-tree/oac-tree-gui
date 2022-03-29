@@ -3,8 +3,8 @@
 target_sources(${library_name} PRIVATE
   explorerpanel.cpp
   explorerpanel.h
-  sequencerxmlview.cpp
-  sequencerxmlview.h
+  sequencerexplorerview.cpp
+  sequencerexplorerview.h
   xmleditor.cpp
   xmleditor.h
   xmlsyntaxhighlighter.cpp

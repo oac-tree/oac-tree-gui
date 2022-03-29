@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPLORER_SEQUENCERXMLVIEW_H
-#define SEQUENCERGUI_EXPLORER_SEQUENCERXMLVIEW_H
+#ifndef SEQUENCERGUI_EXPLORER_SEQUENCEREXPLORERVIEW_H
+#define SEQUENCERGUI_EXPLORER_SEQUENCEREXPLORERVIEW_H
 
 #include <QWidget>
 
@@ -32,13 +32,13 @@ class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
 
-class SequencerXMLView : public QWidget
+class SequencerExplorerView : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit SequencerXMLView(QWidget* parent = nullptr);
-  ~SequencerXMLView() override;
+  explicit SequencerExplorerView(QWidget* parent = nullptr);
+  ~SequencerExplorerView() override;
 
   void SetModel(SequencerModel* model);
 
@@ -64,4 +64,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPLORER_SEQUENCERXMLVIEW_H
+#endif  // SEQUENCERGUI_EXPLORER_SEQUENCEREXPLORERVIEW_H
