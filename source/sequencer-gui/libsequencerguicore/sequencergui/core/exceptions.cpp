@@ -29,6 +29,8 @@ const char* MessageException::what() const noexcept
   return message.c_str();
 }
 
+LogicError::LogicError(const std::string& message) : MessageException{message} {}
+
 TransformToDomainException::TransformToDomainException(const std::string& message)
     : MessageException{message}
 {

@@ -19,6 +19,7 @@
 
 #include "sequencergui/monitor/jobmanager.h"
 
+#include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"
@@ -163,7 +164,7 @@ int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &d
 {
   QStringList with_index_added;
   int index{0};
-  for (const auto& str : choices)
+  for (const auto &str : choices)
   {
     with_index_added.push_back(QString("%1 %2").arg(index++).arg(str));
   }
@@ -173,6 +174,12 @@ int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &d
 
 JobContext *JobManager::CreateContext()
 {
+  auto it = m_context_map.find(m_current_procedure);
+  if (it != m_context_map.end())
+  {
+    throw LogicError("JobManager::CreateContext() : already created context");
+  }
+
   auto on_user_input = [this](auto value, auto description)
   { return onUserInputRequest(value, description); };
 
@@ -184,12 +191,12 @@ JobContext *JobManager::CreateContext()
   context->SetMessagePanel(m_message_panel);
   connect(context, &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
-  m_context_map[m_current_procedure] = context;
 
   context->SetUserContext({on_user_input, on_user_choice});
   context->onPrepareJobRequest();
 
-
+  // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
+  m_context_map.insert({m_current_procedure, context});
 
   return context;
 }

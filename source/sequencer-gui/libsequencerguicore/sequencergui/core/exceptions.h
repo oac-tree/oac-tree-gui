@@ -38,6 +38,14 @@ private:
   std::string message;
 };
 
+//! Logic error in UI that theoreticaly can be detected by reading the code.
+
+class LogicError : public MessageException
+{
+public:
+  explicit LogicError(const std::string& message);
+};
+
 //! Error detected in the Sequencer domain during the attempt to convert UI classes to
 //! sequencer classes.
 
