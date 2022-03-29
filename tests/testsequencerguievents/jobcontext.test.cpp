@@ -20,6 +20,7 @@
 #include "sequencergui/monitor/jobcontext.h"
 
 #include "Instruction.h"
+#include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -43,6 +44,16 @@ using msec = std::chrono::milliseconds;
 class JobContextTest : public ::testing::Test
 {
 public:
+  //! Creates invalid procedure that will cause JobContext to crash during the preparation.
+  static ProcedureItem* CreateInvalidProcedure(SequencerModel* model)
+  {
+    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+    // InstructionItem that doesn't have counterpart in SequencerDomain
+    auto item =
+        model->InsertItem<UnknownInstructionItem>(procedure_item->GetInstructionContainer());
+    return procedure_item;
+  }
+
   //! Creates procedure with single wait instruction.
   static ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model)
   {
@@ -135,6 +146,15 @@ public:
 
   SequencerModel m_model;
 };
+
+//! Attempt to use JobContext with invalid procedure.
+
+TEST_F(JobContextTest, InvalidProcedure)
+{
+  auto procedure = CreateInvalidProcedure(&m_model);
+  JobContext context(procedure);
+  EXPECT_THROW(context.onPrepareJobRequest(), TransformToDomainException);
+}
 
 //! Normal execution of the procedure with single wait instruction.
 

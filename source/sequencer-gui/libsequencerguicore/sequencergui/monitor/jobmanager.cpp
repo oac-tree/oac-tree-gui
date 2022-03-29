@@ -188,6 +188,9 @@ JobContext *JobManager::CreateContext()
 
   context->SetUserContext({on_user_input, on_user_choice});
   context->onPrepareJobRequest();
+
+
+
   return context;
 }
 

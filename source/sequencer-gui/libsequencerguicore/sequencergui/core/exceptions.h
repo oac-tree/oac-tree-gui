@@ -31,22 +31,22 @@ namespace sequencergui
 class MessageException : public std::exception
 {
 public:
-  MessageException(std::string message);
+  explicit MessageException(std::string message);
   const char* what() const noexcept override;
 
 private:
   std::string message;
 };
 
-//! Base Exception class with message.
+//! Error detected in the Sequencer domain during the attempt to convert UI classes to
+//! sequencer classes.
 
 class TransformToDomainException : public MessageException
 {
 public:
-  TransformToDomainException(const std::string& message);
+  explicit TransformToDomainException(const std::string& message);
 };
 
 }  // namespace sequencergui
 
-#endif // SEQUENCERGUI_CORE_EXCEPTIONS_H
-
+#endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H
