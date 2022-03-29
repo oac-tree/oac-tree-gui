@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/proceduretreeswidget.h"
 
-#include "sequencergui/mainwindow/explorertoolbar.h"
+#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 

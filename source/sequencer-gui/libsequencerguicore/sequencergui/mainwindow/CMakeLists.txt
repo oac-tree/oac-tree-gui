@@ -7,14 +7,14 @@ target_sources(${library_name} PRIVATE
   collapsiblewidget.h
   explorernarrowtoolbar.cpp
   explorernarrowtoolbar.h
-  explorertoolbar.cpp
-  explorertoolbar.h
   filetreeview.cpp
   filetreeview.h
   mainwindow.cpp
   mainwindow.h
   opendocumentswidget.cpp
   opendocumentswidget.h
+  paneltoolbar.cpp
+  paneltoolbar.h
   proceduretreeswidget.cpp
   proceduretreeswidget.h
   projecthandler.cpp

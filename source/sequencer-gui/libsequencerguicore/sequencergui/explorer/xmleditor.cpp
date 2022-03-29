@@ -20,7 +20,7 @@
 #include "sequencergui/explorer/xmleditor.h"
 
 #include "sequencergui/explorer/xmlsyntaxhighlighter.h"
-#include "sequencergui/mainwindow/explorertoolbar.h"
+#include "sequencergui/mainwindow/paneltoolbar.h"
 
 #include <QFile>
 #include <QLabel>
