@@ -72,12 +72,17 @@ void ComposerTreeWidget::SetModel(SequencerModel* model, ProcedureItem* procedur
   m_model = model;
   m_procedure = procedure;
 
-  m_instruction_tree->SetApplicationModel(m_model);
-  m_workspace_tree->SetApplicationModel(m_model);
   if (m_procedure)
   {
+    m_instruction_tree->SetApplicationModel(m_model);
+    m_workspace_tree->SetApplicationModel(m_model);
     m_instruction_tree->SetRootSessionItem(procedure->GetInstructionContainer());
     m_workspace_tree->SetRootSessionItem(procedure->GetWorkspace());
+  }
+  else
+  {
+    m_instruction_tree->SetApplicationModel(nullptr);
+    m_workspace_tree->SetApplicationModel(nullptr);
   }
 }
 

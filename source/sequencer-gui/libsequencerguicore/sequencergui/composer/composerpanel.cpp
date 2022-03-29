@@ -61,6 +61,9 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
           &ComposerPanel::procedureSelected);
+  connect(m_open_documents_widget, &OpenDocumentsWidget::createNewProcedureRequest, this,
+          &ComposerPanel::createNewProcedureRequest);
+
 }
 
 ComposerPanel::~ComposerPanel() = default;

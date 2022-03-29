@@ -48,6 +48,7 @@ public:
   void SetModel(SequencerModel* model);
 
 signals:
+  void createNewProcedureRequest();
   void procedureSelected(ProcedureItem* procedureItem);
 
 private:

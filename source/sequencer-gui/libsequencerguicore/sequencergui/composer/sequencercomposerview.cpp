@@ -88,6 +88,10 @@ void SequencerComposerView::SetupConnections()
     m_composer_tree_widget->SetModel(m_model, procedure_item);
   };
   connect(m_composer_panel, &ComposerPanel::procedureSelected, this, on_procedure_selected);
+
+  auto on_create_procedure = [this]()
+  { auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer()); };
+  connect(m_composer_panel, &ComposerPanel::createNewProcedureRequest, this, on_create_procedure);
 }
 
 //! Returns first procedure from the procedure container, if exist.
