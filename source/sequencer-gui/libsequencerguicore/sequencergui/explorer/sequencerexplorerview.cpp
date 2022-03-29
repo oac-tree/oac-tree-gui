@@ -25,6 +25,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/xmlutils.h"
+#include "sequencergui/utils/widgetutils.h"
 
 #include "mvvm/interfaces/modeleventsubscriberinterface.h"
 #include "mvvm/standarditems/standarditemincludes.h"
@@ -117,7 +118,7 @@ void SequencerExplorerView::SetXMLFile(const QString &file_name)
   auto on_import = [file_name, procedure_item]()
   { ImportFromFile(file_name.toStdString(), procedure_item); };
 
-  if (auto result = invoke_and_catch(on_import); result)
+  if (auto result = InvokeAndCatch(on_import); result)
   {
     m_trees_widget->SetModel(m_temp_model.get(), procedure_item);
   }
