@@ -79,6 +79,12 @@ public:
   GraphicsScene m_scene;
 };
 
+TEST_F(GraphicsSceneTest, InitialState)
+{
+  GraphicsScene scene;
+  EXPECT_FALSE(scene.HasContext());
+}
+
 //! Scene with single instruction. Make it selected and emit delete request.
 
 TEST_F(GraphicsSceneTest, onDeleteSelectedRequest)

@@ -49,6 +49,8 @@ public:
 
   void SetContext(SequencerModel* model, InstructionContainerItem* root_item);
 
+  bool HasContext();
+
   std::vector<ConnectableView*> GetConnectableViews();
   ConnectableView* FindViewForInstruction(InstructionItem* instruction);
 

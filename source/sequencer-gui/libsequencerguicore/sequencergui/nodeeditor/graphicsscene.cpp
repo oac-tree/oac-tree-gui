@@ -33,6 +33,7 @@
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
+#include <QMessageBox>
 #include <QMimeData>
 
 namespace
@@ -75,6 +76,13 @@ void GraphicsScene::SetContext(SequencerModel *model, InstructionContainerItem *
   m_root_item = root_item;
 }
 
+//! Returns true if given scene is initialised (has model and instruction container assigned).
+
+bool GraphicsScene::HasContext()
+{
+  return m_model && m_root_item;
+}
+
 std::vector<ConnectableView *> GraphicsScene::GetConnectableViews()
 {
   std::vector<ConnectableView *> result;
@@ -106,9 +114,10 @@ ConnectableView *GraphicsScene::FindViewForInstruction(InstructionItem *instruct
 
 void GraphicsScene::OnDeleteSelectedRequest()
 {
-  if (!m_model || !m_root_item)
+  if (!HasContext())
   {
-    throw std::runtime_error("Error in GraphicsScene: model not initialised");
+    qWarning("Error in GraphicsScene: context is not initialised");
+    return;
   }
 
   // Break explicitely selected connections.
@@ -187,6 +196,13 @@ void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
+  if (!HasContext())
+  {
+    qWarning("Error in GraphicsScene: context is not initialised");
+    QMessageBox::warning(nullptr, "Logic error", "Please create procedure first");
+    return;
+  }
+
   // for later coordinate calculation, where to drop
   static QRectF ref_view_rectangle = ConnectableViewRectangle();
 
