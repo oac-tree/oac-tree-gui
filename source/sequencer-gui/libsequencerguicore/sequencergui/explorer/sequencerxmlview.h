@@ -28,7 +28,7 @@ namespace sequencergui
 {
 class SequencerModel;
 class XMLEditor;
-class ExplorerView;
+class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
 
@@ -53,7 +53,7 @@ public:
 private:
   void SetupConnections();
 
-  ExplorerView* m_explorer_view{nullptr};
+  ExplorerPanel* m_explorer_view{nullptr};
   ProcedureTreesWidget* m_trees_widget{nullptr};
   XMLEditor* m_xml_editor{nullptr};
   QSplitter* m_splitter{nullptr};

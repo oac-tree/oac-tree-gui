@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/xmleditor.h"
+#include "sequencergui/explorer/xmleditor.h"
 
+#include "sequencergui/explorer/xmlsyntaxhighlighter.h"
 #include "sequencergui/mainwindow/explorertoolbar.h"
-#include "sequencergui/mainwindow/xmlsyntaxhighlighter.h"
 
 #include <QFile>
 #include <QLabel>

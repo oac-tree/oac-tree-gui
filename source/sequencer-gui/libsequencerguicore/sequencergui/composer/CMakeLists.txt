@@ -1,3 +1,5 @@
+# Contains source for SequencerComposerView (main widget for procedure editing).
+
 target_sources(${library_name} PRIVATE
   composerpanel.cpp
   composerpanel.h

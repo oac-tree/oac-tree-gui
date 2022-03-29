@@ -23,17 +23,11 @@ target_sources(${library_name} PRIVATE
   projecthandler.h
   recentprojectsettings.cpp
   recentprojectsettings.h
-  sequencerxmlview.cpp
-  sequencerxmlview.h
   settingsview.cpp
   settingsview.h
   styleutils.cpp
   styleutils.h
   userinteractor.cpp
   userinteractor.h
-  xmleditor.cpp
-  xmleditor.h
-  xmlsyntaxhighlighter.cpp
-  xmlsyntaxhighlighter.h
 )
 

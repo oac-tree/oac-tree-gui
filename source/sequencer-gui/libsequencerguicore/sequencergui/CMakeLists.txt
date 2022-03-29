@@ -1,6 +1,7 @@
 add_subdirectory(algorithm)
 add_subdirectory(composer)
 add_subdirectory(core)
+add_subdirectory(explorer)
 add_subdirectory(mainwindow)
 add_subdirectory(model)
 add_subdirectory(monitor)

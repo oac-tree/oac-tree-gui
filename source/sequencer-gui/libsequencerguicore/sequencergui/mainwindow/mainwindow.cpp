@@ -20,8 +20,8 @@
 #include "sequencergui/mainwindow/mainwindow.h"
 
 #include "sequencergui/composer/sequencercomposerview.h"
+#include "sequencergui/explorer/sequencerxmlview.h"
 #include "sequencergui/mainwindow/actionmanager.h"
-#include "sequencergui/mainwindow/sequencerxmlview.h"
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/procedureexamples.h"

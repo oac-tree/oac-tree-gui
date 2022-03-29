@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/sequencerxmlview.h"
+#include "sequencergui/explorer/sequencerxmlview.h"
 
+#include "sequencergui/explorer/xmleditor.h"
 #include "sequencergui/mainwindow/explorerview.h"
 #include "sequencergui/mainwindow/proceduretreeswidget.h"
-#include "sequencergui/mainwindow/xmleditor.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/xmlutils.h"
@@ -69,7 +69,7 @@ namespace sequencergui
 {
 SequencerXMLView::SequencerXMLView(QWidget *parent)
     : QWidget(parent)
-    , m_explorer_view(new ExplorerView)
+    , m_explorer_view(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_editor(new XMLEditor)
     , m_splitter(new QSplitter)
@@ -160,16 +160,16 @@ void SequencerXMLView::onSratchpadProcedureSelected(ProcedureItem *procedure_ite
 
 void SequencerXMLView::SetupConnections()
 {
-  connect(m_explorer_view, &ExplorerView::procedureFileClicked, this,
+  connect(m_explorer_view, &ExplorerPanel::procedureFileClicked, this,
           &SequencerXMLView::SetXMLFile);
 
-  connect(m_explorer_view, &ExplorerView::procedureFileDoubleClicked, this,
+  connect(m_explorer_view, &ExplorerPanel::procedureFileDoubleClicked, this,
           &SequencerXMLView::OnAddToScratchpad);
 
-  connect(m_explorer_view, &ExplorerView::createNewProcedureRequest, this,
+  connect(m_explorer_view, &ExplorerPanel::createNewProcedureRequest, this,
           &SequencerXMLView::onCreateNewProcedure);
 
-  connect(m_explorer_view, &ExplorerView::sratchpadProcedureSelected, this,
+  connect(m_explorer_view, &ExplorerPanel::sratchpadProcedureSelected, this,
           &SequencerXMLView::onSratchpadProcedureSelected);
 }
 
