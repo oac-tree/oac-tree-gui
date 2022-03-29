@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/algorithm/alignutils.h"
+#include "sequencergui/utils/alignutils.h"
 
-#include "sequencergui/algorithm/alignnode.h"
+#include "sequencergui/utils/alignnode.h"
 
 #include "mvvm/utils/containerutils.h"
 

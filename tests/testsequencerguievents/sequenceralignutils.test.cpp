@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/algorithm/sequenceralignutils.h"
+#include "sequencergui/utils/sequenceralignutils.h"
 
-#include "sequencergui/algorithm/alignnode.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
+#include "sequencergui/utils/alignnode.h"
 
 #include <gtest/gtest.h>
 

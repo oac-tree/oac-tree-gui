@@ -19,7 +19,6 @@
 
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
-#include "sequencergui/algorithm/sequenceralignutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -29,6 +28,7 @@
 #include "sequencergui/nodeeditor/graphicsview.h"
 #include "sequencergui/nodeeditor/nodeeditortoolbar.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
+#include "sequencergui/utils/sequenceralignutils.h"
 
 #include <QDebug>
 #include <QPointF>
