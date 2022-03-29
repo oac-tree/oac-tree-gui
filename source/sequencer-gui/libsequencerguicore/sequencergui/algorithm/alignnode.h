@@ -21,14 +21,14 @@
 #define SEQUENCERGUI_ALGORITHM_ALIGNNODE_H
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace sequencergui::algorithm
 {
 
-//! The node of the AlignTree.
-//! Part of the machinery for node positioning of the general trees.
+//! The node of the generic tree. Carries the information necessary for the alignment algorithm to
+//! function.
 
 class AlignNode
 {

@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/opendocumentswidget.h"
 
-#include "sequencergui/mainwindow/explorernarrowtoolbar.h"
+#include "sequencergui/mainwindow/collapsibletoolbar.h"
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"

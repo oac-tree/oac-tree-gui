@@ -53,7 +53,7 @@ public:
 private:
   void SetupConnections();
 
-  ExplorerPanel* m_explorer_view{nullptr};
+  ExplorerPanel* m_explorer_panel{nullptr};
   ProcedureTreesWidget* m_trees_widget{nullptr};
   XMLEditor* m_xml_editor{nullptr};
   QSplitter* m_splitter{nullptr};

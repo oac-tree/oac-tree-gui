@@ -3,10 +3,10 @@ target_sources(${library_name} PRIVATE
   actionmanager.h
   appsettings.cpp
   appsettings.h
+  collapsibletoolbar.cpp
+  collapsibletoolbar.h
   collapsiblewidget.cpp
   collapsiblewidget.h
-  explorernarrowtoolbar.cpp
-  explorernarrowtoolbar.h
   filetreeview.cpp
   filetreeview.h
   mainwindow.cpp

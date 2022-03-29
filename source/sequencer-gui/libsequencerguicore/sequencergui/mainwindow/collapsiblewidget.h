@@ -27,7 +27,7 @@ class QSplitter;
 namespace sequencergui
 {
 
-class ExplorerNarrowToolBar;
+class CollapsibleToolBar;
 
 class CollapsibleWidget : public QWidget
 {
@@ -39,12 +39,12 @@ public:
 
   void AddToSplitter(QSplitter* splitter);
 
-  ExplorerNarrowToolBar* GetToolBar();
+  CollapsibleToolBar* GetToolBar();
 
   void SetText(const QString& text);
 
 private:
-  ExplorerNarrowToolBar* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
+  CollapsibleToolBar* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
 };
 
 }  // namespace sequencergui

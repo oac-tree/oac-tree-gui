@@ -39,6 +39,8 @@ namespace sequencergui::algorithm
 
 class AlignNode;
 
+//! FIXME reduce variety of methods
+
 //! Creates AlignTree representing instruction hierarchy. The tree will
 //! be used by the align algorithm to nicely position instructions on the graphics scene.
 std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem* container);

@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/collapsiblewidget.h"
 
-#include "sequencergui/mainwindow/explorernarrowtoolbar.h"
+#include "sequencergui/mainwindow/collapsibletoolbar.h"
 
 #include <QSplitter>
 
@@ -27,7 +27,7 @@ namespace sequencergui
 {
 
 CollapsibleWidget::CollapsibleWidget(QWidget *parent)
-    : QWidget(parent), m_tool_bar(new ExplorerNarrowToolBar)
+    : QWidget(parent), m_tool_bar(new CollapsibleToolBar)
 {
   m_tool_bar->SetControlledWidget(this);
 }
@@ -42,7 +42,7 @@ void CollapsibleWidget::AddToSplitter(QSplitter *splitter)
   splitter->addWidget(this);
 }
 
-ExplorerNarrowToolBar *CollapsibleWidget::GetToolBar()
+CollapsibleToolBar *CollapsibleWidget::GetToolBar()
 {
   return m_tool_bar;
 }

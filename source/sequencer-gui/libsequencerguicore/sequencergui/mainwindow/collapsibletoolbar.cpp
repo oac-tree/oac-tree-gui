@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/explorernarrowtoolbar.h"
+#include "sequencergui/mainwindow/collapsibletoolbar.h"
 
 #include "sequencergui/mainwindow/styleutils.h"
 
@@ -30,7 +30,7 @@
 
 namespace sequencergui
 {
-ExplorerNarrowToolBar::ExplorerNarrowToolBar(QWidget *parent)
+CollapsibleToolBar::CollapsibleToolBar(QWidget *parent)
     : QFrame(parent)
     , m_tool_bar(new QToolBar)
     , m_expand_button(new QToolButton)
@@ -68,7 +68,7 @@ ExplorerNarrowToolBar::ExplorerNarrowToolBar(QWidget *parent)
 
 //! Set text next to collapse/expand icon.
 
-void ExplorerNarrowToolBar::SetText(const QString &text)
+void CollapsibleToolBar::SetText(const QString &text)
 {
   mvvm::utils::ScaleLabelFont(m_label, 0.9);
   m_label->setText(text);
@@ -76,12 +76,12 @@ void ExplorerNarrowToolBar::SetText(const QString &text)
 
 //! Sets the widget which will be collapsed/expanded.
 
-void ExplorerNarrowToolBar::SetControlledWidget(QWidget *widget)
+void CollapsibleToolBar::SetControlledWidget(QWidget *widget)
 {
   m_controlled_widget = widget;
 }
 
-void ExplorerNarrowToolBar::AddWidget(QWidget *widget)
+void CollapsibleToolBar::AddWidget(QWidget *widget)
 {
   // Feature of QToolBar: returns action on adding any widget or button.
   // These actions can be used to hide widgets from the toolbar (see ::UpdateToolBar)
@@ -91,7 +91,7 @@ void ExplorerNarrowToolBar::AddWidget(QWidget *widget)
 
 //! Updates toolbar appearance depending on collapsed/expaned status
 
-void ExplorerNarrowToolBar::UpdateToolBar()
+void CollapsibleToolBar::UpdateToolBar()
 {
   UpdateIcon();
 
@@ -110,7 +110,7 @@ void ExplorerNarrowToolBar::UpdateToolBar()
 
 //! Updates collapse/expand icon.
 
-void ExplorerNarrowToolBar::UpdateIcon()
+void CollapsibleToolBar::UpdateIcon()
 {
   if (m_expanded)
   {
@@ -124,7 +124,7 @@ void ExplorerNarrowToolBar::UpdateIcon()
   }
 }
 
-void ExplorerNarrowToolBar::InsertStrech()
+void CollapsibleToolBar::InsertStrech()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

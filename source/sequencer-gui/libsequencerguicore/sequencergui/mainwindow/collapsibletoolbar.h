@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_EXPLORERNARROWTOOLBAR_H
-#define SEQUENCERGUI_MAINWINDOW_EXPLORERNARROWTOOLBAR_H
+#ifndef SEQUENCERGUI_MAINWINDOW_COLLAPSIBLETOOLBAR_H
+#define SEQUENCERGUI_MAINWINDOW_COLLAPSIBLETOOLBAR_H
 
 #include <QFrame>
 #include <QList>
@@ -37,12 +37,12 @@ namespace sequencergui
 
 //! This toolbar is intended to function in splitters together with CollapsibleWidgets.
 
-class ExplorerNarrowToolBar : public QFrame
+class CollapsibleToolBar : public QFrame
 {
   Q_OBJECT
 
 public:
-  explicit ExplorerNarrowToolBar(QWidget* parent = nullptr);
+  explicit CollapsibleToolBar(QWidget* parent = nullptr);
 
   void SetText(const QString& text);
 
@@ -65,4 +65,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERNARROWTOOLBAR_H
+#endif  // SEQUENCERGUI_MAINWINDOW_COLLAPSIBLETOOLBAR_H

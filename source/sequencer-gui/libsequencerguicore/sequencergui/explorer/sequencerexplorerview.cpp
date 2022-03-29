@@ -69,7 +69,7 @@ namespace sequencergui
 {
 SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     : QWidget(parent)
-    , m_explorer_view(new ExplorerPanel)
+    , m_explorer_panel(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_editor(new XMLEditor)
     , m_splitter(new QSplitter)
@@ -79,7 +79,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
   //  layout->setSpacing(0);
   //  layout->setMargin(0);
 
-  m_splitter->addWidget(m_explorer_view);
+  m_splitter->addWidget(m_explorer_panel);
   m_splitter->addWidget(m_trees_widget);
   m_splitter->addWidget(m_xml_editor);
 
@@ -93,11 +93,11 @@ SequencerExplorerView::~SequencerExplorerView() = default;
 void SequencerExplorerView::SetModel(SequencerModel *model)
 {
   m_model = model;
-  m_explorer_view->SetModel(model);
+  m_explorer_panel->SetModel(model);
 
   auto on_data_change = [this](auto, auto)
   {
-    if (auto procedure_item = m_explorer_view->GetCurrentScratchpadProcedure(); procedure_item)
+    if (auto procedure_item = m_explorer_panel->GetCurrentScratchpadProcedure(); procedure_item)
     {
       m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     }
@@ -160,16 +160,16 @@ void SequencerExplorerView::onSratchpadProcedureSelected(ProcedureItem *procedur
 
 void SequencerExplorerView::SetupConnections()
 {
-  connect(m_explorer_view, &ExplorerPanel::procedureFileClicked, this,
+  connect(m_explorer_panel, &ExplorerPanel::procedureFileClicked, this,
           &SequencerExplorerView::SetXMLFile);
 
-  connect(m_explorer_view, &ExplorerPanel::procedureFileDoubleClicked, this,
+  connect(m_explorer_panel, &ExplorerPanel::procedureFileDoubleClicked, this,
           &SequencerExplorerView::OnAddToScratchpad);
 
-  connect(m_explorer_view, &ExplorerPanel::createNewProcedureRequest, this,
+  connect(m_explorer_panel, &ExplorerPanel::createNewProcedureRequest, this,
           &SequencerExplorerView::onCreateNewProcedure);
 
-  connect(m_explorer_view, &ExplorerPanel::sratchpadProcedureSelected, this,
+  connect(m_explorer_panel, &ExplorerPanel::sratchpadProcedureSelected, this,
           &SequencerExplorerView::onSratchpadProcedureSelected);
 }
 

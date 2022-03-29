@@ -22,7 +22,7 @@
 
 //! @file alignutils.h
 //! Collection of utility function for node positioning of the general tree.
-//! The tree is implemented with the help of AlignTree and AlignNode classes.
+//! The tree is represented by AlignNode classes.
 
 //! Relies on Reingold-Tilford algorithm, as given in https://www.cs.unc.edu/techreports/89-034.pdf
 //! closely follows C# Rachel Lim's implementation given at
