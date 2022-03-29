@@ -98,7 +98,7 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
 
   auto on_data_change = [this](auto, auto)
   {
-    if (auto procedure_item = m_explorer_panel->GetCurrentScratchpadProcedure(); procedure_item)
+    if (auto procedure_item = m_explorer_panel->GetSelectedProcedure(); procedure_item)
     {
       m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     }
@@ -170,7 +170,7 @@ void SequencerExplorerView::SetupConnections()
   connect(m_explorer_panel, &ExplorerPanel::createNewProcedureRequest, this,
           &SequencerExplorerView::onCreateNewProcedure);
 
-  connect(m_explorer_panel, &ExplorerPanel::sratchpadProcedureSelected, this,
+  connect(m_explorer_panel, &ExplorerPanel::procedureSelected, this,
           &SequencerExplorerView::onSratchpadProcedureSelected);
 }
 

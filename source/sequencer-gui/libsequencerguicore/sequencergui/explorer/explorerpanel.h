@@ -32,7 +32,7 @@ class OpenDocumentsWidget;
 class SequencerModel;
 class ProcedureItem;
 
-//! Vertical panel located on the left of XMLTreeView
+//! Vertical panel located on the left of SequencerExplorerView.
 
 class ExplorerPanel : public QWidget
 {
@@ -44,13 +44,13 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  ProcedureItem* GetCurrentScratchpadProcedure();
+  ProcedureItem* GetSelectedProcedure();
 
 signals:
   void procedureFileClicked(const QString& filename);
   void procedureFileDoubleClicked(const QString& filename);
   void createNewProcedureRequest();
-  void sratchpadProcedureSelected(ProcedureItem* procedureItem);
+  void procedureSelected(ProcedureItem* procedureItem);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};

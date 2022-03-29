@@ -19,9 +19,9 @@
 
 #include "sequencergui/explorer/explorerpanel.h"
 
-#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/mainwindow/filetreeview.h"
 #include "sequencergui/mainwindow/opendocumentswidget.h"
+#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 
 #include <QLabel>
@@ -43,7 +43,6 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_file_tree_view);
 
-  //  m_splitter->addWidget(m_open_documents_widget);
   m_open_documents_widget->SetText("OPEN PROCEDURES");
   m_open_documents_widget->AddToSplitter(m_splitter);
 
@@ -65,7 +64,7 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   connect(m_open_documents_widget, &OpenDocumentsWidget::createNewProcedureRequest, this,
           &ExplorerPanel::createNewProcedureRequest);
   connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
-          &ExplorerPanel::sratchpadProcedureSelected);
+          &ExplorerPanel::procedureSelected);
 }
 
 void ExplorerPanel::SetModel(SequencerModel *model)
@@ -73,7 +72,7 @@ void ExplorerPanel::SetModel(SequencerModel *model)
   m_open_documents_widget->SetModel(model);
 }
 
-ProcedureItem *ExplorerPanel::GetCurrentScratchpadProcedure()
+ProcedureItem *ExplorerPanel::GetSelectedProcedure()
 {
   return m_open_documents_widget->GetSelectedProcedure();
 }
