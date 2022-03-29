@@ -49,6 +49,7 @@ bool InvokeAndCatch(T method, const QString& description = {"Exception was caugh
     QApplication::restoreOverrideCursor();
     QMessageBox msg_box;
     msg_box.setText(description);
+    msg_box.setDetailedText("Loren ipsum");
     msg_box.setInformativeText(QString(ex.what()));
     msg_box.setIcon(msg_box.Critical);
     msg_box.exec();

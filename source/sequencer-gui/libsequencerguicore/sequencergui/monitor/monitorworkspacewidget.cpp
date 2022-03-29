@@ -61,6 +61,10 @@ void MonitorWorkspaceWidget::SetModel(SequencerModel *model, ProcedureItem *proc
   {
     m_instruction_tree->SetRootSessionItem(procedure_item->GetWorkspace());
   }
+  else
+  {
+    m_instruction_tree->SetRootSessionItem(model->GetProcedureContainer());
+  }
 }
 
 }  // namespace sequencergui

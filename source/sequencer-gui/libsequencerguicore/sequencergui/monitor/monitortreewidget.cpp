@@ -72,7 +72,13 @@ void MonitorTreeWidget::SetModel(SequencerModel *model, ProcedureItem *procedure
   m_instruction_tree->SetViewModel(std::make_unique<InstructionViewModel>(model));
   if (procedure_item)
   {
+    // Showing instructiont tree of the given procedure.
     m_instruction_tree->SetRootSessionItem(procedure_item->GetInstructionContainer());
+  }
+  else
+  {
+    // Was called with no procedure defined
+    m_instruction_tree->SetRootSessionItem(model->GetProcedureContainer());
   }
   m_node_editor->SetModel(model, procedure_item);
 }
