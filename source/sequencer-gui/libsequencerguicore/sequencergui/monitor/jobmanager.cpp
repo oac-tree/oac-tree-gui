@@ -163,7 +163,7 @@ int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &d
 {
   QStringList with_index_added;
   int index{0};
-  for (const auto str : choices)
+  for (const auto& str : choices)
   {
     with_index_added.push_back(QString("%1 %2").arg(index++).arg(str));
   }

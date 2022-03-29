@@ -83,7 +83,7 @@ public:
   void SetRightHandSide(const std::string& value);
 
 private:
-  virtual void InitFromDomainImpl(const instruction_t* instruction) override;
+  void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
@@ -97,7 +97,7 @@ public:
   std::string GetDomainType() const override;
 
 private:
-  virtual void InitFromDomainImpl(const instruction_t* instruction) override;
+  void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
