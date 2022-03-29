@@ -29,6 +29,7 @@
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
+#include <QDebug>
 #include <iostream>
 
 namespace
@@ -74,14 +75,15 @@ JobContext::~JobContext() = default;
 
 void JobContext::onStartRequest()
 {
-  if (m_procedure_runner->IsBusy())
+  if (!IsValid())
   {
+    qWarning() << "JobContext is in an invalid state";
     return;
   }
 
-  if (!m_domain_procedure)
+  if (m_procedure_runner->IsBusy())
   {
-    throw std::runtime_error("Error in JobContext: procedure is not ready");
+    return;
   }
 
   m_job_log->ClearLog();
@@ -147,6 +149,12 @@ ProcedureItem *JobContext::GetExpandedProcedure() const
 SequencerModel *JobContext::GetExpandedModel()
 {
   return m_job_model.get();
+}
+
+//! Returns true if this context is in valid state
+bool JobContext::IsValid() const
+{
+  return m_domain_procedure != nullptr;
 }
 
 void JobContext::onInstructionStatusChange(const instruction_t *instruction)

@@ -151,6 +151,7 @@ TEST_F(JobContextTest, InitialState)
 {
   ProcedureItem procedure;
   JobContext job_context(&procedure);
+  EXPECT_FALSE(job_context.IsValid());
   EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
   EXPECT_NE(job_context.GetExpandedModel(), nullptr);
 }
@@ -162,6 +163,7 @@ TEST_F(JobContextTest, InvalidProcedure)
   auto procedure = CreateInvalidProcedure(&m_model);
   JobContext job_context(procedure);
   EXPECT_THROW(job_context.onPrepareJobRequest(), TransformToDomainException);
+  EXPECT_FALSE(job_context.IsValid());
 }
 
 //! Normal execution of the procedure with single wait instruction.
@@ -184,7 +186,9 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   EXPECT_EQ(procedure->GetStatus(), std::string());
 
   JobContext job_context(procedure);
+  EXPECT_FALSE(job_context.IsValid());
   job_context.onPrepareJobRequest();
+  EXPECT_TRUE(job_context.IsValid());
 
   QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 

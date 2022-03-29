@@ -77,6 +77,8 @@ public:
   ProcedureItem* GetExpandedProcedure() const;
   SequencerModel* GetExpandedModel();
 
+  bool IsValid() const; // FIXME find better name
+
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
