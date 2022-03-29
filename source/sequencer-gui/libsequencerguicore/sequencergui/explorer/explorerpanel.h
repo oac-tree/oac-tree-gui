@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_EXPLORERVIEW_H
-#define SEQUENCERGUI_MAINWINDOW_EXPLORERVIEW_H
+#ifndef SEQUENCERGUI_MAINWINDOW_EXPLORERPANEL_H
+#define SEQUENCERGUI_MAINWINDOW_EXPLORERPANEL_H
 
 #include <QWidget>
 
@@ -34,13 +34,13 @@ class ProcedureItem;
 
 //! Vertical panel located on the left of XMLTreeView
 
-class ExplorerView : public QWidget
+class ExplorerPanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ExplorerView(QWidget* parent = nullptr);
-  ~ExplorerView() override;
+  explicit ExplorerPanel(QWidget* parent = nullptr);
+  ~ExplorerPanel() override;
 
   void SetModel(SequencerModel* model);
 
@@ -62,4 +62,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERVIEW_H
+#endif  // SEQUENCERGUI_MAINWINDOW_EXPLORERPANEL_H

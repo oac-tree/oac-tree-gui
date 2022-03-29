@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   explorernarrowtoolbar.h
   explorertoolbar.cpp
   explorertoolbar.h
-  explorerview.cpp
-  explorerview.h
   filetreeview.cpp
   filetreeview.h
   mainwindow.cpp

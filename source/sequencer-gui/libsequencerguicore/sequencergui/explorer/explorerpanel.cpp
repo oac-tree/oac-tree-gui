@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/explorerview.h"
+#include "sequencergui/explorer/explorerpanel.h"
 
 #include "sequencergui/mainwindow/explorertoolbar.h"
 #include "sequencergui/mainwindow/filetreeview.h"
@@ -31,7 +31,7 @@
 
 namespace sequencergui
 {
-ExplorerView::ExplorerView(QWidget *parent)
+ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new ExplorerToolBar)
     , m_splitter(new QSplitter)
@@ -59,25 +59,25 @@ ExplorerView::ExplorerView(QWidget *parent)
   layout->addWidget(m_splitter);
 
   connect(m_file_tree_view, &FileTreeView::procedureFileClicked, this,
-          &ExplorerView::procedureFileClicked);
+          &ExplorerPanel::procedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::procedureFileDoubleClicked, this,
-          &ExplorerView::procedureFileDoubleClicked);
+          &ExplorerPanel::procedureFileDoubleClicked);
   connect(m_open_documents_widget, &OpenDocumentsWidget::createNewProcedureRequest, this,
-          &ExplorerView::createNewProcedureRequest);
+          &ExplorerPanel::createNewProcedureRequest);
   connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
-          &ExplorerView::sratchpadProcedureSelected);
+          &ExplorerPanel::sratchpadProcedureSelected);
 }
 
-void ExplorerView::SetModel(SequencerModel *model)
+void ExplorerPanel::SetModel(SequencerModel *model)
 {
   m_open_documents_widget->SetModel(model);
 }
 
-ProcedureItem *ExplorerView::GetCurrentScratchpadProcedure()
+ProcedureItem *ExplorerPanel::GetCurrentScratchpadProcedure()
 {
   return m_open_documents_widget->GetSelectedProcedure();
 }
 
-ExplorerView::~ExplorerView() = default;
+ExplorerPanel::~ExplorerPanel() = default;
 
 }  // namespace sequencergui
