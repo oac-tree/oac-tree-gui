@@ -57,9 +57,9 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  connect(m_file_tree_view, &FileTreeView::procedureFileClicked, this,
+  connect(m_file_tree_view, &FileTreeView::ProcedureFileClicked, this,
           &ExplorerPanel::procedureFileClicked);
-  connect(m_file_tree_view, &FileTreeView::procedureFileDoubleClicked, this,
+  connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::procedureFileDoubleClicked);
   connect(m_open_documents_widget, &OpenDocumentsWidget::createNewProcedureRequest, this,
           &ExplorerPanel::createNewProcedureRequest);

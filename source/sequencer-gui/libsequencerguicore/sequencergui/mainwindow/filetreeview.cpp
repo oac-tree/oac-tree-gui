@@ -52,7 +52,7 @@ FileTreeView::FileTreeView(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_path_label(new QLabel)
 {
-  readSettings();
+  ReadSettings();
 
   m_tree_view->setModel(m_file_system_model);
   m_tree_view->setColumnHidden(1, true);
@@ -66,17 +66,18 @@ FileTreeView::FileTreeView(QWidget *parent)
   layout->addWidget(m_tree_view);
 
   m_path_label->setWordWrap(true);
-  connect(m_path_label, &QLabel::linkActivated, [this](auto link) { onLabelClick(link); });
+  connect(m_path_label, &QLabel::linkActivated, this, [this](auto link) { OnLabelClick(link); });
 
-  connect(m_tree_view, &QTreeView::doubleClicked, [this](auto index) { onTreeDoubleClick(index); });
-  connect(m_tree_view, &QTreeView::clicked, [this](auto index) { onTreeSingleClick(index); });
+  connect(m_tree_view, &QTreeView::doubleClicked, this,
+          [this](auto index) { OnTreeDoubleClick(index); });
+  connect(m_tree_view, &QTreeView::clicked, this, [this](auto index) { OnTreeSingleClick(index); });
 
   SetCurrentDir(m_current_workdir);
 }
 
 FileTreeView::~FileTreeView()
 {
-  writeSettings();
+  WriteSettings();
 }
 
 //! Sets the directory to be shown in breadcrumb, and in a file tree view.
@@ -92,14 +93,14 @@ void FileTreeView::SetCurrentDir(const QString &dirname)
 
 //! Processes click on active label with directory names embedded.
 
-void FileTreeView::onLabelClick(const QString &link)
+void FileTreeView::OnLabelClick(const QString &link)
 {
   SetCurrentDir(link);
 }
 
 //! Processed double clicks.
 
-void FileTreeView::onTreeDoubleClick(const QModelIndex &index)
+void FileTreeView::OnTreeDoubleClick(const QModelIndex &index)
 {
   QFileInfo info(m_file_system_model->filePath(index));
 
@@ -114,11 +115,11 @@ void FileTreeView::onTreeDoubleClick(const QModelIndex &index)
 
   if (IsProcedureFile(info))
   {
-    emit procedureFileDoubleClicked(info.filePath());
+    emit ProcedureFileDoubleClicked(info.filePath());
   }
 }
 
-void FileTreeView::onTreeSingleClick(const QModelIndex &index)
+void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
 {
   QFileInfo info(m_file_system_model->filePath(index));
 
@@ -127,20 +128,20 @@ void FileTreeView::onTreeSingleClick(const QModelIndex &index)
     if (m_current_xml_file != info.filePath())
     {
       m_current_xml_file = info.filePath();
-      emit procedureFileClicked(m_current_xml_file);
+      emit ProcedureFileClicked(m_current_xml_file);
     }
   }
 }
 
 //! Write widget settings to file.
-void FileTreeView::writeSettings()
+void FileTreeView::WriteSettings()
 {
   QSettings settings;
   settings.setValue(GetWorkdirSettingName(), m_current_workdir);
 }
 
 //! Reads widget settings from file.
-void FileTreeView::readSettings()
+void FileTreeView::ReadSettings()
 {
   QSettings settings;
   m_current_workdir = QDir::homePath();

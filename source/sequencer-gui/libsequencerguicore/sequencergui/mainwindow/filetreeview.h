@@ -42,15 +42,15 @@ public:
   void SetCurrentDir(const QString& dirname);
 
 signals:
-  void procedureFileClicked(const QString& filename);
-  void procedureFileDoubleClicked(const QString& filename);
+  void ProcedureFileClicked(const QString& filename);
+  void ProcedureFileDoubleClicked(const QString& filename);
 
 private:
-  void onLabelClick(const QString& link);
-  void onTreeDoubleClick(const QModelIndex& index);
-  void onTreeSingleClick(const QModelIndex& index);
-  void writeSettings();
-  void readSettings();
+  void OnLabelClick(const QString& link);
+  void OnTreeDoubleClick(const QModelIndex& index);
+  void OnTreeSingleClick(const QModelIndex& index);
+  void WriteSettings();
+  void ReadSettings();
 
   QFileSystemModel* m_file_system_model{nullptr};
   QTreeView* m_tree_view{nullptr};
