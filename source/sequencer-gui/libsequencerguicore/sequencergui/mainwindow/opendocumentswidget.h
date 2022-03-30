@@ -52,13 +52,13 @@ public:
   void SetSelectedProcedure(ProcedureItem* procedure);
 
 signals:
-  void createNewProcedureRequest();
-  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
+  void CreateNewProcedureRequest();
+  void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   void SetupToolBar();
-  void onTreeSingleClick(const QModelIndex& index);
-  void onRemoveSelectedRequest();
+  void OnTreeSingleClick(const QModelIndex& index);
+  void OnRemoveSelectedRequest();
 
   QListView* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};

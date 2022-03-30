@@ -161,16 +161,16 @@ void SequencerExplorerView::onSratchpadProcedureSelected(ProcedureItem *procedur
 
 void SequencerExplorerView::SetupConnections()
 {
-  connect(m_explorer_panel, &ExplorerPanel::procedureFileClicked, this,
+  connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
           &SequencerExplorerView::SetXMLFile);
 
-  connect(m_explorer_panel, &ExplorerPanel::procedureFileDoubleClicked, this,
+  connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
           &SequencerExplorerView::OnAddToScratchpad);
 
-  connect(m_explorer_panel, &ExplorerPanel::createNewProcedureRequest, this,
+  connect(m_explorer_panel, &ExplorerPanel::CreateNewProcedureRequest, this,
           &SequencerExplorerView::onCreateNewProcedure);
 
-  connect(m_explorer_panel, &ExplorerPanel::procedureSelected, this,
+  connect(m_explorer_panel, &ExplorerPanel::ProcedureSelected, this,
           &SequencerExplorerView::onSratchpadProcedureSelected);
 }
 

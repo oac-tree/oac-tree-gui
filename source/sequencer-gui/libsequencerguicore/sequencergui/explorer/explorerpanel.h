@@ -47,14 +47,13 @@ public:
   ProcedureItem* GetSelectedProcedure();
 
 signals:
-  void procedureFileClicked(const QString& filename);
-  void procedureFileDoubleClicked(const QString& filename);
-  void createNewProcedureRequest();
-  void procedureSelected(ProcedureItem* procedureItem);
+  void ProcedureFileClicked(const QString& filename);
+  void ProcedureFileDoubleClicked(const QString& filename);
+  void CreateNewProcedureRequest();
+  void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
-
   QSplitter* m_splitter{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
   OpenDocumentsWidget* m_open_documents_widget{nullptr};

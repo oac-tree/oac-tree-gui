@@ -59,9 +59,9 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   //  m_splitter->setSizes(QList<int>() << 400 << 200);
 
-  connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
+  connect(m_open_documents_widget, &OpenDocumentsWidget::ProcedureSelected, this,
           &ComposerPanel::procedureSelected);
-  connect(m_open_documents_widget, &OpenDocumentsWidget::createNewProcedureRequest, this,
+  connect(m_open_documents_widget, &OpenDocumentsWidget::CreateNewProcedureRequest, this,
           &ComposerPanel::createNewProcedureRequest);
 
 }

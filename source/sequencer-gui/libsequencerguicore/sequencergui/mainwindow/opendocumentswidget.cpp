@@ -49,7 +49,7 @@ OpenDocumentsWidget::OpenDocumentsWidget(QWidget *parent)
 
   SetupToolBar();
 
-  connect(m_list_view, &QListView::clicked, this, &OpenDocumentsWidget::onTreeSingleClick);
+  connect(m_list_view, &QListView::clicked, this, &OpenDocumentsWidget::OnTreeSingleClick);
 }
 
 OpenDocumentsWidget::~OpenDocumentsWidget() = default;
@@ -103,17 +103,17 @@ void OpenDocumentsWidget::SetupToolBar()
   auto new_procedure_button = new QToolButton;
   new_procedure_button->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
   connect(new_procedure_button, &QToolButton::clicked, this,
-          &OpenDocumentsWidget::createNewProcedureRequest);
+          &OpenDocumentsWidget::CreateNewProcedureRequest);
   tool_bar->AddWidget(new_procedure_button);
 
   auto remove_selected_button = new QToolButton;
   remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
   connect(remove_selected_button, &QToolButton::clicked, this,
-          &OpenDocumentsWidget::onRemoveSelectedRequest);
+          &OpenDocumentsWidget::OnRemoveSelectedRequest);
   tool_bar->AddWidget(remove_selected_button);
 }
 
-void OpenDocumentsWidget::onTreeSingleClick(const QModelIndex &index)
+void OpenDocumentsWidget::OnTreeSingleClick(const QModelIndex &index)
 {
   if (!index.isValid())
   {
@@ -123,11 +123,11 @@ void OpenDocumentsWidget::onTreeSingleClick(const QModelIndex &index)
   if (auto item = mvvm::utils::GetItemFromView<ProcedureItem>(m_view_model->itemFromIndex(index));
       item)
   {
-    emit procedureSelected(const_cast<ProcedureItem *>(item));
+    emit ProcedureSelected(const_cast<ProcedureItem *>(item));
   }
 }
 
-void OpenDocumentsWidget::onRemoveSelectedRequest()
+void OpenDocumentsWidget::OnRemoveSelectedRequest()
 {
   for (auto procedure_item : GetSelectedProcedures())
   {

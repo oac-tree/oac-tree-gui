@@ -58,13 +58,13 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   layout->addWidget(m_splitter);
 
   connect(m_file_tree_view, &FileTreeView::ProcedureFileClicked, this,
-          &ExplorerPanel::procedureFileClicked);
+          &ExplorerPanel::ProcedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
-          &ExplorerPanel::procedureFileDoubleClicked);
-  connect(m_open_documents_widget, &OpenDocumentsWidget::createNewProcedureRequest, this,
-          &ExplorerPanel::createNewProcedureRequest);
-  connect(m_open_documents_widget, &OpenDocumentsWidget::procedureSelected, this,
-          &ExplorerPanel::procedureSelected);
+          &ExplorerPanel::ProcedureFileDoubleClicked);
+  connect(m_open_documents_widget, &OpenDocumentsWidget::CreateNewProcedureRequest, this,
+          &ExplorerPanel::CreateNewProcedureRequest);
+  connect(m_open_documents_widget, &OpenDocumentsWidget::ProcedureSelected, this,
+          &ExplorerPanel::ProcedureSelected);
 }
 
 void ExplorerPanel::SetModel(SequencerModel *model)
