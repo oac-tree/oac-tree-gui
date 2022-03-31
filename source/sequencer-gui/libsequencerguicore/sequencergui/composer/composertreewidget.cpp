@@ -67,17 +67,22 @@ ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
 
 ComposerTreeWidget::~ComposerTreeWidget() = default;
 
-void ComposerTreeWidget::SetModel(SequencerModel* model, ProcedureItem* procedure)
+void ComposerTreeWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
-  m_procedure = procedure;
+}
+
+void ComposerTreeWidget::SetProcedure(ProcedureItem* procedure_item)
+{
+  // FIXME simplify after the refactoring of TopItemsTreeView
+  m_procedure = procedure_item;
 
   if (m_procedure)
   {
     m_instruction_tree->SetApplicationModel(m_model);
     m_workspace_tree->SetApplicationModel(m_model);
-    m_instruction_tree->SetRootSessionItem(procedure->GetInstructionContainer());
-    m_workspace_tree->SetRootSessionItem(procedure->GetWorkspace());
+    m_instruction_tree->SetRootSessionItem(m_procedure->GetInstructionContainer());
+    m_workspace_tree->SetRootSessionItem(m_procedure->GetWorkspace());
   }
   else
   {
@@ -86,7 +91,7 @@ void ComposerTreeWidget::SetModel(SequencerModel* model, ProcedureItem* procedur
   }
 }
 
-void ComposerTreeWidget::SetSelected(InstructionItem* instruction)
+void ComposerTreeWidget::SetSelectedInstruction(InstructionItem* instruction)
 {
   m_instruction_tree->SetSelected(instruction);
 }

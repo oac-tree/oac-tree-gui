@@ -52,18 +52,21 @@ class ComposerTreeWidget : public QWidget
 
 public:
   explicit ComposerTreeWidget(QWidget* parent = nullptr);
-  virtual ~ComposerTreeWidget() override;
+  ~ComposerTreeWidget() override;
 
-  void SetModel(SequencerModel* model, ProcedureItem* procedure);
+  void SetModel(SequencerModel* model);
 
-  void SetSelected(InstructionItem* instruction);
+  void SetProcedure(ProcedureItem* procedure_item);
+
+  void SetSelectedInstruction(InstructionItem* instruction);
+
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
 signals:
-  void InstructionSelected(InstructionItem* instruction);
+  void InstructionSelected(sequencergui::InstructionItem* instruction);
 
 private:
   void SetupConnections();

@@ -57,7 +57,9 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_model = model;
   m_composer_panel->SetModel(model);
   m_node_editor->SetModel(model, GetFirstProcedure());
-  m_composer_tree_widget->SetModel(model, GetFirstProcedure());
+
+  m_composer_tree_widget->SetModel(model);
+  m_composer_tree_widget->SetProcedure(GetFirstProcedure());
 }
 
 SequencerComposerView::~SequencerComposerView() = default;
@@ -85,7 +87,7 @@ void SequencerComposerView::SetupConnections()
   auto on_procedure_selected = [this](auto procedure_item)
   {
     m_node_editor->SetModel(m_model, procedure_item);
-    m_composer_tree_widget->SetModel(m_model, procedure_item);
+    m_composer_tree_widget->SetProcedure(procedure_item);
   };
   connect(m_composer_panel, &ComposerPanel::procedureSelected, this, on_procedure_selected);
 
