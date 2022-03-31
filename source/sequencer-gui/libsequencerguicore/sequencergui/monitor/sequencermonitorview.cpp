@@ -24,7 +24,7 @@
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/jobmanager.h"
 #include "sequencergui/monitor/monitorpanel.h"
-#include "sequencergui/monitor/monitortreewidget.h"
+#include "sequencergui/monitor/monitorrealtimewidget.h"
 #include "sequencergui/monitor/monitorworkspacewidget.h"
 
 #include "mvvm/widgets/allitemstreeview.h"

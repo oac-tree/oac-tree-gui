@@ -18,8 +18,8 @@ target_sources(${library_name} PRIVATE
   monitorpanel.h
   monitortreetoolbar.cpp
   monitortreetoolbar.h
-  monitortreewidget.cpp
-  monitortreewidget.h
+  monitorrealtimewidget.cpp
+  monitorrealtimewidget.h
   monitorworkspacetoolbar.cpp
   monitorworkspacetoolbar.h
   monitorworkspacewidget.cpp
