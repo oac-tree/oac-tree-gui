@@ -120,7 +120,11 @@ void SequencerExplorerView::SetXMLFile(const QString &file_name)
 
   if (auto result = InvokeAndCatch(on_import); result)
   {
-    m_trees_widget->SetModel(m_temp_model.get(), procedure_item);
+    m_trees_widget->SetProcedure(procedure_item);
+  }
+  else
+  {
+    m_trees_widget->SetProcedure(nullptr);
   }
   //  on_import();
   //  m_trees_widget->SetModel(m_model.get(), procedure_item);
@@ -147,15 +151,14 @@ void SequencerExplorerView::onCreateNewProcedure()
 void SequencerExplorerView::onSratchpadProcedureSelected(ProcedureItem *procedure_item)
 {
   qDebug() << "onSratchpadProcedureSelected" << procedure_item;
+  m_trees_widget->SetProcedure(nullptr);
   if (procedure_item)
   {
-    m_trees_widget->SetModel(m_model, procedure_item);
     m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
   }
   else
   {
     m_xml_editor->ClearText();
-    m_trees_widget->SetModel(nullptr, nullptr);
   }
 }
 

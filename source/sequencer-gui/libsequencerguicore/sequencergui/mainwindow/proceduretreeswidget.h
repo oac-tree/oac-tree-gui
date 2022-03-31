@@ -45,7 +45,7 @@ class ProcedureTreesWidget : public QWidget
 public:
   explicit ProcedureTreesWidget(QWidget* parent = nullptr);
 
-  void SetModel(SequencerModel* model, ProcedureItem* procedure_item = nullptr);
+  void SetProcedure(ProcedureItem* procedure_item);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};

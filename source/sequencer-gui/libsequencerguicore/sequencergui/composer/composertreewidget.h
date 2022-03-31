@@ -52,7 +52,7 @@ class ComposerTreeWidget : public QWidget
 
 public:
   explicit ComposerTreeWidget(QWidget* parent = nullptr);
-  virtual ~ComposerTreeWidget();
+  virtual ~ComposerTreeWidget() override;
 
   void SetModel(SequencerModel* model, ProcedureItem* procedure);
 
