@@ -45,7 +45,9 @@ public:
   explicit NodeEditor(Qt::ToolBarArea area = Qt::TopToolBarArea, QWidget* parent = nullptr);
   ~NodeEditor() override;
 
-  void SetModel(SequencerModel* model, ProcedureItem* procedure);
+  void SetModel(SequencerModel* model);
+
+  void SetProcedure(ProcedureItem* procedure);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 

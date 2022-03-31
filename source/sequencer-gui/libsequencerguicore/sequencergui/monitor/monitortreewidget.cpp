@@ -80,7 +80,9 @@ void MonitorTreeWidget::SetModel(SequencerModel *model, ProcedureItem *procedure
     // Was called with no procedure defined
     m_instruction_tree->SetRootSessionItem(model->GetProcedureContainer());
   }
-  m_node_editor->SetModel(model, procedure_item);
+
+  m_node_editor->SetModel(model);
+  m_node_editor->SetProcedure(procedure_item);
 }
 
 void MonitorTreeWidget::SetSelected(const InstructionItem *item)

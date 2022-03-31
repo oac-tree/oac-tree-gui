@@ -62,15 +62,18 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
 
 NodeEditor::~NodeEditor() = default;
 
-void NodeEditor::SetModel(SequencerModel *model, ProcedureItem *procedure)
+void NodeEditor::SetModel(SequencerModel *model)
 {
-  qDebug() << "NodeEditor" << model << procedure;
   m_model = model;
+}
+
+void NodeEditor::SetProcedure(ProcedureItem *procedure)
+{
   if (procedure)
   {
     auto instruction_container = procedure->GetInstructionContainer();
-    m_graphics_scene->SetContext(model, instruction_container);
-    m_scene_controller = std::make_unique<GraphicsSceneController>(model, m_graphics_scene);
+    m_graphics_scene->SetContext(m_model, instruction_container);
+    m_scene_controller = std::make_unique<GraphicsSceneController>(m_model, m_graphics_scene);
 
     auto scene_rect = m_graphics_scene->sceneRect();
     const QPointF reference_point = m_graphics_scene->sceneRect().center();
