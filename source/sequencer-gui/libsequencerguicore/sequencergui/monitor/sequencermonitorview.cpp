@@ -39,7 +39,7 @@ namespace sequencergui
 SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     : QWidget(parent)
     , m_monitor_panel(new MonitorPanel)
-    , m_tree_widget(new MonitorTreeWidget)
+    , m_tree_widget(new MonitorRealTimeWidget)
     , m_workspace_widget(new MonitorWorkspaceWidget)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
@@ -83,19 +83,19 @@ void SequencerMonitorView::SetupConnections()
   // Process request from MonitorTreeWidget to JobManager
   auto on_start = [this]()
   { m_job_manager->onStartProcedureRequest(m_monitor_panel->GetSelectedProcedure()); };
-  connect(m_tree_widget, &MonitorTreeWidget::runRequest, this, on_start);
+  connect(m_tree_widget, &MonitorRealTimeWidget::runRequest, this, on_start);
 
   // Pause request from MonitorTreeWidget to JobManager
-  connect(m_tree_widget, &MonitorTreeWidget::pauseRequest, m_job_manager,
+  connect(m_tree_widget, &MonitorRealTimeWidget::pauseRequest, m_job_manager,
           &JobManager::onPauseProcedureRequest);
 
   // Stop request from MonitorTreeWidget to JobManager
-  connect(m_tree_widget, &MonitorTreeWidget::stopRequest, m_job_manager,
+  connect(m_tree_widget, &MonitorRealTimeWidget::stopRequest, m_job_manager,
           &JobManager::onStopProcedureRequest);
 
   // Process step button click
   auto on_step = [this]() { m_job_manager->onMakeStepRequest(); };
-  connect(m_tree_widget, &MonitorTreeWidget::stepRequest, this, on_step);
+  connect(m_tree_widget, &MonitorRealTimeWidget::stepRequest, this, on_step);
 
   // Selection request from JobManager to this
   auto on_selection = [this](auto instruction)
@@ -110,7 +110,7 @@ void SequencerMonitorView::SetupConnections()
   };
   connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);
 
-  connect(m_tree_widget, &MonitorTreeWidget::changeDelayRequest, m_job_manager,
+  connect(m_tree_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);
 }
 

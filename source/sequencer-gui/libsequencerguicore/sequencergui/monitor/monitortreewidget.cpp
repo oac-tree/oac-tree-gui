@@ -36,7 +36,7 @@
 namespace sequencergui
 {
 
-MonitorTreeWidget::MonitorTreeWidget(QWidget *parent)
+MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorTreeToolBar)
     , m_splitter(new QSplitter)
@@ -65,9 +65,9 @@ MonitorTreeWidget::MonitorTreeWidget(QWidget *parent)
   SetupConnections();
 }
 
-MonitorTreeWidget::~MonitorTreeWidget() = default;
+MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
-void MonitorTreeWidget::SetProcedure(ProcedureItem *procedure_item)
+void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   if (procedure_item)
   {
@@ -83,33 +83,33 @@ void MonitorTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   }
 }
 
-void MonitorTreeWidget::SetSelectedInstruction(const InstructionItem *item)
+void MonitorRealTimeWidget::SetSelectedInstruction(const InstructionItem *item)
 {
   auto instruction = const_cast<InstructionItem *>(item);
   m_instruction_tree->SetSelected(instruction);
   m_node_editor->SetSelectedInstructions({instruction});
 }
 
-MessagePanel *MonitorTreeWidget::GetMessagePanel()
+MessagePanel *MonitorRealTimeWidget::GetMessagePanel()
 {
   return m_message_panel;
 }
 
-void MonitorTreeWidget::onAppChangeRequest(int id)
+void MonitorRealTimeWidget::onAppChangeRequest(int id)
 {
   m_stacked_widget->setCurrentIndex(id);
 }
 
-void MonitorTreeWidget::SetupConnections()
+void MonitorRealTimeWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorTreeToolBar::runRequest, this, &MonitorTreeWidget::runRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::pauseRequest, this, &MonitorTreeWidget::pauseRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::stepRequest, this, &MonitorTreeWidget::stepRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::stopRequest, this, &MonitorTreeWidget::stopRequest);
+  connect(m_tool_bar, &MonitorTreeToolBar::runRequest, this, &MonitorRealTimeWidget::runRequest);
+  connect(m_tool_bar, &MonitorTreeToolBar::pauseRequest, this, &MonitorRealTimeWidget::pauseRequest);
+  connect(m_tool_bar, &MonitorTreeToolBar::stepRequest, this, &MonitorRealTimeWidget::stepRequest);
+  connect(m_tool_bar, &MonitorTreeToolBar::stopRequest, this, &MonitorRealTimeWidget::stopRequest);
   connect(m_tool_bar, &MonitorTreeToolBar::changeDelayRequest, this,
-          &MonitorTreeWidget::changeDelayRequest);
+          &MonitorRealTimeWidget::changeDelayRequest);
   connect(m_tool_bar, &MonitorTreeToolBar::appChangeRequest, this,
-          &MonitorTreeWidget::onAppChangeRequest);
+          &MonitorRealTimeWidget::onAppChangeRequest);
 }
 
 }  // namespace sequencergui

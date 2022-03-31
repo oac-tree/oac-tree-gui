@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MONITORTREEWIDGET_H
-#define SEQUENCERGUI_MONITOR_MONITORTREEWIDGET_H
+#ifndef SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
+#define SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
 
 #include <QWidget>
 
@@ -42,13 +42,13 @@ class NodeEditor;
 
 //! Central panel on SequencerMonitorView.
 
-class MonitorTreeWidget : public QWidget
+class MonitorRealTimeWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit MonitorTreeWidget(QWidget* parent = nullptr);
-  ~MonitorTreeWidget() override;
+  explicit MonitorRealTimeWidget(QWidget* parent = nullptr);
+  ~MonitorRealTimeWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
@@ -80,4 +80,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MONITORTREEWIDGET_H
+#endif  // SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H

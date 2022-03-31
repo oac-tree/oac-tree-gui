@@ -29,7 +29,7 @@ namespace sequencergui
 class SequencerModel;
 class MonitorPanel;
 class MonitorWorkspaceWidget;
-class MonitorTreeWidget;
+class MonitorRealTimeWidget;
 class JobManager;
 class ProcedureItem;
 
@@ -52,7 +52,7 @@ private:
   ProcedureItem* GetFirstProcedure();
 
   MonitorPanel* m_monitor_panel{nullptr};
-  MonitorTreeWidget* m_tree_widget{nullptr};
+  MonitorRealTimeWidget* m_tree_widget{nullptr};
   MonitorWorkspaceWidget* m_workspace_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};
