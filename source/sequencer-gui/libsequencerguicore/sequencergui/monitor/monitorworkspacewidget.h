@@ -46,7 +46,7 @@ public:
   explicit MonitorWorkspaceWidget(QWidget* parent = nullptr);
   ~MonitorWorkspaceWidget() override;
 
-  void SetModel(SequencerModel* model, ProcedureItem* procedure_item);
+  void SetProcedure(ProcedureItem* procedure_item);
 
 private:
   MonitorWorkspaceToolBar* m_tool_bar{nullptr};
