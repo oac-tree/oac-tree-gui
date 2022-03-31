@@ -34,7 +34,7 @@ class ItemsTreeView;
 namespace sequencergui
 {
 class SequencerModel;
-class MonitorTreeToolBar;
+class MonitorRealTimeToolBar;
 class InstructionItem;
 class ProcedureItem;
 class MessagePanel;
@@ -68,7 +68,7 @@ signals:
 private:
   void SetupConnections();
 
-  MonitorTreeToolBar* m_tool_bar{nullptr};
+  MonitorRealTimeToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
 
   QStackedWidget* m_stacked_widget{nullptr};

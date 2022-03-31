@@ -38,7 +38,7 @@ namespace sequencergui
 
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new MonitorTreeToolBar)
+    , m_tool_bar(new MonitorRealTimeToolBar)
     , m_splitter(new QSplitter)
     , m_stacked_widget(new QStackedWidget)
     , m_instruction_tree(new mvvm::ItemsTreeView)
@@ -102,13 +102,13 @@ void MonitorRealTimeWidget::onAppChangeRequest(int id)
 
 void MonitorRealTimeWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorTreeToolBar::runRequest, this, &MonitorRealTimeWidget::runRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::pauseRequest, this, &MonitorRealTimeWidget::pauseRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::stepRequest, this, &MonitorRealTimeWidget::stepRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::stopRequest, this, &MonitorRealTimeWidget::stopRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::changeDelayRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this, &MonitorRealTimeWidget::runRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this, &MonitorRealTimeWidget::pauseRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this, &MonitorRealTimeWidget::stepRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this, &MonitorRealTimeWidget::stopRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
           &MonitorRealTimeWidget::changeDelayRequest);
-  connect(m_tool_bar, &MonitorTreeToolBar::appChangeRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::appChangeRequest, this,
           &MonitorRealTimeWidget::onAppChangeRequest);
 }
 

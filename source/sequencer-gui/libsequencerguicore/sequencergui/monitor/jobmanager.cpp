@@ -35,7 +35,7 @@ namespace sequencergui
 {
 
 JobManager::JobManager(QObject *parent)
-    : QObject(parent), m_current_delay(MonitorTreeToolBar::GetDefaultDelay())
+    : QObject(parent), m_current_delay(MonitorRealTimeToolBar::GetDefaultDelay())
 {
 }
 

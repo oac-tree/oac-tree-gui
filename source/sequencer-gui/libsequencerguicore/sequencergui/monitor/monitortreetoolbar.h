@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H
-#define SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H
+#ifndef SEQUENCERGUI_MONITOR_MONITORREALTIMETOOLBAR_H
+#define SEQUENCERGUI_MONITOR_MONITORREALTIMETOOLBAR_H
 
 #include <QToolBar>
 #include <memory>
@@ -29,15 +29,15 @@ class QMenu;
 
 namespace sequencergui
 {
-//! A toolbar on top of MonitorTreeWidget with control elements to start/stop execution.
+//! A toolbar on top of MonitorRealTimeWidget with control elements to start/stop execution.
 
-class MonitorTreeToolBar : public QToolBar
+class MonitorRealTimeToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
-  explicit MonitorTreeToolBar(QWidget* parent = nullptr);
-  ~MonitorTreeToolBar() override;
+  explicit MonitorRealTimeToolBar(QWidget* parent = nullptr);
+  ~MonitorRealTimeToolBar() override;
 
   static int GetDefaultDelay();
 
@@ -66,4 +66,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MONITORTREETOOLBAR_H
+#endif  // SEQUENCERGUI_MONITOR_MONITORREALTIMETOOLBAR_H

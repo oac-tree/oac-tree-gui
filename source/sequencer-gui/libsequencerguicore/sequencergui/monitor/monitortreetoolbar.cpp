@@ -43,7 +43,7 @@ QString GetDelayText(int delay)
 
 namespace sequencergui
 {
-MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
+MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
     : QToolBar(parent)
     , m_run_button(new QToolButton)
     , m_pause_button(new QToolButton)
@@ -59,28 +59,28 @@ MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
   m_run_button->setIcon(StyleUtils::GetIcon("arrow-right-drop-circle-outline.svg"));
   m_run_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_run_button->setToolTip("Run procedure");
-  connect(m_run_button, &QToolButton::clicked, this, &MonitorTreeToolBar::runRequest);
+  connect(m_run_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::runRequest);
   addWidget(m_run_button);
 
   m_pause_button->setText("Pause");
   m_pause_button->setIcon(StyleUtils::GetIcon("pause-circle-outline.svg"));
   m_pause_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pause_button->setToolTip("Pause sequence at the next occasion");
-  connect(m_pause_button, &QToolButton::clicked, this, &MonitorTreeToolBar::pauseRequest);
+  connect(m_pause_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::pauseRequest);
   addWidget(m_pause_button);
 
   m_step_button->setText("Step");
   m_step_button->setIcon(StyleUtils::GetIcon("play-pause.svg"));
   m_step_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_step_button->setToolTip("Pause sequence at the next occasion");
-  connect(m_step_button, &QToolButton::clicked, this, &MonitorTreeToolBar::stepRequest);
+  connect(m_step_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stepRequest);
   addWidget(m_step_button);
 
   m_stop_button->setText("Stop");
   m_stop_button->setIcon(StyleUtils::GetIcon("stop-circle-outline.svg"));
   m_stop_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_stop_button->setToolTip("Stop procedure");
-  connect(m_stop_button, &QToolButton::clicked, this, &MonitorTreeToolBar::stopRequest);
+  connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_stop_button);
 
   addSeparator();
@@ -91,20 +91,20 @@ MonitorTreeToolBar::MonitorTreeToolBar(QWidget *parent)
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
   m_delay_button->setMenu(m_delay_menu.get());
   m_delay_button->setPopupMode(QToolButton::InstantPopup);
-  connect(m_stop_button, &QToolButton::clicked, this, &MonitorTreeToolBar::stopRequest);
+  connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_delay_button);
 
   AddDotsMenu();
 }
 
-int MonitorTreeToolBar::GetDefaultDelay()
+int MonitorRealTimeToolBar::GetDefaultDelay()
 {
   return default_delay;
 }
 
-MonitorTreeToolBar::~MonitorTreeToolBar() = default;
+MonitorRealTimeToolBar::~MonitorRealTimeToolBar() = default;
 
-void MonitorTreeToolBar::AddDotsMenu()
+void MonitorRealTimeToolBar::AddDotsMenu()
 {
   InsertStrech();
 
@@ -117,14 +117,14 @@ void MonitorTreeToolBar::AddDotsMenu()
   addWidget(button);
 }
 
-void MonitorTreeToolBar::InsertStrech()
+void MonitorRealTimeToolBar::InsertStrech()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   addWidget(empty);
 }
 
-std::unique_ptr<QMenu> MonitorTreeToolBar::CreateDelayMenu()
+std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
 {
   const std::vector<int> delay_values = {0, 10, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
 
@@ -147,7 +147,7 @@ std::unique_ptr<QMenu> MonitorTreeToolBar::CreateDelayMenu()
 
 //! Returns menu for "dots" button for widget selection.
 
-std::unique_ptr<QMenu> MonitorTreeToolBar::CreateAppMenu()
+std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateAppMenu()
 {
   auto result = std::make_unique<QMenu>();
   QStringList app_names = {"Tree", "NodeEditor"};
