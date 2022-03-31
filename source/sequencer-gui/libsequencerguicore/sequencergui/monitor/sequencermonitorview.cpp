@@ -73,7 +73,7 @@ void SequencerMonitorView::SetModel(SequencerModel *model)
 
   if (auto context = m_job_manager->GetCurrentContext(); context)
   {
-    m_tree_widget->SetModel(context->GetExpandedModel(), context->GetExpandedProcedure());
+    m_tree_widget->SetProcedure(context->GetExpandedProcedure());
     m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
   }
 }
@@ -98,14 +98,14 @@ void SequencerMonitorView::SetupConnections()
   connect(m_tree_widget, &MonitorTreeWidget::stepRequest, this, on_step);
 
   // Selection request from JobManager to this
-  auto on_selection = [this](auto instruction) { m_tree_widget->SetSelected(instruction); };
+  auto on_selection = [this](auto instruction)
+  { m_tree_widget->SetSelectedInstruction(instruction); };
   connect(m_job_manager, &JobManager::InstructionStatusChanged, this, on_selection);
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
     m_job_manager->SetCurrentProcedure(procedure_item);
-    m_tree_widget->SetModel(m_job_manager->GetCurrentContext()->GetExpandedModel(),
-                            m_job_manager->GetCurrentContext()->GetExpandedProcedure());
+    m_tree_widget->SetProcedure(m_job_manager->GetCurrentContext()->GetExpandedProcedure());
     m_workspace_widget->SetProcedure(m_job_manager->GetCurrentContext()->GetExpandedProcedure());
   };
   connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);

@@ -67,25 +67,23 @@ MonitorTreeWidget::MonitorTreeWidget(QWidget *parent)
 
 MonitorTreeWidget::~MonitorTreeWidget() = default;
 
-void MonitorTreeWidget::SetModel(SequencerModel *model, ProcedureItem *procedure_item)
+void MonitorTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_instruction_tree->SetViewModel(std::make_unique<InstructionViewModel>(model));
   if (procedure_item)
   {
-    // Showing instructiont tree of the given procedure.
+    auto model = dynamic_cast<SequencerModel*>(procedure_item->GetModel());
+    m_instruction_tree->SetViewModel(std::make_unique<InstructionViewModel>(model));
     m_instruction_tree->SetRootSessionItem(procedure_item->GetInstructionContainer());
+    m_node_editor->SetModel(model);
+    m_node_editor->SetProcedure(procedure_item);
   }
   else
   {
-    // Was called with no procedure defined
-    m_instruction_tree->SetRootSessionItem(model->GetProcedureContainer());
+    m_instruction_tree->Reset();
   }
-
-  m_node_editor->SetModel(model);
-  m_node_editor->SetProcedure(procedure_item);
 }
 
-void MonitorTreeWidget::SetSelected(const InstructionItem *item)
+void MonitorTreeWidget::SetSelectedInstruction(const InstructionItem *item)
 {
   auto instruction = const_cast<InstructionItem *>(item);
   m_instruction_tree->SetSelected(instruction);

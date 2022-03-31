@@ -50,9 +50,9 @@ public:
   explicit MonitorTreeWidget(QWidget* parent = nullptr);
   ~MonitorTreeWidget() override;
 
-  void SetModel(SequencerModel* model, ProcedureItem* procedure_item);
+  void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelected(const InstructionItem* item);
+  void SetSelectedInstruction(const InstructionItem* item);
 
   MessagePanel* GetMessagePanel();
 
