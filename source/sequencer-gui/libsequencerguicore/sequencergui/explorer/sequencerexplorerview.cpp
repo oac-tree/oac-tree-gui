@@ -32,9 +32,20 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QMessageBox>
 #include <QSplitter>
 #include <QVBoxLayout>
+
+namespace
+{
+bool PopulateProcedureFromXmlFile(const QString &file_name,
+                                  sequencergui::ProcedureItem *procedure_item)
+{
+  auto on_import = [file_name, procedure_item]()
+  { ImportFromFile(file_name.toStdString(), procedure_item); };
+  return sequencergui::InvokeAndCatch(on_import);
+}
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -80,20 +91,15 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
 }
 
 //! Show content of XML file.
-//! - Show XML in corresponding editor.
-//! - Generates temporary Procedure from XML and show object tree.
 void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 {
+  // show content in XML editor
   m_xml_editor->SetXMLFile(file_name);
 
+  // Generates temporary Procedure from XML and show object tree.
   m_temp_model = std::make_unique<SequencerModel>();
-
   auto procedure_item = m_temp_model->InsertItem<ProcedureItem>();
-
-  auto on_import = [file_name, procedure_item]()
-  { ImportFromFile(file_name.toStdString(), procedure_item); };
-
-  if (auto result = InvokeAndCatch(on_import); result)
+  if (PopulateProcedureFromXmlFile(file_name, procedure_item))
   {
     m_trees_widget->SetProcedure(procedure_item);
   }
@@ -101,8 +107,6 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
   {
     m_trees_widget->SetProcedure(nullptr);
   }
-  //  on_import();
-  //  m_trees_widget->SetModel(m_model.get(), procedure_item);
 }
 
 //! Show selected procedure in widgets.
@@ -110,7 +114,6 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 //! - Show object tree in widgets.
 void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
 {
-  qDebug() << "onSratchpadProcedureSelected" << procedure_item;
   if (procedure_item)
   {
     m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
@@ -123,18 +126,6 @@ void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
   }
 }
 
-//! Import procedure from file and add it to the container.
-
-void SequencerExplorerView::ImportProcedureFromFile(const QString &file_name)
-{
-  auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-  qDebug() << "inserting new procedure" << procedure_item;
-
-  auto on_import = [file_name, procedure_item]()
-  { ImportFromFile(file_name.toStdString(), procedure_item); };
-  InvokeAndCatch(on_import);
-}
-
 void SequencerExplorerView::CreateNewProcedure()
 {
   auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
@@ -145,8 +136,13 @@ void SequencerExplorerView::SetupConnections()
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
           &SequencerExplorerView::ShowXMLFile);
 
+  auto import_procedure_from_file = [this](auto file_name)
+  {
+    auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
+    PopulateProcedureFromXmlFile(file_name, procedure_item);
+  };
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
-          &SequencerExplorerView::ImportProcedureFromFile);
+          import_procedure_from_file);
 
   connect(m_explorer_panel, &ExplorerPanel::CreateNewProcedureRequest, this,
           &SequencerExplorerView::CreateNewProcedure);

@@ -46,8 +46,6 @@ public:
 
   void ShowSelectedProcedure(ProcedureItem* procedure_item);
 
-  void ImportProcedureFromFile(const QString& file_name);
-
   void CreateNewProcedure();
 
 private:
