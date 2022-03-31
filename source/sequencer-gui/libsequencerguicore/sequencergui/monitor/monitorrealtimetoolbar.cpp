@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitortreetoolbar.h"
+#include "sequencergui/monitor/monitorrealtimetoolbar.h"
 
 #include "sequencergui/mainwindow/styleutils.h"
 

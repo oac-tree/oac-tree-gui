@@ -23,7 +23,7 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/instructionviewmodel.h"
 #include "sequencergui/monitor/messagepanel.h"
-#include "sequencergui/monitor/monitortreetoolbar.h"
+#include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
 #include "mvvm/widgets/topitemstreeview.h"
@@ -71,7 +71,7 @@ void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   if (procedure_item)
   {
-    auto model = dynamic_cast<SequencerModel*>(procedure_item->GetModel());
+    auto model = dynamic_cast<SequencerModel *>(procedure_item->GetModel());
     m_instruction_tree->SetViewModel(std::make_unique<InstructionViewModel>(model));
     m_instruction_tree->SetRootSessionItem(procedure_item->GetInstructionContainer());
     m_node_editor->SetModel(model);
@@ -102,10 +102,14 @@ void MonitorRealTimeWidget::onAppChangeRequest(int id)
 
 void MonitorRealTimeWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this, &MonitorRealTimeWidget::runRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this, &MonitorRealTimeWidget::pauseRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this, &MonitorRealTimeWidget::stepRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this, &MonitorRealTimeWidget::stopRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this,
+          &MonitorRealTimeWidget::runRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this,
+          &MonitorRealTimeWidget::pauseRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this,
+          &MonitorRealTimeWidget::stepRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this,
+          &MonitorRealTimeWidget::stopRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
           &MonitorRealTimeWidget::changeDelayRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::appChangeRequest, this,

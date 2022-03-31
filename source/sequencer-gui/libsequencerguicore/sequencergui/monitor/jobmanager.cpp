@@ -24,7 +24,7 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/messagepanel.h"
-#include "sequencergui/monitor/monitortreetoolbar.h"
+#include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/monitor/usercontext.h"
 #include "sequencergui/utils/widgetutils.h"
 
@@ -195,7 +195,7 @@ JobContext *JobManager::CreateContext()
 
   context->SetUserContext({on_user_input, on_user_choice});
 
-  InvokeAndCatch([context](){context->onPrepareJobRequest();});
+  InvokeAndCatch([context]() { context->onPrepareJobRequest(); });
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
   m_context_map.insert({m_current_procedure, context});
