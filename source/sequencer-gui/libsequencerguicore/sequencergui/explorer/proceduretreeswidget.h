@@ -18,7 +18,7 @@
  *****************************************************************************/
 
 #ifndef SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H
-#define SEQUENCERGUI_MAINWINDOW_PROCEDURETREESWIDGET_H
+#define SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H
 
 #include <QWidget>
 
@@ -55,4 +55,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURETREESWIDGET_H
+#endif  // SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H

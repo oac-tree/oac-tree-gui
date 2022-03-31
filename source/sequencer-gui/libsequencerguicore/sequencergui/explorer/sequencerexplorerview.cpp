@@ -36,36 +36,6 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-namespace
-{
-//! Wraps user method in try/catch and invoke it.
-//! Provides busy-sign while executing, and warning dialog on exception catch.
-template <typename T>
-bool invoke_and_catch(T method)
-{
-  bool is_success{false};
-  QApplication::setOverrideCursor(Qt::WaitCursor);
-  try
-  {
-    std::invoke(method);
-    QApplication::restoreOverrideCursor();
-    is_success = true;
-  }
-  catch (const std::exception &ex)
-  {
-    QApplication::restoreOverrideCursor();
-    QMessageBox msgBox;
-
-    QString message =
-        QString("Exception was thrown while trying to load file \n\n%1").arg(ex.what());
-    msgBox.setText(message);
-    msgBox.setIcon(msgBox.Critical);
-    msgBox.exec();
-  }
-  return is_success;
-}
-}  // namespace
-
 namespace sequencergui
 {
 SequencerExplorerView::SequencerExplorerView(QWidget *parent)
@@ -91,11 +61,14 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
 
 SequencerExplorerView::~SequencerExplorerView() = default;
 
+//! Sets the model.
 void SequencerExplorerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_explorer_panel->SetModel(model);
 
+  // Provide regeneration of XML text corresponding to the currently opened procedure, on every
+  // change in the model.
   auto on_data_change = [this](auto, auto)
   {
     if (auto procedure_item = m_explorer_panel->GetSelectedProcedure(); procedure_item)
@@ -106,7 +79,10 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
   m_model->GetSubscriber()->SetOnDataChanged(on_data_change);
 }
 
-void SequencerExplorerView::SetXMLFile(const QString &file_name)
+//! Show content of XML file.
+//! - Show XML in corresponding editor.
+//! - Generates temporary Procedure from XML and show object tree.
+void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 {
   m_xml_editor->SetXMLFile(file_name);
 
@@ -129,51 +105,54 @@ void SequencerExplorerView::SetXMLFile(const QString &file_name)
   //  m_trees_widget->SetModel(m_model.get(), procedure_item);
 }
 
-//! The procedure with given name with be added to procedure container.
+//! Show selected procedure in widgets.
+//! - Generates XML representing a procedure and show it in editor.
+//! - Show object tree in widgets.
+void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
+{
+  qDebug() << "onSratchpadProcedureSelected" << procedure_item;
+  if (procedure_item)
+  {
+    m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
+    m_trees_widget->SetProcedure(procedure_item);
+  }
+  else
+  {
+    m_xml_editor->ClearText();
+    m_trees_widget->SetProcedure(nullptr);
+  }
+}
 
-void SequencerExplorerView::OnAddToScratchpad(const QString &file_name)
+//! Import procedure from file and add it to the container.
+
+void SequencerExplorerView::ImportProcedureFromFile(const QString &file_name)
 {
   auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
   qDebug() << "inserting new procedure" << procedure_item;
 
   auto on_import = [file_name, procedure_item]()
   { ImportFromFile(file_name.toStdString(), procedure_item); };
-  invoke_and_catch(on_import);
+  InvokeAndCatch(on_import);
 }
 
-void SequencerExplorerView::onCreateNewProcedure()
+void SequencerExplorerView::CreateNewProcedure()
 {
   auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-  qDebug() << "inserting new procedure" << procedure_item;
-}
-
-void SequencerExplorerView::onSratchpadProcedureSelected(ProcedureItem *procedure_item)
-{
-  qDebug() << "onSratchpadProcedureSelected" << procedure_item;
-  m_trees_widget->SetProcedure(nullptr);
-  if (procedure_item)
-  {
-    m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
-  }
-  else
-  {
-    m_xml_editor->ClearText();
-  }
 }
 
 void SequencerExplorerView::SetupConnections()
 {
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
-          &SequencerExplorerView::SetXMLFile);
+          &SequencerExplorerView::ShowXMLFile);
 
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
-          &SequencerExplorerView::OnAddToScratchpad);
+          &SequencerExplorerView::ImportProcedureFromFile);
 
   connect(m_explorer_panel, &ExplorerPanel::CreateNewProcedureRequest, this,
-          &SequencerExplorerView::onCreateNewProcedure);
+          &SequencerExplorerView::CreateNewProcedure);
 
   connect(m_explorer_panel, &ExplorerPanel::ProcedureSelected, this,
-          &SequencerExplorerView::onSratchpadProcedureSelected);
+          &SequencerExplorerView::ShowSelectedProcedure);
 }
 
 }  // namespace sequencergui

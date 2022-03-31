@@ -42,13 +42,13 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  void SetXMLFile(const QString& file_name);
+  void ShowXMLFile(const QString& file_name);
 
-  void OnAddToScratchpad(const QString& file_name);
+  void ShowSelectedProcedure(ProcedureItem* procedure_item);
 
-  void onCreateNewProcedure();
+  void ImportProcedureFromFile(const QString& file_name);
 
-  void onSratchpadProcedureSelected(ProcedureItem* procedure_item);
+  void CreateNewProcedure();
 
 private:
   void SetupConnections();
