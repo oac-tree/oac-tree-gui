@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURETREESWIDGET_H
+#ifndef SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H
 #define SEQUENCERGUI_MAINWINDOW_PROCEDURETREESWIDGET_H
 
 #include <QWidget>

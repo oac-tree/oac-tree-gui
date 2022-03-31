@@ -20,8 +20,8 @@
 #include "sequencergui/explorer/sequencerexplorerview.h"
 
 #include "sequencergui/explorer/explorerpanel.h"
+#include "sequencergui/explorer/proceduretreeswidget.h"
 #include "sequencergui/explorer/xmleditor.h"
-#include "sequencergui/mainwindow/proceduretreeswidget.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/xmlutils.h"
@@ -110,7 +110,6 @@ void SequencerExplorerView::SetXMLFile(const QString &file_name)
 {
   m_xml_editor->SetXMLFile(file_name);
 
-  m_trees_widget->SetModel(nullptr);
   m_temp_model = std::make_unique<SequencerModel>();
 
   auto procedure_item = m_temp_model->InsertItem<ProcedureItem>();

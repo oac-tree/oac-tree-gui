@@ -15,8 +15,6 @@ target_sources(${library_name} PRIVATE
   opendocumentswidget.h
   paneltoolbar.cpp
   paneltoolbar.h
-  proceduretreeswidget.cpp
-  proceduretreeswidget.h
   projecthandler.cpp
   projecthandler.h
   recentprojectsettings.cpp
