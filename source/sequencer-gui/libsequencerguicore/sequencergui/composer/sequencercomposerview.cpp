@@ -25,6 +25,8 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
+#include <QDebug>
+#include <QShowEvent>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -56,12 +58,19 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_composer_panel->SetModel(model);
-
   m_node_editor->SetModel(model);
-  m_node_editor->SetProcedure(GetFirstProcedure());
-
   m_composer_tree_widget->SetModel(model);
-  m_composer_tree_widget->SetProcedure(GetFirstProcedure());
+}
+
+void SequencerComposerView::showEvent(QShowEvent *event)
+{
+  Q_UNUSED(event);
+  qDebug() << "Show event" << m_composer_panel->GetSelectedProcedure();
+  if (!m_composer_panel->GetSelectedProcedure())
+  {
+    qDebug() << "Show even GetFirstProceduret" << GetFirstProcedure();
+    m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
+  }
 }
 
 SequencerComposerView::~SequencerComposerView() = default;
@@ -88,14 +97,15 @@ void SequencerComposerView::SetupConnections()
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
+    qDebug() << "Show on_procedure_selected" << procedure_item;
     m_node_editor->SetProcedure(procedure_item);
     m_composer_tree_widget->SetProcedure(procedure_item);
   };
-  connect(m_composer_panel, &ComposerPanel::procedureSelected, this, on_procedure_selected);
+  connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
 
   auto on_create_procedure = [this]()
   { auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer()); };
-  connect(m_composer_panel, &ComposerPanel::createNewProcedureRequest, this, on_create_procedure);
+  connect(m_composer_panel, &ComposerPanel::CreateNewProcedureRequest, this, on_create_procedure);
 }
 
 //! Returns first procedure from the procedure container, if exist.

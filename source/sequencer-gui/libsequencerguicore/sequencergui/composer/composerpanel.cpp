@@ -21,8 +21,8 @@
 
 #include "sequencergui/composer/instructionpanel.h"
 #include "sequencergui/composer/workspacepanel.h"
-#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/mainwindow/opendocumentswidget.h"
+#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/nodeeditor/instructionlistwidget.h"
 
@@ -60,10 +60,9 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   //  m_splitter->setSizes(QList<int>() << 400 << 200);
 
   connect(m_open_documents_widget, &OpenDocumentsWidget::ProcedureSelected, this,
-          &ComposerPanel::procedureSelected);
+          &ComposerPanel::ProcedureSelected);
   connect(m_open_documents_widget, &OpenDocumentsWidget::CreateNewProcedureRequest, this,
-          &ComposerPanel::createNewProcedureRequest);
-
+          &ComposerPanel::CreateNewProcedureRequest);
 }
 
 ComposerPanel::~ComposerPanel() = default;
@@ -71,6 +70,16 @@ ComposerPanel::~ComposerPanel() = default;
 void ComposerPanel::SetModel(SequencerModel *model)
 {
   m_open_documents_widget->SetModel(model);
+}
+
+ProcedureItem *ComposerPanel::GetSelectedProcedure()
+{
+  return m_open_documents_widget->GetSelectedProcedure();
+}
+
+void ComposerPanel::SetSelectedProcedure(ProcedureItem *procedure)
+{
+  return m_open_documents_widget->SetSelectedProcedure(procedure);
 }
 
 }  // namespace sequencergui

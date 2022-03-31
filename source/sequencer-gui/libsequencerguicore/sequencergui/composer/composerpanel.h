@@ -47,9 +47,13 @@ public:
 
   void SetModel(SequencerModel* model);
 
+  ProcedureItem* GetSelectedProcedure();
+
+  void SetSelectedProcedure(ProcedureItem* procedure);
+
 signals:
-  void createNewProcedureRequest();
-  void procedureSelected(ProcedureItem* procedureItem);
+  void CreateNewProcedureRequest();
+  void ProcedureSelected(ProcedureItem* procedureItem);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};

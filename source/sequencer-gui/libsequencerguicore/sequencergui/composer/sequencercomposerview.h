@@ -24,6 +24,7 @@
 #include <memory>
 
 class QSplitter;
+class QShowEvent;
 
 namespace sequencergui
 {
@@ -46,6 +47,9 @@ public:
   ~SequencerComposerView() override;
 
   void SetModel(SequencerModel* model);
+
+protected:
+  virtual void showEvent(QShowEvent*event) override;
 
 private:
   void SetupConnections();
