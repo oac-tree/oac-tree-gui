@@ -21,7 +21,7 @@
 
 #include "sequencergui/composer/instructionpanel.h"
 #include "sequencergui/composer/workspacepanel.h"
-#include "sequencergui/mainwindow/opendocumentswidget.h"
+#include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/nodeeditor/instructionlistwidget.h"

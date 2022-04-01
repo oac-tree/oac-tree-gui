@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/opendocumentswidget.h"
+#include "sequencergui/mainwindow/procedurelistview.h"
 
 #include "sequencergui/mainwindow/collapsibletoolbar.h"
 #include "sequencergui/mainwindow/styleutils.h"

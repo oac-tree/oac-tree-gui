@@ -11,12 +11,12 @@ target_sources(${library_name} PRIVATE
   filetreeview.h
   mainwindow.cpp
   mainwindow.h
-  opendocumentswidget.cpp
-  opendocumentswidget.h
   paneltoolbar.cpp
   paneltoolbar.h
   projecthandler.cpp
   projecthandler.h
+  procedurelistview.cpp
+  procedurelistview.h
   recentprojectsettings.cpp
   recentprojectsettings.h
   settingsview.cpp
