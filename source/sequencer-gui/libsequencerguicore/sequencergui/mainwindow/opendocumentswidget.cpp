@@ -29,12 +29,14 @@
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
+#include <QItemSelectionModel>
 #include <QLabel>
 #include <QListView>
 #include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QDebug>
 
 namespace sequencergui
 {
@@ -49,7 +51,10 @@ OpenDocumentsWidget::OpenDocumentsWidget(QWidget *parent)
 
   SetupToolBar();
 
-  connect(m_list_view, &QListView::clicked, this, &OpenDocumentsWidget::OnTreeSingleClick);
+  connect(m_list_view, &QListView::clicked, this, &OpenDocumentsWidget::OnSingleClick);
+//  connect(m_list_view->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+//          &OpenDocumentsWidget::OnSelectionChanged);
+  qDebug() << m_list_view->selectionModel();
 }
 
 OpenDocumentsWidget::~OpenDocumentsWidget() = default;
@@ -70,6 +75,7 @@ ProcedureItem *OpenDocumentsWidget::GetSelectedProcedure()
 
 void OpenDocumentsWidget::SetSelectedProcedure(ProcedureItem *procedure)
 {
+  qDebug() << "xxx " << m_list_view->selectionModel() << procedure;
   auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
   if (!indexes.empty())
   {
@@ -113,7 +119,7 @@ void OpenDocumentsWidget::SetupToolBar()
   tool_bar->AddWidget(remove_selected_button);
 }
 
-void OpenDocumentsWidget::OnTreeSingleClick(const QModelIndex &index)
+void OpenDocumentsWidget::OnSingleClick(const QModelIndex &index)
 {
   if (!index.isValid())
   {
@@ -123,7 +129,7 @@ void OpenDocumentsWidget::OnTreeSingleClick(const QModelIndex &index)
   if (auto item = mvvm::utils::GetItemFromView<ProcedureItem>(m_view_model->itemFromIndex(index));
       item)
   {
-    emit ProcedureSelected(const_cast<ProcedureItem *>(item));
+    emit ProcedureClicked(const_cast<ProcedureItem *>(item));
   }
 }
 
@@ -132,6 +138,20 @@ void OpenDocumentsWidget::OnRemoveSelectedRequest()
   for (auto procedure_item : GetSelectedProcedures())
   {
     m_model->RemoveItem(procedure_item);
+  }
+}
+
+void OpenDocumentsWidget::OnSelectionChanged(const QItemSelection &,
+                                             const QItemSelection &deselected)
+{
+  if (GetSelectedProcedures().empty())  // selections has gone
+  {
+    emit ProcedureSelected(nullptr);
+    return;
+  }
+  for (auto item : GetSelectedProcedures())
+  {
+    emit ProcedureSelected(item);
   }
 }
 

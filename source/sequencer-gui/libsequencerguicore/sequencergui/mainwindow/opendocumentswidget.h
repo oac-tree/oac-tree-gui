@@ -28,6 +28,7 @@ class ViewModel;
 }
 
 class QListView;
+class QItemSelection;
 
 namespace sequencergui
 {
@@ -53,12 +54,14 @@ public:
 
 signals:
   void CreateNewProcedureRequest();
+  void ProcedureClicked(sequencergui::ProcedureItem* procedureItem);
   void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   void SetupToolBar();
-  void OnTreeSingleClick(const QModelIndex& index);
+  void OnSingleClick(const QModelIndex& index);
   void OnRemoveSelectedRequest();
+  void OnSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
   QListView* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};
