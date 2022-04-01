@@ -40,6 +40,7 @@ class JobManagerTest : public ::testing::Test
 public:
   JobManagerTest() : m_model(std::make_unique<SequencerModel>())
   {
+    qRegisterMetaType<InstructionItem*>("InstructionItem*");
     SetupCopyProcedure();
     SetupIncludeProcedure();
   }

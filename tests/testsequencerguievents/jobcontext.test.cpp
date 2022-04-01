@@ -44,6 +44,11 @@ using msec = std::chrono::milliseconds;
 class JobContextTest : public ::testing::Test
 {
 public:
+  JobContextTest()
+  {
+    qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
+  }
+
   //! Creates invalid procedure that will cause JobContext to crash during the preparation.
   static ProcedureItem* CreateInvalidProcedure(SequencerModel* model)
   {
