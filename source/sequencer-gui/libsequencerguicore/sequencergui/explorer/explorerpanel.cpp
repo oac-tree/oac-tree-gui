@@ -36,7 +36,7 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
     , m_tool_bar(new PanelToolBar)
     , m_splitter(new QSplitter)
     , m_file_tree_view(new FileTreeView)
-    , m_open_documents_widget(new OpenDocumentsWidget)
+    , m_open_documents_widget(new ProcedureListView)
 {
   m_tool_bar->setText("EXPLORER");
 
@@ -61,9 +61,9 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
           &ExplorerPanel::ProcedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
-  connect(m_open_documents_widget, &OpenDocumentsWidget::CreateNewProcedureRequest, this,
+  connect(m_open_documents_widget, &ProcedureListView::CreateNewProcedureRequest, this,
           &ExplorerPanel::CreateNewProcedureRequest);
-  connect(m_open_documents_widget, &OpenDocumentsWidget::ProcedureSelected, this,
+  connect(m_open_documents_widget, &ProcedureListView::ProcedureSelected, this,
           &ExplorerPanel::ProcedureSelected);
 }
 

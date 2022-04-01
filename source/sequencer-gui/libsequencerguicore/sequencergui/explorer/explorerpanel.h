@@ -28,7 +28,7 @@ namespace sequencergui
 {
 class FileTreeView;
 class PanelToolBar;
-class OpenDocumentsWidget;
+class ProcedureListView;
 class SequencerModel;
 class ProcedureItem;
 
@@ -56,7 +56,7 @@ private:
   PanelToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
-  OpenDocumentsWidget* m_open_documents_widget{nullptr};
+  ProcedureListView* m_open_documents_widget{nullptr};
 };
 
 }  // namespace sequencergui

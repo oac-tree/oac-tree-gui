@@ -29,6 +29,7 @@
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
+#include <QDebug>
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QListView>
@@ -36,11 +37,10 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
-#include <QDebug>
 
 namespace sequencergui
 {
-OpenDocumentsWidget::OpenDocumentsWidget(QWidget *parent)
+ProcedureListView::ProcedureListView(QWidget *parent)
     : CollapsibleWidget(parent), m_list_view(new QListView)
 {
   auto layout = new QVBoxLayout(this);
@@ -51,15 +51,15 @@ OpenDocumentsWidget::OpenDocumentsWidget(QWidget *parent)
 
   SetupToolBar();
 
-  connect(m_list_view, &QListView::clicked, this, &OpenDocumentsWidget::OnSingleClick);
-//  connect(m_list_view->selectionModel(), &QItemSelectionModel::selectionChanged, this,
-//          &OpenDocumentsWidget::OnSelectionChanged);
+  connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick);
+  //  connect(m_list_view->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+  //          &OpenDocumentsWidget::OnSelectionChanged);
   qDebug() << m_list_view->selectionModel();
 }
 
-OpenDocumentsWidget::~OpenDocumentsWidget() = default;
+ProcedureListView::~ProcedureListView() = default;
 
-void OpenDocumentsWidget::SetModel(SequencerModel *model)
+void ProcedureListView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
@@ -67,13 +67,13 @@ void OpenDocumentsWidget::SetModel(SequencerModel *model)
   m_list_view->setModel(m_view_model.get());
 }
 
-ProcedureItem *OpenDocumentsWidget::GetSelectedProcedure()
+ProcedureItem *ProcedureListView::GetSelectedProcedure()
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
 }
 
-void OpenDocumentsWidget::SetSelectedProcedure(ProcedureItem *procedure)
+void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
 {
   qDebug() << "xxx " << m_list_view->selectionModel() << procedure;
   auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
@@ -83,7 +83,7 @@ void OpenDocumentsWidget::SetSelectedProcedure(ProcedureItem *procedure)
   }
 }
 
-std::vector<ProcedureItem *> OpenDocumentsWidget::GetSelectedProcedures() const
+std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
 {
   std::vector<mvvm::SessionItem *> result;
 
@@ -100,7 +100,7 @@ std::vector<ProcedureItem *> OpenDocumentsWidget::GetSelectedProcedures() const
   return mvvm::utils::CastedItems<ProcedureItem>(result);
 }
 
-void OpenDocumentsWidget::SetupToolBar()
+void ProcedureListView::SetupToolBar()
 {
   SetText("PROCEDURES");
 
@@ -109,17 +109,17 @@ void OpenDocumentsWidget::SetupToolBar()
   auto new_procedure_button = new QToolButton;
   new_procedure_button->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
   connect(new_procedure_button, &QToolButton::clicked, this,
-          &OpenDocumentsWidget::CreateNewProcedureRequest);
+          &ProcedureListView::CreateNewProcedureRequest);
   tool_bar->AddWidget(new_procedure_button);
 
   auto remove_selected_button = new QToolButton;
   remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
   connect(remove_selected_button, &QToolButton::clicked, this,
-          &OpenDocumentsWidget::OnRemoveSelectedRequest);
+          &ProcedureListView::OnRemoveSelectedRequest);
   tool_bar->AddWidget(remove_selected_button);
 }
 
-void OpenDocumentsWidget::OnSingleClick(const QModelIndex &index)
+void ProcedureListView::OnSingleClick(const QModelIndex &index)
 {
   if (!index.isValid())
   {
@@ -133,7 +133,7 @@ void OpenDocumentsWidget::OnSingleClick(const QModelIndex &index)
   }
 }
 
-void OpenDocumentsWidget::OnRemoveSelectedRequest()
+void ProcedureListView::OnRemoveSelectedRequest()
 {
   for (auto procedure_item : GetSelectedProcedures())
   {
@@ -141,8 +141,7 @@ void OpenDocumentsWidget::OnRemoveSelectedRequest()
   }
 }
 
-void OpenDocumentsWidget::OnSelectionChanged(const QItemSelection &,
-                                             const QItemSelection &deselected)
+void ProcedureListView::OnSelectionChanged(const QItemSelection &, const QItemSelection &deselected)
 {
   if (GetSelectedProcedures().empty())  // selections has gone
   {

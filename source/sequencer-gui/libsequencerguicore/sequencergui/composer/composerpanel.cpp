@@ -39,7 +39,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
     , m_splitter(new QSplitter)
-    , m_open_documents_widget(new OpenDocumentsWidget)
+    , m_open_documents_widget(new ProcedureListView)
     , m_instruction_panel(new InstructionPanel)
     , m_workspace_panel(new WorkspacePanel)
 
@@ -59,9 +59,9 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   //  m_splitter->setSizes(QList<int>() << 400 << 200);
 
-  connect(m_open_documents_widget, &OpenDocumentsWidget::ProcedureSelected, this,
+  connect(m_open_documents_widget, &ProcedureListView::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
-  connect(m_open_documents_widget, &OpenDocumentsWidget::CreateNewProcedureRequest, this,
+  connect(m_open_documents_widget, &ProcedureListView::CreateNewProcedureRequest, this,
           &ComposerPanel::CreateNewProcedureRequest);
 }
 
