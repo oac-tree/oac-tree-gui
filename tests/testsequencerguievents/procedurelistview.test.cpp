@@ -82,3 +82,32 @@ TEST_F(ProcedureListViewTest, SelectProcedure)
   selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
   EXPECT_EQ(selected_procedure, nullptr);
 }
+
+//! Removing selected and checking notifications
+
+TEST_F(ProcedureListViewTest, SelectionAfterRemoval)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  ProcedureListView view;
+  view.SetModel(&model);
+
+  // selecting single item
+  view.SetSelectedProcedure(procedure);
+
+  // checking selections
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<sequencergui::ProcedureItem*>({procedure}));
+
+  QSignalSpy spy_selected(&view, &ProcedureListView::ProcedureSelected);
+
+  // removing item
+  model.RemoveItem(procedure);
+
+  // signal should emit once and report nullptr as selected item
+  EXPECT_EQ(spy_selected.count(), 1);
+  auto arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
+  EXPECT_EQ(selected_procedure, nullptr);
+}
