@@ -29,7 +29,6 @@
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
-#include <QDebug>
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QListView>
@@ -51,10 +50,8 @@ ProcedureListView::ProcedureListView(QWidget *parent)
 
   SetupToolBar();
 
-  connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick);
-  //  connect(m_list_view->selectionModel(), &QItemSelectionModel::selectionChanged, this,
-  //          &OpenDocumentsWidget::OnSelectionChanged);
-  qDebug() << m_list_view->selectionModel();
+  connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick,
+          Qt::UniqueConnection);
 }
 
 ProcedureListView::~ProcedureListView() = default;
@@ -65,22 +62,15 @@ void ProcedureListView::SetModel(SequencerModel *model)
   m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
   m_view_model->SetRootSessionItem(model->GetProcedureContainer());
   m_list_view->setModel(m_view_model.get());
+
+  connect(m_list_view->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+          &ProcedureListView::OnSelectionChanged, Qt::UniqueConnection);
 }
 
 ProcedureItem *ProcedureListView::GetSelectedProcedure()
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
-}
-
-void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
-{
-  qDebug() << "xxx " << m_list_view->selectionModel() << procedure;
-  auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
-  if (!indexes.empty())
-  {
-    m_list_view->selectionModel()->select(indexes.at(0), QItemSelectionModel::SelectCurrent);
-  }
 }
 
 std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
@@ -97,7 +87,31 @@ std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
 
     result.push_back(const_cast<mvvm::SessionItem *>(procedure_item));
   }
-  return mvvm::utils::CastedItems<ProcedureItem>(result);
+  return mvvm::utils::CastedItems<ProcedureItem>(mvvm::utils::UniqueItems(result));
+}
+
+void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
+{
+  SetSelectedProcedures({procedure});
+}
+
+void ProcedureListView::SetSelectedProcedures(std::vector<ProcedureItem *> procedures)
+{
+  if (!m_view_model)
+  {
+    return;
+  }
+
+  m_list_view->selectionModel()->clearSelection();
+  QItemSelection selection;
+  for (auto item : procedures)
+  {
+    for (auto index : m_view_model->GetIndexOfSessionItem(item))
+    {
+      selection.push_back(QItemSelectionRange(index));
+    }
+  }
+  m_list_view->selectionModel()->select(selection, QItemSelectionModel::Select);
 }
 
 void ProcedureListView::SetupToolBar()

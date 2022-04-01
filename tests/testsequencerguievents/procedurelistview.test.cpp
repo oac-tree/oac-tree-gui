@@ -1,0 +1,84 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2022 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "sequencergui/mainwindow/procedurelistview.h"
+
+#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
+
+#include <gtest/gtest.h>
+
+#include <QDebug>
+#include <QSignalSpy>
+
+using namespace sequencergui;
+
+Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
+
+//! Tests for utility functions related to the domain to presentation transformations.
+
+class ProcedureListViewTest : public ::testing::Test
+{
+public:
+  ProcedureListViewTest()
+  {
+    qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
+  }
+};
+
+TEST_F(ProcedureListViewTest, InitialState)
+{
+  ProcedureListView view;
+  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+  EXPECT_TRUE(view.GetSelectedProcedures().empty());
+}
+
+TEST_F(ProcedureListViewTest, SelectProcedure)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  ProcedureListView view;
+  QSignalSpy spy_selected(&view, &ProcedureListView::ProcedureSelected);
+
+  view.SetModel(&model);
+  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+
+  // selecting an item and checking results
+  view.SetSelectedProcedure(procedure);
+  EXPECT_EQ(view.GetSelectedProcedure(), procedure);
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
+  EXPECT_EQ(spy_selected.count(), 1);
+  QList<QVariant> arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
+  EXPECT_EQ(selected_procedure, procedure);
+
+  spy_selected.clear();
+
+  // removing selection
+
+  view.SetSelectedProcedure(nullptr);
+  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+  EXPECT_EQ(spy_selected.count(), 1);
+
+  arguments = spy_selected.takeFirst();
+  selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
+  EXPECT_EQ(selected_procedure, nullptr);
+}

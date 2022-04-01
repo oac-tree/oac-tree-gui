@@ -47,10 +47,11 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  std::vector<ProcedureItem*> GetSelectedProcedures() const;
   ProcedureItem* GetSelectedProcedure();
+  std::vector<ProcedureItem*> GetSelectedProcedures() const;
 
   void SetSelectedProcedure(ProcedureItem* procedure);
+  void SetSelectedProcedures(std::vector<ProcedureItem*> procedures);
 
 signals:
   void CreateNewProcedureRequest();
