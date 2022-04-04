@@ -107,7 +107,6 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   void RemoveView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
     auto item_to_remove = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
-
     // Removing view of item, and all views of child items.
     for (auto view : m_instruction_to_view.FindRelatedViews(item_to_remove))
     {
@@ -198,6 +197,16 @@ void GraphicsSceneController::OnItemInserted(mvvm::SessionItem* parent,
 void GraphicsSceneController::OnAboutToRemoveItem(mvvm::SessionItem* parent,
                                                   const mvvm::TagIndex& tag_index)
 {
+  auto item_to_remove = parent->GetItem(tag_index.tag, tag_index.index);
+
+  // Special case when user removes procedure owning our instruction container.
+  if (item_to_remove == p_impl->m_root_item->GetParent())
+  {
+    // We can't continue, all objects should be removed from the scene.
+    p_impl->m_graphics_scene->ResetContext();
+    return;
+  }
+
   if (p_impl->IsInScope(parent))
   {
     p_impl->RemoveView(parent, tag_index);

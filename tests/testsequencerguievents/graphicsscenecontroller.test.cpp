@@ -29,6 +29,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>
+
 using namespace sequencergui;
 
 //! Tests for GraphicsSceneController class.
@@ -36,12 +38,12 @@ using namespace sequencergui;
 class GraphicsSceneControllerTest : public ::testing::Test
 {
 public:
-  GraphicsSceneControllerTest() { m_model.InsertItem<ProcedureItem>(); }
-
-  InstructionContainerItem* GetContainer()
+  GraphicsSceneControllerTest()
   {
-    return m_model.GetTopItem<ProcedureItem>()->GetInstructionContainer();
+    m_procedure_item = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }
+
+  InstructionContainerItem* GetContainer() { return m_procedure_item->GetInstructionContainer(); }
 
   std::vector<ConnectableView*> GetConnectedChildren(ConnectableView* parent)
   {
@@ -62,6 +64,7 @@ public:
 
   SequencerModel m_model;
   GraphicsScene m_scene;
+  ProcedureItem* m_procedure_item;
 };
 
 //! Empty procedure and model.
@@ -254,7 +257,7 @@ TEST_F(GraphicsSceneControllerTest, InsertProcedure)
   EXPECT_EQ(children_views, std::vector<ConnectableView*>({wait_view}));
 
   // insert second procedure (outside of controller scope)
-  auto procedure = m_model.InsertItem<ProcedureItem>();
+  auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   auto sequence2 = m_model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
 
   // removing second sequence
@@ -266,4 +269,28 @@ TEST_F(GraphicsSceneControllerTest, InsertProcedure)
   wait_view = m_scene.FindViewForInstruction(wait);
   children_views = GetConnectedChildren(sequence_view);
   EXPECT_EQ(children_views, std::vector<ConnectableView*>({wait_view}));
+}
+
+//! Scene is looking to the procedure with instruction.
+//! Remove procedure and make sure that scene has been cleaned up.
+//! Real bug.
+
+TEST_F(GraphicsSceneControllerTest, RemoveProcedure)
+{
+  auto controller = CreateController();
+
+  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
+  auto sequence_view = m_scene.FindViewForInstruction(sequence);
+  auto wait_view = m_scene.FindViewForInstruction(wait);
+  auto children_views = GetConnectedChildren(sequence_view);
+  EXPECT_EQ(children_views, std::vector<ConnectableView*>({wait_view}));
+
+  // remove procedure
+  m_model.RemoveItem(m_procedure_item);
+
+  // graphics scene should be cleaned up
+  EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
 }
