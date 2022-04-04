@@ -67,14 +67,15 @@ void SequencerMonitorView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_job_manager->SetModel(model);
-  m_job_manager->SetCurrentProcedure(GetFirstProcedure());
   m_monitor_panel->SetModel(model);
-  m_monitor_panel->SetSelectedProcedure(GetFirstProcedure());
+}
 
-  if (auto context = m_job_manager->GetCurrentContext(); context)
+void SequencerMonitorView::showEvent(QShowEvent *event)
+{
+  Q_UNUSED(event);
+  if (!m_monitor_panel->GetSelectedProcedure())
   {
-    m_tree_widget->SetProcedure(context->GetExpandedProcedure());
-    m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+    m_monitor_panel->SetSelectedProcedure(GetFirstProcedure());
   }
 }
 
@@ -105,8 +106,11 @@ void SequencerMonitorView::SetupConnections()
   auto on_procedure_selected = [this](auto procedure_item)
   {
     m_job_manager->SetCurrentProcedure(procedure_item);
-    m_tree_widget->SetProcedure(m_job_manager->GetCurrentContext()->GetExpandedProcedure());
-    m_workspace_widget->SetProcedure(m_job_manager->GetCurrentContext()->GetExpandedProcedure());
+    if (auto context = m_job_manager->GetCurrentContext(); context)
+    {
+      m_tree_widget->SetProcedure(context->GetExpandedProcedure());
+      m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+    }
   };
   connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);
 

@@ -23,6 +23,7 @@
 #include <QWidget>
 
 class QSplitter;
+class QShowEvent;
 
 namespace sequencergui
 {
@@ -46,6 +47,9 @@ public:
   ~SequencerMonitorView() override;
 
   void SetModel(SequencerModel* model);
+
+protected:
+  void showEvent(QShowEvent*event) override;
 
 private:
   void SetupConnections();

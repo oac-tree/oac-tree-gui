@@ -26,7 +26,6 @@
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
 #include <QDebug>
-#include <QShowEvent>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -65,10 +64,8 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 void SequencerComposerView::showEvent(QShowEvent *event)
 {
   Q_UNUSED(event);
-  qDebug() << "Show event" << m_composer_panel->GetSelectedProcedure();
   if (!m_composer_panel->GetSelectedProcedure())
   {
-    qDebug() << "Show even GetFirstProceduret" << GetFirstProcedure();
     m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
   }
 }

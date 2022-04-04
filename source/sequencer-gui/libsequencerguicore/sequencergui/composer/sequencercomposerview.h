@@ -49,7 +49,7 @@ public:
   void SetModel(SequencerModel* model);
 
 protected:
-  virtual void showEvent(QShowEvent*event) override;
+  void showEvent(QShowEvent*event) override;
 
 private:
   void SetupConnections();
