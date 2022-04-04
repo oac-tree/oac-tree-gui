@@ -62,6 +62,22 @@ void ConnectableViewMap::Remove(const InstructionItem *item)
   }
 }
 
+//! Removes view from the map and return it to the user
+ConnectableView *ConnectableViewMap::TakeView(const InstructionItem *item)
+{
+  auto it = m_item_to_view.find(item);
+  if (it != m_item_to_view.end())
+  {
+    m_item_to_view.erase(it);
+  }
+  else
+  {
+    throw NotFoundKeyException("No connectable view found for given instruction item");
+  }
+
+  return it->second;
+}
+
 void ConnectableViewMap::Clear()
 {
   m_item_to_view.clear();

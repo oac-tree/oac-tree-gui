@@ -46,7 +46,7 @@ public:
 
   QRectF boundingRect() const override;
 
-  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*) override;
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
   void MakeChildConnected(ConnectableView* child_view);
 

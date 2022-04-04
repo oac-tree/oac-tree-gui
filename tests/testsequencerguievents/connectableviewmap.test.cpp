@@ -97,6 +97,29 @@ TEST_F(ConnectableViewMapTest, InsertOrAssignThenFind)
 }
 
 //! Testing InsertOrAssign method when
+TEST_F(ConnectableViewMapTest, TakeView)
+{
+  WaitItem instruction0;
+  auto view0 = ConnectableViewFactory().CreateView(&instruction0);
+  WaitItem instruction1;
+  auto view1 = ConnectableViewFactory().CreateView(&instruction1);
+  ConnectableViewMap map;
+
+  // updating the map
+  map.InsertOrAssign(&instruction0, view0.get());
+  map.InsertOrAssign(&instruction1, view1.get());
+
+  auto taken = map.TakeView(&instruction0);
+  EXPECT_EQ(taken, view0.get());
+
+  // the view is not in the map anymore
+  EXPECT_EQ(map.FindView(&instruction0), nullptr);
+
+  // another view is in the map
+  EXPECT_EQ(map.FindView(&instruction1), view1.get());
+}
+
+//! Testing InsertOrAssign method when
 TEST_F(ConnectableViewMapTest, InsertOrAssignTwice)
 {
   WaitItem instruction;
@@ -113,6 +136,6 @@ TEST_F(ConnectableViewMapTest, InsertOrAssignTwice)
   // updating the map
   map.InsertOrAssign(&instruction, view1.get());
 
-  // now we can find the view
+  // another view is in the map
   EXPECT_EQ(map.FindView(&instruction), view1.get());
 }

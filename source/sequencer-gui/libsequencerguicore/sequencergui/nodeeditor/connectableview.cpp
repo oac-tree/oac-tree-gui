@@ -73,8 +73,11 @@ QRectF ConnectableView::boundingRect() const
   return m_rect;
 }
 
-void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*)
+void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+                            QWidget* widget)
 {
+  Q_UNUSED(widget);
+
   static QPixmap pixmap(QString(":/icons/map-marker-outline.png"));
 
   painter->setRenderHint(QPainter::SmoothPixmapTransform);
@@ -104,14 +107,14 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
 //! Connects children's output port to appropriate input port.
 
-void ConnectableView::MakeChildConnected(ConnectableView* childView)
+void ConnectableView::MakeChildConnected(ConnectableView* child_view)
 {
-  if (!childView)
+  if (!child_view)
   {
     throw std::runtime_error("Error in ConnectableView: wrong child");
   }
 
-  auto child_port = childView->GetChildPort();
+  auto child_port = child_view->GetChildPort();
   if (!child_port)
   {
     return;
