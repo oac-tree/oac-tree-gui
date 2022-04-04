@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   connectableview.h
   connectableviewfactory.cpp
   connectableviewfactory.h
+  connectableviewmap.cpp
+  connectableviewmap.h
   graphicsscene.cpp
   graphicsscene.h
   graphicsscenecontroller.cpp
