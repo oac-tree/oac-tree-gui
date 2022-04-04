@@ -115,6 +115,9 @@ TEST_F(ConnectableViewMapTest, TakeView)
   // the view is not in the map anymore
   EXPECT_EQ(map.FindView(&instruction0), nullptr);
 
+  // it is not possible to take a view again
+  EXPECT_THROW(map.TakeView(&instruction0), NotFoundKeyException);
+
   // another view is in the map
   EXPECT_EQ(map.FindView(&instruction1), view1.get());
 }

@@ -23,13 +23,13 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableview.h"
 #include "sequencergui/nodeeditor/connectableviewfactory.h"
+#include "sequencergui/nodeeditor/connectableviewmap.h"
 #include "sequencergui/nodeeditor/graphicsscene.h"
 #include "sequencergui/nodeeditor/viewfactoryinterface.h"
 
 #include "mvvm/model/itemutils.h"
 
 #include <QDebug>
-#include <map>
 
 namespace sequencergui
 {
@@ -38,7 +38,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   SequencerModel* m_model{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
-  std::map<const InstructionItem*, ConnectableView*> m_instruction_to_view;
+  ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
   std::function<void(InstructionContainerItem*)> m_align_strategy;
@@ -55,8 +55,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 
   ConnectableView* FindView(const InstructionItem* instruction)
   {
-    auto it = m_instruction_to_view.find(instruction);
-    return it == m_instruction_to_view.end() ? nullptr : it->second;
+    return m_instruction_to_view.FindView(instruction);
   }
 
   void Iterate(InstructionItem* instruction, ConnectableView* parent_view)
@@ -79,7 +78,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
     {
       auto instruction_view_unique = m_view_factory->CreateView(instruction);
       instruction_view = instruction_view_unique.get();
-      m_instruction_to_view[instruction] = instruction_view;
+      m_instruction_to_view.Insert(instruction, instruction_view);
       m_graphics_scene->addItem(instruction_view_unique.release());
     }
 
@@ -108,12 +107,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   void RemoveView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
     auto to_remove = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
-    auto it = m_instruction_to_view.find(to_remove);
-    if (it != m_instruction_to_view.end())
-    {
-      delete it->second;
-      m_instruction_to_view.erase(it);
-    }
+    delete m_instruction_to_view.TakeView(to_remove);
   }
 
   void InitScene(InstructionContainerItem* root_item)
@@ -124,7 +118,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
     }
 
     m_graphics_scene->clear();
-    m_instruction_to_view.clear();
+    m_instruction_to_view.Clear();
     m_root_item = root_item;
 
     for (auto instruction : root_item->GetInstructions())
