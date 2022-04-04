@@ -167,23 +167,23 @@ TEST_F(GraphicsSceneControllerTest, ParentWithChildRemoveChild)
 }
 
 //! Scene is looking to the procedure with sequence and single child in it.
-//! Sequence is deleted, thish should lead to the disappearance of two vews.
+//! Sequence is deleted, thish should lead to the disappearance of two views.
 
-//TEST_F(GraphicsSceneControllerTest, RemoveParentWithChild)
-//{
-//  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
-//  auto wait = m_model.InsertItem<WaitItem>(sequence);
+TEST_F(GraphicsSceneControllerTest, RemoveParentWithChild)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(GetContainer());
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
 
-//  auto controller = CreateController();
+  auto controller = CreateController();
 
-//  auto sequence_view = m_scene.FindViewForInstruction(sequence);
-//  auto wait_view = m_scene.FindViewForInstruction(wait);
-//  EXPECT_EQ(sequence_view->GetConnectableItem()->GetInstruction(), sequence);
-//  EXPECT_EQ(wait_view->GetConnectableItem()->GetInstruction(), wait);
+  auto sequence_view = m_scene.FindViewForInstruction(sequence);
+  auto wait_view = m_scene.FindViewForInstruction(wait);
+  EXPECT_EQ(sequence_view->GetConnectableItem()->GetInstruction(), sequence);
+  EXPECT_EQ(wait_view->GetConnectableItem()->GetInstruction(), wait);
 
-//  m_model.RemoveItem(sequence);
-//  EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
-//}
+  m_model.RemoveItem(sequence);
+  EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
+}
 
 //! View is moving, check item.
 

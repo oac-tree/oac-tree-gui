@@ -106,8 +106,14 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 
   void RemoveView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
-    auto to_remove = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
-    delete m_instruction_to_view.TakeView(to_remove);
+    auto item_to_remove = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
+
+    // Removing view of item, and all views of child items.
+    for (auto view : m_instruction_to_view.FindRelatedViews(item_to_remove))
+    {
+      m_instruction_to_view.Remove(view);
+      delete view;  // removing from scene
+    }
   }
 
   void InitScene(InstructionContainerItem* root_item)
