@@ -21,6 +21,7 @@
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/instructionitem.h"
+#include "sequencergui/nodeeditor/connectableview.h"
 
 #include <stack>
 
@@ -28,6 +29,9 @@ namespace sequencergui
 {
 
 ConnectableViewMap::ConnectableViewMap() = default;
+
+//! Insert instruction item and corresponding view in a map.
+//! Will throw if such instruction already exist. Doesn't take an ownership.
 
 void ConnectableViewMap::Insert(const InstructionItem *item, ConnectableView *view_item)
 {
@@ -39,10 +43,15 @@ void ConnectableViewMap::Insert(const InstructionItem *item, ConnectableView *vi
   m_item_to_view.insert(it, {item, view_item});
 }
 
+//! Insert instruction item and corresponding view in a map.
+//! If such item already exists, will replace corresponding view with the given one.
+
 void ConnectableViewMap::InsertOrAssign(const InstructionItem *item, ConnectableView *view_item)
 {
   m_item_to_view.insert_or_assign(item, view_item);
 }
+
+//! Find view for given item.
 
 ConnectableView *ConnectableViewMap::FindView(const InstructionItem *item)
 {
@@ -50,7 +59,8 @@ ConnectableView *ConnectableViewMap::FindView(const InstructionItem *item)
   return it == m_item_to_view.end() ? nullptr : it->second;
 }
 
-//! Removes view from map corresponding to given instruction.
+//! Removes item and its corresponding view from the map.
+//! Will throw if no item exists.
 
 void ConnectableViewMap::Remove(const InstructionItem *item)
 {
@@ -65,7 +75,26 @@ void ConnectableViewMap::Remove(const InstructionItem *item)
   }
 }
 
-//! Removes view from the map and return it to the user
+//! Removes view and its corresponding item from the map.
+
+void ConnectableViewMap::Remove(ConnectableView *view)
+{
+  auto it = std::find_if(m_item_to_view.begin(), m_item_to_view.end(),
+                         [view](auto it) { return it.second == view; });
+
+  if (it != m_item_to_view.end())
+  {
+    m_item_to_view.erase(it);
+  }
+  else
+  {
+    throw NotFoundValueException("No connectable view found");
+  }
+}
+
+//! Removes item and its corresponding view from the map.
+//! View will be returned to the user.
+
 ConnectableView *ConnectableViewMap::TakeView(const InstructionItem *item)
 {
   auto it = m_item_to_view.find(item);
@@ -81,12 +110,15 @@ ConnectableView *ConnectableViewMap::TakeView(const InstructionItem *item)
   return it->second;
 }
 
+//! Clears the map.
+
 void ConnectableViewMap::Clear()
 {
   m_item_to_view.clear();
 }
 
-//! Returns vector of views for given instruction and all its children.
+//! Returns vector of all views related to given item.
+//! These are the view of the item, and views of all teim's children.
 
 std::vector<ConnectableView *> ConnectableViewMap::FindRelatedViews(const InstructionItem *item)
 {

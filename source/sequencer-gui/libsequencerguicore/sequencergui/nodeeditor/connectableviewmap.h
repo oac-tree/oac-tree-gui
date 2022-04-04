@@ -45,6 +45,8 @@ public:
 
   void Remove(const InstructionItem* item);
 
+  void Remove(ConnectableView* view);
+
   ConnectableView* TakeView(const InstructionItem* item);
 
   void Clear();

@@ -89,8 +89,12 @@ QList<T*> ConnectableView::GetPorts() const
 {
   QList<T*> result;
   for (auto child : childItems())
+  {
     if (auto casted = dynamic_cast<T*>(child); casted)
+    {
       result.push_back(casted);
+    }
+  }
   return result;
 }
 

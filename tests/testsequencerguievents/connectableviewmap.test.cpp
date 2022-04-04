@@ -58,7 +58,9 @@ TEST_F(ConnectableViewMapTest, InsertThenFind)
   EXPECT_FALSE(map.FindView(&instruction));
 }
 
-TEST_F(ConnectableViewMapTest, InsertThenRemove)
+//! Testing Remove method.
+
+TEST_F(ConnectableViewMapTest, RemoveUsingItem)
 {
   WaitItem instruction;
   auto view = ConnectableViewFactory().CreateView(&instruction);
@@ -74,6 +76,26 @@ TEST_F(ConnectableViewMapTest, InsertThenRemove)
 
   // it is not possible to remove what was already removed
   EXPECT_THROW(map.Remove(&instruction), NotFoundKeyException);
+}
+
+//! Testing Remove method intended for views.
+
+TEST_F(ConnectableViewMapTest, RemoveUsingView)
+{
+  WaitItem instruction;
+  auto view = ConnectableViewFactory().CreateView(&instruction);
+  ConnectableViewMap map;
+
+  // inserting to the map
+  map.Insert(&instruction, view.get());
+
+  // removing
+  map.Remove(view.get());
+
+  EXPECT_FALSE(map.FindView(&instruction));
+
+  // it is not possible to remove what was already removed
+  EXPECT_THROW(map.Remove(view.get()), NotFoundValueException);
 }
 
 //! Testing InsertOrAssign method.

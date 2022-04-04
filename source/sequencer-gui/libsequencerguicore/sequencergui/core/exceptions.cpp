@@ -40,6 +40,10 @@ NotFoundKeyException::NotFoundKeyException(const std::string& message) : Message
 {
 }
 
+NotFoundValueException::NotFoundValueException(const std::string& message) : MessageException{message}
+{
+}
+
 ExistingKeyException::ExistingKeyException(const std::string& message) : MessageException{message}
 {
 }

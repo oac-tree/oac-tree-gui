@@ -63,6 +63,14 @@ public:
   explicit NotFoundKeyException(const std::string& message);
 };
 
+//! Exception is thrown when no such value exists in a map.
+
+class NotFoundValueException : public MessageException
+{
+public:
+  explicit NotFoundValueException(const std::string& message);
+};
+
 //! Exception is thrown when such key already exists in the map.
 
 class ExistingKeyException : public MessageException
