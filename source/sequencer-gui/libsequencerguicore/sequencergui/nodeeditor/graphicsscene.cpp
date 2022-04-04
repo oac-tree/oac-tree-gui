@@ -83,6 +83,14 @@ bool GraphicsScene::HasContext()
   return m_model && m_root_item;
 }
 
+//! Resets context, removes and deletes objects on scene.
+
+void GraphicsScene::ResetContext()
+{
+  clear();
+  m_root_item = nullptr;
+}
+
 std::vector<ConnectableView *> GraphicsScene::GetConnectableViews()
 {
   std::vector<ConnectableView *> result;

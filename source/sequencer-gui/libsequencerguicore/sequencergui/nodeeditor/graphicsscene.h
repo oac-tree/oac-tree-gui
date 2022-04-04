@@ -51,6 +51,8 @@ public:
 
   bool HasContext();
 
+  void ResetContext();
+
   std::vector<ConnectableView*> GetConnectableViews();
   ConnectableView* FindViewForInstruction(InstructionItem* instruction);
 
@@ -68,7 +70,7 @@ public:
   void onConnectionRequest(ConnectableView* childView, ConnectableView* parentView);
 
 signals:
-  void InstructionSelected(InstructionItem* selected);
+  void InstructionSelected(sequencergui::InstructionItem* selected);
   void selectionModeChangeRequest(int);
 
 protected:

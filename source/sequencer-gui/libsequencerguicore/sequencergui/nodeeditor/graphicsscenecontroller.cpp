@@ -142,6 +142,9 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
     return item == m_root_item || mvvm::utils::IsItemAncestor(item, m_root_item);
   }
 
+  // Returns true if given item is a top level item (ProcedureItem) of our container.
+  bool IsProcedure(mvvm::SessionItem* item) const { return item == m_root_item->GetParent(); }
+
   void OnDataChanged(mvvm::SessionItem* item, int role)
   {
     if (m_block_update)
