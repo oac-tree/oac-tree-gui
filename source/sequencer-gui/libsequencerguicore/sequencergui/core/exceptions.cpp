@@ -36,4 +36,12 @@ TransformToDomainException::TransformToDomainException(const std::string& messag
 {
 }
 
+NotFoundKeyException::NotFoundKeyException(const std::string& message) : MessageException{message}
+{
+}
+
+ExistingKeyException::ExistingKeyException(const std::string& message) : MessageException{message}
+{
+}
+
 }  // namespace sequencergui
