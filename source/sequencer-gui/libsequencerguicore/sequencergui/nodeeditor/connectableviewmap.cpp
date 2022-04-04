@@ -20,6 +20,9 @@
 #include "sequencergui/nodeeditor/connectableviewmap.h"
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/model/instructionitem.h"
+
+#include <stack>
 
 namespace sequencergui
 {
@@ -81,6 +84,31 @@ ConnectableView *ConnectableViewMap::TakeView(const InstructionItem *item)
 void ConnectableViewMap::Clear()
 {
   m_item_to_view.clear();
+}
+
+//! Returns vector of views for given instruction and all its children.
+
+std::vector<ConnectableView *> ConnectableViewMap::FindRelatedViews(const InstructionItem *item)
+{
+  std::vector<ConnectableView *> result;
+  std::stack<const InstructionItem *> stack;
+
+  stack.push(item);
+  while (!stack.empty())
+  {
+    auto instruction = stack.top();
+    stack.pop();
+    if (auto view = FindView(instruction); view)
+    {
+      result.push_back(view);
+    }
+    auto children = instruction->GetInstructions();
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      stack.push(*it);
+    }
+  }
+  return result;
 }
 
 }  // namespace sequencergui

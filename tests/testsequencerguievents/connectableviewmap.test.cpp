@@ -96,7 +96,7 @@ TEST_F(ConnectableViewMapTest, InsertOrAssignThenFind)
   EXPECT_FALSE(map.FindView(&instruction));
 }
 
-//! Testing InsertOrAssign method when
+//! Testing TakeView method.
 TEST_F(ConnectableViewMapTest, TakeView)
 {
   WaitItem instruction0;
@@ -122,7 +122,7 @@ TEST_F(ConnectableViewMapTest, TakeView)
   EXPECT_EQ(map.FindView(&instruction1), view1.get());
 }
 
-//! Testing InsertOrAssign method when
+//! Testing InsertOrAssign method when one view replaces another.
 TEST_F(ConnectableViewMapTest, InsertOrAssignTwice)
 {
   WaitItem instruction;
@@ -141,4 +141,52 @@ TEST_F(ConnectableViewMapTest, InsertOrAssignTwice)
 
   // another view is in the map
   EXPECT_EQ(map.FindView(&instruction), view1.get());
+}
+
+//! Testing FindRelatedView method.
+TEST_F(ConnectableViewMapTest, FindRelatedView)
+{
+  ConnectableViewMap map;
+  WaitItem instruction0;
+  auto view0 = ConnectableViewFactory().CreateView(&instruction0);
+
+  // Empty list of related views for non-registered instructions
+  EXPECT_TRUE(map.FindRelatedViews(&instruction0).empty());
+
+  // List of related views should contain single view
+  map.Insert(&instruction0, view0.get());
+  EXPECT_EQ(map.FindRelatedViews(&instruction0), std::vector<ConnectableView*>({view0.get()}));
+}
+
+//! Testing FindRelatedView method for simple instruction hierarchy.
+TEST_F(ConnectableViewMapTest, FindRelatedViewForChildrenTree)
+{
+  SequenceItem parent;
+  ConnectableViewMap map;
+
+  auto child0 = parent.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto child1 = parent.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  auto grandchild0 = child0->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto grandchild1 = child0->InsertItem<WaitItem>(mvvm::TagIndex::Append());
+
+  std::vector<InstructionItem*> instructions{&parent, child0, child1, grandchild0, grandchild1};
+
+  std::vector<std::unique_ptr<ConnectableView>> views;
+  for (const auto item : instructions)
+  {
+    auto view = ConnectableViewFactory().CreateView(item);
+    map.Insert(item, view.get());
+    views.emplace_back(std::move(view));
+  }
+
+  // expected related views of child0: will be views corresponding child0, grandchild0, grandchild1
+  std::vector<ConnectableView*> expected({views.at(1).get(), views.at(3).get(), views.at(4).get()});
+  EXPECT_EQ(map.FindRelatedViews(child0), expected);
+
+  // expected related views of parent: views corresponding to parent, child0, grandchild0,
+  // grandchild1, child1
+  expected = {views.at(0).get(), views.at(1).get(), views.at(3).get(), views.at(4).get(),
+              views.at(2).get()};
+  EXPECT_EQ(map.FindRelatedViews(&parent), expected);
 }

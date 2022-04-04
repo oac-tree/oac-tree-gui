@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWMAP_H
 
 #include <map>
+#include <vector>
 
 namespace sequencergui
 {
@@ -47,6 +48,8 @@ public:
   ConnectableView* TakeView(const InstructionItem* item);
 
   void Clear();
+
+  std::vector<ConnectableView*> FindRelatedViews(const InstructionItem* item);
 
 private:
   std::map<const InstructionItem*, ConnectableView*> m_item_to_view;
