@@ -199,7 +199,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableV
     std::ostringstream ostr;
     ostr << "Can't connect instructions. Maximum number of children exceeded? "
          << "Details: '" << ex.what() << "'";
-
+    // FIXME implement unit test after implementing Error report mechanism
     qWarning("%s", ostr.str().c_str());
   }
 }
