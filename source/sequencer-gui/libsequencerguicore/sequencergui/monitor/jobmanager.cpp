@@ -178,7 +178,7 @@ JobContext *JobManager::CreateContext()
   auto it = m_context_map.find(m_current_procedure);
   if (it != m_context_map.end())
   {
-    throw LogicError("JobManager::CreateContext() : already created context");
+    throw RuntimeException("JobManager::CreateContext() : already created context");
   }
 
   auto on_user_input = [this](auto value, auto description)
