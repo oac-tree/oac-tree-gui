@@ -83,7 +83,6 @@ private:
   SequencerModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeController> m_node_controller;
-  qreal m_vertical_pos;
 };
 
 template <typename T>

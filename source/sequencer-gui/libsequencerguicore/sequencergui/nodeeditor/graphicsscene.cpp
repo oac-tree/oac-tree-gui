@@ -29,12 +29,14 @@
 #include "sequencergui/nodeeditor/nodecontroller.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 
+#include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMessageBox>
 #include <QMimeData>
+#include <sstream>
 
 namespace
 {
@@ -187,7 +189,19 @@ void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableV
 {
   auto child_instruction = GetInstruction(childView);
   auto parent_instruction = GetInstruction(parentView);
-  m_model->MoveItem(child_instruction, parent_instruction, {"", -1});
+
+  try
+  {
+    m_model->MoveItem(child_instruction, parent_instruction, {"", -1});
+  }
+  catch (const mvvm::InvalidMoveException &ex)
+  {
+    std::ostringstream ostr;
+    ostr << "Can't connect instructions. Maximum number of children exceeded? "
+         << "Details: '" << ex.what() << "'";
+
+    qWarning("%s", ostr.str().c_str());
+  }
 }
 
 void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
