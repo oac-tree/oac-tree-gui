@@ -27,10 +27,29 @@
 #include <future>
 
 using namespace sequencergui;
+using namespace sequencergui::DomainConstants;
 
 class DomainUtilsTest : public ::testing::Test
 {
 };
+
+//! An attempt to catch if our duplication of domain constants diverges from the domain.
+
+TEST_F(DomainUtilsTest, DomainTypeConstants)
+{
+  std::vector<std::string> domain_types = {
+      kConditionInstructionType, kCopyInstructionType,         kEqualsInstructionType,
+      kFallbackInstructionType,  kForceSuccessInstructionType, kIncludeInstructionType,
+      kInputInstructionType,     kInverterInstructionType,     kListenInstructionType,
+      kMessageInstructionType,   kOutputInstructionType,       kParallelInstructionType,
+      kRepeatInstructionType,    kSequenceInstructionType,     kUserChoiceInstructionType,
+      kWaitInstructionType};
+
+  for (const auto& domain_type : domain_types)
+  {
+    EXPECT_EQ(DomainUtils::CreateDomainInstruction(domain_type)->GetType(), domain_type);
+  }
+}
 
 TEST_F(DomainUtilsTest, IsRootInstruction)
 {
