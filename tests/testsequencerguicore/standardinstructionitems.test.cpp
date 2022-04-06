@@ -218,7 +218,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItem)
   ForceSuccessItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
-  // it's not possible to add second item to inverter
+  // it's not possible to add second item to ForceSuccess
   EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
 }
 
@@ -380,6 +380,11 @@ TEST_F(StandardInstructionItemsTest, ListenItem)
   EXPECT_TRUE(item.GetVarNames().empty());
   item.SetVarNames("abc");
   EXPECT_EQ(item.GetVarNames(), "abc");
+
+  auto wait = item.InsertItem<WaitItem>({"", -1});
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
+  // it's not possible to add second item to ForceSuccess
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), std::runtime_error);
 }
 
 TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)

@@ -372,6 +372,7 @@ ListenItem::ListenItem() : InstructionItem(Type)
 {
   AddProperty(kForceSuccess, false)->SetDisplayName("Force success");
   AddProperty(kVarNames, std::string())->SetDisplayName("Var names");
+  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string ListenItem::GetDomainType() const
