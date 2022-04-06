@@ -19,7 +19,11 @@
 
 #include "sequencergui/nodeeditor/sceneutils.h"
 
+#include "Instruction.h"
+#include "InstructionRegistry.h"
+#include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/utils/numericutils.h"
 
@@ -58,7 +62,27 @@ class SceneUtilsTest : public ::testing::Test
 {
 public:
   using points_t = std::vector<QPointF>;
+
+  //! Test instruction playing the role of domain instruction unknown to the GUI.
+  class UnknownDomainInstruction : public ::sup::sequencer::Instruction
+  {
+  public:
+    UnknownDomainInstruction() : Instruction(Type) {}
+
+    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface* ui,
+                                                        ::sup::sequencer::Workspace* ws) override
+    {
+      return {};
+    }
+    static const std::string Type;
+  };
+
+  void RegisterUnknownDomainInstruction()
+  {
+    sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
+  }
 };
+const std::string SceneUtilsTest::UnknownDomainInstruction::Type = "UnknownDomainInstruction";
 
 TEST_F(SceneUtilsTest, VectorOfPointsEquality)
 {
@@ -211,4 +235,34 @@ TEST_F(SceneUtilsTest, ForceAlignTreeWithParentAndTwoChildren)
   EXPECT_FLOAT_EQ(wait0->GetY(), 2.0 + step_height);
   EXPECT_FLOAT_EQ(wait1->GetX(), 1.0 + step_width / 2.);
   EXPECT_FLOAT_EQ(wait1->GetY(), 2.0 + step_height);
+}
+
+//! Checking adding known domain_type instruction to SequencerModel
+
+TEST_F(SceneUtilsTest, AddKnownInstruction)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto item = AddInstruction(&model, procedure->GetInstructionContainer(),
+                             QString::fromStdString(DomainConstants::kWaitInstructionType));
+
+  EXPECT_EQ(item->GetType(), WaitItem::Type);
+  EXPECT_EQ(item->GetDomainType(), DomainConstants::kWaitInstructionType);
+}
+
+//! Checking adding known domain_type instruction.
+
+TEST_F(SceneUtilsTest, AddUnknownInstruction)
+{
+  RegisterUnknownDomainInstruction();
+
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto item = AddInstruction(&model, procedure->GetInstructionContainer(),
+                             QString::fromStdString(UnknownDomainInstruction::Type));
+
+  EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);
+  EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
 }

@@ -20,6 +20,7 @@
 #include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/transformfromdomain.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/sequencerutils.h"
