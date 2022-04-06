@@ -19,7 +19,7 @@
 
 #include "sequencergui/composer/instructionpanel.h"
 
-#include "sequencergui/nodeeditor/instructionlistwidget.h"
+#include "sequencergui/composer/instructionlistwidget.h"
 
 #include <QVBoxLayout>
 

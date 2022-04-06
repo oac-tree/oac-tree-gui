@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/instructionlistwidget.h"
+#include "sequencergui/composer/instructionlistwidget.h"
 
 #include "InstructionRegistry.h"
 #include "sequencergui/nodeeditor/sceneutils.h"

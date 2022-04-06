@@ -3,10 +3,12 @@
 target_sources(${library_name} PRIVATE
   composerpanel.cpp
   composerpanel.h
-  composertreewidget.cpp
-  composertreewidget.h
   composertreetoolbar.cpp
   composertreetoolbar.h
+  composertreewidget.cpp
+  composertreewidget.h
+  instructionlistwidget.cpp
+  instructionlistwidget.h
   instructionpanel.cpp
   instructionpanel.h
   sequencercomposerview.cpp

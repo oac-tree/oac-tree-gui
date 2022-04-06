@@ -19,12 +19,12 @@
 
 #include "graphicsscene.h"
 
+#include "sequencergui/composer/instructionlistwidget.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 #include "sequencergui/nodeeditor/connectableview.h"
 #include "sequencergui/nodeeditor/graphicsscenecontroller.h"
-#include "sequencergui/nodeeditor/instructionlistwidget.h"
 #include "sequencergui/nodeeditor/nodeconnection.h"
 #include "sequencergui/nodeeditor/nodecontroller.h"
 #include "sequencergui/nodeeditor/sceneutils.h"

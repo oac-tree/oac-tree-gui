@@ -24,7 +24,7 @@
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
-#include "sequencergui/nodeeditor/instructionlistwidget.h"
+#include "sequencergui/composer/instructionlistwidget.h"
 
 #include <QLabel>
 #include <QSplitter>
