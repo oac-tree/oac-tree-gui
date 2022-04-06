@@ -28,7 +28,7 @@ namespace sequencergui
 {
 SequencerModel::SequencerModel() : mvvm::ApplicationModel("SequencerModel")
 {
-  RegisterItem<ChannelAccessVariableItem>();
+  // instructions
   RegisterItem<ConditionItem>();
   RegisterItem<CopyItem>();
   RegisterItem<EqualsItem>();
@@ -39,19 +39,23 @@ SequencerModel::SequencerModel() : mvvm::ApplicationModel("SequencerModel")
   RegisterItem<InputItem>();
   RegisterItem<InstructionContainerItem>();
   RegisterItem<InverterItem>();
-  RegisterItem<LocalVariableItem>();
+  RegisterItem<ListenItem>();
   RegisterItem<MessageItem>();
   RegisterItem<OutputItem>();
-  RegisterItem<PVClientVariableItem>();
   RegisterItem<ParallelSequenceItem>();
   RegisterItem<ProcedureItem>();
   RegisterItem<RepeatItem>();
   RegisterItem<SequenceItem>();
   RegisterItem<UnknownInstructionItem>();
-  RegisterItem<UnknownVariableItem>();
   RegisterItem<UserChoiceItem>();
   RegisterItem<WaitItem>();
   RegisterItem<WorkspaceItem>();
+
+  // variables
+  RegisterItem<ChannelAccessVariableItem>();
+  RegisterItem<LocalVariableItem>();
+  RegisterItem<PVClientVariableItem>();
+  RegisterItem<UnknownVariableItem>();
 
   SetupModel();
 }

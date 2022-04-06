@@ -363,6 +363,21 @@ void InverterItem::SetupDomainImpl(instruction_t *instruction) const
 }
 
 // ----------------------------------------------------------------------------
+// ListenItem
+// ----------------------------------------------------------------------------
+
+ListenItem::ListenItem() : InstructionItem(Type) {}
+
+std::string ListenItem::GetDomainType() const
+{
+  return DomainConstants::kListenInstructionType;
+}
+
+void ListenItem::InitFromDomainImpl(const instruction_t *instruction) {}
+
+void ListenItem::SetupDomainImpl(instruction_t *instruction) const {}
+
+// ----------------------------------------------------------------------------
 // MessageItem
 // ----------------------------------------------------------------------------
 

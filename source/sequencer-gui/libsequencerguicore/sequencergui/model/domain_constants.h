@@ -38,6 +38,7 @@ const std::string kForceSuccessInstructionType = "ForceSuccess";
 const std::string kIncludeInstructionType = "Include";
 const std::string kInputInstructionType = "Input";
 const std::string kInverterInstructionType = "Inverter";
+const std::string kListenInstructionType = "Listen";
 const std::string kMessageInstructionType = "Message";
 const std::string kOutputInstructionType = "Output";
 const std::string kParallelInstructionType = "ParallelSequence";
