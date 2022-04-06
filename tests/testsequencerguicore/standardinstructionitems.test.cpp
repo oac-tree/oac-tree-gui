@@ -296,7 +296,9 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFileAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kPathAttribute), "def");
 
-//  EXPECT_TRUE(IsValid(domain_item.get())); FIXME why it is failing?
+  // Test below will fail since it requires valid instruction on disk.
+  // Too difficult to test.
+  // EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
