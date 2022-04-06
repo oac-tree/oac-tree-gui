@@ -234,21 +234,17 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     return;
   }
 
-  auto requested_types =
+  auto requested_domain_types =
       mvvm::utils::GetStringList(mimeData->data(InstructionListWidget::piecesMimeType()));
 
-  for (const auto &item_type : requested_types)
+  for (const auto &domain_type : requested_domain_types)
   {
     QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
                      event->scenePos().y() - ref_view_rectangle.height() / 2);
 
-    if (auto item = dynamic_cast<InstructionItem *>(
-            m_model->InsertNewItem(item_type.toStdString(), m_root_item));
-        item)
-    {
-      item->SetX(drop_pos.x());
-      item->SetY(drop_pos.y());
-    }
+    auto item = AddInstruction(m_model, m_root_item, domain_type);
+    item->SetX(drop_pos.x());
+    item->SetY(drop_pos.y());
   }
 }
 

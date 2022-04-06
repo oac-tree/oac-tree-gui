@@ -20,11 +20,11 @@
 #include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/transformfromdomain.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/sequencerutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/transformfromdomain.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"
@@ -164,7 +164,7 @@ InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem*
   {
     // The UI knows nothing about instruction of given type.
     return dynamic_cast<InstructionItem*>(
-        model->InsertItem(CreateUnknownInstructionItem(domain_type.toStdString()), nullptr, {}));
+        model->InsertItem(CreateUnknownInstructionItem(domain_type.toStdString()), container, {}));
   }
 }
 
