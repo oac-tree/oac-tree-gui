@@ -70,7 +70,7 @@ QColor GetBaseColor(const InstructionItem* instruction);
 //! user. If the model doesn't have given InstructionItem registered, create UnknownInstructionItem
 //! instead.
 InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem* container,
-                                const QString& domain_type);
+                                const std::string& domain_type);
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H

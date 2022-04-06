@@ -245,7 +245,7 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   auto item = AddInstruction(&model, procedure->GetInstructionContainer(),
-                             QString::fromStdString(DomainConstants::kWaitInstructionType));
+                             DomainConstants::kWaitInstructionType);
 
   EXPECT_EQ(item->GetType(), WaitItem::Type);
   EXPECT_EQ(item->GetDomainType(), DomainConstants::kWaitInstructionType);
@@ -263,8 +263,8 @@ TEST_F(SceneUtilsTest, AddUnknownInstruction)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   // adding unknown domain instruction
-  auto item = AddInstruction(&model, procedure->GetInstructionContainer(),
-                             QString::fromStdString(UnknownDomainInstruction::Type));
+  auto item =
+      AddInstruction(&model, procedure->GetInstructionContainer(), UnknownDomainInstruction::Type);
 
   // It should result to UnknownInstructionItem with proper DomainType on board
   EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);

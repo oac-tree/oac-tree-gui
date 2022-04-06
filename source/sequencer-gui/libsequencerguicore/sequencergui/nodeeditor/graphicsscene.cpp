@@ -52,6 +52,21 @@ sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *vie
               : nullptr;
 }
 
+//! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
+//! will return an empty string.
+std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
+{
+  auto event_data = event->mimeData();
+  if (event_data->hasFormat(sequencergui::InstructionListWidget::piecesMimeType()))
+  {
+    auto binary_data = event_data->data(sequencergui::InstructionListWidget::piecesMimeType());
+    auto list = mvvm::utils::GetStringList(binary_data);
+    return list.empty() ? std::string() : list.front().toStdString();
+  }
+
+  return {};
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -218,6 +233,9 @@ void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
+  // for later coordinate calculation, where to drop
+  static QRectF ref_view_rectangle = ConnectableViewRectangle();
+
   if (!HasContext())
   {
     qWarning("Error in GraphicsScene: context is not initialised");
@@ -225,19 +243,7 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     return;
   }
 
-  // for later coordinate calculation, where to drop
-  static QRectF ref_view_rectangle = ConnectableViewRectangle();
-
-  auto mimeData = event->mimeData();
-  if (!mimeData->hasFormat(InstructionListWidget::piecesMimeType()))
-  {
-    return;
-  }
-
-  auto requested_domain_types =
-      mvvm::utils::GetStringList(mimeData->data(InstructionListWidget::piecesMimeType()));
-
-  for (const auto &domain_type : requested_domain_types)
+  if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
     QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
                      event->scenePos().y() - ref_view_rectangle.height() / 2);
