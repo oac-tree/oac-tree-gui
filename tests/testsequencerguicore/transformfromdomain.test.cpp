@@ -69,6 +69,7 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(IncludeItem::Type, GetItemType(DomainConstants::kIncludeInstructionType));
   EXPECT_EQ(InputItem::Type, GetItemType(DomainConstants::kInputInstructionType));
   EXPECT_EQ(InverterItem::Type, GetItemType(DomainConstants::kInverterInstructionType));
+  EXPECT_EQ(ListenItem::Type, GetItemType(DomainConstants::kListenInstructionType));
   EXPECT_EQ(MessageItem::Type, GetItemType(DomainConstants::kMessageInstructionType));
   EXPECT_EQ(OutputItem::Type, GetItemType(DomainConstants::kOutputInstructionType));
   EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(DomainConstants::kParallelInstructionType));

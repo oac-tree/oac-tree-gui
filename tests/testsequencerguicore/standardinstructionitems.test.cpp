@@ -319,6 +319,48 @@ TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
+// ListenItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, ListenItem)
+{
+  ListenItem item;
+
+  EXPECT_FALSE(item.IsForceSuccess());
+  item.SetForceSuccess(true);
+  EXPECT_TRUE(item.IsForceSuccess());
+
+  EXPECT_TRUE(item.GetVarNames().empty());
+  item.SetVarNames("abc");
+  EXPECT_EQ(item.GetVarNames(), "abc");
+}
+
+TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kListenInstructionType);
+  input->AddAttribute(DomainConstants::kListenVarNamesAttribute, "abc");
+  input->AddAttribute(DomainConstants::kListenForceSuccessAttribute, "true");
+
+  ListenItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetVarNames(), "abc");
+  EXPECT_TRUE(item.IsForceSuccess());
+}
+
+// TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
+//{
+//   MessageItem item;
+//   item.SetText("abc");
+//   item.SetIsRootFlag(true);
+
+//  auto domain_item = item.CreateDomainInstruction();
+//  EXPECT_EQ(domain_item->GetType(), DomainConstants::kMessageInstructionType);
+//  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kTextAttribute), "abc");
+//  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kIsRootAttribute), "true");
+//}
+
+// ----------------------------------------------------------------------------
 // MessageItem tests
 // ----------------------------------------------------------------------------
 

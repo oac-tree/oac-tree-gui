@@ -399,9 +399,26 @@ void ListenItem::SetVarNames(const std::string &value)
   SetProperty(kVarNames, value);
 }
 
-void ListenItem::InitFromDomainImpl(const instruction_t *instruction) {}
+void ListenItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(DomainConstants::kListenForceSuccessAttribute))
+  {
+    SetForceSuccess(::mvvm::utils::StringToBool(
+        instruction->GetAttribute(DomainConstants::kListenForceSuccessAttribute)));
+  }
 
-void ListenItem::SetupDomainImpl(instruction_t *instruction) const {}
+  if (instruction->HasAttribute(DomainConstants::kListenVarNamesAttribute))
+  {
+    SetVarNames(instruction->GetAttribute(DomainConstants::kListenVarNamesAttribute));
+  }
+}
+
+void ListenItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(DomainConstants::kListenForceSuccessAttribute,
+                            mvvm::utils::FromBool(IsForceSuccess()));
+  instruction->AddAttribute(DomainConstants::kListenVarNamesAttribute, GetVarNames());
+}
 
 // ----------------------------------------------------------------------------
 // MessageItem

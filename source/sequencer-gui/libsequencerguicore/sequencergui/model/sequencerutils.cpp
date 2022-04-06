@@ -20,9 +20,9 @@
 #include "sequencergui/model/sequencerutils.h"
 
 #include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/item_constants.h"
 
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/utils/containerutils.h"
@@ -36,6 +36,7 @@ std::vector<std::string> GetDomainDecoratorNames()
 {
   std::vector<std::string> result{sequencergui::DomainConstants::kForceSuccessInstructionType,
                                   sequencergui::DomainConstants::kIncludeInstructionType,
+                                  sequencergui::DomainConstants::kListenInstructionType,
                                   sequencergui::DomainConstants::kRepeatInstructionType,
                                   sequencergui::DomainConstants::kInverterInstructionType};
   return result;
