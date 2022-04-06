@@ -182,6 +182,12 @@ public:
 
   std::string GetDomainType() const override;
 
+  bool IsForceSuccess() const;
+  void SetForceSuccess(bool value);
+
+  std::string GetVarNames() const;
+  void SetVarNames(const std::string& str);
+
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;

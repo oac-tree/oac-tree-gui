@@ -365,12 +365,38 @@ void InverterItem::SetupDomainImpl(instruction_t *instruction) const
 // ----------------------------------------------------------------------------
 // ListenItem
 // ----------------------------------------------------------------------------
+static inline const std::string kForceSuccess = "kForceSuccess";
+static inline const std::string kVarNames = "kVarNames";
 
-ListenItem::ListenItem() : InstructionItem(Type) {}
+ListenItem::ListenItem() : InstructionItem(Type)
+{
+  AddProperty(kForceSuccess, false)->SetDisplayName("Force success");
+  AddProperty(kVarNames, std::string())->SetDisplayName("Var names");
+}
 
 std::string ListenItem::GetDomainType() const
 {
   return DomainConstants::kListenInstructionType;
+}
+
+bool ListenItem::IsForceSuccess() const
+{
+  return Property<bool>(kForceSuccess);
+}
+
+void ListenItem::SetForceSuccess(bool value)
+{
+  SetProperty(kForceSuccess, value);
+}
+
+std::string ListenItem::GetVarNames() const
+{
+  return Property<std::string>(kVarNames);
+}
+
+void ListenItem::SetVarNames(const std::string &str)
+{
+  SetProperty(kVarNames, str);
 }
 
 void ListenItem::InitFromDomainImpl(const instruction_t *instruction) {}

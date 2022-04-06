@@ -78,6 +78,8 @@ const std::string kConditionVarNameAttribute = "var_name";
 const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
 const std::string kWaitTimeoutAttribute = "timeout";
+const std::string kListenVarNamesAttribute = "varNames";
+const std::string kListenForceSuccessAttribute = "forceSuccess";
 
 }  // namespace sequencergui::DomainConstants
 
