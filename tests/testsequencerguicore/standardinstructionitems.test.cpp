@@ -79,6 +79,8 @@ TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kConditionInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kIsRootAttribute), "true");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -121,6 +123,8 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kCopyInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kInputAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kOutputAttribute), "cde");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -162,6 +166,8 @@ TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kEqualsInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kLeftHandAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kRightHandAttribute), "cde");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -171,10 +177,35 @@ TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
 TEST_F(StandardInstructionItemsTest, FallbackItem)
 {
   // Correctly initialised item
-  sequencergui::FallbackItem item;
+  FallbackItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   auto sequence = item.InsertItem<SequenceItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
+}
+
+//! Validate SequenceItem convertion to the domain object.
+
+TEST_F(StandardInstructionItemsTest, FallbackItemFromDomain)
+{
+  auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kFallbackInstructionType);
+  input->AddAttribute(DomainConstants::kNameAttribute, "abc");
+
+  // Correctly initialised item
+  FallbackItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetName(), std::string("abc"));
+}
+
+//! Validate SequenceItem convertion to the domain object.
+
+TEST_F(StandardInstructionItemsTest, FallbackItemToDomain)
+{
+  // Correctly initialised item
+  FallbackItem item;
+
+  auto domain_instruction = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_instruction->GetType(), sequencergui::DomainConstants::kFallbackInstructionType);
 }
 
 // ----------------------------------------------------------------------------
@@ -212,9 +243,10 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
   // Correctly initialised item
   ForceSuccessItem item;
 
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(),
-            sequencergui::DomainConstants::kForceSuccessInstructionType);
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), sequencergui::DomainConstants::kForceSuccessInstructionType);
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -263,6 +295,8 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kIncludeInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFileAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kPathAttribute), "def");
+
+//  EXPECT_TRUE(IsValid(domain_item.get())); FIXME why it is failing?
 }
 
 // ----------------------------------------------------------------------------
@@ -300,6 +334,8 @@ TEST_F(StandardInstructionItemsTest, InputItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kInputInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDescriptionAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kInputTargetAttribute), "var");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -323,8 +359,10 @@ TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
   // Correctly initialised item
   sequencergui::InverterItem item;
 
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), sequencergui::DomainConstants::kInverterInstructionType);
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), sequencergui::DomainConstants::kInverterInstructionType);
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -408,6 +446,8 @@ TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kMessageInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kTextAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kIsRootAttribute), "true");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -445,6 +485,8 @@ TEST_F(StandardInstructionItemsTest, OutputItemToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kOutputInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDescriptionAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kOutputSourceAttribute), "var");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -492,6 +534,8 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kParallelInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kSuccessThresholdAttribute), "42");
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFailureThresholdAttribute), "43");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -532,6 +576,8 @@ TEST_F(StandardInstructionItemsTest, RepeatItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kRepeatInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kMaxCountAttribute), "42");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -559,8 +605,10 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   // Correctly initialised item
   SequenceItem item;
 
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), DomainConstants::kSequenceInstructionType);
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kSequenceInstructionType);
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -600,6 +648,8 @@ TEST_F(StandardInstructionItemsTest, UserChoiceItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), DomainConstants::kUserChoiceInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDescriptionAttribute), "abc");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
 
 // ----------------------------------------------------------------------------
@@ -653,8 +703,10 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
   WaitItem wait_item;
   EXPECT_EQ(wait_item.GetTimeout(), 0.0);
 
-  auto domain_instruction = wait_item.CreateDomainInstruction();
-  EXPECT_TRUE(domain_instruction->HasAttribute(DomainConstants::kWaitTimeoutAttribute));
-  EXPECT_EQ(domain_instruction->GetAttribute(DomainConstants::kWaitTimeoutAttribute), "0.0");
-  EXPECT_EQ(domain_instruction->GetType(), DomainConstants::kWaitInstructionType);
+  auto domain_item = wait_item.CreateDomainInstruction();
+  EXPECT_TRUE(domain_item->HasAttribute(DomainConstants::kWaitTimeoutAttribute));
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kWaitTimeoutAttribute), "0.0");
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kWaitInstructionType);
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
 }
