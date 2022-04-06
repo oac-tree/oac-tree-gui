@@ -96,6 +96,13 @@ std::unique_ptr<mvvm::ItemCatalogue> CreateInstructionItemCatalogue()
 
 namespace sequencergui
 {
+
+std::string GetItemType(const std::string& domain_type)
+{
+  // For the moment it's one-to-one correspondance.
+  return domain_type;
+}
+
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 {
   static const auto catalogue = CreateVariableItemCatalogue();

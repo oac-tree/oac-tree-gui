@@ -35,6 +35,9 @@ class InstructionContainerItem;
 class WorkspaceItem;
 class VariableItem;
 
+//! Translates instruction's `domain_type` name to UI `model_type` name.
+std::string GetItemType(const std::string& domain_type);
+
 //! Creates VariableItem from string representing Type of sup::sequencer::Variable.
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
 

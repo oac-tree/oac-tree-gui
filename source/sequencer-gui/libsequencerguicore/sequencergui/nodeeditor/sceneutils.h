@@ -24,16 +24,19 @@
 //! Collection of utility functions for graphics scene.
 
 #include <vector>
+#include <memory>
 
 class QGradient;
 class QColor;
 class QRectF;
 class QPointF;
+class QString;
 
 namespace sequencergui
 {
 class InstructionContainerItem;
 class InstructionItem;
+class SequencerModel;
 
 //! Returns vertical gradient to paint connectable view with given color and bounding rectangle.
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect);
@@ -63,6 +66,15 @@ void AlignInstructionTree(const QPointF& reference, InstructionItem* instruction
 //! Returns base color of given instruction
 QColor GetBaseColor(const InstructionItem* instruction);
 
+//! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
+//! the default attribute map from the domain. See explanations in the implementation.
+std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type);
+
+//! Adds InstructionItem to the `model` for a  given `domain_type`, and returns the result to the
+//! user. If the model doesn't have given InstructionItem registered, create UnknownInstructionItem
+//! instead.
+InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem* container,
+                                const QString& domain_type);
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H

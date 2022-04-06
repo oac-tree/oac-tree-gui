@@ -19,10 +19,17 @@
 
 #include "sequencergui/nodeeditor/sceneutils.h"
 
+#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/sequencerutils.h"
+#include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/transformfromdomain.h"
 
+#include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"
+
+#include "Instruction.h"
 
 #include <QDebug>
 #include <QLinearGradient>
@@ -145,6 +152,33 @@ QColor GetBaseColor(const InstructionItem* instruction)
   }
 
   return {Qt::lightGray};
+}
+
+std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)
+{
+  // This handles a special case when instruction's domain_type is unknown to the GUI.
+  // We create UnkownInstructionItem and initialise it's attributes from the temporary domain
+  // instruction.
+  auto domain_instruction = DomainUtils::CreateDomainInstruction(domain_type);
+  auto result = std::make_unique<UnknownInstructionItem>();
+  result->InitFromDomain(domain_instruction.get());
+  return result;
+}
+
+InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem* container,
+                                const QString& domain_type)
+{
+  try
+  {
+    auto item_type = GetItemType(domain_type.toStdString());
+    return dynamic_cast<InstructionItem*>(model->InsertNewItem(item_type, container));
+  }
+  catch (const mvvm::NotFoundKeyException& ex)
+  {
+    // The UI knows nothing about instruction of given type.
+    return dynamic_cast<InstructionItem*>(
+        model->InsertItem(CreateUnknownInstructionItem(domain_type.toStdString()), nullptr, {}));
+  }
 }
 
 }  // namespace sequencergui
