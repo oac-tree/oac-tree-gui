@@ -20,6 +20,7 @@
 #include "sequencergui/model/standardinstructionitems.h"
 
 #include "Instruction.h"
+#include "Procedure.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/transformfromdomain.h"
 
@@ -31,6 +32,14 @@ using namespace sequencergui;
 
 class StandardInstructionItemsTest : public ::testing::Test
 {
+public:
+  //! Returns true if domain instruction is valid.
+  bool IsValid(::sup::sequencer::Instruction* instruction)
+  {
+    return instruction->Setup(m_procedure);
+  }
+
+  ::sup::sequencer::Procedure m_procedure;
 };
 
 // ----------------------------------------------------------------------------
@@ -348,17 +357,19 @@ TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
   EXPECT_TRUE(item.IsForceSuccess());
 }
 
-// TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
-//{
-//   MessageItem item;
-//   item.SetText("abc");
-//   item.SetIsRootFlag(true);
+TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
+{
+  ListenItem item;
+  item.SetForceSuccess(true);
+  item.SetVarNames("abc");
 
-//  auto domain_item = item.CreateDomainInstruction();
-//  EXPECT_EQ(domain_item->GetType(), DomainConstants::kMessageInstructionType);
-//  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kTextAttribute), "abc");
-//  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kIsRootAttribute), "true");
-//}
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), DomainConstants::kListenInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kListenVarNamesAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kListenForceSuccessAttribute), "true");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
+}
 
 // ----------------------------------------------------------------------------
 // MessageItem tests
