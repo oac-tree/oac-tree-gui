@@ -59,6 +59,25 @@ public:
   }
 };
 
+TEST_F(TransformFromDomainTest, GetItemType)
+{
+  EXPECT_EQ(ConditionItem::Type, GetItemType(DomainConstants::kConditionInstructionType));
+  EXPECT_EQ(CopyItem::Type, GetItemType(DomainConstants::kCopyInstructionType));
+  EXPECT_EQ(EqualsItem::Type, GetItemType(DomainConstants::kEqualsInstructionType));
+  EXPECT_EQ(FallbackItem::Type, GetItemType(DomainConstants::kFallbackInstructionType));
+  EXPECT_EQ(ForceSuccessItem::Type, GetItemType(DomainConstants::kForceSuccessInstructionType));
+  EXPECT_EQ(IncludeItem::Type, GetItemType(DomainConstants::kIncludeInstructionType));
+  EXPECT_EQ(InputItem::Type, GetItemType(DomainConstants::kInputInstructionType));
+  EXPECT_EQ(InverterItem::Type, GetItemType(DomainConstants::kInverterInstructionType));
+  EXPECT_EQ(MessageItem::Type, GetItemType(DomainConstants::kMessageInstructionType));
+  EXPECT_EQ(OutputItem::Type, GetItemType(DomainConstants::kOutputInstructionType));
+  EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(DomainConstants::kParallelInstructionType));
+  EXPECT_EQ(RepeatItem::Type, GetItemType(DomainConstants::kRepeatInstructionType));
+  EXPECT_EQ(SequenceItem::Type, GetItemType(DomainConstants::kSequenceInstructionType));
+  EXPECT_EQ(UserChoiceItem::Type, GetItemType(DomainConstants::kUserChoiceInstructionType));
+  EXPECT_EQ(WaitItem::Type, GetItemType(DomainConstants::kWaitInstructionType));
+}
+
 //! Validate CreateInstructionItem factory function.
 
 TEST_F(TransformFromDomainTest, CreateVariableItem)
