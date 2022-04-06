@@ -186,7 +186,7 @@ public:
   void SetForceSuccess(bool value);
 
   std::string GetVarNames() const;
-  void SetVarNames(const std::string& str);
+  void SetVarNames(const std::string& value);
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
@@ -204,7 +204,7 @@ public:
 
   std::string GetText() const;
 
-  void SetText(const std::string& text);
+  void SetText(const std::string& value);
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;

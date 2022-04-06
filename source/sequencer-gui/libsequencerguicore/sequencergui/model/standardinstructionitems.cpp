@@ -394,9 +394,9 @@ std::string ListenItem::GetVarNames() const
   return Property<std::string>(kVarNames);
 }
 
-void ListenItem::SetVarNames(const std::string &str)
+void ListenItem::SetVarNames(const std::string &value)
 {
-  SetProperty(kVarNames, str);
+  SetProperty(kVarNames, value);
 }
 
 void ListenItem::InitFromDomainImpl(const instruction_t *instruction) {}
