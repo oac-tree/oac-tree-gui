@@ -212,3 +212,11 @@ TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromProcedureWithLocalVaria
   EXPECT_EQ(variable_item->GetJsonType(), expected_type);
   EXPECT_EQ(variable_item->GetJsonValue(), expected_value);
 }
+
+TEST_F(TransformFromDomainTest, CreateUnknownInstructionItem)
+{
+  auto item = CreateUnknownInstructionItem(DomainConstants::kWaitInstructionType);
+
+  EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);
+  EXPECT_EQ(item->GetDomainType(), DomainConstants::kWaitInstructionType);
+}
