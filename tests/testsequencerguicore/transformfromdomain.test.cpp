@@ -100,16 +100,24 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
 
 TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ConditionItem>(
+      DomainConstants::kConditionInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::CopyItem>(DomainConstants::kCopyInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(
       DomainConstants::kEqualsInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::FallbackItem>(
       DomainConstants::kFallbackInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ForceSuccessItem>(
+      DomainConstants::kForceSuccessInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncludeItem>(
+      DomainConstants::kIncludeInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::InputItem>(DomainConstants::kInputInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::InverterItem>(
       DomainConstants::kInverterInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ListenItem>(
+      DomainConstants::kListenInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::MessageItem>(
       DomainConstants::kMessageInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::OutputItem>(
@@ -120,12 +128,10 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       DomainConstants::kRepeatInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SequenceItem>(
       DomainConstants::kSequenceInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::WaitItem>(DomainConstants::kWaitInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ForceSuccessItem>(
-      DomainConstants::kForceSuccessInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::UserChoiceItem>(
       DomainConstants::kUserChoiceInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::WaitItem>(DomainConstants::kWaitInstructionType));
 }
 
 //! Populate InstructionContainerItem from empty Procedure.
