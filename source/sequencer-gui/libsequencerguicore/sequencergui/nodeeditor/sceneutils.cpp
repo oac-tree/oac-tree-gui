@@ -24,12 +24,9 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/sequencerutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/transformfromdomain.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"
-
-#include "Instruction.h"
 
 #include <QDebug>
 #include <QLinearGradient>
@@ -152,17 +149,6 @@ QColor GetBaseColor(const InstructionItem* instruction)
   }
 
   return {Qt::lightGray};
-}
-
-std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)
-{
-  // This handles a special case when instruction's domain_type is unknown to the GUI.
-  // We create UnkownInstructionItem and initialise it's attributes from the temporary domain
-  // instruction.
-  auto domain_instruction = DomainUtils::CreateDomainInstruction(domain_type);
-  auto result = std::make_unique<UnknownInstructionItem>();
-  result->InitFromDomain(domain_instruction.get());
-  return result;
 }
 
 InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem* container,

@@ -66,10 +66,6 @@ void AlignInstructionTree(const QPointF& reference, InstructionItem* instruction
 //! Returns base color of given instruction
 QColor GetBaseColor(const InstructionItem* instruction);
 
-//! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
-//! the default attribute map from the domain. See explanations in the implementation.
-std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type);
-
 //! Adds InstructionItem to the `model` for a  given `domain_type`, and returns the result to the
 //! user. If the model doesn't have given InstructionItem registered, create UnknownInstructionItem
 //! instead.

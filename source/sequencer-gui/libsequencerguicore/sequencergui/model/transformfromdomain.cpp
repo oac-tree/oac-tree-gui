@@ -23,6 +23,7 @@
 #include "Procedure.h"
 #include "Workspace.h"
 #include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/guiobjectbuilder.h"
 #include "sequencergui/model/sequenceritems.h"
 
@@ -142,6 +143,17 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
 {
   GUIObjectBuilder builder;
   builder.PopulateInstructionContainerItem(procedure, container);
+}
+
+std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)
+{
+  // This handles a special case when instruction's domain_type is unknown to the GUI.
+  // We create UnkownInstructionItem and initialise it's attributes from the temporary domain
+  // instruction.
+  auto domain_instruction = DomainUtils::CreateDomainInstruction(domain_type);
+  auto result = std::make_unique<UnknownInstructionItem>();
+  result->InitFromDomain(domain_instruction.get());
+  return result;
 }
 
 }  // namespace sequencergui

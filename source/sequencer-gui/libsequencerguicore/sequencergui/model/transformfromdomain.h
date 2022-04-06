@@ -51,6 +51,10 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
 
+//! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
+//! the default attribute map from the domain. See explanations in the implementation.
+std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_TRANSFORMFROMDOMAIN_H
