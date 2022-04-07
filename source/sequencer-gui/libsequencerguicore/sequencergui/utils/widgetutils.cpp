@@ -23,4 +23,3 @@ namespace sequencergui
 {
 
 }  // namespace sequencergui
-

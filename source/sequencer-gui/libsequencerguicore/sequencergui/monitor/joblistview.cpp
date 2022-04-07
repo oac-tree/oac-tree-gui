@@ -23,25 +23,23 @@
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/monitor/procedureviewmodel.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/standarditems/standarditemincludes.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
-#include "sequencergui/monitor/procedureviewmodel.h"
-
 #include <QLabel>
-#include <QTreeView>
 #include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
-JobListView::JobListView(QWidget *parent)
-    : CollapsibleWidget(parent), m_tree_view(new QTreeView)
+JobListView::JobListView(QWidget *parent) : CollapsibleWidget(parent), m_tree_view(new QTreeView)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

@@ -69,7 +69,6 @@ private:
   SequencerMonitorView* m_monitor_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
   SettingsView* m_settings_view{nullptr};
-
 };
 
 }  // namespace sequencergui

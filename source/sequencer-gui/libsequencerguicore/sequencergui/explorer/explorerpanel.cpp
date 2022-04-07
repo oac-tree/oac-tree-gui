@@ -20,8 +20,8 @@
 #include "sequencergui/explorer/explorerpanel.h"
 
 #include "sequencergui/mainwindow/filetreeview.h"
-#include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/mainwindow/paneltoolbar.h"
+#include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
 
 #include <QLabel>

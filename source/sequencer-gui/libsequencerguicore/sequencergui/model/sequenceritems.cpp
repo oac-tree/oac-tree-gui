@@ -33,7 +33,8 @@ namespace sequencergui
 // ----------------------------------------------------------------------------
 UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::string UnknownInstructionItem::GetDomainType() const
@@ -72,7 +73,8 @@ void UnknownInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 
 InstructionContainerItem::InstructionContainerItem() : CompoundItem(Type)
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const

@@ -23,8 +23,8 @@
 //! @file sceneutils.h
 //! Collection of utility functions for graphics scene.
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 class QGradient;
 class QColor;

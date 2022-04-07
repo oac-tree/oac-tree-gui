@@ -19,12 +19,12 @@
 
 #include "sequencergui/composer/composerpanel.h"
 
+#include "sequencergui/composer/instructionlistwidget.h"
 #include "sequencergui/composer/instructionpanel.h"
 #include "sequencergui/composer/workspacepanel.h"
-#include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/mainwindow/paneltoolbar.h"
+#include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
-#include "sequencergui/composer/instructionlistwidget.h"
 
 #include <QLabel>
 #include <QSplitter>

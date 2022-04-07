@@ -23,10 +23,9 @@
 
 #include "mvvm/utils/containerutils.h"
 
+#include <QDebug>
 #include <algorithm>
 #include <stack>
-
-#include <QDebug>
 
 namespace
 {
@@ -253,12 +252,12 @@ void CenterNodesBetween(AlignNode& leftNode, AlignNode& rightNode)
   }
 }
 
-void CalculateFinalPositions(AlignNode &node, double mod_sum)
+void CalculateFinalPositions(AlignNode& node, double mod_sum)
 {
-  node.SetX(node.GetX()+mod_sum);
+  node.SetX(node.GetX() + mod_sum);
   mod_sum += node.GetMod();
 
-  for(auto child : node.GetChildren())
+  for (auto child : node.GetChildren())
   {
     CalculateFinalPositions(*child, mod_sum);
   }
@@ -270,6 +269,5 @@ void AlignNodes(AlignNode& node)
   CalculateInitialX(node);
   CalculateFinalPositions(node);
 }
-
 
 }  // namespace sequencergui::algorithm

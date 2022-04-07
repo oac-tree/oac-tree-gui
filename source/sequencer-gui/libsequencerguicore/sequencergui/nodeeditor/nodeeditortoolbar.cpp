@@ -98,7 +98,8 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_align_button_v2->setIcon(StyleUtils::GetIcon("dots-triangle.svg"));
   m_align_button_v2->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_align_button_v2->setToolTip("Align children of currently selected item");
-  connect(m_align_button_v2, &QToolButton::clicked, this, &NodeEditorToolBar::alignSelectedRequestV2);
+  connect(m_align_button_v2, &QToolButton::clicked, this,
+          &NodeEditorToolBar::alignSelectedRequestV2);
   addWidget(m_align_button_v2);
 
   AddDotsMenu();

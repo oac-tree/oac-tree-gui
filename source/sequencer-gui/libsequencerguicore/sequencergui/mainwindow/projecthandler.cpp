@@ -32,7 +32,7 @@
 namespace sequencergui
 {
 
-ProjectHandler::ProjectHandler(mvvm::ApplicationModel* model, QWidget *parent)
+ProjectHandler::ProjectHandler(mvvm::ApplicationModel* model, QWidget* parent)
     : QObject(parent)
     , m_recent_project_settings(std::make_unique<RecentProjectSettings>())
     , m_user_interactor(std::make_unique<UserInteractor>(m_recent_project_settings.get(), parent))
