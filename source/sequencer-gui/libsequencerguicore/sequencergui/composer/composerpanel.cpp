@@ -26,6 +26,8 @@
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
 
+#include "sequencergui/widgets/collapsiblewidget_v2.h"
+
 #include <QLabel>
 #include <QSplitter>
 #include <QToolBar>
@@ -54,7 +56,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   layout->addWidget(m_splitter);
 
   m_procedure_list_widget->AddToSplitter(m_splitter);
-  m_instruction_panel->AddToSplitter(m_splitter);
+  AddToSplitter(m_splitter, m_instruction_panel);
   m_workspace_panel->AddToSplitter(m_splitter);
 
   //  m_splitter->setSizes(QList<int>() << 400 << 200);

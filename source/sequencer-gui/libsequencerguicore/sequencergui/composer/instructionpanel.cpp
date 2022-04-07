@@ -27,9 +27,9 @@ namespace sequencergui
 {
 
 InstructionPanel::InstructionPanel(QWidget *parent)
-    : CollapsibleWidget(parent), m_list_widget(new InstructionListWidget)
+    : QWidget(parent), m_list_widget(new InstructionListWidget)
 {
-  SetText("INSTRUCTIONS");
+  setWindowTitle("INSTRUCTIONS");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

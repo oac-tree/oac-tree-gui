@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONPANEL_H
 #define SEQUENCERGUI_COMPOSER_INSTRUCTIONPANEL_H
 
-#include "sequencergui/mainwindow/collapsiblewidget.h"
+#include <QWidget>
 
 namespace sequencergui
 {
@@ -28,7 +28,7 @@ class InstructionListWidget;
 
 //! Collapsible list with instructions available to drag and drop on graphics scene.
 
-class InstructionPanel : public CollapsibleWidget
+class InstructionPanel : public QWidget
 {
   Q_OBJECT
 
