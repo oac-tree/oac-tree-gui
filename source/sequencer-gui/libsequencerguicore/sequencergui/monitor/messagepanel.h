@@ -32,8 +32,8 @@ class MessagePanel : public CollapsibleWidget
 public:
   explicit MessagePanel(QWidget* parent = nullptr);
 
-public slots:
   void onClearLog();
+
   void onMessage(const QString& message, const QColor& color = QColor(Qt::black));
 
 private:

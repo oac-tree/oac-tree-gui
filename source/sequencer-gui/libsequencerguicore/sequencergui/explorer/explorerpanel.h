@@ -56,7 +56,7 @@ private:
   PanelToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
-  ProcedureListView* m_open_documents_widget{nullptr};
+  ProcedureListView* m_procedure_list_view{nullptr};
 };
 
 }  // namespace sequencergui

@@ -36,17 +36,17 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
     , m_tool_bar(new PanelToolBar)
     , m_splitter(new QSplitter)
     , m_file_tree_view(new FileTreeView)
-    , m_open_documents_widget(new ProcedureListView)
+    , m_procedure_list_view(new ProcedureListView)
 {
   m_tool_bar->setText("EXPLORER");
 
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_file_tree_view);
 
-  m_open_documents_widget->SetText("OPEN PROCEDURES");
-  m_open_documents_widget->AddToSplitter(m_splitter);
+  m_procedure_list_view->SetText("OPEN PROCEDURES");
+  m_procedure_list_view->AddToSplitter(m_splitter);
 
-  m_splitter->setCollapsible(m_splitter->indexOf(m_open_documents_widget), false);
+  m_splitter->setCollapsible(m_splitter->indexOf(m_procedure_list_view), false);
 
   m_splitter->setSizes(QList<int>() << 400 << 200);
 
@@ -61,20 +61,20 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
           &ExplorerPanel::ProcedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
-  connect(m_open_documents_widget, &ProcedureListView::CreateNewProcedureRequest, this,
+  connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
           &ExplorerPanel::CreateNewProcedureRequest);
-  connect(m_open_documents_widget, &ProcedureListView::ProcedureSelected, this,
+  connect(m_procedure_list_view, &ProcedureListView::ProcedureSelected, this,
           &ExplorerPanel::ProcedureSelected);
 }
 
 void ExplorerPanel::SetModel(SequencerModel *model)
 {
-  m_open_documents_widget->SetModel(model);
+  m_procedure_list_view->SetModel(model);
 }
 
 ProcedureItem *ExplorerPanel::GetSelectedProcedure()
 {
-  return m_open_documents_widget->GetSelectedProcedure();
+  return m_procedure_list_view->GetSelectedProcedure();
 }
 
 ExplorerPanel::~ExplorerPanel() = default;
