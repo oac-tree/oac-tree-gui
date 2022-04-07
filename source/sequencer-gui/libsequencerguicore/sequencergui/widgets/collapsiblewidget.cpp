@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/collapsiblewidget_v2.h"
+#include "sequencergui/widgets/collapsiblewidget.h"
 
-#include "sequencergui/widgets/collapsibletoolbar_v2.h"
+#include "sequencergui/widgets/collapsibletoolbar.h"
 
 #include <QAction>
 #include <QDebug>
@@ -30,8 +30,8 @@
 namespace sequencergui
 {
 
-CollapsibleWidgetV2::CollapsibleWidgetV2(QWidget *context, QWidget *parent)
-    : QWidget(parent), m_tool_bar(new CollapsibleToolBarV2)
+CollapsibleWidget::CollapsibleWidget(QWidget *context, QWidget *parent)
+    : QWidget(parent), m_tool_bar(new CollapsibleToolBar)
 {
   auto layout = new QVBoxLayout(this);
   layout->setMargin(0);
@@ -40,9 +40,9 @@ CollapsibleWidgetV2::CollapsibleWidgetV2(QWidget *context, QWidget *parent)
   m_tool_bar->SetControlledWidget(this);
 }
 
-CollapsibleWidgetV2::~CollapsibleWidgetV2() = default;
+CollapsibleWidget::~CollapsibleWidget() = default;
 
-void CollapsibleWidgetV2::AddToSplitter(QSplitter *splitter)
+void CollapsibleWidget::AddToSplitter(QSplitter *splitter)
 {
   splitter->addWidget(m_tool_bar);
   splitter->setCollapsible(splitter->indexOf(m_tool_bar), false);
@@ -50,24 +50,24 @@ void CollapsibleWidgetV2::AddToSplitter(QSplitter *splitter)
   splitter->addWidget(this);
 }
 
-CollapsibleToolBarV2 *CollapsibleWidgetV2::GetToolBar()
+CollapsibleToolBar *CollapsibleWidget::GetToolBar()
 {
   return m_tool_bar;
 }
 
-QToolBar *CollapsibleWidgetV2::toolBar()
+QToolBar *CollapsibleWidget::toolBar()
 {
   return m_tool_bar->GetToolBar();
 }
 
-void CollapsibleWidgetV2::SetText(const QString &text)
+void CollapsibleWidget::SetText(const QString &text)
 {
   m_tool_bar->SetText(text);
 }
 
 void AddToSplitter(QSplitter *splitter, QWidget *context)
 {
-  auto collapsible_widget = new CollapsibleWidgetV2(context);
+  auto collapsible_widget = new CollapsibleWidget(context);
   collapsible_widget->SetText(context->windowTitle());
   collapsible_widget->AddToSplitter(splitter);
   for (auto action : context->actions())

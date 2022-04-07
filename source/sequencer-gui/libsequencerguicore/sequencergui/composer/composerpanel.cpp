@@ -26,7 +26,7 @@
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
 
-#include "sequencergui/widgets/collapsiblewidget_v2.h"
+#include "sequencergui/widgets/collapsiblewidget.h"
 
 #include <QLabel>
 #include <QSplitter>

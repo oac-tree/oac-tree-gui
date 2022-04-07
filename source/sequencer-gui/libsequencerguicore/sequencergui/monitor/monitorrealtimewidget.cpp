@@ -25,7 +25,7 @@
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
-#include "sequencergui/widgets/collapsiblewidget_v2.h"
+#include "sequencergui/widgets/collapsiblewidget.h"
 
 #include "mvvm/widgets/topitemstreeview.h"
 

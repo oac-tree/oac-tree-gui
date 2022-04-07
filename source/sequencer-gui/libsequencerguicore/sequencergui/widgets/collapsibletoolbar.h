@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_V2_H
-#define SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_V2_H
+#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_H
+#define SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_H
 
 #include <QFrame>
 #include <QList>
@@ -37,12 +37,12 @@ namespace sequencergui
 
 //! This toolbar is intended to function in splitters together with CollapsibleWidgets.
 
-class CollapsibleToolBarV2 : public QFrame
+class CollapsibleToolBar : public QFrame
 {
   Q_OBJECT
 
 public:
-  explicit CollapsibleToolBarV2(QWidget* parent = nullptr);
+  explicit CollapsibleToolBar(QWidget* parent = nullptr);
 
   void SetText(const QString& text);
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_V2_H
+#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_H

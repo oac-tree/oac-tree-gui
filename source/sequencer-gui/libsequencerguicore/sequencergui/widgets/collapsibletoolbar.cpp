@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/collapsibletoolbar_v2.h"
+#include "sequencergui/widgets/collapsibletoolbar.h"
 
 #include "sequencergui/mainwindow/styleutils.h"
 
@@ -30,7 +30,7 @@
 
 namespace sequencergui
 {
-CollapsibleToolBarV2::CollapsibleToolBarV2(QWidget *parent)
+CollapsibleToolBar::CollapsibleToolBar(QWidget *parent)
     : QFrame(parent)
     , m_tool_bar(new QToolBar)
     , m_expand_button(new QToolButton)
@@ -68,7 +68,7 @@ CollapsibleToolBarV2::CollapsibleToolBarV2(QWidget *parent)
 
 //! Set text next to collapse/expand icon.
 
-void CollapsibleToolBarV2::SetText(const QString &text)
+void CollapsibleToolBar::SetText(const QString &text)
 {
   mvvm::utils::ScaleLabelFont(m_label, 0.9);
   m_label->setText(text);
@@ -76,12 +76,12 @@ void CollapsibleToolBarV2::SetText(const QString &text)
 
 //! Sets the widget which will be collapsed/expanded.
 
-void CollapsibleToolBarV2::SetControlledWidget(QWidget *widget)
+void CollapsibleToolBar::SetControlledWidget(QWidget *widget)
 {
   m_controlled_widget = widget;
 }
 
-void CollapsibleToolBarV2::AddWidget(QWidget *widget)
+void CollapsibleToolBar::AddWidget(QWidget *widget)
 {
   // Feature of QToolBar: returns action on adding any widget or button.
   // These actions can be used to hide widgets from the toolbar (see ::UpdateToolBar)
@@ -89,20 +89,20 @@ void CollapsibleToolBarV2::AddWidget(QWidget *widget)
   m_toolbar_actions.append(action);  // to hide/show elements later
 }
 
-void CollapsibleToolBarV2::AddAction(QAction *action)
+void CollapsibleToolBar::AddAction(QAction *action)
 {
   m_tool_bar->addAction(action);
   m_toolbar_actions.append(action);
 }
 
-QToolBar *CollapsibleToolBarV2::GetToolBar()
+QToolBar *CollapsibleToolBar::GetToolBar()
 {
   return m_tool_bar;
 }
 
 //! Updates toolbar appearance depending on collapsed/expaned status
 
-void CollapsibleToolBarV2::UpdateToolBar()
+void CollapsibleToolBar::UpdateToolBar()
 {
   UpdateIcon();
 
@@ -121,7 +121,7 @@ void CollapsibleToolBarV2::UpdateToolBar()
 
 //! Updates collapse/expand icon.
 
-void CollapsibleToolBarV2::UpdateIcon()
+void CollapsibleToolBar::UpdateIcon()
 {
   if (m_expanded)
   {
@@ -135,7 +135,7 @@ void CollapsibleToolBarV2::UpdateIcon()
   }
 }
 
-void CollapsibleToolBarV2::InsertStrech()
+void CollapsibleToolBar::InsertStrech()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

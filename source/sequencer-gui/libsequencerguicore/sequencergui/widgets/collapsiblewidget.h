@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_V2_H
-#define SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_V2_H
+#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_H
+#define SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_H
 
 #include <QWidget>
 
@@ -28,30 +28,30 @@ class QToolBar;
 namespace sequencergui
 {
 
-class CollapsibleToolBarV2;
+class CollapsibleToolBar;
 
-class CollapsibleWidgetV2 : public QWidget
+class CollapsibleWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit CollapsibleWidgetV2(QWidget* context, QWidget* parent = nullptr);
-  ~CollapsibleWidgetV2() override;
+  explicit CollapsibleWidget(QWidget* context, QWidget* parent = nullptr);
+  ~CollapsibleWidget() override;
 
   void AddToSplitter(QSplitter* splitter);
 
-  CollapsibleToolBarV2* GetToolBar();
+  CollapsibleToolBar* GetToolBar();
 
   QToolBar* toolBar();
 
   void SetText(const QString& text);
 
 private:
-  CollapsibleToolBarV2* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
+  CollapsibleToolBar* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
 };
 
 void AddToSplitter(QSplitter* splitter, QWidget* context);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_COLLAPSIBLEWIDGET_H
+#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_H

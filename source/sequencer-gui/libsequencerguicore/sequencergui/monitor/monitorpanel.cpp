@@ -22,7 +22,7 @@
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/monitor/joblistview.h"
-#include "sequencergui/widgets/collapsiblewidget_v2.h"
+#include "sequencergui/widgets/collapsiblewidget.h"
 
 #include <QSplitter>
 #include <QToolBar>
