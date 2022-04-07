@@ -26,6 +26,7 @@
 #include <QLabel>
 #include <QToolBar>
 #include <QToolButton>
+#include <QDebug>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -95,6 +96,11 @@ void CollapsibleToolBarV2::AddAction(QAction *action)
   m_toolbar_actions.append(action);
 }
 
+QToolBar *CollapsibleToolBarV2::GetToolBar()
+{
+  return m_tool_bar;
+}
+
 //! Updates toolbar appearance depending on collapsed/expaned status
 
 void CollapsibleToolBarV2::UpdateToolBar()
@@ -112,6 +118,13 @@ void CollapsibleToolBarV2::UpdateToolBar()
   {
     action->setVisible(m_expanded);
   }
+
+  qDebug() << "xxx XXX " << actions();
+  for (auto action : actions())
+  {
+    action->setVisible(m_expanded);
+  }
+
 }
 
 //! Updates collapse/expand icon.

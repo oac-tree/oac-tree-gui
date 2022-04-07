@@ -21,8 +21,11 @@
 
 #include "sequencergui/widgets/collapsibletoolbar_v2.h"
 
+#include <QAction>
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QDebug>
+#include <QToolBar>
 
 namespace sequencergui
 {
@@ -52,16 +55,24 @@ CollapsibleToolBarV2 *CollapsibleWidgetV2::GetToolBar()
   return m_tool_bar;
 }
 
+QToolBar *CollapsibleWidgetV2::toolBar()
+{
+  return m_tool_bar->GetToolBar();
+}
+
 void CollapsibleWidgetV2::SetText(const QString &text)
 {
   m_tool_bar->SetText(text);
 }
 
-void AddToSplitter(QWidget *context, QSplitter *splitter)
+void AddToSplitter(QSplitter *splitter, QWidget *context)
 {
   auto collapsible_widget = new CollapsibleWidgetV2(context);
   collapsible_widget->SetText(context->windowTitle());
   collapsible_widget->AddToSplitter(splitter);
+
+  qDebug() << "OOO" << context->actions();
+  collapsible_widget->GetToolBar()->AddAction(context->actions().front());
 }
 
 }  // namespace sequencergui

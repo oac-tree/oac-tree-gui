@@ -54,7 +54,10 @@ MessagePanel::MessagePanel(QWidget *parent)
   //  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
   //  tool_bar->AddWidget(remove_selected_button);
 
+  m_remove_selected_action->setText("xxx");
   m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+
+  addAction(m_remove_selected_action);
 }
 
 void MessagePanel::onClearLog()
@@ -76,9 +79,5 @@ void MessagePanel::onMessage(const QString &message, const QColor &color)
   }
 }
 
-QList<QAction *> MessagePanel::GetActions() const
-{
-  return {m_remove_selected_action};
-}
 
 }  // namespace sequencergui

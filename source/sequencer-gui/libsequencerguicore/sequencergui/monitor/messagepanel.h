@@ -37,8 +37,6 @@ public:
 
   void onMessage(const QString& message, const QColor& color = QColor(Qt::black));
 
-  QList<QAction*> GetActions() const;
-
 private:
   QTextEdit* m_text_edit{nullptr};
   QAction* m_remove_selected_action{nullptr};

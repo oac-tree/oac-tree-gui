@@ -52,6 +52,8 @@ public:
 
   void AddAction(QAction* action);
 
+  QToolBar* GetToolBar();
+
 private:
   void UpdateToolBar();
   void UpdateIcon();

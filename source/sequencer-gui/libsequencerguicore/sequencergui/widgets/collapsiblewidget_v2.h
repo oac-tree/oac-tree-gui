@@ -23,6 +23,7 @@
 #include <QWidget>
 
 class QSplitter;
+class QToolBar;
 
 namespace sequencergui
 {
@@ -41,13 +42,15 @@ public:
 
   CollapsibleToolBarV2* GetToolBar();
 
+  QToolBar* toolBar();
+
   void SetText(const QString& text);
 
 private:
   CollapsibleToolBarV2* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
 };
 
-void AddToSplitter(QWidget* context, QSplitter* splitter);
+void AddToSplitter(QSplitter* splitter, QWidget* context);
 
 }  // namespace sequencergui
 
