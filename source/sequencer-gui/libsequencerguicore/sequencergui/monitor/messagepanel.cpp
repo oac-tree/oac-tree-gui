@@ -46,6 +46,7 @@ MessagePanel::MessagePanel(QWidget *parent)
   m_text_edit->setFont(f);
 
   //  SetText("LOG");
+  setWindowTitle("LOG");
 
   //  auto tool_bar = GetToolBar();
 

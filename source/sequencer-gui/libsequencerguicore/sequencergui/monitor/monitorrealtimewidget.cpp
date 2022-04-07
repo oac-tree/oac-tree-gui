@@ -55,7 +55,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   m_splitter->addWidget(m_stacked_widget);
   m_stacked_widget->addWidget(m_node_editor);
 
-  AddToSplitter(m_message_panel, m_splitter, "LOG");
+  AddToSplitter(m_message_panel, m_splitter);
 
   layout->addWidget(m_splitter);
 

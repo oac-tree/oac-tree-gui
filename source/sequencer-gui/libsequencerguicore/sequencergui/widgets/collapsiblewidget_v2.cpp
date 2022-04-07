@@ -57,10 +57,10 @@ void CollapsibleWidgetV2::SetText(const QString &text)
   m_tool_bar->SetText(text);
 }
 
-void AddToSplitter(QWidget *context, QSplitter *splitter, const QString &title)
+void AddToSplitter(QWidget *context, QSplitter *splitter)
 {
   auto collapsible_widget = new CollapsibleWidgetV2(context);
-  collapsible_widget->SetText(title);
+  collapsible_widget->SetText(context->windowTitle());
   collapsible_widget->AddToSplitter(splitter);
 }
 
