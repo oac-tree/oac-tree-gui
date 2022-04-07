@@ -35,7 +35,7 @@ class ConnectableViewFactory : public ViewFactoryInterface
 {
 public:
   ConnectableViewFactory();
-  ~ConnectableViewFactory();
+  ~ConnectableViewFactory() override;
 
   std::unique_ptr<ConnectableView> CreateView(InstructionItem *item) override;
 

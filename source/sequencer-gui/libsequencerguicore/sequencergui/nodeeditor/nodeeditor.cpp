@@ -41,7 +41,7 @@ namespace sequencergui
 NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
     : QMainWindow(parent)
     , m_tool_bar(new NodeEditorToolBar)
-    , m_graphics_scene(new GraphicsScene)
+    , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
 {
   //  auto layout = new QVBoxLayout(this);

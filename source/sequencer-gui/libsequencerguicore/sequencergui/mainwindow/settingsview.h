@@ -46,7 +46,6 @@ private:
   void SetupModelSettings();
   void SetupOtherSettings();
 
-  QToolBar* m_tool_bar{nullptr};
   QListWidget* m_list_widget;                 //!< selector for specific settings window on the left
   QStackedWidget* m_stacked_widget{nullptr};  //!< stack with settings widgets
   QTabWidget* m_tab_widget{nullptr};          //!< application model settings

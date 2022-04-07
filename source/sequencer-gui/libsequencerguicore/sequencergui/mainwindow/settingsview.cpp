@@ -38,17 +38,14 @@ namespace sequencergui
 
 SettingsView::SettingsView(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar{new QToolBar}
     , m_list_widget(new QListWidget)
     , m_stacked_widget(new QStackedWidget)
     , m_tab_widget(new QTabWidget)
 {
-  m_tool_bar->setIconSize(StyleUtils::ToolBarIconSize());
-
   auto hlayout = new QHBoxLayout;
   hlayout->setMargin(0);
   hlayout->setSpacing(0);
-  //  hlayout->setContentsMargins(0, 0, 0, 0);
+  hlayout->setContentsMargins(0, 0, 0, 0);
 
   hlayout->addWidget(m_list_widget);
   //  layout->addSpacing(mvvm::Utils::WidthOfLetterM() / 2);
@@ -57,7 +54,6 @@ SettingsView::SettingsView(QWidget *parent)
   m_stacked_widget->setCurrentIndex(0);
 
   auto layout = new QVBoxLayout(this);
-  //  layout->addWidget(m_tool_bar);
   layout->addLayout(hlayout);
 }
 

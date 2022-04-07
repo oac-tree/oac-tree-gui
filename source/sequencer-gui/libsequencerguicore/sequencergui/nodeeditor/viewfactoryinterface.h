@@ -31,6 +31,11 @@ class ConnectableView;
 class ViewFactoryInterface
 {
 public:
+  virtual ~ViewFactoryInterface() = default;
+  ViewFactoryInterface() = default;
+  ViewFactoryInterface(const ViewFactoryInterface&) = delete;
+  ViewFactoryInterface& operator=(const ViewFactoryInterface&) = delete;
+
   virtual std::unique_ptr<ConnectableView> CreateView(InstructionItem*) = 0;
 };
 
