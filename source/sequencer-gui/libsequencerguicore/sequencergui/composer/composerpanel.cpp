@@ -55,7 +55,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  m_procedure_list_widget->AddToSplitter(m_splitter);
+  AddToSplitter(m_splitter, m_procedure_list_widget);
   AddToSplitter(m_splitter, m_instruction_panel);
   m_workspace_panel->AddToSplitter(m_splitter);
 

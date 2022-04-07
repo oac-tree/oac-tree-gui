@@ -24,6 +24,8 @@
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
 
+#include "sequencergui/widgets/collapsiblewidget_v2.h"
+
 #include <QLabel>
 #include <QSplitter>
 #include <QToolButton>
@@ -43,10 +45,12 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_file_tree_view);
 
-  m_procedure_list_view->SetText("OPEN PROCEDURES");
-  m_procedure_list_view->AddToSplitter(m_splitter);
+  m_procedure_list_view->setWindowTitle("OPEN PROCEDURES");
 
-  m_splitter->setCollapsible(m_splitter->indexOf(m_procedure_list_view), false);
+  AddToSplitter(m_splitter, m_procedure_list_view);
+
+// FIXME restore after switching to CollapsibleListView
+//  m_splitter->setCollapsible(m_splitter->indexOf(m_procedure_list_view), false);
 
   m_splitter->setSizes(QList<int>() << 400 << 200);
 

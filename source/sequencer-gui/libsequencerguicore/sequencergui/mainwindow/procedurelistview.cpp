@@ -29,26 +29,29 @@
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
+#include <QAction>
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QListView>
-#include <QSplitter>
-#include <QToolBar>
-#include <QToolButton>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 ProcedureListView::ProcedureListView(QWidget *parent)
-    : CollapsibleWidget(parent), m_list_view(new QListView)
+    : QWidget(parent)
+    , m_new_procedure_action(new QAction)
+    , m_remove_selected_action(new QAction)
+    , m_list_view(new QListView)
 {
+  setWindowTitle("PROCEDURES");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
 
-  SetupToolBar();
+  SetupActions();
 
   connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick,
           Qt::UniqueConnection);
@@ -114,23 +117,17 @@ void ProcedureListView::SetSelectedProcedures(std::vector<ProcedureItem *> proce
   m_list_view->selectionModel()->select(selection, QItemSelectionModel::Select);
 }
 
-void ProcedureListView::SetupToolBar()
+void ProcedureListView::SetupActions()
 {
-  SetText("PROCEDURES");
-
-  auto tool_bar = GetToolBar();
-
-  auto new_procedure_button = new QToolButton;
-  new_procedure_button->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
-  connect(new_procedure_button, &QToolButton::clicked, this,
+  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+  connect(m_new_procedure_action, &QAction::triggered, this,
           &ProcedureListView::CreateNewProcedureRequest);
-  tool_bar->AddWidget(new_procedure_button);
+  addAction(m_new_procedure_action);
 
-  auto remove_selected_button = new QToolButton;
-  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  connect(remove_selected_button, &QToolButton::clicked, this,
+  m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  connect(m_remove_selected_action, &QAction::triggered, this,
           &ProcedureListView::OnRemoveSelectedRequest);
-  tool_bar->AddWidget(remove_selected_button);
+  addAction(m_remove_selected_action);
 }
 
 void ProcedureListView::OnSingleClick(const QModelIndex &index)

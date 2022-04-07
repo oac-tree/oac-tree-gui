@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURELISTVIEW_H
 #define SEQUENCERGUI_MAINWINDOW_PROCEDURELISTVIEW_H
 
-#include "sequencergui/mainwindow/collapsiblewidget.h"
+#include <QWidget>
 
 namespace mvvm
 {
@@ -29,6 +29,7 @@ class ViewModel;
 
 class QListView;
 class QItemSelection;
+class QAction;
 
 namespace sequencergui
 {
@@ -37,7 +38,7 @@ class ProcedureItem;
 
 //! Vertical panel located on the left of XMLTreeView
 
-class ProcedureListView : public CollapsibleWidget
+class ProcedureListView : public QWidget
 {
   Q_OBJECT
 
@@ -59,10 +60,13 @@ signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
-  void SetupToolBar();
+  void SetupActions();
   void OnSingleClick(const QModelIndex& index);
   void OnRemoveSelectedRequest();
   void OnSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+
+  QAction* m_new_procedure_action{nullptr};
+  QAction* m_remove_selected_action{nullptr};
 
   QListView* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};
