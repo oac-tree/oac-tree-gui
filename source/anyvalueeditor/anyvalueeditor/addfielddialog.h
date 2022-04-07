@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ADDFIELDDIALOG_H
-#define ANYVALUEEDITOR_ADDFIELDDIALOG_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ADDFIELDDIALOG_H
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ADDFIELDDIALOG_H
 
 #include <QDialog>
 
@@ -46,4 +46,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ADDFIELDDIALOG_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ADDFIELDDIALOG_H

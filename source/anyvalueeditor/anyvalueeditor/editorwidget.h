@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_EDITORWIDGET_H
-#define ANYVALUEEDITOR_EDITORWIDGET_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_EDITORWIDGET_H
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_EDITORWIDGET_H
 
 #include <QWidget>
 #include <memory>
@@ -56,4 +56,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_EDITORWIDGET_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_EDITORWIDGET_H

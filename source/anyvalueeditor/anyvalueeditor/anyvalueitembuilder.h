@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
-#define ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
 
 #include "BasicScalarTypes.h"
 #include "IAnySerializer.h"
@@ -58,4 +58,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H

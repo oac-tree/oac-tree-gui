@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_TRANSFORMFROMANYVALUE_H
-#define ANYVALUEEDITOR_TRANSFORMFROMANYVALUE_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORMFROMANYVALUE_H
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORMFROMANYVALUE_H
 
 #include "anyvalue_type.h"
 
@@ -33,4 +33,4 @@ void PopulateItem(const sup::dto::AnyValue* domain, AnyValueItem* item);
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_TRANSFORMFROMANYVALUE_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORMFROMANYVALUE_H

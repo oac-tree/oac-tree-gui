@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_JOBLISTVIEW_H
-#define SEQUENCERGUI_MAINWINDOW_JOBLISTVIEW_H
+#ifndef SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
+#define SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
 
 #include "sequencergui/mainwindow/collapsiblewidget.h"
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_JOBLISTVIEW_H
+#endif  // SEQUENCERGUI_MONITOR_JOBLISTVIEW_H

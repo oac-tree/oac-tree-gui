@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEITEM_H
-#define ANYVALUEEDITOR_ANYVALUEITEM_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEM_H
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEM_H
 
 
 #include "mvvm/model/compounditem.h"
@@ -42,4 +42,4 @@ public:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEITEM_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEM_H

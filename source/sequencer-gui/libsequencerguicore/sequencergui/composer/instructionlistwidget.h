@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_INSTRUCTIONLISTWIDGET_H
-#define SEQUENCERGUI_NODEEDITOR_INSTRUCTIONLISTWIDGET_H
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONLISTWIDGET_H
+#define SEQUENCERGUI_COMPOSER_INSTRUCTIONLISTWIDGET_H
 
 #include <QListWidget>
 
@@ -49,4 +49,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_INSTRUCTIONLISTWIDGET_H
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTIONLISTWIDGET_H

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
-#define ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
 
 #include <QObject>
 
@@ -58,4 +58,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEEDITORACTIONS_H
