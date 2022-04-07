@@ -34,7 +34,7 @@ class CollapsibleWidgetV2 : public QWidget
   Q_OBJECT
 
 public:
-  explicit CollapsibleWidgetV2(QWidget* parent = nullptr);
+  explicit CollapsibleWidgetV2(QWidget* context, QWidget* parent = nullptr);
   ~CollapsibleWidgetV2() override;
 
   void AddToSplitter(QSplitter* splitter);
@@ -46,6 +46,8 @@ public:
 private:
   CollapsibleToolBarV2* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
 };
+
+void AddToSplitter(QWidget* context, QSplitter* splitter, const QString& title);
 
 }  // namespace sequencergui
 

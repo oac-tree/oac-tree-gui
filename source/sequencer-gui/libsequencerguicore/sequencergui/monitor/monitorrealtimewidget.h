@@ -39,6 +39,7 @@ class InstructionItem;
 class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
+class CollapsibleWidgetV2;
 
 //! Central panel on SequencerMonitorView.
 

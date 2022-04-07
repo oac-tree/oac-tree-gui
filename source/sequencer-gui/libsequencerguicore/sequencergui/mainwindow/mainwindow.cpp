@@ -127,7 +127,7 @@ void MainWindow::WriteSettings()
 
 void MainWindow::PopulateModel()
 {
-  //  Examples::AddCopyProcedure(m_model.get());
+    Examples::AddCopyProcedure(m_model.get());
   //  Examples::AddLocalIncludeProcedure(m_model.get());
   //  Examples::AddUserChoiceProcedure(m_model.get());
   //  Examples::AddInputProcedure(m_model.get());

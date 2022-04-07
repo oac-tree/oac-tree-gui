@@ -30,7 +30,7 @@
 namespace sequencergui
 {
 
-MessagePanel::MessagePanel(QWidget *parent) : CollapsibleWidget(parent), m_text_edit(new QTextEdit)
+MessagePanel::MessagePanel(QWidget *parent) : QWidget(parent), m_text_edit(new QTextEdit)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -43,13 +43,13 @@ MessagePanel::MessagePanel(QWidget *parent) : CollapsibleWidget(parent), m_text_
   f.setStyleHint(QFont::Monospace);
   m_text_edit->setFont(f);
 
-  SetText("LOG");
+//  SetText("LOG");
 
-  auto tool_bar = GetToolBar();
+//  auto tool_bar = GetToolBar();
 
-  auto remove_selected_button = new QToolButton;
-  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  tool_bar->AddWidget(remove_selected_button);
+//  auto remove_selected_button = new QToolButton;
+//  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+//  tool_bar->AddWidget(remove_selected_button);
 }
 
 void MessagePanel::onClearLog()

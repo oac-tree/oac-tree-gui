@@ -25,6 +25,7 @@
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
+#include "sequencergui/widgets/collapsiblewidget_v2.h"
 
 #include "mvvm/widgets/topitemstreeview.h"
 
@@ -54,7 +55,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   m_splitter->addWidget(m_stacked_widget);
   m_stacked_widget->addWidget(m_node_editor);
 
-  m_message_panel->AddToSplitter(m_splitter);
+  AddToSplitter(m_message_panel, m_splitter, "LOG");
 
   layout->addWidget(m_splitter);
 

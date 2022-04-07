@@ -20,14 +20,14 @@
 #ifndef SEQUENCERGUI_MONITOR_MESSAGEPANEL_H
 #define SEQUENCERGUI_MONITOR_MESSAGEPANEL_H
 
-#include "sequencergui/mainwindow/collapsiblewidget.h"
+#include <QWidget>
 
 class QTextEdit;
 
 namespace sequencergui
 {
 
-class MessagePanel : public CollapsibleWidget
+class MessagePanel : public QWidget
 {
 public:
   explicit MessagePanel(QWidget* parent = nullptr);
