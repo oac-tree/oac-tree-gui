@@ -39,7 +39,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
     , m_splitter(new QSplitter)
-    , m_open_documents_widget(new ProcedureListView)
+    , m_procedure_list_widget(new ProcedureListView)
     , m_instruction_panel(new InstructionPanel)
     , m_workspace_panel(new WorkspacePanel)
 
@@ -53,15 +53,15 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  m_open_documents_widget->AddToSplitter(m_splitter);
+  m_procedure_list_widget->AddToSplitter(m_splitter);
   m_instruction_panel->AddToSplitter(m_splitter);
   m_workspace_panel->AddToSplitter(m_splitter);
 
   //  m_splitter->setSizes(QList<int>() << 400 << 200);
 
-  connect(m_open_documents_widget, &ProcedureListView::ProcedureSelected, this,
+  connect(m_procedure_list_widget, &ProcedureListView::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
-  connect(m_open_documents_widget, &ProcedureListView::CreateNewProcedureRequest, this,
+  connect(m_procedure_list_widget, &ProcedureListView::CreateNewProcedureRequest, this,
           &ComposerPanel::CreateNewProcedureRequest);
 }
 
@@ -69,17 +69,17 @@ ComposerPanel::~ComposerPanel() = default;
 
 void ComposerPanel::SetModel(SequencerModel *model)
 {
-  m_open_documents_widget->SetModel(model);
+  m_procedure_list_widget->SetModel(model);
 }
 
 ProcedureItem *ComposerPanel::GetSelectedProcedure()
 {
-  return m_open_documents_widget->GetSelectedProcedure();
+  return m_procedure_list_widget->GetSelectedProcedure();
 }
 
 void ComposerPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  return m_open_documents_widget->SetSelectedProcedure(procedure);
+  return m_procedure_list_widget->SetSelectedProcedure(procedure);
 }
 
 }  // namespace sequencergui

@@ -28,7 +28,7 @@ namespace sequencergui
 WorkspacePanel::WorkspacePanel(QWidget *parent)
     : CollapsibleWidget(parent), m_list_widget(new QListWidget)
 {
-  SetText("VARIABLES");
+  SetText("COMPONENTS");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

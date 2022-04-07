@@ -58,7 +58,7 @@ signals:
 private:
   PanelToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
-  ProcedureListView* m_open_documents_widget{nullptr};
+  ProcedureListView* m_procedure_list_widget{nullptr};
   InstructionPanel* m_instruction_panel{nullptr};
   WorkspacePanel* m_workspace_panel{nullptr};
 };
