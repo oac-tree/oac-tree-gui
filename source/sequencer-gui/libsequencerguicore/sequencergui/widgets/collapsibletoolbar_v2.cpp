@@ -89,6 +89,12 @@ void CollapsibleToolBarV2::AddWidget(QWidget *widget)
   m_toolbar_actions.append(action);  // to hide/show elements later
 }
 
+void CollapsibleToolBarV2::AddAction(QAction *action)
+{
+  m_tool_bar->addAction(action);
+  m_toolbar_actions.append(action);
+}
+
 //! Updates toolbar appearance depending on collapsed/expaned status
 
 void CollapsibleToolBarV2::UpdateToolBar()

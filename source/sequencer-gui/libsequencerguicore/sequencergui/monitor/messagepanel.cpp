@@ -22,6 +22,7 @@
 #include "sequencergui/mainwindow/collapsibletoolbar.h"
 #include "sequencergui/mainwindow/styleutils.h"
 
+#include <QAction>
 #include <QScrollBar>
 #include <QTextEdit>
 #include <QToolButton>
@@ -30,7 +31,8 @@
 namespace sequencergui
 {
 
-MessagePanel::MessagePanel(QWidget *parent) : QWidget(parent), m_text_edit(new QTextEdit)
+MessagePanel::MessagePanel(QWidget *parent)
+    : QWidget(parent), m_text_edit(new QTextEdit), m_remove_selected_action(new QAction(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -43,13 +45,15 @@ MessagePanel::MessagePanel(QWidget *parent) : QWidget(parent), m_text_edit(new Q
   f.setStyleHint(QFont::Monospace);
   m_text_edit->setFont(f);
 
-//  SetText("LOG");
+  //  SetText("LOG");
 
-//  auto tool_bar = GetToolBar();
+  //  auto tool_bar = GetToolBar();
 
-//  auto remove_selected_button = new QToolButton;
-//  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-//  tool_bar->AddWidget(remove_selected_button);
+  //  auto remove_selected_button = new QToolButton;
+  //  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  //  tool_bar->AddWidget(remove_selected_button);
+
+  m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
 }
 
 void MessagePanel::onClearLog()
@@ -69,6 +73,11 @@ void MessagePanel::onMessage(const QString &message, const QColor &color)
     c.movePosition(QTextCursor::End);
     m_text_edit->setTextCursor(c);
   }
+}
+
+QList<QAction *> MessagePanel::GetActions() const
+{
+  return {m_remove_selected_action};
 }
 
 }  // namespace sequencergui

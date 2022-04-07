@@ -23,6 +23,7 @@
 #include <QWidget>
 
 class QTextEdit;
+class QAction;
 
 namespace sequencergui
 {
@@ -36,10 +37,12 @@ public:
 
   void onMessage(const QString& message, const QColor& color = QColor(Qt::black));
 
+  QList<QAction*> GetActions() const;
+
 private:
   QTextEdit* m_text_edit{nullptr};
+  QAction* m_remove_selected_action{nullptr};
 };
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_MESSAGEPANEL_H

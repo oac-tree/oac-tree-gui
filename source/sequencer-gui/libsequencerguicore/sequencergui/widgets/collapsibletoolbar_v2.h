@@ -50,6 +50,8 @@ public:
 
   void AddWidget(QWidget* widget);
 
+  void AddAction(QAction* action);
+
 private:
   void UpdateToolBar();
   void UpdateIcon();
