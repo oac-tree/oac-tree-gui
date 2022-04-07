@@ -26,7 +26,7 @@
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/monitor/usercontext.h"
-#include "sequencergui/utils/widgetutils.h"
+#include "sequencergui/widgets/widgetutils.h"
 
 #include <QDebug>
 #include <QInputDialog>

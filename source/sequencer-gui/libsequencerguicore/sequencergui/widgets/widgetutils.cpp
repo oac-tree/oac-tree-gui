@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/utils/widgetutils.h"
+#include "sequencergui/widgets/widgetutils.h"
 
 namespace sequencergui
 {

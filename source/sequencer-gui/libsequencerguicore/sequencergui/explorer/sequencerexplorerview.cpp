@@ -25,7 +25,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/xmlutils.h"
-#include "sequencergui/utils/widgetutils.h"
+#include "sequencergui/widgets/widgetutils.h"
 
 #include "mvvm/interfaces/modeleventsubscriberinterface.h"
 #include "mvvm/standarditems/standarditemincludes.h"

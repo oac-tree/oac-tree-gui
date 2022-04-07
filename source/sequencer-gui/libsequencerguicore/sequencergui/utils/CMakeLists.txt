@@ -5,6 +5,4 @@ target_sources(${library_name} PRIVATE
   alignutils.h
   sequenceralignutils.cpp
   sequenceralignutils.h
-  widgetutils.cpp
-  widgetutils.h
   )
