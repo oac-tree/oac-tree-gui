@@ -40,8 +40,8 @@ InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(it
   AddProperty(ItemConstants::kName, std::string())->SetDisplayName("Name");
   AddProperty(ItemConstants::kIsRoot, false)->SetDisplayName("IsRoot");
   AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status");
-  AddProperty(ItemConstants::kXpos, 0.0)->SetDisplayName("X");
-  AddProperty(ItemConstants::kYpos, 0.0)->SetDisplayName("Y");
+  AddProperty(ItemConstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
+  AddProperty(ItemConstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
 }
 
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
