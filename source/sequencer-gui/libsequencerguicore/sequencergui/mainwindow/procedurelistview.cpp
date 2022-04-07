@@ -19,7 +19,6 @@
 
 #include "sequencergui/mainwindow/procedurelistview.h"
 
-#include "sequencergui/mainwindow/collapsibletoolbar.h"
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"

@@ -19,7 +19,6 @@
 
 #include "sequencergui/monitor/messagepanel.h"
 
-#include "sequencergui/mainwindow/collapsibletoolbar.h"
 #include "sequencergui/mainwindow/styleutils.h"
 
 #include <QAction>
