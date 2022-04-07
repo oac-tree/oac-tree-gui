@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_WORKSPACEPANEL_H
 #define SEQUENCERGUI_COMPOSER_WORKSPACEPANEL_H
 
-#include "sequencergui/mainwindow/collapsiblewidget.h"
+#include <QWidget>
 
 class QListWidget;
 
@@ -29,7 +29,7 @@ namespace sequencergui
 
 //! Collapsible list with types of workspace variables.
 
-class WorkspacePanel : public CollapsibleWidget
+class WorkspacePanel : public QWidget
 {
   Q_OBJECT
 

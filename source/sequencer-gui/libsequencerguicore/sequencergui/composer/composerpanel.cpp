@@ -57,7 +57,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   AddToSplitter(m_splitter, m_procedure_list_widget);
   AddToSplitter(m_splitter, m_instruction_panel);
-  m_workspace_panel->AddToSplitter(m_splitter);
+  AddToSplitter(m_splitter, m_workspace_panel);
 
   //  m_splitter->setSizes(QList<int>() << 400 << 200);
 
