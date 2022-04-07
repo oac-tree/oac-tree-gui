@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
 #define SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
 
-#include "sequencergui/mainwindow/collapsiblewidget.h"
+#include <QWidget>
 
 namespace mvvm
 {
@@ -28,6 +28,7 @@ class ViewModel;
 }
 
 class QTreeView;
+class QAction;
 
 namespace sequencergui
 {
@@ -38,7 +39,7 @@ class ProcedureItem;
 //! Occupy upper left corner of SequencerMonitorView.
 //! FIXME almost full duplication of OpenDocumentsWidget
 
-class JobListView : public CollapsibleWidget
+class JobListView : public QWidget
 {
   Q_OBJECT
 
@@ -58,9 +59,12 @@ signals:
   void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
-  void SetupToolBar();
+  void SetupActions();
   void onTreeSingleClick(const QModelIndex& index);
   void onRemoveSelectedRequest();
+
+  QAction* m_new_procedure_action{nullptr};
+  QAction* m_remove_selected_button{nullptr};
 
   QTreeView* m_tree_view{nullptr};
   SequencerModel* m_model{nullptr};

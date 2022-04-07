@@ -30,24 +30,28 @@
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
 
+#include <QAction>
 #include <QLabel>
-#include <QSplitter>
-#include <QToolBar>
-#include <QToolButton>
 #include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
-JobListView::JobListView(QWidget *parent) : CollapsibleWidget(parent), m_tree_view(new QTreeView)
+JobListView::JobListView(QWidget *parent)
+    : QWidget(parent)
+    , m_new_procedure_action(new QAction)
+    , m_remove_selected_button(new QAction)
+    , m_tree_view(new QTreeView)
 {
+  setWindowTitle("PROCEDURES");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
-  SetupToolBar();
+  SetupActions();
 
   connect(m_tree_view, &QTreeView::clicked, this, &JobListView::onTreeSingleClick);
 
@@ -97,23 +101,17 @@ std::vector<ProcedureItem *> JobListView::GetSelectedProcedures() const
   return mvvm::utils::CastedItems<ProcedureItem>(result);
 }
 
-void JobListView::SetupToolBar()
+void JobListView::SetupActions()
 {
-  SetText("PROCEDURES");
-
-  auto tool_bar = GetToolBar();
-
-  auto new_procedure_button = new QToolButton;
-  new_procedure_button->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
-  connect(new_procedure_button, &QToolButton::clicked, this,
+  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+  connect(m_new_procedure_action, &QAction::triggered, this,
           &JobListView::createNewProcedureRequest);
-  tool_bar->AddWidget(new_procedure_button);
+  addAction(m_new_procedure_action);
 
-  auto remove_selected_button = new QToolButton;
-  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  connect(remove_selected_button, &QToolButton::clicked, this,
+  m_remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  connect(m_remove_selected_button, &QAction::triggered, this,
           &JobListView::onRemoveSelectedRequest);
-  tool_bar->AddWidget(remove_selected_button);
+  addAction(m_remove_selected_button);
 }
 
 void JobListView::onTreeSingleClick(const QModelIndex &index)

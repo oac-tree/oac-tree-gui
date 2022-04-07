@@ -22,6 +22,7 @@
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/monitor/joblistview.h"
+#include "sequencergui/widgets/collapsiblewidget_v2.h"
 
 #include <QSplitter>
 #include <QToolBar>
@@ -46,7 +47,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  m_job_list_view->AddToSplitter(m_splitter);
+  AddToSplitter(m_splitter, m_job_list_view);
 
   connect(m_job_list_view, &JobListView::procedureSelected, this, &MonitorPanel::procedureSelected);
 }
