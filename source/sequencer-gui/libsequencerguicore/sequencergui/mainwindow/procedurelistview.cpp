@@ -22,6 +22,7 @@
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/viewmodel/selectionmodel.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/standarditems/standarditemincludes.h"
@@ -41,6 +42,7 @@ ProcedureListView::ProcedureListView(QWidget *parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
     , m_list_view(new QListView)
+    , m_selection_model(std::make_unique<SelectionModel>())
 {
   setWindowTitle("PROCEDURES");
 
@@ -63,9 +65,10 @@ void ProcedureListView::SetModel(SequencerModel *model)
   m_model = model;
   m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
   m_view_model->SetRootSessionItem(model->GetProcedureContainer());
+  m_selection_model->SetViewModel(m_view_model.get());
   m_list_view->setModel(m_view_model.get());
 
-  connect(m_list_view->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+  connect(m_selection_model.get(), &SelectionModel::selectionChanged, this,
           &ProcedureListView::OnSelectionChanged, Qt::UniqueConnection);
 }
 
@@ -77,43 +80,19 @@ ProcedureItem *ProcedureListView::GetSelectedProcedure()
 
 std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
 {
-  std::vector<mvvm::SessionItem *> result;
-
-  if (!m_list_view->selectionModel())
+  std::vector<ProcedureItem *> result;
+  auto selected = m_selection_model->GetSelectedItems();
+  auto on_item = [](auto it)
   {
-    return {};
-  }
-  for (auto index : m_list_view->selectionModel()->selectedIndexes())
-  {
-    auto procedure_item = m_view_model->GetSessionItemFromIndex(index);
-
-    result.push_back(const_cast<mvvm::SessionItem *>(procedure_item));
-  }
-  return mvvm::utils::CastedItems<ProcedureItem>(mvvm::utils::UniqueItems(result));
+    return dynamic_cast<ProcedureItem*>(const_cast<mvvm::SessionItem*>(it));
+  };
+  std::transform(selected.begin(), selected.end(), std::back_inserter(result), on_item);
+  return result;
 }
 
 void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  SetSelectedProcedures({procedure});
-}
-
-void ProcedureListView::SetSelectedProcedures(std::vector<ProcedureItem *> procedures)
-{
-  if (!m_view_model)
-  {
-    return;
-  }
-
-  m_list_view->selectionModel()->clearSelection();
-  QItemSelection selection;
-  for (auto item : procedures)
-  {
-    for (auto index : m_view_model->GetIndexOfSessionItem(item))
-    {
-      selection.push_back(QItemSelectionRange(index));
-    }
-  }
-  m_list_view->selectionModel()->select(selection, QItemSelectionModel::Select);
+  m_selection_model->SetSelectedItem(procedure);
 }
 
 void ProcedureListView::SetupActions()

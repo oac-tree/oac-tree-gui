@@ -35,8 +35,9 @@ namespace sequencergui
 {
 class SequencerModel;
 class ProcedureItem;
+class SelectionModel;
 
-//! Vertical panel located on the left of XMLTreeView
+//! List view for ProcedureItem with selection abilities.
 
 class ProcedureListView : public QWidget
 {
@@ -52,7 +53,6 @@ public:
   std::vector<ProcedureItem*> GetSelectedProcedures() const;
 
   void SetSelectedProcedure(ProcedureItem* procedure);
-  void SetSelectedProcedures(std::vector<ProcedureItem*> procedures);
 
 signals:
   void CreateNewProcedureRequest();
@@ -70,6 +70,7 @@ private:
 
   QListView* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};
+  std::unique_ptr<SelectionModel> m_selection_model;
   std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 

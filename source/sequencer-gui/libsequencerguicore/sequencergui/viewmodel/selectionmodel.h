@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_VIEWMODEL_SELECTIONMODEL_H
 #define SEQUENCERGUI_VIEWMODEL_SELECTIONMODEL_H
 
-#include <QItemSelectionModel>
-
 #include "mvvm/model/sessionitem.h"
+
+#include <QItemSelectionModel>
 
 namespace mvvm
 {
@@ -38,7 +38,7 @@ class SelectionModel : public QItemSelectionModel
   Q_OBJECT
 
 public:
-  explicit SelectionModel(mvvm::ViewModel* view_model, QObject* parent = nullptr);
+  explicit SelectionModel(mvvm::ViewModel* view_model = nullptr, QObject* parent = nullptr);
 
   void SetViewModel(mvvm::ViewModel* view_model);
 
