@@ -27,7 +27,7 @@ namespace sequencergui
 
 WorkspacePanel::WorkspacePanel(QWidget *parent) : QWidget(parent), m_list_widget(new QListWidget)
 {
-  setWindowTitle("COMPONENTS");
+  setWindowTitle("AGGREGATES");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

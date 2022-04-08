@@ -25,11 +25,9 @@
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
-
-#include "sequencergui/widgets/collapsiblewidget.h"
+#include "sequencergui/widgets/collapsiblelistview.h"
 
 #include <QLabel>
-#include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
@@ -40,26 +38,22 @@ namespace sequencergui
 ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_splitter(new QSplitter)
+    , m_collapsible_list(new CollapsibleListView)
     , m_procedure_list_widget(new ProcedureListView)
     , m_instruction_panel(new InstructionPanel)
     , m_workspace_panel(new WorkspacePanel)
 
 {
-  m_splitter->setOrientation(Qt::Vertical);
-
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_tool_bar);
-  layout->addWidget(m_splitter);
+  layout->addWidget(m_collapsible_list);
 
-  AddToSplitter(m_splitter, m_procedure_list_widget);
-  AddToSplitter(m_splitter, m_instruction_panel);
-  AddToSplitter(m_splitter, m_workspace_panel);
-
-  //  m_splitter->setSizes(QList<int>() << 400 << 200);
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_widget);
+  m_collapsible_list->AddCollapsibleWidget(m_instruction_panel);
+  m_collapsible_list->AddCollapsibleWidget(m_workspace_panel);
 
   connect(m_procedure_list_widget, &ProcedureListView::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);

@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "sequencergui/widgets/collapsiblelistview.h"
+
 #include "sequencergui/widgets/collapsiblewidget.h"
 
 #include <QSplitter>
@@ -26,7 +27,8 @@
 namespace sequencergui
 {
 
-CollapsibleListView::CollapsibleListView(QWidget *parent) : QWidget(parent)
+CollapsibleListView::CollapsibleListView(QWidget *parent)
+    : QWidget(parent), m_splitter(new QSplitter)
 {
   m_splitter->setOrientation(Qt::Vertical);
 
