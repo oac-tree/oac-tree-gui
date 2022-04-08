@@ -46,10 +46,6 @@ public:
 
   void ShowSelectedProcedure(ProcedureItem* procedure_item);
 
-  void CreateNewProcedure();
-
-  void RemoveProcedure(ProcedureItem* procedure_item);
-
 private:
   void SetupConnections();
 

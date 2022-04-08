@@ -126,19 +126,6 @@ void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
   }
 }
 
-void SequencerExplorerView::CreateNewProcedure()
-{
-  auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-}
-
-void SequencerExplorerView::RemoveProcedure(ProcedureItem *procedure_item)
-{
-  if (procedure_item)
-  {
-    m_model->RemoveItem(procedure_item);
-  }
-}
-
 void SequencerExplorerView::SetupConnections()
 {
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
@@ -155,11 +142,16 @@ void SequencerExplorerView::SetupConnections()
   connect(m_explorer_panel, &ExplorerPanel::ProcedureSelected, this,
           &SequencerExplorerView::ShowSelectedProcedure);
 
-  connect(m_explorer_panel, &ExplorerPanel::CreateNewProcedureRequest, this,
-          &SequencerExplorerView::CreateNewProcedure);
+  // FIXME duplication with SequencerComposerView
+  auto on_remove_procedure = [this](auto procedure)
+  {
+    if (procedure)
+    {
+      m_model->RemoveItem(procedure);
+    }
+  };
 
-  connect(m_explorer_panel, &ExplorerPanel::RemoveProcedureRequest, this,
-          &SequencerExplorerView::RemoveProcedure);
+  connect(m_explorer_panel, &ExplorerPanel::RemoveProcedureRequest, this, on_remove_procedure);
 }
 
 }  // namespace sequencergui

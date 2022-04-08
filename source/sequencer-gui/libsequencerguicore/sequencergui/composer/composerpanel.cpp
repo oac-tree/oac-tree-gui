@@ -61,6 +61,8 @@ ComposerPanel::ComposerPanel(QWidget *parent)
           &ComposerPanel::ProcedureSelected);
   connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
           &ComposerPanel::CreateNewProcedureRequest);
+  connect(m_procedure_list_view, &ProcedureListView::RemoveProcedureRequest, this,
+          &ComposerPanel::RemoveProcedureRequest);
 }
 
 ComposerPanel::~ComposerPanel() = default;

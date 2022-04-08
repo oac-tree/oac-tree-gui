@@ -45,7 +45,7 @@ ProcedureListView::ProcedureListView(QWidget *parent)
     , m_selection_model(std::make_unique<SelectionModel>())
 {
   setWindowTitle("PROCEDURES");
-  setToolTip("List of currently opened procedures.");
+  setToolTip("List of currently opened procedures");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

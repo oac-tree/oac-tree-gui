@@ -53,8 +53,9 @@ public:
   void SetSelectedProcedure(ProcedureItem* procedure);
 
 signals:
+  void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
   void CreateNewProcedureRequest();
-  void ProcedureSelected(ProcedureItem* procedureItem);
+  void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};

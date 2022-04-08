@@ -103,6 +103,15 @@ void SequencerComposerView::SetupConnections()
   auto on_create_procedure = [this]()
   { auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer()); };
   connect(m_composer_panel, &ComposerPanel::CreateNewProcedureRequest, this, on_create_procedure);
+
+  auto on_remove_procedure = [this](auto procedure)
+  {
+    if (procedure)
+    {
+      m_model->RemoveItem(procedure);
+    }
+  };
+  connect(m_composer_panel, &ComposerPanel::RemoveProcedureRequest, this, on_remove_procedure);
 }
 
 //! Returns first procedure from the procedure container, if exist.
