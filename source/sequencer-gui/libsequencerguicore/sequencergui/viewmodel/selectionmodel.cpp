@@ -29,7 +29,10 @@ namespace sequencergui
 SelectionModel::SelectionModel(mvvm::ViewModel *view_model, QObject *parent)
     : QItemSelectionModel(view_model, parent)
 {
-  connect(view_model, &mvvm::ViewModel::modelAboutToBeReset, [this]() { clearSelection(); });
+  connect(view_model, &mvvm::ViewModel::modelAboutToBeReset, this, [this]() { clearSelection(); });
+
+  connect(this, &SelectionModel::selectionChanged, this,
+          [this](auto, auto) { emit SelectedItemChanged(GetSelectedItem()); });
 }
 
 void SelectionModel::SetViewModel(mvvm::ViewModel *view_model)
@@ -49,9 +52,11 @@ std::vector<const mvvm::SessionItem *> SelectionModel::GetSelectedItems() const
 
   for (auto index : selectedIndexes())
   {
-    auto item = GetViewModel()->GetSessionItemFromIndex(index);
-
-    result.push_back(item);
+    // skipping nullptr
+    if (auto item = GetViewModel()->GetSessionItemFromIndex(index); item)
+    {
+      result.push_back(item);
+    }
   }
 
   return mvvm::utils::UniqueWithOrder(result);

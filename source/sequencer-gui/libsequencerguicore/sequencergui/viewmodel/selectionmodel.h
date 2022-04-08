@@ -22,6 +22,8 @@
 
 #include <QItemSelectionModel>
 
+#include "mvvm/model/sessionitem.h"
+
 namespace mvvm
 {
 class ViewModel;
@@ -48,10 +50,15 @@ public:
 
   void SetSelectedItems(std::vector<const mvvm::SessionItem*> items);
 
+signals:
+  void SelectedItemChanged(const mvvm::SessionItem*);
+
 private:
   const mvvm::ViewModel* GetViewModel() const;
 };
 
 }  // namespace sequencergui
+
+Q_DECLARE_METATYPE(const mvvm::SessionItem*)
 
 #endif  // SEQUENCERGUI_VIEWMODEL_SELECTIONMODEL_H

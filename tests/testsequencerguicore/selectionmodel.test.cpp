@@ -20,9 +20,13 @@
 #include "sequencergui/viewmodel/selectionmodel.h"
 
 #include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/compounditem.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 
 #include <gtest/gtest.h>
+
+#include <QSignalSpy>
+#include <QDebug>
 
 using namespace sequencergui;
 
@@ -40,4 +44,39 @@ TEST_F(SelectionModelTest, InitialState)
 {
   EXPECT_EQ(m_selection_model.GetSelectedItem(), nullptr);
   EXPECT_TRUE(m_selection_model.GetSelectedItems().empty());
+}
+
+TEST_F(SelectionModelTest, SelectProcedure)
+{
+  auto item = m_model.InsertItem<mvvm::CompoundItem>();
+
+  QSignalSpy spy_selection_changed(&m_selection_model, &SelectionModel::selectionChanged);
+  QSignalSpy spy_selected_item_changed(&m_selection_model, &SelectionModel::SelectedItemChanged);
+
+  EXPECT_EQ(m_selection_model.GetSelectedItem(), nullptr);
+
+  // selecting an item and checking results
+  m_selection_model.SetSelectedItem(item);
+  EXPECT_EQ(m_selection_model.GetSelectedItem(), item);
+  EXPECT_EQ(m_selection_model.GetSelectedItems(), std::vector<const mvvm::SessionItem*>({item}));
+
+  EXPECT_EQ(spy_selection_changed.count(), 1);
+  EXPECT_EQ(spy_selected_item_changed.count(), 1);
+
+  QList<QVariant> arguments = spy_selected_item_changed.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  const auto* selected_item = arguments.at(0).value<const mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, item);
+
+  spy_selection_changed.clear();
+
+  // removing selection
+
+  m_selection_model.SetSelectedItem(nullptr);
+  EXPECT_EQ(m_selection_model.GetSelectedItem(), nullptr);
+  EXPECT_EQ(spy_selection_changed.count(), 1);
+
+  arguments = spy_selection_changed.takeFirst();
+  selected_item = arguments.at(0).value<const mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, nullptr);
 }
