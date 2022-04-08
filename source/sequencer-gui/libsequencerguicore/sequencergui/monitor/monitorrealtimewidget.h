@@ -22,7 +22,6 @@
 
 #include <QWidget>
 
-class QSplitter;
 class QTreeView;
 class QStackedWidget;
 
@@ -39,7 +38,7 @@ class InstructionItem;
 class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
-class CollapsibleWidget;
+class CollapsibleListView;
 
 //! Central panel on SequencerMonitorView.
 
@@ -70,7 +69,7 @@ private:
   void SetupConnections();
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
-  QSplitter* m_splitter{nullptr};
+  CollapsibleListView* m_splitter{nullptr};
 
   QStackedWidget* m_stacked_widget{nullptr};
   mvvm::ItemsTreeView* m_instruction_tree{nullptr};

@@ -25,7 +25,7 @@
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
-#include "sequencergui/widgets/collapsiblewidget.h"
+#include "sequencergui/widgets/collapsiblelistview.h"
 
 #include "mvvm/widgets/topitemstreeview.h"
 
@@ -40,7 +40,7 @@ namespace sequencergui
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
-    , m_splitter(new QSplitter)
+    , m_splitter(new CollapsibleListView)
     , m_stacked_widget(new QStackedWidget)
     , m_instruction_tree(new mvvm::ItemsTreeView)
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
@@ -48,14 +48,13 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
-  m_splitter->setOrientation(Qt::Vertical);
 
   m_stacked_widget->addWidget(m_instruction_tree);
 
-  m_splitter->addWidget(m_stacked_widget);
+  m_splitter->AddWidget(m_stacked_widget);
   m_stacked_widget->addWidget(m_node_editor);
 
-  AddToSplitter(m_splitter, m_message_panel);
+  m_splitter->AddCollapsibleWidget(m_message_panel);
 
   layout->addWidget(m_splitter);
 
