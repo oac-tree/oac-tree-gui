@@ -45,6 +45,7 @@ ProcedureListView::ProcedureListView(QWidget *parent)
     , m_selection_model(std::make_unique<SelectionModel>())
 {
   setWindowTitle("PROCEDURES");
+  setToolTip("List of currently opened procedures.");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -108,6 +109,8 @@ void ProcedureListView::SetupActions(int action_flag)
 {
   if (action_flag & kCreateNew)
   {
+    m_new_procedure_action->setText("New");
+    m_new_procedure_action->setToolTip("Create new empty procedure");
     m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
     connect(m_new_procedure_action, &QAction::triggered, this,
             &ProcedureListView::CreateNewProcedureRequest);
@@ -116,6 +119,8 @@ void ProcedureListView::SetupActions(int action_flag)
 
   if (action_flag & kRemoveSelected)
   {
+    m_remove_selected_action->setText("Remove");
+    m_remove_selected_action->setToolTip("Remove selected procedure");
     m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
     auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
     connect(m_remove_selected_action, &QAction::triggered, this, on_remove);

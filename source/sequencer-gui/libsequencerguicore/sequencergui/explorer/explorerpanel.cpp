@@ -45,6 +45,7 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
 
   m_procedure_list_view->SetupActions(ProcedureListView::kRemoveSelected);
   m_procedure_list_view->setWindowTitle("OPEN PROCEDURES");
+
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
 
   auto layout = new QVBoxLayout(this);

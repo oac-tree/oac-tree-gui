@@ -68,10 +68,11 @@ CollapsibleToolBar::CollapsibleToolBar(QWidget *parent)
 
 //! Set text next to collapse/expand icon.
 
-void CollapsibleToolBar::SetText(const QString &text)
+void CollapsibleToolBar::SetText(const QString &text, const QString& text_tooltip)
 {
   mvvm::utils::ScaleLabelFont(m_label, 0.9);
   m_label->setText(text);
+  m_label->setToolTip(text_tooltip);
 }
 
 //! Sets the widget which will be collapsed/expanded.

@@ -44,7 +44,7 @@ class CollapsibleToolBar : public QFrame
 public:
   explicit CollapsibleToolBar(QWidget* parent = nullptr);
 
-  void SetText(const QString& text);
+  void SetText(const QString& text, const QString& text_tooltip = {});
 
   void SetControlledWidget(QWidget* widget);
 
