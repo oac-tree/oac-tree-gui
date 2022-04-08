@@ -25,8 +25,8 @@
 
 #include <gtest/gtest.h>
 
-#include <QSignalSpy>
 #include <QDebug>
+#include <QSignalSpy>
 
 using namespace sequencergui;
 
@@ -79,4 +79,33 @@ TEST_F(SelectionModelTest, SelectProcedure)
   arguments = spy_selection_changed.takeFirst();
   selected_item = arguments.at(0).value<const mvvm::SessionItem*>();
   EXPECT_EQ(selected_item, nullptr);
+}
+
+//! Removing selected and checking notifications
+
+TEST_F(SelectionModelTest, SelectionAfterRemoval)
+{
+  auto item = m_model.InsertItem<mvvm::CompoundItem>();
+
+  // selecting single item
+  m_selection_model.SetSelectedItem(item);
+
+  // checking selections
+  EXPECT_EQ(m_selection_model.GetSelectedItem(), item);
+  EXPECT_EQ(m_selection_model.GetSelectedItems(), std::vector<const mvvm::SessionItem*>({item}));
+
+  QSignalSpy spy_selection_changed(&m_selection_model, &SelectionModel::selectionChanged);
+  QSignalSpy spy_selected_item_changed(&m_selection_model, &SelectionModel::SelectedItemChanged);
+
+  // removing item
+  m_model.RemoveItem(item);
+
+  // signal should emit once and report nullptr as selected item
+  EXPECT_EQ(spy_selection_changed.count(), 1);
+  EXPECT_EQ(spy_selected_item_changed.count(), 1);
+
+  auto arguments = spy_selected_item_changed.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_procedure = arguments.at(0).value<const mvvm::SessionItem*>();
+  EXPECT_EQ(selected_procedure, nullptr);
 }
