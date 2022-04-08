@@ -57,10 +57,12 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
           &ExplorerPanel::ProcedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
-  connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
-          &ExplorerPanel::CreateNewProcedureRequest);
   connect(m_procedure_list_view, &ProcedureListView::ProcedureSelected, this,
           &ExplorerPanel::ProcedureSelected);
+  connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
+          &ExplorerPanel::CreateNewProcedureRequest);
+  connect(m_procedure_list_view, &ProcedureListView::RemoveProcedureRequest, this,
+          &ExplorerPanel::RemoveProcedureRequest);
 }
 
 void ExplorerPanel::SetModel(SequencerModel *model)

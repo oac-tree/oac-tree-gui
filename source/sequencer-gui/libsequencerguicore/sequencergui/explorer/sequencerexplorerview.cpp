@@ -131,6 +131,14 @@ void SequencerExplorerView::CreateNewProcedure()
   auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
 }
 
+void SequencerExplorerView::RemoveProcedure(ProcedureItem *procedure_item)
+{
+  if (procedure_item)
+  {
+    m_model->RemoveItem(procedure_item);
+  }
+}
+
 void SequencerExplorerView::SetupConnections()
 {
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
@@ -144,11 +152,14 @@ void SequencerExplorerView::SetupConnections()
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
           import_procedure_from_file);
 
+  connect(m_explorer_panel, &ExplorerPanel::ProcedureSelected, this,
+          &SequencerExplorerView::ShowSelectedProcedure);
+
   connect(m_explorer_panel, &ExplorerPanel::CreateNewProcedureRequest, this,
           &SequencerExplorerView::CreateNewProcedure);
 
-  connect(m_explorer_panel, &ExplorerPanel::ProcedureSelected, this,
-          &SequencerExplorerView::ShowSelectedProcedure);
+  connect(m_explorer_panel, &ExplorerPanel::RemoveProcedureRequest, this,
+          &SequencerExplorerView::RemoveProcedure);
 }
 
 }  // namespace sequencergui

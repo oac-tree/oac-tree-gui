@@ -54,9 +54,10 @@ public:
   void SetSelectedProcedure(ProcedureItem* procedure);
 
 signals:
-  void CreateNewProcedureRequest();
   void ProcedureClicked(sequencergui::ProcedureItem* procedure_item);
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
+  void CreateNewProcedureRequest();
+  void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
   void SetupActions();

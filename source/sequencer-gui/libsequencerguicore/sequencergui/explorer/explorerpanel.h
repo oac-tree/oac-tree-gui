@@ -48,8 +48,9 @@ public:
 signals:
   void ProcedureFileClicked(const QString& filename);
   void ProcedureFileDoubleClicked(const QString& filename);
-  void CreateNewProcedureRequest();
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
+  void CreateNewProcedureRequest();
+  void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};

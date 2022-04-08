@@ -102,8 +102,9 @@ void ProcedureListView::SetupActions()
   addAction(m_new_procedure_action);
 
   m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  connect(m_remove_selected_action, &QAction::triggered, this,
-          &ProcedureListView::OnRemoveSelectedRequest);
+  auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
+  connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
+
   addAction(m_remove_selected_action);
 }
 
@@ -118,14 +119,6 @@ void ProcedureListView::OnSingleClick(const QModelIndex &index)
       item)
   {
     emit ProcedureClicked(const_cast<ProcedureItem *>(item));
-  }
-}
-
-void ProcedureListView::OnRemoveSelectedRequest()
-{
-  for (auto procedure_item : GetSelectedProcedures())
-  {
-    m_model->RemoveItem(procedure_item);
   }
 }
 

@@ -48,6 +48,8 @@ public:
 
   void CreateNewProcedure();
 
+  void RemoveProcedure(ProcedureItem* procedure_item);
+
 private:
   void SetupConnections();
 
