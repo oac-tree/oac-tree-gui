@@ -30,6 +30,7 @@ class PanelToolBar;
 class JobListView;
 class ProcedureItem;
 class SequencerModel;
+class CollapsibleListView;
 
 //! Left panel on SequencerMonitorView.
 //! Contains widget with open procedures and running jobs.
@@ -53,7 +54,7 @@ signals:
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
-  QSplitter* m_splitter{nullptr};
+  CollapsibleListView* m_splitter{nullptr};
   JobListView* m_job_list_view{nullptr};
 };
 

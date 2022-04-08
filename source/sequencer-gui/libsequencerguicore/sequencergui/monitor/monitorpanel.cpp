@@ -22,9 +22,8 @@
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/monitor/joblistview.h"
-#include "sequencergui/widgets/collapsiblewidget.h"
+#include "sequencergui/widgets/collapsiblelistview.h"
 
-#include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
@@ -35,11 +34,9 @@ namespace sequencergui
 MonitorPanel::MonitorPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_splitter(new QSplitter)
+    , m_splitter(new CollapsibleListView)
     , m_job_list_view(new JobListView)
 {
-  m_splitter->setOrientation(Qt::Vertical);
-
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
@@ -47,7 +44,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  AddToSplitter(m_splitter, m_job_list_view);
+  m_splitter->AddCollapsibleWidget(m_job_list_view);
 
   connect(m_job_list_view, &JobListView::procedureSelected, this, &MonitorPanel::procedureSelected);
 }

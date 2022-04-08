@@ -35,23 +35,23 @@ namespace sequencergui
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_splitter(new CollapsibleListView)
+    , m_collapsible_list(new CollapsibleListView)
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListView)
 {
   m_tool_bar->setText("EXPLORER");
 
-  m_splitter->AddWidget(m_file_tree_view);
+  m_collapsible_list->AddWidget(m_file_tree_view);
 
   m_procedure_list_view->setWindowTitle("OPEN PROCEDURES");
-  m_splitter->AddCollapsibleWidget(m_procedure_list_view);
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_tool_bar);
-  layout->addWidget(m_splitter);
+  layout->addWidget(m_collapsible_list);
 
   connect(m_file_tree_view, &FileTreeView::ProcedureFileClicked, this,
           &ExplorerPanel::ProcedureFileClicked);

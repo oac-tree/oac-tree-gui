@@ -22,8 +22,6 @@
 
 #include <QWidget>
 
-class QSplitter;
-
 namespace sequencergui
 {
 class FileTreeView;
@@ -55,7 +53,7 @@ signals:
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
-  CollapsibleListView* m_splitter{nullptr};
+  CollapsibleListView* m_collapsible_list{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
   ProcedureListView* m_procedure_list_view{nullptr};
 };
