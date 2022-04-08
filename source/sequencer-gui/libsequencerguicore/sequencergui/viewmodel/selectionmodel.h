@@ -25,7 +25,8 @@
 namespace mvvm
 {
 class ViewModel;
-}
+class SessionItem;
+}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -36,6 +37,19 @@ class SelectionModel : public QItemSelectionModel
 
 public:
   explicit SelectionModel(mvvm::ViewModel* view_model, QObject* parent = nullptr);
+
+  void SetViewModel(mvvm::ViewModel* view_model);
+
+  const mvvm::SessionItem* GetSelectedItem() const;
+
+  std::vector<const mvvm::SessionItem*> GetSelectedItems() const;
+
+  void SetSelectedItem(const mvvm::SessionItem* item);
+
+  void SetSelectedItems(std::vector<const mvvm::SessionItem*> items);
+
+private:
+  const mvvm::ViewModel* GetViewModel() const;
 };
 
 }  // namespace sequencergui
