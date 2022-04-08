@@ -38,6 +38,12 @@ CollapsibleWidget::CollapsibleWidget(QWidget *context, QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(context);
   m_tool_bar->SetControlledWidget(this);
+  m_tool_bar->SetText(context->windowTitle());
+
+  for (auto action : context->actions())
+  {
+    m_tool_bar->AddAction(action);
+  }
 }
 
 CollapsibleWidget::~CollapsibleWidget() = default;
@@ -55,25 +61,10 @@ CollapsibleToolBar *CollapsibleWidget::GetToolBar()
   return m_tool_bar;
 }
 
-QToolBar *CollapsibleWidget::toolBar()
-{
-  return m_tool_bar->GetToolBar();
-}
-
-void CollapsibleWidget::SetText(const QString &text)
-{
-  m_tool_bar->SetText(text);
-}
-
 void AddToSplitter(QSplitter *splitter, QWidget *context)
 {
   auto collapsible_widget = new CollapsibleWidget(context);
-  collapsible_widget->SetText(context->windowTitle());
   collapsible_widget->AddToSplitter(splitter);
-  for (auto action : context->actions())
-  {
-    collapsible_widget->GetToolBar()->AddAction(action);
-  }
 }
 
 }  // namespace sequencergui

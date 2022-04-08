@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "sequencergui/widgets/collapsiblelistview.h"
+#include "sequencergui/widgets/collapsiblewidget.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -41,6 +42,10 @@ void CollapsibleListView::AddWidget(QWidget *content)
   m_splitter->addWidget(content);
 }
 
-void CollapsibleListView::AddCollapsibleWidget(QWidget *content) {}
+void CollapsibleListView::AddCollapsibleWidget(QWidget *content)
+{
+  auto collapsible_widget = new CollapsibleWidget(content);
+  collapsible_widget->AddToSplitter(m_splitter);
+}
 
 }  // namespace sequencergui

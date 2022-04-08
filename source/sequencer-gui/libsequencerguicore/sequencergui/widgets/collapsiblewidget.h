@@ -23,12 +23,15 @@
 #include <QWidget>
 
 class QSplitter;
-class QToolBar;
 
 namespace sequencergui
 {
 
 class CollapsibleToolBar;
+
+//! Wraps user widget and makes it collapsible.
+//! Intended for usage with a QSplitter. The user widget is inserted into the splitter
+//! with a special toolbar, containing widget actions and a collapse/expand button.
 
 class CollapsibleWidget : public QWidget
 {
@@ -41,10 +44,6 @@ public:
   void AddToSplitter(QSplitter* splitter);
 
   CollapsibleToolBar* GetToolBar();
-
-  QToolBar* toolBar();
-
-  void SetText(const QString& text);
 
 private:
   CollapsibleToolBar* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
