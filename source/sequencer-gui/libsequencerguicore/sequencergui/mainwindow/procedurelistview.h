@@ -53,6 +53,10 @@ public:
 
   void SetSelectedProcedure(ProcedureItem* procedure);
 
+  QListView* GetListView();
+
+  mvvm::ViewModel* GetViewModel();
+
 signals:
   void ProcedureClicked(sequencergui::ProcedureItem* procedure_item);
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);

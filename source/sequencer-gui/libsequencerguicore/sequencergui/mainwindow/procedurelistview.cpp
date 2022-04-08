@@ -96,6 +96,16 @@ void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
   m_selection_model->SetSelectedItem(procedure);
 }
 
+QListView *ProcedureListView::GetListView()
+{
+  return m_list_view;
+}
+
+mvvm::ViewModel *ProcedureListView::GetViewModel()
+{
+  return m_view_model.get();
+}
+
 void ProcedureListView::SetupActions()
 {
   m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));

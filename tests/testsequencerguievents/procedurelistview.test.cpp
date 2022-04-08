@@ -22,9 +22,12 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
+#include "mvvm/viewmodel/viewmodel.h"
+
 #include <gtest/gtest.h>
 
 #include <QDebug>
+#include <QListView>
 #include <QSignalSpy>
 
 using namespace sequencergui;
@@ -110,4 +113,33 @@ TEST_F(ProcedureListViewTest, SelectionAfterRemoval)
   EXPECT_EQ(arguments.size(), 1);
   auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
   EXPECT_EQ(selected_procedure, nullptr);
+}
+
+//! Checking selection when acting through the view.
+
+TEST_F(ProcedureListViewTest, SetCurrentIndex)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  ProcedureListView view;
+  QSignalSpy spy_selected(&view, &ProcedureListView::ProcedureSelected);
+
+  view.SetModel(&model);
+  EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
+
+  // selecting an item and checking results
+  auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
+  ASSERT_EQ(indexes.size(), 2);
+  view.GetListView()->setCurrentIndex(indexes.at(0));
+
+  EXPECT_EQ(view.GetSelectedProcedure(), procedure);
+  EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
+  EXPECT_EQ(spy_selected.count(), 1);
+  QList<QVariant> arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
+  EXPECT_EQ(selected_procedure, procedure);
+
+  spy_selected.clear();
 }
