@@ -51,8 +51,6 @@ ProcedureListView::ProcedureListView(QWidget *parent)
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
-
-  SetupActions();
 }
 
 ProcedureListView::~ProcedureListView() = default;
@@ -106,21 +104,23 @@ mvvm::ViewModel *ProcedureListView::GetViewModel()
   return m_view_model.get();
 }
 
-void ProcedureListView::SetupActions()
+void ProcedureListView::SetupActions(int action_flag)
 {
-  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
-  connect(m_new_procedure_action, &QAction::triggered, this,
-          &ProcedureListView::CreateNewProcedureRequest);
-  addAction(m_new_procedure_action);
-
-  m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  auto on_remove = [this]()
+  if (action_flag & kCreateNew)
   {
-    emit RemoveProcedureRequest(GetSelectedProcedure());
-  };
-  connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
+    m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+    connect(m_new_procedure_action, &QAction::triggered, this,
+            &ProcedureListView::CreateNewProcedureRequest);
+    addAction(m_new_procedure_action);
+  }
 
-  addAction(m_remove_selected_action);
+  if (action_flag & kRemoveSelected)
+  {
+    m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+    auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
+    connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
+    addAction(m_remove_selected_action);
+  }
 }
 
 void ProcedureListView::OnSingleClick(const QModelIndex &index)

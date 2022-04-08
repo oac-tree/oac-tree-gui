@@ -43,6 +43,12 @@ class ProcedureListView : public QWidget
   Q_OBJECT
 
 public:
+  enum Actions
+  {
+    kCreateNew = 1,
+    kRemoveSelected = 2
+  };
+
   explicit ProcedureListView(QWidget* parent = nullptr);
   ~ProcedureListView() override;
 
@@ -57,6 +63,8 @@ public:
 
   mvvm::ViewModel* GetViewModel();
 
+  void SetupActions(int action_flag);
+
 signals:
   void ProcedureClicked(sequencergui::ProcedureItem* procedure_item);
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
@@ -64,7 +72,6 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
-  void SetupActions();
   void OnSingleClick(const QModelIndex& index);
   void OnRemoveSelectedRequest();
 

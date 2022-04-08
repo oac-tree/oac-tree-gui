@@ -39,7 +39,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
     , m_collapsible_list(new CollapsibleListView)
-    , m_procedure_list_widget(new ProcedureListView)
+    , m_procedure_list_view(new ProcedureListView)
     , m_instruction_panel(new InstructionPanel)
     , m_workspace_panel(new WorkspacePanel)
 
@@ -51,13 +51,15 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_collapsible_list);
 
-  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_widget);
+  m_procedure_list_view->SetupActions(ProcedureListView::kCreateNew
+                                      | ProcedureListView::kRemoveSelected);
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
   m_collapsible_list->AddCollapsibleWidget(m_instruction_panel);
   m_collapsible_list->AddCollapsibleWidget(m_workspace_panel);
 
-  connect(m_procedure_list_widget, &ProcedureListView::ProcedureSelected, this,
+  connect(m_procedure_list_view, &ProcedureListView::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
-  connect(m_procedure_list_widget, &ProcedureListView::CreateNewProcedureRequest, this,
+  connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
           &ComposerPanel::CreateNewProcedureRequest);
 }
 
@@ -65,17 +67,17 @@ ComposerPanel::~ComposerPanel() = default;
 
 void ComposerPanel::SetModel(SequencerModel *model)
 {
-  m_procedure_list_widget->SetModel(model);
+  m_procedure_list_view->SetModel(model);
 }
 
 ProcedureItem *ComposerPanel::GetSelectedProcedure()
 {
-  return m_procedure_list_widget->GetSelectedProcedure();
+  return m_procedure_list_view->GetSelectedProcedure();
 }
 
 void ComposerPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  return m_procedure_list_widget->SetSelectedProcedure(procedure);
+  return m_procedure_list_view->SetSelectedProcedure(procedure);
 }
 
 }  // namespace sequencergui

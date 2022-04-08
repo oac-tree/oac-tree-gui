@@ -51,7 +51,7 @@ public:
   void SetSelectedItems(std::vector<const mvvm::SessionItem*> items);
 
 signals:
-  void SelectedItemChanged(const mvvm::SessionItem*);
+  void SelectedItemChanged(const mvvm::SessionItem*); // FIXME revise, emit const or non-const, after all?
 
 private:
   void OnViewModelReset();

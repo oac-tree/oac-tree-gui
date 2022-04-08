@@ -59,7 +59,7 @@ signals:
 private:
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
-  ProcedureListView* m_procedure_list_widget{nullptr};
+  ProcedureListView* m_procedure_list_view{nullptr};
   InstructionPanel* m_instruction_panel{nullptr};
   WorkspacePanel* m_workspace_panel{nullptr};
 };
