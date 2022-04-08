@@ -34,6 +34,7 @@
 #include <QLabel>
 #include <QListView>
 #include <QVBoxLayout>
+#include <QDebug>
 
 namespace sequencergui
 {
@@ -53,9 +54,6 @@ ProcedureListView::ProcedureListView(QWidget *parent)
   layout->addWidget(m_list_view);
 
   SetupActions();
-
-  connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick,
-          Qt::UniqueConnection);
 }
 
 ProcedureListView::~ProcedureListView() = default;
@@ -70,6 +68,9 @@ void ProcedureListView::SetModel(SequencerModel *model)
 
   connect(m_selection_model.get(), &SelectionModel::selectionChanged, this,
           &ProcedureListView::OnSelectionChanged, Qt::UniqueConnection);
+
+  connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick,
+          Qt::UniqueConnection);
 }
 
 ProcedureItem *ProcedureListView::GetSelectedProcedure()
@@ -92,6 +93,7 @@ std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
 
 void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
 {
+  qDebug() << "aaaa" << procedure;
   m_selection_model->SetSelectedItem(procedure);
 }
 

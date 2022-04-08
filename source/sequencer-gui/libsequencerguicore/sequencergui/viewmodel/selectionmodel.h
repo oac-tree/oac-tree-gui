@@ -54,6 +54,7 @@ signals:
   void SelectedItemChanged(const mvvm::SessionItem*);
 
 private:
+  void OnViewModelReset();
   const mvvm::ViewModel* GetViewModel() const;
 };
 

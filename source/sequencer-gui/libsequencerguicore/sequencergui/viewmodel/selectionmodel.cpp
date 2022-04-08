@@ -27,17 +27,23 @@ namespace sequencergui
 {
 
 SelectionModel::SelectionModel(mvvm::ViewModel *view_model, QObject *parent)
-    : QItemSelectionModel(view_model, parent)
+    : QItemSelectionModel(nullptr, parent)
 {
-  connect(view_model, &mvvm::ViewModel::modelAboutToBeReset, this, [this]() { clearSelection(); });
-
   connect(this, &SelectionModel::selectionChanged, this,
           [this](auto, auto) { emit SelectedItemChanged(GetSelectedItem()); });
+
+  SetViewModel(view_model);
 }
 
 void SelectionModel::SetViewModel(mvvm::ViewModel *view_model)
 {
   setModel(view_model);
+
+  if (view_model)
+  {
+    connect(view_model, &mvvm::ViewModel::modelAboutToBeReset, this,
+            &SelectionModel::OnViewModelReset, Qt::UniqueConnection);
+  }
 }
 
 const mvvm::SessionItem *SelectionModel::GetSelectedItem() const
@@ -78,9 +84,16 @@ void SelectionModel::SetSelectedItems(std::vector<const mvvm::SessionItem *> ite
       selection.push_back(QItemSelectionRange(index));
     }
   }
-  //  auto flags = QItemSelectionModel::Select; // not clear, which one to use
-  auto flags = QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows;
+  auto flags = QItemSelectionModel::Select;  // not clear, which one to use
+  //  auto flags = QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows;
   select(selection, flags);
+}
+
+void SelectionModel::OnViewModelReset()
+{
+  // we've made it memeber function, and not lambda, because UniqueConnection doesn't work with
+  // lambda
+  clearSelection();
 }
 
 const mvvm::ViewModel *SelectionModel::GetViewModel() const
