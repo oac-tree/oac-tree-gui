@@ -23,8 +23,7 @@
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
-
-#include "sequencergui/widgets/collapsiblewidget.h"
+#include "sequencergui/widgets/collapsiblelistview.h"
 
 #include <QLabel>
 #include <QSplitter>
@@ -36,23 +35,16 @@ namespace sequencergui
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_splitter(new QSplitter)
+    , m_splitter(new CollapsibleListView)
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListView)
 {
   m_tool_bar->setText("EXPLORER");
 
-  m_splitter->setOrientation(Qt::Vertical);
-  m_splitter->addWidget(m_file_tree_view);
+  m_splitter->AddWidget(m_file_tree_view);
 
   m_procedure_list_view->setWindowTitle("OPEN PROCEDURES");
-
-  AddToSplitter(m_splitter, m_procedure_list_view);
-
-// FIXME restore after switching to CollapsibleListView
-//  m_splitter->setCollapsible(m_splitter->indexOf(m_procedure_list_view), false);
-
-  m_splitter->setSizes(QList<int>() << 400 << 200);
+  m_splitter->AddCollapsibleWidget(m_procedure_list_view);
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
