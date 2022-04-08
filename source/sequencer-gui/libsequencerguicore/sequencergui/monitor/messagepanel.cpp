@@ -33,6 +33,8 @@ namespace sequencergui
 MessagePanel::MessagePanel(QWidget *parent)
     : QWidget(parent), m_text_edit(new QTextEdit), m_remove_selected_action(new QAction(this))
 {
+  setWindowTitle("LOG");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
@@ -44,18 +46,7 @@ MessagePanel::MessagePanel(QWidget *parent)
   f.setStyleHint(QFont::Monospace);
   m_text_edit->setFont(f);
 
-  //  SetText("LOG");
-  setWindowTitle("LOG");
-
-  //  auto tool_bar = GetToolBar();
-
-  //  auto remove_selected_button = new QToolButton;
-  //  remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  //  tool_bar->AddWidget(remove_selected_button);
-
-  m_remove_selected_action->setText("xxx");
   m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-
   addAction(m_remove_selected_action);
 }
 
