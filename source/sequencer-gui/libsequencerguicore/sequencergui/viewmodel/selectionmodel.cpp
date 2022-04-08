@@ -91,7 +91,7 @@ void SelectionModel::SetSelectedItems(std::vector<const mvvm::SessionItem *> ite
 
 void SelectionModel::OnViewModelReset()
 {
-  // we've made it memeber function, and not lambda, because UniqueConnection doesn't work with
+  // we've made it member function, and not lambda, because UniqueConnection doesn't work with
   // lambda
   clearSelection();
 }

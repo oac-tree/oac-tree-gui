@@ -28,7 +28,6 @@ class ViewModel;
 }
 
 class QListView;
-class QItemSelection;
 class QAction;
 
 namespace sequencergui
@@ -56,14 +55,13 @@ public:
 
 signals:
   void CreateNewProcedureRequest();
-  void ProcedureClicked(sequencergui::ProcedureItem* procedureItem);
-  void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
+  void ProcedureClicked(sequencergui::ProcedureItem* procedure_item);
+  void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
 
 private:
   void SetupActions();
   void OnSingleClick(const QModelIndex& index);
   void OnRemoveSelectedRequest();
-  void OnSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};

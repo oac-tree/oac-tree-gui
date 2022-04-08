@@ -30,11 +30,11 @@
 #include "mvvm/viewmodel/viewmodelutils.h"
 
 #include <QAction>
+#include <QDebug>
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QListView>
 #include <QVBoxLayout>
-#include <QDebug>
 
 namespace sequencergui
 {
@@ -66,8 +66,8 @@ void ProcedureListView::SetModel(SequencerModel *model)
   m_selection_model->SetViewModel(m_view_model.get());
   m_list_view->setModel(m_view_model.get());
 
-  connect(m_selection_model.get(), &SelectionModel::selectionChanged, this,
-          &ProcedureListView::OnSelectionChanged, Qt::UniqueConnection);
+  connect(m_selection_model.get(), &SelectionModel::SelectedItemChanged, this,
+          [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 
   connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick,
           Qt::UniqueConnection);
@@ -84,16 +84,13 @@ std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
   std::vector<ProcedureItem *> result;
   auto selected = m_selection_model->GetSelectedItems();
   auto on_item = [](auto it)
-  {
-    return dynamic_cast<ProcedureItem*>(const_cast<mvvm::SessionItem*>(it));
-  };
+  { return dynamic_cast<ProcedureItem *>(const_cast<mvvm::SessionItem *>(it)); };
   std::transform(selected.begin(), selected.end(), std::back_inserter(result), on_item);
   return result;
 }
 
 void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  qDebug() << "aaaa" << procedure;
   m_selection_model->SetSelectedItem(procedure);
 }
 
@@ -129,19 +126,6 @@ void ProcedureListView::OnRemoveSelectedRequest()
   for (auto procedure_item : GetSelectedProcedures())
   {
     m_model->RemoveItem(procedure_item);
-  }
-}
-
-void ProcedureListView::OnSelectionChanged(const QItemSelection &, const QItemSelection &deselected)
-{
-  if (GetSelectedProcedures().empty())  // selections has gone
-  {
-    emit ProcedureSelected(nullptr);
-    return;
-  }
-  for (auto item : GetSelectedProcedures())
-  {
-    emit ProcedureSelected(item);
   }
 }
 
