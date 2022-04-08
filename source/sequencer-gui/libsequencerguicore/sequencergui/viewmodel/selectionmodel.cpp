@@ -84,8 +84,8 @@ void SelectionModel::SetSelectedItems(std::vector<const mvvm::SessionItem *> ite
       selection.push_back(QItemSelectionRange(index));
     }
   }
-  auto flags = QItemSelectionModel::Select;  // not clear, which one to use
-  //  auto flags = QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows;
+//  auto flags = QItemSelectionModel::Select;  // not clear, which one to use
+    auto flags = QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows;
   select(selection, flags);
 }
 

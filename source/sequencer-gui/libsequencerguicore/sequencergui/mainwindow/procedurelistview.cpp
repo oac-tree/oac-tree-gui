@@ -30,7 +30,6 @@
 #include "mvvm/viewmodel/viewmodelutils.h"
 
 #include <QAction>
-#include <QDebug>
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QListView>
@@ -63,8 +62,11 @@ void ProcedureListView::SetModel(SequencerModel *model)
   m_model = model;
   m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
   m_view_model->SetRootSessionItem(model->GetProcedureContainer());
+
   m_selection_model->SetViewModel(m_view_model.get());
+
   m_list_view->setModel(m_view_model.get());
+  m_list_view->setSelectionModel(m_selection_model.get());
 
   connect(m_selection_model.get(), &SelectionModel::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
@@ -102,7 +104,10 @@ void ProcedureListView::SetupActions()
   addAction(m_new_procedure_action);
 
   m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
+  auto on_remove = [this]()
+  {
+    emit RemoveProcedureRequest(GetSelectedProcedure());
+  };
   connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
 
   addAction(m_remove_selected_action);
