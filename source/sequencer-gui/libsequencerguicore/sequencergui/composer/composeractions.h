@@ -43,6 +43,8 @@ public:
 
   void InsertInstructionAfterRequest(const std::string& item_type);
 
+  void InsertInstructionIntoRequest(const std::string& item_type);
+
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;

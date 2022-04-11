@@ -53,10 +53,31 @@ public:
 };
 
 //! Insertion instruction after selected instruction.
+
+TEST_F(ComposerActionsTest, InsertInstructionAfter)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+
+  // creating the context mimicking `sequence` instruction selected
+  auto context = CreateContext(sequence, nullptr);
+  m_actions.SetContext(context);
+
+  // appending instruction to the container
+  m_actions.InsertInstructionAfterRequest(WaitItem::Type);
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
+
+  // Wait instruction should be after Sequence instruction
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::Type);
+  EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::Type);
+}
+
+//! Insertion instruction after selected instruction.
 //! Mimicking the case when no instruction is actually selected.
 //! Items should be added one after another.
 
-TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppend)
+TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating the context mimicking "no instruction selected"
   auto context = CreateContext(nullptr, nullptr);
@@ -73,4 +94,29 @@ TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppend)
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
   EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::Type);
+}
+
+//! Insertion instruction int the selected instruction.
+
+TEST_F(ComposerActionsTest, InsertInstructionInto)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+
+  // creating the context mimicking `sequence` instruction selected
+  auto context = CreateContext(sequence, nullptr);
+  m_actions.SetContext(context);
+
+  // inserting instruction into selected instruction
+  m_actions.InsertInstructionIntoRequest(WaitItem::Type);
+  ASSERT_EQ(sequence->GetInstructions().size(), 1);
+
+  // inserting second instruction
+  m_actions.InsertInstructionIntoRequest(MessageItem::Type);
+  ASSERT_EQ(sequence->GetInstructions().size(), 2);
+
+  // Wait instruction should be after Sequence instruction
+  auto instructions = sequence->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+  EXPECT_EQ(instructions.at(1)->GetType(), MessageItem::Type);
 }

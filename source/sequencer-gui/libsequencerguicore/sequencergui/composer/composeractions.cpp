@@ -41,7 +41,8 @@ void ComposerActions::SetContext(ComposerContext context)
   m_context = std::move(context);
 }
 
-//! Inserts instruction
+//! Inserts new instruction of given type after the current selection.
+//! The selection is retrieved via a callback.
 void ComposerActions::InsertInstructionAfterRequest(const std::string &item_type)
 {
   if (!m_model)
@@ -54,8 +55,8 @@ void ComposerActions::InsertInstructionAfterRequest(const std::string &item_type
     throw RuntimeException("Callbacks are not defined");
   }
 
-  auto selected_instruction = m_context.m_selected_instruction();
   auto selected_procedure = m_context.m_selected_procedure();
+  auto selected_instruction = m_context.m_selected_instruction();
 
   if (selected_instruction)
   {
@@ -64,7 +65,30 @@ void ComposerActions::InsertInstructionAfterRequest(const std::string &item_type
   }
   else
   {
-    m_model->InsertNewItem(item_type, selected_procedure->GetInstructionContainer(), {"", -1});
+    m_model->InsertNewItem(item_type, selected_procedure->GetInstructionContainer(),
+                           mvvm::TagIndex::Append());
+  }
+}
+
+//! Inserts new instruction of given type after the current selection.
+//! The selection is retrieved via a callback.
+void ComposerActions::InsertInstructionIntoRequest(const std::string &item_type)
+{
+  if (!m_model)
+  {
+    throw NullException("Model is not defined");
+  }
+
+  if (!m_context.m_selected_instruction || !m_context.m_selected_procedure)
+  {
+    throw RuntimeException("Callbacks are not defined");
+  }
+
+  auto selected_instruction = m_context.m_selected_instruction();
+
+  if (selected_instruction)
+  {
+    m_model->InsertNewItem(item_type, selected_instruction, mvvm::TagIndex::Append());
   }
 }
 
