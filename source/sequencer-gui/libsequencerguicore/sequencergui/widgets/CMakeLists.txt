@@ -1,11 +1,13 @@
 # Collection of general purpose widgets
 target_sources(${library_name} PRIVATE
-  widgetutils.cpp
-  widgetutils.h
+  collapsiblelistview.cpp
+  collapsiblelistview.h
   collapsibletoolbar.cpp
   collapsibletoolbar.h
   collapsiblewidget.cpp
   collapsiblewidget.h
-  collapsiblelistview.cpp
-  collapsiblelistview.h
+  filetreeview.cpp
+  filetreeview.h
+  widgetutils.cpp
+  widgetutils.h
   )

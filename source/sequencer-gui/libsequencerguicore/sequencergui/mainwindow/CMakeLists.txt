@@ -3,8 +3,6 @@ target_sources(${library_name} PRIVATE
   actionmanager.h
   appsettings.cpp
   appsettings.h
-  filetreeview.cpp
-  filetreeview.h
   mainwindow.cpp
   mainwindow.h
   paneltoolbar.cpp
