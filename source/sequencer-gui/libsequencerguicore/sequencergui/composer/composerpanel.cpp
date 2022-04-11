@@ -19,9 +19,9 @@
 
 #include "sequencergui/composer/composerpanel.h"
 
+#include "sequencergui/composer/aggregatepanel.h"
 #include "sequencergui/composer/instructionlistwidget.h"
 #include "sequencergui/composer/instructionpanel.h"
-#include "sequencergui/composer/workspacepanel.h"
 #include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
@@ -41,7 +41,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     , m_collapsible_list(new CollapsibleListView)
     , m_procedure_list_view(new ProcedureListView)
     , m_instruction_panel(new InstructionPanel)
-    , m_workspace_panel(new WorkspacePanel)
+    , m_workspace_panel(new AggregatePanel)
 
 {
   auto layout = new QVBoxLayout(this);

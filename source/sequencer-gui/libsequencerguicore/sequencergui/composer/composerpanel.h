@@ -31,7 +31,7 @@ class ProcedureListView;
 class PanelToolBar;
 class SequencerModel;
 class ProcedureItem;
-class WorkspacePanel;
+class AggregatePanel;
 class CollapsibleListView;
 
 //! Left panel on SequencerComposerView.
@@ -62,7 +62,7 @@ private:
   CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListView* m_procedure_list_view{nullptr};
   InstructionPanel* m_instruction_panel{nullptr};
-  WorkspacePanel* m_workspace_panel{nullptr};
+  AggregatePanel* m_workspace_panel{nullptr};
 };
 
 }  // namespace sequencergui

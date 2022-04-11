@@ -1,6 +1,8 @@
 # Contains source for SequencerComposerView (main widget for procedure editing).
 
 target_sources(${library_name} PRIVATE
+  aggregatepanel.cpp
+  aggregatepanel.h
   composeractions.cpp
   composeractions.h
   composerpanel.cpp
@@ -15,7 +17,5 @@ target_sources(${library_name} PRIVATE
   instructionpanel.h
   sequencercomposerview.cpp
   sequencercomposerview.h
-  workspacepanel.cpp
-  workspacepanel.h
 )
 

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_WORKSPACEPANEL_H
-#define SEQUENCERGUI_COMPOSER_WORKSPACEPANEL_H
+#ifndef SEQUENCERGUI_COMPOSER_AGREGATEPANEL_H
+#define SEQUENCERGUI_COMPOSER_AGREGATEPANEL_H
 
 #include <QWidget>
 
@@ -27,14 +27,14 @@ class QListWidget;
 namespace sequencergui
 {
 
-//! Collapsible list with types of workspace variables.
+//! Panel with tree view for instruction aggregates.
 
-class WorkspacePanel : public QWidget
+class AggregatePanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit WorkspacePanel(QWidget* parent = nullptr);
+  explicit AggregatePanel(QWidget* parent = nullptr);
 
 private:
   QListWidget* m_list_widget{nullptr};
@@ -42,4 +42,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_WORKSPACEPANEL_H
+#endif  // SEQUENCERGUI_COMPOSER_AGREGATEPANEL_H

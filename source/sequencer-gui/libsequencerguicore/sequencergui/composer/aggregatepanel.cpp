@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/workspacepanel.h"
+#include "sequencergui/composer/aggregatepanel.h"
 
 #include <QListWidget>
 #include <QVBoxLayout>
@@ -25,7 +25,7 @@
 namespace sequencergui
 {
 
-WorkspacePanel::WorkspacePanel(QWidget *parent) : QWidget(parent), m_list_widget(new QListWidget)
+AggregatePanel::AggregatePanel(QWidget *parent) : QWidget(parent), m_list_widget(new QListWidget)
 {
   setWindowTitle("AGGREGATES");
 
