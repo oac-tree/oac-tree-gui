@@ -17,21 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MOCKMESSAGEREPORTER_H
-#define MOCKMESSAGEREPORTER_H
+#ifndef SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
+#define SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
 
 #include "sequencergui/core/messageinterface.h"
 
-#include <gmock/gmock.h>
+namespace sequencergui
+{
 
-#include <string>
-
-//! Mock class to use as MessageHandler.
-
-class MockMessageReporter : public sequencergui::MessageInterface
+class StdMessageHandler : public MessageInterface
 {
 public:
-  MOCK_METHOD1(SendMessage, void(std::string));
+  void SendMessage(const std::string& text) override;
 };
 
-#endif  //  MOCKMESSAGEREPORTER_H
+}
+
+#endif // SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H

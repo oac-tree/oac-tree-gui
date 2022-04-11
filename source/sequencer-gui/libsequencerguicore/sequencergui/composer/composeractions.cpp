@@ -20,6 +20,7 @@
 #include "sequencergui/composer/composeractions.h"
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/core/messageinterface.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
@@ -30,6 +31,8 @@ ComposerActions::ComposerActions(SequencerModel *model, QObject *parent) : QObje
 {
   SetModel(model);
 }
+
+ComposerActions::~ComposerActions() = default;
 
 void ComposerActions::SetModel(SequencerModel *model)
 {

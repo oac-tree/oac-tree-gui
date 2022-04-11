@@ -20,13 +20,16 @@
 #ifndef SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
 #define SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
 
+#include "sequencergui/composer/composercontext.h"
+
 #include <QObject>
 
-#include "sequencergui/composer/composercontext.h"
+#include <memory>
 
 namespace sequencergui
 {
 class SequencerModel;
+class MessageInterface;
 
 //! Collection of actions
 
@@ -36,6 +39,7 @@ class ComposerActions : public QObject
 
 public:
   explicit ComposerActions(SequencerModel* model, QObject* parent = nullptr);
+  ~ComposerActions() override;
 
   void SetModel(SequencerModel* model);
 
@@ -48,6 +52,7 @@ public:
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
+  std::unique_ptr<MessageInterface> m_message_reporter;
 };
 
 }  // namespace sequencergui
