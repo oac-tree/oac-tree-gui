@@ -19,6 +19,10 @@
 
 #include "sequencergui/composer/composeractions.h"
 
+#include "sequencergui/core/exceptions.h"
+#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
+
 namespace sequencergui
 {
 
@@ -34,7 +38,34 @@ void ComposerActions::SetModel(SequencerModel *model)
 
 void ComposerActions::SetContext(ComposerContext context)
 {
-  m_context = context;
+  m_context = std::move(context);
+}
+
+//! Inserts instruction
+void ComposerActions::InsertInstructionAfterRequest(const std::string &item_type)
+{
+  if (!m_model)
+  {
+    throw NullException("Model is not defined");
+  }
+
+  if (!m_context.m_selected_instruction || !m_context.m_selected_procedure)
+  {
+    throw RuntimeException("Callbacks are not defined");
+  }
+
+  auto selected_instruction = m_context.m_selected_instruction();
+  auto selected_procedure = m_context.m_selected_procedure();
+
+  if (selected_instruction)
+  {
+    m_model->InsertNewItem(item_type, selected_instruction->GetParent(),
+                           selected_instruction->GetTagIndex().Next());
+  }
+  else
+  {
+    m_model->InsertNewItem(item_type, selected_procedure->GetInstructionContainer(), {"", -1});
+  }
 }
 
 }  // namespace sequencergui

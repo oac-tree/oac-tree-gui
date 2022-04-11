@@ -49,4 +49,8 @@ ExistingKeyException::ExistingKeyException(const std::string& message) : Message
 {
 }
 
+NullException::NullException(const std::string& message) : MessageException{message}
+{
+}
+
 }  // namespace sequencergui

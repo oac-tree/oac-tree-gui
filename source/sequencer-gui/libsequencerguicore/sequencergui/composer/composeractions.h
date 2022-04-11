@@ -41,6 +41,8 @@ public:
 
   void SetContext(ComposerContext context);
 
+  void InsertInstructionAfterRequest(const std::string& item_type);
+
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;

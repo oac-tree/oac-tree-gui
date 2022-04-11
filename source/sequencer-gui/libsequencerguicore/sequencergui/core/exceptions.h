@@ -79,6 +79,14 @@ public:
   explicit ExistingKeyException(const std::string& message);
 };
 
+//! Exception is thrown when the argument is nullptr.
+
+class NullException : public MessageException
+{
+public:
+  explicit NullException(const std::string& message);
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H
