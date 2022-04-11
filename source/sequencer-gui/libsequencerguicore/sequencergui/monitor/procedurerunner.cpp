@@ -90,7 +90,7 @@ void ProcedureRunner::onMakeStepRequest()
 
 void ProcedureRunner::Terminate()
 {
-  onLogMessage("ProcedureRunner::Terminate()", MessageType::kWarning);
+  onLogMessage("ProcedureRunner::Terminate()", JobMessageType::kWarning);
 
   SetRunnerStatus(RunnerStatus::kCanceling);
 
@@ -159,7 +159,7 @@ void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction
 
 //! Propagate log message from observer up in the form of signals.
 
-void ProcedureRunner::onLogMessage(const std::string &message, MessageType message_type)
+void ProcedureRunner::onLogMessage(const std::string &message, JobMessageType message_type)
 {
   emit LogMessageRequest(QString::fromStdString(message), static_cast<int>(message_type));
 }

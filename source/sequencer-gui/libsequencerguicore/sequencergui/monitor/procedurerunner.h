@@ -74,7 +74,7 @@ public:
 
   void onInstructionStatusChange(const instruction_t* instruction);
 
-  void onLogMessage(const std::string& message, MessageType message_type = MessageType::kDefault);
+  void onLogMessage(const std::string& message, JobMessageType message_type = JobMessageType::kDefault);
 
   void onVariableChange(const std::string& variable_name, const std::string& value);
 

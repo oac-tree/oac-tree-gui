@@ -47,7 +47,7 @@ enum class RunnerStatus
 };
 
 //! Defines message types that JobLog is aware of.
-enum class MessageType
+enum class JobMessageType
 {
   kDefault,
   kSuccess,

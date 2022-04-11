@@ -23,14 +23,14 @@
 
 namespace
 {
-QColor GetColor(sequencergui::MessageType message_type)
+QColor GetColor(sequencergui::JobMessageType message_type)
 {
-  static const std::map<sequencergui::MessageType, std::string> message_to_colorname = {
-      {sequencergui::MessageType::kDefault, "gray"},
-      {sequencergui::MessageType::kSuccess, "dodgerblue"},
-      {sequencergui::MessageType::kHighlight, "darkorchid"},
-      {sequencergui::MessageType::kWarning, "orange"},
-      {sequencergui::MessageType::kError, "firebrick"}};
+  static const std::map<sequencergui::JobMessageType, std::string> message_to_colorname = {
+      {sequencergui::JobMessageType::kDefault, "gray"},
+      {sequencergui::JobMessageType::kSuccess, "dodgerblue"},
+      {sequencergui::JobMessageType::kHighlight, "darkorchid"},
+      {sequencergui::JobMessageType::kWarning, "orange"},
+      {sequencergui::JobMessageType::kError, "firebrick"}};
   auto it = message_to_colorname.find(message_type);
   return it == message_to_colorname.end() ? QColor(Qt::red) : QColor(it->second.c_str());
 }
@@ -58,7 +58,7 @@ void JobLog::SetMessagePanel(MessagePanel* message_panel)
   }
 }
 
-void JobLog::Append(const std::string& text, MessageType type)
+void JobLog::Append(const std::string& text, JobMessageType type)
 {
   m_records.push_back({text, type});
 

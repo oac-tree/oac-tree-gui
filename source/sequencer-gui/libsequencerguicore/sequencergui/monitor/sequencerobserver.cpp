@@ -48,7 +48,7 @@ bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &value,
                                      const std::string &description)
 {
   auto value_string = DomainUtils::GetJsonString(&value);
-  m_procedure_runner->onLogMessage(description + value_string, MessageType::kHighlight);
+  m_procedure_runner->onLogMessage(description + value_string, JobMessageType::kHighlight);
   return true;
 }
 
@@ -77,7 +77,7 @@ void SequencerObserver::EndSingleStepImpl() {}
 
 void SequencerObserver::MessageImpl(const std::string &message)
 {
-  m_procedure_runner->onLogMessage(message, MessageType::kHighlight);
+  m_procedure_runner->onLogMessage(message, JobMessageType::kHighlight);
 }
 
 }  // namespace sequencergui
