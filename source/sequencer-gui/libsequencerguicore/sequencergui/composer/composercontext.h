@@ -17,35 +17,33 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
-#define SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSERCONTEXT_H
+#define SEQUENCERGUI_COMPOSER_COMPOSERCONTEXT_H
 
-#include <QObject>
-
-#include "sequencergui/composer/composercontext.h"
+#include <functional>
 
 namespace sequencergui
 {
-class SequencerModel;
 
-//! Collection of actions
+class ProcedureItem;
+class InstructionItem;
+class VariableItem;
 
-class ComposerActions : public QObject
+//! Context representing current state of widgets related to the procedure composition.
+//! Allows to retrieve currently selected procedure, instruction and variable.
+
+struct ComposerContext
 {
-  Q_OBJECT
+  //! Callback to get currently selected procedure.
+  std::function<ProcedureItem*()> m_selected_procedure;
 
-public:
-  explicit ComposerActions(SequencerModel* model, QObject* parent = nullptr);
+  //! Callback to get currently selected instruction.
+  std::function<InstructionItem*()> m_selected_instruction;
 
-  void SetModel(SequencerModel* model);
-
-  void SetContext(ComposerContext context);
-
-private:
-  SequencerModel* m_model{nullptr};
-  ComposerContext m_context;
+  //! Callback to get currently selected variable.
+  std::function<VariableItem*()> m_selected_variable;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSERCONTEXT_H

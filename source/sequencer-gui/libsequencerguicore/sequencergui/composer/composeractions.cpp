@@ -22,6 +22,19 @@
 namespace sequencergui
 {
 
-ComposerActions::ComposerActions(QObject *parent) : QObject(parent) {}
+ComposerActions::ComposerActions(SequencerModel *model, QObject *parent) : QObject(parent)
+{
+  SetModel(model);
+}
+
+void ComposerActions::SetModel(SequencerModel *model)
+{
+  m_model = model;
+}
+
+void ComposerActions::SetContext(ComposerContext context)
+{
+  m_context = context;
+}
 
 }  // namespace sequencergui
