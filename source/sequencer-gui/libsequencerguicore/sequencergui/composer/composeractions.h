@@ -29,7 +29,7 @@
 namespace sequencergui
 {
 class SequencerModel;
-class MessageInterface;
+class MessageHandlerInterface;
 
 //! Collection of actions
 
@@ -52,7 +52,7 @@ public:
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
-  std::unique_ptr<MessageInterface> m_message_reporter;
+  std::unique_ptr<MessageHandlerInterface> m_message_reporter;
 };
 
 }  // namespace sequencergui

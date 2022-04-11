@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_MESSAGEINTERFACE_H
-#define SEQUENCERGUI_CORE_MESSAGEINTERFACE_H
+#ifndef SEQUENCERGUI_CORE_MESSAGEHANDLERINTERFACE_H
+#define SEQUENCERGUI_CORE_MESSAGEHANDLERINTERFACE_H
 
 #include <string>
 
@@ -26,7 +26,7 @@ namespace sequencergui
 {
 
 //! Interface class to send messages to the user.
-class MessageInterface
+class MessageHandlerInterface
 {
 public:
   virtual void SendMessage(const std::string& text) = 0;
@@ -34,4 +34,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_MESSAGEINTERFACE_H
+#endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERINTERFACE_H

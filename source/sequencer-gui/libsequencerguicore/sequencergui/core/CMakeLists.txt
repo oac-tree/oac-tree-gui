@@ -1,7 +1,7 @@
 target_sources(${library_name} PRIVATE
   exceptions.cpp
   exceptions.h
-  messageinterface.h
+  messagehandlerinterface.h
   messagereporterfactory.cpp
   messagereporterfactory.h
   stdmessagehandler.cpp

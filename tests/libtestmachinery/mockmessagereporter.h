@@ -28,7 +28,7 @@
 
 //! Mock class to use as MessageHandler.
 
-class MockMessageReporter : public sequencergui::MessageInterface
+class MockMessageReporter : public sequencergui::MessageHandlerInterface
 {
 public:
   MOCK_METHOD1(SendMessage, void(std::string));

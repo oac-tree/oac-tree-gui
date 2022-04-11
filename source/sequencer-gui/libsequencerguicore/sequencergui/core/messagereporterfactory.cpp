@@ -24,7 +24,7 @@
 namespace sequencergui
 {
 
-std::unique_ptr<MessageInterface> CreateStdMessageHandler()
+std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler()
 {
   return std::make_unique<StdMessageHandler>();
 }

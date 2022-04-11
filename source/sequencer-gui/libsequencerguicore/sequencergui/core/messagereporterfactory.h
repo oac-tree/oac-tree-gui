@@ -23,14 +23,14 @@
 //! @file messagereporterfactory.h
 //! Factory functions to create various message reporters.
 
-#include "sequencergui/core/messageinterface.h"
+#include "sequencergui/core/messagehandlerinterface.h"
 
 #include <memory>
 namespace sequencergui
 {
 
 //! Creates
-std::unique_ptr<MessageInterface> CreateStdMessageHandler();
+std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler();
 
 }
 

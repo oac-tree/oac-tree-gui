@@ -20,12 +20,12 @@
 #ifndef SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
 #define SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
 
-#include "sequencergui/core/messageinterface.h"
+#include "sequencergui/core/messagehandlerinterface.h"
 
 namespace sequencergui
 {
 
-class StdMessageHandler : public MessageInterface
+class StdMessageHandler : public MessageHandlerInterface
 {
 public:
   void SendMessage(const std::string& text) override;

@@ -20,7 +20,7 @@
 #include "sequencergui/composer/composeractions.h"
 
 #include "sequencergui/core/exceptions.h"
-#include "sequencergui/core/messageinterface.h"
+#include "sequencergui/core/messagehandlerinterface.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
