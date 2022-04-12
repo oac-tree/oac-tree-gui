@@ -26,6 +26,10 @@
 
 #include "mvvm/core/exceptions.h"
 
+#include <sstream>
+
+#include <QDebug>
+
 namespace sequencergui
 {
 
@@ -70,8 +74,27 @@ void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
 
   if (selected_instruction)
   {
-    m_model->InsertNewItem(item_type.toStdString(), selected_instruction->GetParent(),
-                           selected_instruction->GetTagIndex().Next());
+    try
+    {
+      m_model->InsertNewItem(item_type.toStdString(), selected_instruction->GetParent(),
+                             selected_instruction->GetTagIndex().Next());
+    }
+    catch (const mvvm::InvalidInsertException &ex)
+    {
+      qDebug() << "xxxx" << m_message_handler.get();
+      if (m_message_handler)
+      {
+        std::ostringstream ostr;
+        ostr << "Can't insert instruction '" << item_type.toStdString() << "' into parent '"
+             << selected_instruction->GetParent()->GetType() << "'";
+        m_message_handler->SendMessage(ostr.str());
+      }
+      else
+      {
+        qDebug() << "xxxx 1.2";
+        throw;
+      }
+    }
   }
   else
   {
@@ -100,20 +123,23 @@ void ComposerActions::InsertInstructionIntoRequest(const QString &item_type)
   {
     try
     {
-      m_model->InsertNewItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
+      m_model->InsertNewItem(item_type.toStdString(), selected_instruction,
+                             mvvm::TagIndex::Append());
     }
-    catch(const mvvm::InvalidInsertException& ex)
+    catch (const mvvm::InvalidInsertException &ex)
     {
       if (m_message_handler)
       {
-        m_message_handler->SendMessage(ex.what());
+        std::ostringstream ostr;
+        ostr << "Can't insert instruction '" << item_type.toStdString() << "' into parent '"
+             << selected_instruction->GetType() << "'";
+        m_message_handler->SendMessage(ostr.str());
       }
       else
       {
-        throw ex;
+        throw;
       }
     }
-
   }
 }
 

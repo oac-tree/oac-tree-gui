@@ -121,6 +121,33 @@ TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
   EXPECT_EQ(instructions.at(1)->GetType(), SequenceItem::Type);
 }
 
+//! Insertion instruction after selected instruction, when no more insertions is allowed.
+
+TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
+{
+  // inserting instruction in the container
+  auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+  auto sequence = m_model.InsertItem<SequenceItem>(repeat);
+
+  // creating the context mimicking `sequence` instruction selected
+  auto context = CreateContext(sequence, nullptr);
+  m_actions.SetContext(context);
+
+  // It is not possible to add second instruction to repeat instruction
+  EXPECT_THROW(m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
+               mvvm::InvalidInsertException);
+
+  ASSERT_EQ(repeat->GetInstructions().size(), 1);
+
+  // setting message handler
+  MockMessageHandler mock_handler;
+  m_actions.SetMessageHandler(CreateMessageHandler(&mock_handler));
+
+  // after handler set, we expect no throws; handler method should be called
+  EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
+  EXPECT_NO_THROW(m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+}
+
 //! Insertion instruction in the selected instruction.
 
 TEST_F(ComposerActionsTest, InsertInstructionInto)
@@ -163,11 +190,10 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 
   // setting message handler
-
   MockMessageHandler mock_handler;
   m_actions.SetMessageHandler(CreateMessageHandler(&mock_handler));
 
-  // After handler set, we expect no throws, and trigger of MessageHandler method.
+  // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
   EXPECT_NO_THROW(m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
 }
