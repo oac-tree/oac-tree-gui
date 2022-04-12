@@ -70,8 +70,8 @@ ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
   // setting up ComposerActions
   m_composer_actions->SetMessageHandler(CreateStdMessageHandler());
   ComposerContext context;
-  context.m_selected_procedure = [this]() { return m_procedure; };
-  context.m_selected_instruction = [this]()
+  context.selected_procedure = [this]() { return m_procedure; };
+  context.selected_instruction = [this]()
   { return dynamic_cast<InstructionItem*>(m_instruction_tree->GetSelectedItem()); };
   m_composer_actions->SetContext(context);
 }

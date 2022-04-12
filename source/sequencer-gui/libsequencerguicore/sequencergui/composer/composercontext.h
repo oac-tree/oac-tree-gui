@@ -35,13 +35,13 @@ class VariableItem;
 struct ComposerContext
 {
   //! Callback to get currently selected procedure.
-  std::function<ProcedureItem*()> m_selected_procedure;
+  std::function<ProcedureItem*()> selected_procedure;
 
   //! Callback to get currently selected instruction.
-  std::function<InstructionItem*()> m_selected_instruction;
+  std::function<InstructionItem*()> selected_instruction;
 
   //! Callback to get currently selected variable.
-  std::function<VariableItem*()> m_selected_variable;
+  std::function<VariableItem*()> selected_variable;
 };
 
 }  // namespace sequencergui

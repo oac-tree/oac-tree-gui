@@ -59,9 +59,9 @@ public:
   ComposerContext CreateContext(InstructionItem* instruction, VariableItem* variable)
   {
     ComposerContext result;
-    result.m_selected_procedure = [this]() { return m_procedure; };
-    result.m_selected_instruction = [instruction]() { return instruction; };
-    result.m_selected_variable = [variable]() { return variable; };
+    result.selected_procedure = [this]() { return m_procedure; };
+    result.selected_instruction = [instruction]() { return instruction; };
+    result.selected_variable = [variable]() { return variable; };
     return result;
   }
 

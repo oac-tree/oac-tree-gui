@@ -60,13 +60,13 @@ void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
     throw NullException("Model is not defined");
   }
 
-  if (!m_context.m_selected_instruction || !m_context.m_selected_procedure)
+  if (!m_context.selected_instruction || !m_context.selected_procedure)
   {
     throw RuntimeException("Callbacks are not defined");
   }
 
-  auto selected_procedure = m_context.m_selected_procedure();
-  auto selected_instruction = m_context.m_selected_instruction();
+  auto selected_procedure = m_context.selected_procedure();
+  auto selected_instruction = m_context.selected_instruction();
 
   if (selected_instruction)
   {
@@ -89,12 +89,12 @@ void ComposerActions::InsertInstructionIntoRequest(const QString &item_type)
     throw NullException("Model is not defined");
   }
 
-  if (!m_context.m_selected_instruction || !m_context.m_selected_procedure)
+  if (!m_context.selected_instruction || !m_context.selected_procedure)
   {
     throw RuntimeException("Callbacks are not defined");
   }
 
-  auto selected_instruction = m_context.m_selected_instruction();
+  auto selected_instruction = m_context.selected_instruction();
 
   if (selected_instruction)
   {
