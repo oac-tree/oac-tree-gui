@@ -24,6 +24,8 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
+#include "mvvm/core/exceptions.h"
+
 namespace sequencergui
 {
 
@@ -42,6 +44,11 @@ void ComposerActions::SetModel(SequencerModel *model)
 void ComposerActions::SetContext(ComposerContext context)
 {
   m_context = std::move(context);
+}
+
+void ComposerActions::SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler)
+{
+  m_message_handler = std::move(message_handler);
 }
 
 //! Inserts new instruction of given type after the current selection.
@@ -91,7 +98,22 @@ void ComposerActions::InsertInstructionIntoRequest(const std::string &item_type)
 
   if (selected_instruction)
   {
-    m_model->InsertNewItem(item_type, selected_instruction, mvvm::TagIndex::Append());
+    try
+    {
+      m_model->InsertNewItem(item_type, selected_instruction, mvvm::TagIndex::Append());
+    }
+    catch(const mvvm::InvalidInsertException& ex)
+    {
+      if (m_message_handler)
+      {
+        m_message_handler->SendMessage(ex.what());
+      }
+      else
+      {
+        throw ex;
+      }
+    }
+
   }
 }
 

@@ -29,7 +29,7 @@
 namespace sequencergui
 {
 
-//! Creates
+//! Creates message handler that prints messages to standard output.
 std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler();
 
 }

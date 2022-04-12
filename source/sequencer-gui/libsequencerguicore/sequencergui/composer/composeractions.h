@@ -45,6 +45,8 @@ public:
 
   void SetContext(ComposerContext context);
 
+  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
+
   void InsertInstructionAfterRequest(const std::string& item_type);
 
   void InsertInstructionIntoRequest(const std::string& item_type);
@@ -52,7 +54,7 @@ public:
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
-  std::unique_ptr<MessageHandlerInterface> m_message_reporter;
+  std::unique_ptr<MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui

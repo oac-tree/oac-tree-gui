@@ -31,7 +31,7 @@
 class MockMessageHandler : public sequencergui::MessageHandlerInterface
 {
 public:
-  MOCK_METHOD1(SendMessage, void(std::string));
+  MOCK_METHOD1(SendMessage, void(const std::string&));
 };
 
 #endif  //  MOCKMESSAGEHANDLER_H
