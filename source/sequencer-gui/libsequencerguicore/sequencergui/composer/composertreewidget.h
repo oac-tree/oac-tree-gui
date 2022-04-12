@@ -41,6 +41,7 @@ class SequencerModel;
 class InstructionItem;
 class ComposerTreeToolBar;
 class ProcedureItem;
+class ComposerActions;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -80,6 +81,8 @@ private:
 
   SequencerModel* m_model{nullptr};
   ProcedureItem* m_procedure{nullptr};
+
+  std::unique_ptr<ComposerActions> m_composer_actions;
 };
 
 }  // namespace sequencergui

@@ -89,7 +89,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfter)
   m_actions.SetContext(context);
 
   // appending instruction to the container
-  m_actions.InsertInstructionAfterRequest(WaitItem::Type);
+  m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -109,11 +109,11 @@ TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
   m_actions.SetContext(context);
 
   // appending instruction to the container
-  m_actions.InsertInstructionAfterRequest(WaitItem::Type);
+  m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  m_actions.InsertInstructionAfterRequest(SequenceItem::Type);
+  m_actions.InsertInstructionAfterRequest(QString::fromStdString(SequenceItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -133,11 +133,11 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
   m_actions.SetContext(context);
 
   // inserting instruction into selected instruction
-  m_actions.InsertInstructionIntoRequest(WaitItem::Type);
+  m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   // inserting second instruction
-  m_actions.InsertInstructionIntoRequest(MessageItem::Type);
+  m_actions.InsertInstructionIntoRequest(QString::fromStdString(MessageItem::Type));
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -158,7 +158,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   m_actions.SetContext(context);
 
   // inserting instruction into selected instruction
-  EXPECT_THROW(m_actions.InsertInstructionIntoRequest(WaitItem::Type),
+  EXPECT_THROW(m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
                mvvm::InvalidInsertException);
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 
@@ -169,5 +169,5 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
 
   // After handler set, we expect no throws, and trigger of MessageHandler method.
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(m_actions.InsertInstructionIntoRequest(WaitItem::Type));
+  EXPECT_NO_THROW(m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
 }

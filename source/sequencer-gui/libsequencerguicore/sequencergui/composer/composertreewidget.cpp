@@ -19,7 +19,9 @@
 
 #include "sequencergui/composer/composertreewidget.h"
 
+#include "sequencergui/composer/composeractions.h"
 #include "sequencergui/composer/composertreetoolbar.h"
+#include "sequencergui/core/messagehandlerfactory.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -45,6 +47,7 @@ ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
     , m_workspace_tree(new mvvm::AllItemsTreeView)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
+    , m_composer_actions(std::make_unique<ComposerActions>())
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -63,6 +66,14 @@ ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
   layout->setMargin(0);
 
   SetupConnections();
+
+  // setting up ComposerActions
+  m_composer_actions->SetMessageHandler(CreateStdMessageHandler());
+  ComposerContext context;
+  context.m_selected_procedure = [this]() { return m_procedure; };
+  context.m_selected_instruction = [this]()
+  { return dynamic_cast<InstructionItem*>(m_instruction_tree->GetSelectedItem()); };
+  m_composer_actions->SetContext(context);
 }
 
 ComposerTreeWidget::~ComposerTreeWidget() = default;
@@ -70,6 +81,7 @@ ComposerTreeWidget::~ComposerTreeWidget() = default;
 void ComposerTreeWidget::SetModel(SequencerModel* model)
 {
   m_model = model;
+  m_composer_actions->SetModel(model);
 }
 
 void ComposerTreeWidget::SetProcedure(ProcedureItem* procedure_item)
@@ -124,29 +136,10 @@ void ComposerTreeWidget::SetupConnections()
   };
   connect(m_instruction_tree, &mvvm::TopItemsTreeView::itemSelected, on_selection_changed);
 
-  // insert after
-  auto on_insert_after = [this](auto name)
-  {
-    if (auto item = m_instruction_tree->GetSelectedItem(); item)
-    {
-      m_model->InsertNewItem(name.toStdString(), item->GetParent(), item->GetTagIndex().Next());
-    }
-    else
-    {
-      m_model->InsertNewItem(name.toStdString(), m_procedure->GetInstructionContainer(), {"", -1});
-    }
-  };
-  connect(m_tool_bar, &ComposerTreeToolBar::insertAfterRequest, this, on_insert_after);
-
-  // Insert into
-  auto on_insert_into = [this](auto name)
-  {
-    if (auto item = m_instruction_tree->GetSelectedItem(); item)
-    {
-      m_model->InsertNewItem(name.toStdString(), item, {"", -1});
-    }
-  };
-  connect(m_tool_bar, &ComposerTreeToolBar::insertIntoRequest, this, on_insert_into);
+  connect(m_tool_bar, &ComposerTreeToolBar::insertAfterRequest, m_composer_actions.get(),
+          &ComposerActions::InsertInstructionAfterRequest);
+  connect(m_tool_bar, &ComposerTreeToolBar::insertIntoRequest, m_composer_actions.get(),
+          &ComposerActions::InsertInstructionIntoRequest);
 
   // Remove instruction
   auto on_remove = [this]()

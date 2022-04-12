@@ -53,7 +53,7 @@ void ComposerActions::SetMessageHandler(std::unique_ptr<MessageHandlerInterface>
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void ComposerActions::InsertInstructionAfterRequest(const std::string &item_type)
+void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
 {
   if (!m_model)
   {
@@ -70,19 +70,19 @@ void ComposerActions::InsertInstructionAfterRequest(const std::string &item_type
 
   if (selected_instruction)
   {
-    m_model->InsertNewItem(item_type, selected_instruction->GetParent(),
+    m_model->InsertNewItem(item_type.toStdString(), selected_instruction->GetParent(),
                            selected_instruction->GetTagIndex().Next());
   }
   else
   {
-    m_model->InsertNewItem(item_type, selected_procedure->GetInstructionContainer(),
+    m_model->InsertNewItem(item_type.toStdString(), selected_procedure->GetInstructionContainer(),
                            mvvm::TagIndex::Append());
   }
 }
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void ComposerActions::InsertInstructionIntoRequest(const std::string &item_type)
+void ComposerActions::InsertInstructionIntoRequest(const QString &item_type)
 {
   if (!m_model)
   {
@@ -100,7 +100,7 @@ void ComposerActions::InsertInstructionIntoRequest(const std::string &item_type)
   {
     try
     {
-      m_model->InsertNewItem(item_type, selected_instruction, mvvm::TagIndex::Append());
+      m_model->InsertNewItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
     }
     catch(const mvvm::InvalidInsertException& ex)
     {

@@ -38,7 +38,7 @@ class ComposerActions : public QObject
   Q_OBJECT
 
 public:
-  explicit ComposerActions(SequencerModel* model, QObject* parent = nullptr);
+  explicit ComposerActions(SequencerModel* model = nullptr, QObject* parent = nullptr);
   ~ComposerActions() override;
 
   void SetModel(SequencerModel* model);
@@ -47,9 +47,9 @@ public:
 
   void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
 
-  void InsertInstructionAfterRequest(const std::string& item_type);
+  void InsertInstructionAfterRequest(const QString& item_type);
 
-  void InsertInstructionIntoRequest(const std::string& item_type);
+  void InsertInstructionIntoRequest(const QString& item_type);
 
 private:
   SequencerModel* m_model{nullptr};
