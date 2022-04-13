@@ -44,10 +44,9 @@ QPixmap createPixmap()
   return pixmap;
 }
 
-const int ModelTypeRole = Qt::UserRole;
-const int PixmapRole = Qt::UserRole + 1;
-
-const int column_width = 160;
+const int kModelTypeRole = Qt::UserRole;
+const int kPixmapRole = Qt::UserRole + 1;
+const int kColumnWidth = 160;
 }  // namespace
 
 namespace sequencergui
@@ -73,7 +72,7 @@ QString ItemListWidget::piecesMimeType()
 
 QSize ItemListWidget::sizeHint() const
 {
-  return QSize(column_width, 600);
+  return {kColumnWidth, 600};
 }
 
 //! Prepare data for dragging.
@@ -81,14 +80,14 @@ QSize ItemListWidget::sizeHint() const
 void ItemListWidget::startDrag(Qt::DropActions)
 {
   QListWidgetItem* item = currentItem();
-  auto pixmap = item->data(PixmapRole).value<QPixmap>();
-  QStringList dataToGo = QStringList() << item->data(Qt::UserRole).toString();
+  auto pixmap = item->data(kPixmapRole).value<QPixmap>();
+  QStringList data_togo = QStringList() << item->data(Qt::UserRole).toString();
 
-  auto mimeData = new QMimeData;
-  mimeData->setData(piecesMimeType(), mvvm::utils::GetByteArray(dataToGo));
+  auto mime_data = new QMimeData;
+  mime_data->setData(piecesMimeType(), mvvm::utils::GetByteArray(data_togo));
 
   auto drag = new QDrag(this);
-  drag->setMimeData(mimeData);
+  drag->setMimeData(mime_data);
   drag->setPixmap(pixmap);
   drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
 
@@ -115,8 +114,8 @@ void ItemListWidget::addEntry(const QString& name)
   auto pixmap = createPixmap();
   //  pieceItem->setIcon(QIcon(pixmap));
   pieceItem->setData(Qt::DisplayRole, name);
-  pieceItem->setData(ModelTypeRole, name);
-  pieceItem->setData(PixmapRole, QVariant(pixmap));
+  pieceItem->setData(kModelTypeRole, name);
+  pieceItem->setData(kPixmapRole, QVariant(pixmap));
   pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
   addItem(pieceItem);
