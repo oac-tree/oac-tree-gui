@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/instructionpanel.h"
+#include "sequencergui/composer/instructionitempanel.h"
 
 #include "sequencergui/composer/instructionlistwidget.h"
 
@@ -26,7 +26,7 @@
 namespace sequencergui
 {
 
-InstructionPanel::InstructionPanel(QWidget *parent)
+InstructionItemPanel::InstructionItemPanel(QWidget *parent)
     : QWidget(parent), m_list_widget(new InstructionListWidget)
 {
   setWindowTitle("INSTRUCTIONS");

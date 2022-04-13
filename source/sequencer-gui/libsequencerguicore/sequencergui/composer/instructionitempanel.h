@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONPANEL_H
-#define SEQUENCERGUI_COMPOSER_INSTRUCTIONPANEL_H
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONITEMPANEL_H
+#define SEQUENCERGUI_COMPOSER_INSTRUCTIONITEMPANEL_H
 
 #include <QWidget>
 
@@ -28,12 +28,12 @@ class InstructionListWidget;
 
 //! Collapsible list with instructions available to drag and drop on graphics scene.
 
-class InstructionPanel : public QWidget
+class InstructionItemPanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit InstructionPanel(QWidget* parent = nullptr);
+  explicit InstructionItemPanel(QWidget* parent = nullptr);
 
 private:
   InstructionListWidget* m_list_widget{nullptr};
@@ -41,4 +41,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTIONPANEL_H
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTIONITEMPANEL_H

@@ -13,8 +13,8 @@ target_sources(${library_name} PRIVATE
   composerprocedureeditor.h
   instructionlistwidget.cpp
   instructionlistwidget.h
-  instructionpanel.cpp
-  instructionpanel.h
+  instructionitempanel.cpp
+  instructionitempanel.h
   sequencercomposerview.cpp
   sequencercomposerview.h
 )
