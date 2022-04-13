@@ -9,8 +9,8 @@ target_sources(${library_name} PRIVATE
   composerpanel.h
   composertreetoolbar.cpp
   composertreetoolbar.h
-  composertreewidget.cpp
-  composertreewidget.h
+  composerprocedureeditor.cpp
+  composerprocedureeditor.h
   instructionlistwidget.cpp
   instructionlistwidget.h
   instructionpanel.cpp

@@ -29,7 +29,7 @@ class QShowEvent;
 namespace sequencergui
 {
 class SequencerModel;
-class ComposerTreeWidget;
+class ComposerProcedureEditor;
 class ComposerPanel;
 class NodeEditor;
 class ProcedureItem;
@@ -57,7 +57,7 @@ private:
 
   ComposerPanel* m_composer_panel{nullptr};
   NodeEditor* m_node_editor{nullptr};
-  ComposerTreeWidget* m_composer_tree_widget{nullptr};
+  ComposerProcedureEditor* m_composer_tree_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};

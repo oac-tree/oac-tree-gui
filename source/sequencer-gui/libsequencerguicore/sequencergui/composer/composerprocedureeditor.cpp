@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composertreewidget.h"
+#include "sequencergui/composer/composerprocedureeditor.h"
 
 #include "sequencergui/composer/composeractions.h"
 #include "sequencergui/composer/composertreetoolbar.h"
@@ -39,7 +39,7 @@
 
 namespace sequencergui
 {
-ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
+ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
     : QWidget(parent)
     , m_tool_bar(new ComposerTreeToolBar)
     , m_tab_widget(new QTabWidget)
@@ -76,15 +76,15 @@ ComposerTreeWidget::ComposerTreeWidget(QWidget* parent)
   m_composer_actions->SetContext(context);
 }
 
-ComposerTreeWidget::~ComposerTreeWidget() = default;
+ComposerProcedureEditor::~ComposerProcedureEditor() = default;
 
-void ComposerTreeWidget::SetModel(SequencerModel* model)
+void ComposerProcedureEditor::SetModel(SequencerModel* model)
 {
   m_model = model;
   m_composer_actions->SetModel(model);
 }
 
-void ComposerTreeWidget::SetProcedure(ProcedureItem* procedure_item)
+void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure_item)
 {
   // FIXME simplify after the refactoring of TopItemsTreeView
   m_procedure = procedure_item;
@@ -103,31 +103,31 @@ void ComposerTreeWidget::SetProcedure(ProcedureItem* procedure_item)
   }
 }
 
-void ComposerTreeWidget::SetSelectedInstruction(InstructionItem* instruction)
+void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instruction)
 {
   m_instruction_tree->SetSelected(instruction);
 }
 
-void ComposerTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
+void ComposerProcedureEditor::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
 {
   std::vector<mvvm::SessionItem*> items;
   std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
   m_instruction_tree->SetSelectedItems(items);
 }
 
-std::vector<InstructionItem*> ComposerTreeWidget::GetSelectedInstructions() const
+std::vector<InstructionItem*> ComposerProcedureEditor::GetSelectedInstructions() const
 {
   auto selected_items = m_instruction_tree->GetSelectedItems();
   return mvvm::utils::CastedItems<InstructionItem>(selected_items);
 }
 
-InstructionItem* ComposerTreeWidget::GetSelectedInstruction() const
+InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
 }
 
-void ComposerTreeWidget::SetupConnections()
+void ComposerProcedureEditor::SetupConnections()
 {
   auto on_selection_changed = [this](auto item)
   {

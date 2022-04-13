@@ -20,7 +20,7 @@
 #include "sequencergui/composer/sequencercomposerview.h"
 
 #include "sequencergui/composer/composerpanel.h"
-#include "sequencergui/composer/composertreewidget.h"
+#include "sequencergui/composer/composerprocedureeditor.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
@@ -35,7 +35,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     : QWidget(parent)
     , m_composer_panel(new ComposerPanel)
     , m_node_editor(new NodeEditor)
-    , m_composer_tree_widget(new ComposerTreeWidget)
+    , m_composer_tree_widget(new ComposerProcedureEditor)
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
@@ -89,7 +89,7 @@ void SequencerComposerView::SetupConnections()
       m_node_editor->SetSelectedInstructions(m_composer_tree_widget->GetSelectedInstructions());
     }
   };
-  connect(m_composer_tree_widget, &ComposerTreeWidget::InstructionSelected, this,
+  connect(m_composer_tree_widget, &ComposerProcedureEditor::InstructionSelected, this,
           on_tree_instruction_selected);
 
   auto on_procedure_selected = [this](auto procedure_item)

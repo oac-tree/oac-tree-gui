@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSERTREEWIDGET_H
-#define SEQUENCERGUI_COMPOSER_COMPOSERTREEWIDGET_H
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
+#define SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
 
 #include "sequencergui/model/sequencer_types.h"
 
@@ -47,13 +47,13 @@ class ComposerActions;
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
 //! instruction.
 
-class ComposerTreeWidget : public QWidget
+class ComposerProcedureEditor : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ComposerTreeWidget(QWidget* parent = nullptr);
-  ~ComposerTreeWidget() override;
+  explicit ComposerProcedureEditor(QWidget* parent = nullptr);
+  ~ComposerProcedureEditor() override;
 
   void SetModel(SequencerModel* model);
 
@@ -87,4 +87,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSERTREEWIDGET_H
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
