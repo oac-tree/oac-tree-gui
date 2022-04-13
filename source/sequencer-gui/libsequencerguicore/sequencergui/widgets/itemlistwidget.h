@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONLISTWIDGET_H
-#define SEQUENCERGUI_COMPOSER_INSTRUCTIONLISTWIDGET_H
+#ifndef SEQUENCERGUI_COMPOSER_ITEMLISTWIDGET_H
+#define SEQUENCERGUI_COMPOSER_ITEMLISTWIDGET_H
 
 #include <QListWidget>
 
@@ -28,12 +28,12 @@ namespace sequencergui
 //! Located at the left-hand side of the NodeEditorWidget.
 //! Elements from the list can be drag-and-dropped on the graphics scene.
 
-class InstructionListWidget : public QListWidget
+class ItemListWidget : public QListWidget
 {
   Q_OBJECT
 
 public:
-  explicit InstructionListWidget(QWidget* parent = nullptr);
+  explicit ItemListWidget(QWidget* parent = nullptr);
 
   static QString piecesMimeType();
 
@@ -49,4 +49,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTIONLISTWIDGET_H
+#endif  // SEQUENCERGUI_COMPOSER_ITEMLISTWIDGET_H

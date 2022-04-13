@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/instructionlistwidget.h"
+#include "sequencergui/widgets/itemlistwidget.h"
 
 #include "InstructionRegistry.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
@@ -52,7 +52,7 @@ const int column_width = 160;
 
 namespace sequencergui
 {
-InstructionListWidget::InstructionListWidget(QWidget* parent) : QListWidget(parent)
+ItemListWidget::ItemListWidget(QWidget* parent) : QListWidget(parent)
 {
   setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
@@ -66,19 +66,19 @@ InstructionListWidget::InstructionListWidget(QWidget* parent) : QListWidget(pare
   populateList();
 }
 
-QString InstructionListWidget::piecesMimeType()
+QString ItemListWidget::piecesMimeType()
 {
   return QStringLiteral("image/x-connectable-view");
 }
 
-QSize InstructionListWidget::sizeHint() const
+QSize ItemListWidget::sizeHint() const
 {
   return QSize(column_width, 600);
 }
 
 //! Prepare data for dragging.
 
-void InstructionListWidget::startDrag(Qt::DropActions)
+void ItemListWidget::startDrag(Qt::DropActions)
 {
   QListWidgetItem* item = currentItem();
   auto pixmap = item->data(PixmapRole).value<QPixmap>();
@@ -97,7 +97,7 @@ void InstructionListWidget::startDrag(Qt::DropActions)
 
 //! Populates list with icons representing ConnectableView's to drop on scene.
 
-void InstructionListWidget::populateList()
+void ItemListWidget::populateList()
 {
   auto names = ::sup::sequencer::GlobalInstructionRegistry().RegisteredInstructionNames();
   for (const auto& name : names)
@@ -109,7 +109,7 @@ void InstructionListWidget::populateList()
 
 //! Adds entry to the list. It will be the icon (gray rectangle) with the name.
 
-void InstructionListWidget::addEntry(const QString& name)
+void ItemListWidget::addEntry(const QString& name)
 {
   auto pieceItem = new QListWidgetItem;
   auto pixmap = createPixmap();

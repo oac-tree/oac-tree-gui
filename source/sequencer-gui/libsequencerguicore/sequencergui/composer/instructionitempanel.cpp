@@ -19,7 +19,7 @@
 
 #include "sequencergui/composer/instructionitempanel.h"
 
-#include "sequencergui/composer/instructionlistwidget.h"
+#include "sequencergui/widgets/itemlistwidget.h"
 
 #include <QVBoxLayout>
 
@@ -27,7 +27,7 @@ namespace sequencergui
 {
 
 InstructionItemPanel::InstructionItemPanel(QWidget *parent)
-    : QWidget(parent), m_list_widget(new InstructionListWidget)
+    : QWidget(parent), m_list_widget(new ItemListWidget)
 {
   setWindowTitle("INSTRUCTIONS");
 

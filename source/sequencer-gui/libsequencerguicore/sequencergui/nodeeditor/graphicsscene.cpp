@@ -19,7 +19,7 @@
 
 #include "graphicsscene.h"
 
-#include "sequencergui/composer/instructionlistwidget.h"
+#include "sequencergui/widgets/itemlistwidget.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -57,9 +57,9 @@ sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *vie
 std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 {
   auto event_data = event->mimeData();
-  if (event_data->hasFormat(sequencergui::InstructionListWidget::piecesMimeType()))
+  if (event_data->hasFormat(sequencergui::ItemListWidget::piecesMimeType()))
   {
-    auto binary_data = event_data->data(sequencergui::InstructionListWidget::piecesMimeType());
+    auto binary_data = event_data->data(sequencergui::ItemListWidget::piecesMimeType());
     auto list = mvvm::utils::GetStringList(binary_data);
     return list.empty() ? std::string() : list.front().toStdString();
   }
@@ -221,7 +221,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableV
 
 void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-  if (event->mimeData()->hasFormat(InstructionListWidget::piecesMimeType()))
+  if (event->mimeData()->hasFormat(ItemListWidget::piecesMimeType()))
   {
     event->accept();
   }

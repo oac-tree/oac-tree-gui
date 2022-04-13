@@ -24,7 +24,7 @@
 
 namespace sequencergui
 {
-class InstructionListWidget;
+class ItemListWidget;
 
 //! Collapsible list with instructions available to drag and drop on graphics scene.
 
@@ -36,7 +36,7 @@ public:
   explicit InstructionItemPanel(QWidget* parent = nullptr);
 
 private:
-  InstructionListWidget* m_list_widget{nullptr};
+  ItemListWidget* m_list_widget{nullptr};
 };
 
 }  // namespace sequencergui
