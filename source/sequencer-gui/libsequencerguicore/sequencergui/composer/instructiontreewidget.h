@@ -22,8 +22,16 @@
 
 #include <QWidget>
 
+namespace mvvm
+{
+class TopItemsTreeView;
+}  // namespace mvvm
+
 namespace sequencergui
 {
+
+class ProcedureItem;
+class InstructionItem;
 
 //! Tree of instruction items at the right of SequencerComposerView.
 //! Defines set of actions to add/remove instructions. Part of ComposerProcedureEditor.
@@ -34,6 +42,22 @@ class InstructionTreeWidget : public QWidget
 
 public:
   explicit InstructionTreeWidget(QWidget* parent = nullptr);
+
+  void SetProcedure(ProcedureItem* procedure);
+
+  void SetSelectedInstruction(InstructionItem* instruction);
+
+  void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
+
+  std::vector<InstructionItem*> GetSelectedInstructions() const;
+
+  InstructionItem* GetSelectedInstruction() const;
+
+signals:
+  void InstructionSelected(sequencergui::InstructionItem* instruction);
+
+private:
+  mvvm::TopItemsTreeView* m_instruction_tree{nullptr};
 };
 
 }  // namespace sequencergui

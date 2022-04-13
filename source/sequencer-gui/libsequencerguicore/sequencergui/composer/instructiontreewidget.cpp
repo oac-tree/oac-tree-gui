@@ -19,9 +19,63 @@
 
 #include "sequencergui/composer/instructiontreewidget.h"
 
+#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
+
+#include "mvvm/widgets/topitemstreeview.h"
+#include "mvvm/model/itemutils.h"
+
+#include <QVBoxLayout>
+
 namespace sequencergui
 {
 
-InstructionTreeWidget::InstructionTreeWidget(QWidget *parent) : QWidget(parent) {}
+InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
+    : QWidget(parent), m_instruction_tree(new mvvm::TopItemsTreeView)
+
+{
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setMargin(0);
+  layout->addWidget(m_instruction_tree);
+}
+
+void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
+{
+  if (procedure)
+  {
+    m_instruction_tree->SetApplicationModel(dynamic_cast<SequencerModel *>(procedure->GetModel()));
+    m_instruction_tree->SetRootSessionItem(procedure->GetInstructionContainer());
+  }
+  else
+  {
+    m_instruction_tree->SetApplicationModel(nullptr);
+  }
+}
+
+void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
+{
+  m_instruction_tree->SetSelected(instruction);
+}
+
+void InstructionTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions)
+{
+  std::vector<mvvm::SessionItem*> items;
+  std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
+  m_instruction_tree->SetSelectedItems(items);
+}
+
+std::vector<InstructionItem *> InstructionTreeWidget::GetSelectedInstructions() const
+{
+  auto selected_items = m_instruction_tree->GetSelectedItems();
+  return mvvm::utils::CastedItems<InstructionItem>(selected_items);
+}
+
+InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const
+{
+  auto selected = GetSelectedInstructions();
+  return selected.empty() ? nullptr : selected.front();
+}
 
 }  // namespace sequencergui
