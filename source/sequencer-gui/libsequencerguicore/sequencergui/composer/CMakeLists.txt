@@ -7,13 +7,17 @@ target_sources(${library_name} PRIVATE
   composeractions.h
   composerpanel.cpp
   composerpanel.h
-  composertreetoolbar.cpp
-  composertreetoolbar.h
   composerprocedureeditor.cpp
   composerprocedureeditor.h
+  composertreetoolbar.cpp
+  composertreetoolbar.h
   instructionitempanel.cpp
   instructionitempanel.h
+  instructiontreewidget.cpp
+  instructiontreewidget.h
   sequencercomposerview.cpp
   sequencercomposerview.h
+  workspacelistwidget.cpp
+  workspacelistwidget.h
 )
 
