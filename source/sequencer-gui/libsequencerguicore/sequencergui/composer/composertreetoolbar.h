@@ -41,6 +41,9 @@ public:
   explicit ComposerTreeToolBar(QWidget* parent = nullptr);
   ~ComposerTreeToolBar() override;
 
+  void SetActions(const QList<QAction*>& actions);
+  void SetWidgets(const QList<QWidget*>& widgets);
+
 signals:
   void insertIntoRequest(const QString& name);
   void insertAfterRequest(const QString& name);

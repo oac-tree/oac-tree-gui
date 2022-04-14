@@ -52,8 +52,8 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(splitter);
 
-  connect(m_procedure_tree, &mvvm::TopItemsTreeView::SelectedItemChanged, this,
-          [this](auto item) { m_property_tree->SetItem(const_cast<mvvm::SessionItem *>(item)); });
+  connect(m_procedure_tree, &mvvm::TopItemsTreeView::SelectedItemChanged, m_property_tree,
+          &mvvm::PropertyTreeView::SetItem);
 }
 
 void ProcedureTreesWidget::SetProcedure(ProcedureItem *procedure_item)

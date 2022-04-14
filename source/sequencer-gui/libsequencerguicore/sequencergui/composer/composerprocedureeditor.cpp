@@ -66,14 +66,16 @@ ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
   layout->setSpacing(0);
   layout->setMargin(0);
 
-  SetupConnections();
-
   // setting up ComposerActions
   m_composer_actions->SetMessageHandler(CreateStdMessageHandler());
   ComposerContext context;
   context.selected_procedure = [this]() { return m_procedure; };
   context.selected_instruction = [this]() { return m_instruction_tree->GetSelectedInstruction(); };
   m_composer_actions->SetContext(context);
+
+  m_tool_bar->SetWidgets(m_instruction_tree->GetToolBarWidgets());
+
+  SetupConnections();
 }
 
 ComposerProcedureEditor::~ComposerProcedureEditor() = default;
@@ -122,9 +124,14 @@ void ComposerProcedureEditor::SetupConnections()
   };
   connect(m_instruction_tree, &InstructionTreeWidget::InstructionSelected, on_selection_changed);
 
-  connect(m_tool_bar, &ComposerTreeToolBar::insertAfterRequest, m_composer_actions.get(),
+  //  connect(m_tool_bar, &ComposerTreeToolBar::insertAfterRequest, m_composer_actions.get(),
+  //          &ComposerActions::InsertInstructionAfterRequest);
+  //  connect(m_tool_bar, &ComposerTreeToolBar::insertIntoRequest, m_composer_actions.get(),
+  //          &ComposerActions::InsertInstructionIntoRequest);
+
+  connect(m_instruction_tree, &InstructionTreeWidget::InsertAfterRequest, m_composer_actions.get(),
           &ComposerActions::InsertInstructionAfterRequest);
-  connect(m_tool_bar, &ComposerTreeToolBar::insertIntoRequest, m_composer_actions.get(),
+  connect(m_instruction_tree, &InstructionTreeWidget::InsertIntoRequest, m_composer_actions.get(),
           &ComposerActions::InsertInstructionIntoRequest);
 
   // Remove instruction

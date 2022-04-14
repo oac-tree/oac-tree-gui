@@ -42,35 +42,54 @@ ComposerTreeToolBar::ComposerTreeToolBar(QWidget *parent)
 {
   setIconSize(StyleUtils::ToolBarIconSize());
 
-  SetupMenu();
+    SetupMenu();
 
-  m_insert_after_button->setText("After");
-  m_insert_after_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
-  m_insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_insert_after_button->setPopupMode(QToolButton::InstantPopup);
-  m_insert_after_button->setMenu(m_insert_after_menu.get());
-  m_insert_after_button->setToolTip(
-      "Insert instruction after current selection,\nor simply add to the list if nothing is "
-      "selected");
-  addWidget(m_insert_after_button);
+    m_insert_after_button->setText("After");
+    m_insert_after_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
+    m_insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    m_insert_after_button->setPopupMode(QToolButton::InstantPopup);
+    m_insert_after_button->setMenu(m_insert_after_menu.get());
+    m_insert_after_button->setToolTip(
+        "Insert instruction after current selection,\nor simply add to the list if nothing is "
+        "selected");
+    addWidget(m_insert_after_button);
 
-  m_insert_into_button->setText("Into");
-  m_insert_into_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
-  m_insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_insert_into_button->setPopupMode(QToolButton::InstantPopup);
-  m_insert_into_button->setMenu(m_insert_into_menu.get());
-  m_insert_into_button->setToolTip(
-      "Append instruction as a child to the currently selected instruction");
-  addWidget(m_insert_into_button);
+  //  m_insert_into_button->setText("Into");
+  //  m_insert_into_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
+  //  m_insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  //  m_insert_into_button->setPopupMode(QToolButton::InstantPopup);
+  //  m_insert_into_button->setMenu(m_insert_into_menu.get());
+  //  m_insert_into_button->setToolTip(
+  //      "Append instruction as a child to the currently selected instruction");
+  //  addWidget(m_insert_into_button);
 
-  m_remove_button->setText("Into");
-  m_remove_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  m_remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_remove_button->setToolTip("Remove currently selected instruction together with its children");
-  connect(m_remove_button, &QToolButton::clicked, this,
-          &ComposerTreeToolBar::removeSelectedRequest);
-  addWidget(m_remove_button);
+  //  m_remove_button->setText("Into");
+  //  m_remove_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  //  m_remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  //  m_remove_button->setToolTip("Remove currently selected instruction together with its
+  //  children"); connect(m_remove_button, &QToolButton::clicked, this,
+  //          &ComposerTreeToolBar::removeSelectedRequest);
+  //  addWidget(m_remove_button);
 
+  //  AddDotsMenu();
+}
+
+void ComposerTreeToolBar::SetActions(const QList<QAction *> &actions)
+{
+  for (auto action : actions)
+  {
+    addAction(action);
+  }
+  AddDotsMenu();
+}
+
+void ComposerTreeToolBar::SetWidgets(const QList<QWidget *> &widgets)
+{
+  clear();
+  for (auto widget : widgets)
+  {
+    addWidget(widget);
+  }
   AddDotsMenu();
 }
 

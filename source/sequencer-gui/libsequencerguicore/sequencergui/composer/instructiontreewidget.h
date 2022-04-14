@@ -21,6 +21,13 @@
 #define SEQUENCERGUI_COMPOSER_INSTRUCTIONTREEWIDGET_H
 
 #include <QWidget>
+#include <QMenu>
+#include <QList>
+
+#include <memory>
+
+class QAction;
+class QToolBar;
 
 namespace mvvm
 {
@@ -53,10 +60,26 @@ public:
 
   InstructionItem* GetSelectedInstruction() const;
 
+  QList<QWidget*> GetToolBarWidgets();
+
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
+  void InsertIntoRequest(const QString& name);
+  void InsertAfterRequest(const QString& name);
+  void RemoveSelectedRequest();
 
 private:
+  void SetupActions();
+  std::unique_ptr<QMenu> CreateInsertAfterMenu();
+  std::unique_ptr<QMenu> CreateInsertIntoMenu();
+
+  std::unique_ptr<QMenu> m_insert_into_menu;
+  std::unique_ptr<QMenu> m_insert_after_menu;
+
+//  QAction* m_insert_after_action{nullptr};
+//  QAction* m_insert_into_action{nullptr};
+//  QAction* m_remove_action{nullptr};
+
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
 };
 
