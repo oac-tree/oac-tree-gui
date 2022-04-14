@@ -6,6 +6,8 @@ target_sources(${library_name} PRIVATE
   collapsibletoolbar.h
   collapsiblewidget.cpp
   collapsiblewidget.h
+  dotstoolbar.cpp
+  dotstoolbar.h
   filetreeview.cpp
   filetreeview.h
   itemlistwidget.cpp

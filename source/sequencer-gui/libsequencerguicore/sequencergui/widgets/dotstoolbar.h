@@ -17,24 +17,23 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H
-#define SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H
+#ifndef SEQUENCERGUI_WIDGETS_DOTSTOOLBAR_H
+#define SEQUENCERGUI_WIDGETS_DOTSTOOLBAR_H
 
 #include <QToolBar>
 #include <memory>
 
 namespace sequencergui
 {
-//! A toolbar on top of ComposerTreeWidget with control elements to add/remove instructions or
-//! variables.
+//! Wide toolbar for vertical panels with dots menu for dynamic content.
 
-class ComposerTreeToolBar : public QToolBar
+class DotsToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
-  explicit ComposerTreeToolBar(QWidget* parent = nullptr);
-  ~ComposerTreeToolBar() override;
+  explicit DotsToolBar(QWidget* parent = nullptr);
+  ~DotsToolBar() override;
 
   void SetActions(const QList<QAction*>& actions);
   void SetWidgets(const QList<QWidget*>& widgets);
@@ -47,4 +46,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSERTREETOOLBAR_H
+#endif  // SEQUENCERGUI_WIDGETS_DOTSTOOLBAR_H

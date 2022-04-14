@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composertreetoolbar.h"
+#include "sequencergui/widgets/dotstoolbar.h"
 
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/domainutils.h"
@@ -32,13 +32,12 @@
 
 namespace sequencergui
 {
-ComposerTreeToolBar::ComposerTreeToolBar(QWidget *parent)
-    : QToolBar(parent)
+DotsToolBar::DotsToolBar(QWidget *parent) : QToolBar(parent)
 {
   setIconSize(StyleUtils::ToolBarIconSize());
 }
 
-void ComposerTreeToolBar::SetActions(const QList<QAction *> &actions)
+void DotsToolBar::SetActions(const QList<QAction *> &actions)
 {
   clear();
   for (auto action : actions)
@@ -48,7 +47,7 @@ void ComposerTreeToolBar::SetActions(const QList<QAction *> &actions)
   AddDotsMenu();
 }
 
-void ComposerTreeToolBar::SetWidgets(const QList<QWidget *> &widgets)
+void DotsToolBar::SetWidgets(const QList<QWidget *> &widgets)
 {
   clear();
   for (auto widget : widgets)
@@ -58,9 +57,9 @@ void ComposerTreeToolBar::SetWidgets(const QList<QWidget *> &widgets)
   AddDotsMenu();
 }
 
-ComposerTreeToolBar::~ComposerTreeToolBar() = default;
+DotsToolBar::~DotsToolBar() = default;
 
-void ComposerTreeToolBar::AddDotsMenu()
+void DotsToolBar::AddDotsMenu()
 {
   InsertStrech();
 
@@ -70,7 +69,7 @@ void ComposerTreeToolBar::AddDotsMenu()
   addWidget(button);
 }
 
-void ComposerTreeToolBar::InsertStrech()
+void DotsToolBar::InsertStrech()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

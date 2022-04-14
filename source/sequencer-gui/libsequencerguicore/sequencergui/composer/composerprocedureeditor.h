@@ -38,7 +38,7 @@ namespace sequencergui
 {
 class SequencerModel;
 class InstructionItem;
-class ComposerTreeToolBar;
+class DotsToolBar;
 class ProcedureItem;
 class ComposerActions;
 class InstructionTreeWidget;
@@ -72,7 +72,7 @@ signals:
 private:
   void SetupConnections();
 
-  ComposerTreeToolBar* m_tool_bar{nullptr};
+  DotsToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
   InstructionTreeWidget* m_instruction_tree{nullptr};
   mvvm::AllItemsTreeView* m_workspace_tree{nullptr};

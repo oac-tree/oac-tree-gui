@@ -20,12 +20,12 @@
 #include "sequencergui/composer/composerprocedureeditor.h"
 
 #include "sequencergui/composer/composeractions.h"
-#include "sequencergui/composer/composertreetoolbar.h"
 #include "sequencergui/composer/instructiontreewidget.h"
 #include "sequencergui/core/messagehandlerfactory.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/widgets/dotstoolbar.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/widgets/allitemstreeview.h"
@@ -42,7 +42,7 @@ namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
     : QWidget(parent)
-    , m_tool_bar(new ComposerTreeToolBar)
+    , m_tool_bar(new DotsToolBar)
     , m_tab_widget(new QTabWidget)
     , m_instruction_tree(new InstructionTreeWidget)
     , m_workspace_tree(new mvvm::AllItemsTreeView)
