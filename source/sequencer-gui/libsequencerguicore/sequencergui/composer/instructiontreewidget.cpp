@@ -56,7 +56,7 @@ void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
 
 void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
 {
-  m_instruction_tree->SetSelected(instruction);
+  m_instruction_tree->SetSelectedItem(instruction);
 }
 
 void InstructionTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions)

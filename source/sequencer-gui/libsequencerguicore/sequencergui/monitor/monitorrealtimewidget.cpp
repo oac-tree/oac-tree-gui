@@ -86,7 +86,7 @@ void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 void MonitorRealTimeWidget::SetSelectedInstruction(const InstructionItem *item)
 {
   auto instruction = const_cast<InstructionItem *>(item);
-  m_instruction_tree->SetSelected(instruction);
+  m_instruction_tree->SetSelectedItem(instruction);
   m_node_editor->SetSelectedInstructions({instruction});
 }
 

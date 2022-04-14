@@ -105,7 +105,7 @@ void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure_item)
 
 void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instruction)
 {
-  m_instruction_tree->SetSelected(instruction);
+  m_instruction_tree->SetSelectedItem(instruction);
 }
 
 void ComposerProcedureEditor::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
