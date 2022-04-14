@@ -56,7 +56,7 @@ std::vector<T*> CastedItems(const std::vector<const mvvm::SessionItem*>& items)
   return result;
 }
 
-}
+}  // namespace
 
 namespace sequencergui
 {
@@ -108,23 +108,11 @@ void ComposerProcedureEditor::SetModel(SequencerModel* model)
   m_composer_actions->SetModel(model);
 }
 
-void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure_item)
+void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)
 {
-  // FIXME simplify after the refactoring of TopItemsTreeView
-  m_procedure = procedure_item;
-
-  if (m_procedure)
-  {
-    m_instruction_tree->SetApplicationModel(m_model);
-    m_workspace_tree->SetApplicationModel(m_model);
-    m_instruction_tree->SetRootSessionItem(m_procedure->GetInstructionContainer());
-    m_workspace_tree->SetRootSessionItem(m_procedure->GetWorkspace());
-  }
-  else
-  {
-    m_instruction_tree->SetApplicationModel(nullptr);
-    m_workspace_tree->SetApplicationModel(nullptr);
-  }
+  m_procedure = procedure;
+  m_instruction_tree->SetItem(m_procedure ? m_procedure->GetInstructionContainer() : nullptr);
+  m_workspace_tree->SetItem(m_procedure ? m_procedure->GetWorkspace() : nullptr);
 }
 
 void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instruction)

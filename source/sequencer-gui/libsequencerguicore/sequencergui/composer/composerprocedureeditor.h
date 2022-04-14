@@ -57,7 +57,7 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  void SetProcedure(ProcedureItem* procedure_item);
+  void SetProcedure(ProcedureItem* procedure);
 
   void SetSelectedInstruction(InstructionItem* instruction);
 
