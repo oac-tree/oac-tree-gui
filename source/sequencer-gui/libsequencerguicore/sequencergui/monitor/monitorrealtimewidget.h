@@ -25,11 +25,6 @@
 class QTreeView;
 class QStackedWidget;
 
-namespace mvvm
-{
-class ItemsTreeView;
-}
-
 namespace sequencergui
 {
 class SequencerModel;
@@ -39,6 +34,7 @@ class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
 class CollapsibleListView;
+class JobTreeView;
 
 //! Central panel on SequencerMonitorView.
 
@@ -72,7 +68,7 @@ private:
   CollapsibleListView* m_splitter{nullptr};
 
   QStackedWidget* m_stacked_widget{nullptr};
-  mvvm::ItemsTreeView* m_instruction_tree{nullptr};
+  JobTreeView* m_instruction_tree{nullptr};
   NodeEditor* m_node_editor{nullptr};
 
   MessagePanel* m_message_panel{nullptr};

@@ -27,6 +27,36 @@
 
 #include <QVBoxLayout>
 
+namespace
+{
+//template <typename C, typename T>
+//std::vector<T*> CastedItems(const C& container)
+//{
+//  std::vector<T*> result;
+//  auto process = [](auto it){return dynamic_cast<T*>(*it);};
+//  std::copy(container.begin(), container.end(), std::back_inserter(result), process);
+//  return result;
+//}
+
+// FIXME move to mvvm:: and remove duplication in composerprocedureeditor.cpp
+template <typename T>
+std::vector<T*> CastedItems(const std::vector<const mvvm::SessionItem*>& items)
+{
+  std::vector<T*> result;
+  for (auto item : items)
+  {
+    if (auto casted_item = dynamic_cast<const T*>(item); casted_item)
+    {
+      result.push_back(const_cast<T*>(casted_item));
+    }
+  }
+
+  return result;
+}
+
+
+}
+
 namespace sequencergui
 {
 
@@ -61,7 +91,7 @@ void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
 
 void InstructionTreeWidget::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions)
 {
-  std::vector<mvvm::SessionItem*> items;
+  std::vector<const mvvm::SessionItem*> items;
   std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
   m_instruction_tree->SetSelectedItems(items);
 }
@@ -69,7 +99,7 @@ void InstructionTreeWidget::SetSelectedInstructions(const std::vector<Instructio
 std::vector<InstructionItem *> InstructionTreeWidget::GetSelectedInstructions() const
 {
   auto selected_items = m_instruction_tree->GetSelectedItems();
-  return mvvm::utils::CastedItems<InstructionItem>(selected_items);
+  return CastedItems<InstructionItem>(selected_items);
 }
 
 InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const

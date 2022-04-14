@@ -52,24 +52,13 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(splitter);
 
-  connect(m_procedure_tree, &mvvm::TopItemsTreeView::itemSelected, this,
-          [this](auto item) { m_property_tree->SetItem(item); });
+  connect(m_procedure_tree, &mvvm::TopItemsTreeView::SelectedItemChanged, this,
+          [this](auto item) { m_property_tree->SetItem(const_cast<mvvm::SessionItem *>(item)); });
 }
 
 void ProcedureTreesWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  // FIXME simplify after the refactoring of TopItemsTreeView
-  if (procedure_item)
-  {
-    m_procedure_tree->SetApplicationModel(
-        dynamic_cast<mvvm::ApplicationModel *>(procedure_item->GetModel()));
-    m_procedure_tree->SetRootSessionItem(procedure_item);
-    m_procedure_tree->GetTreeView()->setAlternatingRowColors(true);
-  }
-  else
-  {
-    m_procedure_tree->SetApplicationModel(nullptr);
-  }
+  m_procedure_tree->SetItem(procedure_item);
 }
 
 }  // namespace sequencergui

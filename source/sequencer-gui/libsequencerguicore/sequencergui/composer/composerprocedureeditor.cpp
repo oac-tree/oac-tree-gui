@@ -37,6 +37,27 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
+namespace
+{
+
+// FIXME move to mvvm:: and remove duplication in composerprocedureeditor.cpp
+template <typename T>
+std::vector<T*> CastedItems(const std::vector<const mvvm::SessionItem*>& items)
+{
+  std::vector<T*> result;
+  for (auto item : items)
+  {
+    if (auto casted_item = dynamic_cast<const T*>(item); casted_item)
+    {
+      result.push_back(const_cast<T*>(casted_item));
+    }
+  }
+
+  return result;
+}
+
+}
+
 namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
@@ -72,7 +93,10 @@ ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
   ComposerContext context;
   context.selected_procedure = [this]() { return m_procedure; };
   context.selected_instruction = [this]()
-  { return dynamic_cast<InstructionItem*>(m_instruction_tree->GetSelectedItem()); };
+  {
+    return dynamic_cast<InstructionItem*>(
+        const_cast<mvvm::SessionItem*>(m_instruction_tree->GetSelectedItem()));
+  };
   m_composer_actions->SetContext(context);
 }
 
@@ -108,9 +132,10 @@ void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instructio
   m_instruction_tree->SetSelectedItem(instruction);
 }
 
-void ComposerProcedureEditor::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
+void ComposerProcedureEditor::SetSelectedInstructions(
+    const std::vector<InstructionItem*>& instructions)
 {
-  std::vector<mvvm::SessionItem*> items;
+  std::vector<const mvvm::SessionItem*> items;
   std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
   m_instruction_tree->SetSelectedItems(items);
 }
@@ -118,7 +143,7 @@ void ComposerProcedureEditor::SetSelectedInstructions(const std::vector<Instruct
 std::vector<InstructionItem*> ComposerProcedureEditor::GetSelectedInstructions() const
 {
   auto selected_items = m_instruction_tree->GetSelectedItems();
-  return mvvm::utils::CastedItems<InstructionItem>(selected_items);
+  return CastedItems<InstructionItem>(selected_items);
 }
 
 InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
@@ -131,10 +156,10 @@ void ComposerProcedureEditor::SetupConnections()
 {
   auto on_selection_changed = [this](auto item)
   {
-    m_property_tree->SetItem(item);
+    m_property_tree->SetItem(const_cast<mvvm::SessionItem*>(item));
     emit InstructionSelected(GetSelectedInstruction());
   };
-  connect(m_instruction_tree, &mvvm::TopItemsTreeView::itemSelected, on_selection_changed);
+  connect(m_instruction_tree, &mvvm::TopItemsTreeView::SelectedItemChanged, on_selection_changed);
 
   connect(m_tool_bar, &ComposerTreeToolBar::insertAfterRequest, m_composer_actions.get(),
           &ComposerActions::InsertInstructionAfterRequest);
@@ -146,7 +171,7 @@ void ComposerProcedureEditor::SetupConnections()
   {
     if (auto item = m_instruction_tree->GetSelectedItem(); item)
     {
-      m_model->RemoveItem(item);
+      m_model->RemoveItem(const_cast<mvvm::SessionItem*>(item));
     }
   };
   connect(m_tool_bar, &ComposerTreeToolBar::removeSelectedRequest, this, on_remove);

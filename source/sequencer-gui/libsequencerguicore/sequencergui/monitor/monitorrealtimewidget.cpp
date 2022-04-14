@@ -37,12 +37,24 @@
 namespace sequencergui
 {
 
+class MVVM_VIEW_EXPORT JobTreeView : public mvvm::AbstractItemView
+{
+public:
+  explicit JobTreeView(mvvm::ApplicationModel* model = nullptr, QWidget* parent = nullptr)
+    : AbstractItemView(mvvm::CreateViewModel<InstructionViewModel>, new QTreeView, model, parent)
+  {
+
+  }
+};
+
+
+
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
     , m_splitter(new CollapsibleListView)
     , m_stacked_widget(new QStackedWidget)
-    , m_instruction_tree(new mvvm::ItemsTreeView)
+    , m_instruction_tree(new JobTreeView)
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
 {
@@ -69,25 +81,13 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  if (procedure_item)
-  {
-    auto model = dynamic_cast<SequencerModel *>(procedure_item->GetModel());
-    m_instruction_tree->SetViewModel(std::make_unique<InstructionViewModel>(model));
-    m_instruction_tree->SetRootSessionItem(procedure_item->GetInstructionContainer());
-    m_node_editor->SetModel(model);
-    m_node_editor->SetProcedure(procedure_item);
-  }
-  else
-  {
-    m_instruction_tree->Reset();
-  }
+  m_instruction_tree->SetItem(procedure_item);
 }
 
 void MonitorRealTimeWidget::SetSelectedInstruction(const InstructionItem *item)
 {
-  auto instruction = const_cast<InstructionItem *>(item);
-  m_instruction_tree->SetSelectedItem(instruction);
-  m_node_editor->SetSelectedInstructions({instruction});
+  m_instruction_tree->SetSelectedItem(item);
+//  m_node_editor->SetSelectedInstructions({instruction}); FIXME restore
 }
 
 MessagePanel *MonitorRealTimeWidget::GetMessagePanel()

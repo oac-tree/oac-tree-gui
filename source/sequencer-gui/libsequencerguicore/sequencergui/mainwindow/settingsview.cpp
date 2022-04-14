@@ -71,7 +71,7 @@ void SettingsView::SetModel(SequencerModel *model)
 void SettingsView::SetupModelSettings()
 {
   auto view = new mvvm::AllItemsTreeView(m_model);
-  view->GetTreeView()->setAlternatingRowColors(true);
+//  view->GetTreeView()->setAlternatingRowColors(true);
   m_tab_widget->addTab(view, QString::fromStdString(m_model->GetType()));
   m_stacked_widget->addWidget(m_tab_widget);
 }

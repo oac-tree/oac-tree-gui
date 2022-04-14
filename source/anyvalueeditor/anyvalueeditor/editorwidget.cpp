@@ -54,8 +54,10 @@ EditorWidget::EditorWidget(QWidget *parent)
 
   m_all_items_tree_view->SetApplicationModel(m_model.get());
   auto on_selected = [this](auto item)
-  { m_actions->SetSelectedItem(dynamic_cast<AnyValueItem *>(item)); };
-  connect(m_all_items_tree_view, &mvvm::AllItemsTreeView::itemSelected, this, on_selected);
+  {
+    m_actions->SetSelectedItem(dynamic_cast<AnyValueItem *>(const_cast<mvvm::SessionItem *>(item)));
+  };
+  connect(m_all_items_tree_view, &mvvm::AllItemsTreeView::SelectedItemChanged, this, on_selected);
 }
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
@@ -67,7 +69,7 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
   auto item = m_model->InsertItem<AnyValueItem>();
   PopulateItem(&anyvalue, item);
 
-//   setting view back to the model
+  //   setting view back to the model
   m_all_items_tree_view->SetApplicationModel(m_model.get());
 }
 
