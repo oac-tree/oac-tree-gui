@@ -63,15 +63,7 @@ InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
 
 void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
 {
-  if (procedure)
-  {
-    m_instruction_tree->SetApplicationModel(dynamic_cast<SequencerModel *>(procedure->GetModel()));
-    m_instruction_tree->SetRootSessionItem(procedure->GetInstructionContainer());
-  }
-  else
-  {
-    m_instruction_tree->SetApplicationModel(nullptr);
-  }
+  m_instruction_tree->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
 }
 
 void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
@@ -82,15 +74,15 @@ void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
 void InstructionTreeWidget::SetSelectedInstructions(
     const std::vector<InstructionItem *> &instructions)
 {
-  std::vector<const mvvm::SessionItem *> items;
-  std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
-  m_instruction_tree->SetSelectedItems(items);
+//  std::vector<mvvm::SessionItem *> items;
+//  std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
+//  m_instruction_tree->SetSelectedItems(items);
+  m_instruction_tree->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
 std::vector<InstructionItem *> InstructionTreeWidget::GetSelectedInstructions() const
 {
-  auto selected_items = m_instruction_tree->GetSelectedItems();
-  return CastedItems<InstructionItem>(selected_items);
+  return m_instruction_tree->GetSelectedItems<InstructionItem>();
 }
 
 InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const

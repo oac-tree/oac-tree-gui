@@ -37,27 +37,6 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace
-{
-
-// FIXME move to mvvm:: and remove duplication in composerprocedureeditor.cpp
-template <typename T>
-std::vector<T*> CastedItems(const std::vector<const mvvm::SessionItem*>& items)
-{
-  std::vector<T*> result;
-  for (auto item : items)
-  {
-    if (auto casted_item = dynamic_cast<const T*>(item); casted_item)
-    {
-      result.push_back(const_cast<T*>(casted_item));
-    }
-  }
-
-  return result;
-}
-
-}  // namespace
-
 namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
@@ -93,10 +72,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
   ComposerContext context;
   context.selected_procedure = [this]() { return m_procedure; };
   context.selected_instruction = [this]()
-  {
-    return dynamic_cast<InstructionItem*>(
-        const_cast<mvvm::SessionItem*>(m_instruction_tree->GetSelectedItem()));
-  };
+  { return m_instruction_tree->GetSelected<InstructionItem>(); };
   m_composer_actions->SetContext(context);
 }
 
@@ -123,15 +99,12 @@ void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instructio
 void ComposerProcedureEditor::SetSelectedInstructions(
     const std::vector<InstructionItem*>& instructions)
 {
-  std::vector<const mvvm::SessionItem*> items;
-  std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
-  m_instruction_tree->SetSelectedItems(items);
+  m_instruction_tree->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
 std::vector<InstructionItem*> ComposerProcedureEditor::GetSelectedInstructions() const
 {
-  auto selected_items = m_instruction_tree->GetSelectedItems();
-  return CastedItems<InstructionItem>(selected_items);
+  return m_instruction_tree->GetSelectedItems<InstructionItem>();
 }
 
 InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const

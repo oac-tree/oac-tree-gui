@@ -40,14 +40,11 @@ namespace sequencergui
 class MVVM_VIEW_EXPORT JobTreeView : public mvvm::AbstractItemView
 {
 public:
-  explicit JobTreeView(mvvm::ApplicationModel* model = nullptr, QWidget* parent = nullptr)
-    : AbstractItemView(mvvm::CreateViewModel<InstructionViewModel>, new QTreeView, model, parent)
+  explicit JobTreeView(mvvm::ApplicationModel *model = nullptr, QWidget *parent = nullptr)
+      : AbstractItemView(mvvm::CreateViewModel<InstructionViewModel>, new QTreeView, model, parent)
   {
-
   }
 };
-
-
 
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
@@ -84,10 +81,10 @@ void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
   m_instruction_tree->SetItem(procedure_item);
 }
 
-void MonitorRealTimeWidget::SetSelectedInstruction(const InstructionItem *item)
+void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)
 {
   m_instruction_tree->SetSelectedItem(item);
-//  m_node_editor->SetSelectedInstructions({instruction}); FIXME restore
+  m_node_editor->SetSelectedInstructions({item});
 }
 
 MessagePanel *MonitorRealTimeWidget::GetMessagePanel()

@@ -48,7 +48,7 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelectedInstruction(const InstructionItem* item);
+  void SetSelectedInstruction(InstructionItem *item);
 
   MessagePanel* GetMessagePanel();
 
