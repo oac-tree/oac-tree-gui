@@ -69,7 +69,10 @@ ProcedureListView::~ProcedureListView() = default;
 void ProcedureListView::SetModel(SequencerModel *model)
 {
   m_model = model;
-  m_list_view->SetApplicationModel(model);
+  if (model)
+  {
+    m_list_view->SetItem(model->GetProcedureContainer());
+  }
 
   connect(m_list_view, &ProcedureList::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
@@ -103,7 +106,7 @@ QListView *ProcedureListView::GetListView()
 
 mvvm::ViewModel *ProcedureListView::GetViewModel()
 {
-  return m_view_model.get();
+  return m_list_view->GetViewModel();
 }
 
 void ProcedureListView::SetupActions(int action_flag)
@@ -126,20 +129,6 @@ void ProcedureListView::SetupActions(int action_flag)
     auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
     connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
     addAction(m_remove_selected_action);
-  }
-}
-
-void ProcedureListView::OnSingleClick(const QModelIndex &index)
-{
-  if (!index.isValid())
-  {
-    return;
-  }
-
-  if (auto item = mvvm::utils::GetItemFromView<ProcedureItem>(m_view_model->itemFromIndex(index));
-      item)
-  {
-    emit ProcedureClicked(const_cast<ProcedureItem *>(item));
   }
 }
 

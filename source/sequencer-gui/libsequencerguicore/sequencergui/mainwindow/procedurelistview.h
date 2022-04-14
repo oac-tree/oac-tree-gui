@@ -67,13 +67,11 @@ public:
   void SetupActions(int action_flag);
 
 signals:
-  void ProcedureClicked(sequencergui::ProcedureItem* procedure_item);
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
   void CreateNewProcedureRequest();
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
-  void OnSingleClick(const QModelIndex& index);
   void OnRemoveSelectedRequest();
 
   QAction* m_new_procedure_action{nullptr};
@@ -81,7 +79,6 @@ private:
 
   ProcedureList* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};
-  std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 
 }  // namespace sequencergui
