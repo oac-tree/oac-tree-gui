@@ -23,11 +23,6 @@
 #include <QToolBar>
 #include <memory>
 
-class QToolButton;
-class QLabel;
-class QMenu;
-class QPushButton;
-
 namespace sequencergui
 {
 //! A toolbar on top of ComposerTreeWidget with control elements to add/remove instructions or
@@ -44,25 +39,10 @@ public:
   void SetActions(const QList<QAction*>& actions);
   void SetWidgets(const QList<QWidget*>& widgets);
 
-signals:
-  void insertIntoRequest(const QString& name);
-  void insertAfterRequest(const QString& name);
-  void removeSelectedRequest();
-
 private:
   void AddDotsMenu();
   void InsertStrech();
   void SetupMenu();
-
-  std::unique_ptr<QMenu> CreateInsertAfterMenu();
-  std::unique_ptr<QMenu> CreateInsertIntoMenu();
-
-  QToolButton* m_insert_after_button{nullptr};
-  QToolButton* m_insert_into_button{nullptr};
-  QToolButton* m_remove_button{nullptr};
-
-  std::unique_ptr<QMenu> m_insert_into_menu;
-  std::unique_ptr<QMenu> m_insert_after_menu;
 };
 
 }  // namespace sequencergui
