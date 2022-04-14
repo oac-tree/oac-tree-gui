@@ -27,62 +27,42 @@
 
 #include <QVBoxLayout>
 
-namespace
-{
-// FIXME move to mvvm:: and remove duplication in composerprocedureeditor.cpp
-template <typename T>
-std::vector<T *> CastedItems(const std::vector<const mvvm::SessionItem *> &items)
-{
-  std::vector<T *> result;
-  for (auto item : items)
-  {
-    if (auto casted_item = dynamic_cast<const T *>(item); casted_item)
-    {
-      result.push_back(const_cast<T *>(casted_item));
-    }
-  }
-
-  return result;
-}
-
-}  // namespace
-
 namespace sequencergui
 {
 
 InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
-    : QWidget(parent), m_instruction_tree(new mvvm::TopItemsTreeView)
+    : QWidget(parent), m_tree_view(new mvvm::TopItemsTreeView)
 
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->setMargin(0);
-  layout->addWidget(m_instruction_tree);
+  layout->addWidget(m_tree_view);
+
+  connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
+          [this](auto) { emit InstructionSelected(GetSelectedInstruction()); });
 }
 
 void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
 {
-  m_instruction_tree->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
+  m_tree_view->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
 }
 
 void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
 {
-  m_instruction_tree->SetSelectedItem(instruction);
+  m_tree_view->SetSelectedItem(instruction);
 }
 
 void InstructionTreeWidget::SetSelectedInstructions(
     const std::vector<InstructionItem *> &instructions)
 {
-//  std::vector<mvvm::SessionItem *> items;
-//  std::copy(instructions.begin(), instructions.end(), std::back_inserter(items));
-//  m_instruction_tree->SetSelectedItems(items);
-  m_instruction_tree->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
+  m_tree_view->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
 std::vector<InstructionItem *> InstructionTreeWidget::GetSelectedInstructions() const
 {
-  return m_instruction_tree->GetSelectedItems<InstructionItem>();
+  return m_tree_view->GetSelectedItems<InstructionItem>();
 }
 
 InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const

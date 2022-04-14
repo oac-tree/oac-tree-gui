@@ -57,7 +57,7 @@ signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 
 private:
-  mvvm::TopItemsTreeView* m_instruction_tree{nullptr};
+  mvvm::TopItemsTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace sequencergui

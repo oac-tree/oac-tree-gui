@@ -30,7 +30,6 @@ class QTabWidget;
 
 namespace mvvm
 {
-class TopItemsTreeView;
 class PropertyTreeView;
 class AllItemsTreeView;
 }  // namespace mvvm
@@ -42,6 +41,7 @@ class InstructionItem;
 class ComposerTreeToolBar;
 class ProcedureItem;
 class ComposerActions;
+class InstructionTreeWidget;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -74,7 +74,7 @@ private:
 
   ComposerTreeToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
-  mvvm::TopItemsTreeView* m_instruction_tree{nullptr};
+  InstructionTreeWidget* m_instruction_tree{nullptr};
   mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
