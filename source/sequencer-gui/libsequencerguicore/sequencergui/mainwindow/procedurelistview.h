@@ -35,6 +35,7 @@ namespace sequencergui
 class SequencerModel;
 class ProcedureItem;
 class SelectionModel;
+class ProcedureList;
 
 //! List view for ProcedureItem with selection abilities.
 
@@ -78,9 +79,8 @@ private:
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};
 
-  QListView* m_list_view{nullptr};
+  ProcedureList* m_list_view{nullptr};
   SequencerModel* m_model{nullptr};
-  std::unique_ptr<SelectionModel> m_selection_model;
   std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 

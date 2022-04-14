@@ -22,12 +22,12 @@
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/viewmodel/selectionmodel.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/standarditems/standarditemincludes.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
+#include "mvvm/widgets/abstractitemview.h"
 
 #include <QAction>
 #include <QItemSelectionModel>
@@ -37,12 +37,22 @@
 
 namespace sequencergui
 {
+
+class ProcedureList : public mvvm::AbstractItemView
+{
+public:
+  explicit ProcedureList(mvvm::ApplicationModel *model = nullptr, QWidget *parent = nullptr)
+      : AbstractItemView(mvvm::CreateViewModel<mvvm::TopItemsViewModel>, new QListView, model,
+                         parent)
+  {
+  }
+};
+
 ProcedureListView::ProcedureListView(QWidget *parent)
     : QWidget(parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
-    , m_list_view(new QListView)
-    , m_selection_model(std::make_unique<SelectionModel>())
+    , m_list_view(new ProcedureList)
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");
@@ -59,19 +69,10 @@ ProcedureListView::~ProcedureListView() = default;
 void ProcedureListView::SetModel(SequencerModel *model)
 {
   m_model = model;
-  m_view_model = std::make_unique<mvvm::TopItemsViewModel>(model);
-  m_view_model->SetRootSessionItem(model->GetProcedureContainer());
+  m_list_view->SetApplicationModel(model);
 
-  m_selection_model->SetViewModel(m_view_model.get());
-
-  m_list_view->setModel(m_view_model.get());
-  m_list_view->setSelectionModel(m_selection_model.get());
-
-  connect(m_selection_model.get(), &SelectionModel::SelectedItemChanged, this,
+  connect(m_list_view, &ProcedureList::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
-
-  connect(m_list_view, &QListView::clicked, this, &ProcedureListView::OnSingleClick,
-          Qt::UniqueConnection);
 }
 
 ProcedureItem *ProcedureListView::GetSelectedProcedure()
@@ -83,7 +84,7 @@ ProcedureItem *ProcedureListView::GetSelectedProcedure()
 std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
 {
   std::vector<ProcedureItem *> result;
-  auto selected = m_selection_model->GetSelectedItems();
+  auto selected = m_list_view->GetSelectedItems();
   auto on_item = [](auto it)
   { return dynamic_cast<ProcedureItem *>(const_cast<mvvm::SessionItem *>(it)); };
   std::transform(selected.begin(), selected.end(), std::back_inserter(result), on_item);
@@ -92,12 +93,12 @@ std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
 
 void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  m_selection_model->SetSelectedItem(procedure);
+  m_list_view->SetSelectedItem(procedure);
 }
 
 QListView *ProcedureListView::GetListView()
 {
-  return m_list_view;
+  return dynamic_cast<QListView *>(m_list_view->GetView());
 }
 
 mvvm::ViewModel *ProcedureListView::GetViewModel()
