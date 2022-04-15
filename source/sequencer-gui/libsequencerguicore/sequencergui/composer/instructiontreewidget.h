@@ -27,7 +27,6 @@
 #include <memory>
 
 class QAction;
-class QToolBar;
 
 namespace mvvm
 {

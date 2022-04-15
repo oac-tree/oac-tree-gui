@@ -21,9 +21,20 @@
 #define SEQUENCERGUI_COMPOSER_WORKSPACELISTWIDGET_H
 
 #include <QWidget>
+#include <memory>
+
+class QMenu;
+
+namespace mvvm
+{
+class TopItemsTreeView;
+}  // namespace mvvm
 
 namespace sequencergui
 {
+
+class ProcedureItem;
+class VariableItem;
 
 //! List of workspace variables at the right of SequencerComposerView.
 //! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
@@ -34,6 +45,25 @@ class WorkspaceListWidget : public QWidget
 
 public:
   explicit WorkspaceListWidget(QWidget* parent = nullptr);
+  ~WorkspaceListWidget() override;
+
+  void SetProcedure(ProcedureItem* procedure);
+
+  VariableItem* GetSelectedVariable() const;
+
+  QList<QWidget*> GetToolBarWidgets();
+
+signals:
+  void VariableSelected(sequencergui::VariableItem* variable);
+  void InsertAfterRequest(const QString& name);
+  void RemoveSelectedRequest();
+
+private:
+  std::unique_ptr<QMenu> CreateInsertAfterMenu();
+
+  std::unique_ptr<QMenu> m_insert_after_menu;
+  mvvm::TopItemsTreeView* m_tree_view{nullptr};
+
 };
 
 }  // namespace sequencergui

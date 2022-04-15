@@ -22,14 +22,12 @@
 #include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
-#include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/widgets/topitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QAction>
-#include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -155,6 +153,8 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
 //  addAction(m_remove_action);
 //}
 
+//! Creates menu to insert an instruction after currently selected instruction.
+
 std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertAfterMenu()
 {
   auto result = std::make_unique<QMenu>();
@@ -170,6 +170,10 @@ std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertAfterMenu()
 
   return result;
 }
+
+//! Creates menu to insert an instruction into currently selected instruction.
+//! Code mostly coincides with the code above. However, this duplication is temporary and it
+//! will diverge in the future (idea to disable some actions if an operation is not possible).
 
 std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertIntoMenu()
 {
