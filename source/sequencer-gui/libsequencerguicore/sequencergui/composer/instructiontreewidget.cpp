@@ -90,18 +90,16 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("After");
   insert_after_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  insert_after_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip(
-      "Insert instruction after current selection,\nor simply add to the list if nothing is "
-      "selected");
+  insert_after_button->setToolTip("Insert instruction after current selection");
   result.push_back(insert_after_button);
 
   auto insert_into_button = new QToolButton;
   insert_into_button->setText("Into");
-  insert_into_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
-  insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  insert_into_button->setIcon(StyleUtils::GetIcon("plus-circle-multiple-outline.svg"));
+  insert_into_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_into_button->setPopupMode(QToolButton::InstantPopup);
   insert_into_button->setMenu(m_insert_into_menu.get());
   insert_into_button->setToolTip(

@@ -68,19 +68,17 @@ QList<QWidget *> WorkspaceListWidget::GetToolBarWidgets()
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("After");
   insert_after_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  insert_after_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip(
-      "Insert instruction after current selection,\nor simply add to the list if nothing is "
-      "selected");
+  insert_after_button->setToolTip("Insert variable after current selection");
   result.push_back(insert_after_button);
 
   auto remove_button = new QToolButton;
   remove_button->setText("Into");
   remove_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  remove_button->setToolTip("Remove currently selected instruction together with its children");
+  remove_button->setToolTip("Remove currently selected variable");
   connect(remove_button, &QToolButton::clicked, this, &WorkspaceListWidget::RemoveSelectedRequest);
   result.push_back(remove_button);
 
