@@ -96,8 +96,7 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
   insert_into_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_into_button->setPopupMode(QToolButton::InstantPopup);
   insert_into_button->setMenu(m_insert_into_menu.get());
-  insert_into_button->setToolTip(
-      "Append instruction as a child to the currently selected instruction");
+  insert_into_button->setToolTip("Insert instruction into currently selected instruction");
   result.push_back(insert_into_button);
 
   auto remove_button = new QToolButton;
