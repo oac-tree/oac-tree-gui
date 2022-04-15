@@ -20,10 +20,9 @@
 #ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONTREEWIDGET_H
 #define SEQUENCERGUI_COMPOSER_INSTRUCTIONTREEWIDGET_H
 
-#include <QWidget>
-#include <QMenu>
 #include <QList>
-
+#include <QMenu>
+#include <QWidget>
 #include <memory>
 
 class QAction;
@@ -74,10 +73,6 @@ private:
 
   std::unique_ptr<QMenu> m_insert_into_menu;
   std::unique_ptr<QMenu> m_insert_after_menu;
-
-//  QAction* m_insert_after_action{nullptr};
-//  QAction* m_insert_into_action{nullptr};
-//  QAction* m_remove_action{nullptr};
 
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
 };

@@ -67,36 +67,13 @@ void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
     throw RuntimeException("Callbacks are not defined");
   }
 
-  auto selected_procedure = m_context.selected_procedure();
-  auto selected_instruction = m_context.selected_instruction();
+  auto procedure = m_context.selected_procedure();
+  auto item = m_context.selected_instruction();
 
-  if (selected_instruction)
-  {
-    try
-    {
-      m_model->InsertNewItem(item_type.toStdString(), selected_instruction->GetParent(),
-                             selected_instruction->GetTagIndex().Next());
-    }
-    catch (const mvvm::InvalidInsertException &ex)
-    {
-      if (m_message_handler)
-      {
-        std::ostringstream ostr;
-        ostr << "Can't insert instruction '" << item_type.toStdString() << "' into parent '"
-             << selected_instruction->GetParent()->GetType() << "'";
-        m_message_handler->SendMessage(ostr.str());
-      }
-      else
-      {
-        throw;
-      }
-    }
-  }
-  else
-  {
-    m_model->InsertNewItem(item_type.toStdString(), selected_procedure->GetInstructionContainer(),
-                           mvvm::TagIndex::Append());
-  }
+  auto parent = item ? item->GetParent() : procedure->GetInstructionContainer();
+  auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+  InsertItem(item_type.toStdString(), parent, tagindex);
 }
 
 //! Inserts new instruction of given type after the current selection.
@@ -115,28 +92,8 @@ void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
 
   auto selected_instruction = m_context.selected_instruction();
 
-  if (selected_instruction)
-  {
-    try
-    {
-      m_model->InsertNewItem(item_type.toStdString(), selected_instruction,
-                             mvvm::TagIndex::Append());
-    }
-    catch (const mvvm::InvalidInsertException &ex)
-    {
-      if (m_message_handler)
-      {
-        std::ostringstream ostr;
-        ostr << "Can't insert instruction '" << item_type.toStdString() << "' into parent '"
-             << selected_instruction->GetType() << "'";
-        m_message_handler->SendMessage(ostr.str());
-      }
-      else
-      {
-        throw;
-      }
-    }
-  }
+  auto item = m_context.selected_instruction();
+  InsertItem(item_type.toStdString(), item, mvvm::TagIndex::Append());
 }
 
 //! Removes currently selected instruction.
@@ -163,36 +120,13 @@ void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
     throw RuntimeException("Callbacks are not defined");
   }
 
-  auto selected_procedure = m_context.selected_procedure();
-  auto selected_variable = m_context.selected_variable();
+  auto procedure = m_context.selected_procedure();
+  auto item = m_context.selected_variable();
 
-  if (selected_variable)
-  {
-    try
-    {
-      m_model->InsertNewItem(item_type.toStdString(), selected_variable->GetParent(),
-                             selected_variable->GetTagIndex().Next());
-    }
-    catch (const mvvm::InvalidInsertException &ex)
-    {
-      if (m_message_handler)
-      {
-        std::ostringstream ostr;
-        ostr << "Can't insert variable '" << item_type.toStdString() << "' into parent '"
-             << selected_variable->GetParent()->GetType() << "'";
-        m_message_handler->SendMessage(ostr.str());
-      }
-      else
-      {
-        throw;
-      }
-    }
-  }
-  else
-  {
-    m_model->InsertNewItem(item_type.toStdString(), selected_procedure->GetWorkspace(),
-                           mvvm::TagIndex::Append());
-  }
+  auto parent = item ? item->GetParent() : procedure->GetWorkspace();
+  auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+  InsertItem(item_type.toStdString(), parent, tagindex);
 }
 
 void ComposerActions::OnRemoveVariableRequest()
@@ -201,7 +135,29 @@ void ComposerActions::OnRemoveVariableRequest()
   {
     m_model->RemoveItem(selected);
   }
+}
 
+void ComposerActions::InsertItem(const std::string &item_type, mvvm::SessionItem *parent,
+                                 const mvvm::TagIndex &index)
+{
+  try
+  {
+    m_model->InsertNewItem(item_type, parent, index);
+  }
+  catch (const mvvm::InvalidInsertException &ex)
+  {
+    if (m_message_handler)
+    {
+      std::ostringstream ostr;
+      ostr << "Can't insert variable '" << item_type << "' into parent '" << parent->GetType()
+           << "'. Maximum allowed number of children exceeded?";
+      m_message_handler->SendMessage(ostr.str());
+    }
+    else
+    {
+      throw;
+    }
+  }
 }
 
 }  // namespace sequencergui

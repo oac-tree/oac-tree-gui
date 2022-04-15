@@ -26,6 +26,12 @@
 
 #include <memory>
 
+namespace mvvm
+{
+class SessionItem;
+class TagIndex;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
@@ -58,6 +64,8 @@ public:
   void OnRemoveVariableRequest();
 
 private:
+  void InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent, const ::mvvm::TagIndex& index);
+
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
   std::unique_ptr<MessageHandlerInterface> m_message_handler;
