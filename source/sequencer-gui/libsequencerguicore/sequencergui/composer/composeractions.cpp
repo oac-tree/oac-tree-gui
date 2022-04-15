@@ -26,9 +26,8 @@
 
 #include "mvvm/core/exceptions.h"
 
-#include <sstream>
-
 #include <QDebug>
+#include <sstream>
 namespace sequencergui
 {
 
@@ -149,6 +148,50 @@ void ComposerActions::OnRemoveInstructionRequest()
   if (selected_instruction)
   {
     m_model->RemoveItem(selected_instruction);
+  }
+}
+
+void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
+{
+  if (!m_model)
+  {
+    throw NullException("Model is not defined");
+  }
+
+  if (!m_context.selected_variable || !m_context.selected_procedure)
+  {
+    throw RuntimeException("Callbacks are not defined");
+  }
+
+  auto selected_procedure = m_context.selected_procedure();
+  auto selected_variable = m_context.selected_variable();
+
+  if (selected_variable)
+  {
+    try
+    {
+      m_model->InsertNewItem(item_type.toStdString(), selected_variable->GetParent(),
+                             selected_variable->GetTagIndex().Next());
+    }
+    catch (const mvvm::InvalidInsertException &ex)
+    {
+      if (m_message_handler)
+      {
+        std::ostringstream ostr;
+        ostr << "Can't insert variable '" << item_type.toStdString() << "' into parent '"
+             << selected_variable->GetParent()->GetType() << "'";
+        m_message_handler->SendMessage(ostr.str());
+      }
+      else
+      {
+        throw;
+      }
+    }
+  }
+  else
+  {
+    m_model->InsertNewItem(item_type.toStdString(), selected_procedure->GetWorkspace(),
+                           mvvm::TagIndex::Append());
   }
 }
 

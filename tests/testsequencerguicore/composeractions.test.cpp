@@ -147,7 +147,8 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(
+      m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
 }
 
 //! Insertion instruction in the selected instruction.
@@ -220,4 +221,48 @@ TEST_F(ComposerActionsTest, RemoveInstruction)
   // remove request should remove item
   m_actions.OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
+}
+
+//! Insertion variable after selected variable.
+
+TEST_F(ComposerActionsTest, InsertVariableAfter)
+{
+  // inserting instruction in the container
+  auto variable0 = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
+  auto variable1 = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
+
+  // creating the context mimicking `sequence` instruction selected
+  auto context = CreateContext(nullptr, variable0);
+  m_actions.SetContext(context);
+
+  // appending variable to the container
+  m_actions.OnInsertVariableAfterRequest(QString::fromStdString(FileVariableItem::Type));
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetTotalItemCount(), 3);
+
+  // Wait instruction should be after Sequence instruction
+  auto variables = m_procedure->GetWorkspace()->GetVariables();
+  EXPECT_EQ(variables.at(0)->GetType(), LocalVariableItem::Type);
+  EXPECT_EQ(variables.at(1)->GetType(), FileVariableItem::Type);
+  EXPECT_EQ(variables.at(2)->GetType(), LocalVariableItem::Type);
+}
+
+//! Insertion variable when no variable selected.
+
+TEST_F(ComposerActionsTest, InsertVariableAfterWhenInAppendMode)
+{
+  // creating the context mimicking "no instruction selected"
+  auto context = CreateContext(nullptr, nullptr);
+  m_actions.SetContext(context);
+
+  // appending variable to the container
+  m_actions.OnInsertVariableAfterRequest(QString::fromStdString(FileVariableItem::Type));
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetTotalItemCount(), 1);
+
+  // appending instruction to the container
+  m_actions.OnInsertVariableAfterRequest(QString::fromStdString(LocalVariableItem::Type));
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetTotalItemCount(), 2);
+
+  auto variables = m_procedure->GetWorkspace()->GetVariables();
+  EXPECT_EQ(variables.at(0)->GetType(), FileVariableItem::Type);
+  EXPECT_EQ(variables.at(1)->GetType(), LocalVariableItem::Type);
 }
