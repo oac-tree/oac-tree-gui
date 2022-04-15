@@ -201,7 +201,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   EXPECT_NO_THROW(m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
 }
 
-//! Insertion instruction in the selected instruction.
+//! Removing selected variable.
 
 TEST_F(ComposerActionsTest, RemoveInstruction)
 {
@@ -227,11 +227,11 @@ TEST_F(ComposerActionsTest, RemoveInstruction)
 
 TEST_F(ComposerActionsTest, InsertVariableAfter)
 {
-  // inserting instruction in the container
+  // inserting variable in the container
   auto variable0 = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
   auto variable1 = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
 
-  // creating the context mimicking `sequence` instruction selected
+  // creating the context mimicking variable0 selected
   auto context = CreateContext(nullptr, variable0);
   m_actions.SetContext(context);
 
@@ -239,7 +239,7 @@ TEST_F(ComposerActionsTest, InsertVariableAfter)
   m_actions.OnInsertVariableAfterRequest(QString::fromStdString(FileVariableItem::Type));
   ASSERT_EQ(m_procedure->GetWorkspace()->GetTotalItemCount(), 3);
 
-  // Wait instruction should be after Sequence instruction
+  // checking that variable was inserted right after the selection
   auto variables = m_procedure->GetWorkspace()->GetVariables();
   EXPECT_EQ(variables.at(0)->GetType(), LocalVariableItem::Type);
   EXPECT_EQ(variables.at(1)->GetType(), FileVariableItem::Type);
@@ -250,7 +250,7 @@ TEST_F(ComposerActionsTest, InsertVariableAfter)
 
 TEST_F(ComposerActionsTest, InsertVariableAfterWhenInAppendMode)
 {
-  // creating the context mimicking "no instruction selected"
+  // creating the context mimicking "no variable selected"
   auto context = CreateContext(nullptr, nullptr);
   m_actions.SetContext(context);
 
@@ -258,11 +258,33 @@ TEST_F(ComposerActionsTest, InsertVariableAfterWhenInAppendMode)
   m_actions.OnInsertVariableAfterRequest(QString::fromStdString(FileVariableItem::Type));
   ASSERT_EQ(m_procedure->GetWorkspace()->GetTotalItemCount(), 1);
 
-  // appending instruction to the container
+  // appending variable to the container
   m_actions.OnInsertVariableAfterRequest(QString::fromStdString(LocalVariableItem::Type));
   ASSERT_EQ(m_procedure->GetWorkspace()->GetTotalItemCount(), 2);
 
   auto variables = m_procedure->GetWorkspace()->GetVariables();
   EXPECT_EQ(variables.at(0)->GetType(), FileVariableItem::Type);
   EXPECT_EQ(variables.at(1)->GetType(), LocalVariableItem::Type);
+}
+
+//! Removing selected variable.
+
+TEST_F(ComposerActionsTest, RemoveVariable)
+{
+  // inserting instruction in the container
+  auto variable = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
+
+  // creating the context mimicking no instruction selected
+  m_actions.SetContext(CreateContext(nullptr, nullptr));
+
+  // nothing selected, remove request does nothing
+  m_actions.OnRemoveVariableRequest();
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetVariables().size(), 1);
+
+  // creating the context mimicking sequencer selected
+  m_actions.SetContext(CreateContext(nullptr, variable));
+
+  // remove request should remove item
+  m_actions.OnRemoveVariableRequest();
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetVariables().size(), 0);
 }

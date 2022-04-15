@@ -55,6 +55,8 @@ public:
 
   void OnInsertVariableAfterRequest(const QString& item_type);
 
+  void OnRemoveVariableRequest();
+
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;

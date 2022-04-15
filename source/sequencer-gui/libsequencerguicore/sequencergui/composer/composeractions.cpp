@@ -195,4 +195,13 @@ void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
   }
 }
 
+void ComposerActions::OnRemoveVariableRequest()
+{
+  if (auto selected = m_context.selected_variable(); selected)
+  {
+    m_model->RemoveItem(selected);
+  }
+
+}
+
 }  // namespace sequencergui
