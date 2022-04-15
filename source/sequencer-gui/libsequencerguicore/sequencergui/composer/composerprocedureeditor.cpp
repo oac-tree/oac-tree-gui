@@ -124,20 +124,13 @@ void ComposerProcedureEditor::SetupConnections()
   };
   connect(m_instruction_tree, &InstructionTreeWidget::InstructionSelected, on_selection_changed);
 
+  // propagate instruction related operations from InstructionTreeWidget to ComposerActions
   connect(m_instruction_tree, &InstructionTreeWidget::InsertAfterRequest, m_composer_actions.get(),
-          &ComposerActions::InsertInstructionAfterRequest);
+          &ComposerActions::OnInsertInstructionAfterRequest);
   connect(m_instruction_tree, &InstructionTreeWidget::InsertIntoRequest, m_composer_actions.get(),
-          &ComposerActions::InsertInstructionIntoRequest);
-
-  // Remove instruction
-  auto on_remove = [this]()
-  {
-    if (auto item = m_instruction_tree->GetSelectedInstruction(); item)
-    {
-      m_model->RemoveItem(item);
-    }
-  };
-  connect(m_instruction_tree, &InstructionTreeWidget::RemoveSelectedRequest, this, on_remove);
+          &ComposerActions::OnInsertInstructionIntoRequest);
+  connect(m_instruction_tree, &InstructionTreeWidget::RemoveSelectedRequest,
+          m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
 }
 
 }  // namespace sequencergui

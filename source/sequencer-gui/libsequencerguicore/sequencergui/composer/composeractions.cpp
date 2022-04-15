@@ -56,7 +56,7 @@ void ComposerActions::SetMessageHandler(std::unique_ptr<MessageHandlerInterface>
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
+void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
 {
   if (!m_model)
   {
@@ -102,7 +102,7 @@ void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void ComposerActions::InsertInstructionIntoRequest(const QString &item_type)
+void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   if (!m_model)
   {
@@ -140,7 +140,9 @@ void ComposerActions::InsertInstructionIntoRequest(const QString &item_type)
   }
 }
 
-void ComposerActions::RemoveSelectedRequest()
+//! Removes currently selected instruction.
+//! The selection is retrieved via a callback.
+void ComposerActions::OnRemoveInstructionRequest()
 {
   auto selected_instruction = m_context.selected_instruction();
 

@@ -47,11 +47,11 @@ public:
 
   void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
 
-  void InsertInstructionAfterRequest(const QString& item_type);
+  void OnInsertInstructionAfterRequest(const QString& item_type);
 
-  void InsertInstructionIntoRequest(const QString& item_type);
+  void OnInsertInstructionIntoRequest(const QString& item_type);
 
-  void RemoveSelectedRequest();
+  void OnRemoveInstructionRequest();
 
 private:
   SequencerModel* m_model{nullptr};

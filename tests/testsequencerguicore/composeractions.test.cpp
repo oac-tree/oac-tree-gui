@@ -91,7 +91,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfter)
   m_actions.SetContext(context);
 
   // appending instruction to the container
-  m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -111,11 +111,11 @@ TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
   m_actions.SetContext(context);
 
   // appending instruction to the container
-  m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  m_actions.InsertInstructionAfterRequest(QString::fromStdString(SequenceItem::Type));
+  m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(SequenceItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -136,7 +136,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
   m_actions.SetContext(context);
 
   // It is not possible to add second instruction to repeat instruction
-  EXPECT_THROW(m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
+  EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
                mvvm::InvalidInsertException);
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
@@ -147,7 +147,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(m_actions.InsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
 }
 
 //! Insertion instruction in the selected instruction.
@@ -162,11 +162,11 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
   m_actions.SetContext(context);
 
   // inserting instruction into selected instruction
-  m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
+  m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   // inserting second instruction
-  m_actions.InsertInstructionIntoRequest(QString::fromStdString(MessageItem::Type));
+  m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(MessageItem::Type));
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -187,7 +187,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   m_actions.SetContext(context);
 
   // inserting instruction into selected instruction
-  EXPECT_THROW(m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
+  EXPECT_THROW(m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
                mvvm::InvalidInsertException);
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 
@@ -197,7 +197,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
 }
 
 //! Insertion instruction in the selected instruction.
@@ -211,13 +211,13 @@ TEST_F(ComposerActionsTest, RemoveInstruction)
   m_actions.SetContext(CreateContext(nullptr, nullptr));
 
   // nothing selected, remove request does nothing
-  m_actions.RemoveSelectedRequest();
+  m_actions.OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // creating the context mimicking sequencer selected
   m_actions.SetContext(CreateContext(sequence, nullptr));
 
   // remove request should remove item
-  m_actions.RemoveSelectedRequest();
+  m_actions.OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
 }
