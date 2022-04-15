@@ -51,6 +51,8 @@ public:
 
   void InsertInstructionIntoRequest(const QString& item_type);
 
+  void RemoveSelectedRequest();
+
 private:
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;

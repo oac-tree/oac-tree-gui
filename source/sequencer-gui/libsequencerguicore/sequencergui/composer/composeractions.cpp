@@ -29,7 +29,6 @@
 #include <sstream>
 
 #include <QDebug>
-
 namespace sequencergui
 {
 
@@ -81,7 +80,6 @@ void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
     }
     catch (const mvvm::InvalidInsertException &ex)
     {
-      qDebug() << "xxxx" << m_message_handler.get();
       if (m_message_handler)
       {
         std::ostringstream ostr;
@@ -91,7 +89,6 @@ void ComposerActions::InsertInstructionAfterRequest(const QString &item_type)
       }
       else
       {
-        qDebug() << "xxxx 1.2";
         throw;
       }
     }
@@ -140,6 +137,16 @@ void ComposerActions::InsertInstructionIntoRequest(const QString &item_type)
         throw;
       }
     }
+  }
+}
+
+void ComposerActions::RemoveSelectedRequest()
+{
+  auto selected_instruction = m_context.selected_instruction();
+
+  if (selected_instruction)
+  {
+    m_model->RemoveItem(selected_instruction);
   }
 }
 

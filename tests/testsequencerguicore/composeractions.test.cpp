@@ -27,6 +27,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QDebug>
+
 using namespace sequencergui;
 using ::testing::_;
 
@@ -196,4 +198,26 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
   EXPECT_NO_THROW(m_actions.InsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
+}
+
+//! Insertion instruction in the selected instruction.
+
+TEST_F(ComposerActionsTest, RemoveInstruction)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+
+  // creating the context mimicking no instruction selected
+  m_actions.SetContext(CreateContext(nullptr, nullptr));
+
+  // nothing selected, remove request does nothing
+  m_actions.RemoveSelectedRequest();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
+
+  // creating the context mimicking sequencer selected
+  m_actions.SetContext(CreateContext(sequence, nullptr));
+
+  // remove request should remove item
+  m_actions.RemoveSelectedRequest();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
 }
