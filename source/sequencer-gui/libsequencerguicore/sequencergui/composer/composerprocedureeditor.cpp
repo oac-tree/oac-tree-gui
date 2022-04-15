@@ -64,12 +64,23 @@ ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
 
   // setting up ComposerActions
   m_composer_actions->SetMessageHandler(CreateStdMessageHandler());
-  ComposerContext context;
-  context.selected_procedure = [this]() { return m_procedure; };
-  context.selected_instruction = [this]() { return m_instruction_tree->GetSelectedInstruction(); };
-  m_composer_actions->SetContext(context);
+  m_composer_actions->SetContext(CreateComposerContext());
 
   m_tool_bar->SetWidgets(m_instruction_tree->GetToolBarWidgets());
+
+  auto on_tabbar_changed = [this](int index)
+  {
+    // FIXME simplify
+    if (index == 0)
+    {
+      m_tool_bar->SetWidgets(m_instruction_tree->GetToolBarWidgets());
+    }
+    else
+    {
+      m_tool_bar->SetWidgets(m_workspace_tree->GetToolBarWidgets());
+    }
+  };
+  connect(m_tab_widget, &QTabWidget::currentChanged, this, on_tabbar_changed);
 
   SetupConnections();
 }
@@ -128,8 +139,23 @@ void ComposerProcedureEditor::SetupConnections()
   connect(m_instruction_tree, &InstructionTreeWidget::RemoveSelectedRequest,
           m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
 
+  // propagate variable related operations from WorkspaceListWidget to ComposerActions
   connect(m_workspace_tree, &WorkspaceListWidget::VariableSelected, m_property_tree,
           &::mvvm::PropertyTreeView::SetItem);
+  connect(m_workspace_tree, &WorkspaceListWidget::InsertAfterRequest, m_composer_actions.get(),
+          &ComposerActions::OnInsertVariableAfterRequest);
+  connect(m_workspace_tree, &WorkspaceListWidget::RemoveSelectedRequest, m_composer_actions.get(),
+          &ComposerActions::OnRemoveVariableRequest);
+}
+
+//! Create context to access current selections performed by the user.
+ComposerContext ComposerProcedureEditor::CreateComposerContext()
+{
+  ComposerContext context;
+  context.selected_procedure = [this]() { return m_procedure; };
+  context.selected_instruction = [this]() { return m_instruction_tree->GetSelectedInstruction(); };
+  context.selected_variable = [this]() { return m_workspace_tree->GetSelectedVariable(); };
+  return context;
 }
 
 }  // namespace sequencergui

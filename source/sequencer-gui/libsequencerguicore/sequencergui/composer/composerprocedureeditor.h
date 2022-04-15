@@ -41,6 +41,7 @@ class ProcedureItem;
 class ComposerActions;
 class InstructionTreeWidget;
 class WorkspaceListWidget;
+class ComposerContext;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -70,6 +71,7 @@ signals:
 
 private:
   void SetupConnections();
+  ComposerContext CreateComposerContext();
 
   DotsToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
