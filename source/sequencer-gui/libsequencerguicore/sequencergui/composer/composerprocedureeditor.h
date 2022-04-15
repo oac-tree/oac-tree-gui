@@ -25,13 +25,11 @@
 #include <QWidget>
 
 class QSplitter;
-class QTreeView;
 class QTabWidget;
 
 namespace mvvm
 {
 class PropertyTreeView;
-class AllItemsTreeView;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -42,6 +40,7 @@ class DotsToolBar;
 class ProcedureItem;
 class ComposerActions;
 class InstructionTreeWidget;
+class WorkspaceListWidget;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -75,7 +74,7 @@ private:
   DotsToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
   InstructionTreeWidget* m_instruction_tree{nullptr};
-  mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
+  WorkspaceListWidget* m_workspace_tree{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
 

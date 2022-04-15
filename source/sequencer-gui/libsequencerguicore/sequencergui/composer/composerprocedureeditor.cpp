@@ -21,21 +21,17 @@
 
 #include "sequencergui/composer/composeractions.h"
 #include "sequencergui/composer/instructiontreewidget.h"
+#include "sequencergui/composer/workspacelistwidget.h"
 #include "sequencergui/core/messagehandlerfactory.h"
-#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/widgets/dotstoolbar.h"
 
-#include "mvvm/model/itemutils.h"
-#include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/propertytreeview.h"
-#include "mvvm/widgets/topitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QSplitter>
 #include <QTabWidget>
-#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -45,7 +41,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
     , m_tool_bar(new DotsToolBar)
     , m_tab_widget(new QTabWidget)
     , m_instruction_tree(new InstructionTreeWidget)
-    , m_workspace_tree(new mvvm::AllItemsTreeView)
+    , m_workspace_tree(new WorkspaceListWidget)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
     , m_composer_actions(std::make_unique<ComposerActions>())
@@ -90,7 +86,7 @@ void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)
 {
   m_procedure = procedure;
   m_instruction_tree->SetProcedure(m_procedure);
-  m_workspace_tree->SetItem(m_procedure ? m_procedure->GetWorkspace() : nullptr);
+  m_workspace_tree->SetProcedure(m_procedure);
 }
 
 void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instruction)
@@ -131,6 +127,9 @@ void ComposerProcedureEditor::SetupConnections()
           &ComposerActions::OnInsertInstructionIntoRequest);
   connect(m_instruction_tree, &InstructionTreeWidget::RemoveSelectedRequest,
           m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
+
+  connect(m_workspace_tree, &WorkspaceListWidget::VariableSelected, m_property_tree,
+          &::mvvm::PropertyTreeView::SetItem);
 }
 
 }  // namespace sequencergui
