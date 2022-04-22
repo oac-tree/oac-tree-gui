@@ -35,62 +35,62 @@ namespace
 {
 //! Creates catalogue where VariableItem factory functions are registered against "Type"
 //! name strings known by the sequencer.
-std::unique_ptr<mvvm::ItemCatalogue> CreateVariableItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateVariableItemCatalogue()
 {
   using mvvm::ItemFactoryFunction;
-  auto result = std::make_unique<mvvm::ItemCatalogue>();
+  auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
 
   result->RegisterItem(sequencergui::DomainConstants::kLocalVariableType,
-                       ItemFactoryFunction<sequencergui::LocalVariableItem>());
+                       ItemFactoryFunction<sequencergui::LocalVariableItem>);
   result->RegisterItem(sequencergui::DomainConstants::kFileVariableType,
-                       ItemFactoryFunction<sequencergui::FileVariableItem>());
+                       ItemFactoryFunction<sequencergui::FileVariableItem>);
   result->RegisterItem(sequencergui::DomainConstants::kChannelAccessVariableType,
-                       ItemFactoryFunction<sequencergui::ChannelAccessVariableItem>());
+                       ItemFactoryFunction<sequencergui::ChannelAccessVariableItem>);
   result->RegisterItem(sequencergui::DomainConstants::kPVClientVariableType,
-                       ItemFactoryFunction<sequencergui::PVClientVariableItem>());
+                       ItemFactoryFunction<sequencergui::PVClientVariableItem>);
 
   return result;
 }
 
 //! Creates catalogue where InstructionItem factory functions are registered against "Type"
 //! name strings known by the sequencer.
-std::unique_ptr<mvvm::ItemCatalogue> CreateInstructionItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateInstructionItemCatalogue()
 {
   using mvvm::ItemFactoryFunction;
-  auto result = std::make_unique<mvvm::ItemCatalogue>();
+  auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
 
   result->RegisterItem(sequencergui::DomainConstants::kConditionInstructionType,
-                       ItemFactoryFunction<sequencergui::ConditionItem>());
+                       ItemFactoryFunction<sequencergui::ConditionItem>);
   result->RegisterItem(sequencergui::DomainConstants::kCopyInstructionType,
-                       ItemFactoryFunction<sequencergui::CopyItem>());
+                       ItemFactoryFunction<sequencergui::CopyItem>);
   result->RegisterItem(sequencergui::DomainConstants::kEqualsInstructionType,
-                       ItemFactoryFunction<sequencergui::EqualsItem>());
+                       ItemFactoryFunction<sequencergui::EqualsItem>);
   result->RegisterItem(sequencergui::DomainConstants::kFallbackInstructionType,
-                       ItemFactoryFunction<sequencergui::FallbackItem>());
+                       ItemFactoryFunction<sequencergui::FallbackItem>);
   result->RegisterItem(sequencergui::DomainConstants::kForceSuccessInstructionType,
-                       ItemFactoryFunction<sequencergui::ForceSuccessItem>());
+                       ItemFactoryFunction<sequencergui::ForceSuccessItem>);
   result->RegisterItem(sequencergui::DomainConstants::kIncludeInstructionType,
-                       ItemFactoryFunction<sequencergui::IncludeItem>());
+                       ItemFactoryFunction<sequencergui::IncludeItem>);
   result->RegisterItem(sequencergui::DomainConstants::kInputInstructionType,
-                       ItemFactoryFunction<sequencergui::InputItem>());
+                       ItemFactoryFunction<sequencergui::InputItem>);
   result->RegisterItem(sequencergui::DomainConstants::kInverterInstructionType,
-                       ItemFactoryFunction<sequencergui::InverterItem>());
+                       ItemFactoryFunction<sequencergui::InverterItem>);
   result->RegisterItem(sequencergui::DomainConstants::kListenInstructionType,
-                       ItemFactoryFunction<sequencergui::ListenItem>());
+                       ItemFactoryFunction<sequencergui::ListenItem>);
   result->RegisterItem(sequencergui::DomainConstants::kMessageInstructionType,
-                       ItemFactoryFunction<sequencergui::MessageItem>());
+                       ItemFactoryFunction<sequencergui::MessageItem>);
   result->RegisterItem(sequencergui::DomainConstants::kOutputInstructionType,
-                       ItemFactoryFunction<sequencergui::OutputItem>());
+                       ItemFactoryFunction<sequencergui::OutputItem>);
   result->RegisterItem(sequencergui::DomainConstants::kParallelInstructionType,
-                       ItemFactoryFunction<sequencergui::ParallelSequenceItem>());
+                       ItemFactoryFunction<sequencergui::ParallelSequenceItem>);
   result->RegisterItem(sequencergui::DomainConstants::kRepeatInstructionType,
-                       ItemFactoryFunction<sequencergui::RepeatItem>());
+                       ItemFactoryFunction<sequencergui::RepeatItem>);
   result->RegisterItem(sequencergui::DomainConstants::kSequenceInstructionType,
-                       ItemFactoryFunction<sequencergui::SequenceItem>());
+                       ItemFactoryFunction<sequencergui::SequenceItem>);
   result->RegisterItem(sequencergui::DomainConstants::kUserChoiceInstructionType,
-                       ItemFactoryFunction<sequencergui::UserChoiceItem>());
+                       ItemFactoryFunction<sequencergui::UserChoiceItem>);
   result->RegisterItem(sequencergui::DomainConstants::kWaitInstructionType,
-                       ItemFactoryFunction<sequencergui::WaitItem>());
+                       ItemFactoryFunction<sequencergui::WaitItem>);
 
   return result;
 }
