@@ -35,10 +35,10 @@ namespace
 {
 //! Creates catalogue where VariableItem factory functions are registered against "Type"
 //! name strings known by the sequencer.
-std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateVariableItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableItemCatalogue()
 {
   using mvvm::ItemFactoryFunction;
-  auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
+  auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::VariableItem>>();
 
   result->RegisterItem(sequencergui::DomainConstants::kLocalVariableType,
                        ItemFactoryFunction<sequencergui::LocalVariableItem>);
@@ -54,10 +54,10 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateVariableItemCatalo
 
 //! Creates catalogue where InstructionItem factory functions are registered against "Type"
 //! name strings known by the sequencer.
-std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateInstructionItemCatalogue()
+std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstructionItemCatalogue()
 {
   using mvvm::ItemFactoryFunction;
-  auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
+  auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::InstructionItem>>();
 
   result->RegisterItem(sequencergui::DomainConstants::kConditionInstructionType,
                        ItemFactoryFunction<sequencergui::ConditionItem>);
@@ -115,9 +115,7 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
     return std::make_unique<UnknownVariableItem>();
   }
 
-  // FIXME remove downcast and unique_ptr recreation
-  return std::unique_ptr<VariableItem>(
-      static_cast<VariableItem*>(catalogue->Create(domain_type).release()));
+  return catalogue->Create(domain_type);
 }
 
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type)
@@ -129,9 +127,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
     return std::make_unique<UnknownInstructionItem>();
   }
 
-  // FIXME remove downcast and unique_ptr recreation
-  return std::unique_ptr<InstructionItem>(
-      static_cast<InstructionItem*>(catalogue->Create(domain_type).release()));
+  return catalogue->Create(domain_type);
 }
 
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace)
