@@ -17,12 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/graphicsscenemessagehandler.h"
+#include "sequencergui/widgets/graphicsscenemessagehandler.h"
 
 namespace sequencergui
 {
 
-GraphiscSceneMessageHandler::GraphiscSceneMessageHandler(const QGraphicsScene *scene) {}
+GraphiscSceneMessageHandler::GraphiscSceneMessageHandler(const QGraphicsScene *scene)
+    : m_scene(scene)
+{
+}
 
 void GraphiscSceneMessageHandler::SendMessage(const std::string &text) {}
 
