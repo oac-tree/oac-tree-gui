@@ -1,4 +1,4 @@
-# Collection of general purpose widgets that doesn't contain any sequencer specifics.
+# Collection of general purpose widgets that doesn't contain any Sequencer UI related specifics.
 
 target_sources(${library_name} PRIVATE
   collapsiblelistview.cpp
@@ -15,6 +15,10 @@ target_sources(${library_name} PRIVATE
   graphicsscenemessagehandler.h
   itemlistwidget.cpp
   itemlistwidget.h
+  overlaymessagecontroller.cpp
+  overlaymessagecontroller.h
+  overlaymessageframe.cpp
+  overlaymessageframe.h
   widgetutils.cpp
   widgetutils.h
   )
