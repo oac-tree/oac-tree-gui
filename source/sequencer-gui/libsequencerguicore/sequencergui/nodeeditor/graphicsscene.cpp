@@ -19,7 +19,7 @@
 
 #include "graphicsscene.h"
 
-#include "sequencergui/widgets/itemlistwidget.h"
+#include "sequencergui/core/messagehandlerinterface.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -28,6 +28,7 @@
 #include "sequencergui/nodeeditor/nodeconnection.h"
 #include "sequencergui/nodeeditor/nodecontroller.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
+#include "sequencergui/widgets/itemlistwidget.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"
@@ -91,6 +92,11 @@ void GraphicsScene::SetContext(SequencerModel *model, InstructionContainerItem *
 {
   m_model = model;
   m_root_item = root_item;
+}
+
+void GraphicsScene::SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler)
+{
+  m_message_handler = std::move(message_handler);
 }
 
 //! Returns true if given scene is initialised (has model and instruction container assigned).
@@ -200,10 +206,10 @@ std::vector<InstructionItem *> GraphicsScene::GetSelectedInstructions() const
   return result;
 }
 
-void GraphicsScene::onConnectionRequest(ConnectableView *childView, ConnectableView *parentView)
+void GraphicsScene::onConnectionRequest(ConnectableView *child_view, ConnectableView *parent_view)
 {
-  auto child_instruction = GetInstruction(childView);
-  auto parent_instruction = GetInstruction(parentView);
+  auto child_instruction = GetInstruction(child_view);
+  auto parent_instruction = GetInstruction(parent_view);
 
   try
   {

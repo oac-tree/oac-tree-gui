@@ -38,6 +38,7 @@ class NodeConnection;
 class InstructionItem;
 class SequencerModel;
 class InstructionContainerItem;
+class MessageHandlerInterface;
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -48,6 +49,8 @@ public:
   ~GraphicsScene() override;
 
   void SetContext(SequencerModel* model, InstructionContainerItem* root_item);
+
+  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
 
   bool HasContext();
 
@@ -67,7 +70,7 @@ public:
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
 
-  void onConnectionRequest(ConnectableView* childView, ConnectableView* parentView);
+  void onConnectionRequest(ConnectableView* child_view, ConnectableView* parent_view);
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
@@ -83,6 +86,7 @@ private:
   SequencerModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeController> m_node_controller;
+  std::unique_ptr<MessageHandlerInterface> m_message_handler;
 };
 
 template <typename T>
