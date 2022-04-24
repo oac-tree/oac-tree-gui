@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   graphicsscene.h
   graphicsscenecontroller.cpp
   graphicsscenecontroller.h
+  graphicsscenemessagehandler.cpp
+  graphicsscenemessagehandler.h
   graphicsview.cpp
   graphicsview.h
   nodeconnection.cpp

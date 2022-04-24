@@ -17,22 +17,23 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
-#define SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
+#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENEMESSAGEHANDLER_H
+#define SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENEMESSAGEHANDLER_H
 
 #include "sequencergui/core/messagehandlerinterface.h"
 
+class QGraphicsScene;
+
 namespace sequencergui
 {
-
-//! Simple message handler that prints messages to standard output.
-
-class StdMessageHandler : public MessageHandlerInterface
+class GraphiscSceneMessageHandler : public MessageHandlerInterface
 {
 public:
+  explicit GraphiscSceneMessageHandler(const QGraphicsScene* scene);
+
   void SendMessage(const std::string& text) override;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_STDMESSAGEHANDLER_H
+#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENEMESSAGEHANDLER_H
