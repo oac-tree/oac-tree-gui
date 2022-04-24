@@ -54,7 +54,7 @@ public:
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
 signals:
-  void InstructionSelected(InstructionItem* selected);
+  void InstructionSelected(sequencergui::InstructionItem* selected);
 
 private:
   void SetupConnections();
