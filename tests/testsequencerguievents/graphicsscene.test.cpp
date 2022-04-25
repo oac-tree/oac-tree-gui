@@ -19,6 +19,7 @@
 
 #include "sequencergui/nodeeditor/graphicsscene.h"
 
+#include "mockmessagehandler.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -27,12 +28,15 @@
 #include "sequencergui/nodeeditor/nodeconnection.h"
 #include "sequencergui/nodeeditor/nodeport.h"
 
+#include "mvvm/core/exceptions.h"
+
 #include <gtest/gtest.h>
 
 #include <QSignalSpy>
 #include <QTest>
 
 using namespace sequencergui;
+using ::testing::_;
 
 //! Tests for GraphicsScene class. Supplements graphicscontroller.test.cpp
 
@@ -142,6 +146,34 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
   // the model should have sequence as a top instruciton, and wait into it
   EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 1);
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait}));
+}
+
+//! Scene with two instructions not intended for connection. One tries to get connected with
+//! another.
+
+TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
+{
+  auto controller = CreateController();
+
+  auto wait0 = m_model.InsertItem<WaitItem>(GetInstructionContainer());
+  auto wait1 = m_model.InsertItem<WaitItem>(GetInstructionContainer());
+
+  EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
+
+  auto view0 = m_scene.FindViewForInstruction(wait0);
+  ASSERT_TRUE(view0 != nullptr);
+  auto view1 = m_scene.FindViewForInstruction(wait1);
+  ASSERT_TRUE(view1 != nullptr);
+
+  // attempt to connect to leaves together
+  EXPECT_THROW(m_scene.onConnectionRequest(view0, view1), mvvm::InvalidMoveException);
+
+  MockMessageHandler mock_handler;
+  m_scene.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
+
+  // after handler set, we expect no throws; handler method should be called
+  EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
+  EXPECT_NO_THROW(m_scene.onConnectionRequest(view0, view1));
 }
 
 //! Scene with two instructions. One connected with the another, when we delete connection.
