@@ -29,7 +29,7 @@ namespace sequencergui
 
 OverlayMessage::~OverlayMessage() = default;
 
-OverlayMessage::OverlayMessage(const QString &text, QAbstractScrollArea *area)
+OverlayMessage::OverlayMessage(const QString &text, QWidget *area)
 {
   m_message_frame = std::make_unique<OverlayMessageFrame>(text, area);
   m_message_controller = std::make_unique<OverlayMessageController>(m_message_frame.get(), area);

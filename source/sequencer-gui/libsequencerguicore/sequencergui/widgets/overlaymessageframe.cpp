@@ -33,6 +33,7 @@ OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
 {
   setAttribute(Qt::WA_TransparentForMouseEvents);
   setAttribute(Qt::WA_NoSystemBackground);
+//  setWindowOpacity(0.2);
 }
 
 void OverlayMessageFrame::SetRectangle(const QRect& rect)

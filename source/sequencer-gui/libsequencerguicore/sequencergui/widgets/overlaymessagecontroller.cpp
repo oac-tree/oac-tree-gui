@@ -64,7 +64,7 @@ namespace sequencergui
 {
 
 OverlayMessageController::OverlayMessageController(OverlayMessageFrame* message,
-                                                   QAbstractScrollArea* area, QObject* parent)
+                                                   QWidget *area, QObject* parent)
     : QObject(parent), m_message_frame(message), m_area(area)
 {
   m_area->installEventFilter(this);
@@ -99,7 +99,7 @@ QPoint OverlayMessageController::GetBoxPosition() const
   int y = m_area->height() - GetBoxHeight() - GetYposOffset();
 
   // shift position a bit, if scroll bars are present and visible
-  if (QAbstractScrollArea* scroll_area = dynamic_cast<QAbstractScrollArea*>(m_area); scroll_area)
+  if (auto scroll_area = dynamic_cast<QAbstractScrollArea*>(m_area); scroll_area)
   {
     if (QScrollBar* horizontal = scroll_area->horizontalScrollBar();
         horizontal && horizontal->isVisible())

@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
 #define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
 
-class QAbstractScrollArea;
+class QWidget;
 class QString;
 
 #include <memory>
@@ -36,7 +36,7 @@ class OverlayMessageController;
 class OverlayMessage
 {
 public:
-  explicit OverlayMessage(const QString& text, QAbstractScrollArea* area);
+  explicit OverlayMessage(const QString& text, QWidget* area);
   ~OverlayMessage();
 
 private:

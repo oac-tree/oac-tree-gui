@@ -22,7 +22,7 @@
 
 #include <QFrame>
 
-class QAbstractScrollArea;
+class QWidget;
 class QPoint;
 
 namespace sequencergui
@@ -39,7 +39,7 @@ class OverlayMessageController : public QObject
   Q_OBJECT
 
 public:
-  explicit OverlayMessageController(OverlayMessageFrame* message, QAbstractScrollArea* area,
+  explicit OverlayMessageController(OverlayMessageFrame* message, QWidget* area,
                                     QObject* parent = nullptr);
 
 protected:
@@ -50,7 +50,7 @@ private:
   QPoint GetBoxPosition() const;
 
   OverlayMessageFrame* m_message_frame{nullptr};
-  QAbstractScrollArea* m_area{nullptr};
+  QWidget* m_area{nullptr};
 };
 
 }  // namespace sequencergui
