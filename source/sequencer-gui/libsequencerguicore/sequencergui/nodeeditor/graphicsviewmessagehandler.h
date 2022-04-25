@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGEHANDLER_H
-#define SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGEHANDLER_H
+#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICSVIEWMESSAGEHANDLER_H
+#define SEQUENCERGUI_NODEEDITOR_GRAPHICSVIEWMESSAGEHANDLER_H
 
 #include "sequencergui/core/messagehandlerinterface.h"
 
@@ -39,4 +39,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGEHANDLER_H
+#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSVIEWMESSAGEHANDLER_H

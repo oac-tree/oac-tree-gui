@@ -17,13 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/graphicsviewmessagehandler.h"
+#include "sequencergui/nodeeditor/graphicsviewmessagehandler.h"
 
 namespace sequencergui
 {
 
-GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *view)
-    : m_graphics_view(view)
+GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *view) : m_graphics_view(view)
 {
 }
 

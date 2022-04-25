@@ -13,8 +13,6 @@ target_sources(${library_name} PRIVATE
   filetreeview.h
   graphicsviewmessagecontroller.cpp
   graphicsviewmessagecontroller.h
-  graphicsviewmessagehandler.cpp
-  graphicsviewmessagehandler.h
   itemlistwidget.cpp
   itemlistwidget.h
   overlaymessage.cpp
