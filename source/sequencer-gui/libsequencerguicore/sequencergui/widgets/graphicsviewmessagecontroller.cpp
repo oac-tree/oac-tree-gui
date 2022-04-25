@@ -43,8 +43,7 @@ void GraphicsViewMessageController::AddMessage(const QString &text)
   // in the current implementation new message replaces the old one
   m_message = std::make_unique<OverlayMessage>(text, m_graphics_view);
 
-  // waiting 5 sec before deleting
-  m_timer->start();
+  m_timer->start(); // starting timer to delete a message after a while
 }
 
 void GraphicsViewMessageController::RemoveMessageOnTimeout()

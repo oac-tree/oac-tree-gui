@@ -45,6 +45,11 @@ void WarningSignWidget::SetHeader(const QString &header)
   m_header = header;
 }
 
+bool WarningSignWidget::IsBusy() const
+{
+  return m_is_busy;
+}
+
 void WarningSignWidget::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event);
@@ -55,6 +60,7 @@ void WarningSignWidget::paintEvent(QPaintEvent *event)
 
 void WarningSignWidget::mousePressEvent(QMouseEvent *event)
 {
+  m_is_busy = true;
   Q_UNUSED(event);
   QMessageBox box;
   box.setWindowTitle(m_header);
@@ -62,6 +68,7 @@ void WarningSignWidget::mousePressEvent(QMouseEvent *event)
   box.setStandardButtons(QMessageBox::Ok);
   box.setDefaultButton(QMessageBox::Ok);
   box.exec();
+  m_is_busy = false;
 }
 
 }  // namespace sequencergui

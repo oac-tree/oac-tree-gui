@@ -39,6 +39,8 @@ public:
 
   void SetHeader(const QString& header);
 
+  bool IsBusy() const;
+
 protected:
   void paintEvent(QPaintEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
@@ -47,6 +49,7 @@ private:
   QString m_header;
   QString m_message;
   QPixmap m_pixmap;
+  bool m_is_busy{false};
 };
 
 }  // namespace sequencergui

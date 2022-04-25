@@ -32,13 +32,17 @@ OverlayMessage::~OverlayMessage() = default;
 
 OverlayMessage::OverlayMessage(const QString &text, QWidget *area)
 {
-//  m_message_widget = std::make_unique<OverlayMessageFrame>(text, area);
+  //  m_message_widget = std::make_unique<OverlayMessageFrame>(text, area);
   m_message_widget = std::make_unique<WarningSignWidget>(text, area);
   m_message_controller = std::make_unique<OverlayMessageController>(m_message_widget.get(), area);
 }
 
 bool OverlayMessage::CanBeDeleted()
 {
+  if (auto widget = dynamic_cast<WarningSignWidget *>(m_message_widget.get()); widget)
+  {
+    return !widget->IsBusy();
+  }
   return true;
 }
 
