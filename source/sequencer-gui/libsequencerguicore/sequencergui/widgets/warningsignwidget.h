@@ -29,13 +29,15 @@ namespace sequencergui
 //! The overlay warning sign indended to appear in the corner of some widget.
 //! Provide dialog window on click.
 
-class WaringSignWidget : public QWidget
+class WarningSignWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit WaringSignWidget(const QString& header, const QString& message,
+  explicit WarningSignWidget(const QString& message,
                             QWidget* parent = nullptr);
+
+  void SetHeader(const QString& header);
 
 protected:
   void paintEvent(QPaintEvent* event) override;

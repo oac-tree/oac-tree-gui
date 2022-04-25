@@ -29,18 +29,23 @@
 namespace sequencergui
 {
 
-WaringSignWidget::WaringSignWidget(const QString &header, const QString &message, QWidget *parent)
-    : QWidget(parent), m_header(header), m_message(message)
+WarningSignWidget::WarningSignWidget(const QString &message, QWidget *parent)
+    : QWidget(parent), m_header("Houston, we have a problem."), m_message(message)
 {
   setAttribute(Qt::WA_NoSystemBackground);
-  setToolTip(m_header + "\nClick to see details.");
+  setToolTip("Click to see details");
 
   m_pixmap = StyleUtils::GetIcon("dots-horizontal.svg").pixmap(QSize(48, 48));
 
   setGeometry(0, 0, m_pixmap.width(), m_pixmap.height());
 }
 
-void WaringSignWidget::paintEvent(QPaintEvent *event)
+void WarningSignWidget::SetHeader(const QString &header)
+{
+  m_header = header;
+}
+
+void WarningSignWidget::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event);
   QPainter painter(this);
@@ -48,7 +53,7 @@ void WaringSignWidget::paintEvent(QPaintEvent *event)
   painter.drawPixmap(target, m_pixmap);
 }
 
-void WaringSignWidget::mousePressEvent(QMouseEvent *event)
+void WarningSignWidget::mousePressEvent(QMouseEvent *event)
 {
   Q_UNUSED(event);
   QMessageBox box;

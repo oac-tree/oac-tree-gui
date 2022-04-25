@@ -24,6 +24,7 @@
 #include <memory>
 
 class QGraphicsView;
+class QTimer;
 
 namespace sequencergui
 {
@@ -44,8 +45,11 @@ public:
   void AddMessage(const QString& text);
 
 private:
+  void RemoveMessageOnTimeout();
+
   QGraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<OverlayMessage> m_message;
+  QTimer* m_timer{nullptr};
 };
 
 }  // namespace sequencergui

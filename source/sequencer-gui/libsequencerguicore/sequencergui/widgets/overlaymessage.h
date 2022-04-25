@@ -39,8 +39,10 @@ public:
   explicit OverlayMessage(const QString& text, QWidget* area);
   ~OverlayMessage();
 
+  bool CanBeDeleted();
+
 private:
-  std::unique_ptr<OverlayMessageFrame> m_message_frame;
+  std::unique_ptr<QWidget> m_message_widget;
   std::unique_ptr<OverlayMessageController> m_message_controller;
 };
 

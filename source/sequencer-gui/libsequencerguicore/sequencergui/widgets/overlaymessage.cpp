@@ -21,6 +21,7 @@
 
 #include "sequencergui/widgets/overlaymessagecontroller.h"
 #include "sequencergui/widgets/overlaymessageframe.h"
+#include "sequencergui/widgets/warningsignwidget.h"
 
 #include <QAbstractScrollArea>
 
@@ -31,8 +32,14 @@ OverlayMessage::~OverlayMessage() = default;
 
 OverlayMessage::OverlayMessage(const QString &text, QWidget *area)
 {
-  m_message_frame = std::make_unique<OverlayMessageFrame>(text, area);
-  m_message_controller = std::make_unique<OverlayMessageController>(m_message_frame.get(), area);
+//  m_message_widget = std::make_unique<OverlayMessageFrame>(text, area);
+  m_message_widget = std::make_unique<WarningSignWidget>(text, area);
+  m_message_controller = std::make_unique<OverlayMessageController>(m_message_widget.get(), area);
+}
+
+bool OverlayMessage::CanBeDeleted()
+{
+  return true;
 }
 
 }  // namespace sequencergui

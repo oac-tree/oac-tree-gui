@@ -28,8 +28,12 @@ namespace sequencergui
 {
 
 GraphicsViewMessageController::GraphicsViewMessageController(QGraphicsView *view)
-    : m_graphics_view(view)
+    : m_graphics_view(view), m_timer(new QTimer)
 {
+  m_timer->setSingleShot(true);
+  m_timer->setInterval(5000);
+  QObject::connect(m_timer, &QTimer::timeout, this,
+                   &GraphicsViewMessageController::RemoveMessageOnTimeout);
 }
 
 GraphicsViewMessageController::~GraphicsViewMessageController() = default;
@@ -39,9 +43,21 @@ void GraphicsViewMessageController::AddMessage(const QString &text)
   // in the current implementation new message replaces the old one
   m_message = std::make_unique<OverlayMessage>(text, m_graphics_view);
 
-  QTimer::singleShot(4000, this, [=]() { m_message.reset(); });
+  // waiting 5 sec before deleting
+  m_timer->start();
+}
 
-
+void GraphicsViewMessageController::RemoveMessageOnTimeout()
+{
+  if (m_message->CanBeDeleted())
+  {
+    m_message.reset();
+  }
+  else
+  {
+    // if message can't be deleted now, repeat attempt
+    m_timer->start();
+  }
 }
 
 }  // namespace sequencergui
