@@ -19,6 +19,9 @@
 
 #include "sequencergui/widgets/warningsignwidget.h"
 
+#include "sequencergui/mainwindow/styleutils.h"
+
+#include <QIcon>
 #include <QMessageBox>
 #include <QPainter>
 #include <QRect>
@@ -31,6 +34,9 @@ WaringSignWidget::WaringSignWidget(const QString &header, const QString &message
 {
   setAttribute(Qt::WA_NoSystemBackground);
   setToolTip(m_header + "\nClick to see details.");
+
+  m_pixmap = StyleUtils::GetIcon("dots-horizontal.svg").pixmap(QSize(48, 48));
+
   setGeometry(0, 0, m_pixmap.width(), m_pixmap.height());
 }
 

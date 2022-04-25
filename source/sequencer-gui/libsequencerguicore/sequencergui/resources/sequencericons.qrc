@@ -65,5 +65,7 @@
         <file>icons/chevron-triple-right.png</file>
         <file>icons/map-marker-outline.png</file>
         <file>icons/map-marker-outline.svg</file>
+        <file>icons/bell-alert-outline.svg</file>
+        <file>icons/bell-alert-outline.png</file>
     </qresource>
 </RCC>
