@@ -17,6 +17,8 @@ target_sources(${library_name} PRIVATE
   graphicsviewmessagehandler.h
   itemlistwidget.cpp
   itemlistwidget.h
+  overlaymessage.cpp
+  overlaymessage.h
   overlaymessagecontroller.cpp
   overlaymessagecontroller.h
   overlaymessageframe.cpp

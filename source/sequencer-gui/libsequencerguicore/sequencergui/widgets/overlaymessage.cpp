@@ -17,36 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGECONTROLLER_H
-#define SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGECONTROLLER_H
+#include "sequencergui/widgets/overlaymessage.h"
 
-#include <QObject>
-#include <memory>
-
-class QGraphicsView;
+#include "sequencergui/widgets/overlaymessagecontroller.h"
+#include "sequencergui/widgets/overlaymessageframe.h"
 
 namespace sequencergui
 {
 
-class OverlayMessage;
+OverlayMessage::~OverlayMessage() = default;
 
-//! Controls appearance of overlay messages on top of graphics view.
-//! Current implementation is simplified and allows only single message on the screen.
-
-class GraphicsViewMessageController : public QObject
+OverlayMessage::OverlayMessage(const QString &text, QAbstractScrollArea *area)
 {
-  Q_OBJECT
-
-public:
-  explicit GraphicsViewMessageController(QGraphicsView* view);
-
-  void AddMessage(const QString& text);
-
-private:
-  QGraphicsView* m_graphics_view{nullptr};
-  OverlayMessage* m_message{nullptr};  //!<
-};
+  m_message_frame = std::make_unique<OverlayMessageFrame>(text);
+  m_message_controller = std::make_unique<OverlayMessageController>(m_message_frame.get(), area);
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGECONTROLLER_H

@@ -28,7 +28,10 @@
 namespace sequencergui
 {
 
-OverlayMessageFrame::OverlayMessageFrame(QWidget* parent) : QFrame(parent) {}
+OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
+    : QFrame(parent), m_text(text)
+{
+}
 
 void OverlayMessageFrame::SetRectangle(const QRect& rect)
 {

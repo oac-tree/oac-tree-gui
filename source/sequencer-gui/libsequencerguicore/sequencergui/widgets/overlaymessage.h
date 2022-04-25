@@ -17,39 +17,33 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGECONTROLLER_H
-#define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGECONTROLLER_H
-
-#include <QFrame>
+#ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
+#define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
 
 class QAbstractScrollArea;
+class QString;
+
+#include <memory>
 
 namespace sequencergui
 {
 
 class OverlayMessageFrame;
+class OverlayMessageController;
 
-//! Controls appearance of OverlayMessageFrame (position, show/hide) on top of widget.
-//! Current implementation is intended to work with scroll areas.
+//! Represents a message on top of scroll area.
 
-class OverlayMessageController : public QObject
+class OverlayMessage
 {
-  Q_OBJECT
-
 public:
-  explicit OverlayMessageController(OverlayMessageFrame* message, QAbstractScrollArea* area,
-                                    QObject* parent = nullptr);
-
-protected:
-  bool eventFilter(QObject* obj, QEvent* event) override;
+  explicit OverlayMessage(const QString& text, QAbstractScrollArea* area);
+  ~OverlayMessage();
 
 private:
-  void UpdateLabelGeometry();
-
-  OverlayMessageFrame* m_message_frame{nullptr};
-  QAbstractScrollArea* m_area{nullptr};
+  std::unique_ptr<OverlayMessageFrame> m_message_frame;
+  std::unique_ptr<OverlayMessageController> m_message_controller;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_OVERLAYMESSAGECONTROLLER_H
+#endif  // SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
