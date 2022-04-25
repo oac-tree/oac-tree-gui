@@ -30,12 +30,13 @@ namespace sequencergui
 {
 
 WarningSignWidget::WarningSignWidget(const QString &message, QWidget *parent)
-    : QWidget(parent), m_header("Houston, we have a problem."), m_message(message)
+    : QWidget(parent)
+    , m_header("Houston, we have a problem.")
+    , m_message(message)
+    , m_pixmap(":/icons/bell-alert-outline-48.png")
 {
   setAttribute(Qt::WA_NoSystemBackground);
   setToolTip("Click to see details");
-
-  m_pixmap = StyleUtils::GetIcon("bell-alert-outline.svg").pixmap(StyleUtils::ToolBarIconSize());
 
   setGeometry(0, 0, m_pixmap.width(), m_pixmap.height());
 }
