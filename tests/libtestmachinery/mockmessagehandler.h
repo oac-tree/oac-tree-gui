@@ -24,6 +24,7 @@
 
 #include <gmock/gmock.h>
 
+#include <memory>
 #include <string>
 
 //! Mock class to use as MessageHandler.
@@ -33,5 +34,26 @@ class MockMessageHandler : public sequencergui::MessageHandlerInterface
 public:
   MOCK_METHOD1(SendMessage, void(const std::string&));
 };
+
+//! Decorator to wrap MockMessageHandler.
+//! This is to avoid pasing unique_ptr<MockMessageHandler> directly, since it triggers
+//! googletest warnings related to testing::Mock::AllowLeak.
+
+class TestMessageHandler : public sequencergui::MessageHandlerInterface
+{
+public:
+  explicit TestMessageHandler(sequencergui::MessageHandlerInterface* context) : m_context(context)
+  {
+  }
+
+  void SendMessage(const std::string& text) override { m_context->SendMessage(text); }
+  sequencergui::MessageHandlerInterface* m_context{nullptr};
+};
+
+//! Create decorator around MockMessageHandler to avoid googletest specific warning
+//! related to testing::Mock::AllowLeak.
+
+std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
+    MockMessageHandler* mock_handler);
 
 #endif  //  MOCKMESSAGEHANDLER_H

@@ -37,20 +37,6 @@ using ::testing::_;
 class ComposerActionsTest : public ::testing::Test
 {
 public:
-  //! Test class to wrap MockHandlerDecorator and pass it inside ComposerActions.
-  //! This is to avoid using testing::Mock::AllowLeak.
-  class TestHandlerDecorator : public sequencergui::MessageHandlerInterface
-  {
-  public:
-    explicit TestHandlerDecorator(sequencergui::MessageHandlerInterface* context)
-        : m_context(context)
-    {
-    }
-
-    void SendMessage(const std::string& text) override { m_context->SendMessage(text); }
-    sequencergui::MessageHandlerInterface* m_context{nullptr};
-  };
-
   ComposerActionsTest() : m_actions(&m_model)
   {
     m_procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
@@ -65,13 +51,6 @@ public:
     result.selected_instruction = [instruction]() { return instruction; };
     result.selected_variable = [variable]() { return variable; };
     return result;
-  }
-
-  //! Create message handler to pass it inside ComposerActions.
-  static std::unique_ptr<MessageHandlerInterface> CreateMessageHandler(
-      MessageHandlerInterface* mock_handler)
-  {
-    return std::make_unique<TestHandlerDecorator>(mock_handler);
   }
 
   SequencerModel m_model;
@@ -143,7 +122,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
 
   // setting message handler
   MockMessageHandler mock_handler;
-  m_actions.SetMessageHandler(CreateMessageHandler(&mock_handler));
+  m_actions.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
@@ -194,7 +173,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
 
   // setting message handler
   MockMessageHandler mock_handler;
-  m_actions.SetMessageHandler(CreateMessageHandler(&mock_handler));
+  m_actions.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
