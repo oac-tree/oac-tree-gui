@@ -17,37 +17,36 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGEFRAME_H
-#define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGEFRAME_H
+#ifndef SEQUENCERGUI_WIDGETS_WARNINGSIGNWIDGET_H
+#define SEQUENCERGUI_WIDGETS_WARNINGSIGNWIDGET_H
 
-#include <QFrame>
-#include <QFont>
+#include <QPixmap>
+#include <QWidget>
 
 namespace sequencergui
 {
 
-//! The overlay frame with the text message to place on top of any widget outside of any layout
-//! context.
+//! The overlay warning sign indended to appear in the corner of some widget.
+//! Provide dialog window on click.
 
-class OverlayMessageFrame : public QFrame
+class WaringSignWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit OverlayMessageFrame(const QString& text, QWidget* parent = nullptr);
-
-//  void SetRectangle(const QRect& rect);
-  void SetPosition(int x, int y);
+  explicit WaringSignWidget(const QString& header, const QString& message,
+                            QWidget* parent = nullptr);
 
 protected:
   void paintEvent(QPaintEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
 
 private:
-  QString m_text;
-  QRect m_bounding_rect;
-  QFont m_font;
+  QString m_header;
+  QString m_message;
+  QPixmap m_pixmap;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_OVERLAYMESSAGEFRAME_H
+#endif  // SEQUENCERGUI_WIDGETS_WARNINGSIGNWIDGET_H

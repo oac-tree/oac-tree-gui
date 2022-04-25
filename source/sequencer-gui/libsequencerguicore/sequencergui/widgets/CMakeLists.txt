@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   overlaymessagecontroller.h
   overlaymessageframe.cpp
   overlaymessageframe.h
+  warningsignwidget.cpp
+  warningsignwidget.h
   widgetutils.cpp
   widgetutils.h
   )
