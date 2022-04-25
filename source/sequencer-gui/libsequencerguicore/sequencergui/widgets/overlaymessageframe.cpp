@@ -55,6 +55,7 @@ OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
 {
   setAttribute(Qt::WA_TransparentForMouseEvents);
   setAttribute(Qt::WA_NoSystemBackground);
+  setGeometry(0, 0, m_bounding_rect.width(), m_bounding_rect.height());
 }
 
 void OverlayMessageFrame::SetPosition(int x, int y)

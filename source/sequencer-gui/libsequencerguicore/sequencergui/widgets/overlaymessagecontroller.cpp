@@ -55,8 +55,8 @@ OverlayMessageController::OverlayMessageController(OverlayMessageFrame* message,
     : QObject(parent), m_message_frame(message), m_area(area)
 {
   m_area->installEventFilter(this);
-  UpdateLabelGeometry();
   m_message_frame->show();
+  UpdateLabelGeometry();
 }
 
 bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)

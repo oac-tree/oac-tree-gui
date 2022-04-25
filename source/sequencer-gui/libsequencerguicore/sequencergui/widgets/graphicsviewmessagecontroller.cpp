@@ -22,6 +22,7 @@
 #include "sequencergui/widgets/overlaymessage.h"
 
 #include <QGraphicsView>
+#include <QTimer>
 
 namespace sequencergui
 {
@@ -37,6 +38,10 @@ void GraphicsViewMessageController::AddMessage(const QString &text)
 {
   // in the current implementation new message replaces the old one
   m_message = std::make_unique<OverlayMessage>(text, m_graphics_view);
+
+  QTimer::singleShot(4000, this, [=]() { m_message.reset(); });
+
+
 }
 
 }  // namespace sequencergui
