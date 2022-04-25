@@ -22,11 +22,11 @@
 namespace sequencergui
 {
 
-GraphiscSceneMessageHandler::GraphiscSceneMessageHandler(const QGraphicsScene *scene)
+GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *scene)
     : m_scene(scene)
 {
 }
 
-void GraphiscSceneMessageHandler::SendMessage(const std::string &text) {}
+void GraphicsViewMessageHandler::SendMessage(const std::string &text) {}
 
 }  // namespace sequencergui
