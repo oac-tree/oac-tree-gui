@@ -21,11 +21,17 @@
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICSVIEWMESSAGEHANDLER_H
 
 #include "sequencergui/core/messagehandlerinterface.h"
+#include <memory>
 
 class QGraphicsView;
 
 namespace sequencergui
 {
+
+class GraphicsViewMessageController;
+
+//!
+
 class GraphicsViewMessageHandler : public MessageHandlerInterface
 {
 public:
@@ -34,7 +40,7 @@ public:
   void SendMessage(const std::string& text) override;
 
 private:
-  QGraphicsView* m_graphics_view{nullptr};
+  std::unique_ptr<GraphicsViewMessageController> m_message_controller;
 };
 
 }  // namespace sequencergui

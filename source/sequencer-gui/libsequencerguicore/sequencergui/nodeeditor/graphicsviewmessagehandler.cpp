@@ -19,13 +19,19 @@
 
 #include "sequencergui/nodeeditor/graphicsviewmessagehandler.h"
 
+#include "sequencergui/widgets/graphicsviewmessagecontroller.h"
+
 namespace sequencergui
 {
 
-GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *view) : m_graphics_view(view)
+GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *view)
+    : m_message_controller(std::make_unique<GraphicsViewMessageController>(view))
 {
 }
 
-void GraphicsViewMessageHandler::SendMessage(const std::string &text) {}
+void GraphicsViewMessageHandler::SendMessage(const std::string &text)
+{
+  m_message_controller->AddMessage(QString::fromStdString(text));
+}
 
 }  // namespace sequencergui

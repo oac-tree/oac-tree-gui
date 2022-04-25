@@ -19,6 +19,10 @@
 
 #include "sequencergui/widgets/graphicsviewmessagecontroller.h"
 
+#include "sequencergui/widgets/overlaymessage.h"
+
+#include <QGraphicsView>
+
 namespace sequencergui
 {
 
@@ -27,9 +31,12 @@ GraphicsViewMessageController::GraphicsViewMessageController(QGraphicsView *view
 {
 }
 
+GraphicsViewMessageController::~GraphicsViewMessageController() = default;
+
 void GraphicsViewMessageController::AddMessage(const QString &text)
 {
-
+  // in the current implementation new message replaces the old one
+  m_message = std::make_unique<OverlayMessage>(text, m_graphics_view);
 }
 
 }  // namespace sequencergui

@@ -39,12 +39,13 @@ class GraphicsViewMessageController : public QObject
 
 public:
   explicit GraphicsViewMessageController(QGraphicsView* view);
+  ~GraphicsViewMessageController() override;
 
   void AddMessage(const QString& text);
 
 private:
   QGraphicsView* m_graphics_view{nullptr};
-  OverlayMessage* m_message{nullptr};  //!<
+  std::unique_ptr<OverlayMessage> m_message;
 };
 
 }  // namespace sequencergui
