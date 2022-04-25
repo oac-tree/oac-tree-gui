@@ -34,6 +34,18 @@ class OverlayMessageFrame : public QFrame
 
 public:
   explicit OverlayMessageFrame(QWidget* parent = nullptr);
+
+  void SetRectangle(const QRect& rect);
+  void SetPosition(int x, int y);
+
+  void SetText(const QString& text) { m_text = text; }
+
+protected:
+  void paintEvent(QPaintEvent* event) override;
+
+private:
+  QString m_text;
+  QRect m_bounding_rect;
 };
 
 }  // namespace sequencergui

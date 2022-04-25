@@ -19,9 +19,38 @@
 
 #include "sequencergui/widgets/overlaymessageframe.h"
 
+#include "mvvm/widgets/widgetutils.h"
+
+#include <QColor>
+#include <QFont>
+#include <QPainter>
+
 namespace sequencergui
 {
 
-OverlayMessageFrame::OverlayMessageFrame(QWidget *parent) : QFrame(parent) {}
+OverlayMessageFrame::OverlayMessageFrame(QWidget* parent) : QFrame(parent) {}
+
+void OverlayMessageFrame::SetRectangle(const QRect& rect)
+{
+  m_bounding_rect = rect;
+}
+
+void OverlayMessageFrame::SetPosition(int x, int y)
+{
+  setGeometry(x, y, m_bounding_rect.width(), m_bounding_rect.height());
+}
+
+void OverlayMessageFrame::paintEvent(QPaintEvent* event)
+{
+  Q_UNUSED(event);
+  QPainter painter(this);
+  painter.setBrush(QColor(Qt::lightGray));
+  QFont serifFont("Monospace", mvvm::utils::SystemPointSize(), QFont::Normal, true);
+  painter.setFont(serifFont);
+  //    painter.drawRect(m_bounding_rect);
+  auto margin = mvvm::utils::WidthOfLetterM();
+  painter.drawText(m_bounding_rect.marginsRemoved(QMargins(margin, margin, margin, margin)),
+                   Qt::AlignCenter, m_text);
+}
 
 }  // namespace sequencergui
