@@ -50,40 +50,39 @@ int GetYposOffset()
 namespace sequencergui
 {
 
-OverlayMessageController::OverlayMessageController(OverlayMessageFrame* message, QWidget* area,
+OverlayMessageController::OverlayMessageController(QWidget* message_widget, QWidget* area,
                                                    QObject* parent)
-    : QObject(parent), m_message_frame(message), m_area(area)
+    : QObject(parent), m_message_widget(message_widget), m_area(area)
 {
   m_area->installEventFilter(this);
-  m_message_frame->show();
-  UpdateLabelGeometry();
+  m_message_widget->show();
+  UpdateMessageWidgetGeometry();
 }
 
 bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)
 {
   if (event->type() == QEvent::Resize)
   {
-    UpdateLabelGeometry();
+    UpdateMessageWidgetGeometry();
   }
 
   return QObject::eventFilter(obj, event);
 }
 
-void OverlayMessageController::UpdateLabelGeometry()
+void OverlayMessageController::UpdateMessageWidgetGeometry()
 {
-//  m_message_frame->SetRectangle(QRect(0, 0, GetMaximumBoxWidth(), GetMaximumBoxHeight()));
-
-  auto pos = GetBoxPosition();
-  m_message_frame->SetPosition(pos.x(), pos.y());
+  auto pos = CalculateWidgetPosition();
+  m_message_widget->setGeometry(pos.x(), pos.y(), m_message_widget->width(),
+                               m_message_widget->height());
 }
 
-//! Caclulates position of message box.
+//! Caclulates position of message widget to be aproximately at the lower right corner of the area.
 //! Takes into account scroll bars if exist.
 
-QPoint OverlayMessageController::GetBoxPosition() const
+QPoint OverlayMessageController::CalculateWidgetPosition() const
 {
-  int x = m_area->width() - m_message_frame->width() - GetXposOffset();
-  int y = m_area->height() - m_message_frame->height() - GetYposOffset();
+  int x = m_area->width() - m_message_widget->width() - GetXposOffset();
+  int y = m_area->height() - m_message_widget->height() - GetYposOffset();
 
   // shift position a bit, if scroll bars are present and visible
   if (auto scroll_area = dynamic_cast<QAbstractScrollArea*>(m_area); scroll_area)

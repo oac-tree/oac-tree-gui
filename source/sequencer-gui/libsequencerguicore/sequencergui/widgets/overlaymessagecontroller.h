@@ -39,17 +39,17 @@ class OverlayMessageController : public QObject
   Q_OBJECT
 
 public:
-  explicit OverlayMessageController(OverlayMessageFrame* message, QWidget* area,
+  explicit OverlayMessageController(QWidget* message_widget, QWidget* area,
                                     QObject* parent = nullptr);
 
 protected:
   bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
-  void UpdateLabelGeometry();
-  QPoint GetBoxPosition() const;
+  void UpdateMessageWidgetGeometry();
+  QPoint CalculateWidgetPosition() const;
 
-  OverlayMessageFrame* m_message_frame{nullptr};
+  QWidget* m_message_widget{nullptr};
   QWidget* m_area{nullptr};
 };
 
