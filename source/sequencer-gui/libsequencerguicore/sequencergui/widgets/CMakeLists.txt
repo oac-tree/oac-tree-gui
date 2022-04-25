@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   dotstoolbar.h
   filetreeview.cpp
   filetreeview.h
+  graphicsviewmessagecontroller.cpp
+  graphicsviewmessagecontroller.h
   graphicsviewmessagehandler.cpp
   graphicsviewmessagehandler.h
   itemlistwidget.cpp

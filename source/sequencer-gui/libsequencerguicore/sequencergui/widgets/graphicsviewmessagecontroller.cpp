@@ -17,26 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGEHANDLER_H
-#define SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGEHANDLER_H
-
-#include "sequencergui/core/messagehandlerinterface.h"
-
-class QGraphicsView;
+#include "sequencergui/widgets/graphicsviewmessagecontroller.h"
 
 namespace sequencergui
 {
-class GraphicsViewMessageHandler : public MessageHandlerInterface
+
+GraphicsViewMessageController::GraphicsViewMessageController(QGraphicsView *view)
+    : m_graphics_view(view)
 {
-public:
-  explicit GraphicsViewMessageHandler(QGraphicsView* view);
+}
 
-  void SendMessage(const std::string& text) override;
+void GraphicsViewMessageController::AddMessage(const QString &text)
+{
 
-private:
-  QGraphicsView* m_graphics_view{nullptr};
-};
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_WIDGETS_GRAPHICSVIEWMESSAGEHANDLER_H
