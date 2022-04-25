@@ -22,8 +22,12 @@
 
 #include <QFrame>
 
+class QAbstractScrollArea;
+
 namespace sequencergui
 {
+
+class OverlayMessageFrame;
 
 //! Controls appearance of OverlayMessageFrame (position, show/hide) on top of widget.
 //! This particular implementation is intended to work wirh scroll areas.
@@ -33,7 +37,17 @@ class OverlayMessageController : public QObject
   Q_OBJECT
 
 public:
-  explicit OverlayMessageController(QObject* parent = nullptr);
+  explicit OverlayMessageController(OverlayMessageFrame* message, QAbstractScrollArea* area,
+                                    QObject* parent = nullptr);
+
+protected:
+  bool eventFilter(QObject* obj, QEvent* event) override;
+
+private:
+  void UpdateLabelGeometry();
+
+  OverlayMessageFrame* m_message_frame{nullptr};
+  QAbstractScrollArea* m_area{nullptr};
 };
 
 }  // namespace sequencergui
