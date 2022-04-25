@@ -29,6 +29,8 @@ GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *view)
 {
 }
 
+GraphicsViewMessageHandler::~GraphicsViewMessageHandler() = default;
+
 void GraphicsViewMessageHandler::SendMessage(const std::string &text)
 {
   m_message_controller->AddMessage(QString::fromStdString(text));

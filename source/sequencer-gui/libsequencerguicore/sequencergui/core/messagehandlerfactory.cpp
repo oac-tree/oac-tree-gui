@@ -20,6 +20,7 @@
 #include "sequencergui/core/messagehandlerfactory.h"
 
 #include "sequencergui/core/stdmessagehandler.h"
+#include "sequencergui/nodeeditor/graphicsviewmessagehandler.h"
 
 namespace sequencergui
 {
@@ -27,6 +28,11 @@ namespace sequencergui
 std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler()
 {
   return std::make_unique<StdMessageHandler>();
+}
+
+std::unique_ptr<MessageHandlerInterface> CreateGraphicsViewMessageHandler(QGraphicsView *view)
+{
+  return std::make_unique<GraphicsViewMessageHandler>(view);
 }
 
 }  // namespace sequencergui

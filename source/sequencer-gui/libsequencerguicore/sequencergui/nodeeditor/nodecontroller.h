@@ -45,12 +45,13 @@ class NodeController : public QObject
 public:
   explicit NodeController(QGraphicsScene* scene);
 
-  bool eventFilter(QObject* object, QEvent* event);
+  bool eventFilter(QObject* object, QEvent* event) override;
 
   NodePort* findPort(const QPointF& pos);
 
 signals:
-  void connectionRequest(ConnectableView* childView, ConnectableView* parentView);
+  void connectionRequest(sequencergui::ConnectableView* childView,
+                         sequencergui::ConnectableView* parentView);
   void selectionModeChangeRequest(int);
 
 private:

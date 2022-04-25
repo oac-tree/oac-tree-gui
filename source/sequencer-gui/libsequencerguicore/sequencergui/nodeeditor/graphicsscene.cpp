@@ -217,11 +217,16 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
   }
   catch (const mvvm::InvalidMoveException &ex)
   {
-    std::ostringstream ostr;
-    ostr << "Can't connect instructions. Maximum number of children exceeded? "
-         << "Details: '" << ex.what() << "'";
-    // FIXME implement unit test after implementing Error report mechanism
-    qWarning("%s", ostr.str().c_str());
+    if (m_message_handler)
+    {
+      std::ostringstream ostr;
+      ostr << "Can't connect instructions. Maximum number of children exceeded? ";
+      m_message_handler->SendMessage(ostr.str());
+    }
+    else
+    {
+      throw;
+    }
   }
 }
 

@@ -36,6 +36,7 @@ class GraphicsViewMessageHandler : public MessageHandlerInterface
 {
 public:
   explicit GraphicsViewMessageHandler(QGraphicsView* view);
+  ~GraphicsViewMessageHandler();
 
   void SendMessage(const std::string& text) override;
 
