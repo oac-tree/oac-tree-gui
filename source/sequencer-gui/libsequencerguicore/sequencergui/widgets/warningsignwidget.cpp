@@ -35,7 +35,7 @@ WarningSignWidget::WarningSignWidget(const QString &message, QWidget *parent)
   setAttribute(Qt::WA_NoSystemBackground);
   setToolTip("Click to see details");
 
-  m_pixmap = StyleUtils::GetIcon("dots-horizontal.svg").pixmap(QSize(48, 48));
+  m_pixmap = StyleUtils::GetIcon("bell-alert-outline.svg").pixmap(StyleUtils::ToolBarIconSize());
 
   setGeometry(0, 0, m_pixmap.width(), m_pixmap.height());
 }
