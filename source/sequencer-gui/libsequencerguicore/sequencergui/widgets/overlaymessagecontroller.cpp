@@ -24,25 +24,12 @@
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QAbstractScrollArea>
+#include <QApplication>
 #include <QEvent>
 #include <QScrollBar>
 
 namespace
 {
-
-//! Returns width of message box.
-int GetBoxWidth()
-{
-  const int number_of_characters = 40;
-  return mvvm::utils::WidthOfLetterM() * number_of_characters;
-}
-
-//! Returns height of message box.
-int GetBoxHeight()
-{
-  const int number_of_characters = 10;
-  return mvvm::utils::HeightOfLetterM() * number_of_characters;
-}
 
 //! Returns horizontal distance to the widget corner.
 int GetXposOffset()
@@ -63,8 +50,8 @@ int GetYposOffset()
 namespace sequencergui
 {
 
-OverlayMessageController::OverlayMessageController(OverlayMessageFrame* message,
-                                                   QWidget *area, QObject* parent)
+OverlayMessageController::OverlayMessageController(OverlayMessageFrame* message, QWidget* area,
+                                                   QObject* parent)
     : QObject(parent), m_message_frame(message), m_area(area)
 {
   m_area->installEventFilter(this);
@@ -84,7 +71,7 @@ bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)
 
 void OverlayMessageController::UpdateLabelGeometry()
 {
-  m_message_frame->SetRectangle(QRect(0, 0, GetBoxWidth(), GetBoxHeight()));
+//  m_message_frame->SetRectangle(QRect(0, 0, GetMaximumBoxWidth(), GetMaximumBoxHeight()));
 
   auto pos = GetBoxPosition();
   m_message_frame->SetPosition(pos.x(), pos.y());
@@ -95,8 +82,8 @@ void OverlayMessageController::UpdateLabelGeometry()
 
 QPoint OverlayMessageController::GetBoxPosition() const
 {
-  int x = m_area->width() - GetBoxWidth() - GetXposOffset();
-  int y = m_area->height() - GetBoxHeight() - GetYposOffset();
+  int x = m_area->width() - m_message_frame->width() - GetXposOffset();
+  int y = m_area->height() - m_message_frame->height() - GetYposOffset();
 
   // shift position a bit, if scroll bars are present and visible
   if (auto scroll_area = dynamic_cast<QAbstractScrollArea*>(m_area); scroll_area)

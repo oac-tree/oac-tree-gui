@@ -22,23 +22,39 @@
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QColor>
+#include <QDebug>
 #include <QFont>
 #include <QPainter>
+
+namespace
+{
+//! Returns width of message box.
+int GetMaximumBoxWidth()
+{
+  const int number_of_characters = 40;
+  return mvvm::utils::WidthOfLetterM() * number_of_characters;
+}
+
+//! Returns height of message box.
+int GetMinimumBoxHeight()
+{
+  const int number_of_characters = 4;
+  return mvvm::utils::HeightOfLetterM() * number_of_characters;
+}
+
+}  // namespace
 
 namespace sequencergui
 {
 
 OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
-    : QFrame(parent), m_text(text)
+    : QFrame(parent)
+    , m_text(text)
+    , m_bounding_rect(0, 0, GetMaximumBoxWidth(), GetMinimumBoxHeight())
+    , m_font("Monospace", mvvm::utils::SystemPointSize(), QFont::Normal, true)
 {
   setAttribute(Qt::WA_TransparentForMouseEvents);
   setAttribute(Qt::WA_NoSystemBackground);
-//  setWindowOpacity(0.2);
-}
-
-void OverlayMessageFrame::SetRectangle(const QRect& rect)
-{
-  m_bounding_rect = rect;
 }
 
 void OverlayMessageFrame::SetPosition(int x, int y)
@@ -51,12 +67,11 @@ void OverlayMessageFrame::paintEvent(QPaintEvent* event)
   Q_UNUSED(event);
   QPainter painter(this);
   painter.setBrush(QColor(Qt::lightGray));
-  QFont serifFont("Monospace", mvvm::utils::SystemPointSize(), QFont::Normal, true);
-  painter.setFont(serifFont);
+  painter.setFont(m_font);
   painter.drawRect(m_bounding_rect);
   auto margin = mvvm::utils::WidthOfLetterM();
   painter.drawText(m_bounding_rect.marginsRemoved(QMargins(margin, margin, margin, margin)),
-                   Qt::AlignCenter, m_text);
+                   Qt::TextWordWrap, m_text);
 }
 
 }  // namespace sequencergui
