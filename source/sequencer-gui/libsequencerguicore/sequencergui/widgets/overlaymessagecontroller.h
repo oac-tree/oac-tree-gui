@@ -23,6 +23,7 @@
 #include <QFrame>
 
 class QAbstractScrollArea;
+class QPoint;
 
 namespace sequencergui
 {
@@ -30,7 +31,8 @@ namespace sequencergui
 class OverlayMessageFrame;
 
 //! Controls appearance of OverlayMessageFrame (position, show/hide) on top of widget.
-//! Current implementation is intended to work with scroll areas.
+//! Current implementation places message box at the lower bottom conrner of widget (hardcoded
+//! behavior for the moment).
 
 class OverlayMessageController : public QObject
 {
@@ -45,6 +47,7 @@ protected:
 
 private:
   void UpdateLabelGeometry();
+  QPoint GetBoxPosition() const;
 
   OverlayMessageFrame* m_message_frame{nullptr};
   QAbstractScrollArea* m_area{nullptr};

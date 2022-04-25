@@ -21,9 +21,44 @@
 
 #include "sequencergui/widgets/overlaymessageframe.h"
 
+#include "mvvm/widgets/widgetutils.h"
+
 #include <QAbstractScrollArea>
 #include <QEvent>
-#include <QDebug>
+#include <QScrollBar>
+
+namespace
+{
+
+//! Returns width of message box.
+int GetBoxWidth()
+{
+  const int number_of_characters = 40;
+  return mvvm::utils::WidthOfLetterM() * number_of_characters;
+}
+
+//! Returns height of message box.
+int GetBoxHeight()
+{
+  const int number_of_characters = 10;
+  return mvvm::utils::HeightOfLetterM() * number_of_characters;
+}
+
+//! Returns horizontal distance to the widget corner.
+int GetXposOffset()
+{
+  const int number_of_characters = 1;
+  return mvvm::utils::WidthOfLetterM() * number_of_characters;
+}
+
+//! Returns horizontal distance to the widget corner.
+int GetYposOffset()
+{
+  const int number_of_characters = 1;
+  return mvvm::utils::HeightOfLetterM() * number_of_characters;
+}
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -49,14 +84,36 @@ bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)
 
 void OverlayMessageController::UpdateLabelGeometry()
 {
-  if (!m_message_frame || !m_area)
-  {
-    return;
-  }
-  qDebug() << "aaaa " << m_area->width() << m_area->height();
+  m_message_frame->SetRectangle(QRect(0, 0, GetBoxWidth(), GetBoxHeight()));
 
-  m_message_frame->SetRectangle(QRect(0, 0, m_area->width(), m_area->height()));
-  m_message_frame->SetPosition(0, 0);
+  auto pos = GetBoxPosition();
+  m_message_frame->SetPosition(pos.x(), pos.y());
+}
+
+//! Caclulates position of message box.
+//! Takes into account scroll bars if exist.
+
+QPoint OverlayMessageController::GetBoxPosition() const
+{
+  int x = m_area->width() - GetBoxWidth() - GetXposOffset();
+  int y = m_area->height() - GetBoxHeight() - GetYposOffset();
+
+  // shift position a bit, if scroll bars are present and visible
+  if (QAbstractScrollArea* scroll_area = dynamic_cast<QAbstractScrollArea*>(m_area); scroll_area)
+  {
+    if (QScrollBar* horizontal = scroll_area->horizontalScrollBar();
+        horizontal && horizontal->isVisible())
+    {
+      y -= horizontal->height();
+    }
+
+    if (QScrollBar* vertical = scroll_area->verticalScrollBar(); vertical && vertical->isVisible())
+    {
+      x -= vertical->width();
+    }
+  }
+
+  return {x, y};
 }
 
 }  // namespace sequencergui
