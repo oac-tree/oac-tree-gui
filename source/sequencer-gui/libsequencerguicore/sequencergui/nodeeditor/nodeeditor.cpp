@@ -19,6 +19,7 @@
 
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
+#include "sequencergui/core/messagehandlerfactory.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
@@ -51,6 +52,9 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
 
   //  layout->addWidget(m_tool_bar);
   //  layout->addWidget(m_graphics_view);
+
+  auto message_handler = CreateGraphicsViewMessageHandler(m_graphics_view);
+  m_graphics_scene->SetMessageHandler(std::move(message_handler));
 
   m_tool_bar->setMovable(false);
 

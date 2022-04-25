@@ -23,6 +23,7 @@
 
 #include <QAbstractScrollArea>
 #include <QEvent>
+#include <QDebug>
 
 namespace sequencergui
 {
@@ -33,6 +34,7 @@ OverlayMessageController::OverlayMessageController(OverlayMessageFrame* message,
 {
   m_area->installEventFilter(this);
   UpdateLabelGeometry();
+  m_message_frame->show();
 }
 
 bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)
@@ -51,6 +53,8 @@ void OverlayMessageController::UpdateLabelGeometry()
   {
     return;
   }
+  qDebug() << "aaaa " << m_area->width() << m_area->height();
+
   m_message_frame->SetRectangle(QRect(0, 0, m_area->width(), m_area->height()));
   m_message_frame->SetPosition(0, 0);
 }

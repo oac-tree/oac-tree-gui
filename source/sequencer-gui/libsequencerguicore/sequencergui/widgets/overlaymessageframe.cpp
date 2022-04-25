@@ -31,6 +31,8 @@ namespace sequencergui
 OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
     : QFrame(parent), m_text(text)
 {
+  setAttribute(Qt::WA_TransparentForMouseEvents);
+  setAttribute(Qt::WA_NoSystemBackground);
 }
 
 void OverlayMessageFrame::SetRectangle(const QRect& rect)
@@ -50,7 +52,7 @@ void OverlayMessageFrame::paintEvent(QPaintEvent* event)
   painter.setBrush(QColor(Qt::lightGray));
   QFont serifFont("Monospace", mvvm::utils::SystemPointSize(), QFont::Normal, true);
   painter.setFont(serifFont);
-  //    painter.drawRect(m_bounding_rect);
+  painter.drawRect(m_bounding_rect);
   auto margin = mvvm::utils::WidthOfLetterM();
   painter.drawText(m_bounding_rect.marginsRemoved(QMargins(margin, margin, margin, margin)),
                    Qt::AlignCenter, m_text);
