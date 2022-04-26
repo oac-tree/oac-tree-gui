@@ -149,6 +149,10 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  const double sequence_x = 10;
+  const double sequence_y = 20;
+  sequence->SetX(sequence_x);
+  sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
   auto context = CreateContext(sequence, nullptr);
@@ -166,7 +170,18 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
   auto instructions = sequence->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
   EXPECT_EQ(instructions.at(1)->GetType(), MessageItem::Type);
+
+  // Check coordinates of Wait instruction. It should be placed nearby to original
+  // instruction
+
+  // hardcoded in composeractions.cpp in UpdateChildCoordinate() function
+  const double coordinate_offset = 10;
+
+  EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);
+  EXPECT_EQ(instructions.at(1)->GetY(), coordinate_offset + sequence_y);
 }
+
+
 
 //! Attempt to insert instruction into the one, that can't have children.
 

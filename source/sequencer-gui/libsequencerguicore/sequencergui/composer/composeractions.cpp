@@ -42,8 +42,10 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
   if (auto inserted_instruction = dynamic_cast<sequencergui::InstructionItem *>(child);
       inserted_instruction)
   {
-    inserted_instruction->SetX(reference ? reference->GetX() + coordinate_offset : default_center.x());
-    inserted_instruction->SetY(reference ? reference->GetY() + coordinate_offset : default_center.y());
+    inserted_instruction->SetX(reference ? reference->GetX() + coordinate_offset
+                                         : default_center.x());
+    inserted_instruction->SetY(reference ? reference->GetY() + coordinate_offset
+                                         : default_center.y());
   }
 }
 
@@ -116,6 +118,7 @@ void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
 
   auto item = m_context.selected_instruction();
   auto child = InsertItem(item_type.toStdString(), item, mvvm::TagIndex::Append());
+  UpdateChildCoordinate(item, child);
 }
 
 //! Removes currently selected instruction.
