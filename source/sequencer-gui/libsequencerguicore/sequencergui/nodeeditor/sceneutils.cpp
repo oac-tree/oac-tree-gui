@@ -50,6 +50,26 @@ bool HasNoPosition(sequencergui::InstructionItem* instruction)
 namespace sequencergui
 {
 
+QSizeF GetGraphicsViewportSize()
+{
+  return {6000.0, 6000.0};
+}
+
+QPointF GetGraphicsViewportOrigin()
+{
+  return {-3000.0, 0.0};
+}
+
+QPointF GetGraphicsViewportCenter()
+{
+  // y-axis on graphics scene is pointing downwards. Our scene's corners looks like this:
+  // (-3000, 0)     (3000, 0)
+  // (-3000, 6000)  (3000, 6000)
+  const auto origin = GetGraphicsViewportOrigin();
+  const auto size = GetGraphicsViewportSize();
+  return {origin.x() + size.width()/2, origin.y() + size.height()/2};
+}
+
 double GetAlignmentGridWidth()
 {
   return sequencergui::ConnectableViewRectangle().width() * 1.4;

@@ -31,12 +31,22 @@ class QColor;
 class QRectF;
 class QPointF;
 class QString;
+class QSizeF;
 
 namespace sequencergui
 {
 class InstructionContainerItem;
 class InstructionItem;
 class SequencerModel;
+
+//! Returns maximum size of graphics viewport.
+QSizeF GetGraphicsViewportSize();
+
+//! Returns origin of graphics viewport.
+QPointF GetGraphicsViewportOrigin();
+
+//! Returns initial center of graphics viewport.
+QPointF GetGraphicsViewportCenter();
 
 //! Returns vertical gradient to paint connectable view with given color and bounding rectangle.
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect);

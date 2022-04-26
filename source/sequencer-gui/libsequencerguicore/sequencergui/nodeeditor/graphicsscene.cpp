@@ -41,10 +41,11 @@
 
 namespace
 {
-const double scene_origin_x{-3000.0};
-const double scene_origin_y{0.0};
 
-const QRectF default_scene_rect{QPointF{scene_origin_x, scene_origin_y}, QSizeF{6000, 6000}};
+QRectF GetDefaultSceneRect()
+{
+  return {sequencergui::GetGraphicsViewportOrigin(), sequencergui::GetGraphicsViewportSize()};
+}
 
 sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *view)
 {
@@ -75,7 +76,7 @@ namespace sequencergui
 GraphicsScene::GraphicsScene(QObject *parent)
     : QGraphicsScene(parent), m_node_controller(new NodeController(this))
 {
-  setSceneRect(default_scene_rect);
+  setSceneRect(GetDefaultSceneRect());
 
   connect(m_node_controller.get(), &NodeController::connectionRequest, this,
           &GraphicsScene::onConnectionRequest);
