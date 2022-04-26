@@ -28,6 +28,24 @@
 
 #include <QDebug>
 #include <sstream>
+
+namespace
+{
+
+//! Update child coordinate so it is located near the reference
+void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm::SessionItem *child)
+{
+  const int coordinate_offset = 10;  // to place a child aproximately near the parent
+  if (auto inserted_instruction = dynamic_cast<sequencergui::InstructionItem *>(child);
+      inserted_instruction)
+  {
+    inserted_instruction->SetX(reference ? reference->GetX() + coordinate_offset : 0.0);
+    inserted_instruction->SetY(reference ? reference->GetY() + coordinate_offset : 3000);
+  }
+}
+
+}  // namespace
+
 namespace sequencergui
 {
 
@@ -73,7 +91,8 @@ void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
   auto parent = item ? item->GetParent() : procedure->GetInstructionContainer();
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
-  InsertItem(item_type.toStdString(), parent, tagindex);
+  auto child = InsertItem(item_type.toStdString(), parent, tagindex);
+  UpdateChildCoordinate(item, child);
 }
 
 //! Inserts new instruction of given type after the current selection.
@@ -93,7 +112,7 @@ void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
   auto selected_instruction = m_context.selected_instruction();
 
   auto item = m_context.selected_instruction();
-  InsertItem(item_type.toStdString(), item, mvvm::TagIndex::Append());
+  auto child = InsertItem(item_type.toStdString(), item, mvvm::TagIndex::Append());
 }
 
 //! Removes currently selected instruction.
@@ -137,12 +156,14 @@ void ComposerActions::OnRemoveVariableRequest()
   }
 }
 
-void ComposerActions::InsertItem(const std::string &item_type, mvvm::SessionItem *parent,
-                                 const mvvm::TagIndex &index)
+mvvm::SessionItem *ComposerActions::InsertItem(const std::string &item_type,
+                                               mvvm::SessionItem *parent,
+                                               const mvvm::TagIndex &index)
 {
+  mvvm::SessionItem *result{nullptr};
   try
   {
-    m_model->InsertNewItem(item_type, parent, index);
+    result = m_model->InsertNewItem(item_type, parent, index);
   }
   catch (const mvvm::InvalidInsertException &ex)
   {
@@ -158,6 +179,7 @@ void ComposerActions::InsertItem(const std::string &item_type, mvvm::SessionItem
       throw;
     }
   }
+  return result;
 }
 
 }  // namespace sequencergui

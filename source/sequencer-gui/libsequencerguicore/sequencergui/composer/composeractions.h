@@ -23,14 +23,13 @@
 #include "sequencergui/composer/composercontext.h"
 
 #include <QObject>
-
 #include <memory>
 
 namespace mvvm
 {
 class SessionItem;
 class TagIndex;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -64,7 +63,8 @@ public:
   void OnRemoveVariableRequest();
 
 private:
-  void InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent, const ::mvvm::TagIndex& index);
+  ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
+                                  const ::mvvm::TagIndex& index);
 
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
