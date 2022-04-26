@@ -21,7 +21,7 @@
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
 
 #include "BasicScalarTypes.h"
-#include "IAnySerializer.h"
+#include "IAnyVisitor.h"
 #include "anyvalue_type.h"
 
 namespace anyvalueeditor
@@ -29,27 +29,27 @@ namespace anyvalueeditor
 
 class AnyValueItem;
 
-class AnyValueItemBuilder : public sup::dto::IAnySerializer<sup::dto::AnyValue>
+class AnyValueItemBuilder : public sup::dto::IAnyVisitor<const sup::dto::AnyValue>
 {
 public:
   explicit AnyValueItemBuilder(AnyValueItem* item);
 
-  void AddEmptyProlog(const anyvalue_t* anyvalue) override;
-  void AddEmptyEpilog(const anyvalue_t* anyvalue) override;
+  void EmptyProlog(const anyvalue_t* anyvalue) override;
+  void EmptyEpilog(const anyvalue_t* anyvalue) override;
 
-  void AddStructProlog(const anyvalue_t* anyvalue) override;
-  void AddStructMemberSeparator() override;
-  void AddStructEpilog(const anyvalue_t* anyvalue) override;
+  void StructProlog(const anyvalue_t* anyvalue) override;
+  void StructMemberSeparator() override;
+  void StructEpilog(const anyvalue_t* anyvalue) override;
 
-  void AddMemberProlog(const anyvalue_t* anyvalue, const std::string& member_name) override;
-  void AddMemberEpilog(const anyvalue_t* anyvalue, const std::string& member_name) override;
+  void MemberProlog(const anyvalue_t* anyvalue, const std::string& member_name) override;
+  void MemberEpilog(const anyvalue_t* anyvalue, const std::string& member_name) override;
 
-  void AddArrayProlog(const anyvalue_t* anyvalue) override;
-  void AddArrayElementSeparator() override;
-  void AddArrayEpilog(const anyvalue_t* anyvalue) override;
+  void ArrayProlog(const anyvalue_t* anyvalue) override;
+  void ArrayElementSeparator() override;
+  void ArrayEpilog(const anyvalue_t* anyvalue) override;
 
-  void AddScalarProlog(const anyvalue_t* anyvalue) override;
-  void AddScalarEpilog(const anyvalue_t* anyvalue) override;
+  void ScalarProlog(const anyvalue_t* anyvalue) override;
+  void ScalarEpilog(const anyvalue_t* anyvalue) override;
 
 private:
   AnyValueItem* m_item{nullptr};
