@@ -28,7 +28,7 @@ class QGraphicsView;
 namespace sequencergui
 {
 
-class GraphicsViewMessageController;
+class WidgetMessageAppearanceController;
 
 //!
 
@@ -41,7 +41,7 @@ public:
   void SendMessage(const std::string& text) override;
 
 private:
-  std::unique_ptr<GraphicsViewMessageController> m_message_controller;
+  std::unique_ptr<WidgetMessageAppearanceController> m_message_controller;
 };
 
 }  // namespace sequencergui
