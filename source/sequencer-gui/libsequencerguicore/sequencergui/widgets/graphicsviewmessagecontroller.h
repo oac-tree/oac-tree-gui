@@ -23,7 +23,7 @@
 #include <QObject>
 #include <memory>
 
-class QGraphicsView;
+class QWidget;
 class QTimer;
 
 namespace sequencergui
@@ -31,7 +31,7 @@ namespace sequencergui
 
 class OverlayMessage;
 
-//! Controls appearance of overlay messages on top of graphics view.
+//! Controls appearance of overlay messages on top of arbitrary widget.
 //! Current implementation is simplified and allows only single message on the screen.
 
 class GraphicsViewMessageController : public QObject
@@ -39,7 +39,7 @@ class GraphicsViewMessageController : public QObject
   Q_OBJECT
 
 public:
-  explicit GraphicsViewMessageController(QGraphicsView* view);
+  explicit GraphicsViewMessageController(QWidget* widget);
   ~GraphicsViewMessageController() override;
 
   void AddMessage(const QString& text);
@@ -47,7 +47,7 @@ public:
 private:
   void RemoveMessageOnTimeout();
 
-  QGraphicsView* m_graphics_view{nullptr};
+  QWidget* m_widget{nullptr};
   std::unique_ptr<OverlayMessage> m_message;
   QTimer* m_timer{nullptr};
 };

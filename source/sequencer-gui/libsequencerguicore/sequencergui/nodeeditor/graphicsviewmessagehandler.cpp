@@ -21,6 +21,8 @@
 
 #include "sequencergui/widgets/graphicsviewmessagecontroller.h"
 
+#include <QGraphicsView>
+
 namespace sequencergui
 {
 
