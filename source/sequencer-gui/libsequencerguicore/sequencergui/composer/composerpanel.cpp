@@ -21,11 +21,11 @@
 
 #include "sequencergui/composer/aggregatepanel.h"
 #include "sequencergui/composer/instructionitempanel.h"
-#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 #include "sequencergui/widgets/itemlistwidget.h"
+#include "sequencergui/widgets/paneltoolbar.h"
 
 #include <QLabel>
 #include <QToolBar>

@@ -19,9 +19,9 @@
 
 #include "sequencergui/explorer/proceduretreeswidget.h"
 
-#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/widgets/paneltoolbar.h"
 
 #include "mvvm/widgets/propertytreeview.h"
 #include "mvvm/widgets/topitemstreeview.h"

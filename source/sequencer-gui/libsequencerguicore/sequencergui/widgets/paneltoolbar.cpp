@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/paneltoolbar.h"
+#include "sequencergui/widgets/paneltoolbar.h"
 
 #include "sequencergui/mainwindow/styleutils.h"
 

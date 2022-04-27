@@ -20,7 +20,7 @@
 #include "sequencergui/explorer/explorerpanel.h"
 
 #include "sequencergui/widgets/filetreeview.h"
-#include "sequencergui/mainwindow/paneltoolbar.h"
+#include "sequencergui/widgets/paneltoolbar.h"
 #include "sequencergui/mainwindow/procedurelistview.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/widgets/collapsiblelistview.h"

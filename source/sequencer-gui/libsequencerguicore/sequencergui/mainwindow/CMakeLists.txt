@@ -5,8 +5,6 @@ target_sources(${library_name} PRIVATE
   appsettings.h
   mainwindow.cpp
   mainwindow.h
-  paneltoolbar.cpp
-  paneltoolbar.h
   projecthandler.cpp
   projecthandler.h
   procedurelistview.cpp

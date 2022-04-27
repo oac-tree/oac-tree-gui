@@ -19,10 +19,10 @@
 
 #include "sequencergui/monitor/monitorpanel.h"
 
-#include "sequencergui/mainwindow/paneltoolbar.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/monitor/joblistview.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
+#include "sequencergui/widgets/paneltoolbar.h"
 
 #include <QToolBar>
 #include <QToolButton>

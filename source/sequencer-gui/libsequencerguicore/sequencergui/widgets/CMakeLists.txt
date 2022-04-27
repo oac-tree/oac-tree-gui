@@ -19,6 +19,8 @@ target_sources(${library_name} PRIVATE
   overlaymessageframe.h
   overlaywidgetpositionstrategy.cpp
   overlaywidgetpositionstrategy.h
+  paneltoolbar.cpp
+  paneltoolbar.h
   warningsignwidget.cpp
   warningsignwidget.h
   widgetoverlaymessagepublisher.cpp
