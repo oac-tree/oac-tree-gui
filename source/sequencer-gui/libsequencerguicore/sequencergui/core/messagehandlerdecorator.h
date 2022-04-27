@@ -17,29 +17,32 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MOCKMESSAGEHANDLER_H
-#define MOCKMESSAGEHANDLER_H
+#ifndef SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
+#define SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
 
 #include "sequencergui/core/messagehandlerinterface.h"
 
-#include <gmock/gmock.h>
-
 #include <memory>
-#include <string>
 
-//! Mock class to use as MessageHandler.
+namespace sequencergui
+{
 
-class MockMessageHandler : public sequencergui::MessageHandlerInterface
+//! Decorator for message handler. Used when we have to use MessageHandler with unique_ptr but still
+//! don't want to pass ownership.
+
+class MessageHandlerDecorator : public MessageHandlerInterface
 {
 public:
-  MOCK_METHOD1(SendMessage, void(const std::string&));
+  explicit MessageHandlerDecorator(MessageHandlerInterface* component);
+
+  static std::unique_ptr<MessageHandlerInterface> Create(MessageHandlerInterface* component);
+
+  void SendMessage(const std::string& text) override;
+
+private:
+  MessageHandlerInterface* m_component{nullptr};
 };
 
-//! Create decorator around MockMessageHandler.
-//! This is to avoid pasing unique_ptr<MockMessageHandler> directly, since it triggers
-//! googletest warnings related to testing::Mock::AllowLeak.
+}  // namespace sequencergui
 
-std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
-    MockMessageHandler* mock_handler);
-
-#endif  //  MOCKMESSAGEHANDLER_H
+#endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H

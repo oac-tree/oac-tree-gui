@@ -19,8 +19,10 @@
 
 #include "mockmessagehandler.h"
 
-std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(MockMessageHandler *mock_handler)
-{
-  return std::make_unique<TestMessageHandler>(mock_handler);
-}
+#include "sequencergui/core/messagehandlerdecorator.h"
 
+std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
+    MockMessageHandler *mock_handler)
+{
+  return sequencergui::MessageHandlerDecorator::Create(mock_handler);
+}
