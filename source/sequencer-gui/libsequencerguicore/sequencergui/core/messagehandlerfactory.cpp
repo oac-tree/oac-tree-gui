@@ -20,7 +20,7 @@
 #include "sequencergui/core/messagehandlerfactory.h"
 
 #include "sequencergui/core/stdmessagehandler.h"
-#include "sequencergui/nodeeditor/widgetoverlaymessageappearancecontroller.h"
+#include "sequencergui/nodeeditor/widgetoverlaymessagehandler.h"
 
 namespace sequencergui
 {
