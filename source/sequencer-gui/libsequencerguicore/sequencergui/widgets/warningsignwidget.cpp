@@ -26,6 +26,16 @@
 #include <QPainter>
 #include <QRect>
 
+namespace
+{
+QRect GetPixmapRect()
+{
+  auto size = sequencergui::StyleUtils::ToolBarIconSize();
+  return {0, 0, 32, 32};
+}
+
+}
+
 namespace sequencergui
 {
 
@@ -33,12 +43,13 @@ WarningSignWidget::WarningSignWidget(const QString &message, QWidget *parent)
     : QWidget(parent)
     , m_header("Houston, we have a problem.")
     , m_message(message)
-    , m_pixmap(":/icons/bell-alert-outline-32.png")
+    , m_pixmap(":/icons/bell-alert-outline.png")
 {
   setAttribute(Qt::WA_NoSystemBackground);
   setToolTip("Click to see details");
 
-  setGeometry(0, 0, m_pixmap.width(), m_pixmap.height());
+  auto rect = GetPixmapRect();
+  setGeometry(0, 0, rect.width(), rect.height());
 }
 
 void WarningSignWidget::SetHeader(const QString &header)
@@ -55,8 +66,8 @@ void WarningSignWidget::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event);
   QPainter painter(this);
-  QRect target(m_pixmap.rect());
-  painter.drawPixmap(target, m_pixmap);
+  painter.setRenderHint(QPainter::Antialiasing);
+  painter.drawPixmap(GetPixmapRect(), m_pixmap);
 }
 
 void WarningSignWidget::mousePressEvent(QMouseEvent *event)
