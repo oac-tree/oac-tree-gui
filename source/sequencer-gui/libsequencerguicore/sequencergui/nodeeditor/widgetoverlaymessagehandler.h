@@ -17,25 +17,33 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/graphicsviewmessagehandler.h"
+#ifndef SEQUENCERGUI_NODEEDITOR_WIDGETOVERLAYMESSAGEHANDLER_H
+#define SEQUENCERGUI_NODEEDITOR_WIDGETOVERLAYMESSAGEHANDLER_H
 
-#include "sequencergui/widgets/widgetmessageappearancecontroller.h"
+#include "sequencergui/core/messagehandlerinterface.h"
+#include <memory>
 
-#include <QGraphicsView>
+class QWidget;
 
 namespace sequencergui
 {
 
-GraphicsViewMessageHandler::GraphicsViewMessageHandler(QGraphicsView *view)
-    : m_message_controller(std::make_unique<WidgetMessageAppearanceController>(view))
-{
-}
+class WidgetMessageAppearanceController;
 
-GraphicsViewMessageHandler::~GraphicsViewMessageHandler() = default;
+//! Display messages in widget corner.
 
-void GraphicsViewMessageHandler::SendMessage(const std::string &text)
+class WidgetOverlayMessageHandler : public MessageHandlerInterface
 {
-  m_message_controller->AddMessage(QString::fromStdString(text));
-}
+public:
+  explicit WidgetOverlayMessageHandler(QWidget* view);
+  ~WidgetOverlayMessageHandler();
+
+  void SendMessage(const std::string& text) override;
+
+private:
+  std::unique_ptr<WidgetMessageAppearanceController> m_message_controller;
+};
 
 }  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_NODEEDITOR_WIDGETOVERLAYMESSAGEHANDLER_H

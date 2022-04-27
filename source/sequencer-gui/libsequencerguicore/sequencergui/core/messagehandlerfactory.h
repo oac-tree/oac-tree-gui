@@ -27,7 +27,7 @@
 
 #include <memory>
 
-class QGraphicsView;
+class QWidget;
 
 namespace sequencergui
 {
@@ -36,7 +36,7 @@ namespace sequencergui
 std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler();
 
 //! Creates message handler intended to work with the graphics view.
-std::unique_ptr<MessageHandlerInterface> CreateGraphicsViewMessageHandler(QGraphicsView* view);
+std::unique_ptr<MessageHandlerInterface> CreateGraphicsViewMessageHandler(QWidget *view);
 
 }
 

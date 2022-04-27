@@ -31,8 +31,8 @@ namespace sequencergui
 class OverlayMessageFrame;
 
 //! Controls appearance of OverlayMessageFrame (position, show/hide) on top of widget.
-//! Current implementation places message box at the lower bottom conrner of widget (hardcoded
-//! behavior for the moment).
+//! Current implementation places message box at the lower right corner of widget (hardcoded
+//! behavior).
 
 class OverlayMessageController : public QObject
 {

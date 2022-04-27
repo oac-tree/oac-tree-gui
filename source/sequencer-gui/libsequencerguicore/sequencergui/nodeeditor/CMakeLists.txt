@@ -13,8 +13,6 @@ target_sources(${library_name} PRIVATE
   graphicsscenecontroller.h
   graphicsview.cpp
   graphicsview.h
-  graphicsviewmessagehandler.cpp
-  graphicsviewmessagehandler.h
   nodeconnection.cpp
   nodeconnection.h
   nodecontroller.cpp
@@ -31,4 +29,6 @@ target_sources(${library_name} PRIVATE
   sceneutils.cpp
   sceneutils.h
   viewfactoryinterface.h
+  widgetoverlaymessagehandler.cpp
+  widgetoverlaymessagehandler.h
   )
