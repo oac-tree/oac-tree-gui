@@ -22,7 +22,7 @@
 #include "sequencergui/composer/composeractions.h"
 #include "sequencergui/composer/instructiontreewidget.h"
 #include "sequencergui/composer/workspacelistwidget.h"
-#include "sequencergui/core/messagehandlerfactory.h"
+#include "sequencergui/core/messagehandlerinterface.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/widgets/dotstoolbar.h"
@@ -36,7 +36,8 @@
 
 namespace sequencergui
 {
-ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
+ComposerProcedureEditor::ComposerProcedureEditor(
+    std::unique_ptr<MessageHandlerInterface> message_handler, QWidget* parent)
     : QWidget(parent)
     , m_tool_bar(new DotsToolBar)
     , m_tab_widget(new QTabWidget)
@@ -63,7 +64,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(QWidget* parent)
   layout->setMargin(0);
 
   // setting up ComposerActions
-  m_composer_actions->SetMessageHandler(CreateStdMessageHandler());
+  m_composer_actions->SetMessageHandler(std::move(message_handler));
   m_composer_actions->SetContext(CreateComposerContext());
 
   m_tool_bar->SetWidgets(m_instruction_tree->GetToolBarWidgets());

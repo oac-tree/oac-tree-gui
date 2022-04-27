@@ -42,6 +42,7 @@ class ComposerActions;
 class InstructionTreeWidget;
 class WorkspaceListWidget;
 class ComposerContext;
+class MessageHandlerInterface;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -52,7 +53,8 @@ class ComposerProcedureEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit ComposerProcedureEditor(QWidget* parent = nullptr);
+  explicit ComposerProcedureEditor(std::unique_ptr<MessageHandlerInterface> message_handler,
+                                   QWidget* parent = nullptr);
   ~ComposerProcedureEditor() override;
 
   void SetModel(SequencerModel* model);

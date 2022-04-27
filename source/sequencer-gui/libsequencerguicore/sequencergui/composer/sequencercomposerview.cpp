@@ -21,6 +21,7 @@
 
 #include "sequencergui/composer/composerpanel.h"
 #include "sequencergui/composer/composerprocedureeditor.h"
+#include "sequencergui/core/messagehandlerinterface.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
@@ -35,7 +36,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     : QWidget(parent)
     , m_composer_panel(new ComposerPanel)
     , m_node_editor(new NodeEditor)
-    , m_composer_tree_widget(new ComposerProcedureEditor)
+    , m_composer_tree_widget(new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
