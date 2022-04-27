@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGECONTROLLER_H
-#define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGECONTROLLER_H
+#ifndef SEQUENCERGUI_WIDGETS_OVERLAYWIDGETPOSITIONCONTROLLER_H
+#define SEQUENCERGUI_WIDGETS_OVERLAYWIDGETPOSITIONCONTROLLER_H
 
 #include <QFrame>
 
@@ -30,17 +30,17 @@ namespace sequencergui
 
 class OverlayMessageFrame;
 
-//! Controls appearance of OverlayMessageFrame (position, show/hide) on top of widget.
-//! Current implementation places message box at the lower right corner of widget (hardcoded
+//! Controls the appearance of overlay widget (position, show/hide) on top of another widget.
+//! Current implementation places a message box at the lower right corner of the widget (hardcoded
 //! behavior).
 
-class OverlayMessageController : public QObject
+class OverlayWidgetPositionStrategy : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit OverlayMessageController(QWidget* message_widget, QWidget* area,
-                                    QObject* parent = nullptr);
+  explicit OverlayWidgetPositionStrategy(QWidget* overlay_widget, QWidget* area,
+                                           QObject* parent = nullptr);
 
 protected:
   bool eventFilter(QObject* obj, QEvent* event) override;
@@ -49,10 +49,10 @@ private:
   void UpdateMessageWidgetGeometry();
   QPoint CalculateWidgetPosition() const;
 
-  QWidget* m_message_widget{nullptr};
+  QWidget* m_overlay_widget{nullptr};
   QWidget* m_area{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_OVERLAYMESSAGECONTROLLER_H
+#endif  // SEQUENCERGUI_WIDGETS_OVERLAYWIDGETPOSITIONCONTROLLER_H

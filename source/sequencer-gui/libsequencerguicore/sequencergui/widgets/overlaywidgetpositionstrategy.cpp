@@ -17,9 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/overlaymessagecontroller.h"
-
-#include "sequencergui/widgets/overlaymessageframe.h"
+#include "sequencergui/widgets/overlaywidgetpositionstrategy.h"
 
 #include "mvvm/widgets/widgetutils.h"
 
@@ -50,16 +48,16 @@ int GetYposOffset()
 namespace sequencergui
 {
 
-OverlayMessageController::OverlayMessageController(QWidget* message_widget, QWidget* area,
+OverlayWidgetPositionStrategy::OverlayWidgetPositionStrategy(QWidget* overlay_widget, QWidget* area,
                                                    QObject* parent)
-    : QObject(parent), m_message_widget(message_widget), m_area(area)
+    : QObject(parent), m_overlay_widget(overlay_widget), m_area(area)
 {
   m_area->installEventFilter(this);
-  m_message_widget->show();
+  m_overlay_widget->show();
   UpdateMessageWidgetGeometry();
 }
 
-bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)
+bool OverlayWidgetPositionStrategy::eventFilter(QObject* obj, QEvent* event)
 {
   if (event->type() == QEvent::Resize)
   {
@@ -69,20 +67,20 @@ bool OverlayMessageController::eventFilter(QObject* obj, QEvent* event)
   return QObject::eventFilter(obj, event);
 }
 
-void OverlayMessageController::UpdateMessageWidgetGeometry()
+void OverlayWidgetPositionStrategy::UpdateMessageWidgetGeometry()
 {
   auto pos = CalculateWidgetPosition();
-  m_message_widget->setGeometry(pos.x(), pos.y(), m_message_widget->width(),
-                               m_message_widget->height());
+  m_overlay_widget->setGeometry(pos.x(), pos.y(), m_overlay_widget->width(),
+                               m_overlay_widget->height());
 }
 
 //! Caclulates position of message widget to be aproximately at the lower right corner of the area.
 //! Takes into account scroll bars if exist.
 
-QPoint OverlayMessageController::CalculateWidgetPosition() const
+QPoint OverlayWidgetPositionStrategy::CalculateWidgetPosition() const
 {
-  int x = m_area->width() - m_message_widget->width() - GetXposOffset();
-  int y = m_area->height() - m_message_widget->height() - GetYposOffset();
+  int x = m_area->width() - m_overlay_widget->width() - GetXposOffset();
+  int y = m_area->height() - m_overlay_widget->height() - GetYposOffset();
 
   // shift position a bit, if scroll bars are present and visible
   if (auto scroll_area = dynamic_cast<QAbstractScrollArea*>(m_area); scroll_area)

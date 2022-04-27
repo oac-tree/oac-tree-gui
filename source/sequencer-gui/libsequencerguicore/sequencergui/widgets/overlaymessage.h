@@ -29,7 +29,7 @@ namespace sequencergui
 {
 
 class OverlayMessageFrame;
-class OverlayMessageController;
+class OverlayWidgetPositionStrategy;
 
 //! Represents a message on top of scroll area.
 
@@ -43,7 +43,7 @@ public:
 
 private:
   std::unique_ptr<QWidget> m_message_widget;
-  std::unique_ptr<OverlayMessageController> m_message_controller;
+  std::unique_ptr<OverlayWidgetPositionStrategy> m_position_strategy;
 };
 
 }  // namespace sequencergui
