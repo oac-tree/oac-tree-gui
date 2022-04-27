@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_WIDGETOVERLAYMESSAGEHANDLER_H
-#define SEQUENCERGUI_NODEEDITOR_WIDGETOVERLAYMESSAGEHANDLER_H
+#ifndef SEQUENCERGUI_CORE_WIDGETOVERLAYMESSAGEHANDLER_H
+#define SEQUENCERGUI_CORE_WIDGETOVERLAYMESSAGEHANDLER_H
 
 #include "sequencergui/core/messagehandlerinterface.h"
 #include <memory>
@@ -46,4 +46,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_WIDGETOVERLAYMESSAGEHANDLER_H
+#endif  // SEQUENCERGUI_CORE_WIDGETOVERLAYMESSAGEHANDLER_H

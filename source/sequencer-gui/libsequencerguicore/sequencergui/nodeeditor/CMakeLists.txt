@@ -29,6 +29,4 @@ target_sources(${library_name} PRIVATE
   sceneutils.cpp
   sceneutils.h
   viewfactoryinterface.h
-  widgetoverlaymessagehandler.cpp
-  widgetoverlaymessagehandler.h
   )

@@ -6,5 +6,7 @@ target_sources(${library_name} PRIVATE
   messagehandlerfactory.h
   stdmessagehandler.cpp
   stdmessagehandler.h
+  widgetoverlaymessagehandler.cpp
+  widgetoverlaymessagehandler.h
 )
 
