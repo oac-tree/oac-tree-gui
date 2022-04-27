@@ -21,8 +21,8 @@ target_sources(${library_name} PRIVATE
   overlaywidgetpositionstrategy.h
   warningsignwidget.cpp
   warningsignwidget.h
-  widgetoverlaymessageappearancecontroller.cpp
-  widgetoverlaymessageappearancecontroller.h
+  widgetoverlaymessagepublisher.cpp
+  widgetoverlaymessagepublisher.h
   widgetutils.cpp
   widgetutils.h
   )

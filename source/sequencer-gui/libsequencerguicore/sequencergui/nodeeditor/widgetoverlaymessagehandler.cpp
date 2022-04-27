@@ -19,14 +19,14 @@
 
 #include "sequencergui/nodeeditor/widgetoverlaymessagehandler.h"
 
-#include "sequencergui/widgets/widgetoverlaymessageappearancecontroller.h"
+#include "sequencergui/widgets/widgetoverlaymessagepublisher.h"
 
 
 namespace sequencergui
 {
 
 WidgetOverlayMessageHandler::WidgetOverlayMessageHandler(QWidget *view)
-    : m_message_controller(std::make_unique<WidgetOverlayMessageAppearanceController>(view))
+    : m_message_publisher(std::make_unique<WidgetOverlayMessagePublisher>(view))
 {
 }
 
@@ -34,7 +34,7 @@ WidgetOverlayMessageHandler::~WidgetOverlayMessageHandler() = default;
 
 void WidgetOverlayMessageHandler::SendMessage(const std::string &text)
 {
-  m_message_controller->AddMessage(QString::fromStdString(text));
+  m_message_publisher->AddMessage(QString::fromStdString(text));
 }
 
 }  // namespace sequencergui

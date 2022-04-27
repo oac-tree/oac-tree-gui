@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEAPPEARANCECONTROLLER_H
-#define SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEAPPEARANCECONTROLLER_H
+#ifndef SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEPUBLISHER_H
+#define SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEPUBLISHER_H
 
 #include <QObject>
 #include <memory>
@@ -34,24 +34,24 @@ class OverlayMessage;
 //! Controls appearance of overlay messages on top of arbitrary widget.
 //! Current implementation is simplified and allows only single message on the screen.
 
-class WidgetOverlayMessageAppearanceController : public QObject
+class WidgetOverlayMessagePublisher : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit WidgetOverlayMessageAppearanceController(QWidget* widget);
-  ~WidgetOverlayMessageAppearanceController() override;
+  explicit WidgetOverlayMessagePublisher(QWidget* target_widget);
+  ~WidgetOverlayMessagePublisher() override;
 
   void AddMessage(const QString& text);
 
 private:
   void RemoveMessageOnTimeout();
 
-  QWidget* m_widget{nullptr};
+  QWidget* m_target_widget{nullptr};
   std::unique_ptr<OverlayMessage> m_message;
   QTimer* m_timer{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEAPPEARANCECONTROLLER_H
+#endif  // SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEPUBLISHER_H
