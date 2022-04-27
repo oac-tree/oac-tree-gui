@@ -44,6 +44,7 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
     , m_tool_bar(new NodeEditorToolBar)
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
+    , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
   //  auto layout = new QVBoxLayout(this);
   //  layout->setContentsMargins(0, 0, 0, 0);
@@ -53,8 +54,7 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
   //  layout->addWidget(m_tool_bar);
   //  layout->addWidget(m_graphics_view);
 
-  auto message_handler = CreateWidgetOverlayMessageHandler(m_graphics_view);
-  m_graphics_scene->SetMessageHandler(std::move(message_handler));
+  m_graphics_scene->SetMessageHandler(CreateMessageHandler());
 
   m_tool_bar->setMovable(false);
 
@@ -99,6 +99,14 @@ std::vector<InstructionItem *> NodeEditor::GetSelectedInstructions() const
 void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions) const
 {
   m_graphics_scene->SetSelectedInstructions(instructions);
+}
+
+//! Creates message handler that can be used to publish messages at the lower right corner of
+//! graphics view.
+
+std::unique_ptr<MessageHandlerInterface> NodeEditor::CreateMessageHandler()
+{
+  return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
 }
 
 void NodeEditor::SetupConnections()

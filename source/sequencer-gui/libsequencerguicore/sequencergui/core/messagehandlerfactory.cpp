@@ -19,6 +19,7 @@
 
 #include "sequencergui/core/messagehandlerfactory.h"
 
+#include "sequencergui/core/messagehandlerdecorator.h"
 #include "sequencergui/core/stdmessagehandler.h"
 #include "sequencergui/core/widgetoverlaymessagehandler.h"
 
@@ -33,6 +34,12 @@ std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler()
 std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget *view)
 {
   return std::make_unique<WidgetOverlayMessageHandler>(view);
+}
+
+std::unique_ptr<MessageHandlerInterface> CreateMessageHandlerDecorator(
+    MessageHandlerInterface *component)
+{
+  return MessageHandlerDecorator::Create(component);
 }
 
 }  // namespace sequencergui

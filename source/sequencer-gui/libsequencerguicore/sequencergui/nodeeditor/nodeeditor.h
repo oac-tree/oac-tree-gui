@@ -34,6 +34,7 @@ class GraphicsSceneController;
 class InstructionItem;
 class NodeEditorToolBar;
 class ProcedureItem;
+class MessageHandlerInterface;
 
 //! NodeEditor widget (central part of SequencerComposerView).
 
@@ -53,6 +54,8 @@ public:
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
+  std::unique_ptr<MessageHandlerInterface> CreateMessageHandler();
+
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
 
@@ -63,6 +66,7 @@ private:
   GraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
+  std::unique_ptr<MessageHandlerInterface> m_graphics_view_message_handler;
 
   SequencerModel* m_model{nullptr};
 };

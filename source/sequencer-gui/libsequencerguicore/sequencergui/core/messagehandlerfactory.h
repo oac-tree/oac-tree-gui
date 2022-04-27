@@ -36,8 +36,12 @@ namespace sequencergui
 std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler();
 
 //! Creates message handler intended to work with the graphics view.
-std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget *view);
+std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget* view);
 
-}
+//! Creates message handler decorator.
+std::unique_ptr<MessageHandlerInterface> CreateMessageHandlerDecorator(
+    MessageHandlerInterface* component);
 
-#endif // SEQUENCERGUI_CORE_MESSAGEHANDLERFACTORY_H
+}  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERFACTORY_H
