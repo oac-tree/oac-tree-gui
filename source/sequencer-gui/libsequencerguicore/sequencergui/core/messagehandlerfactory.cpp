@@ -30,7 +30,7 @@ std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler()
   return std::make_unique<StdMessageHandler>();
 }
 
-std::unique_ptr<MessageHandlerInterface> CreateGraphicsViewMessageHandler(QWidget *view)
+std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget *view)
 {
   return std::make_unique<WidgetOverlayMessageHandler>(view);
 }

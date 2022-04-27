@@ -53,7 +53,7 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
   //  layout->addWidget(m_tool_bar);
   //  layout->addWidget(m_graphics_view);
 
-  auto message_handler = CreateGraphicsViewMessageHandler(m_graphics_view);
+  auto message_handler = CreateWidgetOverlayMessageHandler(m_graphics_view);
   m_graphics_scene->SetMessageHandler(std::move(message_handler));
 
   m_tool_bar->setMovable(false);
