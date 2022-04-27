@@ -35,9 +35,9 @@ const std::string footer{R"RAW(</root>
 
 }  // namespace
 
-namespace TestUtils
+namespace testutils
 {
-std::string GetTestOutputDir()
+std::string GetTestSuiteOutputDir()
 {
   return sequencergui::TestConfig::TestOutputDir();  // defined in auto-generated testconfig.h
 }
@@ -63,4 +63,4 @@ void CreateTextFile(const std::string &file_name, const std::string &content)
   file_out.write(content.c_str(), content.size());
 }
 
-}  // namespace TestUtils
+}  // namespace testutils

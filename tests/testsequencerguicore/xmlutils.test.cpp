@@ -60,7 +60,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
-  TestUtils::CreateTextFile(file_name, CreateProcedureString(body));
+  testutils::CreateTextFile(file_name, CreateProcedureString(body));
 
   sequencergui::ProcedureItem procedure_item;
   sequencergui::ImportFromFile(file_name, &procedure_item);
@@ -82,7 +82,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
-  TestUtils::CreateTextFile(file_name, CreateProcedureString(body));
+  testutils::CreateTextFile(file_name, CreateProcedureString(body));
 
   sequencergui::ProcedureItem procedure_item;
   sequencergui::ImportFromFile(file_name, &procedure_item);
