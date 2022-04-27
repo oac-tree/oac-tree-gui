@@ -28,7 +28,7 @@ class QWidget;
 namespace sequencergui
 {
 
-class WidgetMessageAppearanceController;
+class WidgetOverlayMessageAppearanceController;
 
 //! Display messages in widget corner.
 
@@ -41,7 +41,7 @@ public:
   void SendMessage(const std::string& text) override;
 
 private:
-  std::unique_ptr<WidgetMessageAppearanceController> m_message_controller;
+  std::unique_ptr<WidgetOverlayMessageAppearanceController> m_message_controller;
 };
 
 }  // namespace sequencergui

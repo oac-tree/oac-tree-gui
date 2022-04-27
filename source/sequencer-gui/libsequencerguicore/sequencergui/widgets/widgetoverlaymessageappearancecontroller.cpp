@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/widgetmessageappearancecontroller.h"
+#include "sequencergui/widgets/widgetoverlaymessageappearancecontroller.h"
 
 #include "sequencergui/widgets/overlaymessage.h"
 
@@ -27,18 +27,18 @@
 namespace sequencergui
 {
 
-WidgetMessageAppearanceController::WidgetMessageAppearanceController(QWidget *widget)
+WidgetOverlayMessageAppearanceController::WidgetOverlayMessageAppearanceController(QWidget *widget)
     : m_widget(widget), m_timer(new QTimer)
 {
   m_timer->setSingleShot(true);
   m_timer->setInterval(5000);
   QObject::connect(m_timer, &QTimer::timeout, this,
-                   &WidgetMessageAppearanceController::RemoveMessageOnTimeout);
+                   &WidgetOverlayMessageAppearanceController::RemoveMessageOnTimeout);
 }
 
-WidgetMessageAppearanceController::~WidgetMessageAppearanceController() = default;
+WidgetOverlayMessageAppearanceController::~WidgetOverlayMessageAppearanceController() = default;
 
-void WidgetMessageAppearanceController::AddMessage(const QString &text)
+void WidgetOverlayMessageAppearanceController::AddMessage(const QString &text)
 {
   // in the current implementation new message replaces the old one
   m_message = std::make_unique<OverlayMessage>(text, m_widget);
@@ -46,7 +46,7 @@ void WidgetMessageAppearanceController::AddMessage(const QString &text)
   m_timer->start();  // starting timer to delete a message after a while
 }
 
-void WidgetMessageAppearanceController::RemoveMessageOnTimeout()
+void WidgetOverlayMessageAppearanceController::RemoveMessageOnTimeout()
 {
   if (m_message->CanBeDeleted())
   {

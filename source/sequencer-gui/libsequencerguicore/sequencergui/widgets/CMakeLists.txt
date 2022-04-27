@@ -11,18 +11,18 @@ target_sources(${library_name} PRIVATE
   dotstoolbar.h
   filetreeview.cpp
   filetreeview.h
-  widgetmessageappearancecontroller.cpp
-  widgetmessageappearancecontroller.h
   itemlistwidget.cpp
   itemlistwidget.h
   overlaymessage.cpp
   overlaymessage.h
-  overlaywidgetpositionstrategy.cpp
-  overlaywidgetpositionstrategy.h
   overlaymessageframe.cpp
   overlaymessageframe.h
+  overlaywidgetpositionstrategy.cpp
+  overlaywidgetpositionstrategy.h
   warningsignwidget.cpp
   warningsignwidget.h
+  widgetoverlaymessageappearancecontroller.cpp
+  widgetoverlaymessageappearancecontroller.h
   widgetutils.cpp
   widgetutils.h
   )
