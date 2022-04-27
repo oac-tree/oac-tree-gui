@@ -62,9 +62,9 @@ public:
 
   void SetY(double value);
 
-  SessionItem* GetStatusItem() const;
+  mvvm::SessionItem* GetStatusItem() const;
 
-  SessionItem* GetNameItem() const;
+  mvvm::SessionItem* GetNameItem() const;
 
 private:
   virtual void InitFromDomainImpl(const instruction_t* instruction) = 0;
