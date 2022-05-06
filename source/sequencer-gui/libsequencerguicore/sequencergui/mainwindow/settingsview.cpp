@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/settingsview.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/utils/styleutils.h"
 #include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/widgets/allitemstreeview.h"

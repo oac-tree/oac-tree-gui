@@ -13,8 +13,6 @@ target_sources(${library_name} PRIVATE
   recentprojectsettings.h
   settingsview.cpp
   settingsview.h
-  styleutils.cpp
-  styleutils.h
   userinteractor.cpp
   userinteractor.h
 )

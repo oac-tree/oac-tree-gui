@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/paneltoolbar.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include <QLabel>
 #include <QToolButton>

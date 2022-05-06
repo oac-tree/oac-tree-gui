@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/procedurelistview.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/utils/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 

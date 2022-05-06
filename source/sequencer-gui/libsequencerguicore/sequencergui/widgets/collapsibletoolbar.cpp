@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/collapsibletoolbar.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/widgets/widgetutils.h"
 

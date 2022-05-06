@@ -23,10 +23,10 @@
 #include "sequencergui/explorer/sequencerexplorerview.h"
 #include "sequencergui/mainwindow/actionmanager.h"
 #include "sequencergui/mainwindow/settingsview.h"
-#include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/widgets/mainverticalbarwidget.h"
 
@@ -127,7 +127,7 @@ void MainWindow::WriteSettings()
 
 void MainWindow::PopulateModel()
 {
-    Examples::AddCopyProcedure(m_model.get());
+  Examples::AddCopyProcedure(m_model.get());
   //  Examples::AddLocalIncludeProcedure(m_model.get());
   //  Examples::AddUserChoiceProcedure(m_model.get());
   //  Examples::AddInputProcedure(m_model.get());

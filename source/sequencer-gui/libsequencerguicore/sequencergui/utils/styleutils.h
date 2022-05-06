@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_STYLEUTILS_H
-#define SEQUENCERGUI_MAINWINDOW_STYLEUTILS_H
+#ifndef SEQUENCERGUI_UTILS_STYLEUTILS_H
+#define SEQUENCERGUI_UTILS_STYLEUTILS_H
 
 #include <QWidget>
 
@@ -37,4 +37,4 @@ QSize NarrowToolBarIconSize();
 QIcon GetIcon(const std::string& icon_name);
 }  // namespace sequencergui::StyleUtils
 
-#endif  // SEQUENCERGUI_MAINWINDOW_STYLEUTILS_H
+#endif  // SEQUENCERGUI_UTILS_STYLEUTILS_H

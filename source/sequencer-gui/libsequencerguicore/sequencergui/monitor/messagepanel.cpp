@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/messagepanel.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include <QAction>
 #include <QScrollBar>

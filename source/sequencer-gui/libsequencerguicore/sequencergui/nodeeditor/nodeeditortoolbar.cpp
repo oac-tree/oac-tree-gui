@@ -19,9 +19,9 @@
 
 #include "sequencergui/nodeeditor/nodeeditortoolbar.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/nodeeditor/graphicsview.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/widgets/widgetutils.h"
 

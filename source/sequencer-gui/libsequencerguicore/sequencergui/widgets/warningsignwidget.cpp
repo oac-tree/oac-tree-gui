@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/warningsignwidget.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include <QIcon>
 #include <QMessageBox>
@@ -34,7 +34,7 @@ QRect GetPixmapRect()
   return {0, 0, 32, 32};
 }
 
-}
+}  // namespace
 
 namespace sequencergui
 {

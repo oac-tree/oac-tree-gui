@@ -19,8 +19,8 @@
 
 #include "sequencergui/widgets/dotstoolbar.h"
 
-#include "sequencergui/mainwindow/styleutils.h"
 #include "sequencergui/model/domainutils.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/widgets/widgetutils.h"
 
