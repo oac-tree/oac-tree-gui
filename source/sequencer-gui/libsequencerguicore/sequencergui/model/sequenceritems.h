@@ -87,6 +87,18 @@ public:
   WorkspaceItem* GetWorkspace() const;
 };
 
+//! Represents job.
+class JobItem : public mvvm::CompoundItem
+{
+public:
+  static inline const std::string Type = "Job";
+  JobItem();
+
+  std::string GetStatus() const;
+
+  void SetStatus(const std::string& status);
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMS_H

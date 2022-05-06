@@ -131,4 +131,23 @@ WorkspaceItem *ProcedureItem::GetWorkspace() const
   return GetItem<WorkspaceItem>(kWorkspace);
 }
 
+// ----------------------------------------------------------------------------
+// JobItem
+// ----------------------------------------------------------------------------
+
+JobItem::JobItem() : CompoundItem(Type)
+{
+  AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
+}
+
+std::string JobItem::GetStatus() const
+{
+  return Property<std::string>(ItemConstants::kStatus);
+}
+
+void JobItem::SetStatus(const std::string &status)
+{
+  SetProperty(ItemConstants::kStatus, status);
+}
+
 }  // namespace sequencergui
