@@ -17,38 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
-#define SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
-
-#include "mvvm/model/applicationmodel.h"
-
-namespace mvvm
-{
-class ContainerItem;
-}
+#include "sequencergui/model/jobmodel.h"
 
 namespace sequencergui
 {
-class InstructionItem;
 
-//! The model containing a collection of sequencer procedures.
-//! Used during procedure assembly.
-
-class SequencerModel : public mvvm::ApplicationModel
-{
-public:
-  SequencerModel();
-
-  InstructionItem* GetInstruction(const std::string& identifier) const;
-
-  mvvm::ContainerItem* GetProcedureContainer() const;
-
-private:
-  void SetupModel();
-
-  mvvm::ContainerItem* m_procedure_container{nullptr};
-};
+JobModel::JobModel() : ApplicationModel("JobModel") {}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERMODEL_H

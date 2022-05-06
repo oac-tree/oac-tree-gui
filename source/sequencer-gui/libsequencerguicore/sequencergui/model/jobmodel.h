@@ -22,31 +22,15 @@
 
 #include "mvvm/model/applicationmodel.h"
 
-namespace mvvm
-{
-class ContainerItem;
-}
-
 namespace sequencergui
 {
-class InstructionItem;
 
-//! The model containing a collection of sequencer procedures.
-//! Used during procedure assembly.
+//! The model to hold running procedures.
 
-class SequencerModel : public mvvm::ApplicationModel
+class JobModel : public mvvm::ApplicationModel
 {
 public:
-  SequencerModel();
-
-  InstructionItem* GetInstruction(const std::string& identifier) const;
-
-  mvvm::ContainerItem* GetProcedureContainer() const;
-
-private:
-  void SetupModel();
-
-  mvvm::ContainerItem* m_procedure_container{nullptr};
+  JobModel();
 };
 
 }  // namespace sequencergui

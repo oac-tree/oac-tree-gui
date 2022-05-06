@@ -9,6 +9,8 @@ target_sources(${library_name} PRIVATE
   instructionitem.cpp
   instructionitem.h
   item_constants.h
+  jobmodel.cpp
+  jobmodel.h
   procedureexamples.cpp
   procedureexamples.h
   sequenceritems.cpp
