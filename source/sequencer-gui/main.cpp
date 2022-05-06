@@ -18,12 +18,12 @@
  *****************************************************************************/
 
 #include "sequencergui/mainwindow/mainwindow.h"
-
 #include "sequencergui/model/domainutils.h"
 
 #include <QApplication>
 #include <QLocale>
 #include <QMetaType>
+#include <QStyleFactory>
 
 int main(int argc, char** argv)
 {
@@ -32,6 +32,8 @@ int main(int argc, char** argv)
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
   QApplication app(argc, argv);
+
+  QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
 
   Q_INIT_RESOURCE(sequencericons);
 
