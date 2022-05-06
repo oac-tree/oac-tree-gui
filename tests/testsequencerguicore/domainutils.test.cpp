@@ -27,7 +27,7 @@
 #include <future>
 
 using namespace sequencergui;
-using namespace sequencergui::DomainConstants;
+using namespace sequencergui::domainconstants;
 
 class DomainUtilsTest : public ::testing::Test
 {
@@ -53,15 +53,15 @@ TEST_F(DomainUtilsTest, DomainTypeConstants)
 
 TEST_F(DomainUtilsTest, IsRootInstruction)
 {
-  auto item = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
+  auto item = DomainUtils::CreateDomainInstruction(kWaitInstructionType);
   EXPECT_FALSE(DomainUtils::IsRootInstruction(item.get()));
 
-  item->AddAttribute(DomainConstants::kIsRootAttribute, "true");
+  item->AddAttribute(kIsRootAttribute, "true");
   EXPECT_TRUE(DomainUtils::IsRootInstruction(item.get()));
 
-  item->SetAttribute(DomainConstants::kIsRootAttribute, "yEs");
+  item->SetAttribute(kIsRootAttribute, "yEs");
   EXPECT_TRUE(DomainUtils::IsRootInstruction(item.get()));
 
-  item->SetAttribute(DomainConstants::kIsRootAttribute, "false");
+  item->SetAttribute(kIsRootAttribute, "false");
   EXPECT_FALSE(DomainUtils::IsRootInstruction(item.get()));
 }

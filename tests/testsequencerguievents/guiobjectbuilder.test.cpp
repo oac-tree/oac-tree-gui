@@ -56,8 +56,8 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
+  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
   auto wait_ptr = wait.get();
   procedure.PushInstruction(wait.release());
 
@@ -77,11 +77,11 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
+  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
-  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
 
-  auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
+  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
   sequence->InsertInstruction(wait.release(), 0);
 
@@ -112,9 +112,9 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-  local_variable->AddAttribute(DomainConstants::kTypeAttribute, expected_type);
-  local_variable->AddAttribute(DomainConstants::kValueAttribute, expected_value);
+  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  local_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
+  local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
   auto local_variable_ptr = local_variable.get();
 
   procedure.AddVariable("abc", local_variable.release());
@@ -150,25 +150,25 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   ::sup::sequencer::Procedure procedure;
 
   // Sequence with wait instruction
-  auto wait = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
+  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
-  wait->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
 
-  auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
+  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
-  sequence->AddAttribute(sequencergui::DomainConstants::kNameAttribute, "MySequence");
+  sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");
   sequence->InsertInstruction(wait.release(), 0);
 
   // Repeat with include instruction
-  auto include = DomainUtils::CreateDomainInstruction(DomainConstants::kIncludeInstructionType);
+  auto include = DomainUtils::CreateDomainInstruction(domainconstants::kIncludeInstructionType);
   auto include_ptr = include.get();
-  include->AddAttribute(sequencergui::DomainConstants::kNameAttribute, "MyInclude");
-  include->AddAttribute(sequencergui::DomainConstants::kPathAttribute, "MySequence");
+  include->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MyInclude");
+  include->AddAttribute(sequencergui::domainconstants::kPathAttribute, "MySequence");
 
-  auto repeat = DomainUtils::CreateDomainInstruction(DomainConstants::kRepeatInstructionType);
+  auto repeat = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
   auto repeat_ptr = repeat.get();
-  repeat->AddAttribute(sequencergui::DomainConstants::kIsRootAttribute, "true");
-  repeat->AddAttribute(sequencergui::DomainConstants::kMaxCountAttribute, "10");
+  repeat->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
+  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute, "10");
   repeat->InsertInstruction(include.release(), 0);
 
   // procedure with two instructions

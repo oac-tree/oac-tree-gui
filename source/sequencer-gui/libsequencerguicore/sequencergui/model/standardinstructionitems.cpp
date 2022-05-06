@@ -40,20 +40,20 @@ ConditionItem::ConditionItem() : InstructionItem(Type)
 
 std::string ConditionItem::GetDomainType() const
 {
-  return DomainConstants::kConditionInstructionType;
+  return domainconstants::kConditionInstructionType;
 }
 
 void ConditionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kConditionVarNameAttribute))
+  if (instruction->HasAttribute(domainconstants::kConditionVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(DomainConstants::kConditionVarNameAttribute));
+    SetVariableName(instruction->GetAttribute(domainconstants::kConditionVarNameAttribute));
   }
 }
 
 void ConditionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kConditionVarNameAttribute, GetVariableName());
+  instruction->AddAttribute(domainconstants::kConditionVarNameAttribute, GetVariableName());
 }
 
 std::string ConditionItem::GetVariableName() const
@@ -80,28 +80,28 @@ CopyItem::CopyItem() : InstructionItem(Type)
 
 std::string CopyItem::GetDomainType() const
 {
-  return DomainConstants::kCopyInstructionType;
+  return domainconstants::kCopyInstructionType;
 }
 
 void CopyItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (!instruction->HasAttribute(DomainConstants::kInputAttribute))
+  if (!instruction->HasAttribute(domainconstants::kInputAttribute))
   {
     throw std::runtime_error("Error in CopyItem: no `input` attribute provided");
   }
-  SetInput(instruction->GetAttribute(DomainConstants::kInputAttribute));
+  SetInput(instruction->GetAttribute(domainconstants::kInputAttribute));
 
-  if (!instruction->HasAttribute(DomainConstants::kOutputAttribute))
+  if (!instruction->HasAttribute(domainconstants::kOutputAttribute))
   {
     throw std::runtime_error("Error in CopyItem: no `output` attribute provided");
   }
-  SetOutput(instruction->GetAttribute(DomainConstants::kOutputAttribute));
+  SetOutput(instruction->GetAttribute(domainconstants::kOutputAttribute));
 }
 
 void CopyItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kInputAttribute, GetInput());
-  instruction->AddAttribute(DomainConstants::kOutputAttribute, GetOutput());
+  instruction->AddAttribute(domainconstants::kInputAttribute, GetInput());
+  instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
 }
 
 std::string CopyItem::GetInput() const
@@ -139,7 +139,7 @@ EqualsItem::EqualsItem() : InstructionItem(Type)
 
 std::string EqualsItem::GetDomainType() const
 {
-  return DomainConstants::kEqualsInstructionType;
+  return domainconstants::kEqualsInstructionType;
 }
 
 std::string EqualsItem::GetLeftHandSide() const
@@ -164,20 +164,20 @@ void EqualsItem::SetRightHandSide(const std::string &value)
 
 void EqualsItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kLeftHandAttribute))
+  if (instruction->HasAttribute(domainconstants::kLeftHandAttribute))
   {
-    SetLeftHandSide(instruction->GetAttribute(DomainConstants::kLeftHandAttribute));
+    SetLeftHandSide(instruction->GetAttribute(domainconstants::kLeftHandAttribute));
   }
-  if (instruction->HasAttribute(DomainConstants::kRightHandAttribute))
+  if (instruction->HasAttribute(domainconstants::kRightHandAttribute))
   {
-    SetRightHandSide(instruction->GetAttribute(DomainConstants::kRightHandAttribute));
+    SetRightHandSide(instruction->GetAttribute(domainconstants::kRightHandAttribute));
   }
 }
 
 void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kLeftHandAttribute, GetLeftHandSide());
-  instruction->AddAttribute(DomainConstants::kRightHandAttribute, GetRightHandSide());
+  instruction->AddAttribute(domainconstants::kLeftHandAttribute, GetLeftHandSide());
+  instruction->AddAttribute(domainconstants::kRightHandAttribute, GetRightHandSide());
 }
 
 // ----------------------------------------------------------------------------
@@ -185,13 +185,13 @@ void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : InstructionItem(Type)
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
 
 std::string FallbackItem::GetDomainType() const
 {
-  return DomainConstants::kFallbackInstructionType;
+  return domainconstants::kFallbackInstructionType;
 }
 
 void FallbackItem::InitFromDomainImpl(const instruction_t *instruction) {}
@@ -207,12 +207,12 @@ void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
 
 ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
 {
-  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string ForceSuccessItem::GetDomainType() const
 {
-  return DomainConstants::kForceSuccessInstructionType;
+  return domainconstants::kForceSuccessInstructionType;
 }
 
 void ForceSuccessItem::InitFromDomainImpl(const instruction_t *instruction)
@@ -236,31 +236,31 @@ IncludeItem::IncludeItem() : InstructionItem(Type)
 {
   AddProperty(kFile, std::string())->SetDisplayName("File name");
   AddProperty(kPath, std::string())->SetDisplayName("Path");
-  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string IncludeItem::GetDomainType() const
 {
-  return DomainConstants::kIncludeInstructionType;
+  return domainconstants::kIncludeInstructionType;
 }
 
 void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kFileAttribute))
+  if (instruction->HasAttribute(domainconstants::kFileAttribute))
   {
-    SetFileName(instruction->GetAttribute(DomainConstants::kFileAttribute));
+    SetFileName(instruction->GetAttribute(domainconstants::kFileAttribute));
   }
 
-  if (instruction->HasAttribute(DomainConstants::kPathAttribute))
+  if (instruction->HasAttribute(domainconstants::kPathAttribute))
   {
-    SetPath(instruction->GetAttribute(DomainConstants::kPathAttribute));
+    SetPath(instruction->GetAttribute(domainconstants::kPathAttribute));
   }
 }
 
 void IncludeItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kFileAttribute, GetFileName());
-  instruction->AddAttribute(DomainConstants::kPathAttribute, GetPath());
+  instruction->AddAttribute(domainconstants::kFileAttribute, GetFileName());
+  instruction->AddAttribute(domainconstants::kPathAttribute, GetPath());
 }
 
 std::string IncludeItem::GetFileName() const
@@ -290,32 +290,32 @@ static inline const std::string kTarget = "kTarget";
 
 InputItem::InputItem() : InstructionItem(Type)
 {
-  AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
+  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kTarget, std::string())->SetDisplayName("Target");
 }
 
 std::string InputItem::GetDomainType() const
 {
-  return DomainConstants::kInputInstructionType;
+  return domainconstants::kInputInstructionType;
 }
 
 void InputItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
+  if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
   {
-    SetDescription(instruction->GetAttribute(DomainConstants::kDescriptionAttribute));
+    SetDescription(instruction->GetAttribute(domainconstants::kDescriptionAttribute));
   }
 
-  if (instruction->HasAttribute(DomainConstants::kInputTargetAttribute))
+  if (instruction->HasAttribute(domainconstants::kInputTargetAttribute))
   {
-    SetTargetVariableName(instruction->GetAttribute(DomainConstants::kInputTargetAttribute));
+    SetTargetVariableName(instruction->GetAttribute(domainconstants::kInputTargetAttribute));
   }
 }
 
 void InputItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kInputTargetAttribute, GetTargetVariableName());
-  instruction->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
+  instruction->AddAttribute(domainconstants::kInputTargetAttribute, GetTargetVariableName());
+  instruction->AddAttribute(domainconstants::kDescriptionAttribute, GetDescription());
 }
 
 std::string InputItem::GetTargetVariableName() const
@@ -330,12 +330,12 @@ void InputItem::SetTargetVariableName(const std::string &value)
 
 std::string InputItem::GetDescription() const
 {
-  return Property<std::string>(ItemConstants::kDescription);
+  return Property<std::string>(itemconstants::kDescription);
 }
 
 void InputItem::SetDescription(const std::string &value)
 {
-  SetProperty(ItemConstants::kDescription, value);
+  SetProperty(itemconstants::kDescription, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -344,12 +344,12 @@ void InputItem::SetDescription(const std::string &value)
 
 InverterItem::InverterItem() : InstructionItem(Type)
 {
-  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string InverterItem::GetDomainType() const
 {
-  return DomainConstants::kInverterInstructionType;
+  return domainconstants::kInverterInstructionType;
 }
 
 void InverterItem::InitFromDomainImpl(const instruction_t *instruction)
@@ -372,12 +372,12 @@ ListenItem::ListenItem() : InstructionItem(Type)
 {
   AddProperty(kForceSuccess, false)->SetDisplayName("Force success");
   AddProperty(kVarNames, std::string())->SetDisplayName("Var names");
-  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
 std::string ListenItem::GetDomainType() const
 {
-  return DomainConstants::kListenInstructionType;
+  return domainconstants::kListenInstructionType;
 }
 
 bool ListenItem::IsForceSuccess() const
@@ -402,23 +402,23 @@ void ListenItem::SetVarNames(const std::string &value)
 
 void ListenItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kListenForceSuccessAttribute))
+  if (instruction->HasAttribute(domainconstants::kListenForceSuccessAttribute))
   {
     SetForceSuccess(::mvvm::utils::StringToBool(
-        instruction->GetAttribute(DomainConstants::kListenForceSuccessAttribute)));
+        instruction->GetAttribute(domainconstants::kListenForceSuccessAttribute)));
   }
 
-  if (instruction->HasAttribute(DomainConstants::kListenVarNamesAttribute))
+  if (instruction->HasAttribute(domainconstants::kListenVarNamesAttribute))
   {
-    SetVarNames(instruction->GetAttribute(DomainConstants::kListenVarNamesAttribute));
+    SetVarNames(instruction->GetAttribute(domainconstants::kListenVarNamesAttribute));
   }
 }
 
 void ListenItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kListenForceSuccessAttribute,
+  instruction->AddAttribute(domainconstants::kListenForceSuccessAttribute,
                             mvvm::utils::FromBool(IsForceSuccess()));
-  instruction->AddAttribute(DomainConstants::kListenVarNamesAttribute, GetVarNames());
+  instruction->AddAttribute(domainconstants::kListenVarNamesAttribute, GetVarNames());
 }
 
 // ----------------------------------------------------------------------------
@@ -434,20 +434,20 @@ MessageItem::MessageItem() : InstructionItem(Type)
 
 std::string MessageItem::GetDomainType() const
 {
-  return DomainConstants::kMessageInstructionType;
+  return domainconstants::kMessageInstructionType;
 }
 
 void MessageItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kTextAttribute))
+  if (instruction->HasAttribute(domainconstants::kTextAttribute))
   {
-    SetText(instruction->GetAttribute(DomainConstants::kTextAttribute));
+    SetText(instruction->GetAttribute(domainconstants::kTextAttribute));
   }
 }
 
 void MessageItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kTextAttribute, GetText());
+  instruction->AddAttribute(domainconstants::kTextAttribute, GetText());
 }
 
 std::string MessageItem::GetText() const
@@ -468,32 +468,32 @@ static inline const std::string kSource = "kSource";
 
 OutputItem::OutputItem() : InstructionItem(Type)
 {
-  AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
+  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kSource, std::string())->SetDisplayName("Source");
 }
 
 std::string OutputItem::GetDomainType() const
 {
-  return DomainConstants::kOutputInstructionType;
+  return domainconstants::kOutputInstructionType;
 }
 
 void OutputItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
+  if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
   {
-    SetDescription(instruction->GetAttribute(DomainConstants::kDescriptionAttribute));
+    SetDescription(instruction->GetAttribute(domainconstants::kDescriptionAttribute));
   }
 
-  if (instruction->HasAttribute(DomainConstants::kOutputSourceAttribute))
+  if (instruction->HasAttribute(domainconstants::kOutputSourceAttribute))
   {
-    SetSourceVariableName(instruction->GetAttribute(DomainConstants::kOutputSourceAttribute));
+    SetSourceVariableName(instruction->GetAttribute(domainconstants::kOutputSourceAttribute));
   }
 }
 
 void OutputItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kOutputSourceAttribute, GetSourceVariableName());
-  instruction->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
+  instruction->AddAttribute(domainconstants::kOutputSourceAttribute, GetSourceVariableName());
+  instruction->AddAttribute(domainconstants::kDescriptionAttribute, GetDescription());
 }
 
 std::string OutputItem::GetSourceVariableName() const
@@ -508,12 +508,12 @@ void OutputItem::SetSourceVariableName(const std::string &value)
 
 std::string OutputItem::GetDescription() const
 {
-  return Property<std::string>(ItemConstants::kDescription);
+  return Property<std::string>(itemconstants::kDescription);
 }
 
 void OutputItem::SetDescription(const std::string &value)
 {
-  SetProperty(ItemConstants::kDescription, value);
+  SetProperty(itemconstants::kDescription, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -527,35 +527,35 @@ ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
   AddProperty(kSuccessThreshold, 0)->SetDisplayName("Success threshold");
   AddProperty(kFailureThreshold, 0)->SetDisplayName("Failure threshold");
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
 
 std::string ParallelSequenceItem::GetDomainType() const
 {
-  return DomainConstants::kParallelInstructionType;
+  return domainconstants::kParallelInstructionType;
 }
 
 void ParallelSequenceItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kSuccessThresholdAttribute))
+  if (instruction->HasAttribute(domainconstants::kSuccessThresholdAttribute))
   {
     SetSuccessThreshold(
-        std::stoi(instruction->GetAttribute(DomainConstants::kSuccessThresholdAttribute)));
+        std::stoi(instruction->GetAttribute(domainconstants::kSuccessThresholdAttribute)));
   }
 
-  if (instruction->HasAttribute(DomainConstants::kFailureThresholdAttribute))
+  if (instruction->HasAttribute(domainconstants::kFailureThresholdAttribute))
   {
     SetFailureThreshold(
-        std::stoi(instruction->GetAttribute(DomainConstants::kFailureThresholdAttribute)));
+        std::stoi(instruction->GetAttribute(domainconstants::kFailureThresholdAttribute)));
   }
 }
 
 void ParallelSequenceItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kSuccessThresholdAttribute,
+  instruction->AddAttribute(domainconstants::kSuccessThresholdAttribute,
                             std::to_string(GetSuccessThreshold()));
-  instruction->AddAttribute(DomainConstants::kFailureThresholdAttribute,
+  instruction->AddAttribute(domainconstants::kFailureThresholdAttribute,
                             std::to_string(GetFailureThreshold()));
 }
 
@@ -587,19 +587,19 @@ static inline const std::string kMaxCount = "kRepeatCount";
 RepeatItem::RepeatItem() : InstructionItem(Type)
 {
   AddProperty(kMaxCount, -1)->SetDisplayName("maxCount");
-  RegisterTag(mvvm::TagInfo(ItemConstants::kChildInstructions, 0, 1, {}), /*default*/ true);
+  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*default*/ true);
 }
 
 std::string RepeatItem::GetDomainType() const
 {
-  return DomainConstants::kRepeatInstructionType;
+  return domainconstants::kRepeatInstructionType;
 }
 
 void RepeatItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kMaxCountAttribute))
+  if (instruction->HasAttribute(domainconstants::kMaxCountAttribute))
   {
-    SetRepeatCount(std::stoi(instruction->GetAttribute(DomainConstants::kMaxCountAttribute)));
+    SetRepeatCount(std::stoi(instruction->GetAttribute(domainconstants::kMaxCountAttribute)));
   }
   else
   {
@@ -609,7 +609,7 @@ void RepeatItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void RepeatItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kMaxCountAttribute, std::to_string(GetRepeatCount()));
+  instruction->AddAttribute(domainconstants::kMaxCountAttribute, std::to_string(GetRepeatCount()));
 }
 
 int RepeatItem::GetRepeatCount() const
@@ -627,13 +627,13 @@ void RepeatItem::SetRepeatCount(int value)
 // ----------------------------------------------------------------------------
 SequenceItem::SequenceItem() : InstructionItem(Type)
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
 
 std::string SequenceItem::GetDomainType() const
 {
-  return DomainConstants::kSequenceInstructionType;
+  return domainconstants::kSequenceInstructionType;
 }
 
 void SequenceItem::InitFromDomainImpl(const instruction_t *instruction) {}
@@ -649,37 +649,37 @@ void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
 
 UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
 {
-  AddProperty(ItemConstants::kDescription, std::string())->SetDisplayName("Description");
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
 
 std::string UserChoiceItem::GetDomainType() const
 {
-  return DomainConstants::kUserChoiceInstructionType;
+  return domainconstants::kUserChoiceInstructionType;
 }
 
 std::string UserChoiceItem::GetDescription() const
 {
-  return Property<std::string>(ItemConstants::kDescription);
+  return Property<std::string>(itemconstants::kDescription);
 }
 
 void UserChoiceItem::SetDescription(const std::string &value)
 {
-  SetProperty(ItemConstants::kDescription, value);
+  SetProperty(itemconstants::kDescription, value);
 }
 
 void UserChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kDescriptionAttribute))
+  if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
   {
-    SetDescription(instruction->GetAttribute(DomainConstants::kDescriptionAttribute));
+    SetDescription(instruction->GetAttribute(domainconstants::kDescriptionAttribute));
   }
 }
 
 void UserChoiceItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kDescriptionAttribute, GetDescription());
+  instruction->AddAttribute(domainconstants::kDescriptionAttribute, GetDescription());
 }
 
 // ----------------------------------------------------------------------------
@@ -694,14 +694,14 @@ WaitItem::WaitItem() : InstructionItem(Type)
 
 std::string WaitItem::GetDomainType() const
 {
-  return DomainConstants::kWaitInstructionType;
+  return domainconstants::kWaitInstructionType;
 }
 
 void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(DomainConstants::kWaitTimeoutAttribute))
+  if (instruction->HasAttribute(domainconstants::kWaitTimeoutAttribute))
   {
-    SetTimeout(std::stod(instruction->GetAttribute(DomainConstants::kWaitTimeoutAttribute)));
+    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kWaitTimeoutAttribute)));
   }
   else
   {
@@ -711,7 +711,7 @@ void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void WaitItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(DomainConstants::kWaitTimeoutAttribute,
+  instruction->AddAttribute(domainconstants::kWaitTimeoutAttribute,
                             mvvm::utils::DoubleToString(GetTimeout()));
 }
 

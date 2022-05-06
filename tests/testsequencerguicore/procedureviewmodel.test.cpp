@@ -58,12 +58,12 @@ TEST_F(ProcedureViewModelTest, SingleProcedure)
   auto displayname_index = viewmodel.index(0, 0);
   auto status_index = viewmodel.index(0, 1);
 
-  auto views = viewmodel.FindViews(item->GetItem(ItemConstants::kStatus));
+  auto views = viewmodel.FindViews(item->GetItem(itemconstants::kStatus));
   EXPECT_EQ(views.size(), 1);
   EXPECT_EQ(viewmodel.indexFromItem(views[0]), status_index);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(displayname_index), item);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(status_index), item->GetItem(ItemConstants::kStatus));
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(status_index), item->GetItem(itemconstants::kStatus));
 
   EXPECT_EQ(viewmodel.data(displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Procedure"));

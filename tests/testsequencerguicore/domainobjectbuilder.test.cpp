@@ -76,7 +76,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithSingleInstruction)
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   ASSERT_EQ(procedure->GetInstructions().at(0)->GetType(),
-            DomainConstants::kSequenceInstructionType);
+            domainconstants::kSequenceInstructionType);
   EXPECT_TRUE(procedure->VariableNames().empty());
 }
 
@@ -99,11 +99,11 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithTwoInstructions)
   EXPECT_EQ(procedure->RootInstruction(), nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 2);
   auto instructions = procedure->GetInstructions();
-  EXPECT_EQ(instructions.at(0)->GetType(), DomainConstants::kWaitInstructionType);
-  EXPECT_EQ(instructions.at(1)->GetType(), DomainConstants::kWaitInstructionType);
+  EXPECT_EQ(instructions.at(0)->GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(instructions.at(1)->GetType(), domainconstants::kWaitInstructionType);
 
-  EXPECT_EQ(instructions.at(0)->GetAttribute(DomainConstants::kWaitTimeoutAttribute), "0.1");
-  EXPECT_EQ(instructions.at(1)->GetAttribute(DomainConstants::kWaitTimeoutAttribute), "0.2");
+  EXPECT_EQ(instructions.at(0)->GetAttribute(domainconstants::kWaitTimeoutAttribute), "0.1");
+  EXPECT_EQ(instructions.at(1)->GetAttribute(domainconstants::kWaitTimeoutAttribute), "0.2");
 }
 
 //! Building domain procedure from ProcedureItem containing Sequence and wait in it.
@@ -123,10 +123,10 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParentAndChild)
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
-  EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kSequenceInstructionType);
+  EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
   ASSERT_EQ(domain_sequence->ChildrenCount(), 1);
   EXPECT_EQ(domain_sequence->ChildInstructions().at(0)->GetType(),
-            DomainConstants::kWaitInstructionType);
+            domainconstants::kWaitInstructionType);
 }
 
 //! Building domain procedure from ProcedureItem containing Sequence and wait in it.
@@ -152,12 +152,12 @@ TEST_F(DomainObjectBuilderTest, BuildProcedureWithParentAndChild)
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
 
-  EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kSequenceInstructionType);
+  EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
   ASSERT_EQ(domain_sequence->ChildrenCount(), 1);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
 
   auto domain_wait = domain_sequence->ChildInstructions().at(0);
-  EXPECT_EQ(domain_wait->GetType(), DomainConstants::kWaitInstructionType);
+  EXPECT_EQ(domain_wait->GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_wait), wait->GetIdentifier());
 }
 
@@ -184,16 +184,16 @@ TEST_F(DomainObjectBuilderTest, InverterWithSequence)
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_inverter = procedure->GetInstructions().at(0);
 
-  EXPECT_EQ(domain_inverter->GetType(), DomainConstants::kInverterInstructionType);
+  EXPECT_EQ(domain_inverter->GetType(), domainconstants::kInverterInstructionType);
   ASSERT_EQ(domain_inverter->ChildrenCount(), 1);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_inverter), inverter->GetIdentifier());
 
   auto domain_sequence = domain_inverter->ChildInstructions().at(0);
-  EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kSequenceInstructionType);
+  EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
 
   auto domain_wait = domain_sequence->ChildInstructions().at(0);
-  EXPECT_EQ(domain_wait->GetType(), DomainConstants::kWaitInstructionType);
+  EXPECT_EQ(domain_wait->GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_wait), wait->GetIdentifier());
 }
 
@@ -219,12 +219,12 @@ TEST_F(DomainObjectBuilderTest, RepeatWithSingleInstruction)
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_repeat = procedure->GetInstructions().at(0);
 
-  EXPECT_EQ(domain_repeat->GetType(), DomainConstants::kRepeatInstructionType);
+  EXPECT_EQ(domain_repeat->GetType(), domainconstants::kRepeatInstructionType);
   ASSERT_EQ(domain_repeat->ChildrenCount(), 1);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_repeat), repeater->GetIdentifier());
 
   auto domain_sequence = domain_repeat->ChildInstructions().at(0);
-  EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kSequenceInstructionType);
+  EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
 }
 
@@ -272,10 +272,10 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParallelSequence)
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
-  EXPECT_EQ(domain_sequence->GetType(), DomainConstants::kParallelInstructionType);
+  EXPECT_EQ(domain_sequence->GetType(), domainconstants::kParallelInstructionType);
   ASSERT_EQ(domain_sequence->ChildrenCount(), 2);
   EXPECT_EQ(domain_sequence->ChildInstructions().at(0)->GetType(),
-            DomainConstants::kWaitInstructionType);
+            domainconstants::kWaitInstructionType);
   EXPECT_EQ(domain_sequence->ChildInstructions().at(1)->GetType(),
-            DomainConstants::kWaitInstructionType);
+            domainconstants::kWaitInstructionType);
 }

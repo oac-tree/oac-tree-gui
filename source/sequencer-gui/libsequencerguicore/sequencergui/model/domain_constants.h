@@ -27,7 +27,7 @@
 
 #include <string>
 
-namespace sequencergui::DomainConstants
+namespace sequencergui::domainconstants
 {
 // instructions
 const std::string kConditionInstructionType = "Condition";
@@ -81,6 +81,6 @@ const std::string kWaitTimeoutAttribute = "timeout";
 const std::string kListenVarNamesAttribute = "varNames";
 const std::string kListenForceSuccessAttribute = "forceSuccess";
 
-}  // namespace sequencergui::DomainConstants
+}  // namespace sequencergui::domainconstants
 
 #endif  // SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H

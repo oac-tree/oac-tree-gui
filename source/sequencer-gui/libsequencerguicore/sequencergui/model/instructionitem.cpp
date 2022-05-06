@@ -37,11 +37,11 @@ namespace sequencergui
 
 InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type)
 {
-  AddProperty(ItemConstants::kName, std::string())->SetDisplayName("Name");
-  AddProperty(ItemConstants::kIsRoot, false)->SetDisplayName("IsRoot");
-  AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status");
-  AddProperty(ItemConstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
-  AddProperty(ItemConstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
+  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
+  AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
+  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status");
+  AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
+  AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
 }
 
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
@@ -54,9 +54,9 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
       throw std::runtime_error("Error in InstructionItem: domain instruction doesn't match.");
     }
 
-    if (instruction->HasAttribute(DomainConstants::kNameAttribute))
+    if (instruction->HasAttribute(domainconstants::kNameAttribute))
     {
-      SetProperty(ItemConstants::kName, instruction->GetAttribute(DomainConstants::kNameAttribute));
+      SetProperty(itemconstants::kName, instruction->GetAttribute(domainconstants::kNameAttribute));
     }
   }
 
@@ -72,11 +72,11 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   // Set common attributes (that exist in every instruction)
   if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
   {
-    result->AddAttribute(DomainConstants::kNameAttribute,
-                         Property<std::string>(ItemConstants::kName));
+    result->AddAttribute(domainconstants::kNameAttribute,
+                         Property<std::string>(itemconstants::kName));
   }
-  result->AddAttribute(DomainConstants::kIsRootAttribute,
-                       mvvm::utils::FromBool(Property<bool>(ItemConstants::kIsRoot)));
+  result->AddAttribute(domainconstants::kIsRootAttribute,
+                       mvvm::utils::FromBool(Property<bool>(itemconstants::kIsRoot)));
   SetupDomainImpl(result.get());
   return result;
 }
@@ -85,69 +85,69 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 
 std::vector<InstructionItem *> InstructionItem::GetInstructions() const
 {
-  return GetTaggedItems()->HasTag(ItemConstants::kChildInstructions)
-             ? GetItems<InstructionItem>(ItemConstants::kChildInstructions)
+  return GetTaggedItems()->HasTag(itemconstants::kChildInstructions)
+             ? GetItems<InstructionItem>(itemconstants::kChildInstructions)
              : std::vector<InstructionItem *>();
 }
 
 bool InstructionItem::IsRoot() const
 {
-  return Property<bool>(ItemConstants::kIsRoot);
+  return Property<bool>(itemconstants::kIsRoot);
 }
 
 void InstructionItem::SetIsRootFlag(bool value)
 {
-  SetProperty(ItemConstants::kIsRoot, value);
+  SetProperty(itemconstants::kIsRoot, value);
 }
 
 std::string InstructionItem::GetName() const
 {
-  return Property<std::string>(ItemConstants::kName);
+  return Property<std::string>(itemconstants::kName);
 }
 
 void InstructionItem::SetName(const std::string &name)
 {
-  SetProperty(ItemConstants::kName, name);
+  SetProperty(itemconstants::kName, name);
 }
 
 std::string InstructionItem::GetStatus() const
 {
-  return Property<std::string>(ItemConstants::kStatus);
+  return Property<std::string>(itemconstants::kStatus);
 }
 
 void InstructionItem::SetStatus(const std::string &status)
 {
-  SetProperty(ItemConstants::kStatus, status);
+  SetProperty(itemconstants::kStatus, status);
 }
 
 double InstructionItem::GetX() const
 {
-  return Property<double>(ItemConstants::kXpos);
+  return Property<double>(itemconstants::kXpos);
 }
 
 void InstructionItem::SetX(double value)
 {
-  SetProperty(ItemConstants::kXpos, value);
+  SetProperty(itemconstants::kXpos, value);
 }
 
 double InstructionItem::GetY() const
 {
-  return Property<double>(ItemConstants::kYpos);
+  return Property<double>(itemconstants::kYpos);
 }
 
 void InstructionItem::SetY(double value)
 {
-  SetProperty(ItemConstants::kYpos, value);
+  SetProperty(itemconstants::kYpos, value);
 }
 
 mvvm::SessionItem *InstructionItem::GetStatusItem() const
 {
-  return GetItem(ItemConstants::kStatus);
+  return GetItem(itemconstants::kStatus);
 }
 
 mvvm::SessionItem *InstructionItem::GetNameItem() const
 {
-  return GetItem(ItemConstants::kName);
+  return GetItem(itemconstants::kName);
 }
 
 }  // namespace sequencergui

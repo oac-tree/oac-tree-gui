@@ -43,7 +43,7 @@ ChannelAccessVariableItem::ChannelAccessVariableItem() : VariableItem(Type)
 
 std::string ChannelAccessVariableItem::GetDomainType() const
 {
-  return DomainConstants::kChannelAccessVariableType;
+  return domainconstants::kChannelAccessVariableType;
 }
 
 std::string ChannelAccessVariableItem::GetDataType() const
@@ -74,22 +74,22 @@ void ChannelAccessVariableItem::SetJsonValue(const std::string &value)
 
 void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(DomainConstants::kDataTypeAttribute))
+  if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
   {
-    SetDataType(variable->GetAttribute(DomainConstants::kDataTypeAttribute));
+    SetDataType(variable->GetAttribute(domainconstants::kDataTypeAttribute));
   }
 
-  if (variable->HasAttribute(DomainConstants::kChannelAttribute))
+  if (variable->HasAttribute(domainconstants::kChannelAttribute))
   {
-    SetChannel(variable->GetAttribute(DomainConstants::kChannelAttribute));
+    SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
   SetJsonValue(DomainUtils::GetValueJsonString(variable));
 }
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(DomainConstants::kDataTypeAttribute, GetDataType());
-  variable->AddAttribute(DomainConstants::kChannelAttribute, GetChannel());
+  variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
 }
 
 // ----------------------------------------------------------------------------
@@ -104,7 +104,7 @@ FileVariableItem::FileVariableItem() : VariableItem(Type)
 
 std::string FileVariableItem::GetDomainType() const
 {
-  return DomainConstants::kFileVariableType;
+  return domainconstants::kFileVariableType;
 }
 
 std::string FileVariableItem::GetFileName() const
@@ -119,15 +119,15 @@ void FileVariableItem::SetFileName(const std::string &name)
 
 void FileVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(DomainConstants::kFileAttribute))
+  if (variable->HasAttribute(domainconstants::kFileAttribute))
   {
-    SetProperty(kFileName, variable->GetAttribute(DomainConstants::kFileAttribute));
+    SetProperty(kFileName, variable->GetAttribute(domainconstants::kFileAttribute));
   }
 }
 
 void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(DomainConstants::kFileAttribute, GetFileName());
+  variable->AddAttribute(domainconstants::kFileAttribute, GetFileName());
 }
 
 // ----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ LocalVariableItem::LocalVariableItem() : VariableItem(Type)
 
 std::string LocalVariableItem::GetDomainType() const
 {
-  return DomainConstants::kLocalVariableType;
+  return domainconstants::kLocalVariableType;
 }
 
 std::string LocalVariableItem::GetJsonType() const
@@ -169,23 +169,23 @@ void LocalVariableItem::SetJsonValue(const std::string &value)
 
 void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(DomainConstants::kTypeAttribute))
+  if (variable->HasAttribute(domainconstants::kTypeAttribute))
   {
-    SetJsonType(variable->GetAttribute(DomainConstants::kTypeAttribute));
+    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
   }
 
-  if (variable->HasAttribute(DomainConstants::kValueAttribute))
+  if (variable->HasAttribute(domainconstants::kValueAttribute))
   {
-    SetJsonValue(variable->GetAttribute(DomainConstants::kValueAttribute));
+    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
   }
 }
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(DomainConstants::kTypeAttribute, GetJsonType());
+  variable->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
   if (!GetJsonValue().empty())
   {
-    variable->AddAttribute(DomainConstants::kValueAttribute, GetJsonValue());
+    variable->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
   }
 }
 
@@ -202,7 +202,7 @@ PVClientVariableItem::PVClientVariableItem() : VariableItem(Type)
 
 std::string PVClientVariableItem::GetDomainType() const
 {
-  return DomainConstants::kPVClientVariableType;
+  return domainconstants::kPVClientVariableType;
 }
 
 std::string PVClientVariableItem::GetDataType() const
@@ -232,14 +232,14 @@ void PVClientVariableItem::SetJsonValue(const std::string &value)
 
 void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(DomainConstants::kDataTypeAttribute))
+  if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
   {
-    SetDataType(variable->GetAttribute(DomainConstants::kDataTypeAttribute));
+    SetDataType(variable->GetAttribute(domainconstants::kDataTypeAttribute));
   }
 
-  if (variable->HasAttribute(DomainConstants::kChannelAttribute))
+  if (variable->HasAttribute(domainconstants::kChannelAttribute))
   {
-    SetChannel(variable->GetAttribute(DomainConstants::kChannelAttribute));
+    SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
   SetJsonValue(DomainUtils::GetValueJsonString(variable));
@@ -247,8 +247,8 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(DomainConstants::kDataTypeAttribute, GetDataType());
-  variable->AddAttribute(DomainConstants::kChannelAttribute, GetChannel());
+  variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
 }
 
 // ----------------------------------------------------------------------------

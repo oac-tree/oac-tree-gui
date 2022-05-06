@@ -245,10 +245,10 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   auto item = AddInstruction(&model, procedure->GetInstructionContainer(),
-                             DomainConstants::kWaitInstructionType);
+                             domainconstants::kWaitInstructionType);
 
   EXPECT_EQ(item->GetType(), WaitItem::Type);
-  EXPECT_EQ(item->GetDomainType(), DomainConstants::kWaitInstructionType);
+  EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 

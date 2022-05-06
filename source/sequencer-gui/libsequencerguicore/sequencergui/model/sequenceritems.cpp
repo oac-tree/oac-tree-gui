@@ -33,7 +33,7 @@ namespace sequencergui
 // ----------------------------------------------------------------------------
 UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
 
@@ -73,13 +73,13 @@ void UnknownInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 
 InstructionContainerItem::InstructionContainerItem() : CompoundItem(Type)
 {
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(ItemConstants::kChildInstructions),
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
 
 std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
 {
-  return GetItems<InstructionItem>(ItemConstants::kChildInstructions);
+  return GetItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
 // ----------------------------------------------------------------------------
@@ -106,19 +106,19 @@ static inline const std::string kWorkspace = "kWorkspace";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
 {
-  AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
+  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
 }
 
 std::string ProcedureItem::GetStatus() const
 {
-  return Property<std::string>(ItemConstants::kStatus);
+  return Property<std::string>(itemconstants::kStatus);
 }
 
 void ProcedureItem::SetStatus(const std::string &status)
 {
-  SetProperty(ItemConstants::kStatus, status);
+  SetProperty(itemconstants::kStatus, status);
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
@@ -137,17 +137,17 @@ WorkspaceItem *ProcedureItem::GetWorkspace() const
 
 JobItem::JobItem() : CompoundItem(Type)
 {
-  AddProperty(ItemConstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
+  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
 }
 
 std::string JobItem::GetStatus() const
 {
-  return Property<std::string>(ItemConstants::kStatus);
+  return Property<std::string>(itemconstants::kStatus);
 }
 
 void JobItem::SetStatus(const std::string &status)
 {
-  SetProperty(ItemConstants::kStatus, status);
+  SetProperty(itemconstants::kStatus, status);
 }
 
 }  // namespace sequencergui

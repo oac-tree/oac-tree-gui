@@ -63,10 +63,10 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   if (DomainUtils::IsChannelAccessAvailable())
   {
     auto ca_variable =
-        DomainUtils::CreateDomainVariable(DomainConstants::kChannelAccessVariableType);
-    ca_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
-    ca_variable->AddAttribute(DomainConstants::kChannelAttribute, expected_channel);
-    ca_variable->AddAttribute(DomainConstants::kDataTypeAttribute, expected_datatype);
+        DomainUtils::CreateDomainVariable(domainconstants::kChannelAccessVariableType);
+    ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+    ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
+    ca_variable->AddAttribute(domainconstants::kDataTypeAttribute, expected_datatype);
 
     ChannelAccessVariableItem ca_variable_item;
     ca_variable_item.InitFromDomain(ca_variable.get());
@@ -91,10 +91,10 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
     item.SetDataType(expected_datatype);
 
     auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), DomainConstants::kChannelAccessVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDataTypeAttribute), expected_datatype);
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
   }
 }
 
@@ -118,9 +118,9 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   const std::string expected_name("abc");
   const std::string expected_file_name("edf");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(DomainConstants::kFileVariableType);
-  local_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
-  local_variable->AddAttribute(DomainConstants::kFileAttribute, expected_file_name);
+  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kFileVariableType);
+  local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+  local_variable->AddAttribute(domainconstants::kFileAttribute, expected_file_name);
 
   sequencergui::FileVariableItem local_variable_item;
   local_variable_item.InitFromDomain(local_variable.get());
@@ -139,9 +139,9 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   item.SetFileName(expected_file_name);
 
   auto domain_item = item.CreateDomainVariable();
-  EXPECT_EQ(domain_item->GetType(), DomainConstants::kFileVariableType);
-  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
-  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kFileAttribute), expected_file_name);
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kFileVariableType);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFileAttribute), expected_file_name);
 }
 
 //! LocalVariableItem
@@ -169,7 +169,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
+  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
   local_variable->AddAttribute("name", expected_name);
   local_variable->AddAttribute("type", expected_type);
   local_variable->AddAttribute("value", expected_value);
@@ -194,10 +194,10 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   item.SetJsonValue(expected_value);
 
   auto domain_item = item.CreateDomainVariable();
-  EXPECT_EQ(domain_item->GetType(), DomainConstants::kLocalVariableType);
-  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
-  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kValueAttribute), expected_value);
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
   EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
 }
 
@@ -216,7 +216,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomainMissedValue)
   item.SetJsonValue(expected_value);
 
   auto domain_item = item.CreateDomainVariable();
-  EXPECT_FALSE(domain_item->HasAttribute(DomainConstants::kValueAttribute));
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
 }
 
 //! PVClientVariableItem
@@ -246,10 +246,10 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
   if (DomainUtils::IsChannelAccessAvailable())
   {
-    auto ca_variable = DomainUtils::CreateDomainVariable(DomainConstants::kPVClientVariableType);
-    ca_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
-    ca_variable->AddAttribute(DomainConstants::kChannelAttribute, expected_channel);
-    ca_variable->AddAttribute(DomainConstants::kDataTypeAttribute, expected_datatype);
+    auto ca_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
+    ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+    ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
+    ca_variable->AddAttribute(domainconstants::kDataTypeAttribute, expected_datatype);
 
     PVClientVariableItem ca_variable_item;
     ca_variable_item.InitFromDomain(ca_variable.get());
@@ -274,10 +274,10 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
     item.SetDataType(expected_datatype);
 
     auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), DomainConstants::kPVClientVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(DomainConstants::kDataTypeAttribute), expected_datatype);
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
   }
 }
 
@@ -291,22 +291,22 @@ TEST_F(StandardVariableItemsTest, UnknownVariableItemFromLocalVariable)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto domain_variable = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-  domain_variable->AddAttribute(DomainConstants::kNameAttribute, expected_name);
-  domain_variable->AddAttribute(DomainConstants::kTypeAttribute, expected_type);
-  domain_variable->AddAttribute(DomainConstants::kValueAttribute, expected_value);
+  auto domain_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  domain_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+  domain_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
+  domain_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
   // from domain
   UnknownVariableItem item;
   item.InitFromDomain(domain_variable.get());
-  EXPECT_EQ(item.Property<std::string>(DomainConstants::kNameAttribute), expected_name);
-  EXPECT_EQ(item.Property<std::string>(DomainConstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(item.Property<std::string>(DomainConstants::kValueAttribute), expected_value);
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kNameAttribute), expected_name);
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kTypeAttribute), expected_type);
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kValueAttribute), expected_value);
 
   // to domain
   auto new_domain_item = item.CreateDomainVariable();
-  EXPECT_EQ(new_domain_item->GetType(), DomainConstants::kLocalVariableType);
-  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kNameAttribute), expected_name);
-  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kValueAttribute), expected_value);
+  EXPECT_EQ(new_domain_item->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
+  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
 }

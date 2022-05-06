@@ -94,12 +94,12 @@ std::map<std::string, std::string> GetAttributes(const variable_t* variable)
 bool IsRootInstruction(const instruction_t* instruction)
 {
   static const std::vector<std::string> expected_values{"true", "yes"};
-  if (!instruction->HasAttribute(DomainConstants::kIsRootAttribute))
+  if (!instruction->HasAttribute(domainconstants::kIsRootAttribute))
   {
     return false;
   }
 
-  auto value = instruction->GetAttribute(DomainConstants::kIsRootAttribute);
+  auto value = instruction->GetAttribute(domainconstants::kIsRootAttribute);
   std::transform(value.begin(), value.end(), value.begin(), ::tolower);
 
   return std::find(expected_values.begin(), expected_values.end(), value) != expected_values.end();
@@ -108,7 +108,7 @@ bool IsRootInstruction(const instruction_t* instruction)
 bool IsChannelAccessAvailable()
 {
   static const std::vector<std::string> names = GetDomainVariableNames();
-  return std::find(names.begin(), names.end(), DomainConstants::kChannelAccessVariableType)
+  return std::find(names.begin(), names.end(), domainconstants::kChannelAccessVariableType)
          != names.end();
 }
 

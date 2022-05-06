@@ -25,7 +25,7 @@
 
 #include <string>
 
-namespace sequencergui::ItemConstants
+namespace sequencergui::itemconstants
 {
 
 //! Constants to register property items.
@@ -37,6 +37,6 @@ const std::string kYpos = "kYpos";
 const std::string kChildInstructions = "kChildInstructions";
 const std::string kIsRoot = "kIsRoot";
 
-}  // namespace sequencergui::ItemConstants
+}  // namespace sequencergui::itemconstants
 
 #endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H

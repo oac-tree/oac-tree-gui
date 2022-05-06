@@ -52,19 +52,19 @@ TEST_F(SequencerItemsTest, WorkspaceItem)
 TEST_F(SequencerItemsTest, UnknownInstructionFromConditionItem)
 {
   auto domain_item =
-      DomainUtils::CreateDomainInstruction(DomainConstants::kConditionInstructionType);
-  domain_item->AddAttribute(DomainConstants::kConditionVarNameAttribute, "abc");
+      DomainUtils::CreateDomainInstruction(domainconstants::kConditionInstructionType);
+  domain_item->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
 
   // from domain
   UnknownInstructionItem item;
   item.InitFromDomain(domain_item.get());
-  EXPECT_EQ(item.Property<std::string>(DomainConstants::kConditionVarNameAttribute),
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kConditionVarNameAttribute),
             std::string("abc"));
 
   // to domain
   auto new_domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(new_domain_item->GetType(), DomainConstants::kConditionInstructionType);
-  EXPECT_EQ(new_domain_item->GetAttribute(DomainConstants::kConditionVarNameAttribute), "abc");
+  EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
+  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
 }
 
 //! Validate ProcedureItem

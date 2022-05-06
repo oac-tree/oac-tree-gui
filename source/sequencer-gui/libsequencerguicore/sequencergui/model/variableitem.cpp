@@ -43,7 +43,7 @@ std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 
   if (GetType() != UnknownVariableItem::Type)
   {
-    result->AddAttribute(DomainConstants::kNameAttribute, Property<std::string>(kName));
+    result->AddAttribute(domainconstants::kNameAttribute, Property<std::string>(kName));
   }
 
   SetupDomainImpl(result.get());
@@ -61,9 +61,9 @@ void VariableItem::InitFromDomain(const variable_t *variable)
                                + GetDomainType() + "' type.");
     }
 
-    if (variable->HasAttribute(DomainConstants::kNameAttribute))
+    if (variable->HasAttribute(domainconstants::kNameAttribute))
     {
-      SetProperty(kName, variable->GetAttribute(DomainConstants::kNameAttribute));
+      SetProperty(kName, variable->GetAttribute(domainconstants::kNameAttribute));
     }
   }
 

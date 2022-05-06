@@ -47,11 +47,11 @@ public:
   std::unique_ptr<procedure_t> CreateSingleWaitProcedure(int msec_to_wait) const
   {
     auto result = std::make_unique<procedure_t>();
-    auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait0->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute,
+    auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
                         std::to_string(double(msec_to_wait) / 1000));  // expects in sec
     result->PushInstruction(wait0.release());
-    result->AddAttribute(DomainConstants::kTickTimeOutAttribute, "0.01");  // 10 msec
+    result->AddAttribute(domainconstants::kTickTimeOutAttribute, "0.01");  // 10 msec
     return result;
   }
 
@@ -60,21 +60,21 @@ public:
   {
     auto result = std::make_unique<procedure_t>();
 
-    auto copy = DomainUtils::CreateDomainInstruction(DomainConstants::kCopyInstructionType);
-    copy->AddAttribute(sequencergui::DomainConstants::kInputAttribute, "var0");
-    copy->AddAttribute(sequencergui::DomainConstants::kOutputAttribute, "var1");
+    auto copy = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
+    copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
+    copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
     result->PushInstruction(copy.release());
 
-    auto var0 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-    var0->AddAttribute(DomainConstants::kNameAttribute, "var0");
-    var0->AddAttribute(DomainConstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var0->AddAttribute(DomainConstants::kValueAttribute, "42");
+    auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+    var0->AddAttribute(domainconstants::kNameAttribute, "var0");
+    var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+    var0->AddAttribute(domainconstants::kValueAttribute, "42");
     result->AddVariable("var0", var0.release());
 
-    auto var1 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-    var1->AddAttribute(DomainConstants::kNameAttribute, "var1");
-    var1->AddAttribute(DomainConstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var1->AddAttribute(DomainConstants::kValueAttribute, "0");
+    auto var1 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+    var1->AddAttribute(domainconstants::kNameAttribute, "var1");
+    var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+    var1->AddAttribute(domainconstants::kValueAttribute, "0");
     result->AddVariable("var1", var1.release());
 
     return result;
@@ -84,11 +84,11 @@ public:
   std::unique_ptr<procedure_t> CreateNestedProcedure() const
   {
     auto result = std::make_unique<procedure_t>();
-    auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
-    auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait0->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "0.01");
-    auto wait1 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait1->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "0.01");
+    auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+    auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "0.01");
+    auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "0.01");
 
     sequence->InsertInstruction(wait0.release(), 0);
     sequence->InsertInstruction(wait1.release(), 1);
@@ -101,17 +101,17 @@ public:
   std::unique_ptr<procedure_t> CreateInputProcedure() const
   {
     auto result = std::make_unique<procedure_t>();
-    auto sequence = DomainUtils::CreateDomainInstruction(DomainConstants::kSequenceInstructionType);
-    auto input = DomainUtils::CreateDomainInstruction(DomainConstants::kInputInstructionType);
-    input->AddAttribute(DomainConstants::kInputTargetAttribute, "var0");
-    input->AddAttribute(DomainConstants::kDescriptionAttribute, "description");
+    auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+    auto input = DomainUtils::CreateDomainInstruction(domainconstants::kInputInstructionType);
+    input->AddAttribute(domainconstants::kInputTargetAttribute, "var0");
+    input->AddAttribute(domainconstants::kDescriptionAttribute, "description");
     sequence->InsertInstruction(input.release(), 0);
     result->PushInstruction(sequence.release());
 
-    auto var0 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-    var0->AddAttribute(DomainConstants::kNameAttribute, "var0");
-    var0->AddAttribute(DomainConstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var0->AddAttribute(DomainConstants::kValueAttribute, "0");
+    auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+    var0->AddAttribute(domainconstants::kNameAttribute, "var0");
+    var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+    var0->AddAttribute(domainconstants::kValueAttribute, "0");
     result->AddVariable("var0", var0.release());
 
     return result;
@@ -122,29 +122,29 @@ public:
   {
     auto result = std::make_unique<procedure_t>();
     auto userchoice =
-        DomainUtils::CreateDomainInstruction(DomainConstants::kUserChoiceInstructionType);
-    userchoice->AddAttribute(DomainConstants::kDescriptionAttribute, "it's your choice");
+        DomainUtils::CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
+    userchoice->AddAttribute(domainconstants::kDescriptionAttribute, "it's your choice");
 
-    auto wait0 = DomainUtils::CreateDomainInstruction(DomainConstants::kWaitInstructionType);
-    wait0->AddAttribute(sequencergui::DomainConstants::kWaitTimeoutAttribute, "10");  // 10 sec
+    auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "10");  // 10 sec
 
-    auto copy = DomainUtils::CreateDomainInstruction(DomainConstants::kCopyInstructionType);
-    copy->AddAttribute(sequencergui::DomainConstants::kInputAttribute, "var0");
-    copy->AddAttribute(sequencergui::DomainConstants::kOutputAttribute, "var1");
+    auto copy = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
+    copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
+    copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
 
     userchoice->InsertInstruction(wait0.release(), 0);
     userchoice->InsertInstruction(copy.release(), 1);
 
-    auto var0 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-    var0->AddAttribute(DomainConstants::kNameAttribute, "var0");
-    var0->AddAttribute(DomainConstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var0->AddAttribute(DomainConstants::kValueAttribute, "42");
+    auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+    var0->AddAttribute(domainconstants::kNameAttribute, "var0");
+    var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+    var0->AddAttribute(domainconstants::kValueAttribute, "42");
     result->AddVariable("var0", var0.release());
 
-    auto var1 = DomainUtils::CreateDomainVariable(DomainConstants::kLocalVariableType);
-    var1->AddAttribute(DomainConstants::kNameAttribute, "var1");
-    var1->AddAttribute(DomainConstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var1->AddAttribute(DomainConstants::kValueAttribute, "0");
+    auto var1 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+    var1->AddAttribute(domainconstants::kNameAttribute, "var1");
+    var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+    var1->AddAttribute(domainconstants::kValueAttribute, "0");
     result->AddVariable("var1", var1.release());
 
     result->PushInstruction(userchoice.release());

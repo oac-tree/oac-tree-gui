@@ -34,11 +34,11 @@ namespace
 
 std::vector<std::string> GetDomainDecoratorNames()
 {
-  std::vector<std::string> result{sequencergui::DomainConstants::kForceSuccessInstructionType,
-                                  sequencergui::DomainConstants::kIncludeInstructionType,
-                                  sequencergui::DomainConstants::kListenInstructionType,
-                                  sequencergui::DomainConstants::kRepeatInstructionType,
-                                  sequencergui::DomainConstants::kInverterInstructionType};
+  std::vector<std::string> result{sequencergui::domainconstants::kForceSuccessInstructionType,
+                                  sequencergui::domainconstants::kIncludeInstructionType,
+                                  sequencergui::domainconstants::kListenInstructionType,
+                                  sequencergui::domainconstants::kRepeatInstructionType,
+                                  sequencergui::domainconstants::kInverterInstructionType};
   return result;
 }
 }  // namespace
@@ -48,7 +48,7 @@ namespace sequencergui
 
 bool IsCompoundInstruction(const InstructionItem *instruction)
 {
-  return instruction->GetTaggedItems()->HasTag(ItemConstants::kChildInstructions);
+  return instruction->GetTaggedItems()->HasTag(itemconstants::kChildInstructions);
 }
 
 bool IsDecoratorInstruction(const InstructionItem *instruction)

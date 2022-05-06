@@ -55,7 +55,7 @@ public:
 
     if (auto procedure = dynamic_cast<ProcedureItem *>(item); procedure)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(procedure->GetItem(ItemConstants::kStatus)));
+      result.emplace_back(mvvm::CreateDataViewItem(procedure->GetItem(itemconstants::kStatus)));
     }
     return result;
   }
