@@ -1,4 +1,6 @@
 target_sources(${library_name} PRIVATE
+  applicationmodels.cpp
+  applicationmodels.h
   domain_constants.h
   domainobjectbuilder.cpp
   domainobjectbuilder.h

@@ -17,22 +17,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_JOBMODEL_H
-#define SEQUENCERGUI_MODEL_JOBMODEL_H
+#include "sequencergui/model/applicationmodels.h"
 
-#include "mvvm/model/applicationmodel.h"
+#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/jobmodel.h"
 
 namespace sequencergui
 {
 
-//! The model to hold running procedures.
-
-class JobModel : public mvvm::ApplicationModel
+ApplicationModels::ApplicationModels()
 {
-public:
-  JobModel();
-};
+  m_sequencer_model = std::make_unique<SequencerModel>();
+  m_job_model = std::make_unique<JobModel>();
+}
+
+ApplicationModels::~ApplicationModels() = default;
+
+SequencerModel *ApplicationModels::GetSequencerModel()
+{
+  return m_sequencer_model.get();
+}
+
+JobModel *ApplicationModels::GetJobModel()
+{
+  return m_job_model.get();
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_MODEL_JOBMODEL_H
