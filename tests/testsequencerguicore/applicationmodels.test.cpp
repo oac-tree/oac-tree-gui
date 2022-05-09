@@ -17,33 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
-#define SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+#include "sequencergui/model/applicationmodels.h"
 
-//! @file sequencerutils.h
-//! Various utils for GUI items.
+#include <gtest/gtest.h>
 
-#include <memory>
+using namespace sequencergui;
 
-namespace mvvm
+//! Tests of ApplicationModels class.
+
+class ApplicationModelsTest : public ::testing::Test
 {
-class SessionItem;
-template <typename T>
-class ItemCatalogue;
-}  // namespace mvvm
+};
 
-namespace sequencergui
+TEST_F(ApplicationModelsTest, InitialState)
 {
+  ApplicationModels models;
 
-class InstructionItem;
-class SequencerModel;
-
-bool IsCompoundInstruction(const InstructionItem* instruction);
-
-bool IsDecoratorInstruction(const InstructionItem* instruction);
-
-std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatalogue();
-
-}  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+  EXPECT_NE(models.GetSequencerModel(), nullptr);
+  EXPECT_NE(models.GetJobModel(), nullptr);
+}

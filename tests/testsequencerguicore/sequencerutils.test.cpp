@@ -21,6 +21,8 @@
 
 #include "sequencergui/model/sequenceritems.h"
 
+#include "mvvm/factories/itemcataloguefactory.h"
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -53,4 +55,13 @@ TEST_F(SequencerUtilsTest, IsDecoratorInstruction)
 
   WaitItem wait;
   EXPECT_FALSE(IsDecoratorInstruction(&wait));
+}
+
+TEST_F(SequencerUtilsTest, CreateSequencerItemCatalogues)
+{
+  // checking one sequencer related item in the catalogue
+  auto catalogue = CreateSequencerItemCatalogue();
+
+  auto item = catalogue->Create(SequenceItem::Type);
+  EXPECT_EQ(item->GetType(), SequenceItem::Type);
 }

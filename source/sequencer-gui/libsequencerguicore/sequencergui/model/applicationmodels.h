@@ -28,7 +28,8 @@ namespace sequencergui
 class SequencerModel;
 class JobModel;
 
-//! Aggregate-like class to hold various applicationmodels.
+//! Central place to store all application models.
+
 class ApplicationModels
 {
 public:

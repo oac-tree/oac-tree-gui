@@ -24,6 +24,7 @@
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 
+#include "mvvm/model/itemcatalogue.h"
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/utils/containerutils.h"
 
@@ -55,6 +56,43 @@ bool IsDecoratorInstruction(const InstructionItem *instruction)
 {
   static const std::vector<std::string> domain_names = GetDomainDecoratorNames();
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
+}
+
+std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatalogue()
+{
+  auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
+
+  // instructions
+  result->RegisterItem<ConditionItem>();
+  result->RegisterItem<CopyItem>();
+  result->RegisterItem<EqualsItem>();
+  result->RegisterItem<FallbackItem>();
+  result->RegisterItem<FileVariableItem>();
+  result->RegisterItem<ForceSuccessItem>();
+  result->RegisterItem<IncludeItem>();
+  result->RegisterItem<InputItem>();
+  result->RegisterItem<InstructionContainerItem>();
+  result->RegisterItem<InverterItem>();
+  result->RegisterItem<ListenItem>();
+  result->RegisterItem<MessageItem>();
+  result->RegisterItem<OutputItem>();
+  result->RegisterItem<ParallelSequenceItem>();
+  result->RegisterItem<RepeatItem>();
+  result->RegisterItem<SequenceItem>();
+  result->RegisterItem<UnknownInstructionItem>();
+  result->RegisterItem<UserChoiceItem>();
+  result->RegisterItem<WaitItem>();
+
+  // variables
+  result->RegisterItem<ChannelAccessVariableItem>();
+  result->RegisterItem<LocalVariableItem>();
+  result->RegisterItem<PVClientVariableItem>();
+  result->RegisterItem<UnknownVariableItem>();
+
+  // other items
+  result->RegisterItem<WorkspaceItem>();
+  result->RegisterItem<ProcedureItem>();
+  return result;
 }
 
 }  // namespace sequencergui
