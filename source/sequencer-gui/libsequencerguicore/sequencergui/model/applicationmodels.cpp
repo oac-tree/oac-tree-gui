@@ -19,16 +19,21 @@
 
 #include "sequencergui/model/applicationmodels.h"
 
-#include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/jobmodel.h"
+#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/sequencerutils.h"
+
+#include "mvvm/interfaces/itemmanagerinterface.h"
+#include "mvvm/model/itempool.h"
 
 namespace sequencergui
 {
 
 ApplicationModels::ApplicationModels()
+    : m_item_pool(std::make_shared<mvvm::ItemPool>())
+    , m_sequencer_model(std::make_unique<SequencerModel>(CreateSequencerItemManager(m_item_pool)))
+    , m_job_model(std::make_unique<JobModel>(CreateSequencerItemManager(m_item_pool)))
 {
-  m_sequencer_model = std::make_unique<SequencerModel>();
-  m_job_model = std::make_unique<JobModel>();
 }
 
 ApplicationModels::~ApplicationModels() = default;

@@ -19,6 +19,10 @@
 
 #include "sequencergui/model/applicationmodels.h"
 
+#include "sequencergui/model/jobmodel.h"
+#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencermodel.h"
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -35,4 +39,16 @@ TEST_F(ApplicationModelsTest, InitialState)
 
   EXPECT_NE(models.GetSequencerModel(), nullptr);
   EXPECT_NE(models.GetJobModel(), nullptr);
+}
+
+TEST_F(ApplicationModelsTest, FindItems)
+{
+  ApplicationModels models;
+
+  // default catalogue is capable of creating sequencer items
+  auto procedure = models.GetSequencerModel()->InsertNewItem(ProcedureItem::Type);
+  EXPECT_EQ(procedure->GetType(), ProcedureItem::Type);
+
+  // second model can find alien item
+  EXPECT_EQ(models.GetJobModel()->FindItem(procedure->GetIdentifier()), procedure);
 }

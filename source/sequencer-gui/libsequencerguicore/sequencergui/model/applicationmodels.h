@@ -22,6 +22,11 @@
 
 #include <memory>
 
+namespace mvvm
+{
+class ItemPool;
+}
+
 namespace sequencergui
 {
 
@@ -29,6 +34,7 @@ class SequencerModel;
 class JobModel;
 
 //! Central place to store all application models.
+//! All models are using the same memory pool to allow cross-model item search.
 
 class ApplicationModels
 {
@@ -41,6 +47,7 @@ public:
   JobModel* GetJobModel();
 
 private:
+  std::shared_ptr<mvvm::ItemPool> m_item_pool;
   std::unique_ptr<SequencerModel> m_sequencer_model;
   std::unique_ptr<JobModel> m_job_model;
 };

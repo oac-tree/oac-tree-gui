@@ -99,7 +99,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
 std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
     std::shared_ptr<mvvm::ItemPool> pool)
 {
-  return mvvm::CreateDefaultItemManager(CreateSequencerItemCatalogue(), pool);
+  return mvvm::CreateDefaultItemManager(CreateSequencerItemCatalogue(), std::move(pool));
 }
 
 }  // namespace sequencergui
