@@ -25,6 +25,7 @@
 #include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/model/itemcatalogue.h"
+#include "mvvm/model/itemmanager.h"
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/utils/containerutils.h"
 
@@ -93,6 +94,12 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<WorkspaceItem>();
   result->RegisterItem<ProcedureItem>();
   return result;
+}
+
+std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
+    std::shared_ptr<mvvm::ItemPool> pool)
+{
+  return mvvm::CreateDefaultItemManager(CreateSequencerItemCatalogue(), pool);
 }
 
 }  // namespace sequencergui

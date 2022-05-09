@@ -22,6 +22,7 @@
 #include "sequencergui/model/sequenceritems.h"
 
 #include "mvvm/factories/itemcataloguefactory.h"
+#include "mvvm/interfaces/itemmanagerinterface.h"
 
 #include <gtest/gtest.h>
 
@@ -63,5 +64,14 @@ TEST_F(SequencerUtilsTest, CreateSequencerItemCatalogues)
   auto catalogue = CreateSequencerItemCatalogue();
 
   auto item = catalogue->Create(SequenceItem::Type);
+  EXPECT_EQ(item->GetType(), SequenceItem::Type);
+}
+
+TEST_F(SequencerUtilsTest, CreateSequencerItemManager)
+{
+  // checking one sequencer related item in the catalogue
+  auto manager = CreateSequencerItemManager();
+
+  auto item = manager->CreateItem(SequenceItem::Type);
   EXPECT_EQ(item->GetType(), SequenceItem::Type);
 }

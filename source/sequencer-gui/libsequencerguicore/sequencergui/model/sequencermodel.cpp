@@ -19,45 +19,17 @@
 
 #include "sequencergui/model/sequencermodel.h"
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/sequencerutils.h"
 
+#include "mvvm/interfaces/itemmanagerinterface.h"
 #include "mvvm/model/applicationmodel.h"
-#include "mvvm/model/itemmanager.h"
 #include "mvvm/standarditems/containeritem.h"
 
 namespace sequencergui
 {
-SequencerModel::SequencerModel() : mvvm::ApplicationModel("SequencerModel")
+SequencerModel::SequencerModel()
+    : mvvm::ApplicationModel("SequencerModel", CreateSequencerItemManager())
 {
-  // instructions
-  RegisterItem<ConditionItem>();
-  RegisterItem<CopyItem>();
-  RegisterItem<EqualsItem>();
-  RegisterItem<FallbackItem>();
-  RegisterItem<FileVariableItem>();
-  RegisterItem<ForceSuccessItem>();
-  RegisterItem<IncludeItem>();
-  RegisterItem<InputItem>();
-  RegisterItem<InstructionContainerItem>();
-  RegisterItem<InverterItem>();
-  RegisterItem<ListenItem>();
-  RegisterItem<MessageItem>();
-  RegisterItem<OutputItem>();
-  RegisterItem<ParallelSequenceItem>();
-//  RegisterItem<ProcedureItem>();
-  RegisterItem<RepeatItem>();
-  RegisterItem<SequenceItem>();
-  RegisterItem<UnknownInstructionItem>();
-  RegisterItem<UserChoiceItem>();
-  RegisterItem<WaitItem>();
-  RegisterItem<WorkspaceItem>();
-
-  // variables
-  RegisterItem<ChannelAccessVariableItem>();
-  RegisterItem<LocalVariableItem>();
-  RegisterItem<PVClientVariableItem>();
-  RegisterItem<UnknownVariableItem>();
-
   SetupModel();
 }
 

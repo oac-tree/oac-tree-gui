@@ -30,6 +30,8 @@ namespace mvvm
 class SessionItem;
 template <typename T>
 class ItemCatalogue;
+class ItemManagerInterface;
+class ItemPool;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -42,7 +44,12 @@ bool IsCompoundInstruction(const InstructionItem* instruction);
 
 bool IsDecoratorInstruction(const InstructionItem* instruction);
 
+//! Creates catalogue of sequencer presentation items.
 std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatalogue();
+
+//! Creates manager for sequencer presentation items.
+std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
+    std::shared_ptr<mvvm::ItemPool> pool = {});
 
 }  // namespace sequencergui
 
