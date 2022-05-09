@@ -27,8 +27,11 @@
 
 namespace sequencergui
 {
-SequencerModel::SequencerModel()
-    : mvvm::ApplicationModel("SequencerModel", CreateSequencerItemManager())
+SequencerModel::SequencerModel() : SequencerModel(CreateSequencerItemManager()) {}
+
+SequencerModel::SequencerModel(std::unique_ptr<mvvm::ItemManagerInterface> manager)
+    : mvvm::ApplicationModel("SequencerModel", std::move(manager))
+
 {
   SetupModel();
 }

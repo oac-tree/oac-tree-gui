@@ -19,18 +19,24 @@
 
 #include "sequencergui/model/jobmodel.h"
 
-#include "sequencergui/model/sequencerutils.h"
+#include "sequencergui/model/sequenceritems.h"
 
-#include "mvvm/interfaces/itemmanagerinterface.h"
+#include <gtest/gtest.h>
 
-namespace sequencergui
+using namespace sequencergui;
+
+//! Tests for JobModel class.
+
+class JobModelTest : public ::testing::Test
 {
+};
 
-JobModel::JobModel() : JobModel(CreateSequencerItemManager()) {}
-
-JobModel::JobModel(std::unique_ptr<mvvm::ItemManagerInterface> manager)
-    : mvvm::ApplicationModel("JobModel", std::move(manager))
+TEST_F(JobModelTest, InitialState)
 {
+  JobModel model;
+
+  // trying to insert procedure to make sure that catalogue is there
+  auto item = model.InsertNewItem(ProcedureItem::Type);
+  EXPECT_EQ(item->GetType(), ProcedureItem::Type);
+  EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }
-
-}  // namespace sequencergui

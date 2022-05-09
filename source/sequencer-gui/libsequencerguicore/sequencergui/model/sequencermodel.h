@@ -38,6 +38,7 @@ class SequencerModel : public mvvm::ApplicationModel
 {
 public:
   SequencerModel();
+  explicit SequencerModel(std::unique_ptr<mvvm::ItemManagerInterface> manager);
 
   mvvm::ContainerItem* GetProcedureContainer() const;
 
