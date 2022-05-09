@@ -23,8 +23,8 @@
 #include "sequencergui/explorer/sequencerexplorerview.h"
 #include "sequencergui/mainwindow/actionmanager.h"
 #include "sequencergui/mainwindow/settingsview.h"
+#include "sequencergui/model/applicationmodels.h"
 #include "sequencergui/model/procedureexamples.h"
-#include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
 #include "sequencergui/utils/styleutils.h"
 
@@ -43,16 +43,16 @@ const QString pos_key = "pos";
 
 namespace sequencergui
 {
-MainWindow::MainWindow() : m_model(std::make_unique<SequencerModel>())
+MainWindow::MainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
   PopulateModel();
 
   InitApplication();
 
-  m_xml_view->SetModel(m_model.get());
-  m_settings_view->SetModel(m_model.get());
-  m_composer_view->SetModel(m_model.get());
-  m_monitor_view->SetModel(m_model.get());
+  m_xml_view->SetModel(m_models->GetSequencerModel());
+  m_settings_view->SetModel(m_models->GetSequencerModel());
+  m_composer_view->SetModel(m_models->GetSequencerModel());
+  m_monitor_view->SetModel(m_models->GetSequencerModel());
 }
 
 MainWindow::~MainWindow() = default;
@@ -90,7 +90,7 @@ void MainWindow::InitApplication()
 
 void MainWindow::InitComponents()
 {
-  m_action_manager = new ActionManager(m_model.get(), this);
+  m_action_manager = new ActionManager(m_models->GetSequencerModel(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
 
@@ -127,12 +127,12 @@ void MainWindow::WriteSettings()
 
 void MainWindow::PopulateModel()
 {
-  Examples::AddCopyProcedure(m_model.get());
-  //  Examples::AddLocalIncludeProcedure(m_model.get());
-  //  Examples::AddUserChoiceProcedure(m_model.get());
-  //  Examples::AddInputProcedure(m_model.get());
-  //  Examples::AddComplexAlignmentProcedure(m_model.get());
-  //  Examples::AddComplexAlignmentProcedureV2(m_model.get());
+  Examples::AddCopyProcedure(m_models->GetSequencerModel());
+  //  Examples::AddLocalIncludeProcedure(m_models->GetSequencerModel());
+  //  Examples::AddUserChoiceProcedure(m_models->GetSequencerModel());
+  //  Examples::AddInputProcedure(m_models->GetSequencerModel());
+  //  Examples::AddComplexAlignmentProcedure(m_models->GetSequencerModel());
+  //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
 }
 
 }  // namespace sequencergui
