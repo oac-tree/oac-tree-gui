@@ -44,7 +44,7 @@ SequencerModel::SequencerModel() : mvvm::ApplicationModel("SequencerModel")
   RegisterItem<MessageItem>();
   RegisterItem<OutputItem>();
   RegisterItem<ParallelSequenceItem>();
-  RegisterItem<ProcedureItem>();
+//  RegisterItem<ProcedureItem>();
   RegisterItem<RepeatItem>();
   RegisterItem<SequenceItem>();
   RegisterItem<UnknownInstructionItem>();
@@ -59,12 +59,6 @@ SequencerModel::SequencerModel() : mvvm::ApplicationModel("SequencerModel")
   RegisterItem<UnknownVariableItem>();
 
   SetupModel();
-}
-
-//! Returns InstructionItem corresponding to the given identifier.
-InstructionItem *SequencerModel::GetInstruction(const std::string &identifier) const
-{
-  return dynamic_cast<InstructionItem *>(FindItem(identifier));
 }
 
 mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const

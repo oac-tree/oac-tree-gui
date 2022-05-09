@@ -17,36 +17,29 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
-#define SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
+#include "sequencergui/model/sequencermodel.h"
 
-#include "mvvm/model/applicationmodel.h"
+#include "sequencergui/model/sequenceritems.h"
 
-namespace mvvm
+#include <gtest/gtest.h>
+
+using namespace sequencergui;
+
+//! Tests for SequencerModel class.
+
+class SequencerModelTest : public ::testing::Test
 {
-class ContainerItem;
-}
-
-namespace sequencergui
-{
-class InstructionItem;
-
-//! The model containing a collection of sequencer procedures.
-//! Used during procedure assembly.
-
-class SequencerModel : public mvvm::ApplicationModel
-{
-public:
-  SequencerModel();
-
-  mvvm::ContainerItem* GetProcedureContainer() const;
-
-private:
-  void SetupModel();
-
-  mvvm::ContainerItem* m_procedure_container{nullptr};
 };
 
-}  // namespace sequencergui
+TEST_F(SequencerModelTest, InitialState)
+{
+  SequencerModel model;
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
+  // container is already created
+  EXPECT_NE(model.GetProcedureContainer(), nullptr);
+
+  // trying to insert procedure to make sure that catalogue is there
+  auto item = model.InsertNewItem(ProcedureItem::Type);
+  EXPECT_EQ(item->GetType(), ProcedureItem::Type);
+  EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
+}
