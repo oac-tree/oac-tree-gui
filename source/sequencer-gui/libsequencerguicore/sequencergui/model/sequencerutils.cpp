@@ -93,6 +93,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   // other items
   result->RegisterItem<WorkspaceItem>();
   result->RegisterItem<ProcedureItem>();
+  result->RegisterItem<JobItem>();
   return result;
 }
 
