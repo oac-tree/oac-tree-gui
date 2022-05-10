@@ -5,10 +5,10 @@ target_sources(${library_name} PRIVATE
   appsettings.h
   mainwindow.cpp
   mainwindow.h
+  procedurelistwidget.cpp
+  procedurelistwidget.h
   projecthandler.cpp
   projecthandler.h
-  procedurelistview.cpp
-  procedurelistview.h
   recentprojectsettings.cpp
   recentprojectsettings.h
   settingsview.cpp

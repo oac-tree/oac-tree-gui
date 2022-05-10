@@ -21,7 +21,7 @@
 
 #include "sequencergui/widgets/filetreeview.h"
 #include "sequencergui/widgets/paneltoolbar.h"
-#include "sequencergui/mainwindow/procedurelistview.h"
+#include "sequencergui/mainwindow/procedurelistwidget.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 
@@ -37,13 +37,13 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
     , m_tool_bar(new PanelToolBar)
     , m_collapsible_list(new CollapsibleListView)
     , m_file_tree_view(new FileTreeView)
-    , m_procedure_list_view(new ProcedureListView)
+    , m_procedure_list_view(new ProcedureListWidget)
 {
   m_tool_bar->setText("EXPLORER");
 
   m_collapsible_list->AddWidget(m_file_tree_view);
 
-  m_procedure_list_view->SetupActions(ProcedureListView::kRemoveSelected);
+  m_procedure_list_view->SetupActions(ProcedureListWidget::kRemoveSelected);
   m_procedure_list_view->setWindowTitle("OPEN PROCEDURES");
 
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
@@ -59,11 +59,11 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
           &ExplorerPanel::ProcedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
-  connect(m_procedure_list_view, &ProcedureListView::ProcedureSelected, this,
+  connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ExplorerPanel::ProcedureSelected);
-  connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
+  connect(m_procedure_list_view, &ProcedureListWidget::CreateNewProcedureRequest, this,
           &ExplorerPanel::CreateNewProcedureRequest);
-  connect(m_procedure_list_view, &ProcedureListView::RemoveProcedureRequest, this,
+  connect(m_procedure_list_view, &ProcedureListWidget::RemoveProcedureRequest, this,
           &ExplorerPanel::RemoveProcedureRequest);
 }
 

@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/procedurelistview.h"
+#include "sequencergui/mainwindow/procedurelistwidget.h"
 
-#include "sequencergui/utils/styleutils.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/standarditems/standarditemincludes.h"
@@ -48,7 +48,7 @@ public:
   }
 };
 
-ProcedureListView::ProcedureListView(QWidget *parent)
+ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     : QWidget(parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
@@ -64,9 +64,9 @@ ProcedureListView::ProcedureListView(QWidget *parent)
   layout->addWidget(m_list_view);
 }
 
-ProcedureListView::~ProcedureListView() = default;
+ProcedureListWidget::~ProcedureListWidget() = default;
 
-void ProcedureListView::SetModel(SequencerModel *model)
+void ProcedureListWidget::SetModel(SequencerModel *model)
 {
   m_model = model;
   if (model)
@@ -78,13 +78,13 @@ void ProcedureListView::SetModel(SequencerModel *model)
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 }
 
-ProcedureItem *ProcedureListView::GetSelectedProcedure()
+ProcedureItem *ProcedureListWidget::GetSelectedProcedure()
 {
   auto selected = GetSelectedProcedures();
   return selected.empty() ? nullptr : selected.front();
 }
 
-std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
+std::vector<ProcedureItem *> ProcedureListWidget::GetSelectedProcedures() const
 {
   std::vector<ProcedureItem *> result;
   auto selected = m_list_view->GetSelectedItems();
@@ -94,22 +94,22 @@ std::vector<ProcedureItem *> ProcedureListView::GetSelectedProcedures() const
   return result;
 }
 
-void ProcedureListView::SetSelectedProcedure(ProcedureItem *procedure)
+void ProcedureListWidget::SetSelectedProcedure(ProcedureItem *procedure)
 {
   m_list_view->SetSelectedItem(procedure);
 }
 
-QListView *ProcedureListView::GetListView()
+QListView *ProcedureListWidget::GetListView()
 {
   return dynamic_cast<QListView *>(m_list_view->GetView());
 }
 
-mvvm::ViewModel *ProcedureListView::GetViewModel()
+mvvm::ViewModel *ProcedureListWidget::GetViewModel()
 {
   return m_list_view->GetViewModel();
 }
 
-void ProcedureListView::SetupActions(int action_flag)
+void ProcedureListWidget::SetupActions(int action_flag)
 {
   if (action_flag & kCreateNew)
   {
@@ -117,7 +117,7 @@ void ProcedureListView::SetupActions(int action_flag)
     m_new_procedure_action->setToolTip("Create new empty procedure");
     m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
     connect(m_new_procedure_action, &QAction::triggered, this,
-            &ProcedureListView::CreateNewProcedureRequest);
+            &ProcedureListWidget::CreateNewProcedureRequest);
     addAction(m_new_procedure_action);
   }
 

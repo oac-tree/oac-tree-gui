@@ -27,7 +27,7 @@ class QSplitter;
 namespace sequencergui
 {
 class InstructionItemPanel;
-class ProcedureListView;
+class ProcedureListWidget;
 class PanelToolBar;
 class SequencerModel;
 class ProcedureItem;
@@ -60,7 +60,7 @@ signals:
 private:
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
-  ProcedureListView* m_procedure_list_view{nullptr};
+  ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};
   AggregatePanel* m_workspace_panel{nullptr};
 };

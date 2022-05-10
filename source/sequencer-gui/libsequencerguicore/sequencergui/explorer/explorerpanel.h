@@ -26,7 +26,7 @@ namespace sequencergui
 {
 class FileTreeView;
 class PanelToolBar;
-class ProcedureListView;
+class ProcedureListWidget;
 class SequencerModel;
 class ProcedureItem;
 class CollapsibleListView;
@@ -56,7 +56,7 @@ private:
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
-  ProcedureListView* m_procedure_list_view{nullptr};
+  ProcedureListWidget* m_procedure_list_view{nullptr};
 };
 
 }  // namespace sequencergui

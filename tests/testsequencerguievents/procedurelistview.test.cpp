@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/procedurelistview.h"
+#include "sequencergui/mainwindow/procedurelistwidget.h"
 
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -47,7 +47,7 @@ public:
 
 TEST_F(ProcedureListViewTest, InitialState)
 {
-  ProcedureListView view;
+  ProcedureListWidget view;
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
   EXPECT_TRUE(view.GetSelectedProcedures().empty());
 }
@@ -57,8 +57,8 @@ TEST_F(ProcedureListViewTest, SelectProcedure)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListView view;
-  QSignalSpy spy_selected(&view, &ProcedureListView::ProcedureSelected);
+  ProcedureListWidget view;
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
   view.SetModel(&model);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
@@ -93,7 +93,7 @@ TEST_F(ProcedureListViewTest, SelectionAfterRemoval)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListView view;
+  ProcedureListWidget view;
   view.SetModel(&model);
 
   // selecting single item
@@ -102,7 +102,7 @@ TEST_F(ProcedureListViewTest, SelectionAfterRemoval)
   // checking selections
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<sequencergui::ProcedureItem*>({procedure}));
 
-  QSignalSpy spy_selected(&view, &ProcedureListView::ProcedureSelected);
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
   // removing item
   model.RemoveItem(procedure);
@@ -122,8 +122,8 @@ TEST_F(ProcedureListViewTest, SetCurrentIndex)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  ProcedureListView view;
-  QSignalSpy spy_selected(&view, &ProcedureListView::ProcedureSelected);
+  ProcedureListWidget view;
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
 
   view.SetModel(&model);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);

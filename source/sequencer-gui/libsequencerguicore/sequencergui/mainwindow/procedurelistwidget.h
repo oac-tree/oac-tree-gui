@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURELISTVIEW_H
-#define SEQUENCERGUI_MAINWINDOW_PROCEDURELISTVIEW_H
+#ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURELISTWIDGET_H
+#define SEQUENCERGUI_MAINWINDOW_PROCEDURELISTWIDGET_H
 
 #include <QWidget>
 
@@ -39,7 +39,7 @@ class ProcedureList;
 
 //! List view for ProcedureItem with selection abilities.
 
-class ProcedureListView : public QWidget
+class ProcedureListWidget : public QWidget
 {
   Q_OBJECT
 
@@ -50,8 +50,8 @@ public:
     kRemoveSelected = 2
   };
 
-  explicit ProcedureListView(QWidget* parent = nullptr);
-  ~ProcedureListView() override;
+  explicit ProcedureListWidget(QWidget* parent = nullptr);
+  ~ProcedureListWidget() override;
 
   void SetModel(SequencerModel* model);
 
@@ -83,4 +83,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURELISTVIEW_H
+#endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURELISTWIDGET_H

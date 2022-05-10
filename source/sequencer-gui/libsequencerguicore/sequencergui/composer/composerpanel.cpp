@@ -21,7 +21,7 @@
 
 #include "sequencergui/composer/aggregatepanel.h"
 #include "sequencergui/composer/instructionitempanel.h"
-#include "sequencergui/mainwindow/procedurelistview.h"
+#include "sequencergui/mainwindow/procedurelistwidget.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 #include "sequencergui/widgets/itemlistwidget.h"
@@ -39,7 +39,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
     , m_collapsible_list(new CollapsibleListView)
-    , m_procedure_list_view(new ProcedureListView)
+    , m_procedure_list_view(new ProcedureListWidget)
     , m_instruction_panel(new InstructionItemPanel)
     , m_workspace_panel(new AggregatePanel)
 
@@ -51,17 +51,17 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_collapsible_list);
 
-  m_procedure_list_view->SetupActions(ProcedureListView::kCreateNew
-                                      | ProcedureListView::kRemoveSelected);
+  m_procedure_list_view->SetupActions(ProcedureListWidget::kCreateNew
+                                      | ProcedureListWidget::kRemoveSelected);
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
   m_collapsible_list->AddCollapsibleWidget(m_instruction_panel);
   m_collapsible_list->AddCollapsibleWidget(m_workspace_panel);
 
-  connect(m_procedure_list_view, &ProcedureListView::ProcedureSelected, this,
+  connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
-  connect(m_procedure_list_view, &ProcedureListView::CreateNewProcedureRequest, this,
+  connect(m_procedure_list_view, &ProcedureListWidget::CreateNewProcedureRequest, this,
           &ComposerPanel::CreateNewProcedureRequest);
-  connect(m_procedure_list_view, &ProcedureListView::RemoveProcedureRequest, this,
+  connect(m_procedure_list_view, &ProcedureListWidget::RemoveProcedureRequest, this,
           &ComposerPanel::RemoveProcedureRequest);
 }
 
