@@ -6,6 +6,8 @@ target_sources(${library_name} PRIVATE
   job_types.h
   jobcontext.cpp
   jobcontext.h
+  joblistwidget.cpp
+  joblistwidget.h
   joblog.cpp
   joblog.h
   jobmanager.cpp
@@ -35,6 +37,4 @@ target_sources(${library_name} PRIVATE
   usercontext.h
   usercontroller.cpp
   usercontroller.h
-  joblistview.cpp
-  joblistview.h
   )

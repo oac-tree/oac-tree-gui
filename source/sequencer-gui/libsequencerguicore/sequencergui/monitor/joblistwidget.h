@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
-#define SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
+#ifndef SEQUENCERGUI_MONITOR_JOBLISTWIDGET_H
+#define SEQUENCERGUI_MONITOR_JOBLISTWIDGET_H
 
 #include <QWidget>
 
@@ -37,15 +37,15 @@ class ProcedureItem;
 
 //! List view with top-level ProcedureItem's.
 //! Occupy upper left corner of SequencerMonitorView.
-//! FIXME almost full duplication of OpenDocumentsWidget
+//! FIXME almost full duplication of ProcedureListWidget
 
-class JobListView : public QWidget
+class JobListWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit JobListView(QWidget* parent = nullptr);
-  ~JobListView() override;
+  explicit JobListWidget(QWidget* parent = nullptr);
+  ~JobListWidget() override;
 
   void SetModel(SequencerModel* model);
 
@@ -73,4 +73,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOBLISTVIEW_H
+#endif  // SEQUENCERGUI_MONITOR_JOBLISTWIDGET_H

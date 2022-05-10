@@ -27,7 +27,7 @@ class QSplitter;
 namespace sequencergui
 {
 class PanelToolBar;
-class JobListView;
+class JobListWidget;
 class ProcedureItem;
 class SequencerModel;
 class CollapsibleListView;
@@ -55,7 +55,7 @@ signals:
 private:
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_splitter{nullptr};
-  JobListView* m_job_list_view{nullptr};
+  JobListWidget* m_job_list_view{nullptr};
 };
 
 }  // namespace sequencergui
