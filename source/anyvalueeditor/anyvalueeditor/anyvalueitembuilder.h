@@ -51,6 +51,9 @@ public:
   void ScalarProlog(const anyvalue_t* anyvalue) override;
   void ScalarEpilog(const anyvalue_t* anyvalue) override;
 
+  void UnboundedArrayProlog(const anyvalue_t* val) override;
+  void UnboundedArrayEpilog(const anyvalue_t* val) override;
+
 private:
   AnyValueItem* m_item{nullptr};
   int m_index{0};
