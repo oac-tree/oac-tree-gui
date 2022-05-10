@@ -42,7 +42,7 @@ JobListWidget::JobListWidget(QWidget *parent)
     , m_remove_selected_button(new QAction)
     , m_tree_view(new QTreeView)
 {
-  setWindowTitle("PROCEDURES");
+  setWindowTitle("JOBS");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

@@ -36,23 +36,23 @@ Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
-class ProcedureListViewTest : public ::testing::Test
+class ProcedureListWidgetTest : public ::testing::Test
 {
 public:
-  ProcedureListViewTest()
+  ProcedureListWidgetTest()
   {
     qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
   }
 };
 
-TEST_F(ProcedureListViewTest, InitialState)
+TEST_F(ProcedureListWidgetTest, InitialState)
 {
   ProcedureListWidget view;
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
   EXPECT_TRUE(view.GetSelectedProcedures().empty());
 }
 
-TEST_F(ProcedureListViewTest, SelectProcedure)
+TEST_F(ProcedureListWidgetTest, SelectProcedure)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -88,7 +88,7 @@ TEST_F(ProcedureListViewTest, SelectProcedure)
 
 //! Removing selected and checking notifications
 
-TEST_F(ProcedureListViewTest, SelectionAfterRemoval)
+TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -117,7 +117,7 @@ TEST_F(ProcedureListViewTest, SelectionAfterRemoval)
 
 //! Checking selection when acting through the view.
 
-TEST_F(ProcedureListViewTest, SetCurrentIndex)
+TEST_F(ProcedureListWidgetTest, SetCurrentIndex)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
