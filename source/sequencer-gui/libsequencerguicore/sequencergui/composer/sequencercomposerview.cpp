@@ -26,6 +26,8 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
 
+#include "mvvm/standarditems/containeritem.h"
+
 #include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>

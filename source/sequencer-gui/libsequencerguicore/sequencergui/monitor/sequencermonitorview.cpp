@@ -29,6 +29,7 @@
 #include "sequencergui/monitor/monitorrealtimewidget.h"
 #include "sequencergui/monitor/monitorworkspacewidget.h"
 
+#include "mvvm/standarditems/containeritem.h"
 #include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/topitemstreeview.h"
 

@@ -28,6 +28,7 @@
 #include "sequencergui/model/procedureitems.h"
 
 #include "mvvm/model/itemcatalogue.h"
+#include "mvvm/model/function_types.h"
 
 #include <stdexcept>
 

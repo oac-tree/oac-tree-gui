@@ -24,6 +24,7 @@
 #include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/core/exceptions.h"
+#include "mvvm/standarditems/containeritem.h"
 
 #include <gtest/gtest.h>
 

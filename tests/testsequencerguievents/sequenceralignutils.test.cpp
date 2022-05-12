@@ -25,6 +25,8 @@
 #include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/utils/alignnode.h"
 
+#include "mvvm/standarditems/containeritem.h"
+
 #include <gtest/gtest.h>
 
 #include <QPointF>

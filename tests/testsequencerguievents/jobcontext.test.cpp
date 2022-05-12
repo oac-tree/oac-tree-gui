@@ -27,6 +27,7 @@
 #include "sequencergui/monitor/jobutils.h"
 
 #include "mvvm/model/modelutils.h"
+#include "mvvm/standarditems/containeritem.h"
 
 #include <gtest/gtest.h>
 

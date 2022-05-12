@@ -28,7 +28,6 @@
 #include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/compounditem.h"
-#include "mvvm/standarditems/standarditemincludes.h"
 
 #include <string>
 

@@ -28,6 +28,7 @@
 #include "sequencergui/monitor/joblog.h"
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
+#include "mvvm/standarditems/containeritem.h"
 
 #include <QDebug>
 #include <iostream>
