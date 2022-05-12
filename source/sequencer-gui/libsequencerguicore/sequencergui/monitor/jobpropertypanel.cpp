@@ -17,42 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/collapsiblelistview.h"
+#include "sequencergui/monitor/jobpropertypanel.h"
 
-#include "sequencergui/widgets/collapsiblewidget.h"
-#include "sequencergui/core/exceptions.h"
-
-#include <QSplitter>
+#include <QListWidget>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-CollapsibleListView::CollapsibleListView(QWidget *parent)
-    : QWidget(parent), m_splitter(new QSplitter)
+JobPropertyPanel::JobPropertyPanel(QWidget *parent)
+    : QWidget(parent), m_list_widget(new QListWidget)
 {
-  m_splitter->setOrientation(Qt::Vertical);
+  setWindowTitle("JOB PROPERTIES");
+  setToolTip("Properties of currently selected job");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
-  layout->addWidget(m_splitter);
-}
-
-//! Adds widget to the splitter.
-//! Widget is added as it is, without collapsible bar and menus.
-void CollapsibleListView::AddWidget(QWidget *content)
-{
-  m_splitter->addWidget(content);
-}
-
-void CollapsibleListView::AddCollapsibleWidget(QWidget *content)
-{
-  if (!content)
-  {
-    throw RuntimeException("CollapsibleListView: can't add a null widget");
-  }
-  auto collapsible_widget = new CollapsibleWidget(content);
-  collapsible_widget->AddToSplitter(m_splitter);
+  layout->setMargin(0);
+  layout->setSpacing(0);
+  layout->addWidget(m_list_widget);
 }
 
 }  // namespace sequencergui

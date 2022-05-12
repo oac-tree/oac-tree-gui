@@ -21,6 +21,7 @@
 
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/monitor/joblistwidget.h"
+#include "sequencergui/monitor/jobpropertypanel.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 #include "sequencergui/widgets/paneltoolbar.h"
 
@@ -36,6 +37,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
     , m_tool_bar(new PanelToolBar)
     , m_collapsible_list(new CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
+    , m_property_panel(new JobPropertyPanel)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -45,6 +47,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   layout->addWidget(m_collapsible_list);
 
   m_collapsible_list->AddCollapsibleWidget(m_job_list_widget);
+  m_collapsible_list->AddCollapsibleWidget(m_property_panel);
 
   connect(m_job_list_widget, &JobListWidget::procedureSelected, this,
           &MonitorPanel::procedureSelected);

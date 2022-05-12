@@ -1,3 +1,5 @@
+# Contains source for SequencerMonitorView (main window for running procedures).
+
 target_sources(${library_name} PRIVATE
   flowcontroller.cpp
   flowcontroller.h
@@ -12,6 +14,8 @@ target_sources(${library_name} PRIVATE
   joblog.h
   jobmanager.cpp
   jobmanager.h
+  jobpropertypanel.cpp
+  jobpropertypanel.h
   jobutils.cpp
   jobutils.h
   messagepanel.cpp

@@ -31,6 +31,7 @@ class JobListWidget;
 class ProcedureItem;
 class SequencerModel;
 class CollapsibleListView;
+class JobPropertyPanel;
 
 //! Left panel on SequencerMonitorView.
 //! Contains widget with open procedures and running jobs.
@@ -56,6 +57,7 @@ private:
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
+  JobPropertyPanel* m_property_panel{nullptr};
 };
 
 }  // namespace sequencergui
