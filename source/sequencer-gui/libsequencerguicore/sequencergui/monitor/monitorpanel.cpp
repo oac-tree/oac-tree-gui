@@ -34,36 +34,37 @@ namespace sequencergui
 MonitorPanel::MonitorPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_splitter(new CollapsibleListView)
-    , m_job_list_view(new JobListWidget)
+    , m_collapsible_list(new CollapsibleListView)
+    , m_job_list_widget(new JobListWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_tool_bar);
-  layout->addWidget(m_splitter);
+  layout->addWidget(m_collapsible_list);
 
-  m_splitter->AddCollapsibleWidget(m_job_list_view);
+  m_collapsible_list->AddCollapsibleWidget(m_job_list_widget);
 
-  connect(m_job_list_view, &JobListWidget::procedureSelected, this, &MonitorPanel::procedureSelected);
+  connect(m_job_list_widget, &JobListWidget::procedureSelected, this,
+          &MonitorPanel::procedureSelected);
 }
 
 MonitorPanel::~MonitorPanel() = default;
 
 void MonitorPanel::SetModel(SequencerModel *model)
 {
-  m_job_list_view->SetModel(model);
+  m_job_list_widget->SetModel(model);
 }
 
 ProcedureItem *MonitorPanel::GetSelectedProcedure() const
 {
-  return m_job_list_view->GetSelectedProcedure();
+  return m_job_list_widget->GetSelectedProcedure();
 }
 
 void MonitorPanel::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  m_job_list_view->SetSelectedProcedure(procedure);
+  m_job_list_widget->SetSelectedProcedure(procedure);
 }
 
 }  // namespace sequencergui

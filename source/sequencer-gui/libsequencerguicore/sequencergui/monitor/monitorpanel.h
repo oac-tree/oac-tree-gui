@@ -54,8 +54,8 @@ signals:
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
-  CollapsibleListView* m_splitter{nullptr};
-  JobListWidget* m_job_list_view{nullptr};
+  CollapsibleListView* m_collapsible_list{nullptr};
+  JobListWidget* m_job_list_widget{nullptr};
 };
 
 }  // namespace sequencergui
