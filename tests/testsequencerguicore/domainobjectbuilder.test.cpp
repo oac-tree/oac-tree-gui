@@ -24,6 +24,7 @@
 #include "Procedure.h"
 #include "Workspace.h"
 #include "sequencergui/model/domain_constants.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/model/standardinstructionitems.h"

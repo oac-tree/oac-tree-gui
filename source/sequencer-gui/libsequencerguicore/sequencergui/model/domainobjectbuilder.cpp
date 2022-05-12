@@ -22,6 +22,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/instructionitem.h"

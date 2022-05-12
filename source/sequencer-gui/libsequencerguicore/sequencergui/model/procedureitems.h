@@ -52,21 +52,6 @@ public:
 
   std::vector<VariableItem*> GetVariables() const;
 };
-
-//! Represents Procedure.
-class ProcedureItem : public mvvm::CompoundItem
-{
-public:
-  static inline const std::string Type = "Procedure";
-  ProcedureItem();
-
-  std::string GetStatus() const;
-
-  void SetStatus(const std::string& status);
-
-  InstructionContainerItem* GetInstructionContainer() const;
-  WorkspaceItem* GetWorkspace() const;
-};
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDUREITEMS_H

@@ -60,37 +60,4 @@ std::vector<VariableItem *> WorkspaceItem::GetVariables() const
   return GetItems<VariableItem>(kVariableItems);
 }
 
-// ----------------------------------------------------------------------------
-// ProcedureItem
-// ----------------------------------------------------------------------------
-
-static inline const std::string kInstructions = "kInstructions";
-static inline const std::string kWorkspace = "kWorkspace";
-
-ProcedureItem::ProcedureItem() : CompoundItem(Type)
-{
-  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
-  AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
-  AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
-}
-
-std::string ProcedureItem::GetStatus() const
-{
-  return Property<std::string>(itemconstants::kStatus);
-}
-
-void ProcedureItem::SetStatus(const std::string &status)
-{
-  SetProperty(itemconstants::kStatus, status);
-}
-
-InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
-{
-  return GetItem<InstructionContainerItem>(kInstructions);
-}
-
-WorkspaceItem *ProcedureItem::GetWorkspace() const
-{
-  return GetItem<WorkspaceItem>(kWorkspace);
-}
 }  // namespace sequencergui

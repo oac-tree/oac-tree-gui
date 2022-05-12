@@ -21,7 +21,7 @@
 
 #include "sequencergui/core/messagehandlerfactory.h"
 #include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 #include "sequencergui/nodeeditor/connectableview.h"

@@ -11,12 +11,16 @@ target_sources(${library_name} PRIVATE
   instructionitem.cpp
   instructionitem.h
   item_constants.h
-  jobmodel.cpp
-  jobmodel.h
   jobitem.cpp
   jobitem.h
+  jobmodel.cpp
+  jobmodel.h
   procedureexamples.cpp
   procedureexamples.h
+  procedureitem.cpp
+  procedureitem.h
+  procedureitems.cpp
+  procedureitems.h
   sequenceritemincludes.h
   sequencermodel.cpp
   sequencermodel.h
@@ -30,8 +34,6 @@ target_sources(${library_name} PRIVATE
   standardvariableitems.h
   transformfromdomain.cpp
   transformfromdomain.h
-  procedureitems.cpp
-  procedureitems.h
   variableitem.cpp
   variableitem.h
   xmlutils.cpp

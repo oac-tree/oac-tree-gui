@@ -21,7 +21,7 @@
 
 #include "sequencergui/model/applicationmodels.h"
 #include "sequencergui/model/jobmodel.h"
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/jobmanager.h"

@@ -17,26 +17,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/jobmodel.h"
+#ifndef SEQUENCERGUI_MODEL_PROCEDUREITEM_H
+#define SEQUENCERGUI_MODEL_PROCEDUREITEM_H
 
-#include "sequencergui/model/procedureitem.h"
+#include "mvvm/model/compounditem.h"
 
-#include <gtest/gtest.h>
-
-using namespace sequencergui;
-
-//! Tests for JobModel class.
-
-class JobModelTest : public ::testing::Test
+namespace sequencergui
 {
+class WorkspaceItem;
+class InstructionContainerItem;
+
+//! Represents Procedure.
+class ProcedureItem : public mvvm::CompoundItem
+{
+public:
+  static inline const std::string Type = "Procedure";
+  ProcedureItem();
+
+  std::string GetStatus() const;
+
+  void SetStatus(const std::string& status);
+
+  InstructionContainerItem* GetInstructionContainer() const;
+  WorkspaceItem* GetWorkspace() const;
 };
+}  // namespace sequencergui
 
-TEST_F(JobModelTest, InitialState)
-{
-  JobModel model;
-
-  // trying to insert procedure to make sure that catalogue is there
-  auto item = model.InsertNewItem(ProcedureItem::Type);
-  EXPECT_EQ(item->GetType(), ProcedureItem::Type);
-  EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
-}
+#endif  // SEQUENCERGUI_MODEL_PROCEDUREITEMS_H

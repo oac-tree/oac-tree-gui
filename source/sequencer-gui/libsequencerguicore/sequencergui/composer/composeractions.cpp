@@ -21,6 +21,7 @@
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/core/messagehandlerinterface.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"

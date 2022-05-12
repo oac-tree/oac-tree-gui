@@ -22,6 +22,7 @@
 #include "sequencergui/explorer/explorerpanel.h"
 #include "sequencergui/explorer/proceduretreeswidget.h"
 #include "sequencergui/explorer/xmleditor.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/xmlutils.h"

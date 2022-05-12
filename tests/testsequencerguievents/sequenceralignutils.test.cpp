@@ -19,6 +19,7 @@
 
 #include "sequencergui/utils/sequenceralignutils.h"
 
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"

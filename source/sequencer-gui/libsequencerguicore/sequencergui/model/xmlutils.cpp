@@ -22,6 +22,7 @@
 #include "Procedure.h"
 #include "SequenceParser.h"
 #include "sequencergui/model/domainobjectbuilder.h"
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/transformfromdomain.h"
 
