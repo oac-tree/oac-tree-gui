@@ -87,12 +87,7 @@ ProcedureItem *ProcedureListWidget::GetSelectedProcedure()
 
 std::vector<ProcedureItem *> ProcedureListWidget::GetSelectedProcedures() const
 {
-  std::vector<ProcedureItem *> result;
-  auto selected = m_list_view->GetSelectedItems();
-  auto on_item = [](auto it)
-  { return dynamic_cast<ProcedureItem *>(const_cast<mvvm::SessionItem *>(it)); };
-  std::transform(selected.begin(), selected.end(), std::back_inserter(result), on_item);
-  return result;
+  return m_list_view->GetSelectedItems<ProcedureItem>();
 }
 
 void ProcedureListWidget::SetSelectedProcedure(ProcedureItem *procedure)
