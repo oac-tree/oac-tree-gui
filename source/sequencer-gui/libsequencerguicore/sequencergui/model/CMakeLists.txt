@@ -15,6 +15,7 @@ target_sources(${library_name} PRIVATE
   jobmodel.h
   procedureexamples.cpp
   procedureexamples.h
+  sequenceritemincludes.h
   sequenceritems.cpp
   sequenceritems.h
   sequencermodel.cpp

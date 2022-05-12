@@ -133,6 +133,8 @@ void MainWindow::PopulateModel()
   //  Examples::AddInputProcedure(m_models->GetSequencerModel());
   //  Examples::AddComplexAlignmentProcedure(m_models->GetSequencerModel());
   //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
+
+  auto job_model = m_models->GetJobModel();
 }
 
 }  // namespace sequencergui
