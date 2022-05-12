@@ -27,7 +27,7 @@ class QShowEvent;
 
 namespace sequencergui
 {
-class SequencerModel;
+class ApplicationModels;
 class MonitorPanel;
 class MonitorWorkspaceWidget;
 class MonitorRealTimeWidget;
@@ -46,7 +46,7 @@ public:
   explicit SequencerMonitorView(QWidget* parent = nullptr);
   ~SequencerMonitorView() override;
 
-  void SetModel(SequencerModel* model);
+  void SetApplicationModels(ApplicationModels* models);
 
 protected:
   void showEvent(QShowEvent* event) override;
@@ -60,7 +60,7 @@ private:
   MonitorWorkspaceWidget* m_workspace_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};
-  SequencerModel* m_model{nullptr};
+  ApplicationModels* m_models{nullptr};
 
   JobManager* m_job_manager{nullptr};
 };

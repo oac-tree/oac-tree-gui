@@ -52,7 +52,7 @@ MainWindow::MainWindow() : m_models(std::make_unique<ApplicationModels>())
   m_xml_view->SetModel(m_models->GetSequencerModel());
   m_settings_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModel(m_models->GetSequencerModel());
-  m_monitor_view->SetModel(m_models->GetSequencerModel());
+  m_monitor_view->SetApplicationModels(m_models.get());
 }
 
 MainWindow::~MainWindow() = default;

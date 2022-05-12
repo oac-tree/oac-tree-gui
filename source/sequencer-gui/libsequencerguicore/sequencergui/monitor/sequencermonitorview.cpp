@@ -19,6 +19,8 @@
 
 #include "sequencergui/monitor/sequencermonitorview.h"
 
+#include "sequencergui/model/applicationmodels.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"
@@ -63,11 +65,11 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
 
 SequencerMonitorView::~SequencerMonitorView() = default;
 
-void SequencerMonitorView::SetModel(SequencerModel *model)
+void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
 {
-  m_model = model;
-  m_job_manager->SetModel(model);
-  m_monitor_panel->SetModel(model);
+  m_models = models;
+  m_job_manager->SetModel(models->GetSequencerModel());
+  m_monitor_panel->SetModel(models->GetSequencerModel());
 }
 
 void SequencerMonitorView::showEvent(QShowEvent *event)
@@ -120,7 +122,7 @@ void SequencerMonitorView::SetupConnections()
 
 ProcedureItem *SequencerMonitorView::GetFirstProcedure()
 {
-  auto procedure_container = m_model->GetProcedureContainer();
+  auto procedure_container = m_models->GetSequencerModel()->GetProcedureContainer();
   return procedure_container->IsEmpty() ? nullptr : procedure_container->GetItem<ProcedureItem>("");
 }
 
