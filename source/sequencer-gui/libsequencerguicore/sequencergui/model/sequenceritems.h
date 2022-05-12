@@ -34,23 +34,6 @@
 
 namespace sequencergui
 {
-//! Represents unknown instruction.
-class UnknownInstructionItem : public InstructionItem
-{
-public:
-  static inline const std::string Type = "UnknownInstruction";
-  UnknownInstructionItem();
-
-  std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
-
-  std::string m_domain_name;
-  std::vector<std::string> m_domain_attributes;
-};
-
 //! Represents Instructions.
 class InstructionContainerItem : public mvvm::CompoundItem
 {

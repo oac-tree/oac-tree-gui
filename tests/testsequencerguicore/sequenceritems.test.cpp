@@ -45,28 +45,6 @@ TEST_F(SequencerItemsTest, WorkspaceItem)
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
 }
 
-//! UnknownInstructionItem tests.
-//! Here we pretend that Condition insrtuction is uknown for a GUI, and check how
-//! UnknownInstructionItem behaves on the way from/to domain.
-
-TEST_F(SequencerItemsTest, UnknownInstructionFromConditionItem)
-{
-  auto domain_item =
-      DomainUtils::CreateDomainInstruction(domainconstants::kConditionInstructionType);
-  domain_item->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
-
-  // from domain
-  UnknownInstructionItem item;
-  item.InitFromDomain(domain_item.get());
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kConditionVarNameAttribute),
-            std::string("abc"));
-
-  // to domain
-  auto new_domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
-}
-
 //! Validate ProcedureItem
 
 TEST_F(SequencerItemsTest, ProcedureItem)
