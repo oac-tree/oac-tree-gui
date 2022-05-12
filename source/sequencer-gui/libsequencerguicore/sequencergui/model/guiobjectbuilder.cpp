@@ -28,6 +28,7 @@
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/transformfromdomain.h"
+#include "sequencergui/model/workspaceitem.h"
 
 #include <stdexcept>
 

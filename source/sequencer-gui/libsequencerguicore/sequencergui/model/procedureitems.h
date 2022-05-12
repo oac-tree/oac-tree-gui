@@ -42,16 +42,6 @@ public:
   std::vector<InstructionItem*> GetInstructions() const;
 };
 
-//! Represents a Workspace.
-
-class WorkspaceItem : public mvvm::CompoundItem
-{
-public:
-  static inline const std::string Type = "Workspace";
-  WorkspaceItem();
-
-  std::vector<VariableItem*> GetVariables() const;
-};
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDUREITEMS_H

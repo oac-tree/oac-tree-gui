@@ -21,6 +21,7 @@
 
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/workspaceitem.h"
 
 namespace sequencergui
 {

@@ -19,11 +19,8 @@
 
 #include "sequencergui/model/procedureexamples.h"
 
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/sequenceritemincludes.h"
 #include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/standarditems/containeritem.h"
 

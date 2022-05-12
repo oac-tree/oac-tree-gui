@@ -19,8 +19,8 @@
 
 #include "Instruction.h"
 #include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/workspaceitem.h"
 
 #include <gtest/gtest.h>
 

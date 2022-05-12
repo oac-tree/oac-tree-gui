@@ -45,19 +45,4 @@ std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
   return GetItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
-// ----------------------------------------------------------------------------
-// WorkspaceItem
-// ----------------------------------------------------------------------------
-static inline const std::string kVariableItems = "kVariableItems";
-
-WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
-{
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
-}
-
-std::vector<VariableItem *> WorkspaceItem::GetVariables() const
-{
-  return GetItems<VariableItem>(kVariableItems);
-}
-
 }  // namespace sequencergui

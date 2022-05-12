@@ -29,6 +29,7 @@
 #include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/workspaceitem.h"
 
 #include "mvvm/model/sessionitem.h"
 

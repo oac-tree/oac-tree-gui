@@ -17,18 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-
-//! @file sequenceritemincludes.h
-//! Includes for all sequencer related items.
-
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/jobitem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/workspaceitem.h"
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#include "sequencergui/model/variableitem.h"
+
+namespace sequencergui
+{
+static inline const std::string kVariableItems = "kVariableItems";
+
+WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
+{
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
+}
+
+std::vector<VariableItem *> WorkspaceItem::GetVariables() const
+{
+  return GetItems<VariableItem>(kVariableItems);
+}
+
+}  // namespace sequencergui

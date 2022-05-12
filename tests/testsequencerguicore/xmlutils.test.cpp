@@ -24,6 +24,7 @@
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/workspaceitem.h"
 #include "test_utils.h"
 
 //! Testing methods from importutils.h

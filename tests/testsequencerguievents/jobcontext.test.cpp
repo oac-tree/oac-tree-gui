@@ -25,9 +25,10 @@
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/workspaceitem.h"
+#include "sequencergui/monitor/jobutils.h"
 
 #include "mvvm/model/modelutils.h"
 #include "mvvm/standarditems/containeritem.h"

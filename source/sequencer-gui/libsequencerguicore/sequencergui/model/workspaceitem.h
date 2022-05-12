@@ -17,18 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#ifndef SEQUENCERGUI_MODEL_WORKSPACEITEM_H
+#define SEQUENCERGUI_MODEL_WORKSPACEITEM_H
 
-//! @file sequenceritemincludes.h
-//! Includes for all sequencer related items.
+#include "mvvm/model/compounditem.h"
 
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/jobitem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/workspaceitem.h"
+namespace sequencergui
+{
+class VariableItem;
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+//! Represents a Workspace.
+
+class WorkspaceItem : public mvvm::CompoundItem
+{
+public:
+  static inline const std::string Type = "Workspace";
+  WorkspaceItem();
+
+  std::vector<VariableItem*> GetVariables() const;
+};
+}  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_MODEL_WORKSPACEITEM_H

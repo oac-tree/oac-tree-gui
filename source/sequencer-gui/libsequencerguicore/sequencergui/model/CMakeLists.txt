@@ -36,6 +36,8 @@ target_sources(${library_name} PRIVATE
   transformfromdomain.h
   variableitem.cpp
   variableitem.h
+  workspaceitem.cpp
+  workspaceitem.h
   xmlutils.cpp
   xmlutils.h
 )

@@ -17,18 +17,24 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-
-//! @file sequenceritemincludes.h
-//! Includes for all sequencer related items.
-
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/jobitem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/workspaceitem.h"
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#include "sequencergui/model/standardvariableitems.h"
+
+#include <gtest/gtest.h>
+
+using namespace sequencergui;
+
+class WorkspaceItemTest : public ::testing::Test
+{
+};
+
+TEST_F(WorkspaceItemTest, WorkspaceItem)
+{
+  WorkspaceItem item;
+  EXPECT_TRUE(item.GetVariables().empty());
+
+  auto var0 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
+}

@@ -26,6 +26,7 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "mvvm/core/exceptions.h"
