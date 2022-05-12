@@ -23,6 +23,7 @@
 #include "Procedure.h"
 #include "Workspace.h"
 #include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/sessionmodel.h"
 

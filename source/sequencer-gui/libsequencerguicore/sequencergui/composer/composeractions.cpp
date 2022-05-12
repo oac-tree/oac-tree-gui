@@ -23,6 +23,7 @@
 #include "sequencergui/core/messagehandlerinterface.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "mvvm/core/exceptions.h"

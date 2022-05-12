@@ -24,6 +24,7 @@
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/monitor/jobutils.h"
 
 #include "mvvm/model/modelutils.h"

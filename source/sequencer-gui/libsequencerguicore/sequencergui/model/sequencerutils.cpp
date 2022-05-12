@@ -23,6 +23,7 @@
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/itemcatalogue.h"
 #include "mvvm/model/itemmanager.h"

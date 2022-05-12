@@ -22,6 +22,7 @@
 #include "mockmessagehandler.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/standarditems/containeritem.h"
@@ -181,8 +182,6 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
   EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);
   EXPECT_EQ(instructions.at(1)->GetY(), coordinate_offset + sequence_y);
 }
-
-
 
 //! Attempt to insert instruction into the one, that can't have children.
 

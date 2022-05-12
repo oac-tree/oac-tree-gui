@@ -19,10 +19,11 @@
 
 #include "sequencergui/composer/workspacelistwidget.h"
 
-#include "sequencergui/utils/styleutils.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/widgets/topitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"

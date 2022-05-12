@@ -24,6 +24,7 @@
 #include "Workspace.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/transformfromdomain.h"
 
 #include <stdexcept>

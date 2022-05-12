@@ -25,9 +25,11 @@
 #include "sequencergui/model/guiobjectbuilder.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/monitor/joblog.h"
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
+
 #include "mvvm/standarditems/containeritem.h"
 
 #include <QDebug>

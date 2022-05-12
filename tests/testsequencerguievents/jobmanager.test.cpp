@@ -21,6 +21,7 @@
 
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/messagepanel.h"
 

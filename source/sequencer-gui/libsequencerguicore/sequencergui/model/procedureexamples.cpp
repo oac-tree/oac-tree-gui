@@ -21,6 +21,8 @@
 
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardvariableitems.h"
+
 #include "mvvm/standarditems/containeritem.h"
 
 namespace sequencergui::Examples

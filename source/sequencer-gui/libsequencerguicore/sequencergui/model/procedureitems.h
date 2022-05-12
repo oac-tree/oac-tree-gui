@@ -25,7 +25,6 @@
 
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/compounditem.h"
 
@@ -33,6 +32,8 @@
 
 namespace sequencergui
 {
+class VariableItem;
+
 //! Represents Instructions.
 class InstructionContainerItem : public mvvm::CompoundItem
 {
