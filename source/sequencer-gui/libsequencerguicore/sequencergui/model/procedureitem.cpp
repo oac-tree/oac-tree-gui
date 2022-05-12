@@ -19,8 +19,8 @@
 
 #include "sequencergui/model/procedureitem.h"
 
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/workspaceitem.h"
 
 namespace sequencergui

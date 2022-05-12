@@ -17,22 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 
-#include "Instruction.h"
-#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
-
-#include "mvvm/model/itemutils.h"
 
 namespace sequencergui
 {
-// ----------------------------------------------------------------------------
-// InstructionContainerItem
-// ----------------------------------------------------------------------------
 
 InstructionContainerItem::InstructionContainerItem() : CompoundItem(Type)
 {

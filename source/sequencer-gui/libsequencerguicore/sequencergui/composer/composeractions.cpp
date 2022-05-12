@@ -21,11 +21,11 @@
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/core/messagehandlerinterface.h"
+#include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/variableitem.h"
 #include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 

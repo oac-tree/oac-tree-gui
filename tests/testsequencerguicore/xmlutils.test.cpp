@@ -20,8 +20,8 @@
 #include "sequencergui/model/xmlutils.h"
 
 #include "folderbasedtest.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/workspaceitem.h"

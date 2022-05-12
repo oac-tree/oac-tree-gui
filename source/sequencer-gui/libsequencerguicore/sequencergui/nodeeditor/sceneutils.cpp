@@ -20,7 +20,7 @@
 #include "sequencergui/nodeeditor/sceneutils.h"
 
 #include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/sequencerutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
@@ -67,7 +67,7 @@ QPointF GetGraphicsViewportCenter()
   // (-3000, 6000)  (3000, 6000)
   const auto origin = GetGraphicsViewportOrigin();
   const auto size = GetGraphicsViewportSize();
-  return {origin.x() + size.width()/2, origin.y() + size.height()/2};
+  return {origin.x() + size.width() / 2, origin.y() + size.height() / 2};
 }
 
 double GetAlignmentGridWidth()

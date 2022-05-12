@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/sequencerutils.h"
 
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/factories/itemcataloguefactory.h"

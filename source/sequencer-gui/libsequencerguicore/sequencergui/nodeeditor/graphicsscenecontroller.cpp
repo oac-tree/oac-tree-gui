@@ -19,14 +19,14 @@
 
 #include "sequencergui/nodeeditor/graphicsscenecontroller.h"
 
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableview.h"
 #include "sequencergui/nodeeditor/connectableviewfactory.h"
 #include "sequencergui/nodeeditor/connectableviewmap.h"
 #include "sequencergui/nodeeditor/graphicsscene.h"
 #include "sequencergui/nodeeditor/viewfactoryinterface.h"
-#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/model/itemutils.h"
 

@@ -8,6 +8,8 @@ target_sources(${library_name} PRIVATE
   domainutils.h
   guiobjectbuilder.cpp
   guiobjectbuilder.h
+  instructioncontaineritem.cpp
+  instructioncontaineritem.h
   instructionitem.cpp
   instructionitem.h
   item_constants.h
@@ -19,8 +21,6 @@ target_sources(${library_name} PRIVATE
   procedureexamples.h
   procedureitem.cpp
   procedureitem.h
-  procedureitems.cpp
-  procedureitems.h
   sequenceritemincludes.h
   sequencermodel.cpp
   sequencermodel.h

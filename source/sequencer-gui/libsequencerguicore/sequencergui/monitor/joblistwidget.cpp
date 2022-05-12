@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/joblistwidget.h"
 
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/procedureviewmodel.h"
 #include "sequencergui/utils/styleutils.h"
@@ -53,7 +53,7 @@ JobListWidget::JobListWidget(QWidget *parent)
 
   SetupActions();
 
-//  connect(m_tree_view, &QTreeView::clicked, this, &JobListWidget::onTreeSingleClick);
+  //  connect(m_tree_view, &QTreeView::clicked, this, &JobListWidget::onTreeSingleClick);
 
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setHeaderHidden(true);
@@ -64,31 +64,31 @@ JobListWidget::~JobListWidget() = default;
 void JobListWidget::SetJobModel(JobModel *model)
 {
   m_model = model;
-//  m_view_model = std::make_unique<ProcedureViewModel>(model);
-//  m_view_model->SetRootSessionItem(model->GetProcedureContainer());
-//  m_tree_view->setModel(m_view_model.get());
+  //  m_view_model = std::make_unique<ProcedureViewModel>(model);
+  //  m_view_model->SetRootSessionItem(model->GetProcedureContainer());
+  //  m_tree_view->setModel(m_view_model.get());
 }
 
 //! FIXME restore
-//ProcedureItem *JobListWidget::GetSelectedProcedure()
+// ProcedureItem *JobListWidget::GetSelectedProcedure()
 //{
-//  auto selected = GetSelectedProcedures();
-//  return selected.empty() ? nullptr : selected.front();
-//}
+//   auto selected = GetSelectedProcedures();
+//   return selected.empty() ? nullptr : selected.front();
+// }
 
-//void JobListWidget::SetSelectedProcedure(ProcedureItem *procedure)
+// void JobListWidget::SetSelectedProcedure(ProcedureItem *procedure)
 //{
-//  auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
-//  if (!indexes.empty())
-//  {
-//    m_tree_view->selectionModel()->select(indexes.at(0), QItemSelectionModel::SelectCurrent);
-//  }
-//}
+//   auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
+//   if (!indexes.empty())
+//   {
+//     m_tree_view->selectionModel()->select(indexes.at(0), QItemSelectionModel::SelectCurrent);
+//   }
+// }
 
 //! FIXME restore
-//std::vector<ProcedureItem *> JobListWidget::GetSelectedProcedures() const
+// std::vector<ProcedureItem *> JobListWidget::GetSelectedProcedures() const
 //{
-//  std::vector<mvvm::SessionItem *> result;
+//   std::vector<mvvm::SessionItem *> result;
 
 //  if (!m_tree_view->selectionModel())
 //  {
@@ -106,23 +106,23 @@ void JobListWidget::SetJobModel(JobModel *model)
 
 void JobListWidget::SetupActions()
 {
-//  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
-//  connect(m_new_procedure_action, &QAction::triggered, this,
-//          &JobListWidget::createNewProcedureRequest);
-//  addAction(m_new_procedure_action);
+  //  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+  //  connect(m_new_procedure_action, &QAction::triggered, this,
+  //          &JobListWidget::createNewProcedureRequest);
+  //  addAction(m_new_procedure_action);
 
-//  m_remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-//  connect(m_remove_selected_button, &QAction::triggered, this,
-//          &JobListWidget::onRemoveSelectedRequest);
-//  addAction(m_remove_selected_button);
+  //  m_remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  //  connect(m_remove_selected_button, &QAction::triggered, this,
+  //          &JobListWidget::onRemoveSelectedRequest);
+  //  addAction(m_remove_selected_button);
 }
 
-//void JobListWidget::onTreeSingleClick(const QModelIndex &index)
+// void JobListWidget::onTreeSingleClick(const QModelIndex &index)
 //{
-//  if (!index.isValid())
-//  {
-//    return;
-//  }
+//   if (!index.isValid())
+//   {
+//     return;
+//   }
 
 //  if (auto item = mvvm::utils::GetItemFromView<ProcedureItem>(m_view_model->itemFromIndex(index));
 //      item)
@@ -131,12 +131,12 @@ void JobListWidget::SetupActions()
 //  }
 //}
 
-//void JobListWidget::onRemoveSelectedRequest()
+// void JobListWidget::onRemoveSelectedRequest()
 //{
-//  for (auto procedure_item : GetSelectedProcedures())
-//  {
-//    m_model->RemoveItem(procedure_item);
-//  }
-//}
+//   for (auto procedure_item : GetSelectedProcedures())
+//   {
+//     m_model->RemoveItem(procedure_item);
+//   }
+// }
 
 }  // namespace sequencergui

@@ -23,10 +23,10 @@
 //! @file sequenceritemincludes.h
 //! Includes for all sequencer related items.
 
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/workspaceitem.h"

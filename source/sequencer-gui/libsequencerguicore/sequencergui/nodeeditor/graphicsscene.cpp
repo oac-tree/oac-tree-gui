@@ -20,7 +20,8 @@
 #include "graphicsscene.h"
 
 #include "sequencergui/core/messagehandlerinterface.h"
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 #include "sequencergui/nodeeditor/connectableview.h"
@@ -29,7 +30,6 @@
 #include "sequencergui/nodeeditor/nodecontroller.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/widgets/itemlistwidget.h"
-#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"

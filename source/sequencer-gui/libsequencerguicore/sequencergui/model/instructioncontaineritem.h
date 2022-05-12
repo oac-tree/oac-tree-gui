@@ -17,19 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_PROCEDUREITEMS_H
-#define SEQUENCERGUI_MODEL_PROCEDUREITEMS_H
-
-//! @file procedureitems.h
-//! Collection of classes defining main procedure related UI items.
+#ifndef SEQUENCERGUI_MODEL_INSTRUCTIONCONTAINERITEM_H
+#define SEQUENCERGUI_MODEL_INSTRUCTIONCONTAINERITEM_H
 
 #include "mvvm/model/compounditem.h"
 
-#include <string>
-
 namespace sequencergui
 {
-class VariableItem;
 class InstructionItem;
 
 //! Represents Instructions.
@@ -44,4 +38,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_PROCEDUREITEMS_H
+#endif  // SEQUENCERGUI_MODEL_INSTRUCTIONCONTAINERITEM_H
