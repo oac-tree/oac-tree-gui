@@ -24,6 +24,8 @@
 #include "sequencergui/mainwindow/actionmanager.h"
 #include "sequencergui/mainwindow/settingsview.h"
 #include "sequencergui/model/applicationmodels.h"
+#include "sequencergui/model/jobitem.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/monitor/sequencermonitorview.h"
 #include "sequencergui/utils/styleutils.h"
@@ -135,6 +137,7 @@ void MainWindow::PopulateModel()
   //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
 
   auto job_model = m_models->GetJobModel();
+  job_model->InsertItem<JobItem>();
 }
 
 }  // namespace sequencergui

@@ -21,7 +21,7 @@
 
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/jobmodel.h"
-#include "sequencergui/monitor/procedureviewmodel.h"
+#include "sequencergui/viewmodel/procedureviewmodel.h"
 #include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/model/itemutils.h"

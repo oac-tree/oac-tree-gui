@@ -32,8 +32,6 @@ target_sources(${library_name} PRIVATE
   monitorworkspacewidget.h
   procedurerunner.cpp
   procedurerunner.h
-  procedureviewmodel.cpp
-  procedureviewmodel.h
   sequencermonitorview.cpp
   sequencermonitorview.h
   sequencerobserver.cpp
