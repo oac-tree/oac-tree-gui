@@ -47,16 +47,18 @@ public:
   explicit JobListWidget(QWidget* parent = nullptr);
   ~JobListWidget() override;
 
-  void SetModel(SequencerModel* model);
+  void SetJobModel(SequencerModel* model);
 
-  std::vector<ProcedureItem*> GetSelectedProcedures() const;
-  ProcedureItem* GetSelectedProcedure();
+  //! FIXME restore
+//  std::vector<ProcedureItem*> GetSelectedProcedures() const;
+//  ProcedureItem* GetSelectedProcedure();
 
-  void SetSelectedProcedure(ProcedureItem* procedure);
+  //! FIXME restore
+//  void SetSelectedProcedure(ProcedureItem* procedure);
 
-signals:
-  void createNewProcedureRequest();
-  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
+//signals:
+//  void createNewProcedureRequest();
+//  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   void SetupActions();

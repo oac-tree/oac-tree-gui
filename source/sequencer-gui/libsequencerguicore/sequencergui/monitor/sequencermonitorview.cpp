@@ -69,24 +69,26 @@ void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   m_job_manager->SetModel(models->GetSequencerModel());
-  m_monitor_panel->SetModel(models->GetSequencerModel());
+  m_monitor_panel->SetJobModel(models->GetSequencerModel());
 }
 
 void SequencerMonitorView::showEvent(QShowEvent *event)
 {
   Q_UNUSED(event);
-  if (!m_monitor_panel->GetSelectedProcedure())
-  {
-    m_monitor_panel->SetSelectedProcedure(GetFirstProcedure());
-  }
+  // FIXME restore
+//  if (!m_monitor_panel->GetSelectedProcedure())
+//  {
+//    m_monitor_panel->SetSelectedProcedure(GetFirstProcedure());
+//  }
 }
 
 void SequencerMonitorView::SetupConnections()
 {
   // Process request from MonitorTreeWidget to JobManager
-  auto on_start = [this]()
-  { m_job_manager->onStartProcedureRequest(m_monitor_panel->GetSelectedProcedure()); };
-  connect(m_tree_widget, &MonitorRealTimeWidget::runRequest, this, on_start);
+  // FIXME restore
+//  auto on_start = [this]()
+//  { m_job_manager->onStartProcedureRequest(m_monitor_panel->GetSelectedProcedure()); };
+//  connect(m_tree_widget, &MonitorRealTimeWidget::runRequest, this, on_start);
 
   // Pause request from MonitorTreeWidget to JobManager
   connect(m_tree_widget, &MonitorRealTimeWidget::pauseRequest, m_job_manager,
@@ -105,16 +107,17 @@ void SequencerMonitorView::SetupConnections()
   { m_tree_widget->SetSelectedInstruction(instruction); };
   connect(m_job_manager, &JobManager::InstructionStatusChanged, this, on_selection);
 
-  auto on_procedure_selected = [this](auto procedure_item)
-  {
-    m_job_manager->SetCurrentProcedure(procedure_item);
-    if (auto context = m_job_manager->GetCurrentContext(); context)
-    {
-      m_tree_widget->SetProcedure(context->GetExpandedProcedure());
-      m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
-    }
-  };
-  connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);
+  // FIXME restore
+//  auto on_procedure_selected = [this](auto procedure_item)
+//  {
+//    m_job_manager->SetCurrentProcedure(procedure_item);
+//    if (auto context = m_job_manager->GetCurrentContext(); context)
+//    {
+//      m_tree_widget->SetProcedure(context->GetExpandedProcedure());
+//      m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+//    }
+//  };
+//  connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);
 
   connect(m_tree_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);

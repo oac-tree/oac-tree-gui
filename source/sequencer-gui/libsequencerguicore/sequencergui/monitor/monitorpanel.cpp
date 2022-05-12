@@ -49,25 +49,28 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   m_collapsible_list->AddCollapsibleWidget(m_job_list_widget);
   m_collapsible_list->AddCollapsibleWidget(m_property_panel);
 
-  connect(m_job_list_widget, &JobListWidget::procedureSelected, this,
-          &MonitorPanel::procedureSelected);
+
+//  connect(m_job_list_widget, &JobListWidget::procedureSelected, this,
+//          &MonitorPanel::procedureSelected);
 }
 
 MonitorPanel::~MonitorPanel() = default;
 
-void MonitorPanel::SetModel(SequencerModel *model)
+void MonitorPanel::SetJobModel(SequencerModel *model)
 {
-  m_job_list_widget->SetModel(model);
+  m_job_list_widget->SetJobModel(model);
 }
 
-ProcedureItem *MonitorPanel::GetSelectedProcedure() const
-{
-  return m_job_list_widget->GetSelectedProcedure();
-}
+// FIXME restore
+//ProcedureItem *MonitorPanel::GetSelectedProcedure() const
+//{
+//  return m_job_list_widget->GetSelectedProcedure();
+//}
 
-void MonitorPanel::SetSelectedProcedure(ProcedureItem *procedure)
-{
-  m_job_list_widget->SetSelectedProcedure(procedure);
-}
+// FIXME restore
+//void MonitorPanel::SetSelectedProcedure(ProcedureItem *procedure)
+//{
+//  m_job_list_widget->SetSelectedProcedure(procedure);
+//}
 
 }  // namespace sequencergui

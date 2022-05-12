@@ -44,14 +44,14 @@ public:
   explicit MonitorPanel(QWidget* parent = nullptr);
   ~MonitorPanel() override;
 
-  void SetModel(SequencerModel* model);
+  void SetJobModel(SequencerModel* model);
 
-  ProcedureItem* GetSelectedProcedure() const;
+//  ProcedureItem* GetSelectedProcedure() const;
 
-  void SetSelectedProcedure(ProcedureItem* procedure);
+//  void SetSelectedProcedure(ProcedureItem* procedure);
 
-signals:
-  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
+//signals:
+//  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
