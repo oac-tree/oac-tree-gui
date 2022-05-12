@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURELISTWIDGET_H
-#define SEQUENCERGUI_MAINWINDOW_PROCEDURELISTWIDGET_H
+#ifndef SEQUENCERGUI_COMPONENTS_PROCEDURELISTWIDGET_H
+#define SEQUENCERGUI_COMPONENTS_PROCEDURELISTWIDGET_H
 
 #include <QWidget>
 
@@ -83,4 +83,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURELISTWIDGET_H
+#endif  // SEQUENCERGUI_COMPONENTS_PROCEDURELISTWIDGET_H

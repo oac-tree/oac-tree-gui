@@ -21,7 +21,7 @@
 
 #include "sequencergui/widgets/filetreeview.h"
 #include "sequencergui/widgets/paneltoolbar.h"
-#include "sequencergui/mainwindow/procedurelistwidget.h"
+#include "sequencergui/components/procedurelistwidget.h"
 #include "sequencergui/model/sequenceritems.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 

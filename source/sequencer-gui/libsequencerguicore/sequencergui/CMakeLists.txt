@@ -1,3 +1,4 @@
+add_subdirectory(components)
 add_subdirectory(composer)
 add_subdirectory(core)
 add_subdirectory(explorer)
