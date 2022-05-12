@@ -23,7 +23,7 @@
 #include "Procedure.h"
 #include "Workspace.h"
 #include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/transformfromdomain.h"
 
 #include <stdexcept>

@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/procedureexamples.h"
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 
 namespace sequencergui::Examples

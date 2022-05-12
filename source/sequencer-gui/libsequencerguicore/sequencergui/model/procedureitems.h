@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMS_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMS_H
+#ifndef SEQUENCERGUI_MODEL_PROCEDUREITEMS_H
+#define SEQUENCERGUI_MODEL_PROCEDUREITEMS_H
 
-//! @file sequenceritems.h
-//! Collection of classes defining main components of SequencerModel.
+//! @file procedureitems.h
+//! Collection of classes defining main procedure related UI items.
 
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/standardinstructionitems.h"
@@ -84,4 +84,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMS_H
+#endif  // SEQUENCERGUI_MODEL_PROCEDUREITEMS_H

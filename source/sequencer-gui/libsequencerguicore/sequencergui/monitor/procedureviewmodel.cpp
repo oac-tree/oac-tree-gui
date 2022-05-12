@@ -20,7 +20,7 @@
 #include "sequencergui/monitor/procedureviewmodel.h"
 
 #include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 
 #include "mvvm/factories/viewmodelcontrollerfactory.h"
 #include "mvvm/interfaces/childrenstrategyinterface.h"

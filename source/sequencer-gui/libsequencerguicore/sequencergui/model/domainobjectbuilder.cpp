@@ -22,7 +22,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 
 #include "mvvm/model/sessionmodel.h"
 

@@ -22,7 +22,7 @@
 #include "sequencergui/composer/aggregatepanel.h"
 #include "sequencergui/composer/instructionitempanel.h"
 #include "sequencergui/components/procedurelistwidget.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 #include "sequencergui/widgets/itemlistwidget.h"
 #include "sequencergui/widgets/paneltoolbar.h"

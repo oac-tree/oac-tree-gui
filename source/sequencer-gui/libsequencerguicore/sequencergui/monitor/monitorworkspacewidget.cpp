@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/monitorworkspacewidget.h"
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/monitorworkspacetoolbar.h"
 

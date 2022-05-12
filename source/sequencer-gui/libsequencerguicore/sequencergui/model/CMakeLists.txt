@@ -16,8 +16,6 @@ target_sources(${library_name} PRIVATE
   procedureexamples.cpp
   procedureexamples.h
   sequenceritemincludes.h
-  sequenceritems.cpp
-  sequenceritems.h
   sequencermodel.cpp
   sequencermodel.h
   sequencerutils.cpp
@@ -30,6 +28,8 @@ target_sources(${library_name} PRIVATE
   standardvariableitems.h
   transformfromdomain.cpp
   transformfromdomain.h
+  procedureitems.cpp
+  procedureitems.h
   variableitem.cpp
   variableitem.h
   xmlutils.cpp

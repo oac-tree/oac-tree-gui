@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 
 #include "Instruction.h"
 #include "sequencergui/model/domainutils.h"
@@ -44,6 +44,7 @@ TEST_F(SequencerItemsTest, WorkspaceItem)
   auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
 }
+
 
 //! Validate ProcedureItem
 

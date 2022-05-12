@@ -21,7 +21,7 @@
 
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/model/itemcatalogue.h"

@@ -19,7 +19,7 @@
 
 #include "Instruction.h"
 #include "sequencergui/model/sequencer_types.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

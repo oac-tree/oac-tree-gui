@@ -20,7 +20,7 @@
 #include "sequencergui/utils/sequenceralignutils.h"
 
 #include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/utils/alignnode.h"
 #include "sequencergui/utils/alignutils.h"

@@ -23,7 +23,7 @@
 #include "Procedure.h"
 #include "Variable.h"
 #include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/transformfromdomain.h"
 
 #include <gtest/gtest.h>

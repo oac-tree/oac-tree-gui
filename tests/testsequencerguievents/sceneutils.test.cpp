@@ -22,7 +22,7 @@
 #include "Instruction.h"
 #include "InstructionRegistry.h"
 #include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 
 #include "mvvm/utils/numericutils.h"

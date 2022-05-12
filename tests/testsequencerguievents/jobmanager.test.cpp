@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/jobmanager.h"
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/messagepanel.h"

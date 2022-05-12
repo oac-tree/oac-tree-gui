@@ -23,7 +23,7 @@
 #include "Procedure.h"
 #include "sequencergui/model/domainobjectbuilder.h"
 #include "sequencergui/model/guiobjectbuilder.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/joblog.h"
 #include "sequencergui/monitor/jobutils.h"

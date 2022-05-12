@@ -19,7 +19,7 @@
 
 #include "sequencergui/nodeeditor/graphicsscenecontroller.h"
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/connectableview.h"
 #include "sequencergui/nodeeditor/connectableviewfactory.h"

@@ -22,7 +22,7 @@
 #include "Variable.h"
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 
 namespace sequencergui
 {

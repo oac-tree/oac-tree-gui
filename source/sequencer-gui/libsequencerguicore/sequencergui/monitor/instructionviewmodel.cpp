@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/instructionviewmodel.h"
 
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 
 #include "mvvm/factories/viewmodelcontrollerfactory.h"
 #include "mvvm/model/applicationmodel.h"

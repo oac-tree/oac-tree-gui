@@ -22,7 +22,7 @@
 #include "sequencergui/composer/composerpanel.h"
 #include "sequencergui/composer/composerprocedureeditor.h"
 #include "sequencergui/core/messagehandlerinterface.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
 

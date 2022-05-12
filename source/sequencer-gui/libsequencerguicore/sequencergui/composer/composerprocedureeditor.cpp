@@ -23,7 +23,7 @@
 #include "sequencergui/composer/instructiontreewidget.h"
 #include "sequencergui/composer/workspacelistwidget.h"
 #include "sequencergui/core/messagehandlerinterface.h"
-#include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/widgets/dotstoolbar.h"
 
