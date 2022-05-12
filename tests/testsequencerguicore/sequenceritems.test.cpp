@@ -18,10 +18,8 @@
  *****************************************************************************/
 
 #include "Instruction.h"
-#include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/transformfromdomain.h"
 
 #include <gtest/gtest.h>
 
@@ -50,16 +48,6 @@ TEST_F(SequencerItemsTest, WorkspaceItem)
 TEST_F(SequencerItemsTest, ProcedureItem)
 {
   ProcedureItem item;
-
-  item.SetStatus("abc");
-  EXPECT_EQ(item.GetStatus(), "abc");
-}
-
-//! Validate ProcedureItem
-
-TEST_F(SequencerItemsTest, JobItem)
-{
-  JobItem item;
 
   item.SetStatus("abc");
   EXPECT_EQ(item.GetStatus(), "abc");

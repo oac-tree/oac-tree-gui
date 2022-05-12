@@ -17,16 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-
-//! @file sequenceritemincludes.h
-//! Includes for all sequencer related items.
-
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/procedureitems.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/jobitem.h"
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#include <gtest/gtest.h>
+
+using namespace sequencergui;
+
+//! Tests for JobItem class.
+
+class JobItemTest : public ::testing::Test
+{
+};
+
+TEST_F(JobItemTest, JobItem)
+{
+  JobItem item;
+
+  item.SetStatus("abc");
+  EXPECT_EQ(item.GetStatus(), "abc");
+}

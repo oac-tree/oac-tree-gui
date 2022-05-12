@@ -23,8 +23,8 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/itemutils.h"
 
@@ -93,24 +93,4 @@ WorkspaceItem *ProcedureItem::GetWorkspace() const
 {
   return GetItem<WorkspaceItem>(kWorkspace);
 }
-
-// ----------------------------------------------------------------------------
-// JobItem
-// ----------------------------------------------------------------------------
-
-JobItem::JobItem() : CompoundItem(Type)
-{
-  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
-}
-
-std::string JobItem::GetStatus() const
-{
-  return Property<std::string>(itemconstants::kStatus);
-}
-
-void JobItem::SetStatus(const std::string &status)
-{
-  SetProperty(itemconstants::kStatus, status);
-}
-
 }  // namespace sequencergui

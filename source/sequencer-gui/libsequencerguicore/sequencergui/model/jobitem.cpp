@@ -17,16 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-
-//! @file sequenceritemincludes.h
-//! Includes for all sequencer related items.
-
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/procedureitems.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/jobitem.h"
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#include "sequencergui/model/item_constants.h"
+
+namespace sequencergui
+{
+JobItem::JobItem() : CompoundItem(Type)
+{
+  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
+}
+
+std::string JobItem::GetStatus() const
+{
+  return Property<std::string>(itemconstants::kStatus);
+}
+
+void JobItem::SetStatus(const std::string &status)
+{
+  SetProperty(itemconstants::kStatus, status);
+}
+
+}  // namespace sequencergui

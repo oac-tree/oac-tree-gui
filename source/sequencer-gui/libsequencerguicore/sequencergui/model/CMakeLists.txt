@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   item_constants.h
   jobmodel.cpp
   jobmodel.h
+  jobitem.cpp
+  jobitem.h
   procedureexamples.cpp
   procedureexamples.h
   sequenceritemincludes.h

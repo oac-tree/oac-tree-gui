@@ -17,16 +17,26 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#ifndef SEQUENCERGUI_MODEL_JOBITEM_H
+#define SEQUENCERGUI_MODEL_JOBITEM_H
 
-//! @file sequenceritemincludes.h
-//! Includes for all sequencer related items.
+#include "mvvm/model/compounditem.h"
 
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/procedureitems.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/jobitem.h"
+namespace sequencergui
+{
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+//! Represents job.
+class JobItem : public mvvm::CompoundItem
+{
+public:
+  static inline const std::string Type = "Job";
+  JobItem();
+
+  std::string GetStatus() const;
+
+  void SetStatus(const std::string& status);
+};
+
+}  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_MODEL_JOBITEM_H
