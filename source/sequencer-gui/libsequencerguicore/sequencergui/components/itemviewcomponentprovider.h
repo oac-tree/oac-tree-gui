@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ITEMVIEWCONTROLLER_H
 #define SEQUENCERGUI_COMPONENTS_ITEMVIEWCONTROLLER_H
 
+#include "mvvm/utils/containerutils.h"
+
 #include <QObject>
 #include <functional>
 #include <memory>
@@ -60,12 +62,20 @@ public:
 
   mvvm::ItemSelectionModel* GetSelectionModel() const;
 
+  mvvm::ViewModel* GetViewModel() const;
+
+  mvvm::SessionItem* GetSelectedItem() const;
+
+  template <typename T = mvvm::SessionItem>
+  std::vector<T*> GetSelectedItems() const;
+
 signals:
   void SelectedItemChanged(mvvm::SessionItem*);
 
 private:
   void Reset();
   void InitViewModel(mvvm::ApplicationModel* model);
+  std::vector<mvvm::SessionItem*> GetSelectedItemsIntern() const;
 
   std::unique_ptr<mvvm::ViewModelDelegate> m_delegate;
   std::unique_ptr<mvvm::ItemSelectionModel> m_selection_model;
@@ -74,6 +84,18 @@ private:
 
   QAbstractItemView* m_view{nullptr};
 };
+
+template <typename T>
+std::vector<T*> ItemViewComponentProvider::GetSelectedItems() const
+{
+  return ::mvvm::utils::CastItems<T>(GetSelectedItemsIntern());
+}
+
+template <typename T>
+std::unique_ptr<T> CreateViewModel(mvvm::ApplicationModel* model)
+{
+  return std::make_unique<T>(model);
+}
 
 }  // namespace sequencergui
 

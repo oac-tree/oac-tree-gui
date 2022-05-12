@@ -84,6 +84,16 @@ mvvm::ItemSelectionModel *ItemViewComponentProvider::GetSelectionModel() const
   return m_selection_model.get();
 }
 
+mvvm::ViewModel *ItemViewComponentProvider::GetViewModel() const
+{
+  return m_view_model.get();
+}
+
+mvvm::SessionItem *ItemViewComponentProvider::GetSelectedItem() const
+{
+  return const_cast<mvvm::SessionItem *>(m_selection_model->GetSelectedItem());
+}
+
 void ItemViewComponentProvider::Reset()
 {
   m_view->setModel(nullptr);
@@ -98,6 +108,15 @@ void ItemViewComponentProvider::InitViewModel(mvvm::ApplicationModel *model)
   m_view->setModel(m_view_model.get());
   m_view->setItemDelegate(m_delegate.get());
   m_view->setSelectionModel(m_selection_model.get());
+}
+
+std::vector<mvvm::SessionItem *> ItemViewComponentProvider::GetSelectedItemsIntern() const
+{
+  std::vector<mvvm::SessionItem *> result;
+  auto items = m_selection_model->GetSelectedItems();
+  std::transform(items.begin(), items.end(), std::back_inserter(result),
+                 [](auto it) { return const_cast<mvvm::SessionItem *>(it); });
+  return result;
 }
 
 }  // namespace sequencergui
