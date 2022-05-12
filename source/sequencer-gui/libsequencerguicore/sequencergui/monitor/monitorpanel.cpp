@@ -20,6 +20,7 @@
 #include "sequencergui/monitor/monitorpanel.h"
 
 #include "sequencergui/model/sequenceritems.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/joblistwidget.h"
 #include "sequencergui/monitor/jobpropertypanel.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
@@ -56,7 +57,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
 
 MonitorPanel::~MonitorPanel() = default;
 
-void MonitorPanel::SetJobModel(SequencerModel *model)
+void MonitorPanel::SetJobModel(JobModel *model)
 {
   m_job_list_widget->SetJobModel(model);
 }

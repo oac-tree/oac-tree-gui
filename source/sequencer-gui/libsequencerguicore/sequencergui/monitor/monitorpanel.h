@@ -29,7 +29,7 @@ namespace sequencergui
 class PanelToolBar;
 class JobListWidget;
 class ProcedureItem;
-class SequencerModel;
+class JobModel;
 class CollapsibleListView;
 class JobPropertyPanel;
 
@@ -44,7 +44,7 @@ public:
   explicit MonitorPanel(QWidget* parent = nullptr);
   ~MonitorPanel() override;
 
-  void SetJobModel(SequencerModel* model);
+  void SetJobModel(JobModel* model);
 
 //  ProcedureItem* GetSelectedProcedure() const;
 

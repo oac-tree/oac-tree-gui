@@ -32,8 +32,8 @@ class QAction;
 
 namespace sequencergui
 {
-class SequencerModel;
-class ProcedureItem;
+class JobModel;
+class JobItem;
 
 //! List view with top-level ProcedureItem's.
 //! Occupy upper left corner of SequencerMonitorView.
@@ -47,7 +47,7 @@ public:
   explicit JobListWidget(QWidget* parent = nullptr);
   ~JobListWidget() override;
 
-  void SetJobModel(SequencerModel* model);
+  void SetJobModel(JobModel* model);
 
   //! FIXME restore
 //  std::vector<ProcedureItem*> GetSelectedProcedures() const;
@@ -69,8 +69,8 @@ private:
   QAction* m_remove_selected_button{nullptr};
 
   QTreeView* m_tree_view{nullptr};
-  SequencerModel* m_model{nullptr};
-  std::unique_ptr<mvvm::ViewModel> m_view_model;
+  JobModel* m_model{nullptr};
+//  std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 
 }  // namespace sequencergui

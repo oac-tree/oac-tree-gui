@@ -20,7 +20,7 @@
 #include "sequencergui/monitor/joblistwidget.h"
 
 #include "sequencergui/model/sequenceritems.h"
-#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/procedureviewmodel.h"
 #include "sequencergui/utils/styleutils.h"
 
@@ -61,12 +61,12 @@ JobListWidget::JobListWidget(QWidget *parent)
 
 JobListWidget::~JobListWidget() = default;
 
-void JobListWidget::SetJobModel(SequencerModel *model)
+void JobListWidget::SetJobModel(JobModel *model)
 {
   m_model = model;
-  m_view_model = std::make_unique<ProcedureViewModel>(model);
-  m_view_model->SetRootSessionItem(model->GetProcedureContainer());
-  m_tree_view->setModel(m_view_model.get());
+//  m_view_model = std::make_unique<ProcedureViewModel>(model);
+//  m_view_model->SetRootSessionItem(model->GetProcedureContainer());
+//  m_tree_view->setModel(m_view_model.get());
 }
 
 //! FIXME restore
