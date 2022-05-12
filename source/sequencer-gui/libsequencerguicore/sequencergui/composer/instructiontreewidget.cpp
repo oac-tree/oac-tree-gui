@@ -19,9 +19,10 @@
 
 #include "sequencergui/composer/instructiontreewidget.h"
 
-#include "sequencergui/utils/styleutils.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/model/itemutils.h"
 #include "mvvm/widgets/topitemstreeview.h"

@@ -23,7 +23,7 @@
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/model/taggeditems.h"
 #include "mvvm/model/taginfo.h"

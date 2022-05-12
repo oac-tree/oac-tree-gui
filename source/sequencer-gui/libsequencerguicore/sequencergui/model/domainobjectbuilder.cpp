@@ -24,6 +24,7 @@
 #include "Workspace.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/model/sessionmodel.h"
 

@@ -19,8 +19,8 @@
 
 #include "sequencergui/monitor/instructionviewmodel.h"
 
-#include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/model/applicationmodel.h"
 

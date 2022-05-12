@@ -21,6 +21,7 @@
 
 #include "folderbasedtest.h"
 #include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 #include "test_utils.h"
 

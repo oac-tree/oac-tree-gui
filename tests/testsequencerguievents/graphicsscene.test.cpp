@@ -22,6 +22,7 @@
 #include "mockmessagehandler.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/nodeeditor/connectableinstructionadapter.h"
 #include "sequencergui/nodeeditor/connectableview.h"
 #include "sequencergui/nodeeditor/graphicsscenecontroller.h"

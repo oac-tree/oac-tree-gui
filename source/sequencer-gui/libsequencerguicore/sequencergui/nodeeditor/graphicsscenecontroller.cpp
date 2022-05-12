@@ -26,6 +26,7 @@
 #include "sequencergui/nodeeditor/connectableviewmap.h"
 #include "sequencergui/nodeeditor/graphicsscene.h"
 #include "sequencergui/nodeeditor/viewfactoryinterface.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/model/itemutils.h"
 

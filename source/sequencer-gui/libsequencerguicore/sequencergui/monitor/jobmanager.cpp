@@ -20,6 +20,7 @@
 #include "sequencergui/monitor/jobmanager.h"
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/jobcontext.h"

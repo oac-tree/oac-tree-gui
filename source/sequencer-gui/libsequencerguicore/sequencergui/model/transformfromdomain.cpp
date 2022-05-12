@@ -26,6 +26,7 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/guiobjectbuilder.h"
 #include "sequencergui/model/procedureitems.h"
+#include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/function_types.h"

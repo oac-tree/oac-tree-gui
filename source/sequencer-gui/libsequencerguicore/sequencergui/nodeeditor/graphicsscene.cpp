@@ -29,6 +29,7 @@
 #include "sequencergui/nodeeditor/nodecontroller.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/widgets/itemlistwidget.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/widgets/widgetutils.h"

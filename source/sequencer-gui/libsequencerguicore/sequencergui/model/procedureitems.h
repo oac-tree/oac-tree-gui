@@ -23,9 +23,6 @@
 //! @file procedureitems.h
 //! Collection of classes defining main procedure related UI items.
 
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/standardinstructionitems.h"
-
 #include "mvvm/model/compounditem.h"
 
 #include <string>
@@ -33,6 +30,7 @@
 namespace sequencergui
 {
 class VariableItem;
+class InstructionItem;
 
 //! Represents Instructions.
 class InstructionContainerItem : public mvvm::CompoundItem

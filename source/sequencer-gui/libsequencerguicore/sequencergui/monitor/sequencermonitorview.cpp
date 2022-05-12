@@ -28,6 +28,7 @@
 #include "sequencergui/monitor/monitorpanel.h"
 #include "sequencergui/monitor/monitorrealtimewidget.h"
 #include "sequencergui/monitor/monitorworkspacewidget.h"
+#include "sequencergui/model/instructionitem.h"
 
 #include "mvvm/standarditems/containeritem.h"
 #include "mvvm/widgets/allitemstreeview.h"

@@ -24,6 +24,7 @@
 #include "sequencergui/model/domain_constants.h"
 #include "sequencergui/model/procedureitems.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/standarditems/containeritem.h"
 #include "mvvm/utils/numericutils.h"

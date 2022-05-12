@@ -24,6 +24,7 @@
 #include "sequencergui/model/instructionitem.h"
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/model/itemutils.h"
 
