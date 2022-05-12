@@ -19,9 +19,12 @@
 
 #include "sequencergui/mainwindow/settingsview.h"
 
-#include "sequencergui/utils/styleutils.h"
+#include "sequencergui/model/applicationmodels.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/utils/styleutils.h"
 
+#include "mvvm/model/applicationmodel.h"
 #include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"
 
@@ -57,9 +60,9 @@ SettingsView::SettingsView(QWidget *parent)
   layout->addLayout(hlayout);
 }
 
-void SettingsView::SetModel(SequencerModel *model)
+void SettingsView::SetApplicationModels(ApplicationModels *models)
 {
-  m_model = model;
+  m_models = models;
   SetupListSelector();
   SetupModelSettings();
   SetupOtherSettings();
@@ -70,9 +73,11 @@ void SettingsView::SetModel(SequencerModel *model)
 
 void SettingsView::SetupModelSettings()
 {
-  auto view = new mvvm::AllItemsTreeView(m_model);
-//  view->GetTreeView()->setAlternatingRowColors(true);
-  m_tab_widget->addTab(view, QString::fromStdString(m_model->GetType()));
+  for (auto model : m_models->GetModels())
+  {
+    auto view = new mvvm::AllItemsTreeView(model);
+    m_tab_widget->addTab(view, QString::fromStdString(model->GetType()));
+  }
   m_stacked_widget->addWidget(m_tab_widget);
 }
 

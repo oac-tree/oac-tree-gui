@@ -29,7 +29,7 @@ class QTabWidget;
 
 namespace sequencergui
 {
-class SequencerModel;
+class ApplicationModels;
 
 //! Simple file browser with bread crumb on top, and tree view at the bottom.
 class SettingsView : public QWidget
@@ -39,7 +39,7 @@ class SettingsView : public QWidget
 public:
   explicit SettingsView(QWidget* parent = nullptr);
 
-  void SetModel(SequencerModel* model);
+  void SetApplicationModels(ApplicationModels* models);
 
 private:
   void SetupListSelector();
@@ -50,7 +50,7 @@ private:
   QStackedWidget* m_stacked_widget{nullptr};  //!< stack with settings widgets
   QTabWidget* m_tab_widget{nullptr};          //!< application model settings
 
-  SequencerModel* m_model;
+  ApplicationModels* m_models;
 };
 
 }  // namespace sequencergui

@@ -21,10 +21,12 @@
 #define SEQUENCERGUI_MODEL_APPLICATIONMODELS_H
 
 #include <memory>
+#include <vector>
 
 namespace mvvm
 {
 class ItemPool;
+class ApplicationModel;
 }
 
 namespace sequencergui
@@ -45,6 +47,8 @@ public:
   SequencerModel* GetSequencerModel();
 
   JobModel* GetJobModel();
+
+  std::vector<mvvm::ApplicationModel*> GetModels() const;
 
 private:
   std::shared_ptr<mvvm::ItemPool> m_item_pool;

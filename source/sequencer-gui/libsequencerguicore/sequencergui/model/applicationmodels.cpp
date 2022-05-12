@@ -48,4 +48,9 @@ JobModel *ApplicationModels::GetJobModel()
   return m_job_model.get();
 }
 
+std::vector<mvvm::ApplicationModel *> ApplicationModels::GetModels() const
+{
+  return {m_sequencer_model.get(), m_job_model.get()};
+}
+
 }  // namespace sequencergui
