@@ -3,5 +3,7 @@
 target_sources(${library_name} PRIVATE
   procedurelistwidget.cpp
   procedurelistwidget.h
+  itemviewcomponentprovider.cpp
+  itemviewcomponentprovider.h
 )
 

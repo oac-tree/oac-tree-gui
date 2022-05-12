@@ -28,6 +28,7 @@
 #include "mvvm/standarditems/standarditemincludes.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/viewmodel/viewmodelutils.h"
+#include "mvvm/widgets/abstractitemview.h"
 
 #include <QAction>
 #include <QLabel>
@@ -36,6 +37,19 @@
 
 namespace sequencergui
 {
+
+class JobItemListView : public mvvm::AbstractItemView
+{
+public:
+  explicit JobItemListView(mvvm::ApplicationModel *model = nullptr, QWidget *parent = nullptr)
+      : AbstractItemView(mvvm::CreateViewModel<mvvm::TopItemsViewModel>, new QTreeView, model,
+                         parent)
+  {
+  }
+};
+
+
+
 JobListWidget::JobListWidget(QWidget *parent)
     : QWidget(parent)
     , m_new_procedure_action(new QAction)

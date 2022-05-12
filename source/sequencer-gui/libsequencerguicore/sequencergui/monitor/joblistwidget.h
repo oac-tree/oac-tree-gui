@@ -70,7 +70,7 @@ private:
 
   QTreeView* m_tree_view{nullptr};
   JobModel* m_model{nullptr};
-//  std::unique_ptr<mvvm::ViewModel> m_view_model;
+  std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 
 }  // namespace sequencergui
