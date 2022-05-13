@@ -94,6 +94,11 @@ mvvm::SessionItem *ItemViewComponentProvider::GetSelectedItem() const
   return const_cast<mvvm::SessionItem *>(m_selection_model->GetSelectedItem());
 }
 
+void ItemViewComponentProvider::SetSelectedItem(mvvm::SessionItem *item)
+{
+  m_selection_model->SetSelectedItem(item);
+}
+
 void ItemViewComponentProvider::Reset()
 {
   m_view->setModel(nullptr);

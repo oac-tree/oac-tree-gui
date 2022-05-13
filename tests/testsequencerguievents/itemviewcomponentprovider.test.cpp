@@ -28,6 +28,7 @@
 #include <gtest/gtest.h>
 
 #include <QItemSelectionModel>
+#include <QSignalSpy>
 #include <QTreeView>
 
 using namespace sequencergui;
@@ -186,4 +187,38 @@ TEST_F(ItemViewComponentProviderTest, SetItemAfterItem)
   // setting item from the second model
   EXPECT_NO_THROW(provider.SetItem(item2));
   EXPECT_EQ(provider.GetViewModel()->rowCount(), 0);
+}
+
+TEST_F(ItemViewComponentProviderTest, SelectItem)
+{
+  QTreeView view;
+
+  ItemViewComponentProvider provider(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+
+  QSignalSpy spy_selected(&provider, &ItemViewComponentProvider::SelectedItemChanged);
+
+  provider.SetApplicationModel(&m_model);
+
+  auto item = m_model.InsertItem<mvvm::CompoundItem>();
+  provider.SetSelectedItem(item);
+
+  EXPECT_EQ(provider.GetSelectedItem(), item);
+  EXPECT_EQ(provider.GetSelectedItems(), std::vector<mvvm::SessionItem*>({item}));
+  EXPECT_EQ(spy_selected.count(), 1);
+  QList<QVariant> arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, item);
+
+  spy_selected.clear();
+
+  // removing selection
+
+  provider.SetSelectedItem(nullptr);
+  EXPECT_EQ(provider.GetSelectedItem(), nullptr);
+  EXPECT_EQ(spy_selected.count(), 1);
+
+  arguments = spy_selected.takeFirst();
+  selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, nullptr);
 }

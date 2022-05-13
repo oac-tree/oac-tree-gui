@@ -65,6 +65,7 @@ public:
   mvvm::ViewModel* GetViewModel() const;
 
   mvvm::SessionItem* GetSelectedItem() const;
+  void SetSelectedItem(mvvm::SessionItem* item);
 
   template <typename T = mvvm::SessionItem>
   std::vector<T*> GetSelectedItems() const;
