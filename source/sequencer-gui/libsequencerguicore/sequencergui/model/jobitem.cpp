@@ -25,7 +25,7 @@ namespace sequencergui
 {
 JobItem::JobItem() : CompoundItem(Type)
 {
-  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
+  AddProperty(itemconstants::kStatus, std::string("aaa"))->SetDisplayName("Status")->SetEditable(false);
 }
 
 std::string JobItem::GetStatus() const

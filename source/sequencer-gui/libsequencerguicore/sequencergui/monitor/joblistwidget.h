@@ -26,6 +26,11 @@
 class QTreeView;
 class QAction;
 
+namespace mvvm
+{
+class ViewModel;
+}
+
 namespace sequencergui
 {
 class JobModel;
@@ -48,6 +53,10 @@ public:
   JobItem* GetSelectedJob();
 
   void SetSelectedJob(JobItem* job);
+
+  QTreeView* GetTreeView();
+
+  mvvm::ViewModel* GetViewModel();
 
 signals:
   void JobSelected(sequencergui::JobItem* job_item);

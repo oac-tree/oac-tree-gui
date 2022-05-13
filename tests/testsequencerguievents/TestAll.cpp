@@ -18,8 +18,9 @@
  *****************************************************************************/
 
 #include "Instruction.h"
-#include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/model/instructionitem.h"
+#include "sequencergui/model/jobitem.h"
+#include "sequencergui/model/sequencer_types.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -37,6 +38,7 @@ int main(int argc, char** argv)
   qRegisterMetaType<instruction_t*>("instruction_t*");
   qRegisterMetaType<const instruction_t*>("const instruction_t*");
   qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
+  qRegisterMetaType<sequencergui::JobItem*>("sequencergui::JobItem*");
 
   QApplication app(argc, argv);
   Q_UNUSED(app)

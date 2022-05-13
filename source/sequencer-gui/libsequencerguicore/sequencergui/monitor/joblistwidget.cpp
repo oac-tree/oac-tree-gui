@@ -77,6 +77,16 @@ void JobListWidget::SetSelectedJob(JobItem *job)
   m_component_provider->SetSelectedItem(job);
 }
 
+QTreeView *JobListWidget::GetTreeView()
+{
+  return m_tree_view;
+}
+
+mvvm::ViewModel *JobListWidget::GetViewModel()
+{
+  return m_component_provider->GetViewModel();
+}
+
 void JobListWidget::SetupActions()
 {
   //  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));

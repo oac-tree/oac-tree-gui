@@ -131,7 +131,7 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndex)
 
   // selecting an item and checking results
   auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
-  ASSERT_EQ(indexes.size(), 2);
+  ASSERT_EQ(indexes.size(), 2); // TopItemsViewModel always generates a row with two elements
   view.GetListView()->setCurrentIndex(indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
