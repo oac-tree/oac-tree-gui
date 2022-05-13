@@ -6,13 +6,26 @@ Prototype of Sequencer Graphical User Interface.
 
 ## Installation on CODAC machines
 
-### Install cpp-mvvm library
+The `sequencer-gui` application depends on `sequencer` and `cpp-mvvm` libraries.
 
-The `sequencer-gui` application depends on Qt, `cpp-mvvm` and `sequencer` libraries.
+### Install Sequencer
+
+The Sequencer is not yet packaged and should be build from the source
 
 ```
-# install qt5 
-yum install codac-core-7.0-qt5.x86_64
+# install sequencer dependencies
+yum install gmock-devel.x86_64 libxml2-devel.x86_64
+
+# install sequencer
+https://git.iter.org/scm/coa/sequencer.git
+mvn clean install
+```
+
+### Install cpp-mvvm library
+
+```
+# install dependencies
+yum install freeglut-devel.x86_64 gmock-devel.x86_64 libxml2-devel.x86_64 codac-core-7.1-qt5.x86_64
 
 # get cpp-mvvm source
 git clone https://git.iter.org/scm/coa/cpp-mvvm.git
