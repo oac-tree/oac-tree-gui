@@ -20,6 +20,7 @@
 #include "sequencergui/monitor/monitorpanel.h"
 
 #include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/joblistwidget.h"
 #include "sequencergui/monitor/jobpropertywidget.h"
@@ -50,8 +51,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   m_collapsible_list->AddCollapsibleWidget(m_job_list_widget);
   m_collapsible_list->AddCollapsibleWidget(m_job_property_widget);
 
-  //  connect(m_job_list_widget, &JobListWidget::procedureSelected, this,
-  //          &MonitorPanel::procedureSelected);
+  connect(m_job_list_widget, &JobListWidget::JobSelected, this, &MonitorPanel::OnJobSelectedIntern);
 }
 
 MonitorPanel::~MonitorPanel() = default;
@@ -59,6 +59,12 @@ MonitorPanel::~MonitorPanel() = default;
 void MonitorPanel::SetJobModel(JobModel *model)
 {
   m_job_list_widget->SetJobModel(model);
+}
+
+void MonitorPanel::OnJobSelectedIntern(JobItem *item)
+{
+  m_job_property_widget->SetJob(item);
+  emit JobSelected(item);
 }
 
 // FIXME restore

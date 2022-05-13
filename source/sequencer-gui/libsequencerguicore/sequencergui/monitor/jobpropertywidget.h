@@ -22,10 +22,14 @@
 
 #include <QWidget>
 
-class QListWidget;
+namespace mvvm
+{
+class PropertyTreeView;
+}
 
 namespace sequencergui
 {
+class JobItem;
 
 //! Shows properties of currently selected JobItem, populates lower left corner of
 //! SequencerMonitorView.
@@ -37,8 +41,10 @@ class JobPropertyWidget : public QWidget
 public:
   explicit JobPropertyWidget(QWidget* parent = nullptr);
 
+  void SetJob(JobItem* item);
+
 private:
-  QListWidget* m_list_widget{nullptr};
+  mvvm::PropertyTreeView* m_property_tree_view{nullptr};
 };
 
 }  // namespace sequencergui

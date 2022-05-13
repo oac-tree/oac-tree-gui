@@ -138,6 +138,7 @@ void MainWindow::PopulateModel()
 
   auto job_model = m_models->GetJobModel();
   job_model->InsertItem<JobItem>();
+  job_model->InsertItem<JobItem>()->SetStatus("ccc");
 }
 
 }  // namespace sequencergui

@@ -19,6 +19,10 @@
 
 #include "sequencergui/monitor/jobpropertywidget.h"
 
+#include "sequencergui/model/jobitem.h"
+
+#include "mvvm/widgets/propertytreeview.h"
+
 #include <QListWidget>
 #include <QVBoxLayout>
 
@@ -26,7 +30,7 @@ namespace sequencergui
 {
 
 JobPropertyWidget::JobPropertyWidget(QWidget *parent)
-    : QWidget(parent), m_list_widget(new QListWidget)
+    : QWidget(parent), m_property_tree_view(new mvvm::PropertyTreeView)
 {
   setWindowTitle("JOB PROPERTIES");
   setToolTip("Properties of currently selected job");
@@ -35,7 +39,12 @@ JobPropertyWidget::JobPropertyWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);
   layout->setSpacing(0);
-  layout->addWidget(m_list_widget);
+  layout->addWidget(m_property_tree_view);
+}
+
+void JobPropertyWidget::SetJob(JobItem *item)
+{
+  m_property_tree_view->SetItem(item);
 }
 
 }  // namespace sequencergui

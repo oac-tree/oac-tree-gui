@@ -53,7 +53,12 @@ public:
   // signals:
   //   void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
+signals:
+  void JobSelected(JobItem* item);
+
 private:
+  void OnJobSelectedIntern(JobItem* item);
+
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
