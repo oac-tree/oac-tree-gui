@@ -46,9 +46,9 @@ public:
 
   void SetJobModel(JobModel* model);
 
-  //  ProcedureItem* GetSelectedProcedure() const;
+  JobItem* GetSelectedJob() const;
 
-  //  void SetSelectedProcedure(ProcedureItem* procedure);
+  void SetSelectedJob(JobItem* job_item);
 
   // signals:
   //   void procedureSelected(sequencergui::ProcedureItem* procedureItem);

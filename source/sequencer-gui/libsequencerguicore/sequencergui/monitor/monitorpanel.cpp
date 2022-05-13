@@ -61,6 +61,16 @@ void MonitorPanel::SetJobModel(JobModel *model)
   m_job_list_widget->SetJobModel(model);
 }
 
+JobItem *MonitorPanel::GetSelectedJob() const
+{
+  return m_job_list_widget->GetSelectedJob();
+}
+
+void MonitorPanel::SetSelectedJob(JobItem *job_item)
+{
+  m_job_list_widget->SetSelectedJob(job_item);
+}
+
 void MonitorPanel::OnJobSelectedIntern(JobItem *item)
 {
   m_job_property_widget->SetJob(item);
