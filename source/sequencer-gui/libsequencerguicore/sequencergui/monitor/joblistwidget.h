@@ -21,11 +21,7 @@
 #define SEQUENCERGUI_MONITOR_JOBLISTWIDGET_H
 
 #include <QWidget>
-
-namespace mvvm
-{
-class ViewModel;
-}
+#include <memory>
 
 class QTreeView;
 class QAction;
@@ -34,10 +30,10 @@ namespace sequencergui
 {
 class JobModel;
 class JobItem;
+class ItemViewComponentProvider;
 
-//! List view with top-level ProcedureItem's.
-//! Occupy upper left corner of SequencerMonitorView.
-//! FIXME almost full duplication of ProcedureListWidget
+//! A list-like view of currently running/idle jobs. Occupies a top left corner of
+//! SequencerMonitorView.
 
 class JobListWidget : public QWidget
 {
@@ -49,28 +45,23 @@ public:
 
   void SetJobModel(JobModel* model);
 
-  //! FIXME restore
-//  std::vector<ProcedureItem*> GetSelectedProcedures() const;
-//  ProcedureItem* GetSelectedProcedure();
+  JobItem* GetSelectedJob();
 
-  //! FIXME restore
-//  void SetSelectedProcedure(ProcedureItem* procedure);
+  void SetSelectedJob(JobItem* job);
 
-//signals:
-//  void createNewProcedureRequest();
-//  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
+signals:
+  void JobSelected(sequencergui::JobItem* job_item);
 
 private:
   void SetupActions();
-  void onTreeSingleClick(const QModelIndex& index);
-  void onRemoveSelectedRequest();
 
-  QAction* m_new_procedure_action{nullptr};
-  QAction* m_remove_selected_button{nullptr};
+  QAction* m_submit_job_action{nullptr};
+  QAction* m_remove_selected_action{nullptr};
 
   QTreeView* m_tree_view{nullptr};
+  std::unique_ptr<ItemViewComponentProvider> m_component_provider;
+
   JobModel* m_model{nullptr};
-  std::unique_ptr<mvvm::ViewModel> m_view_model;
 };
 
 }  // namespace sequencergui

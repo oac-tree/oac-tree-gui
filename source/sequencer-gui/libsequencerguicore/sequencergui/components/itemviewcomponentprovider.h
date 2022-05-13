@@ -67,6 +67,9 @@ public:
   mvvm::SessionItem* GetSelectedItem() const;
   void SetSelectedItem(mvvm::SessionItem* item);
 
+  template <typename T>
+  T* GetSelected() const;
+
   template <typename T = mvvm::SessionItem>
   std::vector<T*> GetSelectedItems() const;
 
@@ -85,6 +88,12 @@ private:
 
   QAbstractItemView* m_view{nullptr};
 };
+
+template <typename T>
+T* ItemViewComponentProvider::GetSelected() const
+{
+  return dynamic_cast<T*>(GetSelectedItem());
+}
 
 template <typename T>
 std::vector<T*> ItemViewComponentProvider::GetSelectedItems() const

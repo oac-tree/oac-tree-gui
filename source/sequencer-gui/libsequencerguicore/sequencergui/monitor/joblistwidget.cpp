@@ -19,42 +19,27 @@
 
 #include "sequencergui/monitor/joblistwidget.h"
 
-#include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/components/itemviewcomponentprovider.h"
+#include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
-#include "sequencergui/viewmodel/procedureviewmodel.h"
-#include "sequencergui/utils/styleutils.h"
+#include "sequencergui/viewmodel/joblistviewmodel.h"
 
-#include "mvvm/model/itemutils.h"
-#include "mvvm/standarditems/standarditemincludes.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
-#include "mvvm/viewmodel/viewmodelutils.h"
-#include "mvvm/widgets/abstractitemview.h"
 
 #include <QAction>
-#include <QLabel>
 #include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-class JobItemListView : public mvvm::AbstractItemView
-{
-public:
-  explicit JobItemListView(mvvm::ApplicationModel *model = nullptr, QWidget *parent = nullptr)
-      : AbstractItemView(mvvm::CreateViewModel<mvvm::TopItemsViewModel>, new QTreeView, model,
-                         parent)
-  {
-  }
-};
-
-
-
 JobListWidget::JobListWidget(QWidget *parent)
     : QWidget(parent)
-    , m_new_procedure_action(new QAction)
-    , m_remove_selected_button(new QAction)
+    , m_submit_job_action(new QAction)
+    , m_remove_selected_action(new QAction)
     , m_tree_view(new QTreeView)
+    , m_component_provider(std::make_unique<ItemViewComponentProvider>(
+          CreateViewModel<JobListViewModel>, m_tree_view))
 {
   setWindowTitle("JOBS");
   setToolTip("List of current sequencer running/idle procedures");
@@ -67,10 +52,11 @@ JobListWidget::JobListWidget(QWidget *parent)
 
   SetupActions();
 
-  //  connect(m_tree_view, &QTreeView::clicked, this, &JobListWidget::onTreeSingleClick);
-
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setHeaderHidden(true);
+
+  connect(m_component_provider.get(), &ItemViewComponentProvider::SelectedItemChanged, this,
+          [this](auto) { emit JobSelected(GetSelectedJob()); });
 }
 
 JobListWidget::~JobListWidget() = default;
@@ -78,45 +64,18 @@ JobListWidget::~JobListWidget() = default;
 void JobListWidget::SetJobModel(JobModel *model)
 {
   m_model = model;
-  //  m_view_model = std::make_unique<ProcedureViewModel>(model);
-  //  m_view_model->SetRootSessionItem(model->GetProcedureContainer());
-  //  m_tree_view->setModel(m_view_model.get());
+  m_component_provider->SetApplicationModel(model);
 }
 
-//! FIXME restore
-// ProcedureItem *JobListWidget::GetSelectedProcedure()
-//{
-//   auto selected = GetSelectedProcedures();
-//   return selected.empty() ? nullptr : selected.front();
-// }
+JobItem *JobListWidget::GetSelectedJob()
+{
+  return m_component_provider->GetSelected<JobItem>();
+}
 
-// void JobListWidget::SetSelectedProcedure(ProcedureItem *procedure)
-//{
-//   auto indexes = m_view_model->GetIndexOfSessionItem(procedure);
-//   if (!indexes.empty())
-//   {
-//     m_tree_view->selectionModel()->select(indexes.at(0), QItemSelectionModel::SelectCurrent);
-//   }
-// }
-
-//! FIXME restore
-// std::vector<ProcedureItem *> JobListWidget::GetSelectedProcedures() const
-//{
-//   std::vector<mvvm::SessionItem *> result;
-
-//  if (!m_tree_view->selectionModel())
-//  {
-//    return {};
-//  }
-//  for (auto index : m_tree_view->selectionModel()->selectedIndexes())
-//  {
-//    auto procedure_item = m_view_model->GetSessionItemFromIndex(index);
-
-//! FIXME restore
-//    result.push_back(const_cast<mvvm::SessionItem *>(procedure_item));
-//  }
-//  return mvvm::utils::CastedItems<ProcedureItem>(result);
-//}
+void JobListWidget::SetSelectedJob(JobItem *job)
+{
+  m_component_provider->SetSelectedItem(job);
+}
 
 void JobListWidget::SetupActions()
 {
@@ -130,27 +89,5 @@ void JobListWidget::SetupActions()
   //          &JobListWidget::onRemoveSelectedRequest);
   //  addAction(m_remove_selected_button);
 }
-
-// void JobListWidget::onTreeSingleClick(const QModelIndex &index)
-//{
-//   if (!index.isValid())
-//   {
-//     return;
-//   }
-
-//  if (auto item = mvvm::utils::GetItemFromView<ProcedureItem>(m_view_model->itemFromIndex(index));
-//      item)
-//  {
-//    emit procedureSelected(const_cast<ProcedureItem *>(item));
-//  }
-//}
-
-// void JobListWidget::onRemoveSelectedRequest()
-//{
-//   for (auto procedure_item : GetSelectedProcedures())
-//   {
-//     m_model->RemoveItem(procedure_item);
-//   }
-// }
 
 }  // namespace sequencergui

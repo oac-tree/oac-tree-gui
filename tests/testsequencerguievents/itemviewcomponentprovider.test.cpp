@@ -372,3 +372,24 @@ TEST_F(ItemViewComponentProviderTest, SelectionAfterRemoval)
   item = arguments.at(0).value<mvvm::SessionItem*>();
   EXPECT_EQ(item, nullptr);
 }
+
+//! Delete provider before the view.
+
+TEST_F(ItemViewComponentProviderTest, DeleteProvider)
+{
+  QTreeView view;
+  auto property0 = m_model.InsertItem<mvvm::PropertyItem>();
+
+  auto provider = std::make_unique<ItemViewComponentProvider>(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+  provider->SetApplicationModel(&m_model);
+
+  EXPECT_EQ(view.model(), provider->GetViewModel());
+  EXPECT_EQ(view.selectionModel(), provider->GetSelectionModel());
+  EXPECT_EQ(view.selectionModel()->model(), provider->GetViewModel());
+
+  // deleting provider
+  provider.reset();
+
+  EXPECT_EQ(view.model(), nullptr);
+  EXPECT_EQ(view.selectionModel(), nullptr);
+}
