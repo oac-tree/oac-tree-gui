@@ -161,6 +161,34 @@ TEST_F(ItemViewComponentProviderTest, SetItemAfterSetModel)
   EXPECT_EQ(new_viewmodel->columnCount(), 0);
 }
 
+//! Initialising provider with application model, then setting it to nullptr.
+
+TEST_F(ItemViewComponentProviderTest, SetNullptrAfterSetModel)
+{
+  QTreeView view;
+
+  auto item = m_model.InsertItem<mvvm::CompoundItem>();
+  item->SetData(42);
+
+  ItemViewComponentProvider provider(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+  provider.SetApplicationModel(&m_model);
+
+  auto viewmodel = provider.GetViewModel();
+  ASSERT_NE(viewmodel, nullptr);
+  EXPECT_EQ(viewmodel->rowCount(), 1);
+  EXPECT_EQ(viewmodel->columnCount(), 2);
+
+  EXPECT_EQ(provider.GetView()->model(), viewmodel);
+  EXPECT_EQ(provider.GetSelectionModel()->model(), provider.GetViewModel());
+
+  // resetting the model
+  provider.SetApplicationModel(nullptr);
+
+  EXPECT_EQ(provider.GetViewModel(), nullptr);
+  EXPECT_EQ(provider.GetView()->model(), nullptr);
+  EXPECT_EQ(provider.GetSelectionModel()->model(), nullptr);
+}
+
 //! Attempt to set one item after another, when they belongs to different models
 //! (real life bug)
 
@@ -221,4 +249,59 @@ TEST_F(ItemViewComponentProviderTest, SelectItem)
   arguments = spy_selected.takeFirst();
   selected_item = arguments.at(0).value<mvvm::SessionItem*>();
   EXPECT_EQ(selected_item, nullptr);
+}
+
+//! Checking selection when acting through the view.
+
+TEST_F(ItemViewComponentProviderTest, SetCurrentIndex)
+{
+  QTreeView view;
+
+  ItemViewComponentProvider provider(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+  provider.SetApplicationModel(&m_model);
+
+  auto item = m_model.InsertItem<mvvm::CompoundItem>();
+
+  QSignalSpy spy_selected(&provider, &ItemViewComponentProvider::SelectedItemChanged);
+
+  // selecting an item and checking results
+  auto indexes = provider.GetViewModel()->GetIndexOfSessionItem(item);
+  ASSERT_EQ(indexes.size(), 2);
+  provider.GetView()->setCurrentIndex(indexes.at(0));
+
+  EXPECT_EQ(provider.GetSelectedItem(), item);
+  EXPECT_EQ(provider.GetSelectedItems(), std::vector<mvvm::SessionItem*>({item}));
+  EXPECT_EQ(spy_selected.count(), 1);
+  QList<QVariant> arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, item);
+}
+
+//! Selecting whole row and checking list of selected items.
+//! There should be no duplications.
+
+TEST_F(ItemViewComponentProviderTest, SelectRow)
+{
+  QTreeView view;
+
+  ItemViewComponentProvider provider(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+  provider.SetApplicationModel(&m_model);
+
+  auto vector_item = m_model.InsertItem<mvvm::VectorItem>();
+
+  auto x_item = vector_item->GetItem(mvvm::VectorItem::kX);
+
+  provider.SetItem(vector_item);
+
+  auto x_item_index = provider.GetViewModel()->index(0, 1);
+
+  QSignalSpy spy_selected(&provider, &ItemViewComponentProvider::SelectedItemChanged);
+
+  // selecting row where xItem is located
+  view.selectionModel()->select(x_item_index,
+                                QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+  EXPECT_EQ(provider.GetSelectedItems(), std::vector<mvvm::SessionItem*>({x_item}));
+  EXPECT_EQ(spy_selected.count(), 1);
 }
