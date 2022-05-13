@@ -33,8 +33,8 @@ class JobModel;
 class CollapsibleListView;
 class JobPropertyWidget;
 
-//! Left panel on SequencerMonitorView.
-//! Contains widget with open procedures and running jobs.
+//! Vertical panel with list of running jobs and job properties at the left side of
+//! SequencerMonitorView.
 
 class MonitorPanel : public QWidget
 {
@@ -49,9 +49,6 @@ public:
   JobItem* GetSelectedJob() const;
 
   void SetSelectedJob(JobItem* job_item);
-
-  // signals:
-  //   void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 signals:
   void JobSelected(JobItem* item);

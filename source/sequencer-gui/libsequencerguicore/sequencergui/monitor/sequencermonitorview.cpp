@@ -128,10 +128,4 @@ void SequencerMonitorView::SetupConnections()
           &JobManager::onChangeDelayRequest);
 }
 
-ProcedureItem *SequencerMonitorView::GetFirstProcedure()
-{
-  auto procedure_container = m_models->GetSequencerModel()->GetProcedureContainer();
-  return procedure_container->IsEmpty() ? nullptr : procedure_container->GetItem<ProcedureItem>("");
-}
-
 }  // namespace sequencergui

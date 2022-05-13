@@ -19,7 +19,6 @@
 
 #include "sequencergui/monitor/monitorpanel.h"
 
-#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/joblistwidget.h"
@@ -28,7 +27,6 @@
 #include "sequencergui/widgets/paneltoolbar.h"
 
 #include <QToolBar>
-#include <QToolButton>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -76,17 +74,5 @@ void MonitorPanel::OnJobSelectedIntern(JobItem *item)
   m_job_property_widget->SetJob(item);
   emit JobSelected(item);
 }
-
-// FIXME restore
-// ProcedureItem *MonitorPanel::GetSelectedProcedure() const
-//{
-//  return m_job_list_widget->GetSelectedProcedure();
-//}
-
-// FIXME restore
-// void MonitorPanel::SetSelectedProcedure(ProcedureItem *procedure)
-//{
-//  m_job_list_widget->SetSelectedProcedure(procedure);
-//}
 
 }  // namespace sequencergui

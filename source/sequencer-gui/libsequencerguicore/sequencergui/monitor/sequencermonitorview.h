@@ -53,7 +53,6 @@ protected:
 
 private:
   void SetupConnections();
-  ProcedureItem* GetFirstProcedure();
 
   MonitorPanel* m_monitor_panel{nullptr};
   MonitorRealTimeWidget* m_tree_widget{nullptr};
