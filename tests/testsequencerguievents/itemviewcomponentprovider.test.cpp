@@ -305,3 +305,70 @@ TEST_F(ItemViewComponentProviderTest, SelectRow)
   EXPECT_EQ(provider.GetSelectedItems(), std::vector<mvvm::SessionItem*>({x_item}));
   EXPECT_EQ(spy_selected.count(), 1);
 }
+
+TEST_F(ItemViewComponentProviderTest, DestroyModel)
+{
+  QTreeView view;
+
+  // setting up model and viewmodel
+  auto model = std::make_unique<mvvm::ApplicationModel>();
+
+  auto vector_item = model->InsertItem<mvvm::VectorItem>();
+
+  ItemViewComponentProvider provider(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+  provider.SetApplicationModel(model.get());
+
+  auto viewmodel = provider.GetViewModel();
+  EXPECT_EQ(viewmodel->rowCount(), 1);
+  EXPECT_EQ(viewmodel->columnCount(), 2);
+
+  // destroying the model
+  model.reset();
+
+  EXPECT_EQ(provider.GetViewModel(), viewmodel);
+
+  EXPECT_EQ(viewmodel->rowCount(), 0);
+  EXPECT_EQ(viewmodel->columnCount(), 0);
+  EXPECT_EQ(viewmodel->GetRootSessionItem(), nullptr);
+
+  EXPECT_TRUE(provider.GetSelectedItems().empty());
+  EXPECT_EQ(provider.GetSelectedItem(), nullptr);
+}
+
+//! Removing selected and checking notifications
+
+TEST_F(ItemViewComponentProviderTest, SelectionAfterRemoval)
+{
+  QTreeView view;
+  auto property0 = m_model.InsertItem<mvvm::PropertyItem>();
+
+  ItemViewComponentProvider provider(CreateViewModel<mvvm::AllItemsViewModel>, &view);
+  provider.SetApplicationModel(&m_model);
+
+  QSignalSpy spy_selected(&provider, &ItemViewComponentProvider::SelectedItemChanged);
+
+  // selecting single item
+  provider.SetSelectedItem(property0);
+
+  // checking selections
+  EXPECT_EQ(provider.GetSelectedItems(), std::vector<mvvm::SessionItem*>({property0}));
+
+  // checking signaling
+  EXPECT_EQ(spy_selected.count(), 1);
+  QList<QVariant> arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(item, property0);
+
+  spy_selected.clear();
+
+  // removing item
+  m_model.RemoveItem(property0);
+
+  // signal should emit once and report nullptr as selected item
+  EXPECT_EQ(spy_selected.count(), 1);
+  arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(item, nullptr);
+}
