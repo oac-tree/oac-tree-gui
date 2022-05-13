@@ -28,10 +28,10 @@ namespace sequencergui
 {
 class PanelToolBar;
 class JobListWidget;
-class ProcedureItem;
+class JobItem;
 class JobModel;
 class CollapsibleListView;
-class JobPropertyPanel;
+class JobPropertyWidget;
 
 //! Left panel on SequencerMonitorView.
 //! Contains widget with open procedures and running jobs.
@@ -46,18 +46,18 @@ public:
 
   void SetJobModel(JobModel* model);
 
-//  ProcedureItem* GetSelectedProcedure() const;
+  //  ProcedureItem* GetSelectedProcedure() const;
 
-//  void SetSelectedProcedure(ProcedureItem* procedure);
+  //  void SetSelectedProcedure(ProcedureItem* procedure);
 
-//signals:
-//  void procedureSelected(sequencergui::ProcedureItem* procedureItem);
+  // signals:
+  //   void procedureSelected(sequencergui::ProcedureItem* procedureItem);
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
-  JobPropertyPanel* m_property_panel{nullptr};
+  JobPropertyWidget* m_job_property_widget{nullptr};
 };
 
 }  // namespace sequencergui

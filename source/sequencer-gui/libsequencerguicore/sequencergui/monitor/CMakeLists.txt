@@ -14,8 +14,8 @@ target_sources(${library_name} PRIVATE
   joblog.h
   jobmanager.cpp
   jobmanager.h
-  jobpropertypanel.cpp
-  jobpropertypanel.h
+  jobpropertywidget.cpp
+  jobpropertywidget.h
   jobutils.cpp
   jobutils.h
   messagepanel.cpp

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOBPROPERTYPANEL_H
-#define SEQUENCERGUI_MONITOR_JOBPROPERTYPANEL_H
+#ifndef SEQUENCERGUI_MONITOR_JOBPROPERTYWIDGET_H
+#define SEQUENCERGUI_MONITOR_JOBPROPERTYWIDGET_H
 
 #include <QWidget>
 
@@ -30,12 +30,12 @@ namespace sequencergui
 //! Shows properties of currently selected JobItem, populates lower left corner of
 //! SequencerMonitorView.
 
-class JobPropertyPanel : public QWidget
+class JobPropertyWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit JobPropertyPanel(QWidget* parent = nullptr);
+  explicit JobPropertyWidget(QWidget* parent = nullptr);
 
 private:
   QListWidget* m_list_widget{nullptr};
@@ -43,4 +43,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOBPROPERTYPANEL_H
+#endif  // SEQUENCERGUI_MONITOR_JOBPROPERTYWIDGET_H

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/jobpropertypanel.h"
+#include "sequencergui/monitor/jobpropertywidget.h"
 
 #include <QListWidget>
 #include <QVBoxLayout>
@@ -25,7 +25,7 @@
 namespace sequencergui
 {
 
-JobPropertyPanel::JobPropertyPanel(QWidget *parent)
+JobPropertyWidget::JobPropertyWidget(QWidget *parent)
     : QWidget(parent), m_list_widget(new QListWidget)
 {
   setWindowTitle("JOB PROPERTIES");
