@@ -61,7 +61,7 @@ public:
   int onUserChoiceRequest(const QStringList& choices, const QString& description);
 
 signals:
-  void InstructionStatusChanged(InstructionItem* instruction);
+  void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
   JobContext* CreateContext();
