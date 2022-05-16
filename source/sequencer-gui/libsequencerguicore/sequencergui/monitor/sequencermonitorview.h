@@ -33,6 +33,7 @@ class MonitorWorkspaceWidget;
 class MonitorRealTimeWidget;
 class JobManager;
 class ProcedureItem;
+class JobItem;
 
 //! The SequencerMonitorView is a mainwindow component to run sequences and monitor execution.
 //! Contains the panel with jobs on the left, main sequence tree to run in the middle, and
@@ -53,6 +54,7 @@ protected:
 
 private:
   void SetupConnections();
+  void OnSubmitJobRequest(sequencergui::ProcedureItem* item);
 
   MonitorPanel* m_monitor_panel{nullptr};
   MonitorRealTimeWidget* m_tree_widget{nullptr};

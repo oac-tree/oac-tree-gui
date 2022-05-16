@@ -35,6 +35,7 @@
 #include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/topitemstreeview.h"
 
+#include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -126,6 +127,16 @@ void SequencerMonitorView::SetupConnections()
 
   connect(m_tree_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);
+
+  connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, this,
+          &SequencerMonitorView::OnSubmitJobRequest);
+}
+
+void SequencerMonitorView::OnSubmitJobRequest(ProcedureItem *item)
+{
+  auto job = m_models->GetJobModel()->InsertItem<JobItem>();
+  job->SetProcedure(item);
+  m_monitor_panel->SetSelectedJob(job);
 }
 
 }  // namespace sequencergui

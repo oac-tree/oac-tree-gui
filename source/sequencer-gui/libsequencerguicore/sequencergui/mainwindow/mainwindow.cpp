@@ -136,9 +136,9 @@ void MainWindow::PopulateModel()
   //  Examples::AddComplexAlignmentProcedure(m_models->GetSequencerModel());
   //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
 
-  auto job_model = m_models->GetJobModel();
-  job_model->InsertItem<JobItem>();
-  job_model->InsertItem<JobItem>()->SetStatus("ccc");
+//  auto job_model = m_models->GetJobModel();
+//  job_model->InsertItem<JobItem>();
+//  job_model->InsertItem<JobItem>()->SetStatus("ccc");
 }
 
 }  // namespace sequencergui
