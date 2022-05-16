@@ -20,12 +20,24 @@
 #include "sequencergui/model/jobitem.h"
 
 #include "sequencergui/model/item_constants.h"
+#include "sequencergui/model/procedureitem.h"
+
+#include "mvvm/standarditems/linkeditem.h"
 
 namespace sequencergui
 {
+
+static inline const std::string kLink = "kLink";
+static inline const std::string kExpandedProcedure = "kExpandedProcedure";
+
 JobItem::JobItem() : CompoundItem(Type)
 {
-  AddProperty(itemconstants::kStatus, std::string("aaa"))->SetDisplayName("Status")->SetEditable(false);
+  AddProperty(itemconstants::kStatus, std::string("aaa"))
+      ->SetDisplayName("Status")
+      ->SetEditable(false);
+  AddProperty<mvvm::LinkedItem>(kLink)->SetDisplayName("Link");
+
+  RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::Type}), /*as_default*/ true);
 }
 
 std::string JobItem::GetStatus() const
@@ -36,6 +48,24 @@ std::string JobItem::GetStatus() const
 void JobItem::SetStatus(const std::string &status)
 {
   SetProperty(itemconstants::kStatus, status);
+}
+
+//! Sets link to track given item.
+void JobItem::SetProcedure(const ProcedureItem *item)
+{
+  GetItem<mvvm::LinkedItem>(kLink)->SetLink(item);
+}
+
+//! Returns procedure linked to this JobItem.
+ProcedureItem *JobItem::GetProcedure() const
+{
+  return GetItem<mvvm::LinkedItem>(kLink)->Get<ProcedureItem>();
+}
+
+//! Returns procedure
+ProcedureItem *JobItem::GetExpandedProcedure()
+{
+  return GetItem<ProcedureItem>(kExpandedProcedure);
 }
 
 }  // namespace sequencergui

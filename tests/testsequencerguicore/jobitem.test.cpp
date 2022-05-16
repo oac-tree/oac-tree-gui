@@ -19,6 +19,11 @@
 
 #include "sequencergui/model/jobitem.h"
 
+#include "sequencergui/model/applicationmodels.h"
+#include "sequencergui/model/jobmodel.h"
+#include "sequencergui/model/procedureitem.h"
+#include "sequencergui/model/sequencermodel.h"
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -35,4 +40,30 @@ TEST_F(JobItemTest, JobItem)
 
   item.SetStatus("abc");
   EXPECT_EQ(item.GetStatus(), "abc");
+
+  EXPECT_EQ(item.GetExpandedProcedure(), nullptr);
+}
+
+TEST_F(JobItemTest, SetProcedure)
+{
+  SequencerModel model;
+
+  auto job_item = model.InsertItem<JobItem>();
+  auto procedure_item = model.InsertItem<ProcedureItem>();
+
+  // checking JobItem search machinery
+  job_item->SetProcedure(procedure_item);
+  EXPECT_EQ(job_item->GetProcedure(), procedure_item);
+}
+
+TEST_F(JobItemTest, SetProcedureInterMoidelContext)
+{
+  ApplicationModels models;
+
+  auto job_item = models.GetJobModel()->InsertItem<JobItem>();
+  auto procedure_item = models.GetSequencerModel()->InsertItem<ProcedureItem>();
+
+  // checking JobItem search machinery
+  job_item->SetProcedure(procedure_item);
+  EXPECT_EQ(job_item->GetProcedure(), procedure_item);
 }

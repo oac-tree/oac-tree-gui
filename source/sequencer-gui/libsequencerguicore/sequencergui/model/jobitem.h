@@ -25,6 +25,8 @@
 namespace sequencergui
 {
 
+class ProcedureItem;
+
 //! Represents job.
 class JobItem : public mvvm::CompoundItem
 {
@@ -35,6 +37,12 @@ public:
   std::string GetStatus() const;
 
   void SetStatus(const std::string& status);
+
+  void SetProcedure(const ProcedureItem* item);
+
+  ProcedureItem* GetProcedure() const;
+
+  ProcedureItem* GetExpandedProcedure();
 };
 
 }  // namespace sequencergui
