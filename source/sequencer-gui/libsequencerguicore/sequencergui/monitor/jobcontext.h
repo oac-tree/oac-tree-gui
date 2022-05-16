@@ -44,10 +44,8 @@ class JobContext : public QObject
 {
   Q_OBJECT
 public:
-  explicit JobContext(ProcedureItem* procedure_item, QObject* parent = nullptr);
+  explicit JobContext(JobItem* job_item, QObject* parent = nullptr);
   ~JobContext() override;
-
-  void SetJobItem(JobItem* job_item);
 
   // Methods to control procedure execution.
 
@@ -78,7 +76,6 @@ public:
   // Access to internals
 
   ProcedureItem* GetExpandedProcedure() const;
-  SequencerModel* GetExpandedModel();
 
   bool IsValid() const;  // FIXME find better name
 
@@ -101,10 +98,6 @@ private:
   std::unique_ptr<ProcedureRunner> m_procedure_runner;
   JobLog* m_job_log{nullptr};
 
-  ProcedureItem* m_procedure_item{nullptr};
-  ProcedureItem* m_expanded_procedure_item{nullptr};
-
-  std::unique_ptr<SequencerModel> m_job_model;
   JobItem* m_job_item{nullptr};
 };
 

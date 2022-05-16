@@ -22,7 +22,8 @@
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/jobmodel.h"
+#include "sequencergui/model/jobitem.h"
 #include "sequencergui/monitor/jobcontext.h"
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
@@ -42,21 +43,21 @@ JobManager::JobManager(QObject *parent)
 
 JobManager::~JobManager() = default;
 
-void JobManager::SetModel(SequencerModel *model)
+void JobManager::SetModel(JobModel *model)
 {
   m_model = model;
 }
 
-//! Set JobManager to display the status of given procedure.
+//! Set JobManager to display the status of given job.
 
-void JobManager::SetCurrentProcedure(ProcedureItem *procedure)
+void JobManager::SetCurrentJob(JobItem *job)
 {
-  if (!procedure)
+  if (!job)
   {
     return;
   }
 
-  if (m_current_procedure == procedure)
+  if (m_current_job == job)
   {
     return;
   }
@@ -68,7 +69,7 @@ void JobManager::SetCurrentProcedure(ProcedureItem *procedure)
     m_message_panel->onClearLog();
   }
 
-  m_current_procedure = procedure;
+  m_current_job = job;
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
@@ -84,18 +85,18 @@ void JobManager::SetCurrentProcedure(ProcedureItem *procedure)
 
 JobContext *JobManager::GetCurrentContext()
 {
-  auto it = m_context_map.find(m_current_procedure);
+  auto it = m_context_map.find(m_current_job);
   return it == m_context_map.end() ? nullptr : it->second;
 }
 
-void JobManager::onStartProcedureRequest(ProcedureItem *procedure)
+void JobManager::onStartProcedureRequest(JobItem *procedure)
 {
   if (!procedure)
   {
     return;
   }
 
-  SetCurrentProcedure(procedure);
+  SetCurrentJob(procedure);
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
@@ -176,7 +177,7 @@ int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &d
 
 JobContext *JobManager::CreateContext()
 {
-  auto it = m_context_map.find(m_current_procedure);
+  auto it = m_context_map.find(m_current_job);
   if (it != m_context_map.end())
   {
     throw RuntimeException("JobManager::CreateContext() : already created context");
@@ -188,7 +189,7 @@ JobContext *JobManager::CreateContext()
   auto on_user_choice = [this](auto choices, auto description)
   { return onUserChoiceRequest(choices, description); };
 
-  auto context = new JobContext(m_current_procedure, this);
+  auto context = new JobContext(m_current_job, this);
   context->SetSleepTime(m_current_delay);
   context->SetMessagePanel(m_message_panel);
   connect(context, &JobContext::InstructionStatusChanged, this,
@@ -199,7 +200,7 @@ JobContext *JobManager::CreateContext()
   InvokeAndCatch([context]() { context->onPrepareJobRequest(); });
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
-  m_context_map.insert({m_current_procedure, context});
+  m_context_map.insert({m_current_job, context});
 
   return context;
 }

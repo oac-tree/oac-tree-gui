@@ -23,8 +23,8 @@
 #include "Procedure.h"
 #include "sequencergui/model/domainobjectbuilder.h"
 #include "sequencergui/model/guiobjectbuilder.h"
+#include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/monitor/joblog.h"
@@ -47,37 +47,25 @@ std::string GetStatus(const instruction_t *instruction)
 namespace sequencergui
 {
 
-JobContext::JobContext(ProcedureItem *procedure_item, QObject *parent)
+JobContext::JobContext(JobItem *job_item, QObject *parent)
     : QObject(parent)
     , m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
     , m_procedure_runner(std::make_unique<ProcedureRunner>())
     , m_job_log(new JobLog)
-    , m_procedure_item{procedure_item}
-    , m_job_model(std::make_unique<SequencerModel>())
+    , m_job_item(job_item)
 {
   SetupConnections();
-}
-
-void JobContext::SetJobItem(JobItem *job_item)
-{
-  m_job_item = job_item;
 }
 
 void JobContext::onPrepareJobRequest()
 {
   // building domain procedure
   DomainObjectBuilder builder;
-  m_domain_procedure = builder.CreateProcedure(m_procedure_item);
+  m_domain_procedure = builder.CreateProcedure(m_job_item->GetProcedure());
   m_domain_procedure->Setup();  // to perform all necessary internal clones
 
-  // creating ProcedureItem corresponding to the domain procedure after the setup
-  if (!m_job_model->GetProcedureContainer()->IsEmpty())
-  {
-    throw std::runtime_error("Error non empty container");
-  }
-  m_expanded_procedure_item =
-      m_job_model->InsertItem<ProcedureItem>(m_job_model->GetProcedureContainer());
-  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), m_expanded_procedure_item);
+  auto expanded_procedure = m_job_item->InsertItem<ProcedureItem>(mvvm::TagIndex::Append());
+  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure);
 }
 
 JobContext::~JobContext() = default;
@@ -152,12 +140,7 @@ void JobContext::SetUserContext(const UserContext &user_context)
 
 ProcedureItem *JobContext::GetExpandedProcedure() const
 {
-  return m_expanded_procedure_item;
-}
-
-SequencerModel *JobContext::GetExpandedModel()
-{
-  return m_job_model.get();
+  return m_job_item->GetExpandedProcedure();
 }
 
 //! Returns true if this context is in valid state
@@ -213,7 +196,7 @@ void JobContext::onRunnerStatusChanged()
 {
   // FIXME consider setting status of expanded procedure
   auto status = m_procedure_runner->GetRunnerStatus();
-  m_procedure_item->SetStatus(RunnerStatusToString(status));
+  m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
 void JobContext::SetupConnections()

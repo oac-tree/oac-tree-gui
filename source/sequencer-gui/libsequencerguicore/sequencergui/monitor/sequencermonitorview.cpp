@@ -72,7 +72,7 @@ SequencerMonitorView::~SequencerMonitorView() = default;
 void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
-  m_job_manager->SetModel(models->GetSequencerModel());
+  m_job_manager->SetModel(models->GetJobModel());
   m_monitor_panel->SetApplicationModels(models);
 }
 

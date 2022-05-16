@@ -27,9 +27,9 @@
 
 namespace sequencergui
 {
-class SequencerModel;
+class JobModel;
 class InstructionItem;
-class ProcedureItem;
+class JobItem;
 class MessagePanel;
 class JobContext;
 
@@ -43,13 +43,13 @@ public:
   explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
-  void SetModel(SequencerModel* model);
+  void SetModel(JobModel* model);
 
-  void SetCurrentProcedure(ProcedureItem* procedure);
+  void SetCurrentJob(JobItem* job);
 
   JobContext* GetCurrentContext();
 
-  void onStartProcedureRequest(ProcedureItem* procedure);
+  void onStartProcedureRequest(JobItem* procedure);
   void onPauseProcedureRequest();
   void onStopProcedureRequest();
   void onMakeStepRequest();
@@ -66,9 +66,9 @@ signals:
 private:
   JobContext* CreateContext();
 
-  ProcedureItem* m_current_procedure{nullptr};
-  SequencerModel* m_model{nullptr};
-  std::map<ProcedureItem*, JobContext*> m_context_map;
+  JobItem* m_current_job{nullptr};
+  JobModel* m_model{nullptr};
+  std::map<JobItem*, JobContext*> m_context_map;
   MessagePanel* m_message_panel{nullptr};
   int m_current_delay{0};
 };

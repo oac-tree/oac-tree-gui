@@ -21,7 +21,10 @@
 
 #include "Instruction.h"
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/model/applicationmodels.h"
 #include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/model/jobitem.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -49,6 +52,8 @@ using msec = std::chrono::milliseconds;
 class JobContextTest : public ::testing::Test
 {
 public:
+  JobContextTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
+
   //! Creates invalid procedure that will cause JobContext to crash during the preparation.
   static ProcedureItem* CreateInvalidProcedure(SequencerModel* model)
   {
@@ -149,24 +154,25 @@ public:
     return procedure_item;
   }
 
-  SequencerModel m_model;
+  ApplicationModels m_models;
+  JobItem* m_job_item{nullptr};
 };
 
 TEST_F(JobContextTest, InitialState)
 {
-  ProcedureItem procedure;
-  JobContext job_context(&procedure);
+  JobContext job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
-  EXPECT_NE(job_context.GetExpandedModel(), nullptr);
 }
 
 //! Attempt to use JobContext with invalid procedure.
 
 TEST_F(JobContextTest, InvalidProcedure)
 {
-  auto procedure = CreateInvalidProcedure(&m_model);
-  JobContext job_context(procedure);
+  auto procedure = CreateInvalidProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
+
+  JobContext job_context(m_job_item);
   EXPECT_THROW(job_context.onPrepareJobRequest(), TransformToDomainException);
   EXPECT_FALSE(job_context.IsValid());
 }
@@ -175,9 +181,11 @@ TEST_F(JobContextTest, InvalidProcedure)
 
 TEST_F(JobContextTest, PrematureDeletion)
 {
-  auto procedure = CreateSingleWaitProcedure(&m_model);
+  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
+
   {
-    JobContext job_context(procedure);
+    JobContext job_context(m_job_item);
     job_context.onPrepareJobRequest();
     job_context.onStartRequest();
   }
@@ -187,10 +195,13 @@ TEST_F(JobContextTest, PrematureDeletion)
 
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
-  auto procedure = CreateSingleWaitProcedure(&m_model);
-  EXPECT_EQ(procedure->GetStatus(), std::string());
+  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(procedure);
+  EXPECT_EQ(procedure->GetStatus(), std::string());
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+
+  JobContext job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   job_context.onPrepareJobRequest();
   EXPECT_TRUE(job_context.IsValid());
@@ -204,25 +215,26 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   EXPECT_FALSE(job_context.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(job_context.GetExpandedModel());
+  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 
-  EXPECT_EQ(GetRunnerStatus(procedure->GetStatus()), RunnerStatus::kCompleted);
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
 }
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
-  auto procedure = CreateCopyProcedure(&m_model);
+  auto procedure = CreateCopyProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-  auto vars = mvvm::utils::FindItems<LocalVariableItem>(&m_model);
+  auto vars = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
   ASSERT_EQ(vars.size(), 2);
   EXPECT_EQ(vars.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(vars.at(1)->GetJsonValue(), std::string("43"));
 
-  JobContext job_context(procedure);
+  JobContext job_context(m_job_item);
   job_context.onPrepareJobRequest();
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job_context.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
 
   job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
@@ -234,9 +246,10 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
 
 TEST_F(JobContextTest, LocalIncludeScenario)
 {
-  auto procedure = CreateIncludeProcedure(&m_model);
+  auto procedure = CreateIncludeProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(procedure);
+  JobContext job_context(m_job_item);
   job_context.onPrepareJobRequest();
 
   QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
@@ -248,15 +261,16 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   EXPECT_FALSE(job_context.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(job_context.GetExpandedModel());
+  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
 }
 
 TEST_F(JobContextTest, UserInputScenario)
 {
-  auto procedure = CreateInputProcedure(&m_model);
+  auto procedure = CreateInputProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(procedure);
+  JobContext job_context(m_job_item);
 
   auto on_user_input = [](auto, auto) { return "42"; };
   job_context.SetUserContext({on_user_input});
@@ -268,7 +282,7 @@ TEST_F(JobContextTest, UserInputScenario)
   job_context.onStartRequest();
   QTest::qWait(100);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job_context.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
   EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
 
   EXPECT_FALSE(job_context.IsRunning());
@@ -276,9 +290,10 @@ TEST_F(JobContextTest, UserInputScenario)
 
 TEST_F(JobContextTest, UserChoiceScenario)
 {
-  auto procedure = CreateUserChoiceProcedure(&m_model);
+  auto procedure = CreateUserChoiceProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(procedure);
+  JobContext job_context(m_job_item);
 
   // callback to select Copy instruction
   auto on_user_choice = [](auto, auto) { return 1; };
@@ -293,7 +308,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(job_context.GetExpandedModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
   EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 
   EXPECT_FALSE(job_context.IsRunning());
