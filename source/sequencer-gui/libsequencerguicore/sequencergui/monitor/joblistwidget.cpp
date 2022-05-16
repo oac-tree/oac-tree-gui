@@ -23,6 +23,7 @@
 #include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/viewmodel/joblistviewmodel.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 
@@ -89,15 +90,15 @@ mvvm::ViewModel *JobListWidget::GetViewModel()
 
 void JobListWidget::SetupActions()
 {
-  //  m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
-  //  connect(m_new_procedure_action, &QAction::triggered, this,
-  //          &JobListWidget::createNewProcedureRequest);
-  //  addAction(m_new_procedure_action);
+    m_submit_job_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+//    connect(m_submit_job_action, &QAction::triggered, this,
+//            &JobListWidget::createNewProcedureRequest);
+    addAction(m_submit_job_action);
 
-  //  m_remove_selected_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-  //  connect(m_remove_selected_button, &QAction::triggered, this,
-  //          &JobListWidget::onRemoveSelectedRequest);
-  //  addAction(m_remove_selected_button);
+    m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+//    connect(m_remove_selected_action, &QAction::triggered, this,
+//            &JobListWidget::onRemoveSelectedRequest);
+    addAction(m_remove_selected_action);
 }
 
 }  // namespace sequencergui

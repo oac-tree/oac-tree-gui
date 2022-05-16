@@ -44,7 +44,6 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   m_collapsible_list->AddWidget(m_file_tree_view);
 
   m_procedure_list_view->SetupActions(ProcedureListWidget::kRemoveSelected);
-  m_procedure_list_view->setWindowTitle("OPEN PROCEDURES");
 
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
 
