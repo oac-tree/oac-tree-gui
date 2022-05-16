@@ -22,13 +22,16 @@
 
 #include <QWidget>
 
-class QSplitter;
+#include <memory>
+
+class QMenu;
 
 namespace sequencergui
 {
 class PanelToolBar;
 class JobListWidget;
 class JobItem;
+class ProcedureItem;
 class CollapsibleListView;
 class JobPropertyWidget;
 class ApplicationModels;
@@ -50,16 +53,26 @@ public:
 
   void SetSelectedJob(JobItem* job_item);
 
+  QList<QWidget*> GetToolBarWidgets();
+
 signals:
   void JobSelected(sequencergui::JobItem* item);
+  void RemoveSelectedJobRequest();
+  void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
 
 private:
   void OnJobSelectedIntern(JobItem* item);
+  void OnAboutToShowMenu();
+  std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
 
   PanelToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
   JobPropertyWidget* m_job_property_widget{nullptr};
+
+  std::unique_ptr<QMenu> m_submit_procedure_menu;
+
+  ApplicationModels* m_models{nullptr};
 };
 
 }  // namespace sequencergui
