@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_MONITOR_MONITORPANEL_H
 
 #include <QWidget>
-
 #include <memory>
 
 class QMenu;
@@ -57,7 +56,7 @@ public:
 
 signals:
   void JobSelected(sequencergui::JobItem* item);
-  void RemoveSelectedJobRequest();
+  void RemoveSelectedJobRequest(sequencergui::JobItem* item);
   void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
 
 private:
