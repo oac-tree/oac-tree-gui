@@ -91,10 +91,9 @@ void SequencerMonitorView::showEvent(QShowEvent *event)
 void SequencerMonitorView::SetupConnections()
 {
   // Process request from MonitorTreeWidget to JobManager
-  // FIXME restore
-  //  auto on_start = [this]()
-  //  { m_job_manager->onStartProcedureRequest(m_monitor_panel->GetSelectedProcedure()); };
-  //  connect(m_tree_widget, &MonitorRealTimeWidget::runRequest, this, on_start);
+  auto on_start = [this]()
+  { m_job_manager->onStartProcedureRequest(m_monitor_panel->GetSelectedJob()); };
+  connect(m_tree_widget, &MonitorRealTimeWidget::runRequest, this, on_start);
 
   // Pause request from MonitorTreeWidget to JobManager
   connect(m_tree_widget, &MonitorRealTimeWidget::pauseRequest, m_job_manager,
