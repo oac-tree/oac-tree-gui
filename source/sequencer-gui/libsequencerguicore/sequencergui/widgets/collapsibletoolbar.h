@@ -49,8 +49,10 @@ public:
   void SetControlledWidget(QWidget* widget);
 
   void AddWidget(QWidget* widget);
+  void AddWidgets(const QList<QWidget*>& widgets);
 
   void AddAction(QAction* action);
+  void AddActions(const QList<QAction*> actions);
 
   QToolBar* GetToolBar();
 

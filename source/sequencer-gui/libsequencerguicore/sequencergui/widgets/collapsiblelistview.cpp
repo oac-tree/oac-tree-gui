@@ -46,7 +46,8 @@ void CollapsibleListView::AddWidget(QWidget *content)
   m_splitter->addWidget(content);
 }
 
-void CollapsibleListView::AddCollapsibleWidget(QWidget *content, const QList<QAction *> &actions)
+CollapsibleToolBar *CollapsibleListView::AddCollapsibleWidget(QWidget *content,
+                                                              const QList<QAction *> &actions)
 {
   if (!content)
   {
@@ -60,6 +61,8 @@ void CollapsibleListView::AddCollapsibleWidget(QWidget *content, const QList<QAc
   {
     collapsible_widget->GetToolBar()->AddAction(action);
   }
+
+  return collapsible_widget->GetToolBar();
 }
 
 }  // namespace sequencergui

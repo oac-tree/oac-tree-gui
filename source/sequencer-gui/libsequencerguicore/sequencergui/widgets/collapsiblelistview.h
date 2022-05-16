@@ -27,6 +27,8 @@ class QSplitter;
 namespace sequencergui
 {
 
+class CollapsibleToolBar;
+
 //! Vertical widget with column of panels displayed one under another.
 //! Each panel contains user widget and can be collapsed/expanded. When expanded,
 //! the place occupied by the panel can be changed by draging a splitter.
@@ -40,7 +42,7 @@ public:
 
   void AddWidget(QWidget* content);
 
-  void AddCollapsibleWidget(QWidget* content, const QList<QAction *> &actions);
+  CollapsibleToolBar* AddCollapsibleWidget(QWidget* content, const QList<QAction *> &actions);
 
 private:
   QSplitter* m_splitter{nullptr};

@@ -25,6 +25,7 @@
 #include "sequencergui/monitor/jobpropertywidget.h"
 #include "sequencergui/utils/styleutils.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
+#include "sequencergui/widgets/collapsibletoolbar.h"
 #include "sequencergui/widgets/paneltoolbar.h"
 
 #include <QDebug>
@@ -51,7 +52,8 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_collapsible_list);
 
-  m_collapsible_list->AddCollapsibleWidget(m_job_list_widget, m_job_list_widget->actions());
+  auto toolbar = m_collapsible_list->AddCollapsibleWidget(m_job_list_widget, {});
+  toolbar->AddWidgets(GetToolBarWidgets());
   m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, m_job_property_widget->actions());
 
   connect(m_job_list_widget, &JobListWidget::JobSelected, this, &MonitorPanel::OnJobSelectedIntern);

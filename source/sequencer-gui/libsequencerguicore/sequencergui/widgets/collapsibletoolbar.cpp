@@ -90,11 +90,28 @@ void CollapsibleToolBar::AddWidget(QWidget *widget)
   m_toolbar_actions.append(action);  // to hide/show elements later
 }
 
+void CollapsibleToolBar::AddWidgets(const QList<QWidget *> &widgets)
+{
+  for (auto widget : widgets)
+  {
+    AddWidget(widget);
+  }
+}
+
 void CollapsibleToolBar::AddAction(QAction *action)
 {
   m_tool_bar->addAction(action);
   m_toolbar_actions.append(action);
 }
+
+void CollapsibleToolBar::AddActions(const QList<QAction *> actions)
+{
+  for (auto action : actions)
+  {
+    AddAction(action);
+  }
+}
+
 
 QToolBar *CollapsibleToolBar::GetToolBar()
 {
