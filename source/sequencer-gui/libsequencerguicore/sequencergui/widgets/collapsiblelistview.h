@@ -40,7 +40,7 @@ public:
 
   void AddWidget(QWidget* content);
 
-  void AddCollapsibleWidget(QWidget* content);
+  void AddCollapsibleWidget(QWidget* content, const QList<QAction *> &actions);
 
 private:
   QSplitter* m_splitter{nullptr};

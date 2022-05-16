@@ -19,8 +19,9 @@
 
 #include "sequencergui/widgets/collapsiblelistview.h"
 
-#include "sequencergui/widgets/collapsiblewidget.h"
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/widgets/collapsibletoolbar.h"
+#include "sequencergui/widgets/collapsiblewidget.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -45,7 +46,7 @@ void CollapsibleListView::AddWidget(QWidget *content)
   m_splitter->addWidget(content);
 }
 
-void CollapsibleListView::AddCollapsibleWidget(QWidget *content)
+void CollapsibleListView::AddCollapsibleWidget(QWidget *content, const QList<QAction *> &actions)
 {
   if (!content)
   {
@@ -53,6 +54,12 @@ void CollapsibleListView::AddCollapsibleWidget(QWidget *content)
   }
   auto collapsible_widget = new CollapsibleWidget(content);
   collapsible_widget->AddToSplitter(m_splitter);
+
+  // To show user actions in a tool bar.
+  for (auto action : actions)
+  {
+    collapsible_widget->GetToolBar()->AddAction(action);
+  }
 }
 
 }  // namespace sequencergui

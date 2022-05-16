@@ -51,7 +51,7 @@ public:
   void SetSelectedJob(JobItem* job_item);
 
 signals:
-  void JobSelected(JobItem* item);
+  void JobSelected(sequencergui::JobItem* item);
 
 private:
   void OnJobSelectedIntern(JobItem* item);

@@ -39,12 +39,6 @@ CollapsibleWidget::CollapsibleWidget(QWidget *context, QWidget *parent)
   layout->addWidget(context);
   m_tool_bar->SetControlledWidget(this);
   m_tool_bar->SetText(context->windowTitle(), context->toolTip());
-
-  // To show user actions in a tool bar.
-  for (auto action : context->actions())
-  {
-    m_tool_bar->AddAction(action);
-  }
 }
 
 CollapsibleWidget::~CollapsibleWidget() = default;

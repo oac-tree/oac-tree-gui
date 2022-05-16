@@ -64,7 +64,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   m_splitter->AddWidget(m_stacked_widget);
   m_stacked_widget->addWidget(m_node_editor);
 
-  m_splitter->AddCollapsibleWidget(m_message_panel);
+  m_splitter->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
   layout->addWidget(m_splitter);
 

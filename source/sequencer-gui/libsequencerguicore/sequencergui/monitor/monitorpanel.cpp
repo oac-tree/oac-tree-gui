@@ -46,8 +46,8 @@ MonitorPanel::MonitorPanel(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_collapsible_list);
 
-  m_collapsible_list->AddCollapsibleWidget(m_job_list_widget);
-  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget);
+  m_collapsible_list->AddCollapsibleWidget(m_job_list_widget, m_job_list_widget->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, m_job_property_widget->actions());
 
   connect(m_job_list_widget, &JobListWidget::JobSelected, this, &MonitorPanel::OnJobSelectedIntern);
 }

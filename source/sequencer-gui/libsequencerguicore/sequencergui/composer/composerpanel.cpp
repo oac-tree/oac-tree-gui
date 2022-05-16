@@ -19,9 +19,9 @@
 
 #include "sequencergui/composer/composerpanel.h"
 
+#include "sequencergui/components/procedurelistwidget.h"
 #include "sequencergui/composer/aggregatepanel.h"
 #include "sequencergui/composer/instructionitempanel.h"
-#include "sequencergui/components/procedurelistwidget.h"
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 #include "sequencergui/widgets/itemlistwidget.h"
@@ -53,9 +53,9 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   m_procedure_list_view->SetupActions(ProcedureListWidget::kCreateNew
                                       | ProcedureListWidget::kRemoveSelected);
-  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
-  m_collapsible_list->AddCollapsibleWidget(m_instruction_panel);
-  m_collapsible_list->AddCollapsibleWidget(m_workspace_panel);
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, m_procedure_list_view->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_instruction_panel, m_procedure_list_view->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_workspace_panel, m_procedure_list_view->actions());
 
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);

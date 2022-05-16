@@ -19,11 +19,11 @@
 
 #include "sequencergui/explorer/explorerpanel.h"
 
-#include "sequencergui/widgets/filetreeview.h"
-#include "sequencergui/widgets/paneltoolbar.h"
 #include "sequencergui/components/procedurelistwidget.h"
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
+#include "sequencergui/widgets/filetreeview.h"
+#include "sequencergui/widgets/paneltoolbar.h"
 
 #include <QLabel>
 #include <QSplitter>
@@ -45,7 +45,7 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
 
   m_procedure_list_view->SetupActions(ProcedureListWidget::kRemoveSelected);
 
-  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view);
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, m_procedure_list_view->actions());
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
