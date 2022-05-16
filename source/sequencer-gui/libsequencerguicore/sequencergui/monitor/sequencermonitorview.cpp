@@ -114,16 +114,16 @@ void SequencerMonitorView::SetupConnections()
   connect(m_job_manager, &JobManager::InstructionStatusChanged, this, on_selection);
 
   // FIXME restore
-  //  auto on_procedure_selected = [this](auto procedure_item)
-  //  {
-  //    m_job_manager->SetCurrentProcedure(procedure_item);
-  //    if (auto context = m_job_manager->GetCurrentContext(); context)
-  //    {
-  //      m_tree_widget->SetProcedure(context->GetExpandedProcedure());
-  //      m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
-  //    }
-  //  };
-  //  connect(m_monitor_panel, &MonitorPanel::procedureSelected, this, on_procedure_selected);
+  auto on_procedure_selected = [this](auto job_item)
+  {
+    m_job_manager->SetCurrentJob(job_item);
+    if (auto context = m_job_manager->GetCurrentContext(); context)
+    {
+      m_tree_widget->SetProcedure(context->GetExpandedProcedure());
+      m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+    }
+  };
+  connect(m_monitor_panel, &MonitorPanel::JobSelected, this, on_procedure_selected);
 
   connect(m_tree_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);
