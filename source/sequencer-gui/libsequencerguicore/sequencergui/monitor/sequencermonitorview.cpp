@@ -72,7 +72,7 @@ void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   m_job_manager->SetModel(models->GetSequencerModel());
-  m_monitor_panel->SetJobModel(models->GetJobModel());
+  m_monitor_panel->SetApplicationModels(models);
 }
 
 void SequencerMonitorView::showEvent(QShowEvent *event)

@@ -29,9 +29,9 @@ namespace sequencergui
 class PanelToolBar;
 class JobListWidget;
 class JobItem;
-class JobModel;
 class CollapsibleListView;
 class JobPropertyWidget;
+class ApplicationModels;
 
 //! Vertical panel with list of running jobs and job properties at the left side of
 //! SequencerMonitorView.
@@ -44,7 +44,7 @@ public:
   explicit MonitorPanel(QWidget* parent = nullptr);
   ~MonitorPanel() override;
 
-  void SetJobModel(JobModel* model);
+  void SetApplicationModels(ApplicationModels* models);
 
   JobItem* GetSelectedJob() const;
 

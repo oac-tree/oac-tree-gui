@@ -19,8 +19,8 @@
 
 #include "sequencergui/monitor/monitorpanel.h"
 
+#include "sequencergui/model/applicationmodels.h"
 #include "sequencergui/model/jobitem.h"
-#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/joblistwidget.h"
 #include "sequencergui/monitor/jobpropertywidget.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
@@ -54,9 +54,9 @@ MonitorPanel::MonitorPanel(QWidget *parent)
 
 MonitorPanel::~MonitorPanel() = default;
 
-void MonitorPanel::SetJobModel(JobModel *model)
+void MonitorPanel::SetApplicationModels(ApplicationModels *models)
 {
-  m_job_list_widget->SetJobModel(model);
+  m_job_list_widget->SetJobModel(models->GetJobModel());
 }
 
 JobItem *MonitorPanel::GetSelectedJob() const
