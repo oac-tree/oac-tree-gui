@@ -24,7 +24,6 @@
 #include <memory>
 
 class QTreeView;
-class QAction;
 
 namespace mvvm
 {
@@ -62,11 +61,6 @@ signals:
   void JobSelected(sequencergui::JobItem* job_item);
 
 private:
-  void SetupActions();
-
-  QAction* m_submit_job_action{nullptr};
-  QAction* m_remove_selected_action{nullptr};
-
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<ItemViewComponentProvider> m_component_provider;
 

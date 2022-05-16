@@ -23,11 +23,7 @@
 #include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/viewmodel/joblistviewmodel.h"
-#include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/viewmodel/topitemsviewmodel.h"
-
-#include <QAction>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -36,8 +32,6 @@ namespace sequencergui
 
 JobListWidget::JobListWidget(QWidget *parent)
     : QWidget(parent)
-    , m_submit_job_action(new QAction)
-    , m_remove_selected_action(new QAction)
     , m_tree_view(new QTreeView)
     , m_component_provider(std::make_unique<ItemViewComponentProvider>(
           CreateViewModel<JobListViewModel>, m_tree_view))
@@ -50,8 +44,6 @@ JobListWidget::JobListWidget(QWidget *parent)
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
-
-  SetupActions();
 
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setHeaderHidden(true);
@@ -86,19 +78,6 @@ QTreeView *JobListWidget::GetTreeView()
 mvvm::ViewModel *JobListWidget::GetViewModel()
 {
   return m_component_provider->GetViewModel();
-}
-
-void JobListWidget::SetupActions()
-{
-    m_submit_job_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
-//    connect(m_submit_job_action, &QAction::triggered, this,
-//            &JobListWidget::createNewProcedureRequest);
-    addAction(m_submit_job_action);
-
-    m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
-//    connect(m_remove_selected_action, &QAction::triggered, this,
-//            &JobListWidget::onRemoveSelectedRequest);
-    addAction(m_remove_selected_action);
 }
 
 }  // namespace sequencergui

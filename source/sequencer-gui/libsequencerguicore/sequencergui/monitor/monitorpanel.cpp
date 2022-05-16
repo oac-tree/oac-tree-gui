@@ -21,6 +21,8 @@
 
 #include "sequencergui/model/applicationmodels.h"
 #include "sequencergui/model/jobitem.h"
+#include "sequencergui/model/procedureitem.h"
+#include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/monitor/joblistwidget.h"
 #include "sequencergui/monitor/jobpropertywidget.h"
 #include "sequencergui/utils/styleutils.h"
@@ -54,7 +56,7 @@ MonitorPanel::MonitorPanel(QWidget *parent)
 
   auto toolbar = m_collapsible_list->AddCollapsibleWidget(m_job_list_widget, {});
   toolbar->AddWidgets(GetToolBarWidgets());
-  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, m_job_property_widget->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
 
   connect(m_job_list_widget, &JobListWidget::JobSelected, this, &MonitorPanel::OnJobSelectedIntern);
 }
@@ -90,6 +92,13 @@ QList<QWidget *> MonitorPanel::GetToolBarWidgets()
   submit_button->setToolTip("Submit sequencer procedure for execution");
   result.push_back(submit_button);
 
+  auto remove_button = new QToolButton;
+  remove_button->setText("Remove");
+  remove_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  remove_button->setToolTip("Remove selected job from the list");
+  result.push_back(submit_button);
+
   return result;
 }
 
@@ -99,15 +108,29 @@ void MonitorPanel::OnJobSelectedIntern(JobItem *item)
   emit JobSelected(item);
 }
 
-//! Will be called when insert_af
+//! Populates `submit_button` pop-up menu on show event
 void MonitorPanel::OnAboutToShowMenu()
 {
-  qDebug() << "About to show";
+  auto menu = m_submit_procedure_menu.get();
+  menu->clear();
+
+  for (auto procedure : m_models->GetSequencerModel()->GetProcedures())
+  {
+    auto action = menu->addAction(QString::fromStdString(procedure->GetDisplayName()));
+    action->setToolTip("Submit given procedure for execution");
+    auto on_action = [this, procedure]() { emit SubmitProcedureRequest(procedure); };
+    connect(action, &QAction::triggered, this, on_action);
+  }
+  menu->addSeparator();
+  auto action = menu->addAction("Import from disk");
+  action->setToolTip("Implort sequencer xml procedure from disk");
+  action->setEnabled(false);
 }
 
 std::unique_ptr<QMenu> MonitorPanel::CreateSubmitProcedureMenu()
 {
   auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
   connect(result.get(), &QMenu::aboutToShow, this, &MonitorPanel::OnAboutToShowMenu);
   return result;
 }
