@@ -36,6 +36,7 @@ class SequencerModel;
 class ProcedureItem;
 class SelectionModel;
 class ProcedureList;
+class ItemViewComponentProvider;
 
 //! List view for ProcedureItem with selection abilities.
 
@@ -77,7 +78,9 @@ private:
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};
 
-  ProcedureList* m_list_view{nullptr};
+  QListView* m_list_view{nullptr};
+  std::unique_ptr<ItemViewComponentProvider> m_component_provider;
+
   SequencerModel* m_model{nullptr};
 };
 

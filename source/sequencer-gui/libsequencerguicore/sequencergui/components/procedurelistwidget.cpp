@@ -19,41 +19,30 @@
 
 #include "sequencergui/components/procedurelistwidget.h"
 
+#include "sequencergui/components/itemviewcomponentprovider.h"
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/model/itemutils.h"
-#include "mvvm/standarditems/standarditemincludes.h"
+#include "mvvm/standarditems/containeritem.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
-#include "mvvm/viewmodel/viewmodelutils.h"
-#include "mvvm/widgets/abstractitemview.h"
 
 #include <QAction>
-#include <QItemSelectionModel>
-#include <QLabel>
 #include <QListView>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-class ProcedureList : public mvvm::AbstractItemView
-{
-public:
-  explicit ProcedureList(mvvm::ApplicationModel *model = nullptr, QWidget *parent = nullptr)
-      : AbstractItemView(mvvm::CreateViewModel<mvvm::TopItemsViewModel>, new QListView, model,
-                         parent)
-  {
-  }
-};
-
 ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     : QWidget(parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
-    , m_list_view(new ProcedureList)
+    , m_list_view(new QListView)
+    , m_component_provider(std::make_unique<ItemViewComponentProvider>(
+          CreateViewModel<mvvm::TopItemsViewModel>, m_list_view))
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");
@@ -63,6 +52,9 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
+
+  connect(m_component_provider.get(), &ItemViewComponentProvider::SelectedItemChanged, this,
+          [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;
@@ -72,11 +64,8 @@ void ProcedureListWidget::SetModel(SequencerModel *model)
   m_model = model;
   if (model)
   {
-    m_list_view->SetItem(model->GetProcedureContainer());
+    m_component_provider->SetItem(model->GetProcedureContainer());
   }
-
-  connect(m_list_view, &ProcedureList::SelectedItemChanged, this,
-          [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 }
 
 ProcedureItem *ProcedureListWidget::GetSelectedProcedure()
@@ -87,22 +76,22 @@ ProcedureItem *ProcedureListWidget::GetSelectedProcedure()
 
 std::vector<ProcedureItem *> ProcedureListWidget::GetSelectedProcedures() const
 {
-  return m_list_view->GetSelectedItems<ProcedureItem>();
+  return m_component_provider->GetSelectedItems<ProcedureItem>();
 }
 
 void ProcedureListWidget::SetSelectedProcedure(ProcedureItem *procedure)
 {
-  m_list_view->SetSelectedItem(procedure);
+  m_component_provider->SetSelectedItem(procedure);
 }
 
 QListView *ProcedureListWidget::GetListView()
 {
-  return dynamic_cast<QListView *>(m_list_view->GetView());
+  return m_list_view;
 }
 
 mvvm::ViewModel *ProcedureListWidget::GetViewModel()
 {
-  return m_list_view->GetViewModel();
+  return m_component_provider->GetViewModel();
 }
 
 void ProcedureListWidget::SetupActions(int action_flag)
