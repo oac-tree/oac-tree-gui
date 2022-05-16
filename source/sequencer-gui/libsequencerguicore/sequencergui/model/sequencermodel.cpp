@@ -19,6 +19,7 @@
 
 #include "sequencergui/model/sequencermodel.h"
 
+#include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencerutils.h"
 
 #include "mvvm/interfaces/itemmanagerinterface.h"
@@ -39,6 +40,11 @@ SequencerModel::SequencerModel(std::unique_ptr<mvvm::ItemManagerInterface> manag
 mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 {
   return m_procedure_container;
+}
+
+std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
+{
+  return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::ContainerItem::kChildren);
 }
 
 //! Creates initial content of the model.

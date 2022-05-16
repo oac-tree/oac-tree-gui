@@ -21,6 +21,8 @@
 
 #include "sequencergui/model/procedureitem.h"
 
+#include "mvvm/standarditems/containeritem.h"
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -38,8 +40,19 @@ TEST_F(SequencerModelTest, InitialState)
   // container is already created
   EXPECT_NE(model.GetProcedureContainer(), nullptr);
 
+  EXPECT_TRUE(model.GetProcedures().empty());
+
   // trying to insert procedure to make sure that catalogue is there
   auto item = model.InsertNewItem(ProcedureItem::Type);
   EXPECT_EQ(item->GetType(), ProcedureItem::Type);
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
+}
+
+TEST_F(SequencerModelTest, GetProcedures)
+{
+  SequencerModel model;
+  auto procedure0 = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+  auto procedure1 = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  EXPECT_EQ(model.GetProcedures(), std::vector<ProcedureItem*>({procedure0, procedure1}));
 }

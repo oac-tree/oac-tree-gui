@@ -29,7 +29,7 @@ class ContainerItem;
 
 namespace sequencergui
 {
-class InstructionItem;
+class ProcedureItem;
 
 //! The model containing a collection of sequencer procedures.
 //! Used during procedure assembly.
@@ -41,6 +41,8 @@ public:
   explicit SequencerModel(std::unique_ptr<mvvm::ItemManagerInterface> manager);
 
   mvvm::ContainerItem* GetProcedureContainer() const;
+
+  std::vector<ProcedureItem*> GetProcedures() const;
 
 private:
   void SetupModel();
