@@ -21,9 +21,9 @@
 
 #include "Instruction.h"
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/procedureexamples.h"
 #include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/standardvariableitems.h"
@@ -49,11 +49,6 @@ using msec = std::chrono::milliseconds;
 class JobContextTest : public ::testing::Test
 {
 public:
-  JobContextTest()
-  {
-    qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
-  }
-
   //! Creates invalid procedure that will cause JobContext to crash during the preparation.
   static ProcedureItem* CreateInvalidProcedure(SequencerModel* model)
   {

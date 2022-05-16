@@ -58,6 +58,11 @@ JobContext::JobContext(ProcedureItem *procedure_item, QObject *parent)
   SetupConnections();
 }
 
+void JobContext::SetJobItem(JobItem *job_item)
+{
+  m_job_item = job_item;
+}
+
 void JobContext::onPrepareJobRequest()
 {
   // building domain procedure

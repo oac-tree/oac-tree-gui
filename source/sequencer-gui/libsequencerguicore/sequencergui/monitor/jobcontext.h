@@ -33,6 +33,7 @@ namespace sequencergui
 class ProcedureItem;
 class ProcedureRunner;
 class JobLog;
+class JobItem;
 class SequencerModel;
 class MessagePanel;
 class InstructionItem;
@@ -45,6 +46,8 @@ class JobContext : public QObject
 public:
   explicit JobContext(ProcedureItem* procedure_item, QObject* parent = nullptr);
   ~JobContext() override;
+
+  void SetJobItem(JobItem* job_item);
 
   // Methods to control procedure execution.
 
@@ -102,6 +105,7 @@ private:
   ProcedureItem* m_expanded_procedure_item{nullptr};
 
   std::unique_ptr<SequencerModel> m_job_model;
+  JobItem* m_job_item{nullptr};
 };
 
 }  // namespace sequencergui
