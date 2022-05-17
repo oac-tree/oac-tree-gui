@@ -28,6 +28,7 @@
 #include "sequencergui/nodeeditor/nodeeditor.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 
+#include "mvvm/widgets/itemviewcomponentprovider.h"
 #include "mvvm/widgets/topitemstreeview.h"
 
 #include <QSplitter>
@@ -38,21 +39,14 @@
 namespace sequencergui
 {
 
-class MVVM_VIEW_EXPORT JobTreeView : public mvvm::AbstractItemView
-{
-public:
-  explicit JobTreeView(mvvm::ApplicationModel *model = nullptr, QWidget *parent = nullptr)
-      : AbstractItemView(mvvm::CreateViewModel<InstructionViewModel>, new QTreeView, model, parent)
-  {
-  }
-};
-
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
     , m_splitter(new CollapsibleListView)
     , m_stacked_widget(new QStackedWidget)
-    , m_instruction_tree(new JobTreeView)
+    , m_instruction_tree(new QTreeView)
+    , m_component_provider(std::make_unique<mvvm::ItemViewComponentProvider>(
+          mvvm::CreateViewModel<InstructionViewModel>, m_instruction_tree))
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
 {
@@ -79,12 +73,12 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_instruction_tree->SetItem(procedure_item);
+  m_component_provider->SetItem(procedure_item);
 }
 
 void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)
 {
-  m_instruction_tree->SetSelectedItem(item);
+  m_component_provider->SetSelectedItem(item);
   m_node_editor->SetSelectedInstructions({item});
 }
 

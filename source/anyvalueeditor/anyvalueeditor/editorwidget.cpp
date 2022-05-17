@@ -63,7 +63,7 @@ EditorWidget::EditorWidget(QWidget *parent)
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
   // disabling view from listening ApplicationModel for performance
-  m_all_items_tree_view->Reset();
+  m_all_items_tree_view->SetApplicationModel(nullptr);
 
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
   auto item = m_model->InsertItem<AnyValueItem>();

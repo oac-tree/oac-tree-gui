@@ -19,10 +19,11 @@
 
 #include "sequencergui/monitor/joblistwidget.h"
 
-#include "sequencergui/components/itemviewcomponentprovider.h"
 #include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/viewmodel/joblistviewmodel.h"
+
+#include "mvvm/widgets/itemviewcomponentprovider.h"
 
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -33,8 +34,8 @@ namespace sequencergui
 JobListWidget::JobListWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
-    , m_component_provider(std::make_unique<ItemViewComponentProvider>(
-          CreateViewModel<JobListViewModel>, m_tree_view))
+    , m_component_provider(std::make_unique<mvvm::ItemViewComponentProvider>(
+          mvvm::CreateViewModel<JobListViewModel>, m_tree_view))
 {
   setWindowTitle("JOBS");
   setToolTip("List of current sequencer running/idle procedures");
@@ -48,7 +49,7 @@ JobListWidget::JobListWidget(QWidget *parent)
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setHeaderHidden(true);
 
-  connect(m_component_provider.get(), &ItemViewComponentProvider::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit JobSelected(GetSelectedJob()); });
 }
 

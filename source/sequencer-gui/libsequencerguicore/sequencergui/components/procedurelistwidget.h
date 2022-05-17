@@ -25,7 +25,8 @@
 namespace mvvm
 {
 class ViewModel;
-}
+class ItemViewComponentProvider;
+}  // namespace mvvm
 
 class QListView;
 class QAction;
@@ -36,7 +37,6 @@ class SequencerModel;
 class ProcedureItem;
 class SelectionModel;
 class ProcedureList;
-class ItemViewComponentProvider;
 
 //! List view for ProcedureItem with selection abilities.
 
@@ -79,7 +79,7 @@ private:
   QAction* m_remove_selected_action{nullptr};
 
   QListView* m_list_view{nullptr};
-  std::unique_ptr<ItemViewComponentProvider> m_component_provider;
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 
   SequencerModel* m_model{nullptr};
 };

@@ -58,17 +58,7 @@ MonitorWorkspaceWidget::~MonitorWorkspaceWidget() = default;
 
 void MonitorWorkspaceWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  // FIXME simplify after the refactoring of TopItemsTreeView
-  if (procedure_item)
-  {
-    m_instruction_tree->SetApplicationModel(
-        dynamic_cast<mvvm::ApplicationModel *>(procedure_item->GetModel()));
-    m_instruction_tree->SetRootSessionItem(procedure_item->GetWorkspace());
-  }
-  else
-  {
-    m_instruction_tree->SetApplicationModel(nullptr);
-  }
+  m_instruction_tree->SetItem(procedure_item);
 }
 
 }  // namespace sequencergui

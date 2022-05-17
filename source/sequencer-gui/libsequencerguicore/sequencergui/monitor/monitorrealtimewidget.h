@@ -21,6 +21,12 @@
 #define SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
 
 #include <QWidget>
+#include <memory>
+
+namespace mvvm
+{
+class ItemViewComponentProvider;
+}
 
 class QTreeView;
 class QStackedWidget;
@@ -34,7 +40,6 @@ class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
 class CollapsibleListView;
-class JobTreeView;
 
 //! Central panel on SequencerMonitorView.
 
@@ -68,7 +73,9 @@ private:
   CollapsibleListView* m_splitter{nullptr};
 
   QStackedWidget* m_stacked_widget{nullptr};
-  JobTreeView* m_instruction_tree{nullptr};
+  QTreeView* m_instruction_tree{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+
   NodeEditor* m_node_editor{nullptr};
 
   MessagePanel* m_message_panel{nullptr};

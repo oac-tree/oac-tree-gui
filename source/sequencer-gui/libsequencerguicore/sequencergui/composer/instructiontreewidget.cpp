@@ -25,7 +25,7 @@
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/model/itemutils.h"
+#include "mvvm/utils/containerutils.h"
 #include "mvvm/widgets/topitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"
 
@@ -70,7 +70,7 @@ void InstructionTreeWidget::SetSelectedInstructions(
 
 std::vector<InstructionItem *> InstructionTreeWidget::GetSelectedInstructions() const
 {
-  return m_tree_view->GetSelectedItems<InstructionItem>();
+  return ::mvvm::utils::CastItems<InstructionItem>(m_tree_view->GetSelectedItems());
 }
 
 InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const

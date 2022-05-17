@@ -28,13 +28,13 @@ class QTreeView;
 namespace mvvm
 {
 class ViewModel;
+class ItemViewComponentProvider;
 }
 
 namespace sequencergui
 {
 class JobModel;
 class JobItem;
-class ItemViewComponentProvider;
 
 //! A list-like view of currently running/idle jobs. Occupies a top left corner of
 //! SequencerMonitorView.
@@ -62,7 +62,7 @@ signals:
 
 private:
   QTreeView* m_tree_view{nullptr};
-  std::unique_ptr<ItemViewComponentProvider> m_component_provider;
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 
   JobModel* m_model{nullptr};
 };

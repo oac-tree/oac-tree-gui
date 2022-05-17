@@ -19,7 +19,6 @@
 
 #include "sequencergui/components/procedurelistwidget.h"
 
-#include "sequencergui/components/itemviewcomponentprovider.h"
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
@@ -28,6 +27,7 @@
 #include "mvvm/model/itemutils.h"
 #include "mvvm/standarditems/containeritem.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
+#include "mvvm/widgets/itemviewcomponentprovider.h"
 
 #include <QAction>
 #include <QListView>
@@ -41,8 +41,8 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
     , m_list_view(new QListView)
-    , m_component_provider(std::make_unique<ItemViewComponentProvider>(
-          CreateViewModel<mvvm::TopItemsViewModel>, m_list_view))
+    , m_component_provider(std::make_unique<mvvm::ItemViewComponentProvider>(
+          mvvm::CreateViewModel<mvvm::TopItemsViewModel>, m_list_view))
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");
@@ -53,7 +53,7 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
   layout->setSpacing(0);
   layout->addWidget(m_list_view);
 
-  connect(m_component_provider.get(), &ItemViewComponentProvider::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 }
 
