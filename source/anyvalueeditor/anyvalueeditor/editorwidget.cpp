@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/editorwidget.h"
 
-#include "AnyValue.h"
-#include "AnyValueHelper.h"
+#include "sup/dto/AnyValue.h"
+#include "sup/dto/AnyValueHelper.h"
 #include "anyvalueeditor/anyvalueeditoractions.h"
 #include "anyvalueeditor/anyvalueeditortoolbar.h"
 #include "anyvalueeditor/anyvalueitem.h"

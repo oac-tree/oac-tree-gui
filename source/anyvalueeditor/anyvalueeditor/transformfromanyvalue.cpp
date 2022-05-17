@@ -19,9 +19,9 @@
 
 #include "anyvalueeditor/transformfromanyvalue.h"
 
-#include "AnyValue.h"
-#include "AnyValueHelper.h"
-#include "BasicScalarTypes.h"
+#include "sup/dto/AnyValue.h"
+#include "sup/dto/AnyValueHelper.h"
+#include "sup/dto/BasicScalarTypes.h"
 #include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/anyvalueitembuilder.h"
 

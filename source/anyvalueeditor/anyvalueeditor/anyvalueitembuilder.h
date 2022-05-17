@@ -20,8 +20,8 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
 
-#include "BasicScalarTypes.h"
-#include "IAnyVisitor.h"
+#include "sup/dto/BasicScalarTypes.h"
+#include "sup/dto/IAnyVisitor.h"
 #include "anyvalue_type.h"
 
 namespace anyvalueeditor

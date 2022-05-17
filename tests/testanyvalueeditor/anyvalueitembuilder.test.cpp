@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/anyvalueitembuilder.h"
 
-#include "AnyValue.h"
-#include "AnyValueHelper.h"
+#include "sup/dto/AnyValue.h"
+#include "sup/dto/AnyValueHelper.h"
 #include "anyvalueeditor/anyvalueitem.h"
 
 #include <gtest/gtest.h>

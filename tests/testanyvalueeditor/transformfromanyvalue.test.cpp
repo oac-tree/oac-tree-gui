@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/transformfromanyvalue.h"
 
-#include "AnyValue.h"
-#include "BasicScalarTypes.h"
+#include "sup/dto/AnyValue.h"
+#include "sup/dto/BasicScalarTypes.h"
 #include "anyvalueeditor/anyvalueitem.h"
 
 #include "mvvm/core/variant.h"
