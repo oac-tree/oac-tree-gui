@@ -41,8 +41,7 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
     , m_list_view(new QListView)
-    , m_component_provider(std::make_unique<mvvm::ItemViewComponentProvider>(
-          mvvm::CreateViewModel<mvvm::TopItemsViewModel>, m_list_view))
+    , m_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");

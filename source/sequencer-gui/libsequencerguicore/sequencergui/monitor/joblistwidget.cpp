@@ -34,8 +34,7 @@ namespace sequencergui
 JobListWidget::JobListWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
-    , m_component_provider(std::make_unique<mvvm::ItemViewComponentProvider>(
-          mvvm::CreateViewModel<JobListViewModel>, m_tree_view))
+    , m_component_provider(mvvm::CreateProvider<JobListViewModel>(m_tree_view))
 {
   setWindowTitle("JOBS");
   setToolTip("List of current sequencer running/idle procedures");

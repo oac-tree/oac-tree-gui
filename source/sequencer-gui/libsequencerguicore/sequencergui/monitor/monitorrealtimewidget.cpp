@@ -45,8 +45,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     , m_splitter(new CollapsibleListView)
     , m_stacked_widget(new QStackedWidget)
     , m_instruction_tree(new QTreeView)
-    , m_component_provider(std::make_unique<mvvm::ItemViewComponentProvider>(
-          mvvm::CreateViewModel<InstructionViewModel>, m_instruction_tree))
+    , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_instruction_tree))
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
 {
