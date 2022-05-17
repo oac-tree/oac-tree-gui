@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/instructionviewmodel.h"
+#include "sequencergui/viewmodel/instructionviewmodel.h"
 
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/standardinstructionitems.h"

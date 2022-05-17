@@ -3,8 +3,6 @@
 target_sources(${library_name} PRIVATE
   flowcontroller.cpp
   flowcontroller.h
-  instructionviewmodel.cpp
-  instructionviewmodel.h
   job_types.h
   jobcontext.cpp
   jobcontext.h
