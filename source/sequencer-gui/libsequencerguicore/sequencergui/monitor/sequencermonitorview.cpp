@@ -112,7 +112,6 @@ void SequencerMonitorView::SetupConnections()
   { m_tree_widget->SetSelectedInstruction(instruction); };
   connect(m_job_manager, &JobManager::InstructionStatusChanged, this, on_selection);
 
-  // FIXME restore
   auto on_procedure_selected = [this](auto job_item)
   {
     m_job_manager->SetCurrentJob(job_item);

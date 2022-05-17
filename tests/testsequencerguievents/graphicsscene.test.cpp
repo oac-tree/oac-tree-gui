@@ -48,7 +48,8 @@ public:
   GraphicsSceneTest()
   {
     m_model.InsertItem<ProcedureItem>();
-    m_scene.SetContext(&m_model, GetInstructionContainer());
+    m_scene.SetModel(&m_model);
+    m_scene.SetInstructionContainer(GetInstructionContainer());
   }
 
   InstructionContainerItem* GetInstructionContainer()

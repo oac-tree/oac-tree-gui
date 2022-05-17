@@ -72,6 +72,7 @@ NodeEditor::~NodeEditor() = default;
 void NodeEditor::SetModel(mvvm::ApplicationModel *model)
 {
   m_model = model;
+  m_graphics_scene->SetModel(model);
 }
 
 void NodeEditor::SetProcedure(ProcedureItem *procedure)
@@ -79,7 +80,7 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
   if (procedure)
   {
     auto instruction_container = procedure->GetInstructionContainer();
-    m_graphics_scene->SetContext(dynamic_cast<SequencerModel *>(m_model), instruction_container);
+    m_graphics_scene->SetInstructionContainer(instruction_container);
     m_scene_controller = std::make_unique<GraphicsSceneController>(m_model, m_graphics_scene);
 
     auto scene_rect = m_graphics_scene->sceneRect();

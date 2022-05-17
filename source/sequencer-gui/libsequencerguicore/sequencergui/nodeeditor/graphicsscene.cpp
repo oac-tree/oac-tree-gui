@@ -88,11 +88,15 @@ GraphicsScene::GraphicsScene(QObject *parent)
   connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged);
 }
 
-GraphicsScene::~GraphicsScene() = default;
-
-void GraphicsScene::SetContext(SequencerModel *model, InstructionContainerItem *root_item)
+void GraphicsScene::SetModel(mvvm::ApplicationModel *model)
 {
   m_model = model;
+}
+
+GraphicsScene::~GraphicsScene() = default;
+
+void GraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
+{
   m_root_item = root_item;
 }
 
@@ -261,7 +265,8 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
                      event->scenePos().y() - ref_view_rectangle.height() / 2);
 
-    auto item = AddInstruction(m_model, m_root_item, domain_type);
+    // FIXME remove cast
+    auto item = AddInstruction(dynamic_cast<SequencerModel*>(m_model), m_root_item, domain_type);
     item->SetX(drop_pos.x());
     item->SetY(drop_pos.y());
   }

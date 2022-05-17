@@ -28,6 +28,7 @@
 namespace mvvm
 {
 class ViewItem;
+class ApplicationModel;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -36,7 +37,6 @@ class ConnectableView;
 class NodeController;
 class NodeConnection;
 class InstructionItem;
-class SequencerModel;
 class InstructionContainerItem;
 class MessageHandlerInterface;
 
@@ -48,7 +48,9 @@ public:
   explicit GraphicsScene(QObject* parent = nullptr);
   ~GraphicsScene() override;
 
-  void SetContext(SequencerModel* model, InstructionContainerItem* root_item);
+  void SetModel(mvvm::ApplicationModel* model);
+
+  void SetInstructionContainer(InstructionContainerItem* root_item);
 
   void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
 
@@ -83,7 +85,7 @@ protected:
 private:
   void onSelectionChanged();
 
-  SequencerModel* m_model{nullptr};
+  mvvm::ApplicationModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeController> m_node_controller;
   std::unique_ptr<MessageHandlerInterface> m_message_handler;
