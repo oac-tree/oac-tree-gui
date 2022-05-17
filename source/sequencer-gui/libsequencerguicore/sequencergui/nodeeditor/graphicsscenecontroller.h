@@ -25,6 +25,11 @@
 #include <functional>
 #include <memory>
 
+namespace mvvm
+{
+class ApplicationModel;
+}
+
 namespace sequencergui
 {
 class GraphicsScene;
@@ -36,7 +41,7 @@ class InstructionContainerItem;
 class GraphicsSceneController : public mvvm::AbstractViewModelController
 {
 public:
-  GraphicsSceneController(SequencerModel *model, GraphicsScene *graphics_scene);
+  GraphicsSceneController(mvvm::ApplicationModel *model, GraphicsScene *graphics_scene);
   ~GraphicsSceneController() override;
 
   void SetAlignStrategy(std::function<void(InstructionContainerItem *)> strategy);
