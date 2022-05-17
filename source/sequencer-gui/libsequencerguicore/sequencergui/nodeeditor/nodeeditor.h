@@ -25,11 +25,15 @@
 class QKeyEvent;
 class QToolBar;
 
+namespace mvvm
+{
+class ApplicationModel;
+}
+
 namespace sequencergui
 {
 class GraphicsView;
 class GraphicsScene;
-class SequencerModel;
 class GraphicsSceneController;
 class InstructionItem;
 class NodeEditorToolBar;
@@ -46,7 +50,7 @@ public:
   explicit NodeEditor(Qt::ToolBarArea area = Qt::TopToolBarArea, QWidget* parent = nullptr);
   ~NodeEditor() override;
 
-  void SetModel(SequencerModel* model);
+  void SetModel(mvvm::ApplicationModel* model);
 
   void SetProcedure(ProcedureItem* procedure);
 
@@ -68,7 +72,7 @@ private:
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<MessageHandlerInterface> m_graphics_view_message_handler;
 
-  SequencerModel* m_model{nullptr};
+  mvvm::ApplicationModel* m_model{nullptr};
 };
 
 }  // namespace sequencergui
