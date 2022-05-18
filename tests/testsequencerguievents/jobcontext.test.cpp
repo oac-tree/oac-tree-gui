@@ -165,6 +165,32 @@ TEST_F(JobContextTest, InitialState)
   EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
 }
 
+//! Calling PrepareJobRequest.
+
+TEST_F(JobContextTest, PrepareJobRequest)
+{
+  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
+
+  JobContext job_context(m_job_item);
+  EXPECT_FALSE(job_context.IsValid());
+  EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
+
+  job_context.onPrepareJobRequest();
+
+  auto expanded_procedure = job_context.GetExpandedProcedure();
+  EXPECT_NE(expanded_procedure, nullptr);
+  EXPECT_EQ(job_context.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
+  EXPECT_TRUE(job_context.IsValid());
+
+  // calling expanded second time (expanded should be rebuild)
+  job_context.onPrepareJobRequest();
+
+  EXPECT_NE(expanded_procedure, nullptr);
+  EXPECT_NE(job_context.GetExpandedProcedure(), expanded_procedure); // old procedure was regenerated
+  EXPECT_EQ(job_context.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
+}
+
 //! Attempt to use JobContext with invalid procedure.
 
 TEST_F(JobContextTest, InvalidProcedure)

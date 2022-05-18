@@ -66,7 +66,13 @@ void JobContext::onPrepareJobRequest()
   m_domain_procedure->Setup();  // to perform all necessary internal clones
 
   // FIXME, refactor, provide unit tests (that JobModel notifies views correctly)
-  auto job_model =dynamic_cast<JobModel*>(m_job_item->GetModel());
+  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
+
+  if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
+  {
+    job_model->RemoveItem(expanded_procedure);
+  }
+
   auto expanded_procedure = std::make_unique<ProcedureItem>();
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get());
   job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
