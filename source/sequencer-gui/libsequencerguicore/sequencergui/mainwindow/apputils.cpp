@@ -51,7 +51,8 @@ QString GetFontInfo()
   result += "\n";
 
   auto font = QGuiApplication::font();
-  result += "Default font point size      : " + QString("%1").arg(font.pointSize());
+  result += "Default font point size      : "
+            + QString("%1 (%2F)").arg(font.pointSize()).arg(font.pointSizeF());
   result += "\n";
 
   return result;
@@ -71,6 +72,20 @@ QString GetScreenInfo()
   result += "\n";
 
   result += "Device pixel ratio           : " + QString("%1").arg(screen->devicePixelRatio());
+  result += "\n";
+
+  result += "Logical dots per inch        : "
+            + QString("%1 (%2, %3)")
+                  .arg(screen->logicalDotsPerInch())
+                  .arg(screen->logicalDotsPerInchX())
+                  .arg(screen->logicalDotsPerInchY());
+  result += "\n";
+
+  result += "Physical dots per inch        : "
+            + QString("%1 (%2, %3)")
+                  .arg(screen->physicalDotsPerInch())
+                  .arg(screen->physicalDotsPerInchX())
+                  .arg(screen->physicalDotsPerInchY());
   result += "\n";
 
   return result;
