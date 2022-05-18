@@ -90,9 +90,8 @@ void SequencerMonitorView::showEvent(QShowEvent *event)
 void SequencerMonitorView::SetupConnections()
 {
   // Process request from MonitorTreeWidget to JobManager
-  auto on_start = [this]()
-  { m_job_manager->onStartProcedureRequest(m_monitor_panel->GetSelectedJob()); };
-  connect(m_realtime_widget, &MonitorRealTimeWidget::runRequest, this, on_start);
+  connect(m_realtime_widget, &MonitorRealTimeWidget::runRequest, this,
+          &SequencerMonitorView::OnRunJobRequest);
 
   // Pause request from MonitorTreeWidget to JobManager
   connect(m_realtime_widget, &MonitorRealTimeWidget::pauseRequest, m_job_manager,
@@ -131,12 +130,31 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
   }
 }
 
-//! Sibmits given procedure for execution.
+//! Submits given procedure for execution.
 void SequencerMonitorView::OnSubmitProcedureRequest(ProcedureItem *item)
 {
   auto job = m_models->GetJobModel()->InsertItem<JobItem>();
   job->SetProcedure(item);
   m_monitor_panel->SetSelectedJob(job);
+}
+
+void SequencerMonitorView::OnRunJobRequest()
+{
+  // FIXME simplify this
+
+  auto selected_job = m_monitor_panel->GetSelectedJob();
+  if (!selected_job)
+  {
+    return;
+  }
+  m_job_manager->SetCurrentJob(selected_job);
+  auto context = m_job_manager->GetCurrentContext();
+
+  context->onPrepareJobRequest();
+  m_realtime_widget->SetProcedure(context->GetExpandedProcedure());
+  m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+
+  m_job_manager->onStartProcedureRequest(selected_job);
 }
 
 }  // namespace sequencergui
