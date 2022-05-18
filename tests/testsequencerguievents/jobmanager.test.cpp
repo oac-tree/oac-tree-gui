@@ -103,7 +103,6 @@ public:
 TEST_F(JobManagerTest, InitialState)
 {
   JobManager manager;
-  manager.SetModel(GetJobModel());
   EXPECT_FALSE(manager.GetCurrentContext());
 }
 
@@ -116,7 +115,6 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
 
   JobManager manager;
   manager.SetMessagePanel(&panel);
-  manager.SetModel(GetJobModel());
   manager.SetCurrentJob(m_job_item);
   manager.onChangeDelayRequest(10);
 

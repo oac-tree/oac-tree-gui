@@ -43,11 +43,6 @@ JobManager::JobManager(QObject *parent)
 
 JobManager::~JobManager() = default;
 
-void JobManager::SetModel(JobModel *model)
-{
-  m_model = model;
-}
-
 //! Set JobManager to display the status of given job.
 
 void JobManager::SetCurrentJob(JobItem *job)

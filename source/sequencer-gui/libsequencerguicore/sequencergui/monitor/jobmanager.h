@@ -43,8 +43,6 @@ public:
   explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
-  void SetModel(JobModel* model);
-
   void SetCurrentJob(JobItem* job);
 
   JobContext* GetCurrentContext();
@@ -67,7 +65,6 @@ private:
   JobContext* CreateContext();
 
   JobItem* m_current_job{nullptr};
-  JobModel* m_model{nullptr};
   std::map<JobItem*, JobContext*> m_context_map;
   MessagePanel* m_message_panel{nullptr};
   int m_current_delay{0};
