@@ -3,6 +3,8 @@ target_sources(${library_name} PRIVATE
   actionmanager.h
   appsettings.cpp
   appsettings.h
+  apputils.cpp
+  apputils.h
   mainwindow.cpp
   mainwindow.h
   projecthandler.cpp

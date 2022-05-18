@@ -18,20 +18,25 @@
  *****************************************************************************/
 
 #include "sequencergui/mainwindow/mainwindow.h"
+#include "sequencergui/mainwindow/apputils.h"
 #include "sequencergui/model/domainutils.h"
 
 #include <QApplication>
 #include <QLocale>
 #include <QMetaType>
 #include <QStyleFactory>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
 
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QApplication app(argc, argv);
+
+  std::cout << sequencergui::GetDesktopInfo();
 
   QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
 
