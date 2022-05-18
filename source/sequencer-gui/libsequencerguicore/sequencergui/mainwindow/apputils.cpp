@@ -21,8 +21,9 @@
 
 #include "mvvm/widgets/widgetutils.h"
 
-#include <QApplication>
 #include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QSize>
 #include <QString>
 #include <sstream>
@@ -48,18 +49,33 @@ QString GetFontInfo()
   result +=
       "Size of letter M             : " + QString("(%1, %2)").arg(size.width()).arg(size.height());
   result += "\n";
+
+  auto font = QGuiApplication::font();
+  result += "Default font point size      : " + QString("%1").arg(font.pointSize());
+  result += "\n";
+
   return result;
 }
 
-QString GetDpiInfo()
+QString GetScreenInfo()
 {
   QString result;
-  int x = QApplication::desktop()->physicalDpiX();
-  int y = QApplication::desktop()->physicalDpiY();
-  result += "Physical Dpi                 : " + QString("(%1, %2)").arg(x).arg(y);
+  auto screen = QGuiApplication::primaryScreen();
+  auto size = screen->physicalSize();
+  result +=
+      "Screen physical size         : " + QString("(%1, %2)").arg(size.height()).arg(size.width());
   result += "\n";
+  auto geometry = screen->geometry();
+  result += "Screen geometry              : "
+            + QString("(%1, %2)").arg(geometry.height()).arg(geometry.width());
+  result += "\n";
+
+  result += "Device pixel ratio           : " + QString("%1").arg(screen->devicePixelRatio());
+  result += "\n";
+
   return result;
 }
+
 }  // namespace
 
 namespace sequencergui
@@ -73,7 +89,7 @@ std::string GetDesktopInfo()
   result += "\n";
   result += GetEnvironmentInfo();
   result += GetFontInfo();
-  result += GetDpiInfo();
+  result += GetScreenInfo();
 
   result += QString(80, '-');
   result += "\n";

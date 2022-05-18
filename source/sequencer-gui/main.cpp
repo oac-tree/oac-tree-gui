@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
 
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, false);
 
   QApplication app(argc, argv);
 
