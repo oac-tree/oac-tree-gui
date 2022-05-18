@@ -110,12 +110,13 @@ void MonitorPanel::OnJobSelectedIntern(JobItem *item)
   emit JobSelected(item);
 }
 
-//! Populates `submit_button` pop-up menu on show event
+//! Populates `submit_button` pop-up menu on show event.
 void MonitorPanel::OnAboutToShowMenu()
 {
   auto menu = m_submit_procedure_menu.get();
   menu->clear();
 
+  // build a menu containing list of procedures for later job submission
   for (auto procedure : m_models->GetSequencerModel()->GetProcedures())
   {
     auto action = menu->addAction(QString::fromStdString(procedure->GetDisplayName()));
@@ -123,6 +124,8 @@ void MonitorPanel::OnAboutToShowMenu()
     auto on_action = [this, procedure]() { emit SubmitProcedureRequest(procedure); };
     connect(action, &QAction::triggered, this, on_action);
   }
+
+  // menu section to import procedure from disk (not implemented for the moment)
   menu->addSeparator();
   auto action = menu->addAction("Import from disk");
   action->setToolTip("Implort sequencer xml procedure from disk");

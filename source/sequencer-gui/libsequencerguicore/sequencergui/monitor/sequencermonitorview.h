@@ -54,7 +54,8 @@ protected:
 
 private:
   void SetupConnections();
-  void OnSubmitJobRequest(sequencergui::ProcedureItem* item);
+  void OnJobSelected(sequencergui::JobItem* item);
+  void OnSubmitProcedureRequest(sequencergui::ProcedureItem* item);
 
   MonitorPanel* m_monitor_panel{nullptr};
   MonitorRealTimeWidget* m_tree_widget{nullptr};

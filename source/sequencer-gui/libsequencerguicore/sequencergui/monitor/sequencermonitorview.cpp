@@ -112,25 +112,28 @@ void SequencerMonitorView::SetupConnections()
   { m_tree_widget->SetSelectedInstruction(instruction); };
   connect(m_job_manager, &JobManager::InstructionStatusChanged, this, on_selection);
 
-  auto on_procedure_selected = [this](auto job_item)
-  {
-    m_job_manager->SetCurrentJob(job_item);
-    if (auto context = m_job_manager->GetCurrentContext(); context)
-    {
-      m_tree_widget->SetProcedure(context->GetExpandedProcedure());
-      m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
-    }
-  };
-  connect(m_monitor_panel, &MonitorPanel::JobSelected, this, on_procedure_selected);
-
   connect(m_tree_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);
 
+  connect(m_monitor_panel, &MonitorPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
+
   connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, this,
-          &SequencerMonitorView::OnSubmitJobRequest);
+          &SequencerMonitorView::OnSubmitProcedureRequest);
 }
 
-void SequencerMonitorView::OnSubmitJobRequest(ProcedureItem *item)
+//! Setup widgets to show currently selected job.
+void SequencerMonitorView::OnJobSelected(JobItem *item)
+{
+  m_job_manager->SetCurrentJob(item);
+  if (auto context = m_job_manager->GetCurrentContext(); context)
+  {
+    m_tree_widget->SetProcedure(context->GetExpandedProcedure());
+    m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+  }
+}
+
+//! Sibmits given procedure for execution.
+void SequencerMonitorView::OnSubmitProcedureRequest(ProcedureItem *item)
 {
   auto job = m_models->GetJobModel()->InsertItem<JobItem>();
   job->SetProcedure(item);
