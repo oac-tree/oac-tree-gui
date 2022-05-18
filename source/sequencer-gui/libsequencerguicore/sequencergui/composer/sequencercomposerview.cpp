@@ -62,7 +62,6 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_composer_panel->SetModel(model);
-  m_node_editor->SetModel(model);
   m_composer_tree_widget->SetModel(model);
 }
 

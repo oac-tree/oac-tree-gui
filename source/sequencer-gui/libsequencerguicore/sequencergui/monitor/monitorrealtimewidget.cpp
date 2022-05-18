@@ -20,6 +20,7 @@
 #include "sequencergui/monitor/monitorrealtimewidget.h"
 
 #include "sequencergui/model/procedureitem.h"
+#include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/monitor/messagepanel.h"
@@ -72,7 +73,9 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_component_provider->SetItem(procedure_item);
+  m_component_provider->SetItem(procedure_item->GetInstructionContainer());
+  m_instruction_tree->expandAll();
+  m_node_editor->SetProcedure(procedure_item);
 }
 
 void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)

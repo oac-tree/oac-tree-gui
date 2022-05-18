@@ -50,8 +50,6 @@ public:
   explicit NodeEditor(Qt::ToolBarArea area = Qt::TopToolBarArea, QWidget* parent = nullptr);
   ~NodeEditor() override;
 
-  void SetModel(mvvm::ApplicationModel* model);
-
   void SetProcedure(ProcedureItem* procedure);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
@@ -71,8 +69,6 @@ private:
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<MessageHandlerInterface> m_graphics_view_message_handler;
-
-  mvvm::ApplicationModel* m_model{nullptr};
 };
 
 }  // namespace sequencergui

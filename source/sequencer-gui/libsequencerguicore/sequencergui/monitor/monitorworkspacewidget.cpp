@@ -58,7 +58,7 @@ MonitorWorkspaceWidget::~MonitorWorkspaceWidget() = default;
 
 void MonitorWorkspaceWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_instruction_tree->SetItem(procedure_item);
+  m_instruction_tree->SetItem(procedure_item->GetWorkspace());
 }
 
 }  // namespace sequencergui
