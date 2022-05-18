@@ -72,7 +72,6 @@ NodeEditor::~NodeEditor() = default;
 void NodeEditor::SetModel(mvvm::ApplicationModel *model)
 {
   m_model = model;
-  m_graphics_scene->SetModel(model);
 }
 
 void NodeEditor::SetProcedure(ProcedureItem *procedure)

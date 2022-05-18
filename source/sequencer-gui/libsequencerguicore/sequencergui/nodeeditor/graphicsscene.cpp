@@ -88,11 +88,6 @@ GraphicsScene::GraphicsScene(QObject *parent)
   connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged);
 }
 
-void GraphicsScene::SetModel(mvvm::ApplicationModel *model)
-{
-  m_model = model;
-}
-
 GraphicsScene::~GraphicsScene() = default;
 
 void GraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
@@ -266,7 +261,8 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
                      event->scenePos().y() - ref_view_rectangle.height() / 2);
 
     // FIXME remove cast
-    auto item = AddInstruction(dynamic_cast<SequencerModel*>(GetModel()), m_root_item, domain_type);
+    auto item =
+        AddInstruction(dynamic_cast<SequencerModel *>(GetModel()), m_root_item, domain_type);
     item->SetX(drop_pos.x());
     item->SetY(drop_pos.y());
   }
@@ -284,7 +280,7 @@ void GraphicsScene::onSelectionChanged()
 
 mvvm::ApplicationModel *GraphicsScene::GetModel()
 {
-  return m_model;
+  return m_root_item ? dynamic_cast<mvvm::ApplicationModel *>(m_root_item->GetModel()) : nullptr;
 }
 
 }  // namespace sequencergui

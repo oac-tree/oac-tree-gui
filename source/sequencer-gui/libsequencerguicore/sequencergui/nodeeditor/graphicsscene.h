@@ -48,8 +48,6 @@ public:
   explicit GraphicsScene(QObject* parent = nullptr);
   ~GraphicsScene() override;
 
-  void SetModel(mvvm::ApplicationModel* model);
-
   void SetInstructionContainer(InstructionContainerItem* root_item);
 
   void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
@@ -86,7 +84,6 @@ private:
   void onSelectionChanged();
   mvvm::ApplicationModel* GetModel();
 
-  mvvm::ApplicationModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeController> m_node_controller;
   std::unique_ptr<MessageHandlerInterface> m_message_handler;
