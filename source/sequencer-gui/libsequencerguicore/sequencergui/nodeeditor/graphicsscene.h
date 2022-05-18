@@ -84,6 +84,7 @@ protected:
 
 private:
   void onSelectionChanged();
+  mvvm::ApplicationModel* GetModel();
 
   mvvm::ApplicationModel* m_model{nullptr};
   InstructionContainerItem* m_root_item{nullptr};

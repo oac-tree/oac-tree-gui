@@ -58,7 +58,7 @@ private:
   void OnSubmitProcedureRequest(sequencergui::ProcedureItem* item);
 
   MonitorPanel* m_monitor_panel{nullptr};
-  MonitorRealTimeWidget* m_tree_widget{nullptr};
+  MonitorRealTimeWidget* m_realtime_widget{nullptr};
   MonitorWorkspaceWidget* m_workspace_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};

@@ -109,7 +109,7 @@ void GraphicsScene::SetMessageHandler(std::unique_ptr<MessageHandlerInterface> m
 
 bool GraphicsScene::HasContext()
 {
-  return m_model && m_root_item;
+  return GetModel() && m_root_item;
 }
 
 //! Resets context, removes and deletes objects on scene.
@@ -173,7 +173,7 @@ void GraphicsScene::OnDeleteSelectedRequest()
     }
 
     auto instruction = view->GetConnectableItem()->GetInstruction();
-    m_model->RemoveItem(instruction);
+    GetModel()->RemoveItem(instruction);
   }
 }
 
@@ -185,7 +185,7 @@ void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
   // corresponding ConnectableView recreation.
 
   auto instruction = GetInstruction(connection->childView());
-  m_model->MoveItem(instruction, m_root_item, {"", -1});
+  GetModel()->MoveItem(instruction, m_root_item, {"", -1});
   // No need to delete the connection explicitly. It will be done by ConnectableView via its
   // ports.
 }
@@ -219,7 +219,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
 
   try
   {
-    m_model->MoveItem(child_instruction, parent_instruction, {"", -1});
+    GetModel()->MoveItem(child_instruction, parent_instruction, {"", -1});
   }
   catch (const mvvm::InvalidMoveException &ex)
   {
@@ -266,7 +266,7 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
                      event->scenePos().y() - ref_view_rectangle.height() / 2);
 
     // FIXME remove cast
-    auto item = AddInstruction(dynamic_cast<SequencerModel*>(m_model), m_root_item, domain_type);
+    auto item = AddInstruction(dynamic_cast<SequencerModel*>(GetModel()), m_root_item, domain_type);
     item->SetX(drop_pos.x());
     item->SetY(drop_pos.y());
   }
@@ -280,6 +280,11 @@ void GraphicsScene::onSelectionChanged()
     return;
   }
   emit InstructionSelected(GetInstruction(selected.at(0)));
+}
+
+mvvm::ApplicationModel *GraphicsScene::GetModel()
+{
+  return m_model;
 }
 
 }  // namespace sequencergui
