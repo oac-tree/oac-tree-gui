@@ -150,9 +150,12 @@ void SequencerMonitorView::OnRunJobRequest()
   m_job_manager->SetCurrentJob(selected_job);
   auto context = m_job_manager->GetCurrentContext();
 
-  context->onPrepareJobRequest();
-  m_realtime_widget->SetProcedure(context->GetExpandedProcedure());
-  m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+  if (!context->IsRunning())
+  {
+    context->onPrepareJobRequest();
+    m_realtime_widget->SetProcedure(context->GetExpandedProcedure());
+    m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
+  }
 
   m_job_manager->onStartProcedureRequest(selected_job);
 }

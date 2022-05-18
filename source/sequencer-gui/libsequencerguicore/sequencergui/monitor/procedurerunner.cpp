@@ -140,7 +140,8 @@ void ProcedureRunner::SetUserContext(const UserContext &user_context)
 
 bool ProcedureRunner::IsBusy() const
 {
-  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling;
+  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling
+         || m_runner_status == RunnerStatus::kPaused;
 }
 
 RunnerStatus ProcedureRunner::GetRunnerStatus() const
