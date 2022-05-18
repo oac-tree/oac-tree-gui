@@ -81,7 +81,7 @@ QString GetScreenInfo()
                   .arg(screen->logicalDotsPerInchY());
   result += "\n";
 
-  result += "Physical dots per inch        : "
+  result += "Physical dots per inch       : "
             + QString("%1 (%2, %3)")
                   .arg(screen->physicalDotsPerInch())
                   .arg(screen->physicalDotsPerInchX())
