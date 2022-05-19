@@ -21,6 +21,9 @@
 
 #include "mvvm/widgets/widgetutils.h"
 
+#include <QCommandLineOption>
+#include <QCommandLineParser>
+#include <QCoreApplication>
 #include <QDesktopWidget>
 #include <QGuiApplication>
 #include <QScreen>
@@ -111,6 +114,30 @@ std::string GetDesktopInfo()
   result += "\n";
 
   return result.toStdString();
+}
+
+Options ParseOptions(int argc, char **argv)
+{
+  // Parser requires an application to be created upfront, fortunately it is cheap.
+  // Create an application solely for parser needs.
+  QCoreApplication app(argc, argv);
+
+  QCommandLineParser parser;
+  parser.addHelpOption();
+  parser.addVersionOption();
+
+  QCommandLineOption info_option("info", "Show system environment information");
+  parser.addOption(info_option);
+
+  QCommandLineOption scale_option("scale",
+                                  "Rely on system scale via QT_ variables for 4K, instead of "
+                                  "internal scale mechanism (default).");
+  parser.addOption(scale_option);
+
+  parser.process(app);
+
+  Options result = {parser.isSet(scale_option), parser.isSet(info_option)};
+  return result;
 }
 
 }  // namespace sequencergui

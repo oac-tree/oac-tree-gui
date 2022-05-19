@@ -74,10 +74,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::InitApplication()
 {
-  QCoreApplication::setApplicationName("sequencer-gui");
-  QCoreApplication::setApplicationVersion("0.1");
-  QCoreApplication::setOrganizationName("sequencer");
-
   QSettings settings;
   if (settings.childGroups().contains(main_window_group))
   {

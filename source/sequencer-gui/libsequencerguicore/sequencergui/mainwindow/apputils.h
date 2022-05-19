@@ -23,14 +23,23 @@
 //! @file apputils.h
 //! Collection of utils for mainwindow.
 
+#include <memory>
 #include <string>
 
 namespace sequencergui
 {
 
+struct Options
+{
+  bool scale;  //! rely on system scale via QT_ variables (instead of internal scale mechanism)
+  bool info;   //! print system environment information
+};
+
 //! Returns multiline-string describing system environment related to the user desktop.
 std::string GetDesktopInfo();
 
+//! Parse command line options.
+Options ParseOptions(int argc, char** argv);
 
 }  // namespace sequencergui
 

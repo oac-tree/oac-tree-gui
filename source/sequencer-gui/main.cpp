@@ -31,12 +31,21 @@ int main(int argc, char** argv)
 {
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
 
+  QCoreApplication::setApplicationName("sequencer-gui");
+  QCoreApplication::setApplicationVersion("0.1");
+  QCoreApplication::setOrganizationName("sequencer");
+
+  auto options = sequencergui::ParseOptions(argc, argv);
+
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, false);
 
   QApplication app(argc, argv);
 
-  std::cout << sequencergui::GetDesktopInfo();
+  if (options.info)
+  {
+    std::cout << sequencergui::GetDesktopInfo();
+  }
 
   QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
 
