@@ -28,9 +28,10 @@ class QIcon;
 namespace sequencergui::styleutils
 {
 
-//! Returns charactesitic size in which all sizes of UI elements have to be expressed.
-//! Internally it corresponds to the width of the letter 'M'.
-int UnitSize();
+//! Returns characteristic UI size scaled by a given factor.
+//! Characteristic size corresponds to the width of the letter 'M', expressed in units of Qt's
+//! own virtual coordinate system. The user is expected to express all widget sizes in these units.
+int UnitSize(double scale = 1.0);
 
 //! Returns default point size of the application's font.
 int AppFontSize();

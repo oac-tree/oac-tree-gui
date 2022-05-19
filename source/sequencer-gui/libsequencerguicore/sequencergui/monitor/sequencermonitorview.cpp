@@ -30,6 +30,7 @@
 #include "sequencergui/monitor/monitorpanel.h"
 #include "sequencergui/monitor/monitorrealtimewidget.h"
 #include "sequencergui/monitor/monitorworkspacewidget.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/standarditems/containeritem.h"
 #include "mvvm/widgets/allitemstreeview.h"
@@ -58,7 +59,8 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
   m_splitter->addWidget(m_monitor_panel);
   m_splitter->addWidget(m_realtime_widget);
   m_splitter->addWidget(m_workspace_widget);
-  m_splitter->setSizes(QList<int>() << 50 << 300 << 120);
+  m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
+                                    << styleutils::UnitSize(30));
 
   layout->addWidget(m_splitter);
 

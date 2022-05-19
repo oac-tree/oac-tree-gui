@@ -27,6 +27,7 @@
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/nodeeditor/nodeeditor.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/standarditems/containeritem.h"
 
@@ -51,7 +52,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_node_editor);
   m_splitter->addWidget(m_composer_tree_widget);
-  m_splitter->setSizes(QList<int>() << 50 << 300 << 120);
+  m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
+                                    << styleutils::UnitSize(30));
 
   layout->addWidget(m_splitter);
 

@@ -33,9 +33,9 @@ const bool kSvgIcons = false;
 namespace sequencergui::styleutils
 {
 
-int UnitSize()
+int UnitSize(double scale)
 {
-  return mvvm::utils::WidthOfLetterM();
+  return std::round(mvvm::utils::WidthOfLetterM() * scale);
 }
 
 int AppFontSize()
