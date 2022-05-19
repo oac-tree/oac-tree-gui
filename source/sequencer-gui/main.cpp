@@ -37,17 +37,15 @@ int main(int argc, char** argv)
 
   auto options = sequencergui::ParseOptions(argc, argv);
 
-  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, false);
+  sequencergui::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
+  QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
 
   if (options.info)
   {
     std::cout << sequencergui::GetDesktopInfo();
   }
-
-  QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
 
 //  auto font = QApplication::font();
 //  font.setPointSize(font.pointSize()*1.5);

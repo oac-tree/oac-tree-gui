@@ -41,6 +41,9 @@ std::string GetDesktopInfo();
 //! Parse command line options.
 Options ParseOptions(int argc, char** argv);
 
+//! Sets up high DPI scaling.
+void SetupHighDpiScaling(bool use_system_scale);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H

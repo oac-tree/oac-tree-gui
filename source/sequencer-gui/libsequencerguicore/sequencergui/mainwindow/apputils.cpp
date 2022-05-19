@@ -24,6 +24,7 @@
 #include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QDebug>
 #include <QDesktopWidget>
 #include <QGuiApplication>
 #include <QScreen>
@@ -94,6 +95,21 @@ QString GetScreenInfo()
   return result;
 }
 
+//! Returns true if there is an attempt to scale via environment variable.
+bool IsAttemptToScaleViaEnvironment()
+{
+  return qEnvironmentVariableIsSet("QT_AUTO_SCREEN_SCALE_FACTOR")
+         || qEnvironmentVariableIsSet("QT_SCALE_FACTOR")
+         || qEnvironmentVariableIsSet("QT_SCREEN_SCALE_FACTORS");
+}
+
+void ResetHighDpiEnvironment()
+{
+  qunsetenv("QT_AUTO_SCREEN_SCALE_FACTOR");
+  qunsetenv("QT_SCALE_FACTOR");
+  qunsetenv("QT_SCREEN_SCALE_FACTORS");
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -138,6 +154,30 @@ Options ParseOptions(int argc, char **argv)
 
   Options result = {parser.isSet(scale_option), parser.isSet(info_option)};
   return result;
+}
+
+void SetupHighDpiScaling(bool use_system_scale)
+{
+  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+  if (use_system_scale)
+  {
+    if (IsAttemptToScaleViaEnvironment())
+    {
+      // Nothing to do if scaling is steared via environment variables
+      qDebug() << "QT_ defined, no scale";
+      return;
+    }
+    qDebug() << "Enable High Dpi";
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+  }
+  else
+  {
+    qDebug() << "Own scaling, resetting environment";
+    // our GUI is perfect and knows how to scale by itself
+    ResetHighDpiEnvironment();
+    QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling, true);
+  }
 }
 
 }  // namespace sequencergui
