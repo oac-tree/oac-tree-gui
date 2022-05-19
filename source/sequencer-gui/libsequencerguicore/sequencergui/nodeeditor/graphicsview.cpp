@@ -21,6 +21,8 @@
 
 #include "sequencergui/nodeeditor/graphicsscene.h"
 
+#include "sequencergui/utils/styleutils.h"
+
 #include <QKeyEvent>
 
 namespace sequencergui
@@ -52,12 +54,12 @@ GraphicsView::ESelectionModes GraphicsView::GetSelectionModes()
 
 QSize GraphicsView::sizeHint() const
 {
-  return {800, 600};
+  return {styleutils::UnitSize()*80, styleutils::UnitSize()*60};
 }
 
 QSize GraphicsView::minimumSizeHint() const
 {
-  return {400, 300};
+  return {styleutils::UnitSize()*40, styleutils::UnitSize()*30};
 }
 
 void GraphicsView::onSelectionMode(int mode)

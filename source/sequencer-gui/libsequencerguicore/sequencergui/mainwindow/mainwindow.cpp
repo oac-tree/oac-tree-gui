@@ -82,8 +82,10 @@ void MainWindow::InitApplication()
   if (settings.childGroups().contains(main_window_group))
   {
     settings.beginGroup(main_window_group);
-    resize(settings.value(size_key, QSize(400, 400)).toSize());
-    move(settings.value(pos_key, QPoint(200, 200)).toPoint());
+    resize(settings.value(size_key, QSize(styleutils::UnitSize() * 80, styleutils::UnitSize() * 60))
+               .toSize());
+    move(settings.value(pos_key, QPoint(styleutils::UnitSize() * 20, styleutils::UnitSize() * 40))
+             .toPoint());
     settings.endGroup();
   }
 
@@ -136,9 +138,9 @@ void MainWindow::PopulateModel()
   //  Examples::AddComplexAlignmentProcedure(m_models->GetSequencerModel());
   //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
 
-//  auto job_model = m_models->GetJobModel();
-//  job_model->InsertItem<JobItem>();
-//  job_model->InsertItem<JobItem>()->SetStatus("ccc");
+  //  auto job_model = m_models->GetJobModel();
+  //  job_model->InsertItem<JobItem>();
+  //  job_model->InsertItem<JobItem>()->SetStatus("ccc");
 }
 
 }  // namespace sequencergui
