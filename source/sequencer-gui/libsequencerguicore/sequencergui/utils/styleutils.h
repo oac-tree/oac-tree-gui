@@ -28,15 +28,6 @@ class QIcon;
 namespace sequencergui::styleutils
 {
 
-//! Returns width of the letter 'M' deduced from current font metrics.
-int WidthOfLetterM();
-
-//! Returns height of the letter 'M' deduced from current font metrics.
-int HeightOfLetterM();
-
-//! Returns size corresponding to actual size of letter `M` basing on current font metrics.
-QSize SizeOfLetterM();
-
 //! Size of tolbar icons.
 QSize ToolBarIconSize();
 

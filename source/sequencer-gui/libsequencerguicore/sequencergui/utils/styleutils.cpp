@@ -23,7 +23,7 @@
 
 #include <QIcon>
 #include <QSize>
-
+#include <cmath>
 namespace
 {
 //! Flag if to use svg versions of icons.
@@ -33,29 +33,16 @@ const bool kSvgIcons = false;
 namespace sequencergui::styleutils
 {
 
-int WidthOfLetterM()
-{
-  return mvvm::utils::SizeOfLetterM().width();
-}
-
-int HeightOfLetterM()
-{
-  return mvvm::utils::SizeOfLetterM().height();
-}
-
-QSize SizeOfLetterM()
-{
-  return mvvm::utils::SizeOfLetterM();
-}
-
 QSize ToolBarIconSize()
 {
-  return {24, 24};
+  const int width = std::round(mvvm::utils::WidthOfLetterM() * 2.3);
+  return {width, width};
 }
 
 QSize NarrowToolBarIconSize()
 {
-  return {20, 20};
+  const int width = std::round(mvvm::utils::WidthOfLetterM() * 1.75);
+  return {width, width};
 }
 
 QIcon GetIcon(const std::string &icon_name)
