@@ -38,6 +38,11 @@ int UnitSize()
   return mvvm::utils::WidthOfLetterM();
 }
 
+int AppFontSize()
+{
+  return mvvm::utils::SystemPointSize();
+}
+
 QSize ToolBarIconSize()
 {
   const int width = std::round(UnitSize() * 2.3);

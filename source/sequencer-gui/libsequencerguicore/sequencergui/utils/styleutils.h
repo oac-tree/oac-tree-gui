@@ -29,7 +29,11 @@ namespace sequencergui::styleutils
 {
 
 //! Returns charactesitic size in which all sizes of UI elements have to be expressed.
+//! Internally it corresponds to the width of the letter 'M'.
 int UnitSize();
+
+//! Returns default point size of the application's font.
+int AppFontSize();
 
 //! Size of tolbar icons.
 QSize ToolBarIconSize();

@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/overlaywidgetpositionstrategy.h"
 
-#include "mvvm/widgets/widgetutils.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include <QAbstractScrollArea>
 #include <QApplication>
@@ -33,14 +33,14 @@ namespace
 int GetXposOffset()
 {
   const int number_of_characters = 1;
-  return mvvm::utils::WidthOfLetterM() * number_of_characters;
+  return sequencergui::styleutils::UnitSize() * number_of_characters;
 }
 
 //! Returns horizontal distance to the widget corner.
 int GetYposOffset()
 {
   const int number_of_characters = 1;
-  return mvvm::utils::HeightOfLetterM() * number_of_characters;
+  return sequencergui::styleutils::UnitSize() * number_of_characters;
 }
 
 }  // namespace
@@ -49,7 +49,7 @@ namespace sequencergui
 {
 
 OverlayWidgetPositionStrategy::OverlayWidgetPositionStrategy(QWidget* overlay_widget, QWidget* area,
-                                                   QObject* parent)
+                                                             QObject* parent)
     : QObject(parent), m_overlay_widget(overlay_widget), m_area(area)
 {
   m_area->installEventFilter(this);
@@ -71,7 +71,7 @@ void OverlayWidgetPositionStrategy::UpdateMessageWidgetGeometry()
 {
   auto pos = CalculateWidgetPosition();
   m_overlay_widget->setGeometry(pos.x(), pos.y(), m_overlay_widget->width(),
-                               m_overlay_widget->height());
+                                m_overlay_widget->height());
 }
 
 //! Caclulates position of message widget to be aproximately at the lower right corner of the area.
