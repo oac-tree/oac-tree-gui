@@ -31,8 +31,14 @@ namespace sequencergui
 
 struct Options
 {
-  bool scale;  //! rely on system scale via QT_ variables (instead of internal scale mechanism)
-  bool info;   //! print system environment information
+  //! Rely on system scale via QT_ variables, if true.
+  bool scale = false;
+
+  //! print system environment information
+  bool info = false;
+
+  //! appplication system font point size
+  int system_font_psize = -1;
 };
 
 //! Returns multiline-string describing system environment related to the user desktop.

@@ -146,13 +146,25 @@ Options ParseOptions(int argc, char **argv)
   parser.addOption(info_option);
 
   QCommandLineOption scale_option("scale",
-                                  "Rely on system scale via QT_ variables for 4K, instead of "
-                                  "internal scale mechanism (default).");
+                                  "Rely on system scale via QT_ variables for 4K. If option is "
+                                  "absent, will rely on internal scale mechanism.");
   parser.addOption(scale_option);
+
+  QCommandLineOption font_option("font", "Main application font point size");
+  font_option.setValueName("10");
+  parser.addOption(font_option);
 
   parser.process(app);
 
-  Options result = {parser.isSet(scale_option), parser.isSet(info_option)};
+  Options result;
+  result.info = parser.isSet(info_option);
+  result.scale = parser.isSet(scale_option);
+
+  if (parser.isSet(font_option))
+  {
+    result.system_font_psize = parser.value(font_option).toInt();
+  }
+
   return result;
 }
 

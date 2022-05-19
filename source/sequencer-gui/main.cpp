@@ -42,14 +42,14 @@ int main(int argc, char** argv)
   QApplication app(argc, argv);
   QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
 
+//  auto font = QApplication::font();
+//  font.setPointSize(12);
+//  QApplication::setFont(font);
+
   if (options.info)
   {
     std::cout << sequencergui::GetDesktopInfo();
   }
-
-//  auto font = QApplication::font();
-//  font.setPointSize(font.pointSize()*1.5);
-//  QApplication::setFont(font);
 
   Q_INIT_RESOURCE(sequencericons);
 
