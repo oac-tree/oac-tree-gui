@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/mainwindow.h"
 #include "sequencergui/mainwindow/apputils.h"
+#include "sequencergui/mainwindow/mainwindow.h"
 #include "sequencergui/model/domainutils.h"
 
 #include <QApplication>
@@ -40,11 +40,9 @@ int main(int argc, char** argv)
   sequencergui::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
-  QApplication::setStyle(QStyleFactory::create("Breeze")); // same style on all machines
+  QApplication::setStyle(QStyleFactory::create("Breeze"));  // same style on all machines
 
-//  auto font = QApplication::font();
-//  font.setPointSize(12);
-//  QApplication::setFont(font);
+  sequencergui::SetApplicationFontSize(options.system_font_psize);
 
   if (options.info)
   {

@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_MAINWINDOW_APPUTILS_H
 
 //! @file apputils.h
-//! Collection of utils for mainwindow.
+//! Collection of utils for main() function.
 
 #include <memory>
 #include <string>
@@ -31,7 +31,7 @@ namespace sequencergui
 
 struct Options
 {
-  //! Rely on system scale via QT_ variables, if true.
+  //! rely on system scale via QT_ variables, if true
   bool scale = false;
 
   //! print system environment information
@@ -49,6 +49,9 @@ Options ParseOptions(int argc, char** argv);
 
 //! Sets up high DPI scaling.
 void SetupHighDpiScaling(bool use_system_scale);
+
+//! Sets point size of the main application font.
+void SetApplicationFontSize(int point_size);
 
 }  // namespace sequencergui
 

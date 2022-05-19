@@ -21,6 +21,7 @@
 
 #include "mvvm/widgets/widgetutils.h"
 
+#include <QApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QCoreApplication>
@@ -145,9 +146,10 @@ Options ParseOptions(int argc, char **argv)
   QCommandLineOption info_option("info", "Show system environment information");
   parser.addOption(info_option);
 
-  QCommandLineOption scale_option("scale",
-                                  "Rely on system scale via QT_ variables for 4K. If option is "
-                                  "absent, will rely on internal scale mechanism.");
+  QCommandLineOption scale_option(
+      "scale",
+      "Rely on system high-DPI scale via QT_ variables for 4K. If option is "
+      "absent, will rely on internal scale mechanism (preferred).");
   parser.addOption(scale_option);
 
   QCommandLineOption font_option("font", "Main application font point size");
@@ -190,6 +192,21 @@ void SetupHighDpiScaling(bool use_system_scale)
     ResetHighDpiEnvironment();
     QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling, true);
   }
+}
+
+void SetApplicationFontSize(int point_size)
+{
+  if (point_size <= 0)
+  {
+    // user didn't provide any meaningful font size from the command line
+    return;
+  }
+
+  // We retrive current application font to set the size, and then reuse.
+  // This will preserve all other font properties.
+  auto font = QApplication::font();
+  font.setPointSize(point_size);
+  QApplication::setFont(font);
 }
 
 }  // namespace sequencergui
