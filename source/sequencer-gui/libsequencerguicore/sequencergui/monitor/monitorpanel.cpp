@@ -85,7 +85,7 @@ QList<QWidget *> MonitorPanel::GetToolBarWidgets()
 
   auto submit_button = new QToolButton;
   submit_button->setText("Submit");
-  submit_button->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+  submit_button->setIcon(styleutils::GetIcon("file-plus-outline.svg"));
   submit_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   submit_button->setPopupMode(QToolButton::InstantPopup);
   submit_button->setMenu(m_submit_procedure_menu.get());
@@ -94,7 +94,7 @@ QList<QWidget *> MonitorPanel::GetToolBarWidgets()
 
   auto remove_button = new QToolButton;
   remove_button->setText("Remove");
-  remove_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove selected job from the list");
   connect(remove_button, &QToolButton::clicked, this,

@@ -28,7 +28,7 @@ namespace sequencergui
 {
 PanelToolBar::PanelToolBar(QWidget *parent) : QToolBar(parent), m_label(new QLabel)
 {
-  setIconSize(StyleUtils::ToolBarIconSize());
+  setIconSize(styleutils::ToolBarIconSize());
   //  setStyleSheet("QToolButton:!hover {background-color:#eff6fc} QToolBar {background: #eff6fc}");
 
   addWidget(m_label);
@@ -46,8 +46,8 @@ void PanelToolBar::AddDotsMenu()
   insertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(StyleUtils::ToolBarIconSize());
+  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
+  button->setIconSize(styleutils::ToolBarIconSize());
   addWidget(button);
 }
 

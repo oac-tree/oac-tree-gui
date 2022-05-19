@@ -85,7 +85,7 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("After");
-  insert_after_button->setIcon(StyleUtils::GetIcon("plus-circle-outline.svg"));
+  insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline.svg"));
   insert_after_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
@@ -94,7 +94,7 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
 
   auto insert_into_button = new QToolButton;
   insert_into_button->setText("Into");
-  insert_into_button->setIcon(StyleUtils::GetIcon("plus-circle-multiple-outline.svg"));
+  insert_into_button->setIcon(styleutils::GetIcon("plus-circle-multiple-outline.svg"));
   insert_into_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_into_button->setPopupMode(QToolButton::InstantPopup);
   insert_into_button->setMenu(m_insert_into_menu.get());
@@ -103,7 +103,7 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
 
   auto remove_button = new QToolButton;
   remove_button->setText("Into");
-  remove_button->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove currently selected instruction together with its children");
   connect(remove_button, &QToolButton::clicked, this,

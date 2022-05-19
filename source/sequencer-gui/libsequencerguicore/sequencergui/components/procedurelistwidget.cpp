@@ -99,7 +99,7 @@ void ProcedureListWidget::SetupActions(int action_flag)
   {
     m_new_procedure_action->setText("New");
     m_new_procedure_action->setToolTip("Create new empty procedure");
-    m_new_procedure_action->setIcon(StyleUtils::GetIcon("file-plus-outline.svg"));
+    m_new_procedure_action->setIcon(styleutils::GetIcon("file-plus-outline.svg"));
     connect(m_new_procedure_action, &QAction::triggered, this,
             &ProcedureListWidget::CreateNewProcedureRequest);
     addAction(m_new_procedure_action);
@@ -109,7 +109,7 @@ void ProcedureListWidget::SetupActions(int action_flag)
   {
     m_remove_selected_action->setText("Remove");
     m_remove_selected_action->setToolTip("Remove selected procedure");
-    m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+    m_remove_selected_action->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
     auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
     connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
     addAction(m_remove_selected_action);

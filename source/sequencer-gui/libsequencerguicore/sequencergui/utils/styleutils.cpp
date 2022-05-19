@@ -28,7 +28,7 @@ namespace
 const bool kSvgIcons = false;
 }  // namespace
 
-namespace sequencergui::StyleUtils
+namespace sequencergui::styleutils
 {
 
 QSize ToolBarIconSize()

@@ -31,7 +31,7 @@ namespace sequencergui
 {
 MonitorWorkspaceToolBar::MonitorWorkspaceToolBar(QWidget *parent) : QToolBar(parent)
 {
-  setIconSize(StyleUtils::ToolBarIconSize());
+  setIconSize(styleutils::ToolBarIconSize());
 
   AddDotsMenu();
 }
@@ -43,8 +43,8 @@ void MonitorWorkspaceToolBar::AddDotsMenu()
   InsertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(StyleUtils::ToolBarIconSize());
+  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
+  button->setIconSize(styleutils::ToolBarIconSize());
   addWidget(button);
 }
 

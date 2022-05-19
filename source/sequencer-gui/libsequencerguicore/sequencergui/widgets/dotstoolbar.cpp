@@ -34,7 +34,7 @@ namespace sequencergui
 {
 DotsToolBar::DotsToolBar(QWidget *parent) : QToolBar(parent)
 {
-  setIconSize(StyleUtils::ToolBarIconSize());
+  setIconSize(styleutils::ToolBarIconSize());
 }
 
 void DotsToolBar::SetActions(const QList<QAction *> &actions)
@@ -64,8 +64,8 @@ void DotsToolBar::AddDotsMenu()
   InsertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(StyleUtils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(StyleUtils::ToolBarIconSize());
+  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
+  button->setIconSize(styleutils::ToolBarIconSize());
   addWidget(button);
 }
 

@@ -98,15 +98,16 @@ namespace sequencergui
 
 std::string GetDesktopInfo()
 {
+  const int line_length(80);
   QString result;
 
-  result += QString(80, '-');
+  result += QString(line_length, '-');
   result += "\n";
   result += GetEnvironmentInfo();
   result += GetFontInfo();
   result += GetScreenInfo();
 
-  result += QString(80, '-');
+  result += QString(line_length, '-');
   result += "\n";
 
   return result.toStdString();

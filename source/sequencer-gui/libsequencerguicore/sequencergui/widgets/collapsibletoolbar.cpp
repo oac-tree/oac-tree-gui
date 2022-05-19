@@ -42,14 +42,14 @@ CollapsibleToolBar::CollapsibleToolBar(QWidget *parent)
   layout->setSpacing(0);
   layout->addWidget(m_tool_bar);
 
-  m_tool_bar->setIconSize(StyleUtils::NarrowToolBarIconSize());
+  m_tool_bar->setIconSize(styleutils::NarrowToolBarIconSize());
 
   // make it narrow, buttons closer to each other
   m_tool_bar->setStyleSheet(
       "QToolBar { padding-bottom: 0px; margin-bottom: 0px; } QToolButton { padding: 0px; margin: "
       "0px; }");
 
-  m_expand_button->setIcon(StyleUtils::GetIcon("chevron-down.svg"));
+  m_expand_button->setIcon(styleutils::GetIcon("chevron-down.svg"));
   auto on_expand_click = [this]()
   {
     m_expanded = !m_expanded;
@@ -61,7 +61,7 @@ CollapsibleToolBar::CollapsibleToolBar(QWidget *parent)
   m_tool_bar->addWidget(m_label);
   InsertStrech();
 
-  setFixedHeight(StyleUtils::NarrowToolBarIconSize().height() * 1.5);
+  setFixedHeight(styleutils::NarrowToolBarIconSize().height() * 1.5);
 
   UpdateToolBar();
 }
@@ -143,12 +143,12 @@ void CollapsibleToolBar::UpdateIcon()
 {
   if (m_expanded)
   {
-    m_expand_button->setIcon(StyleUtils::GetIcon("chevron-down.svg"));
+    m_expand_button->setIcon(styleutils::GetIcon("chevron-down.svg"));
     setFrameStyle(QFrame::StyledPanel);
   }
   else
   {
-    m_expand_button->setIcon(StyleUtils::GetIcon("chevron-right.svg"));
+    m_expand_button->setIcon(styleutils::GetIcon("chevron-right.svg"));
     setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
   }
 }

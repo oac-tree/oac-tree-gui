@@ -30,7 +30,7 @@ namespace
 {
 QRect GetPixmapRect()
 {
-  auto size = sequencergui::StyleUtils::ToolBarIconSize();
+  auto size = sequencergui::styleutils::ToolBarIconSize();
   return {0, 0, 32, 32};
 }
 

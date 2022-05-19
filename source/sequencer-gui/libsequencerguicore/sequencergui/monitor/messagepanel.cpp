@@ -46,7 +46,7 @@ MessagePanel::MessagePanel(QWidget *parent)
   f.setStyleHint(QFont::Monospace);
   m_text_edit->setFont(f);
 
-  m_remove_selected_action->setIcon(StyleUtils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_selected_action->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   addAction(m_remove_selected_action);
 }
 

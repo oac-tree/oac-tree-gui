@@ -88,10 +88,10 @@ void SettingsView::SetupListSelector()
   m_list_widget->setIconSize(
       QSize(mvvm::utils::WidthOfLetterM() * 1.2, mvvm::utils::WidthOfLetterM() * 1.2));
 
-  auto item = new QListWidgetItem(StyleUtils::GetIcon("card-bulleted-outline.svg"), "All models");
+  auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"), "All models");
   m_list_widget->addItem(item);
 
-  item = new QListWidgetItem(StyleUtils::GetIcon("cog-outline.svg"), "Miscellaneous");
+  item = new QListWidgetItem(styleutils::GetIcon("cog-outline.svg"), "Miscellaneous");
   m_list_widget->addItem(item);
 
   connect(m_list_widget, &QListWidget::currentRowChanged,
