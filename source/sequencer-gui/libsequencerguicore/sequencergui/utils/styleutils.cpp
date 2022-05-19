@@ -33,15 +33,20 @@ const bool kSvgIcons = false;
 namespace sequencergui::styleutils
 {
 
+int UnitSize()
+{
+  return mvvm::utils::WidthOfLetterM();
+}
+
 QSize ToolBarIconSize()
 {
-  const int width = std::round(mvvm::utils::WidthOfLetterM() * 2.3);
+  const int width = std::round(UnitSize() * 2.3);
   return {width, width};
 }
 
 QSize NarrowToolBarIconSize()
 {
-  const int width = std::round(mvvm::utils::WidthOfLetterM() * 1.75);
+  const int width = std::round(UnitSize() * 1.75);
   return {width, width};
 }
 

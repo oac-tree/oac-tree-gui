@@ -25,9 +25,9 @@
 #include "sequencergui/model/sequencerutils.h"
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/model/transformfromdomain.h"
+#include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/core/exceptions.h"
-#include "mvvm/widgets/widgetutils.h"
 
 #include <QDebug>
 #include <QLinearGradient>
@@ -93,8 +93,7 @@ QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect)
 QRectF ConnectableViewRectangle()
 {
   // make size of rectangle depending on 'M'-letter size to address scaling issues
-  static QRectF result =
-      QRectF(0, 0, mvvm::utils::WidthOfLetterM() * 8.2, mvvm::utils::HeightOfLetterM() * 8.2);
+  static QRectF result = QRectF(0, 0, styleutils::UnitSize() * 8.2, styleutils::UnitSize() * 8.2);
   return result;
 }
 

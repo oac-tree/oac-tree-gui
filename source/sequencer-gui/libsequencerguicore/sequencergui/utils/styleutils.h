@@ -28,6 +28,9 @@ class QIcon;
 namespace sequencergui::styleutils
 {
 
+//! Returns charactesitic size in which all sizes of UI elements have to be expressed.
+int UnitSize();
+
 //! Size of tolbar icons.
 QSize ToolBarIconSize();
 

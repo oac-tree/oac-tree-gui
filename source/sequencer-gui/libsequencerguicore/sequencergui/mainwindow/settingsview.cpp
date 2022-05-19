@@ -26,7 +26,6 @@
 
 #include "mvvm/model/applicationmodel.h"
 #include "mvvm/widgets/allitemstreeview.h"
-#include "mvvm/widgets/widgetutils.h"
 
 #include <QHBoxLayout>
 #include <QListView>
@@ -51,7 +50,6 @@ SettingsView::SettingsView(QWidget *parent)
   hlayout->setContentsMargins(0, 0, 0, 0);
 
   hlayout->addWidget(m_list_widget);
-  //  layout->addSpacing(mvvm::Utils::WidthOfLetterM() / 2);
   hlayout->addWidget(m_stacked_widget);
 
   m_stacked_widget->setCurrentIndex(0);
@@ -83,10 +81,9 @@ void SettingsView::SetupModelSettings()
 
 void SettingsView::SetupListSelector()
 {
-  const int width = mvvm::utils::WidthOfLetterM() * 15;
+  const int width = styleutils::UnitSize() * 15;
   m_list_widget->setFixedWidth(width);
-  m_list_widget->setIconSize(
-      QSize(mvvm::utils::WidthOfLetterM() * 1.2, mvvm::utils::WidthOfLetterM() * 1.2));
+  m_list_widget->setIconSize(QSize(styleutils::UnitSize() * 1.2, styleutils::UnitSize() * 1.2));
 
   auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"), "All models");
   m_list_widget->addItem(item);
