@@ -19,6 +19,8 @@
 
 #include "sequencergui/utils/styleutils.h"
 
+#include "mvvm/widgets/widgetutils.h"
+
 #include <QIcon>
 #include <QSize>
 
@@ -31,14 +33,29 @@ const bool kSvgIcons = false;
 namespace sequencergui::styleutils
 {
 
+int WidthOfLetterM()
+{
+  return mvvm::utils::SizeOfLetterM().width();
+}
+
+int HeightOfLetterM()
+{
+  return mvvm::utils::SizeOfLetterM().height();
+}
+
+QSize SizeOfLetterM()
+{
+  return mvvm::utils::SizeOfLetterM();
+}
+
 QSize ToolBarIconSize()
 {
-  return QSize(24, 24);
+  return {24, 24};
 }
 
 QSize NarrowToolBarIconSize()
 {
-  return QSize(20, 20);
+  return {20, 20};
 }
 
 QIcon GetIcon(const std::string &icon_name)
@@ -48,8 +65,7 @@ QIcon GetIcon(const std::string &icon_name)
   {
     name.replace(".svg", ".png");
   }
-  auto result = QIcon(name);
   return QIcon(name);
 }
 
-}  // namespace sequencergui::StyleUtils
+}  // namespace sequencergui::styleutils
