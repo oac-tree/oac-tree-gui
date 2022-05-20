@@ -22,8 +22,12 @@
 
 #include "sequencergui/monitor/job_types.h"
 
+#include <memory>
+
 namespace sequencergui
 {
+
+class JobStateInterface;
 
 //! Abstract job to execute the arbitrary task via RunnerInterface.
 //! The main responsibility of a class is to forward JobAction to the runner, preventing
@@ -41,12 +45,13 @@ public:
 
 private:
   friend class JobStateInterface;
+
   virtual void Start() {}
   virtual void Pause() {}
   virtual void Step() {}
   virtual void Stop() {}
 
-  RunnerStatus m_runner_status;
+  std::unique_ptr<JobStateInterface> m_state;
 };
 
 }  // namespace sequencergui

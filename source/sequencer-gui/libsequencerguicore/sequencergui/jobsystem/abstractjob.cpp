@@ -19,37 +19,25 @@
 
 #include "sequencergui/jobsystem/abstractjob.h"
 
+#include "sequencergui/jobsystem/jobstates.h"
+
 namespace sequencergui
 {
-AbstractJob::AbstractJob() : m_runner_status(RunnerStatus::kIdle) {}
+AbstractJob::AbstractJob() : m_state(std::make_unique<IdleState>()) {}
 
 AbstractJob::~AbstractJob() = default;
 
 RunnerStatus AbstractJob::GetStatus() const
 {
-  return m_runner_status;
+  return m_state->GetStatus();
 }
 
 bool AbstractJob::PerformAction(JobAction action)
 {
-  switch (m_runner_status)
+  if (auto new_state = m_state->Handle(action, this); new_state)
   {
-  case RunnerStatus::kIdle:
-    break;
-  case RunnerStatus::kRunning:
-    break;
-  case RunnerStatus::kPaused:
-    break;
-  case RunnerStatus::kCompleted:
-    break;
-  case RunnerStatus::kCanceling:
-    break;
-  case RunnerStatus::kCanceled:
-    break;
-  case RunnerStatus::kFailed:
-    break;
-  default:
-    break;
+    m_state = std::move(new_state);
+    return true;
   }
 
   return false;
