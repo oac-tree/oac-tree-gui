@@ -56,6 +56,15 @@ enum class JobMessageType
   kError
 };
 
+//! Defines actions which can be performed on a job.
+enum class JobAction
+{
+  kStart, //! start a job
+  kPause, //! pause job execution
+  kStep,  //! make a step till the next break point
+  kStop   //! stop the job
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_JOB_TYPES_H
