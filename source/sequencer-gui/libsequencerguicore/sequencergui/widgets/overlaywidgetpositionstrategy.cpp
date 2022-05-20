@@ -32,15 +32,13 @@ namespace
 //! Returns horizontal distance to the widget corner.
 int GetXposOffset()
 {
-  const int number_of_characters = 1;
-  return sequencergui::styleutils::UnitSize() * number_of_characters;
+  return sequencergui::styleutils::UnitSize();
 }
 
 //! Returns horizontal distance to the widget corner.
 int GetYposOffset()
 {
-  const int number_of_characters = 1;
-  return sequencergui::styleutils::UnitSize() * number_of_characters;
+  return sequencergui::styleutils::UnitSize();
 }
 
 }  // namespace

@@ -31,15 +31,13 @@ namespace
 //! Returns width of message box.
 int GetMaximumBoxWidth()
 {
-  const int number_of_characters = 40;
-  return sequencergui::styleutils::UnitSize() * number_of_characters;
+  return sequencergui::styleutils::UnitSize(40);
 }
 
 //! Returns height of message box.
 int GetMinimumBoxHeight()
 {
-  const int number_of_characters = 4;
-  return sequencergui::styleutils::UnitSize() * number_of_characters;
+  return sequencergui::styleutils::UnitSize(4);
 }
 
 }  // namespace

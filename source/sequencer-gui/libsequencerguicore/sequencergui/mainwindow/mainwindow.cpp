@@ -78,9 +78,9 @@ void MainWindow::InitApplication()
   if (settings.childGroups().contains(main_window_group))
   {
     settings.beginGroup(main_window_group);
-    resize(settings.value(size_key, QSize(styleutils::UnitSize() * 80, styleutils::UnitSize() * 60))
+    resize(settings.value(size_key, QSize(styleutils::UnitSize(80), styleutils::UnitSize(60)))
                .toSize());
-    move(settings.value(pos_key, QPoint(styleutils::UnitSize() * 20, styleutils::UnitSize() * 40))
+    move(settings.value(pos_key, QPoint(styleutils::UnitSize(20), styleutils::UnitSize(40)))
              .toPoint());
     settings.endGroup();
   }

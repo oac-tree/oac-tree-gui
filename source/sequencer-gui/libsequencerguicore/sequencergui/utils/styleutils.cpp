@@ -35,7 +35,7 @@ namespace sequencergui::styleutils
 
 int UnitSize(double scale)
 {
-  return std::round(mvvm::utils::WidthOfLetterM() * scale);
+  return static_cast<int>(std::round(mvvm::utils::WidthOfLetterM() * scale));
 }
 
 int AppFontSize()
@@ -45,13 +45,13 @@ int AppFontSize()
 
 QSize ToolBarIconSize()
 {
-  const int width = std::round(UnitSize() * 2.3);
+  const int width = UnitSize(2.3);
   return {width, width};
 }
 
 QSize NarrowToolBarIconSize()
 {
-  const int width = std::round(UnitSize() * 1.75);
+  const int width = std::round(UnitSize(1.75));
   return {width, width};
 }
 

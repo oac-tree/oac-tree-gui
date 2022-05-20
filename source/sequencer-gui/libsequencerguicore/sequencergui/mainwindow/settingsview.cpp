@@ -81,9 +81,9 @@ void SettingsView::SetupModelSettings()
 
 void SettingsView::SetupListSelector()
 {
-  const int width = styleutils::UnitSize() * 15;
+  const int width = styleutils::UnitSize(15.0);
   m_list_widget->setFixedWidth(width);
-  m_list_widget->setIconSize(QSize(styleutils::UnitSize() * 1.2, styleutils::UnitSize() * 1.2));
+  m_list_widget->setIconSize(QSize(styleutils::UnitSize(1.2), styleutils::UnitSize(1.2)));
 
   auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"), "All models");
   m_list_widget->addItem(item);

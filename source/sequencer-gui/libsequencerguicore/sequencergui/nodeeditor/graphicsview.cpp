@@ -54,12 +54,12 @@ GraphicsView::ESelectionModes GraphicsView::GetSelectionModes()
 
 QSize GraphicsView::sizeHint() const
 {
-  return {styleutils::UnitSize()*80, styleutils::UnitSize()*60};
+  return {styleutils::UnitSize(80), styleutils::UnitSize(60)};
 }
 
 QSize GraphicsView::minimumSizeHint() const
 {
-  return {styleutils::UnitSize()*40, styleutils::UnitSize()*30};
+  return {styleutils::UnitSize(40), styleutils::UnitSize(30)};
 }
 
 void GraphicsView::onSelectionMode(int mode)

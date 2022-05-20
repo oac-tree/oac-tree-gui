@@ -30,7 +30,7 @@ namespace
 {
 double port_radius()
 {
-  return sequencergui::styleutils::UnitSize() * 0.4;
+  return sequencergui::styleutils::UnitSize(0.4);
 }
 
 }  // namespace

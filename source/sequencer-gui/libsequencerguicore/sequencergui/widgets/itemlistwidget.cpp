@@ -34,8 +34,8 @@ namespace
 {
 QPixmap createPixmap()
 {
-  QRect rect = QRect(0, 0, sequencergui::styleutils::UnitSize() * 4,
-                     sequencergui::styleutils::UnitSize() * 4);
+  QRect rect = QRect(0, 0, sequencergui::styleutils::UnitSize(4),
+                     sequencergui::styleutils::UnitSize(4));
   QPixmap pixmap(rect.width() + 1, rect.height() + 1);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
