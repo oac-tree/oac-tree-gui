@@ -19,19 +19,147 @@
 
 #include "sequencergui/jobsystem/jobstates.h"
 
+#include "sequencergui/jobsystem/abstractjob.h"
+
 namespace sequencergui
 {
 
+// ----------------------------------------------------------------------------
+// JobStateInterface
+// ----------------------------------------------------------------------------
+
 JobStateInterface::~JobStateInterface() = default;
+
+void JobStateInterface::Start(AbstractJob *job)
+{
+  job->Start();
+}
+
+void JobStateInterface::Pause(AbstractJob *job)
+{
+  job->Pause();
+}
+
+void JobStateInterface::Step(AbstractJob *job)
+{
+  job->Step();
+}
+
+void JobStateInterface::Stop(AbstractJob *job)
+{
+  job->Stop();
+}
+
+// ----------------------------------------------------------------------------
+// IdleState
+// ----------------------------------------------------------------------------
 
 RunnerStatus IdleState::GetStatus()
 {
   return RunnerStatus::kIdle;
 }
 
-std::unique_ptr<JobStateInterface> IdleState::Handle(JobAction action, AbstractJob *)
+std::unique_ptr<JobStateInterface> IdleState::Handle(JobAction action, AbstractJob *job)
 {
-  return {};
+  // on start action we start the job
+  if (action == JobAction::kStart)
+  {
+    Start(job);
+    return std::make_unique<RunningState>();
+  }
+
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// RunningState
+// ----------------------------------------------------------------------------
+
+RunnerStatus RunningState::GetStatus()
+{
+  return RunnerStatus::kRunning;
+}
+
+std::unique_ptr<JobStateInterface> RunningState::Handle(JobAction action, AbstractJob *job)
+{
+  // on pause action with pause the job
+  if (action == JobAction::kPause)
+  {
+    Pause(job);
+    return std::make_unique<PausedState>();
+  }
+
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// PausedState
+// ----------------------------------------------------------------------------
+
+RunnerStatus PausedState::GetStatus()
+{
+  return RunnerStatus::kPaused;
+}
+
+std::unique_ptr<JobStateInterface> PausedState::Handle(JobAction action, AbstractJob *job)
+{
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// CompletedState
+// ----------------------------------------------------------------------------
+
+RunnerStatus CompletedState::GetStatus()
+{
+  return RunnerStatus::kCompleted;
+}
+
+std::unique_ptr<JobStateInterface> CompletedState::Handle(JobAction action, AbstractJob *job)
+{
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// CancelingState
+// ----------------------------------------------------------------------------
+
+RunnerStatus CancelingState::GetStatus()
+{
+  return RunnerStatus::kCanceling;
+}
+
+std::unique_ptr<JobStateInterface> CancelingState::Handle(JobAction action, AbstractJob *job)
+{
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// CanceledState
+// ----------------------------------------------------------------------------
+
+RunnerStatus CanceledState::GetStatus()
+{
+  return RunnerStatus::kCanceled;
+}
+
+std::unique_ptr<JobStateInterface> CanceledState::Handle(JobAction action, AbstractJob *job)
+{
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// FailedState
+// ----------------------------------------------------------------------------
+
+RunnerStatus FailedState::GetStatus()
+{
+  return RunnerStatus::kFailed;
+}
+
+std::unique_ptr<JobStateInterface> FailedState::Handle(JobAction action, AbstractJob *job)
+{
+  return {};  // other actions are ignored
 }
 
 }  // namespace sequencergui

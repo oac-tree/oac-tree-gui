@@ -40,6 +40,7 @@ public:
   bool PerformAction(JobAction action);
 
 private:
+  friend class JobStateInterface;
   virtual void Start() {}
   virtual void Pause() {}
   virtual void Step() {}
