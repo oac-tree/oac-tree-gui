@@ -43,8 +43,8 @@ public:
 
   virtual std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) = 0;
 
-  // The methods below are to cheat the friendship with  AbstractJob, and let all derived
-  // have same benefits as JobStateInterface.
+  // The methods below are to cheat the friendship with AbstractJob, and let all derived
+  // access AbstractJob as JobStateInterface.
   static void Start(AbstractJob *job);
   static void Pause(AbstractJob *job);
   static void Step(AbstractJob *job);
@@ -81,7 +81,7 @@ public:
   std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
 };
 
-//! StoppedState represent a state when job is completed.
+//! StoppedState represent a state when job was stopped by the user.
 
 class StoppedState : public JobStateInterface
 {
@@ -101,7 +101,7 @@ public:
   std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
 };
 
-//! FailedState represent a state when job failed during execution.
+//! FailedState represent a state when job failed during execution (throw in a runner).
 
 class FailedState : public JobStateInterface
 {
