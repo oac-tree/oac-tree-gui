@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTRUNNER_H
-#define SEQUENCERGUI_JOBSYSTEM_ABSTRACTRUNNER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
+#define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
 
 #include "sequencergui/jobsystem/runnerinterface.h"
 #include "sequencergui/monitor/job_types.h"
@@ -29,12 +29,12 @@
 namespace sequencergui
 {
 
-//! Basic implementation of the runner
-class AbstractRunner : public RunnerInterface
+//! Basic implementation of the funciton runner.
+class FunctionRunner : public RunnerInterface
 {
 public:
-  explicit AbstractRunner(std::function<bool()> worker);
-  ~AbstractRunner() override;
+  explicit FunctionRunner(std::function<bool()> worker);
+  ~FunctionRunner() override;
 
   bool Start() override;
 
@@ -55,4 +55,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_RUNNERINTERFACE_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H

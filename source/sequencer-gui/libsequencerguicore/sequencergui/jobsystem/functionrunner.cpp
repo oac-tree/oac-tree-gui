@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/abstractrunner.h"
+#include "sequencergui/jobsystem/functionrunner.h"
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/monitor/flowcontroller.h"
@@ -29,7 +29,7 @@
 namespace sequencergui
 {
 
-struct AbstractRunner::AbstractRunnerImpl
+struct FunctionRunner::AbstractRunnerImpl
 {
   std::mutex m_mutex;
   std::thread m_runner_thread;
@@ -77,14 +77,14 @@ struct AbstractRunner::AbstractRunnerImpl
   }
 };
 
-AbstractRunner::AbstractRunner(std::function<bool()> worker)
+FunctionRunner::FunctionRunner(std::function<bool()> worker)
     : p_impl(std::make_unique<AbstractRunnerImpl>(std::move(worker)))
 {
 }
 
-AbstractRunner::~AbstractRunner() = default;
+FunctionRunner::~FunctionRunner() = default;
 
-bool AbstractRunner::Start()
+bool FunctionRunner::Start()
 {
   if (p_impl->IsBusy())
   {
@@ -107,28 +107,28 @@ bool AbstractRunner::Start()
   return true;
 }
 
-bool AbstractRunner::Stop()
+bool FunctionRunner::Stop()
 {
   p_impl->Stop();
   return true;
 }
 
-bool AbstractRunner::Pause()
+bool FunctionRunner::Pause()
 {
   return true;
 }
 
-bool AbstractRunner::Step()
+bool FunctionRunner::Step()
 {
   return true;
 }
 
-bool AbstractRunner::IsInTransition() const
+bool FunctionRunner::IsInTransition() const
 {
   return false;
 }
 
-RunnerStatus AbstractRunner::GetRunnerStatus() const
+RunnerStatus FunctionRunner::GetRunnerStatus() const
 {
   return p_impl->m_runner_status;
 }
