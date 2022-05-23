@@ -20,7 +20,9 @@
 #include "sequencergui/jobsystem/abstractrunner.h"
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/monitor/flowcontroller.h"
 
+#include <atomic>
 #include <mutex>
 #include <thread>
 
@@ -33,8 +35,10 @@ struct AbstractRunner::AbstractRunnerImpl
   std::thread m_runner_thread;
   RunnerStatus m_runner_status{RunnerStatus::kIdle};
   std::function<bool()> m_worker;
+  std::atomic<bool> m_halt_request;
+  FlowController m_flow_controller;
 
-  AbstractRunnerImpl(std::function<bool()> worker) : m_worker(std::move(worker)) {}
+  explicit AbstractRunnerImpl(std::function<bool()> worker) : m_worker(std::move(worker)) {}
 
   void SetRunnerStatus(RunnerStatus value)
   {
@@ -48,6 +52,29 @@ struct AbstractRunner::AbstractRunnerImpl
     return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling
            || m_runner_status == RunnerStatus::kPaused;
   }
+
+  void Launch()
+  {
+    m_halt_request.store(false);
+
+    while (!m_halt_request.load())
+    {
+      m_halt_request.store(m_worker());
+      m_flow_controller.WaitIfNecessary();
+    }
+  }
+
+  void Stop()
+  {
+    SetRunnerStatus(RunnerStatus::kCanceling);
+    m_halt_request.store(true);
+    m_flow_controller.Interrupt();  // to prevent possible waiting on step request
+    SetRunnerStatus(RunnerStatus::kStopped);
+    if (m_runner_thread.joinable())
+    {
+      m_runner_thread.join();
+    }
+  }
 };
 
 AbstractRunner::AbstractRunner(std::function<bool()> worker)
@@ -59,6 +86,11 @@ AbstractRunner::~AbstractRunner() = default;
 
 bool AbstractRunner::Start()
 {
+  if (p_impl->IsBusy())
+  {
+    return false;
+  }
+
   if (!p_impl->m_worker)
   {
     throw InvalidOperationException("Worker is not defined");
@@ -70,12 +102,14 @@ bool AbstractRunner::Start()
   }
 
   p_impl->SetRunnerStatus(RunnerStatus::kRunning);
+  p_impl->m_runner_thread = std::thread([this]() { p_impl->Launch(); });
 
   return true;
 }
 
 bool AbstractRunner::Stop()
 {
+  p_impl->Stop();
   return true;
 }
 
