@@ -49,8 +49,8 @@ public:
   RunnerStatus GetRunnerStatus() const;
 
 private:
-  struct AbstractRunnerImpl;
-  std::unique_ptr<AbstractRunnerImpl> p_impl;
+  struct FunctionRunnerImpl;
+  std::unique_ptr<FunctionRunnerImpl> p_impl;
 };
 
 }  // namespace sequencergui

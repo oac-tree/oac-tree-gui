@@ -25,7 +25,7 @@
 using namespace sequencergui;
 using ::testing::NiceMock;
 
-//! Tests for JobStates.
+//! Tests for AbstractJob.
 
 class AbstractJobTest : public ::testing::Test
 {
@@ -46,7 +46,7 @@ TEST_F(AbstractJobTest, InitialState)
   EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
 }
 
-//! Transition of TestJob from idle state to all other states
+//! The transition of TestJob from idle state to all other states.
 
 TEST_F(AbstractJobTest, FromIdle)
 {
@@ -91,7 +91,7 @@ TEST_F(AbstractJobTest, FromIdle)
   }
 }
 
-//! Transition of TestJob from running state to all other states
+//! The transition of TestJob from running state to all other states.
 
 TEST_F(AbstractJobTest, FromRunning)
 {
@@ -144,14 +144,14 @@ TEST_F(AbstractJobTest, FromRunning)
   }
 }
 
-//! Transition of TestJob from running state to all other states
+//! The transition of TestJob from paused state to all other states.
 
 TEST_F(AbstractJobTest, FromPaused)
 {
   {  // to running
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
-    job.PerformAction(JobAction::kPause); // here we at paused state
+    job.PerformAction(JobAction::kPause);  // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(1);
     EXPECT_CALL(job, Pause()).Times(0);
@@ -163,7 +163,7 @@ TEST_F(AbstractJobTest, FromPaused)
   {  // to pause
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
-    job.PerformAction(JobAction::kPause); // here we at paused state
+    job.PerformAction(JobAction::kPause);  // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
@@ -176,7 +176,7 @@ TEST_F(AbstractJobTest, FromPaused)
   {  // to step
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
-    job.PerformAction(JobAction::kPause); // here we at paused state
+    job.PerformAction(JobAction::kPause);  // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
@@ -189,7 +189,7 @@ TEST_F(AbstractJobTest, FromPaused)
   {  // to stop
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
-    job.PerformAction(JobAction::kPause); // here we at paused state
+    job.PerformAction(JobAction::kPause);  // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);

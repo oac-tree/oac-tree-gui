@@ -29,7 +29,7 @@
 namespace sequencergui
 {
 
-struct FunctionRunner::AbstractRunnerImpl
+struct FunctionRunner::FunctionRunnerImpl
 {
   std::mutex m_mutex;
   std::thread m_runner_thread;
@@ -38,7 +38,7 @@ struct FunctionRunner::AbstractRunnerImpl
   std::atomic<bool> m_halt_request;
   FlowController m_flow_controller;
 
-  explicit AbstractRunnerImpl(std::function<bool()> worker) : m_worker(std::move(worker)) {}
+  explicit FunctionRunnerImpl(std::function<bool()> worker) : m_worker(std::move(worker)) {}
 
   void SetRunnerStatus(RunnerStatus value)
   {
@@ -69,16 +69,16 @@ struct FunctionRunner::AbstractRunnerImpl
     SetRunnerStatus(RunnerStatus::kCanceling);
     m_halt_request.store(true);
     m_flow_controller.Interrupt();  // to prevent possible waiting on step request
-    SetRunnerStatus(RunnerStatus::kStopped);
     if (m_runner_thread.joinable())
     {
       m_runner_thread.join();
     }
+    SetRunnerStatus(RunnerStatus::kStopped);
   }
 };
 
 FunctionRunner::FunctionRunner(std::function<bool()> worker)
-    : p_impl(std::make_unique<AbstractRunnerImpl>(std::move(worker)))
+    : p_impl(std::make_unique<FunctionRunnerImpl>(std::move(worker)))
 {
 }
 
@@ -115,11 +115,13 @@ bool FunctionRunner::Stop()
 
 bool FunctionRunner::Pause()
 {
+  p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
   return true;
 }
 
 bool FunctionRunner::Step()
 {
+  p_impl->m_flow_controller.StepRequest();
   return true;
 }
 
