@@ -147,6 +147,12 @@ RunnerStatus StoppedState::GetStatus()
 
 std::unique_ptr<JobStateInterface> StoppedState::Handle(JobAction action, AbstractJob *job)
 {
+  if (action == JobAction::kStart)
+  {
+    Start(job);
+    return std::make_unique<RunningState>();
+  }
+
   return {};  // other actions are ignored
 }
 

@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
+using ::testing::NiceMock;
 
 //! Tests for JobStates.
 
@@ -95,7 +96,7 @@ TEST_F(AbstractJobTest, FromIdle)
 TEST_F(AbstractJobTest, FromRunning)
 {
   {  // to running
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
     EXPECT_CALL(job, Start()).Times(0);
@@ -107,7 +108,7 @@ TEST_F(AbstractJobTest, FromRunning)
   }
 
   {  // to pause
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
     EXPECT_CALL(job, Start()).Times(0);
@@ -119,7 +120,7 @@ TEST_F(AbstractJobTest, FromRunning)
   }
 
   {  // to step
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
     EXPECT_CALL(job, Start()).Times(0);
@@ -131,14 +132,14 @@ TEST_F(AbstractJobTest, FromRunning)
   }
 
   {  // to stop
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(1);
-    EXPECT_FALSE(job.PerformAction(JobAction::kStop));
+    EXPECT_TRUE(job.PerformAction(JobAction::kStop));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
   }
 }
@@ -148,32 +149,34 @@ TEST_F(AbstractJobTest, FromRunning)
 TEST_F(AbstractJobTest, FromPaused)
 {
   {  // to running
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
+    job.PerformAction(JobAction::kPause); // here we at paused state
+
+    EXPECT_CALL(job, Start()).Times(1);
+    EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Step()).Times(0);
+    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_TRUE(job.PerformAction(JobAction::kStart));
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kRunning);
+  }
+  {  // to pause
+    NiceMock<TestJob> job;
+    job.PerformAction(JobAction::kStart);
+    job.PerformAction(JobAction::kPause); // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
-    EXPECT_FALSE(job.PerformAction(JobAction::kStart));
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kRunning);
-  }
-
-  {  // to pause
-    TestJob job;
-    job.PerformAction(JobAction::kStart);
-
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(1);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
-    EXPECT_TRUE(job.PerformAction(JobAction::kPause));
+    EXPECT_FALSE(job.PerformAction(JobAction::kPause));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
 
   {  // to step
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
+    job.PerformAction(JobAction::kPause); // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
@@ -184,14 +187,15 @@ TEST_F(AbstractJobTest, FromPaused)
   }
 
   {  // to stop
-    TestJob job;
+    NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
+    job.PerformAction(JobAction::kPause); // here we at paused state
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(1);
-    EXPECT_FALSE(job.PerformAction(JobAction::kStop));
+    EXPECT_TRUE(job.PerformAction(JobAction::kStop));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
   }
 }
