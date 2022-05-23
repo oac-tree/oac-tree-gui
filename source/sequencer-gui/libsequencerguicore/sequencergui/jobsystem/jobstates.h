@@ -42,6 +42,8 @@ public:
 
   virtual std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) = 0;
 
+  // The methods below are to cheat the friendship with  AbstractJob, and let all derived
+  // have same benefits as JobStateInterface.
   static void Start(AbstractJob *job);
   static void Pause(AbstractJob *job);
   static void Step(AbstractJob *job);

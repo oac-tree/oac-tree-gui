@@ -89,6 +89,21 @@ std::unique_ptr<JobStateInterface> RunningState::Handle(JobAction action, Abstra
     return std::make_unique<PausedState>();
   }
 
+  // on step action with stop the job
+  if (action == JobAction::kStep)
+  {
+    // FIXME provide switch to step mode here
+    Step(job);
+    return std::make_unique<PausedState>();
+  }
+
+  // on stop action with stop the job
+  if (action == JobAction::kStop)
+  {
+    Stop(job);
+    return std::make_unique<FailedState>();
+  }
+
   return {};  // other actions are ignored
 }
 
@@ -103,6 +118,13 @@ RunnerStatus PausedState::GetStatus()
 
 std::unique_ptr<JobStateInterface> PausedState::Handle(JobAction action, AbstractJob *job)
 {
+  // on pause action with pause the job
+  if (action == JobAction::kStart)
+  {
+    Start(job);
+    return std::make_unique<RunningState>();
+  }
+
   return {};  // other actions are ignored
 }
 
