@@ -23,24 +23,26 @@
 #include "sequencergui/jobsystem/runnerinterface.h"
 #include "sequencergui/monitor/job_types.h"
 
+#include <functional>
 #include <memory>
 
 namespace sequencergui
 {
 
+//! Basic implementation of the runner
 class AbstractRunner : public RunnerInterface
 {
 public:
-  AbstractRunner();
+  explicit AbstractRunner(std::function<bool()> worker);
   ~AbstractRunner() override;
 
-  void Start() override;
+  bool Start() override;
 
-  void Stop() override;
+  bool Stop() override;
 
-  void Pause() override;
+  bool Pause() override;
 
-  void Step() override;
+  bool Step() override;
 
   bool IsInTransition() const override;
 

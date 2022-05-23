@@ -31,16 +31,16 @@ public:
   virtual ~RunnerInterface() = default;
 
   //! Starts task execution.
-  virtual void Start() = 0;
+  virtual bool Start() = 0;
 
   //! Stops task execution.
-  virtual void Stop() = 0;
+  virtual bool Stop() = 0;
 
   //! Pause task execution at the next break point.
-  virtual void Pause() = 0;
+  virtual bool Pause() = 0;
 
   //! Step paused task forward till the next break point.
-  virtual void Step() = 0;
+  virtual bool Step() = 0;
 
   //! The runner is in the transition stage (i.e. `stopping`, after the stop was called till the
   //! moment it is actually stopped.
