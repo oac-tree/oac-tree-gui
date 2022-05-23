@@ -24,6 +24,7 @@
 //! Collection of
 
 #include "sequencergui/monitor/job_types.h"
+
 #include <memory>
 
 namespace sequencergui
@@ -48,7 +49,6 @@ public:
   static void Pause(AbstractJob *job);
   static void Step(AbstractJob *job);
   static void Stop(AbstractJob *job);
-
 };
 
 //! IdleState represent a state when job just created.
@@ -81,29 +81,19 @@ public:
   std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
 };
 
+//! StoppedState represent a state when job is completed.
+
+class StoppedState : public JobStateInterface
+{
+public:
+  RunnerStatus GetStatus() override;
+
+  std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
+};
+
 //! CompletedState represent a state when job is completed.
 
 class CompletedState : public JobStateInterface
-{
-public:
-  RunnerStatus GetStatus() override;
-
-  std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
-};
-
-//! CancelingState represent a state when job is in the process of canceling.
-
-class CancelingState : public JobStateInterface
-{
-public:
-  RunnerStatus GetStatus() override;
-
-  std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
-};
-
-//! CanceledState represent a state when job was canceled.
-
-class CanceledState : public JobStateInterface
 {
 public:
   RunnerStatus GetStatus() override;
@@ -120,7 +110,6 @@ public:
 
   std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
 };
-
 
 }  // namespace sequencergui
 

@@ -105,7 +105,7 @@ void ProcedureRunner::Terminate()
   {
     m_runner_thread.join();
   }
-  SetRunnerStatus(RunnerStatus::kCanceled);
+  SetRunnerStatus(RunnerStatus::kStopped);
 }
 
 void ProcedureRunner::SetWaitingMode(WaitingMode waiting_mode)

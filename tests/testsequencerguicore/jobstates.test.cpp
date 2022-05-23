@@ -129,7 +129,7 @@ TEST_F(JobStatesTest, RunningState)
     EXPECT_CALL(job, Stop()).Times(1);
     auto result = state.Handle(JobAction::kStop, &job);
     ASSERT_TRUE(result.get());  // trigger action
-    EXPECT_EQ(result->GetStatus(), RunnerStatus::kFailed);
+    EXPECT_EQ(result->GetStatus(), RunnerStatus::kStopped);
   }
 }
 
@@ -158,42 +158,33 @@ TEST_F(JobStatesTest, PausedState)
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
   }
 
-//  {  // Make a step
-//    MockJob job;
-//    EXPECT_CALL(job, Start()).Times(0);
-//    EXPECT_CALL(job, Pause()).Times(0);
-//    EXPECT_CALL(job, Step()).Times(0);
-//    EXPECT_CALL(job, Stop()).Times(0);
-//    EXPECT_FALSE(state.Handle(JobAction::kStep, &job));  // trigger action
-//  }
+  {  // Make a step
+    MockJob job;
+    EXPECT_CALL(job, Start()).Times(0);
+    EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Step()).Times(1);
+    EXPECT_CALL(job, Stop()).Times(0);
+    auto result = state.Handle(JobAction::kStep, &job);
+    ASSERT_TRUE(result.get());  // trigger action
+    EXPECT_EQ(result->GetStatus(), RunnerStatus::kPaused);
+  }
 
-//  {  // Make a stop
-//    MockJob job;
-//    EXPECT_CALL(job, Start()).Times(0);
-//    EXPECT_CALL(job, Pause()).Times(0);
-//    EXPECT_CALL(job, Step()).Times(0);
-//    EXPECT_CALL(job, Stop()).Times(0);
-//    EXPECT_FALSE(state.Handle(JobAction::kStop, &job));  // trigger action
-//  }
-
+  {  // Make a stop
+    MockJob job;
+    EXPECT_CALL(job, Start()).Times(0);
+    EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Step()).Times(0);
+    EXPECT_CALL(job, Stop()).Times(1);
+    auto result = state.Handle(JobAction::kStop, &job);
+    ASSERT_TRUE(result.get());  // trigger action
+    EXPECT_EQ(result->GetStatus(), RunnerStatus::kStopped);
+  }
 }
 
 TEST_F(JobStatesTest, CompletedState)
 {
   CompletedState state;
   EXPECT_EQ(state.GetStatus(), RunnerStatus::kCompleted);
-}
-
-TEST_F(JobStatesTest, CancelingState)
-{
-  CancelingState state;
-  EXPECT_EQ(state.GetStatus(), RunnerStatus::kCanceling);
-}
-
-TEST_F(JobStatesTest, CanceledState)
-{
-  CanceledState state;
-  EXPECT_EQ(state.GetStatus(), RunnerStatus::kCanceled);
 }
 
 TEST_F(JobStatesTest, FailedState)

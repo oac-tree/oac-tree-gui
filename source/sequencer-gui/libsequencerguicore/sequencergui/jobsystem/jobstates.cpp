@@ -61,7 +61,6 @@ RunnerStatus IdleState::GetStatus()
 
 std::unique_ptr<JobStateInterface> IdleState::Handle(JobAction action, AbstractJob *job)
 {
-  // on start action we start the job
   if (action == JobAction::kStart)
   {
     Start(job);
@@ -82,14 +81,12 @@ RunnerStatus RunningState::GetStatus()
 
 std::unique_ptr<JobStateInterface> RunningState::Handle(JobAction action, AbstractJob *job)
 {
-  // on pause action with pause the job
   if (action == JobAction::kPause)
   {
     Pause(job);
     return std::make_unique<PausedState>();
   }
 
-  // on step action with stop the job
   if (action == JobAction::kStep)
   {
     // FIXME provide switch to step mode here
@@ -97,11 +94,10 @@ std::unique_ptr<JobStateInterface> RunningState::Handle(JobAction action, Abstra
     return std::make_unique<PausedState>();
   }
 
-  // on stop action with stop the job
   if (action == JobAction::kStop)
   {
     Stop(job);
-    return std::make_unique<FailedState>();
+    return std::make_unique<StoppedState>();
   }
 
   return {};  // other actions are ignored
@@ -118,13 +114,39 @@ RunnerStatus PausedState::GetStatus()
 
 std::unique_ptr<JobStateInterface> PausedState::Handle(JobAction action, AbstractJob *job)
 {
-  // on pause action with pause the job
   if (action == JobAction::kStart)
   {
     Start(job);
     return std::make_unique<RunningState>();
   }
 
+  if (action == JobAction::kStep)
+  {
+    // FIXME provide switch to step mode here
+    Step(job);
+    return std::make_unique<PausedState>();
+  }
+
+  if (action == JobAction::kStop)
+  {
+    Stop(job);
+    return std::make_unique<StoppedState>();
+  }
+
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// StoppedState
+// ----------------------------------------------------------------------------
+
+RunnerStatus StoppedState::GetStatus()
+{
+  return RunnerStatus::kStopped;
+}
+
+std::unique_ptr<JobStateInterface> StoppedState::Handle(JobAction action, AbstractJob *job)
+{
   return {};  // other actions are ignored
 }
 
@@ -138,34 +160,6 @@ RunnerStatus CompletedState::GetStatus()
 }
 
 std::unique_ptr<JobStateInterface> CompletedState::Handle(JobAction action, AbstractJob *job)
-{
-  return {};  // other actions are ignored
-}
-
-// ----------------------------------------------------------------------------
-// CancelingState
-// ----------------------------------------------------------------------------
-
-RunnerStatus CancelingState::GetStatus()
-{
-  return RunnerStatus::kCanceling;
-}
-
-std::unique_ptr<JobStateInterface> CancelingState::Handle(JobAction action, AbstractJob *job)
-{
-  return {};  // other actions are ignored
-}
-
-// ----------------------------------------------------------------------------
-// CanceledState
-// ----------------------------------------------------------------------------
-
-RunnerStatus CanceledState::GetStatus()
-{
-  return RunnerStatus::kCanceled;
-}
-
-std::unique_ptr<JobStateInterface> CanceledState::Handle(JobAction action, AbstractJob *job)
 {
   return {};  // other actions are ignored
 }

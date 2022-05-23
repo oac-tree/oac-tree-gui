@@ -42,7 +42,7 @@ enum class RunnerStatus
   kPaused,     //! paused
   kCompleted,  //! completed
   kCanceling,  //! in the process of canceling (performed Halt of procedure)
-  kCanceled,   //! was canceled
+  kStopped,    //! was stopped
   kFailed      //! something went wrong in the domain runner
 };
 
@@ -59,10 +59,10 @@ enum class JobMessageType
 //! Defines actions which can be performed on a job.
 enum class JobAction
 {
-  kStart, //! start a job
-  kPause, //! pause job execution
-  kStep,  //! make a step till the next break point
-  kStop   //! stop the job
+  kStart,  //! start a job
+  kPause,  //! pause job execution
+  kStep,   //! make a step till the next break point
+  kStop    //! stop the job
 };
 
 }  // namespace sequencergui

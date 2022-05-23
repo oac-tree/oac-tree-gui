@@ -203,7 +203,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
   runner->Terminate();
 
   std::this_thread::sleep_for(msec(10));
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCanceled);
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kStopped);
 
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::NOT_STARTED);
   EXPECT_FALSE(runner->IsBusy());
