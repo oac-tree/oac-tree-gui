@@ -49,7 +49,10 @@ ExistingKeyException::ExistingKeyException(const std::string& message) : Message
 {
 }
 
-NullException::NullException(const std::string& message) : MessageException{message}
+NullException::NullException(const std::string& message) : MessageException{message} {}
+
+InvalidOperationException::InvalidOperationException(const std::string& message)
+    : MessageException{message}
 {
 }
 

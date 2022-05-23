@@ -87,6 +87,14 @@ public:
   explicit NullException(const std::string& message);
 };
 
+//! Exception is thrown on invalid operation.
+
+class InvalidOperationException : public MessageException
+{
+public:
+  explicit InvalidOperationException(const std::string& message);
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H
