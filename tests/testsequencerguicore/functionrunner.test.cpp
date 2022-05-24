@@ -22,8 +22,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <thread>
+
 using namespace sequencergui;
 using ::testing::NiceMock;
+using msec = std::chrono::milliseconds;
 
 //! Tests for JobStates.
 
@@ -86,3 +89,27 @@ TEST_F(FunctionRunnerTest, StartSingleCall)
   WaitForCompletion(runner, 0.02);
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
 }
+
+//! Premature destruction. Runner dies before task is finished.
+
+TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
+{
+  int ncount(0);
+  auto worker = [&ncount]() // executes forever
+  {
+    ncount++;
+    std::this_thread::sleep_for(msec(5));
+    return true;
+  };
+
+  auto runner = std::make_unique<FunctionRunner>(worker);
+
+  runner->Start();
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+
+  ASSERT_NO_FATAL_FAILURE(runner.reset());
+  // event loop was interrupted, thread was succesfully joined
+}
+
+
