@@ -71,6 +71,7 @@ TEST_F(FunctionRunnerTest, InitialState)
 }
 
 //! Running worker which immediately returns `false`.
+//! Represent short task which is executed normally.
 
 TEST_F(FunctionRunnerTest, StartSingleCall)
 {
@@ -78,7 +79,7 @@ TEST_F(FunctionRunnerTest, StartSingleCall)
   auto worker = []() { return false; };
   FunctionRunner runner(worker, listener.CreateCallback());
 
-  // expecting two calls with status change kIdle, kRunning, kCompleted
+  // expecting calls with status change kRunning, kCompleted
   {
     ::testing::InSequence seq;
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
@@ -88,6 +89,7 @@ TEST_F(FunctionRunnerTest, StartSingleCall)
   EXPECT_TRUE(runner.Start());  // triggering action
   WaitForCompletion(runner, 0.02);
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
+  EXPECT_FALSE(runner.IsBusy());
 }
 
 //! Premature destruction. Runner dies before task is finished.
@@ -107,9 +109,37 @@ TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
   runner->Start();
   std::this_thread::sleep_for(msec(20));
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+  EXPECT_TRUE(ncount > 0);
 
   ASSERT_NO_FATAL_FAILURE(runner.reset());
   // event loop was interrupted, thread was succesfully joined
 }
 
+//! Terminating the procedure that runs too long.
+
+TEST_F(FunctionRunnerTest, StartAndTerminate)
+{
+  MockListener listener;
+  auto worker = []() { std::this_thread::sleep_for(msec(10)); return true; }; // executes forever
+  FunctionRunner runner(worker, listener.CreateCallback());
+
+  // expecting calls with status change kRunning, kCanceling, kStopped
+  {
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCanceling));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
+  }
+
+  EXPECT_TRUE(runner.Start());  // triggering action
+  EXPECT_TRUE(runner.IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_FALSE(WaitForCompletion(runner, 0.01));
+
+  runner.Stop();
+  std::this_thread::sleep_for(msec(10));
+
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kStopped);
+}
 

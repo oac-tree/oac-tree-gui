@@ -96,10 +96,10 @@ struct FunctionRunner::FunctionRunnerImpl
   {
     m_halt_request.store(true);
     m_flow_controller.Interrupt();  // to prevent possible waiting on step request
-//    if (m_runner_thread.joinable())
-//    {
-//      m_runner_thread.join();
-//    }
+    if (m_runner_thread.joinable())
+    {
+      m_runner_thread.join();
+    }
   }
 };
 
