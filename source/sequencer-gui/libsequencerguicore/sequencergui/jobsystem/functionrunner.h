@@ -29,7 +29,8 @@
 namespace sequencergui
 {
 
-//! Basic implementation of the funciton runner.
+//! Basic implementation of the function runner.
+//! It will execute `worker` function in a loop unless it returns false.
 class FunctionRunner : public RunnerInterface
 {
 public:

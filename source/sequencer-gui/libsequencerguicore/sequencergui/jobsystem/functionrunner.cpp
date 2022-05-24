@@ -97,6 +97,7 @@ struct FunctionRunner::FunctionRunnerImpl
 
       if (m_flow_controller.IsPaused())
       {
+        // after the release, we have to switch back to running state
         SetRunnerStatus(RunnerStatus::kRunning);
       }
 
@@ -114,10 +115,11 @@ struct FunctionRunner::FunctionRunnerImpl
     SetRunnerStatus(RunnerStatus::kStopped);
   }
 
+  //! Shutdown working thread.
   void Shutdown()
   {
-    m_halt_request.store(true);
-    m_flow_controller.Interrupt();  // to prevent possible waiting on step request
+    m_halt_request.store(true); // request to quit from event loop
+    m_flow_controller.Interrupt();  // interrupt waiting if in step mode
     if (m_runner_thread.joinable())
     {
       m_runner_thread.join();
@@ -139,6 +141,11 @@ FunctionRunner::~FunctionRunner()
 
 bool FunctionRunner::Start()
 {
+  if (GetRunnerStatus() == RunnerStatus::kPaused)
+  {
+
+  }
+
   if (p_impl->IsBusy())
   {
     return false;
