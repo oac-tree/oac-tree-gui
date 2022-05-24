@@ -80,7 +80,9 @@ struct FunctionRunner::FunctionRunnerImpl
       {
         break;
       }
+      std::cout << "aaaa 1.1a " << std::endl;
       m_flow_controller.WaitIfNecessary();
+      std::cout << "aaaa 1.1b " << std::endl;
     }
     std::cout << "aaaa 1.2 " << std::endl;
     SetRunnerStatus(m_halt_request.load() ? RunnerStatus::kStopped : RunnerStatus::kCompleted);
@@ -169,6 +171,11 @@ RunnerStatus FunctionRunner::GetRunnerStatus() const
 bool FunctionRunner::IsBusy() const
 {
   return p_impl->IsBusy();
+}
+
+void FunctionRunner::SetWaitingMode(WaitingMode waiting_mode)
+{
+  p_impl->m_flow_controller.SetWaitingMode(waiting_mode);
 }
 
 bool WaitForCompletion(const FunctionRunner &runner, double timeout_sec)

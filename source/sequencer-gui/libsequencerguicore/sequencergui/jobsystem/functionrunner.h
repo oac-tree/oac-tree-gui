@@ -51,6 +51,8 @@ public:
 
   bool IsBusy() const;
 
+  void SetWaitingMode(WaitingMode waiting_mode);
+
 private:
   struct FunctionRunnerImpl;
   std::unique_ptr<FunctionRunnerImpl> p_impl;

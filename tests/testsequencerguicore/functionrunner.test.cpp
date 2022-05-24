@@ -22,6 +22,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <iostream>
 #include <thread>
 
 using namespace sequencergui;
@@ -97,7 +98,7 @@ TEST_F(FunctionRunnerTest, StartSingleCall)
 TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
 {
   int ncount(0);
-  auto worker = [&ncount]() // executes forever
+  auto worker = [&ncount]()  // executes forever
   {
     ncount++;
     std::this_thread::sleep_for(msec(5));
@@ -120,7 +121,11 @@ TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
 TEST_F(FunctionRunnerTest, StartAndTerminate)
 {
   MockListener listener;
-  auto worker = []() { std::this_thread::sleep_for(msec(10)); return true; }; // executes forever
+  auto worker = []()
+  {
+    std::this_thread::sleep_for(msec(10));
+    return true;
+  };  // executes forever
   FunctionRunner runner(worker, listener.CreateCallback());
 
   // expecting calls with status change kRunning, kCanceling, kStopped
@@ -143,3 +148,53 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kStopped);
 }
 
+//! Stepwise task execution.
+//! The task is launched in step wise mode. After 3 steps the task is expected to be completed.
+
+TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
+{
+  //  MockListener listener;
+  int nsteps{0};
+  auto worker = [&nsteps]()
+  {
+    std::this_thread::sleep_for(msec(10));
+    nsteps++;
+    std::cout << "worker " << nsteps << std::endl;
+    return nsteps < 3;  // should stop when nsteps==3
+  };
+
+  FunctionRunner runner(worker);
+  //  FunctionRunner runner(worker, listener.CreateCallback());
+  runner.SetWaitingMode(WaitingMode::kWaitForRelease);
+
+  //  // expecting calls with status change kRunning, kCanceling, kStopped
+  //  {
+  //    ::testing::InSequence seq;
+  //    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+  //    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
+  //    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
+  //  }
+
+  EXPECT_TRUE(runner.Start());  // triggering action
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
+  EXPECT_TRUE(runner.IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_EQ(nsteps, 1);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
+  EXPECT_TRUE(runner.IsBusy());
+
+  runner.Step();
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_EQ(nsteps, 2);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
+  EXPECT_TRUE(runner.IsBusy());
+
+  runner.Step();
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_EQ(nsteps, 3);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
+  EXPECT_FALSE(runner.IsBusy());
+}
