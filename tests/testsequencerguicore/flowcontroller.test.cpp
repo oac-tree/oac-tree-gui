@@ -138,3 +138,37 @@ TEST_F(FlowControllerTest, WaitForReleaseChange)
   waiting_done.get();  // making sure pushing thread has finished
   EXPECT_TRUE(duration(end_time - start_time) >= 100);
 }
+
+TEST_F(FlowControllerTest, Interrupt)
+{
+  FlowController controller;
+  controller.SetWaitingMode(WaitingMode::kWaitForRelease);
+  time_t start_time;
+  time_t end_time;
+  std::future<void> waiting_done;
+  std::promise<void> ready_for_test;
+
+  waiting_done = std::async(std::launch::async,
+                            [&controller, &start_time, &end_time, &ready_for_test]()
+                            {
+                              ready_for_test.set_value();
+                              start_time = clock_used::now();
+                              controller.WaitIfNecessary();
+                              end_time = clock_used::now();
+                            });
+
+  // waiting for threads being prepared for racing
+  ready_for_test.get_future().wait();
+
+  std::this_thread::sleep_for(msec(100));
+
+  // interruption should release waiting
+  controller.Interrupt();
+
+  // it has to return back to Proceed mode
+  EXPECT_FALSE(controller.IsPaused());
+
+  // checking result
+  waiting_done.get();  // making sure pushing thread has finished
+  EXPECT_TRUE(duration(end_time - start_time) >= 100);
+}

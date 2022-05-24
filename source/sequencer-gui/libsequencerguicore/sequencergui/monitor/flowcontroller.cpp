@@ -82,6 +82,7 @@ void FlowController::StepRequest()
 
 void FlowController::Interrupt()
 {
+  SetWaitingMode(WaitingMode::kProceed);
   m_step_request.stop();  // stops waiting in m_step_request.wait_and_pop()
 }
 
