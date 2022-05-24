@@ -40,6 +40,11 @@ void JobStateInterface::Pause(AbstractJob *job)
   job->Pause();
 }
 
+void JobStateInterface::Release(AbstractJob *job)
+{
+  job->Release();
+}
+
 void JobStateInterface::Step(AbstractJob *job)
 {
   job->Step();
@@ -140,6 +145,22 @@ std::unique_ptr<JobStateInterface> PausedState::Handle(JobAction action, Abstrac
 // StoppedState
 // ----------------------------------------------------------------------------
 
+RunnerStatus StoppingState::GetStatus()
+{
+  return RunnerStatus::kStopping;
+}
+
+std::unique_ptr<JobStateInterface> StoppingState::Handle(JobAction action, AbstractJob *job)
+{
+  (void)action;
+  (void)job;
+  return {};  // other actions are ignored
+}
+
+// ----------------------------------------------------------------------------
+// StoppedState
+// ----------------------------------------------------------------------------
+
 RunnerStatus StoppedState::GetStatus()
 {
   return RunnerStatus::kStopped;
@@ -167,6 +188,8 @@ RunnerStatus CompletedState::GetStatus()
 
 std::unique_ptr<JobStateInterface> CompletedState::Handle(JobAction action, AbstractJob *job)
 {
+  (void)action;
+  (void)job;
   return {};  // other actions are ignored
 }
 
@@ -181,6 +204,8 @@ RunnerStatus FailedState::GetStatus()
 
 std::unique_ptr<JobStateInterface> FailedState::Handle(JobAction action, AbstractJob *job)
 {
+  (void)action;
+  (void)job;
   return {};  // other actions are ignored
 }
 

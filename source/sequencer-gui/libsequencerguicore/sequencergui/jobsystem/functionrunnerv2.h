@@ -23,6 +23,7 @@
 #include "sequencergui/jobsystem/abstractjob.h"
 
 #include <memory>
+#include <functional>
 
 namespace sequencergui
 {
@@ -30,15 +31,27 @@ namespace sequencergui
 class FunctionRunnerV2 : public AbstractJob
 {
 public:
-  FunctionRunnerV2();
+  explicit FunctionRunnerV2(std::function<bool()> worker,
+                          std::function<void(RunnerStatus)> status_changed_callback = {});
+
   ~FunctionRunnerV2() override;
+
+  bool IsBusy() const;
 
 private:
   void Start() override;
   void Pause() override;
+  void Release() override;
   void Step() override;
   void Stop() override;
+
+  struct FunctionRunnerImpl;
+  std::unique_ptr<FunctionRunnerImpl> p_impl;
 };
+
+//! Will wait a given amount of sec for job completion. Returns `true` is runner has finished before
+//! the timeout, `false` otherwise. Internally has a precision of 10 msec.
+bool WaitForCompletion(const FunctionRunnerV2& runner, double timeout_sec);
 
 }  // namespace sequencergui
 

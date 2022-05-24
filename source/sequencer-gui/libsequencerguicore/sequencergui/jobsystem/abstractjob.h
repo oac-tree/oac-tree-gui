@@ -43,6 +43,9 @@ public:
 
   bool PerformAction(JobAction action);
 
+protected:
+  void SetState(std::unique_ptr<JobStateInterface> state);
+
 private:
   friend class JobStateInterface;
 

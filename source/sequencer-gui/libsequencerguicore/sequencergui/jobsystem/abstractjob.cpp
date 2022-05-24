@@ -43,4 +43,9 @@ bool AbstractJob::PerformAction(JobAction action)
   return false;
 }
 
+void AbstractJob::SetState(std::unique_ptr<JobStateInterface> state)
+{
+  m_state = std::move(state);
+}
+
 }  // namespace sequencergui

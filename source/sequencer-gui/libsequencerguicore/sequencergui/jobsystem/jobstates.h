@@ -45,8 +45,10 @@ public:
 
   // The methods below are to cheat the friendship with AbstractJob, and let all derived
   // access AbstractJob as JobStateInterface.
+
   static void Start(AbstractJob *job);
   static void Pause(AbstractJob *job);
+  static void Release(AbstractJob *job);
   static void Step(AbstractJob *job);
   static void Stop(AbstractJob *job);
 };
@@ -74,6 +76,16 @@ public:
 //! PausedState represent a state when job is paused.
 
 class PausedState : public JobStateInterface
+{
+public:
+  RunnerStatus GetStatus() override;
+
+  std::unique_ptr<JobStateInterface> Handle(JobAction action, AbstractJob *job) override;
+};
+
+//! StoppingState represent a state when job entered to stopping process.
+
+class StoppingState : public JobStateInterface
 {
 public:
   RunnerStatus GetStatus() override;
