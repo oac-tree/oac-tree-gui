@@ -35,6 +35,7 @@ public:
   public:
     MOCK_METHOD0(Start, void(void));
     MOCK_METHOD0(Pause, void(void));
+    MOCK_METHOD0(Release, void(void));
     MOCK_METHOD0(Step, void(void));
     MOCK_METHOD0(Stop, void(void));
   };
@@ -54,6 +55,7 @@ TEST_F(AbstractJobTest, FromIdle)
     TestJob job;
     EXPECT_CALL(job, Start()).Times(1);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStart));
@@ -64,6 +66,7 @@ TEST_F(AbstractJobTest, FromIdle)
     TestJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kPause));
@@ -74,6 +77,7 @@ TEST_F(AbstractJobTest, FromIdle)
     TestJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kStep));
@@ -84,6 +88,7 @@ TEST_F(AbstractJobTest, FromIdle)
     TestJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kStop));
@@ -101,6 +106,7 @@ TEST_F(AbstractJobTest, FromRunning)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kStart));
@@ -113,6 +119,7 @@ TEST_F(AbstractJobTest, FromRunning)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(1);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kPause));
@@ -125,6 +132,7 @@ TEST_F(AbstractJobTest, FromRunning)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(1);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStep));
@@ -137,6 +145,7 @@ TEST_F(AbstractJobTest, FromRunning)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(1);
     EXPECT_TRUE(job.PerformAction(JobAction::kStop));
@@ -155,6 +164,7 @@ TEST_F(AbstractJobTest, FromPaused)
 
     EXPECT_CALL(job, Start()).Times(1);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStart));
@@ -167,6 +177,7 @@ TEST_F(AbstractJobTest, FromPaused)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kPause));
@@ -180,6 +191,7 @@ TEST_F(AbstractJobTest, FromPaused)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(1);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStep));
@@ -193,6 +205,7 @@ TEST_F(AbstractJobTest, FromPaused)
 
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(1);
     EXPECT_TRUE(job.PerformAction(JobAction::kStop));

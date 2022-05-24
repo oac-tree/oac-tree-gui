@@ -48,6 +48,7 @@ private:
 
   virtual void Start() {}
   virtual void Pause() {}
+  virtual void Release() {}
   virtual void Step() {}
   virtual void Stop() {}
 

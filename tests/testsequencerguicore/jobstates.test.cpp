@@ -36,6 +36,7 @@ public:
   public:
     MOCK_METHOD0(Start, void(void));
     MOCK_METHOD0(Pause, void(void));
+    MOCK_METHOD0(Release, void(void));
     MOCK_METHOD0(Step, void(void));
     MOCK_METHOD0(Stop, void(void));
   };
@@ -50,6 +51,7 @@ TEST_F(JobStatesTest, IdleState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(1);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     auto result = state.Handle(JobAction::kStart, &job);
@@ -61,6 +63,7 @@ TEST_F(JobStatesTest, IdleState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
@@ -70,6 +73,7 @@ TEST_F(JobStatesTest, IdleState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStep, &job));  // trigger action
@@ -79,6 +83,7 @@ TEST_F(JobStatesTest, IdleState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStop, &job));  // trigger action
@@ -94,6 +99,7 @@ TEST_F(JobStatesTest, RunningState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStart, &job));  // trigger action
@@ -103,6 +109,7 @@ TEST_F(JobStatesTest, RunningState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(1);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     auto result = state.Handle(JobAction::kPause, &job);
@@ -114,6 +121,7 @@ TEST_F(JobStatesTest, RunningState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(1);
     EXPECT_CALL(job, Stop()).Times(0);
     auto result = state.Handle(JobAction::kStep, &job);
@@ -125,6 +133,7 @@ TEST_F(JobStatesTest, RunningState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(1);
     auto result = state.Handle(JobAction::kStop, &job);
@@ -142,6 +151,7 @@ TEST_F(JobStatesTest, PausedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(1);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     auto result = state.Handle(JobAction::kStart, &job);
@@ -153,6 +163,7 @@ TEST_F(JobStatesTest, PausedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
@@ -162,6 +173,7 @@ TEST_F(JobStatesTest, PausedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(1);
     EXPECT_CALL(job, Stop()).Times(0);
     auto result = state.Handle(JobAction::kStep, &job);
@@ -173,6 +185,7 @@ TEST_F(JobStatesTest, PausedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(1);
     auto result = state.Handle(JobAction::kStop, &job);
@@ -190,6 +203,7 @@ TEST_F(JobStatesTest, StoppedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(1);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     auto result = state.Handle(JobAction::kStart, &job);
@@ -201,6 +215,7 @@ TEST_F(JobStatesTest, StoppedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
@@ -210,6 +225,7 @@ TEST_F(JobStatesTest, StoppedState)
     MockJob job;
     EXPECT_CALL(job, Start()).Times(0);
     EXPECT_CALL(job, Pause()).Times(0);
+    EXPECT_CALL(job, Release()).Times(0);
     EXPECT_CALL(job, Step()).Times(0);
     EXPECT_CALL(job, Stop()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStep, &job));  // trigger action
