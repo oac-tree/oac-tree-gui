@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   abstractjob.h
   functionrunner.cpp
   functionrunner.h
+  functionrunnerv2.cpp
+  functionrunnerv2.h
   jobstates.cpp
   jobstates.h
   runnerinterface.h
