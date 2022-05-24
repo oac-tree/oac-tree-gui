@@ -45,6 +45,8 @@ public:
 
   void SetSleepTime(int msec);
 
+  bool IsPaused() const;
+
 private:
   mvvm::threadsafe_stack<int> m_step_request;
   WaitingMode m_waiting_mode{WaitingMode::kProceed};

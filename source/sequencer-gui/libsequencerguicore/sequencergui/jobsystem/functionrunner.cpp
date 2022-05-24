@@ -52,6 +52,12 @@ struct FunctionRunner::FunctionRunnerImpl
   void SetRunnerStatus(RunnerStatus value)
   {
     std::lock_guard lock(m_mutex);
+
+    if (value == m_runner_status)
+    {
+      return;
+    }
+
     m_runner_status = value;
 
     std::cout << "SetRunnerStatus " << static_cast<int>(value) << std::endl;
@@ -81,7 +87,19 @@ struct FunctionRunner::FunctionRunnerImpl
         break;
       }
       std::cout << "aaaa 1.1a " << std::endl;
+
+      if (m_flow_controller.IsPaused())
+      {
+        SetRunnerStatus(RunnerStatus::kPaused);
+      }
+
       m_flow_controller.WaitIfNecessary();
+
+      if (m_flow_controller.IsPaused())
+      {
+        SetRunnerStatus(RunnerStatus::kRunning);
+      }
+
       std::cout << "aaaa 1.1b " << std::endl;
     }
     std::cout << "aaaa 1.2 " << std::endl;

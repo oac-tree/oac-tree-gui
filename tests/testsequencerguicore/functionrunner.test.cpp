@@ -71,17 +71,15 @@ TEST_F(FunctionRunnerTest, InitialState)
   EXPECT_TRUE(WaitForCompletion(runner, 0.001));
 }
 
-//! Running worker which immediately returns `false`.
-//! Represent short task which is executed normally.
+//! Start and normal completion of the short task.
 
-TEST_F(FunctionRunnerTest, StartSingleCall)
+TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 {
   MockListener listener;
-  auto worker = []() { return false; };
+  auto worker = []() { return false; };  // worker asks to exit immediately
   FunctionRunner runner(worker, listener.CreateCallback());
 
-  // expecting calls with status change kRunning, kCompleted
-  {
+  {  // expecting calls with status change in this order
     ::testing::InSequence seq;
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
@@ -128,8 +126,7 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   };  // executes forever
   FunctionRunner runner(worker, listener.CreateCallback());
 
-  // expecting calls with status change kRunning, kCanceling, kStopped
-  {
+  {  // expecting calls with status change in this order
     ::testing::InSequence seq;
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
@@ -148,53 +145,81 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kStopped);
 }
 
-//! Stepwise task execution.
-//! The task is launched in step wise mode. After 3 steps the task is expected to be completed.
+//! Stepwise task execution. The task is launched in step wise mode. After 3 steps the task is
+//! expected to be completed.
 
 TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
 {
-  //  MockListener listener;
+  int nsteps{0};
+  auto worker = [&nsteps]()
+  {
+    std::this_thread::sleep_for(msec(10));
+    nsteps++;
+    return nsteps < 3;  // should stop when nsteps==3
+  };
+
+  FunctionRunner runner(worker);
+  runner.SetWaitingMode(WaitingMode::kWaitForRelease);
+
+  EXPECT_TRUE(runner.Start());
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
+  EXPECT_TRUE(runner.IsBusy());
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(nsteps, 1);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(runner.IsBusy());
+
+  runner.Step();
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(nsteps, 2);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(runner.IsBusy());
+
+  runner.Step();
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(nsteps, 3);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
+  EXPECT_FALSE(runner.IsBusy());
+}
+
+//! Stepwise task execution (checking signals). The task is launched in step wise mode. After 2
+//! steps the task is expected to be completed.
+
+TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
+{
+  MockListener listener;
   int nsteps{0};
   auto worker = [&nsteps]()
   {
     std::this_thread::sleep_for(msec(10));
     nsteps++;
     std::cout << "worker " << nsteps << std::endl;
-    return nsteps < 3;  // should stop when nsteps==3
+    return nsteps < 2;  // should stop when nsteps==3
   };
 
-  FunctionRunner runner(worker);
-  //  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
   runner.SetWaitingMode(WaitingMode::kWaitForRelease);
 
-  //  // expecting calls with status change kRunning, kCanceling, kStopped
-  //  {
-  //    ::testing::InSequence seq;
-  //    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-  //    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
-  //    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
-  //  }
+  {  // expecting calls with status change in this order
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+  }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
-  EXPECT_TRUE(runner.IsBusy());
   std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(runner.IsBusy());
 
   EXPECT_EQ(nsteps, 1);
-  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(runner.IsBusy());
 
   runner.Step();
   std::this_thread::sleep_for(msec(20));
-
   EXPECT_EQ(nsteps, 2);
-  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kRunning);
-  EXPECT_TRUE(runner.IsBusy());
-
-  runner.Step();
-  std::this_thread::sleep_for(msec(20));
-
-  EXPECT_EQ(nsteps, 3);
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
   EXPECT_FALSE(runner.IsBusy());
 }

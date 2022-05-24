@@ -90,4 +90,9 @@ void FlowController::SetSleepTime(int msec)
   m_wait_msec = msec;
 }
 
+bool FlowController::IsPaused() const
+{
+  return m_waiting_mode == WaitingMode::kWaitForRelease;
+}
+
 }  // namespace sequencergui

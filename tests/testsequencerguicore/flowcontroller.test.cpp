@@ -43,6 +43,12 @@ public:
   using msec = std::chrono::milliseconds;
 };
 
+TEST_F(FlowControllerTest, InitialState)
+{
+  FlowController controller;
+  EXPECT_FALSE(controller.IsPaused());
+}
+
 TEST_F(FlowControllerTest, ProceedMode)
 {
   FlowController controller;
@@ -76,6 +82,8 @@ TEST_F(FlowControllerTest, WaitForReleaseMode)
 {
   FlowController controller;
   controller.SetWaitingMode(WaitingMode::kWaitForRelease);
+  EXPECT_TRUE(controller.IsPaused());
+
   time_t start_time;
   time_t end_time;
   std::future<void> waiting_done;
