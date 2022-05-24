@@ -30,13 +30,59 @@ using ::testing::NiceMock;
 class FunctionRunnerTest : public ::testing::Test
 {
 public:
+  //! Auxiliary class to listen for RunnerStatus changed events.
+  class MockListener
+  {
+  public:
+    MOCK_METHOD1(StatusChanged, void(RunnerStatus status));
+
+    //! Creates callback to listen for status change.
+    //! The call will be propagated to StatusChanged mock method to benefit from gmock.
+    std::function<void(RunnerStatus)> CreateCallback()
+    {
+      return [this](auto status) { StatusChanged(status); };
+    }
+  };
 };
+
+//! Checking that listener works as expected.
+
+TEST_F(FunctionRunnerTest, CheckListener)
+{
+  MockListener listener;
+
+  EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+
+  auto callback = listener.CreateCallback();
+  callback(RunnerStatus::kRunning);
+}
+
+//! Initial state of FunctionRunner.
 
 TEST_F(FunctionRunnerTest, InitialState)
 {
-  //  int count{0};
-  //  auto worker = [&count]() -> bool { return count++; return false; };
-
   FunctionRunner runner([]() { return false; });
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kIdle);
+  EXPECT_FALSE(runner.IsBusy());
+  EXPECT_TRUE(WaitForCompletion(runner, 0.001));
+}
+
+//! Running worker which immediately returns `false`.
+
+TEST_F(FunctionRunnerTest, StartSingleCall)
+{
+  MockListener listener;
+  auto worker = []() { return false; };
+  FunctionRunner runner(worker, listener.CreateCallback());
+
+  // expecting two calls with status change kIdle, kRunning, kCompleted
+  {
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+  }
+
+  EXPECT_TRUE(runner.Start());  // triggering action
+  WaitForCompletion(runner, 0.02);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
 }

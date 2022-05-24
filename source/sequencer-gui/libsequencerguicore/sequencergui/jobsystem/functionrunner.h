@@ -49,10 +49,16 @@ public:
 
   RunnerStatus GetRunnerStatus() const;
 
+  bool IsBusy() const;
+
 private:
   struct FunctionRunnerImpl;
   std::unique_ptr<FunctionRunnerImpl> p_impl;
 };
+
+//! Will wait a given amount of sec for job completion. Returns `true` is runner has finished before
+//! the timeout, `false` otherwise. Internally has a precision of 10 msec.
+bool WaitForCompletion(const FunctionRunner& runner, double timeout_sec);
 
 }  // namespace sequencergui
 

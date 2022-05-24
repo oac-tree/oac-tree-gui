@@ -22,7 +22,11 @@
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/monitor/flowcontroller.h"
 
+#include <algorithm>
 #include <atomic>
+#include <chrono>
+#include <cmath>
+#include <iostream>
 #include <mutex>
 #include <thread>
 
@@ -49,11 +53,13 @@ struct FunctionRunner::FunctionRunnerImpl
   {
     std::lock_guard lock(m_mutex);
     m_runner_status = value;
+
+    std::cout << "SetRunnerStatus " << static_cast<int>(value) << std::endl;
+
     if (m_status_changed_callback)
     {
       m_status_changed_callback(m_runner_status);
     }
-    // FIXME emit is necessary here
   }
 
   bool IsBusy() const
@@ -64,23 +70,26 @@ struct FunctionRunner::FunctionRunnerImpl
 
   void Launch()
   {
+    std::cout << "aaaa 1.0 " << std::endl;
     m_halt_request.store(false);
 
     while (!m_halt_request.load())
     {
+      std::cout << "aaaa 1.1 " << std::endl;
       if (!m_worker())
       {
         break;
       }
       m_flow_controller.WaitIfNecessary();
     }
+    std::cout << "aaaa 1.2 " << std::endl;
+    SetRunnerStatus(m_halt_request.load() ? RunnerStatus::kStopped : RunnerStatus::kCompleted);
   }
 
   void Stop()
   {
     SetRunnerStatus(RunnerStatus::kCanceling);
     Shutdown();
-    SetRunnerStatus(RunnerStatus::kStopped);
   }
 
   void Shutdown()
@@ -155,6 +164,27 @@ bool FunctionRunner::IsInTransition() const
 RunnerStatus FunctionRunner::GetRunnerStatus() const
 {
   return p_impl->m_runner_status;
+}
+
+bool FunctionRunner::IsBusy() const
+{
+  return p_impl->IsBusy();
+}
+
+bool WaitForCompletion(const FunctionRunner &runner, double timeout_sec)
+{
+  const int timeout_precision_msec(10);
+  auto timeout =
+      std::chrono::system_clock::now() + std::chrono::nanoseconds(std::lround(timeout_sec * 1e9));
+  while (std::chrono::system_clock::now() < timeout)
+  {
+    if (!runner.IsBusy())
+    {
+      return true;
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(timeout_precision_msec));
+  }
+  return false;
 }
 
 }  // namespace sequencergui
