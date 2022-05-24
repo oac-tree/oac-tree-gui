@@ -35,15 +35,24 @@ struct FunctionRunner::FunctionRunnerImpl
   std::thread m_runner_thread;
   RunnerStatus m_runner_status{RunnerStatus::kIdle};
   std::function<bool()> m_worker;
-  std::atomic<bool> m_halt_request;
+  std::function<void(RunnerStatus)> m_status_changed_callback;
+  std::atomic<bool> m_halt_request{false};
   FlowController m_flow_controller;
 
-  explicit FunctionRunnerImpl(std::function<bool()> worker) : m_worker(std::move(worker)) {}
+  explicit FunctionRunnerImpl(std::function<bool()> worker,
+                              std::function<void(RunnerStatus)> status_changed_callback)
+      : m_worker(std::move(worker)), m_status_changed_callback(std::move(status_changed_callback))
+  {
+  }
 
   void SetRunnerStatus(RunnerStatus value)
   {
     std::lock_guard lock(m_mutex);
     m_runner_status = value;
+    if (m_status_changed_callback)
+    {
+      m_status_changed_callback(m_runner_status);
+    }
     // FIXME emit is necessary here
   }
 
@@ -59,7 +68,10 @@ struct FunctionRunner::FunctionRunnerImpl
 
     while (!m_halt_request.load())
     {
-      m_halt_request.store(m_worker());
+      if (!m_worker())
+      {
+        break;
+      }
       m_flow_controller.WaitIfNecessary();
     }
   }
@@ -67,22 +79,32 @@ struct FunctionRunner::FunctionRunnerImpl
   void Stop()
   {
     SetRunnerStatus(RunnerStatus::kCanceling);
+    Shutdown();
+    SetRunnerStatus(RunnerStatus::kStopped);
+  }
+
+  void Shutdown()
+  {
     m_halt_request.store(true);
     m_flow_controller.Interrupt();  // to prevent possible waiting on step request
     if (m_runner_thread.joinable())
     {
       m_runner_thread.join();
     }
-    SetRunnerStatus(RunnerStatus::kStopped);
   }
 };
 
-FunctionRunner::FunctionRunner(std::function<bool()> worker)
-    : p_impl(std::make_unique<FunctionRunnerImpl>(std::move(worker)))
+FunctionRunner::FunctionRunner(std::function<bool()> worker,
+                               std::function<void(RunnerStatus)> status_changed_callback)
+    : p_impl(
+        std::make_unique<FunctionRunnerImpl>(std::move(worker), std::move(status_changed_callback)))
 {
 }
 
-FunctionRunner::~FunctionRunner() = default;
+FunctionRunner::~FunctionRunner()
+{
+  p_impl->Shutdown();
+}
 
 bool FunctionRunner::Start()
 {

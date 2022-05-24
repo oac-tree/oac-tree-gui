@@ -33,7 +33,8 @@ namespace sequencergui
 class FunctionRunner : public RunnerInterface
 {
 public:
-  explicit FunctionRunner(std::function<bool()> worker);
+  explicit FunctionRunner(std::function<bool()> worker,
+                          std::function<void(RunnerStatus)> status_changed_callback = {});
   ~FunctionRunner() override;
 
   bool Start() override;
