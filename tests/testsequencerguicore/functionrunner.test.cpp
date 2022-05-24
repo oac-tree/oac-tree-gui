@@ -194,7 +194,7 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
     std::this_thread::sleep_for(msec(10));
     nsteps++;
     std::cout << "worker " << nsteps << std::endl;
-    return nsteps < 2;  // should stop when nsteps==3
+    return nsteps < 2;  // should stop when nsteps==2
   };
 
   FunctionRunner runner(worker, listener.CreateCallback());
@@ -210,9 +210,7 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
 
   EXPECT_TRUE(runner.Start());  // triggering action
   std::this_thread::sleep_for(msec(20));
-  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(runner.IsBusy());
-
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(runner.IsBusy());
@@ -221,5 +219,47 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
   std::this_thread::sleep_for(msec(20));
   EXPECT_EQ(nsteps, 2);
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kCompleted);
+  EXPECT_FALSE(runner.IsBusy());
+}
+
+//! Stepwise task execution. The task is launched in step wise mode. After
+//! second step it is stopped.
+
+TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
+{
+  MockListener listener;
+  int nsteps{0};
+  auto worker = [&nsteps]()
+  {
+    std::this_thread::sleep_for(msec(10));
+    nsteps++;
+    std::cout << "worker " << nsteps << std::endl;
+    return nsteps < 2;  // should stop when nsteps==2
+  };
+
+  FunctionRunner runner(worker, listener.CreateCallback());
+  runner.SetWaitingMode(WaitingMode::kWaitForRelease);
+
+  {  // expecting calls with status change in this order
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
+  }
+
+  EXPECT_TRUE(runner.Start());  // triggering action
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_TRUE(runner.IsBusy());
+  EXPECT_EQ(nsteps, 1);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(runner.IsBusy());
+
+  // let's terminate while being in step mode
+  runner.Stop();
+
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(nsteps, 1);
+  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kStopped);
   EXPECT_FALSE(runner.IsBusy());
 }

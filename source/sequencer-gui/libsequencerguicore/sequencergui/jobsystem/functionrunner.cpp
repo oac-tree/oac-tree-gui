@@ -103,6 +103,7 @@ struct FunctionRunner::FunctionRunnerImpl
       std::cout << "aaaa 1.1b " << std::endl;
     }
     std::cout << "aaaa 1.2 " << std::endl;
+
     SetRunnerStatus(m_halt_request.load() ? RunnerStatus::kStopped : RunnerStatus::kCompleted);
   }
 
@@ -110,6 +111,7 @@ struct FunctionRunner::FunctionRunnerImpl
   {
     SetRunnerStatus(RunnerStatus::kStopping);
     Shutdown();
+    SetRunnerStatus(RunnerStatus::kStopped);
   }
 
   void Shutdown()
