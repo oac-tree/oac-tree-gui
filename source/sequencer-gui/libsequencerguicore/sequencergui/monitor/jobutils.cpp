@@ -29,10 +29,11 @@ namespace
 const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     {sequencergui::RunnerStatus::kIdle, "Idle"},
     {sequencergui::RunnerStatus::kRunning, "Running"},
+    {sequencergui::RunnerStatus::kPaused, "Paused"},
     {sequencergui::RunnerStatus::kCompleted, "Completed"},
     {sequencergui::RunnerStatus::kPaused, "Paused"},
-    {sequencergui::RunnerStatus::kCanceling, "Canceling"},
-    {sequencergui::RunnerStatus::kStopped, "Canceled"},
+    {sequencergui::RunnerStatus::kStopping, "Stopping"},
+    {sequencergui::RunnerStatus::kStopped, "Stopped"},
     {sequencergui::RunnerStatus::kFailed, "Failed"}};
 }  // namespace
 

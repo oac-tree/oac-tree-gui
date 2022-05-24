@@ -127,7 +127,7 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   {
     ::testing::InSequence seq;
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCanceling));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
     EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
   }
 

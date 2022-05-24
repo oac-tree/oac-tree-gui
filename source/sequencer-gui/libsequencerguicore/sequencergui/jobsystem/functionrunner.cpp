@@ -64,7 +64,7 @@ struct FunctionRunner::FunctionRunnerImpl
 
   bool IsBusy() const
   {
-    return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling
+    return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kStopping
            || m_runner_status == RunnerStatus::kPaused;
   }
 
@@ -88,7 +88,7 @@ struct FunctionRunner::FunctionRunnerImpl
 
   void Stop()
   {
-    SetRunnerStatus(RunnerStatus::kCanceling);
+    SetRunnerStatus(RunnerStatus::kStopping);
     Shutdown();
   }
 

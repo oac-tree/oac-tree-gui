@@ -92,7 +92,7 @@ void ProcedureRunner::Terminate()
 {
   onLogMessage("ProcedureRunner::Terminate()", JobMessageType::kWarning);
 
-  SetRunnerStatus(RunnerStatus::kCanceling);
+  SetRunnerStatus(RunnerStatus::kStopping);
 
   if (m_domain_runner)
   {
@@ -140,7 +140,7 @@ void ProcedureRunner::SetUserContext(const UserContext &user_context)
 
 bool ProcedureRunner::IsBusy() const
 {
-  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kCanceling
+  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kStopping
          || m_runner_status == RunnerStatus::kPaused;
 }
 
@@ -190,7 +190,7 @@ void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)
   m_domain_runner->SetProcedure(procedure);
   m_domain_runner->ExecuteProcedure();
   procedure->Reset();
-  if (GetRunnerStatus() != RunnerStatus::kCanceling)
+  if (GetRunnerStatus() != RunnerStatus::kStopping)
   {
     SetRunnerStatus(RunnerStatus::kCompleted);
   }
