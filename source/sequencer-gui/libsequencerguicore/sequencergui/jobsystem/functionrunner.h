@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNERV2_H
-#define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNERV2_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
+#define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
 
 #include "sequencergui/jobsystem/abstractjob.h"
 #include "sequencergui/monitor/job_types.h"
@@ -31,12 +31,12 @@ namespace sequencergui
 
 //! Basic implementation of the function runner.
 //! It will execute `worker` function in a loop unless it returns false.
-class FunctionRunnerV2 : public AbstractJob
+class FunctionRunner : public AbstractJob
 {
 public:
-  explicit FunctionRunnerV2(std::function<bool()> worker,
-                            std::function<void(RunnerStatus)> status_changed_callback = {});
-  ~FunctionRunnerV2() override;
+  explicit FunctionRunner(std::function<bool()> worker,
+                          std::function<void(RunnerStatus)> status_changed_callback = {});
+  ~FunctionRunner() override;
 
   bool IsBusy() const;
 
@@ -54,8 +54,8 @@ private:
 
 //! Will wait a given amount of sec for job completion. Returns `true` is runner has finished before
 //! the timeout, `false` otherwise. Internally has a precision of 10 msec.
-bool WaitForCompletion(const FunctionRunnerV2& runner, double timeout_sec);
+bool WaitForCompletion(const FunctionRunner& runner, double timeout_sec);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNERV2_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H

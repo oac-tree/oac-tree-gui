@@ -3,7 +3,7 @@
 target_sources(${library_name} PRIVATE
   abstractjob.cpp
   abstractjob.h
-  functionrunnerv2.cpp
-  functionrunnerv2.h
+  functionrunner.cpp
+  functionrunner.h
   runnerinterface.h
   )

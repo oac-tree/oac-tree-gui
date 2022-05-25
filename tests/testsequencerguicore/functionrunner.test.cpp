@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/functionrunnerv2.h"
+#include "sequencergui/jobsystem/functionrunner.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -26,12 +26,11 @@
 #include <thread>
 
 using namespace sequencergui;
-using ::testing::NiceMock;
 using msec = std::chrono::milliseconds;
 
 //! Tests for JobStates.
 
-class FunctionRunnerV2Test : public ::testing::Test
+class FunctionRunnerTest : public ::testing::Test
 {
 public:
   //! Auxiliary class to listen for RunnerStatus changed events.
@@ -51,7 +50,7 @@ public:
 
 //! Checking that listener works as expected.
 
-TEST_F(FunctionRunnerV2Test, CheckListener)
+TEST_F(FunctionRunnerTest, CheckListener)
 {
   MockListener listener;
 
@@ -63,9 +62,9 @@ TEST_F(FunctionRunnerV2Test, CheckListener)
 
 //! Initial state of FunctionRunner.
 
-TEST_F(FunctionRunnerV2Test, InitialState)
+TEST_F(FunctionRunnerTest, InitialState)
 {
-  FunctionRunnerV2 runner([]() { return false; });
+  FunctionRunner runner([]() { return false; });
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kIdle);
   EXPECT_FALSE(runner.IsBusy());
   EXPECT_TRUE(WaitForCompletion(runner, 0.001));
@@ -73,11 +72,11 @@ TEST_F(FunctionRunnerV2Test, InitialState)
 
 //! Start and normal completion of the short task.
 
-TEST_F(FunctionRunnerV2Test, ShortTaskNormalCompletion)
+TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 {
   MockListener listener;
   auto worker = []() { return false; };  // worker asks to exit immediately
-  FunctionRunnerV2 runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
@@ -93,7 +92,7 @@ TEST_F(FunctionRunnerV2Test, ShortTaskNormalCompletion)
 
 //! Premature destruction. Runner dies before task is finished.
 
-TEST_F(FunctionRunnerV2Test, PrematureDeletionDuringRun)
+TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
 {
   int ncount(0);
   auto worker = [&ncount]()  // executes forever
@@ -103,7 +102,7 @@ TEST_F(FunctionRunnerV2Test, PrematureDeletionDuringRun)
     return true;
   };
 
-  auto runner = std::make_unique<FunctionRunnerV2>(worker);
+  auto runner = std::make_unique<FunctionRunner>(worker);
 
   runner->Start();
   std::this_thread::sleep_for(msec(20));
@@ -116,7 +115,7 @@ TEST_F(FunctionRunnerV2Test, PrematureDeletionDuringRun)
 
 //! Terminating the procedure that runs too long.
 
-TEST_F(FunctionRunnerV2Test, StartAndTerminate)
+TEST_F(FunctionRunnerTest, StartAndTerminate)
 {
   MockListener listener;
   auto worker = []()
@@ -124,7 +123,7 @@ TEST_F(FunctionRunnerV2Test, StartAndTerminate)
     std::this_thread::sleep_for(msec(10));
     return true;
   };  // executes forever
-  FunctionRunnerV2 runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
@@ -148,7 +147,7 @@ TEST_F(FunctionRunnerV2Test, StartAndTerminate)
 //! Stepwise task execution. The task is launched in step wise mode. After 3 steps the task is
 //! expected to be completed.
 
-TEST_F(FunctionRunnerV2Test, StepwiseExecutionAndNormalCompletion)
+TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
 {
   int nsteps{0};
   auto worker = [&nsteps]()
@@ -158,7 +157,7 @@ TEST_F(FunctionRunnerV2Test, StepwiseExecutionAndNormalCompletion)
     return nsteps < 3;  // should stop when nsteps==3
   };
 
-  FunctionRunnerV2 runner(worker);
+  FunctionRunner runner(worker);
 
   EXPECT_TRUE(runner.Step());
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
@@ -184,7 +183,7 @@ TEST_F(FunctionRunnerV2Test, StepwiseExecutionAndNormalCompletion)
 //! Stepwise task execution (checking signals). The task is launched in step wise mode. After 2
 //! steps the task is expected to be completed.
 
-TEST_F(FunctionRunnerV2Test, SignalingDuringStepwiseExecutionAndNormalCompletion)
+TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
 {
   MockListener listener;
   int nsteps{0};
@@ -196,7 +195,7 @@ TEST_F(FunctionRunnerV2Test, SignalingDuringStepwiseExecutionAndNormalCompletion
     return nsteps < 2;  // should stop when nsteps==2
   };
 
-  FunctionRunnerV2 runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
@@ -223,7 +222,7 @@ TEST_F(FunctionRunnerV2Test, SignalingDuringStepwiseExecutionAndNormalCompletion
 //! Stepwise task execution. The task is launched in step wise mode. After
 //! second step it is stopped.
 
-TEST_F(FunctionRunnerV2Test, TerminateDuringStepwiseExecution)
+TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
 {
   MockListener listener;
   int nsteps{0};
@@ -235,7 +234,7 @@ TEST_F(FunctionRunnerV2Test, TerminateDuringStepwiseExecution)
     return nsteps < 2;  // should stop when nsteps==2
   };
 
-  FunctionRunnerV2 runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
 //  FunctionRunnerV2 runner(worker);
 
   {  // expecting calls with status change in this order
@@ -263,7 +262,7 @@ TEST_F(FunctionRunnerV2Test, TerminateDuringStepwiseExecution)
 
 //! We start normally, then make a pause, when continue till normal termination.
 
- TEST_F(FunctionRunnerV2Test, RunPauseRun)
+ TEST_F(FunctionRunnerTest, RunPauseRun)
 {
   MockListener listener;
   int nsteps{0};
@@ -276,7 +275,7 @@ TEST_F(FunctionRunnerV2Test, TerminateDuringStepwiseExecution)
     return is_continue;
   };
 
-  FunctionRunnerV2 runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
 
 //  FunctionRunnerV2 runner(worker);
 
@@ -315,7 +314,7 @@ TEST_F(FunctionRunnerV2Test, TerminateDuringStepwiseExecution)
 
 //! We start normally, then make a pause, then step, then continue till normal termination.
 
-TEST_F(FunctionRunnerV2Test, RunPauseStepRun)
+TEST_F(FunctionRunnerTest, RunPauseStepRun)
 {
   MockListener listener;
   int nsteps{0};
@@ -328,7 +327,7 @@ TEST_F(FunctionRunnerV2Test, RunPauseStepRun)
     return is_continue;
   };
 
-  FunctionRunnerV2 runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, listener.CreateCallback());
 
 //  FunctionRunnerV2 runner(worker);
 
@@ -374,13 +373,5 @@ TEST_F(FunctionRunnerV2Test, RunPauseStepRun)
   EXPECT_TRUE(WaitForCompletion(runner, 0.02));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
-
-
-  // releasing waiting
-
-//  std::this_thread::sleep_for(msec(20));
-//  EXPECT_EQ(nsteps, 1);
-//  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kStopped);
-//  EXPECT_FALSE(runner.IsBusy());
 }
 

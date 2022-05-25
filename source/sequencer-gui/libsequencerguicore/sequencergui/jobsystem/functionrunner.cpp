@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/functionrunnerv2.h"
+#include "sequencergui/jobsystem/functionrunner.h"
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/monitor/flowcontroller.h"
@@ -33,7 +33,7 @@
 namespace sequencergui
 {
 
-struct FunctionRunnerV2::FunctionRunnerImpl
+struct FunctionRunner::FunctionRunnerImpl
 {
   AbstractJob* m_self{nullptr};
   std::thread m_runner_thread;
@@ -119,24 +119,24 @@ struct FunctionRunnerV2::FunctionRunnerImpl
   }
 };
 
-FunctionRunnerV2::FunctionRunnerV2(std::function<bool()> worker,
+FunctionRunner::FunctionRunner(std::function<bool()> worker,
                                    std::function<void(RunnerStatus)> status_changed_callback)
     : p_impl(std::make_unique<FunctionRunnerImpl>(this, std::move(worker),
                                                   std::move(status_changed_callback)))
 {
 }
 
-FunctionRunnerV2::~FunctionRunnerV2()
+FunctionRunner::~FunctionRunner()
 {
   p_impl->Shutdown();
 }
 
-bool FunctionRunnerV2::IsBusy() const
+bool FunctionRunner::IsBusy() const
 {
   return p_impl->IsBusy();
 }
 
-void FunctionRunnerV2::StartRequest()
+void FunctionRunner::StartRequest()
 {
   if (p_impl->m_runner_thread.joinable())
   {
@@ -147,27 +147,27 @@ void FunctionRunnerV2::StartRequest()
   p_impl->m_runner_thread = std::thread([this]() { p_impl->Launch(); });
 }
 
-void FunctionRunnerV2::PauseModeOnRequest()
+void FunctionRunner::PauseModeOnRequest()
 {
   p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
 }
 
-void FunctionRunnerV2::PauseModeOffRequest()
+void FunctionRunner::PauseModeOffRequest()
 {
   p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kProceed);
 }
 
-void FunctionRunnerV2::StepRequest()
+void FunctionRunner::StepRequest()
 {
   p_impl->m_flow_controller.StepRequest();
 }
 
-void FunctionRunnerV2::StopRequest()
+void FunctionRunner::StopRequest()
 {
   p_impl->Stop();
 }
 
-void FunctionRunnerV2::OnStatusChange(RunnerStatus status)
+void FunctionRunner::OnStatusChange(RunnerStatus status)
 {
   if (p_impl->m_status_changed_callback)
   {
@@ -175,7 +175,7 @@ void FunctionRunnerV2::OnStatusChange(RunnerStatus status)
   }
 }
 
-bool WaitForCompletion(const FunctionRunnerV2& runner, double timeout_sec)
+bool WaitForCompletion(const FunctionRunner& runner, double timeout_sec)
 {
   const int timeout_precision_msec(10);
   auto timeout =
