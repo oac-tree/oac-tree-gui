@@ -70,7 +70,7 @@ private:
   virtual void StopRequest() {}
 
   //! Will be called on status change.
-  virtual void OnStatusChange() {}
+  virtual void OnStatusChange(RunnerStatus status) {}
 
   RunnerStatus m_status{RunnerStatus::kIdle};
   mutable std::mutex m_mutex;

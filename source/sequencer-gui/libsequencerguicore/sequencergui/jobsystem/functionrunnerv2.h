@@ -38,21 +38,16 @@ public:
                           std::function<void(RunnerStatus)> status_changed_callback = {});
   ~FunctionRunnerV2() override;
 
-  bool Start() override;
-
-  bool Stop() override;
-
-  bool Pause() override;
-
-  bool Step() override;
-
-  RunnerStatus GetRunnerStatus() const;
-
   bool IsBusy() const;
 
-  void SetWaitingMode(WaitingMode waiting_mode);
-
 private:
+  void StartRequest() override;
+  void PauseModeOnRequest() override;
+  void PauseModeOffRequest() override;
+  void StepRequest() override;
+  void StopRequest() override;
+  void OnStatusChange(RunnerStatus status) override;
+
   struct FunctionRunnerImpl;
   std::unique_ptr<FunctionRunnerImpl> p_impl;
 };
