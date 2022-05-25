@@ -187,7 +187,7 @@ TEST_F(AbstractJobV2Test, FromPaused)
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
 
-  {  // PausedSate + StepAction -> PauseModeRequest, StepRequest
+  {  // PausedSate + StepAction -> StepRequest
     TestJob job;
     job.SetStatus(RunnerStatus::kPaused);
 

@@ -119,7 +119,7 @@ RunnerStatus AbstractJobV2::GetStatus() const
 void AbstractJobV2::SetStatus(RunnerStatus status)
 {
   std::lock_guard lock(m_mutex);
-  std::cout << "status " << static_cast<int>(status) << std::endl;
+  std::cout << "    status " << static_cast<int>(status) << std::endl;
   m_status = status;
   OnStatusChange(m_status);
 }
