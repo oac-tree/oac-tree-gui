@@ -40,7 +40,8 @@ bool CanReleaseJob(::sequencergui::RunnerStatus current_status)
 
 bool CanStopJob(::sequencergui::RunnerStatus current_status)
 {
-  return current_status != ::sequencergui::RunnerStatus::kStopping;
+  return current_status != ::sequencergui::RunnerStatus::kStopping
+         && current_status != ::sequencergui::RunnerStatus::kIdle;
 }
 
 }  // namespace
@@ -54,47 +55,57 @@ AbstractJobV2::~AbstractJobV2() = default;
 
 bool AbstractJobV2::Start()
 {
+  bool is_valid_request{false};
   if (CanStartJob(m_status))
   {
     StartRequest();
+    is_valid_request = true;
   }
   else if (CanReleaseJob(m_status))
   {
-    ReleaseRequest();
+    PauseModeOffRequest();
+    is_valid_request = true;
   }
-  return true;
+  return is_valid_request;
 }
 
 bool AbstractJobV2::Stop()
 {
+  bool is_valid_request{false};
   if (CanStopJob(m_status))
   {
     StopRequest();
+    is_valid_request = true;
   }
-  return true;
+  return is_valid_request;
 }
 
 bool AbstractJobV2::Pause()
 {
+  bool is_valid_request{false};
   if (CanPauseJob(m_status))
   {
-    PauseRequest();
+    PauseModeOnRequest();
+    is_valid_request = true;
   }
-  return true;
+  return is_valid_request;
 }
 
 bool AbstractJobV2::Step()
 {
+  bool is_valid_request{false};
   if (CanReleaseJob(m_status))
   {
-    ReleaseRequest();
+    StepRequest();
+    is_valid_request = true;
   }
   else if (CanStartJob(m_status))
   {
-    PauseRequest();
+    PauseModeOnRequest();
     StartRequest();
+    is_valid_request = true;
   }
-  return true;
+  return is_valid_request;
 }
 
 RunnerStatus AbstractJobV2::GetStatus() const

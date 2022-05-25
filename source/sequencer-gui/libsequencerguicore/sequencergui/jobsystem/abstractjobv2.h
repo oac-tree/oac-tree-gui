@@ -53,10 +53,19 @@ public:
   void SetStatus(RunnerStatus status);
 
 private:
+  //! Submits jobs for a execution.
   virtual void StartRequest() {}
-  virtual void PauseRequest() {}
-  virtual void ReleaseRequest() {}
+
+  //! Request for pause mode.
+  virtual void PauseModeOnRequest() {}
+
+  //! Request for mode "proceed without waiting".
+  virtual void PauseModeOffRequest() {}
+
+  //! Request for single step.
   virtual void StepRequest() {}
+
+  //! Request for job stop without waiting for its natural completion.
   virtual void StopRequest() {}
 
   RunnerStatus m_status{RunnerStatus::kIdle};
