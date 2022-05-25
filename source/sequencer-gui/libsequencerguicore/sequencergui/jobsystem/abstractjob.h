@@ -49,11 +49,11 @@ protected:
 private:
   friend class JobStateInterface;
 
-  virtual void Start() {}
-  virtual void Pause() {}
-  virtual void Release() {}
-  virtual void Step() {}
-  virtual void Stop() {}
+  virtual void StartRequest() {}
+  virtual void PauseRequest() {}
+  virtual void ReleaseRequest() {}
+  virtual void StepRequest() {}
+  virtual void StopRequest() {}
 
   std::unique_ptr<JobStateInterface> m_state;
 };

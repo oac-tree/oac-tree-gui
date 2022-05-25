@@ -145,7 +145,7 @@ bool FunctionRunnerV2::IsBusy() const
 
 }
 
-void FunctionRunnerV2::Start()
+void FunctionRunnerV2::StartRequest()
 {
   if (!p_impl->m_worker)
   {
@@ -162,24 +162,24 @@ void FunctionRunnerV2::Start()
 
 }
 
-void FunctionRunnerV2::Pause()
+void FunctionRunnerV2::PauseRequest()
 {
   p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
 
 }
 
-void FunctionRunnerV2::Release()
+void FunctionRunnerV2::ReleaseRequest()
 {
   p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kProceed);
 }
 
-void FunctionRunnerV2::Step()
+void FunctionRunnerV2::StepRequest()
 {
   p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
   p_impl->m_flow_controller.StepRequest();
 }
 
-void FunctionRunnerV2::Stop()
+void FunctionRunnerV2::StopRequest()
 {
   p_impl->Stop();
 }

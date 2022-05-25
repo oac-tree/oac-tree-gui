@@ -32,27 +32,27 @@ JobStateInterface::~JobStateInterface() = default;
 
 void JobStateInterface::Start(AbstractJob *job)
 {
-  job->Start();
+  job->StartRequest();
 }
 
 void JobStateInterface::Pause(AbstractJob *job)
 {
-  job->Pause();
+  job->PauseRequest();
 }
 
 void JobStateInterface::Release(AbstractJob *job)
 {
-  job->Release();
+  job->ReleaseRequest();
 }
 
 void JobStateInterface::Step(AbstractJob *job)
 {
-  job->Step();
+  job->StepRequest();
 }
 
 void JobStateInterface::Stop(AbstractJob *job)
 {
-  job->Stop();
+  job->StopRequest();
 }
 
 // ----------------------------------------------------------------------------

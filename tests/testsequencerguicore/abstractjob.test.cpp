@@ -33,11 +33,11 @@ public:
   class TestJob : public sequencergui::AbstractJob
   {
   public:
-    MOCK_METHOD0(Start, void(void));
-    MOCK_METHOD0(Pause, void(void));
-    MOCK_METHOD0(Release, void(void));
-    MOCK_METHOD0(Step, void(void));
-    MOCK_METHOD0(Stop, void(void));
+    MOCK_METHOD0(StartRequest, void(void));
+    MOCK_METHOD0(PauseRequest, void(void));
+    MOCK_METHOD0(ReleaseRequest, void(void));
+    MOCK_METHOD0(StepRequest, void(void));
+    MOCK_METHOD0(StopRequest, void(void));
   };
 };
 
@@ -53,44 +53,44 @@ TEST_F(AbstractJobTest, FromIdle)
 {
   {  // to running
     TestJob job;
-    EXPECT_CALL(job, Start()).Times(1);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStart));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kRunning);
   }
 
   {  // to pause
     TestJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kPause));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
   }
 
   {  // to step
     TestJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kStep));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
   }
 
   {  // to stop
     TestJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kStop));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
   }
@@ -104,11 +104,11 @@ TEST_F(AbstractJobTest, FromRunning)
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kStart));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kRunning);
   }
@@ -117,11 +117,11 @@ TEST_F(AbstractJobTest, FromRunning)
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(1);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(1);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kPause));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
@@ -130,11 +130,11 @@ TEST_F(AbstractJobTest, FromRunning)
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(1);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(1);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStep));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
@@ -143,11 +143,11 @@ TEST_F(AbstractJobTest, FromRunning)
     NiceMock<TestJob> job;
     job.PerformAction(JobAction::kStart);
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(1);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(1);
     EXPECT_TRUE(job.PerformAction(JobAction::kStop));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
   }
@@ -162,11 +162,11 @@ TEST_F(AbstractJobTest, FromPaused)
     job.PerformAction(JobAction::kStart);
     job.PerformAction(JobAction::kPause);  // here we at paused state
 
-    EXPECT_CALL(job, Start()).Times(1);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStart));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kRunning);
   }
@@ -175,11 +175,11 @@ TEST_F(AbstractJobTest, FromPaused)
     job.PerformAction(JobAction::kStart);
     job.PerformAction(JobAction::kPause);  // here we at paused state
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.PerformAction(JobAction::kPause));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
@@ -189,11 +189,11 @@ TEST_F(AbstractJobTest, FromPaused)
     job.PerformAction(JobAction::kStart);
     job.PerformAction(JobAction::kPause);  // here we at paused state
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(1);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(1);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.PerformAction(JobAction::kStep));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
@@ -203,11 +203,11 @@ TEST_F(AbstractJobTest, FromPaused)
     job.PerformAction(JobAction::kStart);
     job.PerformAction(JobAction::kPause);  // here we at paused state
 
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(1);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(1);
     EXPECT_TRUE(job.PerformAction(JobAction::kStop));
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
   }

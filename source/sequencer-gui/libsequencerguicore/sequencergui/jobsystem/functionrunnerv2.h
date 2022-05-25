@@ -39,11 +39,11 @@ public:
   bool IsBusy() const;
 
 private:
-  void Start() override;
-  void Pause() override;
-  void Release() override;
-  void Step() override;
-  void Stop() override;
+  void StartRequest() override;
+  void PauseRequest() override;
+  void ReleaseRequest() override;
+  void StepRequest() override;
+  void StopRequest() override;
 
   struct FunctionRunnerImpl;
   std::unique_ptr<FunctionRunnerImpl> p_impl;

@@ -34,11 +34,11 @@ public:
   class MockJob : public sequencergui::AbstractJob
   {
   public:
-    MOCK_METHOD0(Start, void(void));
-    MOCK_METHOD0(Pause, void(void));
-    MOCK_METHOD0(Release, void(void));
-    MOCK_METHOD0(Step, void(void));
-    MOCK_METHOD0(Stop, void(void));
+    MOCK_METHOD0(StartRequest, void(void));
+    MOCK_METHOD0(PauseRequest, void(void));
+    MOCK_METHOD0(ReleaseRequest, void(void));
+    MOCK_METHOD0(StepRequest, void(void));
+    MOCK_METHOD0(StopRequest, void(void));
   };
 };
 
@@ -49,11 +49,11 @@ TEST_F(JobStatesTest, IdleState)
 
   {  // starting job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(1);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     auto result = state.Handle(JobAction::kStart, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kRunning);
@@ -61,31 +61,31 @@ TEST_F(JobStatesTest, IdleState)
 
   {  // Pausing job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
   }
 
   {  // Make a step
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStep, &job));  // trigger action
   }
 
   {  // Make a stop
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStop, &job));  // trigger action
   }
 }
@@ -97,21 +97,21 @@ TEST_F(JobStatesTest, RunningState)
 
   {  // starting job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStart, &job));  // trigger action
   }
 
   {  // Pausing job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(1);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(1);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     auto result = state.Handle(JobAction::kPause, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kPaused);
@@ -119,11 +119,11 @@ TEST_F(JobStatesTest, RunningState)
 
   {  // Make a step
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(1);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(1);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     auto result = state.Handle(JobAction::kStep, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kPaused);
@@ -131,11 +131,11 @@ TEST_F(JobStatesTest, RunningState)
 
   {  // Make a stop
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(1);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(1);
     auto result = state.Handle(JobAction::kStop, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kStopped);
@@ -149,11 +149,11 @@ TEST_F(JobStatesTest, PausedState)
 
   {  // starting job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(1);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     auto result = state.Handle(JobAction::kStart, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kRunning);
@@ -161,21 +161,21 @@ TEST_F(JobStatesTest, PausedState)
 
   {  // Pausing job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
   }
 
   {  // Make a step
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(1);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(1);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     auto result = state.Handle(JobAction::kStep, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kPaused);
@@ -183,11 +183,11 @@ TEST_F(JobStatesTest, PausedState)
 
   {  // Make a stop
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(1);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(1);
     auto result = state.Handle(JobAction::kStop, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kStopped);
@@ -201,11 +201,11 @@ TEST_F(JobStatesTest, StoppedState)
 
   {  // starting job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(1);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     auto result = state.Handle(JobAction::kStart, &job);
     ASSERT_TRUE(result.get());  // trigger action
     EXPECT_EQ(result->GetStatus(), RunnerStatus::kRunning);
@@ -213,30 +213,30 @@ TEST_F(JobStatesTest, StoppedState)
 
   {  // Pausing job
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kPause, &job));  // trigger action
   }
 
   {  // Make a step
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Release()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, ReleaseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStep, &job));  // trigger action
   }
 
   {  // Make a stop
     MockJob job;
-    EXPECT_CALL(job, Start()).Times(0);
-    EXPECT_CALL(job, Pause()).Times(0);
-    EXPECT_CALL(job, Step()).Times(0);
-    EXPECT_CALL(job, Stop()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(state.Handle(JobAction::kStop, &job));  // trigger action
   }
 }
