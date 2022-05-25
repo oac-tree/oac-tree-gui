@@ -51,25 +51,25 @@ public:
 
 //! Checking that listener works as expected.
 
-TEST_F(FunctionRunnerV2Test, CheckListener)
-{
-  MockListener listener;
+//TEST_F(FunctionRunnerV2Test, CheckListener)
+//{
+//  MockListener listener;
 
-  EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+//  EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
 
-  auto callback = listener.CreateCallback();
-  callback(RunnerStatus::kRunning);
-}
+//  auto callback = listener.CreateCallback();
+//  callback(RunnerStatus::kRunning);
+//}
 
-//! Initial state of FunctionRunner.
+////! Initial state of FunctionRunner.
 
-TEST_F(FunctionRunnerV2Test, InitialState)
-{
-  FunctionRunnerV2 runner([]() { return false; });
-  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kIdle);
-  EXPECT_FALSE(runner.IsBusy());
-  EXPECT_TRUE(WaitForCompletion(runner, 0.001));
-}
+//TEST_F(FunctionRunnerV2Test, InitialState)
+//{
+//  FunctionRunnerV2 runner([]() { return false; });
+//  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kIdle);
+//  EXPECT_FALSE(runner.IsBusy());
+//  EXPECT_TRUE(WaitForCompletion(runner, 0.001));
+//}
 
 //! Start and normal completion of the short task.
 

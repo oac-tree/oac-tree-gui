@@ -18,8 +18,9 @@
  *****************************************************************************/
 
 #include "sequencergui/jobsystem/functionrunnerv2.h"
-#include "sequencergui/monitor/flowcontroller.h"
+
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/monitor/flowcontroller.h"
 
 #include <algorithm>
 #include <atomic>
@@ -29,7 +30,6 @@
 #include <mutex>
 #include <thread>
 
-
 namespace sequencergui
 {
 
@@ -37,7 +37,7 @@ struct FunctionRunnerV2::FunctionRunnerImpl
 {
   std::mutex m_mutex;
   std::thread m_runner_thread;
-//  RunnerStatus m_runner_status{RunnerStatus::kIdle};
+  RunnerStatus m_runner_status{RunnerStatus::kIdle};
   std::function<bool()> m_worker;
   std::function<void(RunnerStatus)> m_status_changed_callback;
   std::atomic<bool> m_halt_request{false};
@@ -49,25 +49,30 @@ struct FunctionRunnerV2::FunctionRunnerImpl
   {
   }
 
+  void SetRunnerStatus(RunnerStatus value)
+  {
+    std::lock_guard lock(m_mutex);
 
-//  void SetRunnerStatus(RunnerStatus value)
-//  {
-//    std::lock_guard lock(m_mutex);
+    if (value == m_runner_status)
+    {
+      return;
+    }
 
-//    if (value == m_runner_status)
-//    {
-//      return;
-//    }
+    m_runner_status = value;
 
-//    m_runner_status = value;
+    std::cout << "SetRunnerStatus " << static_cast<int>(value) << std::endl;
 
-//    std::cout << "SetRunnerStatus " << static_cast<int>(value) << std::endl;
+    if (m_status_changed_callback)
+    {
+      m_status_changed_callback(m_runner_status);
+    }
+  }
 
-//    if (m_status_changed_callback)
-//    {
-//      m_status_changed_callback(m_runner_status);
-//    }
-//  }
+  bool IsBusy() const
+  {
+    return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kStopping
+           || m_runner_status == RunnerStatus::kPaused;
+  }
 
   void Launch()
   {
@@ -83,31 +88,31 @@ struct FunctionRunnerV2::FunctionRunnerImpl
       }
       std::cout << "aaaa 1.1a " << std::endl;
 
-//      if (m_flow_controller.IsPaused())
-//      {
-//        SetRunnerStatus(RunnerStatus::kPaused);
-//      }
+      if (m_flow_controller.IsPaused())
+      {
+        SetRunnerStatus(RunnerStatus::kPaused);
+      }
 
       m_flow_controller.WaitIfNecessary();
 
-//      if (m_flow_controller.IsPaused())
-//      {
-//        // after the release, we have to switch back to running state
-//        SetRunnerStatus(RunnerStatus::kRunning);
-//      }
+      if (m_flow_controller.IsPaused())
+      {
+        // after the release, we have to switch back to running state
+        SetRunnerStatus(RunnerStatus::kRunning);
+      }
 
       std::cout << "aaaa 1.1b " << std::endl;
     }
     std::cout << "aaaa 1.2 " << std::endl;
 
-//    SetRunnerStatus(m_halt_request.load() ? RunnerStatus::kStopped : RunnerStatus::kCompleted);
+    SetRunnerStatus(m_halt_request.load() ? RunnerStatus::kStopped : RunnerStatus::kCompleted);
   }
 
   void Stop()
   {
-//    SetRunnerStatus(RunnerStatus::kStopping);
+    SetRunnerStatus(RunnerStatus::kStopping);
     Shutdown();
-//    SetRunnerStatus(RunnerStatus::kStopped);
+    SetRunnerStatus(RunnerStatus::kStopped);
   }
 
   //! Shutdown working thread.
@@ -120,13 +125,10 @@ struct FunctionRunnerV2::FunctionRunnerImpl
       m_runner_thread.join();
     }
   }
-
-
 };
 
-
 FunctionRunnerV2::FunctionRunnerV2(std::function<bool()> worker,
-                                   std::function<void(RunnerStatus)> status_changed_callback)
+                               std::function<void(RunnerStatus)> status_changed_callback)
     : p_impl(
         std::make_unique<FunctionRunnerImpl>(std::move(worker), std::move(status_changed_callback)))
 {
@@ -137,16 +139,18 @@ FunctionRunnerV2::~FunctionRunnerV2()
   p_impl->Shutdown();
 }
 
-bool FunctionRunnerV2::IsBusy() const
+bool FunctionRunnerV2::Start()
 {
-  auto status = GetStatus();
-  return status == RunnerStatus::kRunning || status == RunnerStatus::kStopping
-         || status == RunnerStatus::kPaused;
+  if (GetRunnerStatus() == RunnerStatus::kPaused)
+  {
 
-}
+  }
 
-void FunctionRunnerV2::StartRequest()
-{
+  if (p_impl->IsBusy())
+  {
+    return false;
+  }
+
   if (!p_impl->m_worker)
   {
     throw InvalidOperationException("Worker is not defined");
@@ -157,31 +161,43 @@ void FunctionRunnerV2::StartRequest()
     p_impl->m_runner_thread.join();
   }
 
-//  p_impl->SetRunnerStatus(RunnerStatus::kRunning);
+  p_impl->SetRunnerStatus(RunnerStatus::kRunning);
   p_impl->m_runner_thread = std::thread([this]() { p_impl->Launch(); });
 
+  return true;
 }
 
-void FunctionRunnerV2::PauseRequest()
-{
-  p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
-
-}
-
-void FunctionRunnerV2::ReleaseRequest()
-{
-  p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kProceed);
-}
-
-void FunctionRunnerV2::StepRequest()
-{
-  p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
-  p_impl->m_flow_controller.StepRequest();
-}
-
-void FunctionRunnerV2::StopRequest()
+bool FunctionRunnerV2::Stop()
 {
   p_impl->Stop();
+  return true;
+}
+
+bool FunctionRunnerV2::Pause()
+{
+  p_impl->m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
+  return true;
+}
+
+bool FunctionRunnerV2::Step()
+{
+  p_impl->m_flow_controller.StepRequest();
+  return true;
+}
+
+RunnerStatus FunctionRunnerV2::GetRunnerStatus() const
+{
+  return p_impl->m_runner_status;
+}
+
+bool FunctionRunnerV2::IsBusy() const
+{
+  return p_impl->IsBusy();
+}
+
+void FunctionRunnerV2::SetWaitingMode(WaitingMode waiting_mode)
+{
+  p_impl->m_flow_controller.SetWaitingMode(waiting_mode);
 }
 
 bool WaitForCompletion(const FunctionRunnerV2 &runner, double timeout_sec)
@@ -199,7 +215,5 @@ bool WaitForCompletion(const FunctionRunnerV2 &runner, double timeout_sec)
   }
   return false;
 }
-
-
 
 }  // namespace sequencergui

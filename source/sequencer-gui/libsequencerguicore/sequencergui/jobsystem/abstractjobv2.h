@@ -32,8 +32,8 @@ namespace sequencergui
 class JobStateInterface;
 
 //! Abstract job to execute the arbitrary task via RunnerInterface.
-//! The main responsibility of a class is to forward JobAction to the runner, preventing
-//! contradicting actions.
+//! The main responsibility of a class is to process start/stop/pause/step requests in correct
+//! order.
 
 class AbstractJobV2 : public RunnerInterface
 {
