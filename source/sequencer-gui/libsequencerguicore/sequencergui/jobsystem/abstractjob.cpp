@@ -17,9 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/abstractjobv2.h"
-
-#include <iostream>
+#include "sequencergui/jobsystem/abstractjob.h"
 
 namespace
 {
@@ -51,11 +49,11 @@ bool CanStopJob(::sequencergui::RunnerStatus current_status)
 namespace sequencergui
 {
 
-AbstractJobV2::AbstractJobV2() = default;
+AbstractJob::AbstractJob() = default;
 
-AbstractJobV2::~AbstractJobV2() = default;
+AbstractJob::~AbstractJob() = default;
 
-bool AbstractJobV2::Start()
+bool AbstractJob::Start()
 {
   bool is_valid_request{false};
   if (CanStartJob(m_status))
@@ -71,7 +69,7 @@ bool AbstractJobV2::Start()
   return is_valid_request;
 }
 
-bool AbstractJobV2::Stop()
+bool AbstractJob::Stop()
 {
   bool is_valid_request{false};
   if (CanStopJob(m_status))
@@ -82,7 +80,7 @@ bool AbstractJobV2::Stop()
   return is_valid_request;
 }
 
-bool AbstractJobV2::Pause()
+bool AbstractJob::Pause()
 {
   bool is_valid_request{false};
   if (CanPauseJob(m_status))
@@ -93,7 +91,7 @@ bool AbstractJobV2::Pause()
   return is_valid_request;
 }
 
-bool AbstractJobV2::Step()
+bool AbstractJob::Step()
 {
   bool is_valid_request{false};
   if (CanReleaseJob(m_status))
@@ -110,16 +108,15 @@ bool AbstractJobV2::Step()
   return is_valid_request;
 }
 
-RunnerStatus AbstractJobV2::GetStatus() const
+RunnerStatus AbstractJob::GetStatus() const
 {
   std::lock_guard lock(m_mutex);
   return m_status;
 }
 
-void AbstractJobV2::SetStatus(RunnerStatus status)
+void AbstractJob::SetStatus(RunnerStatus status)
 {
   std::lock_guard lock(m_mutex);
-  std::cout << "    status " << static_cast<int>(status) << std::endl;
   m_status = status;
   OnStatusChange(m_status);
 }

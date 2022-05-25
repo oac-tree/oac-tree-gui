@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNERV2_H
 #define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNERV2_H
 
-#include "sequencergui/jobsystem/abstractjobv2.h"
+#include "sequencergui/jobsystem/abstractjob.h"
 #include "sequencergui/monitor/job_types.h"
 
 #include <functional>
@@ -31,11 +31,11 @@ namespace sequencergui
 
 //! Basic implementation of the function runner.
 //! It will execute `worker` function in a loop unless it returns false.
-class FunctionRunnerV2 : public AbstractJobV2
+class FunctionRunnerV2 : public AbstractJob
 {
 public:
   explicit FunctionRunnerV2(std::function<bool()> worker,
-                          std::function<void(RunnerStatus)> status_changed_callback = {});
+                            std::function<void(RunnerStatus)> status_changed_callback = {});
   ~FunctionRunnerV2() override;
 
   bool IsBusy() const;

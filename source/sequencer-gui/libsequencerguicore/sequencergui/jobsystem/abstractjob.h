@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOBV2_H
-#define SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOBV2_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
+#define SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
 
 #include "sequencergui/jobsystem/runnerinterface.h"
 #include "sequencergui/monitor/job_types.h"
@@ -35,11 +35,11 @@ class JobStateInterface;
 //! The main responsibility of a class is to process start/stop/pause/step requests in correct
 //! order.
 
-class AbstractJobV2 : public RunnerInterface
+class AbstractJob : public RunnerInterface
 {
 public:
-  AbstractJobV2();
-  ~AbstractJobV2() override;
+  AbstractJob();
+  ~AbstractJob() override;
 
   bool Start() override;
 

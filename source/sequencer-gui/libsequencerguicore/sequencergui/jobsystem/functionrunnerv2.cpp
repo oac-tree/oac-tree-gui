@@ -35,14 +35,14 @@ namespace sequencergui
 
 struct FunctionRunnerV2::FunctionRunnerImpl
 {
-  AbstractJobV2* m_self{nullptr};
+  AbstractJob* m_self{nullptr};
   std::thread m_runner_thread;
   std::function<bool()> m_worker;
   std::function<void(RunnerStatus)> m_status_changed_callback;
   std::atomic<bool> m_halt_request{false};
   FlowController m_flow_controller;
 
-  explicit FunctionRunnerImpl(AbstractJobV2* self, std::function<bool()> worker,
+  explicit FunctionRunnerImpl(AbstractJob* self, std::function<bool()> worker,
                               std::function<void(RunnerStatus)> status_changed_callback)
       : m_self(self)
       , m_worker(std::move(worker))

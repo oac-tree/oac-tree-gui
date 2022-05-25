@@ -17,20 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/abstractjobv2.h"
+#include "sequencergui/jobsystem/abstractjob.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
-using ::testing::NiceMock;
 
 //! Tests for AbstractJob.
 
-class AbstractJobV2Test : public ::testing::Test
+class AbstractJobTest : public ::testing::Test
 {
 public:
-  class TestJob : public sequencergui::AbstractJobV2
+  class TestJob : public sequencergui::AbstractJob
   {
   public:
     MOCK_METHOD0(StartRequest, void(void));
@@ -41,7 +40,7 @@ public:
   };
 };
 
-TEST_F(AbstractJobV2Test, InitialState)
+TEST_F(AbstractJobTest, InitialState)
 {
   TestJob job;
   EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
@@ -50,7 +49,7 @@ TEST_F(AbstractJobV2Test, InitialState)
 //! The transition of TestJob from idle state to all other states.
 //! In fact, no change in state occurs, we are testing various requests.
 
-TEST_F(AbstractJobV2Test, FromIdle)
+TEST_F(AbstractJobTest, FromIdle)
 {
   {  // IdleState + StartAction -> StartRequest
     TestJob job;
@@ -102,7 +101,7 @@ TEST_F(AbstractJobV2Test, FromIdle)
 
 //! The transition of TestJob from running state to all other states.
 
-TEST_F(AbstractJobV2Test, FromRunning)
+TEST_F(AbstractJobTest, FromRunning)
 {
   {  // RunningState + StartAction -> no activity
     TestJob job;
@@ -159,7 +158,7 @@ TEST_F(AbstractJobV2Test, FromRunning)
 
 //! The transition of TestJob from paused state to all other states.
 
-TEST_F(AbstractJobV2Test, FromPaused)
+TEST_F(AbstractJobTest, FromPaused)
 {
   {  // PausedState + StartAction -> PauseModeOffRequest (+ automatic release)
     TestJob job;
