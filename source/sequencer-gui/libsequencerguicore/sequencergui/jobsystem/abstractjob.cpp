@@ -36,7 +36,7 @@ bool AbstractJob::PerformAction(JobAction action)
 {
   if (auto new_state = m_state->Handle(action, this); new_state)
   {
-    m_state = std::move(new_state);
+    SetState(std::move(new_state));
     return true;
   }
 

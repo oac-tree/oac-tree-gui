@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
-#define SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOBV2_H
+#define SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOBV2_H
 
 #include "sequencergui/monitor/job_types.h"
 
@@ -33,29 +33,28 @@ class JobStateInterface;
 //! The main responsibility of a class is to forward JobAction to the runner, preventing
 //! contradicting actions.
 
-class AbstractJob
+class AbstractJobV2
 {
 public:
-  AbstractJob();
-  virtual ~AbstractJob();
+  AbstractJobV2();
+  virtual ~AbstractJobV2();
 
   RunnerStatus GetStatus() const;
 
   bool PerformAction(JobAction action);
 
 protected:
-  virtual void SetState(std::unique_ptr<JobStateInterface> state);
+  virtual void SetStatus(RunnerStatus state);
 
 private:
-  friend class JobStateInterface;
 
-  virtual void Start() {}
-  virtual void Pause() {}
-  virtual void Release() {}
-  virtual void Step() {}
-  virtual void Stop() {}
+  virtual void StartRequest() {}
+  virtual void PauseRequest() {}
+  virtual void ReleaseRequest() {}
+  virtual void StepRequest() {}
+  virtual void StopRequest() {}
 
-  std::unique_ptr<JobStateInterface> m_state;
+  RunnerStatus m_status{RunnerStatus::kIdle};
 };
 
 }  // namespace sequencergui
