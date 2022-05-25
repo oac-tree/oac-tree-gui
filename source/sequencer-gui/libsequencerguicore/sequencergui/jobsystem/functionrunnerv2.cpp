@@ -36,9 +36,7 @@ namespace sequencergui
 struct FunctionRunnerV2::FunctionRunnerImpl
 {
   AbstractJobV2* m_self{nullptr};
-  std::mutex m_mutex;
   std::thread m_runner_thread;
-  RunnerStatus m_runner_status{RunnerStatus::kIdle};
   std::function<bool()> m_worker;
   std::function<void(RunnerStatus)> m_status_changed_callback;
   std::atomic<bool> m_halt_request{false};
@@ -54,8 +52,9 @@ struct FunctionRunnerV2::FunctionRunnerImpl
 
   bool IsBusy() const
   {
-    return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kStopping
-           || m_runner_status == RunnerStatus::kPaused;
+    auto status = m_self->GetStatus();
+    return status == RunnerStatus::kRunning || status == RunnerStatus::kStopping
+           || status == RunnerStatus::kPaused;
   }
 
   void Launch()
@@ -72,24 +71,33 @@ struct FunctionRunnerV2::FunctionRunnerImpl
       }
       std::cout << "aaaa 1.1a " << std::endl;
 
-      if (m_flow_controller.IsPaused())
-      {
-        m_self->SetStatus(RunnerStatus::kPaused);
-      }
-
-      m_flow_controller.WaitIfNecessary();
-
-      if (m_flow_controller.IsPaused())
-      {
-        // after the release, we have to switch back to running state
-        m_self->SetStatus(RunnerStatus::kRunning);
-      }
+      WaitIfNecessary();
 
       std::cout << "aaaa 1.1b " << std::endl;
     }
-    std::cout << "aaaa 1.2 " << std::endl;
+    std::cout << "aaaa 1.2 "
+              << " " << m_halt_request.load() << std::endl;
 
-    m_self->SetStatus(m_halt_request.load() ? RunnerStatus::kStopped : RunnerStatus::kCompleted);
+    if (!m_halt_request.load())
+    {
+      m_self->SetStatus(RunnerStatus::kCompleted);
+    }
+  }
+
+  void WaitIfNecessary()
+  {
+    bool was_paused = m_flow_controller.IsPaused();
+    if (was_paused)
+    {
+      m_self->SetStatus(RunnerStatus::kPaused);
+    }
+
+    m_flow_controller.WaitIfNecessary();
+
+    if (was_paused && m_self->GetStatus() != RunnerStatus::kStopping)
+    {
+      m_self->SetStatus(RunnerStatus::kRunning);
+    }
   }
 
   void Stop()
