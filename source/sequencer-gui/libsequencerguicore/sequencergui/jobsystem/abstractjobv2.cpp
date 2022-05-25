@@ -43,70 +43,68 @@ bool CanStopJob(::sequencergui::RunnerStatus current_status)
   return current_status != ::sequencergui::RunnerStatus::kStopping;
 }
 
-
 }  // namespace
 
 namespace sequencergui
 {
 
-AbstractJobV2::AbstractJobV2() {}
+AbstractJobV2::AbstractJobV2() = default;
 
-AbstractJobV2::~AbstractJobV2() {}
+AbstractJobV2::~AbstractJobV2() = default;
+
+bool AbstractJobV2::Start()
+{
+  if (CanStartJob(m_status))
+  {
+    StartRequest();
+  }
+  else if (CanReleaseJob(m_status))
+  {
+    ReleaseRequest();
+  }
+  return true;
+}
+
+bool AbstractJobV2::Stop()
+{
+  if (CanStopJob(m_status))
+  {
+    StopRequest();
+  }
+  return true;
+}
+
+bool AbstractJobV2::Pause()
+{
+  if (CanPauseJob(m_status))
+  {
+    PauseRequest();
+  }
+  return true;
+}
+
+bool AbstractJobV2::Step()
+{
+  if (CanReleaseJob(m_status))
+  {
+    ReleaseRequest();
+  }
+  else if (CanStartJob(m_status))
+  {
+    PauseRequest();
+    StartRequest();
+  }
+  return true;
+}
 
 RunnerStatus AbstractJobV2::GetStatus() const
 {
   return m_status;
 }
 
-bool AbstractJobV2::PerformAction(JobAction action)
+void AbstractJobV2::SetStatus(RunnerStatus status)
 {
-  switch (action)
-  {
-  case JobAction::kStart:
-  {
-    if (CanStartJob(m_status))
-    {
-      StartRequest();
-    }
-    else if (CanReleaseJob(m_status))
-    {
-      ReleaseRequest();
-    }
-    break;
-  }
-  case JobAction::kPause:
-  {
-    if (CanPauseJob(m_status))
-    {
-      PauseRequest();
-    }
-    break;
-  }
-  case JobAction::kStep:
-  {
-    if (CanReleaseJob(m_status))
-    {
-      ReleaseRequest();
-    }
-    break;
-  }
-  case JobAction::kStop:
-  {
-    if (CanStopJob(m_status))
-    {
-      StopRequest();
-    }
-    break;
-  }
-  default:
-  {
-    break;
-  }
-  }
-
-  return {};
+  m_status = status;
 }
-
-void AbstractJobV2::SetStatus(RunnerStatus state) {}
 
 }  // namespace sequencergui

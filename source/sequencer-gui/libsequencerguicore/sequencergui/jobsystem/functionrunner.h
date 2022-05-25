@@ -46,8 +46,6 @@ public:
 
   bool Step() override;
 
-  bool IsInTransition() const override;
-
   RunnerStatus GetRunnerStatus() const;
 
   bool IsBusy() const;

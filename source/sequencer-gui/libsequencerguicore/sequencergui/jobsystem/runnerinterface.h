@@ -41,10 +41,6 @@ public:
 
   //! Step paused task forward till the next break point.
   virtual bool Step() = 0;
-
-  //! The runner is in the transition stage (i.e. `stopping`, after the stop was called till the
-  //! moment it is actually stopped.
-  virtual bool IsInTransition() const = 0;
 };
 
 }  // namespace sequencergui

@@ -185,11 +185,6 @@ bool FunctionRunner::Step()
   return true;
 }
 
-bool FunctionRunner::IsInTransition() const
-{
-  return false;
-}
-
 RunnerStatus FunctionRunner::GetRunnerStatus() const
 {
   return p_impl->m_runner_status;

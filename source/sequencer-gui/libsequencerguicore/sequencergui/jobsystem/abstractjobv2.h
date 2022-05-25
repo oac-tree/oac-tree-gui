@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOBV2_H
 #define SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOBV2_H
 
+#include "sequencergui/jobsystem/runnerinterface.h"
 #include "sequencergui/monitor/job_types.h"
 
 #include <memory>
@@ -33,21 +34,25 @@ class JobStateInterface;
 //! The main responsibility of a class is to forward JobAction to the runner, preventing
 //! contradicting actions.
 
-class AbstractJobV2
+class AbstractJobV2 : public RunnerInterface
 {
 public:
   AbstractJobV2();
-  virtual ~AbstractJobV2();
+  ~AbstractJobV2() override;
+
+  bool Start() override;
+
+  bool Stop() override;
+
+  bool Pause() override;
+
+  bool Step() override;
 
   RunnerStatus GetStatus() const;
 
-  bool PerformAction(JobAction action);
-
-protected:
-  virtual void SetStatus(RunnerStatus state);
+  void SetStatus(RunnerStatus status);
 
 private:
-
   virtual void StartRequest() {}
   virtual void PauseRequest() {}
   virtual void ReleaseRequest() {}
