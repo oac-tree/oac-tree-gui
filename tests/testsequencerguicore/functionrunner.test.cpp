@@ -22,7 +22,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <thread>
 
 using namespace sequencergui;
@@ -191,7 +190,6 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
   {
     std::this_thread::sleep_for(msec(10));
     nsteps++;
-    std::cout << "worker " << nsteps << std::endl;
     return nsteps < 2;  // should stop when nsteps==2
   };
 
@@ -230,12 +228,10 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   {
     std::this_thread::sleep_for(msec(10));
     nsteps++;
-    std::cout << "worker " << nsteps << std::endl;
     return nsteps < 2;  // should stop when nsteps==2
   };
 
   FunctionRunner runner(worker, listener.CreateCallback());
-//  FunctionRunnerV2 runner(worker);
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
@@ -276,8 +272,6 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   };
 
   FunctionRunner runner(worker, listener.CreateCallback());
-
-//  FunctionRunnerV2 runner(worker);
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
@@ -323,13 +317,10 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   {
     std::this_thread::sleep_for(msec(5));
     nsteps++;
-    std::cout << "worker " << nsteps << std::endl;
     return is_continue;
   };
 
   FunctionRunner runner(worker, listener.CreateCallback());
-
-//  FunctionRunnerV2 runner(worker);
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
@@ -358,9 +349,7 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
 
   // making step
-  std::cout << "before step" << std::endl;
   runner.Step();
-  std::cout << "after step" << std::endl;
   std::this_thread::sleep_for(msec(20));
   EXPECT_EQ(nsteps, last_step + 1);
   EXPECT_TRUE(runner.IsBusy());

@@ -26,7 +26,6 @@
 #include <atomic>
 #include <chrono>
 #include <cmath>
-#include <iostream>
 #include <mutex>
 #include <thread>
 
@@ -59,24 +58,17 @@ struct FunctionRunner::FunctionRunnerImpl
 
   void Launch()
   {
-    std::cout << "aaaa 1.0 " << std::endl;
     m_halt_request.store(false);
 
     while (!m_halt_request.load())
     {
-      std::cout << "aaaa 1.1 " << std::endl;
       if (!m_worker())
       {
         break;
       }
-      std::cout << "aaaa 1.1a " << std::endl;
 
       WaitIfNecessary();
-
-      std::cout << "aaaa 1.1b " << std::endl;
     }
-    std::cout << "aaaa 1.2 "
-              << " " << m_halt_request.load() << std::endl;
 
     if (!m_halt_request.load())
     {
@@ -120,7 +112,7 @@ struct FunctionRunner::FunctionRunnerImpl
 };
 
 FunctionRunner::FunctionRunner(std::function<bool()> worker,
-                                   std::function<void(RunnerStatus)> status_changed_callback)
+                               std::function<void(RunnerStatus)> status_changed_callback)
     : p_impl(std::make_unique<FunctionRunnerImpl>(this, std::move(worker),
                                                   std::move(status_changed_callback)))
 {
