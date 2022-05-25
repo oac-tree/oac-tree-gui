@@ -110,12 +110,15 @@ bool AbstractJobV2::Step()
 
 RunnerStatus AbstractJobV2::GetStatus() const
 {
+  std::lock_guard lock(m_mutex);
   return m_status;
 }
 
 void AbstractJobV2::SetStatus(RunnerStatus status)
 {
+  std::lock_guard lock(m_mutex);
   m_status = status;
+  OnStatusChange();
 }
 
 }  // namespace sequencergui

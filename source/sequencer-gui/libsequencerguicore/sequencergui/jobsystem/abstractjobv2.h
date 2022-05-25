@@ -24,6 +24,7 @@
 #include "sequencergui/monitor/job_types.h"
 
 #include <memory>
+#include <mutex>
 
 namespace sequencergui
 {
@@ -68,7 +69,11 @@ private:
   //! Request for job stop without waiting for its natural completion.
   virtual void StopRequest() {}
 
+  //! Will be called on status change.
+  virtual void OnStatusChange() {}
+
   RunnerStatus m_status{RunnerStatus::kIdle};
+  mutable std::mutex m_mutex;
 };
 
 }  // namespace sequencergui
