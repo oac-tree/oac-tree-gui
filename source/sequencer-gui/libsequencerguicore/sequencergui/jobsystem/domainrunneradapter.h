@@ -32,7 +32,7 @@ namespace sequencergui
 
 class FunctionRunner;
 
-//! Runner to execute sequencer procedure in event loop.
+//! Adapter for domain runner to perform stepwise execution in a thread.
 
 class DomainRunnerAdapter : public RunnerInterface
 {

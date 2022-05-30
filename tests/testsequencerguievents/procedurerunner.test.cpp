@@ -25,6 +25,7 @@
 #include "Variable.h"
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequencer_types.h"
+#include "test_procedures.h"
 
 #include <gtest/gtest.h>
 
@@ -43,113 +44,6 @@ using msec = std::chrono::milliseconds;
 class ProcedureRunnerTest : public ::testing::Test
 {
 public:
-  //! Retuns domain procedure that contain only a single wait instruction.
-  std::unique_ptr<procedure_t> CreateSingleWaitProcedure(int msec_to_wait) const
-  {
-    auto result = std::make_unique<procedure_t>();
-    auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
-                        std::to_string(double(msec_to_wait) / 1000));  // expects in sec
-    result->PushInstruction(wait0.release());
-    result->AddAttribute(domainconstants::kTickTimeOutAttribute, "0.01");  // 10 msec
-    return result;
-  }
-
-  //! Returns procedure that makes a single copy.
-  std::unique_ptr<procedure_t> CreateCopyProcedure() const
-  {
-    auto result = std::make_unique<procedure_t>();
-
-    auto copy = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
-    copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
-    copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
-    result->PushInstruction(copy.release());
-
-    auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
-    var0->AddAttribute(domainconstants::kNameAttribute, "var0");
-    var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var0->AddAttribute(domainconstants::kValueAttribute, "42");
-    result->AddVariable("var0", var0.release());
-
-    auto var1 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
-    var1->AddAttribute(domainconstants::kNameAttribute, "var1");
-    var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var1->AddAttribute(domainconstants::kValueAttribute, "0");
-    result->AddVariable("var1", var1.release());
-
-    return result;
-  }
-
-  //! Creates sequence with two waits.
-  std::unique_ptr<procedure_t> CreateNestedProcedure() const
-  {
-    auto result = std::make_unique<procedure_t>();
-    auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-    auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "0.01");
-    auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "0.01");
-
-    sequence->InsertInstruction(wait0.release(), 0);
-    sequence->InsertInstruction(wait1.release(), 1);
-
-    result->PushInstruction(sequence.release());
-    return result;
-  }
-
-  //! Creates procedure with one variable and input instruction.
-  std::unique_ptr<procedure_t> CreateInputProcedure() const
-  {
-    auto result = std::make_unique<procedure_t>();
-    auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-    auto input = DomainUtils::CreateDomainInstruction(domainconstants::kInputInstructionType);
-    input->AddAttribute(domainconstants::kInputTargetAttribute, "var0");
-    input->AddAttribute(domainconstants::kDescriptionAttribute, "description");
-    sequence->InsertInstruction(input.release(), 0);
-    result->PushInstruction(sequence.release());
-
-    auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
-    var0->AddAttribute(domainconstants::kNameAttribute, "var0");
-    var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var0->AddAttribute(domainconstants::kValueAttribute, "0");
-    result->AddVariable("var0", var0.release());
-
-    return result;
-  }
-
-  //! Creates procedure with wait and copy instructions and possibility to select what to execute.
-  std::unique_ptr<procedure_t> CreateUserChoiceProcedure() const
-  {
-    auto result = std::make_unique<procedure_t>();
-    auto userchoice =
-        DomainUtils::CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
-    userchoice->AddAttribute(domainconstants::kDescriptionAttribute, "it's your choice");
-
-    auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "10");  // 10 sec
-
-    auto copy = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
-    copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
-    copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
-
-    userchoice->InsertInstruction(wait0.release(), 0);
-    userchoice->InsertInstruction(copy.release(), 1);
-
-    auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
-    var0->AddAttribute(domainconstants::kNameAttribute, "var0");
-    var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var0->AddAttribute(domainconstants::kValueAttribute, "42");
-    result->AddVariable("var0", var0.release());
-
-    auto var1 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
-    var1->AddAttribute(domainconstants::kNameAttribute, "var1");
-    var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
-    var1->AddAttribute(domainconstants::kValueAttribute, "0");
-    result->AddVariable("var1", var1.release());
-
-    result->PushInstruction(userchoice.release());
-    return result;
-  }
 };
 
 TEST_F(ProcedureRunnerTest, InitialState)
@@ -163,7 +57,7 @@ TEST_F(ProcedureRunnerTest, InitialState)
 
 TEST_F(ProcedureRunnerTest, PrematureDeletion)
 {
-  auto procedure = CreateSingleWaitProcedure(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(10000);
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   auto runner = std::make_unique<ProcedureRunner>();
@@ -184,7 +78,7 @@ TEST_F(ProcedureRunnerTest, PrematureDeletion)
 
 TEST_F(ProcedureRunnerTest, StartAndTerminate)
 {
-  auto procedure = CreateSingleWaitProcedure(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(10000);
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -216,7 +110,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
 
 TEST_F(ProcedureRunnerTest, StartAndStop)
 {
-  auto procedure = CreateSingleWaitProcedure(10);
+  auto procedure = testutils::CreateSingleWaitProcedure(10);
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -239,7 +133,7 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
 
 TEST_F(ProcedureRunnerTest, WaitForCompletion)
 {
-  auto procedure = CreateSingleWaitProcedure(100);
+  auto procedure = testutils::CreateSingleWaitProcedure(100);
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -257,7 +151,7 @@ TEST_F(ProcedureRunnerTest, WaitForCompletion)
 
 TEST_F(ProcedureRunnerTest, CopyVariable)
 {
-  auto procedure = CreateCopyProcedure();
+  auto procedure = testutils::CreateCopyProcedure();
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -284,7 +178,7 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
 
 TEST_F(ProcedureRunnerTest, StepwiseExecution)
 {
-  auto procedure = CreateNestedProcedure();
+  auto procedure = testutils::CreateNestedProcedure();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kWaitForRelease);
@@ -314,7 +208,7 @@ TEST_F(ProcedureRunnerTest, UserInput)
   // User input callback.
   auto on_user_input = [](auto, auto) { return "42"; };
 
-  auto procedure = CreateInputProcedure();
+  auto procedure = testutils::CreateInputProcedure();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kProceed);
@@ -351,7 +245,7 @@ TEST_F(ProcedureRunnerTest, UserChoice)
     return 1;  // selecting second instruction
   };
 
-  auto procedure = CreateUserChoiceProcedure();
+  auto procedure = testutils::CreateUserChoiceProcedure();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kProceed);
