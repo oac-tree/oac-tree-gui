@@ -26,7 +26,7 @@ namespace sequencergui
 {
 
 DomainRunnerAdapter::DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
-                           std::function<void(RunnerStatus)> status_changed_callback)
+                                         std::function<void(RunnerStatus)> status_changed_callback)
     : m_domain_runner(std::move(domain_runner))
 {
   auto worker = [this]() { return ExecuteSingle(); };
@@ -51,6 +51,16 @@ bool DomainRunnerAdapter::Pause()
 bool DomainRunnerAdapter::Step()
 {
   return m_function_runner->Step();
+}
+
+RunnerStatus DomainRunnerAdapter::GetStatus() const
+{
+  return m_function_runner->GetStatus();
+}
+
+bool DomainRunnerAdapter::WaitForCompletion(double timeout_sec)
+{
+  return ::sequencergui::WaitForCompletion(*m_function_runner, timeout_sec);
 }
 
 bool DomainRunnerAdapter::ExecuteSingle()

@@ -24,8 +24,8 @@
 #include "sequencergui/model/sequencer_types.h"
 #include "sequencergui/monitor/job_types.h"
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 namespace sequencergui
 {
@@ -38,7 +38,7 @@ class DomainRunnerAdapter : public RunnerInterface
 {
 public:
   DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
-               std::function<void(RunnerStatus)> status_changed_callback);
+                      std::function<void(RunnerStatus)> status_changed_callback);
   ~DomainRunnerAdapter() override;
 
   bool Start() override;
@@ -48,6 +48,10 @@ public:
   bool Pause() override;
 
   bool Step() override;
+
+  RunnerStatus GetStatus() const;
+
+  bool WaitForCompletion(double timeout_sec);
 
 private:
   bool ExecuteSingle();
