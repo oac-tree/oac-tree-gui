@@ -19,6 +19,8 @@
 
 #include "sequencergui/jobsystem/abstractjob.h"
 
+#include <iostream>
+
 namespace
 {
 bool CanStartJob(::sequencergui::RunnerStatus current_status)
@@ -118,6 +120,7 @@ void AbstractJob::SetStatus(RunnerStatus status)
 {
   std::lock_guard lock(m_mutex);
   m_status = status;
+  std::cout << "  status:" << static_cast<int>(status) << std::endl;
   OnStatusChange(m_status);
 }
 

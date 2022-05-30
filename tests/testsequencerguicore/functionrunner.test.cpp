@@ -22,6 +22,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <stdexcept>
 #include <thread>
 
 using namespace sequencergui;
@@ -86,6 +87,30 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
   EXPECT_TRUE(runner.Start());  // triggering action
   EXPECT_TRUE(WaitForCompletion(runner, 0.02));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_FALSE(runner.IsBusy());
+}
+
+//! Task is failing during execution.
+
+TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
+{
+  MockListener listener;
+  auto worker = []()
+  {
+    throw std::runtime_error("Failed during runtime");
+    return true;
+  };
+  FunctionRunner runner(worker, listener.CreateCallback());
+
+  {  // expecting calls with status change in this order
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kFailed));
+  }
+
+  EXPECT_TRUE(runner.Start());  // triggering action
+  EXPECT_TRUE(WaitForCompletion(runner, 0.02));
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kFailed);
   EXPECT_FALSE(runner.IsBusy());
 }
 
@@ -258,7 +283,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
 
 //! We start normally, then make a pause, when continue till normal termination.
 
- TEST_F(FunctionRunnerTest, RunPauseRun)
+TEST_F(FunctionRunnerTest, RunPauseRun)
 {
   MockListener listener;
   int nsteps{0};
@@ -267,7 +292,6 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   {
     std::this_thread::sleep_for(msec(5));
     nsteps++;
-    std::cout << "worker " << nsteps << std::endl;
     return is_continue;
   };
 
@@ -284,7 +308,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   EXPECT_TRUE(runner.Start());  // triggering action
   std::this_thread::sleep_for(msec(20));
   EXPECT_TRUE(runner.IsBusy());
-  EXPECT_TRUE(nsteps> 0);
+  EXPECT_TRUE(nsteps > 0);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
 
   // let's pause
@@ -294,13 +318,13 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   EXPECT_TRUE(runner.IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_EQ(last_step, nsteps); // it is not running anymore
+  EXPECT_EQ(last_step, nsteps);  // it is not running anymore
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
 
   // releasing waiting
   runner.Start();
   std::this_thread::sleep_for(msec(10));
-  is_continue = false; // terminating in natural way
+  is_continue = false;  // terminating in natural way
   EXPECT_TRUE(WaitForCompletion(runner, 0.02));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
@@ -335,7 +359,7 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   EXPECT_TRUE(runner.Start());  // triggering action
   std::this_thread::sleep_for(msec(20));
   EXPECT_TRUE(runner.IsBusy());
-  EXPECT_TRUE(nsteps> 0);
+  EXPECT_TRUE(nsteps > 0);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
 
   // let's pause
@@ -345,7 +369,7 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   EXPECT_TRUE(runner.IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_EQ(last_step, nsteps); // it is not running anymore
+  EXPECT_EQ(last_step, nsteps);  // it is not running anymore
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
 
   // making step
@@ -358,9 +382,8 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   // releasing waiting
   runner.Start();
   std::this_thread::sleep_for(msec(10));
-  is_continue = false; // terminating in natural way
+  is_continue = false;  // terminating in natural way
   EXPECT_TRUE(WaitForCompletion(runner, 0.02));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }
-

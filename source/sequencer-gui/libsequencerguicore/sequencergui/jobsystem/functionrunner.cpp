@@ -62,15 +62,24 @@ struct FunctionRunner::FunctionRunnerImpl
 
     while (!m_halt_request.load())
     {
-      if (!m_worker())
+      try
       {
+        auto result = m_worker();
+        if (!result)
+        {
+          break;
+        }
+      }
+      catch (std::exception& ex)
+      {
+        m_self->SetStatus(RunnerStatus::kFailed);
         break;
       }
 
       WaitIfNecessary();
     }
 
-    if (!m_halt_request.load())
+    if (!m_halt_request.load() && m_self->GetStatus() != RunnerStatus::kFailed)
     {
       m_self->SetStatus(RunnerStatus::kCompleted);
     }
