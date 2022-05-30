@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <memory>
+#include <atomic>
 
 namespace sequencergui
 {
@@ -53,11 +54,14 @@ public:
 
   bool WaitForCompletion(double timeout_sec);
 
+  void SetTickTimeout(int msec);
+
 private:
   bool ExecuteSingle();
 
   std::unique_ptr<runner_t> m_domain_runner;
   std::unique_ptr<FunctionRunner> m_function_runner;
+  std::atomic<int> m_tick_timeout_ms{0};
 };
 
 }  // namespace sequencergui

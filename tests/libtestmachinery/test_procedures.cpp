@@ -65,6 +65,20 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(int msec_to_wait)
+{
+  auto result = std::make_unique<procedure_t>();
+  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
+                      std::to_string(double(msec_to_wait) / 1000));  // expects in sec
+
+  sequence->InsertInstruction(wait0.release(), 0);
+
+  result->PushInstruction(sequence.release());
+  return result;
+}
+
 std::unique_ptr<procedure_t> CreateNestedProcedure()
 {
   auto result = std::make_unique<procedure_t>();

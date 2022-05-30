@@ -38,6 +38,9 @@ std::unique_ptr<procedure_t> CreateSingleWaitProcedure(int msec_to_wait);
 //! Returns procedure that makes a single copy.
 std::unique_ptr<procedure_t> CreateCopyProcedure();
 
+//! Returns procedure with sequence and wait instruction in it.
+std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(int msec_to_wait);
+
 //! Creates sequence with two waits.
 std::unique_ptr<procedure_t> CreateNestedProcedure();
 

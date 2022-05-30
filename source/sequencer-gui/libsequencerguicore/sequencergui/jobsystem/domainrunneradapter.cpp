@@ -22,6 +22,12 @@
 #include "Runner.h"
 #include "sequencergui/jobsystem/functionrunner.h"
 
+#include <chrono>
+#include <thread>
+#include <iostream>
+
+using msec = std::chrono::milliseconds;
+
 namespace sequencergui
 {
 
@@ -29,7 +35,16 @@ DomainRunnerAdapter::DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner
                                          std::function<void(RunnerStatus)> status_changed_callback)
     : m_domain_runner(std::move(domain_runner))
 {
-  auto worker = [this]() { return ExecuteSingle(); };
+  auto worker = [this]()
+  {
+    auto result = ExecuteSingle();
+    std::cout << "worker tick " << result << std::endl;
+    if (result && m_tick_timeout_ms.load() > 0)
+    {
+      std::this_thread::sleep_for(msec(m_tick_timeout_ms.load()));
+    }
+    return result;
+  };
   m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));
 }
 
@@ -61,6 +76,11 @@ RunnerStatus DomainRunnerAdapter::GetStatus() const
 bool DomainRunnerAdapter::WaitForCompletion(double timeout_sec)
 {
   return ::sequencergui::WaitForCompletion(*m_function_runner, timeout_sec);
+}
+
+void DomainRunnerAdapter::SetTickTimeout(int msec)
+{
+  m_tick_timeout_ms.store(msec);
 }
 
 bool DomainRunnerAdapter::ExecuteSingle()

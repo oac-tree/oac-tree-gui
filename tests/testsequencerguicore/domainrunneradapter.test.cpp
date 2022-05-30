@@ -29,15 +29,26 @@
 
 #include <memory>
 #include <thread>
+#include <chrono>
+
+namespace
+{
+const auto duration = [](auto time_interval)
+{ return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
+}
 
 using namespace sequencergui;
-
-using msec = std::chrono::milliseconds;
 using ::testing::_;
 
 class DomainRunnerAdapterTest : public ::testing::Test
 {
 public:
+  using clock_used = std::chrono::high_resolution_clock;
+  using time_t = std::chrono::time_point<clock_used>;
+  using duration_unit = std::chrono::milliseconds;
+  using msec = std::chrono::milliseconds;
+
+
   std::unique_ptr<runner_t> CreateRunner(procedure_t* procedure)
   {
     auto result = std::make_unique<runner_t>(&m_observer);
@@ -50,6 +61,8 @@ public:
   testutils::MockRunnerListener m_listener;
 };
 
+//! Single wait procedure started in normal way. Waiting upon completion.
+
 TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(10);
@@ -59,7 +72,7 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-  {  // signaling related to the runner status changer
+  {  // signaling related to the runner status change
     ::testing::InSequence seq;
     EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
     EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kCompleted));
@@ -75,7 +88,45 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   // triggering action
   EXPECT_TRUE(adapter.Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(0.1));
+  EXPECT_TRUE(adapter.WaitForCompletion(0.06));
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::SUCCESS);
+}
+
+//! Sequence with single wait.
+
+TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
+{
+  auto procedure = testutils::CreateSequenceWithWaitProcedure(10);
+  auto runner = CreateRunner(procedure.get());
+
+  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
+  adapter.SetTickTimeout(1000); // tick timeout shouldn't influence execution time
+
+  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kCompleted));
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(4);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+  }
+
+  // triggering action
+//  time_t start_time = clock_used::now();
+  EXPECT_TRUE(adapter.Step());
+
+  EXPECT_TRUE(adapter.WaitForCompletion(0.06));
+
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+//  time_t end_time = clock_used::now();
+//  EXPECT_TRUE(duration(end_time - start_time) >= 100);
 }
