@@ -19,6 +19,8 @@
 
 #include "sequencergui/jobsystem/functionrunner.h"
 
+#include "mockrunnerlistener.h"
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -32,27 +34,13 @@ using msec = std::chrono::milliseconds;
 
 class FunctionRunnerTest : public ::testing::Test
 {
-public:
-  //! Auxiliary class to listen for RunnerStatus changed events.
-  class MockListener
-  {
-  public:
-    MOCK_METHOD1(StatusChanged, void(RunnerStatus status));
-
-    //! Creates callback to listen for status change.
-    //! The call will be propagated to StatusChanged mock method to benefit from gmock.
-    std::function<void(RunnerStatus)> CreateCallback()
-    {
-      return [this](auto status) { StatusChanged(status); };
-    }
-  };
 };
 
 //! Checking that listener works as expected.
 
 TEST_F(FunctionRunnerTest, CheckListener)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
 
   EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
 
@@ -74,7 +62,7 @@ TEST_F(FunctionRunnerTest, InitialState)
 
 TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   auto worker = []() { return false; };  // worker asks to exit immediately
   FunctionRunner runner(worker, listener.CreateCallback());
 
@@ -94,7 +82,7 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 
 TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   auto worker = []()
   {
     throw std::runtime_error("Failed during runtime");
@@ -141,7 +129,7 @@ TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
 
 TEST_F(FunctionRunnerTest, StartAndTerminate)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   auto worker = []()
   {
     std::this_thread::sleep_for(msec(10));
@@ -209,7 +197,7 @@ TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
 
 TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   int nsteps{0};
   auto worker = [&nsteps]()
   {
@@ -247,7 +235,7 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
 
 TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   int nsteps{0};
   auto worker = [&nsteps]()
   {
@@ -285,7 +273,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
 
 TEST_F(FunctionRunnerTest, RunPauseRun)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   int nsteps{0};
   bool is_continue{true};
   auto worker = [&nsteps, &is_continue]()
@@ -334,7 +322,7 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
 
 TEST_F(FunctionRunnerTest, RunPauseStepRun)
 {
-  MockListener listener;
+  testutils::MockRunnerListener listener;
   int nsteps{0};
   bool is_continue{true};
   auto worker = [&nsteps, &is_continue]()
