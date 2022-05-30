@@ -79,7 +79,7 @@ struct FunctionRunner::FunctionRunnerImpl
       WaitIfNecessary();
     }
 
-    if (!m_halt_request.load() && m_self->GetStatus() != RunnerStatus::kFailed)
+    if (m_self->GetStatus() == RunnerStatus::kRunning)
     {
       m_self->SetStatus(RunnerStatus::kCompleted);
     }

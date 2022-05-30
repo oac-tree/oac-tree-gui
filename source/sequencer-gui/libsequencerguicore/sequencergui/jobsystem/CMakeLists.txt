@@ -6,4 +6,6 @@ target_sources(${library_name} PRIVATE
   functionrunner.cpp
   functionrunner.h
   runnerinterface.h
+  domainrunner.cpp
+  domainrunner.h
   )
