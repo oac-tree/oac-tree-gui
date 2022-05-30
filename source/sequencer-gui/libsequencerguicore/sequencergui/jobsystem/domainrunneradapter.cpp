@@ -24,7 +24,6 @@
 
 #include <chrono>
 #include <thread>
-#include <iostream>
 
 using msec = std::chrono::milliseconds;
 
@@ -38,7 +37,6 @@ DomainRunnerAdapter::DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner
   auto worker = [this]()
   {
     auto result = ExecuteSingle();
-    std::cout << "worker tick " << result << std::endl;
     if (result && m_tick_timeout_ms.load() > 0)
     {
       std::this_thread::sleep_for(msec(m_tick_timeout_ms.load()));

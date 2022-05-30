@@ -25,8 +25,8 @@
 
 #include "sequencergui/model/sequencer_types.h"
 
-#include <memory>
 #include <chrono>
+#include <memory>
 
 //! Various common utils for unit tests.
 
@@ -43,7 +43,8 @@ std::unique_ptr<procedure_t> CreateCopyProcedure();
 std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout);
 
 //! Creates sequence with two waits.
-std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure();
+std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(
+    std::chrono::milliseconds timeout1, std::chrono::milliseconds timeout2);
 
 //! Creates procedure with one variable and input instruction.
 std::unique_ptr<procedure_t> CreateInputProcedure();

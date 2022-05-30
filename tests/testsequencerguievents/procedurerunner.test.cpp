@@ -178,7 +178,7 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
 
 TEST_F(ProcedureRunnerTest, StepwiseExecution)
 {
-  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure();
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kWaitForRelease);

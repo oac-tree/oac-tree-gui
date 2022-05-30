@@ -88,14 +88,17 @@ std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::millis
   return result;
 }
 
-std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure()
+std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::milliseconds timeout1,
+                                                                 std::chrono::milliseconds timeout2)
 {
   auto result = std::make_unique<procedure_t>();
   auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "0.01");
+  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
+                      GetTimeoutInSec(timeout1));
   auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "0.01");
+  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
+                      GetTimeoutInSec(timeout2));
 
   sequence->InsertInstruction(wait0.release(), 0);
   sequence->InsertInstruction(wait1.release(), 1);
