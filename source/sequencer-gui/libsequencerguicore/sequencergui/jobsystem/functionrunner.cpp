@@ -178,7 +178,7 @@ void FunctionRunner::OnStatusChange(RunnerStatus status)
 
 bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout_msec)
 {
-  std::chrono::milliseconds timeout_precision_msec(10);
+  const std::chrono::milliseconds timeout_precision_msec(10);
   auto timeout = std::chrono::system_clock::now() + timeout_msec;
   while (std::chrono::system_clock::now() < timeout)
   {
