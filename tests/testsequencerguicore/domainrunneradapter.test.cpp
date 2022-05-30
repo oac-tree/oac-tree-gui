@@ -88,7 +88,7 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   // triggering action
   EXPECT_TRUE(adapter.Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(0.06));
+  EXPECT_TRUE(adapter.WaitForCompletion(msec(60)));
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
@@ -123,7 +123,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
 //  time_t start_time = clock_used::now();
   EXPECT_TRUE(adapter.Step());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(0.06));
+  EXPECT_TRUE(adapter.WaitForCompletion(msec(60)));
 
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 

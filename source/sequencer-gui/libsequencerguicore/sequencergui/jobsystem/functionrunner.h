@@ -25,6 +25,7 @@
 
 #include <functional>
 #include <memory>
+#include <chrono>
 
 namespace sequencergui
 {
@@ -54,7 +55,7 @@ private:
 
 //! Will wait a given amount of sec for job completion. Returns `true` is runner has finished before
 //! the timeout, `false` otherwise. Internally has a precision of 10 msec.
-bool WaitForCompletion(const FunctionRunner& runner, double timeout_sec);
+bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout_msec);
 
 }  // namespace sequencergui
 

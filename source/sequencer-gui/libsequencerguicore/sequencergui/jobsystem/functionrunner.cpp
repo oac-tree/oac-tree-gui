@@ -176,18 +176,17 @@ void FunctionRunner::OnStatusChange(RunnerStatus status)
   }
 }
 
-bool WaitForCompletion(const FunctionRunner& runner, double timeout_sec)
+bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout_msec)
 {
-  const int timeout_precision_msec(10);
-  auto timeout =
-      std::chrono::system_clock::now() + std::chrono::nanoseconds(std::lround(timeout_sec * 1e9));
+  std::chrono::milliseconds timeout_precision_msec(10);
+  auto timeout = std::chrono::system_clock::now() + timeout_msec;
   while (std::chrono::system_clock::now() < timeout)
   {
     if (!runner.IsBusy())
     {
       return true;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(timeout_precision_msec));
+    std::this_thread::sleep_for(timeout_precision_msec);
   }
   return false;
 }

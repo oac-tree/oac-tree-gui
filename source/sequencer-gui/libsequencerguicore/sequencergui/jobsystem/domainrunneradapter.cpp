@@ -73,9 +73,9 @@ RunnerStatus DomainRunnerAdapter::GetStatus() const
   return m_function_runner->GetStatus();
 }
 
-bool DomainRunnerAdapter::WaitForCompletion(double timeout_sec)
+bool DomainRunnerAdapter::WaitForCompletion(std::chrono::milliseconds timeout_msec)
 {
-  return ::sequencergui::WaitForCompletion(*m_function_runner, timeout_sec);
+  return ::sequencergui::WaitForCompletion(*m_function_runner, timeout_msec);
 }
 
 void DomainRunnerAdapter::SetTickTimeout(int msec)

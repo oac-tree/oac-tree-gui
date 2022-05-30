@@ -55,7 +55,7 @@ TEST_F(FunctionRunnerTest, InitialState)
   FunctionRunner runner([]() { return false; });
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kIdle);
   EXPECT_FALSE(runner.IsBusy());
-  EXPECT_TRUE(WaitForCompletion(runner, 0.001));
+  EXPECT_TRUE(WaitForCompletion(runner, msec(1)));
 }
 
 //! Start and normal completion of the short task.
@@ -73,7 +73,7 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_TRUE(WaitForCompletion(runner, 0.02));
+  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -97,7 +97,7 @@ TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_TRUE(WaitForCompletion(runner, 0.02));
+  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kFailed);
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -148,7 +148,7 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   EXPECT_TRUE(runner.IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_FALSE(WaitForCompletion(runner, 0.01));
+  EXPECT_FALSE(WaitForCompletion(runner, msec(10)));
 
   runner.Stop();
   std::this_thread::sleep_for(msec(10));
@@ -313,7 +313,7 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
   runner.Start();
   std::this_thread::sleep_for(msec(10));
   is_continue = false;  // terminating in natural way
-  EXPECT_TRUE(WaitForCompletion(runner, 0.02));
+  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }
@@ -371,7 +371,7 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   runner.Start();
   std::this_thread::sleep_for(msec(10));
   is_continue = false;  // terminating in natural way
-  EXPECT_TRUE(WaitForCompletion(runner, 0.02));
+  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }

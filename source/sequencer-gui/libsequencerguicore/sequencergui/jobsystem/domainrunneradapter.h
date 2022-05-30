@@ -27,6 +27,7 @@
 #include <functional>
 #include <memory>
 #include <atomic>
+#include <chrono>
 
 namespace sequencergui
 {
@@ -52,7 +53,7 @@ public:
 
   RunnerStatus GetStatus() const;
 
-  bool WaitForCompletion(double timeout_sec);
+  bool WaitForCompletion(std::chrono::milliseconds timeout_msec);
 
   void SetTickTimeout(int msec);
 
