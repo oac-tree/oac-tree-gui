@@ -67,7 +67,7 @@ public:
 
 TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
-  const int timeout_msec(10);
+  std::chrono::milliseconds timeout_msec(10);
   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
   auto runner = CreateRunner(procedure.get());
 
@@ -96,11 +96,11 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
-//! Sequence with single wait.
+//! Sequence with single wait in normal start mode.
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
 {
-  const int timeout_msec(10);
+  std::chrono::milliseconds timeout_msec(10);
 
   auto procedure = testutils::CreateSequenceWithWaitProcedure(timeout_msec);
   auto runner = CreateRunner(procedure.get());
@@ -135,8 +135,53 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
 
   time_t end_time = clock_used::now();
 
-  // here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
-  // since we have only one child that gets executed during single step
+  // Here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
+  // since we have only one child that gets executed during single step.
   EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
               < msec(kDefaultWaitPrecision * 2));
 }
+
+//! Sequence with single wait in normal start mode.
+
+//TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
+//{
+//  const int timeout_msec(100);
+
+//  auto procedure = testutils::CreateNestedProcedure();
+//  auto runner = CreateRunner(procedure.get());
+
+//  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
+//  adapter.SetTickTimeout(timeout_msec);
+
+//  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+//  {  // signaling related to the runner status changer
+//    ::testing::InSequence seq;
+//    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+//    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kCompleted));
+//  }
+
+//  {  // observer signaling
+//    ::testing::InSequence seq;
+//    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(4);
+//    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+//  }
+
+//  // triggering action
+//  time_t start_time = clock_used::now();
+//  EXPECT_TRUE(adapter.Step());
+
+//  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + msec(timeout_msec)));
+
+//  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
+//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+//  time_t end_time = clock_used::now();
+
+//  // here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
+//  // since we have only one child that gets executed during single step
+//  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
+//              < msec(kDefaultWaitPrecision * 2));
+//}

@@ -26,6 +26,7 @@
 #include "sequencergui/model/sequencer_types.h"
 
 #include <memory>
+#include <chrono>
 
 //! Various common utils for unit tests.
 
@@ -33,16 +34,16 @@ namespace testutils
 {
 
 //! Retuns domain procedure that contain only a single wait instruction.
-std::unique_ptr<procedure_t> CreateSingleWaitProcedure(int msec_to_wait);
+std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout);
 
 //! Returns procedure that makes a single copy.
 std::unique_ptr<procedure_t> CreateCopyProcedure();
 
 //! Returns procedure with sequence and wait instruction in it.
-std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(int msec_to_wait);
+std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout);
 
 //! Creates sequence with two waits.
-std::unique_ptr<procedure_t> CreateNestedProcedure();
+std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure();
 
 //! Creates procedure with one variable and input instruction.
 std::unique_ptr<procedure_t> CreateInputProcedure();

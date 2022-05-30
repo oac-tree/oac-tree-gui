@@ -27,15 +27,24 @@
 
 using namespace sequencergui;
 
+namespace
+{
+std::string GetTimeoutInSec(std::chrono::milliseconds timeout)
+{
+  auto value = std::chrono::duration_cast<std::chrono::milliseconds>(timeout).count();
+  return std::to_string(static_cast<double>(value) / 1000);
+}
+}  // namespace
+
 namespace testutils
 {
 
-std::unique_ptr<procedure_t> CreateSingleWaitProcedure(int msec_to_wait)
+std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<procedure_t>();
   auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
-                      std::to_string(double(msec_to_wait) / 1000));  // expects in sec
+                      GetTimeoutInSec(timeout));  // expects in sec
   result->PushInstruction(wait0.release());
   result->AddAttribute(domainconstants::kTickTimeOutAttribute, "0.01");  // 10 msec
   return result;
@@ -65,13 +74,13 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
   return result;
 }
 
-std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(int msec_to_wait)
+std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<procedure_t>();
   auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
-                      std::to_string(double(msec_to_wait) / 1000));  // expects in sec
+                      GetTimeoutInSec(timeout));  // expects in sec
 
   sequence->InsertInstruction(wait0.release(), 0);
 
@@ -79,7 +88,7 @@ std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(int msec_to_wait)
   return result;
 }
 
-std::unique_ptr<procedure_t> CreateNestedProcedure()
+std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure()
 {
   auto result = std::make_unique<procedure_t>();
   auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);

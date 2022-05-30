@@ -57,7 +57,7 @@ TEST_F(ProcedureRunnerTest, InitialState)
 
 TEST_F(ProcedureRunnerTest, PrematureDeletion)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   auto runner = std::make_unique<ProcedureRunner>();
@@ -78,7 +78,7 @@ TEST_F(ProcedureRunnerTest, PrematureDeletion)
 
 TEST_F(ProcedureRunnerTest, StartAndTerminate)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -110,7 +110,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
 
 TEST_F(ProcedureRunnerTest, StartAndStop)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(10);
+  auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -133,7 +133,7 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
 
 TEST_F(ProcedureRunnerTest, WaitForCompletion)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(100);
+  auto procedure = testutils::CreateSingleWaitProcedure(msec(100));
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -178,7 +178,7 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
 
 TEST_F(ProcedureRunnerTest, StepwiseExecution)
 {
-  auto procedure = testutils::CreateNestedProcedure();
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kWaitForRelease);
