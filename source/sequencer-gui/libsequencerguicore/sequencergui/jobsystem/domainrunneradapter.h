@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNER_H
-#define SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
+#define SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 
 #include "sequencergui/jobsystem/runnerinterface.h"
 #include "sequencergui/model/sequencer_types.h"
@@ -34,12 +34,12 @@ class FunctionRunner;
 
 //! Runner to execute sequencer procedure in event loop.
 
-class DomainRunner : public RunnerInterface
+class DomainRunnerAdapter : public RunnerInterface
 {
 public:
-  DomainRunner(procedure_t* procedure, userinterface_t* user_interface,
+  DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
                std::function<void(RunnerStatus)> status_changed_callback);
-  ~DomainRunner() override;
+  ~DomainRunnerAdapter() override;
 
   bool Start() override;
 
@@ -52,8 +52,6 @@ public:
 private:
   bool ExecuteSingle();
 
-  procedure_t* m_procedure{nullptr};
-  userinterface_t* m_user_interface{nullptr};
   std::unique_ptr<runner_t> m_domain_runner;
   std::unique_ptr<FunctionRunner> m_function_runner;
 };

@@ -17,52 +17,48 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domainrunner.h"
+#include "sequencergui/jobsystem/domainrunneradapter.h"
 
-#include "Procedure.h"
 #include "Runner.h"
 #include "sequencergui/jobsystem/functionrunner.h"
 
 namespace sequencergui
 {
 
-DomainRunner::DomainRunner(procedure_t *procedure, userinterface_t *user_interface,
+DomainRunnerAdapter::DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
                            std::function<void(RunnerStatus)> status_changed_callback)
-    : m_procedure(procedure), m_user_interface(user_interface)
+    : m_domain_runner(std::move(domain_runner))
 {
-  m_domain_runner = std::make_unique<sup::sequencer::Runner>(m_user_interface);
-  m_domain_runner->SetProcedure(m_procedure);
-
   auto worker = [this]() { return ExecuteSingle(); };
-  m_function_runner = std::make_unique<FunctionRunner>(worker, status_changed_callback);
+  m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));
 }
 
-bool DomainRunner::Start()
+bool DomainRunnerAdapter::Start()
 {
   return m_function_runner->Start();
 }
 
-bool DomainRunner::Stop()
+bool DomainRunnerAdapter::Stop()
 {
   return m_function_runner->Stop();
 }
 
-bool DomainRunner::Pause()
+bool DomainRunnerAdapter::Pause()
 {
   return m_function_runner->Pause();
 }
 
-bool DomainRunner::Step()
+bool DomainRunnerAdapter::Step()
 {
   return m_function_runner->Step();
 }
 
-bool DomainRunner::ExecuteSingle()
+bool DomainRunnerAdapter::ExecuteSingle()
 {
   m_domain_runner->ExecuteSingle();
   return !m_domain_runner->IsFinished();
 }
 
-DomainRunner::~DomainRunner() = default;
+DomainRunnerAdapter::~DomainRunnerAdapter() = default;
 
 }  // namespace sequencergui
