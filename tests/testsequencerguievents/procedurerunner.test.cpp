@@ -218,7 +218,6 @@ TEST_F(ProcedureRunnerTest, UserInput)
   procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
-  runner->SetWaitingMode(WaitingMode::kProceed);
   runner->SetUserContext({on_user_input});
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
@@ -256,7 +255,6 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
-  runner->SetWaitingMode(WaitingMode::kProceed);
   runner->SetUserContext({{}, on_user_choice});
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
