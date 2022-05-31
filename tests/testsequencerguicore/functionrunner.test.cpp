@@ -269,7 +269,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   EXPECT_FALSE(runner.IsBusy());
 }
 
-//! We start normally, then make a pause, when continue till normal termination.
+//! We start normally, then make a pause, then continue till normal termination.
 
 TEST_F(FunctionRunnerTest, RunPauseRun)
 {

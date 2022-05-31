@@ -143,6 +143,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
 }
 
 //! Sequence with single wait in normal start mode.
+//! Additional tick timeout slows down the execution.
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
 {
@@ -189,7 +190,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
               > msec(tick_timeout_msec));
 }
 
-//! Sequence with single wait in normal start mode.
+//! Sequence with two waits in step mode.
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 {
