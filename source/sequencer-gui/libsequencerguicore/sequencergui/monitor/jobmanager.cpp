@@ -183,7 +183,6 @@ JobContext *JobManager::CreateContext()
   { return onUserChoiceRequest(choices, description); };
 
   auto context = new JobContext(m_current_job, this);
-  context->SetSleepTime(m_current_delay);
   context->SetMessagePanel(m_message_panel);
   connect(context, &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
@@ -191,6 +190,7 @@ JobContext *JobManager::CreateContext()
   context->SetUserContext({on_user_input, on_user_choice});
 
   InvokeAndCatch([context]() { context->onPrepareJobRequest(); });
+  context->SetSleepTime(m_current_delay); // FIXME must be after onPrepareJobContext
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
   m_context_map.insert({m_current_job, context});
