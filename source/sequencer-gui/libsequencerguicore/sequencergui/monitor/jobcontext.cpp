@@ -102,7 +102,6 @@ void JobContext::onStartRequest()
 
 void JobContext::onPauseRequest()
 {
-//  m_procedure_runner->SetWaitingMode(WaitingMode::kWaitForRelease);
   m_procedure_runner->Pause();
 }
 
@@ -113,15 +112,7 @@ void JobContext::onMakeStepRequest()
 
 void JobContext::onStopRequest()
 {
-  if (m_procedure_runner->GetRunnerStatus() == RunnerStatus::kRunning)
-  {
-    m_procedure_runner->Stop();
-  }
-}
-
-bool JobContext::WaitForCompletion(double timeout_sec)
-{
-  return m_procedure_runner->WaitForCompletion(timeout_sec);
+  m_procedure_runner->Stop();
 }
 
 bool JobContext::IsRunning() const
@@ -135,11 +126,6 @@ void JobContext::SetMessagePanel(MessagePanel *panel)
 {
   m_job_log->SetMessagePanel(panel);
 }
-
-//void JobContext::SetWaitingMode(WaitingMode waiting_mode)
-//{
-//  m_procedure_runner->SetWaitingMode(waiting_mode);
-//}
 
 void JobContext::SetSleepTime(int time_msec)
 {
@@ -207,7 +193,6 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
 
 void JobContext::onRunnerStatusChanged()
 {
-  // FIXME consider setting status of expanded procedure
   auto status = m_procedure_runner->GetRunnerStatus();
   m_job_item->SetStatus(RunnerStatusToString(status));
 }

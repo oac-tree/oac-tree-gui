@@ -25,7 +25,6 @@
 #include "sequencergui/monitor/usercontext.h"
 
 #include <QObject>
-#include <functional>
 #include <memory>
 
 namespace sequencergui
@@ -34,7 +33,6 @@ class ProcedureItem;
 class ProcedureRunner;
 class JobLog;
 class JobItem;
-class SequencerModel;
 class MessagePanel;
 class InstructionItem;
 class GUIObjectBuilder;
@@ -59,15 +57,11 @@ public:
 
   void onStopRequest();
 
-  bool WaitForCompletion(double timeout_sec);
-
   bool IsRunning() const;
 
   // Methods to setup procedure execution.
 
   void SetMessagePanel(MessagePanel* panel);
-
-//  void SetWaitingMode(WaitingMode waiting_mode);
 
   void SetSleepTime(int time_msec);
 
