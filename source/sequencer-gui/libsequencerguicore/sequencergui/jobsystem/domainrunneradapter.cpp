@@ -81,6 +81,11 @@ void DomainRunnerAdapter::SetTickTimeout(int msec)
   m_tick_timeout_ms.store(msec);
 }
 
+bool DomainRunnerAdapter::IsBusy() const
+{
+  return m_function_runner->IsBusy();
+}
+
 bool DomainRunnerAdapter::ExecuteSingle()
 {
   m_domain_runner->ExecuteSingle();

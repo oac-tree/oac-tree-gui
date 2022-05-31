@@ -21,16 +21,16 @@
 #define SEQUENCERGUI_MONITOR_PROCEDURERUNNER_H
 
 #include "sequencergui/model/sequencer_types.h"
-#include "sequencergui/monitor/flowcontroller.h"
+//#include "sequencergui/monitor/flowcontroller.h"
 #include "sequencergui/monitor/job_types.h"
 #include "sequencergui/monitor/usercontroller.h"
 
-#include "mvvm/utils/threadsafestack.h"
+//#include "mvvm/utils/threadsafestack.h"
 
 #include <QObject>
 #include <memory>
-#include <mutex>
-#include <thread>
+//#include <mutex>
+//#include <thread>
 
 namespace sequencergui
 {
@@ -94,17 +94,18 @@ signals:
   void VariableChanged(const QString& variable_name, const QString& value);
 
 private:
-  void LaunchDomainRunner(procedure_t* procedure);
-  void SetRunnerStatus(RunnerStatus value);
+  void CheckConditions() const;
+//  void LaunchDomainRunner(procedure_t* procedure);
+//  void SetRunnerStatus(RunnerStatus value);
 
   std::unique_ptr<SequencerObserver> m_observer;
-  std::thread m_runner_thread;
-  RunnerStatus m_runner_status;
-  std::unique_ptr<runner_t> m_domain_runner;
+//  std::thread m_runner_thread;
+//  RunnerStatus m_runner_status;
+//  std::unique_ptr<runner_t> m_domain_runner;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
-  FlowController m_flow_controller;
+//  FlowController m_flow_controller;
   UserController m_user_controller;
-  mutable std::mutex m_mutex;
+//  mutable std::mutex m_mutex;
 };
 
 }  // namespace sequencergui

@@ -57,6 +57,8 @@ public:
 
   void SetTickTimeout(int msec);
 
+  bool IsBusy() const;
+
 private:
   bool ExecuteSingle();
 
