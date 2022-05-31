@@ -112,13 +112,14 @@ void ProcedureRunner::Stop()
 
 void ProcedureRunner::Pause()
 {
-  SetWaitingMode(WaitingMode::kWaitForRelease);
+  m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
+//  SetWaitingMode(WaitingMode::kWaitForRelease);
 }
 
-void ProcedureRunner::SetWaitingMode(WaitingMode waiting_mode)
-{
-  m_flow_controller.SetWaitingMode(waiting_mode);
-}
+//void ProcedureRunner::SetWaitingMode(WaitingMode waiting_mode)
+//{
+//  m_flow_controller.SetWaitingMode(waiting_mode);
+//}
 
 void ProcedureRunner::SetSleepTime(int time_msec)
 {

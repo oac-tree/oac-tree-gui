@@ -74,7 +74,6 @@ void JobManager::SetCurrentJob(JobItem *job)
   else
   {
     auto context = CreateContext();
-    context->SetWaitingMode(WaitingMode::kSleepFor);
   }
 }
 
@@ -95,7 +94,6 @@ void JobManager::onStartProcedureRequest(JobItem *procedure)
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
-    current_context->SetWaitingMode(WaitingMode::kSleepFor);
     current_context->onStartRequest();
   }
 }
@@ -121,14 +119,14 @@ void JobManager::onMakeStepRequest()
   if (!GetCurrentContext())
   {
     auto context = CreateContext();
-    context->SetWaitingMode(WaitingMode::kWaitForRelease);
+//    context->SetWaitingMode(WaitingMode::kWaitForRelease);
   }
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
     if (!current_context->IsRunning())
     {
-      current_context->SetWaitingMode(WaitingMode::kWaitForRelease);
+//      current_context->SetWaitingMode(WaitingMode::kWaitForRelease);
       current_context->onStartRequest();
     }
     else

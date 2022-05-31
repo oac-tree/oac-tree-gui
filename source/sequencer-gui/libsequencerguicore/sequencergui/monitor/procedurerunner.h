@@ -59,7 +59,7 @@ public:
 
   void Pause();
 
-  void SetWaitingMode(WaitingMode waiting_mode);
+//  void SetWaitingMode(WaitingMode waiting_mode);
 
   void SetSleepTime(int time_msec);
 

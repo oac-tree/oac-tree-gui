@@ -67,7 +67,7 @@ public:
 
   void SetMessagePanel(MessagePanel* panel);
 
-  void SetWaitingMode(WaitingMode waiting_mode);
+//  void SetWaitingMode(WaitingMode waiting_mode);
 
   void SetSleepTime(int time_msec);
 

@@ -134,10 +134,10 @@ void JobContext::SetMessagePanel(MessagePanel *panel)
   m_job_log->SetMessagePanel(panel);
 }
 
-void JobContext::SetWaitingMode(WaitingMode waiting_mode)
-{
-  m_procedure_runner->SetWaitingMode(waiting_mode);
-}
+//void JobContext::SetWaitingMode(WaitingMode waiting_mode)
+//{
+//  m_procedure_runner->SetWaitingMode(waiting_mode);
+//}
 
 void JobContext::SetSleepTime(int time_msec)
 {
