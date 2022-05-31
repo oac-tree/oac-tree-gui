@@ -21,65 +21,36 @@
 
 #include "Procedure.h"
 #include "Runner.h"
+#include "sequencergui/core/exceptions.h"
 #include "sequencergui/jobsystem/domainrunneradapter.h"
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/sequencerobserver.h"
-#include "sequencergui/core/exceptions.h"
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
-#include <iostream>
 #include <stdexcept>
 
 namespace sequencergui
 {
 ProcedureRunner::ProcedureRunner(QObject *parent)
-    : QObject(parent)
-    , m_observer(std::make_unique<SequencerObserver>(this))
-//    , m_runner_status(RunnerStatus::kIdle)
+    : QObject(parent), m_observer(std::make_unique<SequencerObserver>(this))
 {
-//  m_flow_controller.SetWaitingMode(WaitingMode::kProceed);
 }
 
-ProcedureRunner::~ProcedureRunner()
-{
-//  if (m_domain_runner)
-//  {
-//    m_domain_runner->Halt();
-//  }
-
-//  m_flow_controller.Interrupt();  // to prevent possible waiting on step request
-
-//  if (m_runner_thread.joinable())
-//  {
-//    m_runner_thread.join();
-//  }
-}
-
-//! Executes given procedure in a thread.
-//! Doesn't have
+ProcedureRunner::~ProcedureRunner() = default;
 
 void ProcedureRunner::SetProcedure(procedure_t *procedure)
 {
-//  if (IsBusy())
-//  {
-//    return;
-//  }
+  if (IsBusy())
+  {
+    return;
+  }
 
   auto runner = std::make_unique<runner_t>(m_observer.get());
-    runner->SetProcedure(procedure);
+  runner->SetProcedure(procedure);
   auto status_changed = [this](auto) { emit RunnerStatusChanged(); };
   m_domain_runner_adapter =
       std::make_unique<DomainRunnerAdapter>(std::move(runner), status_changed);
-
-//  if (m_runner_thread.joinable())
-//  {
-//    m_runner_thread.join();
-//  }
-
-//  SetRunnerStatus(RunnerStatus::kRunning);
-//  m_runner_thread = std::thread([this, procedure]() { LaunchDomainRunner(procedure); });
 }
 
 void ProcedureRunner::Start()
@@ -94,7 +65,6 @@ void ProcedureRunner::Step()
 {
   CheckConditions();
   m_domain_runner_adapter->Step();
-//  m_flow_controller.StepRequest();
 }
 
 //! Terminate currently running procedure
@@ -103,59 +73,25 @@ void ProcedureRunner::Stop()
 {
   CheckConditions();
   onLogMessage("ProcedureRunner::Terminate()", JobMessageType::kWarning);
-
-//  SetRunnerStatus(RunnerStatus::kStopping);
-
-//  if (m_domain_runner)
-//  {
-//    m_domain_runner->Halt();
-//  }
-
-//  m_flow_controller.Interrupt();  // to prevent possible waiting on step request
-
-//  if (m_runner_thread.joinable())
-//  {
-//    m_runner_thread.join();
-//  }
-//  SetRunnerStatus(RunnerStatus::kStopped);
-
   m_domain_runner_adapter->Stop();
-
 }
 
 void ProcedureRunner::Pause()
 {
-//  m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
   CheckConditions();
   m_domain_runner_adapter->Pause();
 }
 
-//void ProcedureRunner::SetWaitingMode(WaitingMode waiting_mode)
-//{
-//  m_flow_controller.SetWaitingMode(waiting_mode);
-//}
-
 void ProcedureRunner::SetSleepTime(int time_msec)
 {
   m_domain_runner_adapter->SetTickTimeout(time_msec);
-//  m_flow_controller.SetSleepTime(time_msec);
 }
 
 bool ProcedureRunner::WaitForCompletion(double timeout_sec)
 {
   CheckConditions();
-  return m_domain_runner_adapter->WaitForCompletion(std::chrono::milliseconds(static_cast<int>(timeout_sec*1000.)));
-//  auto timeout =
-//      std::chrono::system_clock::now() + std::chrono::nanoseconds(std::lround(timeout_sec * 1e9));
-//  while (std::chrono::system_clock::now() < timeout)
-//  {
-//    if (!IsBusy())
-//    {
-//      return true;
-//    }
-//    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-//  }
-//  return false;
+  return m_domain_runner_adapter->WaitForCompletion(
+      std::chrono::milliseconds(static_cast<int>(timeout_sec * 1000.)));
 }
 
 void ProcedureRunner::SetUserContext(const UserContext &user_context)
@@ -166,23 +102,16 @@ void ProcedureRunner::SetUserContext(const UserContext &user_context)
 bool ProcedureRunner::IsBusy() const
 {
   return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
-//  return m_runner_status == RunnerStatus::kRunning || m_runner_status == RunnerStatus::kStopping
-//         || m_runner_status == RunnerStatus::kPaused;
 }
 
 RunnerStatus ProcedureRunner::GetRunnerStatus() const
 {
-  return m_domain_runner_adapter? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
-//  std::lock_guard lock(m_mutex);
-//  return m_runner_status;
+  return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
 }
 
-//! Performs necessary activity on domain instruction status change.
-//! This is the place where we pause execution, if necessary.
 void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction)
 {
   emit InstructionStatusChanged(instruction);
-//  m_flow_controller.WaitIfNecessary();
 }
 
 //! Propagate log message from observer up in the form of signals.
@@ -216,26 +145,4 @@ void ProcedureRunner::CheckConditions() const
     throw RuntimeException("Domain runner is not initialised");
   }
 }
-
-//void ProcedureRunner::LaunchDomainRunner(procedure_t *procedure)
-//{
-//  //  SetRunnerStatus(RunnerStatus::kRunning);
-
-//  m_domain_runner = std::make_unique<sup::sequencer::Runner>(m_observer.get());
-//  m_domain_runner->SetProcedure(procedure);
-//  m_domain_runner->ExecuteProcedure();
-//  procedure->Reset();
-//  if (GetRunnerStatus() != RunnerStatus::kStopping)
-//  {
-//    SetRunnerStatus(RunnerStatus::kCompleted);
-//  }
-//}
-
-//void ProcedureRunner::SetRunnerStatus(RunnerStatus value)
-//{
-//  std::lock_guard lock(m_mutex);
-//  m_runner_status = value;
-//  emit RunnerStatusChanged();
-//}
-
 }  // namespace sequencergui
