@@ -81,10 +81,16 @@ void ProcedureRunner::ExecuteProcedure(procedure_t *procedure)
   m_runner_thread = std::thread([this, procedure]() { LaunchDomainRunner(procedure); });
 }
 
+void ProcedureRunner::Start()
+{
+  m_domain_runner_adapter->Start();
+}
+
 //! Performs request to release possible waiting in ProcedureRunner::onInstructionStatusChange.
 
 void ProcedureRunner::Step()
 {
+  m_domain_runner_adapter->Step();
   m_flow_controller.StepRequest();
 }
 
@@ -108,12 +114,16 @@ void ProcedureRunner::Stop()
     m_runner_thread.join();
   }
   SetRunnerStatus(RunnerStatus::kStopped);
+
+  m_domain_runner_adapter->Stop();
+
 }
 
 void ProcedureRunner::Pause()
 {
   m_flow_controller.SetWaitingMode(WaitingMode::kWaitForRelease);
-//  SetWaitingMode(WaitingMode::kWaitForRelease);
+
+//  m_domain_runner_adapter->Pause();
 }
 
 //void ProcedureRunner::SetWaitingMode(WaitingMode waiting_mode)

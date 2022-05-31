@@ -53,6 +53,8 @@ public:
 
   void ExecuteProcedure(procedure_t* procedure);
 
+  void Start();
+
   void Step();
 
   void Stop();
