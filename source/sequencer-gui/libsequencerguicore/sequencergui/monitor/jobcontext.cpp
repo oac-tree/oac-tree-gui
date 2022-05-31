@@ -95,7 +95,7 @@ void JobContext::onStartRequest()
 
   m_job_log->ClearLog();
 
-  m_procedure_runner->ExecuteProcedure(m_domain_procedure.get(), false);  // do not setup
+  m_procedure_runner->ExecuteProcedure(m_domain_procedure.get());
 }
 
 void JobContext::onPauseRequest()

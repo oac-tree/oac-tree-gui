@@ -50,7 +50,7 @@ public:
 
   // Methods to control flow.
 
-  void ExecuteProcedure(procedure_t* procedure, bool make_setup);
+  void ExecuteProcedure(procedure_t* procedure);
 
   void onMakeStepRequest();
 

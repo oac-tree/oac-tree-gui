@@ -58,11 +58,12 @@ TEST_F(ProcedureRunnerTest, InitialState)
 TEST_F(ProcedureRunnerTest, PrematureDeletion)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
+  procedure->Setup();
   EXPECT_TRUE(procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   auto runner = std::make_unique<ProcedureRunner>();
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(100));
   EXPECT_TRUE(runner->IsBusy());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
@@ -79,13 +80,14 @@ TEST_F(ProcedureRunnerTest, PrematureDeletion)
 TEST_F(ProcedureRunnerTest, StartAndTerminate)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(100));
   EXPECT_TRUE(runner->IsBusy());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
@@ -111,13 +113,14 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
 TEST_F(ProcedureRunnerTest, StartAndStop)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(100));
   EXPECT_FALSE(runner->IsBusy());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
@@ -134,13 +137,14 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
 TEST_F(ProcedureRunnerTest, WaitForCompletion)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(msec(100));
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
   EXPECT_TRUE(runner->WaitForCompletion(1.0));
   EXPECT_FALSE(runner->IsBusy());
@@ -152,6 +156,7 @@ TEST_F(ProcedureRunnerTest, WaitForCompletion)
 TEST_F(ProcedureRunnerTest, CopyVariable)
 {
   auto procedure = testutils::CreateCopyProcedure();
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
 
@@ -159,7 +164,7 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(100));
   EXPECT_FALSE(runner->IsBusy());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
@@ -179,6 +184,7 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
 TEST_F(ProcedureRunnerTest, StepwiseExecution)
 {
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kWaitForRelease);
@@ -186,7 +192,7 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(50));
 
   // Making 6 steps (3 instructions, 2 status change per each)
@@ -209,6 +215,7 @@ TEST_F(ProcedureRunnerTest, UserInput)
   auto on_user_input = [](auto, auto) { return "42"; };
 
   auto procedure = testutils::CreateInputProcedure();
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kProceed);
@@ -218,7 +225,7 @@ TEST_F(ProcedureRunnerTest, UserInput)
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(50));
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
@@ -246,6 +253,7 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   };
 
   auto procedure = testutils::CreateUserChoiceProcedure();
+  procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
   runner->SetWaitingMode(WaitingMode::kProceed);
@@ -255,7 +263,7 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-  runner->ExecuteProcedure(procedure.get(), true);
+  runner->ExecuteProcedure(procedure.get());
   std::this_thread::sleep_for(msec(50));
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);

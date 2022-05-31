@@ -58,7 +58,7 @@ ProcedureRunner::~ProcedureRunner()
 //! Executes given procedure in a thread.
 //! Doesn't have
 
-void ProcedureRunner::ExecuteProcedure(procedure_t *procedure, bool make_setup)
+void ProcedureRunner::ExecuteProcedure(procedure_t *procedure)
 {
   if (IsBusy())
   {
@@ -68,11 +68,6 @@ void ProcedureRunner::ExecuteProcedure(procedure_t *procedure, bool make_setup)
   if (m_runner_thread.joinable())
   {
     m_runner_thread.join();
-  }
-
-  if (make_setup && !procedure->Setup())
-  {
-    throw std::runtime_error("Error in ProcedureRunner: can't setup procedure");
   }
 
   SetRunnerStatus(RunnerStatus::kRunning);
