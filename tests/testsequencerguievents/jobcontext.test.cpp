@@ -242,7 +242,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
   auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
-  EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
 }
@@ -288,7 +288,7 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
   auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
-  EXPECT_EQ(instructions.at(0)->GetStatus(), "Not started");
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }
 
 TEST_F(JobContextTest, UserInputScenario)
