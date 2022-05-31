@@ -96,6 +96,48 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
+//! Terminates procedure which runs too long.
+
+TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
+{
+  std::chrono::milliseconds timeout_msec(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+  auto runner = CreateRunner(procedure.get());
+
+  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
+  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopped));
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+  }
+
+  // triggering action
+  EXPECT_TRUE(adapter.Start()); // trigger action
+
+  EXPECT_TRUE(adapter.IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_FALSE(adapter.WaitForCompletion(msec(10)));
+
+  adapter.Stop();
+  std::this_thread::sleep_for(msec(10));
+
+  EXPECT_FALSE(adapter.IsBusy());
+  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kStopped);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+}
+
 //! Sequence with single wait in normal start mode.
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)

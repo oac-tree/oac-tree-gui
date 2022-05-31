@@ -53,6 +53,7 @@ bool DomainRunnerAdapter::Start()
 
 bool DomainRunnerAdapter::Stop()
 {
+  m_domain_runner->Halt();
   return m_function_runner->Stop();
 }
 
