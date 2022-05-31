@@ -26,6 +26,7 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/sequencer_types.h"
 #include "test_procedures.h"
+#include "test_utils.h"
 
 #include <gtest/gtest.h>
 
@@ -157,7 +158,7 @@ TEST_F(ProcedureRunnerTest, WaitForCompletion)
   runner->Start();
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-  EXPECT_TRUE(runner->WaitForCompletion(1.0));
+  EXPECT_TRUE(testutils::WaitForCompletion(*runner, msec(1000)));
   EXPECT_FALSE(runner->IsBusy());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
 }

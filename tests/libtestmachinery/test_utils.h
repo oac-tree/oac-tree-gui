@@ -26,6 +26,8 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 //! Various common utils for unit tests.
 
@@ -76,6 +78,23 @@ std::string GetTextFileContent(const std::string& file_name);
 
 //! Create ASCII file with given content.
 void CreateTextFile(const std::string& file_name, const std::string& content);
+
+template<typename T>
+bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
+{
+  const std::chrono::milliseconds timeout_precision_msec(10);
+  auto timeout = std::chrono::system_clock::now() + timeout_msec;
+  while (std::chrono::system_clock::now() < timeout)
+  {
+    if (!runner.IsBusy())
+    {
+      return true;
+    }
+    std::this_thread::sleep_for(timeout_precision_msec);
+  }
+  return false;
+}
+
 
 }  // namespace testutils
 

@@ -87,13 +87,6 @@ void ProcedureRunner::SetSleepTime(int time_msec)
   m_domain_runner_adapter->SetTickTimeout(time_msec);
 }
 
-bool ProcedureRunner::WaitForCompletion(double timeout_sec)
-{
-  CheckConditions();
-  return m_domain_runner_adapter->WaitForCompletion(
-      std::chrono::milliseconds(static_cast<int>(timeout_sec * 1000.)));
-}
-
 void ProcedureRunner::SetUserContext(const UserContext &user_context)
 {
   m_user_controller.SetUserContext(user_context);

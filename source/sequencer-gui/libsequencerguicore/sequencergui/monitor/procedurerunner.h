@@ -58,8 +58,6 @@ public:
 
   void SetSleepTime(int time_msec);
 
-  bool WaitForCompletion(double timeout_sec);
-
   void SetUserContext(const UserContext& user_context);
 
   // Methods to retrieve status
