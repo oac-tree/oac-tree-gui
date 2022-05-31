@@ -93,6 +93,9 @@ bool DomainRunnerAdapter::ExecuteSingle()
   return !m_domain_runner->IsFinished();
 }
 
-DomainRunnerAdapter::~DomainRunnerAdapter() = default;
+DomainRunnerAdapter::~DomainRunnerAdapter()
+{
+  m_domain_runner->Halt();
+}
 
 }  // namespace sequencergui

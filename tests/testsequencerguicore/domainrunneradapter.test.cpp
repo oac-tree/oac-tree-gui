@@ -123,7 +123,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
   }
 
   // triggering action
-  EXPECT_TRUE(adapter.Start()); // trigger action
+  EXPECT_TRUE(adapter.Start());  // trigger action
 
   EXPECT_TRUE(adapter.IsBusy());
   std::this_thread::sleep_for(msec(20));
@@ -135,6 +135,48 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 
   EXPECT_FALSE(adapter.IsBusy());
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kStopped);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+}
+
+//! Runner dies before procedure has finished.
+
+TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
+{
+  std::chrono::milliseconds timeout_msec(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+  auto runner = CreateRunner(procedure.get());
+
+  auto adapter =
+      std::make_unique<DomainRunnerAdapter>(std::move(runner), m_listener.CreateCallback());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    // We do not expect any ohter signals during premature DomainRunnerAdapter destruction.
+    // This is how internal FunctionRunner is implemented.
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+  }
+
+  // triggering action
+  EXPECT_TRUE(adapter->Start());  // trigger action
+
+  EXPECT_TRUE(adapter->IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
+
+  // delete before end
+  EXPECT_NO_FATAL_FAILURE(adapter.reset());
+  std::this_thread::sleep_for(msec(10));
+
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
@@ -171,7 +213,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
   time_t start_time = clock_used::now();
   EXPECT_TRUE(adapter.Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + 2*msec(timeout_msec)));
+  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + 2 * msec(timeout_msec)));
 
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
@@ -265,7 +307,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
   // triggering action
   EXPECT_TRUE(adapter.Step());
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kRunning);
-  std::this_thread::sleep_for(msec(kDefaultWaitPrecision*3));
+  std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(adapter.Step());
 
