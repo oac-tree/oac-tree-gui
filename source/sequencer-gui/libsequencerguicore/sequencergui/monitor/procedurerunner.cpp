@@ -145,7 +145,7 @@ void ProcedureRunner::SetSleepTime(int time_msec)
 bool ProcedureRunner::WaitForCompletion(double timeout_sec)
 {
   CheckConditions();
-  return m_domain_runner_adapter->WaitForCompletion(std::chrono::milliseconds(static_cast<int>(timeout_sec/1000.)));
+  return m_domain_runner_adapter->WaitForCompletion(std::chrono::milliseconds(static_cast<int>(timeout_sec*1000.)));
 //  auto timeout =
 //      std::chrono::system_clock::now() + std::chrono::nanoseconds(std::lround(timeout_sec * 1e9));
 //  while (std::chrono::system_clock::now() < timeout)

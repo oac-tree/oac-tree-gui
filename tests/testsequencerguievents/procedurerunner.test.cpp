@@ -71,7 +71,7 @@ TEST_F(ProcedureRunnerTest, PrematureDeletion)
   // sudden runner destruction
   runner.reset();
 
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
 //! Terminates procedure which runs too long.
@@ -100,7 +100,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
   std::this_thread::sleep_for(msec(10));
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kStopped);
 
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
   EXPECT_FALSE(runner->IsBusy());
 
   EXPECT_EQ(spy_instruction_status.count(), 2);
