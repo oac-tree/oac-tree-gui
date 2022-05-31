@@ -156,6 +156,35 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kStopped);
 }
 
+//! Terminating the procedure that runs too long.
+
+TEST_F(FunctionRunnerTest, PrematureDeletion)
+{
+  testutils::MockRunnerListener listener;
+  auto worker = []()
+  {
+    std::this_thread::sleep_for(msec(10));
+    return true;
+  };  // executes forever
+
+  auto runner = std::make_unique<FunctionRunner>(worker, listener.CreateCallback());
+
+  // The feature of FunctionRunner that the last signal is RunningState on sudden destruction
+  {
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+  }
+
+  EXPECT_TRUE(runner->Start());  // triggering action
+  EXPECT_TRUE(runner->IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_FALSE(WaitForCompletion(*runner, msec(10)));
+
+  EXPECT_NO_FATAL_FAILURE(runner.reset());
+}
+
+
 //! Stepwise task execution. The task is launched in step wise mode. After 3 steps the task is
 //! expected to be completed.
 
