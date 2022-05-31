@@ -100,7 +100,8 @@ void JobContext::onStartRequest()
 
 void JobContext::onPauseRequest()
 {
-  m_procedure_runner->SetWaitingMode(WaitingMode::kWaitForRelease);
+//  m_procedure_runner->SetWaitingMode(WaitingMode::kWaitForRelease);
+  m_procedure_runner->Pause();
 }
 
 void JobContext::onMakeStepRequest()

@@ -187,7 +187,7 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
   procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>();
-  runner->SetWaitingMode(WaitingMode::kWaitForRelease);
+  runner->Pause();
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);

@@ -110,6 +110,11 @@ void ProcedureRunner::Stop()
   SetRunnerStatus(RunnerStatus::kStopped);
 }
 
+void ProcedureRunner::Pause()
+{
+  SetWaitingMode(WaitingMode::kWaitForRelease);
+}
+
 void ProcedureRunner::SetWaitingMode(WaitingMode waiting_mode)
 {
   m_flow_controller.SetWaitingMode(waiting_mode);
