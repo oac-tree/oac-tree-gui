@@ -112,7 +112,7 @@ void JobContext::onStopRequest()
 {
   if (m_procedure_runner->GetRunnerStatus() == RunnerStatus::kRunning)
   {
-    m_procedure_runner->Terminate();
+    m_procedure_runner->Stop();
   }
 }
 

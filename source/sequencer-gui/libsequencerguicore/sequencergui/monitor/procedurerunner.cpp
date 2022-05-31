@@ -21,6 +21,7 @@
 
 #include "Procedure.h"
 #include "Runner.h"
+#include "sequencergui/jobsystem/domainrunneradapter.h"
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/sequencerobserver.h"
 
@@ -65,6 +66,12 @@ void ProcedureRunner::ExecuteProcedure(procedure_t *procedure)
     return;
   }
 
+  auto runner = std::make_unique<runner_t>(m_observer.get());
+  //  runner->SetProcedure(procedure);
+  auto status_changed = [this](auto) { emit RunnerStatusChanged(); };
+  m_domain_runner_adapter =
+      std::make_unique<DomainRunnerAdapter>(std::move(runner), status_changed);
+
   if (m_runner_thread.joinable())
   {
     m_runner_thread.join();
@@ -83,7 +90,7 @@ void ProcedureRunner::onMakeStepRequest()
 
 //! Terminate currently running procedure
 
-void ProcedureRunner::Terminate()
+void ProcedureRunner::Stop()
 {
   onLogMessage("ProcedureRunner::Terminate()", JobMessageType::kWarning);
 

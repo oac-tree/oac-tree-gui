@@ -96,7 +96,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
   EXPECT_EQ(spy_instruction_status.count(), 1);
   EXPECT_EQ(spy_runner_status.count(), 1);  // running
 
-  runner->Terminate();
+  runner->Stop();
 
   std::this_thread::sleep_for(msec(10));
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kStopped);

@@ -35,6 +35,7 @@
 namespace sequencergui
 {
 class SequencerObserver;
+class DomainRunnerAdapter;
 
 //! Executes sequencer's procedure in a separate thread.
 //! Observes sequence execution and converts sequencer UI calls into signals.
@@ -54,7 +55,7 @@ public:
 
   void onMakeStepRequest();
 
-  void Terminate();
+  void Stop();
 
   void SetWaitingMode(WaitingMode waiting_mode);
 
@@ -96,6 +97,7 @@ private:
   std::thread m_runner_thread;
   RunnerStatus m_runner_status;
   std::unique_ptr<runner_t> m_domain_runner;
+  std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
   FlowController m_flow_controller;
   UserController m_user_controller;
   mutable std::mutex m_mutex;
