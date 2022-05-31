@@ -46,6 +46,9 @@ std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::millis
 std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(
     std::chrono::milliseconds timeout1, std::chrono::milliseconds timeout2);
 
+//! Creates sequence with two message.
+std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure();
+
 //! Creates procedure with one variable and input instruction.
 std::unique_ptr<procedure_t> CreateInputProcedure();
 

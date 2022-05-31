@@ -60,7 +60,7 @@ ProcedureRunner::~ProcedureRunner()
 //! Executes given procedure in a thread.
 //! Doesn't have
 
-void ProcedureRunner::ExecuteProcedure(procedure_t *procedure)
+void ProcedureRunner::SetProcedure(procedure_t *procedure)
 {
 //  if (IsBusy())
 //  {
@@ -80,7 +80,6 @@ void ProcedureRunner::ExecuteProcedure(procedure_t *procedure)
 
 //  SetRunnerStatus(RunnerStatus::kRunning);
 //  m_runner_thread = std::thread([this, procedure]() { LaunchDomainRunner(procedure); });
-  m_domain_runner_adapter->Start();
 }
 
 void ProcedureRunner::Start()

@@ -107,6 +107,22 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure()
+{
+  auto result = std::make_unique<procedure_t>();
+  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto message0 = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  message0->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
+  auto message1 = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  message1->AddAttribute(sequencergui::domainconstants::kTextAttribute, "efg");
+
+  sequence->InsertInstruction(message0.release(), 0);
+  sequence->InsertInstruction(message1.release(), 1);
+
+  result->PushInstruction(sequence.release());
+  return result;
+}
+
 std::unique_ptr<procedure_t> CreateInputProcedure()
 {
   auto result = std::make_unique<procedure_t>();

@@ -51,7 +51,7 @@ public:
 
   // Methods to control flow.
 
-  void ExecuteProcedure(procedure_t* procedure);
+  void SetProcedure(procedure_t* procedure);
 
   void Start();
 
