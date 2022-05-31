@@ -105,7 +105,7 @@ void JobContext::onPauseRequest()
 
 void JobContext::onMakeStepRequest()
 {
-  m_procedure_runner->onMakeStepRequest();
+  m_procedure_runner->Step();
 }
 
 void JobContext::onStopRequest()

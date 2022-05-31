@@ -53,7 +53,7 @@ public:
 
   void ExecuteProcedure(procedure_t* procedure);
 
-  void onMakeStepRequest();
+  void Step();
 
   void Stop();
 

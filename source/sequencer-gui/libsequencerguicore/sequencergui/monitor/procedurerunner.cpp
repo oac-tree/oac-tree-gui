@@ -83,7 +83,7 @@ void ProcedureRunner::ExecuteProcedure(procedure_t *procedure)
 
 //! Performs request to release possible waiting in ProcedureRunner::onInstructionStatusChange.
 
-void ProcedureRunner::onMakeStepRequest()
+void ProcedureRunner::Step()
 {
   m_flow_controller.StepRequest();
 }

@@ -199,7 +199,7 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
   for (size_t i = 0; i < 6; ++i)
   {
     EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-    runner->onMakeStepRequest();
+    runner->Step();
     std::this_thread::sleep_for(msec(50));
   }
   std::this_thread::sleep_for(msec(50));
