@@ -76,6 +76,8 @@ void JobContext::onPrepareJobRequest()
   auto expanded_procedure = std::make_unique<ProcedureItem>();
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get());
   job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+
+  m_procedure_runner->SetProcedure(m_domain_procedure.get());
 }
 
 JobContext::~JobContext() = default;
@@ -95,7 +97,7 @@ void JobContext::onStartRequest()
 
   m_job_log->ClearLog();
 
-  m_procedure_runner->SetProcedure(m_domain_procedure.get());
+  m_procedure_runner->Start();
 }
 
 void JobContext::onPauseRequest()

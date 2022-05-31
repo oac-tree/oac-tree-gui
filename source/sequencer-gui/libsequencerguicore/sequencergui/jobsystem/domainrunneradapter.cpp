@@ -95,7 +95,10 @@ bool DomainRunnerAdapter::ExecuteSingle()
 
 DomainRunnerAdapter::~DomainRunnerAdapter()
 {
-  m_domain_runner->Halt();
+  // Line below is commented since we don't now if the underlying procedure is still alive.
+  // So attempt to delete the runner during procedure execution will lead to UB
+  // m_domain_runner->Halt();
+  // FIXME find solution, see comments DomainRunnerAdapterTest::PrematureDeletion
 }
 
 }  // namespace sequencergui

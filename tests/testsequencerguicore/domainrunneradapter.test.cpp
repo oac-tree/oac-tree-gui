@@ -139,46 +139,49 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 }
 
 //! Runner dies before procedure has finished.
+//! Test is commented. For the moment an attempt to delete the runner during procedure execution
+//! will lead to UB. It is not clear how to provide mutual safety for time of life of Procedure
+//! and DomainRunnerAdapter.
 
-TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
-{
-  std::chrono::milliseconds timeout_msec(10000);
-  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
-  auto runner = CreateRunner(procedure.get());
+//TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
+//{
+//  std::chrono::milliseconds timeout_msec(10000);
+//  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+//  auto runner = CreateRunner(procedure.get());
 
-  auto adapter =
-      std::make_unique<DomainRunnerAdapter>(std::move(runner), m_listener.CreateCallback());
-  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+//  auto adapter =
+//      std::make_unique<DomainRunnerAdapter>(std::move(runner), m_listener.CreateCallback());
+//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-  {  // signaling related to the runner status change
-    ::testing::InSequence seq;
-    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
-    // We do not expect any ohter signals during premature DomainRunnerAdapter destruction.
-    // This is how internal FunctionRunner is implemented.
-  }
+//  {  // signaling related to the runner status change
+//    ::testing::InSequence seq;
+//    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+//    // We do not expect any ohter signals during premature DomainRunnerAdapter destruction.
+//    // This is how internal FunctionRunner is implemented.
+//  }
 
-  {  // observer signaling
-    ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-  }
+//  {  // observer signaling
+//    ::testing::InSequence seq;
+//    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+//    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+//  }
 
-  // triggering action
-  EXPECT_TRUE(adapter->Start());  // trigger action
+//  // triggering action
+//  EXPECT_TRUE(adapter->Start());  // trigger action
 
-  EXPECT_TRUE(adapter->IsBusy());
-  std::this_thread::sleep_for(msec(20));
+//  EXPECT_TRUE(adapter->IsBusy());
+//  std::this_thread::sleep_for(msec(20));
 
-  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
+//  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
 
-  // delete before end
-  EXPECT_NO_FATAL_FAILURE(adapter.reset());
-  std::this_thread::sleep_for(msec(10));
+//  // delete before end
+//  EXPECT_NO_FATAL_FAILURE(adapter.reset());
+//  std::this_thread::sleep_for(msec(10));
 
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
-}
+//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+//}
 
 //! Sequence with single wait in normal start mode.
 
