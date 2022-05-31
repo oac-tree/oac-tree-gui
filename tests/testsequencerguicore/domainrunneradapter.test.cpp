@@ -129,7 +129,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
   time_t start_time = clock_used::now();
   EXPECT_TRUE(adapter.Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + msec(timeout_msec)));
+  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + 2*msec(timeout_msec)));
 
   EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
