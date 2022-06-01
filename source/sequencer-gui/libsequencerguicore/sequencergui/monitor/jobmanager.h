@@ -47,7 +47,7 @@ public:
 
   JobContext* GetCurrentContext();
 
-  void onStartProcedureRequest(JobItem* procedure);
+  void onStartProcedureRequest(JobItem* job_item);
   void onPauseProcedureRequest();
   void onStopProcedureRequest();
   void onMakeStepRequest();

@@ -85,14 +85,14 @@ JobContext *JobManager::GetCurrentContext()
   return it == m_context_map.end() ? nullptr : it->second;
 }
 
-void JobManager::onStartProcedureRequest(JobItem *procedure)
+void JobManager::onStartProcedureRequest(JobItem *job_item)
 {
-  if (!procedure)
+  if (!job_item)
   {
     return;
   }
 
-  SetCurrentJob(procedure);
+  SetCurrentJob(job_item);
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
@@ -102,39 +102,25 @@ void JobManager::onStartProcedureRequest(JobItem *procedure)
 
 void JobManager::onPauseProcedureRequest()
 {
-  if (auto current_context = GetCurrentContext(); current_context)
+  if (auto context = GetCurrentContext(); context)
   {
-    current_context->onPauseRequest();
+    context->onPauseRequest();
   }
 }
 
 void JobManager::onStopProcedureRequest()
 {
-  if (auto current_context = GetCurrentContext(); current_context)
+  if (auto context = GetCurrentContext(); context)
   {
-    current_context->onStopRequest();
+    context->onStopRequest();
   }
 }
 
 void JobManager::onMakeStepRequest()
 {
-  if (!GetCurrentContext())
+  if (auto context = GetCurrentContext(); context)
   {
-    auto context = CreateContext();
-    //    context->SetWaitingMode(WaitingMode::kWaitForRelease);
-  }
-
-  if (auto current_context = GetCurrentContext(); current_context)
-  {
-    if (!current_context->IsRunning())
-    {
-      //      current_context->SetWaitingMode(WaitingMode::kWaitForRelease);
-      current_context->onStartRequest();
-    }
-    else
-    {
-      current_context->onMakeStepRequest();
-    }
+    context->onMakeStepRequest();
   }
 }
 
