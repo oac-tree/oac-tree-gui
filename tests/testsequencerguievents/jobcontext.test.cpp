@@ -32,9 +32,12 @@
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/monitor/jobutils.h"
+#include "sequencergui/model/item_constants.h"
 
 #include "mvvm/model/modelutils.h"
 #include "mvvm/standarditems/containeritem.h"
+
+#include "mockitemlistener.h"
 
 #include <gtest/gtest.h>
 
@@ -246,6 +249,39 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
 }
+
+//! Normal execution of procedure with single wait.
+//! Validating signaling going from expanded procedure (instruction status change).
+
+TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
+{
+  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
+
+  EXPECT_EQ(procedure->GetStatus(), std::string());
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+
+  JobContext job_context(m_job_item);
+  EXPECT_FALSE(job_context.IsValid());
+  job_context.onPrepareJobRequest();
+  EXPECT_TRUE(job_context.IsValid());
+
+  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
+  auto wait = instructions.at(0);
+
+  MockItemListener listener(wait);
+
+  EXPECT_CALL(listener, OnPropertyChanged(wait, itemconstants::kStatus)).Times(2);
+
+  job_context.onStartRequest();
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
+
+  EXPECT_FALSE(job_context.IsRunning());
+
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
+}
+
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
