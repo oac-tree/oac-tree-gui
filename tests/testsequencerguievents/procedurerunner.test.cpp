@@ -138,7 +138,7 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
   EXPECT_EQ(spy_runner_status.count(), 2);
 
   auto arguments = spy_instruction_status.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
+  EXPECT_EQ(arguments.size(), 2);
 }
 
 //! Short procedure which is executed normally.
@@ -323,5 +323,5 @@ TEST_F(ProcedureRunnerTest, SetProcedureTwice)
   EXPECT_EQ(spy_runner_status.count(), 2);
 
   auto arguments = spy_instruction_status.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
+  EXPECT_EQ(arguments.size(), 2);
 }

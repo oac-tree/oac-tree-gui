@@ -68,7 +68,7 @@ public:
 
   // Methods used by the domain to to report the activity.
 
-  void onInstructionStatusChange(const instruction_t* instruction);
+  void onInstructionStatusChange(const instruction_t* instruction, const std::string& value);
 
   void onLogMessage(const std::string& message,
                     JobMessageType message_type = JobMessageType::kDefault);
@@ -80,7 +80,7 @@ public:
   int onUserChoice(const std::vector<std::string>& choices, const std::string& description);
 
 signals:
-  void InstructionStatusChanged(const instruction_t* instruction);
+  void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
   void LogMessageRequest(const QString& message, int message_type);
   void RunnerStatusChanged();
   void VariableChanged(const QString& variable_name, const QString& value);

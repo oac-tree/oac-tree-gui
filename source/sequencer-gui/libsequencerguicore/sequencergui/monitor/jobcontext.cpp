@@ -37,15 +37,6 @@
 #include <QDebug>
 #include <iostream>
 
-namespace
-{
-std::string GetStatus(const instruction_t *instruction)
-{
-  std::cout << "zzzzz " << static_cast<int>(instruction->GetStatus()) << std::endl;
-  return ::sup::sequencer::StatusToString(instruction->GetStatus());
-}
-}  // namespace
-
 namespace sequencergui
 {
 
@@ -145,13 +136,15 @@ bool JobContext::IsValid() const
   return m_domain_procedure != nullptr;
 }
 
-void JobContext::onInstructionStatusChange(const instruction_t *instruction)
+void JobContext::onInstructionStatusChange(const instruction_t *instruction, const QString &status)
 {
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
-  std::cout << "JobContext::onInstructionStatusChange() " << instruction << " " << GetStatus(instruction) << std::endl;;
+  std::cout << "JobContext::onInstructionStatusChange() " << instruction << " "
+            << status.toStdString() << std::endl;
+  ;
   if (instruction_item)
   {
-    instruction_item->SetStatus(GetStatus(instruction));
+    instruction_item->SetStatus(status.toStdString());
     emit InstructionStatusChanged(instruction_item);
   }
   else

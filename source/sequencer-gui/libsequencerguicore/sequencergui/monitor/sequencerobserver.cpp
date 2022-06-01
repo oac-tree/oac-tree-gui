@@ -23,6 +23,14 @@
 #include "sequencergui/model/shallnotbenamedvalueutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
+namespace
+{
+std::string GetStatus(const instruction_t *instruction)
+{
+  return ::sup::sequencer::StatusToString(instruction->GetStatus());
+}
+}  // namespace
+
 namespace sequencergui
 {
 SequencerObserver::SequencerObserver(ProcedureRunner *procedure_runner)
@@ -30,11 +38,11 @@ SequencerObserver::SequencerObserver(ProcedureRunner *procedure_runner)
 {
 }
 
-SequencerObserver::~SequencerObserver() {}
+SequencerObserver::~SequencerObserver() = default;
 
 void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instruction *instruction)
 {
-  m_procedure_runner->onInstructionStatusChange(instruction);
+  m_procedure_runner->onInstructionStatusChange(instruction, GetStatus(instruction));
 }
 
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,

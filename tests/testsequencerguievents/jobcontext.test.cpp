@@ -20,9 +20,11 @@
 #include "sequencergui/monitor/jobcontext.h"
 
 #include "Instruction.h"
+#include "mockitemlistener.h"
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/applicationmodels.h"
 #include "sequencergui/model/instructioncontaineritem.h"
+#include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/jobitem.h"
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/model/procedureexamples.h"
@@ -32,12 +34,9 @@
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/monitor/jobutils.h"
-#include "sequencergui/model/item_constants.h"
 
 #include "mvvm/model/modelutils.h"
 #include "mvvm/standarditems/containeritem.h"
-
-#include "mockitemlistener.h"
 
 #include <gtest/gtest.h>
 
@@ -190,7 +189,8 @@ TEST_F(JobContextTest, PrepareJobRequest)
   job_context.onPrepareJobRequest();
 
   EXPECT_NE(expanded_procedure, nullptr);
-  EXPECT_NE(job_context.GetExpandedProcedure(), expanded_procedure); // old procedure was regenerated
+  EXPECT_NE(job_context.GetExpandedProcedure(),
+            expanded_procedure);  // old procedure was regenerated
   EXPECT_EQ(job_context.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
 }
 
@@ -281,7 +281,6 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
 }
-
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {

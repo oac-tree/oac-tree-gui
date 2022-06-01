@@ -111,10 +111,10 @@ RunnerStatus ProcedureRunner::GetRunnerStatus() const
   return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
 }
 
-void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction)
+void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction, const std::string &value)
 {
- std::cout << "ProcedureRunner::onInstructionStatusChange" << instruction << " " << static_cast<int>(instruction->GetStatus())<< std::endl;
-  emit InstructionStatusChanged(instruction);
+ std::cout << "ProcedureRunner::onInstructionStatusChange" << instruction << " " << static_cast<int>(instruction->GetStatus()) << "qqq" << value<< std::endl;
+  emit InstructionStatusChanged(instruction, QString::fromStdString(value));
 }
 
 //! Propagate log message from observer up in the form of signals.

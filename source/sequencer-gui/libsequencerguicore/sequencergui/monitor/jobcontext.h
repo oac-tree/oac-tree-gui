@@ -77,7 +77,7 @@ signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
-  void onInstructionStatusChange(const instruction_t* instruction);
+  void onInstructionStatusChange(const instruction_t* instruction, const QString& status);
   void onLogMessage(const QString& message, int message_type);
   void onVariableChange(const QString& variable_name, const QString& value);
   void onRunnerStatusChanged();
