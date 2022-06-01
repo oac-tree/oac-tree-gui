@@ -92,7 +92,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
 
   runner->SetProcedure(procedure.get());
 
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
 
   std::this_thread::sleep_for(msec(100));
   EXPECT_TRUE(runner->IsBusy());
@@ -102,7 +102,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
   EXPECT_EQ(spy_instruction_status.count(), 1);
   EXPECT_EQ(spy_runner_status.count(), 1);  // running
 
-  runner->Stop();
+  EXPECT_TRUE(runner->Stop());
 
   std::this_thread::sleep_for(msec(10));
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kStopped);
@@ -128,7 +128,7 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
 
   runner->SetProcedure(procedure.get());
 
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
 
   std::this_thread::sleep_for(msec(100));
   EXPECT_FALSE(runner->IsBusy());
@@ -142,6 +142,7 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
 }
 
 //! Short procedure which is executed normally.
+//! Testing method WaitForCompletion.
 
 TEST_F(ProcedureRunnerTest, WaitForCompletion)
 {
@@ -155,7 +156,7 @@ TEST_F(ProcedureRunnerTest, WaitForCompletion)
 
   runner->SetProcedure(procedure.get());
 
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
   EXPECT_TRUE(testutils::WaitForCompletion(*runner, msec(1000)));
@@ -178,7 +179,7 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
 
   runner->SetProcedure(procedure.get());
 
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
 
   std::this_thread::sleep_for(msec(100));
   EXPECT_FALSE(runner->IsBusy());
@@ -210,11 +211,11 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kIdle);
 
-  runner->Step();
+  EXPECT_TRUE(runner->Step());
   std::this_thread::sleep_for(msec(10));
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kPaused);
 
-  runner->Step();
+  EXPECT_TRUE(runner->Step());
   std::this_thread::sleep_for(msec(10));
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
 
@@ -239,7 +240,7 @@ TEST_F(ProcedureRunnerTest, UserInput)
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
   runner->SetProcedure(procedure.get());
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
   std::this_thread::sleep_for(msec(50));
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
@@ -277,7 +278,7 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
   runner->SetProcedure(procedure.get());
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
   std::this_thread::sleep_for(msec(50));
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
@@ -312,7 +313,7 @@ TEST_F(ProcedureRunnerTest, SetProcedureTwice)
   // ProcedureRunner is consistent
   runner->SetProcedure(procedure.get());
 
-  runner->Start();
+  EXPECT_TRUE(runner->Start());
 
   std::this_thread::sleep_for(msec(100));
   EXPECT_FALSE(runner->IsBusy());

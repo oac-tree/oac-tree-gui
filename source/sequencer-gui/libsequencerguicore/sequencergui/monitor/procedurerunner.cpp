@@ -54,35 +54,38 @@ void ProcedureRunner::SetProcedure(procedure_t *procedure)
       std::make_unique<DomainRunnerAdapter>(std::move(runner), status_changed);
 }
 
-void ProcedureRunner::Start()
+bool ProcedureRunner::Start()
 {
   CheckConditions();
-  m_domain_runner_adapter->Start();
+  return m_domain_runner_adapter->Start();
 }
 
 //! Performs request to release possible waiting in ProcedureRunner::onInstructionStatusChange.
 
-void ProcedureRunner::Step()
+bool ProcedureRunner::Step()
 {
   CheckConditions();
-  m_domain_runner_adapter->Step();
+  return m_domain_runner_adapter->Step();
 }
 
 //! Terminate currently running procedure
 
-void ProcedureRunner::Stop()
+bool ProcedureRunner::Stop()
 {
   CheckConditions();
-  if (m_domain_runner_adapter->Stop())
+  auto is_valid_request = m_domain_runner_adapter->Stop();
+  if (is_valid_request)
   {
     onLogMessage("ProcedureRunner::Stop()", JobMessageType::kWarning);
   }
+
+  return is_valid_request;
 }
 
-void ProcedureRunner::Pause()
+bool ProcedureRunner::Pause()
 {
   CheckConditions();
-  m_domain_runner_adapter->Pause();
+  return m_domain_runner_adapter->Pause();
 }
 
 void ProcedureRunner::SetSleepTime(int time_msec)

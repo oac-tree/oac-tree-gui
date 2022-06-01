@@ -48,13 +48,13 @@ public:
 
   void SetProcedure(procedure_t* procedure);
 
-  void Start();
+  bool Start();
 
-  void Step();
+  bool Step();
 
-  void Stop();
+  bool Stop();
 
-  void Pause();
+  bool Pause();
 
   void SetSleepTime(int time_msec);
 
