@@ -25,6 +25,7 @@ bool CanStartJob(::sequencergui::RunnerStatus current_status)
 {
   return current_status == ::sequencergui::RunnerStatus::kIdle
          || current_status == ::sequencergui::RunnerStatus::kFailed
+         || current_status == ::sequencergui::RunnerStatus::kStopped
          || current_status == ::sequencergui::RunnerStatus::kCompleted;
 }
 
@@ -42,6 +43,7 @@ bool CanStopJob(::sequencergui::RunnerStatus current_status)
 {
   return current_status != ::sequencergui::RunnerStatus::kStopping
          && current_status != ::sequencergui::RunnerStatus::kIdle
+         && current_status != ::sequencergui::RunnerStatus::kCompleted
          && current_status != ::sequencergui::RunnerStatus::kStopped;
 }
 

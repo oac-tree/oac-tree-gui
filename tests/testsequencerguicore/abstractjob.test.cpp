@@ -212,3 +212,117 @@ TEST_F(AbstractJobTest, FromPaused)
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kPaused);
   }
 }
+
+//! The transition of TestJob from stopped state to all other states.
+
+TEST_F(AbstractJobTest, FromStopped)
+{
+  {  // kStopped + StartAction -> StartRequest
+    TestJob job;
+    job.SetStatus(RunnerStatus::kStopped);
+
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_TRUE(job.Start());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+  }
+
+  {  // kStopped + PauseAction -> no activity
+    TestJob job;
+    job.SetStatus(RunnerStatus::kStopped);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_FALSE(job.Pause());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+  }
+
+  {  // kStopped + StepAction -> PauseModeOnRequest, StartRequest
+    TestJob job;
+    job.SetStatus(RunnerStatus::kStopped);
+    {
+      EXPECT_CALL(job, PauseModeOnRequest()).Times(1);
+      EXPECT_CALL(job, StartRequest()).Times(1);
+    }
+
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_TRUE(job.Step());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+  }
+
+  {  // kStopped + StopAction -> no activity
+    TestJob job;
+    job.SetStatus(RunnerStatus::kStopped);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_FALSE(job.Stop());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+  }
+}
+
+//! The transition of TestJob from completed state to all other states.
+
+TEST_F(AbstractJobTest, FromCompleted)
+{
+  {  // kCompleted + StartAction -> StartRequest
+    TestJob job;
+    job.SetStatus(RunnerStatus::kCompleted);
+
+    EXPECT_CALL(job, StartRequest()).Times(1);
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_TRUE(job.Start());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+  }
+
+  {  // kCompleted + PauseAction -> no activity
+    TestJob job;
+    job.SetStatus(RunnerStatus::kCompleted);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_FALSE(job.Pause());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+  }
+
+  {  // kCompleted + StepAction -> PauseModeOnRequest, StartRequest
+    TestJob job;
+    job.SetStatus(RunnerStatus::kCompleted);
+    {
+      EXPECT_CALL(job, PauseModeOnRequest()).Times(1);
+      EXPECT_CALL(job, StartRequest()).Times(1);
+    }
+
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_TRUE(job.Step());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+  }
+
+  {  // kCompleted + StopAction -> no activity
+    TestJob job;
+    job.SetStatus(RunnerStatus::kCompleted);
+    EXPECT_CALL(job, StartRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
+    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StopRequest()).Times(0);
+    EXPECT_FALSE(job.Stop());
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+  }
+}
