@@ -21,6 +21,7 @@
 
 #include "Procedure.h"
 #include "Runner.h"
+#include "Instruction.h"
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/jobsystem/domainrunneradapter.h"
 #include "sequencergui/monitor/jobutils.h"
@@ -54,13 +55,15 @@ void ProcedureRunner::SetProcedure(procedure_t *procedure)
       std::make_unique<DomainRunnerAdapter>(std::move(runner), status_changed);
 }
 
+//! Starts new job, or release paused job.
+
 bool ProcedureRunner::Start()
 {
   CheckConditions();
   return m_domain_runner_adapter->Start();
 }
 
-//! Performs request to release possible waiting in ProcedureRunner::onInstructionStatusChange.
+//! Make a step in paused job.
 
 bool ProcedureRunner::Step()
 {
@@ -68,7 +71,7 @@ bool ProcedureRunner::Step()
   return m_domain_runner_adapter->Step();
 }
 
-//! Terminate currently running procedure
+//! Stop currently running procedure.
 
 bool ProcedureRunner::Stop()
 {
@@ -110,6 +113,7 @@ RunnerStatus ProcedureRunner::GetRunnerStatus() const
 
 void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction)
 {
+ std::cout << "ProcedureRunner::onInstructionStatusChange" << instruction << " " << static_cast<int>(instruction->GetStatus())<< std::endl;
   emit InstructionStatusChanged(instruction);
 }
 

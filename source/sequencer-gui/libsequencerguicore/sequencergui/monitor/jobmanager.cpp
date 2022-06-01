@@ -179,7 +179,6 @@ JobContext *JobManager::CreateContext()
   context->SetUserContext({on_user_input, on_user_choice});
 
   InvokeAndCatch([context]() { context->onPrepareJobRequest(); });
-  std::cout << "XXXXX " << m_current_delay << std::endl;
   context->SetSleepTime(m_current_delay);  // FIXME must be after onPrepareJobContext
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?

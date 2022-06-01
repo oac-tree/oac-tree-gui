@@ -41,6 +41,7 @@ namespace
 {
 std::string GetStatus(const instruction_t *instruction)
 {
+  std::cout << "zzzzz " << static_cast<int>(instruction->GetStatus()) << std::endl;
   return ::sup::sequencer::StatusToString(instruction->GetStatus());
 }
 }  // namespace
@@ -147,7 +148,7 @@ bool JobContext::IsValid() const
 void JobContext::onInstructionStatusChange(const instruction_t *instruction)
 {
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
-  std::cout << "JobContext::onInstructionStatusChange() " << GetStatus(instruction) << std::endl;;
+  std::cout << "JobContext::onInstructionStatusChange() " << instruction << " " << GetStatus(instruction) << std::endl;;
   if (instruction_item)
   {
     instruction_item->SetStatus(GetStatus(instruction));
