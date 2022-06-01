@@ -90,7 +90,6 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
   m_delay_button->setMenu(m_delay_menu.get());
   m_delay_button->setPopupMode(QToolButton::InstantPopup);
-  connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_delay_button);
 
   AddDotsMenu();

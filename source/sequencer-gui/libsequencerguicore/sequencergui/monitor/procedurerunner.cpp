@@ -26,6 +26,7 @@
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/sequencerobserver.h"
 
+#include <QDebug>
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
@@ -72,8 +73,10 @@ void ProcedureRunner::Step()
 void ProcedureRunner::Stop()
 {
   CheckConditions();
-  onLogMessage("ProcedureRunner::Terminate()", JobMessageType::kWarning);
-  m_domain_runner_adapter->Stop();
+  if (m_domain_runner_adapter->Stop())
+  {
+    onLogMessage("ProcedureRunner::Stop()", JobMessageType::kWarning);
+  }
 }
 
 void ProcedureRunner::Pause()
@@ -84,7 +87,6 @@ void ProcedureRunner::Pause()
 
 void ProcedureRunner::SetSleepTime(int time_msec)
 {
-  std::cout << "BBB 1.1 " << time_msec << std::endl;
   m_domain_runner_adapter->SetTickTimeout(time_msec);
 }
 

@@ -142,8 +142,6 @@ void SequencerMonitorView::OnSubmitProcedureRequest(ProcedureItem *item)
 
 void SequencerMonitorView::OnRunJobRequest()
 {
-  // FIXME simplify this
-
   auto selected_job = m_monitor_panel->GetSelectedJob();
   if (!selected_job)
   {

@@ -110,6 +110,7 @@ void JobManager::onPauseProcedureRequest()
 
 void JobManager::onStopProcedureRequest()
 {
+  qDebug() << "JobManager::onStopProcedureRequest()";
   if (auto context = GetCurrentContext(); context)
   {
     context->onStopRequest();

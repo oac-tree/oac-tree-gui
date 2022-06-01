@@ -41,7 +41,8 @@ bool CanReleaseJob(::sequencergui::RunnerStatus current_status)
 bool CanStopJob(::sequencergui::RunnerStatus current_status)
 {
   return current_status != ::sequencergui::RunnerStatus::kStopping
-         && current_status != ::sequencergui::RunnerStatus::kIdle;
+         && current_status != ::sequencergui::RunnerStatus::kIdle
+         && current_status != ::sequencergui::RunnerStatus::kStopped;
 }
 
 }  // namespace

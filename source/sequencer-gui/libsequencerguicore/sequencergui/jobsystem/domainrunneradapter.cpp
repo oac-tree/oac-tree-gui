@@ -82,7 +82,7 @@ bool DomainRunnerAdapter::ExecuteSingle()
 {
   m_domain_runner->ExecuteSingle();
   auto is_running = !m_domain_runner->IsFinished();
-  std::cout << "msec msec msec " << m_tick_timeout_ms << "  result: " << is_running << std::endl;
+  std::cout << "ExecuteSingle() " << m_tick_timeout_ms << "  result: " << is_running << std::endl;
   if (is_running && m_tick_timeout_ms.load() > 0)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_ms.load()));

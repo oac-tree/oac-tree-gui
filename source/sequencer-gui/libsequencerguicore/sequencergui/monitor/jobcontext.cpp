@@ -112,6 +112,7 @@ void JobContext::onMakeStepRequest()
 
 void JobContext::onStopRequest()
 {
+  qDebug() << "JobContext::onStopRequest()";
   m_procedure_runner->Stop();
 }
 
