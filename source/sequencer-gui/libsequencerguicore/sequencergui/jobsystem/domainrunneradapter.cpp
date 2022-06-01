@@ -26,8 +26,6 @@
 #include <iostream>
 #include <thread>
 
-// using msec = std::chrono::milliseconds;
-
 namespace sequencergui
 {
 

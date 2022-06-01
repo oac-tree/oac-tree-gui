@@ -84,6 +84,7 @@ void ProcedureRunner::Pause()
 
 void ProcedureRunner::SetSleepTime(int time_msec)
 {
+  std::cout << "BBB 1.1 " << time_msec << std::endl;
   m_domain_runner_adapter->SetTickTimeout(time_msec);
 }
 

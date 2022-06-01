@@ -22,9 +22,10 @@
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/model/jobitem.h"
+#include "sequencergui/model/jobmodel.h"
 #include "sequencergui/monitor/jobcontext.h"
+#include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/messagepanel.h"
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
 #include "sequencergui/monitor/usercontext.h"
@@ -32,12 +33,13 @@
 
 #include <QDebug>
 #include <QInputDialog>
+#include <iostream>
 
 namespace sequencergui
 {
 
 JobManager::JobManager(QObject *parent)
-    : QObject(parent), m_current_delay(MonitorRealTimeToolBar::GetDefaultDelay())
+    : QObject(parent), m_current_delay(GetDefaultTickTimeoutMsc())
 {
 }
 
@@ -119,14 +121,14 @@ void JobManager::onMakeStepRequest()
   if (!GetCurrentContext())
   {
     auto context = CreateContext();
-//    context->SetWaitingMode(WaitingMode::kWaitForRelease);
+    //    context->SetWaitingMode(WaitingMode::kWaitForRelease);
   }
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
     if (!current_context->IsRunning())
     {
-//      current_context->SetWaitingMode(WaitingMode::kWaitForRelease);
+      //      current_context->SetWaitingMode(WaitingMode::kWaitForRelease);
       current_context->onStartRequest();
     }
     else
@@ -190,7 +192,8 @@ JobContext *JobManager::CreateContext()
   context->SetUserContext({on_user_input, on_user_choice});
 
   InvokeAndCatch([context]() { context->onPrepareJobRequest(); });
-  context->SetSleepTime(m_current_delay); // FIXME must be after onPrepareJobContext
+  std::cout << "XXXXX " << m_current_delay << std::endl;
+  context->SetSleepTime(m_current_delay);  // FIXME must be after onPrepareJobContext
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
   m_context_map.insert({m_current_job, context});

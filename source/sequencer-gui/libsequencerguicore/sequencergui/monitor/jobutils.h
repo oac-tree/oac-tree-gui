@@ -36,6 +36,9 @@ std::string RunnerStatusToString(RunnerStatus status);
 //! Get RunnerStatus from string representation.
 RunnerStatus GetRunnerStatus(const std::string& status_name);
 
+//! Returns default tick timeout in msec.
+int GetDefaultTickTimeoutMsc();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MONITOR_JOBUTILS_H

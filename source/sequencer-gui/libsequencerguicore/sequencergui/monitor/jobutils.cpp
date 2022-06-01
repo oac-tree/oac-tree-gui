@@ -58,4 +58,10 @@ RunnerStatus GetRunnerStatus(const std::string &status_name)
   return it->first;
 }
 
+int GetDefaultTickTimeoutMsc()
+{
+  const int kDefaultTimeout{200};
+  return kDefaultTimeout;
+}
+
 }  // namespace sequencergui

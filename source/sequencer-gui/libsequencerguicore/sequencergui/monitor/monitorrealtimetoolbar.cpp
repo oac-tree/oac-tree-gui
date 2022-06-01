@@ -19,6 +19,7 @@
 
 #include "sequencergui/monitor/monitorrealtimetoolbar.h"
 
+#include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/widgets/widgetutils.h"
@@ -32,8 +33,6 @@
 
 namespace
 {
-const int default_delay = 200;
-
 QString GetDelayText(int delay)
 {
   QString name = delay < 1000 ? QString("%1 msec").arg(delay) : QString("%1 sec").arg(delay / 1000);
@@ -85,7 +84,7 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
 
   addSeparator();
 
-  m_delay_button->setText(GetDelayText(default_delay));
+  m_delay_button->setText(GetDelayText(GetDefaultTickTimeoutMsc()));
   m_delay_button->setIcon(styleutils::GetIcon("speedometer-slow.svg"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
@@ -95,11 +94,6 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   addWidget(m_delay_button);
 
   AddDotsMenu();
-}
-
-int MonitorRealTimeToolBar::GetDefaultDelay()
-{
-  return default_delay;
 }
 
 MonitorRealTimeToolBar::~MonitorRealTimeToolBar() = default;

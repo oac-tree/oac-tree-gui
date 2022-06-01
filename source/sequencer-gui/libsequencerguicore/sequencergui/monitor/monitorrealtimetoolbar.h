@@ -39,8 +39,6 @@ public:
   explicit MonitorRealTimeToolBar(QWidget* parent = nullptr);
   ~MonitorRealTimeToolBar() override;
 
-  static int GetDefaultDelay();
-
 signals:
   void runRequest();
   void pauseRequest();
