@@ -90,11 +90,6 @@ void JobContext::onStartRequest()
     return;
   }
 
-  if (m_procedure_runner->IsBusy())
-  {
-    return;
-  }
-
   m_job_log->ClearLog();
 
   m_procedure_runner->Start();
@@ -152,6 +147,7 @@ bool JobContext::IsValid() const
 void JobContext::onInstructionStatusChange(const instruction_t *instruction)
 {
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
+  std::cout << "JobContext::onInstructionStatusChange() " << GetStatus(instruction) << std::endl;;
   if (instruction_item)
   {
     instruction_item->SetStatus(GetStatus(instruction));

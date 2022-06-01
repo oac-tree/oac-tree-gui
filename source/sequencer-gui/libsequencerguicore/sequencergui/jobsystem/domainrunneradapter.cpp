@@ -39,6 +39,8 @@ DomainRunnerAdapter::DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner
 
 bool DomainRunnerAdapter::Start()
 {
+  std::cout << "DomainRunnerAdapter::Start()" << std::endl;
+
   return m_function_runner->Start();
 }
 
