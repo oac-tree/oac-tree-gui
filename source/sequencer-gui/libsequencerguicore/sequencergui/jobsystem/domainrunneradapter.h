@@ -60,7 +60,7 @@ public:
   bool IsBusy() const;
 
 private:
-  bool ExecuteSingle();
+  bool ExecuteSingle();  
 
   std::unique_ptr<runner_t> m_domain_runner;
   std::unique_ptr<FunctionRunner> m_function_runner;
