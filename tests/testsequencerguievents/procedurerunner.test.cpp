@@ -56,11 +56,11 @@ TEST_F(ProcedureRunnerTest, InitialState)
 
 //! ProcedureRunner dies before execution of procedure finished.
 //! FIXME uncomment
-//TEST_F(ProcedureRunnerTest, PrematureDeletion)
+// TEST_F(ProcedureRunnerTest, PrematureDeletion)
 //{
-//  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
-//  procedure->Setup();
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+//   auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
+//   procedure->Setup();
+//   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
 //  auto runner = std::make_unique<ProcedureRunner>();
 //  runner->SetProcedure(procedure.get());
@@ -137,8 +137,11 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
   EXPECT_EQ(spy_instruction_status.count(), 2);
   EXPECT_EQ(spy_runner_status.count(), 2);
 
-  auto arguments = spy_instruction_status.takeFirst();
-  EXPECT_EQ(arguments.size(), 2);
+  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
+  // first signal should come with status "Not finished"
+  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
+  // Second signal should come with status "Success"
+  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
 }
 
 //! Short procedure which is executed normally.
