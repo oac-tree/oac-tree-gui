@@ -43,12 +43,7 @@ DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t
 bool DomainRunnerAdapter::Start()
 {
   std::cout << "DomainRunnerAdapter::Start()" << std::endl;
-
-  if (m_procedure->GetStatus() != ::sup::sequencer::ExecutionStatus::NOT_STARTED)
-  {
-    // case is Starting from failed state
-    m_procedure->Reset();
-  }
+  ResetIfNecessary();
 
   return m_function_runner->Start();
 }
@@ -59,7 +54,7 @@ bool DomainRunnerAdapter::Stop()
   auto result = m_function_runner->Stop();
   if (result)
   {
-    m_procedure_needs_reset = true;
+    m_was_stopped = true;
   }
 
   return result;
@@ -72,17 +67,8 @@ bool DomainRunnerAdapter::Pause()
 
 bool DomainRunnerAdapter::Step()
 {
-  if (m_procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::SUCCESS)
-  {
-    m_procedure->Reset();
-  }
-
-
-  std::cout << "Step 1.1 " << static_cast<int>(GetStatus()) << " procedure_status"
-            << static_cast<int>(m_procedure->GetStatus())  << "\n";
+  ResetIfNecessary();
   bool result = m_function_runner->Step();
-  std::cout << "Step 1.2" << static_cast<int>(GetStatus()) << " procedure_status"
-            << static_cast<int>(m_procedure->GetStatus()) << " result:" << result << "\n";
   return result;
 }
 
@@ -110,7 +96,6 @@ bool DomainRunnerAdapter::ExecuteSingle()
 {
   m_domain_runner->ExecuteSingle();
   auto is_running = !m_domain_runner->IsFinished();
-  std::cout << "ExecuteSingle() " << m_tick_timeout_ms << "  result: " << is_running << std::endl;
   if (is_running && m_tick_timeout_ms.load() > 0)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_ms.load()));
@@ -121,7 +106,8 @@ bool DomainRunnerAdapter::ExecuteSingle()
 
 void DomainRunnerAdapter::ResetIfNecessary()
 {
-  if (m_procedure_needs_reset)
+  // Reset if procedure was explicitely stopped, or was terminated normally
+  if (m_was_stopped || m_procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::SUCCESS)
   {
     m_procedure->Reset();
   }

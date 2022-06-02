@@ -81,7 +81,7 @@ private:
   //! Delay in event loop.
   std::atomic<int> m_tick_timeout_ms{0};
 
-  bool m_procedure_needs_reset{false};
+  bool m_was_stopped{false};
 };
 
 }  // namespace sequencergui
