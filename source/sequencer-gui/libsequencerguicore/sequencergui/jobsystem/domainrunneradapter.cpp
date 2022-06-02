@@ -19,6 +19,7 @@
 
 #include "sequencergui/jobsystem/domainrunneradapter.h"
 
+#include "Procedure.h"
 #include "Runner.h"
 #include "sequencergui/jobsystem/functionrunner.h"
 
@@ -33,7 +34,6 @@ DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t
                                          std::function<void(RunnerStatus)> status_changed_callback)
     : m_procedure(procedure), m_userinterface(interface)
 {
-
   m_domain_runner = std::make_unique<runner_t>(m_userinterface);
   m_domain_runner->SetProcedure(m_procedure);
   auto worker = [this] { return ExecuteSingle(); };
@@ -44,13 +44,19 @@ bool DomainRunnerAdapter::Start()
 {
   std::cout << "DomainRunnerAdapter::Start()" << std::endl;
 
+  if (m_procedure->GetStatus() != ::sup::sequencer::ExecutionStatus::NOT_STARTED)
+  {
+    m_procedure->Reset();
+  }
+
   return m_function_runner->Start();
 }
 
 bool DomainRunnerAdapter::Stop()
 {
   m_domain_runner->Halt();
-  return m_function_runner->Stop();
+  auto result = m_function_runner->Stop();
+  return result;
 }
 
 bool DomainRunnerAdapter::Pause()

@@ -184,7 +184,6 @@ TEST_F(FunctionRunnerTest, PrematureDeletion)
   EXPECT_NO_FATAL_FAILURE(runner.reset());
 }
 
-
 //! Stepwise task execution. The task is launched in step wise mode. After 3 steps the task is
 //! expected to be completed.
 
@@ -403,4 +402,52 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
+}
+
+//! We start short task and let if finish. Then we run it again.
+//! Here we check the use case of running same job one after another.
+
+TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
+{
+  testutils::MockRunnerListener listener;
+  int nsteps{0};
+  bool is_continue{true};
+  auto worker = [&nsteps, &is_continue]()
+  {
+    std::this_thread::sleep_for(msec(5));
+    nsteps++;
+    return nsteps % 10 != 0;  // will exit after each 10 counts
+  };
+
+  FunctionRunner runner(worker, listener.CreateCallback());
+
+  {  // expecting calls with status change in this order
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+  }
+
+  EXPECT_TRUE(runner.Start());  // triggering action
+  std::this_thread::sleep_for(msec(10));
+  EXPECT_TRUE(runner.IsBusy());
+  EXPECT_TRUE(nsteps > 0);
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
+
+  // waiting until completion
+  EXPECT_TRUE(WaitForCompletion(runner, msec(100)));
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(nsteps, 10);
+
+  // running again should
+  EXPECT_TRUE(runner.Start());  // triggering action
+  std::this_thread::sleep_for(msec(10));
+  EXPECT_TRUE(runner.IsBusy());
+  EXPECT_TRUE(nsteps > 0);
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
+
+  EXPECT_TRUE(WaitForCompletion(runner, msec(100)));
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(nsteps, 20);
 }

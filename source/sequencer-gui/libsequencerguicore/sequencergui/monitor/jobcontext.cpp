@@ -21,6 +21,7 @@
 
 #include "Instruction.h"
 #include "Procedure.h"
+#include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/domainobjectbuilder.h"
 #include "sequencergui/model/guiobjectbuilder.h"
 #include "sequencergui/model/jobitem.h"
@@ -55,7 +56,12 @@ void JobContext::onPrepareJobRequest()
   // building domain procedure
   DomainObjectBuilder builder;
   m_domain_procedure = builder.CreateProcedure(m_job_item->GetProcedure());
-  m_domain_procedure->Setup();  // to perform all necessary internal clones
+
+  // to perform all necessary internal clones
+  if (!m_domain_procedure->Setup())
+  {
+    throw InvalidOperationException("Can't setup procedure");
+  }
 
   // FIXME, refactor, provide unit tests (that JobModel notifies views correctly)
   auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());

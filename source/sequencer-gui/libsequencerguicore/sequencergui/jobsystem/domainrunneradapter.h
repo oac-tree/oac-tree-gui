@@ -36,6 +36,7 @@ class FunctionRunner;
 
 //! Adapter for domain runner to perform stepwise execution in a thread.
 //! We call the domain Runner::ExecuteSingle in the event loop provided by FunctionRunner.
+//! The Procedure and UserInterface should be alive during the life-time of the DomainRunnerAdapter.
 
 class DomainRunnerAdapter : public RunnerInterface
 {
