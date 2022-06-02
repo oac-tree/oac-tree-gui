@@ -19,9 +19,9 @@
 
 #include "sequencergui/monitor/procedurerunner.h"
 
+#include "Instruction.h"
 #include "Procedure.h"
 #include "Runner.h"
-#include "Instruction.h"
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/jobsystem/domainrunneradapter.h"
 #include "sequencergui/monitor/jobutils.h"
@@ -48,11 +48,9 @@ void ProcedureRunner::SetProcedure(procedure_t *procedure)
     return;
   }
 
-  auto runner = std::make_unique<runner_t>(m_observer.get());
-  runner->SetProcedure(procedure);
   auto status_changed = [this](auto) { emit RunnerStatusChanged(); };
   m_domain_runner_adapter =
-      std::make_unique<DomainRunnerAdapter>(std::move(runner), status_changed);
+      std::make_unique<DomainRunnerAdapter>(procedure, m_observer.get(), status_changed);
 }
 
 //! Starts new job, or release paused job.
@@ -111,9 +109,11 @@ RunnerStatus ProcedureRunner::GetRunnerStatus() const
   return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
 }
 
-void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction, const std::string &value)
+void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction,
+                                                const std::string &value)
 {
- std::cout << "ProcedureRunner::onInstructionStatusChange" << instruction << " " << static_cast<int>(instruction->GetStatus()) << "qqq" << value<< std::endl;
+  std::cout << "ProcedureRunner::onInstructionStatusChange" << instruction << " "
+            << static_cast<int>(instruction->GetStatus()) << "qqq" << value << std::endl;
   emit InstructionStatusChanged(instruction, QString::fromStdString(value));
 }
 

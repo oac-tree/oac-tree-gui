@@ -29,14 +29,6 @@
 namespace sequencergui
 {
 
-DomainRunnerAdapter::DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
-                                         std::function<void(RunnerStatus)> status_changed_callback)
-    : m_domain_runner(std::move(domain_runner))
-{
-  auto worker = [this] { return ExecuteSingle(); };
-  m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));
-}
-
 DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t *interface,
                                          std::function<void(RunnerStatus)> status_changed_callback)
     : m_procedure(procedure), m_userinterface(interface)

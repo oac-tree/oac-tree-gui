@@ -40,9 +40,6 @@ class FunctionRunner;
 class DomainRunnerAdapter : public RunnerInterface
 {
 public:
-  DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
-                      std::function<void(RunnerStatus)> status_changed_callback);
-
   DomainRunnerAdapter(procedure_t* procedure, userinterface_t* interface,
                       std::function<void(RunnerStatus)> status_changed_callback);
 
