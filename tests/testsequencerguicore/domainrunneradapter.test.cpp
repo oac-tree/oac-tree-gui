@@ -59,6 +59,18 @@ public:
     return result;
   }
 
+  std::unique_ptr<DomainRunnerAdapter> CreateRunnerAdapter(procedure_t* procedure)
+  {
+    if (!procedure->Setup())
+    {
+      throw std::runtime_error("Can't setup procedure");
+    }
+    auto result =
+        std::make_unique<DomainRunnerAdapter>(procedure, &m_observer, m_listener.CreateCallback());
+
+    return result;
+  }
+
   testutils::MockSequencerObserver m_observer;
   testutils::MockRunnerListener m_listener;
 };
@@ -69,10 +81,10 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
   std::chrono::milliseconds timeout_msec(10);
   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
-  auto runner = CreateRunner(procedure.get());
 
-  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   {  // signaling related to the runner status change
@@ -89,10 +101,10 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   }
 
   // triggering action
-  EXPECT_TRUE(adapter.Start());
+  EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + msec(timeout_msec)));
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_TRUE(adapter->WaitForCompletion(kDefaultWaitPrecision + msec(timeout_msec)));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
@@ -102,10 +114,10 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 {
   std::chrono::milliseconds timeout_msec(10000);
   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
-  auto runner = CreateRunner(procedure.get());
 
-  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   {  // signaling related to the runner status change
@@ -123,18 +135,18 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
   }
 
   // triggering action
-  EXPECT_TRUE(adapter.Start());  // trigger action
+  EXPECT_TRUE(adapter->Start());  // trigger action
 
-  EXPECT_TRUE(adapter.IsBusy());
+  EXPECT_TRUE(adapter->IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_FALSE(adapter.WaitForCompletion(msec(10)));
+  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
 
-  adapter.Stop();
+  adapter->Stop();
   std::this_thread::sleep_for(msec(10));
 
-  EXPECT_FALSE(adapter.IsBusy());
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kStopped);
+  EXPECT_FALSE(adapter->IsBusy());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
@@ -143,11 +155,11 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 //! will lead to UB. It is not clear how to provide mutual safety for time of life of Procedure
 //! and DomainRunnerAdapter.
 
-//TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
+// TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
 //{
-//  std::chrono::milliseconds timeout_msec(10000);
-//  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
-//  auto runner = CreateRunner(procedure.get());
+//   std::chrono::milliseconds timeout_msec(10000);
+//   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+//   auto runner = CreateRunner(procedure.get());
 
 //  auto adapter =
 //      std::make_unique<DomainRunnerAdapter>(std::move(runner), m_listener.CreateCallback());
@@ -191,12 +203,11 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
   std::chrono::milliseconds timeout_msec(10);
 
   auto procedure = testutils::CreateSequenceWithWaitProcedure(timeout_msec);
-  auto runner = CreateRunner(procedure.get());
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
-  adapter.SetTickTimeout(tick_timeout_msec);
+  adapter->SetTickTimeout(tick_timeout_msec);
 
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   {  // signaling related to the runner status changer
@@ -214,11 +225,11 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
 
   // triggering action
   time_t start_time = clock_used::now();
-  EXPECT_TRUE(adapter.Start());
+  EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(kDefaultWaitPrecision + 2 * msec(timeout_msec)));
+  EXPECT_TRUE(adapter->WaitForCompletion(kDefaultWaitPrecision + 2 * msec(timeout_msec)));
 
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   time_t end_time = clock_used::now();
@@ -237,12 +248,11 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
   const int tick_timeout_msec(100);
 
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-  auto runner = CreateRunner(procedure.get());
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
-  adapter.SetTickTimeout(tick_timeout_msec);
+  adapter->SetTickTimeout(tick_timeout_msec);
 
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   {  // signaling related to the runner status changer
@@ -263,11 +273,11 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
 
   // triggering action
   time_t start_time = clock_used::now();
-  EXPECT_TRUE(adapter.Start());
+  EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(msec(1000)));
+  EXPECT_TRUE(adapter->WaitForCompletion(msec(1000)));
 
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   time_t end_time = clock_used::now();
@@ -282,11 +292,9 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 {
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-  auto runner = CreateRunner(procedure.get());
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-  DomainRunnerAdapter adapter(std::move(runner), m_listener.CreateCallback());
-
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   {  // signaling related to the runner status changer
@@ -308,14 +316,14 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
   }
 
   // triggering action
-  EXPECT_TRUE(adapter.Step());
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kRunning);
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
   std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kPaused);
-  EXPECT_TRUE(adapter.Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(adapter->Step());
 
-  EXPECT_TRUE(adapter.WaitForCompletion(msec(1000)));
+  EXPECT_TRUE(adapter->WaitForCompletion(msec(1000)));
 
-  EXPECT_EQ(adapter.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }

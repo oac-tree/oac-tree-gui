@@ -35,12 +35,17 @@ namespace sequencergui
 class FunctionRunner;
 
 //! Adapter for domain runner to perform stepwise execution in a thread.
+//! We call the domain Runner::ExecuteSingle in the event loop provided by FunctionRunner.
 
 class DomainRunnerAdapter : public RunnerInterface
 {
 public:
   DomainRunnerAdapter(std::unique_ptr<runner_t> domain_runner,
                       std::function<void(RunnerStatus)> status_changed_callback);
+
+  DomainRunnerAdapter(procedure_t* procedure, userinterface_t* interface,
+                      std::function<void(RunnerStatus)> status_changed_callback);
+
   ~DomainRunnerAdapter() override;
 
   bool Start() override;
@@ -62,8 +67,19 @@ public:
 private:
   bool ExecuteSingle();  
 
+  //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
+
+  //! Our own runner introduced to start/stop/pause jobs.
   std::unique_ptr<FunctionRunner> m_function_runner;
+
+  //! Procedure to execute in a thread. Must be after the Setup call.
+  procedure_t* m_procedure{nullptr};
+
+  //! Sequencer user interface.
+  userinterface_t* m_userinterface{nullptr};
+
+  //! Delay in event loop.
   std::atomic<int> m_tick_timeout_ms{0};
 };
 
