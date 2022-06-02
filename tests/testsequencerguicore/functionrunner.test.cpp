@@ -451,3 +451,51 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(nsteps, 20);
 }
+
+//! We start normally, then make a pause, then stop execution.
+//! After that we start again and let it finish.
+
+TEST_F(FunctionRunnerTest, ContinueAfterStopInStepMode)
+{
+  testutils::MockRunnerListener listener;
+  int nsteps{0};
+  auto worker = [&nsteps]()
+  {
+    std::this_thread::sleep_for(msec(5));
+    nsteps++;
+    return nsteps / 10 != 1;  // should stop when nsteps==10
+  };
+
+  FunctionRunner runner(worker, listener.CreateCallback());
+
+  {  // expecting calls with status change in this order
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+  }
+
+  EXPECT_TRUE(runner.Step());  // triggering action
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_TRUE(runner.IsBusy());
+  EXPECT_EQ(nsteps, 1);
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
+
+  // let's terminate while being in Pause mode
+  runner.Stop();
+
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_EQ(nsteps, 1);
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kStopped);
+  EXPECT_FALSE(runner.IsBusy());
+
+  // run from the beginning
+  nsteps = 0;
+  runner.Start();
+  EXPECT_TRUE(WaitForCompletion(runner, msec(100)));
+  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(nsteps, 10);
+}
