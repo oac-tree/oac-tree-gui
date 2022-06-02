@@ -46,6 +46,7 @@ bool DomainRunnerAdapter::Start()
 
   if (m_procedure->GetStatus() != ::sup::sequencer::ExecutionStatus::NOT_STARTED)
   {
+    // case is Starting from failed state
     m_procedure->Reset();
   }
 
@@ -56,6 +57,11 @@ bool DomainRunnerAdapter::Stop()
 {
   m_domain_runner->Halt();
   auto result = m_function_runner->Stop();
+  if (result)
+  {
+    m_procedure_needs_reset = true;
+  }
+
   return result;
 }
 
@@ -66,7 +72,18 @@ bool DomainRunnerAdapter::Pause()
 
 bool DomainRunnerAdapter::Step()
 {
-  return m_function_runner->Step();
+  if (m_procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::SUCCESS)
+  {
+    m_procedure->Reset();
+  }
+
+
+  std::cout << "Step 1.1 " << static_cast<int>(GetStatus()) << " procedure_status"
+            << static_cast<int>(m_procedure->GetStatus())  << "\n";
+  bool result = m_function_runner->Step();
+  std::cout << "Step 1.2" << static_cast<int>(GetStatus()) << " procedure_status"
+            << static_cast<int>(m_procedure->GetStatus()) << " result:" << result << "\n";
+  return result;
 }
 
 RunnerStatus DomainRunnerAdapter::GetStatus() const
@@ -98,7 +115,16 @@ bool DomainRunnerAdapter::ExecuteSingle()
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_ms.load()));
   }
+
   return is_running;
+}
+
+void DomainRunnerAdapter::ResetIfNecessary()
+{
+  if (m_procedure_needs_reset)
+  {
+    m_procedure->Reset();
+  }
 };
 
 DomainRunnerAdapter::~DomainRunnerAdapter()

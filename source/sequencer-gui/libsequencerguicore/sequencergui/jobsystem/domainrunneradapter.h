@@ -64,6 +64,7 @@ public:
 
 private:
   bool ExecuteSingle();  
+  void ResetIfNecessary();
 
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
@@ -79,6 +80,8 @@ private:
 
   //! Delay in event loop.
   std::atomic<int> m_tick_timeout_ms{0};
+
+  bool m_procedure_needs_reset{false};
 };
 
 }  // namespace sequencergui
