@@ -147,6 +147,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 
   EXPECT_FALSE(adapter->IsBusy());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  // it is FAILURE here (and not NOT_FINISHED) necause we have interrupted Wait with the Halt
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
@@ -351,20 +352,20 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
     ::testing::InSequence seq;
     // first run (sequence, message
     EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); // sequence
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); // message
-    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1); // message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); //message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); //sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);                  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
 
     // second run (sequence, message
     EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); // sequence
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); // message
-    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1); // message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); //message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1); //sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);                  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
@@ -377,6 +378,105 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
   // starting again
   EXPECT_TRUE(adapter->Start());
   EXPECT_TRUE(adapter->WaitForCompletion(msec(50)));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+}
+
+//! Sequence with two waits in step mode. After first step it is interrupted.
+
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
+{
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopped));
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+//    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+//    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+  }
+
+  // triggering action
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
+  std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+
+  // stopping job
+  EXPECT_TRUE(adapter->Stop());
+  EXPECT_TRUE(adapter->WaitForCompletion(msec(1000)));
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
+}
+
+//! Sequence with two waits in step mode. After first step it is interrupted, and then started from
+//! the beginning.
+
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
+{
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopped));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kCompleted));
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    // first step
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+    // after job restart
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+
+  }
+
+  // triggering action
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
+  std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+
+  // stopping job
+  EXPECT_TRUE(adapter->Stop());
+  EXPECT_TRUE(adapter->WaitForCompletion(msec(1000)));
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
+
+  // restarting job
+  EXPECT_TRUE(adapter->Start());
+  EXPECT_TRUE(adapter->WaitForCompletion(msec(1000)));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
