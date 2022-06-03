@@ -41,6 +41,7 @@ TEST_F(ShallNotBeNamedValueUtilsTest, GetJsonString)
   auto variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
   variable->AddAttribute(domainconstants::kTypeAttribute, R"({"type":"uint32"})");
   variable->AddAttribute(domainconstants::kValueAttribute, "42");
+  variable->Setup();
 
   ::ccs::types::AnyValue any_value;
   EXPECT_TRUE(variable->GetValue(any_value));
