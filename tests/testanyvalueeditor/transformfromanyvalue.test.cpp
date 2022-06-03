@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/transformfromanyvalue.h"
 
-#include "sup/dto/AnyValue.h"
-#include "sup/dto/BasicScalarTypes.h"
+#include "sup/dto/anyvalue.h"
+#include "sup/dto/basic_scalar_types.h"
 #include "anyvalueeditor/anyvalueitem.h"
 
 #include "mvvm/core/variant.h"
@@ -35,7 +35,7 @@ class TransformFromAnyValueTest : public ::testing::Test
 
 TEST_F(TransformFromAnyValueTest, BoolScalarToItem)
 {
-  sup::dto::AnyValue anyvalue{sup::dto::Boolean};
+  sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
   anyvalue = true;
   AnyValueItem item;
   ScalarToItem(anyvalue, item);
@@ -46,7 +46,7 @@ TEST_F(TransformFromAnyValueTest, BoolScalarToItem)
 
 TEST_F(TransformFromAnyValueTest, IntScalarToItem)
 {
-  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
   anyvalue = 42;
   AnyValueItem item;
   ScalarToItem(anyvalue, item);
@@ -57,7 +57,7 @@ TEST_F(TransformFromAnyValueTest, IntScalarToItem)
 
 TEST_F(TransformFromAnyValueTest, PopulateFromIntScalar)
 {
-  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
   anyvalue = 42;
   AnyValueItem item;
 
@@ -76,7 +76,7 @@ TEST_F(TransformFromAnyValueTest, PopulateFromTwoScalars)
   AnyValueItem item;
 
   sup::dto::AnyValue anyvalue = {
-      {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+      {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
 
   PopulateItem(&anyvalue, &item);
   EXPECT_EQ(item.GetTotalItemCount(), 2);
@@ -99,7 +99,7 @@ TEST_F(TransformFromAnyValueTest, PopulateFromNestedStruct)
   AnyValueItem item;
 
   sup::dto::AnyValue two_scalars = {
-      {{"signed", {sup::dto::SignedInteger8, 1}}, {"bool", {sup::dto::Boolean, 12}}}};
+      {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
   sup::dto::AnyValue anyvalue{{
       {"scalars", two_scalars},
   }};
@@ -131,11 +131,11 @@ TEST_F(TransformFromAnyValueTest, PopulateFromTwoNestedStruct)
 
   const std::string nested_name = "nested_struct";
   sup::dto::AnyValue two_scalars = {
-      {{"signed", {sup::dto::SignedInteger8, 1}}, {"unsigned", {sup::dto::UnsignedInteger8, 12}}}};
+      {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"unsigned", {sup::dto::UnsignedInteger8Type, 12}}}};
   sup::dto::AnyValue anyvalue{
       {{"scalars", two_scalars},
        {"single",
-        {{"first", {sup::dto::SignedInteger8, 0}}, {"second", {sup::dto::SignedInteger8, 5}}}}},
+        {{"first", {sup::dto::SignedInteger8Type, 0}}, {"second", {sup::dto::SignedInteger8Type, 5}}}}},
       nested_name};
 
   PopulateItem(&anyvalue, &item);
@@ -181,7 +181,7 @@ TEST_F(TransformFromAnyValueTest, PopulateFromArrayOfIntegers)
   AnyValueItem item;
 
   sup::dto::AnyValue anyvalue =
-      sup::dto::ArrayValue({{sup::dto::SignedInteger64, 1}, 2}, "my_array_t");
+      sup::dto::ArrayValue({{sup::dto::SignedInteger64Type, 1}, 2}, "my_array_t");
 
   PopulateItem(&anyvalue, &item);
 

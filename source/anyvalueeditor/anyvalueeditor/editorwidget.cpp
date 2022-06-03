@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/editorwidget.h"
 
-#include "sup/dto/AnyValue.h"
-#include "sup/dto/AnyValueHelper.h"
+#include "sup/dto/anyvalue.h"
+#include "sup/dto/anyvalue_helper.h"
 #include "anyvalueeditor/anyvalueeditoractions.h"
 #include "anyvalueeditor/anyvalueeditortoolbar.h"
 #include "anyvalueeditor/anyvalueitem.h"
@@ -79,14 +79,14 @@ void EditorWidget::PopulateModel()
 {
   {  // two members
     sup::dto::AnyValue anyvalue = {
-        {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
     auto item = m_model->InsertItem<AnyValueItem>();
     PopulateItem(&anyvalue, item);
   }
 
   {  // Nested structure
     sup::dto::AnyValue two_scalars = {
-        {{"signed", {sup::dto::SignedInteger8, 1}}, {"bool", {sup::dto::Boolean, 12}}}};
+        {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
     sup::dto::AnyValue anyvalue{{
         {"scalars", two_scalars},
     }};

@@ -19,7 +19,7 @@
 
 #include "anyvalueeditor/mainwindow.h"
 
-#include "sup/dto/AnyValue.h"
+#include "sup/dto/anyvalue.h"
 #include "anyvalueeditor/editorwidget.h"
 
 #include <QCoreApplication>

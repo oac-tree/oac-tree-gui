@@ -19,9 +19,9 @@
 
 #include "anyvalueeditor/anyvalueitembuilder.h"
 
-#include "sup/dto/AnyValue.h"
-#include "sup/dto/AnyValueHelper.h"
 #include "anyvalueeditor/anyvalueitem.h"
+#include "sup/dto/anyvalue.h"
+#include "sup/dto/anyvalue_helper.h"
 
 #include <gtest/gtest.h>
 
@@ -44,7 +44,7 @@ TEST_F(AnyValueItemBuilderTest, ScalarValues)
 {
   {  // bool
     AnyValueItem item;
-    sup::dto::AnyValue anyvalue{sup::dto::Boolean};
+    sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
     anyvalue = true;
     ProcessValue(anyvalue, item);
     EXPECT_EQ(item.GetTotalItemCount(), 0);
@@ -54,7 +54,7 @@ TEST_F(AnyValueItemBuilderTest, ScalarValues)
 
   {  // int
     AnyValueItem item;
-    sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32};
+    sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
     anyvalue = 42;
     ProcessValue(anyvalue, item);
     EXPECT_EQ(item.GetTotalItemCount(), 0);
@@ -70,7 +70,7 @@ TEST_F(AnyValueItemBuilderTest, TwoScalars)
   AnyValueItem item;
 
   sup::dto::AnyValue anyvalue = {
-      {{"signed", {sup::dto::SignedInteger32, 42}}, {"bool", {sup::dto::Boolean, true}}}};
+      {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
 
   ProcessValue(anyvalue, item);
   EXPECT_EQ(item.GetTotalItemCount(), 2);

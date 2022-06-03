@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/anyvalueutils.h"
 
-#include "sup/dto/AnyType.h"
-#include "sup/dto/BasicScalarTypes.h"
+#include "sup/dto/anytype.h"
+#include "sup/dto/basic_scalar_types.h"
 
 #include <algorithm>
 #include <functional>
