@@ -52,7 +52,8 @@ bool IsRootInstruction(const instruction_t* instruction);
 
 bool IsChannelAccessAvailable();
 
-void LoadPlugins();
+void LoadCodacPlugins();
+void LoadLocalPlugins();
 
 }  // namespace sequencergui::DomainUtils
 

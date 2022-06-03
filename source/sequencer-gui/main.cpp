@@ -52,7 +52,9 @@ int main(int argc, char** argv)
   Q_INIT_RESOURCE(sequencericons);
 
 #ifdef SEQUENCERGUI_CODAC
-  sequencergui::DomainUtils::LoadPlugins();
+  sequencergui::DomainUtils::LoadCodacPlugins();
+#else
+  sequencergui::DomainUtils::LoadLocalPlugins();
 #endif
 
   sequencergui::MainWindow win;
