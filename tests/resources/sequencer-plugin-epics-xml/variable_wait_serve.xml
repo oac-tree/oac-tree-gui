@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Plugin>libsequencer-pvxs.so</Plugin>
+    <RegisterType jsontype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"float32"}}]}'/>
+    <Sequence>
+        <Copy input="new-pvxs-value" output="pvxs-server-variable"/>
+        <Wait timeout="10"/>
+    </Sequence>
+    <Workspace>
+        <PVServerVariable name="pvxs-server-variable"
+            channel="seq::test::variable"
+            datatype='{"type":"seq::test::Type/v1.0"}'/>
+        <Local name="new-pvxs-value"
+               type='{"type":"seq::test::Type/v1.0"}'
+               value='{"value":12.5}'/>
+    </Workspace>
+</Procedure>

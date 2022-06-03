@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Plugin>libsequencer-ca.so</Plugin>
+    <Plugin>libsequencer-pvxs.so</Plugin>
+    <RegisterType jsontype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"float32"}}]}'/>
+    <Repeat maxCount="-1">
+        <Sequence>
+            <ForceSuccess>
+                <Sequence>
+                    <Copy input="pvxs-client-variable" output="local-value"/>
+                    <Output from="local-value"/>
+                </Sequence>
+            </ForceSuccess>
+            <Message text="waiting..."/>
+            <Wait timeout="1.0"/>
+        </Sequence>
+    </Repeat>
+    <Workspace>
+        <ChannelAccessVariable name="boolean"
+            channel='SEQ-TEST:BOOL'
+            period='10000000'
+            datatype='{"type":"bool"}'/>
+        <PVClientVariable name="pvxs-client-variable"
+            channel="seq::test::variable"
+            datatype='{"type":"seq::test::Type/v1.0"}'/>
+        <Local name="local-value"
+               type='{"type":"seq::test::Type/v1.0"}'/>
+    </Workspace>
+</Procedure>

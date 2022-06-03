@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Sequence>
+        <ChannelAccessWriteInstruction name="put-client"
+            channel="SEQ-TEST:BOOL"
+            delay="100000000"
+            datatype='{"type":"string"}'
+            instance='"TRUE"'/>
+        <ChannelAccessFetchInstruction name="get-client"
+            channel="SEQ-TEST:BOOL"
+            variable="boolean"/>
+        <ChannelAccessFetchInstruction name="get-client"
+            channel="SEQ-TEST:BOOL"
+            variable="uint32"/>
+        <ChannelAccessFetchInstruction name="get-client"
+            channel="SEQ-TEST:BOOL"
+            variable="string"/>
+        <LogTrace level="info" input="boolean"/>
+        <LogTrace level="info" input="uint32"/>
+        <LogTrace level="info" input="string"/>
+        <ChannelAccessWriteInstruction name="put-client"
+            channel="SEQ-TEST:FLOAT"
+            datatype='{"type":"string"}'
+            instance='"0.5"'/>
+        <ChannelAccessFetchInstruction name="get-client"
+            channel="SEQ-TEST:FLOAT"
+            variable="float32"/>
+        <LogTrace level="info" input="float32"/>
+        <ChannelAccessWriteInstruction name="put-client"
+            channel="SEQ-TEST:STRING"
+            datatype='{"type":"string"}'
+            instance='"{value:0}"'/>
+        <ChannelAccessFetchInstruction name="get-client"
+            channel="SEQ-TEST:STRING"
+            variable="string"/>
+        <LogTrace level="info" input="string"/>
+        <!-- Read/Write workspace variable -->
+        <ChannelAccessWriteInstruction name="put-client"
+            channel="SEQ-TEST:FLOAT"
+            variable="to-write"/>
+        <ChannelAccessFetchInstruction name="get-client"
+            channel="SEQ-TEST:FLOAT"
+            variable="to-fetch"/>
+    </Sequence>
+    <Workspace>
+        <Local name="boolean"
+               type='{"type":"bool"}'
+               value="false"/>
+        <Local name="uint32"
+               type='{"type":"uint32"}'
+               value="0"/>
+        <Local name="float32"
+               type='{"type":"float32"}'
+               value="0.0"/>
+        <Local name="string"
+               type='{"type":"string"}'
+               value='"undefined"'/>
+        <Local name="to-write"
+               type='{"type":"float32"}'
+               value="-1.1"/>
+        <Local name="to-fetch"
+               type='{"type":"float32"}'
+               value="0.0"/>
+    </Workspace>
+</Procedure>

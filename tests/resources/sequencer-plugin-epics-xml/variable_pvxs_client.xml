@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Plugin>libsequencer-pvxs.so</Plugin>
+    <RegisterType jsontype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"float32"}}]}'/>
+    <Sequence>
+        <Copy input="old-pvxs-value" output="pvxs-server-variable"/>
+        <Equals lhs="pvxs-server-variable" rhs="old-pvxs-value"/>
+        <Wait timeout="0.1"/>
+        <Equals lhs="pvxs-client-variable" rhs="old-pvxs-value"/>
+        <Wait timeout="2.0"/>
+        <Copy input="new-pvxs-value" output="pvxs-client-variable"/>
+        <Wait timeout="2.0"/>
+        <Equals lhs="pvxs-server-variable" rhs="new-pvxs-value"/>
+    </Sequence>
+    <Workspace>
+        <PVServerVariable name="pvxs-server-variable"
+            channel="seq::test::variable"
+            datatype='{"type":"seq::test::Type/v1.0"}'/>
+        <PVClientVariable name="pvxs-client-variable"
+            channel="seq::test::variable"
+            datatype='{"type":"seq::test::Type/v1.0"}'/>            
+        <Local name="old-pvxs-value"
+               type='{"type":"seq::test::Type/v1.0"}'
+               value='{"value":1.0}'/>
+        <Local name="new-pvxs-value"
+               type='{"type":"seq::test::Type/v1.0"}'
+               value='{"value":12.5}'/>
+    </Workspace>
+</Procedure>

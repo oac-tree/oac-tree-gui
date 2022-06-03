@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Sequence>
+        <PVMonitorInstruction name="monitor"
+            channel="CTRL-SYSM-COM-TRUNK-TSYNC"
+            timeout="10000000000"
+            variable="to-write"/>
+        <LogTrace level="info" input="to-write"/>
+    </Sequence>
+    <Workspace>
+        <Local name="to-write"/>
+    </Workspace>
+</Procedure>
