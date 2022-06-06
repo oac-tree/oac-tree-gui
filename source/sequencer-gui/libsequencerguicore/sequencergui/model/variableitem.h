@@ -22,7 +22,7 @@
 
 #include "sequencergui/model/sequencer_types.h"
 
-#include "mvvm/model/compounditem.h"
+#include "mvvm/model/compound_item.h"
 
 namespace sequencergui
 {

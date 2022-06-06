@@ -24,7 +24,7 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/application_model.h"
 #include "mvvm/widgets/allitemstreeview.h"
 
 #include <QHBoxLayout>

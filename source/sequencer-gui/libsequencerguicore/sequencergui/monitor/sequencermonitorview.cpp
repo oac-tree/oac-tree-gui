@@ -32,7 +32,7 @@
 #include "sequencergui/monitor/monitorworkspacewidget.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/standarditems/container_item.h"
 #include "mvvm/widgets/allitemstreeview.h"
 #include "mvvm/widgets/topitemstreeview.h"
 

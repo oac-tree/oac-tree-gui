@@ -22,7 +22,7 @@
 #include "sequencergui/model/sequenceritemincludes.h"
 #include "sequencergui/model/sequencermodel.h"
 
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/standarditems/container_item.h"
 
 namespace sequencergui::Examples
 {

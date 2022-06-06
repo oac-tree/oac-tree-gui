@@ -32,7 +32,7 @@
 #include "sequencergui/nodeeditor/sceneutils.h"
 #include "sequencergui/utils/sequenceralignutils.h"
 
-#include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/application_model.h"
 
 #include <QDebug>
 #include <QPointF>

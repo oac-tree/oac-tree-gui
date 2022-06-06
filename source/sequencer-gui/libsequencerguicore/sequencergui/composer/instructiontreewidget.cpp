@@ -25,7 +25,7 @@
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/utils/containerutils.h"
+#include "mvvm/utils/container_utils.h"
 #include "mvvm/widgets/topitemstreeview.h"
 #include "mvvm/widgets/widgetutils.h"
 

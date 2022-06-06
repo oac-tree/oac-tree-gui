@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_WORKSPACEITEM_H
 #define SEQUENCERGUI_MODEL_WORKSPACEITEM_H
 
-#include "mvvm/model/compounditem.h"
+#include "mvvm/model/compound_item.h"
 
 namespace sequencergui
 {

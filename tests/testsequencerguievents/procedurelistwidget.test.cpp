@@ -22,7 +22,7 @@
 #include "sequencergui/model/procedureitem.h"
 #include "sequencergui/model/sequencermodel.h"
 
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/standarditems/container_item.h"
 #include "mvvm/viewmodel/viewmodel.h"
 
 #include <gtest/gtest.h>

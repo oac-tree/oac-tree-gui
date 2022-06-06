@@ -22,7 +22,7 @@
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/procedureitem.h"
 
-#include "mvvm/standarditems/linkeditem.h"
+#include "mvvm/standarditems/linked_item.h"
 
 namespace sequencergui
 {

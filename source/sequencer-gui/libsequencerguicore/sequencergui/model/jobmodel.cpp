@@ -21,7 +21,7 @@
 
 #include "sequencergui/model/sequencerutils.h"
 
-#include "mvvm/interfaces/itemmanagerinterface.h"
+#include "mvvm/interfaces/item_manager_interface.h"
 
 namespace sequencergui
 {

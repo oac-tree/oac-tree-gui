@@ -23,8 +23,8 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/sequencerutils.h"
 
-#include "mvvm/interfaces/itemmanagerinterface.h"
-#include "mvvm/model/itempool.h"
+#include "mvvm/interfaces/item_manager_interface.h"
+#include "mvvm/model/item_pool.h"
 
 namespace sequencergui
 {

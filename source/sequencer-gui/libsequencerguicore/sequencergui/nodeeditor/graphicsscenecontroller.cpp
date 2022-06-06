@@ -27,8 +27,8 @@
 #include "sequencergui/nodeeditor/graphicsscene.h"
 #include "sequencergui/nodeeditor/viewfactoryinterface.h"
 
-#include "mvvm/model/applicationmodel.h"
-#include "mvvm/model/itemutils.h"
+#include "mvvm/model/application_model.h"
+#include "mvvm/model/item_utils.h"
 
 #include <QDebug>
 

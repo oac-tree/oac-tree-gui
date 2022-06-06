@@ -23,10 +23,10 @@
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/sequenceritemincludes.h"
 
-#include "mvvm/model/itemcatalogue.h"
-#include "mvvm/model/itemmanager.h"
-#include "mvvm/model/taggeditems.h"
-#include "mvvm/utils/containerutils.h"
+#include "mvvm/model/item_catalogue.h"
+#include "mvvm/model/item_manager.h"
+#include "mvvm/model/tagged_items.h"
+#include "mvvm/utils/container_utils.h"
 
 #include <vector>
 

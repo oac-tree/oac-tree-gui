@@ -25,9 +25,9 @@
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/standardinstructionitems.h"
 
-#include "mvvm/model/taggeditems.h"
+#include "mvvm/model/tagged_items.h"
 #include "mvvm/model/taginfo.h"
-#include "mvvm/utils/stringutils.h"
+#include "mvvm/utils/string_utils.h"
 
 namespace sequencergui
 {

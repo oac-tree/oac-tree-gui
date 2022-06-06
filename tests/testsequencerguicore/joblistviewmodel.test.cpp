@@ -24,7 +24,7 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/model/standardinstructionitems.h"
 
-#include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/application_model.h"
 
 #include <gtest/gtest.h>
 

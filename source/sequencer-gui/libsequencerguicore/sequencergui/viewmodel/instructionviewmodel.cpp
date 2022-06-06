@@ -23,7 +23,7 @@
 #include "sequencergui/model/standardinstructionitems.h"
 
 #include "mvvm/factories/viewmodelcontrollerfactory.h"
-#include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/application_model.h"
 #include "mvvm/viewmodel/standardchildrenstrategies.h"
 #include "mvvm/viewmodel/standardrowstrategies.h"
 #include "mvvm/viewmodel/viewitemfactory.h"

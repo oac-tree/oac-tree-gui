@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_PROCEDUREITEM_H
 #define SEQUENCERGUI_MODEL_PROCEDUREITEM_H
 
-#include "mvvm/model/compounditem.h"
+#include "mvvm/model/compound_item.h"
 
 namespace sequencergui
 {

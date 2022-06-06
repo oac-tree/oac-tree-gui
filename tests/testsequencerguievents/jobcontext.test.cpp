@@ -35,8 +35,8 @@
 #include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/monitor/jobutils.h"
 
-#include "mvvm/model/modelutils.h"
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/model/model_utils.h"
+#include "mvvm/standarditems/container_item.h"
 
 #include <gtest/gtest.h>
 

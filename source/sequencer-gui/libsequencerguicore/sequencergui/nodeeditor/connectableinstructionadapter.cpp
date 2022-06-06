@@ -23,7 +23,7 @@
 #include "sequencergui/model/standardinstructionitems.h"
 #include "sequencergui/nodeeditor/sceneutils.h"
 
-#include "mvvm/utils/containerutils.h"
+#include "mvvm/utils/container_utils.h"
 
 #include <QColor>
 #include <QDebug>

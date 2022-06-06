@@ -22,7 +22,7 @@
 
 #include "sequencergui/monitor/usercontext.h"
 
-#include "mvvm/utils/threadsafestack.h"
+#include "mvvm/utils/threadsafe_stack.h"
 
 #include <QObject>
 

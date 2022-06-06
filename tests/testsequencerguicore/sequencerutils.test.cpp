@@ -22,8 +22,8 @@
 #include "sequencergui/model/instructioncontaineritem.h"
 #include "sequencergui/model/standardinstructionitems.h"
 
-#include "mvvm/factories/itemcataloguefactory.h"
-#include "mvvm/interfaces/itemmanagerinterface.h"
+#include "mvvm/factories/item_catalogue_factory.h"
+#include "mvvm/interfaces/item_manager_interface.h"
 
 #include <gtest/gtest.h>
 

@@ -24,7 +24,7 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/model/item_constants.h"
 
-#include "mvvm/utils/stringutils.h"
+#include "mvvm/utils/string_utils.h"
 
 namespace sequencergui
 {

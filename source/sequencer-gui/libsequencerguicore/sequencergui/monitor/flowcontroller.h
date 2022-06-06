@@ -22,7 +22,7 @@
 
 #include "sequencergui/monitor/job_types.h"
 
-#include "mvvm/utils/threadsafestack.h"
+#include "mvvm/utils/threadsafe_stack.h"
 
 namespace sequencergui
 {

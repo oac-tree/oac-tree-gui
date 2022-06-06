@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/recentprojectsettings.h"
 
-#include "mvvm/utils/fileutils.h"
+#include "mvvm/utils/file_utils.h"
 
 #include <QDir>
 #include <QSettings>

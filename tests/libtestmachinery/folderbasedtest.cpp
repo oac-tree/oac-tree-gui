@@ -21,7 +21,7 @@
 
 #include "test_utils.h"
 
-#include "mvvm/utils/fileutils.h"
+#include "mvvm/utils/file_utils.h"
 
 FolderBasedTest::FolderBasedTest(std::string test_home_dirname)
     : m_test_home_dirname(std::move(test_home_dirname))

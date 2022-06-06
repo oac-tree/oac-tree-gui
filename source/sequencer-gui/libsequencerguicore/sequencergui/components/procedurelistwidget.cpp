@@ -24,8 +24,8 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/model/itemutils.h"
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/model/item_utils.h"
+#include "mvvm/standarditems/container_item.h"
 #include "mvvm/viewmodel/topitemsviewmodel.h"
 #include "mvvm/widgets/itemviewcomponentprovider.h"
 

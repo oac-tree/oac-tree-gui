@@ -30,7 +30,7 @@
 #include "sequencergui/model/standardvariableitems.h"
 
 #include "mvvm/model/function_types.h"
-#include "mvvm/model/itemcatalogue.h"
+#include "mvvm/model/item_catalogue.h"
 
 #include <stdexcept>
 

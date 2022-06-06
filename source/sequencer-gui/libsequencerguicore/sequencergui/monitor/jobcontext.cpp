@@ -33,7 +33,7 @@
 #include "sequencergui/monitor/jobutils.h"
 #include "sequencergui/monitor/procedurerunner.h"
 
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/standarditems/container_item.h"
 
 #include <QDebug>
 #include <iostream>

@@ -28,8 +28,8 @@
 #include "sequencergui/model/xmlutils.h"
 #include "sequencergui/widgets/widgetutils.h"
 
-#include "mvvm/interfaces/modeleventsubscriberinterface.h"
-#include "mvvm/standarditems/standarditemincludes.h"
+#include "mvvm/interfaces/model_event_subscriber_interface.h"
+#include "mvvm/standarditems/standard_item_includes.h"
 
 #include <QApplication>
 #include <QDebug>

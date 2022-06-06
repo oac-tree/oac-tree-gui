@@ -24,8 +24,8 @@
 
 #include "mvvm/factories/viewmodelcontrollerfactory.h"
 #include "mvvm/interfaces/childrenstrategyinterface.h"
-#include "mvvm/model/applicationmodel.h"
-#include "mvvm/model/itemutils.h"
+#include "mvvm/model/application_model.h"
+#include "mvvm/model/item_utils.h"
 #include "mvvm/viewmodel/standardrowstrategies.h"
 #include "mvvm/viewmodel/viewitemfactory.h"
 #include "mvvm/viewmodelbase/viewitem.h"

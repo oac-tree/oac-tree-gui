@@ -23,7 +23,7 @@
 #include "anyvalueeditor/anyvalueitem.h"
 #include "anyvalueeditor/anyvalueutils.h"
 
-#include "mvvm/model/applicationmodel.h"
+#include "mvvm/model/application_model.h"
 #include "mvvm/widgets/widgetutils.h"
 
 #include <QMainWindow>

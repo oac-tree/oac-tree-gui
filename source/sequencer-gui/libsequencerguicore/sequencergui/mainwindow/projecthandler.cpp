@@ -22,8 +22,8 @@
 #include "sequencergui/mainwindow/recentprojectsettings.h"
 #include "sequencergui/mainwindow/userinteractor.h"
 
-#include "mvvm/factories/projectmanagerfactory.h"
-#include "mvvm/model/applicationmodel.h"
+#include "mvvm/factories/project_manager_factory.h"
+#include "mvvm/model/application_model.h"
 #include "mvvm/project/project_types.h"
 #include "mvvm/widgets/widgetutils.h"
 

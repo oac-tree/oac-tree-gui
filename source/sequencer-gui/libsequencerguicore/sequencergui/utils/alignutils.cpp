@@ -21,7 +21,7 @@
 
 #include "sequencergui/utils/alignnode.h"
 
-#include "mvvm/utils/containerutils.h"
+#include "mvvm/utils/container_utils.h"
 
 #include <QDebug>
 #include <algorithm>

@@ -28,7 +28,7 @@
 #include "sequencergui/model/workspaceitem.h"
 
 #include "mvvm/core/exceptions.h"
-#include "mvvm/standarditems/containeritem.h"
+#include "mvvm/standarditems/container_item.h"
 
 #include <gtest/gtest.h>
 
