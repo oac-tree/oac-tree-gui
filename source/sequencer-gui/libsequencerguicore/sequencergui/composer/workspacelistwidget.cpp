@@ -26,8 +26,8 @@
 #include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/widgets/topitemstreeview.h"
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/top_items_tree_view.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QMenu>
 #include <QToolButton>

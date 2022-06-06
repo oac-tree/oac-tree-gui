@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/filetreeview.h"
 
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QFileSystemModel>
 #include <QLabel>

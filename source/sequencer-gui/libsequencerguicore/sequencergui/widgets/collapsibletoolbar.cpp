@@ -21,7 +21,7 @@
 
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QLabel>
 #include <QToolBar>

@@ -32,7 +32,7 @@
 #include "sequencergui/widgets/itemlistwidget.h"
 
 #include "mvvm/core/exceptions.h"
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>

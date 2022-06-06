@@ -21,7 +21,7 @@
 
 #include "sequencergui/model/jobitem.h"
 
-#include "mvvm/widgets/propertytreeview.h"
+#include "mvvm/widgets/property_tree_view.h"
 
 #include <QListWidget>
 #include <QVBoxLayout>

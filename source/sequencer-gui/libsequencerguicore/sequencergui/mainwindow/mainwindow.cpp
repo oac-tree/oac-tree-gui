@@ -30,7 +30,7 @@
 #include "sequencergui/monitor/sequencermonitorview.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/widgets/mainverticalbarwidget.h"
+#include "mvvm/widgets/main_vertical_bar_widget.h"
 
 #include <QCloseEvent>
 #include <QCoreApplication>

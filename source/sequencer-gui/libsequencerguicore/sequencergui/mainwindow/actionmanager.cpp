@@ -22,7 +22,7 @@
 #include "sequencergui/mainwindow/projecthandler.h"
 #include "sequencergui/model/sequencermodel.h"
 
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QAction>
 #include <QMainWindow>

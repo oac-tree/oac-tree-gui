@@ -25,7 +25,7 @@
 #include "sequencergui/model/workspaceitem.h"
 #include "sequencergui/monitor/monitorworkspacetoolbar.h"
 
-#include "mvvm/widgets/allitemstreeview.h"
+#include "mvvm/widgets/all_items_tree_view.h"
 
 #include <QSplitter>
 #include <QTreeView>

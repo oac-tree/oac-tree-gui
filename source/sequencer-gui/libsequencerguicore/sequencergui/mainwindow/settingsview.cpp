@@ -25,7 +25,7 @@
 #include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/model/application_model.h"
-#include "mvvm/widgets/allitemstreeview.h"
+#include "mvvm/widgets/all_items_tree_view.h"
 
 #include <QHBoxLayout>
 #include <QListView>

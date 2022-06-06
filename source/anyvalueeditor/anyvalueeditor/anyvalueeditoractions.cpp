@@ -24,7 +24,7 @@
 #include "anyvalueeditor/anyvalueutils.h"
 
 #include "mvvm/model/application_model.h"
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QMainWindow>
 

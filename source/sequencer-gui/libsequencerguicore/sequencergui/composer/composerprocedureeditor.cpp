@@ -29,8 +29,8 @@
 #include "sequencergui/model/standardvariableitems.h"
 #include "sequencergui/widgets/dotstoolbar.h"
 
-#include "mvvm/widgets/propertytreeview.h"
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/property_tree_view.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QSplitter>
 #include <QTabWidget>

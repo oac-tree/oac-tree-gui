@@ -23,8 +23,8 @@
 #include "sequencergui/model/sequencermodel.h"
 #include "sequencergui/widgets/paneltoolbar.h"
 
-#include "mvvm/widgets/propertytreeview.h"
-#include "mvvm/widgets/topitemstreeview.h"
+#include "mvvm/widgets/property_tree_view.h"
+#include "mvvm/widgets/top_items_tree_view.h"
 
 #include <QSplitter>
 #include <QTreeView>

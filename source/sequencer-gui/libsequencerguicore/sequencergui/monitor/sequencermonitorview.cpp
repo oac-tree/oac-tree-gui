@@ -33,8 +33,8 @@
 #include "sequencergui/utils/styleutils.h"
 
 #include "mvvm/standarditems/container_item.h"
-#include "mvvm/widgets/allitemstreeview.h"
-#include "mvvm/widgets/topitemstreeview.h"
+#include "mvvm/widgets/all_items_tree_view.h"
+#include "mvvm/widgets/top_items_tree_view.h"
 
 #include <QDebug>
 #include <QSplitter>

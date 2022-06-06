@@ -25,7 +25,7 @@
 #include "mvvm/factories/project_manager_factory.h"
 #include "mvvm/model/application_model.h"
 #include "mvvm/project/project_types.h"
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QMainWindow>
 

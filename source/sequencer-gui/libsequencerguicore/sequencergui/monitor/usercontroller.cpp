@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/usercontroller.h"
 
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 namespace sequencergui
 {

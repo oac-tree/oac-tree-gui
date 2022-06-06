@@ -23,7 +23,7 @@
 #include "sequencergui/model/jobmodel.h"
 #include "sequencergui/viewmodel/joblistviewmodel.h"
 
-#include "mvvm/widgets/itemviewcomponentprovider.h"
+#include "mvvm/widgets/item_view_component_provider.h"
 
 #include <QTreeView>
 #include <QVBoxLayout>

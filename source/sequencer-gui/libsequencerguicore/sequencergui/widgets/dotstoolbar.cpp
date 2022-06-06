@@ -22,7 +22,7 @@
 #include "sequencergui/model/domainutils.h"
 #include "sequencergui/utils/styleutils.h"
 
-#include "mvvm/widgets/widgetutils.h"
+#include "mvvm/widgets/widget_utils.h"
 
 #include <QAction>
 #include <QLabel>

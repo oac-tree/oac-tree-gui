@@ -29,8 +29,8 @@
 #include "sequencergui/viewmodel/instructionviewmodel.h"
 #include "sequencergui/widgets/collapsiblelistview.h"
 
-#include "mvvm/widgets/itemviewcomponentprovider.h"
-#include "mvvm/widgets/topitemstreeview.h"
+#include "mvvm/widgets/item_view_component_provider.h"
+#include "mvvm/widgets/top_items_tree_view.h"
 
 #include <QSplitter>
 #include <QStackedWidget>
