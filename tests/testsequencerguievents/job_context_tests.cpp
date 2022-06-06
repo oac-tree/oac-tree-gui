@@ -20,7 +20,7 @@
 #include "sequencergui/monitor/job_context.h"
 
 #include "Instruction.h"
-#include "mockitemlistener.h"
+#include "mock_item_listener.h"
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/application_models.h"
 #include "sequencergui/model/instruction_container_item.h"

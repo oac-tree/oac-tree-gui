@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "mockmodellistener.h"
+#include "mock_model_listener.h"
 
 #include "mvvm/model/sessionitem.h"
 

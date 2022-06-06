@@ -69,7 +69,7 @@ TEST_F(TransformFromAnyValueTest, PopulateFromIntScalar)
 }
 
 //! Building AnyValueItem from AnyValue with two named scalars.
-//! More tests in anyvalueitembuilder.test.cpp
+//! More tests in anyvalue_item_builder_tests.cpp
 
 TEST_F(TransformFromAnyValueTest, PopulateFromTwoScalars)
 {

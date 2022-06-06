@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "mockmessagehandler.h"
+#include "mock_message_handler.h"
 
 #include "sequencergui/core/message_handler_decorator.h"
 

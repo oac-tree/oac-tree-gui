@@ -19,7 +19,7 @@
 
 #include "sequencergui/nodeeditor/graphics_scene.h"
 
-#include "mockmessagehandler.h"
+#include "mock_message_handler.h"
 #include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/sequencer_model.h"

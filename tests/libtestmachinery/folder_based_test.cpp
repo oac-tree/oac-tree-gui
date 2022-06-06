@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "folderbasedtest.h"
+#include "folder_based_test.h"
 
 #include "test_utils.h"
 

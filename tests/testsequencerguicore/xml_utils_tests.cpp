@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/xml_utils.h"
 
-#include "folderbasedtest.h"
+#include "folder_based_test.h"
 #include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/standard_instruction_items.h"

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "mockitemlistener.h"
+#include "mock_item_listener.h"
 
 #include "mvvm/model/sessionitem.h"
 #include "mvvm/model/tagindex.h"

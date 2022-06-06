@@ -21,8 +21,8 @@
 
 #include "Procedure.h"
 #include "Runner.h"
-#include "mockrunnerlistener.h"
-#include "mocksequencerobserver.h"
+#include "mock_runner_listener.h"
+#include "mock_sequencer_observer.h"
 #include "test_procedures.h"
 
 #include <gtest/gtest.h>

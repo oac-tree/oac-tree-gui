@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "widgetbasedtest.h"
+#include "widget_based_tests.h"
 
 #include "test_utils.h"
 

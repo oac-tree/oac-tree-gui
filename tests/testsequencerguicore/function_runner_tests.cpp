@@ -19,7 +19,7 @@
 
 #include "sequencergui/jobsystem/function_runner.h"
 
-#include "mockrunnerlistener.h"
+#include "mock_runner_listener.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
