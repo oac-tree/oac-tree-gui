@@ -26,7 +26,7 @@
 
 #include "mvvm/model/item_utils.h"
 #include "mvvm/standarditems/container_item.h"
-#include "mvvm/viewmodel/topitemsviewmodel.h"
+#include "mvvm/viewmodel/top_items_viewmodel.h"
 #include "mvvm/widgets/itemviewcomponentprovider.h"
 
 #include <QAction>

@@ -22,12 +22,12 @@
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/jobitem.h"
 
-#include "mvvm/factories/viewmodelcontrollerfactory.h"
-#include "mvvm/interfaces/childrenstrategyinterface.h"
+#include "mvvm/factories/viewmodel_controller_factory.h"
+#include "mvvm/interfaces/children_strategy_interface.h"
 #include "mvvm/model/application_model.h"
 #include "mvvm/model/item_utils.h"
-#include "mvvm/viewmodel/standardrowstrategies.h"
-#include "mvvm/viewmodel/viewitemfactory.h"
+#include "mvvm/viewmodel/standard_row_strategies.h"
+#include "mvvm/viewmodel/viewitem_factory.h"
 #include "mvvm/viewmodelbase/viewitem.h"
 
 namespace sequencergui
