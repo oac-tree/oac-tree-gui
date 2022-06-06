@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/standard_instruction_items.h"
 
 #include "Instruction.h"
 #include "Procedure.h"
-#include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/transformfromdomain.h"
+#include "sequencergui/model/domain_utils.h"
+#include "sequencergui/model/transform_from_domain.h"
 
 #include <gtest/gtest.h>
 

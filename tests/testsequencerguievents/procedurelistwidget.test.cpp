@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/components/procedurelistwidget.h"
+#include "sequencergui/components/procedure_list_widget.h"
 
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/sequencer_model.h"
 
 #include "mvvm/standarditems/container_item.h"
 #include "mvvm/viewmodel/viewmodel.h"

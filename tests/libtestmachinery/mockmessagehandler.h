@@ -20,7 +20,7 @@
 #ifndef MOCKMESSAGEHANDLER_H
 #define MOCKMESSAGEHANDLER_H
 
-#include "sequencergui/core/messagehandlerinterface.h"
+#include "sequencergui/core/message_handler_interface.h"
 
 #include <gmock/gmock.h>
 

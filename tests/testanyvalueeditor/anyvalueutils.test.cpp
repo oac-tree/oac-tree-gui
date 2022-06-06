@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalueutils.h"
+#include "anyvalueeditor/anyvalue_utils.h"
 
 #include <gtest/gtest.h>
 

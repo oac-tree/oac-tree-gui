@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/procedurerunner.h"
+#include "sequencergui/monitor/procedure_runner.h"
 
 #include "ExecutionStatus.h"
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
-#include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/domain_utils.h"
 #include "sequencergui/model/sequencer_types.h"
 #include "test_procedures.h"
 #include "test_utils.h"

@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/sceneutils.h"
+#include "sequencergui/nodeeditor/scene_utils.h"
 
 #include "Instruction.h"
 #include "InstructionRegistry.h"
 #include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/instructioncontaineritem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/instruction_container_item.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/sequencer_model.h"
+#include "sequencergui/model/standard_instruction_items.h"
 
 #include "mvvm/standarditems/container_item.h"
 #include "mvvm/utils/numeric_utils.h"

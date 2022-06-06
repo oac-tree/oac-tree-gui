@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/graphicsscenecontroller.h"
+#include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
-#include "sequencergui/model/instructioncontaineritem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/nodeeditor/connectableinstructionadapter.h"
-#include "sequencergui/nodeeditor/connectableview.h"
-#include "sequencergui/nodeeditor/graphicsscene.h"
-#include "sequencergui/nodeeditor/nodeconnection.h"
-#include "sequencergui/nodeeditor/nodeport.h"
+#include "sequencergui/model/instruction_container_item.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/sequencer_model.h"
+#include "sequencergui/model/standard_instruction_items.h"
+#include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
+#include "sequencergui/nodeeditor/connectable_view.h"
+#include "sequencergui/nodeeditor/graphics_scene.h"
+#include "sequencergui/nodeeditor/node_connection.h"
+#include "sequencergui/nodeeditor/node_port.h"
 
 #include "mvvm/standarditems/container_item.h"
 

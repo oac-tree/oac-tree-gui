@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/flowcontroller.h"
+#include "sequencergui/monitor/flow_controller.h"
 
 #include <gtest/gtest.h>
 

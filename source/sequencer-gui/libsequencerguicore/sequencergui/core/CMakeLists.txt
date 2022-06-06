@@ -3,14 +3,14 @@
 target_sources(${library_name} PRIVATE
   exceptions.cpp
   exceptions.h
-  messagehandlerinterface.h
-  messagehandlerdecorator.cpp
-  messagehandlerdecorator.h
-  messagehandlerfactory.cpp
-  messagehandlerfactory.h
-  stdmessagehandler.cpp
-  stdmessagehandler.h
-  widgetoverlaymessagehandler.cpp
-  widgetoverlaymessagehandler.h
+  message_handler_interface.h
+  message_handler_decorator.cpp
+  message_handler_decorator.h
+  message_handler_factory.cpp
+  message_handler_factory.h
+  std_message_handler.cpp
+  std_message_handler.h
+  widget_overlay_message_handler.cpp
+  widget_overlay_message_handler.h
 )
 

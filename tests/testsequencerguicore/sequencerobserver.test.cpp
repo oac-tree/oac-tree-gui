@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/sequencerobserver.h"
+#include "sequencergui/monitor/sequencer_observer.h"
 
 #include <gtest/gtest.h>
 

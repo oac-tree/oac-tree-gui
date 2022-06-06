@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/jobmodel.h"
+#include "sequencergui/model/job_model.h"
 
-#include "sequencergui/model/procedureitem.h"
+#include "sequencergui/model/procedure_item.h"
 
 #include <gtest/gtest.h>
 

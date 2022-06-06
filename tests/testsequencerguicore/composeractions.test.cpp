@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composeractions.h"
+#include "sequencergui/composer/composer_actions.h"
 
 #include "mockmessagehandler.h"
-#include "sequencergui/model/instructioncontaineritem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/workspaceitem.h"
+#include "sequencergui/model/instruction_container_item.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/sequencer_model.h"
+#include "sequencergui/model/standard_instruction_items.h"
+#include "sequencergui/model/standard_variable_items.h"
+#include "sequencergui/model/workspace_item.h"
 
 #include "mvvm/core/exceptions.h"
 #include "mvvm/standarditems/container_item.h"
@@ -90,7 +90,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfter)
   // Check coordinates of Wait instruction. It should be placed nearby to original
   // instruction
 
-  // hardcoded in composeractions.cpp in UpdateChildCoordinate() function
+  // hardcoded in composer_actions.cpp in UpdateChildCoordinate() function
   const double coordinate_offset = 10;
 
   EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);
@@ -179,7 +179,7 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
   // Check coordinates of Wait instruction. It should be placed nearby to original
   // instruction
 
-  // hardcoded in composeractions.cpp in UpdateChildCoordinate() function
+  // hardcoded in composer_actions.cpp in UpdateChildCoordinate() function
   const double coordinate_offset = 10;
 
   EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);

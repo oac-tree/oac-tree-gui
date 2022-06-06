@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/instructionitem.h"
+#include "sequencergui/model/instruction_item.h"
 
 #include <gtest/gtest.h>
 

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domainrunneradapter.h"
+#include "sequencergui/jobsystem/domain_runner_adapter.h"
 
 #include "Procedure.h"
 #include "Runner.h"

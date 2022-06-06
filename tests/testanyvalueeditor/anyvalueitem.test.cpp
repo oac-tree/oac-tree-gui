@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/anyvalue_item.h"
 
-#include "anyvalueeditor/anyvalueutils.h"
+#include "anyvalueeditor/anyvalue_utils.h"
 
 #include <gtest/gtest.h>
 
@@ -37,7 +37,7 @@ TEST_F(AnyValueItemTest, InitialState)
   EXPECT_TRUE(item.GetAnyTypeName().empty());
   EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
   EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-  const int kAnyTypeNameRole = 10;  // defined in anyvalueitem.cpp
+  const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
   EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
 }
 
@@ -51,6 +51,6 @@ TEST_F(AnyValueItemTest, SetAnyTypeName)
   EXPECT_EQ(item.Data<int>(), 0);
   EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));
   EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));
-  const int kAnyTypeNameRole = 10;  // defined in anyvalueitem.cpp
+  const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
   EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
 }

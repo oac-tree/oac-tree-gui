@@ -7,25 +7,25 @@ add_library(${library_name} SHARED "")
 target_link_libraries(${library_name} PUBLIC pthread MVVM::View COACompact::sup-dto)
 
 target_sources(${library_name} PRIVATE
-  addfielddialog.cpp
-  addfielddialog.h
+  add_field_dialog.cpp
+  add_field_dialog.h
   anyvalue_type.h
-  anyvalueeditoractions.cpp
-  anyvalueeditoractions.h
-  anyvalueeditortoolbar.cpp
-  anyvalueeditortoolbar.h
-  anyvalueitem.cpp
-  anyvalueitem.h
-  anyvalueitembuilder.cpp
-  anyvalueitembuilder.h
-  anyvalueutils.cpp
-  anyvalueutils.h
-  editorwidget.cpp
-  editorwidget.h
-  mainwindow.cpp
-  mainwindow.h
-  transformfromanyvalue.cpp
-  transformfromanyvalue.h
+  anyvalue_editor_actions.cpp
+  anyvalue_editor_actions.h
+  anyvalue_editor_toolbar.cpp
+  anyvalue_editor_toolbar.h
+  anyvalue_item.cpp
+  anyvalue_item.h
+  anyvalue_item_builder.cpp
+  anyvalue_item_builder.h
+  anyvalue_utils.cpp
+  anyvalue_utils.h
+  editor_widget.cpp
+  editor_widget.h
+  main_window.cpp
+  main_window.h
+  transform_from_anyvalue.cpp
+  transform_from_anyvalue.h
 )
 
 target_include_directories(${library_name} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..$<SEMICOLON>${SEQUENCERGUI_AUTOGEN_DIR}>)

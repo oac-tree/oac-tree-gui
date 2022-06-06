@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/joblistwidget.h"
+#include "sequencergui/monitor/job_list_widget.h"
 
-#include "sequencergui/model/jobitem.h"
-#include "sequencergui/model/jobmodel.h"
+#include "sequencergui/model/job_item.h"
+#include "sequencergui/model/job_model.h"
 #include "sequencergui/model/item_constants.h"
 
 #include "mvvm/viewmodel/viewmodel.h"

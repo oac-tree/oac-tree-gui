@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/applicationmodels.h"
+#include "sequencergui/model/application_models.h"
 
-#include "sequencergui/model/jobmodel.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/sequencermodel.h"
+#include "sequencergui/model/job_model.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/sequencer_model.h"
 
 #include <gtest/gtest.h>
 

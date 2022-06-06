@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/utils/sequenceralignutils.h"
+#include "sequencergui/utils/sequencer_align_utils.h"
 
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/instructioncontaineritem.h"
-#include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/nodeeditor/sceneutils.h"
-#include "sequencergui/utils/alignnode.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/instruction_container_item.h"
+#include "sequencergui/model/sequencer_model.h"
+#include "sequencergui/model/standard_instruction_items.h"
+#include "sequencergui/nodeeditor/scene_utils.h"
+#include "sequencergui/utils/align_node.h"
 
 #include "mvvm/standarditems/container_item.h"
 

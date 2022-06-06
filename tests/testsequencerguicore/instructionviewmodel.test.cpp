@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/instructionviewmodel.h"
+#include "sequencergui/viewmodel/instruction_viewmodel.h"
 
-#include "sequencergui/model/sequencermodel.h"
-#include "sequencergui/model/standardinstructionitems.h"
+#include "sequencergui/model/sequencer_model.h"
+#include "sequencergui/model/standard_instruction_items.h"
 
 #include "mvvm/model/application_model.h"
 

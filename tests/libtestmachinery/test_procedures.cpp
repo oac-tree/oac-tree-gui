@@ -23,7 +23,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
-#include "sequencergui/model/domainutils.h"
+#include "sequencergui/model/domain_utils.h"
 
 using namespace sequencergui;
 

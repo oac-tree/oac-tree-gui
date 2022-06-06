@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/abstractjob.h"
+#include "sequencergui/jobsystem/abstract_job.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

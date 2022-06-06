@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/transformfromanyvalue.h"
+#include "anyvalueeditor/transform_from_anyvalue.h"
 
 #include "sup/dto/anyvalue.h"
 #include "sup/dto/basic_scalar_types.h"
-#include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/anyvalue_item.h"
 
 #include "mvvm/core/variant.h"
 

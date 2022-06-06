@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/connectableviewmap.h"
+#include "sequencergui/nodeeditor/connectable_view_map.h"
 
 #include "sequencergui/core/exceptions.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/nodeeditor/connectableview.h"
-#include "sequencergui/nodeeditor/connectableviewfactory.h"
+#include "sequencergui/model/standard_instruction_items.h"
+#include "sequencergui/nodeeditor/connectable_view.h"
+#include "sequencergui/nodeeditor/connectable_view_factory.h"
 
 #include <gtest/gtest.h>
 

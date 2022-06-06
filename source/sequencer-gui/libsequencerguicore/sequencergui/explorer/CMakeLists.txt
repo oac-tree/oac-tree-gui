@@ -2,14 +2,14 @@
 # This is one of 3 main views of MainWindow.
 
 target_sources(${library_name} PRIVATE
-  explorerpanel.cpp
-  explorerpanel.h
-  proceduretreeswidget.cpp
-  proceduretreeswidget.h
-  sequencerexplorerview.cpp
-  sequencerexplorerview.h
-  xmleditor.cpp
-  xmleditor.h
-  xmlsyntaxhighlighter.cpp
-  xmlsyntaxhighlighter.h
+  explorer_panel.cpp
+  explorer_panel.h
+  procedure_trees_widget.cpp
+  procedure_trees_widget.h
+  sequencer_explorer_view.cpp
+  sequencer_explorer_view.h
+  xml_editor.cpp
+  xml_editor.h
+  xml_syntax_highlighter.cpp
+  xml_syntax_highlighter.h
 )

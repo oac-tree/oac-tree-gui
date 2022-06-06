@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/xmlutils.h"
+#include "sequencergui/model/xml_utils.h"
 
 #include "folderbasedtest.h"
-#include "sequencergui/model/instructioncontaineritem.h"
-#include "sequencergui/model/procedureitem.h"
-#include "sequencergui/model/standardinstructionitems.h"
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/workspaceitem.h"
+#include "sequencergui/model/instruction_container_item.h"
+#include "sequencergui/model/procedure_item.h"
+#include "sequencergui/model/standard_instruction_items.h"
+#include "sequencergui/model/standard_variable_items.h"
+#include "sequencergui/model/workspace_item.h"
 #include "test_utils.h"
 
 //! Testing methods from importutils.h

@@ -17,19 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/standardvariableitems.h"
+#include "sequencergui/model/standard_variable_items.h"
 
 #include "AttributeMap.h"
 #include "Variable.h"
-#include "sequencergui/model/domainutils.h"
-#include "sequencergui/model/standardvariableitems.h"
-#include "sequencergui/model/transformfromdomain.h"
+#include "sequencergui/model/domain_utils.h"
+#include "sequencergui/model/standard_variable_items.h"
+#include "sequencergui/model/transform_from_domain.h"
 
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
 
-//! Tests for items in standardvariableitems.h
+//! Tests for items in standard_variable_items.h
 
 class StandardVariableItemsTest : public ::testing::Test
 {

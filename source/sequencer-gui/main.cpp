@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/apputils.h"
-#include "sequencergui/mainwindow/mainwindow.h"
-#include "sequencergui/model/domainutils.h"
+#include "sequencergui/mainwindow/app_utils.h"
+#include "sequencergui/mainwindow/main_window.h"
+#include "sequencergui/model/domain_utils.h"
 
 #include <QApplication>
 #include <QLocale>

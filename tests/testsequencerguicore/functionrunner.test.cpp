@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/functionrunner.h"
+#include "sequencergui/jobsystem/function_runner.h"
 
 #include "mockrunnerlistener.h"
 

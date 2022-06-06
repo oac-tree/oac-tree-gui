@@ -18,8 +18,8 @@
  *****************************************************************************/
 
 #include "Instruction.h"
-#include "sequencergui/model/instructionitem.h"
-#include "sequencergui/model/jobitem.h"
+#include "sequencergui/model/instruction_item.h"
+#include "sequencergui/model/job_item.h"
 #include "sequencergui/model/sequencer_types.h"
 
 #include <gmock/gmock.h>

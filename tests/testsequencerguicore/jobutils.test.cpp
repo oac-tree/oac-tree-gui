@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/jobutils.h"
+#include "sequencergui/monitor/job_utils.h"
 
 #include <gtest/gtest.h>
 

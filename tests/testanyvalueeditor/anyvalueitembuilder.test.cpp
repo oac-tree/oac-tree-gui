@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalueitembuilder.h"
+#include "anyvalueeditor/anyvalue_item_builder.h"
 
-#include "anyvalueeditor/anyvalueitem.h"
+#include "anyvalueeditor/anyvalue_item.h"
 #include "sup/dto/anyvalue.h"
 #include "sup/dto/anyvalue_helper.h"
 
