@@ -53,8 +53,8 @@ private:
   std::unique_ptr<FunctionRunnerImpl> p_impl;
 };
 
-//! Will wait a given amount of sec for job completion. Returns `true` is runner has finished before
-//! the timeout, `false` otherwise. Internally has a precision of 10 msec.
+//! Will wait a given amount of msec for job completion. Returns `true` is runner has finished
+//! before the timeout, `false` otherwise. Internally has a precision of 10 msec.
 bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout_msec);
 
 }  // namespace sequencergui
