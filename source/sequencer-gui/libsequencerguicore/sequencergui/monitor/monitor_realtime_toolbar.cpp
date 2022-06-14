@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/monitor_realtime_toolbar.h"
 
-#include "sequencergui/monitor/job_utils.h"
+#include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/utils/style_utils.h"
 
 #include "mvvm/widgets/widget_utils.h"

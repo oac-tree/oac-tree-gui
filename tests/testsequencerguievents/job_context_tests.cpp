@@ -32,7 +32,7 @@
 #include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/model/standard_variable_items.h"
 #include "sequencergui/model/workspace_item.h"
-#include "sequencergui/monitor/job_utils.h"
+#include "sequencergui/jobsystem/job_utils.h"
 
 #include "mvvm/model/model_utils.h"
 #include "mvvm/standarditems/container_item.h"

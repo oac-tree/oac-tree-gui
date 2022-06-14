@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   job_manager.h
   job_property_widget.cpp
   job_property_widget.h
-  job_utils.cpp
-  job_utils.h
   message_panel.cpp
   message_panel.h
   monitor_panel.cpp

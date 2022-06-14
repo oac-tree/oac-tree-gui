@@ -21,11 +21,11 @@
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/jobsystem/job_context.h"
+#include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/instruction_item.h"
 #include "sequencergui/model/job_item.h"
 #include "sequencergui/model/job_model.h"
-#include "sequencergui/monitor/job_utils.h"
 #include "sequencergui/monitor/message_panel.h"
 #include "sequencergui/monitor/monitor_realtime_toolbar.h"
 #include "sequencergui/monitor/user_context.h"

@@ -22,6 +22,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/jobsystem/procedure_runner.h"
 #include "sequencergui/model/domain_object_builder.h"
 #include "sequencergui/model/gui_object_builder.h"
@@ -31,7 +32,6 @@
 #include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/model/standard_variable_items.h"
 #include "sequencergui/monitor/job_log.h"
-#include "sequencergui/monitor/job_utils.h"
 
 #include "mvvm/standarditems/container_item.h"
 
