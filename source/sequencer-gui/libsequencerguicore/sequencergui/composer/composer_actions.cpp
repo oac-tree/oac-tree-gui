@@ -20,7 +20,7 @@
 #include "sequencergui/composer/composer_actions.h"
 
 #include "sequencergui/core/exceptions.h"
-#include "sequencergui/core/message_handler_interface.h"
+#include "sequencergui/core/message_handler_factory.h"
 #include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/instruction_item.h"
 #include "sequencergui/model/procedure_item.h"
@@ -58,7 +58,8 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
 namespace sequencergui
 {
 
-ComposerActions::ComposerActions(SequencerModel *model, QObject *parent) : QObject(parent)
+ComposerActions::ComposerActions(SequencerModel *model, QObject *parent)
+    : QObject(parent), m_message_handler(CreateNullMessageHandler())
 {
   SetModel(model);
 }
@@ -175,19 +176,12 @@ mvvm::SessionItem *ComposerActions::InsertItem(const std::string &item_type,
   {
     result = m_model->InsertNewItem(item_type, parent, index);
   }
-  catch (const mvvm::InvalidInsertException &ex)
+  catch (const std::exception &ex)
   {
-    if (m_message_handler)
-    {
-      std::ostringstream ostr;
-      ostr << "Can't insert variable '" << item_type << "' into parent '" << parent->GetType()
-           << "'. Maximum allowed number of children exceeded?";
-      m_message_handler->SendMessage(ostr.str());
-    }
-    else
-    {
-      throw;
-    }
+    std::ostringstream ostr;
+    ostr << "Can't insert variable '" << item_type << "' into parent '" << parent->GetType()
+         << "'. Maximum allowed number of children exceeded?";
+    m_message_handler->SendMessage(ostr.str());
   }
   return result;
 }
