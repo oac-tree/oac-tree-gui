@@ -20,6 +20,7 @@
 #include "sequencergui/jobsystem/job_manager.h"
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/core/message_handler_interface.h"
 #include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/jobsystem/user_context.h"
@@ -34,6 +35,7 @@
 #include <QDebug>
 #include <QInputDialog>
 #include <iostream>
+#include <sstream>
 
 namespace sequencergui
 {
@@ -41,6 +43,11 @@ namespace sequencergui
 JobManager::JobManager(QObject *parent)
     : QObject(parent), m_current_delay(GetDefaultTickTimeoutMsc())
 {
+}
+
+void JobManager::SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler)
+{
+  m_message_handler = std::move(message_handler);
 }
 
 void JobManager::SubmitJob(JobItem *job)
@@ -196,7 +203,25 @@ JobContext *JobManager::CreateContext(JobItem *item)
 
   context->SetUserContext({on_user_input, on_user_choice});
 
-  InvokeAndCatch([context]() { context->onPrepareJobRequest(); });
+  try
+  {
+    context->onPrepareJobRequest();
+  }
+  catch (const std::runtime_error &ex)
+  {
+    if (m_message_handler)
+    {
+      std::ostringstream ostr;
+      ostr << "Exception was caught during JobContext preparation with the message `"
+           << std::string(ex.what()) << "'";
+      m_message_handler->SendMessage(ostr.str());
+    }
+    else
+    {
+      throw;
+    }
+  }
+
   context->SetSleepTime(m_current_delay);  // FIXME must be after onPrepareJobContext
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?

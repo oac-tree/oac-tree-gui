@@ -66,6 +66,8 @@ TEST_F(JobManagerTest, SubmitProcedure)
   auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
+  EXPECT_EQ(m_job_item->GetExpandedProcedure(), nullptr);
+
   JobManager manager;
   manager.SubmitJob(m_job_item);
 
@@ -88,6 +90,18 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
 
   // it shouldn't be possible to submit job twice
   EXPECT_THROW(manager.SubmitJob(m_job_item), RuntimeException);
+}
+
+//! Attempt to submit wronly configured procedure.
+
+TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
+{
+  auto invalid_procedure = testutils::CreateInvalidProcedure(GetSequencerModel());
+  m_job_item->SetProcedure(invalid_procedure);
+
+  JobManager manager;
+
+  EXPECT_THROW(manager.SubmitJob(m_job_item), TransformToDomainException);
 }
 
 //! Set first procedure to the JobManager and execute it.

@@ -32,6 +32,7 @@ class InstructionItem;
 class JobItem;
 class MessagePanel;
 class JobContext;
+class MessageHandlerInterface;
 
 //! Handles simultaneous execution of multiple procedures.
 
@@ -42,6 +43,8 @@ class JobManager : public QObject
 public:
   explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
+
+  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
 
   void SubmitJob(JobItem* job);
 
@@ -72,6 +75,7 @@ private:
   std::map<JobItem*, JobContext*> m_context_map;
   MessagePanel* m_message_panel{nullptr};
   int m_current_delay{0};
+  std::unique_ptr<MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui
