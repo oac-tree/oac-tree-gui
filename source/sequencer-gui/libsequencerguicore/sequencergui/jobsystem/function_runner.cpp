@@ -20,7 +20,7 @@
 #include "sequencergui/jobsystem/function_runner.h"
 
 #include "sequencergui/core/exceptions.h"
-#include "sequencergui/monitor/flow_controller.h"
+#include "sequencergui/jobsystem/flow_controller.h"
 
 #include <algorithm>
 #include <atomic>

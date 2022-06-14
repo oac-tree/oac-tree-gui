@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/flow_controller.h"
-using msec = std::chrono::milliseconds;
+#include "sequencergui/jobsystem/flow_controller.h"
+
 #include <iostream>
 
 namespace
@@ -58,7 +58,7 @@ void FlowController::WaitIfNecessary()
 
   if (m_waiting_mode == WaitingMode::kSleepFor & m_wait_msec > 0)
   {
-    std::this_thread::sleep_for(msec(m_wait_msec));
+    std::this_thread::sleep_for(std::chrono::milliseconds(m_wait_msec));
   }
 
   if (m_waiting_mode == WaitingMode::kWaitForRelease)

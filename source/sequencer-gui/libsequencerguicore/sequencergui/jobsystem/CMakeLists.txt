@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   abstract_job.h
   domain_runner_adapter.cpp
   domain_runner_adapter.h
+  flow_controller.cpp
+  flow_controller.h
   function_runner.cpp
   function_runner.h
   job_types.h
