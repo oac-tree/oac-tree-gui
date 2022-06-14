@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "test_procedures.h"
+#include "test_domain_procedures.h"
 
 #include "ExecutionStatus.h"
 #include "Instruction.h"

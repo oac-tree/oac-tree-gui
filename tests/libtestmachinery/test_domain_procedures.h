@@ -17,18 +17,16 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TESTPROCEDURES_H
-#define TESTPROCEDURES_H
+#ifndef TEST_DOMAIN_PROCEDURES_H
+#define TEST_DOMAIN_PROCEDURES_H
 
-//! @file test_procedures.h
+//! @file test_domain_procedures.h
 //! Collection of domain rpocedures for testing purpose.
 
 #include "sequencergui/model/sequencer_types.h"
 
 #include <chrono>
 #include <memory>
-
-//! Various common utils for unit tests.
 
 namespace testutils
 {
@@ -60,4 +58,4 @@ std::unique_ptr<procedure_t> CreateUserChoiceProcedure();
 
 }  // namespace testutils
 
-#endif  // TESTPROCEDURES_H
+#endif  // TEST_DOMAIN_PROCEDURES_H

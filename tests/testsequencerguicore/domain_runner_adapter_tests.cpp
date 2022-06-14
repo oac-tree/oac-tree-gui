@@ -17,13 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domain_runner_adapter.h"
-
 #include "Procedure.h"
 #include "Runner.h"
 #include "mock_runner_listener.h"
 #include "mock_sequencer_observer.h"
-#include "test_procedures.h"
+#include "sequencergui/jobsystem/domain_runner_adapter.h"
+#include "test_domain_procedures.h"
 
 #include <gtest/gtest.h>
 
@@ -405,9 +404,9 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
     EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-//    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+    //    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    //    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    //    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -458,7 +457,6 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
     EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-
   }
 
   // triggering action
@@ -481,8 +479,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
-//! Sequence with two waits in step mode. We start procedure normally and let is run till completion.
-//! Then start again in step mode.
+//! Sequence with two waits in step mode. We start procedure normally and let is run till
+//! completion. Then start again in step mode.
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 {
@@ -541,4 +539,3 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
-

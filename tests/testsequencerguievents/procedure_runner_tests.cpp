@@ -25,7 +25,7 @@
 #include "Variable.h"
 #include "sequencergui/model/domain_utils.h"
 #include "sequencergui/model/sequencer_types.h"
-#include "test_procedures.h"
+#include "test_domain_procedures.h"
 #include "test_utils.h"
 
 #include <gtest/gtest.h>
