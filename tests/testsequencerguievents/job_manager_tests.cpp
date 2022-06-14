@@ -17,6 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/core/exceptions.h"
 #include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_manager.h"
 #include "sequencergui/model/application_models.h"
@@ -57,6 +58,36 @@ TEST_F(JobManagerTest, InitialState)
 {
   JobManager manager;
   EXPECT_FALSE(manager.GetCurrentContext());
+  EXPECT_FALSE(manager.GetContext(m_job_item));
+}
+
+TEST_F(JobManagerTest, SubmitProcedure)
+{
+  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  m_job_item->SetProcedure(copy_procedure);
+
+  JobManager manager;
+  manager.SubmitJob(m_job_item);
+
+  ASSERT_TRUE(manager.GetContext(m_job_item));
+  EXPECT_EQ(manager.GetContext(m_job_item)->GetExpandedProcedure(),
+            m_job_item->GetExpandedProcedure());
+}
+
+TEST_F(JobManagerTest, AttemptToSubmitProcedure)
+{
+  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  m_job_item->SetProcedure(copy_procedure);
+
+  JobManager manager;
+
+  // it shouldn't be possible to submit undefined job
+  EXPECT_THROW(manager.SubmitJob(nullptr), RuntimeException);
+
+  manager.SubmitJob(m_job_item);
+
+  // it shouldn't be possible to submit job twice
+  EXPECT_THROW(manager.SubmitJob(m_job_item), RuntimeException);
 }
 
 //! Set first procedure to the JobManager and execute it.

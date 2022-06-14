@@ -50,13 +50,12 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit undefined job");
   }
 
-  if (auto context = GetCurrentContext(); context)
+  if (auto context = GetContext(job); context)
   {
     throw RuntimeException("Attempt to submit already existing job");
   }
 
   CreateContext(job);
-
 }
 
 JobManager::~JobManager() = default;
