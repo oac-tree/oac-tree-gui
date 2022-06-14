@@ -20,7 +20,7 @@
 #include "sequencergui/core/message_handler_factory.h"
 
 #include "sequencergui/core/message_handler_decorator.h"
-#include "sequencergui/core/std_message_handler.h"
+#include "sequencergui/core/standard_message_handlers.h"
 #include "sequencergui/core/widget_overlay_message_handler.h"
 #include "sequencergui/widgets/dialog_message_handler.h"
 
