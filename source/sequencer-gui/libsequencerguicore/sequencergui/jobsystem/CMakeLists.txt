@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   function_runner.h
   job_context.cpp
   job_context.h
+  job_manager.cpp
+  job_manager.h
   job_types.h
   job_utils.cpp
   job_utils.h

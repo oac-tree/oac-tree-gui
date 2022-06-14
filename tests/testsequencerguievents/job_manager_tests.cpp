@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "sequencergui/jobsystem/job_context.h"
+#include "sequencergui/jobsystem/job_manager.h"
 #include "sequencergui/model/application_models.h"
 #include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/job_item.h"
@@ -27,7 +28,6 @@
 #include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/model/standard_variable_items.h"
 #include "sequencergui/model/workspace_item.h"
-#include "sequencergui/monitor/job_manager.h"
 #include "sequencergui/monitor/message_panel.h"
 
 #include "mvvm/model/model_utils.h"
