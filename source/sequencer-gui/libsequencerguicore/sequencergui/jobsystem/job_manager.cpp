@@ -43,6 +43,22 @@ JobManager::JobManager(QObject *parent)
 {
 }
 
+void JobManager::SubmitJob(JobItem *job)
+{
+  if (!job)
+  {
+    throw RuntimeException("Attempt to submit undefined job");
+  }
+
+  if (auto context = GetCurrentContext(); context)
+  {
+    throw RuntimeException("Attempt to submit already existing job");
+  }
+
+  CreateContext(job);
+
+}
+
 JobManager::~JobManager() = default;
 
 //! Set JobManager to display the status of given job.
@@ -75,13 +91,22 @@ void JobManager::SetCurrentJob(JobItem *job)
   }
   else
   {
-    auto context = CreateContext();
+    auto context = CreateContext(m_current_job);
   }
 }
 
 JobContext *JobManager::GetCurrentContext()
 {
+  GetContext(m_current_job);
   auto it = m_context_map.find(m_current_job);
+  return it == m_context_map.end() ? nullptr : it->second;
+}
+
+//! Returns context for JobItem.
+
+JobContext *JobManager::GetContext(JobItem *job)
+{
+  auto it = m_context_map.find(job);
   return it == m_context_map.end() ? nullptr : it->second;
 }
 
@@ -157,21 +182,15 @@ int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &d
   return with_index_added.indexOf(selection);
 }
 
-JobContext *JobManager::CreateContext()
+JobContext *JobManager::CreateContext(JobItem *item)
 {
-  auto it = m_context_map.find(m_current_job);
-  if (it != m_context_map.end())
-  {
-    throw RuntimeException("JobManager::CreateContext() : already created context");
-  }
-
   auto on_user_input = [this](auto value, auto description)
   { return onUserInputRequest(value, description); };
 
   auto on_user_choice = [this](auto choices, auto description)
   { return onUserChoiceRequest(choices, description); };
 
-  auto context = new JobContext(m_current_job, this);
+  auto context = new JobContext(item, this);
   context->SetMessagePanel(m_message_panel);
   connect(context, &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
@@ -182,7 +201,7 @@ JobContext *JobManager::CreateContext()
   context->SetSleepTime(m_current_delay);  // FIXME must be after onPrepareJobContext
 
   // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
-  m_context_map.insert({m_current_job, context});
+  m_context_map.insert({item, context});
 
   return context;
 }

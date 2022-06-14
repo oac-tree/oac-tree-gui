@@ -43,9 +43,13 @@ public:
   explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
+  void SubmitJob(JobItem* job);
+
   void SetCurrentJob(JobItem* job);
 
   JobContext* GetCurrentContext();
+
+  JobContext* GetContext(JobItem* job);
 
   void onStartProcedureRequest(JobItem* job_item);
   void onPauseProcedureRequest();
@@ -62,7 +66,7 @@ signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
-  JobContext* CreateContext();
+  JobContext* CreateContext(JobItem* item);
 
   JobItem* m_current_job{nullptr};
   std::map<JobItem*, JobContext*> m_context_map;

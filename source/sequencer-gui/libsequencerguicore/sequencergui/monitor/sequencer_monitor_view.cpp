@@ -147,6 +147,7 @@ void SequencerMonitorView::OnRunJobRequest()
   {
     return;
   }
+
   m_job_manager->SetCurrentJob(selected_job);
 
   if (auto context = m_job_manager->GetCurrentContext(); context)
