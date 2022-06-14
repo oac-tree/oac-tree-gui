@@ -21,8 +21,8 @@
 #define SEQUENCERGUI_MONITOR_JOBCONTEXT_H
 
 #include "sequencergui/jobsystem/job_types.h"
+#include "sequencergui/jobsystem/user_context.h"
 #include "sequencergui/model/sequencer_types.h"
-#include "sequencergui/monitor/user_context.h"
 
 #include <QObject>
 #include <memory>

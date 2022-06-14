@@ -19,4 +19,7 @@ target_sources(${library_name} PRIVATE
   runner_interface.h
   sequencer_observer.cpp
   sequencer_observer.h
+  user_context.h
+  user_controller.cpp
+  user_controller.h
   )

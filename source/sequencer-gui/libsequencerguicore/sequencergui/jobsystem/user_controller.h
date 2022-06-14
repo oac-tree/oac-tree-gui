@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MONITOR_USERCONTROLLER_H
 #define SEQUENCERGUI_MONITOR_USERCONTROLLER_H
 
-#include "sequencergui/monitor/user_context.h"
+#include "sequencergui/jobsystem/user_context.h"
 
 #include "mvvm/utils/threadsafe_stack.h"
 

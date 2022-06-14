@@ -23,7 +23,4 @@ target_sources(${library_name} PRIVATE
   monitor_workspace_widget.h
   sequencer_monitor_view.cpp
   sequencer_monitor_view.h
-  user_context.h
-  user_controller.cpp
-  user_controller.h
   )

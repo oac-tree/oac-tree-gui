@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/user_controller.h"
+#include "sequencergui/jobsystem/user_controller.h"
 
 #include <gtest/gtest.h>
 
