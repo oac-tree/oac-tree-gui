@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/sequencer_observer.h"
+#include "sequencergui/jobsystem/sequencer_observer.h"
 
 #include "Instruction.h"
 #include "sequencergui/jobsystem/procedure_runner.h"

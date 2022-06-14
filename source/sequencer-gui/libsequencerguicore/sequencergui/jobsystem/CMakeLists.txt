@@ -9,8 +9,12 @@ target_sources(${library_name} PRIVATE
   flow_controller.h
   function_runner.cpp
   function_runner.h
+  job_context.cpp
+  job_context.h
   job_types.h
   procedure_runner.cpp
   procedure_runner.h
   runner_interface.h
+  sequencer_observer.cpp
+  sequencer_observer.h
   )

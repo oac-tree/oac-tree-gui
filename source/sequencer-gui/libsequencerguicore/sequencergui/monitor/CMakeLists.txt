@@ -1,8 +1,6 @@
 # Contains source for SequencerMonitorView (main window for running procedures).
 
 target_sources(${library_name} PRIVATE
-  job_context.cpp
-  job_context.h
   job_list_widget.cpp
   job_list_widget.h
   job_log.cpp
@@ -27,8 +25,6 @@ target_sources(${library_name} PRIVATE
   monitor_workspace_widget.h
   sequencer_monitor_view.cpp
   sequencer_monitor_view.h
-  sequencer_observer.cpp
-  sequencer_observer.h
   user_context.h
   user_controller.cpp
   user_controller.h
