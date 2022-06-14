@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MONITOR_FLOWCONTROLLER_H
 #define SEQUENCERGUI_MONITOR_FLOWCONTROLLER_H
 
-#include "sequencergui/monitor/job_types.h"
+#include "sequencergui/jobsystem/job_types.h"
 
 #include "mvvm/utils/threadsafe_stack.h"
 

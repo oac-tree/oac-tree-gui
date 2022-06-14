@@ -23,7 +23,7 @@
 //! @file jobutils.h
 //! Collection of various utility functions for job execution.
 
-#include "sequencergui/monitor/job_types.h"
+#include "sequencergui/jobsystem/job_types.h"
 
 #include <string>
 

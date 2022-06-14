@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_MONITOR_JOBCONTEXT_H
 #define SEQUENCERGUI_MONITOR_JOBCONTEXT_H
 
+#include "sequencergui/jobsystem/job_types.h"
 #include "sequencergui/model/sequencer_types.h"
-#include "sequencergui/monitor/job_types.h"
 #include "sequencergui/monitor/user_context.h"
 
 #include <QObject>

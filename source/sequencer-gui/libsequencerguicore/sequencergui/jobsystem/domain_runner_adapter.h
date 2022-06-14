@@ -20,14 +20,14 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 #define SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 
+#include "sequencergui/jobsystem/job_types.h"
 #include "sequencergui/jobsystem/runner_interface.h"
 #include "sequencergui/model/sequencer_types.h"
-#include "sequencergui/monitor/job_types.h"
 
-#include <functional>
-#include <memory>
 #include <atomic>
 #include <chrono>
+#include <functional>
+#include <memory>
 
 namespace sequencergui
 {
@@ -63,7 +63,7 @@ public:
   bool IsBusy() const;
 
 private:
-  bool ExecuteSingle();  
+  bool ExecuteSingle();
   void ResetIfNecessary();
 
   //! Domain runner for procedure.

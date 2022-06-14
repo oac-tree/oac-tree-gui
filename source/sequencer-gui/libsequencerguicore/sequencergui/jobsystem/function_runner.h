@@ -21,11 +21,11 @@
 #define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
 
 #include "sequencergui/jobsystem/abstract_job.h"
-#include "sequencergui/monitor/job_types.h"
+#include "sequencergui/jobsystem/job_types.h"
 
+#include <chrono>
 #include <functional>
 #include <memory>
-#include <chrono>
 
 namespace sequencergui
 {
