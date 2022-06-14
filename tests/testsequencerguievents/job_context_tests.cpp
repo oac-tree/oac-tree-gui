@@ -23,16 +23,14 @@
 #include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/model/application_models.h"
-#include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/job_item.h"
 #include "sequencergui/model/job_model.h"
-#include "sequencergui/model/procedure_examples.h"
 #include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/sequencer_model.h"
 #include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/model/workspace_item.h"
+#include "test_procedure_items.h"
 
 #include "mvvm/model/model_utils.h"
 #include "mvvm/standarditems/container_item.h"
@@ -55,106 +53,6 @@ class JobContextTest : public ::testing::Test
 public:
   JobContextTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
 
-  //! Creates invalid procedure that will cause JobContext to crash during the preparation.
-  static ProcedureItem* CreateInvalidProcedure(SequencerModel* model)
-  {
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    // InstructionItem that doesn't have counterpart in SequencerDomain
-    auto item =
-        model->InsertItem<UnknownInstructionItem>(procedure_item->GetInstructionContainer());
-    return procedure_item;
-  }
-
-  //! Creates procedure with single wait instruction.
-  static ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model)
-  {
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
-    wait->SetTimeout(0.01);
-    return procedure_item;
-  }
-
-  //! Creates procedure with two variables and single Copy instruction.
-  static ProcedureItem* CreateCopyProcedure(SequencerModel* model)
-  {
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto copy = model->InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
-    copy->SetInput("var0");
-    copy->SetOutput("var1");
-
-    auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var0->SetName("var0");
-    var0->SetJsonType(R"({"type":"uint32"})");
-    var0->SetJsonValue("42");
-
-    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var1->SetName("var1");
-    var1->SetJsonType(R"({"type":"uint32"})");
-    var1->SetJsonValue("43");
-
-    return procedure_item;
-  }
-
-  //! Creates procedure with local include.
-  static ProcedureItem* CreateIncludeProcedure(SequencerModel* model)
-  {
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
-    sequence->SetName("MySequence");
-    model->InsertItem<WaitItem>(sequence);
-
-    auto repeat = model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
-    repeat->SetRepeatCount(1);
-    repeat->SetIsRootFlag(true);
-    auto include = model->InsertItem<IncludeItem>(repeat);
-    include->SetPath("MySequence");
-
-    return procedure_item;
-  }
-
-  static ProcedureItem* CreateInputProcedure(SequencerModel* model)
-  {
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
-    sequence->SetName("MySequence");
-    auto input0 = model->InsertItem<InputItem>(sequence);
-    input0->SetTargetVariableName("var1");
-    input0->SetDescription("Your ID");
-
-    auto wait0 = model->InsertItem<WaitItem>(sequence);
-
-    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var1->SetName("var1");
-    var1->SetJsonType(R"({"type":"uint32"})");
-    var1->SetJsonValue(R"(0)");
-
-    return procedure_item;
-  }
-
-  static ProcedureItem* CreateUserChoiceProcedure(SequencerModel* model)
-  {
-    auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
-    auto wait0 = model->InsertItem<WaitItem>(userchoice);
-    wait0->SetTimeout(10.0);
-
-    auto copy = model->InsertItem<CopyItem>(userchoice);
-    copy->SetInput("var0");
-    copy->SetOutput("var1");
-
-    auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var0->SetName("var0");
-    var0->SetJsonType(R"({"type":"uint32"})");
-    var0->SetJsonValue("42");
-
-    auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
-    var1->SetName("var1");
-    var1->SetJsonType(R"({"type":"uint32"})");
-    var1->SetJsonValue("0");
-
-    return procedure_item;
-  }
-
   ApplicationModels m_models;
   JobItem* m_job_item{nullptr};
 };
@@ -170,7 +68,7 @@ TEST_F(JobContextTest, InitialState)
 
 TEST_F(JobContextTest, PrepareJobRequest)
 {
-  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -197,7 +95,7 @@ TEST_F(JobContextTest, PrepareJobRequest)
 
 TEST_F(JobContextTest, InvalidProcedure)
 {
-  auto procedure = CreateInvalidProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateInvalidProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -209,7 +107,7 @@ TEST_F(JobContextTest, InvalidProcedure)
 
 TEST_F(JobContextTest, PrematureDeletion)
 {
-  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   {
@@ -223,7 +121,7 @@ TEST_F(JobContextTest, PrematureDeletion)
 
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
-  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   EXPECT_EQ(procedure->GetStatus(), std::string());
@@ -254,7 +152,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
 
 TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 {
-  auto procedure = CreateSingleWaitProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   EXPECT_EQ(procedure->GetStatus(), std::string());
@@ -283,7 +181,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
-  auto procedure = CreateCopyProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateCopyProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   auto vars = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
@@ -306,7 +204,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
 
 TEST_F(JobContextTest, LocalIncludeScenario)
 {
-  auto procedure = CreateIncludeProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateIncludeProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -327,7 +225,7 @@ TEST_F(JobContextTest, LocalIncludeScenario)
 
 TEST_F(JobContextTest, UserInputScenario)
 {
-  auto procedure = CreateInputProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateInputProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -350,7 +248,7 @@ TEST_F(JobContextTest, UserInputScenario)
 
 TEST_F(JobContextTest, UserChoiceScenario)
 {
-  auto procedure = CreateUserChoiceProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateUserChoiceProcedure(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
