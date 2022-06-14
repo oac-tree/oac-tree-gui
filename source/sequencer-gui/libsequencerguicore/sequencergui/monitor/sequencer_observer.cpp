@@ -20,8 +20,8 @@
 #include "sequencergui/monitor/sequencer_observer.h"
 
 #include "Instruction.h"
+#include "sequencergui/jobsystem/procedure_runner.h"
 #include "sequencergui/model/shall_not_be_named_value_utils.h"
-#include "sequencergui/monitor/procedure_runner.h"
 
 namespace
 {

@@ -25,8 +25,6 @@ target_sources(${library_name} PRIVATE
   monitor_workspace_toolbar.h
   monitor_workspace_widget.cpp
   monitor_workspace_widget.h
-  procedure_runner.cpp
-  procedure_runner.h
   sequencer_monitor_view.cpp
   sequencer_monitor_view.h
   sequencer_observer.cpp

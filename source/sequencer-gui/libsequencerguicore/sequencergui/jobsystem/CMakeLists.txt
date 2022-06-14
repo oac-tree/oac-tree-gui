@@ -10,5 +10,7 @@ target_sources(${library_name} PRIVATE
   function_runner.cpp
   function_runner.h
   job_types.h
+  procedure_runner.cpp
+  procedure_runner.h
   runner_interface.h
   )
