@@ -20,7 +20,7 @@
 #include "sequencergui/jobsystem/job_manager.h"
 
 #include "sequencergui/core/exceptions.h"
-#include "sequencergui/core/message_handler_interface.h"
+#include "sequencergui/core/message_handler_factory.h"
 #include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/jobsystem/user_context.h"
@@ -41,7 +41,9 @@ namespace sequencergui
 {
 
 JobManager::JobManager(QObject *parent)
-    : QObject(parent), m_current_delay(GetDefaultTickTimeoutMsc())
+    : QObject(parent)
+    , m_current_delay(GetDefaultTickTimeoutMsc())
+    , m_message_handler(CreateNullMessageHandler())
 {
 }
 
@@ -207,19 +209,12 @@ JobContext *JobManager::CreateContext(JobItem *item)
   {
     context->onPrepareJobRequest();
   }
-  catch (const std::runtime_error &ex)
+  catch (const std::exception &ex)
   {
-    if (m_message_handler)
-    {
-      std::ostringstream ostr;
-      ostr << "Exception was caught during JobContext preparation with the message `"
-           << std::string(ex.what()) << "'";
-      m_message_handler->SendMessage(ostr.str());
-    }
-    else
-    {
-      throw;
-    }
+    std::ostringstream ostr;
+    ostr << "Exception was caught during JobContext preparation with the message `"
+         << std::string(ex.what()) << "'";
+    m_message_handler->SendMessage(ostr.str());
   }
 
   context->SetSleepTime(m_current_delay);  // FIXME must be after onPrepareJobContext

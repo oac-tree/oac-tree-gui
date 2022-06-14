@@ -22,6 +22,7 @@
 #include "sequencergui/core/exceptions.h"
 
 #include <QDebug>
+#include <iostream>
 
 namespace sequencergui
 {
@@ -33,6 +34,7 @@ void StdMessageHandler::SendMessage(const std::string &text)
 
 void NullMessageHandler::SendMessage(const std::string &text)
 {
+  std::cout << "ooooo" << std::endl;
   throw RuntimeException(text);
 }
 

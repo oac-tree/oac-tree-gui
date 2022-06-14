@@ -101,7 +101,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 
   JobManager manager;
 
-  EXPECT_THROW(manager.SubmitJob(m_job_item), TransformToDomainException);
+  EXPECT_THROW(manager.SubmitJob(m_job_item), sequencergui::RuntimeException);
 }
 
 //! Set first procedure to the JobManager and execute it.
