@@ -17,35 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/core/message_handler_factory.h"
-
-#include "sequencergui/core/message_handler_decorator.h"
-#include "sequencergui/core/std_message_handler.h"
-#include "sequencergui/core/widget_overlay_message_handler.h"
 #include "sequencergui/widgets/dialog_message_handler.h"
+
+#include <QMessageBox>
 
 namespace sequencergui
 {
 
-std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler()
+void DialogMessageHandler::SendMessage(const std::string &text)
 {
-  return std::make_unique<StdMessageHandler>();
-}
-
-std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget *view)
-{
-  return std::make_unique<WidgetOverlayMessageHandler>(view);
-}
-
-std::unique_ptr<MessageHandlerInterface> CreateMessageHandlerDecorator(
-    MessageHandlerInterface *component)
-{
-  return MessageHandlerDecorator::Create(component);
-}
-
-std::unique_ptr<MessageHandlerInterface> CreateMessageBoxHandler()
-{
-  return std::make_unique<DialogMessageHandler>();
+  QMessageBox msg_box;
+  msg_box.setText(QString::fromStdString(text));
+  msg_box.setIcon(msg_box.Critical);
+  msg_box.exec();
 }
 
 }  // namespace sequencergui

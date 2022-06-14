@@ -7,6 +7,8 @@ target_sources(${library_name} PRIVATE
   collapsible_toolbar.h
   collapsible_widget.cpp
   collapsible_widget.h
+  dialog_message_handler.cpp
+  dialog_message_handler.h
   dots_toolbar.cpp
   dots_toolbar.h
   file_tree_view.cpp

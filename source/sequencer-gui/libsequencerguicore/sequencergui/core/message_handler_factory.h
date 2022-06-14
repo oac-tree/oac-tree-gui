@@ -42,6 +42,9 @@ std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidg
 std::unique_ptr<MessageHandlerInterface> CreateMessageHandlerDecorator(
     MessageHandlerInterface* component);
 
+//! Creates message handler that pop's up a message box.
+std::unique_ptr<MessageHandlerInterface> CreateMessageBoxHandler();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERFACTORY_H
