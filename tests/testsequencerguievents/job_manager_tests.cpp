@@ -25,13 +25,12 @@
 #include "sequencergui/model/job_model.h"
 #include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/model/standard_variable_items.h"
 #include "sequencergui/model/workspace_item.h"
 #include "sequencergui/monitor/message_panel.h"
+#include "test_procedure_items.h"
 
 #include "mvvm/model/model_utils.h"
-#include "mvvm/standarditems/container_item.h"
 
 #include <gtest/gtest.h>
 
@@ -45,57 +44,12 @@ using namespace sequencergui;
 class JobManagerTest : public ::testing::Test
 {
 public:
-  JobManagerTest()
-  {
-    qRegisterMetaType<InstructionItem*>("InstructionItem*");
-    SetupCopyProcedure();
-    SetupIncludeProcedure();
-    m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
-  }
-
-  void SetupCopyProcedure()
-  {
-    auto model = GetSequencerModel();
-
-    m_copy_procedure = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto copy = model->InsertItem<CopyItem>(m_copy_procedure->GetInstructionContainer());
-    copy->SetInput("var0");
-    copy->SetOutput("var1");
-
-    auto var0 = model->InsertItem<LocalVariableItem>(m_copy_procedure->GetWorkspace());
-    var0->SetName("var0");
-    var0->SetJsonType(R"({"type":"uint32"})");
-    var0->SetJsonValue("42");
-
-    auto var1 = model->InsertItem<LocalVariableItem>(m_copy_procedure->GetWorkspace());
-    var1->SetName("var1");
-    var1->SetJsonType(R"({"type":"uint32"})");
-    var1->SetJsonValue("43");
-  }
-
-  void SetupIncludeProcedure()
-  {
-    auto model = GetSequencerModel();
-    m_include_procedure = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-    auto sequence = model->InsertItem<SequenceItem>(m_include_procedure->GetInstructionContainer());
-    sequence->SetName("MySequence");
-    model->InsertItem<WaitItem>(sequence);
-    model->InsertItem<WaitItem>(sequence);
-    model->InsertItem<WaitItem>(sequence);
-
-    auto repeat = model->InsertItem<RepeatItem>(m_include_procedure->GetInstructionContainer());
-    repeat->SetRepeatCount(-1);
-    repeat->SetIsRootFlag(true);
-    auto include = model->InsertItem<IncludeItem>(repeat);
-    include->SetPath("MySequence");
-  }
+  JobManagerTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
 
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
   ApplicationModels m_models;
-  ProcedureItem* m_include_procedure{nullptr};
-  ProcedureItem* m_copy_procedure{nullptr};
   JobItem* m_job_item{nullptr};
 };
 
@@ -109,8 +63,10 @@ TEST_F(JobManagerTest, InitialState)
 
 TEST_F(JobManagerTest, SetCurrentProcedure)
 {
+  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+
   MessagePanel panel;
-  m_job_item->SetProcedure(m_copy_procedure);
+  m_job_item->SetProcedure(copy_procedure);
 
   JobManager manager;
   manager.SetMessagePanel(&panel);
