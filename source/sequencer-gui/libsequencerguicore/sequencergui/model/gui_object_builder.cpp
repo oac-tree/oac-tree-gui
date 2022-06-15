@@ -72,12 +72,6 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
   }
 }
 
-std::string GUIObjectBuilder::FindInstructionItemIdentifier(const instruction_t *instruction) const
-{
-  auto it = m_to_instruction_item.find(instruction);
-  return it == m_to_instruction_item.end() ? std::string() : it->second->GetIdentifier();
-}
-
 InstructionItem *GUIObjectBuilder::FindInstructionItem(const instruction_t *instruction) const
 {
   auto it = m_to_instruction_item.find(instruction);
