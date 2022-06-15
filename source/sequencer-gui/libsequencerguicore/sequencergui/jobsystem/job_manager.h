@@ -73,10 +73,10 @@ signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
-  JobContext* CreateContext(JobItem* item);
+  std::unique_ptr<JobContext> CreateContext(JobItem* item);
 
   JobItem* m_current_job{nullptr};
-  std::map<JobItem*, JobContext*> m_context_map;
+  std::map<JobItem*, std::unique_ptr<JobContext>> m_context_map;
   MessagePanel* m_message_panel{nullptr};
   int m_current_delay{0};
   std::unique_ptr<MessageHandlerInterface> m_message_handler;

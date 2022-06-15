@@ -42,7 +42,7 @@ class JobContext : public QObject
 {
   Q_OBJECT
 public:
-  explicit JobContext(JobItem* job_item, QObject* parent = nullptr);
+  explicit JobContext(JobItem* job_item);
   ~JobContext() override;
 
   // Methods to control procedure execution.

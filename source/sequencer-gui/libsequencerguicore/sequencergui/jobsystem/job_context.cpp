@@ -41,9 +41,8 @@
 namespace sequencergui
 {
 
-JobContext::JobContext(JobItem *job_item, QObject *parent)
-    : QObject(parent)
-    , m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
+JobContext::JobContext(JobItem *job_item)
+    : m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
     , m_procedure_runner(std::make_unique<ProcedureRunner>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)

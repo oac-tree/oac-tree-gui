@@ -174,5 +174,6 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
 
   EXPECT_EQ(manager.GetCurrentContext(), nullptr);
+  EXPECT_EQ(manager.GetContext(m_job_item), nullptr);
   EXPECT_EQ(manager.GetCurrentJob(), nullptr);
 }

@@ -64,7 +64,19 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  CreateContext(job);
+  std::unique_ptr<JobContext> context;
+  try
+  {
+    context = CreateContext(job);
+    m_context_map.insert({job, std::move(context)});
+  }
+  catch (const std::exception &ex)
+  {
+    std::ostringstream ostr;
+    ostr << "Exception was caught during JobContext preparation with the message `"
+         << std::string(ex.what()) << "'";
+    m_message_handler->SendMessage(ostr.str());
+  }
 }
 
 JobManager::~JobManager() = default;
@@ -113,7 +125,7 @@ JobContext *JobManager::GetCurrentContext()
 JobContext *JobManager::GetContext(JobItem *job)
 {
   auto it = m_context_map.find(job);
-  return it == m_context_map.end() ? nullptr : it->second;
+  return it == m_context_map.end() ? nullptr : it->second.get();
 }
 
 //! Returns current job. It is the one that is attached to the MessagePanel and is the recipient
@@ -213,7 +225,7 @@ int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &d
   return with_index_added.indexOf(selection);
 }
 
-JobContext *JobManager::CreateContext(JobItem *item)
+std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
 {
   auto on_user_input = [this](auto value, auto description)
   { return onUserInputRequest(value, description); };
@@ -221,29 +233,15 @@ JobContext *JobManager::CreateContext(JobItem *item)
   auto on_user_choice = [this](auto choices, auto description)
   { return onUserChoiceRequest(choices, description); };
 
-  auto context = new JobContext(item, this);
+  auto context = std::make_unique<JobContext>(item);
   context->SetMessagePanel(m_message_panel);
-  connect(context, &JobContext::InstructionStatusChanged, this,
+  connect(context.get(), &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
 
+  context->onPrepareJobRequest();
+  // FIXME two calls below must be after onPrepareJobContext
   context->SetUserContext({on_user_input, on_user_choice});
-
-  try
-  {
-    context->onPrepareJobRequest();
-  }
-  catch (const std::exception &ex)
-  {
-    std::ostringstream ostr;
-    ostr << "Exception was caught during JobContext preparation with the message `"
-         << std::string(ex.what()) << "'";
-    m_message_handler->SendMessage(ostr.str());
-  }
-
-  context->SetSleepTime(m_current_delay);  // FIXME must be after onPrepareJobContext
-
-  // FIXME Refactor logic. What to do when context is pointing to invalid procedure?
-  m_context_map.insert({item, context});
+  context->SetSleepTime(m_current_delay);
 
   return context;
 }
