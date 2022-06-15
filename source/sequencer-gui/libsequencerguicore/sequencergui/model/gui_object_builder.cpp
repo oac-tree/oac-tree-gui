@@ -78,12 +78,6 @@ InstructionItem *GUIObjectBuilder::FindInstructionItem(const instruction_t *inst
   return it == m_to_instruction_item.end() ? nullptr : it->second;
 }
 
-std::string GUIObjectBuilder::FindVariableItemIdentifier(const variable_t *variable) const
-{
-  auto it = m_variable_to_id.find(variable);
-  return it == m_variable_to_id.end() ? std::string() : it->second->GetIdentifier();
-}
-
 VariableItem *GUIObjectBuilder::FindVariableItem(const variable_t *variable) const
 {
   auto it = m_variable_to_id.find(variable);

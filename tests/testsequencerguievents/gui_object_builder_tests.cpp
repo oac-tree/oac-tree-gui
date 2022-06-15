@@ -130,7 +130,6 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   EXPECT_EQ(variable_item->GetJsonType(), expected_type);
   EXPECT_EQ(variable_item->GetJsonValue(), expected_value);
 
-  EXPECT_EQ(builder.FindVariableItemIdentifier(local_variable_ptr), variable_item->GetIdentifier());
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr), variable_item);
   EXPECT_EQ(builder.FindVariableItemIdentifier(local_variable_ptr->GetName()),
             variable_item->GetIdentifier());

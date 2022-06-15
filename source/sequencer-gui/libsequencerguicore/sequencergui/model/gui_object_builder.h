@@ -58,7 +58,6 @@ public:
 
   // FIXME remove unused methods
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
-  std::string FindVariableItemIdentifier(const variable_t* variable) const;
   VariableItem* FindVariableItem(const variable_t* variable) const;
   std::string FindVariableItemIdentifier(const std::string& variable_name) const;
   VariableItem* FindVariableItem(const std::string& variable_name) const;
