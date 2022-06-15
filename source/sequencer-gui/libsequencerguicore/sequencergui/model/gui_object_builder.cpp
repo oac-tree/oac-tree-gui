@@ -84,12 +84,6 @@ VariableItem *GUIObjectBuilder::FindVariableItem(const variable_t *variable) con
   return it == m_variable_to_id.end() ? nullptr : it->second;
 }
 
-std::string GUIObjectBuilder::FindVariableItemIdentifier(const std::string &variable_name) const
-{
-  auto it = m_variablename_to_id.find(variable_name);
-  return it == m_variablename_to_id.end() ? std::string() : it->second->GetIdentifier();
-}
-
 VariableItem *GUIObjectBuilder::FindVariableItem(const std::string &variable_name) const
 {
   auto it = m_variablename_to_id.find(variable_name);
