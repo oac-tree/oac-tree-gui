@@ -30,6 +30,7 @@
 #include "sequencergui/monitor/monitor_panel.h"
 #include "sequencergui/monitor/monitor_realtime_widget.h"
 #include "sequencergui/monitor/monitor_workspace_widget.h"
+#include "sequencergui/monitor/sequencer_monitor_actions.h"
 #include "sequencergui/utils/style_utils.h"
 
 #include "mvvm/standarditems/container_item.h"
@@ -148,10 +149,6 @@ void SequencerMonitorView::OnRunJobRequest()
     return;
   }
 
-  m_realtime_widget->SetProcedure(selected_job->GetExpandedProcedure());
-  m_workspace_widget->SetProcedure(selected_job->GetExpandedProcedure());
-
-  m_job_manager->SetCurrentJob(selected_job);
   m_job_manager->onStartProcedureRequest();
 }
 
