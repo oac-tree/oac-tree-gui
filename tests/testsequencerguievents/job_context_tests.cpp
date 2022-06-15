@@ -119,6 +119,8 @@ TEST_F(JobContextTest, PrematureDeletion)
   EXPECT_EQ(procedure->GetStatus(), std::string());
 }
 
+//! Normal execution of the procedure with single wait instruction.
+
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));

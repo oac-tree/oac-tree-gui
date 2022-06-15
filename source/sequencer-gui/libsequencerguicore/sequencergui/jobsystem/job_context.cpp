@@ -121,19 +121,11 @@ void JobContext::SetMessagePanel(MessagePanel *panel)
 
 void JobContext::SetSleepTime(int time_msec)
 {
-  if (!m_procedure_runner)
-  {
-    throw RuntimeException("Procedure runner is not yet defined");
-  }
   m_procedure_runner->SetSleepTime(time_msec);
 }
 
 void JobContext::SetUserContext(const UserContext &user_context)
 {
-  if (!m_procedure_runner)
-  {
-    throw RuntimeException("Procedure runner is not yet defined");
-  }
   m_procedure_runner->SetUserContext(user_context);
 }
 

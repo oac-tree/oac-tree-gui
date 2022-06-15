@@ -27,7 +27,6 @@
 
 #include "mvvm/widgets/all_items_tree_view.h"
 
-#include <QDebug>
 #include <QSplitter>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -59,7 +58,6 @@ MonitorWorkspaceWidget::~MonitorWorkspaceWidget() = default;
 
 void MonitorWorkspaceWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  qDebug() << "MonitorWorkspaceWidget::SetProcedure" << procedure_item;
   m_instruction_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
 }
 
