@@ -36,7 +36,7 @@ std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds
   auto result = std::make_unique<procedure_t>();
   auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
-                      GetTimeoutInSec(timeout));  // expects in sec
+                      std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
   result->PushInstruction(wait0.release());
   result->AddAttribute(domainconstants::kTickTimeOutAttribute, "0.01");  // 10 msec
   return result;
@@ -72,7 +72,7 @@ std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::millis
   auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
-                      GetTimeoutInSec(timeout));  // expects in sec
+                      std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
   sequence->InsertInstruction(wait0.release(), 0);
 
@@ -87,10 +87,10 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
   auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
-                      GetTimeoutInSec(timeout1));
+                      std::to_string(GetTimeoutInSec(timeout1)));
   auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
-                      GetTimeoutInSec(timeout2));
+                      std::to_string(GetTimeoutInSec(timeout2)));
 
   sequence->InsertInstruction(wait0.release(), 0);
   sequence->InsertInstruction(wait1.release(), 1);

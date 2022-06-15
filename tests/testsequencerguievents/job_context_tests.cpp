@@ -273,3 +273,31 @@ TEST_F(JobContextTest, UserChoiceScenario)
 
   EXPECT_FALSE(job_context.IsRunning());
 }
+
+//! Normal execution of the procedure with single wait instruction.
+
+TEST_F(JobContextTest, StopLongRunningJob)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10000));
+  m_job_item->SetProcedure(procedure);
+
+  JobContext job_context(m_job_item);
+  EXPECT_FALSE(job_context.IsValid());
+  job_context.onPrepareJobRequest();
+  EXPECT_TRUE(job_context.IsValid());
+
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+
+  job_context.onStartRequest();
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(20);
+
+  EXPECT_TRUE(job_context.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 1);
+
+  job_context.onStopRequest();
+  QTest::qWait(20);
+
+  EXPECT_FALSE(job_context.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 2);
+}

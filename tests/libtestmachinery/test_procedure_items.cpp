@@ -28,6 +28,8 @@
 
 #include "mvvm/standarditems/container_item.h"
 
+#include "test_utils.h"
+
 using namespace sequencergui;
 
 namespace testutils
@@ -45,7 +47,7 @@ ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model, std::chrono::mil
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
-  wait->SetTimeout(0.01);
+  wait->SetTimeout(GetTimeoutInSec(timeout));
   return procedure_item;
 }
 

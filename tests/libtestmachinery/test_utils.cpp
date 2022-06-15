@@ -63,10 +63,10 @@ void CreateTextFile(const std::string &file_name, const std::string &content)
   file_out.write(content.c_str(), content.size());
 }
 
-std::string GetTimeoutInSec(std::chrono::milliseconds timeout)
+double GetTimeoutInSec(std::chrono::milliseconds timeout)
 {
   auto value = std::chrono::duration_cast<std::chrono::milliseconds>(timeout).count();
-  return std::to_string(static_cast<double>(value) / 1000);
+  return static_cast<double>(value) / 1000;
 }
 
 }  // namespace testutils
