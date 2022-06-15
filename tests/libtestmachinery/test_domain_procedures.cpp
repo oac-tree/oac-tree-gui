@@ -24,17 +24,9 @@
 #include "Procedure.h"
 #include "Variable.h"
 #include "sequencergui/model/domain_utils.h"
+#include "test_utils.h"
 
 using namespace sequencergui;
-
-namespace
-{
-std::string GetTimeoutInSec(std::chrono::milliseconds timeout)
-{
-  auto value = std::chrono::duration_cast<std::chrono::milliseconds>(timeout).count();
-  return std::to_string(static_cast<double>(value) / 1000);
-}
-}  // namespace
 
 namespace testutils
 {

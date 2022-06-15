@@ -56,10 +56,8 @@ public:
 
   void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
 
-  // FIXME remove unused methods
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
   VariableItem* FindVariableItem(const variable_t* variable) const;
-
   VariableItem* FindVariableItem(const std::string& variable_name) const;
 
 private:

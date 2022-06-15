@@ -41,7 +41,7 @@ sequencergui::ProcedureItem* CreateInvalidProcedure(sequencergui::SequencerModel
   return procedure_item;
 }
 
-ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model)
+ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model, std::chrono::milliseconds timeout)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());

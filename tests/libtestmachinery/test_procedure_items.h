@@ -26,6 +26,7 @@
 #include "sequencergui/model/sequencer_types.h"
 
 #include <memory>
+#include <chrono>
 
 namespace sequencergui
 {
@@ -40,7 +41,7 @@ namespace testutils
 sequencergui::ProcedureItem* CreateInvalidProcedure(sequencergui::SequencerModel* model);
 
 //! Creates procedure with single wait instruction.
-sequencergui::ProcedureItem* CreateSingleWaitProcedure(sequencergui::SequencerModel* model);
+sequencergui::ProcedureItem* CreateSingleWaitProcedure(sequencergui::SequencerModel* model, std::chrono::milliseconds timeout);
 
 //! Creates procedure with two variables and single Copy instruction.
 sequencergui::ProcedureItem* CreateCopyProcedure(sequencergui::SequencerModel* model);
