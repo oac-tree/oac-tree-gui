@@ -115,6 +115,7 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
 
   JobManager manager;
   manager.SetMessagePanel(&panel);
+  manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
   manager.onChangeDelayRequest(10);
 
@@ -131,7 +132,7 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
   EXPECT_EQ(procedure->GetWorkspace()->GetVariables().size(), 2);
 
   // starting procedure
-  manager.onStartProcedureRequest(m_job_item);
+  manager.onStartProcedureRequest();
   EXPECT_TRUE(context->IsRunning());
 
   // We are testing here queued signals, need special waiting to let procedure complete

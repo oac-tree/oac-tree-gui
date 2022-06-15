@@ -82,7 +82,7 @@ TEST_F(JobContextTest, PrepareJobRequest)
   EXPECT_EQ(job_context.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
   EXPECT_TRUE(job_context.IsValid());
 
-  // calling expanded second time (expanded should be rebuild)
+  // calling expanded second time
   job_context.onPrepareJobRequest();
 
   EXPECT_NE(expanded_procedure, nullptr);

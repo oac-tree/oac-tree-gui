@@ -53,6 +53,11 @@ JobContext::JobContext(JobItem *job_item, QObject *parent)
 
 void JobContext::onPrepareJobRequest()
 {
+  if (IsRunning())
+  {
+    throw RuntimeException("Attempt to reset already running job");
+  }
+
   // building domain procedure
   DomainObjectBuilder builder;
   m_domain_procedure = builder.CreateProcedure(m_job_item->GetProcedure());
@@ -82,15 +87,10 @@ JobContext::~JobContext() = default;
 
 void JobContext::onStartRequest()
 {
-  if (!IsValid())
+  if (m_procedure_runner->Start())
   {
-    qWarning() << "JobContext is in an invalid state";
-    return;
+    m_job_log->ClearLog();
   }
-
-  m_job_log->ClearLog();
-
-  m_procedure_runner->Start();
 }
 
 void JobContext::onPauseRequest()
@@ -105,7 +105,6 @@ void JobContext::onMakeStepRequest()
 
 void JobContext::onStopRequest()
 {
-  qDebug() << "JobContext::onStopRequest()";
   m_procedure_runner->Stop();
 }
 

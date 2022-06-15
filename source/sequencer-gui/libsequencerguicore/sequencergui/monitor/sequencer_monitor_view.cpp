@@ -137,6 +137,7 @@ void SequencerMonitorView::OnSubmitProcedureRequest(ProcedureItem *item)
 {
   auto job = m_models->GetJobModel()->InsertItem<JobItem>();
   job->SetProcedure(item);
+  m_job_manager->SubmitJob(job);
   m_monitor_panel->SetSelectedJob(job);
 }
 
@@ -148,15 +149,11 @@ void SequencerMonitorView::OnRunJobRequest()
     return;
   }
 
+  m_realtime_widget->SetProcedure(selected_job->GetExpandedProcedure());
+  m_workspace_widget->SetProcedure(selected_job->GetExpandedProcedure());
+
   m_job_manager->SetCurrentJob(selected_job);
-
-  if (auto context = m_job_manager->GetCurrentContext(); context)
-  {
-    m_realtime_widget->SetProcedure(context->GetExpandedProcedure());
-    m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
-  }
-
-  m_job_manager->onStartProcedureRequest(selected_job);
+  m_job_manager->onStartProcedureRequest();
 }
 
 }  // namespace sequencergui

@@ -73,24 +73,24 @@ JobManager::~JobManager() = default;
 
 void JobManager::SetCurrentJob(JobItem *job)
 {
-  if (!job)
-  {
-    return;
-  }
-
   if (m_current_job == job)
   {
     return;
   }
 
+  // previous context, if exists,  will be detached from the message panel
   if (auto current_context = GetCurrentContext(); current_context)
   {
-    // previous context, if exists,  will be detached from the message panel
     current_context->SetMessagePanel(nullptr);
     m_message_panel->onClearLog();
   }
 
   m_current_job = job;
+
+  if (!m_current_job)
+  {
+    return;
+  }
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
@@ -99,15 +99,13 @@ void JobManager::SetCurrentJob(JobItem *job)
   }
   else
   {
-    auto context = CreateContext(m_current_job);
+    throw RuntimeException("No context for given job has been created");
   }
 }
 
 JobContext *JobManager::GetCurrentContext()
 {
-  GetContext(m_current_job);
-  auto it = m_context_map.find(m_current_job);
-  return it == m_context_map.end() ? nullptr : it->second;
+  return GetContext(m_current_job);
 }
 
 //! Returns context for JobItem.
@@ -118,15 +116,9 @@ JobContext *JobManager::GetContext(JobItem *job)
   return it == m_context_map.end() ? nullptr : it->second;
 }
 
-void JobManager::onStartProcedureRequest(JobItem *job_item)
+void JobManager::onStartProcedureRequest()
 {
-  if (!job_item)
-  {
-    return;
-  }
-
-  SetCurrentJob(job_item);
-
+  qDebug() << "JobManager::onStartProcedureRequest()";
   if (auto current_context = GetCurrentContext(); current_context)
   {
     current_context->onStartRequest();
@@ -135,6 +127,7 @@ void JobManager::onStartProcedureRequest(JobItem *job_item)
 
 void JobManager::onPauseProcedureRequest()
 {
+  qDebug() << "JobManager::onPauseProcedureRequest()";
   if (auto context = GetCurrentContext(); context)
   {
     context->onPauseRequest();
