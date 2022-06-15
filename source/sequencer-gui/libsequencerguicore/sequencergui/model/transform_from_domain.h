@@ -34,6 +34,7 @@ class InstructionItem;
 class InstructionContainerItem;
 class WorkspaceItem;
 class VariableItem;
+class ProcedureItem;
 
 //! Translates instruction's `domain_type` name to UI `model_type` name.
 std::string GetItemType(const std::string& domain_type);
@@ -50,6 +51,9 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
 
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
+
+//! Populates empty ProcedureItem with the content from sequencer Procedure.
+void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item);
 
 //! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
 //! the default attribute map from the domain. See explanations in the implementation.

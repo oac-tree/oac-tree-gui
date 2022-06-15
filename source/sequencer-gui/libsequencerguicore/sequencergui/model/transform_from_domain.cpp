@@ -146,6 +146,12 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
   builder.PopulateInstructionContainerItem(procedure, container);
 }
 
+void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item)
+{
+  GUIObjectBuilder builder;
+  builder.PopulateProcedureItem(procedure, procedure_item);
+}
+
 std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)
 {
   // This handles a special case when instruction's domain_type is unknown to the GUI.

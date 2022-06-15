@@ -38,11 +38,7 @@ void ImportFromFile(const std::string &file_name, ProcedureItem *procedure_item)
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  auto instruction_container = procedure_item->GetInstructionContainer();
-  PopulateInstructionContainerItem(procedure.get(), instruction_container);
-
-  auto workspace_item = procedure_item->GetWorkspace();
-  PopulateWorkspaceItem(procedure.get(), workspace_item);
+  PopulateProcedureItem(procedure.get(), procedure_item);
 }
 
 std::string ExportToXMLString(const ProcedureItem *procedure_item)
