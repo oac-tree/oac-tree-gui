@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_MONITOR_SEQUENCERMONITORACTIONS_H
 
 #include <QObject>
-
 #include <functional>
 
 namespace sequencergui
@@ -29,6 +28,8 @@ namespace sequencergui
 
 class JobModel;
 class JobManager;
+class JobItem;
+class ProcedureItem;
 
 //! High level actions for SequencerMonitorView.
 
@@ -37,9 +38,14 @@ class SequencerMonitorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMonitorActions(JobManager* job_manager, QObject* parent = nullptr);
+  using selection_callback_t = std::function<JobItem*()>;
+
+  explicit SequencerMonitorActions(JobManager* job_manager, selection_callback_t selection_callback,
+                                   QObject* parent = nullptr);
 
   void SetJobModel(JobModel* job_model);
+
+  void OnSubmitJobRequest(ProcedureItem* procedure_item);
 
   void OnStartJobRequest();
 
@@ -54,6 +60,7 @@ public:
 private:
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
+  selection_callback_t m_job_selection_callback;
 };
 
 }  // namespace sequencergui

@@ -51,7 +51,8 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     , m_workspace_widget(new MonitorWorkspaceWidget)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
-    , m_actions(new SequencerMonitorActions(m_job_manager, this))
+    , m_actions(new SequencerMonitorActions(
+          m_job_manager, [this] { return m_monitor_panel->GetSelectedJob(); }, this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
