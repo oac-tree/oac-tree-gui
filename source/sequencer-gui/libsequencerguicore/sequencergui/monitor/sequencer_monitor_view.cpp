@@ -124,15 +124,17 @@ void SequencerMonitorView::SetupConnections()
 //! Setup widgets to show currently selected job.
 void SequencerMonitorView::OnJobSelected(JobItem *item)
 {
+  qDebug() << "SequencerMonitorView::OnJobSelected JobItem" << item;
   m_job_manager->SetCurrentJob(item);
-  m_realtime_widget->SetProcedure(item->GetExpandedProcedure());
-  m_workspace_widget->SetProcedure(item->GetExpandedProcedure());
+  m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 //! Submits given procedure for execution.
 void SequencerMonitorView::OnSubmitProcedureRequest(ProcedureItem *item)
 {
   auto job = m_models->GetJobModel()->InsertItem<JobItem>();
+  qDebug() << "OnSubmitProcedureRequest 1.1 ProcedureItem" << item << " job " << job;
   job->SetProcedure(item);
   m_job_manager->SubmitJob(job);
   m_monitor_panel->SetSelectedJob(job);

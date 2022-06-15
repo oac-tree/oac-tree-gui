@@ -36,6 +36,7 @@
 #include <QStackedWidget>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <QDebug>
 
 namespace sequencergui
 {
@@ -73,7 +74,8 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_component_provider->SetItem(procedure_item->GetInstructionContainer());
+  qDebug() << "MonitorRealTimeWidget::SetProcedure" << procedure_item;
+  m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer() : nullptr);
   m_instruction_tree->expandAll();
   m_node_editor->SetProcedure(procedure_item);
 }
