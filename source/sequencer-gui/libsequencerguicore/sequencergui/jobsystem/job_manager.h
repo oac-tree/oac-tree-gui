@@ -54,10 +54,14 @@ public:
 
   JobContext* GetContext(JobItem* job);
 
+  JobItem* GetCurrentJob();
+
   void onStartProcedureRequest();
   void onPauseProcedureRequest();
   void onStopProcedureRequest();
   void onMakeStepRequest();
+
+  void OnRemoveJobRequest(JobItem* job);
 
   void SetMessagePanel(MessagePanel* panel);
   void onChangeDelayRequest(int msec);

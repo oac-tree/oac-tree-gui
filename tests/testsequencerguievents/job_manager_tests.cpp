@@ -59,6 +59,7 @@ TEST_F(JobManagerTest, InitialState)
   JobManager manager;
   EXPECT_FALSE(manager.GetCurrentContext());
   EXPECT_FALSE(manager.GetContext(m_job_item));
+  EXPECT_FALSE(manager.GetCurrentJob());
 }
 
 TEST_F(JobManagerTest, SubmitProcedure)
@@ -70,6 +71,7 @@ TEST_F(JobManagerTest, SubmitProcedure)
 
   JobManager manager;
   manager.SubmitJob(m_job_item);
+  EXPECT_FALSE(manager.GetCurrentJob());
 
   ASSERT_TRUE(manager.GetContext(m_job_item));
   EXPECT_EQ(manager.GetContext(m_job_item)->GetExpandedProcedure(),
@@ -106,7 +108,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 
 //! Set first procedure to the JobManager and execute it.
 
-TEST_F(JobManagerTest, SetCurrentProcedure)
+TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 {
   auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
 
@@ -117,6 +119,7 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
   manager.SetMessagePanel(&panel);
   manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
+  EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
   manager.onChangeDelayRequest(10);
 
   QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
@@ -149,4 +152,27 @@ TEST_F(JobManagerTest, SetCurrentProcedure)
   auto inside = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
   EXPECT_EQ(inside.at(0)->GetJsonValue(), std::string("42"));
   EXPECT_EQ(inside.at(1)->GetJsonValue(), std::string("43"));
+}
+
+TEST_F(JobManagerTest, OnRemoveJobRequest)
+{
+  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+
+  MessagePanel panel;
+  m_job_item->SetProcedure(copy_procedure);
+
+  JobManager manager;
+  manager.SetMessagePanel(&panel);
+
+  // it is not possible to remove non-existing job
+  EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
+
+  manager.SubmitJob(m_job_item);
+  manager.SetCurrentJob(m_job_item);
+
+  // should be possible to remove submitted, but non-running job
+  EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
+
+  EXPECT_EQ(manager.GetCurrentContext(), nullptr);
+  EXPECT_EQ(manager.GetCurrentJob(), nullptr);
 }

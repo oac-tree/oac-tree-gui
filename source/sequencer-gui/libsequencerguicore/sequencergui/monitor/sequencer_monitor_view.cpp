@@ -125,11 +125,8 @@ void SequencerMonitorView::SetupConnections()
 void SequencerMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
-  if (auto context = m_job_manager->GetCurrentContext(); context)
-  {
-    m_realtime_widget->SetProcedure(context->GetExpandedProcedure());
-    m_workspace_widget->SetProcedure(context->GetExpandedProcedure());
-  }
+  m_realtime_widget->SetProcedure(item->GetExpandedProcedure());
+  m_workspace_widget->SetProcedure(item->GetExpandedProcedure());
 }
 
 //! Submits given procedure for execution.

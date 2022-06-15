@@ -116,6 +116,14 @@ JobContext *JobManager::GetContext(JobItem *job)
   return it == m_context_map.end() ? nullptr : it->second;
 }
 
+//! Returns current job. It is the one that is attached to the MessagePanel and is the recipient
+//! of start/stop/pause requests.
+
+JobItem *JobManager::GetCurrentJob()
+{
+  return m_current_job;
+}
+
 void JobManager::onStartProcedureRequest()
 {
   qDebug() << "JobManager::onStartProcedureRequest()";
@@ -149,6 +157,28 @@ void JobManager::onMakeStepRequest()
   {
     context->onMakeStepRequest();
   }
+}
+
+void JobManager::OnRemoveJobRequest(JobItem *job)
+{
+  auto context = GetContext(job);
+
+  if (!context)
+  {
+    throw RuntimeException("No context for given job");
+  }
+
+  if (context->IsRunning())
+  {
+    throw RuntimeException("Attempt to remove running job");
+  }
+
+  if (job == GetCurrentJob())
+  {
+    SetCurrentJob(nullptr);
+  }
+
+  m_context_map.erase(job);
 }
 
 void JobManager::SetMessagePanel(MessagePanel *panel)
