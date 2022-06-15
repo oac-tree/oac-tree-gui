@@ -22,9 +22,39 @@
 namespace sequencergui
 {
 
-SequencerMonitorActions::SequencerMonitorActions(QObject *parent) : QObject(parent)
+SequencerMonitorActions::SequencerMonitorActions(JobManager *job_manager, QObject *parent)
+    : QObject(parent), m_job_manager(job_manager)
+{
+}
+
+void SequencerMonitorActions::SetJobModel(JobModel *job_model)
+{
+  m_job_model = job_model;
+}
+
+void SequencerMonitorActions::OnStartJobRequest()
 {
 
 }
 
+void SequencerMonitorActions::OnPauseJobRequest()
+{
+
 }
+
+void SequencerMonitorActions::OnStopJobRequest()
+{
+
+}
+
+void SequencerMonitorActions::OnMakeStepRequest()
+{
+
+}
+
+void SequencerMonitorActions::OnRemoveJobRequest()
+{
+
+}
+
+}  // namespace sequencergui

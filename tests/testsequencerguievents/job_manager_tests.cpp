@@ -135,7 +135,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   EXPECT_EQ(procedure->GetWorkspace()->GetVariables().size(), 2);
 
   // starting procedure
-  manager.onStartProcedureRequest();
+  manager.OnStartJobRequest();
   EXPECT_TRUE(context->IsRunning());
 
   // We are testing here queued signals, need special waiting to let procedure complete

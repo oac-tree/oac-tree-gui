@@ -51,6 +51,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     , m_workspace_widget(new MonitorWorkspaceWidget)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
+    , m_actions(new SequencerMonitorActions(m_job_manager, this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -76,6 +77,7 @@ void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   m_monitor_panel->SetApplicationModels(models);
+  m_actions->SetJobModel(models->GetJobModel());
 }
 
 void SequencerMonitorView::showEvent(QShowEvent *event)
@@ -98,14 +100,14 @@ void SequencerMonitorView::SetupConnections()
 
   // Pause request from MonitorTreeWidget to JobManager
   connect(m_realtime_widget, &MonitorRealTimeWidget::pauseRequest, m_job_manager,
-          &JobManager::onPauseProcedureRequest);
+          &JobManager::OnPauseJobRequest);
 
   // Stop request from MonitorTreeWidget to JobManager
   connect(m_realtime_widget, &MonitorRealTimeWidget::stopRequest, m_job_manager,
-          &JobManager::onStopProcedureRequest);
+          &JobManager::OnStopJobRequest);
 
   // Process step button click
-  auto on_step = [this]() { m_job_manager->onMakeStepRequest(); };
+  auto on_step = [this]() { m_job_manager->OnMakeStepRequest(); };
   connect(m_realtime_widget, &MonitorRealTimeWidget::stepRequest, this, on_step);
 
   // Selection request from JobManager to this
@@ -149,7 +151,7 @@ void SequencerMonitorView::OnRunJobRequest()
     return;
   }
 
-  m_job_manager->onStartProcedureRequest();
+  m_job_manager->OnStartJobRequest();
 }
 
 }  // namespace sequencergui

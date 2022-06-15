@@ -56,10 +56,10 @@ public:
 
   JobItem* GetCurrentJob();
 
-  void onStartProcedureRequest();
-  void onPauseProcedureRequest();
-  void onStopProcedureRequest();
-  void onMakeStepRequest();
+  void OnStartJobRequest();
+  void OnPauseJobRequest();
+  void OnStopJobRequest();
+  void OnMakeStepRequest();
 
   void OnRemoveJobRequest(JobItem* job);
 

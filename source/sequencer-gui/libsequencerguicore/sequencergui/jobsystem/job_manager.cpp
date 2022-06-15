@@ -136,7 +136,7 @@ JobItem *JobManager::GetCurrentJob()
   return m_current_job;
 }
 
-void JobManager::onStartProcedureRequest()
+void JobManager::OnStartJobRequest()
 {
   qDebug() << "JobManager::onStartProcedureRequest()";
   if (auto current_context = GetCurrentContext(); current_context)
@@ -145,7 +145,7 @@ void JobManager::onStartProcedureRequest()
   }
 }
 
-void JobManager::onPauseProcedureRequest()
+void JobManager::OnPauseJobRequest()
 {
   qDebug() << "JobManager::onPauseProcedureRequest()";
   if (auto context = GetCurrentContext(); context)
@@ -154,7 +154,7 @@ void JobManager::onPauseProcedureRequest()
   }
 }
 
-void JobManager::onStopProcedureRequest()
+void JobManager::OnStopJobRequest()
 {
   qDebug() << "JobManager::onStopProcedureRequest()";
   if (auto context = GetCurrentContext(); context)
@@ -163,7 +163,7 @@ void JobManager::onStopProcedureRequest()
   }
 }
 
-void JobManager::onMakeStepRequest()
+void JobManager::OnMakeStepRequest()
 {
   if (auto context = GetCurrentContext(); context)
   {
