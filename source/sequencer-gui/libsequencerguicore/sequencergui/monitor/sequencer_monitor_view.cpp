@@ -19,6 +19,7 @@
 
 #include "sequencergui/monitor/sequencer_monitor_view.h"
 
+#include "sequencergui/core/message_handler_factory.h"
 #include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_manager.h"
 #include "sequencergui/model/application_models.h"
@@ -69,6 +70,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
 
   SetupConnections();
 
+  m_actions->SetMessageHandler(CreateMessageBoxHandler());
   m_job_manager->SetMessagePanel(m_realtime_widget->GetMessagePanel());
 }
 
@@ -134,7 +136,6 @@ void SequencerMonitorView::SetupConnections()
   // job removal request
   connect(m_monitor_panel, &MonitorPanel::RemoveJobRequest, m_actions,
           &SequencerMonitorActions::OnRemoveJobRequest);
-
 }
 
 //! Setup widgets to show currently selected job.

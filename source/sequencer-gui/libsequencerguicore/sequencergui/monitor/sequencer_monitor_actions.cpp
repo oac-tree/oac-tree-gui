@@ -45,7 +45,7 @@ bool InvokeAndCatch(T method, const std::string &message,
   catch (const std::exception &ex)
   {
     std::ostringstream ostr;
-    ostr << message << " falied with the message'" << std::string(ex.what()) << "'";
+    ostr << message << " falied with the message '" << std::string(ex.what()) << "'";
     message_interface->SendMessage(ostr.str());
     return false;
   }
