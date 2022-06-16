@@ -30,6 +30,9 @@
 
 #include <gtest/gtest.h>
 
+#include <QTest>
+#include <iostream>
+
 using namespace sequencergui;
 using msec = std::chrono::milliseconds;
 
@@ -70,6 +73,8 @@ TEST_F(SequencerMonitorActionsTests, AttemptToUseWhenMisconfigured)
   }
 }
 
+//! Submission of the procedure.
+
 TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
@@ -82,7 +87,7 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
 
-  // successfull job submlission leads to the creation of JobItem with expanded procedure
+  // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
   EXPECT_EQ(m_job_manager.GetContext(job_item)->GetExpandedProcedure(),
@@ -98,4 +103,37 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 
   EXPECT_EQ(GetJobItems().at(0)->GetProcedure(), procedure);
   EXPECT_EQ(GetJobItems().at(1)->GetProcedure(), procedure);
+}
+
+//! Submit the job, when start and wait till the end.
+
+TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(20));
+
+  // submitting the procedure
+  m_actions.OnSubmitJobRequest(procedure);
+
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  EXPECT_TRUE(m_job_manager.GetContext(job_item));
+
+  // sarting the job when now JobItem is selected
+  m_actions.OnStartJobRequest();
+
+  EXPECT_FALSE(m_job_manager.GetContext(job_item)->IsRunning());
+  EXPECT_FALSE(m_job_manager.GetCurrentContext());  // no item was selected, context is not switched
+
+  // making item selected
+  m_selected_item = job_item;
+
+  m_actions.OnStartJobRequest();
+
+  EXPECT_EQ(m_job_manager.GetCurrentContext(), m_job_manager.GetContext(job_item));
+  EXPECT_TRUE(m_job_manager.GetContext(job_item)->IsRunning());
+
+  QTest::qWait(100);
+  EXPECT_FALSE(m_job_manager.GetContext(job_item)->IsRunning());
+
+  EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
 }
