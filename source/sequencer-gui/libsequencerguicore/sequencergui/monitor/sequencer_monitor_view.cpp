@@ -125,11 +125,15 @@ void SequencerMonitorView::SetupConnections()
   connect(m_monitor_panel, &MonitorPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
 
   connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_monitor_panel,
-          &MonitorPanel::JobSelected);
+          &MonitorPanel::SetSelectedJob);
 
   // job submission request
   connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, m_actions,
           &SequencerMonitorActions::OnSubmitJobRequest);
+
+  // job removal request
+  connect(m_monitor_panel, &MonitorPanel::RemoveJobRequest, m_actions,
+          &SequencerMonitorActions::OnRemoveJobRequest);
 
 }
 

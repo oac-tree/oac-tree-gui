@@ -97,8 +97,7 @@ QList<QWidget *> MonitorPanel::GetToolBarWidgets()
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove selected job from the list");
-  connect(remove_button, &QToolButton::clicked, this,
-          [this]() { emit RemoveSelectedJobRequest(GetSelectedJob()); });
+  connect(remove_button, &QToolButton::clicked, this, &MonitorPanel::RemoveJobRequest);
   result.push_back(remove_button);
 
   return result;

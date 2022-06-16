@@ -56,7 +56,7 @@ public:
 
 signals:
   void JobSelected(sequencergui::JobItem* item);
-  void RemoveSelectedJobRequest(sequencergui::JobItem* item);
+  void RemoveJobRequest();
   void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
 
 private:
