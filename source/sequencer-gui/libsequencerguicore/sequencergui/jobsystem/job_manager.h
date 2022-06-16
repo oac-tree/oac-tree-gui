@@ -20,8 +20,6 @@
 #ifndef SEQUENCERGUI_MONITOR_JOBMANAGER_H
 #define SEQUENCERGUI_MONITOR_JOBMANAGER_H
 
-#include "sequencergui/model/sequencer_types.h"
-
 #include <QObject>
 #include <memory>
 

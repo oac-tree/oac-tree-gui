@@ -20,8 +20,6 @@
 #ifndef SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
 #define SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
 
-#include "sequencergui/model/sequencer_types.h"
-
 #include <QWidget>
 
 class QSplitter;

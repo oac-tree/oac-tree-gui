@@ -203,10 +203,10 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
-  QTest::qWait(10);
+  QTest::qWait(20);
 
   manager.OnStopJobRequest();
-  QTest::qWait(10);
+  QTest::qWait(20);
 
-  EXPECT_TRUE(context->IsRunning());
+  EXPECT_FALSE(context->IsRunning());
 }

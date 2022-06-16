@@ -22,6 +22,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
+#include "sequencergui/core/exceptions.h"
 #include "sequencergui/model/instruction_container_item.h"
 #include "sequencergui/model/instruction_item.h"
 #include "sequencergui/model/procedure_item.h"
@@ -131,6 +132,11 @@ void DomainObjectBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace
 std::unique_ptr<procedure_t> DomainObjectBuilder::CreateProcedure(
     const ProcedureItem* procedure_item)
 {
+  if (!procedure_item)
+  {
+    throw RuntimeException("Procedure is not initialised");
+  }
+
   auto result = std::make_unique<procedure_t>();
 
   PopulateDomainInstructions(procedure_item->GetInstructionContainer(), result.get());

@@ -32,12 +32,14 @@ class JobItem;
 class ProcedureItem;
 
 //! High level actions for SequencerMonitorView.
+//! Provides reporting on exception throw.
 
 class SequencerMonitorActions : public QObject
 {
   Q_OBJECT
 
 public:
+  //!< A callback to get currently selected JobItem.
   using selection_callback_t = std::function<JobItem*()>;
 
   explicit SequencerMonitorActions(JobManager* job_manager, selection_callback_t selection_callback,
@@ -58,6 +60,8 @@ public:
   void OnRemoveJobRequest();
 
 private:
+  void CheckConditions();
+
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   selection_callback_t m_job_selection_callback;
