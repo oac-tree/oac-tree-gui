@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_manager.h"
 #include "sequencergui/model/application_models.h"
 #include "sequencergui/model/job_item.h"
@@ -75,5 +76,26 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 
   EXPECT_NO_FATAL_FAILURE(m_actions.OnSubmitJobRequest(nullptr));
 
-  //  EXPECT_TRUE(GetJobItems().empty());
+  // At the beginning there is not JobItems in a modelo
+  EXPECT_TRUE(GetJobItems().empty());
+
+  // submitting the procedure
+  m_actions.OnSubmitJobRequest(procedure);
+
+  // successfull job submlission leads to the creation of JobItem with expanded procedure
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  EXPECT_EQ(m_job_manager.GetContext(job_item)->GetExpandedProcedure(),
+            job_item->GetExpandedProcedure());
+  EXPECT_EQ(job_item->GetProcedure(), procedure);
+
+  // we can submit same procedure twice, it will be two different jobs
+  m_actions.OnSubmitJobRequest(procedure);
+  ASSERT_EQ(GetJobItems().size(), 2);
+
+  EXPECT_EQ(GetJobItems().at(0), job_item);
+  EXPECT_NE(GetJobItems().at(0), GetJobItems().at(1));
+
+  EXPECT_EQ(GetJobItems().at(0)->GetProcedure(), procedure);
+  EXPECT_EQ(GetJobItems().at(1)->GetProcedure(), procedure);
 }

@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <functional>
+#include <memory>
 
 namespace sequencergui
 {
@@ -30,9 +31,10 @@ class JobModel;
 class JobManager;
 class JobItem;
 class ProcedureItem;
+class MessageHandlerInterface;
 
-//! High level actions for SequencerMonitorView.
-//! Provides reporting on exception throw.
+//! High level actions for SequencerMonitorView. Provides coordination between JobModel and
+//! JobManager. Provides reporting on exception throw.
 
 class SequencerMonitorActions : public QObject
 {
@@ -44,6 +46,10 @@ public:
 
   explicit SequencerMonitorActions(JobManager* job_manager, selection_callback_t selection_callback,
                                    QObject* parent = nullptr);
+
+  ~SequencerMonitorActions() override;
+
+  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
 
   void SetJobModel(JobModel* job_model);
 
@@ -65,6 +71,7 @@ private:
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   selection_callback_t m_job_selection_callback;
+  std::unique_ptr<MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui

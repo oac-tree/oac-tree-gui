@@ -20,10 +20,36 @@
 #include "sequencergui/monitor/sequencer_monitor_actions.h"
 
 #include "sequencergui/core/exceptions.h"
+#include "sequencergui/core/message_handler_factory.h"
 #include "sequencergui/jobsystem/job_manager.h"
 #include "sequencergui/model/job_item.h"
 #include "sequencergui/model/job_model.h"
 #include "sequencergui/model/procedure_item.h"
+
+#include <sstream>
+
+namespace
+{
+
+//! Invokes
+template <typename T>
+bool InvokeAndCatch(T method, const std::string &message,
+                    sequencergui::MessageHandlerInterface *message_interface)
+{
+  try
+  {
+    std::invoke(method);
+    return true;
+  }
+  catch (const std::exception &ex)
+  {
+    std::ostringstream ostr;
+    ostr << message << " falied with the message'" << std::string(ex.what()) << "'";
+    message_interface->SendMessage(ostr.str());
+    return false;
+  }
+}
+}  // namespace
 
 namespace sequencergui
 {
@@ -31,8 +57,20 @@ namespace sequencergui
 SequencerMonitorActions::SequencerMonitorActions(JobManager *job_manager,
                                                  selection_callback_t selection_callback,
                                                  QObject *parent)
-    : QObject(parent), m_job_manager(job_manager), m_job_selection_callback(selection_callback)
+    : QObject(parent)
+    , m_job_manager(job_manager)
+    , m_job_selection_callback(std::move(selection_callback))
+    , m_message_handler(CreateNullMessageHandler())
+
 {
+}
+
+SequencerMonitorActions::~SequencerMonitorActions() = default;
+
+void SequencerMonitorActions::SetMessageHandler(
+    std::unique_ptr<MessageHandlerInterface> message_handler)
+{
+  m_message_handler = std::move(message_handler);
 }
 
 void SequencerMonitorActions::SetJobModel(JobModel *job_model)
@@ -42,16 +80,18 @@ void SequencerMonitorActions::SetJobModel(JobModel *job_model)
 
 void SequencerMonitorActions::OnSubmitJobRequest(ProcedureItem *procedure_item)
 {
-  CheckConditions();
-
   if (!procedure_item)
   {
     return;
   }
 
+  CheckConditions();
+
   auto job = m_job_model->InsertItem<JobItem>();
   job->SetProcedure(procedure_item);
-  m_job_manager->SubmitJob(job);
+
+  InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
+                 m_message_handler.get());
 }
 
 void SequencerMonitorActions::OnStartJobRequest()
