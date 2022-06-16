@@ -37,8 +37,10 @@
 
 #include <QSignalSpy>
 #include <QTest>
+#include <chrono>
 
 using namespace sequencergui;
+using msec = std::chrono::milliseconds;
 
 //! Tests for JobManager.
 
@@ -154,6 +156,8 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   EXPECT_EQ(inside.at(1)->GetJsonValue(), std::string("43"));
 }
 
+//! Removing submitted job.
+
 TEST_F(JobManagerTest, OnRemoveJobRequest)
 {
   auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
@@ -176,4 +180,33 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   EXPECT_EQ(manager.GetCurrentContext(), nullptr);
   EXPECT_EQ(manager.GetContext(m_job_item), nullptr);
   EXPECT_EQ(manager.GetCurrentJob(), nullptr);
+}
+
+//! Attempt to remove long running job.
+
+TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10000));
+
+  MessagePanel panel;
+  m_job_item->SetProcedure(procedure);
+
+  JobManager manager;
+  manager.SetMessagePanel(&panel);
+
+  manager.SubmitJob(m_job_item);
+  manager.SetCurrentJob(m_job_item);
+  manager.OnStartJobRequest();
+
+  auto context = manager.GetCurrentContext();
+  EXPECT_TRUE(context->IsRunning());
+
+  // it shouldn't be possible to remove running job without first stopping it
+  EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
+  QTest::qWait(10);
+
+  manager.OnStopJobRequest();
+  QTest::qWait(10);
+
+  EXPECT_TRUE(context->IsRunning());
 }

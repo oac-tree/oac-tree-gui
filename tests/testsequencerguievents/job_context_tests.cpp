@@ -274,7 +274,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
   EXPECT_FALSE(job_context.IsRunning());
 }
 
-//! Normal execution of the procedure with single wait instruction.
+//! Stop long running job.
 
 TEST_F(JobContextTest, StopLongRunningJob)
 {
