@@ -20,7 +20,6 @@
 #include "sequencergui/jobsystem/job_manager.h"
 
 #include "sequencergui/core/exceptions.h"
-#include "sequencergui/core/message_handler_factory.h"
 #include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_utils.h"
 #include "sequencergui/jobsystem/user_context.h"
@@ -43,13 +42,7 @@ namespace sequencergui
 JobManager::JobManager(QObject *parent)
     : QObject(parent)
     , m_current_delay(GetDefaultTickTimeoutMsc())
-    , m_message_handler(CreateNullMessageHandler())
 {
-}
-
-void JobManager::SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler)
-{
-  m_message_handler = std::move(message_handler);
 }
 
 void JobManager::SubmitJob(JobItem *job)
@@ -64,19 +57,8 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  std::unique_ptr<JobContext> context;
-  try
-  {
-    context = CreateContext(job);
-    m_context_map.insert({job, std::move(context)});
-  }
-  catch (const std::exception &ex)
-  {
-    std::ostringstream ostr;
-    ostr << "Exception was caught during JobContext preparation with the message `"
-         << std::string(ex.what()) << "'";
-    m_message_handler->SendMessage(ostr.str());
-  }
+  auto context = CreateContext(job);
+  m_context_map.insert({job, std::move(context)});
 }
 
 JobManager::~JobManager() = default;
