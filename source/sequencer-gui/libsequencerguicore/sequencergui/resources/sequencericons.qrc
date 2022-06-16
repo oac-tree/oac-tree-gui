@@ -67,5 +67,7 @@
         <file>icons/map-marker-outline.svg</file>
         <file>icons/bell-alert-outline.svg</file>
         <file>icons/bell-alert-outline.png</file>
+        <file>icons/refresh.svg</file>
+        <file>icons/refresh.png</file>
     </qresource>
 </RCC>
