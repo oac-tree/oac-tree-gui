@@ -105,6 +105,20 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
   EXPECT_EQ(GetJobItems().at(1)->GetProcedure(), procedure);
 }
 
+//! Attempt to submit wronly configured procedure.
+
+TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
+{
+  auto procedure = testutils::CreateInvalidProcedure(GetSequencerModel());
+
+  JobManager manager;
+
+  EXPECT_THROW(m_actions.OnSubmitJobRequest(procedure), sequencergui::RuntimeException);
+
+  // After unsuccessfull submission JobItem remains there
+  ASSERT_EQ(GetJobItems().size(), 1);
+}
+
 //! Submit the job, when start and wait till the end.
 
 TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
@@ -136,4 +150,56 @@ TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
   EXPECT_FALSE(m_job_manager.GetContext(job_item)->IsRunning());
 
   EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
+}
+
+//! Removing submitted job.
+
+TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
+{
+  auto procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+
+  m_actions.OnSubmitJobRequest(procedure);
+  EXPECT_EQ(GetJobItems().size(), 1);
+
+  // if no selection provided, the command does nothing
+  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest());
+
+  // if selection is related to JobItem which hasn't been submitted yet
+  JobItem some_unrelated_item;
+  m_selected_item = &some_unrelated_item;
+
+  EXPECT_THROW(m_actions.OnRemoveJobRequest(), RuntimeException);
+
+  auto job_item = GetJobItems().at(0);
+  m_selected_item = GetJobItems().at(0);
+
+  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest());
+  EXPECT_TRUE(GetJobItems().empty());
+}
+
+//! Attempt to remove long running job.
+
+TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10000));
+
+  m_actions.OnSubmitJobRequest(procedure);
+
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  m_selected_item = GetJobItems().at(0);
+
+  m_actions.OnStartJobRequest();
+
+  auto context = m_job_manager.GetCurrentContext();
+  EXPECT_TRUE(context->IsRunning());
+
+  // it shouldn't be possible to remove running job without first stopping it
+  EXPECT_THROW(m_actions.OnRemoveJobRequest(), RuntimeException);
+  QTest::qWait(20);
+
+  m_actions.OnStopJobRequest();
+  QTest::qWait(20);
+
+  EXPECT_FALSE(context->IsRunning());
 }

@@ -27,6 +27,7 @@
 #include "sequencergui/model/procedure_item.h"
 
 #include <sstream>
+#include <iostream>
 
 namespace
 {
@@ -48,6 +49,8 @@ bool InvokeAndCatch(T method, const std::string &message,
     message_interface->SendMessage(ostr.str());
     return false;
   }
+
+  return false;
 }
 }  // namespace
 
@@ -130,9 +133,24 @@ void SequencerMonitorActions::OnRemoveJobRequest()
 {
   CheckConditions();
 
-  auto job_item = m_job_selection_callback();
-  m_job_manager->OnRemoveJobRequest(job_item);
-  m_job_model->RemoveItem(job_item);
+  auto job = m_job_selection_callback();
+
+  if (!job)
+  {
+    return;
+  }
+
+  auto is_success = InvokeAndCatch([this, job]() { m_job_manager->OnRemoveJobRequest(job); },
+                                   "Job removal", m_message_handler.get());
+
+  std::cout << "xxxx " << is_success << " " << job << std::endl;
+  if (is_success)
+  {
+    std::cout << m_job_model->GetTopItems<JobItem>().size() << std::endl;
+    m_job_model->RemoveItem(job);
+    std::cout << "xxxx " << is_success << " " << job << std::endl;
+    std::cout << m_job_model->GetTopItems<JobItem>().size() << std::endl;
+  }
 }
 
 void SequencerMonitorActions::CheckConditions()
