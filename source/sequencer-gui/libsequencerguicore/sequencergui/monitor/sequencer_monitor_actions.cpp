@@ -26,8 +26,8 @@
 #include "sequencergui/model/job_model.h"
 #include "sequencergui/model/procedure_item.h"
 
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 namespace
 {
@@ -95,6 +95,8 @@ void SequencerMonitorActions::OnSubmitJobRequest(ProcedureItem *procedure_item)
 
   InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                  m_message_handler.get());
+
+  emit MakeJobSelectedRequest(job);
 }
 
 void SequencerMonitorActions::OnStartJobRequest()

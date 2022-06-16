@@ -95,34 +95,42 @@ void SequencerMonitorView::showEvent(QShowEvent *event)
 
 void SequencerMonitorView::SetupConnections()
 {
-  // Process request from MonitorTreeWidget to JobManager
-  connect(m_realtime_widget, &MonitorRealTimeWidget::runRequest, this,
-          &SequencerMonitorView::OnRunJobRequest);
+  // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
-  // Pause request from MonitorTreeWidget to JobManager
-  connect(m_realtime_widget, &MonitorRealTimeWidget::pauseRequest, m_job_manager,
-          &JobManager::OnPauseJobRequest);
+  // start request
+  connect(m_realtime_widget, &MonitorRealTimeWidget::runRequest, m_actions,
+          &SequencerMonitorActions::OnStartJobRequest);
 
-  // Stop request from MonitorTreeWidget to JobManager
-  connect(m_realtime_widget, &MonitorRealTimeWidget::stopRequest, m_job_manager,
-          &JobManager::OnStopJobRequest);
+  // pause request
+  connect(m_realtime_widget, &MonitorRealTimeWidget::pauseRequest, m_actions,
+          &SequencerMonitorActions::OnPauseJobRequest);
 
-  // Process step button click
-  auto on_step = [this]() { m_job_manager->OnMakeStepRequest(); };
-  connect(m_realtime_widget, &MonitorRealTimeWidget::stepRequest, this, on_step);
+  // stop request
+  connect(m_realtime_widget, &MonitorRealTimeWidget::stopRequest, m_actions,
+          &SequencerMonitorActions::OnStopJobRequest);
 
-  // Selection request from JobManager to this
-  auto on_selection = [this](auto instruction)
-  { m_realtime_widget->SetSelectedInstruction(instruction); };
-  connect(m_job_manager, &JobManager::InstructionStatusChanged, this, on_selection);
+  // step request
+  connect(m_realtime_widget, &MonitorRealTimeWidget::stepRequest, m_actions,
+          &SequencerMonitorActions::OnMakeStepRequest);
 
+  // change delay request from MonitorRealTimeWidget to JobManager
   connect(m_realtime_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);
 
+  // instruction selection request from JobManager to MonitorRealTimeWidget
+  connect(m_job_manager, &JobManager::InstructionStatusChanged, m_realtime_widget,
+          &MonitorRealTimeWidget::SetSelectedInstruction);
+
+  // job selection request from MonitorPanel
   connect(m_monitor_panel, &MonitorPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
 
-  connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, this,
-          &SequencerMonitorView::OnSubmitProcedureRequest);
+  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_monitor_panel,
+          &MonitorPanel::JobSelected);
+
+  // job submission request
+  connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, m_actions,
+          &SequencerMonitorActions::OnSubmitJobRequest);
+
 }
 
 //! Setup widgets to show currently selected job.
@@ -132,27 +140,6 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
   m_job_manager->SetCurrentJob(item);
   m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_workspace_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-}
-
-//! Submits given procedure for execution.
-void SequencerMonitorView::OnSubmitProcedureRequest(ProcedureItem *item)
-{
-  auto job = m_models->GetJobModel()->InsertItem<JobItem>();
-  qDebug() << "OnSubmitProcedureRequest 1.1 ProcedureItem" << item << " job " << job;
-  job->SetProcedure(item);
-  m_job_manager->SubmitJob(job);
-  m_monitor_panel->SetSelectedJob(job);
-}
-
-void SequencerMonitorView::OnRunJobRequest()
-{
-  auto selected_job = m_monitor_panel->GetSelectedJob();
-  if (!selected_job)
-  {
-    return;
-  }
-
-  m_job_manager->OnStartJobRequest();
 }
 
 }  // namespace sequencergui

@@ -57,8 +57,6 @@ protected:
 private:
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
-  void OnSubmitProcedureRequest(sequencergui::ProcedureItem* item);
-  void OnRunJobRequest();
 
   MonitorPanel* m_monitor_panel{nullptr};
   MonitorRealTimeWidget* m_realtime_widget{nullptr};
