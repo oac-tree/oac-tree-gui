@@ -30,11 +30,14 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
 #include <QTest>
 #include <iostream>
 
 using namespace sequencergui;
 using msec = std::chrono::milliseconds;
+
+Q_DECLARE_METATYPE(sequencergui::JobItem*)
 
 class SequencerMonitorActionsTests : public ::testing::Test
 {
@@ -79,6 +82,8 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
 
+  QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
+
   EXPECT_NO_FATAL_FAILURE(m_actions.OnSubmitJobRequest(nullptr));
 
   // At the beginning there is not JobItems in a modelo
@@ -93,6 +98,11 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
   EXPECT_EQ(m_job_manager.GetContext(job_item)->GetExpandedProcedure(),
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
+
+  EXPECT_EQ(spy_selected_request.count(), 1);
+  auto arguments = spy_selected_request.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  EXPECT_EQ(arguments.at(0).value<JobItem*>(), job_item);
 
   // we can submit same procedure twice, it will be two different jobs
   m_actions.OnSubmitJobRequest(procedure);
@@ -202,4 +212,40 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
   QTest::qWait(20);
 
   EXPECT_FALSE(context->IsRunning());
+}
+
+//! Regenerate submitted job.
+
+TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
+
+  // submitting the procedure
+  m_actions.OnSubmitJobRequest(procedure);
+
+  // successfull job submission leads to the creation of JobItem with expanded procedure
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  auto context = m_job_manager.GetContext(job_item);
+
+  EXPECT_EQ(m_job_manager.GetContext(job_item)->GetExpandedProcedure(),
+            job_item->GetExpandedProcedure());
+  EXPECT_EQ(job_item->GetProcedure(), procedure);
+
+  QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
+
+  // regenerating a job
+  m_selected_item = job_item;
+  m_actions.OnRegenerateJobRequest();
+
+  EXPECT_EQ(spy_selected_request.count(), 1);
+  auto arguments = spy_selected_request.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  EXPECT_EQ(arguments.at(0).value<JobItem*>(), job_item);
+
+  ASSERT_EQ(GetJobItems().size(), 1);
+
+  // it should be same JobItem, but different contexts
+  EXPECT_EQ(GetJobItems().at(0), job_item);
+  EXPECT_NE(m_job_manager.GetContext(job_item), context);
 }

@@ -164,7 +164,7 @@ void JobManager::OnRemoveJobRequest(JobItem *job)
 
   if (context->IsRunning())
   {
-    throw RuntimeException("Attempt to remove running job");
+    throw RuntimeException("Attempt to modify running job");
   }
 
   if (job == GetCurrentJob())
