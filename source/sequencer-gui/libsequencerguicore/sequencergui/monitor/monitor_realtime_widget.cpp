@@ -33,7 +33,6 @@
 #include "mvvm/widgets/item_view_component_provider.h"
 #include "mvvm/widgets/top_items_tree_view.h"
 
-#include <QDebug>
 #include <QEvent>
 #include <QHeaderView>
 #include <QSignalBlocker>
@@ -81,11 +80,11 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  qDebug() << "SetProcedure 1.1" << procedure_item;
   m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
                                                : nullptr);
-  qDebug() << "SetProcedure 1.2" << procedure_item;
   m_node_editor->SetProcedure(procedure_item);
+
+  m_instruction_tree->expandAll();
   AdjustColumnWidth();
 }
 
@@ -107,28 +106,13 @@ void MonitorRealTimeWidget::onAppChangeRequest(int id)
 
 void MonitorRealTimeWidget::AdjustColumnWidth()
 {
-  if (m_header_data.is_first_update)
+  if (m_custom_header->IsAdjustedByUser())
   {
-    m_header_data.is_first_update = false;
-    //    m_instruction_tree->resizeColumnToContents(0);
-    //    m_instruction_tree->expandAll();
-    qDebug() << "AdjustColumnWidth() 1.1";
-    for (int i = 0; i < 3; ++i)
-    {
-      m_header_data.coulmn_width[i] = m_instruction_tree->header()->sectionSize(i);
-    }
-    qDebug() << "   on_resize" << m_header_data.coulmn_width[0] << " "
-             << m_header_data.coulmn_width[1] << " " << m_header_data.coulmn_width[2];
+    m_custom_header->RestoreSize();
   }
   else
   {
-    QSignalBlocker blocker(m_instruction_tree->header());
-    qDebug() << "AdjustColumnWidth() 1.2";
-    m_instruction_tree->header()->resizeSection(0, m_header_data.coulmn_width[0]);
-    m_instruction_tree->header()->resizeSection(1, m_header_data.coulmn_width[1]);
-    m_instruction_tree->header()->resizeSection(2, m_header_data.coulmn_width[2]);
-    qDebug() << "AdjustColumnWidth() 1.2" << m_header_data.coulmn_width[0] << " "
-             << m_header_data.coulmn_width[1] << " " << m_header_data.coulmn_width[2];
+    m_instruction_tree->resizeColumnToContents(0);
   }
 }
 
@@ -147,21 +131,6 @@ void MonitorRealTimeWidget::SetupConnections()
           &MonitorRealTimeWidget::changeDelayRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::appChangeRequest, this,
           &MonitorRealTimeWidget::onAppChangeRequest);
-
-  // signals from the header
-  auto on_resize = [this](int index, int old_size, int new_size)
-  {
-    if (index < 3)
-    {
-      m_header_data.coulmn_width[index] = new_size;
-    }
-    qDebug() << "on_resize" << m_header_data.coulmn_width[0] << " " << m_header_data.coulmn_width[1]
-             << " " << m_header_data.coulmn_width[2];
-  };
-  connect(m_instruction_tree->header(), &QHeaderView::sectionResized, this, on_resize);
-
-  auto on_pressed = [](auto aaa) { qDebug() << " aaa " << aaa; };
-  connect(m_instruction_tree->header(), &QHeaderView::sectionResized, this, on_pressed);
 }
 
 }  // namespace sequencergui

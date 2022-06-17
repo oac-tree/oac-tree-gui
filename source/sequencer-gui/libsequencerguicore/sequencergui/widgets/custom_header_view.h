@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H
 
 #include <QHeaderView>
-#include <array>
+#include <vector>
 
 namespace sequencergui
 {
@@ -34,9 +34,11 @@ class CustomHeaderView : public QHeaderView
   Q_OBJECT
 
 public:
-  CustomHeaderView(QWidget* parent);
+  explicit CustomHeaderView(QWidget* parent);
 
   void RestoreSize();
+
+  bool IsAdjustedByUser();
 
 protected:
   void 	mousePressEvent(QMouseEvent *event) override;
@@ -45,7 +47,9 @@ protected:
 private:
   void OnSectionResize(int index, int prev_size, int new_size);
 
-  bool m_is_in_interactive_mode;
+  bool m_is_in_interactive_mode{false};
+  bool m_is_adjusted_by_user{false};
+  std::vector<int> m_section_size;
 };
 
 }  // namespace sequencergui

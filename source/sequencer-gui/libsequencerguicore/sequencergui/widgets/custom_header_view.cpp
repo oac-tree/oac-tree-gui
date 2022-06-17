@@ -24,21 +24,33 @@
 namespace sequencergui
 {
 
-CustomHeaderView::CustomHeaderView(QWidget *parent) : QHeaderView(Qt::Horizontal, parent) {}
+CustomHeaderView::CustomHeaderView(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
+{
+  connect(this, &QHeaderView::sectionResized, this, &CustomHeaderView::OnSectionResize);
+}
 
-void CustomHeaderView::RestoreSize() {}
+void CustomHeaderView::RestoreSize()
+{
+  for (size_t i = 0; i < m_section_size.size(); ++i)
+  {
+    resizeSection(i, m_section_size[i]);
+  }
+}
+
+bool CustomHeaderView::IsAdjustedByUser()
+{
+  return m_is_adjusted_by_user;
+}
 
 void CustomHeaderView::mousePressEvent(QMouseEvent *event)
 {
   m_is_in_interactive_mode = true;
-  qDebug() << "pressed";
   QHeaderView::mousePressEvent(event);
 }
 
 void CustomHeaderView::mouseReleaseEvent(QMouseEvent *event)
 {
   m_is_in_interactive_mode = false;
-  qDebug() << "released";
   QHeaderView::mouseReleaseEvent(event);
 }
 
@@ -47,6 +59,15 @@ void CustomHeaderView::OnSectionResize(int index, int prev_size, int new_size)
   if (!m_is_in_interactive_mode)
   {
     return;
+  }
+
+  m_is_adjusted_by_user = true;
+
+  m_section_size.resize(this->count());
+
+  for (int i = 0; i < this->count(); ++i)
+  {
+    m_section_size[i] = sectionSize(i);
   }
 }
 

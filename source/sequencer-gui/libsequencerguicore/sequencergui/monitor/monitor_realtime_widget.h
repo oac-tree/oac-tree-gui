@@ -73,13 +73,6 @@ signals:
 private:
   void AdjustColumnWidth();
 
-  struct HeaderData
-  {
-    bool is_first_update{true};
-    bool block_listening_for_size{false};
-    std::array<int, 3> coulmn_width{0, 0, 0};  //! width of 3 columns
-  };
-
   void SetupConnections();
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
@@ -92,7 +85,6 @@ private:
   NodeEditor* m_node_editor{nullptr};
 
   MessagePanel* m_message_panel{nullptr};
-  HeaderData m_header_data;
   CustomHeaderView* m_custom_header{nullptr};
 };
 
