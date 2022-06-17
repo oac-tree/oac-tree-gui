@@ -146,24 +146,20 @@ void JobManager::OnMakeStepRequest()
 
 void JobManager::OnRemoveJobRequest(JobItem *job)
 {
-  auto context = GetContext(job);
-
-  if (!context)
+  if (auto context = GetContext(job); context)
   {
-    throw RuntimeException("No context for given job");
-  }
+    if (context->IsRunning())
+    {
+      throw RuntimeException("Attempt to modify running job");
+    }
 
-  if (context->IsRunning())
-  {
-    throw RuntimeException("Attempt to modify running job");
-  }
+    if (job == GetCurrentJob())
+    {
+      SetCurrentJob(nullptr);
+    }
 
-  if (job == GetCurrentJob())
-  {
-    SetCurrentJob(nullptr);
+    m_context_map.erase(job);
   }
-
-  m_context_map.erase(job);
 }
 
 void JobManager::SetMessagePanel(MessagePanel *panel)

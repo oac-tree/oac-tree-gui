@@ -174,12 +174,6 @@ TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
   // if no selection provided, the command does nothing
   EXPECT_NO_THROW(m_actions.OnRemoveJobRequest());
 
-  // if selection is related to JobItem which hasn't been submitted yet
-  JobItem some_unrelated_item;
-  m_selected_item = &some_unrelated_item;
-
-  EXPECT_THROW(m_actions.OnRemoveJobRequest(), RuntimeException);
-
   auto job_item = GetJobItems().at(0);
   m_selected_item = GetJobItems().at(0);
 

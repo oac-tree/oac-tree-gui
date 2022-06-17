@@ -168,8 +168,8 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   JobManager manager;
   manager.SetMessagePanel(&panel);
 
-  // it is not possible to remove non-existing job
-  EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
+  // nothing wrong if we are trying to remove non-submitted job
+  EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
 
   manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
