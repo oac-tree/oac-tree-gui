@@ -22,6 +22,7 @@
 
 #include <QWidget>
 #include <memory>
+#include <array>
 
 namespace mvvm
 {
@@ -67,6 +68,14 @@ signals:
   void changeDelayRequest(int msec);
 
 private:
+  void AdjustColumnWidth();
+
+  struct HeaderData
+  {
+    bool is_first_update{true};
+    std::array<int, 3> coulmn_width{0,0,0}; //! width of 3 columns
+  };
+
   void SetupConnections();
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
@@ -79,6 +88,7 @@ private:
   NodeEditor* m_node_editor{nullptr};
 
   MessagePanel* m_message_panel{nullptr};
+  HeaderData m_header_data;
 };
 
 }  // namespace sequencergui

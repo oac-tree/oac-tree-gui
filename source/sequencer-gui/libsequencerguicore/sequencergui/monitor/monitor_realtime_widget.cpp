@@ -19,8 +19,8 @@
 
 #include "sequencergui/monitor/monitor_realtime_widget.h"
 
-#include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/instruction_container_item.h"
+#include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/sequencer_model.h"
 #include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/monitor/message_panel.h"
@@ -32,6 +32,8 @@
 #include "mvvm/widgets/item_view_component_provider.h"
 #include "mvvm/widgets/top_items_tree_view.h"
 
+#include <QDebug>
+#include <QHeaderView>
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QTreeView>
@@ -73,9 +75,11 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer() : nullptr);
+  m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
+                                               : nullptr);
   m_instruction_tree->expandAll();
   m_node_editor->SetProcedure(procedure_item);
+  AdjustColumnWidth();
 }
 
 void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)
@@ -94,8 +98,30 @@ void MonitorRealTimeWidget::onAppChangeRequest(int id)
   m_stacked_widget->setCurrentIndex(id);
 }
 
+void MonitorRealTimeWidget::AdjustColumnWidth()
+{
+  if (m_header_data.is_first_update)
+  {
+    m_header_data.is_first_update = false;
+    m_instruction_tree->resizeColumnToContents(0);
+    qDebug() << "AdjustColumnWidth() 1.1";
+    for (int i=0; i<3; ++i)
+    {
+      m_header_data.coulmn_width[i] = m_instruction_tree->header()->sectionSize(i);
+    }
+  }
+  else
+  {
+    m_instruction_tree->header()->resizeSection(0, m_header_data.coulmn_width[0]);
+    m_instruction_tree->header()->resizeSection(1, m_header_data.coulmn_width[1]);
+    m_instruction_tree->header()->resizeSection(2, m_header_data.coulmn_width[2]);
+    qDebug() << "AdjustColumnWidth() 1.2" << m_header_data.coulmn_width[0] << " " << m_header_data.coulmn_width[1] << " " << m_header_data.coulmn_width[2];
+  }
+}
+
 void MonitorRealTimeWidget::SetupConnections()
 {
+  // forward signals from a toolbar
   connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this,
           &MonitorRealTimeWidget::runRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this,
@@ -108,6 +134,18 @@ void MonitorRealTimeWidget::SetupConnections()
           &MonitorRealTimeWidget::changeDelayRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::appChangeRequest, this,
           &MonitorRealTimeWidget::onAppChangeRequest);
+
+  // signals from the header
+  auto on_resize = [this](int index, int old_size, int new_size)
+  {
+
+    if (index < 3)
+    {
+      m_header_data.coulmn_width[index] = new_size;
+    }
+    qDebug() << "on_resize" << m_header_data.coulmn_width[0] << " " << m_header_data.coulmn_width[1] << " " << m_header_data.coulmn_width[2];
+  };
+  connect(m_instruction_tree->header(), &QHeaderView::sectionResized, this, on_resize);
 }
 
 }  // namespace sequencergui
