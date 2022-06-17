@@ -21,8 +21,10 @@
 #define SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
 
 #include <QWidget>
-#include <memory>
 #include <array>
+#include <memory>
+
+#include <QHeaderView>
 
 namespace mvvm
 {
@@ -41,6 +43,7 @@ class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
 class CollapsibleListView;
+class CustomHeaderView;
 
 //! Central panel on SequencerMonitorView.
 
@@ -54,7 +57,7 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelectedInstruction(InstructionItem *item);
+  void SetSelectedInstruction(InstructionItem* item);
 
   MessagePanel* GetMessagePanel();
 
@@ -73,7 +76,8 @@ private:
   struct HeaderData
   {
     bool is_first_update{true};
-    std::array<int, 3> coulmn_width{0,0,0}; //! width of 3 columns
+    bool block_listening_for_size{false};
+    std::array<int, 3> coulmn_width{0, 0, 0};  //! width of 3 columns
   };
 
   void SetupConnections();
@@ -89,6 +93,7 @@ private:
 
   MessagePanel* m_message_panel{nullptr};
   HeaderData m_header_data;
+  CustomHeaderView* m_custom_header{nullptr};
 };
 
 }  // namespace sequencergui
