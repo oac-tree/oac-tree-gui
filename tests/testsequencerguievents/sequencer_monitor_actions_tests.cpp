@@ -227,6 +227,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
   auto context = m_job_manager.GetContext(job_item);
+  auto expanded_procedure = job_item->GetExpandedProcedure();
 
   EXPECT_EQ(m_job_manager.GetContext(job_item)->GetExpandedProcedure(),
             job_item->GetExpandedProcedure());
@@ -248,4 +249,41 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
   // it should be same JobItem, but different contexts
   EXPECT_EQ(GetJobItems().at(0), job_item);
   EXPECT_NE(m_job_manager.GetContext(job_item), context);
+  EXPECT_NE(job_item->GetExpandedProcedure(), expanded_procedure);
+}
+
+//! Regenerate submitted job.
+
+TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
+
+  // submitting the procedure
+  m_actions.OnSubmitJobRequest(procedure);
+
+  // successfull job submission leads to the creation of JobItem with expanded procedure
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  auto context = m_job_manager.GetContext(job_item);
+  auto expanded_procedure = job_item->GetExpandedProcedure();
+
+  // deleting procedure
+  GetSequencerModel()->RemoveItem(procedure);
+
+  QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
+
+  // regenerating a job
+  m_selected_item = job_item;
+  EXPECT_THROW(m_actions.OnRegenerateJobRequest(), RuntimeException);
+
+  // job item has lost it's procedure and expanded procedure
+  EXPECT_FALSE(job_item->GetProcedure());
+  EXPECT_FALSE(job_item->GetExpandedProcedure());
+
+  EXPECT_EQ(spy_selected_request.count(), 0);
+  ASSERT_EQ(GetJobItems().size(), 1);
+
+  // it should be same JobItem, but no context
+  EXPECT_EQ(GetJobItems().at(0), job_item);
+  EXPECT_FALSE(m_job_manager.GetContext(job_item));
 }

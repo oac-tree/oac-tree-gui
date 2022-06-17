@@ -57,6 +57,14 @@ void JobContext::onPrepareJobRequest()
     throw RuntimeException("Attempt to reset already running job");
   }
 
+  // FIXME, refactor, provide unit tests (that JobModel notifies views correctly)
+  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
+
+  if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
+  {
+    job_model->RemoveItem(expanded_procedure);
+  }
+
   // building domain procedure
   DomainObjectBuilder builder;
   m_domain_procedure = builder.CreateProcedure(m_job_item->GetProcedure());
@@ -65,14 +73,6 @@ void JobContext::onPrepareJobRequest()
   if (!m_domain_procedure->Setup())
   {
     throw InvalidOperationException("Can't setup procedure");
-  }
-
-  // FIXME, refactor, provide unit tests (that JobModel notifies views correctly)
-  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
-
-  if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
-  {
-    job_model->RemoveItem(expanded_procedure);
   }
 
   auto expanded_procedure = std::make_unique<ProcedureItem>();

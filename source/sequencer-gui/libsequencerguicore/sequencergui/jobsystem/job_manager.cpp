@@ -81,19 +81,10 @@ void JobManager::SetCurrentJob(JobItem *job)
 
   m_current_job = job;
 
-  if (!m_current_job)
-  {
-    return;
-  }
-
   if (auto current_context = GetCurrentContext(); current_context)
   {
     // new context will be attached to the message panel
     current_context->SetMessagePanel(m_message_panel);
-  }
-  else
-  {
-    throw RuntimeException("No context for given job has been created");
   }
 }
 

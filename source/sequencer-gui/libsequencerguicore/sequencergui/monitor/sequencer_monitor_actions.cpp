@@ -45,7 +45,7 @@ bool InvokeAndCatch(T method, const std::string &message,
   catch (const std::exception &ex)
   {
     std::ostringstream ostr;
-    ostr << message << " falied with the message '" << std::string(ex.what()) << "'";
+    ostr << message << " failed with the message '" << std::string(ex.what()) << "'";
     message_interface->SendMessage(ostr.str());
     return false;
   }
@@ -169,10 +169,13 @@ void SequencerMonitorActions::OnRegenerateJobRequest()
 
   if (is_success)
   {
-    InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
+    auto is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                    m_message_handler.get());
 
-    emit MakeJobSelectedRequest(job);
+    if (is_success)
+    {
+      emit MakeJobSelectedRequest(job);
+    }
   }
 }
 
