@@ -92,6 +92,14 @@ QList<QWidget *> MonitorPanel::GetToolBarWidgets()
   submit_button->setToolTip("Submit sequencer procedure for execution");
   result.push_back(submit_button);
 
+  auto regenerate_button = new QToolButton;
+  regenerate_button->setText("Remove");
+  regenerate_button->setIcon(styleutils::GetIcon("refresh.svg"));
+  regenerate_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  regenerate_button->setToolTip("Regenerate selected job from the original procedure");
+  connect(regenerate_button, &QToolButton::clicked, this, &MonitorPanel::RegenerateJobRequest);
+  result.push_back(regenerate_button);
+
   auto remove_button = new QToolButton;
   remove_button->setText("Remove");
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));

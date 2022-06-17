@@ -65,6 +65,8 @@ public:
 
   void OnRemoveJobRequest();
 
+  void OnRegenerateJobRequest();
+
 signals:
   void MakeJobSelectedRequest(sequencergui::JobItem* item);
 

@@ -37,9 +37,9 @@ class MonitorWorkspaceWidget;
 class ProcedureItem;
 class SequencerMonitorActions;
 
-//! The SequencerMonitorView is a mainwindow component to run sequences and monitor execution.
-//! Contains the panel with jobs on the left, main sequence tree to run in the middle, and
-//! the panel to monitor variables on the left.
+//! The SequencerMonitorView is the main window component to run sequences and monitor execution.
+//! Contains the panel with jobs on the left, main sequence tree in the middle, and
+//! the panel to monitor variables on the right.
 
 class SequencerMonitorView : public QWidget
 {

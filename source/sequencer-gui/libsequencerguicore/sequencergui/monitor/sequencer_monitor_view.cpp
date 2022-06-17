@@ -126,9 +126,6 @@ void SequencerMonitorView::SetupConnections()
   // job selection request from MonitorPanel
   connect(m_monitor_panel, &MonitorPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
 
-  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_monitor_panel,
-          &MonitorPanel::SetSelectedJob);
-
   // job submission request
   connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, m_actions,
           &SequencerMonitorActions::OnSubmitJobRequest);
@@ -136,6 +133,14 @@ void SequencerMonitorView::SetupConnections()
   // job removal request
   connect(m_monitor_panel, &MonitorPanel::RemoveJobRequest, m_actions,
           &SequencerMonitorActions::OnRemoveJobRequest);
+
+  // job regenerate request
+  connect(m_monitor_panel, &MonitorPanel::RegenerateJobRequest, m_actions,
+          &SequencerMonitorActions::OnRegenerateJobRequest);
+
+  // job selection request from SequencerMonitorActions
+  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_monitor_panel,
+          &MonitorPanel::SetSelectedJob);
 }
 
 //! Setup widgets to show currently selected job.
