@@ -41,6 +41,7 @@ const std::chrono::milliseconds kDefaultWaitPrecision(50);
 
 using namespace sequencergui;
 using ::testing::_;
+using ::testing::AtLeast;
 
 class DomainRunnerAdapterTest : public ::testing::Test
 {
@@ -545,8 +546,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 
 TEST_F(DomainRunnerAdapterTest, StartStopStart)
 {
-  std::chrono::milliseconds timeout_msec(10000);
-  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+  std::chrono::milliseconds timeout_msec(100);
+  auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
 
@@ -564,16 +565,9 @@ TEST_F(DomainRunnerAdapterTest, StartStopStart)
     EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopped));
   }
 
-  {  // observer signaling
-    ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-  }
+  EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(AtLeast(1));
 
   // triggering action
   EXPECT_TRUE(adapter->Start());

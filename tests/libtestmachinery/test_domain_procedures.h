@@ -31,7 +31,7 @@
 namespace testutils
 {
 
-//! Retuns domain procedure that contain only a single wait instruction.
+//! Returns domain procedure that contains only a single wait instruction.
 std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout);
 
 //! Returns procedure that makes a single copy.
@@ -55,6 +55,10 @@ std::unique_ptr<procedure_t> CreateInputProcedure();
 
 //! Creates procedure with wait and copy instructions and possibility to select what to execute.
 std::unique_ptr<procedure_t> CreateUserChoiceProcedure();
+
+//! Returns domain procedure with infinite repetition of a sequence.
+std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
+                                                           std::chrono::milliseconds timeout);
 
 }  // namespace testutils
 

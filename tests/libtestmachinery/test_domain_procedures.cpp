@@ -180,4 +180,24 @@ std::unique_ptr<procedure_t> CreateUserChoiceProcedure()
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
+                                                           std::chrono::milliseconds timeout)
+{
+  auto result = std::make_unique<procedure_t>();
+  auto repeat = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  repeat->AddAttribute(domainconstants::kMaxCountAttribute,
+                       std::to_string(count));  // number of prepetitions
+
+  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
+                      std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
+
+  sequence->InsertInstruction(wait0.release(), 0);
+  repeat->InsertInstruction(sequence.release(), 0);
+
+  result->PushInstruction(repeat.release());
+  return result;
+}
+
 }  // namespace testutils
