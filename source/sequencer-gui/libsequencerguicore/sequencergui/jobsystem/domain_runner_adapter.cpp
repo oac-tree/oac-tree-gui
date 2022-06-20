@@ -22,6 +22,7 @@
 #include "Procedure.h"
 #include "Runner.h"
 #include "sequencergui/jobsystem/function_runner.h"
+#include "sequencergui/core/exceptions.h"
 
 #include <chrono>
 #include <iostream>
@@ -39,38 +40,6 @@ DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t
   auto worker = [this] { return ExecuteSingle(); };
   m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));
 }
-
-// bool DomainRunnerAdapter::Start()
-//{
-//   std::cout << "DomainRunnerAdapter::Start()" << std::endl;
-//   ResetIfNecessary();
-
-//  return m_function_runner->Start();
-//}
-
-// bool DomainRunnerAdapter::Stop()
-//{
-//   m_domain_runner->Halt();
-//   auto result = m_function_runner->Stop();
-//   if (result)
-//   {
-//     m_was_stopped = true;
-//   }
-
-//  return result;
-//}
-
-// bool DomainRunnerAdapter::Pause()
-//{
-//   return m_function_runner->Pause();
-// }
-
-// bool DomainRunnerAdapter::Step()
-//{
-//   ResetIfNecessary();
-//   bool result = m_function_runner->Step();
-//   return result;
-// }
 
 RunnerStatus DomainRunnerAdapter::GetStatus() const
 {
@@ -99,7 +68,13 @@ bool DomainRunnerAdapter::IsBusy() const
 
 void DomainRunnerAdapter::StartRequest()
 {
+  if (m_was_started)
+  {
+    throw RuntimeException("Domain runner is not intended to start the job twice");
+  }
+
   m_function_runner->StartRequest();
+  m_was_started = true;
 }
 
 void DomainRunnerAdapter::PauseModeOnRequest()
@@ -119,12 +94,8 @@ void DomainRunnerAdapter::StepRequest()
 
 void DomainRunnerAdapter::StopRequest()
 {
-  std::cout << "DomainRunnerAdapter::StopRequest() 1.1" << std::endl;
   m_domain_runner->Halt();
-  std::cout << "DomainRunnerAdapter::StopRequest() 1.2" << std::endl;
   m_function_runner->StopRequest();
-  std::cout << "DomainRunnerAdapter::StopRequest() 1.3" << std::endl;
-  m_was_stopped = true;
 }
 
 void DomainRunnerAdapter::OnStatusChange(RunnerStatus status)
@@ -144,24 +115,9 @@ bool DomainRunnerAdapter::ExecuteSingle()
   return is_running;
 }
 
-void DomainRunnerAdapter::ResetIfNecessary()
-{
-  // Reset if procedure was explicitely stopped, or was terminated normally
-  if (m_was_stopped || m_procedure->GetStatus() == ::sup::sequencer::ExecutionStatus::SUCCESS)
-  {
-    m_procedure->Reset();
-  }
-}
-
-//! Checks operational conditions. The DomainRunnerAdapter is intended to work with the Procedure
-//! after Setup() call. This method will throw on attempt to
-
-void DomainRunnerAdapter::CheckConditions(){};
 
 DomainRunnerAdapter::~DomainRunnerAdapter()
 {
-  std::cout << "DomainRunnerAdapter::~DomainRunnerAdapter()" << std::endl;
-
   // Line below is commented since we don't now if the underlying procedure is still alive.
   // So attempt to delete the runner during procedure execution will lead to UB
   // m_domain_runner->Halt();

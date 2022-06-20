@@ -49,14 +49,6 @@ public:
 
   ~DomainRunnerAdapter() override;
 
-  //  bool Start() override;
-
-  //  bool Stop() override;
-
-  //  bool Pause() override;
-
-  //  bool Step() override;
-
   RunnerStatus GetStatus() const override;
 
   void SetStatus(RunnerStatus status) override;
@@ -67,29 +59,20 @@ public:
 
   bool IsBusy() const;
 
-public:
-  //! Submits jobs for a execution.
   void StartRequest() override;
 
-  //! Request for pause mode.
   void PauseModeOnRequest() override;
 
-  //! Request for mode "proceed without waiting".
   void PauseModeOffRequest() override;
 
-  //! Request for single step.
   void StepRequest() override;
 
-  //! Request for job stop without waiting for its natural completion.
   void StopRequest() override;
 
-  //  //! Will be called on status change.
   void OnStatusChange(RunnerStatus status) override;
 
+private:
   bool ExecuteSingle();
-  void ResetIfNecessary();
-
-  void CheckConditions();
 
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
@@ -106,7 +89,7 @@ public:
   //! Delay in event loop.
   std::atomic<int> m_tick_timeout_ms{0};
 
-  bool m_was_stopped{false};
+  bool m_was_started{false};
 };
 
 }  // namespace sequencergui
