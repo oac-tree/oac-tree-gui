@@ -111,6 +111,13 @@ void DomainRunnerAdapter::ResetIfNecessary()
   {
     m_procedure->Reset();
   }
+}
+
+//! Checks operational conditions. The DomainRunnerAdapter is intended to work with the Procedure
+//! after Setup() call. This method will throw on attempt to
+
+void DomainRunnerAdapter::CheckConditions()
+{
 };
 
 DomainRunnerAdapter::~DomainRunnerAdapter()

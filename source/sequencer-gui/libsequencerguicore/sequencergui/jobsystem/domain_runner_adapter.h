@@ -36,7 +36,11 @@ class FunctionRunner;
 
 //! Adapter for domain runner to perform stepwise execution in a thread.
 //! We call the domain Runner::ExecuteSingle in the event loop provided by FunctionRunner.
-//! The Procedure and UserInterface should be alive during the life-time of the DomainRunnerAdapter.
+//! The Procedure and UserInterface should be alive during the lifetime of the DomainRunnerAdapter.
+//!
+//! This adapter is intended to work with the domain Procedure after the Setup call. It will throw on
+//! attempt to use it again if the procedure has been already successfully completed.
+
 
 class DomainRunnerAdapter : public RunnerInterface
 {
@@ -65,6 +69,8 @@ public:
 private:
   bool ExecuteSingle();
   void ResetIfNecessary();
+
+  void CheckConditions();
 
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
