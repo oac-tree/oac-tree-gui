@@ -73,6 +73,8 @@ signals:
 private:
   void CheckConditions();
 
+  void ResubmitIfNecessary();
+
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   selection_callback_t m_job_selection_callback;

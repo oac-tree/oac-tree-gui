@@ -144,6 +144,12 @@ bool JobContext::IsValid() const
   return m_domain_procedure != nullptr;
 }
 
+RunnerStatus JobContext::GetRunnerStatus() const
+{
+  CheckRunner();
+  return m_procedure_runner->GetRunnerStatus();
+}
+
 void JobContext::onInstructionStatusChange(const instruction_t *instruction, const QString &status)
 {
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
@@ -196,7 +202,7 @@ void JobContext::onRunnerStatusChanged()
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
-void JobContext::CheckRunner()
+void JobContext::CheckRunner() const
 {
   if (!m_procedure_runner)
   {

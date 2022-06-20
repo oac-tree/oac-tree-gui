@@ -73,6 +73,8 @@ public:
 
   bool IsValid() const;  // FIXME find better name
 
+  RunnerStatus GetRunnerStatus() const;
+
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
@@ -82,7 +84,7 @@ private:
   void onVariableChange(const QString& variable_name, const QString& value);
   void onRunnerStatusChanged();
 
-  void CheckRunner();
+  void CheckRunner() const;
 
   std::unique_ptr<ProcedureRunner> CreateProcedureRunner(procedure_t* procedure);
 

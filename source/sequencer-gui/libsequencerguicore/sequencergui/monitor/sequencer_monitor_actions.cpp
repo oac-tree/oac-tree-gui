@@ -21,6 +21,7 @@
 
 #include "sequencergui/core/exceptions.h"
 #include "sequencergui/core/message_handler_factory.h"
+#include "sequencergui/jobsystem/job_context.h"
 #include "sequencergui/jobsystem/job_manager.h"
 #include "sequencergui/model/job_item.h"
 #include "sequencergui/model/job_model.h"
@@ -104,6 +105,10 @@ void SequencerMonitorActions::OnStartJobRequest()
   CheckConditions();
 
   m_job_manager->SetCurrentJob(m_job_selection_callback());
+  std::cout << "AAAAA 1.1 " << std::endl;
+
+  ResubmitIfNecessary();
+
   m_job_manager->OnStartJobRequest();
 }
 
@@ -128,6 +133,9 @@ void SequencerMonitorActions::OnMakeStepRequest()
   CheckConditions();
 
   m_job_manager->SetCurrentJob(m_job_selection_callback());
+
+  ResubmitIfNecessary();
+
   m_job_manager->OnMakeStepRequest();
 }
 
@@ -194,6 +202,21 @@ void SequencerMonitorActions::CheckConditions()
   if (!m_job_selection_callback)
   {
     throw RuntimeException("Selection callback is not defined");
+  }
+}
+
+//! Resubmit job if last time it was terminated, or was completed succesfully.
+
+void SequencerMonitorActions::ResubmitIfNecessary()
+{
+  if (auto context = m_job_manager->GetCurrentContext(); context)
+  {
+    auto status = context->GetRunnerStatus();
+    if (status == RunnerStatus::kFailed || status == RunnerStatus::kCompleted
+        || status == RunnerStatus::kStopped)
+    {
+      OnRegenerateJobRequest();
+    }
   }
 }
 
