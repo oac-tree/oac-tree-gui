@@ -68,13 +68,12 @@ bool DomainRunnerAdapter::IsBusy() const
 
 void DomainRunnerAdapter::StartRequest()
 {
-  if (m_was_started)
+  if (GetStatus() != RunnerStatus::kIdle)
   {
     throw RuntimeException("Domain runner is not intended to start the job twice");
   }
 
   m_function_runner->StartRequest();
-  m_was_started = true;
 }
 
 void DomainRunnerAdapter::PauseModeOnRequest()
