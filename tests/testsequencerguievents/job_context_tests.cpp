@@ -232,10 +232,10 @@ TEST_F(JobContextTest, UserInputScenario)
 
   JobContext job_context(m_job_item);
 
+  job_context.onPrepareJobRequest();
+
   auto on_user_input = [](auto, auto) { return "42"; };
   job_context.SetUserContext({on_user_input});
-
-  job_context.onPrepareJobRequest();
 
   QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
@@ -255,11 +255,11 @@ TEST_F(JobContextTest, UserChoiceScenario)
 
   JobContext job_context(m_job_item);
 
+  job_context.onPrepareJobRequest();
+
   // callback to select Copy instruction
   auto on_user_choice = [](auto, auto) { return 1; };
   job_context.SetUserContext({{}, on_user_choice});
-
-  job_context.onPrepareJobRequest();
 
   QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 

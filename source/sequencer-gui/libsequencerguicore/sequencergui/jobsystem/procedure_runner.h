@@ -41,12 +41,10 @@ class ProcedureRunner : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureRunner(QObject* parent = nullptr);
+  explicit ProcedureRunner(procedure_t* procedure, QObject* parent = nullptr);
   ~ProcedureRunner() override;
 
   // Methods to control flow.
-
-  void SetProcedure(procedure_t* procedure);
 
   bool Start();
 
@@ -86,8 +84,6 @@ signals:
   void VariableChanged(const QString& variable_name, const QString& value);
 
 private:
-  void CheckConditions() const;
-
   std::unique_ptr<SequencerObserver> m_observer;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
   UserController m_user_controller;

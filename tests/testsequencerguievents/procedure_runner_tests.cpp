@@ -17,12 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/procedure_runner.h"
-
 #include "ExecutionStatus.h"
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
+#include "sequencergui/jobsystem/procedure_runner.h"
 #include "sequencergui/model/domain_utils.h"
 #include "sequencergui/model/sequencer_types.h"
 #include "test_domain_procedures.h"
@@ -49,7 +48,9 @@ public:
 
 TEST_F(ProcedureRunnerTest, InitialState)
 {
-  ProcedureRunner runner;
+  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
+  procedure->Setup();
+  ProcedureRunner runner(procedure.get());
   EXPECT_FALSE(runner.IsBusy());
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kIdle);
 }
@@ -85,12 +86,10 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
   auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  runner->SetProcedure(procedure.get());
 
   EXPECT_TRUE(runner->Start());
 
@@ -121,12 +120,10 @@ TEST_F(ProcedureRunnerTest, StartAndStop)
   auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  runner->SetProcedure(procedure.get());
 
   EXPECT_TRUE(runner->Start());
 
@@ -152,12 +149,10 @@ TEST_F(ProcedureRunnerTest, WaitForCompletion)
   auto procedure = testutils::CreateSingleWaitProcedure(msec(100));
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  runner->SetProcedure(procedure.get());
 
   EXPECT_TRUE(runner->Start());
 
@@ -174,13 +169,11 @@ TEST_F(ProcedureRunnerTest, CopyVariable)
   auto procedure = testutils::CreateCopyProcedure();
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
-
-  runner->SetProcedure(procedure.get());
 
   EXPECT_TRUE(runner->Start());
 
@@ -205,12 +198,10 @@ TEST_F(ProcedureRunnerTest, StepwiseExecution)
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  runner->SetProcedure(procedure.get());
 
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kIdle);
 
@@ -235,14 +226,13 @@ TEST_F(ProcedureRunnerTest, UserInput)
   auto procedure = testutils::CreateInputProcedure();
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
   runner->SetUserContext({on_user_input});
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-  runner->SetProcedure(procedure.get());
   EXPECT_TRUE(runner->Start());
   std::this_thread::sleep_for(msec(50));
 
@@ -273,14 +263,13 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   auto procedure = testutils::CreateUserChoiceProcedure();
   procedure->Setup();
 
-  auto runner = std::make_unique<ProcedureRunner>();
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
   runner->SetUserContext({{}, on_user_choice});
 
   QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
   QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
   QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-  runner->SetProcedure(procedure.get());
   EXPECT_TRUE(runner->Start());
   std::this_thread::sleep_for(msec(50));
 
@@ -296,35 +285,4 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   EXPECT_EQ(arguments.size(), 2);
   EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
   EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
-}
-
-//! Set procedure twice.
-
-TEST_F(ProcedureRunnerTest, SetProcedureTwice)
-{
-  auto runner = std::make_unique<ProcedureRunner>();
-
-  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
-  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
-  procedure->Setup();
-
-  runner->SetProcedure(procedure.get());
-
-  // Setting procedure second time to make sure that time of life of internal components of
-  // ProcedureRunner is consistent
-  runner->SetProcedure(procedure.get());
-
-  EXPECT_TRUE(runner->Start());
-
-  std::this_thread::sleep_for(msec(100));
-  EXPECT_FALSE(runner->IsBusy());
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-
-  EXPECT_EQ(spy_instruction_status.count(), 2);
-  EXPECT_EQ(spy_runner_status.count(), 2);
-
-  auto arguments = spy_instruction_status.takeFirst();
-  EXPECT_EQ(arguments.size(), 2);
 }

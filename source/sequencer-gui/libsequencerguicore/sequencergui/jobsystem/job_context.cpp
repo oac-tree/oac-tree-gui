@@ -43,11 +43,9 @@ namespace sequencergui
 
 JobContext::JobContext(JobItem *job_item)
     : m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
-    , m_procedure_runner(std::make_unique<ProcedureRunner>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
-  SetupConnections();
 }
 
 void JobContext::onPrepareJobRequest()
@@ -79,13 +77,14 @@ void JobContext::onPrepareJobRequest()
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get());
   job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
 
-  m_procedure_runner->SetProcedure(m_domain_procedure.get());
+  m_procedure_runner = CreateProcedureRunner(m_domain_procedure.get());
 }
 
 JobContext::~JobContext() = default;
 
 void JobContext::onStartRequest()
 {
+  CheckRunner();
   if (m_procedure_runner->Start())
   {
     m_job_log->ClearLog();
@@ -94,22 +93,25 @@ void JobContext::onStartRequest()
 
 void JobContext::onPauseRequest()
 {
+  CheckRunner();
   m_procedure_runner->Pause();
 }
 
 void JobContext::onMakeStepRequest()
 {
+  CheckRunner();
   m_procedure_runner->Step();
 }
 
 void JobContext::onStopRequest()
 {
+  CheckRunner();
   m_procedure_runner->Stop();
 }
 
 bool JobContext::IsRunning() const
 {
-  return m_procedure_runner->IsBusy();
+  return m_procedure_runner ? m_procedure_runner->IsBusy() : false;
 }
 
 //! Sets message panel to report text information.
@@ -121,11 +123,13 @@ void JobContext::SetMessagePanel(MessagePanel *panel)
 
 void JobContext::SetSleepTime(int time_msec)
 {
+  CheckRunner();
   m_procedure_runner->SetSleepTime(time_msec);
 }
 
 void JobContext::SetUserContext(const UserContext &user_context)
 {
+  CheckRunner();
   m_procedure_runner->SetUserContext(user_context);
 }
 
@@ -192,19 +196,31 @@ void JobContext::onRunnerStatusChanged()
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
-void JobContext::SetupConnections()
+void JobContext::CheckRunner()
 {
-  connect(m_procedure_runner.get(), &ProcedureRunner::InstructionStatusChanged, this,
+  if (!m_procedure_runner)
+  {
+    throw RuntimeException("No runner defined");
+  }
+}
+
+std::unique_ptr<ProcedureRunner> JobContext::CreateProcedureRunner(procedure_t *procedure)
+{
+  auto result = std::make_unique<ProcedureRunner>(procedure);
+
+  connect(result.get(), &ProcedureRunner::InstructionStatusChanged, this,
           &JobContext::onInstructionStatusChange, Qt::QueuedConnection);
 
-  connect(m_procedure_runner.get(), &ProcedureRunner::LogMessageRequest, this,
-          &JobContext::onLogMessage, Qt::QueuedConnection);
+  connect(result.get(), &ProcedureRunner::LogMessageRequest, this, &JobContext::onLogMessage,
+          Qt::QueuedConnection);
 
-  connect(m_procedure_runner.get(), &ProcedureRunner::VariableChanged, this,
-          &JobContext::onVariableChange, Qt::QueuedConnection);
+  connect(result.get(), &ProcedureRunner::VariableChanged, this, &JobContext::onVariableChange,
+          Qt::QueuedConnection);
 
-  connect(m_procedure_runner.get(), &ProcedureRunner::RunnerStatusChanged, this,
+  connect(result.get(), &ProcedureRunner::RunnerStatusChanged, this,
           &JobContext::onRunnerStatusChanged, Qt::QueuedConnection);
+
+  return result;
 }
 
 }  // namespace sequencergui

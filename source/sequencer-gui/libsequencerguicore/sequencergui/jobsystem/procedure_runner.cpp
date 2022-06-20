@@ -34,30 +34,20 @@
 
 namespace sequencergui
 {
-ProcedureRunner::ProcedureRunner(QObject *parent)
+ProcedureRunner::ProcedureRunner(procedure_t *procedure, QObject *parent)
     : QObject(parent), m_observer(std::make_unique<SequencerObserver>(this))
 {
-}
-
-ProcedureRunner::~ProcedureRunner() = default;
-
-void ProcedureRunner::SetProcedure(procedure_t *procedure)
-{
-  if (IsBusy())
-  {
-    return;
-  }
-
   auto status_changed = [this](auto) { emit RunnerStatusChanged(); };
   m_domain_runner_adapter =
       std::make_unique<DomainRunnerAdapter>(procedure, m_observer.get(), status_changed);
 }
 
+ProcedureRunner::~ProcedureRunner() = default;
+
 //! Starts new job, or release paused job.
 
 bool ProcedureRunner::Start()
 {
-  CheckConditions();
   return m_domain_runner_adapter->Start();
 }
 
@@ -65,7 +55,6 @@ bool ProcedureRunner::Start()
 
 bool ProcedureRunner::Step()
 {
-  CheckConditions();
   return m_domain_runner_adapter->Step();
 }
 
@@ -73,7 +62,6 @@ bool ProcedureRunner::Step()
 
 bool ProcedureRunner::Stop()
 {
-  CheckConditions();
   auto is_valid_request = m_domain_runner_adapter->Stop();
   if (is_valid_request)
   {
@@ -85,7 +73,6 @@ bool ProcedureRunner::Stop()
 
 bool ProcedureRunner::Pause()
 {
-  CheckConditions();
   return m_domain_runner_adapter->Pause();
 }
 
@@ -141,11 +128,4 @@ int ProcedureRunner::onUserChoice(const std::vector<std::string> &choices,
   return m_user_controller.GetUserChoice(choices, description);
 }
 
-void ProcedureRunner::CheckConditions() const
-{
-  if (!m_domain_runner_adapter)
-  {
-    throw RuntimeException("Domain runner is not initialised");
-  }
-}
 }  // namespace sequencergui

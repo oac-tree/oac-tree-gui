@@ -82,7 +82,9 @@ private:
   void onVariableChange(const QString& variable_name, const QString& value);
   void onRunnerStatusChanged();
 
-  void SetupConnections();
+  void CheckRunner();
+
+  std::unique_ptr<ProcedureRunner> CreateProcedureRunner(procedure_t* procedure);
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
 
