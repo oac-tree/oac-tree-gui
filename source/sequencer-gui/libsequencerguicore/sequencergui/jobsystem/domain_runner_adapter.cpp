@@ -40,41 +40,46 @@ DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t
   m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));
 }
 
-bool DomainRunnerAdapter::Start()
-{
-  std::cout << "DomainRunnerAdapter::Start()" << std::endl;
-  ResetIfNecessary();
+// bool DomainRunnerAdapter::Start()
+//{
+//   std::cout << "DomainRunnerAdapter::Start()" << std::endl;
+//   ResetIfNecessary();
 
-  return m_function_runner->Start();
-}
+//  return m_function_runner->Start();
+//}
 
-bool DomainRunnerAdapter::Stop()
-{
-  m_domain_runner->Halt();
-  auto result = m_function_runner->Stop();
-  if (result)
-  {
-    m_was_stopped = true;
-  }
+// bool DomainRunnerAdapter::Stop()
+//{
+//   m_domain_runner->Halt();
+//   auto result = m_function_runner->Stop();
+//   if (result)
+//   {
+//     m_was_stopped = true;
+//   }
 
-  return result;
-}
+//  return result;
+//}
 
-bool DomainRunnerAdapter::Pause()
-{
-  return m_function_runner->Pause();
-}
+// bool DomainRunnerAdapter::Pause()
+//{
+//   return m_function_runner->Pause();
+// }
 
-bool DomainRunnerAdapter::Step()
-{
-  ResetIfNecessary();
-  bool result = m_function_runner->Step();
-  return result;
-}
+// bool DomainRunnerAdapter::Step()
+//{
+//   ResetIfNecessary();
+//   bool result = m_function_runner->Step();
+//   return result;
+// }
 
 RunnerStatus DomainRunnerAdapter::GetStatus() const
 {
   return m_function_runner->GetStatus();
+}
+
+void DomainRunnerAdapter::SetStatus(RunnerStatus status)
+{
+  m_function_runner->SetStatus(status);
 }
 
 bool DomainRunnerAdapter::WaitForCompletion(std::chrono::milliseconds timeout_msec)
@@ -90,6 +95,41 @@ void DomainRunnerAdapter::SetTickTimeout(int msec)
 bool DomainRunnerAdapter::IsBusy() const
 {
   return m_function_runner->IsBusy();
+}
+
+void DomainRunnerAdapter::StartRequest()
+{
+  m_function_runner->StartRequest();
+}
+
+void DomainRunnerAdapter::PauseModeOnRequest()
+{
+  m_function_runner->PauseModeOnRequest();
+}
+
+void DomainRunnerAdapter::PauseModeOffRequest()
+{
+  m_function_runner->PauseModeOffRequest();
+}
+
+void DomainRunnerAdapter::StepRequest()
+{
+  m_function_runner->StepRequest();
+}
+
+void DomainRunnerAdapter::StopRequest()
+{
+  std::cout << "DomainRunnerAdapter::StopRequest() 1.1" << std::endl;
+  m_domain_runner->Halt();
+  std::cout << "DomainRunnerAdapter::StopRequest() 1.2" << std::endl;
+  m_function_runner->StopRequest();
+  std::cout << "DomainRunnerAdapter::StopRequest() 1.3" << std::endl;
+  m_was_stopped = true;
+}
+
+void DomainRunnerAdapter::OnStatusChange(RunnerStatus status)
+{
+  m_function_runner->OnStatusChange(status);
 }
 
 bool DomainRunnerAdapter::ExecuteSingle()
@@ -116,12 +156,12 @@ void DomainRunnerAdapter::ResetIfNecessary()
 //! Checks operational conditions. The DomainRunnerAdapter is intended to work with the Procedure
 //! after Setup() call. This method will throw on attempt to
 
-void DomainRunnerAdapter::CheckConditions()
-{
-};
+void DomainRunnerAdapter::CheckConditions(){};
 
 DomainRunnerAdapter::~DomainRunnerAdapter()
 {
+  std::cout << "DomainRunnerAdapter::~DomainRunnerAdapter()" << std::endl;
+
   // Line below is commented since we don't now if the underlying procedure is still alive.
   // So attempt to delete the runner during procedure execution will lead to UB
   // m_domain_runner->Halt();

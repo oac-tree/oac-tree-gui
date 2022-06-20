@@ -19,6 +19,8 @@
 
 #include "sequencergui/jobsystem/abstract_job.h"
 
+#include <iostream>
+
 namespace
 {
 bool CanStartJob(::sequencergui::RunnerStatus current_status)
@@ -59,12 +61,12 @@ AbstractJob::~AbstractJob() = default;
 bool AbstractJob::Start()
 {
   bool is_valid_request{false};
-  if (CanStartJob(m_status))
+  if (CanStartJob(GetStatus()))
   {
     StartRequest();
     is_valid_request = true;
   }
-  else if (CanReleaseJob(m_status))
+  else if (CanReleaseJob(GetStatus()))
   {
     PauseModeOffRequest();
     is_valid_request = true;
@@ -74,9 +76,11 @@ bool AbstractJob::Start()
 
 bool AbstractJob::Stop()
 {
+  std::cout << " AbstractJob::Stop() 1.1 " << static_cast<int>(GetStatus()) << std::endl;
   bool is_valid_request{false};
-  if (CanStopJob(m_status))
+  if (CanStopJob(GetStatus()))
   {
+    std::cout << " AbstractJob::Stop() 1.2 " << static_cast<int>(GetStatus()) << std::endl;
     StopRequest();
     is_valid_request = true;
   }
@@ -86,7 +90,7 @@ bool AbstractJob::Stop()
 bool AbstractJob::Pause()
 {
   bool is_valid_request{false};
-  if (CanPauseJob(m_status))
+  if (CanPauseJob(GetStatus()))
   {
     PauseModeOnRequest();
     is_valid_request = true;
@@ -97,12 +101,12 @@ bool AbstractJob::Pause()
 bool AbstractJob::Step()
 {
   bool is_valid_request{false};
-  if (CanReleaseJob(m_status))
+  if (CanReleaseJob(GetStatus()))
   {
     StepRequest();
     is_valid_request = true;
   }
-  else if (CanStartJob(m_status))
+  else if (CanStartJob(GetStatus()))
   {
     PauseModeOnRequest();
     StartRequest();

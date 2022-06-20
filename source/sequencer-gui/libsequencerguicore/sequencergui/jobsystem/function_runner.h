@@ -41,7 +41,7 @@ public:
 
   bool IsBusy() const;
 
-private:
+public:
   void StartRequest() override;
   void PauseModeOnRequest() override;
   void PauseModeOffRequest() override;

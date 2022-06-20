@@ -49,11 +49,11 @@ public:
 
   bool Step() override;
 
-  RunnerStatus GetStatus() const;
+  virtual RunnerStatus GetStatus() const;
 
-  void SetStatus(RunnerStatus status);
+  virtual void SetStatus(RunnerStatus status);
 
-private:
+public:
   //! Submits jobs for a execution.
   virtual void StartRequest() {}
 

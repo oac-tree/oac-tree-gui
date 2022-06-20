@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 #define SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 
+#include "sequencergui/jobsystem/abstract_job.h"
 #include "sequencergui/jobsystem/job_types.h"
-#include "sequencergui/jobsystem/runner_interface.h"
 #include "sequencergui/model/sequencer_types.h"
 
 #include <atomic>
@@ -38,11 +38,10 @@ class FunctionRunner;
 //! We call the domain Runner::ExecuteSingle in the event loop provided by FunctionRunner.
 //! The Procedure and UserInterface should be alive during the lifetime of the DomainRunnerAdapter.
 //!
-//! This adapter is intended to work with the domain Procedure after the Setup call. It will throw on
-//! attempt to use it again if the procedure has been already successfully completed.
+//! This adapter is intended to work with the domain Procedure after the Setup call. It will throw
+//! on attempt to use it again if the procedure has been already successfully completed.
 
-
-class DomainRunnerAdapter : public RunnerInterface
+class DomainRunnerAdapter : public AbstractJob
 {
 public:
   DomainRunnerAdapter(procedure_t* procedure, userinterface_t* interface,
@@ -50,15 +49,17 @@ public:
 
   ~DomainRunnerAdapter() override;
 
-  bool Start() override;
+  //  bool Start() override;
 
-  bool Stop() override;
+  //  bool Stop() override;
 
-  bool Pause() override;
+  //  bool Pause() override;
 
-  bool Step() override;
+  //  bool Step() override;
 
-  RunnerStatus GetStatus() const;
+  RunnerStatus GetStatus() const override;
+
+  void SetStatus(RunnerStatus status) override;
 
   bool WaitForCompletion(std::chrono::milliseconds timeout_msec);
 
@@ -66,7 +67,25 @@ public:
 
   bool IsBusy() const;
 
-private:
+public:
+  //! Submits jobs for a execution.
+  void StartRequest() override;
+
+  //! Request for pause mode.
+  void PauseModeOnRequest() override;
+
+  //! Request for mode "proceed without waiting".
+  void PauseModeOffRequest() override;
+
+  //! Request for single step.
+  void StepRequest() override;
+
+  //! Request for job stop without waiting for its natural completion.
+  void StopRequest() override;
+
+  //  //! Will be called on status change.
+  void OnStatusChange(RunnerStatus status) override;
+
   bool ExecuteSingle();
   void ResetIfNecessary();
 

@@ -28,6 +28,7 @@
 #include <cmath>
 #include <mutex>
 #include <thread>
+#include <iostream>
 
 namespace sequencergui
 {
@@ -165,7 +166,10 @@ void FunctionRunner::StepRequest()
 
 void FunctionRunner::StopRequest()
 {
+  std::cout << "FunctionRunner::StopRequest() 1.1" << std::endl;
+
   p_impl->Stop();
+  std::cout << "FunctionRunner::StopRequest() 1.2" << std::endl;
 }
 
 void FunctionRunner::OnStatusChange(RunnerStatus status)
