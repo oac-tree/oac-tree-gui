@@ -41,19 +41,19 @@ public:
   AbstractJob();
   ~AbstractJob() override;
 
-  bool Start() override;
+  bool Start() final;
 
-  bool Stop() override;
+  bool Stop() final;
 
-  bool Pause() override;
+  bool Pause() final;
 
-  bool Step() override;
+  bool Step() final;
 
   virtual RunnerStatus GetStatus() const;
 
   virtual void SetStatus(RunnerStatus status);
 
-public:
+protected:
   //! Submits jobs for a execution.
   virtual void StartRequest() {}
 
@@ -72,6 +72,7 @@ public:
   //! Will be called on status change.
   virtual void OnStatusChange(RunnerStatus status) {}
 
+private:
   RunnerStatus m_status{RunnerStatus::kIdle};
   mutable std::mutex m_mutex;
 };
