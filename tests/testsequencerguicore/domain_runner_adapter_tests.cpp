@@ -146,7 +146,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 
   EXPECT_FALSE(adapter->IsBusy());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
-  // it is FAILURE here (and not NOT_FINISHED) necause we have interrupted Wait with the Halt
+  // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
@@ -538,4 +538,73 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+}
+
+//! Long running procedure gets stopped, then started again (and then stopped).
+//! We check that after abnormal termination of the procedure it is possible to start it again.
+
+TEST_F(DomainRunnerAdapterTest, StartStopStart)
+{
+  std::chrono::milliseconds timeout_msec(10000);
+  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopped));
+
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kStopped));
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+  }
+
+  // triggering action
+  EXPECT_TRUE(adapter->Start());
+
+  EXPECT_TRUE(adapter->IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
+
+  adapter->Stop();
+  std::this_thread::sleep_for(msec(10));
+
+  EXPECT_FALSE(adapter->IsBusy());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  // it is FAILURE here (and not NOT_FINISHED) necause we have interrupted Wait with the Halt
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+
+  // second round
+
+  EXPECT_TRUE(adapter->Start());
+
+  EXPECT_TRUE(adapter->IsBusy());
+  std::this_thread::sleep_for(msec(20));
+
+  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
+
+  adapter->Stop();
+  std::this_thread::sleep_for(msec(10));
+
+  EXPECT_FALSE(adapter->IsBusy());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  // it is FAILURE here (and not NOT_FINISHED) necause we have interrupted Wait with the Halt
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }

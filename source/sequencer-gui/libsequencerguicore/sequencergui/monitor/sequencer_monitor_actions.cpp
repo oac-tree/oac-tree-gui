@@ -169,8 +169,8 @@ void SequencerMonitorActions::OnRegenerateJobRequest()
 
   if (is_success)
   {
-    auto is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
-                   m_message_handler.get());
+    auto is_success = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); },
+                                     "Job submission", m_message_handler.get());
 
     if (is_success)
     {
