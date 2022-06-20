@@ -281,3 +281,39 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
   EXPECT_EQ(GetJobItems().at(0), job_item);
   EXPECT_FALSE(m_job_manager.GetContext(job_item));
 }
+
+//! Consequent execution of same job.
+
+TEST_F(SequencerMonitorActionsTests, ExecuteSameJobTwice)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(50));
+
+  // submitting the procedure
+  m_actions.OnSubmitJobRequest(procedure);
+
+  ASSERT_EQ(GetJobItems().size(), 1);
+  auto job_item = GetJobItems().at(0);
+  EXPECT_TRUE(m_job_manager.GetContext(job_item));
+
+  // sarting the job when now JobItem is selected
+  m_selected_item = job_item;
+
+  m_actions.OnStartJobRequest();
+
+  EXPECT_EQ(m_job_manager.GetCurrentContext(), m_job_manager.GetContext(job_item));
+  EXPECT_TRUE(m_job_manager.GetContext(job_item)->IsRunning());
+
+  QTest::qWait(100);
+  EXPECT_FALSE(m_job_manager.GetContext(job_item)->IsRunning());
+
+  EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
+
+  // starting same job again
+  m_actions.OnStartJobRequest();
+
+  QTest::qWait(100);
+  EXPECT_FALSE(m_job_manager.GetContext(job_item)->IsRunning());
+
+  EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
+
+}

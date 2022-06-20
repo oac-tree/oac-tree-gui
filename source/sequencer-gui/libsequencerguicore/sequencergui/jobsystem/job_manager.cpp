@@ -40,8 +40,7 @@ namespace sequencergui
 {
 
 JobManager::JobManager(QObject *parent)
-    : QObject(parent)
-    , m_current_delay(GetDefaultTickTimeoutMsc())
+    : QObject(parent), m_current_delay(GetDefaultTickTimeoutMsc())
 {
 }
 
@@ -76,7 +75,10 @@ void JobManager::SetCurrentJob(JobItem *job)
   if (auto current_context = GetCurrentContext(); current_context)
   {
     current_context->SetMessagePanel(nullptr);
-    m_message_panel->onClearLog();
+    if (m_message_panel)
+    {
+      m_message_panel->onClearLog();
+    }
   }
 
   m_current_job = job;
