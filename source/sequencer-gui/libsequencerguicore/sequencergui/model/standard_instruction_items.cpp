@@ -527,7 +527,7 @@ static inline const std::string kFailureThreshold = "kFailureThreshold";
 ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
   AddProperty(kSuccessThreshold, 0)->SetDisplayName("Success threshold");
-  AddProperty(kFailureThreshold, 0)->SetDisplayName("Failure threshold");
+  AddProperty(kFailureThreshold, 1)->SetDisplayName("Failure threshold");
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
