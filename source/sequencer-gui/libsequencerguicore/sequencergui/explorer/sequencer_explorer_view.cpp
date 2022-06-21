@@ -30,6 +30,7 @@
 
 #include "mvvm/interfaces/model_event_subscriber_interface.h"
 #include "mvvm/standarditems/standard_item_includes.h"
+#include "mvvm/utils/file_utils.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -41,6 +42,9 @@ namespace
 bool PopulateProcedureFromXmlFile(const QString &file_name,
                                   sequencergui::ProcedureItem *procedure_item)
 {
+  auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
+  procedure_item->SetDisplayName(procedure_name);
+
   auto on_import = [file_name, procedure_item]()
   { ImportFromFile(file_name.toStdString(), procedure_item); };
   return sequencergui::InvokeAndCatch(on_import);
