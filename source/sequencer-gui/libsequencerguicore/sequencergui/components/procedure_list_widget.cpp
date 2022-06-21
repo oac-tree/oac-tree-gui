@@ -23,10 +23,10 @@
 #include "sequencergui/model/procedure_item.h"
 #include "sequencergui/model/sequencer_model.h"
 #include "sequencergui/utils/style_utils.h"
+#include "sequencergui/viewmodel/procedure_viewmodel.h"
 
 #include "mvvm/model/item_utils.h"
 #include "mvvm/standarditems/container_item.h"
-#include "mvvm/viewmodel/top_items_viewmodel.h"
 #include "mvvm/widgets/item_view_component_provider.h"
 
 #include <QAction>
@@ -41,7 +41,7 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     , m_new_procedure_action(new QAction)
     , m_remove_selected_action(new QAction)
     , m_list_view(new QListView)
-    , m_component_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_list_view))
+    , m_component_provider(mvvm::CreateProvider<ProcedureViewModel>(m_list_view))
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");
