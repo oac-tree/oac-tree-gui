@@ -50,6 +50,9 @@ TEST_F(SequencerItemsTest, ProcedureItem)
 {
   ProcedureItem item;
 
-  item.SetStatus("abc");
-  EXPECT_EQ(item.GetStatus(), "abc");
+  item.SetDescription("abc");
+  EXPECT_EQ(item.GetDescription(), "abc");
+
+  item.SetName("efg");
+  EXPECT_EQ(item.GetName(), "efg");
 }

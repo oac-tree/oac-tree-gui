@@ -34,9 +34,13 @@ public:
   static inline const std::string Type = "Procedure";
   ProcedureItem();
 
-  std::string GetStatus() const;
+  std::string GetName() const;
 
-  void SetStatus(const std::string& status);
+  void SetName(const std::string& value);
+
+  std::string GetDescription() const;
+
+  void SetDescription(const std::string& value);
 
   InstructionContainerItem* GetInstructionContainer() const;
   WorkspaceItem* GetWorkspace() const;

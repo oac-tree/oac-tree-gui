@@ -31,19 +31,30 @@ static inline const std::string kWorkspace = "kWorkspace";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
 {
-  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
+  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
+  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
 }
 
-std::string ProcedureItem::GetStatus() const
+std::string ProcedureItem::GetName() const
 {
-  return Property<std::string>(itemconstants::kStatus);
+  return Property<std::string>(itemconstants::kName);
 }
 
-void ProcedureItem::SetStatus(const std::string &status)
+void ProcedureItem::SetName(const std::string &value)
 {
-  SetProperty(itemconstants::kStatus, status);
+  SetProperty(itemconstants::kName, value);
+}
+
+std::string ProcedureItem::GetDescription() const
+{
+  return Property<std::string>(itemconstants::kDescription);
+}
+
+void ProcedureItem::SetDescription(const std::string &value)
+{
+  SetProperty(itemconstants::kDescription, value);
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const

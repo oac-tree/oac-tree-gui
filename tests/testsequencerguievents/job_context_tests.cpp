@@ -116,7 +116,7 @@ TEST_F(JobContextTest, PrematureDeletion)
     job_context.onStartRequest();
   }
 
-  EXPECT_EQ(procedure->GetStatus(), std::string());
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
 }
 
 //! Normal execution of the procedure with single wait instruction.
@@ -126,7 +126,6 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
   auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_EQ(procedure->GetStatus(), std::string());
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
   JobContext job_context(m_job_item);
@@ -157,7 +156,6 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
   auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_EQ(procedure->GetStatus(), std::string());
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
   JobContext job_context(m_job_item);
