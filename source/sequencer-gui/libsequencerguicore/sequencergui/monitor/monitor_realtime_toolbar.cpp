@@ -82,8 +82,6 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_stop_button);
 
-  addSeparator();
-
   m_delay_button->setText(GetDelayText(GetDefaultTickTimeoutMsc()));
   m_delay_button->setIcon(styleutils::GetIcon("speedometer-slow.svg"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);

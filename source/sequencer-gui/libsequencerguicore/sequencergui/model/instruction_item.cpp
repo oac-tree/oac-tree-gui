@@ -39,7 +39,10 @@ InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(it
 {
   AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
   AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
-  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status");
+  AddProperty(itemconstants::kStatus, std::string())
+      ->SetDisplayName("Status")
+      ->SetVisible(false)
+      ->SetEditable(false);
   AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
   AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
 }
