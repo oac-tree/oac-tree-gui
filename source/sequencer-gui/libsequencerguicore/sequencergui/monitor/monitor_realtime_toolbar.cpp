@@ -71,7 +71,7 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   m_step_button->setText("Step");
   m_step_button->setIcon(styleutils::GetIcon("play-pause.svg"));
   m_step_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_step_button->setToolTip("Pause sequence at the next occasion");
+  m_step_button->setToolTip("Execute single instruction");
   connect(m_step_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stepRequest);
   addWidget(m_step_button);
 
