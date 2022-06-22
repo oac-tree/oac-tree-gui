@@ -64,15 +64,6 @@ double GetAlignmentGridHeight();
 //! Returns horizontal size of the alignment grid.
 double GetAlignmentGridWidth();
 
-//! Align instructions tree on graphics scene. When `force` is false allignment is performed only
-//! for instructions with unitialised coordinates.
-void AlignTree(const QPointF& reference, InstructionContainerItem* container, bool force = false);
-
-//! Align children of given instruction on graphics scene.  When `force` is false allignment is
-//! performed only for instructions with unitialised coordinates.
-//! The position of parent `instruction` remains unchanged.
-void AlignInstructionTree(const QPointF& reference, InstructionItem* instruction, bool force);
-
 //! Returns base color of given instruction
 QColor GetBaseColor(const InstructionItem* instruction);
 

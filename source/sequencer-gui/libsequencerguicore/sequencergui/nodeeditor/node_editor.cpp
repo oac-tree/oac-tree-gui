@@ -82,7 +82,7 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
     auto scene_rect = m_graphics_scene->sceneRect();
     const QPointF reference_point = m_graphics_scene->sceneRect().center();
     auto align_strategy = [reference_point](auto container)
-    { AlignTree(reference_point, container); };
+    { algorithm::AlignInstructionTreeWalker(reference_point, container); };
     m_scene_controller->SetAlignStrategy(align_strategy);
 
     m_scene_controller->Init(instruction_container);
@@ -137,19 +137,6 @@ void NodeEditor::SetupConnections()
   // Propagate selection request from GraphicsScene to GraphicsView
   connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
           &GraphicsView::onSelectionMode);
-
-  // Propagate align request from toolBar to GraphicsScene. All children of currently selected
-  // parent will be aligned.
-  auto on_align = [this]()
-  {
-    auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
-    for (auto view : selected)
-    {
-      auto item = view->GetConnectableItem()->GetInstruction();
-      AlignInstructionTree(view->pos(), item, /*force*/ true);
-    }
-  };
-  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
 
   auto on_align_v2 = [this]()
   {

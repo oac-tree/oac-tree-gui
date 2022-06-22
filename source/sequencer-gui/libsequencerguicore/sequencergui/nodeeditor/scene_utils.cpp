@@ -19,6 +19,7 @@
 
 #include "sequencergui/nodeeditor/scene_utils.h"
 
+#include <mvvm/core/exceptions.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -27,25 +28,10 @@
 #include <sequencergui/model/transform_from_domain.h>
 #include <sequencergui/utils/style_utils.h>
 
-#include <mvvm/core/exceptions.h>
-
 #include <QDebug>
 #include <QLinearGradient>
 #include <QRectF>
 #include <numeric>
-
-namespace
-{
-
-//! Returns true if instruction has not been positioned yet.
-bool HasNoPosition(sequencergui::InstructionItem* instruction)
-{
-  const bool zero_x = std::abs(instruction->GetX()) < std::numeric_limits<double>::epsilon();
-  const bool zero_y = std::abs(instruction->GetY()) < std::numeric_limits<double>::epsilon();
-  return zero_x && zero_y;
-}
-
-}  // namespace
 
 namespace sequencergui
 {
@@ -112,43 +98,6 @@ std::vector<QPointF> GetPositions(const QPointF& reference, int n_points, double
     xpos += width;
   }
   return result;
-}
-
-void AlignTree(const QPointF& reference, InstructionContainerItem* container, bool force)
-{
-  auto positions =
-      GetPositions(reference, container->GetInstructions().size(), GetAlignmentGridWidth());
-  int index{0};
-  for (const auto child : container->GetInstructions())
-  {
-    if (HasNoPosition(child))
-    {
-      child->SetX(positions[index].x());
-      child->SetY(positions[index].y());
-    }
-    AlignInstructionTree(positions[index], child, force);
-    ++index;
-  }
-}
-
-void AlignInstructionTree(const QPointF& reference, sequencergui::InstructionItem* instruction,
-                          bool force)
-{
-  auto positions = sequencergui::GetPositions(reference, instruction->GetInstructions().size(),
-                                              sequencergui::GetAlignmentGridWidth());
-  int index{0};
-  for (const auto child : instruction->GetInstructions())
-  {
-    QPointF child_pos(positions[index].x(),
-                      positions[index].y() + sequencergui::GetAlignmentGridHeight());
-    if (HasNoPosition(child) || force)
-    {
-      child->SetX(child_pos.x());
-      child->SetY(child_pos.y());
-    }
-    AlignInstructionTree(child_pos, child, force);
-    ++index;
-  }
 }
 
 QColor GetBaseColor(const InstructionItem* instruction)
