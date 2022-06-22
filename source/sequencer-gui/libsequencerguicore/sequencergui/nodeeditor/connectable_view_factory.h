@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWFACTORY_H
-#define SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWFACTORY_H
+#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
+#define SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_
 
 #include <sequencergui/nodeeditor/view_factory_interface.h>
 
@@ -45,4 +45,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWFACTORY_H
+#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_FACTORY_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_TRANSFORMFROMDOMAIN_H
-#define SEQUENCERGUI_MODEL_TRANSFORMFROMDOMAIN_H
+#ifndef SEQUENCERGUI_MODEL_TRANSFORM_FROM_DOMAIN_H_
+#define SEQUENCERGUI_MODEL_TRANSFORM_FROM_DOMAIN_H_
 
 //! @file transformfromdomain.h
 //! Collection of utility functions to convert sup::sequencer::Procedure into SessionModel.
@@ -61,4 +61,4 @@ std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string&
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_TRANSFORMFROMDOMAIN_H
+#endif  // SEQUENCERGUI_MODEL_TRANSFORM_FROM_DOMAIN_H_

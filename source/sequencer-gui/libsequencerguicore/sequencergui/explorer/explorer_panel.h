@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPLORER_EXPLORERPANEL_H
-#define SEQUENCERGUI_EXPLORER_EXPLORERPANEL_H
+#ifndef SEQUENCERGUI_EXPLORER_EXPLORER_PANEL_H_
+#define SEQUENCERGUI_EXPLORER_EXPLORER_PANEL_H_
 
 #include <QWidget>
 
@@ -61,4 +61,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPLORER_EXPLORERPANEL_H
+#endif  // SEQUENCERGUI_EXPLORER_EXPLORER_PANEL_H_

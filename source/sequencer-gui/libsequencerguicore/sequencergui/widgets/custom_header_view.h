@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H
-#define SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H
+#ifndef SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H_
+#define SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H_
 
 #include <QHeaderView>
 #include <vector>
@@ -54,4 +54,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H
+#endif  // SEQUENCERGUI_WIDGETS_CUSTOM_HEADER_VIEW_H_

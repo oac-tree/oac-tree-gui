@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_XMLUTILS_H
-#define SEQUENCERGUI_MODEL_XMLUTILS_H
+#ifndef SEQUENCERGUI_MODEL_XML_UTILS_H_
+#define SEQUENCERGUI_MODEL_XML_UTILS_H_
 
 //! @file importutils.h
 //! Collection of utility functions to import xml files from disk into SessionModel.
@@ -39,4 +39,4 @@ std::string ExportToXMLString(const ProcedureItem* procedure_item);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_XMLUTILS_H
+#endif  // SEQUENCERGUI_MODEL_XML_UTILS_H_

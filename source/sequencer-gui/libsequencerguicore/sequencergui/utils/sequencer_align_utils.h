@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_SEQUENCERALIGNUTILS_H
-#define SEQUENCERGUI_UTILS_SEQUENCERALIGNUTILS_H
+#ifndef SEQUENCERGUI_UTILS_SEQUENCER_ALIGN_UTILS_H_
+#define SEQUENCERGUI_UTILS_SEQUENCER_ALIGN_UTILS_H_
 
 //! @file sequenceralign_utils.h
 //! Collection of utility functions to align Sequencer instruction tree on the graphics scene.
@@ -66,4 +66,4 @@ void AlignInstructionTreeWalker(const QPointF& reference,
 
 }  // namespace sequencergui::algorithm
 
-#endif  // SEQUENCERGUI_UTILS_SEQUENCERALIGNUTILS_H
+#endif  // SEQUENCERGUI_UTILS_SEQUENCER_ALIGN_UTILS_H_

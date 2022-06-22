@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_MESSAGEHANDLERFACTORY_H
-#define SEQUENCERGUI_CORE_MESSAGEHANDLERFACTORY_H
+#ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_FACTORY_H_
+#define SEQUENCERGUI_CORE_MESSAGE_HANDLER_FACTORY_H_
 
 //! @file messagehandlerfactory.h
 //! Factory functions to create various message reporters.
@@ -50,4 +50,4 @@ std::unique_ptr<MessageHandlerInterface> CreateMessageBoxHandler();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERFACTORY_H
+#endif  // SEQUENCERGUI_CORE_MESSAGE_HANDLER_FACTORY_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MONITORREALTIMETOOLBAR_H
-#define SEQUENCERGUI_MONITOR_MONITORREALTIMETOOLBAR_H
+#ifndef SEQUENCERGUI_MONITOR_MONITOR_REALTIME_TOOLBAR_H_
+#define SEQUENCERGUI_MONITOR_MONITOR_REALTIME_TOOLBAR_H_
 
 #include <QToolBar>
 #include <memory>
@@ -64,4 +64,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MONITORREALTIMETOOLBAR_H
+#endif  // SEQUENCERGUI_MONITOR_MONITOR_REALTIME_TOOLBAR_H_

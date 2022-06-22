@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_MESSAGEHANDLERINTERFACE_H
-#define SEQUENCERGUI_CORE_MESSAGEHANDLERINTERFACE_H
+#ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
+#define SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
 
 #include <string>
 
@@ -34,4 +34,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERINTERFACE_H
+#endif  // SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_

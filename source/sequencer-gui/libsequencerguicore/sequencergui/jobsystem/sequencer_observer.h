@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_SEQUENCEROBSERVER_H
-#define SEQUENCERGUI_MONITOR_SEQUENCEROBSERVER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_
+#define SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_
 
 #include "UserInterface.h"
 
@@ -56,4 +56,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_SEQUENCEROBSERVER_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_

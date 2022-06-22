@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPLORER_XMLSYNTAXHIGHLIGHTER_H
-#define SEQUENCERGUI_EXPLORER_XMLSYNTAXHIGHLIGHTER_H
+#ifndef SEQUENCERGUI_EXPLORER_XML_SYNTAX_HIGHLIGHTER_H_
+#define SEQUENCERGUI_EXPLORER_XML_SYNTAX_HIGHLIGHTER_H_
 
 #include <QRegularExpression>
 #include <QSyntaxHighlighter>
@@ -61,4 +61,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPLORER_XMLSYNTAXHIGHLIGHTER_H
+#endif  // SEQUENCERGUI_EXPLORER_XML_SYNTAX_HIGHLIGHTER_H_

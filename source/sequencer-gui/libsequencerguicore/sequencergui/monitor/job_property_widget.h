@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOBPROPERTYWIDGET_H
-#define SEQUENCERGUI_MONITOR_JOBPROPERTYWIDGET_H
+#ifndef SEQUENCERGUI_MONITOR_JOB_PROPERTY_WIDGET_H_
+#define SEQUENCERGUI_MONITOR_JOB_PROPERTY_WIDGET_H_
 
 #include <QWidget>
 
@@ -49,4 +49,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOBPROPERTYWIDGET_H
+#endif  // SEQUENCERGUI_MONITOR_JOB_PROPERTY_WIDGET_H_

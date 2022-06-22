@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_USERCONTEXT_H
-#define SEQUENCERGUI_MONITOR_USERCONTEXT_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
+#define SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
 
 #include <QStringList>
 #include <functional>
@@ -43,4 +43,4 @@ struct UserContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_USERCONTEXT_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_

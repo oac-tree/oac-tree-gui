@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_TYPE_H
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_TYPE_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_TYPE_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_TYPE_H_
 
 namespace sup::dto
 {
@@ -27,4 +27,4 @@ class AnyValue;
 
 using anyvalue_t = sup::dto::AnyValue;
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_TYPE_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_TYPE_H_

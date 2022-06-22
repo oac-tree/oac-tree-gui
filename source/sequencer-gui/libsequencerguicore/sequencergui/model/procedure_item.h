@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_PROCEDUREITEM_H
-#define SEQUENCERGUI_MODEL_PROCEDUREITEM_H
+#ifndef SEQUENCERGUI_MODEL_PROCEDURE_ITEM_H_
+#define SEQUENCERGUI_MODEL_PROCEDURE_ITEM_H_
 
 #include <mvvm/model/compound_item.h>
 
@@ -47,4 +47,4 @@ public:
 };
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_PROCEDUREITEMS_H
+#endif  // SEQUENCERGUI_MODEL_PROCEDURE_ITEM_H_

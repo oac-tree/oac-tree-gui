@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H
-#define SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H
+#ifndef SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_
+#define SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_
 
 //! @file standardvariableitems.h
 //! Collection of classes to represent Sequencer variables.
@@ -135,4 +135,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_STANDARDVARIABLEITEMS_H
+#endif  // SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_

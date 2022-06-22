@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_WIDGETUTILS_H
-#define SEQUENCERGUI_UTILS_WIDGETUTILS_H
+#ifndef SEQUENCERGUI_WIDGETS_WIDGET_UTILS_H_
+#define SEQUENCERGUI_WIDGETS_WIDGET_UTILS_H_
 
 //! @file widgetutils.h
 //! Collection of general widget-related utility functions.
@@ -59,4 +59,4 @@ bool InvokeAndCatch(T method, const QString& description = {"Exception was caugh
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_UTILS_WIDGETUTILS_H
+#endif  // SEQUENCERGUI_WIDGETS_WIDGET_UTILS_H_

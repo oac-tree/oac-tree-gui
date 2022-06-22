@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_DOMAINUTILS_H
-#define SEQUENCERGUI_MODEL_DOMAINUTILS_H
+#ifndef SEQUENCERGUI_MODEL_DOMAIN_UTILS_H_
+#define SEQUENCERGUI_MODEL_DOMAIN_UTILS_H_
 
 //! @file domainutils.h
 //! Collection of utility functions to access/create various Sequencer related objects.
@@ -57,4 +57,4 @@ void LoadLocalPlugins();
 
 }  // namespace sequencergui::DomainUtils
 
-#endif  // SEQUENCERGUI_MODEL_DOMAINUTILS_H
+#endif  // SEQUENCERGUI_MODEL_DOMAIN_UTILS_H_

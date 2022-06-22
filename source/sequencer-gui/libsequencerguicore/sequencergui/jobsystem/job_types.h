@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOB_TYPES_H
-#define SEQUENCERGUI_MONITOR_JOB_TYPES_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
+#define SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
 
 //! @file job_types.h
 //! Provide conveniece types for procedure execution in the JobManager.
@@ -67,4 +67,4 @@ enum class JobAction
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOB_TYPES_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_

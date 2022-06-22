@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_MAINWINDOW_H
-#define SEQUENCERGUI_MAINWINDOW_MAINWINDOW_H
+#ifndef SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_H_
+#define SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_H_
 
 #include <QMainWindow>
 #include <memory>
@@ -73,4 +73,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_MAINWINDOW_H
+#endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_H_

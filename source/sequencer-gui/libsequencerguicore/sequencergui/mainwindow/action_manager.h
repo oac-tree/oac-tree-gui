@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_ACTIONMANAGER_H
-#define SEQUENCERGUI_MAINWINDOW_ACTIONMANAGER_H
+#ifndef SEQUENCERGUI_MAINWINDOW_ACTION_MANAGER_H_
+#define SEQUENCERGUI_MAINWINDOW_ACTION_MANAGER_H_
 
 #include <QWidget>
 
@@ -63,4 +63,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_ACTIONMANAGER_H
+#endif  // SEQUENCERGUI_MAINWINDOW_ACTION_MANAGER_H_

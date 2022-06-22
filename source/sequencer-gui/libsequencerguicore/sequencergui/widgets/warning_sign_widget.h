@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_WARNINGSIGNWIDGET_H
-#define SEQUENCERGUI_WIDGETS_WARNINGSIGNWIDGET_H
+#ifndef SEQUENCERGUI_WIDGETS_WARNING_SIGN_WIDGET_H_
+#define SEQUENCERGUI_WIDGETS_WARNING_SIGN_WIDGET_H_
 
 #include <QPixmap>
 #include <QWidget>
@@ -54,4 +54,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_WARNINGSIGNWIDGET_H
+#endif  // SEQUENCERGUI_WIDGETS_WARNING_SIGN_WIDGET_H_

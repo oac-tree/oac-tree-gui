@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_DOTSTOOLBAR_H
-#define SEQUENCERGUI_WIDGETS_DOTSTOOLBAR_H
+#ifndef SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
+#define SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
 
 #include <QToolBar>
 #include <memory>
@@ -47,4 +47,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_DOTSTOOLBAR_H
+#endif  // SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_

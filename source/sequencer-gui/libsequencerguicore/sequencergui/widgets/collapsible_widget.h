@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_H
-#define SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_H
+#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLE_WIDGET_H_
+#define SEQUENCERGUI_WIDGETS_COLLAPSIBLE_WIDGET_H_
 
 #include <QWidget>
 
@@ -53,4 +53,4 @@ void AddToSplitter(QSplitter* splitter, QWidget* context);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLEWIDGET_H
+#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLE_WIDGET_H_

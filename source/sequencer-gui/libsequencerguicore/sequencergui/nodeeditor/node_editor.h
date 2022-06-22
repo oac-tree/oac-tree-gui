@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODEEDITOR_H
-#define SEQUENCERGUI_NODEEDITOR_NODEEDITOR_H
+#ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_
+#define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_
 
 #include <QMainWindow>
 
@@ -73,4 +73,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODEEDITOR_H
+#endif  // SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_

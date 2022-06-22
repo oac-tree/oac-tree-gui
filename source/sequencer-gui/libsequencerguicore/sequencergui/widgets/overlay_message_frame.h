@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGEFRAME_H
-#define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGEFRAME_H
+#ifndef SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_FRAME_H_
+#define SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_FRAME_H_
 
 #include <QFrame>
 #include <QFont>
@@ -50,4 +50,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_OVERLAYMESSAGEFRAME_H
+#endif  // SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_FRAME_H_

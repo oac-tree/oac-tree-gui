@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H
-#define SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H
+#ifndef SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
+#define SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
 
 //! @file sceneutils.h
 //! Collection of utility functions for graphics scene.
@@ -83,4 +83,4 @@ InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem*
                                 const std::string& domain_type);
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_SCENEUTILS_H
+#endif  // SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_

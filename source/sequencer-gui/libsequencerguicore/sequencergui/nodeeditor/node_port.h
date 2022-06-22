@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODEPORT_H
-#define SEQUENCERGUI_NODEEDITOR_NODEPORT_H
+#ifndef SEQUENCERGUI_NODEEDITOR_NODE_PORT_H_
+#define SEQUENCERGUI_NODEEDITOR_NODE_PORT_H_
 
 //! Node editor: original code is taken from
 //! http://algoholic.eu/qnodeseditor-qt-nodesports-based-data-processing-flow-editor/
@@ -98,4 +98,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODEPORT_H
+#endif  // SEQUENCERGUI_NODEEDITOR_NODE_PORT_H_

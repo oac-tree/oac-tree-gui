@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_RUNNERINTERFACE_H
-#define SEQUENCERGUI_JOBSYSTEM_RUNNERINTERFACE_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_RUNNER_INTERFACE_H_
+#define SEQUENCERGUI_JOBSYSTEM_RUNNER_INTERFACE_H_
 
 namespace sequencergui
 {
@@ -45,4 +45,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_RUNNERINTERFACE_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_RUNNER_INTERFACE_H_

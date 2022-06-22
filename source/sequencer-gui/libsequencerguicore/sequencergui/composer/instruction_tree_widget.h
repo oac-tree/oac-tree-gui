@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTIONTREEWIDGET_H
-#define SEQUENCERGUI_COMPOSER_INSTRUCTIONTREEWIDGET_H
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_TREE_WIDGET_H_
+#define SEQUENCERGUI_COMPOSER_INSTRUCTION_TREE_WIDGET_H_
 
 #include <QList>
 #include <QMenu>
@@ -79,4 +79,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTIONTREEWIDGET_H
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_TREE_WIDGET_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLELISTVIEW_H
-#define SEQUENCERGUI_WIDGETS_COLLAPSIBLELISTVIEW_H
+#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLE_LIST_VIEW_H_
+#define SEQUENCERGUI_WIDGETS_COLLAPSIBLE_LIST_VIEW_H_
 
 #include <QWidget>
 
@@ -50,4 +50,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLELISTVIEW_H
+#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLE_LIST_VIEW_H_

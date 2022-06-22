@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODEEDITORTOOLBAR_H
-#define SEQUENCERGUI_NODEEDITOR_NODEEDITORTOOLBAR_H
+#ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_TOOLBAR_H_
+#define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_TOOLBAR_H_
 
 #include <QToolBar>
 
@@ -65,4 +65,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODEEDITORTOOLBAR_H
+#endif  // SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_TOOLBAR_H_

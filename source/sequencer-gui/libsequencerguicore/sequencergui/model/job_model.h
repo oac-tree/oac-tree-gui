@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_JOBMODEL_H
-#define SEQUENCERGUI_MODEL_JOBMODEL_H
+#ifndef SEQUENCERGUI_MODEL_JOB_MODEL_H_
+#define SEQUENCERGUI_MODEL_JOB_MODEL_H_
 
 #include <mvvm/model/application_model.h>
 
@@ -36,4 +36,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_JOBMODEL_H
+#endif  // SEQUENCERGUI_MODEL_JOB_MODEL_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
-#define SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+#ifndef SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
+#define SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
 
 //! @file sequencerutils.h
 //! Various utils for GUI items.
@@ -53,4 +53,4 @@ std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERUTILS_H
+#endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_

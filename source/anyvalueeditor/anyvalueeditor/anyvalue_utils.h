@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEUTILS_H
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEUTILS_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_UTILS_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_UTILS_H_
 
 #include <mvvm/core/variant.h>
 
@@ -64,4 +64,4 @@ variant_t GetVariantForAnyValueTypeName(const std::string& type_name);
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEUTILS_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_UTILS_H_

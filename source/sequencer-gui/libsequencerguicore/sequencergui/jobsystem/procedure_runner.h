@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_PROCEDURERUNNER_H
-#define SEQUENCERGUI_MONITOR_PROCEDURERUNNER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
+#define SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
 
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_controller.h>
@@ -91,4 +91,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_PROCEDURERUNNER_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_

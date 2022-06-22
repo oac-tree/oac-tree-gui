@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_WORKSPACELISTWIDGET_H
-#define SEQUENCERGUI_COMPOSER_WORKSPACELISTWIDGET_H
+#ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_LIST_WIDGET_H_
+#define SEQUENCERGUI_COMPOSER_WORKSPACE_LIST_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -68,4 +68,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_WORKSPACELISTWIDGET_H
+#endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_LIST_WIDGET_H_

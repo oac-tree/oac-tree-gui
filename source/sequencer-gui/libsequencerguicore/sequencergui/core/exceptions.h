@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_EXCEPTIONS_H
-#define SEQUENCERGUI_CORE_EXCEPTIONS_H
+#ifndef SEQUENCERGUI_CORE_EXCEPTIONS_H_
+#define SEQUENCERGUI_CORE_EXCEPTIONS_H_
 
 #include <exception>
 #include <string>
@@ -97,4 +97,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H
+#endif  // SEQUENCERGUI_CORE_EXCEPTIONS_H_

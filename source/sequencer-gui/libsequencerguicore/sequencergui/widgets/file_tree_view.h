@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_FILETREEVIEW_H
-#define SEQUENCERGUI_MAINWINDOW_FILETREEVIEW_H
+#ifndef SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_
+#define SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_
 
 #include <QWidget>
 
@@ -61,4 +61,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_FILETREEVIEW_H
+#endif  // SEQUENCERGUI_WIDGETS_FILE_TREE_VIEW_H_

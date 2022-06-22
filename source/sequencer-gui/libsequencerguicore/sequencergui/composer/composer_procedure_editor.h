@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
-#define SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_PROCEDURE_EDITOR_H_
+#define SEQUENCERGUI_COMPOSER_COMPOSER_PROCEDURE_EDITOR_H_
 
 #include <QWidget>
 
@@ -88,4 +88,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSERPROCEDUREEDITOR_H
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_PROCEDURE_EDITOR_H_

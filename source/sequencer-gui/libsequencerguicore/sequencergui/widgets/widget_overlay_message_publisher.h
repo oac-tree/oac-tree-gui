@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEPUBLISHER_H
-#define SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEPUBLISHER_H
+#ifndef SEQUENCERGUI_WIDGETS_WIDGET_OVERLAY_MESSAGE_PUBLISHER_H_
+#define SEQUENCERGUI_WIDGETS_WIDGET_OVERLAY_MESSAGE_PUBLISHER_H_
 
 #include <QObject>
 #include <memory>
@@ -54,4 +54,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_WIDGETOVERLAYMESSAGEPUBLISHER_H
+#endif  // SEQUENCERGUI_WIDGETS_WIDGET_OVERLAY_MESSAGE_PUBLISHER_H_

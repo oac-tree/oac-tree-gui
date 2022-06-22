@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_JOBLISTVIEWMODEL_H
-#define SEQUENCERGUI_VIEWMODEL_JOBLISTVIEWMODEL_H
+#ifndef SEQUENCERGUI_VIEWMODEL_JOB_LIST_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_JOB_LIST_VIEWMODEL_H_
 
 #include <mvvm/viewmodel/viewmodel.h>
 
@@ -42,4 +42,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_PROCEDUREVIEWMODEL_H
+#endif  // SEQUENCERGUI_VIEWMODEL_JOB_LIST_VIEWMODEL_H_

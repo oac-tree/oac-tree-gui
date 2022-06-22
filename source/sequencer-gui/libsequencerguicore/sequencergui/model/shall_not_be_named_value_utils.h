@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SHALLNOTBENAMEDVALUEUTILS_H
-#define SEQUENCERGUI_MODEL_SHALLNOTBENAMEDVALUEUTILS_H
+#ifndef SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
+#define SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
 
 //! @file shallnotbenamedvalueutils.h
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
@@ -44,4 +44,4 @@ bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
 
 }  // namespace sequencergui::DomainUtils
 
-#endif  // SEQUENCERGUI_MODEL_SHALLNOTBENAMEDVALUEUTILS_H
+#endif  // SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_

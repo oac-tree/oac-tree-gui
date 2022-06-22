@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENECONTROLLER_H
-#define SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENECONTROLLER_H
+#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
+#define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
 
 #include <mvvm/viewmodel/abstract_viewmodel_controller.h>
 
@@ -61,4 +61,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENECONTROLLER_H
+#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H
-#define SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H
+#ifndef SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H_
+#define SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H_
 
 //! @file sequencer_types.h
 //! Type aliases for main Sequencer types.
@@ -38,4 +38,4 @@ using variable_t = sup::sequencer::Variable;
 using runner_t = sup::sequencer::Runner;
 using userinterface_t = sup::sequencer::UserInterface;
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H
+#endif  // SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H_

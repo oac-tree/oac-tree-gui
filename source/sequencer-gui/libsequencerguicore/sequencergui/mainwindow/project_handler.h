@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_PROJECTHANDLER_H
-#define SEQUENCERGUI_MAINWINDOW_PROJECTHANDLER_H
+#ifndef SEQUENCERGUI_MAINWINDOW_PROJECT_HANDLER_H_
+#define SEQUENCERGUI_MAINWINDOW_PROJECT_HANDLER_H_
 
 #include <QObject>
 #include <memory>
@@ -79,4 +79,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_PROJECTHANDLER_H
+#endif  // SEQUENCERGUI_MAINWINDOW_PROJECT_HANDLER_H_

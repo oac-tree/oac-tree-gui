@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_APPUTILS_H
-#define SEQUENCERGUI_MAINWINDOW_APPUTILS_H
+#ifndef SEQUENCERGUI_MAINWINDOW_APP_UTILS_H_
+#define SEQUENCERGUI_MAINWINDOW_APP_UTILS_H_
 
 //! @file apputils.h
 //! Collection of utils for main() function.
@@ -55,4 +55,4 @@ void SetApplicationFontSize(int point_size);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H
+#endif  // SEQUENCERGUI_MAINWINDOW_APP_UTILS_H_

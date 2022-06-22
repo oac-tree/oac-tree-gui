@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
-#define SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
+#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
 
 #include <sequencergui/jobsystem/abstract_job.h>
 #include <sequencergui/jobsystem/job_types.h>
@@ -92,4 +92,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_

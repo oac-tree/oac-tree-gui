@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEW_H
-#define SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEW_H
+#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_
+#define SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_
 
 #include <QGraphicsItem>
 #include <memory>
@@ -100,4 +100,4 @@ QList<T*> ConnectableView::GetPorts() const
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEW_H
+#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_H_

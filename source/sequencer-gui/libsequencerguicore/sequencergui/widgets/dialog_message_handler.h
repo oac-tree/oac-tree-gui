@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H
-#define SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H
+#ifndef SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_
+#define SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_
 
 #include <sequencergui/core/message_handler_interface.h>
 
@@ -34,4 +34,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H
+#endif  // SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H
-#define SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H
+#ifndef SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
+#define SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
 
 namespace sequencergui
 {
@@ -43,4 +43,4 @@ private:
 };
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_APPSETTINGS_H
+#endif  // SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_

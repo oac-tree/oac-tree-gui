@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H
-#define SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H
+#ifndef SEQUENCERGUI_EXPLORER_PROCEDURE_TREES_WIDGET_H_
+#define SEQUENCERGUI_EXPLORER_PROCEDURE_TREES_WIDGET_H_
 
 #include <QWidget>
 
@@ -55,4 +55,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPLORER_PROCEDURETREESWIDGET_H
+#endif  // SEQUENCERGUI_EXPLORER_PROCEDURE_TREES_WIDGET_H_

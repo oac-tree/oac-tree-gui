@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_USERINTERACTOR_H
-#define SEQUENCERGUI_MAINWINDOW_USERINTERACTOR_H
+#ifndef SEQUENCERGUI_MAINWINDOW_USER_INTERACTOR_H_
+#define SEQUENCERGUI_MAINWINDOW_USER_INTERACTOR_H_
 
 #include <string>
 
@@ -57,4 +57,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_USERINTERACTOR_H
+#endif  // SEQUENCERGUI_MAINWINDOW_USER_INTERACTOR_H_

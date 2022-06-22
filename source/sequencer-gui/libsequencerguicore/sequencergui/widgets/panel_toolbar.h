@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_PANELTOOLBAR_H
-#define SEQUENCERGUI_WIDGETS_PANELTOOLBAR_H
+#ifndef SEQUENCERGUI_WIDGETS_PANEL_TOOLBAR_H_
+#define SEQUENCERGUI_WIDGETS_PANEL_TOOLBAR_H_
 
 #include <QToolBar>
 
@@ -52,4 +52,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_PANELTOOLBAR_H
+#endif  // SEQUENCERGUI_WIDGETS_PANEL_TOOLBAR_H_

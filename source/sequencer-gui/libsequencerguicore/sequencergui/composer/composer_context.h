@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSERCONTEXT_H
-#define SEQUENCERGUI_COMPOSER_COMPOSERCONTEXT_H
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_CONTEXT_H_
+#define SEQUENCERGUI_COMPOSER_COMPOSER_CONTEXT_H_
 
 #include <functional>
 
@@ -46,4 +46,4 @@ struct ComposerContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSERCONTEXT_H
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_CONTEXT_H_

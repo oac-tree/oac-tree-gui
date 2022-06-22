@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
-#define SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#ifndef SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
+#define SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
 
 //! @file sequenceritemincludes.h
 //! Includes for all sequencer related items.
@@ -31,4 +31,4 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCERITEMINCLUDES_H
+#endif  // SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

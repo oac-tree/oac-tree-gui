@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
-#define SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
+#ifndef SEQUENCERGUI_MONITOR_MONITOR_REALTIME_WIDGET_H_
+#define SEQUENCERGUI_MONITOR_MONITOR_REALTIME_WIDGET_H_
 
 #include <QWidget>
 #include <array>
@@ -90,4 +90,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MONITORREALTIMEWIDGET_H
+#endif  // SEQUENCERGUI_MONITOR_MONITOR_REALTIME_WIDGET_H_

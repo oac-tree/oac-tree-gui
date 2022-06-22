@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_STYLEUTILS_H
-#define SEQUENCERGUI_UTILS_STYLEUTILS_H
+#ifndef SEQUENCERGUI_UTILS_STYLE_UTILS_H_
+#define SEQUENCERGUI_UTILS_STYLE_UTILS_H_
 
 #include <QWidget>
 
@@ -46,4 +46,4 @@ QIcon GetIcon(const std::string& icon_name);
 
 }  // namespace sequencergui::styleutils
 
-#endif  // SEQUENCERGUI_UTILS_STYLEUTILS_H
+#endif  // SEQUENCERGUI_UTILS_STYLE_UTILS_H_

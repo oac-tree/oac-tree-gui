@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_RECENTPROJECTSETTINGS_H
-#define SEQUENCERGUI_MAINWINDOW_RECENTPROJECTSETTINGS_H
+#ifndef SEQUENCERGUI_MAINWINDOW_RECENT_PROJECT_SETTINGS_H_
+#define SEQUENCERGUI_MAINWINDOW_RECENT_PROJECT_SETTINGS_H_
 
 #include <QStringList>
 
@@ -54,4 +54,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_RECENTPROJECTSETTINGS_H
+#endif  // SEQUENCERGUI_MAINWINDOW_RECENT_PROJECT_SETTINGS_H_

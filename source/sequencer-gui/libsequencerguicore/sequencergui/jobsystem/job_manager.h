@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOBMANAGER_H
-#define SEQUENCERGUI_MONITOR_JOBMANAGER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
+#define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
 #include <QObject>
 #include <memory>
@@ -79,4 +79,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOBMANAGER_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_

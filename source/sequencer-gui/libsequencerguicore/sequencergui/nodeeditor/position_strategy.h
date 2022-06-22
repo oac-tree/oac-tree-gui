@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_POSITIONSTRATEGY_H
-#define SEQUENCERGUI_NODEEDITOR_POSITIONSTRATEGY_H
+#ifndef SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
+#define SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_
 
 #include <functional>
 
@@ -64,4 +64,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_POSITIONSTRATEGY_H
+#endif  // SEQUENCERGUI_NODEEDITOR_POSITION_STRATEGY_H_

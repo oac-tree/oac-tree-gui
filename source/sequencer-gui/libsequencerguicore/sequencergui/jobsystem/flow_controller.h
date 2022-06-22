@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_FLOWCONTROLLER_H
-#define SEQUENCERGUI_MONITOR_FLOWCONTROLLER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_FLOW_CONTROLLER_H_
+#define SEQUENCERGUI_JOBSYSTEM_FLOW_CONTROLLER_H_
 
 #include <sequencergui/jobsystem/job_types.h>
 
@@ -55,4 +55,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_FLOWCONTROLLER_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_FLOW_CONTROLLER_H_

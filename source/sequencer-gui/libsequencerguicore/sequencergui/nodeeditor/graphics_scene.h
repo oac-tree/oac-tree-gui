@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENE_H
-#define SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENE_H
+#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
+#define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
 
 #include <sequencergui/model/sequencer_types.h>
 
@@ -105,4 +105,4 @@ inline std::vector<T*> GraphicsScene::GetSelectedViewItems() const
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENE_H
+#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_APPLICATIONMODELS_H
-#define SEQUENCERGUI_MODEL_APPLICATIONMODELS_H
+#ifndef SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_
+#define SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_
 
 #include <memory>
 #include <vector>
@@ -58,4 +58,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_APPLICATIONMODELS_H
+#endif  // SEQUENCERGUI_MODEL_APPLICATION_MODELS_H_

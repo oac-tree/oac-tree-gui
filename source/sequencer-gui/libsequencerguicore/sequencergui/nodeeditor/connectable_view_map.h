@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWMAP_H
-#define SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWMAP_H
+#ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
+#define SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_
 
 #include <map>
 #include <vector>
@@ -59,4 +59,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWMAP_H
+#endif  // SEQUENCERGUI_NODEEDITOR_CONNECTABLE_VIEW_MAP_H_

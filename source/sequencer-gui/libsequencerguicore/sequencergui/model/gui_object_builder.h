@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_GUIOBJECTBUILDER_H
-#define SEQUENCERGUI_MODEL_GUIOBJECTBUILDER_H
+#ifndef SEQUENCERGUI_MODEL_GUI_OBJECT_BUILDER_H_
+#define SEQUENCERGUI_MODEL_GUI_OBJECT_BUILDER_H_
 
 #include <sequencergui/model/sequencer_types.h>
 
@@ -76,4 +76,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_GUIOBJECTBUILDER_H
+#endif  // SEQUENCERGUI_MODEL_GUI_OBJECT_BUILDER_H_

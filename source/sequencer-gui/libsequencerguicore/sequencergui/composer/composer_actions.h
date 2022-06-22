@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
-#define SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_ACTIONS_H_
+#define SEQUENCERGUI_COMPOSER_COMPOSER_ACTIONS_H_
 
 #include <sequencergui/composer/composer_context.h>
 
@@ -73,4 +73,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_ACTIONS_H_

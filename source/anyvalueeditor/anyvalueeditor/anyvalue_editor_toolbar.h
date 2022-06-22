@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_EDITOR_TOOLBAR_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_EDITOR_TOOLBAR_H_
 
 #include <QToolBar>
 #include <memory>
@@ -56,4 +56,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEEDITORTOOLBAR_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_EDITOR_TOOLBAR_H_

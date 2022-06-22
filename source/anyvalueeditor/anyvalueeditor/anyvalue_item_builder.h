@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_
 
 #include "sup/dto/basic_scalar_types.h"
 #include "sup/dto/i_any_visitor.h"
@@ -61,4 +61,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEMBUILDER_H
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_

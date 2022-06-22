@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
-#define SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
+#ifndef SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_H_
+#define SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_H_
 
 class QWidget;
 class QString;
@@ -48,4 +48,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_OVERLAYMESSAGE_H
+#endif  // SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_H_

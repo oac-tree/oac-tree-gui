@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_H
-#define SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_H
+#ifndef SEQUENCERGUI_WIDGETS_COLLAPSIBLE_TOOLBAR_H_
+#define SEQUENCERGUI_WIDGETS_COLLAPSIBLE_TOOLBAR_H_
 
 #include <QFrame>
 #include <QList>
@@ -71,4 +71,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLETOOLBAR_H
+#endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLE_TOOLBAR_H_

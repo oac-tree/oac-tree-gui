@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_STANDARDINSTRUCTIONITEMS_H
-#define SEQUENCERGUI_MODEL_STANDARDINSTRUCTIONITEMS_H
+#ifndef SEQUENCERGUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_
+#define SEQUENCERGUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_
 
 //! @file standardinstructionitems.h
 //! Collection of classes to represent Sequencer instructions.
@@ -342,4 +342,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_STANDARDINSTRUCTIONITEMS_H
+#endif  // SEQUENCERGUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
-#define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTION_RUNNER_H_
+#define SEQUENCERGUI_JOBSYSTEM_FUNCTION_RUNNER_H_
 
 #include <sequencergui/jobsystem/abstract_job.h>
 #include <sequencergui/jobsystem/job_types.h>
@@ -59,4 +59,4 @@ bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds t
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_FUNCTION_RUNNER_H_

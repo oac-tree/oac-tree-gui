@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_VIEWFACTORYINTERFACE_H
-#define SEQUENCERGUI_NODEEDITOR_VIEWFACTORYINTERFACE_H
+#ifndef SEQUENCERGUI_NODEEDITOR_VIEW_FACTORY_INTERFACE_H_
+#define SEQUENCERGUI_NODEEDITOR_VIEW_FACTORY_INTERFACE_H_
 
 #include <memory>
 
@@ -41,4 +41,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_VIEWFACTORYINTERFACE_H
+#endif  // SEQUENCERGUI_NODEEDITOR_VIEW_FACTORY_INTERFACE_H_

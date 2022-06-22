@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODECONNECTION_H
-#define SEQUENCERGUI_NODEEDITOR_NODECONNECTION_H
+#ifndef SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_
+#define SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_
 
 //! Node editor: original code is taken from
 //! http://algoholic.eu/qnodeseditor-qt-nodesports-based-data-processing-flow-editor/
@@ -68,4 +68,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODECONNECTION_H
+#endif  // SEQUENCERGUI_NODEEDITOR_NODE_CONNECTION_H_

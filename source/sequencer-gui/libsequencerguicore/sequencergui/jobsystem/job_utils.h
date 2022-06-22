@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOBUTILS_H
-#define SEQUENCERGUI_MONITOR_JOBUTILS_H
+#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
+#define SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
 
 //! @file jobutils.h
 //! Collection of various utility functions for job execution.
@@ -41,4 +41,4 @@ int GetDefaultTickTimeoutMsc();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOBUTILS_H
+#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_

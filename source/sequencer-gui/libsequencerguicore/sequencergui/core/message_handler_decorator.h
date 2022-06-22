@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
-#define SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
+#ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_DECORATOR_H_
+#define SEQUENCERGUI_CORE_MESSAGE_HANDLER_DECORATOR_H_
 
 #include <sequencergui/core/message_handler_interface.h>
 
@@ -45,4 +45,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
+#endif  // SEQUENCERGUI_CORE_MESSAGE_HANDLER_DECORATOR_H_

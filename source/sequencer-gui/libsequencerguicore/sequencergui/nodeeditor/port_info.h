@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_PORTINFO_H
-#define SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+#ifndef SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_
+#define SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_
 
 #include <string>
 
@@ -38,4 +38,4 @@ const static PortInfo kRootPortInfo = {"BasicPort", "indianred"};
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_PORTINFO_H
+#endif  // SEQUENCERGUI_NODEEDITOR_PORT_INFO_H_

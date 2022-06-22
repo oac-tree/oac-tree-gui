@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_SETTINGSVIEW_H
-#define SEQUENCERGUI_MAINWINDOW_SETTINGSVIEW_H
+#ifndef SEQUENCERGUI_MAINWINDOW_SETTINGS_VIEW_H_
+#define SEQUENCERGUI_MAINWINDOW_SETTINGS_VIEW_H_
 
 #include <QWidget>
 
@@ -55,4 +55,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_SETTINGSVIEW_H
+#endif  // SEQUENCERGUI_MAINWINDOW_SETTINGS_VIEW_H_

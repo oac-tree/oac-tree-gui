@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPLORER_XMLEDITOR_H
-#define SEQUENCERGUI_EXPLORER_XMLEDITOR_H
+#ifndef SEQUENCERGUI_EXPLORER_XML_EDITOR_H_
+#define SEQUENCERGUI_EXPLORER_XML_EDITOR_H_
 
 #include <QWidget>
 
@@ -51,4 +51,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPLORER_XMLEDITOR_H
+#endif  // SEQUENCERGUI_EXPLORER_XML_EDITOR_H_
