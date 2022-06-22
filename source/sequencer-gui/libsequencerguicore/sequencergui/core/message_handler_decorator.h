@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
 #define SEQUENCERGUI_CORE_MESSAGEHANDLERDECORATOR_H
 
-#include "sequencergui/core/message_handler_interface.h"
+#include <sequencergui/core/message_handler_interface.h>
 
 #include <memory>
 

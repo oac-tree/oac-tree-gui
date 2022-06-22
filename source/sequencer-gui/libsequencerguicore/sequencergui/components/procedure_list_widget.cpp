@@ -19,15 +19,15 @@
 
 #include "sequencergui/components/procedure_list_widget.h"
 
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/utils/style_utils.h"
-#include "sequencergui/viewmodel/procedure_viewmodel.h"
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/utils/style_utils.h>
+#include <sequencergui/viewmodel/procedure_viewmodel.h>
 
-#include "mvvm/model/item_utils.h"
-#include "mvvm/standarditems/container_item.h"
-#include "mvvm/widgets/item_view_component_provider.h"
+#include <mvvm/model/item_utils.h>
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QAction>
 #include <QListView>

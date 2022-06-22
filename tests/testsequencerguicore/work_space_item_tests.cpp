@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/workspace_item.h"
+#include <sequencergui/model/workspace_item.h>
 
-#include "sequencergui/model/standard_variable_items.h"
+#include <sequencergui/model/standard_variable_items.h>
 
 #include <gtest/gtest.h>
 

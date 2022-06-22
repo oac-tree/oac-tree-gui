@@ -19,9 +19,9 @@
 
 #include "sequencergui/nodeeditor/graphics_view.h"
 
-#include "sequencergui/nodeeditor/graphics_scene.h"
+#include <sequencergui/nodeeditor/graphics_scene.h>
 
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/utils/style_utils.h>
 
 #include <QKeyEvent>
 

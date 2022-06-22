@@ -19,7 +19,7 @@
 
 #include "sequencergui/utils/align_utils.h"
 
-#include "sequencergui/utils/align_node.h"
+#include <sequencergui/utils/align_node.h>
 
 #include <gtest/gtest.h>
 

@@ -19,15 +19,15 @@
 
 #include "mock_message_handler.h"
 #include "sequencergui/composer/composer_actions.h"
-#include "sequencergui/core/exceptions.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/model/workspace_item.h"
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
 
-#include "mvvm/standarditems/container_item.h"
+#include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 

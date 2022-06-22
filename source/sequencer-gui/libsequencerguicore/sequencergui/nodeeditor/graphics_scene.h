@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENE_H
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENE_H
 
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/sequencer_types.h>
 
 #include <QGraphicsScene>
 #include <map>

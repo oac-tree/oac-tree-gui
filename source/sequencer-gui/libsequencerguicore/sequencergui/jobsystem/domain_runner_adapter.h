@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 #define SEQUENCERGUI_JOBSYSTEM_DOMAINRUNNERADAPTER_H
 
-#include "sequencergui/jobsystem/abstract_job.h"
-#include "sequencergui/jobsystem/job_types.h"
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/jobsystem/abstract_job.h>
+#include <sequencergui/jobsystem/job_types.h>
+#include <sequencergui/model/sequencer_types.h>
 
 #include <atomic>
 #include <chrono>

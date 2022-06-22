@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_DOMAINOBJECTBUILDER_H
 #define SEQUENCERGUI_MODEL_DOMAINOBJECTBUILDER_H
 
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/sequencer_types.h>
 
 #include <map>
 #include <memory>

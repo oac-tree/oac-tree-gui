@@ -19,8 +19,8 @@
 
 #include "sequencergui/explorer/xml_editor.h"
 
-#include "sequencergui/explorer/xml_syntax_highlighter.h"
-#include "sequencergui/widgets/panel_toolbar.h"
+#include <sequencergui/explorer/xml_syntax_highlighter.h>
+#include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QFile>
 #include <QLabel>

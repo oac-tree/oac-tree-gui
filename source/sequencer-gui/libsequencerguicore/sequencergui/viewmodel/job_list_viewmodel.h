@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_VIEWMODEL_JOBLISTVIEWMODEL_H
 #define SEQUENCERGUI_VIEWMODEL_JOBLISTVIEWMODEL_H
 
-#include "mvvm/viewmodel/viewmodel.h"
+#include <mvvm/viewmodel/viewmodel.h>
 
 namespace mvvm
 {

@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/workspace_item.h"
 
-#include "sequencergui/model/variable_item.h"
+#include <sequencergui/model/variable_item.h>
 
 namespace sequencergui
 {

@@ -26,8 +26,8 @@
 #include "anyvalueeditor/anyvalue_item.h"
 #include "anyvalueeditor/transform_from_anyvalue.h"
 
-#include "mvvm/model/application_model.h"
-#include "mvvm/widgets/all_items_tree_view.h"
+#include <mvvm/model/application_model.h>
+#include <mvvm/widgets/all_items_tree_view.h>
 
 #include <QTreeView>
 #include <QVBoxLayout>

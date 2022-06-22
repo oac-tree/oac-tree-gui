@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
 #define SEQUENCERGUI_MODEL_SEQUENCERMODEL_H
 
-#include "mvvm/model/application_model.h"
+#include <mvvm/model/application_model.h>
 
 namespace mvvm
 {

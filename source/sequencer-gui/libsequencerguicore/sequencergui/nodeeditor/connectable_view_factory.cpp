@@ -19,10 +19,10 @@
 
 #include "sequencergui/nodeeditor/connectable_view_factory.h"
 
-#include "sequencergui/mainwindow/app_settings.h"
-#include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
-#include "sequencergui/nodeeditor/connectable_view.h"
-#include "sequencergui/nodeeditor/position_strategy.h"
+#include <sequencergui/mainwindow/app_settings.h>
+#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/position_strategy.h>
 
 namespace sequencergui
 {

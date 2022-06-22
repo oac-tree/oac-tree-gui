@@ -19,14 +19,14 @@
 
 #include "sequencergui/model/sequencer_utils.h"
 
-#include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/item_constants.h"
-#include "sequencergui/model/sequencer_item_includes.h"
+#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/sequencer_item_includes.h>
 
-#include "mvvm/model/item_catalogue.h"
-#include "mvvm/model/item_manager.h"
-#include "mvvm/model/tagged_items.h"
-#include "mvvm/utils/container_utils.h"
+#include <mvvm/model/item_catalogue.h>
+#include <mvvm/model/item_manager.h>
+#include <mvvm/model/tagged_items.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <vector>
 

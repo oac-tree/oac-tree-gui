@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/monitor_workspace_toolbar.h"
 
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/utils/style_utils.h>
 
 #include <QAction>
 #include <QLabel>

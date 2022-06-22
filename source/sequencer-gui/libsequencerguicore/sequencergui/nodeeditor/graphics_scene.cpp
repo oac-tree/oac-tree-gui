@@ -19,20 +19,20 @@
 
 #include "graphics_scene.h"
 
-#include "sequencergui/core/message_handler_interface.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
-#include "sequencergui/nodeeditor/connectable_view.h"
+#include <sequencergui/core/message_handler_interface.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
-#include "sequencergui/nodeeditor/node_connection.h"
-#include "sequencergui/nodeeditor/node_controller.h"
-#include "sequencergui/nodeeditor/scene_utils.h"
-#include "sequencergui/widgets/item_list_widget.h"
+#include <sequencergui/nodeeditor/node_connection.h>
+#include <sequencergui/nodeeditor/node_controller.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/widgets/item_list_widget.h>
 
-#include "mvvm/core/exceptions.h"
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/core/exceptions.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>

@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/warning_sign_widget.h"
 
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/utils/style_utils.h>
 
 #include <QIcon>
 #include <QMessageBox>

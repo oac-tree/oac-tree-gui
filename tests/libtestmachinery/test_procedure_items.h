@@ -23,7 +23,7 @@
 //! @file test_procedure_items.h
 //! Collection of pocedure items for testing purpose.
 
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/sequencer_types.h>
 
 #include <chrono>
 #include <memory>

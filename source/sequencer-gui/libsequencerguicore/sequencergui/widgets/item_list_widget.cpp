@@ -20,10 +20,10 @@
 #include "sequencergui/widgets/item_list_widget.h"
 
 #include "InstructionRegistry.h"
-#include "sequencergui/nodeeditor/scene_utils.h"
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/utils/style_utils.h>
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QDrag>
 #include <QMimeData>

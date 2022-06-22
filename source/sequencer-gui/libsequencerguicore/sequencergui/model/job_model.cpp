@@ -19,9 +19,9 @@
 
 #include "sequencergui/model/job_model.h"
 
-#include "sequencergui/model/sequencer_utils.h"
+#include <sequencergui/model/sequencer_utils.h>
 
-#include "mvvm/interfaces/item_manager_interface.h"
+#include <mvvm/interfaces/item_manager_interface.h>
 
 namespace sequencergui
 {

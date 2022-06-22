@@ -19,12 +19,12 @@
 
 #include "sequencergui/nodeeditor/connectable_view.h"
 
-#include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
-#include "sequencergui/nodeeditor/node_connection.h"
-#include "sequencergui/nodeeditor/node_port.h"
-#include "sequencergui/nodeeditor/position_strategy.h"
-#include "sequencergui/nodeeditor/scene_utils.h"
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
+#include <sequencergui/nodeeditor/node_connection.h>
+#include <sequencergui/nodeeditor/node_port.h>
+#include <sequencergui/nodeeditor/position_strategy.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/utils/style_utils.h>
 
 #include <QDebug>
 #include <QPainter>

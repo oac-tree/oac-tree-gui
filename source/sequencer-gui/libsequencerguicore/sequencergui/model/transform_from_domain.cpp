@@ -22,15 +22,15 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
-#include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/domain_utils.h"
-#include "sequencergui/model/gui_object_builder.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/model/standard_variable_items.h"
+#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/gui_object_builder.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
 
-#include "mvvm/model/function_types.h"
-#include "mvvm/model/item_catalogue.h"
+#include <mvvm/model/function_types.h>
+#include <mvvm/model/item_catalogue.h>
 
 #include <stdexcept>
 

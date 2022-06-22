@@ -19,15 +19,15 @@
 
 #include "sequencergui/nodeeditor/scene_utils.h"
 
-#include "sequencergui/model/domain_utils.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/sequencer_utils.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/model/transform_from_domain.h"
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/transform_from_domain.h>
+#include <sequencergui/utils/style_utils.h>
 
-#include "mvvm/core/exceptions.h"
+#include <mvvm/core/exceptions.h>
 
 #include <QDebug>
 #include <QLinearGradient>

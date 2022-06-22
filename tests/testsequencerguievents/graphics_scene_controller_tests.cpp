@@ -19,17 +19,17 @@
 
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
-#include "sequencergui/nodeeditor/connectable_view.h"
-#include "sequencergui/nodeeditor/graphics_scene.h"
-#include "sequencergui/nodeeditor/node_connection.h"
-#include "sequencergui/nodeeditor/node_port.h"
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/graphics_scene.h>
+#include <sequencergui/nodeeditor/node_connection.h>
+#include <sequencergui/nodeeditor/node_port.h>
 
-#include "mvvm/standarditems/container_item.h"
+#include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 

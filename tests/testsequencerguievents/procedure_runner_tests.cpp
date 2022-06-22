@@ -22,8 +22,8 @@
 #include "Procedure.h"
 #include "Variable.h"
 #include "sequencergui/jobsystem/procedure_runner.h"
-#include "sequencergui/model/domain_utils.h"
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/sequencer_types.h>
 #include "test_domain_procedures.h"
 #include "test_utils.h"
 

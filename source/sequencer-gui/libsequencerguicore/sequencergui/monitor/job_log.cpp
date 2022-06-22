@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/job_log.h"
 
-#include "sequencergui/monitor/message_panel.h"
+#include <sequencergui/monitor/message_panel.h>
 
 namespace
 {

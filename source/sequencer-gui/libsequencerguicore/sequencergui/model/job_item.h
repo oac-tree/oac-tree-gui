@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_JOBITEM_H
 #define SEQUENCERGUI_MODEL_JOBITEM_H
 
-#include "mvvm/model/compound_item.h"
+#include <mvvm/model/compound_item.h>
 
 namespace sequencergui
 {

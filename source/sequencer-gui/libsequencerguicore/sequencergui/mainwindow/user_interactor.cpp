@@ -19,11 +19,11 @@
 
 #include "sequencergui/mainwindow/user_interactor.h"
 
-#include "sequencergui/mainwindow/recent_project_settings.h"
+#include <sequencergui/mainwindow/recent_project_settings.h>
 
-#include "mvvm/project/project_types.h"
-#include "mvvm/project/project_utils.h"
-#include "mvvm/utils/file_utils.h"
+#include <mvvm/project/project_types.h>
+#include <mvvm/project/project_utils.h>
+#include <mvvm/utils/file_utils.h>
 
 #include <QFileDialog>
 #include <QMessageBox>

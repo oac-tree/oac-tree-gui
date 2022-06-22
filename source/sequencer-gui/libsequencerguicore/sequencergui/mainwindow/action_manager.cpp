@@ -19,10 +19,10 @@
 
 #include "sequencergui/mainwindow/action_manager.h"
 
-#include "sequencergui/mainwindow/project_handler.h"
-#include "sequencergui/model/sequencer_model.h"
+#include <sequencergui/mainwindow/project_handler.h>
+#include <sequencergui/model/sequencer_model.h>
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
 #include <QMainWindow>

@@ -19,7 +19,7 @@
 
 #include "sequencergui/core/standard_message_handlers.h"
 
-#include "sequencergui/core/exceptions.h"
+#include <sequencergui/core/exceptions.h>
 
 #include <QDebug>
 #include <iostream>

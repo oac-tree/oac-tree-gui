@@ -19,16 +19,16 @@
 
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/nodeeditor/connectable_view.h"
-#include "sequencergui/nodeeditor/connectable_view_factory.h"
-#include "sequencergui/nodeeditor/connectable_view_map.h"
-#include "sequencergui/nodeeditor/graphics_scene.h"
-#include "sequencergui/nodeeditor/view_factory_interface.h"
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/connectable_view_factory.h>
+#include <sequencergui/nodeeditor/connectable_view_map.h>
+#include <sequencergui/nodeeditor/graphics_scene.h>
+#include <sequencergui/nodeeditor/view_factory_interface.h>
 
-#include "mvvm/model/application_model.h"
-#include "mvvm/model/item_utils.h"
+#include <mvvm/model/application_model.h>
+#include <mvvm/model/item_utils.h>
 
 #include <QDebug>
 

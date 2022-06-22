@@ -19,8 +19,8 @@
 
 #include "sequencergui/nodeeditor/node_connection.h"
 
-#include "sequencergui/mainwindow/app_settings.h"
-#include "sequencergui/nodeeditor/node_port.h"
+#include <sequencergui/mainwindow/app_settings.h>
+#include <sequencergui/nodeeditor/node_port.h>
 
 #include <QGraphicsScene>
 #include <QPainter>

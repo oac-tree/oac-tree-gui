@@ -21,8 +21,8 @@
 
 #include "Instruction.h"
 #include "Procedure.h"
-#include "sequencergui/model/domain_utils.h"
-#include "sequencergui/model/transform_from_domain.h"
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/transform_from_domain.h>
 
 #include <gtest/gtest.h>
 

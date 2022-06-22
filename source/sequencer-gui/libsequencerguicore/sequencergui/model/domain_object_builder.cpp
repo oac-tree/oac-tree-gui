@@ -22,14 +22,14 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
-#include "sequencergui/core/exceptions.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/model/workspace_item.h"
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
 
-#include "mvvm/model/sessionmodel.h"
+#include <mvvm/model/sessionmodel.h>
 
 #include <QDebug>
 

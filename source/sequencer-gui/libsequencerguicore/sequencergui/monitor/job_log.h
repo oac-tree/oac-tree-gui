@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MONITOR_JOBLOG_H
 #define SEQUENCERGUI_MONITOR_JOBLOG_H
 
-#include "sequencergui/jobsystem/job_types.h"
+#include <sequencergui/jobsystem/job_types.h>
 
 #include <string>
 #include <vector>

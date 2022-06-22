@@ -22,10 +22,10 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Runner.h"
-#include "sequencergui/core/exceptions.h"
-#include "sequencergui/jobsystem/domain_runner_adapter.h"
-#include "sequencergui/jobsystem/job_utils.h"
-#include "sequencergui/jobsystem/sequencer_observer.h"
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/domain_runner_adapter.h>
+#include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/jobsystem/sequencer_observer.h>
 
 #include <QDebug>
 #include <algorithm>

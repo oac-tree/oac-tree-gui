@@ -20,14 +20,14 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
-#include "sequencergui/model/domain_utils.h"
+#include <sequencergui/model/domain_utils.h>
 #include "sequencergui/model/gui_object_builder.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/model/transform_from_domain.h"
-#include "sequencergui/model/workspace_item.h"
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/transform_from_domain.h>
+#include <sequencergui/model/workspace_item.h>
 
 #include <gtest/gtest.h>
 

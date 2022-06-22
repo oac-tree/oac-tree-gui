@@ -19,9 +19,9 @@
 
 #include "sequencergui/monitor/job_property_widget.h"
 
-#include "sequencergui/model/job_item.h"
+#include <sequencergui/model/job_item.h>
 
-#include "mvvm/widgets/property_tree_view.h"
+#include <mvvm/widgets/property_tree_view.h>
 
 #include <QListWidget>
 #include <QVBoxLayout>

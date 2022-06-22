@@ -23,7 +23,7 @@
 //! @file standardvariableitems.h
 //! Collection of classes to represent Sequencer variables.
 
-#include "sequencergui/model/variable_item.h"
+#include <sequencergui/model/variable_item.h>
 
 namespace sequencergui
 {

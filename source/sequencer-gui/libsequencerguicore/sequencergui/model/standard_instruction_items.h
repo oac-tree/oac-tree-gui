@@ -23,7 +23,7 @@
 //! @file standardinstructionitems.h
 //! Collection of classes to represent Sequencer instructions.
 
-#include "sequencergui/model/instruction_item.h"
+#include <sequencergui/model/instruction_item.h>
 
 namespace sequencergui
 {

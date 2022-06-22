@@ -19,8 +19,8 @@
 
 #include "sequencergui/model/instruction_container_item.h"
 
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/item_constants.h"
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/item_constants.h>
 
 namespace sequencergui
 {

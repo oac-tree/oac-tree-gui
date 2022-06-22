@@ -19,18 +19,18 @@
 
 #include "sequencergui/composer/composer_procedure_editor.h"
 
-#include "sequencergui/composer/composer_actions.h"
-#include "sequencergui/composer/instruction_tree_widget.h"
-#include "sequencergui/composer/workspace_list_widget.h"
-#include "sequencergui/core/message_handler_interface.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/widgets/dots_toolbar.h"
+#include <sequencergui/composer/composer_actions.h>
+#include <sequencergui/composer/instruction_tree_widget.h>
+#include <sequencergui/composer/workspace_list_widget.h>
+#include <sequencergui/core/message_handler_interface.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/widgets/dots_toolbar.h>
 
-#include "mvvm/widgets/property_tree_view.h"
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/property_tree_view.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QSplitter>
 #include <QTabWidget>

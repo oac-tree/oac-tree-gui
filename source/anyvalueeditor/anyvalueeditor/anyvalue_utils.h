@@ -20,7 +20,7 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEUTILS_H
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEUTILS_H
 
-#include "mvvm/core/variant.h"
+#include <mvvm/core/variant.h>
 
 #include <string>
 #include <vector>

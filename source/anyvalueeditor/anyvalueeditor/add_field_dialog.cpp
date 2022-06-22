@@ -21,7 +21,7 @@
 
 #include "anyvalueeditor/anyvalue_utils.h"
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QComboBox>
 #include <QDialogButtonBox>

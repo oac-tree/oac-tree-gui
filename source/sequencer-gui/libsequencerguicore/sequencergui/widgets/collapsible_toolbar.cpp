@@ -19,9 +19,9 @@
 
 #include "sequencergui/widgets/collapsible_toolbar.h"
 
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/utils/style_utils.h>
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QLabel>
 #include <QToolBar>

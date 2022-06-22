@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/widget_overlay_message_publisher.h"
 
-#include "sequencergui/widgets/overlay_message.h"
+#include <sequencergui/widgets/overlay_message.h>
 
 #include <QGraphicsView>
 #include <QTimer>

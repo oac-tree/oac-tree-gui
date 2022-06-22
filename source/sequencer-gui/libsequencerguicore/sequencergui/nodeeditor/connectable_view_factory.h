@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWFACTORY_H
 #define SEQUENCERGUI_NODEEDITOR_CONNECTABLEVIEWFACTORY_H
 
-#include "sequencergui/nodeeditor/view_factory_interface.h"
+#include <sequencergui/nodeeditor/view_factory_interface.h>
 
 #include <memory>
 

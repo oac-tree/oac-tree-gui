@@ -20,9 +20,9 @@
 #ifndef TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
 #define TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
 
-#include "mvvm/interfaces/model_event_subscriber_interface.h"
-#include "mvvm/model/application_model.h"
-#include "mvvm/signals/model_listener.h"
+#include <mvvm/interfaces/model_event_subscriber_interface.h>
+#include <mvvm/model/application_model.h>
+#include <mvvm/signals/model_listener.h>
 
 #include <gmock/gmock.h>
 

@@ -19,11 +19,11 @@
 
 #include "sequencergui/monitor/job_list_widget.h"
 
-#include "sequencergui/model/job_item.h"
-#include "sequencergui/model/job_model.h"
-#include "sequencergui/model/item_constants.h"
+#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/job_model.h>
+#include <sequencergui/model/item_constants.h>
 
-#include "mvvm/viewmodel/viewmodel.h"
+#include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
 

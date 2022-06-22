@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
 #define SEQUENCERGUI_COMPOSER_COMPOSERACTIONS_H
 
-#include "sequencergui/composer/composer_context.h"
+#include <sequencergui/composer/composer_context.h>
 
 #include <QObject>
 #include <memory>

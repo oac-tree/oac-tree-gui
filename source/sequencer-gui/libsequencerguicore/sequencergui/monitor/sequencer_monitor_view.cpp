@@ -19,24 +19,24 @@
 
 #include "sequencergui/monitor/sequencer_monitor_view.h"
 
-#include "sequencergui/core/message_handler_factory.h"
-#include "sequencergui/jobsystem/job_context.h"
-#include "sequencergui/jobsystem/job_manager.h"
-#include "sequencergui/model/application_models.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/job_item.h"
-#include "sequencergui/model/job_model.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/monitor/monitor_panel.h"
-#include "sequencergui/monitor/monitor_realtime_widget.h"
-#include "sequencergui/monitor/monitor_workspace_widget.h"
-#include "sequencergui/monitor/sequencer_monitor_actions.h"
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/core/message_handler_factory.h>
+#include <sequencergui/jobsystem/job_context.h>
+#include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/model/application_models.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/job_model.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/monitor/monitor_panel.h>
+#include <sequencergui/monitor/monitor_realtime_widget.h>
+#include <sequencergui/monitor/monitor_workspace_widget.h>
+#include <sequencergui/monitor/sequencer_monitor_actions.h>
+#include <sequencergui/utils/style_utils.h>
 
-#include "mvvm/standarditems/container_item.h"
-#include "mvvm/widgets/all_items_tree_view.h"
-#include "mvvm/widgets/top_items_tree_view.h"
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/top_items_tree_view.h>
 
 #include <QDebug>
 #include <QSplitter>

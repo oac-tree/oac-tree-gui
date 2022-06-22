@@ -19,19 +19,19 @@
 
 #include "sequencergui/monitor/monitor_realtime_widget.h"
 
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/monitor/message_panel.h"
-#include "sequencergui/monitor/monitor_realtime_toolbar.h"
-#include "sequencergui/nodeeditor/node_editor.h"
-#include "sequencergui/viewmodel/instruction_viewmodel.h"
-#include "sequencergui/widgets/collapsible_list_view.h"
-#include "sequencergui/widgets/custom_header_view.h"
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/monitor/message_panel.h>
+#include <sequencergui/monitor/monitor_realtime_toolbar.h>
+#include <sequencergui/nodeeditor/node_editor.h>
+#include <sequencergui/viewmodel/instruction_viewmodel.h>
+#include <sequencergui/widgets/collapsible_list_view.h>
+#include <sequencergui/widgets/custom_header_view.h>
 
-#include "mvvm/widgets/item_view_component_provider.h"
-#include "mvvm/widgets/top_items_tree_view.h"
+#include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/widgets/top_items_tree_view.h>
 
 #include <QEvent>
 #include <QHeaderView>

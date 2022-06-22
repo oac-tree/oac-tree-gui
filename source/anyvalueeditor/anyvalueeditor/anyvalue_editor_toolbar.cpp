@@ -21,7 +21,7 @@
 
 #include "anyvalueeditor/anyvalue_editor_actions.h"
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QMenu>
 #include <QPushButton>

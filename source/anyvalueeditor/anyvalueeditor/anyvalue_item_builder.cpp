@@ -22,9 +22,9 @@
 #include "anyvalueeditor/anyvalue_item.h"
 #include "anyvalueeditor/transform_from_anyvalue.h"
 
-#include "mvvm/model/application_model.h"
-#include "mvvm/model/sessionitem.h"
-#include "mvvm/model/tagindex.h"
+#include <mvvm/model/application_model.h>
+#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/tagindex.h>
 
 #include <iostream>
 

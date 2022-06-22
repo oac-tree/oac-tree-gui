@@ -19,11 +19,11 @@
 
 #include "sequencergui/monitor/job_list_widget.h"
 
-#include "sequencergui/model/job_item.h"
-#include "sequencergui/model/job_model.h"
-#include "sequencergui/viewmodel/job_list_viewmodel.h"
+#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/job_model.h>
+#include <sequencergui/viewmodel/job_list_viewmodel.h>
 
-#include "mvvm/widgets/item_view_component_provider.h"
+#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QTreeView>
 #include <QVBoxLayout>

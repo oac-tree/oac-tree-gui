@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H
 #define SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H
 
-#include "sequencergui/core/message_handler_interface.h"
+#include <sequencergui/core/message_handler_interface.h>
 
 namespace sequencergui
 {

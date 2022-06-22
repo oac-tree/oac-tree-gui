@@ -19,15 +19,15 @@
 
 #include "sequencergui/composer/instruction_tree_widget.h"
 
-#include "sequencergui/model/domain_utils.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/utils/style_utils.h>
 
-#include "mvvm/utils/container_utils.h"
-#include "mvvm/widgets/top_items_tree_view.h"
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/utils/container_utils.h>
+#include <mvvm/widgets/top_items_tree_view.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QToolButton>
 #include <QVBoxLayout>

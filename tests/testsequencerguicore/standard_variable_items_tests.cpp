@@ -21,9 +21,9 @@
 
 #include "AttributeMap.h"
 #include "Variable.h"
-#include "sequencergui/model/domain_utils.h"
+#include <sequencergui/model/domain_utils.h>
 #include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/model/transform_from_domain.h"
+#include <sequencergui/model/transform_from_domain.h>
 
 #include <gtest/gtest.h>
 

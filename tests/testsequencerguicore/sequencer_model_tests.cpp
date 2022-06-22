@@ -19,9 +19,9 @@
 
 #include "sequencergui/model/sequencer_model.h"
 
-#include "sequencergui/model/procedure_item.h"
+#include <sequencergui/model/procedure_item.h>
 
-#include "mvvm/standarditems/container_item.h"
+#include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 

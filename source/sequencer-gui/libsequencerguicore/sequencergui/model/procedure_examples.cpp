@@ -19,10 +19,10 @@
 
 #include "sequencergui/model/procedure_examples.h"
 
-#include "sequencergui/model/sequencer_item_includes.h"
-#include "sequencergui/model/sequencer_model.h"
+#include <sequencergui/model/sequencer_item_includes.h>
+#include <sequencergui/model/sequencer_model.h>
 
-#include "mvvm/standarditems/container_item.h"
+#include <mvvm/standarditems/container_item.h>
 
 namespace sequencergui::Examples
 {

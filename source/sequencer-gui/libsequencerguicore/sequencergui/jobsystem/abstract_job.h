@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
 #define SEQUENCERGUI_JOBSYSTEM_ABSTRACTJOB_H
 
-#include "sequencergui/jobsystem/job_types.h"
-#include "sequencergui/jobsystem/runner_interface.h"
+#include <sequencergui/jobsystem/job_types.h>
+#include <sequencergui/jobsystem/runner_interface.h>
 
 #include <memory>
 #include <mutex>

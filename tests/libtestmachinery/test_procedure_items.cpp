@@ -19,14 +19,14 @@
 
 #include "test_procedure_items.h"
 
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/model/standard_variable_items.h"
-#include "sequencergui/model/workspace_item.h"
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
 
-#include "mvvm/standarditems/container_item.h"
+#include <mvvm/standarditems/container_item.h>
 
 #include "test_utils.h"
 

@@ -19,11 +19,11 @@
 
 #include "sequencergui/components/procedure_list_widget.h"
 
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
 
-#include "mvvm/standarditems/container_item.h"
-#include "mvvm/viewmodel/viewmodel.h"
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
 

@@ -19,9 +19,9 @@
 
 #include "sequencergui/utils/align_utils.h"
 
-#include "sequencergui/utils/align_node.h"
+#include <sequencergui/utils/align_node.h>
 
-#include "mvvm/utils/container_utils.h"
+#include <mvvm/utils/container_utils.h>
 
 #include <QDebug>
 #include <algorithm>

@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/overlay_message_frame.h"
 
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/utils/style_utils.h>
 
 #include <QColor>
 #include <QDebug>

@@ -21,10 +21,10 @@
 
 #include "Procedure.h"
 #include "SequenceParser.h"
-#include "sequencergui/model/domain_object_builder.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/transform_from_domain.h"
+#include <sequencergui/model/domain_object_builder.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/transform_from_domain.h>
 
 #include <iostream>
 #include <stdexcept>

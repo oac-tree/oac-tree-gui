@@ -21,8 +21,8 @@
 
 #include "Procedure.h"
 #include "Runner.h"
-#include "sequencergui/jobsystem/function_runner.h"
-#include "sequencergui/core/exceptions.h"
+#include <sequencergui/jobsystem/function_runner.h>
+#include <sequencergui/core/exceptions.h>
 
 #include <chrono>
 #include <iostream>

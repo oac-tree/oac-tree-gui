@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/job_model.h"
 
-#include "sequencergui/model/procedure_item.h"
+#include <sequencergui/model/procedure_item.h>
 
 #include <gtest/gtest.h>
 

@@ -23,7 +23,7 @@
 #include "sup/dto/basic_scalar_types.h"
 #include "anyvalueeditor/anyvalue_item.h"
 
-#include "mvvm/core/variant.h"
+#include <mvvm/core/variant.h>
 
 #include <gtest/gtest.h>
 

@@ -19,17 +19,17 @@
 
 #include "sequencergui/composer/composer_actions.h"
 
-#include "sequencergui/core/exceptions.h"
-#include "sequencergui/core/message_handler_factory.h"
-#include "sequencergui/model/instruction_container_item.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/model/variable_item.h"
-#include "sequencergui/model/workspace_item.h"
-#include "sequencergui/nodeeditor/scene_utils.h"
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/core/message_handler_factory.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/workspace_item.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
 
-#include "mvvm/core/exceptions.h"
+#include <mvvm/core/exceptions.h>
 
 #include <QDebug>
 #include <QPointF>

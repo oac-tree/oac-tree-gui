@@ -19,9 +19,9 @@
 
 #include "sequencergui/nodeeditor/connectable_view_map.h"
 
-#include "sequencergui/core/exceptions.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/nodeeditor/connectable_view.h"
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
 
 #include <stack>
 

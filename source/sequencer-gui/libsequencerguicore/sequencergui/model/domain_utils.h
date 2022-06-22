@@ -25,8 +25,8 @@
 //! With this file we want to decrease as much as possible the visibility of sequencer headers
 //! in the code.
 
-#include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/model/sequencer_types.h>
 
 #include <map>
 #include <memory>

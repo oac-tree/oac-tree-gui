@@ -20,7 +20,7 @@
 #ifndef MOCKRUNNERLISTENER_H
 #define MOCKRUNNERLISTENER_H
 
-#include "sequencergui/jobsystem/job_types.h"
+#include <sequencergui/jobsystem/job_types.h>
 
 #include <gmock/gmock.h>
 

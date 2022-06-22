@@ -19,7 +19,7 @@
 
 #include "sequencergui/jobsystem/user_controller.h"
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 namespace sequencergui
 {

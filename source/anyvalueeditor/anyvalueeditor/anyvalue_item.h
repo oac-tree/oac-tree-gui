@@ -21,7 +21,7 @@
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUEITEM_H
 
 
-#include "mvvm/model/compound_item.h"
+#include <mvvm/model/compound_item.h>
 
 namespace anyvalueeditor
 {

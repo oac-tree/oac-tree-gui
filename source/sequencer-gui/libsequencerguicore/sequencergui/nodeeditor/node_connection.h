@@ -24,7 +24,7 @@
 //! http://algoholic.eu/qnodeseditor-qt-nodesports-based-data-processing-flow-editor/
 //! Copyright (c) 2012, STANISLAW ADASZEWSKI
 
-#include "sequencergui/mainwindow/app_settings.h"
+#include <sequencergui/mainwindow/app_settings.h>
 
 #include <QGraphicsPathItem>
 

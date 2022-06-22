@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/overlay_widget_position_strategy.h"
 
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/utils/style_utils.h>
 
 #include <QAbstractScrollArea>
 #include <QApplication>

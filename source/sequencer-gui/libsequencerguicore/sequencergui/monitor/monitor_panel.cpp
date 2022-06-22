@@ -19,16 +19,16 @@
 
 #include "sequencergui/monitor/monitor_panel.h"
 
-#include "sequencergui/model/application_models.h"
-#include "sequencergui/model/job_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/monitor/job_list_widget.h"
-#include "sequencergui/monitor/job_property_widget.h"
-#include "sequencergui/utils/style_utils.h"
-#include "sequencergui/widgets/collapsible_list_view.h"
-#include "sequencergui/widgets/collapsible_toolbar.h"
-#include "sequencergui/widgets/panel_toolbar.h"
+#include <sequencergui/model/application_models.h>
+#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/monitor/job_list_widget.h>
+#include <sequencergui/monitor/job_property_widget.h>
+#include <sequencergui/utils/style_utils.h>
+#include <sequencergui/widgets/collapsible_list_view.h>
+#include <sequencergui/widgets/collapsible_toolbar.h>
+#include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QDebug>
 #include <QMenu>

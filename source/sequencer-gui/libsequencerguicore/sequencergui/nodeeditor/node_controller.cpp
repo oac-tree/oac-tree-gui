@@ -19,9 +19,9 @@
 
 #include "sequencergui/nodeeditor/node_controller.h"
 
-#include "sequencergui/nodeeditor/graphics_view.h"
-#include "sequencergui/nodeeditor/node_connection.h"
-#include "sequencergui/nodeeditor/node_port.h"
+#include <sequencergui/nodeeditor/graphics_view.h>
+#include <sequencergui/nodeeditor/node_connection.h>
+#include <sequencergui/nodeeditor/node_port.h>
 
 #include <QGraphicsItem>
 #include <QGraphicsScene>

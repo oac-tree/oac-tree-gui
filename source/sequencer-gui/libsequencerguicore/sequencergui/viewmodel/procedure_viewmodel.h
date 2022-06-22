@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MONITOR_PROCEDURE_VIEWMODEL_H
 #define SEQUENCERGUI_MONITOR_PROCEDURE_VIEWMODEL_H
 
-#include "mvvm/viewmodel/viewmodel.h"
+#include <mvvm/viewmodel/viewmodel.h>
 
 namespace mvvm
 {

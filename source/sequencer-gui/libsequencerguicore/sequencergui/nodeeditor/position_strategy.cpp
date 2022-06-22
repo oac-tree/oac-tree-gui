@@ -19,9 +19,9 @@
 
 #include "sequencergui/nodeeditor/position_strategy.h"
 
-#include "sequencergui/nodeeditor/connectable_view.h"
-#include "sequencergui/nodeeditor/node_port.h"
-#include "sequencergui/utils/style_utils.h"
+#include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/node_port.h>
+#include <sequencergui/utils/style_utils.h>
 
 namespace
 {

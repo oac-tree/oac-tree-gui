@@ -21,7 +21,7 @@
 #include "Runner.h"
 #include "mock_runner_listener.h"
 #include "mock_sequencer_observer.h"
-#include "sequencergui/core/exceptions.h"
+#include <sequencergui/core/exceptions.h>
 #include "sequencergui/jobsystem/domain_runner_adapter.h"
 #include "test_domain_procedures.h"
 

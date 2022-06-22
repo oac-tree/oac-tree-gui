@@ -19,20 +19,20 @@
 
 #include "sequencergui/nodeeditor/node_editor.h"
 
-#include "sequencergui/core/message_handler_factory.h"
-#include "sequencergui/model/instruction_item.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/model/sequencer_model.h"
-#include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
-#include "sequencergui/nodeeditor/connectable_view.h"
-#include "sequencergui/nodeeditor/graphics_scene.h"
-#include "sequencergui/nodeeditor/graphics_scene_controller.h"
-#include "sequencergui/nodeeditor/graphics_view.h"
+#include <sequencergui/core/message_handler_factory.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/graphics_scene.h>
+#include <sequencergui/nodeeditor/graphics_scene_controller.h>
+#include <sequencergui/nodeeditor/graphics_view.h>
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
-#include "sequencergui/nodeeditor/scene_utils.h"
-#include "sequencergui/utils/sequencer_align_utils.h"
+#include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/utils/sequencer_align_utils.h>
 
-#include "mvvm/model/application_model.h"
+#include <mvvm/model/application_model.h>
 
 #include <QDebug>
 #include <QPointF>

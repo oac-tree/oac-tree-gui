@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_MODEL_INSTRUCTIONITEM_H
 #define SEQUENCERGUI_MODEL_INSTRUCTIONITEM_H
 
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/sequencer_types.h>
 
-#include "mvvm/model/compound_item.h"
+#include <mvvm/model/compound_item.h>
 
 namespace sequencergui
 {

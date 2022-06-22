@@ -19,7 +19,7 @@
 
 #include "sequencergui/mainwindow/app_utils.h"
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QApplication>
 #include <QCommandLineOption>

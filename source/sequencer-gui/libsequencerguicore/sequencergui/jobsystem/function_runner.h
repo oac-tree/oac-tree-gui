@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
 #define SEQUENCERGUI_JOBSYSTEM_FUNCTIONRUNNER_H
 
-#include "sequencergui/jobsystem/abstract_job.h"
-#include "sequencergui/jobsystem/job_types.h"
+#include <sequencergui/jobsystem/abstract_job.h>
+#include <sequencergui/jobsystem/job_types.h>
 
 #include <chrono>
 #include <functional>

@@ -19,7 +19,7 @@
 
 #include "mock_model_listener.h"
 
-#include "mvvm/model/sessionitem.h"
+#include <mvvm/model/sessionitem.h>
 
 MockModelListener::MockModelListener(mvvm::ApplicationModel *model)  : ModelListener(model)
 {

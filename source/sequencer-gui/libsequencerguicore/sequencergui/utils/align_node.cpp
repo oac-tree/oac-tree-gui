@@ -19,7 +19,7 @@
 
 #include "sequencergui/utils/align_node.h"
 
-#include "mvvm/utils/container_utils.h"
+#include <mvvm/utils/container_utils.h>
 
 #include <algorithm>
 

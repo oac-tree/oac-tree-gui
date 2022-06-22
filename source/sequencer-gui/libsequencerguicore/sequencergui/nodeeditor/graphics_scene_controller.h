@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENECONTROLLER_H
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICSSCENECONTROLLER_H
 
-#include "mvvm/viewmodel/abstract_viewmodel_controller.h"
+#include <mvvm/viewmodel/abstract_viewmodel_controller.h>
 
 #include <functional>
 #include <memory>

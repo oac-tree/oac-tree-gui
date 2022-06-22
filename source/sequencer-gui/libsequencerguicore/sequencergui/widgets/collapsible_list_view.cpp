@@ -19,9 +19,9 @@
 
 #include "sequencergui/widgets/collapsible_list_view.h"
 
-#include "sequencergui/core/exceptions.h"
-#include "sequencergui/widgets/collapsible_toolbar.h"
-#include "sequencergui/widgets/collapsible_widget.h"
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/widgets/collapsible_toolbar.h>
+#include <sequencergui/widgets/collapsible_widget.h>
 
 #include <QSplitter>
 #include <QVBoxLayout>

@@ -19,13 +19,13 @@
 
 #include "sequencergui/composer/composer_panel.h"
 
-#include "sequencergui/components/procedure_list_widget.h"
-#include "sequencergui/composer/aggregate_panel.h"
-#include "sequencergui/composer/instruction_item_panel.h"
-#include "sequencergui/model/procedure_item.h"
-#include "sequencergui/widgets/collapsible_list_view.h"
-#include "sequencergui/widgets/item_list_widget.h"
-#include "sequencergui/widgets/panel_toolbar.h"
+#include <sequencergui/components/procedure_list_widget.h>
+#include <sequencergui/composer/aggregate_panel.h>
+#include <sequencergui/composer/instruction_item_panel.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/widgets/collapsible_list_view.h>
+#include <sequencergui/widgets/item_list_widget.h>
+#include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QLabel>
 #include <QToolBar>

@@ -19,11 +19,11 @@
 
 #include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
 
-#include "sequencergui/model/sequencer_utils.h"
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/nodeeditor/scene_utils.h"
+#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
 
-#include "mvvm/utils/container_utils.h"
+#include <mvvm/utils/container_utils.h>
 
 #include <QColor>
 #include <QDebug>

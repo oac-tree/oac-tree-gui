@@ -20,11 +20,11 @@
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include "Instruction.h"
-#include "sequencergui/model/domain_constants.h"
-#include "sequencergui/model/domain_utils.h"
-#include "sequencergui/model/item_constants.h"
+#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 
-#include "mvvm/utils/string_utils.h"
+#include <mvvm/utils/string_utils.h>
 
 namespace sequencergui
 {

@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_JOBMODEL_H
 #define SEQUENCERGUI_MODEL_JOBMODEL_H
 
-#include "mvvm/model/application_model.h"
+#include <mvvm/model/application_model.h>
 
 namespace sequencergui
 {

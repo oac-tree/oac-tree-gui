@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/collapsible_widget.h"
 
-#include "sequencergui/widgets/collapsible_toolbar.h"
+#include <sequencergui/widgets/collapsible_toolbar.h>
 
 #include <QAction>
 #include <QDebug>

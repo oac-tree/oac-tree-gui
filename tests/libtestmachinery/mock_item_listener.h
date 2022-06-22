@@ -20,7 +20,7 @@
 #ifndef TESTS_LIBTESTMACHINERY_MOCKITEMLISTENER_H
 #define TESTS_LIBTESTMACHINERY_MOCKITEMLISTENER_H
 
-#include "mvvm/signals/item_listener.h"
+#include <mvvm/signals/item_listener.h>
 
 #include <gmock/gmock.h>
 

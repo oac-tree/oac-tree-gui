@@ -23,7 +23,7 @@
 //! @file shallnotbenamedvalueutils.h
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
 
-#include "sequencergui/model/sequencer_types.h"
+#include <sequencergui/model/sequencer_types.h>
 
 #include <string>
 namespace ccs::types

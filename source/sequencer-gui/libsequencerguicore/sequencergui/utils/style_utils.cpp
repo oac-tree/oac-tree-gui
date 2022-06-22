@@ -19,7 +19,7 @@
 
 #include "sequencergui/utils/style_utils.h"
 
-#include "mvvm/widgets/widget_utils.h"
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QIcon>
 #include <QSize>
