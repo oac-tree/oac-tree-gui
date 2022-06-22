@@ -117,7 +117,7 @@ void MonitorRealTimeToolBar::InsertStrech()
 
 std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
 {
-  const std::vector<int> delay_values = {0, 10, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+  const std::vector<int> delay_values = {10, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
 
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
