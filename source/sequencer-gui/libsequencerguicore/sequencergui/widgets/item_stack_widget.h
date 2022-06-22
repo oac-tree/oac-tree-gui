@@ -17,33 +17,42 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
-#define SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
+#ifndef SEQUENCERGUI_WIDGETS_ITEM_STACK_WIDGET_H_
+#define SEQUENCERGUI_WIDGETS_ITEM_STACK_WIDGET_H_
 
-#include <QToolBar>
-#include <memory>
+#include <QWidget>
+#include <QList>
+
+class QStackedWidget;
+class QToolBar;
+class QAction;
 
 namespace sequencergui
 {
 
-//! Wide toolbar with dots menu for dynamic content. Intended for vertical panels with switcheable content.
+//!
 
-class DotsToolBar : public QToolBar
+class ItemStackWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit DotsToolBar(QWidget* parent = nullptr);
-  ~DotsToolBar() override;
+  explicit ItemStackWidget(QWidget* parent = nullptr);
 
-  void SetActions(const QList<QAction*>& actions);
-  void SetWidgets(const QList<QWidget*>& widgets);
+  void AddWidget(QWidget* widget, QToolBar* toolbar, bool toolbar_is_always_visible = false);
 
 private:
-  void AddDotsMenu();
-  void InsertStrech();
+  struct GuestToolBarData
+  {
+    QAction* action{nullptr}; //! action to hide guest toolbar
+    bool is_always_visible{false};
+  };
+
+  QStackedWidget* m_stacked_widget{nullptr};
+  QToolBar* m_toolbar{nullptr};
+  QList<GuestToolBarData> m_toolbar_data;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
+#endif  // SEQUENCERGUI_WIDGETS_ITEM_STACK_WIDGET_H_

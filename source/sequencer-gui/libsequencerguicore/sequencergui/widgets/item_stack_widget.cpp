@@ -17,33 +17,23 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
-#define SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_
+#include "sequencergui/widgets/item_stack_widget.h"
 
+#include <QStackedWidget>
 #include <QToolBar>
-#include <memory>
+#include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-//! Wide toolbar with dots menu for dynamic content. Intended for vertical panels with switcheable content.
-
-class DotsToolBar : public QToolBar
+ItemStackWidget::ItemStackWidget(QWidget *parent)
+    : QWidget(parent), m_stacked_widget(new QStackedWidget), m_toolbar(new QToolBar)
 {
-  Q_OBJECT
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setMargin(0);
 
-public:
-  explicit DotsToolBar(QWidget* parent = nullptr);
-  ~DotsToolBar() override;
-
-  void SetActions(const QList<QAction*>& actions);
-  void SetWidgets(const QList<QWidget*>& widgets);
-
-private:
-  void AddDotsMenu();
-  void InsertStrech();
-};
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_WIDGETS_DOTS_TOOLBAR_H_

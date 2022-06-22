@@ -17,6 +17,8 @@ target_sources(${library_name} PRIVATE
   file_tree_view.h
   item_list_widget.cpp
   item_list_widget.h
+  item_stack_widget.cpp
+  item_stack_widget.h
   overlay_message.cpp
   overlay_message.h
   overlay_message_frame.cpp
