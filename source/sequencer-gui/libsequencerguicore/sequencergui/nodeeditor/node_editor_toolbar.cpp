@@ -64,8 +64,6 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_pointer_mode_group->addButton(m_pan_button, GraphicsView::kHandDrag);
   connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorToolBar::selectionMode);
 
-  addSeparator();
-
   m_zoom_menu = CreateZoomMenu();
   m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
   m_zoom_button->setIcon(styleutils::GetIcon("magnify-plus-outline.svg"));
@@ -84,8 +82,6 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   connect(m_center_button, &QToolButton::clicked, this, &NodeEditorToolBar::centerView);
 
   addWidget(m_center_button);
-
-  addSeparator();
 
   m_align_button->setIcon(styleutils::GetIcon("dots-triangle.svg"));
   m_align_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
