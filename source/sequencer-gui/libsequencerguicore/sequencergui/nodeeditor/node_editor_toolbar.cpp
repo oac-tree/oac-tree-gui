@@ -19,11 +19,10 @@
 
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 
+#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/nodeeditor/graphics_view.h>
 #include <sequencergui/utils/style_utils.h>
-
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QButtonGroup>
 #include <QMenu>
@@ -44,7 +43,6 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
     , m_center_button(new QToolButton)
     , m_zoom_button(new QToolButton)
     , m_align_button(new QToolButton)
-    , m_align_button_v2(new QToolButton)
 {
   setIconSize(styleutils::ToolBarIconSize());
 
@@ -94,13 +92,6 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_align_button->setToolTip("Align children of currently selected item");
   connect(m_align_button, &QToolButton::clicked, this, &NodeEditorToolBar::alignSelectedRequest);
   addWidget(m_align_button);
-
-  m_align_button_v2->setIcon(styleutils::GetIcon("dots-triangle.svg"));
-  m_align_button_v2->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_align_button_v2->setToolTip("Align children of currently selected item");
-  connect(m_align_button_v2, &QToolButton::clicked, this,
-          &NodeEditorToolBar::alignSelectedRequestV2);
-  addWidget(m_align_button_v2);
 
   AddDotsMenu();
 }

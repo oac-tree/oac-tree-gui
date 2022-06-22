@@ -46,7 +46,6 @@ signals:
   void changeScale(double);
   void centerView();
   void alignSelectedRequest();
-  void alignSelectedRequestV2();
 
 private:
   void AddDotsMenu();
@@ -59,7 +58,6 @@ private:
   QToolButton* m_center_button{nullptr};
   QToolButton* m_zoom_button{nullptr};
   QToolButton* m_align_button{nullptr};
-  QToolButton* m_align_button_v2{nullptr};
   std::unique_ptr<QMenu> m_zoom_menu;
 };
 

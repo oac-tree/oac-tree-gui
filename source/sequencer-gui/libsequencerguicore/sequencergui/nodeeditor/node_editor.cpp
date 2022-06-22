@@ -164,7 +164,7 @@ void NodeEditor::SetupConnections()
       algorithm::AlignInstructionTreeWalker(rect.center(), items);
     }
   };
-  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequestV2, this, on_align_v2);
+  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align_v2);
 }
 
 }  // namespace sequencergui
