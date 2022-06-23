@@ -70,6 +70,8 @@ private:
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<MessageHandlerInterface> m_graphics_view_message_handler;
+
+  ProcedureItem* m_procedure_item{nullptr};
 };
 
 }  // namespace sequencergui

@@ -65,26 +65,34 @@ NodeEditor::~NodeEditor() = default;
 
 void NodeEditor::SetProcedure(ProcedureItem *procedure)
 {
-  if (procedure)
+  if (m_procedure_item == procedure)
   {
-    auto instruction_container = procedure->GetInstructionContainer();
-    m_graphics_scene->SetInstructionContainer(instruction_container);
-    auto model = dynamic_cast<mvvm::ApplicationModel *>(
-        procedure->GetModel());  // FIXME find solution without cast
-    m_scene_controller = std::make_unique<GraphicsSceneController>(model, m_graphics_scene);
-
-    auto scene_rect = m_graphics_scene->sceneRect();
-    auto align_strategy = [this](auto container)
-    {
-      const QPointF reference_point = m_graphics_scene->sceneRect().center();
-      algorithm::AlignInstructionTreeWalker(reference_point, container);
-    };
-    m_scene_controller->SetAlignStrategy(align_strategy);
-
-    m_scene_controller->Init(instruction_container);
-
-    m_graphics_view->onCenterView();
+    return;
   }
+
+  m_procedure_item = procedure;
+
+  if (!m_procedure_item)
+  {
+    return;
+  }
+
+  auto instruction_container = procedure->GetInstructionContainer();
+  m_graphics_scene->SetInstructionContainer(instruction_container);
+  auto model = dynamic_cast<mvvm::ApplicationModel *>(
+      procedure->GetModel());  // FIXME find solution without cast
+  m_scene_controller = std::make_unique<GraphicsSceneController>(model, m_graphics_scene);
+
+  auto align_strategy = [this](auto container)
+  {
+    const QPointF reference_point = m_graphics_scene->sceneRect().center();
+    algorithm::AlignInstructionTreeWalker(reference_point, container);
+  };
+  m_scene_controller->SetAlignStrategy(align_strategy);
+
+  m_scene_controller->Init(instruction_container);
+
+  m_graphics_view->onCenterView();
 }
 
 std::vector<InstructionItem *> NodeEditor::GetSelectedInstructions() const
