@@ -57,12 +57,8 @@ void ItemStackWidget::AddWidget(QWidget *widget, std::unique_ptr<QToolBar> toolb
 {
   m_stacked_widget->addWidget(widget);
 
-  if (toolbar)
-  {
-    m_main_toolbar->InsertElement(toolbar.release());
-  }
-
   AddMenuEntry(widget);
+  AddGuestToolBar(std::move(toolbar), toolbar_is_always_visible);
 }
 
 void ItemStackWidget::SetCurrentIndex(int index)
@@ -78,6 +74,29 @@ void ItemStackWidget::AddMenuEntry(QWidget *widget)
   auto action = m_widget_selection_menu->addAction(widget->windowTitle());
   auto on_action = [this, index]() { m_stacked_widget->setCurrentIndex(index); };
   connect(action, &QAction::triggered, this, on_action);
+}
+
+//! Adds guest toolbar to the main toolbar.
+//! Saves also corresponding actions, to be able to hide guest toolbar when widget is inactive.
+void ItemStackWidget::AddGuestToolBar(std::unique_ptr<QToolBar> toolbar,
+                                      bool toolbar_is_always_visible)
+{
+  if (!toolbar)
+  {
+    return;
+  }
+
+  QList<QAction *> actions;
+  if (m_stacked_widget->count() != 0)
+  {
+    actions.append(m_main_toolbar->addSeparator());
+    actions.append(m_main_toolbar->addSeparator());
+    actions.append(m_main_toolbar->addSeparator());
+    actions.append(m_main_toolbar->addSeparator());
+  }
+  actions.append(m_main_toolbar->InsertElement(toolbar.release()));
+
+  m_toolbar_data.append({actions, toolbar_is_always_visible});
 }
 
 }  // namespace sequencergui

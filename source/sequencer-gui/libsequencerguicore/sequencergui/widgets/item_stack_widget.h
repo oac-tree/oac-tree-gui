@@ -51,10 +51,12 @@ public:
 
 private:
   void AddMenuEntry(QWidget* widget);
+  void AddGuestToolBar(std::unique_ptr<QToolBar> toolbar = {},
+                       bool toolbar_is_always_visible = false);
 
   struct GuestToolBarData
   {
-    QAction* action{nullptr};  //! action to hide guest toolbar
+    QList<QAction*> actions;  //! actions to hide guest toolbar
     bool is_always_visible{false};
   };
 
