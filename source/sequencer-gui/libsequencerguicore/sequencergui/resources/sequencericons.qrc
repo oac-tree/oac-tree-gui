@@ -69,5 +69,7 @@
         <file>icons/bell-alert-outline.png</file>
         <file>icons/refresh.svg</file>
         <file>icons/refresh.png</file>
+        <file>icons/about_logo.awk</file>
+        <file>icons/iter_logo.png</file>
     </qresource>
 </RCC>

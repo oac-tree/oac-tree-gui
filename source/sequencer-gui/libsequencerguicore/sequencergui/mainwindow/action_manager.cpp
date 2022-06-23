@@ -19,10 +19,10 @@
 
 #include "sequencergui/mainwindow/action_manager.h"
 
+#include <mvvm/widgets/widget_utils.h>
+#include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/mainwindow/project_handler.h>
 #include <sequencergui/model/sequencer_model.h>
-
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
 #include <QMainWindow>
@@ -108,7 +108,6 @@ void ActionManager::SetupMenus(QMenuBar *menubar)
 
   auto help_menu = menubar->addMenu("&Help");
   help_menu->addAction(m_about_action);
-
 }
 
 void ActionManager::AboutToShowFileMenu()
@@ -138,7 +137,8 @@ void ActionManager::AboutToShowFileMenu()
 
 void ActionManager::OnAbout()
 {
-
+  AboutApplicationDialog dialog(mvvm::utils::FindMainWindow());
+  dialog.exec();
 }
 
 }  // namespace sequencergui

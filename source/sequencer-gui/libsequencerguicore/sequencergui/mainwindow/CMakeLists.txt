@@ -1,4 +1,6 @@
 target_sources(${library_name} PRIVATE
+  about_application_dialog.cpp
+  about_application_dialog.h
   action_manager.cpp
   action_manager.h
   app_settings.cpp
