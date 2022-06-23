@@ -26,13 +26,14 @@
 class QStackedWidget;
 class QAction;
 class QToolBar;
+class QMenu;
 
 namespace sequencergui
 {
 
 class PanelToolBar;
 
-//!
+//! Stack of widgets with wide menubar and dots-menu at the right corner.
 
 class ItemStackWidget : public QWidget
 {
@@ -40,6 +41,7 @@ class ItemStackWidget : public QWidget
 
 public:
   explicit ItemStackWidget(QWidget* parent = nullptr);
+  ~ItemStackWidget() override;
 
   void AddWidget(QWidget* widget, QToolBar* toolbar = nullptr,
                  bool toolbar_is_always_visible = false);
@@ -55,6 +57,7 @@ private:
 
   QStackedWidget* m_stacked_widget{nullptr};
   QList<GuestToolBarData> m_toolbar_data;
+  std::unique_ptr<QMenu> m_widget_selection_menu;
   PanelToolBar* m_main_toolbar{nullptr};
 };
 

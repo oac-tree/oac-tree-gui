@@ -21,6 +21,7 @@
 
 #include <sequencergui/widgets/panel_toolbar.h>
 
+#include <QMenu>
 #include <QStackedWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -29,7 +30,10 @@ namespace sequencergui
 {
 
 ItemStackWidget::ItemStackWidget(QWidget *parent)
-    : QWidget(parent), m_stacked_widget(new QStackedWidget), m_main_toolbar(new PanelToolBar)
+    : QWidget(parent)
+    , m_stacked_widget(new QStackedWidget)
+    , m_widget_selection_menu(std::make_unique<QMenu>())
+    , m_main_toolbar(new PanelToolBar)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -38,7 +42,11 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
 
   layout->addWidget(m_main_toolbar);
   layout->addWidget(m_stacked_widget);
+
+  m_main_toolbar->SetDotsMenu(m_widget_selection_menu.get());
 }
+
+ItemStackWidget::~ItemStackWidget() = default;
 
 void ItemStackWidget::AddWidget(QWidget *widget, QToolBar *toolbar, bool toolbar_is_always_visible)
 {
@@ -48,6 +56,12 @@ void ItemStackWidget::AddWidget(QWidget *widget, QToolBar *toolbar, bool toolbar
   {
     m_main_toolbar->InsertElement(toolbar);
   }
+
+  // action for corner menu to switch to this widget
+  int index = m_stacked_widget->count() - 1;
+  auto action = m_widget_selection_menu->addAction(widget->windowTitle());
+  auto on_action = [this, index]() { m_stacked_widget->setCurrentIndex(index); };
+  connect(action, &QAction::triggered, this, on_action);
 }
 
 void ItemStackWidget::SetCurrentIndex(int index)

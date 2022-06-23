@@ -49,6 +49,8 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
+  setWindowTitle("NodeEditor");
+
   //  auto layout = new QVBoxLayout(this);
   //  layout->setContentsMargins(0, 0, 0, 0);
   //  layout->setSpacing(0);
