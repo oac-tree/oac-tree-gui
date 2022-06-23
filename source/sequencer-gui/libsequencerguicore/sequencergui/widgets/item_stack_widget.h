@@ -49,6 +49,8 @@ public:
   void SetCurrentIndex(int index);
 
 private:
+  void AddMenuEntry(QWidget* widget);
+
   struct GuestToolBarData
   {
     QAction* action{nullptr};  //! action to hide guest toolbar

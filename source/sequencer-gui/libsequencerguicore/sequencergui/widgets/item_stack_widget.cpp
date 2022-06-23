@@ -57,16 +57,22 @@ void ItemStackWidget::AddWidget(QWidget *widget, QToolBar *toolbar, bool toolbar
     m_main_toolbar->InsertElement(toolbar);
   }
 
-  // action for corner menu to switch to this widget
-  int index = m_stacked_widget->count() - 1;
-  auto action = m_widget_selection_menu->addAction(widget->windowTitle());
-  auto on_action = [this, index]() { m_stacked_widget->setCurrentIndex(index); };
-  connect(action, &QAction::triggered, this, on_action);
+  AddMenuEntry(widget);
 }
 
 void ItemStackWidget::SetCurrentIndex(int index)
 {
   m_stacked_widget->setCurrentIndex(index);
+}
+
+//! Add entry to corner menu to switch to this widget.
+
+void ItemStackWidget::AddMenuEntry(QWidget *widget)
+{
+  int index = m_stacked_widget->count() - 1;
+  auto action = m_widget_selection_menu->addAction(widget->windowTitle());
+  auto on_action = [this, index]() { m_stacked_widget->setCurrentIndex(index); };
+  connect(action, &QAction::triggered, this, on_action);
 }
 
 }  // namespace sequencergui

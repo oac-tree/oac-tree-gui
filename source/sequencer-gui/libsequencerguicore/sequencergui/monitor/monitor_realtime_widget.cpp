@@ -47,12 +47,11 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     , m_message_panel(new MessagePanel)
 {
   auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_tool_bar);
 
-  m_stacked_widget->AddWidget(m_instruction_tree_widget);
+  m_stacked_widget->AddWidget(m_instruction_tree_widget, m_tool_bar);
+  m_stacked_widget->AddWidget(m_node_editor);
 
   m_collapsible_list_view->AddWidget(m_stacked_widget);
-  m_stacked_widget->AddWidget(m_node_editor);
 
   m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
@@ -102,8 +101,6 @@ void MonitorRealTimeWidget::SetupConnections()
           &MonitorRealTimeWidget::stopRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
           &MonitorRealTimeWidget::changeDelayRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::appChangeRequest, this,
-          &MonitorRealTimeWidget::onAppChangeRequest);
 }
 
 }  // namespace sequencergui

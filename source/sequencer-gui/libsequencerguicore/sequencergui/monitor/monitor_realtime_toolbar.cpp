@@ -19,10 +19,9 @@
 
 #include "sequencergui/monitor/monitor_realtime_toolbar.h"
 
+#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/utils/style_utils.h>
-
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
 #include <QLabel>
@@ -50,7 +49,6 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
     , m_stop_button(new QToolButton)
     , m_delay_button(new QToolButton)
     , m_delay_menu(CreateDelayMenu())
-    , m_app_menu(CreateAppMenu())
 {
   setIconSize(styleutils::ToolBarIconSize());
 
@@ -89,31 +87,9 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   m_delay_button->setMenu(m_delay_menu.get());
   m_delay_button->setPopupMode(QToolButton::InstantPopup);
   addWidget(m_delay_button);
-
-  AddDotsMenu();
 }
 
 MonitorRealTimeToolBar::~MonitorRealTimeToolBar() = default;
-
-void MonitorRealTimeToolBar::AddDotsMenu()
-{
-  InsertStrech();
-
-  auto button = new QToolButton;
-  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(styleutils::ToolBarIconSize());
-  button->setMenu(m_app_menu.get());
-  button->setPopupMode(QToolButton::InstantPopup);
-
-  addWidget(button);
-}
-
-void MonitorRealTimeToolBar::InsertStrech()
-{
-  auto empty = new QWidget(this);
-  empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-  addWidget(empty);
-}
 
 std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
 {
@@ -131,25 +107,6 @@ std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
       emit changeDelayRequest(delay);
     };
     connect(action, &QAction::triggered, this, on_action);
-  }
-
-  return result;
-}
-
-//! Returns menu for "dots" button for widget selection.
-
-std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateAppMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  QStringList app_names = {"Tree", "NodeEditor"};
-
-  int index{0};
-  for (const auto &name : app_names)
-  {
-    auto action = result->addAction(name);
-    auto on_action = [this, index]() { emit appChangeRequest(index); };
-    connect(action, &QAction::triggered, this, on_action);
-    ++index;
   }
 
   return result;
