@@ -108,7 +108,7 @@ std::unique_ptr<MessageHandlerInterface> NodeEditor::CreateMessageHandler()
   return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
 }
 
-std::unique_ptr<NodeEditorToolBar> NodeEditor::CreateToolBar()
+std::unique_ptr<QToolBar> NodeEditor::CreateToolBar()
 {
   auto result =  std::make_unique<NodeEditorToolBar>();
 

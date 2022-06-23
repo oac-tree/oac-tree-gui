@@ -104,7 +104,7 @@ std::unique_ptr<QMenu> NodeEditorToolBar::CreateZoomMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  const std::vector<int> scales = {25, 50, 75, 100, 125, 150};
+  const std::vector<int> scales = {10, 15, 25, 50, 75, 100, 125, 150};
   std::map<int, QAction *> scale_to_action;
   for (auto scale : scales)
   {

@@ -28,12 +28,14 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/utils/style_utils.h>
+#include <sequencergui/widgets/item_stack_widget.h>
 
 #include <mvvm/standarditems/container_item.h>
 
 #include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QToolBar>
 
 namespace sequencergui
 {
@@ -41,6 +43,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     : QWidget(parent)
     , m_composer_panel(new ComposerPanel)
     , m_node_editor(new NodeEditor)
+    , m_stack_widget(new ItemStackWidget)
     , m_composer_tree_widget(new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
     , m_splitter(new QSplitter)
 {
@@ -49,8 +52,10 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   //  layout->setSpacing(0);
   //  layout->setMargin(0);
 
+  m_stack_widget->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
+
   m_splitter->addWidget(m_composer_panel);
-  m_splitter->addWidget(m_node_editor);
+  m_splitter->addWidget(m_stack_widget);
   m_splitter->addWidget(m_composer_tree_widget);
   m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
                                     << styleutils::UnitSize(30));

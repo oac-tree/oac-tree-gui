@@ -33,6 +33,7 @@ class ComposerProcedureEditor;
 class ComposerPanel;
 class NodeEditor;
 class ProcedureItem;
+class ItemStackWidget;
 
 //! Main widget for model editing. Contains a toolbar on top, and few widgets beneath:
 //! a graphics scene representing a node editor, a toolbox with items to drag-and-drop on the
@@ -57,6 +58,7 @@ private:
 
   ComposerPanel* m_composer_panel{nullptr};
   NodeEditor* m_node_editor{nullptr};
+  ItemStackWidget* m_stack_widget{nullptr};
   ComposerProcedureEditor* m_composer_tree_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};
