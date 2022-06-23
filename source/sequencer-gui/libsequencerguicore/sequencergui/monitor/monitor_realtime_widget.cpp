@@ -19,26 +19,18 @@
 
 #include "sequencergui/monitor/monitor_realtime_widget.h"
 
-#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sequencergui/monitor/monitor_realtime_toolbar.h>
+#include <sequencergui/monitor/monitor_realtime_tree_widget.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/collapsible_list_view.h>
-#include <sequencergui/widgets/custom_header_view.h>
 
-#include <mvvm/widgets/item_view_component_provider.h>
-#include <mvvm/widgets/top_items_tree_view.h>
-
-#include <QEvent>
-#include <QHeaderView>
-#include <QSignalBlocker>
 #include <QSplitter>
 #include <QStackedWidget>
-#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -47,51 +39,43 @@ namespace sequencergui
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
-    , m_splitter(new CollapsibleListView)
+    , m_collapsible_list_view(new CollapsibleListView)
     , m_stacked_widget(new QStackedWidget)
-    , m_instruction_tree(new QTreeView)
-    , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_instruction_tree))
+    , m_instruction_tree_widget(new MonitorRealTimeTreeWidget)
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
-    , m_custom_header(new CustomHeaderView(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
 
-  m_stacked_widget->addWidget(m_instruction_tree);
+  m_stacked_widget->addWidget(m_instruction_tree_widget);
 
-  m_splitter->AddWidget(m_stacked_widget);
+  m_collapsible_list_view->AddWidget(m_stacked_widget);
   m_stacked_widget->addWidget(m_node_editor);
 
-  m_splitter->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
+  m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
-  layout->addWidget(m_splitter);
+  layout->addWidget(m_collapsible_list_view);
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->setMargin(0);
 
   SetupConnections();
-
-  m_instruction_tree->setHeader(m_custom_header);
 }
 
 MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
-                                               : nullptr);
+  m_instruction_tree_widget->SetProcedure(procedure_item);
   m_node_editor->SetProcedure(procedure_item);
-
-  m_instruction_tree->expandAll();
-  AdjustColumnWidth();
 }
 
 void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)
 {
-  m_component_provider->SetSelectedItem(item);
   m_node_editor->SetSelectedInstructions({item});
+  m_instruction_tree_widget->SetSelectedInstruction(item);
 }
 
 MessagePanel *MonitorRealTimeWidget::GetMessagePanel()
@@ -102,18 +86,6 @@ MessagePanel *MonitorRealTimeWidget::GetMessagePanel()
 void MonitorRealTimeWidget::onAppChangeRequest(int id)
 {
   m_stacked_widget->setCurrentIndex(id);
-}
-
-void MonitorRealTimeWidget::AdjustColumnWidth()
-{
-  if (m_custom_header->IsAdjustedByUser())
-  {
-    m_custom_header->RestoreSize();
-  }
-  else
-  {
-    m_instruction_tree->resizeColumnToContents(0);
-  }
 }
 
 void MonitorRealTimeWidget::SetupConnections()

@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   monitor_panel.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
+  monitor_realtime_tree_widget.cpp
+  monitor_realtime_tree_widget.h
   monitor_realtime_widget.cpp
   monitor_realtime_widget.h
   monitor_workspace_toolbar.cpp
