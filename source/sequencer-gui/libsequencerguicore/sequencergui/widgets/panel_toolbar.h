@@ -25,6 +25,8 @@
 class QToolBar;
 class QLabel;
 class QAction;
+class QToolButton;
+class QMenu;
 
 namespace sequencergui
 {
@@ -41,13 +43,16 @@ public:
 
   void AddDotsMenu();
 
-  void InsertElement(QWidget* widget);
+  QAction* InsertElement(QWidget* widget);
+
+  void SetDotsMenu(QMenu* dots_menu);
 
 private:
-  void insertStrech();
+  void InsertStrech();
 
   QLabel* m_label{nullptr};
   QAction* m_spacer_action{nullptr};
+  QToolButton* m_dots_button{nullptr};
 };
 
 }  // namespace sequencergui

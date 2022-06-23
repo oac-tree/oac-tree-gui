@@ -20,15 +20,17 @@
 #ifndef SEQUENCERGUI_WIDGETS_ITEM_STACK_WIDGET_H_
 #define SEQUENCERGUI_WIDGETS_ITEM_STACK_WIDGET_H_
 
-#include <QWidget>
 #include <QList>
+#include <QWidget>
 
 class QStackedWidget;
-class QToolBar;
 class QAction;
+class QToolBar;
 
 namespace sequencergui
 {
+
+class PanelToolBar;
 
 //!
 
@@ -44,13 +46,13 @@ public:
 private:
   struct GuestToolBarData
   {
-    QAction* action{nullptr}; //! action to hide guest toolbar
+    QAction* action{nullptr};  //! action to hide guest toolbar
     bool is_always_visible{false};
   };
 
   QStackedWidget* m_stacked_widget{nullptr};
-  QToolBar* m_toolbar{nullptr};
   QList<GuestToolBarData> m_toolbar_data;
+  PanelToolBar* m_main_toolbar{nullptr};
 };
 
 }  // namespace sequencergui

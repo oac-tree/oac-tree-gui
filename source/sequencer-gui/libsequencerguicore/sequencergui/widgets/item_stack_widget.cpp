@@ -19,6 +19,8 @@
 
 #include "sequencergui/widgets/item_stack_widget.h"
 
+#include <sequencergui/widgets/panel_toolbar.h>
+
 #include <QStackedWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -27,13 +29,21 @@ namespace sequencergui
 {
 
 ItemStackWidget::ItemStackWidget(QWidget *parent)
-    : QWidget(parent), m_stacked_widget(new QStackedWidget), m_toolbar(new QToolBar)
+    : QWidget(parent), m_stacked_widget(new QStackedWidget), m_main_toolbar(new PanelToolBar)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->setMargin(0);
 
+  layout->addWidget(m_main_toolbar);
+  layout->addWidget(m_stacked_widget);
+}
+
+void ItemStackWidget::AddWidget(QWidget *widget, QToolBar *toolbar, bool toolbar_is_always_visible)
+{
+  m_stacked_widget->addWidget(widget);
+  m_main_toolbar->InsertElement(toolbar);
 }
 
 }  // namespace sequencergui

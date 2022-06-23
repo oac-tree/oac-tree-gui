@@ -43,23 +43,31 @@ void PanelToolBar::setText(const QString &text)
 
 void PanelToolBar::AddDotsMenu()
 {
-  insertStrech();
+  InsertStrech();
 
-  auto button = new QToolButton;
-  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(styleutils::ToolBarIconSize());
-  addWidget(button);
+  m_dots_button = new QToolButton;
+  m_dots_button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
+  m_dots_button->setIconSize(styleutils::ToolBarIconSize());
+  addWidget(m_dots_button);
 }
 
 //! Insert element after the label, or last insert element.
 //! Push button representing dots and spacer will always stay at the right.
 
-void PanelToolBar::InsertElement(QWidget *widget)
+QAction *PanelToolBar::InsertElement(QWidget *widget)
 {
-  insertWidget(m_spacer_action, widget);
+  return insertWidget(m_spacer_action, widget);
 }
 
-void PanelToolBar::insertStrech()
+//! Sets a menu to the button with dots. The menu ownership remains on caller side.
+
+void PanelToolBar::SetDotsMenu(QMenu *dots_menu)
+{
+  m_dots_button->setMenu(dots_menu);
+  m_dots_button->setPopupMode(QToolButton::InstantPopup);
+}
+
+void PanelToolBar::InsertStrech()
 {
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
