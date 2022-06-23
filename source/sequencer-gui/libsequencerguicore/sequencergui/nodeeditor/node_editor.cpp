@@ -19,6 +19,9 @@
 
 #include "sequencergui/nodeeditor/node_editor.h"
 
+#include "sequencergui/nodeeditor/node_editor_toolbar.h"
+
+#include <mvvm/model/application_model.h>
 #include <sequencergui/core/message_handler_factory.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -28,11 +31,8 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/graphics_scene_controller.h>
 #include <sequencergui/nodeeditor/graphics_view.h>
-#include "sequencergui/nodeeditor/node_editor_toolbar.h"
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/utils/sequencer_align_utils.h>
-
-#include <mvvm/model/application_model.h>
 
 #include <QDebug>
 #include <QPointF>
@@ -42,26 +42,21 @@
 namespace sequencergui
 {
 
-NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
-    : QMainWindow(parent)
+NodeEditor::NodeEditor(QWidget *parent)
+    : QWidget(parent)
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
 {
   setWindowTitle("NodeEditor");
 
-  //  auto layout = new QVBoxLayout(this);
-  //  layout->setContentsMargins(0, 0, 0, 0);
-  //  layout->setSpacing(0);
-  //  layout->setMargin(0);
-
-  //  layout->addWidget(m_tool_bar);
-  //  layout->addWidget(m_graphics_view);
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setMargin(0);
+  layout->addWidget(m_graphics_view);
 
   m_graphics_scene->SetMessageHandler(CreateMessageHandler());
-
-  addToolBar(area, CreateToolBar().release());
-  setCentralWidget(m_graphics_view);
 
   SetupConnections();
 }
@@ -110,14 +105,15 @@ std::unique_ptr<MessageHandlerInterface> NodeEditor::CreateMessageHandler()
 
 std::unique_ptr<QToolBar> NodeEditor::CreateToolBar()
 {
-  auto result =  std::make_unique<NodeEditorToolBar>();
+  auto result = std::make_unique<NodeEditorToolBar>();
 
   // Propagate selection mode change from toolbar to GraphicsView
   connect(result.get(), &NodeEditorToolBar::selectionMode, m_graphics_view,
           &GraphicsView::onSelectionMode);
 
   // Center view from toolBar to GraphicsView
-  connect(result.get(), &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
+  connect(result.get(), &NodeEditorToolBar::centerView, m_graphics_view,
+          &GraphicsView::onCenterView);
 
   // Propagate zoom request from a toolbar to GraphicsView
   connect(result.get(), &NodeEditorToolBar::changeScale, m_graphics_view,

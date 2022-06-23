@@ -42,7 +42,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     , m_collapsible_list_view(new CollapsibleListView)
     , m_stacked_widget(new ItemStackWidget)
     , m_instruction_tree_widget(new MonitorRealTimeTreeWidget)
-    , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
+    , m_node_editor(new NodeEditor)
     , m_message_panel(new MessagePanel)
 {
   auto layout = new QVBoxLayout(this);
@@ -51,7 +51,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   layout->setMargin(0);
 
   m_stacked_widget->AddWidget(m_instruction_tree_widget, CreateRealTimeToolBar());
-  m_stacked_widget->AddWidget(m_node_editor);
+  m_stacked_widget->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
 
   m_collapsible_list_view->AddWidget(m_stacked_widget);
 
