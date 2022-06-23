@@ -44,6 +44,10 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
   layout->addWidget(m_stacked_widget);
 
   m_main_toolbar->SetDotsMenu(m_widget_selection_menu.get());
+
+  m_main_toolbar->layout()->setContentsMargins(0, 0, 0, 0);
+  m_main_toolbar->layout()->setSpacing(0);
+  m_main_toolbar->layout()->setMargin(0);
 }
 
 ItemStackWidget::~ItemStackWidget() = default;

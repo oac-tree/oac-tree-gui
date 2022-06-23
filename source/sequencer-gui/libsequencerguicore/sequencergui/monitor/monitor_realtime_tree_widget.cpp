@@ -39,6 +39,7 @@ MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
     , m_custom_header(new CustomHeaderView(this))
 {
   setWindowTitle("InstructionTree");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
