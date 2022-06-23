@@ -72,7 +72,7 @@ message(STATUS " Qt5 Includes  : ${Qt5Widgets_INCLUDE_DIRS}")
 configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/testconfig.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/testconfig.h @ONLY)
 
 if (SEQUENCERGUI_BUMP_VERSION)
-    configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/sequencergui_version.h.in  ${SEQUENCERGUI_PROJECT_DIR}/source/sequencergui/core/version.h @ONLY)
+    configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version.h.in  ${SEQUENCERGUI_PROJECT_DIR}/source/sequencer-gui/libsequencerguicore/sequencergui/core/version.h @ONLY)
 endif()
 
 # -----------------------------------------------------------------------------
