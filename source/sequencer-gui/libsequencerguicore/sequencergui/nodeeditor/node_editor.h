@@ -58,13 +58,14 @@ public:
 
   std::unique_ptr<MessageHandlerInterface> CreateMessageHandler();
 
+  std::unique_ptr<NodeEditorToolBar> CreateToolBar();
+
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
 
 private:
   void SetupConnections();
 
-  NodeEditorToolBar* m_tool_bar{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;

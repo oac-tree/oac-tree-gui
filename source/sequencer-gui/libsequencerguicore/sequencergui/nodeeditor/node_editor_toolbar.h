@@ -29,6 +29,7 @@ class QMenu;
 
 namespace sequencergui
 {
+
 //! Instrument tool bar on top of NodeEditor
 
 class NodeEditorToolBar : public QToolBar
@@ -48,8 +49,6 @@ signals:
   void alignSelectedRequest();
 
 private:
-  void AddDotsMenu();
-  void InsertStrech();
   std::unique_ptr<QMenu> CreateZoomMenu();
 
   QButtonGroup* m_pointer_mode_group{nullptr};

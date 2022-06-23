@@ -44,7 +44,6 @@ namespace sequencergui
 
 NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
     : QMainWindow(parent)
-    , m_tool_bar(new NodeEditorToolBar)
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
@@ -61,9 +60,7 @@ NodeEditor::NodeEditor(Qt::ToolBarArea area, QWidget *parent)
 
   m_graphics_scene->SetMessageHandler(CreateMessageHandler());
 
-  m_tool_bar->setMovable(false);
-
-  addToolBar(area, m_tool_bar);
+  addToolBar(area, CreateToolBar().release());
   setCentralWidget(m_graphics_view);
 
   SetupConnections();
@@ -111,34 +108,20 @@ std::unique_ptr<MessageHandlerInterface> NodeEditor::CreateMessageHandler()
   return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
 }
 
-void NodeEditor::SetupConnections()
+std::unique_ptr<NodeEditorToolBar> NodeEditor::CreateToolBar()
 {
-  // Propagates delete request from the graphics view to the scene.
-  connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
-          &GraphicsScene::OnDeleteSelectedRequest);
-
-  // Forward instruction selection from graphics scene
-  connect(m_graphics_scene, &GraphicsScene::InstructionSelected, this,
-          &NodeEditor::InstructionSelected);
-
-  // Propagate selection mode change from GraphicsView to a toolBar
-  connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_tool_bar,
-          &NodeEditorToolBar::onViewSelectionMode);
+  auto result =  std::make_unique<NodeEditorToolBar>();
 
   // Propagate selection mode change from toolbar to GraphicsView
-  connect(m_tool_bar, &NodeEditorToolBar::selectionMode, m_graphics_view,
+  connect(result.get(), &NodeEditorToolBar::selectionMode, m_graphics_view,
           &GraphicsView::onSelectionMode);
 
   // Center view from toolBar to GraphicsView
-  connect(m_tool_bar, &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
+  connect(result.get(), &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
 
   // Propagate zoom request from a toolbar to GraphicsView
-  connect(m_tool_bar, &NodeEditorToolBar::changeScale, m_graphics_view,
+  connect(result.get(), &NodeEditorToolBar::changeScale, m_graphics_view,
           &GraphicsView::onChangeScale);
-
-  // Propagate selection request from GraphicsScene to GraphicsView
-  connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
-          &GraphicsView::onSelectionMode);
 
   auto on_align_v2 = [this]()
   {
@@ -166,7 +149,28 @@ void NodeEditor::SetupConnections()
       algorithm::AlignInstructionTreeWalker(rect.center(), items);
     }
   };
-  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align_v2);
+  connect(result.get(), &NodeEditorToolBar::alignSelectedRequest, this, on_align_v2);
+
+  // Propagate selection mode change from GraphicsView to a toolBar
+  connect(m_graphics_view, &GraphicsView::selectionModeChanged, result.get(),
+          &NodeEditorToolBar::onViewSelectionMode);
+
+  return result;
+}
+
+void NodeEditor::SetupConnections()
+{
+  // Propagates delete request from the graphics view to the scene.
+  connect(m_graphics_view, &GraphicsView::deleteSelectedRequest, m_graphics_scene,
+          &GraphicsScene::OnDeleteSelectedRequest);
+
+  // Forward instruction selection from graphics scene
+  connect(m_graphics_scene, &GraphicsScene::InstructionSelected, this,
+          &NodeEditor::InstructionSelected);
+
+  // Propagate selection request from GraphicsScene to GraphicsView
+  connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
+          &GraphicsView::onSelectionMode);
 }
 
 }  // namespace sequencergui

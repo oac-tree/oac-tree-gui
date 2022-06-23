@@ -88,8 +88,6 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_align_button->setToolTip("Align children of currently selected item");
   connect(m_align_button, &QToolButton::clicked, this, &NodeEditorToolBar::alignSelectedRequest);
   addWidget(m_align_button);
-
-  AddDotsMenu();
 }
 
 NodeEditorToolBar::~NodeEditorToolBar() = default;
@@ -100,23 +98,6 @@ void NodeEditorToolBar::onViewSelectionMode(int mode)
   {
     m_pointer_mode_group->button(mode)->setChecked(true);
   }
-}
-
-void NodeEditorToolBar::AddDotsMenu()
-{
-  InsertStrech();
-
-  auto button = new QToolButton;
-  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(styleutils::ToolBarIconSize());
-  addWidget(button);
-}
-
-void NodeEditorToolBar::InsertStrech()
-{
-  auto empty = new QWidget(this);
-  empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-  addWidget(empty);
 }
 
 std::unique_ptr<QMenu> NodeEditorToolBar::CreateZoomMenu()
