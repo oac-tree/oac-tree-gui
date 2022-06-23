@@ -28,6 +28,7 @@
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/collapsible_list_view.h>
+#include <sequencergui/widgets/item_stack_widget.h>
 
 #include <QSplitter>
 #include <QStackedWidget>
@@ -40,7 +41,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
     , m_collapsible_list_view(new CollapsibleListView)
-    , m_stacked_widget(new QStackedWidget)
+    , m_stacked_widget(new ItemStackWidget)
     , m_instruction_tree_widget(new MonitorRealTimeTreeWidget)
     , m_node_editor(new NodeEditor(Qt::RightToolBarArea))
     , m_message_panel(new MessagePanel)
@@ -48,10 +49,10 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
 
-  m_stacked_widget->addWidget(m_instruction_tree_widget);
+  m_stacked_widget->AddWidget(m_instruction_tree_widget);
 
   m_collapsible_list_view->AddWidget(m_stacked_widget);
-  m_stacked_widget->addWidget(m_node_editor);
+  m_stacked_widget->AddWidget(m_node_editor);
 
   m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
@@ -85,7 +86,7 @@ MessagePanel *MonitorRealTimeWidget::GetMessagePanel()
 
 void MonitorRealTimeWidget::onAppChangeRequest(int id)
 {
-  m_stacked_widget->setCurrentIndex(id);
+  m_stacked_widget->SetCurrentIndex(id);
 }
 
 void MonitorRealTimeWidget::SetupConnections()

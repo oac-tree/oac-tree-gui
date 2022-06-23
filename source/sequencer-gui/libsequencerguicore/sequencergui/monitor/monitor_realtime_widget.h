@@ -22,8 +22,6 @@
 
 #include <QWidget>
 
-class QStackedWidget;
-
 namespace sequencergui
 {
 class SequencerModel;
@@ -34,6 +32,7 @@ class MessagePanel;
 class NodeEditor;
 class CollapsibleListView;
 class MonitorRealTimeTreeWidget;
+class ItemStackWidget;
 
 //! Central panel on SequencerMonitorView.
 
@@ -68,7 +67,8 @@ private:
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list_view{nullptr};
 
-  QStackedWidget* m_stacked_widget{nullptr};
+  ItemStackWidget* m_stacked_widget{nullptr};
+
   MonitorRealTimeTreeWidget* m_instruction_tree_widget{nullptr};
 
   NodeEditor* m_node_editor{nullptr};

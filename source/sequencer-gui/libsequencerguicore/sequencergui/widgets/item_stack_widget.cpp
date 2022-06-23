@@ -43,7 +43,16 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
 void ItemStackWidget::AddWidget(QWidget *widget, QToolBar *toolbar, bool toolbar_is_always_visible)
 {
   m_stacked_widget->addWidget(widget);
-  m_main_toolbar->InsertElement(toolbar);
+
+  if (toolbar)
+  {
+    m_main_toolbar->InsertElement(toolbar);
+  }
+}
+
+void ItemStackWidget::SetCurrentIndex(int index)
+{
+  m_stacked_widget->setCurrentIndex(index);
 }
 
 }  // namespace sequencergui

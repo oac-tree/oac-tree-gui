@@ -41,7 +41,10 @@ class ItemStackWidget : public QWidget
 public:
   explicit ItemStackWidget(QWidget* parent = nullptr);
 
-  void AddWidget(QWidget* widget, QToolBar* toolbar, bool toolbar_is_always_visible = false);
+  void AddWidget(QWidget* widget, QToolBar* toolbar = nullptr,
+                 bool toolbar_is_always_visible = false);
+
+  void SetCurrentIndex(int index);
 
 private:
   struct GuestToolBarData
