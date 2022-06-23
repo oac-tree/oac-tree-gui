@@ -20,6 +20,7 @@
 #include "sequencergui/mainwindow/about_application_dialog.h"
 
 #include <mvvm/editors/custom_event_filters.h>
+#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/core/version.h>
 #include <sequencergui/utils/style_utils.h>
 
@@ -57,8 +58,8 @@ QLabel* createLogoLabel()
 {
   QPixmap logo(":/icons/about_logo.awk", "JPG");
   auto result = new QLabel;
-  result->setPixmap(logo.scaled(sequencergui::styleutils::UnitSize(30),
-                                sequencergui::styleutils::UnitSize(30), Qt::KeepAspectRatio));
+  result->setPixmap(logo.scaled(sequencergui::styleutils::UnitSize(50),
+                                sequencergui::styleutils::UnitSize(50), Qt::KeepAspectRatio));
   return result;
 }
 }  // namespace
@@ -112,30 +113,21 @@ QBoxLayout* AboutApplicationDialog::createTextLayout()
 {
   auto result = new QVBoxLayout;
 
-  QFont title_font;
-  //  titleFont.setPointSize(DesignerHelper::getLabelFontSize() + 2);
-  title_font.setBold(true);
-
-  QFont normal_font;
-  //  normalFont.setPointSize(DesignerHelper::getLabelFontSize());
-  normal_font.setBold(false);
-
   // title
   auto about_title_label = new QLabel(
       QString("Sequencer GUI version ").append(QString::fromStdString(ProjectVersion())));
-  about_title_label->setFont(title_font);
+  mvvm::utils::ScaleLabelFont(about_title_label, 1.2, true);
   about_title_label->setContentsMargins(0, 0, 0, styleutils::UnitSize());
 
   // copyright
   auto copyright_label = createCopyrightLabel();
-  copyright_label->setFont(normal_font);
 
   // description
   QString description =
       "Integrated development environment for Sequencer of the ITER's Supervision and Automation "
       "system";
+
   auto description_label = new QLabel(description);
-  description_label->setFont(normal_font);
   description_label->setWordWrap(true);
 
   result->addWidget(about_title_label);
