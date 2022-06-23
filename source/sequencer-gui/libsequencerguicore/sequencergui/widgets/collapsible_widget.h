@@ -49,8 +49,6 @@ private:
   CollapsibleToolBar* m_tool_bar{nullptr};  // ToolBar intended to go to splitter separately
 };
 
-void AddToSplitter(QSplitter* splitter, QWidget* context);
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_WIDGETS_COLLAPSIBLE_WIDGET_H_

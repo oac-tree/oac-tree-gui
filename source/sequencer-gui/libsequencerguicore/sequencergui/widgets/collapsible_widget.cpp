@@ -56,10 +56,4 @@ CollapsibleToolBar *CollapsibleWidget::GetToolBar()
   return m_tool_bar;
 }
 
-void AddToSplitter(QSplitter *splitter, QWidget *context)
-{
-  auto collapsible_widget = new CollapsibleWidget(context);
-  collapsible_widget->AddToSplitter(splitter);
-}
-
 }  // namespace sequencergui
