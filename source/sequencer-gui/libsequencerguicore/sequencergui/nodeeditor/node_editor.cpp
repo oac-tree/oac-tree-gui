@@ -76,13 +76,8 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
     auto scene_rect = m_graphics_scene->sceneRect();
     auto align_strategy = [this](auto container)
     {
-      static int was_aligned = false;
-      if (!was_aligned)
-      {
-        const QPointF reference_point = m_graphics_scene->sceneRect().center();
-        algorithm::AlignInstructionTreeWalker(reference_point, container);
-        was_aligned = true;
-      }
+      const QPointF reference_point = m_graphics_scene->sceneRect().center();
+      algorithm::AlignInstructionTreeWalker(reference_point, container);
     };
     m_scene_controller->SetAlignStrategy(align_strategy);
 
@@ -129,28 +124,14 @@ std::unique_ptr<QToolBar> NodeEditor::CreateToolBar()
   auto on_align = [this]()
   {
     auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
-    if (selected.empty())
+    if (selected.size() != 1)
     {
       return;
     }
 
-    if (selected.size() == 1)
-    {
-      auto view = selected.front();
-      auto item = view->GetConnectableItem()->GetInstruction();
-      algorithm::AlignInstructionTreeWalker(view->pos(), item);
-    }
-    else
-    {
-      QRectF rect = selected.front()->sceneBoundingRect();
-      std::vector<InstructionItem *> items;
-      for (auto view : selected)
-      {
-        rect = rect.united(view->sceneBoundingRect());
-        items.push_back(view->GetConnectableItem()->GetInstruction());
-      }
-      algorithm::AlignInstructionTreeWalker(rect.center(), items);
-    }
+    auto view = selected.front();
+    auto item = view->GetConnectableItem()->GetInstruction();
+    algorithm::AlignInstructionTreeWalker(view->pos(), item);
   };
   connect(result.get(), &NodeEditorToolBar::alignSelectedRequest, this, on_align);
 
