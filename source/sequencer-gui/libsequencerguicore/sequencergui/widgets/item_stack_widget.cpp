@@ -22,7 +22,6 @@
 #include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QAction>
-#include <QDebug>
 #include <QMenu>
 #include <QStackedWidget>
 #include <QToolBar>
@@ -109,7 +108,6 @@ void ItemStackWidget::UpdateToolBarVisibility()
   for (int i = 0; i < m_toolbar_data.size(); ++i)
   {
     bool is_visible = m_stacked_widget->currentIndex() == i || m_toolbar_data[i].is_always_visible;
-    qDebug() << "xxx " << is_visible;
     for (auto action : m_toolbar_data[i].actions)
     {
       action->setVisible(is_visible);

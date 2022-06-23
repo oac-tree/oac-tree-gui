@@ -74,9 +74,16 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
     m_scene_controller = std::make_unique<GraphicsSceneController>(model, m_graphics_scene);
 
     auto scene_rect = m_graphics_scene->sceneRect();
-    const QPointF reference_point = m_graphics_scene->sceneRect().center();
-    auto align_strategy = [reference_point](auto container)
-    { algorithm::AlignInstructionTreeWalker(reference_point, container); };
+    auto align_strategy = [this](auto container)
+    {
+      static int was_aligned = false;
+      if (!was_aligned)
+      {
+        const QPointF reference_point = m_graphics_scene->sceneRect().center();
+        algorithm::AlignInstructionTreeWalker(reference_point, container);
+        was_aligned = true;
+      }
+    };
     m_scene_controller->SetAlignStrategy(align_strategy);
 
     m_scene_controller->Init(instruction_container);
