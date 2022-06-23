@@ -53,6 +53,7 @@ private:
   void AddMenuEntry(QWidget* widget);
   void AddGuestToolBar(std::unique_ptr<QToolBar> toolbar = {},
                        bool toolbar_is_always_visible = false);
+  void UpdateToolBarVisibility();
 
   struct GuestToolBarData
   {

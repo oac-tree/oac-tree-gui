@@ -67,6 +67,13 @@ void PanelToolBar::SetDotsMenu(QMenu *dots_menu)
   m_dots_button->setPopupMode(QToolButton::InstantPopup);
 }
 
+//! Appends separator to the lates guest element, but before 3-dots menu.
+
+QAction *PanelToolBar::AppendSeparator()
+{
+  return insertSeparator(m_spacer_action);
+}
+
 void PanelToolBar::InsertStrech()
 {
   auto empty = new QWidget(this);

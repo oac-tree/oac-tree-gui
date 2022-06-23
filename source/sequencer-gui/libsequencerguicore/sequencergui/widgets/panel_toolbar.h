@@ -47,6 +47,8 @@ public:
 
   void SetDotsMenu(QMenu* dots_menu);
 
+  QAction* AppendSeparator();
+
 private:
   void InsertStrech();
 

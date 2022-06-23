@@ -50,7 +50,8 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   layout->setSpacing(0);
   layout->setMargin(0);
 
-  m_stacked_widget->AddWidget(m_instruction_tree_widget, CreateRealTimeToolBar());
+  m_stacked_widget->AddWidget(m_instruction_tree_widget, CreateRealTimeToolBar(),
+                              /*toolbar_always_visible*/ true);
   m_stacked_widget->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
 
   m_collapsible_list_view->AddWidget(m_stacked_widget);
