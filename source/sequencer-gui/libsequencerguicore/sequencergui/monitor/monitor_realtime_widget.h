@@ -60,19 +60,12 @@ signals:
   void changeDelayRequest(int msec);
 
 private:
-  void AdjustColumnWidth();
+  std::unique_ptr<MonitorRealTimeToolBar> CreateRealTimeToolBar();
 
-  void SetupConnections();
-
-  MonitorRealTimeToolBar* m_tool_bar{nullptr};
   CollapsibleListView* m_collapsible_list_view{nullptr};
-
   ItemStackWidget* m_stacked_widget{nullptr};
-
   MonitorRealTimeTreeWidget* m_instruction_tree_widget{nullptr};
-
   NodeEditor* m_node_editor{nullptr};
-
   MessagePanel* m_message_panel{nullptr};
 };
 

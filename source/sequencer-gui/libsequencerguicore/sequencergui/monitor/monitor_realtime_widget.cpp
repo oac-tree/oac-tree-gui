@@ -39,7 +39,6 @@ namespace sequencergui
 
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new MonitorRealTimeToolBar)
     , m_collapsible_list_view(new CollapsibleListView)
     , m_stacked_widget(new ItemStackWidget)
     , m_instruction_tree_widget(new MonitorRealTimeTreeWidget)
@@ -47,8 +46,11 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     , m_message_panel(new MessagePanel)
 {
   auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setMargin(0);
 
-  m_stacked_widget->AddWidget(m_instruction_tree_widget, m_tool_bar);
+  m_stacked_widget->AddWidget(m_instruction_tree_widget, CreateRealTimeToolBar());
   m_stacked_widget->AddWidget(m_node_editor);
 
   m_collapsible_list_view->AddWidget(m_stacked_widget);
@@ -56,12 +58,6 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
   layout->addWidget(m_collapsible_list_view);
-
-  layout->setContentsMargins(0, 0, 0, 0);
-  layout->setSpacing(0);
-  layout->setMargin(0);
-
-  SetupConnections();
 }
 
 MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
@@ -88,19 +84,23 @@ void MonitorRealTimeWidget::onAppChangeRequest(int id)
   m_stacked_widget->SetCurrentIndex(id);
 }
 
-void MonitorRealTimeWidget::SetupConnections()
+std::unique_ptr<MonitorRealTimeToolBar> MonitorRealTimeWidget::CreateRealTimeToolBar()
 {
-  // forward signals from a toolbar
-  connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this,
+  auto result = std::make_unique<MonitorRealTimeToolBar>();
+
+  // forward signals from a toolbar further up
+  connect(result.get(), &MonitorRealTimeToolBar::runRequest, this,
           &MonitorRealTimeWidget::runRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this,
+  connect(result.get(), &MonitorRealTimeToolBar::pauseRequest, this,
           &MonitorRealTimeWidget::pauseRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this,
+  connect(result.get(), &MonitorRealTimeToolBar::stepRequest, this,
           &MonitorRealTimeWidget::stepRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this,
+  connect(result.get(), &MonitorRealTimeToolBar::stopRequest, this,
           &MonitorRealTimeWidget::stopRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
+  connect(result.get(), &MonitorRealTimeToolBar::changeDelayRequest, this,
           &MonitorRealTimeWidget::changeDelayRequest);
+
+  return result;
 }
 
 }  // namespace sequencergui

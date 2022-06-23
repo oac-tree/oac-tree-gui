@@ -22,6 +22,7 @@
 
 #include <QList>
 #include <QWidget>
+#include <memory>
 
 class QStackedWidget;
 class QAction;
@@ -43,7 +44,7 @@ public:
   explicit ItemStackWidget(QWidget* parent = nullptr);
   ~ItemStackWidget() override;
 
-  void AddWidget(QWidget* widget, QToolBar* toolbar = nullptr,
+  void AddWidget(QWidget* widget, std::unique_ptr<QToolBar> toolbar = {},
                  bool toolbar_is_always_visible = false);
 
   void SetCurrentIndex(int index);

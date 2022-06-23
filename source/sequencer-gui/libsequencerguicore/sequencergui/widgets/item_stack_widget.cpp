@@ -48,13 +48,14 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
 
 ItemStackWidget::~ItemStackWidget() = default;
 
-void ItemStackWidget::AddWidget(QWidget *widget, QToolBar *toolbar, bool toolbar_is_always_visible)
+void ItemStackWidget::AddWidget(QWidget *widget, std::unique_ptr<QToolBar> toolbar,
+                                bool toolbar_is_always_visible)
 {
   m_stacked_widget->addWidget(widget);
 
   if (toolbar)
   {
-    m_main_toolbar->InsertElement(toolbar);
+    m_main_toolbar->InsertElement(toolbar.release());
   }
 
   AddMenuEntry(widget);
