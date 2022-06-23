@@ -123,7 +123,7 @@ std::unique_ptr<NodeEditorToolBar> NodeEditor::CreateToolBar()
   connect(result.get(), &NodeEditorToolBar::changeScale, m_graphics_view,
           &GraphicsView::onChangeScale);
 
-  auto on_align_v2 = [this]()
+  auto on_align = [this]()
   {
     auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
     if (selected.empty())
@@ -149,7 +149,7 @@ std::unique_ptr<NodeEditorToolBar> NodeEditor::CreateToolBar()
       algorithm::AlignInstructionTreeWalker(rect.center(), items);
     }
   };
-  connect(result.get(), &NodeEditorToolBar::alignSelectedRequest, this, on_align_v2);
+  connect(result.get(), &NodeEditorToolBar::alignSelectedRequest, this, on_align);
 
   // Propagate selection mode change from GraphicsView to a toolBar
   connect(m_graphics_view, &GraphicsView::selectionModeChanged, result.get(),

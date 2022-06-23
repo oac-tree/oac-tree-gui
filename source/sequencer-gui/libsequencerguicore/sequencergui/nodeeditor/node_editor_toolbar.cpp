@@ -59,7 +59,6 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_pan_button->setCheckable(true);
   addWidget(m_pan_button);
 
-  m_pointer_mode_group = new QButtonGroup(this);
   m_pointer_mode_group->addButton(m_pointer_button, GraphicsView::kRubberSelection);
   m_pointer_mode_group->addButton(m_pan_button, GraphicsView::kHandDrag);
   connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorToolBar::selectionMode);
