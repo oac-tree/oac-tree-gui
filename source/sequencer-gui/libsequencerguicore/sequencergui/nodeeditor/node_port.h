@@ -42,7 +42,7 @@ class NodePort : public QGraphicsPathItem
 {
 public:
   NodePort(QGraphicsItem* parent, const PortInfo& info);
-  virtual ~NodePort() override;
+  ~NodePort() override;
 
   void SetPortInfo(const PortInfo& info);
 
@@ -71,7 +71,7 @@ protected:
 
   QGraphicsTextItem* m_label{nullptr};
   QList<NodeConnection*> m_connections;
-  PortInfo m_portInfo;
+  PortInfo m_port_info;
 };
 
 //! Represents child port of connectable view.

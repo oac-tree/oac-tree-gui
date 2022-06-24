@@ -96,8 +96,9 @@ void NodeConnection::updatePath()
   {
     qreal dx = m_pos2.y() - m_pos1.y();
     dx = qMax(dx, 200.);
-    QPointF ctr1(m_pos1.x(), m_pos1.y() + dx * 0.25);
-    QPointF ctr2(m_pos2.x(), m_pos2.y() - dx * 0.25);
+    double step = m_port1->isParentPort() ? dx * 0.25 : -dx * 0.25;
+    QPointF ctr1(m_pos1.x(), m_pos1.y() + step);
+    QPointF ctr2(m_pos2.x(), m_pos2.y() - step);
     p.cubicTo(ctr1, ctr2, m_pos2);
   }
   else

@@ -38,7 +38,7 @@ double port_radius()
 namespace sequencergui
 {
 NodePort::NodePort(QGraphicsItem* parent, const PortInfo& info)
-    : QGraphicsPathItem(parent), m_label(new QGraphicsTextItem(this)), m_portInfo(info)
+    : QGraphicsPathItem(parent), m_label(new QGraphicsTextItem(this)), m_port_info(info)
 {
   setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
   const double radius = port_radius();
@@ -66,7 +66,7 @@ NodePort::~NodePort()
 
 void NodePort::SetPortInfo(const PortInfo& info)
 {
-  m_portInfo = info;
+  m_port_info = info;
   setBrush(QColor(QString::fromStdString(info.m_color)));
   update();
 }
@@ -75,7 +75,7 @@ void NodePort::SetPortInfo(const PortInfo& info)
 
 QString NodePort::portType() const
 {
-  return QString::fromStdString(m_portInfo.m_type);
+  return QString::fromStdString(m_port_info.m_type);
 }
 
 //! Returns true if this is a NodeOutputPort.
