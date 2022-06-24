@@ -1,4 +1,5 @@
-# Contains source for SequencerMonitorView (main window for running procedures).
+# Contains source for SequencerMonitorView, a third main view of the MainWindow.,
+# It is intended for real time procedure execution.
 
 target_sources(${library_name} PRIVATE
   job_list_widget.cpp
@@ -11,16 +12,14 @@ target_sources(${library_name} PRIVATE
   message_panel.h
   monitor_panel.cpp
   monitor_panel.h
+  monitor_property_widget.cpp
+  monitor_property_widget.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
   monitor_realtime_tree_widget.cpp
   monitor_realtime_tree_widget.h
   monitor_realtime_widget.cpp
   monitor_realtime_widget.h
-  monitor_workspace_toolbar.cpp
-  monitor_workspace_toolbar.h
-  monitor_property_widget.cpp
-  monitor_property_widget.h
   sequencer_monitor_actions.cpp
   sequencer_monitor_actions.h
   sequencer_monitor_view.cpp

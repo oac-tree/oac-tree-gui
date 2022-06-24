@@ -19,14 +19,13 @@
 
 #include "sequencergui/monitor/monitor_property_widget.h"
 
+#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/property_tree_view.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/monitor/monitor_workspace_toolbar.h>
-
-#include <mvvm/widgets/all_items_tree_view.h>
-#include <mvvm/widgets/property_tree_view.h>
+#include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QSplitter>
 #include <QTreeView>
@@ -37,7 +36,7 @@ namespace sequencergui
 
 MonitorPropertyWidget::MonitorPropertyWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new MonitorWorkspaceToolBar)
+    , m_tool_bar(new PanelToolBar)
     , m_workspace_tree(new mvvm::AllItemsTreeView)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
@@ -49,6 +48,7 @@ MonitorPropertyWidget::MonitorPropertyWidget(QWidget *parent)
 
   m_splitter->addWidget(m_workspace_tree);
   m_splitter->addWidget(m_property_tree);
+  m_splitter->setSizes(QList<int>() << 300 << 200);
 
   layout->addWidget(m_splitter);
 

@@ -33,8 +33,9 @@ class QSplitter;
 namespace sequencergui
 {
 class SequencerModel;
-class MonitorWorkspaceToolBar;
 class ProcedureItem;
+class PanelToolBar;
+class InstructionItem;
 
 //! Right panel on SequencerMonitorView.
 
@@ -48,8 +49,10 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
+  void SetSelectedInstruction(InstructionItem* instruction);
+
 private:
-  MonitorWorkspaceToolBar* m_tool_bar{nullptr};
+  PanelToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
 
   mvvm::AllItemsTreeView* m_workspace_tree{nullptr};

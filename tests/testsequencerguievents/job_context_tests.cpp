@@ -288,7 +288,7 @@ TEST_F(JobContextTest, StopLongRunningJob)
 
   job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
-  QTest::qWait(20);
+  QTest::qWait(40);
 
   EXPECT_TRUE(job_context.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 1);
