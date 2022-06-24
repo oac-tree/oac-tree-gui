@@ -52,6 +52,9 @@ public:
 
   void SetSelectedInstruction(InstructionItem* item);
 
+signals:
+  void InstructionClicked(sequencergui::InstructionItem* instruction);
+
 private:
   void AdjustColumnWidth();
 

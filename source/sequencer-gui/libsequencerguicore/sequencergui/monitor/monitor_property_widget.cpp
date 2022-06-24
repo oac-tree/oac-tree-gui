@@ -22,6 +22,7 @@
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/property_tree_view.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
@@ -62,6 +63,11 @@ MonitorPropertyWidget::~MonitorPropertyWidget() = default;
 void MonitorPropertyWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_workspace_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
+}
+
+void MonitorPropertyWidget::SetSelectedInstruction(InstructionItem *instruction)
+{
+  m_property_tree->SetItem(instruction);
 }
 
 }  // namespace sequencergui

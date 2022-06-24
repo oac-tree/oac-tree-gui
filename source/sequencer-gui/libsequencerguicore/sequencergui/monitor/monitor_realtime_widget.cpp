@@ -59,6 +59,9 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
   layout->addWidget(m_collapsible_list_view);
+
+  connect(m_instruction_tree_widget, &MonitorRealTimeTreeWidget::InstructionClicked, this,
+          &MonitorRealTimeWidget::InstructionClicked);
 }
 
 MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;

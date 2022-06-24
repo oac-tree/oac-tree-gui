@@ -47,6 +47,15 @@ MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
   layout->addWidget(m_tree_view);
 
   m_tree_view->setHeader(m_custom_header);
+
+  auto on_click = [this](auto index)
+  {
+    // FIXME refactor this hell
+    auto item = const_cast<mvvm::SessionItem *>(
+        m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
+    emit InstructionClicked(dynamic_cast<InstructionItem *>(item));
+  };
+  connect(m_tree_view, &QTreeView::clicked, this, on_click);
 }
 
 MonitorRealTimeTreeWidget::~MonitorRealTimeTreeWidget() = default;

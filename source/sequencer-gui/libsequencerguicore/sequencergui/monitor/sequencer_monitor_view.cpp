@@ -19,6 +19,9 @@
 
 #include "sequencergui/monitor/sequencer_monitor_view.h"
 
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/top_items_tree_view.h>
 #include <sequencergui/core/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -29,14 +32,10 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/monitor_panel.h>
-#include <sequencergui/monitor/monitor_realtime_widget.h>
 #include <sequencergui/monitor/monitor_property_widget.h>
+#include <sequencergui/monitor/monitor_realtime_widget.h>
 #include <sequencergui/monitor/sequencer_monitor_actions.h>
 #include <sequencergui/utils/style_utils.h>
-
-#include <mvvm/standarditems/container_item.h>
-#include <mvvm/widgets/all_items_tree_view.h>
-#include <mvvm/widgets/top_items_tree_view.h>
 
 #include <QDebug>
 #include <QSplitter>
@@ -49,7 +48,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     : QWidget(parent)
     , m_monitor_panel(new MonitorPanel)
     , m_realtime_widget(new MonitorRealTimeWidget)
-    , m_workspace_widget(new MonitorPropertyWidget)
+    , m_property_widget(new MonitorPropertyWidget)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
     , m_actions(new SequencerMonitorActions(
@@ -62,7 +61,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
 
   m_splitter->addWidget(m_monitor_panel);
   m_splitter->addWidget(m_realtime_widget);
-  m_splitter->addWidget(m_workspace_widget);
+  m_splitter->addWidget(m_property_widget);
   m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
                                     << styleutils::UnitSize(30));
 
@@ -119,6 +118,10 @@ void SequencerMonitorView::SetupConnections()
   connect(m_realtime_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
           &JobManager::onChangeDelayRequest);
 
+  // instruction selection request from RealTimeWidget to MonitorPropertyWidget
+  connect(m_realtime_widget, &MonitorRealTimeWidget::InstructionClicked, m_property_widget,
+          &MonitorPropertyWidget::SetSelectedInstruction);
+
   // instruction selection request from JobManager to MonitorRealTimeWidget
   connect(m_job_manager, &JobManager::InstructionStatusChanged, m_realtime_widget,
           &MonitorRealTimeWidget::SetSelectedInstruction);
@@ -149,7 +152,7 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
   qDebug() << "SequencerMonitorView::OnJobSelected JobItem" << item;
   m_job_manager->SetCurrentJob(item);
   m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-  m_workspace_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_property_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 }  // namespace sequencergui

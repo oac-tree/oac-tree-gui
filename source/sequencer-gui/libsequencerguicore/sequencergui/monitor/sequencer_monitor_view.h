@@ -60,7 +60,7 @@ private:
 
   MonitorPanel* m_monitor_panel{nullptr};
   MonitorRealTimeWidget* m_realtime_widget{nullptr};
-  MonitorPropertyWidget* m_workspace_widget{nullptr};
+  MonitorPropertyWidget* m_property_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};

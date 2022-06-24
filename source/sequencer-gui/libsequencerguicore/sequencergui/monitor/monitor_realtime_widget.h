@@ -58,6 +58,7 @@ signals:
   void stepRequest();
   void stopRequest();
   void changeDelayRequest(int msec);
+  void InstructionClicked(sequencergui::InstructionItem* instruction);
 
 private:
   std::unique_ptr<MonitorRealTimeToolBar> CreateRealTimeToolBar();
