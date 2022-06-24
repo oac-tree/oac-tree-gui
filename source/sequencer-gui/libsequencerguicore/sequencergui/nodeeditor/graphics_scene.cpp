@@ -216,12 +216,12 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
   {
     GetModel()->MoveItem(child_instruction, parent_instruction, {"", -1});
   }
-  catch (const mvvm::InvalidMoveException &ex)
+  catch (const mvvm::MessageException &ex)
   {
     if (m_message_handler)
     {
       std::ostringstream ostr;
-      ostr << "Can't connect instructions. Maximum number of children exceeded? ";
+      ostr << ex.what();
       m_message_handler->SendMessage(ostr.str());
     }
     else
