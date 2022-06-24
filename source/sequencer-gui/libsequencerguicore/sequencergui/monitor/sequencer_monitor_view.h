@@ -33,7 +33,7 @@ class JobItem;
 class JobManager;
 class MonitorPanel;
 class MonitorRealTimeWidget;
-class MonitorWorkspaceWidget;
+class MonitorPropertyWidget;
 class ProcedureItem;
 class SequencerMonitorActions;
 
@@ -60,7 +60,7 @@ private:
 
   MonitorPanel* m_monitor_panel{nullptr};
   MonitorRealTimeWidget* m_realtime_widget{nullptr};
-  MonitorWorkspaceWidget* m_workspace_widget{nullptr};
+  MonitorPropertyWidget* m_workspace_widget{nullptr};
 
   QSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};

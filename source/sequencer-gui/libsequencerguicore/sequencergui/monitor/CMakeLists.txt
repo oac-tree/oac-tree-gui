@@ -19,8 +19,8 @@ target_sources(${library_name} PRIVATE
   monitor_realtime_widget.h
   monitor_workspace_toolbar.cpp
   monitor_workspace_toolbar.h
-  monitor_workspace_widget.cpp
-  monitor_workspace_widget.h
+  monitor_property_widget.cpp
+  monitor_property_widget.h
   sequencer_monitor_actions.cpp
   sequencer_monitor_actions.h
   sequencer_monitor_view.cpp

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MONITOR_WORKSPACE_WIDGET_H_
-#define SEQUENCERGUI_MONITOR_MONITOR_WORKSPACE_WIDGET_H_
+#ifndef SEQUENCERGUI_MONITOR_MONITOR_PROPERTY_WIDGET_H_
+#define SEQUENCERGUI_MONITOR_MONITOR_PROPERTY_WIDGET_H_
 
 #include <QWidget>
 
@@ -38,13 +38,13 @@ class ProcedureItem;
 
 //! Right panel on SequencerMonitorView.
 
-class MonitorWorkspaceWidget : public QWidget
+class MonitorPropertyWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit MonitorWorkspaceWidget(QWidget* parent = nullptr);
-  ~MonitorWorkspaceWidget() override;
+  explicit MonitorPropertyWidget(QWidget* parent = nullptr);
+  ~MonitorPropertyWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
@@ -58,4 +58,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MONITOR_WORKSPACE_WIDGET_H_
+#endif  // SEQUENCERGUI_MONITOR_MONITOR_PROPERTY_WIDGET_H_

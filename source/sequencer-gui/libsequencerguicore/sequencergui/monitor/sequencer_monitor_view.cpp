@@ -30,7 +30,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/monitor_panel.h>
 #include <sequencergui/monitor/monitor_realtime_widget.h>
-#include <sequencergui/monitor/monitor_workspace_widget.h>
+#include <sequencergui/monitor/monitor_property_widget.h>
 #include <sequencergui/monitor/sequencer_monitor_actions.h>
 #include <sequencergui/utils/style_utils.h>
 
@@ -49,7 +49,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     : QWidget(parent)
     , m_monitor_panel(new MonitorPanel)
     , m_realtime_widget(new MonitorRealTimeWidget)
-    , m_workspace_widget(new MonitorWorkspaceWidget)
+    , m_workspace_widget(new MonitorPropertyWidget)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
     , m_actions(new SequencerMonitorActions(

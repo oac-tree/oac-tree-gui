@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitor_workspace_widget.h"
+#include "sequencergui/monitor/monitor_property_widget.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -35,7 +35,7 @@
 namespace sequencergui
 {
 
-MonitorWorkspaceWidget::MonitorWorkspaceWidget(QWidget *parent)
+MonitorPropertyWidget::MonitorPropertyWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWorkspaceToolBar)
     , m_workspace_tree(new mvvm::AllItemsTreeView)
@@ -57,9 +57,9 @@ MonitorWorkspaceWidget::MonitorWorkspaceWidget(QWidget *parent)
   layout->setMargin(0);
 }
 
-MonitorWorkspaceWidget::~MonitorWorkspaceWidget() = default;
+MonitorPropertyWidget::~MonitorPropertyWidget() = default;
 
-void MonitorWorkspaceWidget::SetProcedure(ProcedureItem *procedure_item)
+void MonitorPropertyWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_workspace_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
 }
