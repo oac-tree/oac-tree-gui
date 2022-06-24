@@ -26,6 +26,7 @@
 #include <sequencergui/monitor/monitor_workspace_toolbar.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/property_tree_view.h>
 
 #include <QSplitter>
 #include <QTreeView>
@@ -37,7 +38,8 @@ namespace sequencergui
 MonitorWorkspaceWidget::MonitorWorkspaceWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWorkspaceToolBar)
-    , m_instruction_tree(new mvvm::AllItemsTreeView)
+    , m_workspace_tree(new mvvm::AllItemsTreeView)
+    , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
 
 {
@@ -45,7 +47,8 @@ MonitorWorkspaceWidget::MonitorWorkspaceWidget(QWidget *parent)
   layout->addWidget(m_tool_bar);
   m_splitter->setOrientation(Qt::Vertical);
 
-  m_splitter->addWidget(m_instruction_tree);
+  m_splitter->addWidget(m_workspace_tree);
+  m_splitter->addWidget(m_property_tree);
 
   layout->addWidget(m_splitter);
 
@@ -58,7 +61,7 @@ MonitorWorkspaceWidget::~MonitorWorkspaceWidget() = default;
 
 void MonitorWorkspaceWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_instruction_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
+  m_workspace_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
 }
 
 }  // namespace sequencergui

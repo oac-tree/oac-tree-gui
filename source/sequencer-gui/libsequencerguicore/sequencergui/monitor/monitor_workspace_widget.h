@@ -52,7 +52,8 @@ private:
   MonitorWorkspaceToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
 
-  mvvm::AllItemsTreeView* m_instruction_tree{nullptr};
+  mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
+  mvvm::PropertyTreeView* m_property_tree{nullptr};
 };
 
 }  // namespace sequencergui
