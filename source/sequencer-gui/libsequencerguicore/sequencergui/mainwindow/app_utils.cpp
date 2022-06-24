@@ -31,10 +31,13 @@
 #include <QScreen>
 #include <QSize>
 #include <QString>
+#include <QStyleFactory>
 #include <sstream>
 
 namespace
 {
+//! Generate string with environment variables, if any, related to scaling.
+
 QString GetEnvironmentInfo()
 {
   QString result;
@@ -46,6 +49,8 @@ QString GetEnvironmentInfo()
   result += "\n";
   return result;
 }
+
+//! Generate string with system font metrics
 
 QString GetFontInfo()
 {
@@ -62,6 +67,8 @@ QString GetFontInfo()
 
   return result;
 }
+
+//! Generate string with screen geometry information.
 
 QString GetScreenInfo()
 {
@@ -96,6 +103,26 @@ QString GetScreenInfo()
   return result;
 }
 
+//! Generate string with list of available UI styles.
+
+QString GetStyleInfo()
+{
+  QString result("Available UI styles          : ");
+  int index{0};
+  for (const auto& style : QStyleFactory::keys())
+  {
+    result.append(style);
+    if (index < QStyleFactory::keys().size() - 1)
+    {
+      result.append(", ");
+    }
+    ++index;
+  }
+  result += "\n";
+
+  return result;
+}
+
 //! Returns true if there is an attempt to scale via environment variable.
 bool IsAttemptToScaleViaEnvironment()
 {
@@ -116,6 +143,8 @@ void ResetHighDpiEnvironment()
 namespace sequencergui
 {
 
+//! Returns multiline string with various system information.
+
 std::string GetDesktopInfo()
 {
   const int line_length(80);
@@ -126,6 +155,7 @@ std::string GetDesktopInfo()
   result += GetEnvironmentInfo();
   result += GetFontInfo();
   result += GetScreenInfo();
+  result += GetStyleInfo();
 
   result += QString(line_length, '-');
   result += "\n";
@@ -133,10 +163,10 @@ std::string GetDesktopInfo()
   return result.toStdString();
 }
 
-Options ParseOptions(int argc, char **argv)
+Options ParseOptions(int argc, char** argv)
 {
-  // Parser requires an application to be created upfront, fortunately it is cheap.
-  // Create an application solely for parser needs.
+  // Parser requires an application to be created upfront.
+  // Create an application solely for parser needs (fortunately it is cheap).
   QCoreApplication app(argc, argv);
 
   QCommandLineParser parser;
