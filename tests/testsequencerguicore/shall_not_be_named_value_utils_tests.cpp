@@ -20,7 +20,7 @@
 #include "sequencergui/model/shall_not_be_named_value_utils.h"
 
 #include "Variable.h"
-#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
 
 #include <gtest/gtest.h>

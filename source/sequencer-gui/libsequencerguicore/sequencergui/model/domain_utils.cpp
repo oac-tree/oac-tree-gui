@@ -26,7 +26,7 @@
 #include "Variable.h"
 #include "VariableRegistry.h"
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/domain/domain_constants.h>
 
 #include <algorithm>
 #include <iostream>

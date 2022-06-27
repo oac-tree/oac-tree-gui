@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/sequencer_utils.h"
 
-#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_includes.h>
 

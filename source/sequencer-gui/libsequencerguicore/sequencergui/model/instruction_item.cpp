@@ -20,7 +20,7 @@
 #include "sequencergui/model/instruction_item.h"
 
 #include "Instruction.h"
-#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include "sequencergui/model/standard_instruction_items.h"

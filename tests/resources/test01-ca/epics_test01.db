@@ -1,0 +1,24 @@
+record (longin,"FTEST01:RUNNING")
+{
+  field(DESC,"Test is running flag")
+  field(VAL,"1")
+}
+
+record (longin,"FTEST01:DEV1-STATUS")
+{
+  field(DESC,"System is ready")
+  field(VAL,"0")
+}
+
+record (longin,"FTEST01:DEV2-STATUS")
+{
+  field(DESC,"Device is ready")
+  field(VAL,"0")
+}
+
+record (longin,"FTEST01:DEVICES-READY")
+{
+  field(DESC,"Devices is ready")
+  field(VAL,"0")
+}
+

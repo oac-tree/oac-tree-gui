@@ -21,7 +21,7 @@
 
 #include "Instruction.h"
 #include "InstructionRegistry.h"
-#include <sequencergui/model/domain_constants.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
