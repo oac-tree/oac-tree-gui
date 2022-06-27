@@ -51,8 +51,7 @@ public:
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item);
 
   void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                        InstructionContainerItem* container,
-                                        bool root_only = false);
+                                        InstructionContainerItem* container, bool root_only);
 
   void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
 

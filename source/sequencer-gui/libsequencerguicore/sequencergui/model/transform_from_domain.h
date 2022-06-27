@@ -47,7 +47,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
 void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                      InstructionContainerItem* container);
+                                      InstructionContainerItem* container, bool root_only);
 
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);

@@ -22,15 +22,15 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
+
+#include <mvvm/model/function_types.h>
+#include <mvvm/model/item_catalogue.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/gui_object_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-
-#include <mvvm/model/function_types.h>
-#include <mvvm/model/item_catalogue.h>
 
 #include <stdexcept>
 
@@ -140,10 +140,10 @@ void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspac
 }
 
 void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                      InstructionContainerItem* container)
+                                      InstructionContainerItem* container, bool root_only)
 {
   GUIObjectBuilder builder;
-  builder.PopulateInstructionContainerItem(procedure, container);
+  builder.PopulateInstructionContainerItem(procedure, container, root_only);
 }
 
 void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item)

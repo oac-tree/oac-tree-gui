@@ -144,7 +144,7 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromEmptyProcedure)
   ::sup::sequencer::Procedure procedure;
 
   sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container);
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ false);
 
   EXPECT_EQ(container.GetTotalItemCount(), 0);
 }
@@ -160,10 +160,33 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithWait)
   procedure.PushInstruction(wait.release());
 
   sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container);
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ false);
 
   auto item = container.GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 42.0);
+}
+
+//! Populate InstructionContainerItem from Procedure with two Wait instruction.
+//! One is marked as root instruction, root_only=true is used
+
+TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithTwoWaits)
+{
+  ::sup::sequencer::Procedure procedure;
+
+  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  procedure.PushInstruction(wait0.release());
+
+  auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait1->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
+  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "43");
+  procedure.PushInstruction(wait1.release());
+
+  sequencergui::InstructionContainerItem container;
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ true);
+
+  auto item = container.GetItem<sequencergui::WaitItem>("");
+  EXPECT_EQ(item->GetTimeout(), 43.0);
 }
 
 //! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
@@ -181,7 +204,7 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithSequence)
   procedure.PushInstruction(sequence.release());
 
   sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container);
+  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ false);
 
   auto sequence_item = container.GetItem<sequencergui::SequenceItem>("");
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
