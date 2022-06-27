@@ -34,7 +34,7 @@ namespace sequencergui
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 {
   auto result = std::make_unique<ProcedureItem>();
-  auto procedure = sup::sequencer::ParseProcedureFile(file_name);
+ auto procedure = sup::sequencer::ParseProcedureFile(file_name);
 
   if (!procedure)
   {

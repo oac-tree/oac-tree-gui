@@ -25,6 +25,7 @@
 #include "SequenceParser.h"
 #include "Variable.h"
 #include "VariableRegistry.h"
+
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 
@@ -132,7 +133,8 @@ void LoadCodacPlugins()
 
 void LoadLocalPlugins()
 {
-  static const std::vector<std::string> plugins = {"libsequencerpluginepics.so"};
+  static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
+                                                   "libsequencer-misc.so"};
 
   for (const auto& name : plugins)
   {
