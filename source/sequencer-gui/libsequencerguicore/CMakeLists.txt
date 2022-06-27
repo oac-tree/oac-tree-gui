@@ -5,7 +5,7 @@ set(CMAKE_AUTOMOC ON)
 add_library(${library_name} SHARED "")
 
 if (SEQUENCERGUI_CODAC)
-  target_link_libraries(${library_name} PUBLIC pthread MVVM::View sequencer ccs-core sequencer-ca sequencer-pvxs)
+  target_link_libraries(${library_name} PUBLIC pthread MVVM::View sequencer ccs-core)
   target_include_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/include $ENV{CODAC_ROOT}/include/sup)
   target_link_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/lib)
   add_definitions(-DSEQUENCERGUI_CODAC)
