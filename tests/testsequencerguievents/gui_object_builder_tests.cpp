@@ -135,15 +135,57 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr->GetName()), variable_item);
 }
 
-//! Named Sequence and Include instruction
-//! <Sequence name="CountTwice">
-//!     <Wait/>
-//! </Sequence>
-//! <Repeat isRoot="true" maxCount="10">
-//!     <Include name="Counts" path="CountTwice"/>
-//! </Repeat>
+//! Procedure with local include after Setup call.
+//! root_only mode is used.
 
-TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
+TEST_F(GUIObjectBuilderTest, LocalIncludeProcedure)
+{
+  auto procedure = testutils::CreateLocalIncludeProcedure();
+
+  ASSERT_EQ(procedure->GetInstructions().size(), 2);
+  auto sequence_ptr = procedure->GetInstructions().at(0);
+
+  ASSERT_EQ(sequence_ptr->ChildInstructions().size(), 1);
+  auto wait_ptr = sequence_ptr->ChildInstructions().at(0);
+
+  auto repeat_ptr = procedure->GetInstructions().at(1);
+  auto include_ptr = repeat_ptr->ChildInstructions().at(0);
+
+  EXPECT_EQ(procedure->RootInstruction(), repeat_ptr);
+  EXPECT_EQ(repeat_ptr->ChildInstructions().at(0), include_ptr);
+  EXPECT_EQ(include_ptr->ChildInstructions().size(), 0);  // since no Setup has been called
+
+  // Building ProcedureItem in root_only mode
+  sequencergui::ProcedureItem procedure_item;
+  GUIObjectBuilder builder;
+  builder.PopulateProcedureItem(procedure.get(), &procedure_item, /*root_only*/ false);
+
+  // only one root instruction has been processed
+  EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 2);
+
+  auto repeat_item =
+      procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("", 1);
+  auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>("");
+  auto sequence_item =
+      procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("", 0);
+  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
+
+  // Repeat and Include instructions corresponds to their domain counterpart
+  EXPECT_EQ(builder.FindInstructionItem(repeat_ptr), repeat_item);
+  EXPECT_EQ(builder.FindInstructionItem(include_ptr), include_item);
+
+  // include instruction doesn't have children yet (since no Setup has been called)
+  EXPECT_EQ(include_item->GetInstructions().size(), 0);
+
+  // SequenceItem and WaitItem remains on their place
+  EXPECT_EQ(builder.FindInstructionItem(sequence_ptr), sequence_item);
+  EXPECT_EQ(builder.FindInstructionItem(wait_ptr), wait_item);
+}
+
+//! Procedure with local include after Setup call.
+//! root_only mode is used.
+
+TEST_F(GUIObjectBuilderTest, LocalIncludeAfterSetup)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
 
