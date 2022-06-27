@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/xml_utils.h"
-
 #include "folder_based_test.h"
+#include "sequencergui/model/xml_utils.h"
+#include "test_utils.h"
+
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include "test_utils.h"
 
 //! Testing methods from importutils.h
 
@@ -65,10 +65,9 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
   testutils::CreateTextFile(file_name, CreateProcedureString(body));
 
-  sequencergui::ProcedureItem procedure_item;
-  sequencergui::ImportFromFile(file_name, &procedure_item);
+  auto procedure_item = sequencergui::ImportFromFile(file_name);
 
-  auto container = procedure_item.GetInstructionContainer();
+  auto container = procedure_item->GetInstructionContainer();
   auto wait_item = container->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
 }
@@ -87,10 +86,9 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
   testutils::CreateTextFile(file_name, CreateProcedureString(body));
 
-  sequencergui::ProcedureItem procedure_item;
-  sequencergui::ImportFromFile(file_name, &procedure_item);
+  auto procedure_item = sequencergui::ImportFromFile(file_name);
 
-  auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
+  auto variable_item = procedure_item->GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
   EXPECT_EQ(variable_item->GetJsonType(), std::string(R"({"type":"uint32"})"));
   EXPECT_EQ(variable_item->GetJsonValue(), std::string("7"));
 }

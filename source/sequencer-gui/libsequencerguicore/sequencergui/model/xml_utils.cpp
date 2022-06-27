@@ -21,6 +21,7 @@
 
 #include "Procedure.h"
 #include "SequenceParser.h"
+
 #include <sequencergui/model/domain_object_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -30,15 +31,19 @@
 #include <stdexcept>
 namespace sequencergui
 {
-void ImportFromFile(const std::string &file_name, ProcedureItem *procedure_item)
+std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 {
+  auto result = std::make_unique<ProcedureItem>();
   auto procedure = sup::sequencer::ParseProcedureFile(file_name);
+
   if (!procedure)
   {
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  PopulateProcedureItem(procedure.get(), procedure_item, /*root_only*/ false);
+  PopulateProcedureItem(procedure.get(), result.get(), /*root_only*/ false);
+
+  return result;
 }
 
 std::string ExportToXMLString(const ProcedureItem *procedure_item)

@@ -19,6 +19,9 @@
 
 #include "sequencergui/explorer/sequencer_explorer_view.h"
 
+#include <mvvm/interfaces/model_event_subscriber_interface.h>
+#include <mvvm/standarditems/standard_item_includes.h>
+#include <mvvm/utils/file_utils.h>
 #include <sequencergui/explorer/explorer_panel.h>
 #include <sequencergui/explorer/procedure_trees_widget.h>
 #include <sequencergui/explorer/xml_editor.h>
@@ -28,10 +31,6 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/widgets/widget_utils.h>
 
-#include <mvvm/interfaces/model_event_subscriber_interface.h>
-#include <mvvm/standarditems/standard_item_includes.h>
-#include <mvvm/utils/file_utils.h>
-
 #include <QApplication>
 #include <QDebug>
 #include <QSplitter>
@@ -39,15 +38,20 @@
 
 namespace
 {
-bool PopulateProcedureFromXmlFile(const QString &file_name,
-                                  sequencergui::ProcedureItem *procedure_item)
+std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromXmlFile(const QString &file_name)
 {
-  auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
-  procedure_item->SetDisplayName(procedure_name);
+  std::unique_ptr<sequencergui::ProcedureItem> result;
 
-  auto on_import = [file_name, procedure_item]()
-  { ImportFromFile(file_name.toStdString(), procedure_item); };
-  return sequencergui::InvokeAndCatch(on_import);
+  auto on_import = [file_name, &result]()
+  {
+    auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
+    result = sequencergui::ImportFromFile(file_name.toStdString());
+    result->SetDisplayName(procedure_name);
+  };
+
+  sequencergui::InvokeAndCatch(on_import);
+
+  return result;
 }
 
 }  // namespace
@@ -102,11 +106,14 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
   m_xml_editor->SetXMLFile(file_name);
 
   // Generates temporary Procedure from XML and show object tree.
-  m_temp_model = std::make_unique<SequencerModel>();
-  auto procedure_item = m_temp_model->InsertItem<ProcedureItem>();
-  if (PopulateProcedureFromXmlFile(file_name, procedure_item))
+  auto procedure_item = LoadProcedureFromXmlFile(file_name);
+  if (procedure_item)
   {
-    m_trees_widget->SetProcedure(procedure_item);
+    m_temp_model = std::make_unique<SequencerModel>();
+    auto procedure_ptr = procedure_item.get();
+    auto procedure = m_temp_model->InsertItem(
+        std::move(procedure_item), m_temp_model->GetRootItem(), mvvm::TagIndex::Append());
+    m_trees_widget->SetProcedure(procedure_ptr);
   }
   else
   {
@@ -138,8 +145,11 @@ void SequencerExplorerView::SetupConnections()
 
   auto import_procedure_from_file = [this](auto file_name)
   {
-    auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-    PopulateProcedureFromXmlFile(file_name, procedure_item);
+    if (auto procedure_item = LoadProcedureFromXmlFile(file_name); procedure_item)
+    {
+      m_model->InsertItem(std::move(procedure_item), m_model->GetProcedureContainer(),
+                          mvvm::TagIndex::Append());
+    }
   };
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
           import_procedure_from_file);

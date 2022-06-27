@@ -30,9 +30,8 @@ namespace sequencergui
 {
 class ProcedureItem;
 
-//! Imports content of xml file with Sequencer Procedure into ProcedureItem.
-//! ProcedureItem must be empty.
-void ImportFromFile(const std::string& file_name, ProcedureItem* procedure_item);
+//! Returns ProcedureItem representing a sequencer procedure stored in given xml file.
+std::unique_ptr<ProcedureItem> ImportFromFile(const std::string& file_name);
 
 //! Exports procedure to XML string.
 std::string ExportToXMLString(const ProcedureItem* procedure_item);
