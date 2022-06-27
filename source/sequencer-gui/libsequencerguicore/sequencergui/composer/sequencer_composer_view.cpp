@@ -44,7 +44,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_composer_panel(new ComposerPanel)
     , m_node_editor(new NodeEditor)
     , m_stack_widget(new ItemStackWidget)
-    , m_composer_tree_widget(new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
+    , m_composer_procedure_editor(new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
@@ -56,7 +56,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_stack_widget);
-  m_splitter->addWidget(m_composer_tree_widget);
+  m_splitter->addWidget(m_composer_procedure_editor);
   m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
                                     << styleutils::UnitSize(30));
 
@@ -69,7 +69,7 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_composer_panel->SetModel(model);
-  m_composer_tree_widget->SetModel(model);
+  m_composer_procedure_editor->SetModel(model);
 }
 
 void SequencerComposerView::showEvent(QShowEvent *event)
@@ -88,7 +88,7 @@ void SequencerComposerView::SetupConnections()
   auto on_scene_instruction_selected = [this](auto)
   {
     m_block_selection_to_scene = true;
-    m_composer_tree_widget->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
+    m_composer_procedure_editor->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
     m_block_selection_to_scene = false;
   };
   connect(m_node_editor, &NodeEditor::InstructionSelected, this, on_scene_instruction_selected);
@@ -97,17 +97,17 @@ void SequencerComposerView::SetupConnections()
   {
     if (!m_block_selection_to_scene)
     {
-      m_node_editor->SetSelectedInstructions(m_composer_tree_widget->GetSelectedInstructions());
+      m_node_editor->SetSelectedInstructions(m_composer_procedure_editor->GetSelectedInstructions());
     }
   };
-  connect(m_composer_tree_widget, &ComposerProcedureEditor::InstructionSelected, this,
+  connect(m_composer_procedure_editor, &ComposerProcedureEditor::InstructionSelected, this,
           on_tree_instruction_selected);
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
     qDebug() << "Show on_procedure_selected" << procedure_item;
     m_node_editor->SetProcedure(procedure_item);
-    m_composer_tree_widget->SetProcedure(procedure_item);
+    m_composer_procedure_editor->SetProcedure(procedure_item);
   };
   connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
 
