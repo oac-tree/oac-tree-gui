@@ -92,10 +92,9 @@ ProcedureItem* AddLocalIncludeProcedure(SequencerModel* model)
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
   sequence->SetName("MySequence");
-  model->InsertItem<WaitItem>(sequence);
-  model->InsertItem<WaitItem>(sequence);
-  model->InsertItem<WaitItem>(sequence);
-  model->InsertItem<WaitItem>(sequence);
+  model->InsertItem<WaitItem>(sequence)->SetTimeout(0.5);
+  model->InsertItem<WaitItem>(sequence)->SetTimeout(1.0);
+  model->InsertItem<WaitItem>(sequence)->SetTimeout(0.5);
 
   auto repeat = model->InsertItem<RepeatItem>(procedure_item->GetInstructionContainer());
   repeat->SetRepeatCount(-1);
