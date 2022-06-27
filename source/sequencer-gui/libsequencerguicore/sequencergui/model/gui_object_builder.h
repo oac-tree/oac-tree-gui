@@ -48,7 +48,8 @@ class VariableItem;
 class GUIObjectBuilder
 {
 public:
-  void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item);
+  void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
+                             bool root_only);
 
   void PopulateInstructionContainerItem(const procedure_t* procedure,
                                         InstructionContainerItem* container, bool root_only);

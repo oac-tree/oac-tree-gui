@@ -21,6 +21,8 @@
 
 #include "Instruction.h"
 #include "Procedure.h"
+
+#include <mvvm/standarditems/container_item.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
@@ -32,8 +34,6 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
-
-#include <mvvm/standarditems/container_item.h>
 
 #include <QDebug>
 #include <iostream>
@@ -74,7 +74,8 @@ void JobContext::onPrepareJobRequest()
   }
 
   auto expanded_procedure = std::make_unique<ProcedureItem>();
-  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get());
+  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
+                                             /*root_only*/ true);
   job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
 
   m_procedure_runner = CreateProcedureRunner(m_domain_procedure.get());

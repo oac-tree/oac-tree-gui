@@ -53,7 +53,8 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
 void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
 
 //! Populates empty ProcedureItem with the content from sequencer Procedure.
-void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item);
+void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
+                           bool root_only);
 
 //! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
 //! the default attribute map from the domain. See explanations in the implementation.

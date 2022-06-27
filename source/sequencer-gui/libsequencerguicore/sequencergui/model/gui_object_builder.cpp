@@ -22,6 +22,7 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
+
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -36,7 +37,7 @@ namespace sequencergui
 {
 
 void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
-                                             ProcedureItem *procedure_item)
+                                             ProcedureItem *procedure_item, bool root_only)
 {
   if (!procedure)
   {
@@ -48,7 +49,7 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
   m_variablename_to_id.clear();
 
   auto instruction_container = procedure_item->GetInstructionContainer();
-  PopulateInstructionContainerItem(procedure, instruction_container, /*root_only*/ true);
+  PopulateInstructionContainerItem(procedure, instruction_container, root_only);
 
   auto workspace_item = procedure_item->GetWorkspace();
   PopulateWorkspaceItem(procedure, workspace_item);

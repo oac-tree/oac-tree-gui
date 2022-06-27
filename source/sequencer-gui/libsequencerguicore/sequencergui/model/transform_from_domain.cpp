@@ -146,10 +146,11 @@ void PopulateInstructionContainerItem(const procedure_t* procedure,
   builder.PopulateInstructionContainerItem(procedure, container, root_only);
 }
 
-void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item)
+void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
+                           bool root_only)
 {
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(procedure, procedure_item);
+  builder.PopulateProcedureItem(procedure, procedure_item, root_only);
 }
 
 std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)

@@ -48,7 +48,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromEmptyProcedure)
   sequencergui::ProcedureItem procedure_item;
 
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item);
+  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 0);
   EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 0);
@@ -67,7 +67,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item);
+  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   auto item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(item->GetTimeout(), 42.0);
@@ -93,7 +93,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item);
+  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   auto sequence_item =
       procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("");
@@ -123,7 +123,7 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item);
+  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 1);
 
@@ -158,10 +158,10 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
 
   procedure->Setup();
 
-  // Building ProcedureItem
+  // Building ProcedureItem in root_only mode
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(procedure.get(), &procedure_item);
+  builder.PopulateProcedureItem(procedure.get(), &procedure_item, /*root_only*/ true);
 
   // only one root instruction has been processed
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 1);
