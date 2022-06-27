@@ -68,6 +68,7 @@ void MonitorPropertyWidget::SetProcedure(ProcedureItem *procedure_item)
 void MonitorPropertyWidget::SetSelectedInstruction(InstructionItem *instruction)
 {
   m_property_tree->SetItem(instruction);
+  m_property_tree->GetTreeView()->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 }  // namespace sequencergui
