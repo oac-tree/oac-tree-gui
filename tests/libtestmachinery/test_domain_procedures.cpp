@@ -200,4 +200,37 @@ std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
+{
+  auto result = std::make_unique<procedure_t>();
+
+  // Sequence with wait instruction
+  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait_ptr = wait.get();
+  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+
+  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto sequence_ptr = sequence.get();
+  sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");
+  sequence->InsertInstruction(wait.release(), 0);
+
+  // Repeat with include instruction
+  auto include = DomainUtils::CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+  auto include_ptr = include.get();
+  include->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MyInclude");
+  include->AddAttribute(sequencergui::domainconstants::kPathAttribute, "MySequence");
+
+  auto repeat = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  auto repeat_ptr = repeat.get();
+  repeat->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
+  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute, "10");
+  repeat->InsertInstruction(include.release(), 0);
+
+  // procedure with two instructions
+  result->PushInstruction(sequence.release());
+  result->PushInstruction(repeat.release());
+
+  return result;
+}
+
 }  // namespace testutils

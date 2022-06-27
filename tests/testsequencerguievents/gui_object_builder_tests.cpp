@@ -20,16 +20,17 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
-#include <sequencergui/model/domain_utils.h>
 #include "sequencergui/model/gui_object_builder.h"
+#include "test_domain_procedures.h"
+
+#include <gtest/gtest.h>
+#include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/transform_from_domain.h>
 #include <sequencergui/model/workspace_item.h>
-
-#include <gtest/gtest.h>
 
 using namespace sequencergui;
 
@@ -144,39 +145,23 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
 
 TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
 {
-  ::sup::sequencer::Procedure procedure;
+  auto procedure = testutils::CreateLocalIncludeProcedure();
 
-  // Sequence with wait instruction
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  auto wait_ptr = wait.get();
-  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  ASSERT_EQ(procedure->GetInstructions().size(), 2);
+  auto sequence_ptr = procedure->GetInstructions().at(0);
 
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto sequence_ptr = sequence.get();
-  sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");
-  sequence->InsertInstruction(wait.release(), 0);
+  ASSERT_EQ(sequence_ptr->ChildInstructions().size(), 1);
+  auto wait_ptr = sequence_ptr->ChildInstructions().at(0);
 
-  // Repeat with include instruction
-  auto include = DomainUtils::CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  auto include_ptr = include.get();
-  include->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MyInclude");
-  include->AddAttribute(sequencergui::domainconstants::kPathAttribute, "MySequence");
+  auto repeat_ptr = procedure->GetInstructions().at(1);
+  auto include_ptr = repeat_ptr->ChildInstructions().at(0);
 
-  auto repeat = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
-  auto repeat_ptr = repeat.get();
-  repeat->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
-  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute, "10");
-  repeat->InsertInstruction(include.release(), 0);
-
-  // procedure with two instructions
-  procedure.PushInstruction(sequence.release());
-  procedure.PushInstruction(repeat.release());
-  procedure.Setup();
+  procedure->Setup();
 
   // Building ProcedureItem
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(&procedure, &procedure_item);
+  builder.PopulateProcedureItem(procedure.get(), &procedure_item);
 
   // only one root instruction has been processed
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 1);
@@ -196,7 +181,7 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeScenario)
   EXPECT_EQ(builder.FindInstructionItem(wait_ptr), nullptr);
 
   // Domain clones should lead to constructed SequenceItem and WaitItem
-  EXPECT_EQ(procedure.RootInstruction(), repeat_ptr);
+  EXPECT_EQ(procedure->RootInstruction(), repeat_ptr);
   EXPECT_EQ(repeat_ptr->ChildInstructions().at(0), include_ptr);
 
   auto cloned_domain_sequence = include_ptr->ChildInstructions().at(0);

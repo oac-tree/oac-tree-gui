@@ -56,9 +56,19 @@ std::unique_ptr<procedure_t> CreateInputProcedure();
 //! Creates procedure with wait and copy instructions and possibility to select what to execute.
 std::unique_ptr<procedure_t> CreateUserChoiceProcedure();
 
-//! Returns domain procedure with infinite repetition of a sequence.
+//! Returns domain procedure with a sequence inside a repeater.
 std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
                                                            std::chrono::milliseconds timeout);
+
+//! Returns a procedure with sequence included in repeater
+//! <Sequence name="CountTwice">
+//!     <Wait/>
+//! </Sequence>
+//! <Repeat isRoot="true" maxCount="10">
+//!     <Include name="Counts" path="CountTwice"/>
+//! </Repeat>
+std::unique_ptr<procedure_t> CreateLocalIncludeProcedure();
+
 
 }  // namespace testutils
 
