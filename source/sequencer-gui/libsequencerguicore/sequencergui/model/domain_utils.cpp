@@ -113,6 +113,13 @@ bool IsChannelAccessAvailable()
          != names.end();
 }
 
+bool IsPVAccessAvailable()
+{
+  static const std::vector<std::string> names = GetDomainVariableNames();
+  return std::find(names.begin(), names.end(), domainconstants::kPVClientVariableType)
+         != names.end();
+}
+
 //! Loads codac plugins.
 
 void LoadCodacPlugins()

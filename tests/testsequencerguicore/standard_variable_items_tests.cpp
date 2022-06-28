@@ -250,7 +250,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsPVAccessAvailable())
   {
     auto ca_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
     ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -272,7 +272,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsPVAccessAvailable())
   {
     PVClientVariableItem item;
     item.SetName(expected_name);
@@ -314,7 +314,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsPVAccessAvailable())
   {
     auto pvxs_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVServerVariableType);
     pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -336,7 +336,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
    const std::string expected_channel("expected_channel");
    const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsPVAccessAvailable())
   {
     PVServerVariableItem item;
     item.SetName(expected_name);

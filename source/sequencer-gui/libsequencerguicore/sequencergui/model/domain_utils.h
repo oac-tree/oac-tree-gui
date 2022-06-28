@@ -52,6 +52,8 @@ bool IsRootInstruction(const instruction_t* instruction);
 
 bool IsChannelAccessAvailable();
 
+bool IsPVAccessAvailable();
+
 void LoadCodacPlugins();
 void LoadLocalPlugins();
 
