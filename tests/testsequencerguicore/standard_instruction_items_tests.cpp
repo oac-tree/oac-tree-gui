@@ -504,7 +504,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
 {
   // Correctly initialised item
   ParallelSequenceItem item;
-  EXPECT_EQ(item.GetSuccessThreshold(), 0);
+  EXPECT_EQ(item.GetSuccessThreshold(), -1);
   EXPECT_EQ(item.GetFailureThreshold(), 1);
 
   item.SetSuccessThreshold(42);
@@ -540,6 +540,24 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kSuccessThresholdAttribute), "42");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFailureThresholdAttribute), "43");
+
+  EXPECT_TRUE(IsValid(domain_item.get()));
+}
+
+//! This checks that no kSuccessThresholdAttribute attribute created on domain side,
+//! when GUI defines this threshold -1. This is our way to deal with obscured initialisation
+//! of ParallelSequence::SetupImpl
+
+TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomainWhenNoSuccessThresholdDefined)
+{
+  ParallelSequenceItem item;
+  item.SetSuccessThreshold(-1);
+  item.SetFailureThreshold(43);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kSuccessThresholdAttribute));
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFailureThresholdAttribute), "43");
 
   EXPECT_TRUE(IsValid(domain_item.get()));

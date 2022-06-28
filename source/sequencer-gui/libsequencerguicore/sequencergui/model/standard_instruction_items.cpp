@@ -20,11 +20,11 @@
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include "Instruction.h"
+
+#include <mvvm/utils/string_utils.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
-
-#include <mvvm/utils/string_utils.h>
 
 namespace sequencergui
 {
@@ -526,7 +526,9 @@ static inline const std::string kFailureThreshold = "kFailureThreshold";
 
 ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
-  AddProperty(kSuccessThreshold, 0)->SetDisplayName("Success threshold");
+  AddProperty(kSuccessThreshold, -1)
+      ->SetDisplayName("Success threshold")
+      ->SetToolTip("Negative means that all children should succeed");
   AddProperty(kFailureThreshold, 1)->SetDisplayName("Failure threshold");
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
@@ -554,8 +556,11 @@ void ParallelSequenceItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void ParallelSequenceItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kSuccessThresholdAttribute,
-                            std::to_string(GetSuccessThreshold()));
+  if (GetSuccessThreshold() >= 0)
+  {
+    instruction->AddAttribute(domainconstants::kSuccessThresholdAttribute,
+                              std::to_string(GetSuccessThreshold()));
+  }
   instruction->AddAttribute(domainconstants::kFailureThresholdAttribute,
                             std::to_string(GetFailureThreshold()));
 }
