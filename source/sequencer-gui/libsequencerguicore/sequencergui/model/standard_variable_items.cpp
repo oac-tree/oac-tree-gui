@@ -20,6 +20,7 @@
 #include "sequencergui/model/standard_variable_items.h"
 
 #include "Variable.h"
+
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/shall_not_be_named_value_utils.h>
@@ -246,6 +247,68 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 }
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+}
+
+// ----------------------------------------------------------------------------
+// PVServerVariableItem
+// ----------------------------------------------------------------------------
+
+PVServerVariableItem::PVServerVariableItem() : VariableItem(Type)
+{
+  AddProperty(kDataType, std::string())->SetDisplayName("datatype");
+  AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kValue, std::string())->SetDisplayName("value");
+}
+
+std::string PVServerVariableItem::GetDomainType() const
+{
+  return domainconstants::kPVServerVariableType;
+}
+
+std::string PVServerVariableItem::GetDataType() const
+{
+  return Property<std::string>(kDataType);
+}
+
+void PVServerVariableItem::SetDataType(const std::string &value)
+{
+  SetProperty(kDataType, value);
+}
+
+std::string PVServerVariableItem::GetChannel() const
+{
+  return Property<std::string>(kChannel);
+}
+
+void PVServerVariableItem::SetChannel(const std::string &value)
+{
+  SetProperty(kChannel, value);
+}
+
+void PVServerVariableItem::SetJsonValue(const std::string &value)
+{
+  SetProperty(kValue, value);
+}
+
+void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
+  {
+    SetDataType(variable->GetAttribute(domainconstants::kDataTypeAttribute));
+  }
+
+  if (variable->HasAttribute(domainconstants::kChannelAttribute))
+  {
+    SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
+  }
+
+  SetJsonValue(DomainUtils::GetValueJsonString(variable));
+}
+
+void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
   variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());

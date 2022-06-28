@@ -22,14 +22,14 @@
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Workspace.h"
+
+#include <mvvm/model/sessionmodel.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-
-#include <mvvm/model/sessionmodel.h>
 
 #include <QDebug>
 
@@ -120,7 +120,8 @@ void DomainObjectBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace
     auto it = m_variablename_to_id.find(variable_item->GetName());
     if (it != m_variablename_to_id.end())
     {
-      throw std::runtime_error("Error in DomainObjectBuilder: such variable name already exist");
+      throw std::runtime_error("Error in DomainObjectBuilder: such variable name '"
+                               + variable_item->GetName() + "' already exist");
     }
 
     m_variablename_to_id.insert({variable_item->GetName(), variable_item->GetIdentifier()});

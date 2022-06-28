@@ -116,6 +116,30 @@ private:
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
+//! Represent PVServerVariable.
+class PVServerVariableItem : public VariableItem
+{
+public:
+  static inline const std::string Type = "PVServerVariable";
+  PVServerVariableItem();
+
+  std::string GetDomainType() const override;
+
+  std::string GetDataType() const;
+
+  void SetDataType(const std::string& value);
+
+  std::string GetChannel() const;
+
+  void SetChannel(const std::string& value);
+
+  void SetJsonValue(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const variable_t* variable) override;
+  void SetupDomainImpl(variable_t* variable) const override;
+};
+
 //! Represent unknown Variable.
 class UnknownVariableItem : public VariableItem
 {
