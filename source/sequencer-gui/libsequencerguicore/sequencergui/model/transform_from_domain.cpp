@@ -51,6 +51,8 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableI
                        ItemFactoryFunction<sequencergui::ChannelAccessVariableItem>);
   result->RegisterItem(sequencergui::domainconstants::kPVClientVariableType,
                        ItemFactoryFunction<sequencergui::PVClientVariableItem>);
+  result->RegisterItem(sequencergui::domainconstants::kPVServerVariableType,
+                       ItemFactoryFunction<sequencergui::PVServerVariableItem>);
 
   return result;
 }

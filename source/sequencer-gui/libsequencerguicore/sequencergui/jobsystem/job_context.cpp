@@ -190,6 +190,10 @@ void JobContext::onVariableChange(const QString &variable_name, const QString &v
     {
       local_var->SetJsonValue(value.toStdString());
     }
+    else if (auto local_var = dynamic_cast<PVServerVariableItem *>(variable_item))
+    {
+      local_var->SetJsonValue(value.toStdString());
+    }
   }
   else
   {

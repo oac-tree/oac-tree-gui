@@ -17,19 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/transform_from_domain.h"
-
 #include "Instruction.h"
 #include "Procedure.h"
 #include "Variable.h"
+#include "sequencergui/model/transform_from_domain.h"
+
+#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-
-#include <gtest/gtest.h>
+#include <sequencergui/model/workspace_item.h>
 
 using namespace sequencergui;
 
@@ -94,8 +93,13 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
   {
     EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
         domainconstants::kChannelAccessVariableType));
+  }
+  if (DomainUtils::IsPVAccessAvailable())
+  {
     EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
         domainconstants::kPVClientVariableType));
+    EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVServerVariableItem>(
+        domainconstants::kPVServerVariableType));
   }
 }
 

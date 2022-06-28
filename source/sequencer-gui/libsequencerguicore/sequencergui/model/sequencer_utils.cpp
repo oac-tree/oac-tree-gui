@@ -87,6 +87,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<ChannelAccessVariableItem>();
   result->RegisterItem<LocalVariableItem>();
   result->RegisterItem<PVClientVariableItem>();
+  result->RegisterItem<PVServerVariableItem>();
   result->RegisterItem<UnknownVariableItem>();
 
   // other items
