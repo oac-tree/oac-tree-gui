@@ -22,6 +22,11 @@
 
 #include <QWidget>
 
+namespace mvvm
+{
+class CollapsibleListView;
+}
+
 namespace sequencergui
 {
 class FileTreeView;
@@ -29,7 +34,6 @@ class PanelToolBar;
 class ProcedureListWidget;
 class SequencerModel;
 class ProcedureItem;
-class CollapsibleListView;
 
 //! Vertical panel located on the left of SequencerExplorerView.
 
@@ -54,7 +58,7 @@ signals:
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
-  CollapsibleListView* m_collapsible_list{nullptr};
+  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
 };

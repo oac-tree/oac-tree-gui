@@ -1,12 +1,6 @@
 # Collection of general purpose widgets that doesn't contain any Sequencer UI related specifics.
 
 target_sources(${library_name} PRIVATE
-  collapsible_list_view.cpp
-  collapsible_list_view.h
-  collapsible_toolbar.cpp
-  collapsible_toolbar.h
-  collapsible_widget.cpp
-  collapsible_widget.h
   custom_header_view.cpp
   custom_header_view.h
   dialog_message_handler.cpp

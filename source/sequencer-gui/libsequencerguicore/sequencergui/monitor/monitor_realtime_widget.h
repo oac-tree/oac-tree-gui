@@ -22,6 +22,11 @@
 
 #include <QWidget>
 
+namespace mvvm
+{
+class CollapsibleListView;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
@@ -30,7 +35,6 @@ class InstructionItem;
 class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
-class CollapsibleListView;
 class MonitorRealTimeTreeWidget;
 class ItemStackWidget;
 
@@ -63,7 +67,7 @@ signals:
 private:
   std::unique_ptr<MonitorRealTimeToolBar> CreateRealTimeToolBar();
 
-  CollapsibleListView* m_collapsible_list_view{nullptr};
+  mvvm::CollapsibleListView* m_collapsible_list_view{nullptr};
   ItemStackWidget* m_stacked_widget{nullptr};
   MonitorRealTimeTreeWidget* m_instruction_tree_widget{nullptr};
   NodeEditor* m_node_editor{nullptr};

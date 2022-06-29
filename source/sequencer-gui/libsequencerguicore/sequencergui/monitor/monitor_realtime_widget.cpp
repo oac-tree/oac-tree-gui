@@ -27,7 +27,7 @@
 #include <sequencergui/monitor/monitor_realtime_tree_widget.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
-#include <sequencergui/widgets/collapsible_list_view.h>
+#include <mvvm/widgets/collapsible_list_view.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 
 #include <QSplitter>
@@ -39,7 +39,7 @@ namespace sequencergui
 
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
-    , m_collapsible_list_view(new CollapsibleListView)
+    , m_collapsible_list_view(new mvvm::CollapsibleListView)
     , m_stacked_widget(new ItemStackWidget)
     , m_instruction_tree_widget(new MonitorRealTimeTreeWidget)
     , m_node_editor(new NodeEditor)

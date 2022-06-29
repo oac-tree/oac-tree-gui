@@ -19,6 +19,7 @@
 
 #include "sequencergui/monitor/monitor_panel.h"
 
+#include <mvvm/widgets/collapsible_list_view.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -26,8 +27,7 @@
 #include <sequencergui/monitor/job_list_widget.h>
 #include <sequencergui/monitor/job_property_widget.h>
 #include <sequencergui/utils/style_utils.h>
-#include <sequencergui/widgets/collapsible_list_view.h>
-#include <sequencergui/widgets/collapsible_toolbar.h>
+#include <mvvm/widgets/collapsible_toolbar.h>
 #include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QDebug>
@@ -42,7 +42,7 @@ namespace sequencergui
 MonitorPanel::MonitorPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_collapsible_list(new CollapsibleListView)
+    , m_collapsible_list(new mvvm::CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
     , m_job_property_widget(new JobPropertyWidget)
     , m_submit_procedure_menu(CreateSubmitProcedureMenu())

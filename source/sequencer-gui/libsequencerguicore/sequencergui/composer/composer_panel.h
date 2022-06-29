@@ -24,6 +24,11 @@
 
 class QSplitter;
 
+namespace mvvm
+{
+class CollapsibleListView;
+}
+
 namespace sequencergui
 {
 class InstructionItemPanel;
@@ -32,7 +37,6 @@ class PanelToolBar;
 class SequencerModel;
 class ProcedureItem;
 class AggregatePanel;
-class CollapsibleListView;
 
 //! Left panel on SequencerComposerView.
 //! Contains list of opened procedures, list of available instruction, and list of available
@@ -59,7 +63,7 @@ signals:
 
 private:
   PanelToolBar* m_tool_bar{nullptr};
-  CollapsibleListView* m_collapsible_list{nullptr};
+  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};
   AggregatePanel* m_workspace_panel{nullptr};

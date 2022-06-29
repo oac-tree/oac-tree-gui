@@ -19,9 +19,9 @@
 
 #include "sequencergui/explorer/explorer_panel.h"
 
+#include <mvvm/widgets/collapsible_list_view.h>
 #include <sequencergui/components/procedure_list_widget.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/widgets/collapsible_list_view.h>
 #include <sequencergui/widgets/file_tree_view.h>
 #include <sequencergui/widgets/panel_toolbar.h>
 
@@ -35,7 +35,7 @@ namespace sequencergui
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_collapsible_list(new CollapsibleListView)
+    , m_collapsible_list(new mvvm::CollapsibleListView)
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)
 {

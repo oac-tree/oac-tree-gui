@@ -25,13 +25,17 @@
 
 class QMenu;
 
+namespace mvvm
+{
+class CollapsibleListView;
+}
+
 namespace sequencergui
 {
 class PanelToolBar;
 class JobListWidget;
 class JobItem;
 class ProcedureItem;
-class CollapsibleListView;
 class JobPropertyWidget;
 class ApplicationModels;
 
@@ -66,7 +70,7 @@ private:
   std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
 
   PanelToolBar* m_tool_bar{nullptr};
-  CollapsibleListView* m_collapsible_list{nullptr};
+  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
   JobPropertyWidget* m_job_property_widget{nullptr};
 
