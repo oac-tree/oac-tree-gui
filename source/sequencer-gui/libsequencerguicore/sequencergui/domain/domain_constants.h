@@ -73,6 +73,7 @@ const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
 const std::string kLeftHandAttribute = "lhs";
 const std::string kRightHandAttribute = "rhs";
+const std::string kInstanceAttribute = "instance";
 
 // attributes (instruction specific)
 const std::string kConditionVarNameAttribute = "var_name";

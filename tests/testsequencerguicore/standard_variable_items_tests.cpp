@@ -233,6 +233,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_TRUE(item.GetDataType().empty());
+  EXPECT_TRUE(item.GetJsonValue().empty());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -242,6 +243,9 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
 
   item.SetDataType("jkl");
   EXPECT_EQ(item.GetDataType(), std::string("jkl"));
+
+  item.SetJsonValue("bnm");
+  EXPECT_EQ(item.GetJsonValue(), std::string("bnm"));
 }
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
@@ -297,6 +301,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_TRUE(item.GetDataType().empty());
+  EXPECT_TRUE(item.GetJsonValue().empty());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -306,6 +311,9 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
 
   item.SetDataType("jkl");
   EXPECT_EQ(item.GetDataType(), std::string("jkl"));
+
+  item.SetJsonValue("bnm");
+  EXPECT_EQ(item.GetJsonValue(), std::string("bnm"));
 }
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
@@ -313,6 +321,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
+  const std::string expected_instance("expected_instance");
 
   if (DomainUtils::IsPVAccessAvailable())
   {
@@ -320,6 +329,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
     pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
     pvxs_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
     pvxs_variable->AddAttribute(domainconstants::kDataTypeAttribute, expected_datatype);
+    pvxs_variable->AddAttribute(domainconstants::kInstanceAttribute, expected_instance);
 
     PVServerVariableItem pvxs_variable_item;
     pvxs_variable_item.InitFromDomain(pvxs_variable.get());
@@ -327,27 +337,49 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
     EXPECT_EQ(pvxs_variable_item.GetName(), expected_name);
     EXPECT_EQ(pvxs_variable_item.GetChannel(), expected_channel);
     EXPECT_EQ(pvxs_variable_item.GetDataType(), expected_datatype);
+    EXPECT_EQ(pvxs_variable_item.GetJsonValue(), expected_instance);
   }
 }
 
- TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
+TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
 {
-   const std::string expected_name("expected_name");
-   const std::string expected_channel("expected_channel");
-   const std::string expected_datatype("expected_datatype");
+  const std::string expected_name("expected_name");
+  const std::string expected_channel("expected_channel");
+  const std::string expected_datatype("expected_datatype");
+  const std::string expected_instance("expected_instance");
 
   if (DomainUtils::IsPVAccessAvailable())
   {
-    PVServerVariableItem item;
-    item.SetName(expected_name);
-    item.SetChannel(expected_channel);
-    item.SetDataType(expected_datatype);
+    // case when no initial value is defined
+    {
+      PVServerVariableItem item;
+      item.SetName(expected_name);
+      item.SetChannel(expected_channel);
+      item.SetDataType(expected_datatype);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kInstanceAttribute));
+    }
+
+    // case with initial value
+    {
+      PVServerVariableItem item;
+      item.SetName(expected_name);
+      item.SetChannel(expected_channel);
+      item.SetDataType(expected_datatype);
+      item.SetJsonValue(expected_instance);
+
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInstanceAttribute), expected_instance);
+    }
   }
 }
 

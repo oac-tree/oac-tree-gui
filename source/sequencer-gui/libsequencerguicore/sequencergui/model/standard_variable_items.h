@@ -111,6 +111,8 @@ public:
 
   void SetJsonValue(const std::string& value);
 
+  std::string GetJsonValue();
+
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
@@ -132,6 +134,8 @@ public:
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
+
+  std::string GetJsonValue() const;
 
   void SetJsonValue(const std::string& value);
 

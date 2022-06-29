@@ -231,6 +231,11 @@ void PVClientVariableItem::SetJsonValue(const std::string &value)
   SetProperty(kValue, value);
 }
 
+std::string PVClientVariableItem::GetJsonValue()
+{
+  return Property<std::string>(kValue);
+}
+
 void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
@@ -293,6 +298,11 @@ void PVServerVariableItem::SetJsonValue(const std::string &value)
   SetProperty(kValue, value);
 }
 
+std::string PVServerVariableItem::GetJsonValue() const
+{
+  return Property<std::string>(kValue);
+}
+
 void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
@@ -305,13 +315,24 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
-  SetJsonValue(DomainUtils::GetValueJsonString(variable));
+  if (variable->HasAttribute(domainconstants::kInstanceAttribute))
+  {
+    SetJsonValue(variable->GetAttribute(domainconstants::kInstanceAttribute));
+  }
+  else
+  {
+    SetJsonValue(DomainUtils::GetValueJsonString(variable));
+  }
 }
 
 void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
   variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  if (!GetJsonValue().empty())
+  {
+    variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());
+  }
 }
 
 // ----------------------------------------------------------------------------
