@@ -22,10 +22,10 @@
 
 #include <QWidget>
 
-class QListWidget;
-
 namespace sequencergui
 {
+
+class ItemListWidget;
 
 //! Panel with tree view for instruction aggregates.
 
@@ -37,7 +37,7 @@ public:
   explicit AggregatePanel(QWidget* parent = nullptr);
 
 private:
-  QListWidget* m_list_widget{nullptr};
+  ItemListWidget* m_list_widget{nullptr};
 };
 
 }  // namespace sequencergui

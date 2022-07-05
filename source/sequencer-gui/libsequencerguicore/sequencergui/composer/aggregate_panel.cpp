@@ -19,13 +19,15 @@
 
 #include "sequencergui/composer/aggregate_panel.h"
 
+#include <sequencergui/widgets/item_list_widget.h>
+
 #include <QListWidget>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-AggregatePanel::AggregatePanel(QWidget *parent) : QWidget(parent), m_list_widget(new QListWidget)
+AggregatePanel::AggregatePanel(QWidget *parent) : QWidget(parent), m_list_widget(new ItemListWidget)
 {
   setWindowTitle("AGGREGATES");
 
@@ -34,6 +36,8 @@ AggregatePanel::AggregatePanel(QWidget *parent) : QWidget(parent), m_list_widget
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_list_widget);
+
+//  m_list_widget->AddEntries({"aaa"});
 }
 
 }  // namespace sequencergui

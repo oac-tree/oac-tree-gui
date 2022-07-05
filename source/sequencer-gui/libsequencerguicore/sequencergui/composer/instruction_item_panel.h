@@ -24,6 +24,7 @@
 
 namespace sequencergui
 {
+
 class ItemListWidget;
 
 //! Collapsible list with instructions available to drag and drop on graphics scene.
