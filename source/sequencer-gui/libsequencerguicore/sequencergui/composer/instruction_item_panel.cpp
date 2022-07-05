@@ -19,6 +19,8 @@
 
 #include "sequencergui/composer/instruction_item_panel.h"
 
+#include <mvvm/widgets/widget_utils.h>
+#include <sequencergui/model/domain_utils.h>
 #include <sequencergui/widgets/item_list_widget.h>
 
 #include <QVBoxLayout>
@@ -36,6 +38,8 @@ InstructionItemPanel::InstructionItemPanel(QWidget *parent)
   layout->setMargin(0);
   layout->setSpacing(0);
   layout->addWidget(m_list_widget);
+
+  m_list_widget->AddEntries(::mvvm::utils::GetStringList(DomainUtils::GetDomainInstructionNames()));
 }
 
 }  // namespace sequencergui

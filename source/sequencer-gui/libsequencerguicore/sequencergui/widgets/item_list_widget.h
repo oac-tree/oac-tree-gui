@@ -39,11 +39,12 @@ public:
 
   QSize sizeHint() const override;
 
+  void AddEntries(const QStringList& entries);
+
 protected:
   void startDrag(Qt::DropActions supportedActions) override;
 
 private:
-  void populateList();
   void addEntry(const QString& name);
 };
 

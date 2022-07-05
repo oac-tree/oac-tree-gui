@@ -19,11 +19,9 @@
 
 #include "sequencergui/widgets/item_list_widget.h"
 
-#include "InstructionRegistry.h"
+#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/utils/style_utils.h>
-
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QDrag>
 #include <QMimeData>
@@ -34,8 +32,8 @@ namespace
 {
 QPixmap createPixmap()
 {
-  QRect rect = QRect(0, 0, sequencergui::styleutils::UnitSize(4),
-                     sequencergui::styleutils::UnitSize(4));
+  QRect rect =
+      QRect(0, 0, sequencergui::styleutils::UnitSize(4), sequencergui::styleutils::UnitSize(4));
   QPixmap pixmap(rect.width() + 1, rect.height() + 1);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
@@ -63,8 +61,6 @@ ItemListWidget::ItemListWidget(QWidget* parent) : QListWidget(parent)
   setIconSize(QSize(rect.width(), rect.height()));
   setAcceptDrops(false);
   setUniformItemSizes(true);
-
-  populateList();
 }
 
 QString ItemListWidget::piecesMimeType()
@@ -75,6 +71,15 @@ QString ItemListWidget::piecesMimeType()
 QSize ItemListWidget::sizeHint() const
 {
   return {kColumnWidth, 600};
+}
+
+void ItemListWidget::AddEntries(const QStringList& entries)
+{
+  for (const auto& entry : entries)
+  {
+    addEntry(entry);
+  }
+  selectionModel()->reset();
 }
 
 //! Prepare data for dragging.
@@ -94,18 +99,6 @@ void ItemListWidget::startDrag(Qt::DropActions)
   drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
 
   drag->exec(Qt::CopyAction);
-}
-
-//! Populates list with icons representing ConnectableView's to drop on scene.
-
-void ItemListWidget::populateList()
-{
-  auto names = ::sup::sequencer::GlobalInstructionRegistry().RegisteredInstructionNames();
-  for (const auto& name : names)
-  {
-    addEntry(QString::fromStdString(name));
-  }
-  selectionModel()->reset();
 }
 
 //! Adds entry to the list. It will be the icon (gray rectangle) with the name.
