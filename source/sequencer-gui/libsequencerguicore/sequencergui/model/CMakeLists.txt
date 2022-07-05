@@ -1,4 +1,8 @@
 target_sources(${library_name} PRIVATE
+  aggregate_examples.cpp
+  aggregate_examples.h
+  aggregate_factory.cpp
+  aggregate_factory.h
   application_models.cpp
   application_models.h
   domain_object_builder.cpp
