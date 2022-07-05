@@ -19,21 +19,22 @@
 
 #include "graphics_scene.h"
 
+#include "sequencergui/nodeeditor/graphics_scene_controller.h"
+
+#include <mvvm/core/exceptions.h>
+#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/core/message_handler_interface.h>
+#include <sequencergui/model/aggregate_factory.h>
+#include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
-#include "sequencergui/nodeeditor/graphics_scene_controller.h"
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_controller.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/widgets/item_list_widget.h>
-
-#include <mvvm/core/exceptions.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
@@ -56,9 +57,8 @@ sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *vie
               : nullptr;
 }
 
-//! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
-//! will return an empty string.
-std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
+//! Returns name encoded in the drop event.
+std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
 {
   auto event_data = event->mimeData();
   if (event_data->hasFormat(sequencergui::ItemListWidget::piecesMimeType()))
@@ -69,6 +69,19 @@ std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
   }
 
   return {};
+}
+
+//! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
+//! will return an empty string.
+std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
+{
+  return GetEncodedName(event);
+}
+
+bool IsAggregateName(const std::string &name)
+{
+  ::sequencergui::AggregateFactory factory;
+  return factory.Contains(name);
 }
 
 }  // namespace
@@ -261,14 +274,22 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-
-
-    // FIXME remove cast
-    auto item =
-        AddSingleInstruction(dynamic_cast<SequencerModel *>(GetModel()), m_root_item, domain_type);
-    item->SetX(drop_pos.x());
-    item->SetY(drop_pos.y());
-
+    if (IsAggregateName(domain_type))
+    {
+      // FIXME remove cast
+      auto item =
+          AddAggregate(dynamic_cast<SequencerModel *>(GetModel()), m_root_item, domain_type);
+      item->SetX(drop_pos.x());
+      item->SetY(drop_pos.y());
+    }
+    else
+    {
+      // FIXME remove cast
+      auto item = AddSingleInstruction(dynamic_cast<SequencerModel *>(GetModel()), m_root_item,
+                                       domain_type);
+      item->SetX(drop_pos.x());
+      item->SetY(drop_pos.y());
+    }
   }
 }
 
