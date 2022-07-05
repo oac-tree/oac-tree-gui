@@ -22,6 +22,7 @@
 #include <sequencergui/core/message_handler_interface.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
@@ -255,16 +256,19 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     return;
   }
 
+  QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
+                   event->scenePos().y() - ref_view_rectangle.height() / 2);
+
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
-                     event->scenePos().y() - ref_view_rectangle.height() / 2);
+
 
     // FIXME remove cast
     auto item =
-        AddInstruction(dynamic_cast<SequencerModel *>(GetModel()), m_root_item, domain_type);
+        AddSingleInstruction(dynamic_cast<SequencerModel *>(GetModel()), m_root_item, domain_type);
     item->SetX(drop_pos.x());
     item->SetY(drop_pos.y());
+
   }
 }
 

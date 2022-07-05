@@ -70,8 +70,13 @@ QColor GetBaseColor(const InstructionItem* instruction);
 //! Adds InstructionItem to the `model` for a  given `domain_type`, and returns the result to the
 //! user. If the model doesn't have given InstructionItem registered, create UnknownInstructionItem
 //! instead.
-InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem* container,
+InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContainerItem* container,
                                 const std::string& domain_type);
+
+InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* container,
+                                const std::string& aggregate_name);
+
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_

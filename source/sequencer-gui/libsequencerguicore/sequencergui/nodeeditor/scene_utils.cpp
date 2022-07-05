@@ -20,6 +20,7 @@
 #include "sequencergui/nodeeditor/scene_utils.h"
 
 #include <mvvm/core/exceptions.h>
+#include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -120,7 +121,7 @@ QColor GetBaseColor(const InstructionItem* instruction)
   return {Qt::lightGray};
 }
 
-InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem* container,
+InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContainerItem* container,
                                 const std::string& domain_type)
 {
   try
@@ -134,6 +135,14 @@ InstructionItem* AddInstruction(SequencerModel* model, InstructionContainerItem*
     return dynamic_cast<InstructionItem*>(
         model->InsertItem(CreateUnknownInstructionItem(domain_type), container, {}));
   }
+}
+
+InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* container,
+                              const std::string& aggregate_name)
+{
+  AggregateFactory factory;
+  auto factory_func = factory.GetValue(aggregate_name);
+  return dynamic_cast<InstructionItem*>(model->InsertItem(factory_func(), container, {}));
 }
 
 }  // namespace sequencergui

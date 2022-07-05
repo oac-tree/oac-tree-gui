@@ -17,20 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/scene_utils.h"
-
 #include "Instruction.h"
 #include "InstructionRegistry.h"
+#include "sequencergui/nodeeditor/scene_utils.h"
+
+#include <gtest/gtest.h>
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/utils/numeric_utils.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-
-#include <mvvm/standarditems/container_item.h>
-#include <mvvm/utils/numeric_utils.h>
-
-#include <gtest/gtest.h>
 
 #include <QDebug>
 #include <QPointF>
@@ -123,8 +121,8 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  auto item = AddInstruction(&model, procedure->GetInstructionContainer(),
-                             domainconstants::kWaitInstructionType);
+  auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
+                                   domainconstants::kWaitInstructionType);
 
   EXPECT_EQ(item->GetType(), WaitItem::Type);
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
@@ -142,11 +140,23 @@ TEST_F(SceneUtilsTest, AddUnknownInstruction)
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   // adding unknown domain instruction
-  auto item =
-      AddInstruction(&model, procedure->GetInstructionContainer(), UnknownDomainInstruction::Type);
+  auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
+                                   UnknownDomainInstruction::Type);
 
   // It should result to UnknownInstructionItem with proper DomainType on board
   EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+}
+
+//! Checking adding instruction aggregate.
+
+TEST_F(SceneUtilsTest, AddAggregate)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto item = AddAggregate(&model, procedure->GetInstructionContainer(), "if-then-else");
+
+  EXPECT_EQ(item->GetType(), FallbackItem::Type);
 }
