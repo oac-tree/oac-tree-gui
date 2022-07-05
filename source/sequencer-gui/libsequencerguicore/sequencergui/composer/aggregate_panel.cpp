@@ -19,6 +19,8 @@
 
 #include "sequencergui/composer/aggregate_panel.h"
 
+#include <mvvm/widgets/widget_utils.h>
+#include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/widgets/item_list_widget.h>
 
 #include <QListWidget>
@@ -37,7 +39,8 @@ AggregatePanel::AggregatePanel(QWidget *parent) : QWidget(parent), m_list_widget
   layout->setSpacing(0);
   layout->addWidget(m_list_widget);
 
-//  m_list_widget->AddEntries({"aaa"});
+  AggregateFactory factory;
+  m_list_widget->AddEntries(::mvvm::utils::GetStringList(factory.GetKeys()));
 }
 
 }  // namespace sequencergui

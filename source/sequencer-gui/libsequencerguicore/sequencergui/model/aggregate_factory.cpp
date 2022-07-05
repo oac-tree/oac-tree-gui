@@ -22,12 +22,12 @@
 #include <sequencergui/model/aggregate_examples.h>
 #include <sequencergui/model/instruction_item.h>
 
-namespace sequencergui::Examples
+namespace sequencergui
 {
 
 AggregateFactory::AggregateFactory()
 {
-  Register("if-then-else", CreateIfThenElseAggregate);
+  Register("if-then-else", Examples::CreateIfThenElseAggregate);
 }
 
-}  // namespace sequencergui::Examples
+}  // namespace sequencergui

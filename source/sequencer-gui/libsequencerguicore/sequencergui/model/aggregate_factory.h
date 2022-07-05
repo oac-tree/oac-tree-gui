@@ -29,9 +29,6 @@ namespace sequencergui
 {
 class InstructionItem;
 
-namespace Examples
-{
-
 //! Allows to build examples representing complex instruction aggregates.
 
 class AggregateFactory
@@ -41,7 +38,6 @@ public:
   AggregateFactory();
 };
 
-}  // namespace Examples
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_AGGREGATE_FACTORY_H_
