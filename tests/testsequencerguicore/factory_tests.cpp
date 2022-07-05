@@ -28,10 +28,8 @@ class FactoryTests : public ::testing::Test
 public:
   class TestFactory : public Factory<std::string, int>
   {
-
   };
 };
-
 
 TEST_F(FactoryTests, DomainTypeConstants)
 {
