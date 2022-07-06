@@ -43,12 +43,11 @@ public:
 
 private:
   void SetupListSelector();
-  void SetupModelSettings();
-  void SetupOtherSettings();
+  void SetupModelWidgets();
+  void SetupGeneralSettingWidgets();
 
   QListWidget* m_list_widget;                 //!< selector for specific settings window on the left
   QStackedWidget* m_stacked_widget{nullptr};  //!< stack with settings widgets
-  QTabWidget* m_tab_widget{nullptr};          //!< application model settings
 
   ApplicationModels* m_models;
 };

@@ -19,13 +19,12 @@
 
 #include "sequencergui/mainwindow/settings_view.h"
 
+#include <mvvm/model/application_model.h>
+#include <mvvm/widgets/all_items_tree_view.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/utils/style_utils.h>
-
-#include <mvvm/model/application_model.h>
-#include <mvvm/widgets/all_items_tree_view.h>
 
 #include <QHBoxLayout>
 #include <QListView>
@@ -39,10 +38,7 @@ namespace sequencergui
 {
 
 SettingsView::SettingsView(QWidget *parent)
-    : QWidget(parent)
-    , m_list_widget(new QListWidget)
-    , m_stacked_widget(new QStackedWidget)
-    , m_tab_widget(new QTabWidget)
+    : QWidget(parent), m_list_widget(new QListWidget), m_stacked_widget(new QStackedWidget)
 {
   auto hlayout = new QHBoxLayout;
   hlayout->setMargin(0);
@@ -62,21 +58,24 @@ void SettingsView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   SetupListSelector();
-  SetupModelSettings();
-  SetupOtherSettings();
+  SetupModelWidgets();
+  SetupGeneralSettingWidgets();
 }
 
 //! Initialize tabs with model content.
 //! Each model will be represented by a single tree (with all items shown) in a tab.
 
-void SettingsView::SetupModelSettings()
+void SettingsView::SetupModelWidgets()
 {
   for (auto model : m_models->GetModels())
   {
     auto view = new mvvm::AllItemsTreeView(model);
-    m_tab_widget->addTab(view, QString::fromStdString(model->GetType()));
+    m_stacked_widget->addWidget(view);
+
+    auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"),
+                                    QString::fromStdString(model->GetType()));
+    m_list_widget->addItem(item);
   }
-  m_stacked_widget->addWidget(m_tab_widget);
 }
 
 void SettingsView::SetupListSelector()
@@ -85,19 +84,15 @@ void SettingsView::SetupListSelector()
   m_list_widget->setFixedWidth(width);
   m_list_widget->setIconSize(QSize(styleutils::UnitSize(1.2), styleutils::UnitSize(1.2)));
 
-  auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"), "All models");
-  m_list_widget->addItem(item);
-
-  item = new QListWidgetItem(styleutils::GetIcon("cog-outline.svg"), "Miscellaneous");
-  m_list_widget->addItem(item);
-
-  connect(m_list_widget, &QListWidget::currentRowChanged,
+  connect(m_list_widget, &QListWidget::currentRowChanged, this,
           [this](int row) { m_stacked_widget->setCurrentIndex(row); });
 }
 
-void SettingsView::SetupOtherSettings()
+void SettingsView::SetupGeneralSettingWidgets()
 {
   m_stacked_widget->addWidget(new QWidget);
+  auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"), "UI settings");
+  m_list_widget->addItem(item);
 }
 
 }  // namespace sequencergui
