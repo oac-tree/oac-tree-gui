@@ -24,12 +24,12 @@
 #include <mvvm/utils/file_utils.h>
 #include <sequencergui/explorer/explorer_panel.h>
 #include <sequencergui/explorer/procedure_trees_widget.h>
-#include <sequencergui/explorer/xml_editor.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/widgets/widget_utils.h>
+#include <sequencergui/widgets/xml_editor.h>
 
 #include <QApplication>
 #include <QDebug>

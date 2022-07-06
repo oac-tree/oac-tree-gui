@@ -8,8 +8,4 @@ target_sources(${library_name} PRIVATE
   procedure_trees_widget.h
   sequencer_explorer_view.cpp
   sequencer_explorer_view.h
-  xml_editor.cpp
-  xml_editor.h
-  xml_syntax_highlighter.cpp
-  xml_syntax_highlighter.h
 )

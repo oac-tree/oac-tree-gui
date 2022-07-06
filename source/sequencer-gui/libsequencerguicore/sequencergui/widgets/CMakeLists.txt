@@ -27,4 +27,8 @@ target_sources(${library_name} PRIVATE
   widget_overlay_message_publisher.h
   widget_utils.cpp
   widget_utils.h
+  xml_editor.cpp
+  xml_editor.h
+  xml_syntax_highlighter.cpp
+  xml_syntax_highlighter.h
   )
