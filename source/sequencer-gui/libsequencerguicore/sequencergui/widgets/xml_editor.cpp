@@ -19,7 +19,6 @@
 
 #include "sequencergui/widgets/xml_editor.h"
 
-#include <sequencergui/widgets/panel_toolbar.h>
 #include <sequencergui/widgets/xml_syntax_highlighter.h>
 
 #include <QFile>
@@ -34,7 +33,6 @@ namespace sequencergui
 {
 XMLEditor::XMLEditor(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new PanelToolBar)
     , m_text_edit(new QTextEdit)
     , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
 {
@@ -45,7 +43,6 @@ XMLEditor::XMLEditor(QWidget *parent)
   layout->setMargin(0);
   layout->setSpacing(0);
 
-  layout->addWidget(m_tool_bar);
   layout->addWidget(m_text_edit);
 
   QFont textFont("Monospace");

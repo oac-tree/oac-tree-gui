@@ -31,6 +31,7 @@ class XMLEditor;
 class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
+class ItemStackWidget;
 
 //! Main widget for XML browsing.
 //! Contains file browser on the left, top items trees and property tree in the center, and XML
@@ -56,6 +57,7 @@ private:
   ExplorerPanel* m_explorer_panel{nullptr};
   ProcedureTreesWidget* m_trees_widget{nullptr};
   XMLEditor* m_xml_editor{nullptr};
+  ItemStackWidget* m_right_panel{nullptr};
   QSplitter* m_splitter{nullptr};
 
   std::unique_ptr<SequencerModel> m_temp_model;  //!< temporary model for disk browsing

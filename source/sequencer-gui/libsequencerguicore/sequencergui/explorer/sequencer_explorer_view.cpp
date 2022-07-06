@@ -30,11 +30,13 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/widgets/widget_utils.h>
 #include <sequencergui/widgets/xml_editor.h>
+#include <sequencergui/widgets/item_stack_widget.h>
 
 #include <QApplication>
 #include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QToolBar>
 
 namespace
 {
@@ -63,6 +65,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     , m_explorer_panel(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_editor(new XMLEditor)
+    , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
@@ -72,7 +75,9 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
 
   m_splitter->addWidget(m_explorer_panel);
   m_splitter->addWidget(m_trees_widget);
-  m_splitter->addWidget(m_xml_editor);
+
+  m_right_panel->AddWidget(m_xml_editor);
+  m_splitter->addWidget(m_right_panel);
 
   layout->addWidget(m_splitter);
 
