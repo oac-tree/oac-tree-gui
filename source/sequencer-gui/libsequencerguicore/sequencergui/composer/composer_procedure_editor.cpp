@@ -51,7 +51,6 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   setWindowTitle("Composer");
 
   auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_tool_bar);
   m_splitter->setOrientation(Qt::Vertical);
 
   m_tab_widget->addTab(m_instruction_tree, "Instructions");
