@@ -29,18 +29,18 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/utils/style_utils.h>
 
 #include <QSplitter>
 #include <QTabWidget>
-#include <QVBoxLayout>
 #include <QToolBar>
+#include <QVBoxLayout>
 
 namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(
     std::unique_ptr<MessageHandlerInterface> message_handler, QWidget* parent)
     : QWidget(parent)
-    , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
     , m_instruction_tree(new InstructionTreeWidget)
     , m_workspace_tree(new WorkspaceListWidget)
@@ -48,6 +48,8 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_splitter(new QSplitter)
     , m_composer_actions(std::make_unique<ComposerActions>())
 {
+  setWindowTitle("Composer");
+
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
   m_splitter->setOrientation(Qt::Vertical);
@@ -67,8 +69,6 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   // setting up ComposerActions
   m_composer_actions->SetMessageHandler(std::move(message_handler));
   m_composer_actions->SetContext(CreateComposerContext());
-
-  SetToolBarWidgets(m_instruction_tree->GetToolBarWidgets());
 
   auto on_tabbar_changed = [this](int index)
   {
@@ -117,6 +117,16 @@ InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
+}
+
+std::unique_ptr<QToolBar> ComposerProcedureEditor::CreateToolBar()
+{
+  auto result = std::make_unique<QToolBar>();
+  result->setIconSize(styleutils::ToolBarIconSize());
+  // ownership will go to external caller, but we have to keep pointer for later  anipulations
+  m_tool_bar = result.get();
+  SetToolBarWidgets(m_instruction_tree->GetToolBarWidgets());
+  return result;
 }
 
 void ComposerProcedureEditor::SetToolBarWidgets(const QList<QWidget*>& widgets)

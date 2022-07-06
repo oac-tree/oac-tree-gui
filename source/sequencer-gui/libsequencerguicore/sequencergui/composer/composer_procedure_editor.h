@@ -65,6 +65,8 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
+  std::unique_ptr<QToolBar> CreateToolBar();
+
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 

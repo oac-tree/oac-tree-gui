@@ -19,6 +19,7 @@
 
 #include "sequencergui/composer/sequencer_composer_view.h"
 
+#include <mvvm/standarditems/container_item.h>
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_procedure_editor.h>
 #include <sequencergui/core/message_handler_interface.h>
@@ -30,12 +31,10 @@
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 
-#include <mvvm/standarditems/container_item.h>
-
 #include <QDebug>
 #include <QSplitter>
-#include <QVBoxLayout>
 #include <QToolBar>
+#include <QVBoxLayout>
 
 namespace sequencergui
 {
@@ -43,8 +42,10 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     : QWidget(parent)
     , m_composer_panel(new ComposerPanel)
     , m_node_editor(new NodeEditor)
-    , m_stack_widget(new ItemStackWidget)
-    , m_composer_procedure_editor(new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
+    , m_central_panel(new ItemStackWidget)
+    , m_composer_procedure_editor(
+          new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
+    , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
@@ -52,11 +53,13 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   //  layout->setSpacing(0);
   //  layout->setMargin(0);
 
-  m_stack_widget->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
+  m_central_panel->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
+  m_right_panel->AddWidget(m_composer_procedure_editor,
+                           m_composer_procedure_editor->CreateToolBar());
 
   m_splitter->addWidget(m_composer_panel);
-  m_splitter->addWidget(m_stack_widget);
-  m_splitter->addWidget(m_composer_procedure_editor);
+  m_splitter->addWidget(m_central_panel);
+  m_splitter->addWidget(m_right_panel);
   m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
                                     << styleutils::UnitSize(30));
 
@@ -97,7 +100,8 @@ void SequencerComposerView::SetupConnections()
   {
     if (!m_block_selection_to_scene)
     {
-      m_node_editor->SetSelectedInstructions(m_composer_procedure_editor->GetSelectedInstructions());
+      m_node_editor->SetSelectedInstructions(
+          m_composer_procedure_editor->GetSelectedInstructions());
     }
   };
   connect(m_composer_procedure_editor, &ComposerProcedureEditor::InstructionSelected, this,

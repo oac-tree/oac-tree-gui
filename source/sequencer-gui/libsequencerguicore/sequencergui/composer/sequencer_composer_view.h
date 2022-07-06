@@ -58,8 +58,9 @@ private:
 
   ComposerPanel* m_composer_panel{nullptr};
   NodeEditor* m_node_editor{nullptr};
-  ItemStackWidget* m_stack_widget{nullptr};
+  ItemStackWidget* m_central_panel{nullptr};
   ComposerProcedureEditor* m_composer_procedure_editor{nullptr};
+  ItemStackWidget* m_right_panel{nullptr};
 
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
