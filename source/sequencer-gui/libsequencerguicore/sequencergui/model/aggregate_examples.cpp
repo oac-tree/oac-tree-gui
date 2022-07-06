@@ -27,7 +27,17 @@ namespace sequencergui::Examples
 std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
 {
   auto result = std::make_unique<FallbackItem>();
-  result->InsertItem<SequenceItem>(::mvvm::TagIndex::Append());
+  result->SetDisplayName("IfThenElse");
+
+  auto sequence0 = result->InsertItem<SequenceItem>(::mvvm::TagIndex::Append());
+  auto include0 =
+      sequence0->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("A");
+  auto force_success_item = sequence0->InsertItem<ForceSuccessItem>(::mvvm::TagIndex::Append());
+  auto include1 =
+      force_success_item->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("B");
+
+  auto include2 = result->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("C");
+
   return result;
 }
 
