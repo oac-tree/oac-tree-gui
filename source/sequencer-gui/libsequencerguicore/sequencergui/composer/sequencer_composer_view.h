@@ -54,6 +54,7 @@ protected:
   void showEvent(QShowEvent* event) override;
 
 private:
+  void UpdateXML();
   void SetupConnections();
   ProcedureItem* GetFirstProcedure();
 
@@ -67,6 +68,7 @@ private:
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   bool m_block_selection_to_scene{false};
+
 };
 
 }  // namespace sequencergui

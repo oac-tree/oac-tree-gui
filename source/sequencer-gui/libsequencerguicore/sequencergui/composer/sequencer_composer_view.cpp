@@ -27,6 +27,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/xml_utils.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
@@ -87,6 +88,12 @@ void SequencerComposerView::showEvent(QShowEvent *event)
   }
 }
 
+void SequencerComposerView::UpdateXML()
+{
+  m_xml_editor->SetXMLContent(
+      QString::fromStdString(ExportToXMLString(m_composer_panel->GetSelectedProcedure())));
+}
+
 SequencerComposerView::~SequencerComposerView() = default;
 
 void SequencerComposerView::SetupConnections()
@@ -115,6 +122,7 @@ void SequencerComposerView::SetupConnections()
     qDebug() << "Show on_procedure_selected" << procedure_item;
     m_node_editor->SetProcedure(procedure_item);
     m_composer_procedure_editor->SetProcedure(procedure_item);
+    UpdateXML();
   };
   connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
 
