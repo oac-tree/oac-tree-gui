@@ -26,6 +26,11 @@
 class QSplitter;
 class QShowEvent;
 
+namespace mvvm
+{
+class ModelHasChangedController;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
@@ -64,6 +69,8 @@ private:
   ComposerProcedureEditor* m_composer_procedure_editor{nullptr};
   XMLEditor* m_xml_editor{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
+
+  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
 
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};

@@ -19,6 +19,7 @@
 
 #include "sequencergui/composer/sequencer_composer_view.h"
 
+#include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/standarditems/container_item.h>
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_procedure_editor.h>
@@ -77,6 +78,8 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_model = model;
   m_composer_panel->SetModel(model);
   m_composer_procedure_editor->SetModel(model);
+  m_model_changed_controller =
+      std::make_unique<mvvm::ModelHasChangedController>(m_model, [this]() { UpdateXML(); });
 }
 
 void SequencerComposerView::showEvent(QShowEvent *event)
