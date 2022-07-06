@@ -39,8 +39,9 @@ public:
   void SetActions(const QList<QAction*>& actions);
   void SetWidgets(const QList<QWidget*>& widgets);
 
-private:
   void AddDotsMenu();
+
+private:
   void InsertStrech();
 };
 

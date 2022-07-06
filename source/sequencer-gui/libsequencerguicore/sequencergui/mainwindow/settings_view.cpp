@@ -25,6 +25,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/utils/style_utils.h>
+#include <sequencergui/widgets/dots_toolbar.h>
 
 #include <QHBoxLayout>
 #include <QListView>
@@ -33,13 +34,19 @@
 #include <QTabWidget>
 #include <QToolBar>
 #include <QTreeView>
+#include <QVBoxLayout>
 
 namespace sequencergui
 {
 
 SettingsView::SettingsView(QWidget *parent)
-    : QWidget(parent), m_list_widget(new QListWidget), m_stacked_widget(new QStackedWidget)
+    : QWidget(parent)
+    , m_tool_bar(new DotsToolBar)
+    , m_list_widget(new QListWidget)
+    , m_stacked_widget(new QStackedWidget)
 {
+  m_tool_bar->AddDotsMenu();
+
   auto hlayout = new QHBoxLayout;
   hlayout->setMargin(0);
   hlayout->setSpacing(0);
@@ -70,6 +77,10 @@ void SettingsView::SetupModelWidgets()
   for (auto model : m_models->GetModels())
   {
     auto view = new mvvm::AllItemsTreeView(model);
+    view->GetTreeView()->expandAll();
+    view->GetTreeView()->setAlternatingRowColors(true);
+    view->GetTreeView()->resizeColumnToContents(0);
+
     m_stacked_widget->addWidget(view);
 
     auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"),

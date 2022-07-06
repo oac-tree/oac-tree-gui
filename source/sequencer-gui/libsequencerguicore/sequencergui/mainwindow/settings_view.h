@@ -29,7 +29,9 @@ class QTabWidget;
 
 namespace sequencergui
 {
+
 class ApplicationModels;
+class DotsToolBar;
 
 //! Simple file browser with bread crumb on top, and tree view at the bottom.
 class SettingsView : public QWidget
@@ -46,10 +48,11 @@ private:
   void SetupModelWidgets();
   void SetupGeneralSettingWidgets();
 
-  QListWidget* m_list_widget;                 //!< selector for specific settings window on the left
+  DotsToolBar* m_tool_bar{nullptr};
+  QListWidget* m_list_widget{nullptr};                 //!< selector for specific settings window on the left
   QStackedWidget* m_stacked_widget{nullptr};  //!< stack with settings widgets
 
-  ApplicationModels* m_models;
+  ApplicationModels* m_models{nullptr};
 };
 
 }  // namespace sequencergui
