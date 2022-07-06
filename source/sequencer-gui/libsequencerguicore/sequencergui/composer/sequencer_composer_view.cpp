@@ -93,11 +93,16 @@ void SequencerComposerView::showEvent(QShowEvent *event)
 
 void SequencerComposerView::UpdateXML()
 {
-  m_xml_editor->SetXMLContent(
-      QString::fromStdString(ExportToXMLString(m_composer_panel->GetSelectedProcedure())));
+  if (auto selected = m_composer_panel->GetSelectedProcedure(); selected)
+  {
+    m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(selected)));
+  }
 }
 
-SequencerComposerView::~SequencerComposerView() = default;
+SequencerComposerView::~SequencerComposerView()
+{
+  //  m_model_changed_controller.reset(); // to avoid signaling when
+}
 
 void SequencerComposerView::SetupConnections()
 {
