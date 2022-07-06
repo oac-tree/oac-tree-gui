@@ -19,6 +19,8 @@
 
 #include "sequencergui/composer/composer_procedure_editor.h"
 
+#include <mvvm/widgets/property_tree_view.h>
+#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/composer/composer_actions.h>
 #include <sequencergui/composer/instruction_tree_widget.h>
 #include <sequencergui/composer/workspace_list_widget.h>
@@ -27,21 +29,18 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/widgets/dots_toolbar.h>
-
-#include <mvvm/widgets/property_tree_view.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QSplitter>
 #include <QTabWidget>
 #include <QVBoxLayout>
+#include <QToolBar>
 
 namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(
     std::unique_ptr<MessageHandlerInterface> message_handler, QWidget* parent)
     : QWidget(parent)
-    , m_tool_bar(new DotsToolBar)
+    , m_tool_bar(new QToolBar)
     , m_tab_widget(new QTabWidget)
     , m_instruction_tree(new InstructionTreeWidget)
     , m_workspace_tree(new WorkspaceListWidget)
@@ -69,18 +68,18 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   m_composer_actions->SetMessageHandler(std::move(message_handler));
   m_composer_actions->SetContext(CreateComposerContext());
 
-  m_tool_bar->SetWidgets(m_instruction_tree->GetToolBarWidgets());
+  SetToolBarWidgets(m_instruction_tree->GetToolBarWidgets());
 
   auto on_tabbar_changed = [this](int index)
   {
     // FIXME simplify
     if (index == 0)
     {
-      m_tool_bar->SetWidgets(m_instruction_tree->GetToolBarWidgets());
+      SetToolBarWidgets(m_instruction_tree->GetToolBarWidgets());
     }
     else
     {
-      m_tool_bar->SetWidgets(m_workspace_tree->GetToolBarWidgets());
+      SetToolBarWidgets(m_workspace_tree->GetToolBarWidgets());
     }
   };
   connect(m_tab_widget, &QTabWidget::currentChanged, this, on_tabbar_changed);
@@ -103,11 +102,6 @@ void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)
   m_workspace_tree->SetProcedure(m_procedure);
 }
 
-void ComposerProcedureEditor::SetSelectedInstruction(InstructionItem* instruction)
-{
-  m_instruction_tree->SetSelectedInstruction(instruction);
-}
-
 void ComposerProcedureEditor::SetSelectedInstructions(
     const std::vector<InstructionItem*>& instructions)
 {
@@ -123,6 +117,15 @@ InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
+}
+
+void ComposerProcedureEditor::SetToolBarWidgets(const QList<QWidget*>& widgets)
+{
+  m_tool_bar->clear();
+  for (auto widget : widgets)
+  {
+    m_tool_bar->addWidget(widget);
+  }
 }
 
 void ComposerProcedureEditor::SetupConnections()

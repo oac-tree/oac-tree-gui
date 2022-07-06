@@ -24,6 +24,7 @@
 
 class QSplitter;
 class QTabWidget;
+class QToolBar;
 
 namespace mvvm
 {
@@ -59,8 +60,6 @@ public:
 
   void SetProcedure(ProcedureItem* procedure);
 
-  void SetSelectedInstruction(InstructionItem* instruction);
-
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions);
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
@@ -70,10 +69,12 @@ signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 
 private:
+  void SetToolBarWidgets(const QList<QWidget*>& widgets);
+
   void SetupConnections();
   ComposerContext CreateComposerContext();
 
-  DotsToolBar* m_tool_bar{nullptr};
+  QToolBar* m_tool_bar{nullptr};
   QTabWidget* m_tab_widget{nullptr};
   InstructionTreeWidget* m_instruction_tree{nullptr};
   WorkspaceListWidget* m_workspace_tree{nullptr};
