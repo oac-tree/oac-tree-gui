@@ -30,6 +30,7 @@
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
+#include <sequencergui/widgets/xml_editor.h>
 
 #include <QDebug>
 #include <QSplitter>
@@ -45,6 +46,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_central_panel(new ItemStackWidget)
     , m_composer_procedure_editor(
           new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
+    , m_xml_editor(new XMLEditor)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
 {
@@ -56,6 +58,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   m_central_panel->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
   m_right_panel->AddWidget(m_composer_procedure_editor,
                            m_composer_procedure_editor->CreateToolBar());
+  m_right_panel->AddWidget(m_xml_editor);
 
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_central_panel);

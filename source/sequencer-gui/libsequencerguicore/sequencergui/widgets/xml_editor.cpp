@@ -19,8 +19,8 @@
 
 #include "sequencergui/widgets/xml_editor.h"
 
-#include <sequencergui/widgets/xml_syntax_highlighter.h>
 #include <sequencergui/widgets/panel_toolbar.h>
+#include <sequencergui/widgets/xml_syntax_highlighter.h>
 
 #include <QFile>
 #include <QLabel>
@@ -38,6 +38,8 @@ XMLEditor::XMLEditor(QWidget *parent)
     , m_text_edit(new QTextEdit)
     , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
 {
+  setWindowTitle("XML");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setMargin(0);

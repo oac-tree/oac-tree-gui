@@ -32,6 +32,10 @@ class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
 
+//! Main widget for XML browsing.
+//! Contains file browser on the left, top items trees and property tree in the center, and XML
+//! viewer on the right. Belongs to MainWindow.
+
 class SequencerExplorerView : public QWidget
 {
   Q_OBJECT
