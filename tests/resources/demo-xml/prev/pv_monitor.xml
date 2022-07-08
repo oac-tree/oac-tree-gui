@@ -37,9 +37,17 @@
   <Workspace>
     <Local name="zero" type='{"type":"uint32"}' value="0"/>
     <Local name="one" type='{"type":"uint32"}' value="1"/>
-    <ChannelAccessVariable name="test_is_running" channel="IS_RUNNING" datatype='{"type":"uint32"}'/>
-    <ChannelAccessVariable name="dev1_status" channel="DEV1-STATUS" datatype='{"type":"uint32"}'/>
-    <ChannelAccessVariable name="dev2_status" channel="DEV2-STATUS" datatype='{"type":"uint32"}'/>
-    <ChannelAccessVariable name="devices_ready" channel="DEVICES-READY" datatype='{"type":"uint32"}'/>
+    <PVServerVariable name="test_is_running" channel="IS_RUNNING"
+      datatype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"uint32"}}]}'
+      instance='{"value":1}'/>
+    <PVServerVariable name="dev1_status" channel="DEV1-STATUS"
+      datatype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"uint32"}}]}'
+      instance='{"value":1}'/>
+    <PVServerVariable name="dev2_status" channel="DEV2-STATUS"
+      datatype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"uint32"}}]}'
+      instance='{"value":1}'/>
+    <PVServerVariable name="devices_ready" channel="DEVICES-READY"
+      datatype='{"type":"seq::test::Type/v1.0","attributes":[{"value":{"type":"uint32"}}]}'
+      instance='{"value":0}'/>
   </Workspace>  
 </Procedure>
