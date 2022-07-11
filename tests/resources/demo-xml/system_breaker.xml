@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Sequencer functional test"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+  <Plugin>libsequencer-pvxs.so</Plugin>
+  <Repeat isRoot="True" maxCount="-1">
+    <Sequence>
+      <Wait timeout="1.2"/>
+      <Message text="Better switch it off ..."/>
+      <Copy name="Set device broken" input="zero" output="dev1_status"/>
+      <Wait timeout="2"/>
+      <Message text="or may be leave it on?"/>
+      <Copy name="Set device ready" input="one" output="dev1_status"/>
+    </Sequence>
+  </Repeat>
+
+  <Workspace>
+    <Local name="zero" type='{"type":"uint32"}' value="0"/>
+    <Local name="one" type='{"type":"uint32"}' value="1"/>
+    <ChannelAccessVariable name="dev1_status" channel="DEV1-STATUS" datatype='{"type":"uint32"}'/>
+  </Workspace>
+</Procedure>
