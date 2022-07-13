@@ -22,6 +22,7 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/top_items_tree_view.h>
+#include <mvvm/model/model_utils.h>
 #include <sequencergui/core/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -87,7 +88,7 @@ void SequencerMonitorView::showEvent(QShowEvent *event)
   Q_UNUSED(event);
   if (!m_monitor_panel->GetSelectedJob())
   {
-    if (auto job = m_models->GetJobModel()->GetTopItem<JobItem>(); job)
+    if (auto job = ::mvvm::utils::GetTopItem<JobItem>(m_models->GetJobModel()); job)
     {
       m_monitor_panel->SetSelectedJob(job);
     }

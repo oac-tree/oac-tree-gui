@@ -105,7 +105,6 @@ void SequencerMonitorActions::OnStartJobRequest()
   CheckConditions();
 
   m_job_manager->SetCurrentJob(m_job_selection_callback());
-  std::cout << "AAAAA 1.1 " << std::endl;
 
   ResubmitIfNecessary();
 
@@ -155,9 +154,7 @@ void SequencerMonitorActions::OnRemoveJobRequest()
 
   if (is_success)
   {
-    std::cout << m_job_model->GetTopItems<JobItem>().size() << std::endl;
     m_job_model->RemoveItem(job);
-    std::cout << m_job_model->GetTopItems<JobItem>().size() << std::endl;
   }
 }
 

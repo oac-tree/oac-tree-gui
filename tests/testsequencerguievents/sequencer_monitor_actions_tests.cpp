@@ -17,6 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/monitor/sequencer_monitor_actions.h"
+#include "test_procedure_items.h"
+
+#include <gtest/gtest.h>
+#include <mvvm/model/model_utils.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -25,10 +30,6 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include "sequencergui/monitor/sequencer_monitor_actions.h"
-#include "test_procedure_items.h"
-
-#include <gtest/gtest.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -50,7 +51,7 @@ public:
   SequencerModel* GetSequencerModel() { return m_models.GetSequencerModel(); }
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
-  std::vector<JobItem*> GetJobItems() { return GetJobModel()->GetTopItems<JobItem>(); }
+  std::vector<JobItem*> GetJobItems() { return mvvm::utils::GetTopItems<JobItem>(GetJobModel()); }
 
   ApplicationModels m_models;
   JobManager m_job_manager;
@@ -315,5 +316,4 @@ TEST_F(SequencerMonitorActionsTests, ExecuteSameJobTwice)
   EXPECT_FALSE(m_job_manager.GetContext(job_item)->IsRunning());
 
   EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
-
 }

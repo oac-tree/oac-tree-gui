@@ -54,11 +54,11 @@ public:
 
   MOCK_METHOD2(OnDataChanged, void(mvvm::SessionItem* item, int role));
 
-  MOCK_METHOD1(OnModelAboutToBeReset, void(mvvm::SessionModel* model));
+  MOCK_METHOD1(OnModelAboutToBeReset, void(mvvm::SessionModelInterface* model));
 
-  MOCK_METHOD1(OnModelReset, void(mvvm::SessionModel* model));
+  MOCK_METHOD1(OnModelReset, void(mvvm::SessionModelInterface* model));
 
-  MOCK_METHOD1(OnModelAboutToBeDestroyed, void(mvvm::SessionModel* model));
+  MOCK_METHOD1(OnModelAboutToBeDestroyed, void(mvvm::SessionModelInterface* model));
 };
 
 #endif  // TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
