@@ -19,14 +19,12 @@
 
 #include "sequencergui/viewmodel/procedure_viewmodel.h"
 
-#include <sequencergui/model/procedure_item.h>
-
 #include <mvvm/factories/viewmodel_controller_factory.h>
-#include <mvvm/model/application_model.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/standard_row_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
+#include <sequencergui/model/procedure_item.h>
 
 namespace sequencergui
 {
@@ -55,7 +53,7 @@ public:
   }
 };
 
-ProcedureViewModel::ProcedureViewModel(mvvm::ApplicationModel *model, QObject *parent)
+ProcedureViewModel::ProcedureViewModel(mvvm::SessionModelInterface *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(

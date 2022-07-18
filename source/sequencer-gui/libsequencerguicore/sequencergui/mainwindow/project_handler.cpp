@@ -106,7 +106,7 @@ QStringList ProjectHandler::GetRecentProjectList() const
 void ProjectHandler::InitProjectManager()
 {
   auto modified_callback = [this]() { UpdateCurrentProjectName(); };
-  auto models_callback = [this]() { return std::vector<mvvm::ApplicationModel*>({m_model}); };
+  auto models_callback = [this]() { return std::vector<mvvm::SessionModelInterface*>({m_model}); };
   mvvm::ProjectContext project_context{modified_callback, models_callback};
 
   auto select_dir_callback = [this]() { return m_user_interactor->OnSelectDirRequest(); };

@@ -150,7 +150,9 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
   // in AlignNode on previous steps (while building AlignNodes from items). Identifier
   // is used to retrieve instruction items back from the model. Thus, InstructionItem must
   // be the part of some model.
-  auto model = item->GetModel();
+
+  // FIXME remove cast
+  auto model = dynamic_cast<mvvm::SessionModel*>(item->GetModel());
 
   if (!model)
   {

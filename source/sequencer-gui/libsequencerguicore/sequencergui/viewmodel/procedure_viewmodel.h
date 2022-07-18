@@ -24,7 +24,7 @@
 
 namespace mvvm
 {
-class ApplicationModel;
+class SessionModelInterface;
 }
 
 namespace sequencergui
@@ -37,7 +37,7 @@ class MVVM_VIEWMODEL_EXPORT ProcedureViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit ProcedureViewModel(mvvm::ApplicationModel* model, QObject* parent = nullptr);
+  explicit ProcedureViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
 };
 
 }  // namespace sequencergui

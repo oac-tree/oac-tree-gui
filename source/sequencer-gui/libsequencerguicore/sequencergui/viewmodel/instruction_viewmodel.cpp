@@ -19,15 +19,13 @@
 
 #include "sequencergui/viewmodel/instruction_viewmodel.h"
 
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
-
 #include <mvvm/factories/viewmodel_controller_factory.h>
-#include <mvvm/model/application_model.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/standard_row_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
 
 namespace sequencergui
 {
@@ -61,7 +59,7 @@ public:
   }
 };
 
-InstructionViewModel::InstructionViewModel(mvvm::ApplicationModel *model, QObject *parent)
+InstructionViewModel::InstructionViewModel(mvvm::SessionModelInterface *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(

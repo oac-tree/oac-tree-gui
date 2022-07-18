@@ -19,16 +19,14 @@
 
 #include "sequencergui/viewmodel/job_list_viewmodel.h"
 
-#include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/job_item.h>
-
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/interfaces/children_strategy_interface.h>
-#include <mvvm/model/application_model.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/standard_row_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
+#include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/job_item.h>
 
 namespace sequencergui
 {
@@ -74,7 +72,7 @@ public:
   }
 };
 
-JobListViewModel::JobListViewModel(mvvm::ApplicationModel *model, QObject *parent)
+JobListViewModel::JobListViewModel(mvvm::SessionModelInterface *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
