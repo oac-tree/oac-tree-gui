@@ -19,9 +19,8 @@
 
 #include "sequencergui/model/job_model.h"
 
-#include <sequencergui/model/procedure_item.h>
-
 #include <gtest/gtest.h>
+#include <sequencergui/model/procedure_item.h>
 
 using namespace sequencergui;
 
@@ -36,7 +35,7 @@ TEST_F(JobModelTest, InitialState)
   JobModel model;
 
   // trying to insert procedure to make sure that catalogue is there
-  auto item = model.InsertNewItem(ProcedureItem::Type);
+  auto item = model.InsertItem<ProcedureItem>();
   EXPECT_EQ(item->GetType(), ProcedureItem::Type);
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
 }

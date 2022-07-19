@@ -19,6 +19,7 @@
 
 #include "sequencergui/composer/composer_actions.h"
 
+#include <mvvm/core/exceptions.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/core/message_handler_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -28,8 +29,6 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
-
-#include <mvvm/core/exceptions.h>
 
 #include <QDebug>
 #include <QPointF>
@@ -174,7 +173,7 @@ mvvm::SessionItem *ComposerActions::InsertItem(const std::string &item_type,
   mvvm::SessionItem *result{nullptr};
   try
   {
-    result = m_model->InsertNewItem(item_type, parent, index);
+    result = m_model->InsertItem(m_model->GetFactory()->CreateItem(item_type), parent, index);
   }
   catch (const std::exception &ex)
   {
