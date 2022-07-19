@@ -151,8 +151,7 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
   // is used to retrieve instruction items back from the model. Thus, InstructionItem must
   // be the part of some model.
 
-  // FIXME remove cast
-  auto model = dynamic_cast<mvvm::SessionModel*>(item->GetModel());
+  auto model = item->GetModel();
 
   if (!model)
   {
