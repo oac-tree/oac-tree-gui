@@ -167,7 +167,7 @@ TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
   ASSERT_TRUE(view1 != nullptr);
 
   // attempt to connect to leaves together
-  EXPECT_THROW(m_scene.onConnectionRequest(view0, view1), mvvm::InvalidMoveException);
+  EXPECT_THROW(m_scene.onConnectionRequest(view0, view1), mvvm::InvalidOperationException);
 
   MockMessageHandler mock_handler;
   m_scene.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));

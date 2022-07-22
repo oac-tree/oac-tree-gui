@@ -219,7 +219,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItem)
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to ForceSuccess
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidInsertException);
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
 }
 
 //! Validate SequenceItem convertion to the domain object.
@@ -269,7 +269,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to inverter
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidInsertException);
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
 }
 
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
@@ -351,7 +351,7 @@ TEST_F(StandardInstructionItemsTest, InverterItem)
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to inverter
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidInsertException);
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
 }
 
 //! Validate SequenceItem convertion to the domain object.
@@ -386,7 +386,7 @@ TEST_F(StandardInstructionItemsTest, ListenItem)
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to ForceSuccess
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidInsertException);
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
 }
 
 TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
@@ -579,7 +579,7 @@ TEST_F(StandardInstructionItemsTest, RepeatItem)
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to repeater
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidInsertException);
+  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
 }
 
 TEST_F(StandardInstructionItemsTest, RepeatItemFromDomain)
