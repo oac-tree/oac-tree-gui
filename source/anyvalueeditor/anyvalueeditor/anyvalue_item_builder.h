@@ -20,7 +20,6 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_
 
-#include "sup/dto/basic_scalar_types.h"
 #include "sup/dto/i_any_visitor.h"
 #include "anyvalue_type.h"
 
@@ -50,9 +49,6 @@ public:
 
   void ScalarProlog(const anyvalue_t* anyvalue) override;
   void ScalarEpilog(const anyvalue_t* anyvalue) override;
-
-  void UnboundedArrayProlog(const anyvalue_t* val) override;
-  void UnboundedArrayEpilog(const anyvalue_t* val) override;
 
 private:
   AnyValueItem* m_item{nullptr};

@@ -134,16 +134,6 @@ void AnyValueItemBuilder::ScalarEpilog(const anyvalue_t *anyvalue)
   ScalarToItem(*anyvalue, *m_item);
 }
 
-void AnyValueItemBuilder::UnboundedArrayProlog(const anyvalue_t *val)
-{
-
-}
-
-void AnyValueItemBuilder::UnboundedArrayEpilog(const anyvalue_t *val)
-{
-
-}
-
 }  // namespace anyvalueeditor
 
 #include "anyvalueeditor/anyvalue_item_builder.h"
