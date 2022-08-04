@@ -100,7 +100,16 @@ GraphicsScene::GraphicsScene(QObject *parent)
   connect(m_node_controller.get(), &NodeController::selectionModeChangeRequest, this,
           &GraphicsScene::selectionModeChangeRequest);
 
-  connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged);
+  // Strange bug in Qt6.3: if we use connection via lambda, as in code below, everyting works.
+  // If we use classical connection &GraphicsScene::onSelectionChanged program crashes
+  // with the following warning:
+
+  //  ASSERT failure in sequencergui::GraphicsScene: "Called object is not of the correct type
+  //  (class destructor may have already run)", file /usr/include/qt6/QtCore/qobjectdefs_impl.h,
+  //  line 155 Aborted (core dumped)
+
+  connect(this, &GraphicsScene::selectionChanged, this, [this](){onSelectionChanged();});
+  //  connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged); <-- crashes in Qt6.3
 }
 
 GraphicsScene::~GraphicsScene() = default;
