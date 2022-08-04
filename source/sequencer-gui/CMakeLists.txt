@@ -8,4 +8,4 @@ add_executable(${executable_name} main.cpp)
 
 add_subdirectory(libsequencerguicore)
 
-target_link_libraries(${executable_name} sequencerguicore Qt5::Widgets)
+target_link_libraries(${executable_name} sequencerguicore Qt${QT_VERSION_MAJOR}::Widgets)

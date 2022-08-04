@@ -4,4 +4,4 @@ add_executable(${executable_name} main.cpp)
 
 add_subdirectory(anyvalueeditor)
 
-target_link_libraries(${executable_name} anyvalueeditorcore Qt5::Widgets)
+target_link_libraries(${executable_name} anyvalueeditorcore Qt${QT_VERSION_MAJOR}::Widgets)
