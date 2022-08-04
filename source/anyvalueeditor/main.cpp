@@ -26,8 +26,6 @@ int main(int argc, char** argv)
 {
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
 
-  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
   QApplication app(argc, argv);
 
   anyvalueeditor::MainWindow win;
