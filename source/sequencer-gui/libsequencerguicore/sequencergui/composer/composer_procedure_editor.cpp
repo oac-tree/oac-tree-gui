@@ -59,11 +59,10 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   m_splitter->addWidget(m_tab_widget);
   m_splitter->addWidget(m_property_tree);
   m_splitter->setSizes(QList<int>() << 300 << 200);
-  layout->addWidget(m_splitter);
 
+  layout->addWidget(m_splitter);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->setMargin(0);
 
   // setting up ComposerActions
   m_composer_actions->SetMessageHandler(std::move(message_handler));

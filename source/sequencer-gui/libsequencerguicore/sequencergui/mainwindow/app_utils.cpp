@@ -32,6 +32,7 @@
 #include <QSize>
 #include <QString>
 #include <QStyleFactory>
+#include <QFont>
 #include <sstream>
 
 namespace

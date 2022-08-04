@@ -47,7 +47,6 @@ EditorWidget::EditorWidget(QWidget *parent)
   layout->addWidget(m_all_items_tree_view);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->setMargin(0);
 
   m_model->RegisterItem<AnyValueItem>();
   PopulateModel();
