@@ -34,13 +34,12 @@ namespace sequencergui
 XMLEditor::XMLEditor(QWidget *parent)
     : QWidget(parent)
     , m_text_edit(new QTextEdit)
-    , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
+//    , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
 {
   setWindowTitle("XML");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
-  layout->setMargin(0);
   layout->setSpacing(0);
 
   layout->addWidget(m_text_edit);
