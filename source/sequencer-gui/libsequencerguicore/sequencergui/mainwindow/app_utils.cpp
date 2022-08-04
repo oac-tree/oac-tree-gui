@@ -26,7 +26,6 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QDebug>
-#include <QDesktopWidget>
 #include <QGuiApplication>
 #include <QScreen>
 #include <QSize>
@@ -203,7 +202,9 @@ Options ParseOptions(int argc, char** argv)
 
 void SetupHighDpiScaling(bool use_system_scale)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
 
   if (use_system_scale)
   {
@@ -214,14 +215,22 @@ void SetupHighDpiScaling(bool use_system_scale)
       return;
     }
     qDebug() << "Enable High Dpi";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#endif
   }
   else
   {
     qDebug() << "Own scaling, resetting environment";
     // our GUI is perfect and knows how to scale by itself
     ResetHighDpiEnvironment();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling, true);
+#else
+    /* AA_DisableHighDpiScaling is deprecated */
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+        Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+#endif
   }
 }
 

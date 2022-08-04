@@ -39,7 +39,6 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->setMargin(0);
 
   layout->addWidget(m_main_toolbar);
   layout->addWidget(m_stacked_widget);
@@ -86,7 +85,6 @@ void ItemStackWidget::AddGuestToolBar(std::unique_ptr<QToolBar> toolbar,
 
   toolbar->layout()->setContentsMargins(0, 0, 0, 0);
   toolbar->layout()->setSpacing(0);
-  toolbar->layout()->setMargin(0);
 
   QList<QAction *> actions;
   if (m_stacked_widget->count() > 1)

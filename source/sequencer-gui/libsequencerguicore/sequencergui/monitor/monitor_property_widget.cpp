@@ -55,7 +55,6 @@ MonitorPropertyWidget::MonitorPropertyWidget(QWidget *parent)
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->setMargin(0);
 }
 
 MonitorPropertyWidget::~MonitorPropertyWidget() = default;

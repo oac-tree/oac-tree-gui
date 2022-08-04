@@ -48,9 +48,8 @@ SettingsView::SettingsView(QWidget *parent)
   m_tool_bar->AddDotsMenu();
 
   auto hlayout = new QHBoxLayout;
-  hlayout->setMargin(0);
-  hlayout->setSpacing(0);
   hlayout->setContentsMargins(0, 0, 0, 0);
+  hlayout->setSpacing(0);
 
   hlayout->addWidget(m_list_widget);
   hlayout->addWidget(m_stacked_widget);
