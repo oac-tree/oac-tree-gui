@@ -34,7 +34,9 @@ namespace sequencergui
 XMLEditor::XMLEditor(QWidget *parent)
     : QWidget(parent)
     , m_text_edit(new QTextEdit)
-//    , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
+#endif
 {
   setWindowTitle("XML");
 

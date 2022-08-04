@@ -19,87 +19,93 @@
 
 #include "sequencergui/widgets/xml_syntax_highlighter.h"
 
-//namespace sequencergui
-//{
-//XmlSyntaxHighlighter::XmlSyntaxHighlighter(QObject* parent) : QSyntaxHighlighter(parent)
-//{
-//  setRegexes();
-//  setFormats();
-//}
+namespace sequencergui
+{
 
-//XmlSyntaxHighlighter::XmlSyntaxHighlighter(QTextDocument* parent) : QSyntaxHighlighter(parent)
-//{
-//  setRegexes();
-//  setFormats();
-//}
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 
-//void XmlSyntaxHighlighter::highlightBlock(const QString& text)
-//{
-//  // Special treatment for xml element regex as we use captured text to emulate lookbehind
-//  int xmlElementIndex = m_xmlElementRegex.indexIn(text);
-//  while (xmlElementIndex >= 0)
-//  {
-//    int matchedPos = m_xmlElementRegex.pos(1);
-//    int matchedLength = m_xmlElementRegex.cap(1).length();
-//    setFormat(matchedPos, matchedLength, m_xmlElementFormat);
+XmlSyntaxHighlighter::XmlSyntaxHighlighter(QObject* parent) : QSyntaxHighlighter(parent)
+{
+  setRegexes();
+  setFormats();
+}
 
-//    xmlElementIndex = m_xmlElementRegex.indexIn(text, matchedPos + matchedLength);
-//  }
+XmlSyntaxHighlighter::XmlSyntaxHighlighter(QTextDocument* parent) : QSyntaxHighlighter(parent)
+{
+  setRegexes();
+  setFormats();
+}
 
-//  // Highlight xml keywords *after* xml elements to fix any occasional / captured into the enclosing
-//  // element
-//  typedef QList<QRegExp>::const_iterator Iter;
-//  Iter xmlKeywordRegexesEnd = m_xmlKeywordRegexes.end();
-//  for (Iter it = m_xmlKeywordRegexes.begin(); it != xmlKeywordRegexesEnd; ++it)
-//  {
-//    const QRegExp& regex = *it;
-//    highlightByRegex(m_xmlKeywordFormat, regex, text);
-//  }
+void XmlSyntaxHighlighter::highlightBlock(const QString& text)
+{
+  // Special treatment for xml element regex as we use captured text to emulate lookbehind
+  int xmlElementIndex = m_xmlElementRegex.indexIn(text);
+  while (xmlElementIndex >= 0)
+  {
+    int matchedPos = m_xmlElementRegex.pos(1);
+    int matchedLength = m_xmlElementRegex.cap(1).length();
+    setFormat(matchedPos, matchedLength, m_xmlElementFormat);
 
-//  highlightByRegex(m_xmlAttributeFormat, m_xmlAttributeRegex, text);
-//  highlightByRegex(m_xmlCommentFormat, m_xmlCommentRegex, text);
-//  highlightByRegex(m_xmlValueFormat, m_xmlValueRegex, text);
-//}
+    xmlElementIndex = m_xmlElementRegex.indexIn(text, matchedPos + matchedLength);
+  }
 
-//void XmlSyntaxHighlighter::highlightByRegex(const QTextCharFormat& format, const QRegExp& regex,
-//                                            const QString& text)
-//{
-//  int index = regex.indexIn(text);
+  // Highlight xml keywords *after* xml elements to fix any occasional / captured into the enclosing
+  // element
+  typedef QList<QRegExp>::const_iterator Iter;
+  Iter xmlKeywordRegexesEnd = m_xmlKeywordRegexes.end();
+  for (Iter it = m_xmlKeywordRegexes.begin(); it != xmlKeywordRegexesEnd; ++it)
+  {
+    const QRegExp& regex = *it;
+    highlightByRegex(m_xmlKeywordFormat, regex, text);
+  }
 
-//  while (index >= 0)
-//  {
-//    int matchedLength = regex.matchedLength();
-//    setFormat(index, matchedLength, format);
+  highlightByRegex(m_xmlAttributeFormat, m_xmlAttributeRegex, text);
+  highlightByRegex(m_xmlCommentFormat, m_xmlCommentRegex, text);
+  highlightByRegex(m_xmlValueFormat, m_xmlValueRegex, text);
+}
 
-//    index = regex.indexIn(text, index + matchedLength);
-//  }
-//}
+void XmlSyntaxHighlighter::highlightByRegex(const QTextCharFormat& format, const QRegExp& regex,
+                                            const QString& text)
+{
+  int index = regex.indexIn(text);
 
-//void XmlSyntaxHighlighter::setRegexes()
-//{
-//  m_xmlElementRegex.setPattern("<[?\\s]*[/]?[\\s]*([^\\n][^>]*)(?=[\\s/>])");
-//  m_xmlAttributeRegex.setPattern("\\w+(?=\\=)");
-//  m_xmlValueRegex.setPattern("\"[^\\n\"]+\"(?=[?\\s/>])");
-//  m_xmlCommentRegex.setPattern("<!--[^\\n]*-->");
+  while (index >= 0)
+  {
+    int matchedLength = regex.matchedLength();
+    setFormat(index, matchedLength, format);
 
-//  m_xmlKeywordRegexes = QList<QRegExp>() << QRegExp("<\\?") << QRegExp("/>") << QRegExp(">")
-//                                         << QRegExp("<") << QRegExp("</") << QRegExp("\\?>");
-//}
+    index = regex.indexIn(text, index + matchedLength);
+  }
+}
 
-//void XmlSyntaxHighlighter::setFormats()
-//{
-//  m_xmlKeywordFormat.setForeground(Qt::blue);
-//  m_xmlKeywordFormat.setFontWeight(QFont::Bold);
+void XmlSyntaxHighlighter::setRegexes()
+{
+  m_xmlElementRegex.setPattern("<[?\\s]*[/]?[\\s]*([^\\n][^>]*)(?=[\\s/>])");
+  m_xmlAttributeRegex.setPattern("\\w+(?=\\=)");
+  m_xmlValueRegex.setPattern("\"[^\\n\"]+\"(?=[?\\s/>])");
+  m_xmlCommentRegex.setPattern("<!--[^\\n]*-->");
 
-//  m_xmlElementFormat.setForeground(Qt::darkMagenta);
-//  m_xmlElementFormat.setFontWeight(QFont::Bold);
+  m_xmlKeywordRegexes = QList<QRegExp>() << QRegExp("<\\?") << QRegExp("/>") << QRegExp(">")
+                                         << QRegExp("<") << QRegExp("</") << QRegExp("\\?>");
+}
 
-//  m_xmlAttributeFormat.setForeground(Qt::darkGreen);
-//  m_xmlAttributeFormat.setFontWeight(QFont::Bold);
-//  m_xmlAttributeFormat.setFontItalic(true);
+void XmlSyntaxHighlighter::setFormats()
+{
+  m_xmlKeywordFormat.setForeground(Qt::blue);
+  m_xmlKeywordFormat.setFontWeight(QFont::Bold);
 
-//  m_xmlValueFormat.setForeground(Qt::darkRed);
+  m_xmlElementFormat.setForeground(Qt::darkMagenta);
+  m_xmlElementFormat.setFontWeight(QFont::Bold);
 
-//  m_xmlCommentFormat.setForeground(Qt::gray);
-//}
-//}  // namespace sequencergui
+  m_xmlAttributeFormat.setForeground(Qt::darkGreen);
+  m_xmlAttributeFormat.setFontWeight(QFont::Bold);
+  m_xmlAttributeFormat.setFontItalic(true);
+
+  m_xmlValueFormat.setForeground(Qt::darkRed);
+
+  m_xmlCommentFormat.setForeground(Qt::gray);
+}
+
+#endif
+
+}  // namespace sequencergui

@@ -27,37 +27,41 @@
 namespace sequencergui
 {
 
-////! Borrowed from https://github.com/d1vanov/basic-xml-syntax-highlighter
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 
-//class XmlSyntaxHighlighter : public QSyntaxHighlighter
-//{
-//  Q_OBJECT
-//public:
-//  explicit XmlSyntaxHighlighter(QObject* parent);
-//  explicit XmlSyntaxHighlighter(QTextDocument* parent);
+//! Borrowed from https://github.com/d1vanov/basic-xml-syntax-highlighter
 
-//protected:
-//  virtual void highlightBlock(const QString& text);
+class XmlSyntaxHighlighter : public QSyntaxHighlighter
+{
+  Q_OBJECT
+public:
+  explicit XmlSyntaxHighlighter(QObject* parent);
+  explicit XmlSyntaxHighlighter(QTextDocument* parent);
 
-//private:
-//  void highlightByRegex(const QTextCharFormat& format, const QRegExp& regex, const QString& text);
+protected:
+  virtual void highlightBlock(const QString& text);
 
-//  void setRegexes();
-//  void setFormats();
+private:
+  void highlightByRegex(const QTextCharFormat& format, const QRegExp& regex, const QString& text);
 
-//private:
-//  QTextCharFormat m_xmlKeywordFormat;
-//  QTextCharFormat m_xmlElementFormat;
-//  QTextCharFormat m_xmlAttributeFormat;
-//  QTextCharFormat m_xmlValueFormat;
-//  QTextCharFormat m_xmlCommentFormat;
+  void setRegexes();
+  void setFormats();
 
-//  QList<QRegExp> m_xmlKeywordRegexes;
-//  QRegExp m_xmlElementRegex;
-//  QRegExp m_xmlAttributeRegex;
-//  QRegExp m_xmlValueRegex;
-//  QRegExp m_xmlCommentRegex;
-//};
+private:
+  QTextCharFormat m_xmlKeywordFormat;
+  QTextCharFormat m_xmlElementFormat;
+  QTextCharFormat m_xmlAttributeFormat;
+  QTextCharFormat m_xmlValueFormat;
+  QTextCharFormat m_xmlCommentFormat;
+
+  QList<QRegExp> m_xmlKeywordRegexes;
+  QRegExp m_xmlElementRegex;
+  QRegExp m_xmlAttributeRegex;
+  QRegExp m_xmlValueRegex;
+  QRegExp m_xmlCommentRegex;
+};
+
+#endif
 
 }  // namespace sequencergui
 
