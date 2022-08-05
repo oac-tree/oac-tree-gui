@@ -52,7 +52,7 @@ public:
 
   bool hasPort(const NodePort* port) const;
 
-  void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
 
   ConnectableView* parentView() const;
 

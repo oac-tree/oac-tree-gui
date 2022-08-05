@@ -33,6 +33,7 @@ class NodePort;
 class PositionStrategyInterface
 {
 public:
+  virtual ~PositionStrategyInterface() = default;
   virtual void UpdatePosition(ConnectableView* view) = 0;
 };
 

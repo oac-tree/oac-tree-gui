@@ -29,6 +29,7 @@ namespace sequencergui
 class MessageHandlerInterface
 {
 public:
+  virtual ~MessageHandlerInterface() = default;
   virtual void SendMessage(const std::string& text) = 0;
 };
 
