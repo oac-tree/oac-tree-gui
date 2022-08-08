@@ -6,7 +6,7 @@ Prototype of Sequencer Graphical User Interface.
 
 ## Installation on CODAC machines
 
-The `sequencer-gui` application depends on `sequencer` and `cpp-mvvm` libraries.
+The `sequencer-gui` application depends on `sequencer` and `sup-mvvm` libraries.
 
 ### Install Sequencer
 
@@ -21,14 +21,14 @@ https://git.iter.org/scm/coa/sequencer.git
 mvn clean install
 ```
 
-### Install cpp-mvvm library
+### Install sup-mvvm library
 
 ```
 # install dependencies
 yum install freeglut-devel.x86_64 gmock-devel.x86_64 libxml2-devel.x86_64 codac-core-7.1-qt5.x86_64
 
-# get cpp-mvvm source
-git clone https://git.iter.org/scm/coa/cpp-mvvm.git
+# get sup-mvvm source
+git clone https://git.iter.org/scm/coa/sup-mvvm.git
 
 # compile
 mkdir <build>; cd <build>
@@ -58,14 +58,14 @@ make -j4 && ctest
 
 It is possible to develop Sequencer GUI on custom Linux distributive. Tested on `Arch` Linux.
 
-`cpp-mvvm` library and `coa-compact` must be compiled before.
+`sup-mvvm` library and `coa-compact` must be compiled before.
 It is perfectly fine not to install libraries after the build. 
 Thanks to CMake magic they will be discovered and used right from the `build` directories.
 Make sure that `build` directories are different.
 
 ```
-# build cpp-mvvm library
-git clone https://git.iter.org/scm/coa/cpp-mvvm.git
+# build sup-mvvm library
+git clone https://git.iter.org/scm/coa/sup-mvvm.git
 mkdir <build>; cd <build>
 cmake <source> && make -j4 && ctest
 

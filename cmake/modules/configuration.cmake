@@ -66,7 +66,7 @@ message(STATUS " Core library: ${QtWidgets_location}")
 
 find_package(Threads)
 
-find_package(MVVM REQUIRED)
+find_package(sup-mvvm REQUIRED)
 
 if (NOT SEQUENCERGUI_CODAC)
   find_package(COACompact REQUIRED)
