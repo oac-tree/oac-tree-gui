@@ -43,11 +43,6 @@ public:
   mvvm::ContainerItem* GetProcedureContainer() const;
 
   std::vector<ProcedureItem*> GetProcedures() const;
-
-private:
-  void SetupModel();
-
-  mvvm::ContainerItem* m_procedure_container{nullptr};
 };
 
 }  // namespace sequencergui

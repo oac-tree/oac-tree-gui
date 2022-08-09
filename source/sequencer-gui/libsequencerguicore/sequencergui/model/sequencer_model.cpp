@@ -19,12 +19,12 @@
 
 #include "sequencergui/model/sequencer_model.h"
 
-#include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_utils.h>
-
 #include <mvvm/interfaces/item_manager_interface.h>
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_utils.h>
 
 namespace sequencergui
 {
@@ -34,25 +34,17 @@ SequencerModel::SequencerModel(std::unique_ptr<mvvm::ItemManagerInterface> manag
     : mvvm::ApplicationModel("SequencerModel", std::move(manager))
 
 {
-  SetupModel();
+  InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
 }
 
 mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 {
-  return m_procedure_container;
+  return mvvm::utils::GetTopItem<mvvm::ContainerItem>(this);
 }
 
 std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 {
   return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::ContainerItem::kChildren);
-}
-
-//! Creates initial content of the model.
-
-void SequencerModel::SetupModel()
-{
-  m_procedure_container = InsertItem<mvvm::ContainerItem>();
-  m_procedure_container->SetDisplayName("Procedure container");
 }
 
 }  // namespace sequencergui

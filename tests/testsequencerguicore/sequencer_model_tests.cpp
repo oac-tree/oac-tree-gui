@@ -82,4 +82,5 @@ TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
 
   EXPECT_NE(model.GetProcedureContainer(), original_procedure_container);
   ASSERT_EQ(model.GetProcedures().size(), 1);
+  EXPECT_EQ(model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().size(), 1);
 }
