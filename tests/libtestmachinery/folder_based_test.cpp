@@ -34,7 +34,8 @@ std::string FolderBasedTest::GetTestHomeDirName() const
   return m_test_home_dirname;
 }
 
-//! Returns full path to the test folder. Located in CMAKE_BINARY_DIR/test_output/<m_test_dir>.
+//! Returns full path to the test folder. Located in
+//! CMAKE_BINARY_DIR/test_output/<m_test_home_dirname>.
 
 std::string FolderBasedTest::GetTestHomeDir() const
 {

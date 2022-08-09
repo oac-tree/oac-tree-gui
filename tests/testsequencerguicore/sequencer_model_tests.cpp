@@ -17,18 +17,24 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "folder_based_test.h"
 #include "sequencergui/model/sequencer_model.h"
 
 #include <gtest/gtest.h>
+#include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
 
 using namespace sequencergui;
 
 //! Tests for SequencerModel class.
 
-class SequencerModelTest : public ::testing::Test
+class SequencerModelTest : public FolderBasedTest
 {
+public:
+  SequencerModelTest() : FolderBasedTest("test_SequencerModel") {}
 };
 
 TEST_F(SequencerModelTest, InitialState)
@@ -54,4 +60,26 @@ TEST_F(SequencerModelTest, GetProcedures)
   auto procedure1 = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
   EXPECT_EQ(model.GetProcedures(), std::vector<ProcedureItem*>({procedure0, procedure1}));
+}
+
+TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
+{
+  const auto file_path = GetFilePath("XmlDocumentSaveLoad.xml");
+
+  SequencerModel model;
+  auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+  auto sequence0 = model.InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+
+  mvvm::XmlDocument document({&model});
+
+  auto original_procedure_container = model.GetProcedureContainer();
+
+  // saving model in file
+  document.Save(file_path);
+
+  // loading model from file
+  document.Load(file_path);
+
+  EXPECT_NE(model.GetProcedureContainer(), original_procedure_container);
+  ASSERT_EQ(model.GetProcedures().size(), 1);
 }
