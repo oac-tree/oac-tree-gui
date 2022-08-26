@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_item_builder.h
   anyvalue_utils.cpp
   anyvalue_utils.h
+  conversion_utils.cpp
+  conversion_utils.h
   dto_types_fwd.h
   editor_widget.cpp
   editor_widget.h
