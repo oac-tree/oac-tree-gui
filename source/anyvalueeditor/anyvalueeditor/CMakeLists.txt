@@ -9,7 +9,8 @@ target_link_libraries(${library_name} PUBLIC pthread sup-mvvm::view COACompact::
 target_sources(${library_name} PRIVATE
   add_field_dialog.cpp
   add_field_dialog.h
-  anyvalue_type.h
+  anyvalue_build_adapter.cpp
+  anyvalue_build_adapter.h
   anyvalue_editor_actions.cpp
   anyvalue_editor_actions.h
   anyvalue_editor_toolbar.cpp
@@ -18,6 +19,7 @@ target_sources(${library_name} PRIVATE
   anyvalue_item.h
   anyvalue_item_builder.cpp
   anyvalue_item_builder.h
+  anyvalue_type.h
   anyvalue_utils.cpp
   anyvalue_utils.h
   editor_widget.cpp
