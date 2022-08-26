@@ -27,7 +27,7 @@ namespace anyvalueeditor
 
 class AnyValueItem;
 
-void ScalarToItem(const anyvalue_t& value, AnyValueItem& item);
+void SetDataFromScalar(const anyvalue_t& value, AnyValueItem& item);
 
 }  // namespace anyvalueeditor
 

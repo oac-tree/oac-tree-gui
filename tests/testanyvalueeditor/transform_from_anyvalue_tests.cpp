@@ -38,7 +38,7 @@ TEST_F(TransformFromAnyValueTest, BoolScalarToItem)
   sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
   anyvalue = true;
   AnyValueItem item;
-  ScalarToItem(anyvalue, item);
+  SetDataFromScalar(anyvalue, item);
   EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
   EXPECT_TRUE(item.Data<bool>());
   EXPECT_EQ(item.GetTotalItemCount(), 0);
@@ -49,7 +49,7 @@ TEST_F(TransformFromAnyValueTest, IntScalarToItem)
   sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
   anyvalue = 42;
   AnyValueItem item;
-  ScalarToItem(anyvalue, item);
+  SetDataFromScalar(anyvalue, item);
   EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
   EXPECT_EQ(item.Data<int>(), 42);
   EXPECT_EQ(item.GetTotalItemCount(), 0);

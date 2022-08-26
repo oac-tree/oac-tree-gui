@@ -131,7 +131,7 @@ void AnyValueItemBuilder::ScalarProlog(const anyvalue_t *anyvalue)
 void AnyValueItemBuilder::ScalarEpilog(const anyvalue_t *anyvalue)
 {
 //  std::cout << "AddScalarEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
-  ScalarToItem(*anyvalue, *m_item);
+  SetDataFromScalar(*anyvalue, *m_item);
 }
 
 }  // namespace anyvalueeditor
