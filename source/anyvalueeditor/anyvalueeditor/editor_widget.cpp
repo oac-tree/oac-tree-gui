@@ -22,7 +22,7 @@
 #include <anyvalueeditor/anyvalue_editor_actions.h>
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/transform_from_anyvalue.h>
+#include <anyvalueeditor/conversion_utils.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <sup/dto/anyvalue.h>
@@ -60,12 +60,11 @@ EditorWidget::EditorWidget(QWidget *parent)
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
-  // disabling view from listening ApplicationModel for performance
-  m_all_items_tree_view->SetApplicationModel(nullptr);
+  //  // disabling view from listening ApplicationModel for performance
+  //  m_all_items_tree_view->SetApplicationModel(nullptr);
 
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
-  auto item = m_model->InsertItem<AnyValueItem>();
-  PopulateItem(&anyvalue, item);
+  m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
 
   //   setting view back to the model
   m_all_items_tree_view->SetApplicationModel(m_model.get());
@@ -78,8 +77,7 @@ void EditorWidget::PopulateModel()
   {  // two members
     sup::dto::AnyValue anyvalue = {
         {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
-    auto item = m_model->InsertItem<AnyValueItem>();
-    PopulateItem(&anyvalue, item);
+    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
   }
 
   {  // Nested structure
@@ -88,8 +86,7 @@ void EditorWidget::PopulateModel()
     sup::dto::AnyValue anyvalue{{
         {"scalars", two_scalars},
     }};
-    auto item = m_model->InsertItem<AnyValueItem>();
-    PopulateItem(&anyvalue, item);
+    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
   }
 }
 

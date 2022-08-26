@@ -29,8 +29,6 @@ class AnyValueItem;
 
 void ScalarToItem(const anyvalue_t& value, AnyValueItem& item);
 
-void PopulateItem(const sup::dto::AnyValue* domain, AnyValueItem* item);
-
 }  // namespace anyvalueeditor
 
 #endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORM_FROM_ANYVALUE_H_

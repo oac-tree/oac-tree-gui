@@ -19,11 +19,10 @@
 
 #include "anyvalueeditor/transform_from_anyvalue.h"
 
-#include <sup/dto/anyvalue.h>
-#include <sup/dto/anyvalue_helper.h>
-#include <sup/dto/basic_scalar_types.h>
 #include <anyvalueeditor/anyvalue_item.h>
 #include <anyvalueeditor/anyvalue_item_builder.h>
+#include <sup/dto/anyvalue.h>
+#include <sup/dto/basic_scalar_types.h>
 
 #include <functional>
 #include <map>
@@ -79,18 +78,12 @@ void ScalarToItem(const anyvalue_t &value, AnyValueItem &item)
       {TypeCode::Float64, ScalarToItemT<sup::dto::float64>},
       {TypeCode::String, ScalarToItemT<std::string>}};
 
-  auto it = conversion_map.find(value.GetTypeCode());
-  if (it == conversion_map.end())
+  auto iter = conversion_map.find(value.GetTypeCode());
+  if (iter == conversion_map.end())
   {
     throw std::runtime_error("Not a known scalar type code");
   }
-  return it->second(value, item);
-}
-
-void PopulateItem(const sup::dto::AnyValue *domain, AnyValueItem *item)
-{
-  AnyValueItemBuilder m_builder(item);
-  sup::dto::SerializeAnyValue(*domain, m_builder);
+  return iter->second(value, item);
 }
 
 }  // namespace anyvalueeditor
