@@ -19,8 +19,8 @@
 
 #include "anyvalueeditor/anyvalue_item_builder.h"
 
-#include "anyvalueeditor/anyvalue_item.h"
-#include "anyvalueeditor/transform_from_anyvalue.h"
+#include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/transform_from_anyvalue.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/sessionitem.h>

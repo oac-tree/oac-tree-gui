@@ -20,8 +20,8 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_BUILDER_H_
 
-#include "sup/dto/i_any_visitor.h"
-#include "anyvalue_type.h"
+#include <sup/dto/i_any_visitor.h>
+#include <anyvalueeditor/dto_types_fwd.h>
 
 namespace anyvalueeditor
 {

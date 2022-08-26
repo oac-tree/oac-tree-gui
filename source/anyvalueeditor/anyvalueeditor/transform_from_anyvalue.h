@@ -20,7 +20,7 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORM_FROM_ANYVALUE_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORM_FROM_ANYVALUE_H_
 
-#include "anyvalue_type.h"
+#include <anyvalueeditor/dto_types_fwd.h>
 
 namespace anyvalueeditor
 {

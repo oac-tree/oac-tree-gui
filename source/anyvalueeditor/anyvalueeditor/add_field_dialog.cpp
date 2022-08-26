@@ -19,7 +19,7 @@
 
 #include "anyvalueeditor/add_field_dialog.h"
 
-#include "anyvalueeditor/anyvalue_utils.h"
+#include <anyvalueeditor/anyvalue_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

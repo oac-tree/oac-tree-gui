@@ -19,15 +19,14 @@
 
 #include "anyvalueeditor/editor_widget.h"
 
-#include "sup/dto/anyvalue.h"
-#include "sup/dto/anyvalue_helper.h"
-#include "anyvalueeditor/anyvalue_editor_actions.h"
-#include "anyvalueeditor/anyvalue_editor_toolbar.h"
-#include "anyvalueeditor/anyvalue_item.h"
-#include "anyvalueeditor/transform_from_anyvalue.h"
-
+#include <anyvalueeditor/anyvalue_editor_actions.h>
+#include <anyvalueeditor/anyvalue_editor_toolbar.h>
+#include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/transform_from_anyvalue.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/all_items_tree_view.h>
+#include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 
 #include <QTreeView>
 #include <QVBoxLayout>

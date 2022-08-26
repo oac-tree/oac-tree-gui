@@ -19,7 +19,7 @@
 
 #include "anyvalueeditor/anyvalue_item.h"
 
-#include "anyvalueeditor/anyvalue_utils.h"
+#include <anyvalueeditor/anyvalue_utils.h>
 
 namespace
 {

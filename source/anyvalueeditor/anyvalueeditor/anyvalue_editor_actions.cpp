@@ -19,10 +19,9 @@
 
 #include "anyvalueeditor/anyvalue_editor_actions.h"
 
-#include "anyvalueeditor/add_field_dialog.h"
-#include "anyvalueeditor/anyvalue_item.h"
-#include "anyvalueeditor/anyvalue_utils.h"
-
+#include <anyvalueeditor/add_field_dialog.h>
+#include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/anyvalue_utils.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/widget_utils.h>
 

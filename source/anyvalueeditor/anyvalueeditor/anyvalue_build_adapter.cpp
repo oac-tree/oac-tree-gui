@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalue_build_adapter.h"
+#include "anyvalueeditor/anyvalue_build_adapter.h"
 
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>

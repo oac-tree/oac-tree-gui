@@ -20,15 +20,11 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_BUILD_ADAPTER_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_BUILD_ADAPTER_H_
 
+#include <anyvalueeditor/dto_types_fwd.h>
 #include <sup/dto/basic_scalar_types.h>
 
 #include <memory>
 #include <string>
-
-namespace sup::dto
-{
-class AnyValue;
-}
 
 namespace anyvalueeditor
 {
