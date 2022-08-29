@@ -19,13 +19,13 @@
 
 #include "anyvalueeditor/scalar_conversion_utils.h"
 
+#include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/anyvalue_utils.h>
+#include <gtest/gtest.h>
+#include <mvvm/core/variant.h>
+#include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
-#include <anyvalueeditor/anyvalue_item.h>
-
-#include <mvvm/core/variant.h>
-
-#include <gtest/gtest.h>
 
 using namespace anyvalueeditor;
 
@@ -33,7 +33,10 @@ class ScalarConversionUtilsTests : public ::testing::Test
 {
 };
 
-TEST_F(ScalarConversionUtilsTests, BoolScalarToItem)
+//! Testing SetDataFromScalar method: setting AnyValueItem's data from AnyValue containing a
+//! boolean.
+
+TEST_F(ScalarConversionUtilsTests, SetDataFromScalarBool)
 {
   sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
   anyvalue = true;
@@ -44,7 +47,10 @@ TEST_F(ScalarConversionUtilsTests, BoolScalarToItem)
   EXPECT_EQ(item.GetTotalItemCount(), 0);
 }
 
-TEST_F(ScalarConversionUtilsTests, IntScalarToItem)
+//! Testing SetDataFromScalar method: setting AnyValueItem's data from AnyValue containing an
+//! integer.
+
+TEST_F(ScalarConversionUtilsTests, SetDataFromScalarInt)
 {
   sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
   anyvalue = 42;
@@ -53,4 +59,47 @@ TEST_F(ScalarConversionUtilsTests, IntScalarToItem)
   EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
   EXPECT_EQ(item.Data<int>(), 42);
   EXPECT_EQ(item.GetTotalItemCount(), 0);
+}
+
+//! Testing GetAnyValueFromScalar method. Creating scalar AnyValue from scalar-like AnyValueItem
+//! containing various scalars.
+
+TEST_F(ScalarConversionUtilsTests, GetAnyValueFromScalar)
+{
+  {  // boolean
+    AnyValueItem item;
+    item.SetAnyTypeName(sup::dto::kBooleanTypeName);
+    item.SetData(true);
+
+    auto any_value = GetAnyValueFromScalar(item);
+    EXPECT_EQ(any_value.GetType(), sup::dto::BooleanType);
+    EXPECT_EQ(any_value, true);
+  }
+
+  {  // int32
+    AnyValueItem item;
+    item.SetAnyTypeName(sup::dto::kInt32TypeName);
+    item.SetData(42);
+
+    auto any_value = GetAnyValueFromScalar(item);
+    EXPECT_EQ(any_value.GetType(), sup::dto::SignedInteger32Type);
+    EXPECT_EQ(any_value, 42);
+  }
+
+  {  // double
+    AnyValueItem item;
+    item.SetAnyTypeName(sup::dto::kFloat64TypeName);
+    item.SetData(42.1);
+
+    auto any_value = GetAnyValueFromScalar(item);
+    EXPECT_EQ(any_value.GetType(), sup::dto::Float64Type);
+    EXPECT_EQ(any_value, 42.1);
+  }
+
+  {  // attempt to construct a scalar from the struct
+    AnyValueItem item;
+    item.SetAnyTypeName(anyvalueeditor::kStructTypeName);
+
+    EXPECT_THROW(GetAnyValueFromScalar(item), std::runtime_error);
+  }
 }

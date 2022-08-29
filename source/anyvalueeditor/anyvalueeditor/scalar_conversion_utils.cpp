@@ -20,6 +20,8 @@
 #include "anyvalueeditor/scalar_conversion_utils.h"
 
 #include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/anyvalue_utils.h>
+#include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
 
@@ -29,6 +31,13 @@
 
 namespace anyvalueeditor
 {
+
+//! Assigns scalar value from PVXS value to pre-created AnyValue value.
+template <typename T>
+void AssignToAnyValueScalar(const AnyValueItem &item, sup::dto::AnyValue &any_value)
+{
+  any_value = item.Data<T>();
+}
 
 template <typename T>
 void SetDataFromScalarT(const sup::dto::AnyValue &anyvalue, AnyValueItem &item)
@@ -87,26 +96,37 @@ void SetDataFromScalar(const anyvalue_t &value, AnyValueItem &item)
 
 sup::dto::AnyValue GetAnyValueFromScalar(const AnyValueItem &item)
 {
-//  using anyvalue_function_t =
-//      std::function<void(const pvxs::Value& pvxs_value, sup::dto::AnyValue& anyvalue)>;
+  using anyvalue_function_t =
+      std::function<void(const AnyValueItem &item, sup::dto::AnyValue &anyvalue)>;
 
-//  //! Correspondance of AnyValue type code to PVXS value function to assign scalars.
-//  const std::map<sup::dto::TypeCode, anyvalue_function_t> kAssignToAnyValueScalarMap = {
-//      {sup::dto::TypeCode::Bool, AssignToAnyValueScalar<sup::dto::boolean>},
-//      {sup::dto::TypeCode::Char8, AssignToAnyValueScalar<sup::dto::uint8>},  // is it Ok?
-//      {sup::dto::TypeCode::Int8, AssignToAnyValueScalar<sup::dto::int8>},
-//      {sup::dto::TypeCode::UInt8, AssignToAnyValueScalar<sup::dto::uint8>},
-//      {sup::dto::TypeCode::Int16, AssignToAnyValueScalar<sup::dto::int16>},
-//      {sup::dto::TypeCode::UInt16, AssignToAnyValueScalar<sup::dto::uint16>},
-//      {sup::dto::TypeCode::Int32, AssignToAnyValueScalar<sup::dto::int32>},
-//      {sup::dto::TypeCode::UInt32, AssignToAnyValueScalar<sup::dto::uint32>},
-//      {sup::dto::TypeCode::Int64, AssignToAnyValueScalar<sup::dto::int64>},
-//      {sup::dto::TypeCode::UInt64, AssignToAnyValueScalar<sup::dto::uint64>},
-//      {sup::dto::TypeCode::Float32, AssignToAnyValueScalar<sup::dto::float32>},
-//      {sup::dto::TypeCode::Float64, AssignToAnyValueScalar<sup::dto::float64>},
-//      {sup::dto::TypeCode::String, AssignToAnyValueScalar<std::string>}};
+  //! Correspondance of AnyValue type code to PVXS value function to assign scalars.
+  const static std::map<sup::dto::TypeCode, anyvalue_function_t> kAssignToAnyValueScalarMap = {
+      {sup::dto::TypeCode::Bool, AssignToAnyValueScalar<bool>},
+      {sup::dto::TypeCode::Char8, AssignToAnyValueScalar<int>},  // is it Ok?
+      {sup::dto::TypeCode::Int8, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::UInt8, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::Int16, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::UInt16, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::Int32, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::UInt32, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::Int64, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::UInt64, AssignToAnyValueScalar<int>},
+      {sup::dto::TypeCode::Float32, AssignToAnyValueScalar<double>},
+      {sup::dto::TypeCode::Float64, AssignToAnyValueScalar<double>},
+      {sup::dto::TypeCode::String, AssignToAnyValueScalar<std::string>}};
 
-  return {};
+  ::sup::dto::TypeCode type_code = GetTypeCode(item.GetAnyTypeName());
+  auto iter = kAssignToAnyValueScalarMap.find(type_code);
+  if (iter == kAssignToAnyValueScalarMap.end())
+  {
+    throw std::runtime_error("Not a known scalar type code");
+  }
+
+  sup::dto::AnyValue result((::sup::dto::AnyType(type_code)));
+  auto assign_function = iter->second;
+  assign_function(item, result);
+
+  return result;
 }
 
 }  // namespace anyvalueeditor
