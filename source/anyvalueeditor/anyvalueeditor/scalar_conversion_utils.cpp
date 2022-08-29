@@ -85,4 +85,28 @@ void SetDataFromScalar(const anyvalue_t &value, AnyValueItem &item)
   return iter->second(value, item);
 }
 
+sup::dto::AnyValue GetAnyValueFromScalar(const AnyValueItem &item)
+{
+//  using anyvalue_function_t =
+//      std::function<void(const pvxs::Value& pvxs_value, sup::dto::AnyValue& anyvalue)>;
+
+//  //! Correspondance of AnyValue type code to PVXS value function to assign scalars.
+//  const std::map<sup::dto::TypeCode, anyvalue_function_t> kAssignToAnyValueScalarMap = {
+//      {sup::dto::TypeCode::Bool, AssignToAnyValueScalar<sup::dto::boolean>},
+//      {sup::dto::TypeCode::Char8, AssignToAnyValueScalar<sup::dto::uint8>},  // is it Ok?
+//      {sup::dto::TypeCode::Int8, AssignToAnyValueScalar<sup::dto::int8>},
+//      {sup::dto::TypeCode::UInt8, AssignToAnyValueScalar<sup::dto::uint8>},
+//      {sup::dto::TypeCode::Int16, AssignToAnyValueScalar<sup::dto::int16>},
+//      {sup::dto::TypeCode::UInt16, AssignToAnyValueScalar<sup::dto::uint16>},
+//      {sup::dto::TypeCode::Int32, AssignToAnyValueScalar<sup::dto::int32>},
+//      {sup::dto::TypeCode::UInt32, AssignToAnyValueScalar<sup::dto::uint32>},
+//      {sup::dto::TypeCode::Int64, AssignToAnyValueScalar<sup::dto::int64>},
+//      {sup::dto::TypeCode::UInt64, AssignToAnyValueScalar<sup::dto::uint64>},
+//      {sup::dto::TypeCode::Float32, AssignToAnyValueScalar<sup::dto::float32>},
+//      {sup::dto::TypeCode::Float64, AssignToAnyValueScalar<sup::dto::float64>},
+//      {sup::dto::TypeCode::String, AssignToAnyValueScalar<std::string>}};
+
+  return {};
+}
+
 }  // namespace anyvalueeditor

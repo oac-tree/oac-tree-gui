@@ -39,21 +39,6 @@ const std::string kStructTypeName = "struct";
 const std::string kArrayTypeName = "array";
 const std::string kScalarTypeName = "scalar";
 
-const std::string kEmptyTypeName = "empty";
-const std::string kBooleanTypeName = "bool";
-const std::string kChar8TypeName = "char8";
-const std::string kInt8TypeName = "int8";
-const std::string kUInt8TypeName = "uint8";
-const std::string kInt16TypeName = "int16";
-const std::string kUInt16TypeName = "uint16";
-const std::string kInt32TypeName = "int32";
-const std::string kUint32TypeName = "uint32";
-const std::string kInt64TypeName = "int64";
-const std::string kUint64TypeName = "uint64";
-const std::string kFloat32TypeName = "float32";
-const std::string kFloat64TypeName = "float64";
-const std::string kStringTypeName = "string";
-
 std::vector<std::string> GetMainTypeNames();
 
 std::vector<std::string> GetScalarTypeNames();

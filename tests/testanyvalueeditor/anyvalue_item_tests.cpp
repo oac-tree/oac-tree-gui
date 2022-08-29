@@ -19,9 +19,8 @@
 
 #include "anyvalueeditor/anyvalue_item.h"
 
-#include "anyvalueeditor/anyvalue_utils.h"
-
 #include <gtest/gtest.h>
+#include <sup/dto/anytype.h>
 
 using namespace anyvalueeditor;
 
@@ -45,9 +44,9 @@ TEST_F(AnyValueItemTest, SetAnyTypeName)
 {
   AnyValueItem item;
 
-  item.SetAnyTypeName(kInt8TypeName);
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
 
-  EXPECT_EQ(item.GetAnyTypeName(), kInt8TypeName);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<int>(), 0);
   EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));
   EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));

@@ -31,22 +31,22 @@ namespace
 {
 
 const std::map<sup::dto::TypeCode, std::string> kTypeCodeNameMap = {
-    {sup::dto::TypeCode::Empty, anyvalueeditor::kEmptyTypeName},
+    {sup::dto::TypeCode::Empty, sup::dto::kEmptyTypeName},
     {sup::dto::TypeCode::Struct, anyvalueeditor::kStructTypeName},
     {sup::dto::TypeCode::Array, anyvalueeditor::kArrayTypeName},
-    {sup::dto::TypeCode::Bool, anyvalueeditor::kBooleanTypeName},
-    {sup::dto::TypeCode::Char8, anyvalueeditor::kChar8TypeName},
-    {sup::dto::TypeCode::Int8, anyvalueeditor::kInt8TypeName},
-    {sup::dto::TypeCode::UInt8, anyvalueeditor::kUInt8TypeName},
-    {sup::dto::TypeCode::Int16, anyvalueeditor::kInt16TypeName},
-    {sup::dto::TypeCode::UInt16, anyvalueeditor::kUInt16TypeName},
-    {sup::dto::TypeCode::Int32, anyvalueeditor::kInt32TypeName},
-    {sup::dto::TypeCode::UInt32, anyvalueeditor::kUint32TypeName},
-    {sup::dto::TypeCode::Int64, anyvalueeditor::kInt64TypeName},
-    {sup::dto::TypeCode::UInt64, anyvalueeditor::kUint64TypeName},
-    {sup::dto::TypeCode::Float32, anyvalueeditor::kFloat32TypeName},
-    {sup::dto::TypeCode::Float64, anyvalueeditor::kFloat64TypeName},
-    {sup::dto::TypeCode::String, anyvalueeditor::kStringTypeName}};
+    {sup::dto::TypeCode::Bool, sup::dto::kBooleanTypeName},
+    {sup::dto::TypeCode::Char8, sup::dto::kChar8TypeName},
+    {sup::dto::TypeCode::Int8, sup::dto::kInt8TypeName},
+    {sup::dto::TypeCode::UInt8, sup::dto::kUInt8TypeName},
+    {sup::dto::TypeCode::Int16, sup::dto::kInt16TypeName},
+    {sup::dto::TypeCode::UInt16, sup::dto::kUInt16TypeName},
+    {sup::dto::TypeCode::Int32, sup::dto::kInt32TypeName},
+    {sup::dto::TypeCode::UInt32, sup::dto::kUInt32TypeName},
+    {sup::dto::TypeCode::Int64, sup::dto::kInt64TypeName},
+    {sup::dto::TypeCode::UInt64, sup::dto::kUInt64TypeName},
+    {sup::dto::TypeCode::Float32, sup::dto::kFloat32TypeName},
+    {sup::dto::TypeCode::Float64, sup::dto::kFloat64TypeName},
+    {sup::dto::TypeCode::String, sup::dto::kStringTypeName}};
 
 const std::vector<sup::dto::TypeCode> kScalars = {
     sup::dto::TypeCode::Bool,   sup::dto::TypeCode::Char8,   sup::dto::TypeCode::Int8,
