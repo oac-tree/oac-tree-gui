@@ -61,17 +61,6 @@ std::string GetName(sup::dto::TypeCode code)
   return iter == kTypeCodeNameMap.end() ? std::string() : iter->second;
 }
 
-sup::dto::TypeCode GetTypeCode(const std::string& name)
-{
-  auto iter = std::find_if(kTypeCodeNameMap.begin(), kTypeCodeNameMap.end(),
-                           [name](auto item) { return item.second == name; });
-  if (iter == kTypeCodeNameMap.end())
-  {
-    throw std::runtime_error("Error in TypeCode");
-  }
-  return iter->first;
-}
-
 template <typename T>
 variant_t ScalarToItemT()
 {
@@ -113,6 +102,17 @@ std::vector<std::string> GetScalarTypeNames()
   auto on_code = [](auto code) { return GetName(code); };
   std::transform(kScalars.begin(), kScalars.end(), std::back_inserter(result), on_code);
   return result;
+}
+
+sup::dto::TypeCode GetTypeCode(const std::string& name)
+{
+  auto iter = std::find_if(kTypeCodeNameMap.begin(), kTypeCodeNameMap.end(),
+                           [name](auto item) { return item.second == name; });
+  if (iter == kTypeCodeNameMap.end())
+  {
+    throw std::runtime_error("Error in TypeCode");
+  }
+  return iter->first;
 }
 
 variant_t GetVariantForAnyValueTypeName(const std::string& type_name)

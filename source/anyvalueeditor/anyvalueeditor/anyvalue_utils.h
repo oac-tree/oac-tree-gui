@@ -20,6 +20,7 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_UTILS_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_UTILS_H_
 
+#include <anyvalueeditor/dto_types_fwd.h>
 #include <mvvm/core/variant.h>
 
 #include <string>
@@ -42,6 +43,8 @@ const std::string kScalarTypeName = "scalar";
 std::vector<std::string> GetMainTypeNames();
 
 std::vector<std::string> GetScalarTypeNames();
+
+sup::dto::TypeCode GetTypeCode(const std::string& name);
 
 //! Returns variant carrying type corresponding to AnyValue type name. The value of the variant will
 //! be default initialized. See implementation for more explanations.

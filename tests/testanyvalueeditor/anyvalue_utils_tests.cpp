@@ -29,6 +29,31 @@ class AnyValueItemUtilsTest : public ::testing::Test
 public:
 };
 
+TEST_F(AnyValueItemUtilsTest, GetTypeCode)
+{
+  using sup::dto::TypeCode;
+
+  EXPECT_EQ(GetTypeCode(kStructTypeName), TypeCode::Struct);
+  EXPECT_EQ(GetTypeCode(kArrayTypeName), TypeCode::Array);
+
+  EXPECT_EQ(GetTypeCode(sup::dto::kEmptyTypeName), TypeCode::Empty);
+  EXPECT_EQ(GetTypeCode(sup::dto::kBooleanTypeName), TypeCode::Bool);
+  EXPECT_EQ(GetTypeCode(sup::dto::kChar8TypeName), TypeCode::Char8);
+  EXPECT_EQ(GetTypeCode(sup::dto::kInt8TypeName), TypeCode::Int8);
+  EXPECT_EQ(GetTypeCode(sup::dto::kUInt8TypeName), TypeCode::UInt8);
+  EXPECT_EQ(GetTypeCode(sup::dto::kInt16TypeName), TypeCode::Int16);
+  EXPECT_EQ(GetTypeCode(sup::dto::kUInt16TypeName), TypeCode::UInt16);
+  EXPECT_EQ(GetTypeCode(sup::dto::kInt32TypeName), TypeCode::Int32);
+  EXPECT_EQ(GetTypeCode(sup::dto::kUInt32TypeName), TypeCode::UInt32);
+  EXPECT_EQ(GetTypeCode(sup::dto::kInt64TypeName), TypeCode::Int64);
+  EXPECT_EQ(GetTypeCode(sup::dto::kUInt64TypeName), TypeCode::UInt64);
+  EXPECT_EQ(GetTypeCode(sup::dto::kFloat32TypeName), TypeCode::Float32);
+  EXPECT_EQ(GetTypeCode(sup::dto::kFloat64TypeName), TypeCode::Float64);
+  EXPECT_EQ(GetTypeCode(sup::dto::kStringTypeName), TypeCode::String);
+
+  EXPECT_THROW(GetTypeCode("non-existing"), std::runtime_error);
+}
+
 //! Checking function to get variant_t from sup::dto type names.
 
 TEST_F(AnyValueItemUtilsTest, GetVariantForAnyTypeName)
