@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
 
 #include <anyvalueeditor/dto_types_fwd.h>
 
@@ -29,12 +29,23 @@ namespace anyvalueeditor
 
 class AnyValueItem;
 
-//! Creates AnyValue from given item.
-sup::dto::AnyValue CreateAnyValue(const AnyValueItem& item);
+//! The builder to create AnyValue from AnyValueItem.
 
-//! Creates AnyValueItem from given AnyValue.
-std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue& any_value);
+class DomainAnyValueBuilder
+{
+public:
+  explicit DomainAnyValueBuilder(const AnyValueItem& item);
+  ~DomainAnyValueBuilder();
+
+  sup::dto::AnyValue GetAnyValue() const;
+
+
+private:
+  struct DomainAnyValueBuilderImpl;
+  std::unique_ptr<DomainAnyValueBuilderImpl> p_impl;
+};
+
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_

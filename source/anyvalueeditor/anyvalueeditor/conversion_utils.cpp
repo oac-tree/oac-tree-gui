@@ -20,11 +20,18 @@
 #include <anyvalueeditor/anyvalue_item.h>
 #include <anyvalueeditor/anyvalue_item_builder.h>
 #include <anyvalueeditor/conversion_utils.h>
+#include <anyvalueeditor/domain_anyvalue_builder.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 
 namespace anyvalueeditor
 {
+
+sup::dto::AnyValue CreateAnyValue(const AnyValueItem &item)
+{
+  DomainAnyValueBuilder builder(item);
+  return builder.GetAnyValue();
+}
 
 std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue &any_value)
 {

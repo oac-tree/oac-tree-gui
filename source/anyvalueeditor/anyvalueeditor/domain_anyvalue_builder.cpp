@@ -17,24 +17,35 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
+#include "anyvalueeditor/domain_anyvalue_builder.h"
 
-#include <anyvalueeditor/dto_types_fwd.h>
-
-#include <memory>
+#include <anyvalueeditor/anyvalue_build_adapter.h>
+#include <sup/dto/anyvalue.h>
 
 namespace anyvalueeditor
 {
 
-class AnyValueItem;
+struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
+{
+  const AnyValueItem &m_item;
+  AnyValueBuildAdapter m_build_adapter;
 
-//! Creates AnyValue from given item.
-sup::dto::AnyValue CreateAnyValue(const AnyValueItem& item);
+  explicit DomainAnyValueBuilderImpl(const AnyValueItem &item) : m_item(item) {}
 
-//! Creates AnyValueItem from given AnyValue.
-std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue& any_value);
+  void ProcessItem() {}
+};
+
+DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem &item)
+    : p_impl(std::make_unique<DomainAnyValueBuilderImpl>(item))
+{
+  p_impl->ProcessItem();
+}
+
+DomainAnyValueBuilder::~DomainAnyValueBuilder() = default;
+
+sup::dto::AnyValue DomainAnyValueBuilder::GetAnyValue() const
+{
+  return p_impl->m_build_adapter.MoveAnyValue();
+}
 
 }  // namespace anyvalueeditor
-
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_

@@ -23,6 +23,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_utils.h
   conversion_utils.cpp
   conversion_utils.h
+  domain_anyvalue_builder.cpp
+  domain_anyvalue_builder.h
   dto_types_fwd.h
   editor_widget.cpp
   editor_widget.h

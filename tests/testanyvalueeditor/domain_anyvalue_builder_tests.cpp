@@ -17,24 +17,31 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
+#include "anyvalueeditor/anyvalue_item.h"
+#include "anyvalueeditor/domain_anyvalue_builder.h"
+#include "sup/dto/anyvalue.h"
+#include "sup/dto/anyvalue_helper.h"
 
-#include <anyvalueeditor/dto_types_fwd.h>
+#include <gtest/gtest.h>
 
-#include <memory>
+using namespace anyvalueeditor;
 
-namespace anyvalueeditor
+class DomainAnyValueBuilderTest : public ::testing::Test
 {
+public:
+  sup::dto::AnyValue CreateAnyValue(const AnyValueItem& item)
+  {
+    DomainAnyValueBuilder builder(item);
+    return builder.GetAnyValue();
+  }
+};
 
-class AnyValueItem;
+//! Build from empty AnyValueItem.
 
-//! Creates AnyValue from given item.
-sup::dto::AnyValue CreateAnyValue(const AnyValueItem& item);
+TEST_F(DomainAnyValueBuilderTest, EmptyValue)
+{
+  AnyValueItem item;
 
-//! Creates AnyValueItem from given AnyValue.
-std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue& any_value);
-
-}  // namespace anyvalueeditor
-
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
+  auto any_value = CreateAnyValue(item);
+  EXPECT_TRUE(sup::dto::IsEmptyValue(any_value));
+}
