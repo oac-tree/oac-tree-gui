@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/transform_from_anyvalue.h"
+#include "anyvalueeditor/scalar_conversion_utils.h"
 
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
@@ -29,11 +29,11 @@
 
 using namespace anyvalueeditor;
 
-class TransformFromAnyValueTest : public ::testing::Test
+class ScalarConversionUtilsTests : public ::testing::Test
 {
 };
 
-TEST_F(TransformFromAnyValueTest, BoolScalarToItem)
+TEST_F(ScalarConversionUtilsTests, BoolScalarToItem)
 {
   sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
   anyvalue = true;
@@ -44,7 +44,7 @@ TEST_F(TransformFromAnyValueTest, BoolScalarToItem)
   EXPECT_EQ(item.GetTotalItemCount(), 0);
 }
 
-TEST_F(TransformFromAnyValueTest, IntScalarToItem)
+TEST_F(ScalarConversionUtilsTests, IntScalarToItem)
 {
   sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
   anyvalue = 42;

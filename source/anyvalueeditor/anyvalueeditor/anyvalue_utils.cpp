@@ -57,19 +57,19 @@ const std::vector<sup::dto::TypeCode> kScalars = {
 
 std::string GetName(sup::dto::TypeCode code)
 {
-  auto it = kTypeCodeNameMap.find(code);
-  return it == kTypeCodeNameMap.end() ? std::string() : it->second;
+  auto iter = kTypeCodeNameMap.find(code);
+  return iter == kTypeCodeNameMap.end() ? std::string() : iter->second;
 }
 
 sup::dto::TypeCode GetTypeCode(const std::string& name)
 {
-  auto it = std::find_if(kTypeCodeNameMap.begin(), kTypeCodeNameMap.end(),
-                         [name](auto item) { return item.second == name; });
-  if (it == kTypeCodeNameMap.end())
+  auto iter = std::find_if(kTypeCodeNameMap.begin(), kTypeCodeNameMap.end(),
+                           [name](auto item) { return item.second == name; });
+  if (iter == kTypeCodeNameMap.end())
   {
     throw std::runtime_error("Error in TypeCode");
   }
-  return it->first;
+  return iter->first;
 }
 
 template <typename T>

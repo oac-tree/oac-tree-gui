@@ -17,12 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_item.h"
 #include "anyvalueeditor/domain_anyvalue_builder.h"
-#include "sup/dto/anyvalue.h"
-#include "sup/dto/anyvalue_helper.h"
 
+#include <anyvalueeditor/anyvalue_item.h>
 #include <gtest/gtest.h>
+#include <sup/dto/anyvalue.h>
 
 using namespace anyvalueeditor;
 
@@ -44,4 +43,13 @@ TEST_F(DomainAnyValueBuilderTest, EmptyValue)
 
   auto any_value = CreateAnyValue(item);
   EXPECT_TRUE(sup::dto::IsEmptyValue(any_value));
+}
+
+//! Build AnyValue from scalar.
+
+TEST_F(DomainAnyValueBuilderTest, FromScalar)
+{
+  AnyValueItem item;
+
+  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
 }

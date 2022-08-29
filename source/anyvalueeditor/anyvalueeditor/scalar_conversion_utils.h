@@ -17,8 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORM_FROM_ANYVALUE_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORM_FROM_ANYVALUE_H_
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_SCALAR_CONVERSION_UTILS_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_SCALAR_CONVERSION_UTILS_H_
+
+//! @file scalar_conversion_utils.h
+//! Utility functions to convert scalar AnyValue to AnyValueItem and back.
 
 #include <anyvalueeditor/dto_types_fwd.h>
 
@@ -31,4 +34,4 @@ void SetDataFromScalar(const anyvalue_t& value, AnyValueItem& item);
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_TRANSFORM_FROM_ANYVALUE_H_
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_SCALAR_CONVERSION_UTILS_H_

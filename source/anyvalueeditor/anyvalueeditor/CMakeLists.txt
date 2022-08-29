@@ -30,8 +30,8 @@ target_sources(${library_name} PRIVATE
   editor_widget.h
   main_window.cpp
   main_window.h
-  transform_from_anyvalue.cpp
-  transform_from_anyvalue.h
+  scalar_conversion_utils.cpp
+  scalar_conversion_utils.h
 )
 
 target_include_directories(${library_name} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..$<SEMICOLON>${SEQUENCERGUI_AUTOGEN_DIR}>)

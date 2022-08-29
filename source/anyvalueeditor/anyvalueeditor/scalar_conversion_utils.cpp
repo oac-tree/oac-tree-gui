@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/transform_from_anyvalue.h"
+#include "anyvalueeditor/scalar_conversion_utils.h"
 
 #include <anyvalueeditor/anyvalue_item.h>
 #include <sup/dto/anyvalue.h>
