@@ -110,3 +110,26 @@ TEST_F(AnyValueItemUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
   EXPECT_TRUE(std::holds_alternative<std::string>(
       GetVariantForAnyValueTypeName(sup::dto::kStringTypeName)));
 }
+
+//! Testing IsScalarTypeName utility function.
+
+TEST_F(AnyValueItemUtilsTest, IsScalarTypeName)
+{
+  EXPECT_FALSE(IsScalarTypeName(std::string("")));
+
+  EXPECT_FALSE(IsScalarTypeName(kStructTypeName));
+  EXPECT_FALSE(IsScalarTypeName(kArrayTypeName));
+  EXPECT_FALSE(IsScalarTypeName(kScalarTypeName));
+
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kInt8TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kUInt8TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kInt16TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kUInt16TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kInt32TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kUInt32TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kInt64TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kUInt64TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kFloat32TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kFloat64TypeName));
+  EXPECT_TRUE(IsScalarTypeName(sup::dto::kStringTypeName));
+}

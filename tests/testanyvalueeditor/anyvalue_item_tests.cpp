@@ -33,6 +33,7 @@ TEST_F(AnyValueItemTest, InitialState)
 {
   AnyValueItem item;
 
+  EXPECT_FALSE(item.IsScalar());
   EXPECT_TRUE(item.GetAnyTypeName().empty());
   EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
   EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
@@ -46,6 +47,7 @@ TEST_F(AnyValueItemTest, SetAnyTypeName)
 
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
 
+  EXPECT_TRUE(item.IsScalar());
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<int>(), 0);
   EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));

@@ -44,11 +44,15 @@ std::vector<std::string> GetMainTypeNames();
 
 std::vector<std::string> GetScalarTypeNames();
 
+//! Returns any_value type code from the name.
 sup::dto::TypeCode GetTypeCode(const std::string& name);
 
 //! Returns variant carrying type corresponding to AnyValue type name. The value of the variant will
 //! be default initialized. See implementation for more explanations.
 variant_t GetVariantForAnyValueTypeName(const std::string& type_name);
+
+//! Returns true if given name corresponds to a scalar as defined in sup::dto::TypeName.
+bool IsScalarTypeName(const std::string& name);
 
 }  // namespace anyvalueeditor
 

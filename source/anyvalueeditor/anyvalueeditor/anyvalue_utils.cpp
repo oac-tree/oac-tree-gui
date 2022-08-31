@@ -140,12 +140,18 @@ variant_t GetVariantForAnyValueTypeName(const std::string& type_name)
       {TypeCode::String, ScalarToItemT<std::string>}};
 
   auto code = GetTypeCode(type_name);
-  auto it = conversion_map.find(GetTypeCode(type_name));
-  if (it == conversion_map.end())
+  auto iter = conversion_map.find(GetTypeCode(type_name));
+  if (iter == conversion_map.end())
   {
     throw std::runtime_error("Not a known scalar type code");
   }
-  return it->second();
+  return iter->second();
+}
+
+bool IsScalarTypeName(const std::string& name)
+{
+  static const std::vector<std::string> expected_names = GetScalarTypeNames();
+  return std::find(expected_names.begin(), expected_names.end(), name) != expected_names.end();
 }
 
 }  // namespace anyvalueeditor

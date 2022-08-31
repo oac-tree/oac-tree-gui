@@ -21,14 +21,6 @@
 
 #include <anyvalueeditor/anyvalue_utils.h>
 
-namespace
-{
-bool IsScalar(const std::string& name)
-{
-  return name != anyvalueeditor::kStructTypeName && name != anyvalueeditor::kArrayTypeName;
-}
-}  // namespace
-
 namespace anyvalueeditor
 {
 
@@ -42,19 +34,24 @@ AnyValueItem::AnyValueItem() : CompoundItem(Type)
 
 void AnyValueItem::SetAnyTypeName(const std::string& type_name)
 {
-  if (IsScalar(type_name))
+  // saving type_name under own role
+  SetData(type_name, kAnyTypeNameRole);
+
+  if (IsScalar())
   {
     // for scalars we set variant initialised to the underlying type
     SetData(GetVariantForAnyValueTypeName(type_name));
   }
-
-  // saving type_name under own role
-  SetData(type_name, kAnyTypeNameRole);
 }
 
 std::string AnyValueItem::GetAnyTypeName() const
 {
   return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
+}
+
+bool AnyValueItem::IsScalar() const
+{
+  return IsScalarTypeName(GetAnyTypeName());
 }
 
 }  // namespace anyvalueeditor
