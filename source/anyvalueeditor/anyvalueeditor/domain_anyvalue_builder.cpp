@@ -20,6 +20,8 @@
 #include "anyvalueeditor/domain_anyvalue_builder.h"
 
 #include <anyvalueeditor/anyvalue_build_adapter.h>
+#include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/scalar_conversion_utils.h>
 #include <sup/dto/anyvalue.h>
 
 namespace anyvalueeditor
@@ -32,7 +34,13 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   explicit DomainAnyValueBuilderImpl(const AnyValueItem &item) : m_item(item) {}
 
-  void ProcessItem() {}
+  void ProcessItem()
+  {
+    if (m_item.IsScalar())
+    {
+      m_build_adapter.AddMember("", GetAnyValueFromScalar(m_item));
+    }
+  }
 };
 
 DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem &item)

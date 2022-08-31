@@ -45,11 +45,26 @@ TEST_F(DomainAnyValueBuilderTest, EmptyValue)
   EXPECT_TRUE(sup::dto::IsEmptyValue(any_value));
 }
 
-//! Build AnyValue from scalar.
+//! Build AnyValue from AnyValueItem representing a scalar.
+//! More similar tests in ScalarConversionUtilsTests::GetAnyValueFromScalar.
 
 TEST_F(DomainAnyValueBuilderTest, FromScalar)
 {
-  AnyValueItem item;
+  {  // from bool
+    AnyValueItem item;
+    item.SetAnyTypeName(sup::dto::kBooleanTypeName);
+    item.SetData(true);
+    sup::dto::AnyValue expected_anyvalue{sup::dto::BooleanType, true};
+    auto any_value = CreateAnyValue(item);
+    EXPECT_EQ(any_value, expected_anyvalue);
+  }
 
-  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
+  {  // from int32
+    AnyValueItem item;
+    item.SetAnyTypeName(sup::dto::kInt32TypeName);
+    item.SetData(42);
+    sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
+    auto any_value = CreateAnyValue(item);
+    EXPECT_EQ(any_value, expected_anyvalue);
+  }
 }
