@@ -29,15 +29,23 @@
 namespace anyvalueeditor
 {
 
+struct Node
+{
+  const AnyValueItem* m_item{nullptr};  //!< Current item in the hierarchy.
+  std::string m_name;                   //!< The name under which the value is known to its parent.
+  bool m_is_visited{false};  //!< True if `value` is a struct and all children are processed.
+
+  Node(const AnyValueItem* item, const std::string& name) : m_item(item), m_name(name) {}
+};
+
 struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 {
-  const AnyValueItem &m_item;
-  AnyValueBuildAdapter m_build_adapter;
-  std::stack<const AnyValueItem *> m_stack;
+  AnyValueBuildAdapter m_builder;
+  std::stack<Node> m_stack;
 
-  explicit DomainAnyValueBuilderImpl(const AnyValueItem &item) : m_item(item)
+  explicit DomainAnyValueBuilderImpl(const AnyValueItem& item)
   {
-    m_stack.push(&item);
+    m_stack.push({&item, std::string()});
     ProcessItemStack();
   }
 
@@ -45,23 +53,29 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
   {
     while (!m_stack.empty())
     {
-      const auto item = m_stack.top();
-      m_stack.pop();
-      ProcessItem(item);
+      auto& node = m_stack.top();
+
+      if (node.m_item->IsScalar())
+      {
+        ProcessScalarItem(node);
+      }
+      else
+      {
+        m_stack.pop();
+      }
     }
   }
 
-  void ProcessItem(const AnyValueItem *item)
+  void ProcessScalarItem(Node& node)
   {
-    if (m_item.IsScalar())
-    {
-      // empty member name denotes top level scalar
-      m_build_adapter.AddMember("", GetAnyValueFromScalar(*item));
-    }
+    // It's a scalar field. Let's add corresponding field to the AnyValue and remove node from
+    // stack. We don't need it anymore.
+    m_builder.AddMember(node.m_name, GetAnyValueFromScalar(*node.m_item));
+    m_stack.pop();
   }
 };
 
-DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem &item)
+DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem& item)
     : p_impl(std::make_unique<DomainAnyValueBuilderImpl>(item))
 {
 }
@@ -70,7 +84,7 @@ DomainAnyValueBuilder::~DomainAnyValueBuilder() = default;
 
 sup::dto::AnyValue DomainAnyValueBuilder::GetAnyValue() const
 {
-  return p_impl->m_build_adapter.MoveAnyValue();
+  return p_impl->m_builder.MoveAnyValue();
 }
 
 }  // namespace anyvalueeditor
