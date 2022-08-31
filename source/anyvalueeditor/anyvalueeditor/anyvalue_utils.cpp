@@ -154,4 +154,9 @@ bool IsScalarTypeName(const std::string& name)
   return std::find(expected_names.begin(), expected_names.end(), name) != expected_names.end();
 }
 
+bool IsStructTypeName(const std::string& name)
+{
+  return name == kStructTypeName;
+}
+
 }  // namespace anyvalueeditor

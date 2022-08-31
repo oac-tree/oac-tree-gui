@@ -51,8 +51,11 @@ sup::dto::TypeCode GetTypeCode(const std::string& name);
 //! be default initialized. See implementation for more explanations.
 variant_t GetVariantForAnyValueTypeName(const std::string& type_name);
 
-//! Returns true if given name corresponds to a scalar as defined in sup::dto::TypeName.
+//! Returns true if given name corresponds to a scalar.
 bool IsScalarTypeName(const std::string& name);
+
+//! Returns true if given name corresponds to a struct.
+bool IsStructTypeName(const std::string& name);
 
 }  // namespace anyvalueeditor
 

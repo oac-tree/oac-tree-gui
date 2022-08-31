@@ -133,3 +133,26 @@ TEST_F(AnyValueItemUtilsTest, IsScalarTypeName)
   EXPECT_TRUE(IsScalarTypeName(sup::dto::kFloat64TypeName));
   EXPECT_TRUE(IsScalarTypeName(sup::dto::kStringTypeName));
 }
+
+//! Testing IsStructTypeName utility function.
+
+TEST_F(AnyValueItemUtilsTest, IsStructTypeName)
+{
+  EXPECT_FALSE(IsStructTypeName(std::string("")));
+
+  EXPECT_TRUE(IsStructTypeName(kStructTypeName));
+  EXPECT_FALSE(IsStructTypeName(kArrayTypeName));
+  EXPECT_FALSE(IsStructTypeName(kScalarTypeName));
+
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kInt8TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kUInt8TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kInt16TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kUInt16TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kInt32TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kUInt32TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kInt64TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kUInt64TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kFloat32TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kFloat64TypeName));
+  EXPECT_FALSE(IsStructTypeName(sup::dto::kStringTypeName));
+}

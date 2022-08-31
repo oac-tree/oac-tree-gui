@@ -54,4 +54,9 @@ bool AnyValueItem::IsScalar() const
   return IsScalarTypeName(GetAnyTypeName());
 }
 
+bool AnyValueItem::IsStruct() const
+{
+  return IsStructTypeName(GetAnyTypeName());
+}
+
 }  // namespace anyvalueeditor

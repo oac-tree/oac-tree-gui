@@ -38,6 +38,7 @@ public:
   std::string GetAnyTypeName() const;
 
   bool IsScalar() const;
+  bool IsStruct() const;
 
 };
 

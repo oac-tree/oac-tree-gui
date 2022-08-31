@@ -38,7 +38,7 @@ public:
 
 //! Building AnyValueItem from scalar based AnyValues.
 
-TEST_F(AnyValueItemBuilderTest, ScalarValues)
+TEST_F(AnyValueItemBuilderTest, FromScalar)
 {
   {  // bool
     AnyValueItem item;
@@ -61,9 +61,9 @@ TEST_F(AnyValueItemBuilderTest, ScalarValues)
   }
 }
 
-//! Building AnyValueItem from AnyValue with two named scalars.
+//! Building AnyValueItem from AnyValue with a struct containing  two named scalars.
 
-TEST_F(AnyValueItemBuilderTest, TwoScalars)
+TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
 {
   AnyValueItem item;
 
@@ -86,7 +86,9 @@ TEST_F(AnyValueItemBuilderTest, TwoScalars)
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
 }
 
-TEST_F(AnyValueItemBuilderTest, PopulateFromNestedStruct)
+//! Building AnyValueItem from AnyValue containing a structure with nested structure.
+
+TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
 {
   AnyValueItem item;
 
@@ -117,7 +119,9 @@ TEST_F(AnyValueItemBuilderTest, PopulateFromNestedStruct)
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kBoolTypeName);
 }
 
-TEST_F(AnyValueItemBuilderTest, PopulateFromTwoNestedStruct)
+//! Building AnyValueItem from AnyValue containing a structure with two nested structures.
+
+TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
 {
   AnyValueItem item;
 
@@ -168,7 +172,9 @@ TEST_F(AnyValueItemBuilderTest, PopulateFromTwoNestedStruct)
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
 }
 
-TEST_F(AnyValueItemBuilderTest, PopulateFromArrayOfIntegers)
+//! Building AnyValueItem from AnyValue containing an array of integers.
+
+TEST_F(AnyValueItemBuilderTest, FromArrayOfIntegers)
 {
   AnyValueItem item;
 
