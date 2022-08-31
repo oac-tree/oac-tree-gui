@@ -24,6 +24,8 @@
 #include <anyvalueeditor/scalar_conversion_utils.h>
 #include <sup/dto/anyvalue.h>
 
+#include <stack>
+
 namespace anyvalueeditor
 {
 
@@ -31,14 +33,30 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 {
   const AnyValueItem &m_item;
   AnyValueBuildAdapter m_build_adapter;
+  std::stack<const AnyValueItem *> m_stack;
 
-  explicit DomainAnyValueBuilderImpl(const AnyValueItem &item) : m_item(item) {}
+  explicit DomainAnyValueBuilderImpl(const AnyValueItem &item) : m_item(item)
+  {
+    m_stack.push(&item);
+    ProcessItemStack();
+  }
 
-  void ProcessItem()
+  void ProcessItemStack()
+  {
+    while (!m_stack.empty())
+    {
+      const auto item = m_stack.top();
+      m_stack.pop();
+      ProcessItem(item);
+    }
+  }
+
+  void ProcessItem(const AnyValueItem *item)
   {
     if (m_item.IsScalar())
     {
-      m_build_adapter.AddMember("", GetAnyValueFromScalar(m_item));
+      // empty member name denotes top level scalar
+      m_build_adapter.AddMember("", GetAnyValueFromScalar(*item));
     }
   }
 };
@@ -46,7 +64,6 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem &item)
     : p_impl(std::make_unique<DomainAnyValueBuilderImpl>(item))
 {
-  p_impl->ProcessItem();
 }
 
 DomainAnyValueBuilder::~DomainAnyValueBuilder() = default;
