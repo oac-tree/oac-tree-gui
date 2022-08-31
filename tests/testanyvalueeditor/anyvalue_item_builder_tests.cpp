@@ -48,6 +48,8 @@ TEST_F(AnyValueItemBuilderTest, FromScalar)
     EXPECT_EQ(item.GetTotalItemCount(), 0);
     EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
     EXPECT_TRUE(item.Data<bool>());
+    EXPECT_TRUE(item.IsScalar());
+    EXPECT_FALSE(item.IsStruct());
   }
 
   {  // int
@@ -58,6 +60,8 @@ TEST_F(AnyValueItemBuilderTest, FromScalar)
     EXPECT_EQ(item.GetTotalItemCount(), 0);
     EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
     EXPECT_EQ(item.Data<int>(), 42);
+    EXPECT_TRUE(item.IsScalar());
+    EXPECT_FALSE(item.IsStruct());
   }
 }
 
@@ -74,6 +78,8 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
   EXPECT_EQ(item.GetTotalItemCount(), 2);
   EXPECT_EQ(item.GetDisplayName(), "AnyValue");
   EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  EXPECT_FALSE(item.IsScalar());
+  EXPECT_TRUE(item.IsStruct());
 
   auto child = item.GetItem("", 0);
   EXPECT_EQ(child->GetTotalItemCount(), 0);

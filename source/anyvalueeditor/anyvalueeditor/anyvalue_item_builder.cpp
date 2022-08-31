@@ -20,10 +20,13 @@
 #include "anyvalueeditor/anyvalue_item_builder.h"
 
 #include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/anyvalue_utils.h>
 #include <anyvalueeditor/scalar_conversion_utils.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/tagindex.h>
+
+#include <sup/dto/anyvalue.h>
 
 #include <iostream>
 
@@ -48,28 +51,29 @@ AnyValueItemBuilder::AnyValueItemBuilder(AnyValueItem *item) : m_item(item) {}
 
 void AnyValueItemBuilder::EmptyProlog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddEmptyProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddEmptyProlog() value:" << anyvalue << " item:" << m_item << std::endl;
 }
 
 void AnyValueItemBuilder::EmptyEpilog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddEmptyEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddEmptyEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
 }
 
 void AnyValueItemBuilder::StructProlog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  m_item->SetAnyTypeName(kStructTypeName);
 }
 
 void AnyValueItemBuilder::StructMemberSeparator()
 {
-  //  std::cout << "AddStructMemberSeparator() "
-  //            << " item:" << m_item << std::endl;
+  std::cout << "AddStructMemberSeparator() "
+            << " item:" << m_item << std::endl;
 }
 
 void AnyValueItemBuilder::StructEpilog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddStructEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddStructEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
 }
 
 //! Append new child with the display name corresponding to `member_name`.
@@ -78,7 +82,7 @@ void AnyValueItemBuilder::StructEpilog(const anyvalue_t *anyvalue)
 void AnyValueItemBuilder::MemberProlog(const anyvalue_t *anyvalue, const std::string &member_name)
 {
   (void)anyvalue;
-  //  std::cout << "AddMemberProlog() " << m_item << " " << member_name << std::endl;
+  std::cout << "AddMemberProlog() " << m_item << " " << member_name << std::endl;
   auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
   child->SetDisplayName(member_name);
   m_item = child;
@@ -87,13 +91,13 @@ void AnyValueItemBuilder::MemberProlog(const anyvalue_t *anyvalue, const std::st
 void AnyValueItemBuilder::MemberEpilog(const anyvalue_t *anyvalue, const std::string &member_name)
 {
   (void)anyvalue;
-  //  std::cout << "AddMemberEpilog() " << m_item << " " << member_name << std::endl;
+  std::cout << "AddMemberEpilog() " << m_item << " " << member_name << std::endl;
   m_item = static_cast<AnyValueItem *>(m_item->GetParent());
 }
 
 void AnyValueItemBuilder::ArrayProlog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_item << std::endl;
   auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
   m_item = child;
   m_index = 0;
@@ -102,8 +106,8 @@ void AnyValueItemBuilder::ArrayProlog(const anyvalue_t *anyvalue)
 
 void AnyValueItemBuilder::ArrayElementSeparator()
 {
-  //  std::cout << "AddArrayElementSeparator() "
-  //            << " item:" << m_item << std::endl;
+  std::cout << "AddArrayElementSeparator() "
+            << " item:" << m_item << std::endl;
   m_item = static_cast<AnyValueItem *>(m_item->GetParent());
 
   auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
@@ -113,18 +117,19 @@ void AnyValueItemBuilder::ArrayElementSeparator()
 
 void AnyValueItemBuilder::ArrayEpilog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddArrayEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddArrayEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
   m_item = static_cast<AnyValueItem *>(m_item->GetParent());
 }
 
 void AnyValueItemBuilder::ScalarProlog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddScalarProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddScalarProlog() value:" << anyvalue << " item:" << m_item << std::endl;
 }
 
 void AnyValueItemBuilder::ScalarEpilog(const anyvalue_t *anyvalue)
 {
-  //  std::cout << "AddScalarEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddScalarEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
+  m_item->SetAnyTypeName(anyvalue->GetTypeName());
   SetDataFromScalar(*anyvalue, *m_item);
 }
 
