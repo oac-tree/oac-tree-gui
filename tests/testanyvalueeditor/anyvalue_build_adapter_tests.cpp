@@ -20,6 +20,7 @@
 #include "anyvalueeditor/anyvalue_build_adapter.h"
 
 #include <gtest/gtest.h>
+#include <sup/dto/anytype.h>
 #include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
@@ -53,6 +54,21 @@ TEST_F(AnyValueBuildAdapterTests, Scalar)
   EXPECT_EQ(value.GetType(), sup::dto::SignedInteger32Type);
   EXPECT_TRUE(::sup::dto::IsScalarValue(value));
   EXPECT_EQ(value.As<sup::dto::int32>(), 42);
+}
+
+//! Creation of AnyValue scalar via AddMember method with empty name.
+
+TEST_F(AnyValueBuildAdapterTests, ScalarViaAddMember)
+{
+  AnyValueBuildAdapter builder;
+
+  sup::dto::AnyValue expected_anyvalue{sup::dto::StringType, std::string("abc")};
+
+  // By passing an empty member name we tell the builder that this will be the scalar.
+  builder.AddMember("", expected_anyvalue);
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected_anyvalue);
 }
 
 //! Creation of AnyValue containing a struct with single field.
