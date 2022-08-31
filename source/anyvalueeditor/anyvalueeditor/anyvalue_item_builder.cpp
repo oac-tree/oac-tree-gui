@@ -25,7 +25,6 @@
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/tagindex.h>
-
 #include <sup/dto/anyvalue.h>
 
 #include <iostream>
@@ -47,7 +46,10 @@ T *InsertItem(mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
 namespace anyvalueeditor
 {
 
-AnyValueItemBuilder::AnyValueItemBuilder(AnyValueItem *item) : m_item(item) {}
+std::unique_ptr<AnyValueItem> AnyValueItemBuilder::MoveAnyValueItem()
+{
+  return std::move(m_result);
+}
 
 void AnyValueItemBuilder::EmptyProlog(const anyvalue_t *anyvalue)
 {
@@ -61,7 +63,12 @@ void AnyValueItemBuilder::EmptyEpilog(const anyvalue_t *anyvalue)
 
 void AnyValueItemBuilder::StructProlog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_result.get() << std::endl;
+  if (!m_result)
+  {
+    m_result = std::make_unique<AnyValueItem>();
+    m_item = m_result.get();
+  }
   m_item->SetAnyTypeName(kStructTypeName);
 }
 
@@ -98,6 +105,13 @@ void AnyValueItemBuilder::MemberEpilog(const anyvalue_t *anyvalue, const std::st
 void AnyValueItemBuilder::ArrayProlog(const anyvalue_t *anyvalue)
 {
   std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_item << std::endl;
+  if (!m_result)
+  {
+    m_result = std::make_unique<AnyValueItem>();
+    m_item = m_result.get();
+  }
+
+
   auto child = InsertItem<AnyValueItem>(m_item, mvvm::TagIndex::Append());
   m_item = child;
   m_index = 0;
@@ -129,6 +143,13 @@ void AnyValueItemBuilder::ScalarProlog(const anyvalue_t *anyvalue)
 void AnyValueItemBuilder::ScalarEpilog(const anyvalue_t *anyvalue)
 {
   std::cout << "AddScalarEpilog() value:" << anyvalue << " item:" << m_item << std::endl;
+
+  if (!m_result)
+  {
+    m_result = std::make_unique<AnyValueItem>();
+    m_item = m_result.get();
+  }
+
   m_item->SetAnyTypeName(anyvalue->GetTypeName());
   SetDataFromScalar(*anyvalue, *m_item);
 }

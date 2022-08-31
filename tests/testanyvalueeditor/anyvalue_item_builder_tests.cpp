@@ -29,10 +29,11 @@ using namespace anyvalueeditor;
 class AnyValueItemBuilderTest : public ::testing::Test
 {
 public:
-  void ProcessValue(const sup::dto::AnyValue& value, AnyValueItem& item)
+  std::unique_ptr<AnyValueItem> GetAnyValueItem(const sup::dto::AnyValue& value)
   {
-    AnyValueItemBuilder m_builder(&item);
-    sup::dto::SerializeAnyValue(value, m_builder);
+    AnyValueItemBuilder builder;
+    sup::dto::SerializeAnyValue(value, builder);
+    return std::move(builder.MoveAnyValueItem());
   }
 };
 
@@ -41,27 +42,27 @@ public:
 TEST_F(AnyValueItemBuilderTest, FromScalar)
 {
   {  // bool
-    AnyValueItem item;
-    sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
-    anyvalue = true;
-    ProcessValue(anyvalue, item);
-    EXPECT_EQ(item.GetTotalItemCount(), 0);
-    EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
-    EXPECT_TRUE(item.Data<bool>());
-    EXPECT_TRUE(item.IsScalar());
-    EXPECT_FALSE(item.IsStruct());
+    sup::dto::AnyValue anyvalue{sup::dto::BooleanType, true};
+
+    auto item = GetAnyValueItem(anyvalue);
+
+    EXPECT_EQ(item->GetTotalItemCount(), 0);
+    EXPECT_EQ(mvvm::utils::TypeName(item->Data()), mvvm::constants::kBoolTypeName);
+    EXPECT_TRUE(item->Data<bool>());
+    EXPECT_TRUE(item->IsScalar());
+    EXPECT_FALSE(item->IsStruct());
   }
 
   {  // int
-    AnyValueItem item;
-    sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
-    anyvalue = 42;
-    ProcessValue(anyvalue, item);
-    EXPECT_EQ(item.GetTotalItemCount(), 0);
-    EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
-    EXPECT_EQ(item.Data<int>(), 42);
-    EXPECT_TRUE(item.IsScalar());
-    EXPECT_FALSE(item.IsStruct());
+    sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
+
+    auto item = GetAnyValueItem(anyvalue);
+
+    EXPECT_EQ(item->GetTotalItemCount(), 0);
+    EXPECT_EQ(mvvm::utils::TypeName(item->Data()), mvvm::constants::kIntTypeName);
+    EXPECT_EQ(item->Data<int>(), 42);
+    EXPECT_TRUE(item->IsScalar());
+    EXPECT_FALSE(item->IsStruct());
   }
 }
 
@@ -69,24 +70,24 @@ TEST_F(AnyValueItemBuilderTest, FromScalar)
 
 TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
 {
-  AnyValueItem item;
 
   sup::dto::AnyValue anyvalue = {
       {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
 
-  ProcessValue(anyvalue, item);
-  EXPECT_EQ(item.GetTotalItemCount(), 2);
-  EXPECT_EQ(item.GetDisplayName(), "AnyValue");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
-  EXPECT_FALSE(item.IsScalar());
-  EXPECT_TRUE(item.IsStruct());
+  auto item = GetAnyValueItem(anyvalue);
 
-  auto child = item.GetItem("", 0);
+  EXPECT_EQ(item->GetTotalItemCount(), 2);
+  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
+  EXPECT_FALSE(item->IsScalar());
+  EXPECT_TRUE(item->IsStruct());
+
+  auto child = item->GetItem("", 0);
   EXPECT_EQ(child->GetTotalItemCount(), 0);
   EXPECT_EQ(child->GetDisplayName(), "signed");
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
 
-  child = item.GetItem("", 1);
+  child = item->GetItem("", 1);
   EXPECT_EQ(child->GetTotalItemCount(), 0);
   EXPECT_EQ(child->GetDisplayName(), "bool");
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
@@ -96,23 +97,22 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
 
 TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
 {
-  AnyValueItem item;
-
   sup::dto::AnyValue two_scalars = {
       {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
   sup::dto::AnyValue anyvalue{{
       {"scalars", two_scalars},
   }};
 
-  ProcessValue(anyvalue, item);
-  EXPECT_EQ(item.GetTotalItemCount(), 1);
-  EXPECT_EQ(item.GetDisplayName(), "AnyValue");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  auto item = GetAnyValueItem(anyvalue);
 
-  auto child = item.GetItem("", 0);
+  EXPECT_EQ(item->GetTotalItemCount(), 1);
+  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
+
+  auto child = item->GetItem("", 0);
   EXPECT_EQ(child->GetTotalItemCount(), 2);
   EXPECT_EQ(child->GetDisplayName(), "scalars");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   auto grandchild0 = child->GetItem("", 0);
   EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
@@ -129,8 +129,6 @@ TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
 
 TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
 {
-  AnyValueItem item;
-
   const std::string nested_name = "nested_struct";
   sup::dto::AnyValue two_scalars = {{{"signed", {sup::dto::SignedInteger8Type, 1}},
                                      {"unsigned", {sup::dto::UnsignedInteger8Type, 12}}}};
@@ -140,16 +138,17 @@ TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
                                  {"second", {sup::dto::SignedInteger8Type, 5}}}}},
                               nested_name};
 
-  ProcessValue(anyvalue, item);
-  EXPECT_EQ(item.GetTotalItemCount(), 2);
-  EXPECT_EQ(item.GetDisplayName(), "AnyValue");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  auto item = GetAnyValueItem(anyvalue);
+
+  EXPECT_EQ(item->GetTotalItemCount(), 2);
+  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
-  auto child0 = item.GetItem("", 0);
+  auto child0 = item->GetItem("", 0);
   EXPECT_EQ(child0->GetTotalItemCount(), 2);
   EXPECT_EQ(child0->GetDisplayName(), "scalars");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   auto grandchild0 = child0->GetItem("", 0);
   EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
@@ -162,10 +161,10 @@ TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
   EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
 
   // second branch
-  auto child1 = item.GetItem("", 1);
+  auto child1 = item->GetItem("", 1);
   EXPECT_EQ(child1->GetTotalItemCount(), 2);
   EXPECT_EQ(child1->GetDisplayName(), "single");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   grandchild0 = child1->GetItem("", 0);
   EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
@@ -182,26 +181,24 @@ TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
 
 TEST_F(AnyValueItemBuilderTest, FromArrayOfIntegers)
 {
-  AnyValueItem item;
-
   sup::dto::AnyValue anyvalue =
       sup::dto::ArrayValue({{sup::dto::SignedInteger64Type, 1}, 2}, "my_array_t");
 
-  ProcessValue(anyvalue, item);
+  auto item = GetAnyValueItem(anyvalue);
 
-  EXPECT_EQ(item.GetTotalItemCount(), 2);
-  EXPECT_EQ(item.GetDisplayName(), "AnyValue");
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+  EXPECT_EQ(item->GetTotalItemCount(), 2);
+  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
-  auto child0 = item.GetItem("", 0);
+  auto child0 = item->GetItem("", 0);
   EXPECT_EQ(child0->GetTotalItemCount(), 0);
   EXPECT_EQ(child0->GetDisplayName(), "index0");
   EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);
   EXPECT_EQ(child0->Data<int>(), 1);
 
   // second branch
-  auto child1 = item.GetItem("", 1);
+  auto child1 = item->GetItem("", 1);
   EXPECT_EQ(child1->GetTotalItemCount(), 0);
   EXPECT_EQ(child1->GetDisplayName(), "index1");
   EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);

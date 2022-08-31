@@ -23,6 +23,8 @@
 #include <sup/dto/i_any_visitor.h>
 #include <anyvalueeditor/dto_types_fwd.h>
 
+#include <memory>
+
 namespace anyvalueeditor
 {
 
@@ -31,7 +33,7 @@ class AnyValueItem;
 class AnyValueItemBuilder : public sup::dto::IAnyVisitor<const sup::dto::AnyValue>
 {
 public:
-  explicit AnyValueItemBuilder(AnyValueItem* item);
+  std::unique_ptr<AnyValueItem> MoveAnyValueItem();
 
   void EmptyProlog(const anyvalue_t* anyvalue) override;
   void EmptyEpilog(const anyvalue_t* anyvalue) override;
@@ -51,6 +53,7 @@ public:
   void ScalarEpilog(const anyvalue_t* anyvalue) override;
 
 private:
+  std::unique_ptr<AnyValueItem> m_result;
   AnyValueItem* m_item{nullptr};
   int m_index{0};
 };

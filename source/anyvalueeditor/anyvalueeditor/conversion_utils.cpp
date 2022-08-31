@@ -35,10 +35,9 @@ sup::dto::AnyValue CreateAnyValue(const AnyValueItem &item)
 
 std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue &any_value)
 {
-  auto result = std::make_unique<AnyValueItem>();
-  AnyValueItemBuilder m_builder(result.get());
-  sup::dto::SerializeAnyValue(any_value, m_builder);
-  return result;
+  AnyValueItemBuilder builder;
+  sup::dto::SerializeAnyValue(any_value, builder);
+  return std::move(builder.MoveAnyValueItem());
 }
 
 }  // namespace anyvalueeditor
