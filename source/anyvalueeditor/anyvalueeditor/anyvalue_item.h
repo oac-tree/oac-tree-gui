@@ -26,22 +26,64 @@
 namespace anyvalueeditor
 {
 
+//! Base class for all AnyValueItems
+
 class AnyValueItem : public mvvm::CompoundItem
 {
 public:
   static inline const std::string Type = "AnyValue";
 
-  AnyValueItem();
+  explicit AnyValueItem(const std::string& item_type = Type);
 
-  void SetAnyTypeName(const std::string& type_name);
+  virtual void SetAnyTypeName(const std::string& type_name);
 
   std::string GetAnyTypeName() const;
 
-  bool IsScalar() const;
-  bool IsStruct() const;
-
+  virtual bool IsScalar() const;
+  virtual bool IsStruct() const;
+  virtual bool IsArray() const;
 };
 
+//! The item to represent AnyValue scalar.
+
+class AnyValueScalarItem : public AnyValueItem
+{
+public:
+  static inline const std::string Type = "AnyValueScalar";
+
+  explicit AnyValueScalarItem();
+
+  void SetAnyTypeName(const std::string& type_name) override;
+
+  bool IsScalar() const override;
+  bool IsStruct() const override;
+};
+
+//! The item to represent AnyValue struct.
+
+class AnyValueStructItem : public AnyValueItem
+{
+public:
+  static inline const std::string Type = "AnyValueStruct";
+
+  explicit AnyValueStructItem();
+
+  bool IsScalar() const override;
+  bool IsStruct() const override;
+};
+
+//! The item to represent AnyValue array.
+
+class AnyValueArrayItem : public AnyValueItem
+{
+public:
+  static inline const std::string Type = "AnyValueArray";
+
+  explicit AnyValueArrayItem();
+
+  bool IsScalar() const override;
+  bool IsStruct() const override;
+};
 
 }  // namespace anyvalueeditor
 

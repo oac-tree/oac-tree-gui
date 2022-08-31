@@ -31,14 +31,49 @@ public:
 
 TEST_F(AnyValueItemTest, InitialState)
 {
-  AnyValueItem item;
+  { // AnyValueItem
+    AnyValueItem item;
+    EXPECT_FALSE(item.IsScalar());
+    EXPECT_FALSE(item.IsStruct());
+    EXPECT_TRUE(item.GetAnyTypeName().empty());
+    EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+    EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
+    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
+    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+  }
 
-  EXPECT_FALSE(item.IsScalar());
-  EXPECT_TRUE(item.GetAnyTypeName().empty());
-  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
-  EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-  const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
-  EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+  { // AnyValueScalarItem
+    AnyValueScalarItem item;
+    EXPECT_TRUE(item.IsScalar());
+    EXPECT_FALSE(item.IsStruct());
+    EXPECT_TRUE(item.GetAnyTypeName().empty());
+    EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+    EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
+    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
+    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+  }
+
+  { // AnyValueStructItem
+    AnyValueStructItem item;
+    EXPECT_FALSE(item.IsScalar());
+    EXPECT_TRUE(item.IsStruct());
+    EXPECT_TRUE(item.GetAnyTypeName().empty());
+    EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+    EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
+    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
+    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+  }
+
+  { // AnyValueStructItem
+    AnyValueArrayItem item;
+    EXPECT_FALSE(item.IsScalar());
+    EXPECT_FALSE(item.IsStruct());
+    EXPECT_TRUE(item.GetAnyTypeName().empty());
+    EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+    EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
+    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
+    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+  }
 }
 
 TEST_F(AnyValueItemTest, SetAnyTypeName)

@@ -27,7 +27,11 @@ namespace anyvalueeditor
 static inline const std::string kChildren = "kChildren";
 static inline const int kAnyTypeNameRole = 10;  // role to store type name
 
-AnyValueItem::AnyValueItem() : CompoundItem(Type)
+// ----------------------------------------------------------------------------
+// AnyValueItem
+// ----------------------------------------------------------------------------
+
+AnyValueItem::AnyValueItem(const std::string& item_type) : CompoundItem(item_type)
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
@@ -57,6 +61,71 @@ bool AnyValueItem::IsScalar() const
 bool AnyValueItem::IsStruct() const
 {
   return IsStructTypeName(GetAnyTypeName());
+}
+
+bool AnyValueItem::IsArray() const
+{
+  return false;
+}
+
+// ----------------------------------------------------------------------------
+// AnyValueScalarItem
+// ----------------------------------------------------------------------------
+
+AnyValueScalarItem::AnyValueScalarItem() : AnyValueItem(Type) {}
+
+void AnyValueScalarItem::SetAnyTypeName(const std::string& type_name)
+{
+  AnyValueItem::SetAnyTypeName(type_name);
+  SetData(GetVariantForAnyValueTypeName(type_name));
+}
+
+bool AnyValueScalarItem::IsScalar() const
+{
+  return true;
+}
+
+bool AnyValueScalarItem::IsStruct() const
+{
+  return false;
+}
+
+// ----------------------------------------------------------------------------
+// AnyValueStructItem
+// ----------------------------------------------------------------------------
+
+AnyValueStructItem::AnyValueStructItem() : AnyValueItem(Type)
+{
+  //  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
+}
+
+bool AnyValueStructItem::IsScalar() const
+{
+  return false;
+}
+
+bool AnyValueStructItem::IsStruct() const
+{
+  return true;
+}
+
+// ----------------------------------------------------------------------------
+// AnyValueArrayItem
+// ----------------------------------------------------------------------------
+
+AnyValueArrayItem::AnyValueArrayItem() : AnyValueItem(Type)
+{
+//  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
+}
+
+bool AnyValueArrayItem::IsScalar() const
+{
+  return false;
+}
+
+bool AnyValueArrayItem::IsStruct() const
+{
+  return false;
 }
 
 }  // namespace anyvalueeditor
