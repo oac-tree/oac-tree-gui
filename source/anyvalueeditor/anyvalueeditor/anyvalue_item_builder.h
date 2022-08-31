@@ -54,7 +54,7 @@ public:
 
 private:
   std::unique_ptr<AnyValueItem> m_result;
-  AnyValueItem* m_item{nullptr};
+  AnyValueItem* m_current_parent{nullptr};
   int m_index{0};
 };
 
