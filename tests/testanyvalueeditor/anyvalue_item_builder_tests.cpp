@@ -21,6 +21,7 @@
 #include "folder_based_test.h"
 
 #include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/anyvalue_utils.h>
 #include <gtest/gtest.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
@@ -108,7 +109,8 @@ TEST_F(AnyValueItemBuilderTests, FromEmptyStruct)
 
   EXPECT_EQ(item->GetType(), AnyValueStructItem::Type);
   EXPECT_EQ(item->GetTotalItemCount(), 0);
-  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string());
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
   EXPECT_FALSE(item->IsArray());
@@ -123,7 +125,8 @@ TEST_F(AnyValueItemBuilderTests, FromStructWithSingleScalar)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 1);
-  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string());
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
@@ -150,7 +153,8 @@ TEST_F(AnyValueItemBuilderTests, FromStructWithTwoScalars)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string());
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
@@ -188,7 +192,8 @@ TEST_F(AnyValueItemBuilderTests, FromNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 1);
-  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string());
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   auto child = item->GetItem("", 0);
@@ -223,7 +228,8 @@ TEST_F(AnyValueItemBuilderTests, FromTwoNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string());
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
