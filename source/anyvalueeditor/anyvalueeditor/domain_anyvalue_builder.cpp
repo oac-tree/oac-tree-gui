@@ -93,7 +93,7 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       // We found a struct which we haven't seen before. Let's tell the builder to create
       // underlying AnyValue, and let's add children to the stack.
       // We are not poping struct node, we will get back to it later.
-      m_builder.StartStruct(node.m_item->GetDisplayName());
+      m_builder.StartStruct(node.m_item->GetAnyTypeName());
       node.m_is_visited = true;
 
       //      auto children = GetChildren(node.m_value);

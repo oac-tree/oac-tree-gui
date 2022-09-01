@@ -71,10 +71,20 @@ TEST_F(DomainAnyValueBuilderTest, FromScalar)
 
 TEST_F(DomainAnyValueBuilderTest, FromEmptyStruct)
 {
-  AnyValueStructItem item;
 
-  sup::dto::AnyValue expected_anyvalue{::sup::dto::EmptyStruct()};
+  { // empty struct
+    AnyValueStructItem item;
+    sup::dto::AnyValue expected_anyvalue{::sup::dto::EmptyStruct()};
+    auto any_value = CreateAnyValue(item);
+    EXPECT_EQ(any_value, expected_anyvalue);
+  }
 
-  auto any_value = CreateAnyValue(item);
-//  EXPECT_EQ(any_value, expected_anyvalue);
+  { // empty named struct
+    AnyValueStructItem item;
+    item.SetAnyTypeName("my_type");
+    sup::dto::AnyValue expected_anyvalue{::sup::dto::EmptyStruct("my_type")};
+    auto any_value = CreateAnyValue(item);
+    EXPECT_EQ(any_value, expected_anyvalue);
+  }
+
 }
