@@ -35,20 +35,35 @@ AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObj
 {
 }
 
-void AnyValueEditorActions::OnAddAnyValueStruct()
+void AnyValueEditorActions::OnAddAnyValueStruct(bool to_selected)
 {
-  m_model->InsertItem<AnyValueStructItem>();
+  auto parent = to_selected ? m_selected_item : m_model->GetRootItem();
+  if (parent)
+  {
+    m_model->InsertItem<AnyValueStructItem>(parent, mvvm::TagIndex::Append())
+        ->SetDisplayName("struct");
+  }
 }
 
-void AnyValueEditorActions::OnAddAnyValueArray()
+void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
 {
-  m_model->InsertItem<AnyValueArrayItem>();
+  auto parent = to_selected ? m_selected_item : m_model->GetRootItem();
+  if (parent)
+  {
+    m_model->InsertItem<AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
+        ->SetDisplayName("array");
+  }
 }
 
-void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type)
+void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, bool to_selected)
 {
-  auto scalar = m_model->InsertItem<AnyValueScalarItem>();
-  scalar->SetAnyTypeName(scalar_type);
+  auto parent = to_selected ? m_selected_item : m_model->GetRootItem();
+  if (parent)
+  {
+    auto scalar = m_model->InsertItem<AnyValueScalarItem>(parent, mvvm::TagIndex::Append());
+    scalar->SetAnyTypeName(scalar_type);
+    scalar->SetDisplayName(scalar_type);
+  }
 }
 
 void AnyValueEditorActions::OnAddField()

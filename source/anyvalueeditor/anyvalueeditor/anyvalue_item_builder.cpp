@@ -150,11 +150,13 @@ void AnyValueItemBuilder::AddItem(std::unique_ptr<AnyValueItem> item)
   {
     child->SetDisplayName(m_member_name);
   }
-
-  // we are in array mode
-  if (m_index >= 0)
+  else if (m_index >= 0)
   {
     child->SetDisplayName("index" + std::to_string(m_index));
+  }
+  else
+  {
+    std::logic_error("Logic error");
   }
 
   m_current_item = item_ptr;

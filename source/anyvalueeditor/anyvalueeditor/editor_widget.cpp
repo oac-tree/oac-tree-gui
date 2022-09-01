@@ -64,7 +64,8 @@ EditorWidget::EditorWidget(QWidget *parent)
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
-  m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+  auto item = m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+  item->SetDisplayName("AnyValue");
 
   //   setting view back to the model
   m_all_items_tree_view->SetApplicationModel(m_model.get());

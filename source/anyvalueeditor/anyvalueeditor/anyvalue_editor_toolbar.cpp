@@ -33,12 +33,10 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
     : QToolBar(parent)
     , m_add_anyvalue_button(new QToolButton)
     , m_add_field_button(new QToolButton)
-    , m_add_field_button_v2(new QToolButton)
-    , m_insert_field_button(new QToolButton)
     , m_remove_button(new QToolButton)
     , m_actions(actions)
-    , m_create_anyvalue_menu(CreateAnyValueMenu())
-    , m_insert_after_menu(CreateInsertAfterMenu())
+    , m_create_anyvalue_menu(AddAnyValueMenu(false))
+    , m_add_field_menu(AddAnyValueMenu(true))
 {
   setIconSize(QSize(24, 24));
 
@@ -50,32 +48,12 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_add_anyvalue_button->setMenu(m_create_anyvalue_menu.get());
   addWidget(m_add_anyvalue_button);
 
-  addSeparator();
-
   m_add_field_button->setText("Add field");
   m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_add_field_button->setToolTip("Add field after current selection.");
-  connect(m_add_field_button, &QToolButton::clicked, actions, &AnyValueEditorActions::OnAddField);
+  m_add_field_button->setPopupMode(QToolButton::InstantPopup);
+  m_add_field_button->setMenu(m_add_field_menu.get());
   addWidget(m_add_field_button);
-
-  m_add_field_button_v2->setText("Add field");
-  m_add_field_button_v2->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_add_field_button_v2->setToolTip("Add field after current selection.");
-  m_add_field_button_v2->setPopupMode(QToolButton::InstantPopup);
-  m_add_field_button_v2->setMenu(m_insert_after_menu.get());
-  //  connect(m_add_field_button_v2, &QToolButton::clicked, actions,
-  //          &AnyValueEditorActions::OnAddField);
-  addWidget(m_add_field_button_v2);
-
-  m_insert_field_button->setText("Insert field");
-  m_insert_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_insert_field_button->setToolTip(
-      "Insert field into the selection. \nApplicable if selected item is a struct of array");
-  connect(m_insert_field_button, &QToolButton::clicked, actions,
-          &AnyValueEditorActions::OnInsertField);
-  addWidget(m_insert_field_button);
-
-  addSeparator();
 
   m_remove_button->setText("Remove");
   m_remove_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
@@ -94,43 +72,33 @@ void AnyValueEditorToolBar::InsertStrech()
   addWidget(empty);
 }
 
-std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateAnyValueMenu()
+std::unique_ptr<QMenu> AnyValueEditorToolBar::AddAnyValueMenu(bool to_selected)
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
   {  // struct
     auto action = result->addAction("struct");
-    connect(action, &QAction::triggered, this, [this]() { m_actions->OnAddAnyValueStruct(); });
+    connect(action, &QAction::triggered, this,
+            [this, to_selected]() { m_actions->OnAddAnyValueStruct(to_selected); });
   }
 
   {  // array
     auto action = result->addAction("array");
-    connect(action, &QAction::triggered, this, [this]() { m_actions->OnAddAnyValueArray(); });
+    connect(action, &QAction::triggered, this,
+            [this, to_selected]() { m_actions->OnAddAnyValueArray(to_selected); });
   }
 
   {
     auto scalar_menu = result->addMenu("scalar");
     for (const auto &name : GetScalarTypeNames())
     {
-      auto on_action = [name, this]() { m_actions->OnAddAnyValueScalar(name); };
+      auto on_action = [name, this, to_selected]()
+      { m_actions->OnAddAnyValueScalar(name, to_selected); };
       auto action = scalar_menu->addAction(QString::fromStdString(name));
       connect(action, &QAction::triggered, this, on_action);
     }
   }
-
-  return result;
-}
-
-std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateInsertAfterMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-
-  auto on_about_to_show = [this, &result]() {
-
-  };
-  connect(result.get(), &QMenu::aboutToShow, this, on_about_to_show);
 
   return result;
 }

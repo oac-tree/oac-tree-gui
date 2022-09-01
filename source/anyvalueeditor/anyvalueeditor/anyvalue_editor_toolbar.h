@@ -43,19 +43,16 @@ public:
 
 private:
   void InsertStrech();
-  std::unique_ptr<QMenu> CreateAnyValueMenu();
-  std::unique_ptr<QMenu> CreateInsertAfterMenu();
+  std::unique_ptr<QMenu> AddAnyValueMenu(bool to_selected);
 
   QToolButton* m_add_anyvalue_button{nullptr};
   QToolButton* m_add_field_button{nullptr};
-  QToolButton* m_add_field_button_v2{nullptr};
-  QToolButton* m_insert_field_button{nullptr};
   QToolButton* m_remove_button{nullptr};
 
   AnyValueEditorActions* m_actions{nullptr};
 
   std::unique_ptr<QMenu> m_create_anyvalue_menu;
-  std::unique_ptr<QMenu> m_insert_after_menu;
+  std::unique_ptr<QMenu> m_add_field_menu;
 };
 
 }  // namespace anyvalueeditor
