@@ -275,7 +275,7 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(), AnyValueArrayItem::Type);
+  EXPECT_EQ(item->GetDisplayName(),kArrayTypeName);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch

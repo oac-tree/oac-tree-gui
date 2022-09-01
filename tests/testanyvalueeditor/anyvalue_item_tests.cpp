@@ -75,10 +75,10 @@ TEST_F(AnyValueItemTest, InitialState)
     EXPECT_FALSE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
     EXPECT_TRUE(item.IsArray());
-    EXPECT_EQ(item.GetAnyTypeName(), kArrayTypeName);
+    EXPECT_EQ(item.GetAnyTypeName(), std::string());
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-    EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
+    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
   }
 }
 
