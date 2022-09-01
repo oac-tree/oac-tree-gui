@@ -19,8 +19,14 @@
 
 #include "anyvalueeditor/anyvalue_item.h"
 
+#include <anyvalueeditor/anyvalue_utils.h>
 #include <gtest/gtest.h>
 #include <sup/dto/anytype.h>
+
+namespace
+{
+const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
+}
 
 using namespace anyvalueeditor;
 
@@ -31,47 +37,43 @@ public:
 
 TEST_F(AnyValueItemTest, InitialState)
 {
-  { // AnyValueItem
+  {  // AnyValueItem
     AnyValueItem item;
     EXPECT_FALSE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
     EXPECT_TRUE(item.GetAnyTypeName().empty());
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
     EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
   }
 
-  { // AnyValueScalarItem
+  {  // AnyValueScalarItem
     AnyValueScalarItem item;
     EXPECT_TRUE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
     EXPECT_TRUE(item.GetAnyTypeName().empty());
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
     EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
   }
 
-  { // AnyValueStructItem
+  {  // AnyValueStructItem
     AnyValueStructItem item;
     EXPECT_FALSE(item.IsScalar());
     EXPECT_TRUE(item.IsStruct());
-    EXPECT_TRUE(item.GetAnyTypeName().empty());
+    EXPECT_EQ(item.GetAnyTypeName(), kStructTypeName);
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
-    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+    EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
   }
 
-  { // AnyValueStructItem
+  {  // AnyValueStructItem
     AnyValueArrayItem item;
     EXPECT_FALSE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
     EXPECT_TRUE(item.GetAnyTypeName().empty());
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-    const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
     EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
   }
 }
@@ -87,6 +89,5 @@ TEST_F(AnyValueItemTest, SetAnyTypeName)
   EXPECT_EQ(item.Data<int>(), 0);
   EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));
   EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));
-  const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
   EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
 }

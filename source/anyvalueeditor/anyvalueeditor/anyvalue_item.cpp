@@ -96,6 +96,9 @@ bool AnyValueScalarItem::IsStruct() const
 
 AnyValueStructItem::AnyValueStructItem() : AnyValueItem(Type)
 {
+  SetAnyTypeName(kStructTypeName);
+  SetDisplayName("AnyValue");
+
   //  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
 

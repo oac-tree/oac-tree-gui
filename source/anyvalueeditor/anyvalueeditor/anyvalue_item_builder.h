@@ -53,9 +53,12 @@ public:
   void ScalarEpilog(const anyvalue_t* anyvalue) override;
 
 private:
+  void TakeItem();
+
   std::unique_ptr<AnyValueItem> m_result;
-  AnyValueItem* m_current_parent{nullptr};
-  int m_index{0};
+  AnyValueItem* m_current_item{nullptr};
+  int m_index{-1};
+  std::string m_member_name;
 };
 
 }  // namespace anyvalueeditor
