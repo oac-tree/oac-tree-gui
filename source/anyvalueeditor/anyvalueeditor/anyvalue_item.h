@@ -44,6 +44,16 @@ public:
   virtual bool IsArray() const;
 };
 
+//! The item to represent AnyValue empty item.
+
+class AnyValueEmptyItem : public AnyValueItem
+{
+public:
+  static inline const std::string Type = "AnyValueEmpty";
+
+  explicit AnyValueEmptyItem();
+};
+
 //! The item to represent AnyValue scalar.
 
 class AnyValueScalarItem : public AnyValueItem

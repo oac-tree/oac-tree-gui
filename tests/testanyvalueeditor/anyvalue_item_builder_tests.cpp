@@ -17,32 +17,58 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_item.h"
 #include "anyvalueeditor/anyvalue_item_builder.h"
-#include "sup/dto/anyvalue.h"
-#include "sup/dto/anyvalue_helper.h"
+#include "folder_based_test.h"
 
+#include <anyvalueeditor/anyvalue_item.h>
 #include <gtest/gtest.h>
+#include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 
 using namespace anyvalueeditor;
 
-class AnyValueItemBuilderTest : public ::testing::Test
+class AnyValueItemBuilderTests : public FolderBasedTest
 {
 public:
+  AnyValueItemBuilderTests() : FolderBasedTest("test_AnyValueItemBuilder") {}
+
   std::unique_ptr<AnyValueItem> GetAnyValueItem(const sup::dto::AnyValue& value)
   {
     AnyValueItemBuilder builder;
     sup::dto::SerializeAnyValue(value, builder);
     return std::move(builder.MoveAnyValueItem());
   }
+
+  //! Helper function to write AnyValue as JSON. Used to study how AnyValue stores itself.
+  void WriteJson(const sup::dto::AnyValue& any_value, const std::string& file_name)
+  {
+    ::sup::dto::AnyValueToJSONFile(any_value, GetFilePath(file_name), /*pretty*/ true);
+  }
 };
 
 //! Building AnyValueItem from AnyValue containing a scalar.
 
-TEST_F(AnyValueItemBuilderTest, FromScalar)
+TEST_F(AnyValueItemBuilderTests, FromEmptyAnyValue)
+{
+  sup::dto::AnyValue anyvalue;
+  WriteJson(anyvalue, "Empty.json");
+
+  auto item = GetAnyValueItem(anyvalue);
+
+  EXPECT_EQ(item->GetType(), AnyValueEmptyItem::Type);
+  EXPECT_EQ(item->GetTotalItemCount(), 0);
+  EXPECT_FALSE(item->IsScalar());
+  EXPECT_FALSE(item->IsStruct());
+  EXPECT_FALSE(item->IsArray());
+}
+
+//! Building AnyValueItem from AnyValue containing a scalar.
+
+TEST_F(AnyValueItemBuilderTests, FromScalar)
 {
   {  // bool
     sup::dto::AnyValue anyvalue{sup::dto::BooleanType, true};
+    WriteJson(anyvalue, "ScalarBool.json");
 
     auto item = GetAnyValueItem(anyvalue);
 
@@ -52,10 +78,12 @@ TEST_F(AnyValueItemBuilderTest, FromScalar)
     EXPECT_TRUE(item->Data<bool>());
     EXPECT_TRUE(item->IsScalar());
     EXPECT_FALSE(item->IsStruct());
+    EXPECT_FALSE(item->IsArray());
   }
 
   {  // int
     sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
+    WriteJson(anyvalue, "ScalarInt32.json");
 
     auto item = GetAnyValueItem(anyvalue);
 
@@ -65,37 +93,41 @@ TEST_F(AnyValueItemBuilderTest, FromScalar)
     EXPECT_EQ(item->Data<int>(), 42);
     EXPECT_TRUE(item->IsScalar());
     EXPECT_FALSE(item->IsStruct());
+    EXPECT_FALSE(item->IsArray());
   }
 }
 
 //! Building AnyValueItem from AnyValue with a struct containing  two named scalars.
 
-TEST_F(AnyValueItemBuilderTest, FromEmptyStruct)
+TEST_F(AnyValueItemBuilderTests, FromEmptyStruct)
 {
   sup::dto::AnyValue anyvalue = ::sup::dto::EmptyStruct();
+  WriteJson(anyvalue, "EmptyStruct.json");
 
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetType(), AnyValueStructItem::Type);
   EXPECT_EQ(item->GetTotalItemCount(), 0);
-  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
+  EXPECT_FALSE(item->IsArray());
 }
 
 //! Building AnyValueItem from AnyValue with a struct containing a single scalar.
 
-TEST_F(AnyValueItemBuilderTest, FromStructWithSingleScalar)
+TEST_F(AnyValueItemBuilderTests, FromStructWithSingleScalar)
 {
   sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
 
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 1);
-  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
+  EXPECT_FALSE(item->IsArray());
 
   auto child = item->GetItem<AnyValueScalarItem>("", 0);
   EXPECT_EQ(child->GetType(), AnyValueScalarItem::Type);
@@ -103,13 +135,14 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithSingleScalar)
   EXPECT_EQ(child->GetDisplayName(), "signed");
   EXPECT_TRUE(child->IsScalar());
   EXPECT_FALSE(child->IsStruct());
+  EXPECT_FALSE(item->IsArray());
   EXPECT_EQ(child->Data<int>(), 42);
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
 }
 
 //! Building AnyValueItem from AnyValue with a struct containing  two named scalars.
 
-TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
+TEST_F(AnyValueItemBuilderTests, FromStructWithTwoScalars)
 {
   sup::dto::AnyValue anyvalue = {
       {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
@@ -117,10 +150,11 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
+  EXPECT_FALSE(item->IsArray());
 
   auto child = item->GetItem<AnyValueScalarItem>("", 0);
   EXPECT_EQ(child->GetTotalItemCount(), 0);
@@ -128,6 +162,7 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
   EXPECT_EQ(child->Data<int>(), 42);
   EXPECT_TRUE(child->IsScalar());
   EXPECT_FALSE(child->IsStruct());
+  EXPECT_FALSE(item->IsArray());
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
 
   child = item->GetItem<AnyValueScalarItem>("", 1);
@@ -136,12 +171,13 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
   EXPECT_EQ(child->Data<bool>(), true);
   EXPECT_TRUE(child->IsScalar());
   EXPECT_FALSE(child->IsStruct());
+  EXPECT_FALSE(item->IsArray());
   EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
 }
 
 //! Building AnyValueItem from AnyValue containing a structure with nested structure.
 
-TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
+TEST_F(AnyValueItemBuilderTests, FromNestedStruct)
 {
   sup::dto::AnyValue two_scalars = {
       {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
@@ -152,7 +188,7 @@ TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 1);
-  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   auto child = item->GetItem("", 0);
@@ -173,7 +209,7 @@ TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
 
 //! Building AnyValueItem from AnyValue containing a structure with two nested structures.
 
-TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
+TEST_F(AnyValueItemBuilderTests, FromTwoNestedStruct)
 {
   const std::string nested_name = "nested_struct";
   sup::dto::AnyValue two_scalars = {{{"signed", {sup::dto::SignedInteger8Type, 1}},
@@ -187,7 +223,7 @@ TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetDisplayName(), AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
@@ -225,7 +261,7 @@ TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
 
 //! Building AnyValueItem from AnyValue containing an array of integers.
 
-TEST_F(AnyValueItemBuilderTest, FromArrayOfIntegers)
+TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
 {
   sup::dto::AnyValue anyvalue =
       sup::dto::ArrayValue({{sup::dto::SignedInteger64Type, 1}, 2}, "my_array_t");
@@ -233,7 +269,7 @@ TEST_F(AnyValueItemBuilderTest, FromArrayOfIntegers)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(),  AnyValueArrayItem::Type);
+  EXPECT_EQ(item->GetDisplayName(), AnyValueArrayItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch

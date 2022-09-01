@@ -41,6 +41,7 @@ std::unique_ptr<AnyValueItem> AnyValueItemBuilder::MoveAnyValueItem()
 void AnyValueItemBuilder::EmptyProlog(const anyvalue_t *anyvalue)
 {
   std::cout << "AddEmptyProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+  AddItem(std::make_unique<AnyValueEmptyItem>());
 }
 
 void AnyValueItemBuilder::EmptyEpilog(const anyvalue_t *anyvalue)
