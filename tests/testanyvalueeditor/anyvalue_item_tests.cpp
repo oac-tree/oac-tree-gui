@@ -67,14 +67,14 @@ TEST_F(AnyValueItemTest, InitialState)
     EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
   }
 
-  {  // AnyValueStructItem
+  {  // AnyValueArrayItem
     AnyValueArrayItem item;
     EXPECT_FALSE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
-    EXPECT_TRUE(item.GetAnyTypeName().empty());
+    EXPECT_EQ(item.GetAnyTypeName(), kArrayTypeName);
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
-    EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+    EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
   }
 }
 

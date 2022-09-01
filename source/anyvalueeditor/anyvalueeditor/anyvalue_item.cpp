@@ -118,6 +118,8 @@ bool AnyValueStructItem::IsStruct() const
 
 AnyValueArrayItem::AnyValueArrayItem() : AnyValueItem(Type)
 {
+  SetAnyTypeName(kArrayTypeName);
+  SetDisplayName("AnyValue");
 //  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
 

@@ -53,7 +53,7 @@ public:
   void ScalarEpilog(const anyvalue_t* anyvalue) override;
 
 private:
-  void TakeItem();
+  void AddItem(std::unique_ptr<AnyValueItem> item);
 
   std::unique_ptr<AnyValueItem> m_result;
   AnyValueItem* m_current_item{nullptr};
