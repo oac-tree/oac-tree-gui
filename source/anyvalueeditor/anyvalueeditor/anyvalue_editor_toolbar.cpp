@@ -119,10 +119,6 @@ std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateAnyValueMenu()
     }
   }
 
-  //  result->addAction("array");
-  //  auto menu = result->addMenu("scalar");
-  //  menu->addAction("int32");
-
   return result;
 }
 

@@ -78,7 +78,7 @@ TEST_F(AnyValueItemBuilderTest, FromEmptyStruct)
 
   EXPECT_EQ(item->GetType(), AnyValueStructItem::Type);
   EXPECT_EQ(item->GetTotalItemCount(), 0);
-  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
 }
@@ -88,10 +88,11 @@ TEST_F(AnyValueItemBuilderTest, FromEmptyStruct)
 TEST_F(AnyValueItemBuilderTest, FromStructWithSingleScalar)
 {
   sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 1);
-  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
@@ -116,7 +117,7 @@ TEST_F(AnyValueItemBuilderTest, FromStructWithTwoScalars)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
   EXPECT_FALSE(item->IsScalar());
   EXPECT_TRUE(item->IsStruct());
@@ -151,7 +152,7 @@ TEST_F(AnyValueItemBuilderTest, FromNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 1);
-  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   auto child = item->GetItem("", 0);
@@ -186,7 +187,7 @@ TEST_F(AnyValueItemBuilderTest, FromTwoNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_EQ(item->GetDisplayName(),  AnyValueStructItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
@@ -232,7 +233,7 @@ TEST_F(AnyValueItemBuilderTest, FromArrayOfIntegers)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(), "AnyValue");
+  EXPECT_EQ(item->GetDisplayName(),  AnyValueArrayItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
