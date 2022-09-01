@@ -41,7 +41,9 @@ class AnyValueEditorActions : public QObject
 public:
   explicit AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent = nullptr);
 
-  void OnAddAnyValue();
+  void OnAddAnyValueStruct();
+  void OnAddAnyValueArray();
+  void OnAddAnyValueScalar(const std::string& scalar_type);
 
   void OnAddField();
 

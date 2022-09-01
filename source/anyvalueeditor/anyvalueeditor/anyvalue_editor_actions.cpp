@@ -35,10 +35,20 @@ AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObj
 {
 }
 
-void AnyValueEditorActions::OnAddAnyValue()
+void AnyValueEditorActions::OnAddAnyValueStruct()
 {
-  // FIXME restore
-//  m_model->InsertItem<AnyValueItem>();
+  m_model->InsertItem<AnyValueStructItem>();
+}
+
+void AnyValueEditorActions::OnAddAnyValueArray()
+{
+  m_model->InsertItem<AnyValueArrayItem>();
+}
+
+void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type)
+{
+  auto scalar = m_model->InsertItem<AnyValueScalarItem>();
+  scalar->SetAnyTypeName(scalar_type);
 }
 
 void AnyValueEditorActions::OnAddField()
@@ -49,15 +59,15 @@ void AnyValueEditorActions::OnAddField()
   }
 
   // FIXME restore
-//  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
-//  if (dialog.exec() == QDialog::Accepted)
-//  {
-//    auto context = dialog.GetFieldContext();
-//    auto parent = m_selected_item->GetParent();
-//    auto field = m_model->InsertItem<AnyValueItem>(parent, m_selected_item->GetTagIndex().Next());
-//    field->SetDisplayName(context.name);
-//    field->SetAnyTypeName(context.subtype);
-//  }
+  //  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
+  //  if (dialog.exec() == QDialog::Accepted)
+  //  {
+  //    auto context = dialog.GetFieldContext();
+  //    auto parent = m_selected_item->GetParent();
+  //    auto field = m_model->InsertItem<AnyValueItem>(parent,
+  //    m_selected_item->GetTagIndex().Next()); field->SetDisplayName(context.name);
+  //    field->SetAnyTypeName(context.subtype);
+  //  }
 }
 
 void AnyValueEditorActions::OnInsertField() {}

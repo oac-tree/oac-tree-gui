@@ -20,7 +20,7 @@
 #include "anyvalueeditor/anyvalue_editor_toolbar.h"
 
 #include <anyvalueeditor/anyvalue_editor_actions.h>
-
+#include <anyvalueeditor/anyvalue_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMenu>
@@ -36,6 +36,8 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
     , m_add_field_button_v2(new QToolButton)
     , m_insert_field_button(new QToolButton)
     , m_remove_button(new QToolButton)
+    , m_actions(actions)
+    , m_create_anyvalue_menu(CreateAnyValueMenu())
     , m_insert_after_menu(CreateInsertAfterMenu())
 {
   setIconSize(QSize(24, 24));
@@ -44,8 +46,8 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_add_anyvalue_button->setToolTip(
       "Creates new top level AnyValue. \nIt will be appended to the list of existing anyvalues");
-  connect(m_add_anyvalue_button, &QToolButton::clicked, actions,
-          &AnyValueEditorActions::OnAddAnyValue);
+  m_add_anyvalue_button->setPopupMode(QToolButton::InstantPopup);
+  m_add_anyvalue_button->setMenu(m_create_anyvalue_menu.get());
   addWidget(m_add_anyvalue_button);
 
   addSeparator();
@@ -90,6 +92,38 @@ void AnyValueEditorToolBar::InsertStrech()
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   addWidget(empty);
+}
+
+std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateAnyValueMenu()
+{
+  auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
+
+  {  // struct
+    auto action = result->addAction("struct");
+    connect(action, &QAction::triggered, this, [this]() { m_actions->OnAddAnyValueStruct(); });
+  }
+
+  {  // array
+    auto action = result->addAction("array");
+    connect(action, &QAction::triggered, this, [this]() { m_actions->OnAddAnyValueArray(); });
+  }
+
+  {
+    auto scalar_menu = result->addMenu("scalar");
+    for (const auto &name : GetScalarTypeNames())
+    {
+      auto on_action = [name, this]() { m_actions->OnAddAnyValueScalar(name); };
+      auto action = scalar_menu->addAction(QString::fromStdString(name));
+      connect(action, &QAction::triggered, this, on_action);
+    }
+  }
+
+  //  result->addAction("array");
+  //  auto menu = result->addMenu("scalar");
+  //  menu->addAction("int32");
+
+  return result;
 }
 
 std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateInsertAfterMenu()

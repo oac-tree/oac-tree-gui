@@ -74,20 +74,20 @@ EditorWidget::~EditorWidget() = default;
 
 void EditorWidget::PopulateModel()
 {
-  {  // two members
-    sup::dto::AnyValue anyvalue = {
-        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
-    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
-  }
+//  {  // two members
+//    sup::dto::AnyValue anyvalue = {
+//        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
+//    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+//  }
 
-  {  // Nested structure
-    sup::dto::AnyValue two_scalars = {
-        {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
-    sup::dto::AnyValue anyvalue{{
-        {"scalars", two_scalars},
-    }};
-    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
-  }
+//  {  // Nested structure
+//    sup::dto::AnyValue two_scalars = {
+//        {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
+//    sup::dto::AnyValue anyvalue{{
+//        {"scalars", two_scalars},
+//    }};
+//    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+//  }
 }
 
 }  // namespace anyvalueeditor
