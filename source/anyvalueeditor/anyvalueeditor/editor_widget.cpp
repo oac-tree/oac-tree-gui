@@ -29,9 +29,9 @@
 #include <sup/dto/anyvalue_helper.h>
 
 #include <QTreeView>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTextEdit>
+#include <QSplitter>
 
 namespace anyvalueeditor
 {
@@ -43,17 +43,15 @@ EditorWidget::EditorWidget(QWidget *parent)
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
     , m_all_items_tree_view(new mvvm::AllItemsTreeView)
     , m_text_edit(new QTextEdit)
+    , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
 
-  auto hlayout = new QHBoxLayout;
-  hlayout->addWidget(m_all_items_tree_view);
-  hlayout->addWidget(m_text_edit);
-  hlayout->setContentsMargins(0, 0, 0, 0);
-  hlayout->setSpacing(0);
+  m_splitter->addWidget(m_all_items_tree_view);
+  m_splitter->addWidget(m_text_edit);
 
-  layout->addLayout(hlayout);
+  layout->addWidget(m_splitter);
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);

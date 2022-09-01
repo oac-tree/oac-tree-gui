@@ -24,6 +24,7 @@
 #include <memory>
 
 class QTextEdit;
+class QSplitter;
 
 namespace mvvm
 {
@@ -55,6 +56,7 @@ private:
   AnyValueEditorToolBar* m_tool_bar{nullptr};
   mvvm::AllItemsTreeView* m_all_items_tree_view{nullptr};
   QTextEdit* m_text_edit{nullptr};
+  QSplitter* m_splitter{nullptr};
 };
 
 }  // namespace anyvalueeditor
