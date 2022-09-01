@@ -37,6 +37,7 @@ namespace anyvalueeditor
 
 class AnyValueEditorToolBar;
 class AnyValueEditorActions;
+class AnyValueItem;
 
 class EditorWidget : public QWidget
 {
@@ -49,6 +50,7 @@ public:
 
 private:
   void PopulateModel();
+  void OnSelectionChanged(AnyValueItem* item);
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
 

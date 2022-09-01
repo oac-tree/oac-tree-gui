@@ -28,10 +28,10 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 
-#include <QTreeView>
 #include <QHBoxLayout>
-#include <QTextEdit>
 #include <QSplitter>
+#include <QTextEdit>
+#include <QTreeView>
 
 namespace anyvalueeditor
 {
@@ -64,16 +64,15 @@ EditorWidget::EditorWidget(QWidget *parent)
 
   m_all_items_tree_view->SetApplicationModel(m_model.get());
   auto on_selected = [this](auto item)
-  {
-    m_actions->SetSelectedItem(dynamic_cast<AnyValueItem *>(const_cast<mvvm::SessionItem *>(item)));
-  };
+  { OnSelectionChanged(dynamic_cast<AnyValueItem *>(const_cast<mvvm::SessionItem *>(item))); };
   connect(m_all_items_tree_view, &mvvm::AllItemsTreeView::SelectedItemChanged, this, on_selected);
 }
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
-  auto item = m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+  auto item =
+      m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
   item->SetDisplayName("AnyValue");
 
   //   setting view back to the model
@@ -84,20 +83,35 @@ EditorWidget::~EditorWidget() = default;
 
 void EditorWidget::PopulateModel()
 {
-//  {  // two members
-//    sup::dto::AnyValue anyvalue = {
-//        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
-//    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
-//  }
+  //  {  // two members
+  //    sup::dto::AnyValue anyvalue = {
+  //        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType,
+  //        true}}}};
+  //    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+  //  }
 
-//  {  // Nested structure
-//    sup::dto::AnyValue two_scalars = {
-//        {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
-//    sup::dto::AnyValue anyvalue{{
-//        {"scalars", two_scalars},
-//    }};
-//    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
-//  }
+  //  {  // Nested structure
+  //    sup::dto::AnyValue two_scalars = {
+  //        {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
+  //    sup::dto::AnyValue anyvalue{{
+  //        {"scalars", two_scalars},
+  //    }};
+  //    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+  //  }
+}
+
+void EditorWidget::OnSelectionChanged(AnyValueItem *item)
+{
+  if(!item)
+  {
+    return;
+  }
+
+  m_actions->SetSelectedItem(item);
+
+  auto any_value = CreateAnyValue(*item);
+  auto str = sup::dto::AnyValueToJSONString(any_value, true);
+  m_text_edit->setText(QString::fromStdString(str));
 }
 
 }  // namespace anyvalueeditor
