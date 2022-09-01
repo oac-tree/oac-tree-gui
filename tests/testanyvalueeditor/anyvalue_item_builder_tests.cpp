@@ -98,7 +98,7 @@ TEST_F(AnyValueItemBuilderTests, FromScalar)
   }
 }
 
-//! Building AnyValueItem from AnyValue with a struct containing  two named scalars.
+//! Building AnyValueItem from AnyValue with an empty struct.
 
 TEST_F(AnyValueItemBuilderTests, FromEmptyStruct)
 {
@@ -116,11 +116,30 @@ TEST_F(AnyValueItemBuilderTests, FromEmptyStruct)
   EXPECT_FALSE(item->IsArray());
 }
 
+//! Building AnyValueItem from AnyValue with an empty struct.
+
+TEST_F(AnyValueItemBuilderTests, FromEmptyNamedStruct)
+{
+  sup::dto::AnyValue anyvalue = ::sup::dto::EmptyStruct("mystruct");
+  WriteJson(anyvalue, "EmptyStruct.json");
+
+  auto item = GetAnyValueItem(anyvalue);
+
+  EXPECT_EQ(item->GetType(), AnyValueStructItem::Type);
+  EXPECT_EQ(item->GetTotalItemCount(), 0);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string("mystruct"));
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
+  EXPECT_FALSE(item->IsScalar());
+  EXPECT_TRUE(item->IsStruct());
+  EXPECT_FALSE(item->IsArray());
+}
+
 //! Building AnyValueItem from AnyValue with a struct containing a single scalar.
 
 TEST_F(AnyValueItemBuilderTests, FromStructWithSingleScalar)
 {
   sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+  WriteJson(anyvalue, "StructWithSingleScalar.json");
 
   auto item = GetAnyValueItem(anyvalue);
 
@@ -228,7 +247,7 @@ TEST_F(AnyValueItemBuilderTests, FromTwoNestedStruct)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetAnyTypeName(), std::string());
+  EXPECT_EQ(item->GetAnyTypeName(), nested_name);
   EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 

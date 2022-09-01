@@ -52,7 +52,9 @@ void AnyValueItemBuilder::EmptyEpilog(const anyvalue_t *anyvalue)
 void AnyValueItemBuilder::StructProlog(const anyvalue_t *anyvalue)
 {
   std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_result.get() << std::endl;
-  AddItem(std::make_unique<AnyValueStructItem>());
+  auto struct_item = std::make_unique<AnyValueStructItem>();
+  struct_item->SetAnyTypeName(anyvalue->GetTypeName());
+  AddItem(std::move(struct_item));
 }
 
 void AnyValueItemBuilder::StructMemberSeparator()
