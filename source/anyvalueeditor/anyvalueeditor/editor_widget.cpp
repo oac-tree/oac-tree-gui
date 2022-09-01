@@ -47,7 +47,10 @@ EditorWidget::EditorWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_model->RegisterItem<AnyValueItem>();
+  m_model->RegisterItem<AnyValueStructItem>();
+  m_model->RegisterItem<AnyValueArrayItem>();
+  m_model->RegisterItem<AnyValueScalarItem>();
+
   PopulateModel();
 
   m_all_items_tree_view->SetApplicationModel(m_model.get());
@@ -60,9 +63,6 @@ EditorWidget::EditorWidget(QWidget *parent)
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
-  //  // disabling view from listening ApplicationModel for performance
-  //  m_all_items_tree_view->SetApplicationModel(nullptr);
-
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
   m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
 

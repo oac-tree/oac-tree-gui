@@ -39,7 +39,7 @@ public:
 
 TEST_F(DomainAnyValueBuilderTest, EmptyValue)
 {
-  AnyValueItem item;
+  AnyValueItem item("test");
 
   auto any_value = CreateAnyValue(item);
   EXPECT_TRUE(sup::dto::IsEmptyValue(any_value));
@@ -51,7 +51,7 @@ TEST_F(DomainAnyValueBuilderTest, EmptyValue)
 TEST_F(DomainAnyValueBuilderTest, FromScalar)
 {
   {  // from bool
-    AnyValueItem item;
+    AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kBooleanTypeName);
     item.SetData(true);
     sup::dto::AnyValue expected_anyvalue{sup::dto::BooleanType, true};
@@ -60,7 +60,7 @@ TEST_F(DomainAnyValueBuilderTest, FromScalar)
   }
 
   {  // from int32
-    AnyValueItem item;
+    AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kInt32TypeName);
     item.SetData(42);
     sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};

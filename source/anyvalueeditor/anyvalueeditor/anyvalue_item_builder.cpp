@@ -132,7 +132,6 @@ void AnyValueItemBuilder::ScalarEpilog(const anyvalue_t *anyvalue)
 void AnyValueItemBuilder::AddItem(std::unique_ptr<AnyValueItem> item)
 {
   auto item_ptr = item.get();
-  std::cout << "xxx 1.1" << m_current_item << " " << item_ptr << std::endl;
 
   if (!m_result)
   {
@@ -146,18 +145,19 @@ void AnyValueItemBuilder::AddItem(std::unique_ptr<AnyValueItem> item)
 
   auto child = m_current_item->InsertItem(std::move(item), mvvm::TagIndex::Append());
 
+  // we are in member mode
   if (!m_member_name.empty())
   {
     child->SetDisplayName(m_member_name);
   }
 
+  // we are in array mode
   if (m_index >= 0)
   {
     child->SetDisplayName("index" + std::to_string(m_index));
   }
 
   m_current_item = item_ptr;
-  std::cout << "xxx" << m_current_item << std::endl;
 }
 
 }  // namespace anyvalueeditor

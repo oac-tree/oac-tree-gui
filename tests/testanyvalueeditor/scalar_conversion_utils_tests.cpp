@@ -40,7 +40,7 @@ TEST_F(ScalarConversionUtilsTests, SetDataFromScalarBool)
 {
   sup::dto::AnyValue anyvalue{sup::dto::BooleanType};
   anyvalue = true;
-  AnyValueItem item;
+  AnyValueScalarItem item;
   SetDataFromScalar(anyvalue, item);
   EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
   EXPECT_TRUE(item.Data<bool>());
@@ -54,7 +54,7 @@ TEST_F(ScalarConversionUtilsTests, SetDataFromScalarInt)
 {
   sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type};
   anyvalue = 42;
-  AnyValueItem item;
+  AnyValueScalarItem item;
   SetDataFromScalar(anyvalue, item);
   EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
   EXPECT_EQ(item.Data<int>(), 42);
@@ -67,7 +67,7 @@ TEST_F(ScalarConversionUtilsTests, SetDataFromScalarInt)
 TEST_F(ScalarConversionUtilsTests, GetAnyValueFromScalar)
 {
   {  // boolean
-    AnyValueItem item;
+    AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kBooleanTypeName);
     item.SetData(true);
 
@@ -77,7 +77,7 @@ TEST_F(ScalarConversionUtilsTests, GetAnyValueFromScalar)
   }
 
   {  // int32
-    AnyValueItem item;
+    AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kInt32TypeName);
     item.SetData(42);
 
@@ -87,7 +87,7 @@ TEST_F(ScalarConversionUtilsTests, GetAnyValueFromScalar)
   }
 
   {  // double
-    AnyValueItem item;
+    AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kFloat64TypeName);
     item.SetData(42.1);
 
@@ -97,9 +97,7 @@ TEST_F(ScalarConversionUtilsTests, GetAnyValueFromScalar)
   }
 
   {  // attempt to construct a scalar from the struct
-    AnyValueItem item;
-    item.SetAnyTypeName(anyvalueeditor::kStructTypeName);
-
+    AnyValueStructItem item;
     EXPECT_THROW(GetAnyValueFromScalar(item), std::runtime_error);
   }
 }

@@ -31,21 +31,11 @@ static inline const int kAnyTypeNameRole = 10;  // role to store type name
 // AnyValueItem
 // ----------------------------------------------------------------------------
 
-AnyValueItem::AnyValueItem(const std::string& item_type) : CompoundItem(item_type)
-{
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
-}
+AnyValueItem::AnyValueItem(const std::string& item_type) : CompoundItem(item_type) {}
 
 void AnyValueItem::SetAnyTypeName(const std::string& type_name)
 {
-  // saving type_name under own role
   SetData(type_name, kAnyTypeNameRole);
-
-  if (IsScalar())
-  {
-    // for scalars we set variant initialised to the underlying type
-    SetData(GetVariantForAnyValueTypeName(type_name));
-  }
 }
 
 std::string AnyValueItem::GetAnyTypeName() const
@@ -55,12 +45,12 @@ std::string AnyValueItem::GetAnyTypeName() const
 
 bool AnyValueItem::IsScalar() const
 {
-  return IsScalarTypeName(GetAnyTypeName());
+  return false;
 }
 
 bool AnyValueItem::IsStruct() const
 {
-  return IsStructTypeName(GetAnyTypeName());
+  return false;
 }
 
 bool AnyValueItem::IsArray() const
@@ -77,17 +67,13 @@ AnyValueScalarItem::AnyValueScalarItem() : AnyValueItem(Type) {}
 void AnyValueScalarItem::SetAnyTypeName(const std::string& type_name)
 {
   AnyValueItem::SetAnyTypeName(type_name);
+  // setting default value for given type
   SetData(GetVariantForAnyValueTypeName(type_name));
 }
 
 bool AnyValueScalarItem::IsScalar() const
 {
   return true;
-}
-
-bool AnyValueScalarItem::IsStruct() const
-{
-  return false;
 }
 
 // ----------------------------------------------------------------------------
@@ -99,12 +85,7 @@ AnyValueStructItem::AnyValueStructItem() : AnyValueItem(Type)
   SetAnyTypeName(kStructTypeName);
   SetDisplayName("AnyValue");
 
-  //  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
-}
-
-bool AnyValueStructItem::IsScalar() const
-{
-  return false;
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
 
 bool AnyValueStructItem::IsStruct() const
@@ -120,17 +101,12 @@ AnyValueArrayItem::AnyValueArrayItem() : AnyValueItem(Type)
 {
   SetAnyTypeName(kArrayTypeName);
   SetDisplayName("AnyValue");
-//  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(kChildren), /*as_default*/ true);
 }
 
-bool AnyValueArrayItem::IsScalar() const
+bool AnyValueArrayItem::IsArray() const
 {
-  return false;
-}
-
-bool AnyValueArrayItem::IsStruct() const
-{
-  return false;
+  return true;
 }
 
 }  // namespace anyvalueeditor

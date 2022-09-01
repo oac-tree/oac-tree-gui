@@ -37,7 +37,8 @@ AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObj
 
 void AnyValueEditorActions::OnAddAnyValue()
 {
-  m_model->InsertItem<AnyValueItem>();
+  // FIXME restore
+//  m_model->InsertItem<AnyValueItem>();
 }
 
 void AnyValueEditorActions::OnAddField()
@@ -47,15 +48,16 @@ void AnyValueEditorActions::OnAddField()
     return;
   }
 
-  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
-  if (dialog.exec() == QDialog::Accepted)
-  {
-    auto context = dialog.GetFieldContext();
-    auto parent = m_selected_item->GetParent();
-    auto field = m_model->InsertItem<AnyValueItem>(parent, m_selected_item->GetTagIndex().Next());
-    field->SetDisplayName(context.name);
-    field->SetAnyTypeName(context.subtype);
-  }
+  // FIXME restore
+//  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
+//  if (dialog.exec() == QDialog::Accepted)
+//  {
+//    auto context = dialog.GetFieldContext();
+//    auto parent = m_selected_item->GetParent();
+//    auto field = m_model->InsertItem<AnyValueItem>(parent, m_selected_item->GetTagIndex().Next());
+//    field->SetDisplayName(context.name);
+//    field->SetAnyTypeName(context.subtype);
+//  }
 }
 
 void AnyValueEditorActions::OnInsertField() {}

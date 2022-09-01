@@ -38,9 +38,10 @@ public:
 TEST_F(AnyValueItemTest, InitialState)
 {
   {  // AnyValueItem
-    AnyValueItem item;
+    AnyValueItem item("test");
     EXPECT_FALSE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
+    EXPECT_FALSE(item.IsArray());
     EXPECT_TRUE(item.GetAnyTypeName().empty());
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
@@ -51,6 +52,7 @@ TEST_F(AnyValueItemTest, InitialState)
     AnyValueScalarItem item;
     EXPECT_TRUE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
+    EXPECT_FALSE(item.IsArray());
     EXPECT_TRUE(item.GetAnyTypeName().empty());
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
@@ -61,6 +63,7 @@ TEST_F(AnyValueItemTest, InitialState)
     AnyValueStructItem item;
     EXPECT_FALSE(item.IsScalar());
     EXPECT_TRUE(item.IsStruct());
+    EXPECT_FALSE(item.IsArray());
     EXPECT_EQ(item.GetAnyTypeName(), kStructTypeName);
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
@@ -71,6 +74,7 @@ TEST_F(AnyValueItemTest, InitialState)
     AnyValueArrayItem item;
     EXPECT_FALSE(item.IsScalar());
     EXPECT_FALSE(item.IsStruct());
+    EXPECT_TRUE(item.IsArray());
     EXPECT_EQ(item.GetAnyTypeName(), kArrayTypeName);
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
@@ -80,14 +84,27 @@ TEST_F(AnyValueItemTest, InitialState)
 
 TEST_F(AnyValueItemTest, SetAnyTypeName)
 {
-  AnyValueItem item;
+  {  // AnyValueScalarItem
+    AnyValueScalarItem item;
 
-  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+    item.SetAnyTypeName(sup::dto::kInt8TypeName);
 
-  EXPECT_TRUE(item.IsScalar());
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-  EXPECT_EQ(item.Data<int>(), 0);
-  EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));
-  EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));
-  EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
+    EXPECT_TRUE(item.IsScalar());
+    EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+    EXPECT_EQ(item.Data<int>(), 0);
+    EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));
+    EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));
+    EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
+  }
+
+  {  // AnyValueStructItem
+    AnyValueStructItem item;
+
+    item.SetAnyTypeName("abc");
+
+    EXPECT_FALSE(item.IsScalar());
+    EXPECT_TRUE(item.IsStruct());
+    EXPECT_EQ(item.GetAnyTypeName(), std::string("abc"));
+    EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
+  }
 }

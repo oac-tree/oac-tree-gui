@@ -33,7 +33,7 @@ class AnyValueItem : public mvvm::CompoundItem
 public:
   static inline const std::string Type = "AnyValue";
 
-  explicit AnyValueItem(const std::string& item_type = Type);
+  explicit AnyValueItem(const std::string& item_type);
 
   virtual void SetAnyTypeName(const std::string& type_name);
 
@@ -56,7 +56,6 @@ public:
   void SetAnyTypeName(const std::string& type_name) override;
 
   bool IsScalar() const override;
-  bool IsStruct() const override;
 };
 
 //! The item to represent AnyValue struct.
@@ -68,7 +67,6 @@ public:
 
   explicit AnyValueStructItem();
 
-  bool IsScalar() const override;
   bool IsStruct() const override;
 };
 
@@ -81,8 +79,7 @@ public:
 
   explicit AnyValueArrayItem();
 
-  bool IsScalar() const override;
-  bool IsStruct() const override;
+  bool IsArray() const override;
 };
 
 }  // namespace anyvalueeditor
