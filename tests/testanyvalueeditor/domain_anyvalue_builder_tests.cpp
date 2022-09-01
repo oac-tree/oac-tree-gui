@@ -68,3 +68,13 @@ TEST_F(DomainAnyValueBuilderTest, FromScalar)
     EXPECT_EQ(any_value, expected_anyvalue);
   }
 }
+
+TEST_F(DomainAnyValueBuilderTest, FromEmptyStruct)
+{
+  AnyValueStructItem item;
+
+  sup::dto::AnyValue expected_anyvalue{::sup::dto::EmptyStruct()};
+
+  auto any_value = CreateAnyValue(item);
+//  EXPECT_EQ(any_value, expected_anyvalue);
+}

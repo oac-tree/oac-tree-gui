@@ -59,6 +59,10 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       {
         ProcessScalarItem(node);
       }
+      else if (node.m_item->IsStruct())
+      {
+        ProcessStructItem(node);
+      }
       else
       {
         m_stack.pop();
@@ -72,6 +76,33 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
     // stack. We don't need it anymore.
     m_builder.AddMember(node.m_name, GetAnyValueFromScalar(*node.m_item));
     m_stack.pop();
+  }
+
+  //! Process PVXS value representing a struct.
+  void ProcessStructItem(Node& node)
+  {
+    if (node.m_is_visited)
+    {
+      // All children have been already added to the struct. It's time to tell the builder
+      // that the struct has to be added to its own parent.
+      m_builder.EndStruct(node.m_name);
+      m_stack.pop();  // we don't need the node anymore
+    }
+    else
+    {
+      // We found a struct which we haven't seen before. Let's tell the builder to create
+      // underlying AnyValue, and let's add children to the stack.
+      // We are not poping struct node, we will get back to it later.
+      m_builder.StartStruct(node.m_item->GetDisplayName());
+      node.m_is_visited = true;
+
+      //      auto children = GetChildren(node.m_value);
+      //      // iteration in reverse order
+      //      for (auto it = children.rbegin(); it != children.rend(); ++it)
+      //      {
+      //        m_stack.push({*it, node.m_value.nameOf(*it)});
+      //      }
+    }
   }
 };
 
