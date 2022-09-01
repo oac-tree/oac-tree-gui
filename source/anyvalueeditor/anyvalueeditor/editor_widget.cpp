@@ -30,6 +30,8 @@
 
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QTextEdit>
 
 namespace anyvalueeditor
 {
@@ -40,10 +42,19 @@ EditorWidget::EditorWidget(QWidget *parent)
     , m_actions(new AnyValueEditorActions(m_model.get(), this))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
     , m_all_items_tree_view(new mvvm::AllItemsTreeView)
+    , m_text_edit(new QTextEdit)
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
-  layout->addWidget(m_all_items_tree_view);
+
+  auto hlayout = new QHBoxLayout;
+  hlayout->addWidget(m_all_items_tree_view);
+  hlayout->addWidget(m_text_edit);
+  hlayout->setContentsMargins(0, 0, 0, 0);
+  hlayout->setSpacing(0);
+
+  layout->addLayout(hlayout);
+
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 

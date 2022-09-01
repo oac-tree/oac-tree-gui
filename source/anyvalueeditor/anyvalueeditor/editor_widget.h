@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <memory>
 
+class QTextEdit;
+
 namespace mvvm
 {
 class ApplicationModel;
@@ -52,6 +54,7 @@ private:
   AnyValueEditorActions* m_actions{nullptr};
   AnyValueEditorToolBar* m_tool_bar{nullptr};
   mvvm::AllItemsTreeView* m_all_items_tree_view{nullptr};
+  QTextEdit* m_text_edit{nullptr};
 };
 
 }  // namespace anyvalueeditor

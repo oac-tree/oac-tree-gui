@@ -50,7 +50,7 @@ MainWindow::MainWindow() : m_models(std::make_unique<ApplicationModels>())
 
   InitApplication();
 
-  m_xml_view->SetModel(m_models->GetSequencerModel());
+  m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModel(m_models->GetSequencerModel());
   m_monitor_view->SetApplicationModels(m_models.get());
   m_settings_view->SetApplicationModels(m_models.get());
@@ -93,8 +93,8 @@ void MainWindow::InitComponents()
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
 
-  m_xml_view = new SequencerExplorerView;
-  m_tab_widget->addWidget(m_xml_view, "Explore",
+  m_explorer_view = new SequencerExplorerView;
+  m_tab_widget->addWidget(m_explorer_view, "Explore",
                           styleutils::GetIcon("file-search-outline-light.svg"));
 
   m_composer_view = new SequencerComposerView;

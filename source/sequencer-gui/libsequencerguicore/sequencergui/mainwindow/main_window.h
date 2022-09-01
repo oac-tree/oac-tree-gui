@@ -65,7 +65,7 @@ private:
   ActionManager* m_action_manager{nullptr};
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 
-  SequencerExplorerView* m_xml_view{nullptr};
+  SequencerExplorerView* m_explorer_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
   SequencerMonitorView* m_monitor_view{nullptr};
   SettingsView* m_settings_view{nullptr};
