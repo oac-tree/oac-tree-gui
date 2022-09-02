@@ -40,18 +40,18 @@ std::unique_ptr<AnyValueItem> AnyValueItemBuilder::MoveAnyValueItem()
 
 void AnyValueItemBuilder::EmptyProlog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddEmptyProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddEmptyProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
   AddItem(std::make_unique<AnyValueEmptyItem>());
 }
 
 void AnyValueItemBuilder::EmptyEpilog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddEmptyEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddEmptyEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
 }
 
 void AnyValueItemBuilder::StructProlog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_result.get() << std::endl;
+//  std::cout << "AddStructProlog() value:" << anyvalue << " item:" << m_result.get() << std::endl;
   auto struct_item = std::make_unique<AnyValueStructItem>();
   struct_item->SetAnyTypeName(anyvalue->GetTypeName());
   AddItem(std::move(struct_item));
@@ -59,13 +59,13 @@ void AnyValueItemBuilder::StructProlog(const anyvalue_t *anyvalue)
 
 void AnyValueItemBuilder::StructMemberSeparator()
 {
-  std::cout << "AddStructMemberSeparator() "
-            << " item:" << m_current_item << std::endl;
+//  std::cout << "AddStructMemberSeparator() "
+//            << " item:" << m_current_item << std::endl;
 }
 
 void AnyValueItemBuilder::StructEpilog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddStructEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddStructEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
 }
 
 //! Append new child with the display name corresponding to `member_name`.
@@ -75,7 +75,7 @@ void AnyValueItemBuilder::MemberProlog(const anyvalue_t *anyvalue, const std::st
 {
   m_member_name = member_name;
   //  (void)anyvalue;
-  std::cout << "AddMemberProlog() " << m_current_item << " " << member_name << std::endl;
+//  std::cout << "AddMemberProlog() " << m_current_item << " " << member_name << std::endl;
   //  auto child = m_current_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
   //  child->SetDisplayName(member_name);
   //  m_current_item = child;
@@ -84,22 +84,22 @@ void AnyValueItemBuilder::MemberProlog(const anyvalue_t *anyvalue, const std::st
 void AnyValueItemBuilder::MemberEpilog(const anyvalue_t *anyvalue, const std::string &member_name)
 {
   (void)anyvalue;
-  std::cout << "AddMemberEpilog() " << m_current_item << " " << member_name << std::endl;
+//  std::cout << "AddMemberEpilog() " << m_current_item << " " << member_name << std::endl;
   m_member_name.clear();
   m_current_item = static_cast<AnyValueItem *>(m_current_item->GetParent());
 }
 
 void AnyValueItemBuilder::ArrayProlog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
   m_index = 0;
   AddItem(std::make_unique<AnyValueArrayItem>());
 }
 
 void AnyValueItemBuilder::ArrayElementSeparator()
 {
-  std::cout << "AddArrayElementSeparator() "
-            << " item:" << m_current_item << std::endl;
+//  std::cout << "AddArrayElementSeparator() "
+//            << " item:" << m_current_item << std::endl;
 
   m_index++;
   m_current_item = static_cast<AnyValueItem *>(m_current_item->GetParent());
@@ -111,14 +111,14 @@ void AnyValueItemBuilder::ArrayElementSeparator()
 
 void AnyValueItemBuilder::ArrayEpilog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddArrayEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddArrayEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
   m_index = -1;
   m_current_item = static_cast<AnyValueItem *>(m_current_item->GetParent());
 }
 
 void AnyValueItemBuilder::ScalarProlog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddScalarProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddScalarProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
 
   auto scalar = std::make_unique<AnyValueScalarItem>();
   scalar->SetAnyTypeName(anyvalue->GetTypeName());
@@ -129,7 +129,7 @@ void AnyValueItemBuilder::ScalarProlog(const anyvalue_t *anyvalue)
 
 void AnyValueItemBuilder::ScalarEpilog(const anyvalue_t *anyvalue)
 {
-  std::cout << "AddScalarEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
+//  std::cout << "AddScalarEpilog() value:" << anyvalue << " item:" << m_current_item << std::endl;
 }
 
 void AnyValueItemBuilder::AddItem(std::unique_ptr<AnyValueItem> item)

@@ -76,6 +76,8 @@ EditorWidget::EditorWidget(QWidget *parent)
   auto highlighter = new QSourceHighlite::QSourceHighliter(m_text_edit->document());
   highlighter->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJSON);
 
+//  highlighter->setTheme((QSourceHighlite::QSourceHighliter::Themes)1);
+
   auto on_model_changed = [this]() { UpdateJson(GetSelectedItem()); };
   m_model_changed_controller =
       std::make_unique<mvvm::ModelHasChangedController>(m_model.get(), on_model_changed);
@@ -90,6 +92,10 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 
   //   setting view back to the model
   m_all_items_tree_view->SetApplicationModel(m_model.get());
+
+  // setting the editor
+  auto str = sup::dto::AnyValueToJSONString(anyvalue, true);
+  m_text_edit->setText(QString::fromStdString(str));
 }
 
 AnyValueItem *EditorWidget::GetSelectedItem()
