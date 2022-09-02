@@ -298,7 +298,8 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
-  EXPECT_EQ(item->GetDisplayName(),kArrayTypeName);
+  EXPECT_EQ(item->GetDisplayName(), kArrayTypeName);
+  EXPECT_EQ(item->GetType(), AnyValueArrayItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
 
   // first branch
@@ -314,4 +315,42 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
   EXPECT_EQ(child1->GetDisplayName(), "index1");
   EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);
   EXPECT_EQ(child1->Data<int>(), 2);
+}
+
+//! Building AnyValueItem from AnyValue containing an array of integers.
+
+TEST_F(AnyValueItemBuilderTests, StructWithArrayOfIntegers)
+{
+  sup::dto::AnyValue array =
+      sup::dto::ArrayValue({{sup::dto::SignedInteger64Type, 1}, 2}, "my_array");
+
+  sup::dto::AnyValue anyvalue{{{"field", array}}};
+  WriteJson(anyvalue, "StructWithArrayOfIntegers.json");
+
+  auto item = GetAnyValueItem(anyvalue);
+
+  EXPECT_EQ(item->GetTotalItemCount(), 1);
+  EXPECT_EQ(item->GetDisplayName(), kStructTypeName);
+  EXPECT_EQ(item->GetType(), AnyValueStructItem::Type);
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
+
+  // array branch
+  auto child0 = item->GetItem("", 0);
+  EXPECT_EQ(child0->GetTotalItemCount(), 2);
+  EXPECT_EQ(child0->GetDisplayName(), "field");
+  EXPECT_EQ(child0->GetType(), AnyValueArrayItem::Type);
+  EXPECT_FALSE(mvvm::utils::IsValid(child0->Data()));
+
+  // elements
+  auto element0 = child0->GetItem("", 0);
+  EXPECT_EQ(element0->GetTotalItemCount(), 0);
+  EXPECT_EQ(element0->GetDisplayName(), "index0");
+  EXPECT_EQ(mvvm::utils::TypeName(element0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(element0->Data<int>(), 1);
+
+  auto element1 = child0->GetItem("", 1);
+  EXPECT_EQ(element1->GetTotalItemCount(), 0);
+  EXPECT_EQ(element1->GetDisplayName(), "index1");
+  EXPECT_EQ(mvvm::utils::TypeName(element1->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(element1->Data<int>(), 2);
 }

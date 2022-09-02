@@ -75,7 +75,7 @@ void AnyValueItemBuilder::MemberProlog(const anyvalue_t *anyvalue, const std::st
 {
   m_member_name = member_name;
   //  (void)anyvalue;
-  //  std::cout << "AddMemberProlog() " << m_current_item << " " << member_name << std::endl;
+  std::cout << "AddMemberProlog() " << m_current_item << " " << member_name << std::endl;
   //  auto child = m_current_item->InsertItem<AnyValueItem>(mvvm::TagIndex::Append());
   //  child->SetDisplayName(member_name);
   //  m_current_item = child;
@@ -148,10 +148,13 @@ void AnyValueItemBuilder::AddItem(std::unique_ptr<AnyValueItem> item)
 
   auto child = m_current_item->InsertItem(std::move(item), mvvm::TagIndex::Append());
 
+  // FIXME find elegant alternative to the crap below
+
   // we are in member mode
   if (!m_member_name.empty())
   {
     child->SetDisplayName(m_member_name);
+    m_member_name.clear();
   }
   else if (m_index >= 0)
   {
