@@ -69,6 +69,7 @@ EditorWidget::EditorWidget(QWidget *parent)
   PopulateModel();
 
   m_component_provider->SetApplicationModel(m_model.get());
+  m_all_items_tree_view->expandAll();
   auto on_selected = [this](auto) { UpdateJson(GetSelectedItem()); };
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           on_selected);
@@ -89,14 +90,20 @@ EditorWidget::EditorWidget(QWidget *parent)
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
+  m_component_provider->SetApplicationModel(nullptr);
+
   auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
   auto item =
       m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
   item->SetDisplayName("AnyValue");
 
+  m_component_provider->SetApplicationModel(m_model.get());
+
   // setting the editor
   auto str = sup::dto::AnyValueToJSONString(anyvalue, true);
   m_text_edit->setText(QString::fromStdString(str));
+
+  m_all_items_tree_view->expandAll();
 }
 
 AnyValueItem *EditorWidget::GetSelectedItem()
