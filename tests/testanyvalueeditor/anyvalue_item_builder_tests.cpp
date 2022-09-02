@@ -121,7 +121,7 @@ TEST_F(AnyValueItemBuilderTests, FromEmptyStruct)
 TEST_F(AnyValueItemBuilderTests, FromEmptyNamedStruct)
 {
   sup::dto::AnyValue anyvalue = ::sup::dto::EmptyStruct("mystruct");
-  WriteJson(anyvalue, "EmptyStruct.json");
+  WriteJson(anyvalue, "EmptyNamedStruct.json");
 
   auto item = GetAnyValueItem(anyvalue);
 

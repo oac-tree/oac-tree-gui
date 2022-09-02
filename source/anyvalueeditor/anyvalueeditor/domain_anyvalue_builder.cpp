@@ -96,12 +96,13 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       m_builder.StartStruct(node.m_item->GetAnyTypeName());
       node.m_is_visited = true;
 
-      //      auto children = GetChildren(node.m_value);
-      //      // iteration in reverse order
-      //      for (auto it = children.rbegin(); it != children.rend(); ++it)
-      //      {
-      //        m_stack.push({*it, node.m_value.nameOf(*it)});
-      //      }
+      auto children = node.m_item->GetItems<AnyValueItem>("");
+      // iteration in reverse order
+      for (auto it = children.rbegin(); it != children.rend(); ++it)
+      {
+        Node node{const_cast<const AnyValueItem*>(*it), (*it)->GetDisplayName()};
+        m_stack.push(node);
+      }
     }
   }
 };
