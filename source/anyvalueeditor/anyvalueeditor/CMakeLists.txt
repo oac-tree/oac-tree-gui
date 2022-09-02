@@ -34,4 +34,6 @@ target_sources(${library_name} PRIVATE
   scalar_conversion_utils.h
 )
 
+add_subdirectory(highlighter)
+
 target_include_directories(${library_name} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..$<SEMICOLON>${SEQUENCERGUI_AUTOGEN_DIR}>)

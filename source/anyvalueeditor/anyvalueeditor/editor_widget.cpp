@@ -23,6 +23,7 @@
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/anyvalue_item.h>
 #include <anyvalueeditor/conversion_utils.h>
+#include <anyvalueeditor/highlighter/qsourcehighliter.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <sup/dto/anyvalue.h>
@@ -66,6 +67,13 @@ EditorWidget::EditorWidget(QWidget *parent)
   auto on_selected = [this](auto item)
   { OnSelectionChanged(dynamic_cast<AnyValueItem *>(const_cast<mvvm::SessionItem *>(item))); };
   connect(m_all_items_tree_view, &mvvm::AllItemsTreeView::SelectedItemChanged, this, on_selected);
+
+  QFont textFont("Monospace");
+  m_text_edit->setFont(textFont);
+  m_text_edit->setLineWrapMode(QTextEdit::NoWrap);
+
+  auto highlighter = new QSourceHighlite::QSourceHighliter(m_text_edit->document());
+  highlighter->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJSON);
 }
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
