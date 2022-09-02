@@ -21,6 +21,7 @@
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 
 #include <QObject>
+#include <functional>
 
 namespace mvvm
 {
@@ -39,23 +40,21 @@ class AnyValueEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent = nullptr);
+  using callback_t = std::function<AnyValueItem*()>;
+  AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent,
+                                 callback_t get_selected_callback);
 
   void OnAddAnyValueStruct(bool to_selected);
+
   void OnAddAnyValueArray(bool to_selected);
+
   void OnAddAnyValueScalar(const std::string& scalar_type, bool to_selected);
-
-  void OnAddField();
-
-  void OnInsertField();
 
   void OnRemoveSelected();
 
-  void SetSelectedItem(AnyValueItem* item);
-
 private:
   mvvm::ApplicationModel* m_model{nullptr};
-  AnyValueItem* m_selected_item{nullptr};
+  callback_t m_get_selected_callback;
 };
 
 }  // namespace anyvalueeditor

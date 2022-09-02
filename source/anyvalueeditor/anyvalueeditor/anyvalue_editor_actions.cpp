@@ -31,8 +31,9 @@
 namespace anyvalueeditor
 {
 
-AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent)
-    : QObject(parent), m_model(model)
+AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent,
+                                             callback_t get_selected_callback)
+    : QObject(parent), m_model(model), m_get_selected_callback(get_selected_callback)
 {
 }
 
@@ -40,7 +41,7 @@ void AnyValueEditorActions::OnAddAnyValueStruct(bool to_selected)
 {
   try
   {
-    auto parent = to_selected ? m_selected_item : m_model->GetRootItem();
+    auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       m_model->InsertItem<AnyValueStructItem>(parent, mvvm::TagIndex::Append())
@@ -57,7 +58,7 @@ void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
 {
   try
   {
-    auto parent = to_selected ? m_selected_item : m_model->GetRootItem();
+    auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       m_model->InsertItem<AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
@@ -74,7 +75,7 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
 {
   try
   {
-    auto parent = to_selected ? m_selected_item : m_model->GetRootItem();
+    auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       auto scalar = m_model->InsertItem<AnyValueScalarItem>(parent, mvvm::TagIndex::Append());
@@ -88,39 +89,13 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
   }
 }
 
-void AnyValueEditorActions::OnAddField()
-{
-  if (!m_selected_item)
-  {
-    return;
-  }
-
-  // FIXME restore
-  //  AddFieldDialog dialog(mvvm::utils::FindMainWindow());
-  //  if (dialog.exec() == QDialog::Accepted)
-  //  {
-  //    auto context = dialog.GetFieldContext();
-  //    auto parent = m_selected_item->GetParent();
-  //    auto field = m_model->InsertItem<AnyValueItem>(parent,
-  //    m_selected_item->GetTagIndex().Next()); field->SetDisplayName(context.name);
-  //    field->SetAnyTypeName(context.subtype);
-  //  }
-}
-
-void AnyValueEditorActions::OnInsertField() {}
-
 void AnyValueEditorActions::OnRemoveSelected()
 {
-  if (!m_selected_item)
+  if (!m_get_selected_callback())
   {
     return;
   }
-  m_model->RemoveItem(m_selected_item);
-}
-
-void AnyValueEditorActions::SetSelectedItem(AnyValueItem* item)
-{
-  m_selected_item = item;
+  m_model->RemoveItem(m_get_selected_callback());
 }
 
 }  // namespace anyvalueeditor

@@ -25,6 +25,7 @@
 #include <anyvalueeditor/conversion_utils.h>
 #include <anyvalueeditor/highlighter/qsourcehighliter.h>
 #include <mvvm/model/application_model.h>
+#include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
@@ -40,7 +41,8 @@ namespace anyvalueeditor
 EditorWidget::EditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
-    , m_actions(new AnyValueEditorActions(m_model.get(), this))
+    , m_actions(
+          new AnyValueEditorActions(m_model.get(), this, [this]() { return GetSelectedItem(); }))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
     , m_all_items_tree_view(new mvvm::AllItemsTreeView)
     , m_text_edit(new QTextEdit)
@@ -64,8 +66,7 @@ EditorWidget::EditorWidget(QWidget *parent)
   PopulateModel();
 
   m_all_items_tree_view->SetApplicationModel(m_model.get());
-  auto on_selected = [this](auto item)
-  { OnSelectionChanged(dynamic_cast<AnyValueItem *>(const_cast<mvvm::SessionItem *>(item))); };
+  auto on_selected = [this](auto) { UpdateJson(GetSelectedItem()); };
   connect(m_all_items_tree_view, &mvvm::AllItemsTreeView::SelectedItemChanged, this, on_selected);
 
   QFont textFont("Monospace");
@@ -74,6 +75,10 @@ EditorWidget::EditorWidget(QWidget *parent)
 
   auto highlighter = new QSourceHighlite::QSourceHighliter(m_text_edit->document());
   highlighter->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJSON);
+
+  auto on_model_changed = [this]() { UpdateJson(GetSelectedItem()); };
+  m_model_changed_controller =
+      std::make_unique<mvvm::ModelHasChangedController>(m_model.get(), on_model_changed);
 }
 
 void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
@@ -85,6 +90,11 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 
   //   setting view back to the model
   m_all_items_tree_view->SetApplicationModel(m_model.get());
+}
+
+AnyValueItem *EditorWidget::GetSelectedItem()
+{
+  return m_all_items_tree_view->GetSelected<AnyValueItem>();
 }
 
 EditorWidget::~EditorWidget() = default;
@@ -108,15 +118,23 @@ void EditorWidget::PopulateModel()
   //  }
 }
 
-void EditorWidget::OnSelectionChanged(AnyValueItem *item)
+// void EditorWidget::OnSelectionChanged(AnyValueItem *item)
+//{
+//   if (!item)
+//   {
+//     return;
+//   }
+
+//  m_actions->SetSelectedItem(item);
+
+//}
+
+void EditorWidget::UpdateJson(AnyValueItem *item)
 {
-  if(!item)
+  if (!item)
   {
     return;
   }
-
-  m_actions->SetSelectedItem(item);
-
   auto any_value = CreateAnyValue(*item);
   auto str = sup::dto::AnyValueToJSONString(any_value, true);
   m_text_edit->setText(QString::fromStdString(str));

@@ -30,6 +30,7 @@ namespace mvvm
 {
 class ApplicationModel;
 class AllItemsTreeView;
+class ModelHasChangedController;
 }  // namespace mvvm
 
 namespace anyvalueeditor
@@ -48,9 +49,11 @@ public:
 
   void ImportAnyValueFromFile(const QString& filename);
 
+  AnyValueItem* GetSelectedItem();
+
 private:
   void PopulateModel();
-  void OnSelectionChanged(AnyValueItem* item);
+  void UpdateJson(AnyValueItem *item);
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
 
@@ -59,6 +62,7 @@ private:
   mvvm::AllItemsTreeView* m_all_items_tree_view{nullptr};
   QTextEdit* m_text_edit{nullptr};
   QSplitter* m_splitter{nullptr};
+  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
 };
 
 }  // namespace anyvalueeditor
