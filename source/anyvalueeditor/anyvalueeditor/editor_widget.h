@@ -25,12 +25,14 @@
 
 class QTextEdit;
 class QSplitter;
+class QTreeView;
 
 namespace mvvm
 {
 class ApplicationModel;
 class AllItemsTreeView;
 class ModelHasChangedController;
+class ItemViewComponentProvider;
 }  // namespace mvvm
 
 namespace anyvalueeditor
@@ -59,10 +61,11 @@ private:
 
   AnyValueEditorActions* m_actions{nullptr};
   AnyValueEditorToolBar* m_tool_bar{nullptr};
-  mvvm::AllItemsTreeView* m_all_items_tree_view{nullptr};
+  QTreeView* m_all_items_tree_view{nullptr};
   QTextEdit* m_text_edit{nullptr};
   QSplitter* m_splitter{nullptr};
   std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 
 }  // namespace anyvalueeditor
