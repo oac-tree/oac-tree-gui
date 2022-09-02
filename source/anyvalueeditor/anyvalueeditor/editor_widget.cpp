@@ -135,9 +135,19 @@ void EditorWidget::UpdateJson(AnyValueItem *item)
   {
     return;
   }
-  auto any_value = CreateAnyValue(*item);
-  auto str = sup::dto::AnyValueToJSONString(any_value, true);
-  m_text_edit->setText(QString::fromStdString(str));
+
+  try
+  {
+    auto any_value = CreateAnyValue(*item);
+    auto str = sup::dto::AnyValueToJSONString(any_value, true);
+    m_text_edit->setText(QString::fromStdString(str));
+  }
+  catch (const std::exception &ex)
+  {
+    // Current simplified approach calls the method `UpdateJson` on every
+    // model change. If model is unconsistent, CreateAnyValue merhod will fail.
+    m_text_edit->clear();
+  }
 }
 
 }  // namespace anyvalueeditor
