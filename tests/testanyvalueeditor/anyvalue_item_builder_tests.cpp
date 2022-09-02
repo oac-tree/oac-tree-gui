@@ -293,6 +293,7 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
 {
   sup::dto::AnyValue anyvalue =
       sup::dto::ArrayValue({{sup::dto::SignedInteger64Type, 1}, 2}, "my_array_t");
+  WriteJson(anyvalue, "ArrayOfIntegers.json");
 
   auto item = GetAnyValueItem(anyvalue);
 
