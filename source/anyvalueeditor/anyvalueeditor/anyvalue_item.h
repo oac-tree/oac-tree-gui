@@ -20,7 +20,6 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_H_
 
-
 #include <mvvm/model/compound_item.h>
 
 namespace anyvalueeditor
@@ -78,6 +77,9 @@ public:
   explicit AnyValueStructItem();
 
   bool IsStruct() const override;
+
+  AnyValueScalarItem* AddScalarField(const std::string& field_name, const std::string& field_type,
+                                     const variant_t& value);
 };
 
 //! The item to represent AnyValue array.

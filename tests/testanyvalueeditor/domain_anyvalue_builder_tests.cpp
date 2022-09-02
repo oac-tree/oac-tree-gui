@@ -87,15 +87,26 @@ TEST_F(DomainAnyValueBuilderTest, FromEmptyStruct)
   }
 }
 
-TEST_F(DomainAnyValueBuilderTest, FromStructWithSingleField)
+TEST_F(DomainAnyValueBuilderTest, FromStructWithSingleScalar)
 {
   AnyValueStructItem item;
-  auto scalar = item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
-  scalar->SetAnyTypeName(sup::dto::kInt32TypeName);
-  scalar->SetData(42);
-  scalar->SetDisplayName("signed");
+  item.AddScalarField("signed", sup::dto::kInt32TypeName, 42);
 
   sup::dto::AnyValue expected_anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+  auto any_value = CreateAnyValue(item);
+  EXPECT_EQ(any_value, expected_anyvalue);
+}
+
+TEST_F(DomainAnyValueBuilderTest, FromStructWithTwoScalars)
+{
+  AnyValueStructItem item;
+  item.SetAnyTypeName("my_struct");
+  item.AddScalarField("signed", sup::dto::kInt32TypeName, 42);
+  item.AddScalarField("bool", sup::dto::kBooleanTypeName, true);
+
+  sup::dto::AnyValue expected_anyvalue = {
+      {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}, "my_struct"};
+
   auto any_value = CreateAnyValue(item);
   EXPECT_EQ(any_value, expected_anyvalue);
 }

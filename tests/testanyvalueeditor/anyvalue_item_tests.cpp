@@ -108,3 +108,13 @@ TEST_F(AnyValueItemTest, SetAnyTypeName)
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
   }
 }
+
+TEST_F(AnyValueItemTest, AddScalarField)
+{
+  AnyValueStructItem item;
+  auto scalar = item.AddScalarField("signed", sup::dto::kInt32TypeName, 42);
+
+  EXPECT_EQ(scalar->GetDisplayName(), "signed");
+  EXPECT_EQ(scalar->GetAnyTypeName(), sup::dto::kInt32TypeName);
+  EXPECT_EQ(scalar->Data<int>(), 42);
+}

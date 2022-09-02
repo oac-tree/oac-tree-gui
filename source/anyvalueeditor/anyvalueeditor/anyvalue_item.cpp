@@ -97,6 +97,16 @@ bool AnyValueStructItem::IsStruct() const
   return true;
 }
 
+AnyValueScalarItem *AnyValueStructItem::AddScalarField(const std::string& field_name,
+                                        const std::string& field_type, const variant_t& value)
+{
+  auto child = InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  child->SetAnyTypeName(field_type);
+  child->SetData(value);
+  child->SetDisplayName(field_name);
+  return child;
+}
+
 // ----------------------------------------------------------------------------
 // AnyValueArrayItem
 // ----------------------------------------------------------------------------

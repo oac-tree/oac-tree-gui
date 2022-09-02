@@ -168,6 +168,7 @@ TEST_F(AnyValueItemBuilderTests, FromStructWithTwoScalars)
 {
   sup::dto::AnyValue anyvalue = {
       {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType, true}}}};
+  WriteJson(anyvalue, "StructWithTwoScalars.json");
 
   auto item = GetAnyValueItem(anyvalue);
 
