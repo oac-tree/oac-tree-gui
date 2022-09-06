@@ -58,6 +58,10 @@ public:
 
   void EndStruct(const std::string& member_name = {});
 
+  void StartArray(const std::string& array_name = {});
+
+  void EndArray(const std::string& member_name = {});
+
 private:
   struct AnyValueBuildAdapterImpl;
   std::unique_ptr<AnyValueBuildAdapterImpl> p_impl;

@@ -71,6 +71,30 @@ TEST_F(AnyValueBuildAdapterTests, ScalarViaAddMember)
   EXPECT_EQ(value, expected_anyvalue);
 }
 
+//! Creation of AnyValue array.
+
+TEST_F(AnyValueBuildAdapterTests, Array)
+{
+  //  AnyValueBuildAdapter builder;
+
+  //  // By passing an empty member name we tell the builder that this will be the scalar.
+  //  builder.Int32("", 42);
+
+  //  auto value = builder.MoveAnyValue();
+  //  EXPECT_EQ(value.GetType(), sup::dto::SignedInteger32Type);
+  //  EXPECT_TRUE(::sup::dto::IsScalarValue(value));
+  //  EXPECT_EQ(value.As<sup::dto::int32>(), 42);
+
+  sup::dto::AnyValue any_value_array1(0, sup::dto::SignedInteger32Type, "my_array_t");
+  any_value_array1.AddElement(sup::dto::AnyValue({sup::dto::SignedInteger32Type, 10}));
+  any_value_array1.AddElement(sup::dto::AnyValue({sup::dto::SignedInteger32Type, 11}));
+  any_value_array1.AddElement(sup::dto::AnyValue({sup::dto::SignedInteger32Type, 12}));
+
+  sup::dto::AnyValue any_value_array2 =
+      sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 10}, 11, 12}, "my_array_t");
+  EXPECT_EQ(any_value_array1, any_value_array2);
+}
+
 //! Creation of AnyValue containing a struct with single field.
 
 TEST_F(AnyValueBuildAdapterTests, StructWithSingleField)

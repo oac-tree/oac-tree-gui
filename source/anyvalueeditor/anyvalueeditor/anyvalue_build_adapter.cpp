@@ -136,6 +136,9 @@ void AnyValueBuildAdapter::AddMember(const std::string &member_name,
   p_impl->AddMember(member_name, value);
 }
 
+//! Starts new structure.
+//! @param struct_name Type name of the structure.
+
 void AnyValueBuildAdapter::StartStruct(const std::string &struct_name)
 {
   p_impl->m_struct_stack.emplace(::sup::dto::EmptyStruct(struct_name));
@@ -148,6 +151,16 @@ void AnyValueBuildAdapter::EndStruct(const std::string &member_name)
   auto top_struct = p_impl->m_struct_stack.top();
   p_impl->m_struct_stack.pop();
   p_impl->AddMember(member_name, top_struct);
+}
+
+void AnyValueBuildAdapter::StartArray(const std::string &array_name)
+{
+
+}
+
+void AnyValueBuildAdapter::EndArray(const std::string &member_name)
+{
+
 }
 
 AnyValueBuildAdapter::~AnyValueBuildAdapter() = default;
