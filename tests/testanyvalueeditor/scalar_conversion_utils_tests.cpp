@@ -42,7 +42,7 @@ TEST_F(ScalarConversionUtilsTests, SetDataFromScalarBool)
   anyvalue = true;
   AnyValueScalarItem item;
   SetDataFromScalar(anyvalue, item);
-  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kBoolVariantName);
   EXPECT_TRUE(item.Data<bool>());
   EXPECT_EQ(item.GetTotalItemCount(), 0);
 }
@@ -56,7 +56,7 @@ TEST_F(ScalarConversionUtilsTests, SetDataFromScalarInt)
   anyvalue = 42;
   AnyValueScalarItem item;
   SetDataFromScalar(anyvalue, item);
-  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(item.Data()), mvvm::constants::kIntVariantName);
   EXPECT_EQ(item.Data<int>(), 42);
   EXPECT_EQ(item.GetTotalItemCount(), 0);
 }

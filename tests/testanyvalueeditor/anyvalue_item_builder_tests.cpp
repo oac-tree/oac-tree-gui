@@ -75,7 +75,7 @@ TEST_F(AnyValueItemBuilderTests, FromScalar)
 
     EXPECT_EQ(item->GetType(), AnyValueScalarItem::Type);
     EXPECT_EQ(item->GetTotalItemCount(), 0);
-    EXPECT_EQ(mvvm::utils::TypeName(item->Data()), mvvm::constants::kBoolTypeName);
+    EXPECT_EQ(mvvm::utils::TypeName(item->Data()), mvvm::constants::kBoolVariantName);
     EXPECT_TRUE(item->Data<bool>());
     EXPECT_TRUE(item->IsScalar());
     EXPECT_FALSE(item->IsStruct());
@@ -90,7 +90,7 @@ TEST_F(AnyValueItemBuilderTests, FromScalar)
 
     EXPECT_EQ(item->GetType(), AnyValueScalarItem::Type);
     EXPECT_EQ(item->GetTotalItemCount(), 0);
-    EXPECT_EQ(mvvm::utils::TypeName(item->Data()), mvvm::constants::kIntTypeName);
+    EXPECT_EQ(mvvm::utils::TypeName(item->Data()), mvvm::constants::kIntVariantName);
     EXPECT_EQ(item->Data<int>(), 42);
     EXPECT_TRUE(item->IsScalar());
     EXPECT_FALSE(item->IsStruct());
@@ -159,7 +159,7 @@ TEST_F(AnyValueItemBuilderTests, FromStructWithSingleScalar)
   EXPECT_FALSE(child->IsStruct());
   EXPECT_FALSE(item->IsArray());
   EXPECT_EQ(child->Data<int>(), 42);
-  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntVariantName);
 }
 
 //! Building AnyValueItem from AnyValue with a struct containing  two named scalars.
@@ -187,7 +187,7 @@ TEST_F(AnyValueItemBuilderTests, FromStructWithTwoScalars)
   EXPECT_TRUE(child->IsScalar());
   EXPECT_FALSE(child->IsStruct());
   EXPECT_FALSE(item->IsArray());
-  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kIntVariantName);
 
   child = item->GetItem<AnyValueScalarItem>("", 1);
   EXPECT_EQ(child->GetTotalItemCount(), 0);
@@ -196,7 +196,7 @@ TEST_F(AnyValueItemBuilderTests, FromStructWithTwoScalars)
   EXPECT_TRUE(child->IsScalar());
   EXPECT_FALSE(child->IsStruct());
   EXPECT_FALSE(item->IsArray());
-  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(child->Data()), mvvm::constants::kBoolVariantName);
 }
 
 //! Building AnyValueItem from AnyValue containing a structure with nested structure.
@@ -225,12 +225,12 @@ TEST_F(AnyValueItemBuilderTests, FromNestedStruct)
   auto grandchild0 = child->GetItem("", 0);
   EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild0->GetDisplayName(), "signed");
-  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntVariantName);
 
   auto grandchild1 = child->GetItem("", 1);
   EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild1->GetDisplayName(), "bool");
-  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kBoolTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kBoolVariantName);
 }
 
 //! Building AnyValueItem from AnyValue containing a structure with two nested structures.
@@ -263,12 +263,12 @@ TEST_F(AnyValueItemBuilderTests, FromTwoNestedStruct)
   auto grandchild0 = child0->GetItem("", 0);
   EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild0->GetDisplayName(), "signed");
-  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntVariantName);
 
   auto grandchild1 = child0->GetItem("", 1);
   EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild1->GetDisplayName(), "unsigned");
-  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntVariantName);
 
   // second branch
   auto child1 = item->GetItem("", 1);
@@ -279,12 +279,12 @@ TEST_F(AnyValueItemBuilderTests, FromTwoNestedStruct)
   grandchild0 = child1->GetItem("", 0);
   EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild0->GetDisplayName(), "first");
-  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntVariantName);
 
   grandchild1 = child1->GetItem("", 1);
   EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
   EXPECT_EQ(grandchild1->GetDisplayName(), "second");
-  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntVariantName);
 }
 
 //! Building AnyValueItem from AnyValue containing an array of integers.
@@ -306,14 +306,14 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
   auto child0 = item->GetItem("", 0);
   EXPECT_EQ(child0->GetTotalItemCount(), 0);
   EXPECT_EQ(child0->GetDisplayName(), "index0");
-  EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntVariantName);
   EXPECT_EQ(child0->Data<int>(), 1);
 
   // second branch
   auto child1 = item->GetItem("", 1);
   EXPECT_EQ(child1->GetTotalItemCount(), 0);
   EXPECT_EQ(child1->GetDisplayName(), "index1");
-  EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(child0->Data()), mvvm::constants::kIntVariantName);
   EXPECT_EQ(child1->Data<int>(), 2);
 }
 
@@ -345,12 +345,12 @@ TEST_F(AnyValueItemBuilderTests, StructWithArrayOfIntegers)
   auto element0 = child0->GetItem("", 0);
   EXPECT_EQ(element0->GetTotalItemCount(), 0);
   EXPECT_EQ(element0->GetDisplayName(), "index0");
-  EXPECT_EQ(mvvm::utils::TypeName(element0->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(element0->Data()), mvvm::constants::kIntVariantName);
   EXPECT_EQ(element0->Data<int>(), 1);
 
   auto element1 = child0->GetItem("", 1);
   EXPECT_EQ(element1->GetTotalItemCount(), 0);
   EXPECT_EQ(element1->GetDisplayName(), "index1");
-  EXPECT_EQ(mvvm::utils::TypeName(element1->Data()), mvvm::constants::kIntTypeName);
+  EXPECT_EQ(mvvm::utils::TypeName(element1->Data()), mvvm::constants::kIntVariantName);
   EXPECT_EQ(element1->Data<int>(), 2);
 }
