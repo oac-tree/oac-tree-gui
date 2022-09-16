@@ -33,6 +33,15 @@ namespace anyvalueeditor
 struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
 {
   std::stack<AbstractAnyValueBuildNode::node_t> m_stack;
+
+  void AddValueNode(::sup::dto::AnyValue &&value)
+  {
+    auto node = std::make_unique<AnyValueBuildNode>(std::move(value));
+    if (node->Process(m_stack))
+    {
+      m_stack.push(std::move(node));
+    }
+  }
 };
 
 AnyValueBuildAdapterV2::AnyValueBuildAdapterV2() : p_impl(new AnyValueBuildAdapterV2Impl) {}
@@ -43,5 +52,70 @@ sup::dto::AnyValue AnyValueBuildAdapterV2::MoveAnyValue() const
 }
 
 AnyValueBuildAdapterV2::~AnyValueBuildAdapterV2() = default;
+
+void AnyValueBuildAdapterV2::Bool(sup::dto::boolean value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::Int8(sup::dto::int8 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::UInt8(sup::dto::uint8 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::Int16(sup::dto::int16 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::UInt16(sup::dto::uint16 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::Int32(sup::dto::int32 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::UInt32(sup::dto::uint32 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::Int64(sup::dto::int64 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::UInt64(sup::dto::uint64 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::Float32(sup::dto::float32 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::Float64(sup::dto::float64 value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::String(const std::string &value)
+{
+  p_impl->AddValueNode(::sup::dto::AnyValue(value));
+}
+
+void AnyValueBuildAdapterV2::AddValue(sup::dto::AnyValue anyvalue)
+{
+  p_impl->AddValueNode(std::move(anyvalue));
+}
 
 }  // namespace anyvalueeditor

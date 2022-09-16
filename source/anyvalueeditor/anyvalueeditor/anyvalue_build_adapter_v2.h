@@ -39,6 +39,21 @@ public:
 
   sup::dto::AnyValue MoveAnyValue() const;
 
+  void Bool(::sup::dto::boolean value);
+  void Int8(::sup::dto::int8 value);
+  void UInt8(::sup::dto::uint8 value);
+  void Int16(::sup::dto::int16 value);
+  void UInt16(::sup::dto::uint16 value);
+  void Int32(::sup::dto::int32 value);
+  void UInt32(::sup::dto::uint32 value);
+  void Int64(::sup::dto::int64 value);
+  void UInt64(::sup::dto::uint64 value);
+  void Float32(::sup::dto::float32 value);
+  void Float64(::sup::dto::float64 value);
+  void String(const std::string& value);
+
+  void AddValue(sup::dto::AnyValue anyvalue);
+
 private:
   struct AnyValueBuildAdapterV2Impl;
   std::unique_ptr<AnyValueBuildAdapterV2Impl> p_impl;

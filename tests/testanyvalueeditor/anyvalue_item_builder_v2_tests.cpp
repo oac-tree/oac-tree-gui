@@ -40,3 +40,33 @@ TEST_F(AnyValueBuildAdapterV2Tests, InitialState)
 
   EXPECT_TRUE(::sup::dto::IsEmptyValue(value));
 }
+
+//! Creation of AnyValue scalar.
+
+TEST_F(AnyValueBuildAdapterV2Tests, Scalar)
+{
+  AnyValueBuildAdapterV2 builder;
+
+  builder.Int32(42);
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value.GetType(), sup::dto::SignedInteger32Type);
+  EXPECT_TRUE(::sup::dto::IsScalarValue(value));
+  EXPECT_EQ(value.As<sup::dto::int32>(), 42);
+}
+
+//! Creation of AnyValue scalar via AddMember method with empty name.
+
+TEST_F(AnyValueBuildAdapterV2Tests, ScalarViaAddMember)
+{
+  AnyValueBuildAdapterV2 builder;
+
+  sup::dto::AnyValue expected_anyvalue{sup::dto::StringType, std::string("abc")};
+
+  // By passing an empty member name we tell the builder that this will be the scalar.
+  builder.AddValue(expected_anyvalue);
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected_anyvalue);
+}
+
