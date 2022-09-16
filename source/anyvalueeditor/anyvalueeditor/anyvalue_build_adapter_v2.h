@@ -37,6 +37,8 @@ public:
   AnyValueBuildAdapterV2();
   ~AnyValueBuildAdapterV2();
 
+  sup::dto::AnyValue MoveAnyValue() const;
+
 private:
   struct AnyValueBuildAdapterV2Impl;
   std::unique_ptr<AnyValueBuildAdapterV2Impl> p_impl;

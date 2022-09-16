@@ -20,9 +20,9 @@
 #include "anyvalueeditor/anyvalue_build_adapter_v2.h"
 
 #include <anyvalueeditor/anyvalue_buildnodes.h>
-
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 
 #include <stack>
 #include <stdexcept>
@@ -32,9 +32,15 @@ namespace anyvalueeditor
 
 struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
 {
+  std::stack<AbstractAnyValueBuildNode::node_t> m_stack;
 };
 
 AnyValueBuildAdapterV2::AnyValueBuildAdapterV2() : p_impl(new AnyValueBuildAdapterV2Impl) {}
+
+sup::dto::AnyValue AnyValueBuildAdapterV2::MoveAnyValue() const
+{
+  return p_impl->m_stack.empty() ? sup::dto::AnyValue() : p_impl->m_stack.top()->MoveAnyValue();
+}
 
 AnyValueBuildAdapterV2::~AnyValueBuildAdapterV2() = default;
 

@@ -31,7 +31,12 @@ class AnyValueBuildAdapterV2Tests : public ::testing::Test
 {
 };
 
+//! Checking that the builder returns an empty value.
+
 TEST_F(AnyValueBuildAdapterV2Tests, InitialState)
 {
-  EXPECT_EQ(1,1);
+  AnyValueBuildAdapterV2 builder;
+  auto value = builder.MoveAnyValue();
+
+  EXPECT_TRUE(::sup::dto::IsEmptyValue(value));
 }
