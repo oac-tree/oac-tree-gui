@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_viewmodel.h
   anyvalue_build_adapter.cpp
   anyvalue_build_adapter.h
+  anyvalue_build_adapter_v2.cpp
+  anyvalue_build_adapter_v2.h
   anyvalue_editor_actions.cpp
   anyvalue_editor_actions.h
   anyvalue_editor_toolbar.cpp
