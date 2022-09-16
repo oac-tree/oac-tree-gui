@@ -17,25 +17,36 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_build_adapter_v2.h"
+#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_I_ANYVALUE_BUILDNODE_H_
+#define ANYVALUEEDITOR_ANYVALUEEDITOR_I_ANYVALUE_BUILDNODE_H_
 
-#include <anyvalueeditor/anyvalue_buildnodes.h>
-
-#include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 
+#include <memory>
 #include <stack>
-#include <stdexcept>
 
 namespace anyvalueeditor
 {
 
-struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
+//! The node for AnyValueBuildAdapter to build AnyValue.
+
+class AbstractAnyValueBuildNode
 {
+public:
+  using node_t = std::unique_ptr<AbstractAnyValueBuildNode>;
+
+  AbstractAnyValueBuildNode(sup::dto::AnyValue&& value);
+
+  virtual bool Process(std::stack<node_t>& stack) = 0;
+
+  virtual void Consume(sup::dto::AnyValue&& value);
+
+  sup::dto::AnyValue MoveAnyValue() const;
+
+private:
+  sup::dto::AnyValue m_value;
 };
 
-AnyValueBuildAdapterV2::AnyValueBuildAdapterV2() : p_impl(new AnyValueBuildAdapterV2Impl) {}
-
-AnyValueBuildAdapterV2::~AnyValueBuildAdapterV2() = default;
-
 }  // namespace anyvalueeditor
+
+#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_I_ANYVALUE_BUILDNODE_H_

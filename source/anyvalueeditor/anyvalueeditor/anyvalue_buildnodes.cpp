@@ -17,25 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_build_adapter_v2.h"
-
-#include <anyvalueeditor/anyvalue_buildnodes.h>
-
-#include <sup/dto/anytype.h>
-#include <sup/dto/anyvalue.h>
-
-#include <stack>
-#include <stdexcept>
+#include "anyvalueeditor/anyvalue_buildnodes.h"
 
 namespace anyvalueeditor
 {
 
-struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
+AnyValueBuildNode::AnyValueBuildNode(sup::dto::AnyValue &&value)
+    : AbstractAnyValueBuildNode(std::move(value))
 {
-};
+}
 
-AnyValueBuildAdapterV2::AnyValueBuildAdapterV2() : p_impl(new AnyValueBuildAdapterV2Impl) {}
-
-AnyValueBuildAdapterV2::~AnyValueBuildAdapterV2() = default;
+bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
+{
+  return true;
+}
 
 }  // namespace anyvalueeditor
