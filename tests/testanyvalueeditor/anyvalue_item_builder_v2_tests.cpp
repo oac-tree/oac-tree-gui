@@ -70,3 +70,15 @@ TEST_F(AnyValueBuildAdapterV2Tests, ScalarViaAddMember)
   EXPECT_EQ(value, expected_anyvalue);
 }
 
+//! Empty structure
+
+TEST_F(AnyValueBuildAdapterV2Tests, EmptyStruct)
+{
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct("struct_name");
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, sup::dto::EmptyStruct("struct_name"));
+}

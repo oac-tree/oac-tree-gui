@@ -54,6 +54,10 @@ public:
 
   void AddValue(sup::dto::AnyValue anyvalue);
 
+  void StartStruct(const std::string& struct_name = {});
+
+  void EndStruct();
+
 private:
   struct AnyValueBuildAdapterV2Impl;
   std::unique_ptr<AnyValueBuildAdapterV2Impl> p_impl;

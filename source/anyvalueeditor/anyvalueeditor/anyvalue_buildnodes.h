@@ -20,19 +20,40 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_BUILDNODES_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_BUILDNODES_H_
 
+//! @file anyvalue_buildnode.h
+//! Collection of classes representing nodes for AnyValueBuildAdapterV2.
+
 #include <anyvalueeditor/abstract_anyvalue_buildnode.h>
 #include <anyvalueeditor/dto_types_fwd.h>
 
 namespace anyvalueeditor
 {
 
-//! The node for AnyValueBuildAdapter to build AnyValue.
+//! The node to build AnyValue.
 
 class AnyValueBuildNode : public AbstractAnyValueBuildNode
 {
 public:
   AnyValueBuildNode(sup::dto::AnyValue&& value);
 
+  bool Process(std::stack<node_t>& stack);
+};
+
+//! The node which is created at start of the structure.
+
+class StartStructBuildNode : public AbstractAnyValueBuildNode
+{
+public:
+  StartStructBuildNode(const std::string& struct_name);
+
+  bool Process(std::stack<node_t>& stack);
+};
+
+//! The node which is created at start of the structure.
+
+class EndStructBuildNode : public AbstractAnyValueBuildNode
+{
+public:
   bool Process(std::stack<node_t>& stack);
 };
 

@@ -34,13 +34,17 @@ struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
 {
   std::stack<AbstractAnyValueBuildNode::node_t> m_stack;
 
-  void AddValueNode(::sup::dto::AnyValue &&value)
+  void ProcessNode(AbstractAnyValueBuildNode::node_t &&node)
   {
-    auto node = std::make_unique<AnyValueBuildNode>(std::move(value));
     if (node->Process(m_stack))
     {
       m_stack.push(std::move(node));
     }
+  }
+
+  void AddValueNode(::sup::dto::AnyValue &&value)
+  {
+    ProcessNode(std::make_unique<AnyValueBuildNode>(std::move(value)));
   }
 };
 
@@ -116,6 +120,16 @@ void AnyValueBuildAdapterV2::String(const std::string &value)
 void AnyValueBuildAdapterV2::AddValue(sup::dto::AnyValue anyvalue)
 {
   p_impl->AddValueNode(std::move(anyvalue));
+}
+
+void AnyValueBuildAdapterV2::StartStruct(const std::string &struct_name)
+{
+  p_impl->ProcessNode(std::make_unique<StartStructBuildNode>(struct_name));
+}
+
+void AnyValueBuildAdapterV2::EndStruct()
+{
+  p_impl->ProcessNode(std::make_unique<EndStructBuildNode>());
 }
 
 }  // namespace anyvalueeditor

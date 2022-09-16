@@ -19,8 +19,14 @@
 
 #include "anyvalueeditor/anyvalue_buildnodes.h"
 
+#include <stdexcept>
+
 namespace anyvalueeditor
 {
+
+// ----------------------------------------------------------------------------
+// AnyValueBuildNode
+// ----------------------------------------------------------------------------
 
 AnyValueBuildNode::AnyValueBuildNode(sup::dto::AnyValue &&value)
     : AbstractAnyValueBuildNode(std::move(value))
@@ -29,7 +35,36 @@ AnyValueBuildNode::AnyValueBuildNode(sup::dto::AnyValue &&value)
 
 bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
 {
+  if (!stack.empty())
+  {
+    throw std::runtime_error("Suitable for empty stack only");
+  }
   return true;
+}
+
+StartStructBuildNode::StartStructBuildNode(const std::string &struct_name)
+    : AbstractAnyValueBuildNode(::sup::dto::EmptyStruct(struct_name))
+
+{
+}
+
+// ----------------------------------------------------------------------------
+// StartStructBuildNode
+// ----------------------------------------------------------------------------
+
+bool StartStructBuildNode::Process(std::stack<node_t> &stack)
+{
+  return true;
+}
+
+// ----------------------------------------------------------------------------
+// EndStructBuildNode
+// ----------------------------------------------------------------------------
+
+bool EndStructBuildNode::Process(std::stack<node_t> &stack)
+{
+  // do nothing, do not add itself to the stack
+  return false;
 }
 
 }  // namespace anyvalueeditor

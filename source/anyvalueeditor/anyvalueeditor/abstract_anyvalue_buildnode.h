@@ -35,6 +35,7 @@ class AbstractAnyValueBuildNode
 public:
   using node_t = std::unique_ptr<AbstractAnyValueBuildNode>;
 
+  AbstractAnyValueBuildNode() = default;
   AbstractAnyValueBuildNode(sup::dto::AnyValue&& value);
 
   virtual bool Process(std::stack<node_t>& stack) = 0;
