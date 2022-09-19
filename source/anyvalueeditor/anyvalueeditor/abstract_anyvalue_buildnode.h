@@ -44,6 +44,12 @@ public:
 
   sup::dto::AnyValue MoveAnyValue() const;
 
+  virtual bool IsStartElementNode() const;
+
+  virtual bool IsStartFieldNode() const;
+
+  static bool CanAddValueNode(const std::stack<node_t>& stack);
+
 private:
   sup::dto::AnyValue m_value;
 };

@@ -67,4 +67,31 @@ bool EndStructBuildNode::Process(std::stack<node_t> &stack)
   return false;
 }
 
+// ----------------------------------------------------------------------------
+// StartFieldBuildNode
+// ----------------------------------------------------------------------------
+
+StartFieldBuildNode::StartFieldBuildNode(const std::string &field_name) : m_field_name(field_name)
+{
+}
+
+bool StartFieldBuildNode::Process(std::stack<node_t> &stack)
+{
+  return false;
+}
+
+bool StartFieldBuildNode::IsStartFieldNode() const
+{
+  return true;
+}
+
+// ----------------------------------------------------------------------------
+// EndFieldBuildNode
+// ----------------------------------------------------------------------------
+
+bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
+{
+  return false;
+}
+
 }  // namespace anyvalueeditor

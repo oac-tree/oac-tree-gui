@@ -70,7 +70,7 @@ TEST_F(AnyValueBuildAdapterV2Tests, ScalarViaAddMember)
   EXPECT_EQ(value, expected_anyvalue);
 }
 
-//! Empty structure
+//! Empty structure.
 
 TEST_F(AnyValueBuildAdapterV2Tests, EmptyStruct)
 {

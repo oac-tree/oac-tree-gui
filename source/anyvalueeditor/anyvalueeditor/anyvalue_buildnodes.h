@@ -26,6 +26,8 @@
 #include <anyvalueeditor/abstract_anyvalue_buildnode.h>
 #include <anyvalueeditor/dto_types_fwd.h>
 
+#include <string>
+
 namespace anyvalueeditor
 {
 
@@ -36,7 +38,7 @@ class AnyValueBuildNode : public AbstractAnyValueBuildNode
 public:
   AnyValueBuildNode(sup::dto::AnyValue&& value);
 
-  bool Process(std::stack<node_t>& stack);
+  bool Process(std::stack<node_t>& stack) override;
 };
 
 //! The node which is created at start of the structure.
@@ -46,7 +48,7 @@ class StartStructBuildNode : public AbstractAnyValueBuildNode
 public:
   StartStructBuildNode(const std::string& struct_name);
 
-  bool Process(std::stack<node_t>& stack);
+  bool Process(std::stack<node_t>& stack) override;
 };
 
 //! The node which is created at start of the structure.
@@ -54,7 +56,26 @@ public:
 class EndStructBuildNode : public AbstractAnyValueBuildNode
 {
 public:
-  bool Process(std::stack<node_t>& stack);
+  bool Process(std::stack<node_t>& stack) override;
+};
+
+class StartFieldBuildNode : public AbstractAnyValueBuildNode
+{
+public:
+  StartFieldBuildNode(const std::string& field_name);
+
+  bool Process(std::stack<node_t>& stack) override;
+
+  bool IsStartFieldNode() const override;
+
+private:
+  std::string m_field_name;
+};
+
+class EndFieldBuildNode : public AbstractAnyValueBuildNode
+{
+public:
+  bool Process(std::stack<node_t>& stack) override;
 };
 
 }  // namespace anyvalueeditor
