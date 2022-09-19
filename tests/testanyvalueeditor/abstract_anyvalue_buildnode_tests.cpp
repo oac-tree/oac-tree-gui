@@ -1,0 +1,77 @@
+/******************************************************************************
+ *
+ * Project       : Supervision and automation system EPICS interface
+ *
+ * Description   : Library of SUP components for EPICS network protocol
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2022 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "anyvalueeditor/abstract_anyvalue_buildnode.h"
+
+#include <gtest/gtest.h>
+#include <sup/dto/anytype.h>
+#include <sup/dto/anytype_helper.h>
+#include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
+
+using namespace anyvalueeditor;
+
+class AbstractAnyValueBuildNodeTests : public ::testing::Test
+{
+public:
+  class TestNode : public anyvalueeditor::AbstractAnyValueBuildNode
+  {
+  public:
+    TestNode() = default;
+    TestNode(sup::dto::AnyValue&& value)
+        : anyvalueeditor::AbstractAnyValueBuildNode(std::move(value))
+    {
+    }
+
+    bool Process(std::stack<node_t>& stack) { return false; }
+  };
+};
+
+//! Checking initial state of TestNode class.
+
+TEST_F(AbstractAnyValueBuildNodeTests, InitialState)
+{
+  TestNode node;
+  EXPECT_FALSE(node.IsStartElementNode());
+  EXPECT_FALSE(node.IsStartFieldNode());
+
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_FALSE(node.Process(stack));
+}
+
+TEST_F(AbstractAnyValueBuildNodeTests, CanAddValueNode)
+{
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+
+  TestNode node;
+  EXPECT_TRUE(node.CanAddValueNode(stack));
+
+  stack.push(std::make_unique<TestNode>());
+  EXPECT_FALSE(node.CanAddValueNode(stack));
+}
+
+TEST_F(AbstractAnyValueBuildNodeTests, MoveAnyValue)
+{
+  TestNode node(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto result = node.MoveAnyValue();
+
+  sup::dto::AnyValue expected{sup::dto::SignedInteger32Type, 42};
+  EXPECT_EQ(result, expected);
+}
