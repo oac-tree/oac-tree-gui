@@ -69,7 +69,9 @@ public:
   std::string GetFieldName() const;
   void SetFieldName(const std::string& name);
 
-private:
+  virtual void AddMember(const std::string& name, const sup::dto::AnyValue& value);
+
+protected:
   sup::dto::AnyValue m_value;
   std::string m_field_name;
 };

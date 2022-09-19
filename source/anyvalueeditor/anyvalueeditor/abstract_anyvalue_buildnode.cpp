@@ -69,4 +69,9 @@ void AbstractAnyValueBuildNode::SetFieldName(const std::string &name)
   m_field_name = name;
 }
 
+void AbstractAnyValueBuildNode::AddMember(const std::string &name, const sup::dto::AnyValue &value)
+{
+  throw std::runtime_error("Error in AbstractAnyValueBuildNode::AddMember() : not implemented");
+}
+
 }  // namespace anyvalueeditor

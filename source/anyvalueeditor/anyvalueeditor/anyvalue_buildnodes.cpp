@@ -19,6 +19,8 @@
 
 #include "anyvalueeditor/anyvalue_buildnodes.h"
 
+#include <mvvm/utils/container_utils.h>
+
 #include <stdexcept>
 
 namespace anyvalueeditor
@@ -78,6 +80,11 @@ bool StartStructBuildNode::IsStartStructNode() const
   return true;
 }
 
+void StartStructBuildNode::AddMember(const std::string &name, const sup::dto::AnyValue &value)
+{
+  m_value.AddMember(name, value);
+}
+
 // ----------------------------------------------------------------------------
 // EndStructBuildNode
 // ----------------------------------------------------------------------------
@@ -134,6 +141,32 @@ AbstractAnyValueBuildNode::NodeType EndFieldBuildNode::GetNodeType() const
 
 bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {
+  static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
+                                                    NodeType::kEndArray};
+  if (stack.empty() || mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+  }
+
+  auto value = stack.top()->MoveAnyValue();
+  stack.pop();
+
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartField)
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+  }
+
+  auto field_name = stack.top()->GetFieldName();
+  stack.pop();
+
+  if (stack.empty())
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+  }
+
+  stack.top()->AddMember(field_name, value);
+
+  // we don't need to save the node in the stack, all job is already done
   return false;
 }
 

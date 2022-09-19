@@ -85,6 +85,21 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
   EXPECT_EQ(result, expected);
 }
 
+TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcessAddField)
+{
+  StartStructBuildNode node("struct_name");
+
+  // adding a field to struct
+  EXPECT_NO_THROW(
+      node.AddMember("field_name", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+
+  // expected value
+  sup::dto::AnyValue expected_anyvalue = {{{"field_name", {sup::dto::SignedInteger32Type, 42}}},
+                                          "struct_name"};
+  auto result = node.MoveAnyValue();
+  EXPECT_EQ(result, expected_anyvalue);
+}
+
 TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
 {
   StartFieldBuildNode node;
@@ -111,4 +126,8 @@ TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 }
 
-TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess) {}
+TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess)
+{
+  EndFieldBuildNode node;
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kEndField);
+}

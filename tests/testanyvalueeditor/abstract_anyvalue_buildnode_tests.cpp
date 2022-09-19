@@ -25,6 +25,8 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 
+#include <stdexcept>
+
 using namespace anyvalueeditor;
 
 class AbstractAnyValueBuildNodeTests : public ::testing::Test
@@ -56,6 +58,8 @@ TEST_F(AbstractAnyValueBuildNodeTests, InitialState)
 
   std::stack<AbstractAnyValueBuildNode::node_t> stack;
   EXPECT_FALSE(node.Process(stack));
+
+  EXPECT_THROW(node.AddMember("name", sup::dto::AnyValue()), std::runtime_error);
 }
 
 TEST_F(AbstractAnyValueBuildNodeTests, CanAddValueNode)

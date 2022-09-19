@@ -55,6 +55,9 @@ public:
   bool Process(std::stack<node_t>& stack) override;
 
   bool IsStartStructNode() const override;
+
+  void AddMember(const std::string& name, const sup::dto::AnyValue& value) override;
+
 };
 
 //! The node which is created at start of the structure.
