@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <stack>
+#include <string>
 
 namespace anyvalueeditor
 {
@@ -44,14 +45,20 @@ public:
 
   sup::dto::AnyValue MoveAnyValue() const;
 
+  virtual bool IsStartStructNode() const;
+
   virtual bool IsStartElementNode() const;
 
   virtual bool IsStartFieldNode() const;
 
   static bool CanAddValueNode(const std::stack<node_t>& stack);
 
+  std::string GetFieldName() const;
+  void SetFieldName(const std::string& name);
+
 private:
   sup::dto::AnyValue m_value;
+  std::string m_field_name;
 };
 
 }  // namespace anyvalueeditor

@@ -61,6 +61,7 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
 
   EXPECT_FALSE(node.IsStartElementNode());
   EXPECT_FALSE(node.IsStartFieldNode());
+  EXPECT_TRUE(node.IsStartStructNode());
 
   // processing empty stack
   std::stack<AbstractAnyValueBuildNode::node_t> stack;

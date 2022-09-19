@@ -50,6 +50,8 @@ TEST_F(AbstractAnyValueBuildNodeTests, InitialState)
   TestNode node;
   EXPECT_FALSE(node.IsStartElementNode());
   EXPECT_FALSE(node.IsStartFieldNode());
+  EXPECT_FALSE(node.IsStartStructNode());
+  EXPECT_TRUE(node.GetFieldName().empty());
 
   std::stack<AbstractAnyValueBuildNode::node_t> stack;
   EXPECT_FALSE(node.Process(stack));
@@ -74,4 +76,11 @@ TEST_F(AbstractAnyValueBuildNodeTests, MoveAnyValue)
 
   sup::dto::AnyValue expected{sup::dto::SignedInteger32Type, 42};
   EXPECT_EQ(result, expected);
+}
+
+TEST_F(AbstractAnyValueBuildNodeTests, SetFieldName)
+{
+  TestNode node;
+  node.SetFieldName("field_name");
+  EXPECT_EQ(node.GetFieldName(), std::string("field_name"));
 }

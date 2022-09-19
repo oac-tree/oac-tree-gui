@@ -39,6 +39,11 @@ sup::dto::AnyValue AbstractAnyValueBuildNode::MoveAnyValue() const
   return std::move(m_value);
 }
 
+bool AbstractAnyValueBuildNode::IsStartStructNode() const
+{
+  return false;
+}
+
 bool AbstractAnyValueBuildNode::IsStartElementNode() const
 {
   return false;
@@ -52,6 +57,16 @@ bool AbstractAnyValueBuildNode::IsStartFieldNode() const
 bool AbstractAnyValueBuildNode::CanAddValueNode(const std::stack<node_t> &stack)
 {
   return stack.empty() || stack.top()->IsStartElementNode() || stack.top()->IsStartFieldNode();
+}
+
+std::string AbstractAnyValueBuildNode::GetFieldName() const
+{
+  return m_field_name;
+}
+
+void AbstractAnyValueBuildNode::SetFieldName(const std::string &name)
+{
+  m_field_name = name;
 }
 
 }  // namespace anyvalueeditor
