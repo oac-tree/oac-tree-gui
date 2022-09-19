@@ -39,7 +39,8 @@ public:
     {
     }
 
-    bool Process(std::stack<node_t>& stack) { return false; }
+    NodeType GetNodeType() const override { return NodeType::kValue; }
+    bool Process(std::stack<node_t>& stack) override { return false; }
   };
 };
 

@@ -33,6 +33,11 @@ AnyValueBuildNode::AnyValueBuildNode(sup::dto::AnyValue &&value)
 {
 }
 
+AbstractAnyValueBuildNode::NodeType AnyValueBuildNode::GetNodeType() const
+{
+  return NodeType::kValue;
+}
+
 bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
 {
   if (CanAddValueNode(stack))
@@ -47,6 +52,11 @@ StartStructBuildNode::StartStructBuildNode(const std::string &struct_name)
     : AbstractAnyValueBuildNode(::sup::dto::EmptyStruct(struct_name))
 
 {
+}
+
+AbstractAnyValueBuildNode::NodeType StartStructBuildNode::GetNodeType() const
+{
+  return NodeType::kStartStruct;
 }
 
 // ----------------------------------------------------------------------------
@@ -72,6 +82,11 @@ bool StartStructBuildNode::IsStartStructNode() const
 // EndStructBuildNode
 // ----------------------------------------------------------------------------
 
+AbstractAnyValueBuildNode::NodeType EndStructBuildNode::GetNodeType() const
+{
+  return NodeType::kEndStruct;
+}
+
 bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 {
   // do nothing, do not add itself to the stack
@@ -81,6 +96,11 @@ bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 // ----------------------------------------------------------------------------
 // StartFieldBuildNode
 // ----------------------------------------------------------------------------
+
+AbstractAnyValueBuildNode::NodeType StartFieldBuildNode::GetNodeType() const
+{
+  return NodeType::kStartField;
+}
 
 bool StartFieldBuildNode::Process(std::stack<node_t> &stack)
 {
@@ -106,6 +126,11 @@ bool StartFieldBuildNode::IsStartFieldNode() const
 // ----------------------------------------------------------------------------
 // EndFieldBuildNode
 // ----------------------------------------------------------------------------
+
+AbstractAnyValueBuildNode::NodeType EndFieldBuildNode::GetNodeType() const
+{
+  return NodeType::kEndField;
+}
 
 bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {

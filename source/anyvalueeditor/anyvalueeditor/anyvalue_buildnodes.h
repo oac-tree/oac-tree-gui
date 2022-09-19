@@ -38,6 +38,8 @@ class AnyValueBuildNode : public AbstractAnyValueBuildNode
 public:
   AnyValueBuildNode(sup::dto::AnyValue&& value);
 
+  NodeType GetNodeType() const override;
+
   bool Process(std::stack<node_t>& stack) override;
 };
 
@@ -47,6 +49,8 @@ class StartStructBuildNode : public AbstractAnyValueBuildNode
 {
 public:
   StartStructBuildNode(const std::string& struct_name);
+
+  NodeType GetNodeType() const override;
 
   bool Process(std::stack<node_t>& stack) override;
 
@@ -58,12 +62,16 @@ public:
 class EndStructBuildNode : public AbstractAnyValueBuildNode
 {
 public:
+  NodeType GetNodeType() const override;
+
   bool Process(std::stack<node_t>& stack) override;
 };
 
 class StartFieldBuildNode : public AbstractAnyValueBuildNode
 {
 public:
+  NodeType GetNodeType() const override;
+
   bool Process(std::stack<node_t>& stack) override;
 
   bool IsStartFieldNode() const override;
@@ -72,6 +80,8 @@ public:
 class EndFieldBuildNode : public AbstractAnyValueBuildNode
 {
 public:
+  NodeType GetNodeType() const override;
+
   bool Process(std::stack<node_t>& stack) override;
 };
 

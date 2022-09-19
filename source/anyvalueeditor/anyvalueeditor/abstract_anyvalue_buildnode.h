@@ -36,8 +36,21 @@ class AbstractAnyValueBuildNode
 public:
   using node_t = std::unique_ptr<AbstractAnyValueBuildNode>;
 
+  enum class NodeType
+  {
+    kValue,
+    kStartStruct,
+    kEndStruct,
+    kStartField,
+    kEndField,
+    kStartArray,
+    kEndArray
+  };
+
   AbstractAnyValueBuildNode() = default;
   AbstractAnyValueBuildNode(sup::dto::AnyValue&& value);
+
+  virtual NodeType GetNodeType() const = 0;
 
   virtual bool Process(std::stack<node_t>& stack) = 0;
 

@@ -36,6 +36,8 @@ TEST_F(AnyValueBuildNodesTests, AnyValueBuildNodeProcess)
   EXPECT_FALSE(node.IsStartElementNode());
   EXPECT_FALSE(node.IsStartFieldNode());
 
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kValue);
+
   // processing empty stack
   std::stack<AbstractAnyValueBuildNode::node_t> stack;
   EXPECT_TRUE(node.Process(stack));
@@ -62,6 +64,8 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
   EXPECT_FALSE(node.IsStartElementNode());
   EXPECT_FALSE(node.IsStartFieldNode());
   EXPECT_TRUE(node.IsStartStructNode());
+
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartStruct);
 
   // processing empty stack
   std::stack<AbstractAnyValueBuildNode::node_t> stack;
@@ -92,6 +96,8 @@ TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
   EXPECT_TRUE(node.IsStartFieldNode());
   EXPECT_FALSE(node.IsStartStructNode());
 
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartField);
+
   // processing of empty stack is not allowed
   std::stack<AbstractAnyValueBuildNode::node_t> stack;
   EXPECT_THROW(node.Process(stack), std::runtime_error);
@@ -105,7 +111,4 @@ TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 }
 
-TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess)
-{
-
-}
+TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess) {}
