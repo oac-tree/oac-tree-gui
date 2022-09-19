@@ -104,3 +104,8 @@ TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
   node.SetFieldName("");
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 }
+
+TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess)
+{
+
+}

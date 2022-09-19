@@ -132,4 +132,16 @@ void AnyValueBuildAdapterV2::EndStruct()
   p_impl->ProcessNode(std::make_unique<EndStructBuildNode>());
 }
 
+void AnyValueBuildAdapterV2::StartField(const std::string &field_name)
+{
+  auto node = std::make_unique<StartFieldBuildNode>();
+  node->SetFieldName(field_name);
+  p_impl->ProcessNode(std::move(node));
+}
+
+void AnyValueBuildAdapterV2::EndField()
+{
+  p_impl->ProcessNode(std::make_unique<EndFieldBuildNode>());
+}
+
 }  // namespace anyvalueeditor

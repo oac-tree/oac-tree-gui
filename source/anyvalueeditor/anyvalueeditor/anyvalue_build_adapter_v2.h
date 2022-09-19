@@ -58,6 +58,10 @@ public:
 
   void EndStruct();
 
+  void StartField(const std::string& field_name);
+
+  void EndField();
+
 private:
   struct AnyValueBuildAdapterV2Impl;
   std::unique_ptr<AnyValueBuildAdapterV2Impl> p_impl;

@@ -67,9 +67,6 @@ public:
   bool Process(std::stack<node_t>& stack) override;
 
   bool IsStartFieldNode() const override;
-
-private:
-  std::string m_field_name;
 };
 
 class EndFieldBuildNode : public AbstractAnyValueBuildNode
