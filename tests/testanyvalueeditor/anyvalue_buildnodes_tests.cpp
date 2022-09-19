@@ -46,7 +46,7 @@ TEST_F(AnyValueBuildNodesTests, AnyValueBuildNodeProcess)
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 
   // processing stack containing a field
-  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
+  stack.push(std::make_unique<StartFieldBuildNode>());
   EXPECT_TRUE(node.Process(stack));
 
   // expected value
@@ -72,11 +72,35 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 
   // processing stack containing a field
-  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
+  stack.push(std::make_unique<StartFieldBuildNode>());
   EXPECT_TRUE(node.Process(stack));
 
   // expected value
   auto expected = ::sup::dto::EmptyStruct("struct_name");
   auto result = node.MoveAnyValue();
   EXPECT_EQ(result, expected);
+}
+
+TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
+{
+  StartFieldBuildNode node;
+  node.SetFieldName("field_name");
+
+  EXPECT_EQ(node.GetFieldName(), std::string("field_name"));
+
+  EXPECT_FALSE(node.IsStartElementNode());
+  EXPECT_TRUE(node.IsStartFieldNode());
+  EXPECT_FALSE(node.IsStartStructNode());
+
+  // processing of empty stack is not allowed
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_THROW(node.Process(stack), std::runtime_error);
+
+  // stack is possible to process if it contains StartStructBuildNode
+  stack.push(std::make_unique<StartStructBuildNode>(std::string()));
+  EXPECT_TRUE(node.Process(stack));
+
+  // field name should be set
+  node.SetFieldName("");
+  EXPECT_THROW(node.Process(stack), std::runtime_error);
 }

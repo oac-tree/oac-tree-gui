@@ -63,6 +63,11 @@ bool StartStructBuildNode::Process(std::stack<node_t> &stack)
   throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
 }
 
+bool StartStructBuildNode::IsStartStructNode() const
+{
+  return true;
+}
+
 // ----------------------------------------------------------------------------
 // EndStructBuildNode
 // ----------------------------------------------------------------------------
@@ -77,13 +82,20 @@ bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 // StartFieldBuildNode
 // ----------------------------------------------------------------------------
 
-StartFieldBuildNode::StartFieldBuildNode(const std::string &field_name) : m_field_name(field_name)
-{
-}
-
 bool StartFieldBuildNode::Process(std::stack<node_t> &stack)
 {
-  return false;
+  if (GetFieldName().empty())
+  {
+    throw std::runtime_error("Error in StartFieldBuildNode::Process(): fieldname is not defined");
+  }
+
+  if (stack.empty() || !stack.top()->IsStartStructNode())
+  {
+    throw std::runtime_error(
+        "Error in StartFieldBuildNode::Process(): last node is not a structure");
+  }
+
+  return true;
 }
 
 bool StartFieldBuildNode::IsStartFieldNode() const

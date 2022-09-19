@@ -49,6 +49,8 @@ public:
   StartStructBuildNode(const std::string& struct_name);
 
   bool Process(std::stack<node_t>& stack) override;
+
+  bool IsStartStructNode() const override;
 };
 
 //! The node which is created at start of the structure.
@@ -62,8 +64,6 @@ public:
 class StartFieldBuildNode : public AbstractAnyValueBuildNode
 {
 public:
-  StartFieldBuildNode(const std::string& field_name);
-
   bool Process(std::stack<node_t>& stack) override;
 
   bool IsStartFieldNode() const override;
