@@ -35,11 +35,12 @@ AnyValueBuildNode::AnyValueBuildNode(sup::dto::AnyValue &&value)
 
 bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
 {
-  if (!stack.empty())
+  if (CanAddValueNode(stack))
   {
-    throw std::runtime_error("Suitable for empty stack only");
+    return true;
   }
-  return true;
+
+  throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
 }
 
 StartStructBuildNode::StartStructBuildNode(const std::string &struct_name)
@@ -54,7 +55,12 @@ StartStructBuildNode::StartStructBuildNode(const std::string &struct_name)
 
 bool StartStructBuildNode::Process(std::stack<node_t> &stack)
 {
-  return true;
+  if (CanAddValueNode(stack))
+  {
+    return true;
+  }
+
+  throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
 }
 
 // ----------------------------------------------------------------------------

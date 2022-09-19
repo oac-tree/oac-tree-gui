@@ -29,7 +29,53 @@ class AnyValueBuildNodesTests : public ::testing::Test
 {
 };
 
-TEST_F(AnyValueBuildNodesTests, InitialState)
+TEST_F(AnyValueBuildNodesTests, AnyValueBuildNodeProcess)
 {
+  AnyValueBuildNode node(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
+  EXPECT_FALSE(node.IsStartElementNode());
+  EXPECT_FALSE(node.IsStartFieldNode());
+
+  // processing empty stack
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_TRUE(node.Process(stack));
+
+  // processing stack containing another value
+  stack.push(
+      std::make_unique<AnyValueBuildNode>(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+  EXPECT_THROW(node.Process(stack), std::runtime_error);
+
+  // processing stack containing a field
+  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
+  EXPECT_TRUE(node.Process(stack));
+
+  // expected value
+  sup::dto::AnyValue expected{sup::dto::SignedInteger32Type, 42};
+  auto result = node.MoveAnyValue();
+  EXPECT_EQ(result, expected);
+}
+
+TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
+{
+  StartStructBuildNode node("struct_name");
+
+  EXPECT_FALSE(node.IsStartElementNode());
+  EXPECT_FALSE(node.IsStartFieldNode());
+
+  // processing empty stack
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_TRUE(node.Process(stack));
+
+  // processing stack containing another struct
+  stack.push(std::make_unique<StartStructBuildNode>(std::string()));
+  EXPECT_THROW(node.Process(stack), std::runtime_error);
+
+  // processing stack containing a field
+  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
+  EXPECT_TRUE(node.Process(stack));
+
+  // expected value
+  auto expected = ::sup::dto::EmptyStruct("struct_name");
+  auto result = node.MoveAnyValue();
+  EXPECT_EQ(result, expected);
 }
