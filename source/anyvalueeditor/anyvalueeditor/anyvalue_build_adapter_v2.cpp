@@ -134,9 +134,7 @@ void AnyValueBuildAdapterV2::EndStruct()
 
 void AnyValueBuildAdapterV2::StartField(const std::string &field_name)
 {
-  auto node = std::make_unique<StartFieldBuildNode>();
-  node->SetFieldName(field_name);
-  p_impl->ProcessNode(std::move(node));
+  p_impl->ProcessNode(std::make_unique<StartFieldBuildNode>(field_name));
 }
 
 void AnyValueBuildAdapterV2::EndField()

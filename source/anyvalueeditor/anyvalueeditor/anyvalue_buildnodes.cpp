@@ -104,6 +104,12 @@ bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 // StartFieldBuildNode
 // ----------------------------------------------------------------------------
 
+StartFieldBuildNode::StartFieldBuildNode(const std::string &field_name)
+    : AbstractAnyValueBuildNode()
+{
+  SetFieldName(field_name);
+}
+
 AbstractAnyValueBuildNode::NodeType StartFieldBuildNode::GetNodeType() const
 {
   return NodeType::kStartField;

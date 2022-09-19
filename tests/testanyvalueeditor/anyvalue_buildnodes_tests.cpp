@@ -48,7 +48,7 @@ TEST_F(AnyValueBuildNodesTests, AnyValueBuildNodeProcess)
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 
   // processing stack containing a field
-  stack.push(std::make_unique<StartFieldBuildNode>());
+  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
   EXPECT_TRUE(node.Process(stack));
 
   // expected value
@@ -76,7 +76,7 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
   EXPECT_THROW(node.Process(stack), std::runtime_error);
 
   // processing stack containing a field
-  stack.push(std::make_unique<StartFieldBuildNode>());
+  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
   EXPECT_TRUE(node.Process(stack));
 
   // expected value
@@ -102,8 +102,7 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcessAddField)
 
 TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
 {
-  StartFieldBuildNode node;
-  node.SetFieldName("field_name");
+  StartFieldBuildNode node("field_name");
 
   EXPECT_EQ(node.GetFieldName(), std::string("field_name"));
 
@@ -130,4 +129,19 @@ TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess)
 {
   EndFieldBuildNode node;
   EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kEndField);
+
+  {
+    // processing of empty stack is not allowed
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    EXPECT_THROW(node.Process(stack), std::runtime_error);
+  }
+
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  // adding to the stack value node
+    stack.push(std::make_unique<StartStructBuildNode>("struct_name"));
+//        ;
+//    stack.push(std::make_unique<StartFieldBuildNode>("struct_name"));
+//  stack.push(std::make_unique<AnyValueBuildNode>(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+  }
 }
