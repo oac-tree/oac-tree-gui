@@ -138,10 +138,18 @@ TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess)
 
   {
     std::stack<AbstractAnyValueBuildNode::node_t> stack;
-  // adding to the stack value node
     stack.push(std::make_unique<StartStructBuildNode>("struct_name"));
-//        ;
-//    stack.push(std::make_unique<StartFieldBuildNode>("struct_name"));
-//  stack.push(std::make_unique<AnyValueBuildNode>(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+    stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
+    stack.push(
+        std::make_unique<AnyValueBuildNode>(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+
+    EXPECT_FALSE(node.Process(stack));
+
+    EXPECT_EQ(stack.size(), 1);
+
+    sup::dto::AnyValue expected_anyvalue = {{{"field_name", {sup::dto::SignedInteger32Type, 42}}},
+                                            "struct_name"};
+    auto result = stack.top()->MoveAnyValue();
+    EXPECT_EQ(result, expected_anyvalue);
   }
 }

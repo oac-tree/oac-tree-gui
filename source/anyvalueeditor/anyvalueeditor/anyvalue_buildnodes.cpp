@@ -21,6 +21,7 @@
 
 #include <mvvm/utils/container_utils.h>
 
+#include <iostream>
 #include <stdexcept>
 
 namespace anyvalueeditor
@@ -149,7 +150,7 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {
   static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
                                                     NodeType::kEndArray};
-  if (stack.empty() || mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
+  if (stack.empty() || !mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
   {
     throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
   }
