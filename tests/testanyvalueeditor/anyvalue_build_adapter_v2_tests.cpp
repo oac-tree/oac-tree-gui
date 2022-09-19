@@ -82,3 +82,48 @@ TEST_F(AnyValueBuildAdapterV2Tests, EmptyStruct)
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value, sup::dto::EmptyStruct("struct_name"));
 }
+
+//! Creation of AnyValue containing a struct with single field.
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructWithSingleField)
+{
+  sup::dto::AnyType expected_anytype = {{"signed", {sup::dto::SignedInteger32Type}}};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct();
+  builder.StartField("signed");
+  builder.Int32(42);
+  builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value.GetType(), expected_anytype);
+  EXPECT_TRUE(::sup::dto::IsStructValue(value));
+  EXPECT_EQ(value["signed"].As<sup::dto::int32>(), 42);
+}
+
+//! Creation of AnyValue containing a struct with two fields.
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoFields)
+{
+  sup::dto::AnyType expected_anytype = {{"signed", {sup::dto::SignedInteger32Type}},
+                                        {"bool", {sup::dto::BooleanType}}};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct();
+  builder.StartField("signed");
+  builder.Int32(42);
+  builder.EndField();
+  builder.StartField("bool");
+  builder.Bool(true);
+  builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value.GetType(), expected_anytype);
+  EXPECT_TRUE(::sup::dto::IsStructValue(value));
+  EXPECT_EQ(value["signed"].As<sup::dto::int32>(), 42);
+  EXPECT_EQ(value["bool"].As<sup::dto::boolean>(), true);
+}
