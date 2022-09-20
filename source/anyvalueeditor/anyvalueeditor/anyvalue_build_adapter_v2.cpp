@@ -142,4 +142,9 @@ void AnyValueBuildAdapterV2::EndField()
   p_impl->ProcessNode(std::make_unique<EndFieldBuildNode>());
 }
 
+int AnyValueBuildAdapterV2::GetStackSize() const
+{
+  return static_cast<int>(p_impl->m_stack.size());
+}
+
 }  // namespace anyvalueeditor

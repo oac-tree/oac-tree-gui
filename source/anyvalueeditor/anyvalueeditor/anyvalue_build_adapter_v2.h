@@ -62,6 +62,8 @@ public:
 
   void EndField();
 
+  int GetStackSize() const;
+
 private:
   struct AnyValueBuildAdapterV2Impl;
   std::unique_ptr<AnyValueBuildAdapterV2Impl> p_impl;

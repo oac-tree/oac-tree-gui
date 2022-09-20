@@ -38,6 +38,8 @@ TEST_F(AnyValueBuildAdapterV2Tests, InitialState)
   AnyValueBuildAdapterV2 builder;
   auto value = builder.MoveAnyValue();
 
+  EXPECT_EQ(builder.GetStackSize(), 0);
+
   EXPECT_TRUE(::sup::dto::IsEmptyValue(value));
 }
 
@@ -48,6 +50,8 @@ TEST_F(AnyValueBuildAdapterV2Tests, Scalar)
   AnyValueBuildAdapterV2 builder;
 
   builder.Int32(42);
+
+  EXPECT_EQ(builder.GetStackSize(), 1);
 
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value.GetType(), sup::dto::SignedInteger32Type);
@@ -65,6 +69,8 @@ TEST_F(AnyValueBuildAdapterV2Tests, ScalarViaAddMember)
 
   // By passing an empty member name we tell the builder that this will be the scalar.
   builder.AddValue(expected_anyvalue);
+
+  EXPECT_EQ(builder.GetStackSize(), 1);
 
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value, expected_anyvalue);
@@ -97,6 +103,8 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithSingleField)
   builder.EndField();
   builder.EndStruct();
 
+  EXPECT_EQ(builder.GetStackSize(), 1);
+
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value.GetType(), expected_anytype);
   EXPECT_TRUE(::sup::dto::IsStructValue(value));
@@ -120,6 +128,8 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoFields)
   builder.Bool(true);
   builder.EndField();
   builder.EndStruct();
+
+  EXPECT_EQ(builder.GetStackSize(), 1);
 
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value.GetType(), expected_anytype);
