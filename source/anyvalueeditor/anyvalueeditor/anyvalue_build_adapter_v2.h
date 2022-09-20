@@ -62,6 +62,8 @@ public:
 
   void EndField();
 
+  void AddMember(const std::string& name, sup::dto::AnyValue anyvalue);
+
   int GetStackSize() const;
 
 private:

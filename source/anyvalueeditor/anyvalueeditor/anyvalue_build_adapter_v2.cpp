@@ -117,6 +117,9 @@ void AnyValueBuildAdapterV2::String(const std::string &value)
   p_impl->AddValueNode(::sup::dto::AnyValue(value));
 }
 
+//! Adds the value as array element, or structure field.
+//! Must be used inside either StartElement/EndElement for arrays or
+//! StartField/EndField for structures.
 void AnyValueBuildAdapterV2::AddValue(sup::dto::AnyValue anyvalue)
 {
   p_impl->AddValueNode(std::move(anyvalue));
@@ -140,6 +143,15 @@ void AnyValueBuildAdapterV2::StartField(const std::string &field_name)
 void AnyValueBuildAdapterV2::EndField()
 {
   p_impl->ProcessNode(std::make_unique<EndFieldBuildNode>());
+}
+
+//! Adds member with given name to the structure.
+//! Equivalent of calls StartField/AddValue/EndField.
+void AnyValueBuildAdapterV2::AddMember(const std::string &name, sup::dto::AnyValue anyvalue)
+{
+  StartField(name);
+  AddValue(std::move(anyvalue));
+  EndField();
 }
 
 int AnyValueBuildAdapterV2::GetStackSize() const
