@@ -97,8 +97,16 @@ AbstractAnyValueBuildNode::NodeType EndStructBuildNode::GetNodeType() const
 
 bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 {
-  // do nothing, do not add itself to the stack
-  return false;
+  // expecting StartStruct node at the top
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+  }
+
+  Consume(stack.top()->MoveAnyValue());
+  stack.pop();
+
+  return true;
 }
 
 // ----------------------------------------------------------------------------

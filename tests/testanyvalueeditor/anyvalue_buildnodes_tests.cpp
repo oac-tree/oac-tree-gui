@@ -153,3 +153,29 @@ TEST_F(AnyValueBuildNodesTests, EndFieldBuildNodeProcess)
     EXPECT_EQ(result, expected_anyvalue);
   }
 }
+
+TEST_F(AnyValueBuildNodesTests, EndStructBuildNodeProcess)
+{
+  EndStructBuildNode node;
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kEndStruct);
+
+  {  // processing of empty stack is not allowed
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    EXPECT_THROW(node.Process(stack), std::runtime_error);
+  }
+
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    stack.push(std::make_unique<StartStructBuildNode>("struct_name"));
+
+    // as a result of stack processing, the StartStructBuildNode should be removed, it's value
+    // consumed
+    EXPECT_TRUE(node.Process(stack));
+    EXPECT_EQ(stack.size(), 0);
+
+    // expected value
+    auto expected = ::sup::dto::EmptyStruct("struct_name");
+    auto result = node.MoveAnyValue();
+    EXPECT_EQ(result, expected);
+  }
+}
