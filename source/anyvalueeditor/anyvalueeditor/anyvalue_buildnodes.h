@@ -102,6 +102,36 @@ public:
   bool Process(std::stack<node_t>& stack) override;
 };
 
+//! The node which is created at the end of the array.
+
+class EndArrayBuildNode : public AbstractAnyValueBuildNode
+{
+public:
+  NodeType GetNodeType() const override;
+
+  bool Process(std::stack<node_t>& stack) override;
+};
+
+//! The node which is created at the start of the element in the array.
+
+class StartArrayElementBuildNode : public AbstractAnyValueBuildNode
+{
+public:
+  NodeType GetNodeType() const override;
+
+  bool Process(std::stack<node_t>& stack) override;
+};
+
+//! The node which is created at the start of the element in the array.
+
+class EndArrayElementBuildNode : public AbstractAnyValueBuildNode
+{
+public:
+  NodeType GetNodeType() const override;
+
+  bool Process(std::stack<node_t>& stack) override;
+};
+
 }  // namespace anyvalueeditor
 
 #endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_BUILDNODES_H_

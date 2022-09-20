@@ -144,15 +144,19 @@ AbstractAnyValueBuildNode::NodeType EndFieldBuildNode::GetNodeType() const
   return NodeType::kEndField;
 }
 
+//! Processes stack by removing 2 last build nodes (the node with the value, and
+//! StartFieldBuildeNode)
 bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {
   static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
                                                     NodeType::kEndArray};
+
   if (stack.empty() || !mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
   {
     throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
   }
 
+  // removing value node (scalar, struct or array), keeping the value for later reuse
   auto value = stack.top()->MoveAnyValue();
   stack.pop();
 
@@ -161,6 +165,7 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
     throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
   }
 
+  // removing StartFieldNode, keeping the name for later reuse
   auto field_name = stack.top()->GetFieldName();
   stack.pop();
 
@@ -169,6 +174,7 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
     throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
   }
 
+  // We expecting to find here StartStructBuildNode, adding a new member to it.
   stack.top()->AddMember(field_name, value);
 
   // we don't need to save the node in the stack, all job is already done
@@ -179,10 +185,7 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 // StartArrayBuildNode
 // ----------------------------------------------------------------------------
 
-StartArrayBuildNode::StartArrayBuildNode(const std::string &array_name)
-{
-
-}
+StartArrayBuildNode::StartArrayBuildNode(const std::string &array_name) {}
 
 AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
 {
@@ -190,6 +193,48 @@ AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
 }
 
 bool StartArrayBuildNode::Process(std::stack<node_t> &stack)
+{
+  return true;
+}
+
+// ----------------------------------------------------------------------------
+// EndArrayBuildNode
+// ----------------------------------------------------------------------------
+
+AbstractAnyValueBuildNode::NodeType EndArrayBuildNode::GetNodeType() const
+{
+  return NodeType::kEndArray;
+}
+
+bool EndArrayBuildNode::Process(std::stack<node_t> &stack)
+{
+  return true;
+}
+
+// ----------------------------------------------------------------------------
+// StartArrayElementBuildNode
+// ----------------------------------------------------------------------------
+
+AbstractAnyValueBuildNode::NodeType StartArrayElementBuildNode::GetNodeType() const
+{
+  return NodeType::kStartArrayElement;
+}
+
+bool StartArrayElementBuildNode::Process(std::stack<node_t> &stack)
+{
+  return true;
+}
+
+// ----------------------------------------------------------------------------
+// StartArrayElementBuildNode
+// ----------------------------------------------------------------------------
+
+AbstractAnyValueBuildNode::NodeType EndArrayElementBuildNode::GetNodeType() const
+{
+  return NodeType::kEndArrayElement;
+}
+
+bool EndArrayElementBuildNode::Process(std::stack<node_t> &stack)
 {
   return false;
 }
