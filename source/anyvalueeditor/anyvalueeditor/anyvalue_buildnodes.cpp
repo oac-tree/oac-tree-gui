@@ -194,7 +194,13 @@ AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
 
 bool StartArrayBuildNode::Process(std::stack<node_t> &stack)
 {
-  return true;
+  if (CanAddValueNode(stack))
+  {
+    return true;
+  }
+
+  throw std::runtime_error(
+      "Error in StartArrayBuildNode::Process() : stack contains unexpected nodes");
 }
 
 // ----------------------------------------------------------------------------

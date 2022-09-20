@@ -164,3 +164,26 @@ TEST_F(AnyValueBuildNodesTests, EndStructBuildNodeProcess)
     EXPECT_EQ(result, expected);
   }
 }
+
+TEST_F(AnyValueBuildNodesTests, StartArrayBuildNodeProcess)
+{
+  StartArrayBuildNode node("array_name");
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartArray);
+
+  // processing empty stack
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_TRUE(node.Process(stack));
+
+  // processing stack containing another struct is not possible
+  stack.push(std::make_unique<StartStructBuildNode>(std::string()));
+  EXPECT_THROW(node.Process(stack), std::runtime_error);
+
+  // processing stack containing a field
+  stack.push(std::make_unique<StartFieldBuildNode>("field_name"));
+  EXPECT_TRUE(node.Process(stack));
+
+  // at the beginning, StartArrayBuildNode doesn't contain valid AnyValue since it waits the first
+  // element
+  auto result = node.MoveAnyValue();
+  EXPECT_TRUE(sup::dto::IsEmptyValue(result));
+}
