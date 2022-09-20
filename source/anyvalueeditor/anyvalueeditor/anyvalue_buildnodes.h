@@ -100,6 +100,11 @@ public:
   NodeType GetNodeType() const override;
 
   bool Process(std::stack<node_t>& stack) override;
+
+  void AddElement(const sup::dto::AnyValue& value) override;
+
+private:
+  std::string m_array_name;
 };
 
 //! The node which is created at the end of the array.

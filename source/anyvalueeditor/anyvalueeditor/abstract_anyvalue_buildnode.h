@@ -69,6 +69,8 @@ public:
 
   virtual void AddMember(const std::string& name, const sup::dto::AnyValue& value);
 
+  virtual void AddElement(const sup::dto::AnyValue& value);
+
 protected:
   sup::dto::AnyValue m_value;
   std::string m_field_name;

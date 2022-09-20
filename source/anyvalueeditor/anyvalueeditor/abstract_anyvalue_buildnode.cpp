@@ -67,4 +67,9 @@ void AbstractAnyValueBuildNode::AddMember(const std::string &name, const sup::dt
   throw std::runtime_error("Error in AbstractAnyValueBuildNode::AddMember() : not implemented");
 }
 
+void AbstractAnyValueBuildNode::AddElement(const sup::dto::AnyValue &value)
+{
+  throw std::runtime_error("Error in AbstractAnyValueBuildNode::AddMember() : not implemented");
+}
+
 }  // namespace anyvalueeditor

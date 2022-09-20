@@ -76,7 +76,7 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
   EXPECT_EQ(result, expected);
 }
 
-TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcessAddField)
+TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcessAddMember)
 {
   StartStructBuildNode node("struct_name");
 
@@ -186,4 +186,19 @@ TEST_F(AnyValueBuildNodesTests, StartArrayBuildNodeProcess)
   // element
   auto result = node.MoveAnyValue();
   EXPECT_TRUE(sup::dto::IsEmptyValue(result));
+}
+
+//! Testing StartArrayBuildNode::AddElement method.
+TEST_F(AnyValueBuildNodesTests, StartArrayBuildNodeAddElement)
+{
+  StartArrayBuildNode node("array_name");
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartArray);
+
+  // adding an element to the array
+  EXPECT_NO_THROW(node.AddElement(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+  EXPECT_NO_THROW(node.AddElement(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}));
+
+  auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
+  auto result = node.MoveAnyValue();
+  EXPECT_EQ(result, expected);
 }

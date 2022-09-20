@@ -57,6 +57,7 @@ TEST_F(AbstractAnyValueBuildNodeTests, InitialState)
   EXPECT_FALSE(node.Process(stack));
 
   EXPECT_THROW(node.AddMember("name", sup::dto::AnyValue()), std::runtime_error);
+  EXPECT_THROW(node.AddElement(sup::dto::AnyValue()), std::runtime_error);
 }
 
 TEST_F(AbstractAnyValueBuildNodeTests, CanAddValueNode)

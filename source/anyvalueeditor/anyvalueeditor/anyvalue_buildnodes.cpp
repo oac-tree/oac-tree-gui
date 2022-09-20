@@ -185,7 +185,9 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 // StartArrayBuildNode
 // ----------------------------------------------------------------------------
 
-StartArrayBuildNode::StartArrayBuildNode(const std::string &array_name) {}
+StartArrayBuildNode::StartArrayBuildNode(const std::string &array_name) : m_array_name(array_name)
+{
+}
 
 AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
 {
@@ -201,6 +203,21 @@ bool StartArrayBuildNode::Process(std::stack<node_t> &stack)
 
   throw std::runtime_error(
       "Error in StartArrayBuildNode::Process() : stack contains unexpected nodes");
+}
+
+//! Adds element to the array. If array doesn't exist, it will be initialised using the type of the
+//! given value.
+void StartArrayBuildNode::AddElement(const sup::dto::AnyValue &value)
+{
+  if (sup::dto::IsEmptyValue(m_value))
+  {
+    m_value = sup::dto::AnyValue(0, value.GetType(), m_array_name);
+    m_value.AddElement(value);
+  }
+  else
+  {
+    m_value.AddElement(value);
+  }
 }
 
 // ----------------------------------------------------------------------------
