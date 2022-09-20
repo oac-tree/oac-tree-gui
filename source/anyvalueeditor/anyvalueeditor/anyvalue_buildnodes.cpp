@@ -144,8 +144,9 @@ AbstractAnyValueBuildNode::NodeType EndFieldBuildNode::GetNodeType() const
   return NodeType::kEndField;
 }
 
-//! Processes stack by removing 2 last build nodes (the node with the value, and
-//! StartFieldBuildeNode)
+//! Processes the stack, finalizes the adding of the field to StartStructBuildNode
+//! @note It will remove two last nodes (with the vlaue, and with the field name) and then
+//! create a field in the remaining StartStructBuildNode.
 bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {
   static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
@@ -245,6 +246,12 @@ AbstractAnyValueBuildNode::NodeType StartArrayElementBuildNode::GetNodeType() co
 
 bool StartArrayElementBuildNode::Process(std::stack<node_t> &stack)
 {
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartArray)
+  {
+    throw std::runtime_error(
+        "Error in StartArrayElementBuildNode::Process(): last node is not an array");
+  }
+
   return true;
 }
 

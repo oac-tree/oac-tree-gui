@@ -202,3 +202,18 @@ TEST_F(AnyValueBuildNodesTests, StartArrayBuildNodeAddElement)
   auto result = node.MoveAnyValue();
   EXPECT_EQ(result, expected);
 }
+
+//! Testing StartArrayElementBuildNode and its Process method.
+TEST_F(AnyValueBuildNodesTests, StartArrayElementBuildNodeProcess)
+{
+  StartArrayElementBuildNode node;
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartArrayElement);
+
+  // processing of empty stack is not allowed
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_THROW(node.Process(stack), std::runtime_error);
+
+  // stack is possible to process if it contains StartArrayBuildNode
+  stack.push(std::make_unique<StartArrayBuildNode>(std::string()));
+  EXPECT_TRUE(node.Process(stack));
+}
