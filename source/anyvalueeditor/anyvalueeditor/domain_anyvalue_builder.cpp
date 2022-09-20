@@ -19,7 +19,7 @@
 
 #include "anyvalueeditor/domain_anyvalue_builder.h"
 
-#include <anyvalueeditor/anyvalue_build_adapter.h>
+#include <anyvalueeditor/anyvalue_build_adapter_v2.h>
 #include <anyvalueeditor/anyvalue_item.h>
 #include <anyvalueeditor/scalar_conversion_utils.h>
 #include <sup/dto/anyvalue.h>
@@ -40,7 +40,7 @@ struct Node
 
 struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 {
-  AnyValueBuildAdapter m_builder;
+  AnyValueBuildAdapterV2 m_builder;
   std::stack<Node> m_stack;
 
   explicit DomainAnyValueBuilderImpl(const AnyValueItem& item)
@@ -74,7 +74,15 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
   {
     // It's a scalar field. Let's add corresponding field to the AnyValue and remove node from
     // stack. We don't need it anymore.
-    m_builder.AddMember(node.m_name, GetAnyValueFromScalar(*node.m_item));
+    if (node.m_name.empty())
+    {
+      m_builder.AddValue(GetAnyValueFromScalar(*node.m_item));
+    }
+    else
+    {
+      m_builder.AddMember(node.m_name, GetAnyValueFromScalar(*node.m_item));
+    }
+
     m_stack.pop();
   }
 
@@ -85,7 +93,11 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
     {
       // All children have been already added to the struct. It's time to tell the builder
       // that the struct has to be added to its own parent.
-      m_builder.EndStruct(node.m_name);
+      m_builder.EndStruct();
+      if (!node.m_name.empty())
+      {
+        m_builder.EndField();
+      }
       m_stack.pop();  // we don't need the node anymore
     }
     else
@@ -93,6 +105,10 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       // We found a struct which we haven't seen before. Let's tell the builder to create
       // underlying AnyValue, and let's add children to the stack.
       // We are not poping struct node, we will get back to it later.
+      if (!node.m_name.empty())
+      {
+        m_builder.StartField(node.m_name);
+      }
       m_builder.StartStruct(node.m_item->GetAnyTypeName());
       node.m_is_visited = true;
 
