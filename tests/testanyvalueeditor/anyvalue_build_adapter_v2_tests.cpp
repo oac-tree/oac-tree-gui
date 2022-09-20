@@ -127,3 +127,33 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoFields)
   EXPECT_EQ(value["signed"].As<sup::dto::int32>(), 42);
   EXPECT_EQ(value["bool"].As<sup::dto::boolean>(), true);
 }
+
+//! Creation of AnyValue containing a struct with two fields.
+//! Same as before using method AddScalar and pre-constructed AnyValue scalars
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoFieldsViaAddScalar)
+{
+  sup::dto::AnyType expected_anytype = {{"signed", {sup::dto::SignedInteger32Type}},
+                                        {"bool", {sup::dto::BooleanType}}};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct();
+
+  auto value1 = ::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 42);
+  builder.StartField("signed");
+  builder.AddValue(value1);
+  builder.EndField();
+  auto value2 = ::sup::dto::AnyValue(::sup::dto::BooleanType, true);
+  builder.StartField("bool");
+  builder.AddValue(value2);
+  builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value.GetType(), expected_anytype);
+  EXPECT_EQ(value.NumberOfMembers(), 2);
+  EXPECT_TRUE(::sup::dto::IsStructValue(value));
+  EXPECT_EQ(value["signed"].As<sup::dto::int32>(), 42);
+  EXPECT_EQ(value["bool"].As<sup::dto::boolean>(), true);
+}
