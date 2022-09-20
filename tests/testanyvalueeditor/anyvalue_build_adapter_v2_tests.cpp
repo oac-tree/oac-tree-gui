@@ -167,3 +167,36 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoFieldsViaAddScalar)
   EXPECT_EQ(value["signed"].As<sup::dto::int32>(), 42);
   EXPECT_EQ(value["bool"].As<sup::dto::boolean>(), true);
 }
+
+//! Creation of AnyValue containing a struct with another struct in it.
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructWithNestedStructWithField)
+{
+  sup::dto::AnyType two_scalars = {{"signed", {sup::dto::SignedInteger32Type}},
+                                   {"bool", {sup::dto::BooleanType}}};
+  sup::dto::AnyType expected_anytype = {{"scalars", two_scalars}};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct();
+  builder.StartField("scalars");
+
+  builder.StartStruct();
+  builder.StartField("signed");
+  builder.Int32(42);
+  builder.EndField();
+  builder.StartField("bool");
+  builder.Bool(true);
+  builder.EndField();
+  builder.EndStruct();
+
+  builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value.GetType(), expected_anytype);
+  EXPECT_TRUE(::sup::dto::IsStructValue(value));
+  EXPECT_TRUE(::sup::dto::IsStructValue(value["scalars"]));
+  EXPECT_EQ(value["scalars.signed"].As<sup::dto::int32>(), 42);
+  EXPECT_EQ(value["scalars.bool"].As<sup::dto::boolean>(), true);
+}
