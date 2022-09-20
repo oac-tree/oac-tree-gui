@@ -44,7 +44,9 @@ public:
     kStartField,
     kEndField,
     kStartArray,
-    kEndArray
+    kEndArray,
+    kStartArrayElement,
+    kEndArrayElement
   };
 
   AbstractAnyValueBuildNode() = default;
@@ -57,12 +59,6 @@ public:
   virtual void Consume(sup::dto::AnyValue&& value);
 
   sup::dto::AnyValue MoveAnyValue() const;
-
-  virtual bool IsStartStructNode() const;
-
-  virtual bool IsStartElementNode() const;
-
-  virtual bool IsStartFieldNode() const;
 
   static bool CanAddValueNode(const std::stack<node_t>& stack);
 

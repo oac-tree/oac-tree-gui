@@ -51,6 +51,10 @@ bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
   throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
 }
 
+// ----------------------------------------------------------------------------
+// StartStructBuildNode
+// ----------------------------------------------------------------------------
+
 StartStructBuildNode::StartStructBuildNode(const std::string &struct_name)
     : AbstractAnyValueBuildNode(::sup::dto::EmptyStruct(struct_name))
 
@@ -62,10 +66,6 @@ AbstractAnyValueBuildNode::NodeType StartStructBuildNode::GetNodeType() const
   return NodeType::kStartStruct;
 }
 
-// ----------------------------------------------------------------------------
-// StartStructBuildNode
-// ----------------------------------------------------------------------------
-
 bool StartStructBuildNode::Process(std::stack<node_t> &stack)
 {
   if (CanAddValueNode(stack))
@@ -74,11 +74,6 @@ bool StartStructBuildNode::Process(std::stack<node_t> &stack)
   }
 
   throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
-}
-
-bool StartStructBuildNode::IsStartStructNode() const
-{
-  return true;
 }
 
 void StartStructBuildNode::AddMember(const std::string &name, const sup::dto::AnyValue &value)
@@ -131,17 +126,12 @@ bool StartFieldBuildNode::Process(std::stack<node_t> &stack)
     throw std::runtime_error("Error in StartFieldBuildNode::Process(): fieldname is not defined");
   }
 
-  if (stack.empty() || !stack.top()->IsStartStructNode())
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
   {
     throw std::runtime_error(
         "Error in StartFieldBuildNode::Process(): last node is not a structure");
   }
 
-  return true;
-}
-
-bool StartFieldBuildNode::IsStartFieldNode() const
-{
   return true;
 }
 
@@ -182,6 +172,25 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
   stack.top()->AddMember(field_name, value);
 
   // we don't need to save the node in the stack, all job is already done
+  return false;
+}
+
+// ----------------------------------------------------------------------------
+// StartArrayBuildNode
+// ----------------------------------------------------------------------------
+
+StartArrayBuildNode::StartArrayBuildNode(const std::string &array_name)
+{
+
+}
+
+AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
+{
+  return NodeType::kStartArray;
+}
+
+bool StartArrayBuildNode::Process(std::stack<node_t> &stack)
+{
   return false;
 }
 

@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include <anyvalueeditor/abstract_anyvalue_buildnode.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <stdexcept>
 
@@ -39,24 +40,11 @@ sup::dto::AnyValue AbstractAnyValueBuildNode::MoveAnyValue() const
   return std::move(m_value);
 }
 
-bool AbstractAnyValueBuildNode::IsStartStructNode() const
-{
-  return false;
-}
-
-bool AbstractAnyValueBuildNode::IsStartElementNode() const
-{
-  return false;
-}
-
-bool AbstractAnyValueBuildNode::IsStartFieldNode() const
-{
-  return false;
-}
-
 bool AbstractAnyValueBuildNode::CanAddValueNode(const std::stack<node_t> &stack)
 {
-  return stack.empty() || stack.top()->IsStartElementNode() || stack.top()->IsStartFieldNode();
+  static const std::vector<NodeType> expected_types{NodeType::kStartArrayElement,
+                                                    NodeType::kStartField};
+  return stack.empty() || mvvm::utils::Contains(expected_types, stack.top()->GetNodeType());
 }
 
 std::string AbstractAnyValueBuildNode::GetFieldName() const

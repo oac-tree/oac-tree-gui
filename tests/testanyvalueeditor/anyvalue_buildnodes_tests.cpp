@@ -32,10 +32,6 @@ class AnyValueBuildNodesTests : public ::testing::Test
 TEST_F(AnyValueBuildNodesTests, AnyValueBuildNodeProcess)
 {
   AnyValueBuildNode node(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-
-  EXPECT_FALSE(node.IsStartElementNode());
-  EXPECT_FALSE(node.IsStartFieldNode());
-
   EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kValue);
 
   // processing empty stack
@@ -60,11 +56,6 @@ TEST_F(AnyValueBuildNodesTests, AnyValueBuildNodeProcess)
 TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcess)
 {
   StartStructBuildNode node("struct_name");
-
-  EXPECT_FALSE(node.IsStartElementNode());
-  EXPECT_FALSE(node.IsStartFieldNode());
-  EXPECT_TRUE(node.IsStartStructNode());
-
   EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartStruct);
 
   // processing empty stack
@@ -103,13 +94,7 @@ TEST_F(AnyValueBuildNodesTests, StartStructBuildNodeProcessAddField)
 TEST_F(AnyValueBuildNodesTests, StartFieldBuildNodeProcess)
 {
   StartFieldBuildNode node("field_name");
-
   EXPECT_EQ(node.GetFieldName(), std::string("field_name"));
-
-  EXPECT_FALSE(node.IsStartElementNode());
-  EXPECT_TRUE(node.IsStartFieldNode());
-  EXPECT_FALSE(node.IsStartStructNode());
-
   EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kStartField);
 
   // processing of empty stack is not allowed

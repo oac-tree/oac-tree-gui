@@ -51,9 +51,6 @@ public:
 TEST_F(AbstractAnyValueBuildNodeTests, InitialState)
 {
   TestNode node;
-  EXPECT_FALSE(node.IsStartElementNode());
-  EXPECT_FALSE(node.IsStartFieldNode());
-  EXPECT_FALSE(node.IsStartStructNode());
   EXPECT_TRUE(node.GetFieldName().empty());
 
   std::stack<AbstractAnyValueBuildNode::node_t> stack;
