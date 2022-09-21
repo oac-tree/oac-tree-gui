@@ -421,3 +421,27 @@ TEST_F(AnyValueBuildAdapterV2Tests, ScalarArrayViaAddArrayElement)
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value, expected);
 }
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructWithScalarArrayAsField)
+{
+  auto array_value = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
+  sup::dto::AnyValue expected_struct_value = {{{"array_field", array_value}}, "struct_name"};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct("struct_name");
+  builder.StartField("array_field");
+  builder.StartArray("array_name");
+  builder.StartArrayElement();
+  builder.Int32(42);
+  builder.EndArrayElement();
+  builder.StartArrayElement();
+  builder.Int32(43);
+  builder.EndArrayElement();
+  builder.EndArray();
+  builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected_struct_value);
+}
