@@ -38,6 +38,14 @@ public:
     stack.push(std::make_unique<T>((args)...));
     return CanAddValueNode(stack);
   }
+
+  template <typename T, typename... Args>
+  void ValidateCompletedValueNode(Args&&... args)
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    stack.push(std::make_unique<T>((args)...));
+    ValidateIfValueNodeIsComplete(stack);
+  }
 };
 
 //! Unit tests for CanAddValueNode utility function.
@@ -92,4 +100,15 @@ TEST_F(AnyValueBuildNodeUtilsTests, ValidateLastNode)
   EXPECT_NO_THROW(ValidateLastNode(stack, AbstractAnyValueBuildNode::NodeType::kStartStruct));
   EXPECT_THROW(ValidateLastNode(stack, AbstractAnyValueBuildNode::NodeType::kStartArray),
                std::runtime_error);
+}
+
+//! Unit tests for ValidateIfValueNodeIsComplete utility function.
+
+TEST_F(AnyValueBuildNodeUtilsTests, ValidateIfValueNodeIsComplete)
+{
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_THROW(ValidateIfValueNodeIsComplete(stack), std::runtime_error);
+
+  EXPECT_NO_THROW(CheckAddValueNode<EndStructBuildNode>());
+  EXPECT_NO_THROW(CheckAddValueNode<EndArrayBuildNode>());
 }

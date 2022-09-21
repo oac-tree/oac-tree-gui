@@ -48,7 +48,19 @@ void ValidateLastNode(const std::stack<AbstractAnyValueBuildNode::node_t> &stack
 {
   if (stack.empty() || stack.top()->GetNodeType() != node_type)
   {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong type of the last node");
+    throw std::runtime_error("Error in ValidateLastNode(): wrong type of the last node");
+  }
+}
+
+void ValidateIfValueNodeIsComplete(const std::stack<AbstractAnyValueBuildNode::node_t> &stack)
+{
+  using NodeType = AbstractAnyValueBuildNode::NodeType;
+  static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
+                                                    NodeType::kEndArray};
+
+  if (stack.empty() || !mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
+  {
+    throw std::runtime_error("Error in ValidateIfValueNodeIsComplete(): wrong node type");
   }
 }
 

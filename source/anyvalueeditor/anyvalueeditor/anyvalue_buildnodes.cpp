@@ -141,13 +141,7 @@ AbstractAnyValueBuildNode::NodeType EndFieldBuildNode::GetNodeType() const
 //! create a field in the remaining StartStructBuildNode.
 bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {
-  static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
-                                                    NodeType::kEndArray};
-
-  if (stack.empty() || !mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
-  {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
-  }
+  ValidateIfValueNodeIsComplete(stack);
 
   // removing value node (scalar, struct or array), keeping the value for later reuse
   auto value = stack.top()->MoveAnyValue();
@@ -251,13 +245,7 @@ AbstractAnyValueBuildNode::NodeType EndArrayElementBuildNode::GetNodeType() cons
 
 bool EndArrayElementBuildNode::Process(std::stack<node_t> &stack)
 {
-  static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
-                                                    NodeType::kEndArray};
-
-  if (stack.empty() || !mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
-  {
-    throw std::runtime_error("Error in EndArrayElementBuildNode::Process(): wrong node type");
-  }
+  ValidateIfValueNodeIsComplete(stack);
 
   // removing value node (scalar, struct or array), keeping the value for later reuse
   auto value = stack.top()->MoveAnyValue();

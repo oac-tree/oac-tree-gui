@@ -29,8 +29,8 @@ namespace anyvalueeditor
 {
 
 //! Returns true if it is possible to add value node. This will be the case in one of three cases:
-//! 1) the stack is empty 2) last node denotes that we are about to add a field to the struct
-//! 3) last node denote that we are about to add an element to the array.
+//! 1) the stack is empty 2) last node denotes the start of the structure's field
+//! 3) last node denotes denotes the start of the array's element.
 bool CanAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t>& stack);
 
 //! Validates if adding of value node is possible for this stack configuration, and throws if it is
@@ -40,6 +40,9 @@ void ValidateAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t>& s
 //! Validate if the last value in a stack has given type, will throw if not.
 void ValidateLastNode(const std::stack<AbstractAnyValueBuildNode::node_t>& stack,
                       AbstractAnyValueBuildNode::NodeType node_type);
+
+//! Returns true if the last node corresponds to a completed value node.
+void ValidateIfValueNodeIsComplete(const std::stack<AbstractAnyValueBuildNode::node_t>& stack);
 
 }  // namespace anyvalueeditor
 
