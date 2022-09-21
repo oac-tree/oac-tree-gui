@@ -217,3 +217,37 @@ TEST_F(AnyValueBuildNodesTests, StartArrayElementBuildNodeProcess)
   stack.push(std::make_unique<StartArrayBuildNode>(std::string()));
   EXPECT_TRUE(node.Process(stack));
 }
+
+//! Testing StartArrayElementBuildNode and its Process method.
+TEST_F(AnyValueBuildNodesTests, EndArrayElementBuildNodeProcess)
+{
+  EndArrayElementBuildNode node;
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kEndArrayElement);
+
+  // processing of empty stack is not allowed
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    EXPECT_THROW(node.Process(stack), std::runtime_error);
+  }
+
+  // stack should contains proper nodes for processing
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+
+    stack.push(std::make_unique<StartArrayBuildNode>("array_name"));
+    stack.push(std::make_unique<StartArrayElementBuildNode>());
+    stack.push(
+        std::make_unique<AnyValueBuildNode>(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}));
+
+    // processing should return false since EndArrayElementBuildNode doesn't want to be in the stack
+    EXPECT_FALSE(node.Process(stack));
+
+    // stack should contain StartArrayBuildNode
+    EXPECT_EQ(stack.size(), 1);
+
+    // expected value should be array with single element
+    auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}}, "array_name");
+    auto result = stack.top()->MoveAnyValue();
+    EXPECT_EQ(result, expected);
+  }
+}

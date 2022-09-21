@@ -144,8 +144,8 @@ AbstractAnyValueBuildNode::NodeType EndFieldBuildNode::GetNodeType() const
   return NodeType::kEndField;
 }
 
-//! Processes the stack, finalizes the adding of the field to StartStructBuildNode
-//! @note It will remove two last nodes (with the vlaue, and with the field name) and then
+//! Processes the stack, finalizes the adding of the field to StartStructBuildNode.
+//! @note It will remove two last nodes (with the value, and with the field name) and then
 //! create a field in the remaining StartStructBuildNode.
 bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 {
@@ -163,22 +163,22 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
 
   if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartField)
   {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): missed StartFieldBuildNode");
   }
 
   // removing StartFieldNode, keeping the name for later reuse
   auto field_name = stack.top()->GetFieldName();
   stack.pop();
 
-  if (stack.empty())
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
   {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): missed StartStructBuildNode");
   }
 
-  // We expecting to find here StartStructBuildNode, adding a new member to it.
+  // adding a new member to StartStructBuildNode
   stack.top()->AddMember(field_name, value);
 
-  // we don't need to save the node in the stack, all job is already done
+  // we don't need to save this node in the stack, all job is already done
   return false;
 }
 
@@ -256,7 +256,7 @@ bool StartArrayElementBuildNode::Process(std::stack<node_t> &stack)
 }
 
 // ----------------------------------------------------------------------------
-// StartArrayElementBuildNode
+// EndArrayElementBuildNode
 // ----------------------------------------------------------------------------
 
 AbstractAnyValueBuildNode::NodeType EndArrayElementBuildNode::GetNodeType() const
@@ -264,8 +264,34 @@ AbstractAnyValueBuildNode::NodeType EndArrayElementBuildNode::GetNodeType() cons
   return NodeType::kEndArrayElement;
 }
 
+//! Processes the stack, finalizes the adding of the element to StartArrayBuildNode.
+//! @note It will remove two last nodes (with the value, and StartArrayElementNode) and then
+//! create a field in the remaining StartStructBuildNode.
+
 bool EndArrayElementBuildNode::Process(std::stack<node_t> &stack)
 {
+  static const std::vector<NodeType> expected_types{NodeType::kValue, NodeType::kEndStruct,
+                                                    NodeType::kEndArray};
+
+  if (stack.empty() || !mvvm::utils::Contains(expected_types, stack.top()->GetNodeType()))
+  {
+    throw std::runtime_error("Error in EndArrayElementBuildNode::Process(): wrong node type");
+  }
+
+  // removing value node (scalar, struct or array), keeping the value for later reuse
+  auto value = stack.top()->MoveAnyValue();
+  stack.pop();
+
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartArrayElement)
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): missed StartArrayElement");
+  }
+  stack.pop();
+
+  // adding a new element to StartArrayBuildNode
+  stack.top()->AddElement(value);
+
+  // we don't need to save this node in the stack, all job is already done
   return false;
 }
 
