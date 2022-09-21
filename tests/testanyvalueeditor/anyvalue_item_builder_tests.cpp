@@ -26,6 +26,8 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 
+#include <iostream>
+
 using namespace anyvalueeditor;
 
 class AnyValueItemBuilderTests : public FolderBasedTest
@@ -317,7 +319,7 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
   EXPECT_EQ(child1->Data<int>(), 2);
 }
 
-//! Building AnyValueItem from AnyValue containing an array of integers.
+//! Building AnyValueItem from AnyValue structure containing an array of integers.
 
 TEST_F(AnyValueItemBuilderTests, StructWithArrayOfIntegers)
 {
@@ -353,4 +355,64 @@ TEST_F(AnyValueItemBuilderTests, StructWithArrayOfIntegers)
   EXPECT_EQ(element1->GetDisplayName(), "index1");
   EXPECT_EQ(mvvm::utils::TypeName(element1->Data()), mvvm::constants::kIntVariantName);
   EXPECT_EQ(element1->Data<int>(), 2);
+}
+
+//! Building AnyValueItem from AnyValue array containing two structures.
+
+TEST_F(AnyValueItemBuilderTests, ArrayWithTwoStructureElements)
+{
+  sup::dto::AnyValue struct1 = {{{"first", {sup::dto::SignedInteger8Type, -43}},
+                                 {"second", {sup::dto::UnsignedInteger8Type, 44}}},
+                                "struct_name"};
+  sup::dto::AnyValue struct2 = {{{"first", {sup::dto::SignedInteger8Type, 42}},
+                                 {"second", {sup::dto::UnsignedInteger8Type, 43}}},
+                                "struct_name"};
+
+  auto array_value = sup::dto::ArrayValue({{struct1}, struct2}, "array_name");
+  WriteJson(array_value, "ArrayWithTwoStructureElements.json");
+
+  // top level item is AnyValueArrayItem with two elements
+  auto item = GetAnyValueItem(array_value);
+  EXPECT_EQ(item->GetTotalItemCount(), 2);
+  EXPECT_EQ(item->GetDisplayName(), kArrayTypeName);
+  EXPECT_EQ(item->GetType(), AnyValueArrayItem::Type);
+  EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));
+
+  // first element in array is a structure
+  auto child0 = item->GetItem("", 0);
+  EXPECT_EQ(child0->GetTotalItemCount(), 2);
+  EXPECT_EQ(child0->GetDisplayName(), "index0");
+  EXPECT_EQ(child0->GetType(), AnyValueStructItem::Type);
+  EXPECT_FALSE(mvvm::utils::IsValid(child0->Data()));
+
+  auto grandchild0 = child0->GetItem("", 0);
+  EXPECT_EQ(grandchild0->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild0->GetDisplayName(), "first");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild0->Data()), mvvm::constants::kIntVariantName);
+  EXPECT_EQ(grandchild0->Data<int>(), -43);
+
+  auto grandchild1 = child0->GetItem("", 1);
+  EXPECT_EQ(grandchild1->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild1->GetDisplayName(), "second");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild1->Data()), mvvm::constants::kIntVariantName);
+  EXPECT_EQ(grandchild1->Data<int>(), 44);
+
+  // second element in array is a structure
+  auto child1 = item->GetItem("", 1);
+  EXPECT_EQ(child1->GetTotalItemCount(), 2);
+  EXPECT_EQ(child1->GetDisplayName(), "index1");
+  EXPECT_EQ(child1->GetType(), AnyValueStructItem::Type);
+  EXPECT_FALSE(mvvm::utils::IsValid(child1->Data()));
+
+  auto grandchild2 = child1->GetItem("", 0);
+  EXPECT_EQ(grandchild2->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild2->GetDisplayName(), "first");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild2->Data()), mvvm::constants::kIntVariantName);
+  EXPECT_EQ(grandchild2->Data<int>(), 42);
+
+  auto grandchild3 = child1->GetItem("", 1);
+  EXPECT_EQ(grandchild3->GetTotalItemCount(), 0);
+  EXPECT_EQ(grandchild3->GetDisplayName(), "second");
+  EXPECT_EQ(mvvm::utils::TypeName(grandchild3->Data()), mvvm::constants::kIntVariantName);
+  EXPECT_EQ(grandchild3->Data<int>(), 43);
 }

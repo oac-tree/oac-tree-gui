@@ -34,8 +34,8 @@ struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
 {
   std::stack<AbstractAnyValueBuildNode::node_t> m_stack;
 
-  template<typename T, typename... Args>
-  void ProcessNode(Args&&... args)
+  template <typename T, typename... Args>
+  void ProcessNode(Args &&...args)
   {
     auto node = std::make_unique<T>((args)...);
     if (node->Process(m_stack))
@@ -44,10 +44,7 @@ struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
     }
   }
 
-  void AddValueNode(const ::sup::dto::AnyValue& value)
-  {
-    ProcessNode<AnyValueBuildNode>(value);
-  }
+  void AddValueNode(const ::sup::dto::AnyValue &value) { ProcessNode<AnyValueBuildNode>(value); }
 };
 
 AnyValueBuildAdapterV2::AnyValueBuildAdapterV2() : p_impl(new AnyValueBuildAdapterV2Impl) {}
@@ -119,9 +116,14 @@ void AnyValueBuildAdapterV2::String(const std::string &value)
   p_impl->AddValueNode(::sup::dto::AnyValue(value));
 }
 
-//! Adds the value as array element, or structure field.
-//! Must be used inside either StartElement/EndElement for arrays or
-//! StartField/EndField for structures.
+//! Adds the value as array element, or structure field, or single scalar.
+//! @param anyvalue The value to be added.
+//! @note Must be used under one of three scenario:
+//! 1. Adding this value is the only operation with the builder. It can be a
+//! scalar, array or structure. The value will be returned to the user on MoveAnyValue as it is.
+//! 2. StartArrayElement was called before. Then the value will be added to the array elements.
+//! 2. StartField was called before. Then the value will be added to current struct as a field.
+
 void AnyValueBuildAdapterV2::AddValue(const sup::dto::AnyValue &anyvalue)
 {
   p_impl->AddValueNode(anyvalue);
@@ -148,11 +150,13 @@ void AnyValueBuildAdapterV2::EndField()
 }
 
 //! Adds member with given name to the structure.
-//! Equivalent of calls StartField/AddValue/EndField.
+//! @param anyvalue Scalar anyvalue, completed structure or array.
+//! @note Equivalent of calls StartField/AddValue/EndField.
+
 void AnyValueBuildAdapterV2::AddMember(const std::string &name, sup::dto::AnyValue anyvalue)
 {
   StartField(name);
-  AddValue(std::move(anyvalue));
+  AddValue(anyvalue);
   EndField();
 }
 
@@ -171,10 +175,14 @@ void AnyValueBuildAdapterV2::EndArrayElement()
   p_impl->ProcessNode<EndArrayElementBuildNode>();
 }
 
-void AnyValueBuildAdapterV2::AddArrayElement(const sup::dto::AnyValue& anyvalue)
+//! Adds array element.
+//! @param anyvalue Scalar anyvalue, completed structure or array.
+//! @note Equivalent of calls StartArrayElement/AddValue/EndArrayElement.
+
+void AnyValueBuildAdapterV2::AddArrayElement(const sup::dto::AnyValue &anyvalue)
 {
   StartArrayElement();
-  AddValue(std::move(anyvalue));
+  AddValue(anyvalue);
   EndArrayElement();
 }
 
