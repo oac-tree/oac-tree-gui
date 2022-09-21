@@ -36,4 +36,12 @@ bool CanAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode>
   return stack.empty() || mvvm::utils::Contains(expected_types, stack.top()->GetNodeType());
 }
 
+void ValidateAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode> > &stack)
+{
+  if (!CanAddValueNode(stack))
+  {
+    throw std::runtime_error("Error in ValidateAddValueNode(): AnyValueNode can not be added");
+  }
+}
+
 }  // namespace anyvalueeditor

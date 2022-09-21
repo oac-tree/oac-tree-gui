@@ -36,6 +36,9 @@ class AbstractAnyValueBuildNode;
 //! 3) last node denote that we are about to add an element to the array.
 bool CanAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode>>& stack);
 
+//! Validates if adding of value node is possible for this stack configuration.
+void ValidateAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode>>& stack);
+
 }  // namespace anyvalueeditor
 
 #endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_BUILDNODES_UTILS_H_

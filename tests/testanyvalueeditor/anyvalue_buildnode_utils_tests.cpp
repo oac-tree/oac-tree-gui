@@ -40,7 +40,7 @@ public:
   }
 };
 
-//! Unit tests for CanAddValueNode utility functions.
+//! Unit tests for CanAddValueNode utility function.
 
 TEST_F(AnyValueBuildNodeUtilsTests, CanAddValueNode)
 {
@@ -60,4 +60,23 @@ TEST_F(AnyValueBuildNodeUtilsTests, CanAddValueNode)
   EXPECT_FALSE(CheckAddValueNode<EndArrayBuildNode>());
   EXPECT_FALSE(CheckAddValueNode<EndFieldBuildNode>());
   EXPECT_FALSE(CheckAddValueNode<EndArrayElementBuildNode>());
+}
+
+//! Unit tests for ValidateAddValueNode utility function.
+//!
+
+TEST_F(AnyValueBuildNodeUtilsTests, ValidateAddValueNode)
+{
+  {  // it is possible to add value node to empty stack
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    EXPECT_NO_THROW(ValidateAddValueNode(stack));
+  }
+
+  {  // it is not possible to add value node if stack contains StartStructBuildNode
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    stack.push(std::make_unique<StartStructBuildNode>("name"));
+    EXPECT_THROW(ValidateAddValueNode(stack), std::runtime_error);
+  }
+
+  // More tests above in AnyValueBuildNodeUtilsTests::CanAddValueNode.
 }

@@ -44,12 +44,8 @@ AbstractAnyValueBuildNode::NodeType AnyValueBuildNode::GetNodeType() const
 
 bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
 {
-  if (CanAddValueNode(stack))
-  {
-    return true;
-  }
-
-  throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
+  ValidateAddValueNode(stack);
+  return true; // asking the builder to keep us in the stack
 }
 
 // ----------------------------------------------------------------------------
@@ -69,12 +65,8 @@ AbstractAnyValueBuildNode::NodeType StartStructBuildNode::GetNodeType() const
 
 bool StartStructBuildNode::Process(std::stack<node_t> &stack)
 {
-  if (CanAddValueNode(stack))
-  {
-    return true;
-  }
-
-  throw std::runtime_error("Error in AnyValueBuildNode::Process(): AnyValueNode can not be added");
+  ValidateAddValueNode(stack);
+  return true; // asking the builder to keep us in the stack
 }
 
 void StartStructBuildNode::AddMember(const std::string &name, const sup::dto::AnyValue &value)
@@ -199,13 +191,8 @@ AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
 
 bool StartArrayBuildNode::Process(std::stack<node_t> &stack)
 {
-  if (CanAddValueNode(stack))
-  {
-    return true;
-  }
-
-  throw std::runtime_error(
-      "Error in StartArrayBuildNode::Process() : stack contains unexpected nodes");
+  ValidateAddValueNode(stack);
+  return true;
 }
 
 //! Adds element to the array. If array doesn't exist, it will be initialised using the type of the
