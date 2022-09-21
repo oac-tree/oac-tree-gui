@@ -407,6 +407,9 @@ TEST_F(AnyValueBuildAdapterV2Tests, ScalarArray)
   EXPECT_EQ(value, expected);
 }
 
+//! Construction of scalar array with the name and two elements.
+//! Using convenience AddArrayElement methods.
+
 TEST_F(AnyValueBuildAdapterV2Tests, ScalarArrayViaAddArrayElement)
 {
   auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
@@ -421,6 +424,8 @@ TEST_F(AnyValueBuildAdapterV2Tests, ScalarArrayViaAddArrayElement)
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value, expected);
 }
+
+//! Building a structure with scalar array as a single field.
 
 TEST_F(AnyValueBuildAdapterV2Tests, StructWithScalarArrayAsField)
 {
@@ -440,6 +445,40 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithScalarArrayAsField)
   builder.EndArrayElement();
   builder.EndArray();
   builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected_struct_value);
+}
+
+//! Building a structure with two scalar array as fields.
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoScalarArrayAsField)
+{
+  auto array1 = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name1");
+  auto array2 = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 44}, 45, 46}, "array_name2");
+  sup::dto::AnyValue expected_struct_value = {{{"field1", array1}, {"field2", array2}},
+                                              "struct_name"};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct("struct_name");
+
+  builder.StartField("field1");
+  builder.StartArray("array_name1");
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 42));
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 43));
+  builder.EndArray();
+  builder.EndField();
+
+  builder.StartField("field2");
+  builder.StartArray("array_name2");
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 44));
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 45));
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 46));
+  builder.EndArray();
+  builder.EndField();
+
   builder.EndStruct();
 
   auto value = builder.MoveAnyValue();
