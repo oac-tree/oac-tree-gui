@@ -63,7 +63,6 @@ TEST_F(AnyValueBuildNodeUtilsTests, CanAddValueNode)
 }
 
 //! Unit tests for ValidateAddValueNode utility function.
-//!
 
 TEST_F(AnyValueBuildNodeUtilsTests, ValidateAddValueNode)
 {
@@ -79,4 +78,18 @@ TEST_F(AnyValueBuildNodeUtilsTests, ValidateAddValueNode)
   }
 
   // More tests above in AnyValueBuildNodeUtilsTests::CanAddValueNode.
+}
+
+//! Unit tests for ValidateAddValueNode utility function.
+
+TEST_F(AnyValueBuildNodeUtilsTests, ValidateLastNode)
+{
+  std::stack<AbstractAnyValueBuildNode::node_t> stack;
+  EXPECT_THROW(ValidateLastNode(stack, AbstractAnyValueBuildNode::NodeType::kStartArray),
+               std::runtime_error);
+
+  stack.push(std::make_unique<StartStructBuildNode>("name"));
+  EXPECT_NO_THROW(ValidateLastNode(stack, AbstractAnyValueBuildNode::NodeType::kStartStruct));
+  EXPECT_THROW(ValidateLastNode(stack, AbstractAnyValueBuildNode::NodeType::kStartArray),
+               std::runtime_error);
 }

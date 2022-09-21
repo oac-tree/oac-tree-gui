@@ -23,21 +23,23 @@
 //! @file anyvalue_buildnode_utils.h
 //! Collection of utility functions to support AbstractAnyValueBuildNode and Co.
 
-#include <memory>
-#include <stack>
+#include <anyvalueeditor/abstract_anyvalue_buildnode.h>
 
 namespace anyvalueeditor
 {
 
-class AbstractAnyValueBuildNode;
-
 //! Returns true if it is possible to add value node. This will be the case in one of three cases:
 //! 1) the stack is empty 2) last node denotes that we are about to add a field to the struct
 //! 3) last node denote that we are about to add an element to the array.
-bool CanAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode>>& stack);
+bool CanAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t>& stack);
 
-//! Validates if adding of value node is possible for this stack configuration.
-void ValidateAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode>>& stack);
+//! Validates if adding of value node is possible for this stack configuration, and throws if it is
+//! not.
+void ValidateAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t>& stack);
+
+//! Validate if the last value in a stack has given type, will throw if not.
+void ValidateLastNode(const std::stack<AbstractAnyValueBuildNode::node_t>& stack,
+                      AbstractAnyValueBuildNode::NodeType node_type);
 
 }  // namespace anyvalueeditor
 

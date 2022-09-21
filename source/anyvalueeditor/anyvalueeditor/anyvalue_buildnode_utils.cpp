@@ -19,7 +19,6 @@
 
 #include "anyvalueeditor/anyvalue_buildnode_utils.h"
 
-#include <anyvalueeditor/abstract_anyvalue_buildnode.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <vector>
@@ -27,7 +26,7 @@
 namespace anyvalueeditor
 {
 
-bool CanAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode> > &stack)
+bool CanAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t> &stack)
 {
   using NodeType = AbstractAnyValueBuildNode::NodeType;
   static const std::vector<NodeType> expected_types{NodeType::kStartArrayElement,
@@ -36,11 +35,20 @@ bool CanAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode>
   return stack.empty() || mvvm::utils::Contains(expected_types, stack.top()->GetNodeType());
 }
 
-void ValidateAddValueNode(const std::stack<std::unique_ptr<AbstractAnyValueBuildNode> > &stack)
+void ValidateAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t> &stack)
 {
   if (!CanAddValueNode(stack))
   {
     throw std::runtime_error("Error in ValidateAddValueNode(): AnyValueNode can not be added");
+  }
+}
+
+void ValidateLastNode(const std::stack<AbstractAnyValueBuildNode::node_t> &stack,
+                      AbstractAnyValueBuildNode::NodeType node_type)
+{
+  if (stack.empty() || stack.top()->GetNodeType() != node_type)
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong type of the last node");
   }
 }
 

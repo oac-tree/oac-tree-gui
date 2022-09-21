@@ -18,12 +18,18 @@
  *****************************************************************************/
 
 #include "anyvalueeditor/anyvalue_buildnodes.h"
-#include <anyvalueeditor/anyvalue_buildnode_utils.h>
 
+#include <anyvalueeditor/anyvalue_buildnode_utils.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <iostream>
 #include <stdexcept>
+
+namespace
+{
+const bool kKeepInStackRequest{true};
+const bool kDoNotKeepInStackRequest{false};
+}  // namespace
 
 namespace anyvalueeditor
 {
@@ -45,7 +51,7 @@ AbstractAnyValueBuildNode::NodeType AnyValueBuildNode::GetNodeType() const
 bool AnyValueBuildNode::Process(std::stack<node_t> &stack)
 {
   ValidateAddValueNode(stack);
-  return true; // asking the builder to keep us in the stack
+  return kKeepInStackRequest;
 }
 
 // ----------------------------------------------------------------------------
@@ -66,7 +72,7 @@ AbstractAnyValueBuildNode::NodeType StartStructBuildNode::GetNodeType() const
 bool StartStructBuildNode::Process(std::stack<node_t> &stack)
 {
   ValidateAddValueNode(stack);
-  return true; // asking the builder to keep us in the stack
+  return kKeepInStackRequest;
 }
 
 void StartStructBuildNode::AddMember(const std::string &name, const sup::dto::AnyValue &value)
@@ -85,17 +91,13 @@ AbstractAnyValueBuildNode::NodeType EndStructBuildNode::GetNodeType() const
 
 bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 {
-  // expecting StartStructBuildNode at the top
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
-  {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
-  }
+  ValidateLastNode(stack, NodeType::kStartStruct);
 
-  // replacing StartStructBuildNode with EndStructBuildNode
+  // saving the value and removing StartStructBuildNode
   Consume(stack.top()->MoveAnyValue());
   stack.pop();
 
-  return true;
+  return kKeepInStackRequest;
 }
 
 // ----------------------------------------------------------------------------
@@ -115,18 +117,14 @@ AbstractAnyValueBuildNode::NodeType StartFieldBuildNode::GetNodeType() const
 
 bool StartFieldBuildNode::Process(std::stack<node_t> &stack)
 {
+  ValidateLastNode(stack, NodeType::kStartStruct);
+
   if (GetFieldName().empty())
   {
     throw std::runtime_error("Error in StartFieldBuildNode::Process(): fieldname is not defined");
   }
 
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
-  {
-    throw std::runtime_error(
-        "Error in StartFieldBuildNode::Process(): last node is not a structure");
-  }
-
-  return true;
+  return kKeepInStackRequest;
 }
 
 // ----------------------------------------------------------------------------
@@ -155,25 +153,18 @@ bool EndFieldBuildNode::Process(std::stack<node_t> &stack)
   auto value = stack.top()->MoveAnyValue();
   stack.pop();
 
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartField)
-  {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): missed StartFieldBuildNode");
-  }
+  ValidateLastNode(stack, NodeType::kStartField);
 
   // removing StartFieldNode, keeping the name for later reuse
   auto field_name = stack.top()->GetFieldName();
   stack.pop();
 
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
-  {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): missed StartStructBuildNode");
-  }
+  ValidateLastNode(stack, NodeType::kStartStruct);
 
   // adding a new member to StartStructBuildNode
   stack.top()->AddMember(field_name, value);
 
-  // we don't need to save this node in the stack, all job is already done
-  return false;
+  return kDoNotKeepInStackRequest;
 }
 
 // ----------------------------------------------------------------------------
@@ -192,7 +183,7 @@ AbstractAnyValueBuildNode::NodeType StartArrayBuildNode::GetNodeType() const
 bool StartArrayBuildNode::Process(std::stack<node_t> &stack)
 {
   ValidateAddValueNode(stack);
-  return true;
+  return kKeepInStackRequest;
 }
 
 //! Adds element to the array. If array doesn't exist, it will be initialised using the type of the
@@ -221,17 +212,13 @@ AbstractAnyValueBuildNode::NodeType EndArrayBuildNode::GetNodeType() const
 
 bool EndArrayBuildNode::Process(std::stack<node_t> &stack)
 {
-  // expecting StartStruct node at the top
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartArray)
-  {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
-  }
+  ValidateLastNode(stack, NodeType::kStartArray);
 
   // replacing StartArrayBuildNode with EndArrayBuildNode
   Consume(stack.top()->MoveAnyValue());
   stack.pop();
 
-  return true;
+  return kKeepInStackRequest;
 }
 
 // ----------------------------------------------------------------------------
@@ -245,13 +232,8 @@ AbstractAnyValueBuildNode::NodeType StartArrayElementBuildNode::GetNodeType() co
 
 bool StartArrayElementBuildNode::Process(std::stack<node_t> &stack)
 {
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartArray)
-  {
-    throw std::runtime_error(
-        "Error in StartArrayElementBuildNode::Process(): last node is not an array");
-  }
-
-  return true;
+  ValidateLastNode(stack, NodeType::kStartArray);
+  return kKeepInStackRequest;
 }
 
 // ----------------------------------------------------------------------------
@@ -281,17 +263,13 @@ bool EndArrayElementBuildNode::Process(std::stack<node_t> &stack)
   auto value = stack.top()->MoveAnyValue();
   stack.pop();
 
-  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartArrayElement)
-  {
-    throw std::runtime_error("Error in EndFieldBuildNode::Process(): missed StartArrayElement");
-  }
+  ValidateLastNode(stack, NodeType::kStartArrayElement);
   stack.pop();
 
   // adding a new element to StartArrayBuildNode
   stack.top()->AddElement(value);
 
-  // we don't need to save this node in the stack, all job is already done
-  return false;
+  return kDoNotKeepInStackRequest;
 }
 
 }  // namespace anyvalueeditor
