@@ -371,11 +371,53 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoNestedStructsViaAddMember)
   EXPECT_EQ(value["struct2.second"].As<sup::dto::uint8>(), 44);
 }
 
+//! Validate array construction when no elements have beem added.
+
+TEST_F(AnyValueBuildAdapterV2Tests, EmptyArray)
+{
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartArray("array_name");
+  builder.EndArray();
+
+  // current implementation expects at least one element to have array property initialised
+  // attempt to build empty array leads to empty AnyValue
+  auto value = builder.MoveAnyValue();
+  EXPECT_TRUE(sup::dto::IsEmptyValue(value));
+}
+
+//! Construction of scalar array with the name and two elements.
+
 TEST_F(AnyValueBuildAdapterV2Tests, ScalarArray)
 {
   auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
 
   AnyValueBuildAdapterV2 builder;
 
+  builder.StartArray("array_name");
+  builder.StartArrayElement();
+  builder.Int32(42);
+  builder.EndArrayElement();
+  builder.StartArrayElement();
+  builder.Int32(43);
+  builder.EndArrayElement();
+  builder.EndArray();
 
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected);
+}
+
+TEST_F(AnyValueBuildAdapterV2Tests, ScalarArrayViaAddArrayElement)
+{
+  auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartArray("array_name");
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 42));
+  builder.AddArrayElement(::sup::dto::AnyValue(::sup::dto::SignedInteger32Type, 43));
+  builder.EndArray();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected);
 }
