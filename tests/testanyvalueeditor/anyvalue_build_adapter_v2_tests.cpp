@@ -525,3 +525,52 @@ TEST_F(AnyValueBuildAdapterV2Tests, ArrayWithTwoStructureElements)
   auto value = builder.MoveAnyValue();
   EXPECT_EQ(value, expected_array_value);
 }
+
+//! Building astructure with array as a field with two structures.
+
+TEST_F(AnyValueBuildAdapterV2Tests, StructureWithArrayWithStructure)
+{
+  sup::dto::AnyValue struct1 = {{{"first", {sup::dto::SignedInteger8Type, -43}},
+                                 {"second", {sup::dto::UnsignedInteger8Type, 44}}},
+                                "struct_name"};
+  sup::dto::AnyValue struct2 = {{{"first", {sup::dto::SignedInteger8Type, 42}},
+                                 {"second", {sup::dto::UnsignedInteger8Type, 43}}},
+                                "struct_name"};
+
+  auto array_value = sup::dto::ArrayValue({{struct1}, struct2}, "array_name");
+
+  sup::dto::AnyValue expected_struct_value = {{{"field", array_value}}, "struct_name2"};
+
+  AnyValueBuildAdapterV2 builder;
+
+  builder.StartStruct("struct_name2");
+  builder.StartField("field");
+
+  builder.StartArray("array_name");
+
+  builder.StartArrayElement();
+  builder.StartStruct("struct_name");
+  builder.StartField("first");
+  builder.Int8(-43);
+  builder.EndField();
+  builder.StartField("second");
+  builder.UInt8(44);
+  builder.EndField();
+  builder.EndStruct();
+  builder.EndArrayElement();
+
+  builder.StartArrayElement();
+  builder.StartStruct("struct_name");
+  builder.AddMember("first", ::sup::dto::AnyValue(::sup::dto::SignedInteger8Type, 42));
+  builder.AddMember("second", ::sup::dto::AnyValue(::sup::dto::UnsignedInteger8Type, 43));
+  builder.EndStruct();
+  builder.EndArrayElement();
+
+  builder.EndArray();
+
+  builder.EndField();
+  builder.EndStruct();
+
+  auto value = builder.MoveAnyValue();
+  EXPECT_EQ(value, expected_struct_value);
+}
