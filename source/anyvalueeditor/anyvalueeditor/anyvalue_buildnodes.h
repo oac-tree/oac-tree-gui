@@ -37,7 +37,7 @@ namespace anyvalueeditor
 class AnyValueBuildNode : public AbstractAnyValueBuildNode
 {
 public:
-  AnyValueBuildNode(sup::dto::AnyValue&& value);
+  AnyValueBuildNode(const sup::dto::AnyValue& value);
 
   NodeType GetNodeType() const override;
 

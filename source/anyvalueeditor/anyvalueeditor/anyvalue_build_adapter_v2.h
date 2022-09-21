@@ -52,7 +52,7 @@ public:
   void Float64(::sup::dto::float64 value);
   void String(const std::string& value);
 
-  void AddValue(sup::dto::AnyValue anyvalue);
+  void AddValue(const sup::dto::AnyValue& anyvalue);
 
   void StartStruct(const std::string& struct_name = {});
 
@@ -70,7 +70,7 @@ public:
 
   void EndArrayElement();
 
-  void AndArrayElement(sup::dto::AnyValue anyvalue);
+  void AddArrayElement(const sup::dto::AnyValue &anyvalue);
 
   void EndArray();
 

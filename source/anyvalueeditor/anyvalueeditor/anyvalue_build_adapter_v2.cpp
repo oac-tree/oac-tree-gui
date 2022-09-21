@@ -34,17 +34,19 @@ struct AnyValueBuildAdapterV2::AnyValueBuildAdapterV2Impl
 {
   std::stack<AbstractAnyValueBuildNode::node_t> m_stack;
 
-  void ProcessNode(AbstractAnyValueBuildNode::node_t &&node)
+  template<typename T, typename... Args>
+  void ProcessNode(Args&&... args)
   {
+    auto node = std::make_unique<T>((args)...);
     if (node->Process(m_stack))
     {
       m_stack.push(std::move(node));
     }
   }
 
-  void AddValueNode(::sup::dto::AnyValue &&value)
+  void AddValueNode(const ::sup::dto::AnyValue& value)
   {
-    ProcessNode(std::make_unique<AnyValueBuildNode>(std::move(value)));
+    ProcessNode<AnyValueBuildNode>(value);
   }
 };
 
@@ -120,29 +122,29 @@ void AnyValueBuildAdapterV2::String(const std::string &value)
 //! Adds the value as array element, or structure field.
 //! Must be used inside either StartElement/EndElement for arrays or
 //! StartField/EndField for structures.
-void AnyValueBuildAdapterV2::AddValue(sup::dto::AnyValue anyvalue)
+void AnyValueBuildAdapterV2::AddValue(const sup::dto::AnyValue &anyvalue)
 {
-  p_impl->AddValueNode(std::move(anyvalue));
+  p_impl->AddValueNode(anyvalue);
 }
 
 void AnyValueBuildAdapterV2::StartStruct(const std::string &struct_name)
 {
-  p_impl->ProcessNode(std::make_unique<StartStructBuildNode>(struct_name));
+  p_impl->ProcessNode<StartStructBuildNode>(struct_name);
 }
 
 void AnyValueBuildAdapterV2::EndStruct()
 {
-  p_impl->ProcessNode(std::make_unique<EndStructBuildNode>());
+  p_impl->ProcessNode<EndStructBuildNode>();
 }
 
 void AnyValueBuildAdapterV2::StartField(const std::string &field_name)
 {
-  p_impl->ProcessNode(std::make_unique<StartFieldBuildNode>(field_name));
+  p_impl->ProcessNode<StartFieldBuildNode>(field_name);
 }
 
 void AnyValueBuildAdapterV2::EndField()
 {
-  p_impl->ProcessNode(std::make_unique<EndFieldBuildNode>());
+  p_impl->ProcessNode<EndFieldBuildNode>();
 }
 
 //! Adds member with given name to the structure.
@@ -156,20 +158,20 @@ void AnyValueBuildAdapterV2::AddMember(const std::string &name, sup::dto::AnyVal
 
 void AnyValueBuildAdapterV2::StartArray(const std::string &array_name)
 {
-  p_impl->ProcessNode(std::make_unique<StartArrayBuildNode>(array_name));
+  p_impl->ProcessNode<StartArrayBuildNode>(array_name);
 }
 
 void AnyValueBuildAdapterV2::StartArrayElement()
 {
-  p_impl->ProcessNode(std::make_unique<StartArrayElementBuildNode>());
+  p_impl->ProcessNode<StartArrayElementBuildNode>();
 }
 
 void AnyValueBuildAdapterV2::EndArrayElement()
 {
-  p_impl->ProcessNode(std::make_unique<EndArrayElementBuildNode>());
+  p_impl->ProcessNode<EndArrayElementBuildNode>();
 }
 
-void AnyValueBuildAdapterV2::AndArrayElement(sup::dto::AnyValue anyvalue)
+void AnyValueBuildAdapterV2::AddArrayElement(const sup::dto::AnyValue& anyvalue)
 {
   StartArrayElement();
   AddValue(std::move(anyvalue));
@@ -178,7 +180,7 @@ void AnyValueBuildAdapterV2::AndArrayElement(sup::dto::AnyValue anyvalue)
 
 void AnyValueBuildAdapterV2::EndArray()
 {
-  p_impl->ProcessNode(std::make_unique<EndArrayBuildNode>());
+  p_impl->ProcessNode<EndArrayBuildNode>();
 }
 
 int AnyValueBuildAdapterV2::GetStackSize() const

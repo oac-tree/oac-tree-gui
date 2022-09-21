@@ -25,8 +25,8 @@
 namespace anyvalueeditor
 {
 
-AbstractAnyValueBuildNode::AbstractAnyValueBuildNode(sup::dto::AnyValue &&value)
-    : m_value(std::move(value))
+AbstractAnyValueBuildNode::AbstractAnyValueBuildNode(const sup::dto::AnyValue &value)
+    : m_value(value)
 {
 }
 

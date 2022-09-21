@@ -50,7 +50,7 @@ public:
   };
 
   AbstractAnyValueBuildNode() = default;
-  AbstractAnyValueBuildNode(sup::dto::AnyValue&& value);
+  AbstractAnyValueBuildNode(const sup::dto::AnyValue& value);
 
   virtual NodeType GetNodeType() const = 0;
 

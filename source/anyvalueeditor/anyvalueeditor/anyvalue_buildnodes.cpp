@@ -38,8 +38,8 @@ namespace anyvalueeditor
 // AnyValueBuildNode
 // ----------------------------------------------------------------------------
 
-AnyValueBuildNode::AnyValueBuildNode(sup::dto::AnyValue &&value)
-    : AbstractAnyValueBuildNode(std::move(value))
+AnyValueBuildNode::AnyValueBuildNode(const sup::dto::AnyValue &value)
+    : AbstractAnyValueBuildNode(value)
 {
 }
 
