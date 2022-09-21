@@ -370,3 +370,12 @@ TEST_F(AnyValueBuildAdapterV2Tests, StructWithTwoNestedStructsViaAddMember)
   EXPECT_EQ(value["struct2.first"].As<sup::dto::int8>(), -43);
   EXPECT_EQ(value["struct2.second"].As<sup::dto::uint8>(), 44);
 }
+
+TEST_F(AnyValueBuildAdapterV2Tests, ScalarArray)
+{
+  auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
+
+  AnyValueBuildAdapterV2 builder;
+
+
+}

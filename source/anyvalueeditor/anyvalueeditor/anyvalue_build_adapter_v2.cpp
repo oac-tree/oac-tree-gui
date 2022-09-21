@@ -154,6 +154,33 @@ void AnyValueBuildAdapterV2::AddMember(const std::string &name, sup::dto::AnyVal
   EndField();
 }
 
+void AnyValueBuildAdapterV2::StartArray(const std::string &array_name)
+{
+  p_impl->ProcessNode(std::make_unique<StartArrayBuildNode>(array_name));
+}
+
+void AnyValueBuildAdapterV2::StartArrayElement()
+{
+  p_impl->ProcessNode(std::make_unique<StartArrayElementBuildNode>());
+}
+
+void AnyValueBuildAdapterV2::EndArrayElement()
+{
+  p_impl->ProcessNode(std::make_unique<EndArrayElementBuildNode>());
+}
+
+void AnyValueBuildAdapterV2::AndArrayElement(sup::dto::AnyValue anyvalue)
+{
+  StartArrayElement();
+  AddValue(std::move(anyvalue));
+  EndArrayElement();
+}
+
+void AnyValueBuildAdapterV2::EndArray()
+{
+  p_impl->ProcessNode(std::make_unique<EndArrayBuildNode>());
+}
+
 int AnyValueBuildAdapterV2::GetStackSize() const
 {
   return static_cast<int>(p_impl->m_stack.size());

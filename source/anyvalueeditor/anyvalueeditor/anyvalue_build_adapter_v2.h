@@ -64,6 +64,16 @@ public:
 
   void AddMember(const std::string& name, sup::dto::AnyValue anyvalue);
 
+  void StartArray(const std::string& array_name = {});
+
+  void StartArrayElement();
+
+  void EndArrayElement();
+
+  void AndArrayElement(sup::dto::AnyValue anyvalue);
+
+  void EndArray();
+
   int GetStackSize() const;
 
 private:
