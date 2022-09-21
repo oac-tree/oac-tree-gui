@@ -121,6 +121,7 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       }
     }
   }
+
 };
 
 DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem& item)
