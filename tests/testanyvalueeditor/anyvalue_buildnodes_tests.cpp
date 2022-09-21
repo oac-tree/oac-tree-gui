@@ -218,7 +218,7 @@ TEST_F(AnyValueBuildNodesTests, StartArrayElementBuildNodeProcess)
   EXPECT_TRUE(node.Process(stack));
 }
 
-//! Testing StartArrayElementBuildNode and its Process method.
+//! Testing EndArrayElementBuildNode and its Process method.
 TEST_F(AnyValueBuildNodesTests, EndArrayElementBuildNodeProcess)
 {
   EndArrayElementBuildNode node;
@@ -249,5 +249,31 @@ TEST_F(AnyValueBuildNodesTests, EndArrayElementBuildNodeProcess)
     auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}}, "array_name");
     auto result = stack.top()->MoveAnyValue();
     EXPECT_EQ(result, expected);
+  }
+}
+
+TEST_F(AnyValueBuildNodesTests, EndArrayBuildNodeProcess)
+{
+  EndArrayBuildNode node;
+  EXPECT_EQ(node.GetNodeType(), AbstractAnyValueBuildNode::NodeType::kEndArray);
+
+  {  // processing of empty stack is not allowed
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    EXPECT_THROW(node.Process(stack), std::runtime_error);
+  }
+
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    stack.push(std::make_unique<StartArrayBuildNode>("array_name"));
+
+    // as a result of stack processing, the StartStructBuildNode should be removed, it's value
+    // consumed
+    EXPECT_TRUE(node.Process(stack));
+    EXPECT_EQ(stack.size(), 0);
+
+    // as a result we should give empty AnyValues, since array is defined only after the first added
+    // element
+    auto result = node.MoveAnyValue();
+    EXPECT_TRUE(sup::dto::IsEmptyValue(result));
   }
 }

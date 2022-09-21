@@ -92,12 +92,13 @@ AbstractAnyValueBuildNode::NodeType EndStructBuildNode::GetNodeType() const
 
 bool EndStructBuildNode::Process(std::stack<node_t> &stack)
 {
-  // expecting StartStruct node at the top
+  // expecting StartStructBuildNode at the top
   if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartStruct)
   {
     throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
   }
 
+  // replacing StartStructBuildNode with EndStructBuildNode
   Consume(stack.top()->MoveAnyValue());
   stack.pop();
 
@@ -232,6 +233,16 @@ AbstractAnyValueBuildNode::NodeType EndArrayBuildNode::GetNodeType() const
 
 bool EndArrayBuildNode::Process(std::stack<node_t> &stack)
 {
+  // expecting StartStruct node at the top
+  if (stack.empty() || stack.top()->GetNodeType() != NodeType::kStartArray)
+  {
+    throw std::runtime_error("Error in EndFieldBuildNode::Process(): wrong node type");
+  }
+
+  // replacing StartArrayBuildNode with EndArrayBuildNode
+  Consume(stack.top()->MoveAnyValue());
+  stack.pop();
+
   return true;
 }
 

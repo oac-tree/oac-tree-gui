@@ -55,7 +55,7 @@ public:
   virtual NodeType GetNodeType() const = 0;
 
   //! Performs manipulations with the stack, if necessary.
-  //! @return True if nodes whants it to be saved in a stack.
+  //! @return True if nodes wants it to be saved in a stack.
   virtual bool Process(std::stack<node_t>& stack) = 0;
 
   virtual void Consume(sup::dto::AnyValue&& value);
