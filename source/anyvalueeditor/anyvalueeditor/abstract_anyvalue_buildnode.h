@@ -62,8 +62,6 @@ public:
 
   sup::dto::AnyValue MoveAnyValue() const;
 
-  static bool CanAddValueNode(const std::stack<node_t>& stack);
-
   std::string GetFieldName() const;
   void SetFieldName(const std::string& name);
 

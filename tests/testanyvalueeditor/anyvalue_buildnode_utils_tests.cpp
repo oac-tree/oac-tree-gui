@@ -1,0 +1,63 @@
+/******************************************************************************
+ *
+ * Project       : Supervision and automation system EPICS interface
+ *
+ * Description   : Library of SUP components for EPICS network protocol
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2022 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "anyvalueeditor/anyvalue_buildnode_utils.h"
+
+#include <anyvalueeditor/anyvalue_buildnodes.h>
+#include <gtest/gtest.h>
+
+#include <stdexcept>
+
+using namespace anyvalueeditor;
+
+class AnyValueBuildNodeUtilsTests : public ::testing::Test
+{
+public:
+  //! Utility function that creates a stack and put there one build node of given type.
+  //! It returns the value reported by CanAddValueNode for this stack.
+  template <typename T, typename... Args>
+  bool CheckAddValueNode(Args&&... args)
+  {
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    stack.push(std::make_unique<T>((args)...));
+    return CanAddValueNode(stack);
+  }
+};
+
+//! Unit tests for CanAddValueNode utility functions.
+
+TEST_F(AnyValueBuildNodeUtilsTests, CanAddValueNode)
+{
+  {  // it is possible to add value node to empty stack
+    std::stack<AbstractAnyValueBuildNode::node_t> stack;
+    EXPECT_TRUE(CanAddValueNode(stack));
+  }
+
+  // it is possible to add value node if the last node is one of the following
+  EXPECT_TRUE(CheckAddValueNode<StartFieldBuildNode>("name"));
+  EXPECT_TRUE(CheckAddValueNode<StartArrayElementBuildNode>());
+
+  // it is not possible to add value node if the last node in the stack is one of the following
+  EXPECT_FALSE(CheckAddValueNode<StartStructBuildNode>("name"));
+  EXPECT_FALSE(CheckAddValueNode<StartArrayBuildNode>("name"));
+  EXPECT_FALSE(CheckAddValueNode<EndStructBuildNode>());
+  EXPECT_FALSE(CheckAddValueNode<EndArrayBuildNode>());
+  EXPECT_FALSE(CheckAddValueNode<EndFieldBuildNode>());
+  EXPECT_FALSE(CheckAddValueNode<EndArrayElementBuildNode>());
+}

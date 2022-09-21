@@ -7,14 +7,16 @@ add_library(${library_name} SHARED "")
 target_link_libraries(${library_name} PUBLIC pthread sup-mvvm::view COACompact::sup-dto)
 
 target_sources(${library_name} PRIVATE
-  add_field_dialog.cpp
-  add_field_dialog.h
   abstract_anyvalue_buildnode.cpp
   abstract_anyvalue_buildnode.h
+  add_field_dialog.cpp
+  add_field_dialog.h
   anyvalue_build_adapter.cpp
   anyvalue_build_adapter.h
   anyvalue_build_adapter_v2.cpp
   anyvalue_build_adapter_v2.h
+  anyvalue_buildnode_utils.cpp
+  anyvalue_buildnode_utils.h
   anyvalue_buildnodes.cpp
   anyvalue_buildnodes.h
   anyvalue_editor_actions.cpp

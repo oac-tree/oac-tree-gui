@@ -60,17 +60,6 @@ TEST_F(AbstractAnyValueBuildNodeTests, InitialState)
   EXPECT_THROW(node.AddElement(sup::dto::AnyValue()), std::runtime_error);
 }
 
-TEST_F(AbstractAnyValueBuildNodeTests, CanAddValueNode)
-{
-  std::stack<AbstractAnyValueBuildNode::node_t> stack;
-
-  TestNode node;
-  EXPECT_TRUE(node.CanAddValueNode(stack));
-
-  stack.push(std::make_unique<TestNode>());
-  EXPECT_FALSE(node.CanAddValueNode(stack));
-}
-
 TEST_F(AbstractAnyValueBuildNodeTests, MoveAnyValue)
 {
   TestNode node(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});

@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "anyvalueeditor/anyvalue_buildnodes.h"
+#include <anyvalueeditor/anyvalue_buildnode_utils.h>
 
 #include <mvvm/utils/container_utils.h>
 

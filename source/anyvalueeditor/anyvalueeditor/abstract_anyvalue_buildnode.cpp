@@ -40,18 +40,6 @@ sup::dto::AnyValue AbstractAnyValueBuildNode::MoveAnyValue() const
   return std::move(m_value);
 }
 
-//! Returns true if it is possible to add value node. This will be the case in one of three cases:
-//! 1) the stack is empty 2) last node denotes that we are about to add a field to the struct
-//! 3) last node denote that we are about to add an element to the array.
-
-bool AbstractAnyValueBuildNode::CanAddValueNode(const std::stack<node_t> &stack)
-{
-  static const std::vector<NodeType> expected_types{NodeType::kStartArrayElement,
-                                                    NodeType::kStartField};
-
-  return stack.empty() || mvvm::utils::Contains(expected_types, stack.top()->GetNodeType());
-}
-
 std::string AbstractAnyValueBuildNode::GetFieldName() const
 {
   return m_field_name;
