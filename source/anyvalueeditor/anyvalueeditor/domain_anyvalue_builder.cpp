@@ -25,17 +25,30 @@
 #include <sup/dto/anyvalue.h>
 
 #include <stack>
+#include <cassert>
 
 namespace anyvalueeditor
 {
+
+enum NodeContext
+{
+  kRoot,
+  kStructField,
+  kArrayElement
+};
 
 struct Node
 {
   const AnyValueItem* m_item{nullptr};  //!< Current item in the hierarchy.
   std::string m_name;                   //!< The name under which the value is known to its parent.
   bool m_is_visited{false};  //!< True if `value` is a struct and all children are processed.
+  NodeContext m_context;
 
-  Node(const AnyValueItem* item, const std::string& name) : m_item(item), m_name(name) {}
+  Node(const AnyValueItem* item, NodeContext context = kRoot) : m_item(item), m_context(context) {}
+
+  bool IsArrayContext() const { return m_context == kArrayElement; }
+
+  bool IsStructContext() const { return m_context == kStructField; }
 };
 
 struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
@@ -45,7 +58,7 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   explicit DomainAnyValueBuilderImpl(const AnyValueItem& item)
   {
-    m_stack.push({&item, std::string()});
+    m_stack.push({&item});
     ProcessItemStack();
   }
 
@@ -67,6 +80,99 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       {
         m_stack.pop();
       }
+    }
+  }
+
+  void ProcessStructNode(Node& node)
+  {
+    if (!node.m_is_visited)
+    {
+      ProcessNewStructNode(node);
+    }
+    else
+    {
+      ProcessVisitedStructNode(node);
+    }
+  }
+
+  void ProcessArrayNode(Node& node)
+  {
+    if (!node.m_is_visited)
+    {
+      ProcessNewArrayNode(node);
+    }
+    else
+    {
+      ProcessVisitedArrayNode(node);
+    }
+  }
+
+  void ProcessNewStructNode(Node& node)
+  {
+    m_builder.StartStruct(node.m_item->GetAnyTypeName());
+    StartComposite(node);
+    AddChildren(node, NodeContext::kStructField);
+  }
+
+  void ProcessVisitedStructNode(Node& node)
+  {
+    m_builder.EndStruct();
+    EndComposite(node);
+  }
+
+  void ProcessNewArrayNode(Node& node)
+  {
+    m_builder.StartArray(node.m_item->GetAnyTypeName());
+    StartComposite(node);
+    AddChildren(node, NodeContext::kArrayElement);
+  }
+
+  void ProcessVisitedArrayNode(Node& node)
+  {
+    m_builder.EndArray();
+    EndComposite(node);
+  }
+
+  void StartComposite(Node& node)
+  {
+    assert(node.m_is_visited == false);
+    node.m_is_visited = true;
+
+    if (node.IsStructContext())
+    {
+      m_builder.StartField(node.m_name);
+    }
+    else if (node.IsArrayContext())
+    {
+      m_builder.StartArrayElement();
+    }
+
+    // this is top level object
+  }
+
+  void EndComposite(Node& node)
+  {
+    assert(node.m_is_visited);
+    if (node.IsStructContext())
+    {
+      m_builder.EndField();
+    }
+    else if (node.IsArrayContext())
+    {
+      m_builder.EndArrayElement();
+    }
+    m_stack.pop();  // we don't need the node anymore
+  }
+
+  void AddChildren(Node& node, NodeContext context)
+  {
+    auto children = node.m_item->GetItems<AnyValueItem>("");
+    // iteration in reverse order
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      Node node{const_cast<const AnyValueItem*>(*it), context};
+      node.m_name = (*it)->GetDisplayName();
+      m_stack.push(node);
     }
   }
 
@@ -116,12 +222,19 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       // iteration in reverse order
       for (auto it = children.rbegin(); it != children.rend(); ++it)
       {
-        Node node{const_cast<const AnyValueItem*>(*it), (*it)->GetDisplayName()};
+        Node node{const_cast<const AnyValueItem*>(*it), kStructField};
+        node.m_name = (*it)->GetDisplayName();
         m_stack.push(node);
       }
     }
   }
 
+  void AddValueValue(Node& node)
+  {
+    if (node.IsStructContext())
+    {
+    }
+  }
 };
 
 DomainAnyValueBuilder::DomainAnyValueBuilder(const AnyValueItem& item)
