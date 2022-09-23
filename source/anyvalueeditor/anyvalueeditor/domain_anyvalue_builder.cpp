@@ -76,6 +76,10 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       {
         ProcessStructNode(node);
       }
+      else if (node.m_item->IsArray())
+      {
+        ProcessArrayNode(node);
+      }
       else
       {
         m_stack.pop();

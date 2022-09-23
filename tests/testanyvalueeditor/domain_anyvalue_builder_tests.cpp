@@ -159,21 +159,21 @@ TEST_F(DomainAnyValueBuilderTest, FromTwoNestedStructs)
 
 //! Building AnyValue from item representing a scalar array.
 
-//TEST_F(DomainAnyValueBuilderTest, FromScalarArray)
-//{
-//  auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
+TEST_F(DomainAnyValueBuilderTest, FromScalarArray)
+{
+  auto expected = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
 
-//  AnyValueArrayItem item;
-//  item.SetAnyTypeName("array_name");
+  AnyValueArrayItem item;
+  item.SetAnyTypeName("array_name");
 
-//  auto child0 = item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
-//  child0->SetAnyTypeName(sup::dto::kInt32TypeName);
-//  child0->SetData(42);
+  auto child0 = item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  child0->SetAnyTypeName(sup::dto::kInt32TypeName);
+  child0->SetData(42);
 
-//  auto child1 = item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
-//  child1->SetAnyTypeName(sup::dto::kInt32TypeName);
-//  child1->SetData(43);
+  auto child1 = item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  child1->SetAnyTypeName(sup::dto::kInt32TypeName);
+  child1->SetData(43);
 
-//  auto any_value = CreateAnyValue(item);
-//  EXPECT_EQ(any_value, expected);
-//}
+  auto any_value = CreateAnyValue(item);
+  EXPECT_EQ(any_value, expected);
+}
