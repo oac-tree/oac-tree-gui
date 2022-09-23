@@ -245,3 +245,31 @@ TEST_F(DomainAnyValueBuilderTest, StructWithTwoScalarArrayAsField)
   auto any_value = CreateAnyValue(item);
   EXPECT_EQ(any_value, expected_struct_value);
 }
+
+TEST_F(DomainAnyValueBuilderTest, ArrayWithTwoStructureElements)
+{
+  sup::dto::AnyValue struct_value1 = {{{"first", {sup::dto::SignedInteger8Type, -43}},
+                                       {"second", {sup::dto::UnsignedInteger8Type, 44}}},
+                                      "struct_name"};
+  sup::dto::AnyValue struct_value2 = {{{"first", {sup::dto::SignedInteger8Type, 42}},
+                                       {"second", {sup::dto::UnsignedInteger8Type, 43}}},
+                                      "struct_name"};
+
+  auto expected_array_value = sup::dto::ArrayValue({{struct_value1}, struct_value2}, "array_name");
+
+  AnyValueArrayItem item;
+  item.SetAnyTypeName("array_name");
+
+  auto struct0 = item.InsertItem<AnyValueStructItem>(mvvm::TagIndex::Append());
+  struct0->SetAnyTypeName("struct_name");
+  struct0->AddScalarField("first", sup::dto::kInt8TypeName, -43);
+  struct0->AddScalarField("second", sup::dto::kUInt8TypeName, 44);
+
+  auto struct1 = item.InsertItem<AnyValueStructItem>(mvvm::TagIndex::Append());
+  struct1->SetAnyTypeName("struct_name");
+  struct1->AddScalarField("first", sup::dto::kInt8TypeName, 42);
+  struct1->AddScalarField("second", sup::dto::kUInt8TypeName, 43);
+
+  auto any_value = CreateAnyValue(item);
+  EXPECT_EQ(any_value, expected_array_value);
+}
