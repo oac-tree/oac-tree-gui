@@ -201,3 +201,47 @@ TEST_F(DomainAnyValueBuilderTest, StructWithScalarArrayAsField)
   auto any_value = CreateAnyValue(item);
   EXPECT_EQ(any_value, expected_struct_value);
 }
+
+TEST_F(DomainAnyValueBuilderTest, StructWithTwoScalarArrayAsField)
+{
+  auto array_value1 =
+      sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name1");
+  auto array_value2 =
+      sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 44}, 45, 46}, "array_name2");
+  sup::dto::AnyValue expected_struct_value = {{{"field1", array_value1}, {"field2", array_value2}},
+                                              "struct_name"};
+
+  AnyValueStructItem item;
+  item.SetAnyTypeName("struct_name");
+
+  auto array0 = item.InsertItem<AnyValueArrayItem>(mvvm::TagIndex::Append());
+  array0->SetAnyTypeName("array_name1");
+  array0->SetDisplayName("field1");
+
+  auto element0 = array0->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element0->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element0->SetData(42);
+
+  auto element1 = array0->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element1->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element1->SetData(43);
+
+  auto array1 = item.InsertItem<AnyValueArrayItem>(mvvm::TagIndex::Append());
+  array1->SetAnyTypeName("array_name2");
+  array1->SetDisplayName("field2");
+
+  auto element2 = array1->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element2->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element2->SetData(44);
+
+  auto element3 = array1->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element3->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element3->SetData(45);
+
+  auto element4 = array1->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element4->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element4->SetData(46);
+
+  auto any_value = CreateAnyValue(item);
+  EXPECT_EQ(any_value, expected_struct_value);
+}
