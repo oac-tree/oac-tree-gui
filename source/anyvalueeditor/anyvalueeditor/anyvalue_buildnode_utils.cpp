@@ -22,6 +22,7 @@
 #include <mvvm/utils/container_utils.h>
 
 #include <vector>
+#include <sstream>
 
 namespace anyvalueeditor
 {
@@ -39,7 +40,18 @@ void ValidateAddValueNode(const std::stack<AbstractAnyValueBuildNode::node_t> &s
 {
   if (!CanAddValueNode(stack))
   {
-    throw std::runtime_error("Error in ValidateAddValueNode(): AnyValueNode can not be added");
+    std::ostringstream ostr;
+    ostr << "Error in ValidateAddValueNode(): AnyValueNode can not be added, ";
+    if (stack.empty())
+    {
+      ostr << "stack is empty.";
+    }
+    else
+    {
+      ostr << "last NodeType=" << static_cast<int>(stack.top()->GetNodeType()) << ".\n";
+    }
+
+    throw std::runtime_error(ostr.str());
   }
 }
 

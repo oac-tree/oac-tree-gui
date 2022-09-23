@@ -39,12 +39,10 @@ public:
 
   sup::dto::AnyValue GetAnyValue() const;
 
-
 private:
   struct DomainAnyValueBuilderImpl;
   std::unique_ptr<DomainAnyValueBuilderImpl> p_impl;
 };
-
 
 }  // namespace anyvalueeditor
 

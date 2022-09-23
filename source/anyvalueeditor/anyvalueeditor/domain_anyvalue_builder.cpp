@@ -74,7 +74,7 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
       }
       else if (node.m_item->IsStruct())
       {
-        ProcessStructItem(node);
+        ProcessStructNode(node);
       }
       else
       {
@@ -109,8 +109,8 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   void ProcessNewStructNode(Node& node)
   {
-    m_builder.StartStruct(node.m_item->GetAnyTypeName());
     StartComposite(node);
+    m_builder.StartStruct(node.m_item->GetAnyTypeName());
     AddChildren(node, NodeContext::kStructField);
   }
 
@@ -122,8 +122,8 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   void ProcessNewArrayNode(Node& node)
   {
-    m_builder.StartArray(node.m_item->GetAnyTypeName());
     StartComposite(node);
+    m_builder.StartArray(node.m_item->GetAnyTypeName());
     AddChildren(node, NodeContext::kArrayElement);
   }
 
