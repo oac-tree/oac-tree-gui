@@ -300,6 +300,7 @@ TEST_F(AnyValueItemBuilderTests, FromArrayOfIntegers)
   auto item = GetAnyValueItem(anyvalue);
 
   EXPECT_EQ(item->GetTotalItemCount(), 2);
+  EXPECT_EQ(item->GetAnyTypeName(), std::string("my_array_t"));
   EXPECT_EQ(item->GetDisplayName(), kArrayTypeName);
   EXPECT_EQ(item->GetType(), AnyValueArrayItem::Type);
   EXPECT_FALSE(mvvm::utils::IsValid(item->Data()));

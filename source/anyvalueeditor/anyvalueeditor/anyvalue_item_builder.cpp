@@ -93,7 +93,9 @@ void AnyValueItemBuilder::ArrayProlog(const anyvalue_t *anyvalue)
 {
 //  std::cout << "AddArrayProlog() value:" << anyvalue << " item:" << m_current_item << std::endl;
   m_index = 0;
-  AddItem(std::make_unique<AnyValueArrayItem>());
+  auto array_item = std::make_unique<AnyValueArrayItem>();
+  array_item->SetAnyTypeName(anyvalue->GetTypeName());
+  AddItem(std::move(array_item));
 }
 
 void AnyValueItemBuilder::ArrayElementSeparator()
