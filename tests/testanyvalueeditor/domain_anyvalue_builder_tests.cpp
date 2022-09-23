@@ -177,3 +177,27 @@ TEST_F(DomainAnyValueBuilderTest, FromScalarArray)
   auto any_value = CreateAnyValue(item);
   EXPECT_EQ(any_value, expected);
 }
+
+TEST_F(DomainAnyValueBuilderTest, StructWithScalarArrayAsField)
+{
+  auto array_value = sup::dto::ArrayValue({{sup::dto::SignedInteger32Type, 42}, 43}, "array_name");
+  sup::dto::AnyValue expected_struct_value = {{{"array_field", array_value}}, "struct_name"};
+
+  AnyValueStructItem item;
+  item.SetAnyTypeName("struct_name");
+
+  auto array = item.InsertItem<AnyValueArrayItem>(mvvm::TagIndex::Append());
+  array->SetAnyTypeName("array_name");
+  array->SetDisplayName("array_field");
+
+  auto element0 = array->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element0->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element0->SetData(42);
+
+  auto element1 = array->InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append());
+  element1->SetAnyTypeName(sup::dto::kInt32TypeName);
+  element1->SetData(43);
+
+  auto any_value = CreateAnyValue(item);
+  EXPECT_EQ(any_value, expected_struct_value);
+}
