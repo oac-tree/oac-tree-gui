@@ -24,8 +24,8 @@
 #include <anyvalueeditor/scalar_conversion_utils.h>
 #include <sup/dto/anyvalue.h>
 
-#include <stack>
 #include <cassert>
+#include <stack>
 
 namespace anyvalueeditor
 {
@@ -85,25 +85,25 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   void ProcessStructNode(Node& node)
   {
-    if (!node.m_is_visited)
+    if (node.m_is_visited)
     {
-      ProcessNewStructNode(node);
+      ProcessVisitedStructNode(node);
     }
     else
     {
-      ProcessVisitedStructNode(node);
+      ProcessNewStructNode(node);
     }
   }
 
   void ProcessArrayNode(Node& node)
   {
-    if (!node.m_is_visited)
+    if (node.m_is_visited)
     {
-      ProcessNewArrayNode(node);
+      ProcessVisitedArrayNode(node);
     }
     else
     {
-      ProcessVisitedArrayNode(node);
+      ProcessNewArrayNode(node);
     }
   }
 
@@ -178,62 +178,9 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   void ProcessScalarItem(Node& node)
   {
-    // It's a scalar field. Let's add corresponding field to the AnyValue and remove node from
-    // stack. We don't need it anymore.
-    if (node.m_name.empty())
-    {
-      m_builder.AddValue(GetAnyValueFromScalar(*node.m_item));
-    }
-    else
-    {
-      m_builder.AddMember(node.m_name, GetAnyValueFromScalar(*node.m_item));
-    }
-
-    m_stack.pop();
-  }
-
-  //! Process PVXS value representing a struct.
-  void ProcessStructItem(Node& node)
-  {
-    if (node.m_is_visited)
-    {
-      // All children have been already added to the struct. It's time to tell the builder
-      // that the struct has to be added to its own parent.
-      m_builder.EndStruct();
-      if (!node.m_name.empty())
-      {
-        m_builder.EndField();
-      }
-      m_stack.pop();  // we don't need the node anymore
-    }
-    else
-    {
-      // We found a struct which we haven't seen before. Let's tell the builder to create
-      // underlying AnyValue, and let's add children to the stack.
-      // We are not poping struct node, we will get back to it later.
-      if (!node.m_name.empty())
-      {
-        m_builder.StartField(node.m_name);
-      }
-      m_builder.StartStruct(node.m_item->GetAnyTypeName());
-      node.m_is_visited = true;
-
-      auto children = node.m_item->GetItems<AnyValueItem>("");
-      // iteration in reverse order
-      for (auto it = children.rbegin(); it != children.rend(); ++it)
-      {
-        Node node{const_cast<const AnyValueItem*>(*it), kStructField};
-        node.m_name = (*it)->GetDisplayName();
-        m_stack.push(node);
-      }
-    }
-  }
-
-  void AddValueValue(Node& node)
-  {
-    if (node.IsStructContext())
-    {
-    }
+    StartComposite(node);
+    m_builder.AddValue(GetAnyValueFromScalar(*node.m_item));
+    EndComposite(node);
   }
 };
 
