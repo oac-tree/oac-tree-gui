@@ -526,7 +526,7 @@ TEST_F(AnyValueBuildAdapterV2Tests, ArrayWithTwoStructureElements)
   EXPECT_EQ(value, expected_array_value);
 }
 
-//! Building astructure with array as a field with two structures.
+//! Building a structure with array as a field with two structures.
 
 TEST_F(AnyValueBuildAdapterV2Tests, StructureWithArrayWithStructure)
 {
