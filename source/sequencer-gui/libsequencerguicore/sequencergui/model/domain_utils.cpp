@@ -19,15 +19,14 @@
 
 #include "sequencergui/model/domain_utils.h"
 
-#include "AttributeMap.h"
-#include "Instruction.h"
-#include "InstructionRegistry.h"
-#include "SequenceParser.h"
-#include "Variable.h"
-#include "VariableRegistry.h"
-
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sup/sequencer/attribute_map.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/instruction_registry.h>
+#include <sup/sequencer/sequence_parser.h>
+#include <sup/sequencer/variable.h>
+#include <sup/sequencer/variable_registry.h>
 
 #include <algorithm>
 #include <iostream>

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "Instruction.h"
-#include "Procedure.h"
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include <gtest/gtest.h>

@@ -20,7 +20,7 @@
 #ifndef MOCKSEQUENCEROBSERVER_H
 #define MOCKSEQUENCEROBSERVER_H
 
-#include "UserInterface.h"
+#include <sup/sequencer/user_interface.h>
 #include <sequencergui/model/sequencer_types.h>
 
 namespace ccs::types

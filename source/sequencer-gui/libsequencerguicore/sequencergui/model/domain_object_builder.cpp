@@ -19,9 +19,9 @@
 
 #include "sequencergui/model/domain_object_builder.h"
 
-#include "Instruction.h"
-#include "Procedure.h"
-#include "Workspace.h"
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/workspace.h>
 
 #include <mvvm/model/sessionmodel.h>
 #include <sequencergui/core/exceptions.h>

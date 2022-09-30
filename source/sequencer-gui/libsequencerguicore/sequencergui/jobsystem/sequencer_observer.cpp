@@ -19,9 +19,9 @@
 
 #include "sequencergui/jobsystem/sequencer_observer.h"
 
-#include "Instruction.h"
 #include <sequencergui/jobsystem/procedure_runner.h>
 #include <sequencergui/model/shall_not_be_named_value_utils.h>
+#include <sup/sequencer/instruction.h>
 
 namespace
 {
@@ -46,13 +46,13 @@ void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instru
 }
 
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,
-                                            const ccs::types::AnyValue &value)
+                                            const sup::dto::AnyValue &value)
 {
   auto value_string = DomainUtils::GetJsonString(&value);
   m_procedure_runner->onVariableChange(name, value_string);
 }
 
-bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &value,
+bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
   auto value_string = DomainUtils::GetJsonString(&value);
@@ -60,8 +60,7 @@ bool SequencerObserver::PutValueImpl(const ccs::types::AnyValue &value,
   return true;
 }
 
-bool SequencerObserver::GetUserValueImpl(ccs::types::AnyValue &value,
-                                         const std::string &description)
+bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
 {
   auto value_string = DomainUtils::GetJsonString(&value);
   auto user_input = m_procedure_runner->onUserInput(value_string, description);

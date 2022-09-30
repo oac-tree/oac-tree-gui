@@ -20,7 +20,8 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_
 #define SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_
 
-#include "UserInterface.h"
+#include <sequencergui/model/dto_types_fwd.h>
+#include <sup/sequencer/user_interface.h>
 
 namespace sequencergui
 {
@@ -37,11 +38,11 @@ public:
 
   void UpdateInstructionStatusImpl(const ::sup::sequencer::Instruction* instruction) override;
 
-  void VariableUpdatedImpl(const std::string& name, const ccs::types::AnyValue& value) override;
+  void VariableUpdatedImpl(const std::string& name, const sup::dto::AnyValue& value) override;
 
-  bool PutValueImpl(const ::ccs::types::AnyValue& value, const std::string& description) override;
+  bool PutValueImpl(const sup::dto::AnyValue& value, const std::string& description) override;
 
-  bool GetUserValueImpl(::ccs::types::AnyValue& value, const std::string& description) override;
+  bool GetUserValueImpl(sup::dto::AnyValue& value, const std::string& description) override;
 
   int GetUserChoiceImpl(const std::vector<std::string>& choices,
                         const std::string& description) override;

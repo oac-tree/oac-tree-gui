@@ -19,18 +19,19 @@
 
 #include "sequencergui/jobsystem/procedure_runner.h"
 
-#include "Instruction.h"
-#include "Procedure.h"
-#include "Runner.h"
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/runner.h>
 
 #include <QDebug>
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 namespace sequencergui
 {

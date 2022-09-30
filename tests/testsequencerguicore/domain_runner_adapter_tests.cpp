@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "Procedure.h"
-#include "Runner.h"
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/runner.h>
 #include "mock_runner_listener.h"
 #include "mock_sequencer_observer.h"
 #include <sequencergui/core/exceptions.h>

@@ -19,10 +19,8 @@
 
 #include "sequencergui/model/domain_object_builder.h"
 
-#include "ExecutionStatus.h"
-#include "Instruction.h"
-#include "Procedure.h"
-#include "Workspace.h"
+#include <gtest/gtest.h>
+#include <mvvm/model/sessionitem.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -30,10 +28,10 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-
-#include <mvvm/model/sessionitem.h>
-
-#include <gtest/gtest.h>
+#include <sup/sequencer/execution_status.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/workspace.h>
 
 using namespace sequencergui;
 

@@ -17,10 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "Instruction.h"
 #include "mock_item_listener.h"
-#include <sequencergui/core/exceptions.h>
 #include "sequencergui/jobsystem/job_context.h"
+#include "test_procedure_items.h"
+
+#include <gtest/gtest.h>
+#include <mvvm/model/model_utils.h>
+#include <mvvm/standarditems/container_item.h>
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/item_constants.h>
@@ -30,12 +34,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include "test_procedure_items.h"
-
-#include <mvvm/model/model_utils.h>
-#include <mvvm/standarditems/container_item.h>
-
-#include <gtest/gtest.h>
+#include <sup/sequencer/instruction.h>
 
 #include <QSignalSpy>
 #include <QTest>

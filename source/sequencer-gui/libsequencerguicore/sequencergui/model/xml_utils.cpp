@@ -19,13 +19,12 @@
 
 #include "sequencergui/model/xml_utils.h"
 
-#include "Procedure.h"
-#include "SequenceParser.h"
-
 #include <sequencergui/model/domain_object_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/transform_from_domain.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/sequence_parser.h>
 
 #include <iostream>
 #include <stdexcept>
@@ -34,7 +33,7 @@ namespace sequencergui
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 {
   auto result = std::make_unique<ProcedureItem>();
- auto procedure = sup::sequencer::ParseProcedureFile(file_name);
+  auto procedure = sup::sequencer::ParseProcedureFile(file_name);
 
   if (!procedure)
   {

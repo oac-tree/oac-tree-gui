@@ -19,10 +19,10 @@
 
 #include "sequencergui/jobsystem/domain_runner_adapter.h"
 
-#include "Procedure.h"
-#include "Runner.h"
-#include <sequencergui/jobsystem/function_runner.h>
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/function_runner.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/runner.h>
 
 #include <chrono>
 #include <iostream>
@@ -113,7 +113,6 @@ bool DomainRunnerAdapter::ExecuteSingle()
 
   return is_running;
 }
-
 
 DomainRunnerAdapter::~DomainRunnerAdapter()
 {

@@ -19,11 +19,11 @@
 
 #include "sequencergui/model/shall_not_be_named_value_utils.h"
 
-#include "Variable.h"
+#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/domain_utils.h>
-
-#include <gtest/gtest.h>
+#include <sup/dto/anyvalue.h>
+#include <sup/sequencer/variable.h>
 
 using namespace sequencergui;
 
@@ -43,10 +43,9 @@ TEST_F(ShallNotBeNamedValueUtilsTest, GetJsonString)
   variable->AddAttribute(domainconstants::kValueAttribute, "42");
   variable->Setup();
 
-  ::ccs::types::AnyValue any_value;
+  ::sup::dto::AnyValue any_value;
   EXPECT_TRUE(variable->GetValue(any_value));
-  ::ccs::types::uint32 value = any_value;
-  EXPECT_EQ(value, 42);
+  EXPECT_EQ(any_value, 42);
 
   EXPECT_TRUE(variable->GetValue(any_value));
 

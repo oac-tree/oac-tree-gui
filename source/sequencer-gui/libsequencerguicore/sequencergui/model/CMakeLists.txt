@@ -9,6 +9,7 @@ target_sources(${library_name} PRIVATE
   domain_object_builder.h
   domain_utils.cpp
   domain_utils.h
+  dto_types_fwd.h
   gui_object_builder.cpp
   gui_object_builder.h
   instruction_container_item.cpp
@@ -29,12 +30,12 @@ target_sources(${library_name} PRIVATE
   sequencer_model.h
   sequencer_utils.cpp
   sequencer_utils.h
-  shall_not_be_named_value_utils.cpp
-  shall_not_be_named_value_utils.h
   standard_instruction_items.cpp
   standard_instruction_items.h
   standard_variable_items.cpp
   standard_variable_items.h
+  shall_not_be_named_value_utils.cpp
+  shall_not_be_named_value_utils.h
   transform_from_domain.cpp
   transform_from_domain.h
   variable_item.cpp

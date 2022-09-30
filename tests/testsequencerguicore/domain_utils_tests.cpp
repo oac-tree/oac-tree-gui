@@ -19,9 +19,8 @@
 
 #include "sequencergui/model/domain_utils.h"
 
-#include "Instruction.h"
-
 #include <gtest/gtest.h>
+#include <sup/sequencer/instruction.h>
 
 #include <chrono>
 #include <future>

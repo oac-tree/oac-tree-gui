@@ -19,28 +19,28 @@
 
 #include "sequencergui/model/shall_not_be_named_value_utils.h"
 
-#include "Variable.h"
+#include <sup/dto/anyvalue_helper.h>
+#include <sup/sequencer/variable.h>
 
-#include <common/AnyValueHelper.h>
+#include <sstream>
+#include <stdexcept>
 
 namespace
 {
 // FIXME the code is borrowed from CLIInterface.cpp
 // Remove duplication
 
-using ParseFunction = bool (*)(::ccs::types::AnyValue &value, const std::string &str);
+using ParseFunction = bool (*)(sup::dto::AnyValue &, const std::string &);
 
 template <typename T>
-bool ParserFunctionT(::ccs::types::AnyValue &value, const std::string &str)
+bool ParserFunctionT(sup::dto::AnyValue &value, const std::string &str)
 {
   std::istringstream istr(str);
   T val;
   istr >> val;
   if (istr.fail())
   {
-    log_warning("ParseStringToScalarAnyvalue() - could not parse ('%s') in type ('%s)", str.c_str(),
-                value.GetType()->GetName());
-    return false;
+    throw std::runtime_error("ParseStringToScalarAnyvalue() - could not parse");
   }
   value = val;
   return true;
@@ -51,49 +51,45 @@ bool ParserFunctionT(::ccs::types::AnyValue &value, const std::string &str)
  * are integers (zero is false), case insensitive true/false, yes/no, etc.
  */
 template <>
-bool ParserFunctionT<::ccs::types::boolean>(::ccs::types::AnyValue &value, const std::string &str)
+bool ParserFunctionT<sup::dto::boolean>(sup::dto::AnyValue &value, const std::string &str)
 {
   std::istringstream istr(str);
-  ::ccs::types::boolean val;
+  sup::dto::boolean val;
   istr >> std::boolalpha >> val;
   if (istr.fail())
   {
-    log_warning("ParseStringToScalarAnyvalue() - could not parse ('%s') in type ('%s)", str.c_str(),
-                value.GetType()->GetName());
-    return false;
+    throw std::runtime_error("ParseStringToScalarAnyvalue() - could not parse");
   }
   value = val;
   return true;
 }
 
 template <>
-bool ParserFunctionT<::ccs::types::string>(::ccs::types::AnyValue &value, const std::string &str)
+bool ParserFunctionT<std::string>(sup::dto::AnyValue &value, const std::string &str)
 {
-  ::ccs::types::string buffer;
-  ::ccs::HelperTools::SafeStringCopy(buffer, str.c_str(), 64);
-  value = buffer;
+  value = str;
   return true;
 }
 
-std::map<std::string, ParseFunction> CreateParserMap()
+static std::map<std::string, ParseFunction> CreateParserMap()
 {
   std::map<std::string, ParseFunction> parser_map;
-  parser_map["bool"] = ParserFunctionT<::ccs::types::boolean>;
-  parser_map["char8"] = ParserFunctionT<::ccs::types::char8>;
-  parser_map["int8"] = ParserFunctionT<::ccs::types::int8>;
-  parser_map["uint8"] = ParserFunctionT<::ccs::types::uint8>;
-  parser_map["int16"] = ParserFunctionT<::ccs::types::int16>;
-  parser_map["uint16"] = ParserFunctionT<::ccs::types::uint16>;
-  parser_map["int32"] = ParserFunctionT<::ccs::types::int32>;
-  parser_map["uint32"] = ParserFunctionT<::ccs::types::uint32>;
-  parser_map["uint64"] = ParserFunctionT<::ccs::types::uint64>;
-  parser_map["float32"] = ParserFunctionT<::ccs::types::float32>;
-  parser_map["float64"] = ParserFunctionT<::ccs::types::float64>;
-  parser_map["string"] = ParserFunctionT<::ccs::types::string>;
+  parser_map["bool"] = ParserFunctionT<sup::dto::boolean>;
+  parser_map["char8"] = ParserFunctionT<sup::dto::char8>;
+  parser_map["int8"] = ParserFunctionT<sup::dto::int8>;
+  parser_map["uint8"] = ParserFunctionT<sup::dto::uint8>;
+  parser_map["int16"] = ParserFunctionT<sup::dto::int16>;
+  parser_map["uint16"] = ParserFunctionT<sup::dto::uint16>;
+  parser_map["int32"] = ParserFunctionT<sup::dto::int32>;
+  parser_map["uint32"] = ParserFunctionT<sup::dto::uint32>;
+  parser_map["uint64"] = ParserFunctionT<sup::dto::uint64>;
+  parser_map["float32"] = ParserFunctionT<sup::dto::float32>;
+  parser_map["float64"] = ParserFunctionT<sup::dto::float64>;
+  parser_map["string"] = ParserFunctionT<std::string>;
   return parser_map;
 }
 
-std::map<std::string, ParseFunction> &GetParserMap()
+static std::map<std::string, ParseFunction> &GetParserMap()
 {
   static std::map<std::string, ParseFunction> parser_map = CreateParserMap();
   return parser_map;
@@ -106,21 +102,19 @@ namespace sequencergui::DomainUtils
 
 std::string GetJsonString(const anyvalue_t *value)
 {
-  ccs::types::char8 buffer[4096] = STRING_UNDEFINED;
-  auto result = value->SerialiseInstance(buffer, 4096u);
-  return std::string(buffer);
+  return sup::dto::ValuesToJSONString(*value);
 }
 
 std::string GetValueJsonString(const variable_t *value)
 {
-  ::ccs::types::AnyValue anyvalue;
+  sup::dto::AnyValue anyvalue;
   value->GetValue(anyvalue);
   return GetJsonString(&anyvalue);
 }
 
-bool ParseStringToScalarAnyvalue(const std::string &str, anyvalue_t &value)
+bool ParseStringToScalarAnyvalue(const std::string &str, sup::dto::AnyValue &value)
 {
-  std::string type_name = value.GetType()->GetName();
+  std::string type_name = value.GetTypeName();
 
   auto &parser_map = GetParserMap();
   if (parser_map.find(type_name) == parser_map.end())

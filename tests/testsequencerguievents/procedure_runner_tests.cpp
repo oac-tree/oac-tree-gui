@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "ExecutionStatus.h"
-#include "Instruction.h"
-#include "Procedure.h"
-#include "Variable.h"
 #include "sequencergui/jobsystem/procedure_runner.h"
-#include <sequencergui/model/domain_utils.h>
-#include <sequencergui/model/sequencer_types.h>
 #include "test_domain_procedures.h"
 #include "test_utils.h"
 
 #include <gtest/gtest.h>
+#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/model/sequencer_types.h>
+#include <sup/sequencer/execution_status.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/variable.h>
 
 #include <QDebug>
 #include <QSignalSpy>

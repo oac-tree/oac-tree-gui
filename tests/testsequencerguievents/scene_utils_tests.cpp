@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "Instruction.h"
-#include "InstructionRegistry.h"
 #include "sequencergui/nodeeditor/scene_utils.h"
 
 #include <gtest/gtest.h>
@@ -29,6 +27,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/instruction_registry.h>
 
 #include <QDebug>
 #include <QPointF>

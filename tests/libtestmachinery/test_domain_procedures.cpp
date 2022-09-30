@@ -19,10 +19,10 @@
 
 #include "test_domain_procedures.h"
 
-#include "ExecutionStatus.h"
-#include "Instruction.h"
-#include "Procedure.h"
-#include "Variable.h"
+#include <sup/sequencer/execution_status.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/variable.h>
+#include <sup/sequencer/procedure.h>
 #include <sequencergui/model/domain_utils.h>
 #include "test_utils.h"
 

@@ -17,26 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
-#define SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
+#ifndef SEQUENCERGUI_MODEL_ANYVALUE_TYPE_H_
+#define SEQUENCERGUI_MODEL_ANYVALUE_TYPE_H_
 
-//! @file shallnotbenamedvalueutils.h
-//! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
+//! @file dto_types_fwd.h
+//! Forward declaration of AnyValue related types.
 
-#include <sequencergui/model/sequencer_types.h>
-
-#include <sequencergui/model/dto_types_fwd.h>
-#include <string>
-
-namespace sequencergui::DomainUtils
+namespace sup::dto
 {
+class AnyValue;
+class AnyType;
+enum class TypeCode;
+}  // namespace sup::dto
 
-std::string GetJsonString(const anyvalue_t* value);
+using anyvalue_t = sup::dto::AnyValue;
 
-std::string GetValueJsonString(const variable_t* value);
-
-bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
-
-}  // namespace sequencergui::DomainUtils
-
-#endif  // SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
+#endif  // SEQUENCERGUI_MODEL_ANYVALUE_TYPE_H_
