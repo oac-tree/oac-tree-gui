@@ -56,7 +56,7 @@ private:
 class FileVariableItem : public VariableItem
 {
 public:
-  static inline const std::string Type = "FileVariable";
+  static inline const std::string Type = "File";
   FileVariableItem();
 
   std::string GetDomainType() const override;

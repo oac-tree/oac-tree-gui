@@ -49,7 +49,7 @@ const std::string kWaitInstructionType = "Wait";
 
 // variables
 const std::string kLocalVariableType = "Local";
-const std::string kFileVariableType = "FileVariable";
+const std::string kFileVariableType = "File";
 const std::string kChannelAccessVariableType = "ChannelAccessVariable";
 const std::string kPVClientVariableType = "PVClientVariable";
 const std::string kPVServerVariableType = "PVServerVariable";
