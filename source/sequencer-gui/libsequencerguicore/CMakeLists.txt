@@ -10,7 +10,7 @@ if (SEQUENCERGUI_CODAC)
   target_link_directories(${library_name} PUBLIC $ENV{CODAC_ROOT}/lib)
   add_definitions(-DSEQUENCERGUI_CODAC)
 else()
-  target_link_libraries(${library_name} PUBLIC pthread sup-mvvm::view COACompact::sequencer COACompact::sequencer-ca COACompact::sequencer-pvxs)
+  target_link_libraries(${library_name} PUBLIC pthread sup-mvvm::view sequencer::sequencer)
 endif()
 
 add_subdirectory(sequencergui)

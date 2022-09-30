@@ -4,7 +4,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} SHARED "")
 
-target_link_libraries(${library_name} PUBLIC pthread sup-mvvm::view COACompact::sup-dto)
+target_link_libraries(${library_name} PUBLIC pthread sup-mvvm::view sup-dto::sup-dto)
 
 target_sources(${library_name} PRIVATE
   abstract_anyvalue_buildnode.cpp

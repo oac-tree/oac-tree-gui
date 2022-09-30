@@ -69,7 +69,7 @@ find_package(Threads)
 find_package(sup-mvvm REQUIRED)
 
 if (NOT SEQUENCERGUI_CODAC)
-  find_package(COACompact REQUIRED)
+  find_package(sequencer REQUIRED)
 endif()
 
 # -----------------------------------------------------------------------------
