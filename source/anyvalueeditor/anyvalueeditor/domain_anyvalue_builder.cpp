@@ -19,10 +19,10 @@
 
 #include "anyvalueeditor/domain_anyvalue_builder.h"
 
-#include <anyvalueeditor/anyvalue_build_adapter_v2.h>
 #include <anyvalueeditor/anyvalue_item.h>
 #include <anyvalueeditor/scalar_conversion_utils.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_composer.h>
 
 #include <cassert>
 #include <stack>
@@ -53,7 +53,7 @@ struct Node
 
 struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 {
-  AnyValueBuildAdapterV2 m_builder;
+  sup::dto::AnyValueComposer m_builder;
   std::stack<Node> m_stack;
 
   explicit DomainAnyValueBuilderImpl(const AnyValueItem& item)
