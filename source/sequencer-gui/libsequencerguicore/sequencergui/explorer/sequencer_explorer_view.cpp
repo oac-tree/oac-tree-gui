@@ -19,7 +19,7 @@
 
 #include "sequencergui/explorer/sequencer_explorer_view.h"
 
-#include <mvvm/interfaces/model_event_subscriber_interface.h>
+#include <mvvm/signals/model_event_handler.h>
 #include <mvvm/standarditems/standard_item_includes.h>
 #include <mvvm/utils/file_utils.h>
 #include <sequencergui/explorer/explorer_panel.h>
@@ -28,15 +28,15 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/xml_utils.h>
+#include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/widget_utils.h>
 #include <sequencergui/widgets/xml_editor.h>
-#include <sequencergui/widgets/item_stack_widget.h>
 
 #include <QApplication>
 #include <QDebug>
 #include <QSplitter>
-#include <QVBoxLayout>
 #include <QToolBar>
+#include <QVBoxLayout>
 
 namespace
 {
@@ -94,14 +94,14 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
 
   // Provide regeneration of XML text corresponding to the currently opened procedure, on every
   // change in the model.
-  auto on_data_change = [this](auto, auto)
+  auto on_data_change = [this](auto)
   {
     if (auto procedure_item = m_explorer_panel->GetSelectedProcedure(); procedure_item)
     {
       m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     }
   };
-  m_model->GetSubscriber()->SetOnDataChanged(on_data_change);
+  m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(on_data_change);
 }
 
 //! Show content of XML file.

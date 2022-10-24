@@ -22,15 +22,16 @@
 #include <anyvalueeditor/anyvalue_editor_actions.h>
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/anyvalue_item.h>
+#include <anyvalueeditor/anyvalue_utils.h>
 #include <anyvalueeditor/anyvalue_viewmodel.h>
 #include <anyvalueeditor/conversion_utils.h>
 #include <anyvalueeditor/highlighter/qsourcehighliter.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
-#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -92,7 +93,7 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
   m_component_provider->SetApplicationModel(nullptr);
 
-  auto anyvalue = sup::dto::AnyValueFromJSONFile(file_name.toStdString());
+  auto anyvalue = AnyValueFromJSONFile(file_name.toStdString());
   auto item =
       m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
   item->SetDisplayName("AnyValue");

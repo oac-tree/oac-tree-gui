@@ -21,7 +21,7 @@
 
 #include <mvvm/model/sessionitem.h>
 
-MockModelListener::MockModelListener(mvvm::ApplicationModel *model)  : ModelListener(model)
+MockModelListener::MockModelListener(mvvm::SessionModelInterface *model) : ModelListener(model)
 {
   auto on_about_to_insert = [this](auto item, auto tagindex)
   { OnAboutToInsertItem(item, tagindex); };

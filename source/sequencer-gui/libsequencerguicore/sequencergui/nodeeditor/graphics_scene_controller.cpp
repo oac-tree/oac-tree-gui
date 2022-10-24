@@ -175,7 +175,7 @@ GraphicsSceneController::GraphicsSceneController(mvvm::ApplicationModel* model,
                                                  GraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {
-  SubscribeTo(model->GetSubscriber());
+  Subscribe(model->GetEventHandler());
 }
 
 void GraphicsSceneController::SetAlignStrategy(

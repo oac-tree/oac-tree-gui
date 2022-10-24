@@ -20,11 +20,9 @@
 #ifndef TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
 #define TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
 
-#include <mvvm/interfaces/model_event_subscriber_interface.h>
-#include <mvvm/model/application_model.h>
-#include <mvvm/signals/model_listener.h>
-
 #include <gmock/gmock.h>
+#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/signals/model_listener.h>
 
 #include <memory>
 
@@ -37,10 +35,10 @@ class TagIndex;
 //! Mocking class to test ModelEventListenerInterface reactions on notifications issued by
 //! ModelEventNotifier.
 
-class MockModelListener : public mvvm::ModelListener<mvvm::ApplicationModel>
+class MockModelListener : public mvvm::ModelListener<mvvm::SessionModelInterface>
 {
 public:
-  explicit MockModelListener(mvvm::ApplicationModel* model);
+  explicit MockModelListener(mvvm::SessionModelInterface* model);
 
   MOCK_METHOD2(OnAboutToInsertItem,
                void(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index));
