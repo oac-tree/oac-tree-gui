@@ -20,11 +20,17 @@
 #include "anyvalueeditor/anyvalue_utils.h"
 
 #include <sup/dto/anytype.h>
+#include <sup/dto/anytype_registry.h>
+#include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/basic_scalar_types.h>
+#include <sup/dto/json/json_reader.h>
 
 #include <algorithm>
+#include <fstream>
 #include <functional>
 #include <map>
+#include <sstream>
 #include <stdexcept>
 
 namespace
@@ -157,6 +163,18 @@ bool IsScalarTypeName(const std::string& name)
 bool IsStructTypeName(const std::string& name)
 {
   return name == kStructTypeName;
+}
+
+sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename)
+{
+  sup::dto::AnyTypeRegistry anytype_registry;
+  std::ifstream ifs(filename);
+  if (!ifs.is_open())
+  {
+    throw std::runtime_error("AnyValueFromJSONFile could not open the file for reading");
+  }
+
+  return sup::dto::JSONParseAnyValue(&anytype_registry, ifs);
 }
 
 }  // namespace anyvalueeditor
