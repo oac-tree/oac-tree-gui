@@ -130,7 +130,7 @@ InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContaine
     return dynamic_cast<InstructionItem*>(
           model->InsertItem(model->GetFactory()->CreateItem(item_type), container, {}));
   }
-  catch (const mvvm::NotFoundKeyException& ex)
+  catch (const mvvm::KeyNotFoundException& ex)
   {
     // The UI knows nothing about instruction of given type.
     return dynamic_cast<InstructionItem*>(
