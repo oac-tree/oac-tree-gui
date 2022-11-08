@@ -92,25 +92,26 @@ void MainWindow::InitComponents()
   m_action_manager = new ActionManager(m_models->GetSequencerModel(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
+  m_tab_widget->SetBaseColor("#005291");
 
   m_explorer_view = new SequencerExplorerView;
-  m_tab_widget->addWidget(m_explorer_view, "Explore",
+  m_tab_widget->AddWidget(m_explorer_view, "Explore",
                           styleutils::GetIcon("file-search-outline-light.svg"));
 
   m_composer_view = new SequencerComposerView;
-  m_tab_widget->addWidget(m_composer_view, "Compose",
+  m_tab_widget->AddWidget(m_composer_view, "Compose",
                           styleutils::GetIcon("graph-outline-light.svg"));
 
   m_monitor_view = new SequencerMonitorView;
-  m_tab_widget->addWidget(m_monitor_view, "Run",
+  m_tab_widget->AddWidget(m_monitor_view, "Run",
                           styleutils::GetIcon("chevron-right-circle-outline-light.svg"));
 
-  m_tab_widget->addSpacer();
+  m_tab_widget->AddSpacer();
 
   m_settings_view = new SettingsView;
-  m_tab_widget->addWidget(m_settings_view, "", styleutils::GetIcon("cog-outline-light.svg"));
+  m_tab_widget->AddWidget(m_settings_view, "", styleutils::GetIcon("cog-outline-light.svg"));
 
-  m_tab_widget->setCurrentIndex(0);
+  m_tab_widget->SetCurrentIndex(0);
 
   setCentralWidget(m_tab_widget);
 }
@@ -126,9 +127,9 @@ void MainWindow::WriteSettings()
 
 void MainWindow::PopulateModel()
 {
-//  Examples::AddCopyProcedure(m_models->GetSequencerModel());
-//  Examples::AddLocalIncludeProcedure(m_models->GetSequencerModel());
- //  Examples::AddUserChoiceProcedure(m_models->GetSequencerModel());
+  //  Examples::AddCopyProcedure(m_models->GetSequencerModel());
+  //  Examples::AddLocalIncludeProcedure(m_models->GetSequencerModel());
+  //  Examples::AddUserChoiceProcedure(m_models->GetSequencerModel());
   //  Examples::AddInputProcedure(m_models->GetSequencerModel());
   //  Examples::AddComplexAlignmentProcedure(m_models->GetSequencerModel());
   //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
