@@ -18,6 +18,6 @@
   <Workspace>
     <Local name="zero" type='{"type":"uint32"}' value="0"/>
     <Local name="one" type='{"type":"uint32"}' value="1"/>
-    <ChannelAccessVariable name="dev1_status" channel="DEV1-STATUS" datatype='{"type":"uint32"}'/>
+    <ChannelAccessClient name="dev1_status" channel="DEV1-STATUS" datatype='{"type":"uint32"}'/>
   </Workspace>
 </Procedure>
