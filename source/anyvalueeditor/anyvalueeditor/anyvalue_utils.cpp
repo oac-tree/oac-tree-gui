@@ -24,7 +24,7 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/basic_scalar_types.h>
-#include <sup/dto/json/json_reader.h>
+#include <sup/dto/json_value_parser.h>
 
 #include <algorithm>
 #include <fstream>
@@ -167,14 +167,9 @@ bool IsStructTypeName(const std::string& name)
 
 sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename)
 {
-  sup::dto::AnyTypeRegistry anytype_registry;
-  std::ifstream ifs(filename);
-  if (!ifs.is_open())
-  {
-    throw std::runtime_error("AnyValueFromJSONFile could not open the file for reading");
-  }
-
-  return sup::dto::JSONParseAnyValue(&anytype_registry, ifs);
+  sup::dto::JSONAnyValueParser parser;
+  parser.ParseFile(filename);
+  return parser.MoveAnyValue();
 }
 
 }  // namespace anyvalueeditor
