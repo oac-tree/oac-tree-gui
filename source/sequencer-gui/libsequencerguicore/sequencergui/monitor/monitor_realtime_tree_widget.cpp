@@ -23,6 +23,7 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/utils/style_utils.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/custom_header_view.h>
 
@@ -55,6 +56,8 @@ MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
     emit InstructionClicked(dynamic_cast<InstructionItem *>(item));
   };
   connect(m_tree_view, &QTreeView::clicked, this, on_click);
+
+  sequencergui::styleutils::SetBreezePropertyStyle(m_tree_view);
 }
 
 MonitorRealTimeTreeWidget::~MonitorRealTimeTreeWidget() = default;

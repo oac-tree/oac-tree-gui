@@ -22,8 +22,8 @@
 
 #include <QWidget>
 
-class QToolBar;
 class QIcon;
+class QTreeView;
 
 namespace sequencergui::styleutils
 {
@@ -43,6 +43,9 @@ QSize ToolBarIconSize();
 QSize NarrowToolBarIconSize();
 
 QIcon GetIcon(const std::string& icon_name);
+
+//! Sets style for the tree to better look on CODAC systems.
+void SetBreezePropertyStyle(QTreeView* tree);
 
 }  // namespace sequencergui::styleutils
 

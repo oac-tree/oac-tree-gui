@@ -20,6 +20,7 @@
 #include "sequencergui/widgets/file_tree_view.h"
 
 #include <mvvm/widgets/widget_utils.h>
+#include <sequencergui/utils/style_utils.h>
 
 #include <QFileSystemModel>
 #include <QLabel>
@@ -73,6 +74,8 @@ FileTreeView::FileTreeView(QWidget *parent)
   connect(m_tree_view, &QTreeView::clicked, this, [this](auto index) { OnTreeSingleClick(index); });
 
   SetCurrentDir(m_current_workdir);
+
+  sequencergui::styleutils::SetBreezePropertyStyle(m_tree_view);
 }
 
 FileTreeView::~FileTreeView()

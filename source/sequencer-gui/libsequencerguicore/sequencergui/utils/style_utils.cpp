@@ -19,11 +19,15 @@
 
 #include "sequencergui/utils/style_utils.h"
 
+#include <mvvm/widgets/style_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QApplication>
 #include <QIcon>
 #include <QSize>
+#include <QTreeView>
 #include <cmath>
+
 namespace
 {
 //! Flag if to use svg versions of icons.
@@ -63,6 +67,16 @@ QIcon GetIcon(const std::string &icon_name)
     name.replace(".svg", ".png");
   }
   return QIcon(name);
+}
+
+void SetBreezePropertyStyle(QTreeView *tree)
+{
+  // sets "breeze" property style only if current theme is a "fusion", which is what CODAC's gnome
+  // has by default
+  if (QApplication::style()->objectName() == QString("fusion"))
+  {
+    mvvm::utils::SetBreezePropertyStyle(tree);
+  }
 }
 
 }  // namespace sequencergui::styleutils

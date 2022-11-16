@@ -19,12 +19,12 @@
 
 #include "sequencergui/explorer/procedure_trees_widget.h"
 
-#include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/panel_toolbar.h>
-
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/top_items_tree_view.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/utils/style_utils.h>
+#include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QSplitter>
 #include <QTreeView>
@@ -53,6 +53,8 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
 
   connect(m_procedure_tree, &mvvm::TopItemsTreeView::SelectedItemChanged, m_property_tree,
           &mvvm::PropertyTreeView::SetItem);
+
+  sequencergui::styleutils::SetBreezePropertyStyle(m_procedure_tree->GetTreeView());
 }
 
 void ProcedureTreesWidget::SetProcedure(ProcedureItem *procedure_item)
