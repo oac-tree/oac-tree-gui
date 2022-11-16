@@ -1,0 +1,64 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2022 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "sequencergui/mainwindow/command_line_options.h"
+
+#include <QCommandLineOption>
+#include <QCommandLineParser>
+#include <QCoreApplication>
+
+namespace sequencergui
+{
+Options ParseOptions(int argc, char** argv)
+{
+  // Parser requires an application to be created upfront.
+  // Create an application solely for parser needs (fortunately it is cheap).
+  QCoreApplication app(argc, argv);
+
+  QCommandLineParser parser;
+  parser.addHelpOption();
+  parser.addVersionOption();
+
+  QCommandLineOption info_option("info", "Show system environment information");
+  parser.addOption(info_option);
+
+  QCommandLineOption scale_option(
+      "scale",
+      "Rely on system high-DPI scale via QT_ variables for 4K. If option is "
+      "absent, will rely on internal scale mechanism (preferred).");
+  parser.addOption(scale_option);
+
+  QCommandLineOption font_option("font", "Main application font point size");
+  font_option.setValueName("10");
+  parser.addOption(font_option);
+
+  parser.process(app);
+
+  Options result;
+  result.info = parser.isSet(info_option);
+  result.scale = parser.isSet(scale_option);
+
+  if (parser.isSet(font_option))
+  {
+    result.system_font_psize = parser.value(font_option).toInt();
+  }
+
+  return result;
+}
+}  // namespace sequencergui

@@ -41,17 +41,8 @@ struct Options
   int system_font_psize = -1;
 };
 
-//! Returns multiline-string describing system environment related to the user desktop.
-std::string GetDesktopInfo();
-
 //! Parse command line options.
 Options ParseOptions(int argc, char** argv);
-
-//! Sets up high DPI scaling.
-void SetupHighDpiScaling(bool use_system_scale);
-
-//! Sets point size of the main application font.
-void SetApplicationFontSize(int point_size);
 
 }  // namespace sequencergui
 

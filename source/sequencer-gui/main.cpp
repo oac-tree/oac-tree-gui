@@ -17,9 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/app_utils.h"
-#include "sequencergui/mainwindow/main_window.h"
-#include "sequencergui/model/domain_utils.h"
+#include <mvvm/widgets/app_utils.h>
+#include <sequencergui/mainwindow/command_line_options.h>
+#include <sequencergui/mainwindow/main_window.h>
+#include <sequencergui/model/domain_utils.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -37,16 +38,15 @@ int main(int argc, char** argv)
 
   auto options = sequencergui::ParseOptions(argc, argv);
 
-  sequencergui::SetupHighDpiScaling(options.scale);
+  mvvm::utils::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
-  QApplication::setStyle(QStyleFactory::create("Breeze"));  // same style on all machines
 
-  sequencergui::SetApplicationFontSize(options.system_font_psize);
+  mvvm::utils::SetApplicationFontSize(options.system_font_psize);
 
   if (options.info)
   {
-    std::cout << sequencergui::GetDesktopInfo();
+    std::cout << mvvm::utils::GetDesktopInfo();
   }
 
   Q_INIT_RESOURCE(sequencericons);
