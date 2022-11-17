@@ -61,28 +61,32 @@ make -j4 && ctest
 ## Installation on custom Linux
 
 It is possible to develop Sequencer GUI on custom Linux distributive. Tested on `Arch` Linux.
-
 `sup-mvvm`, `sup-dto` and `sequencer` libraries should be compiled and installed before.
 
+
 ```
-# We assume that the user wants to install all dependencies into <path-to-local>.
+
+# We assume that the user wants to install all dependencies into <path-to-local-install>, e.g. /opt/local.
 
 # Install sup-dto
+git clone https://git.iter.org/scm/coa/sup-dto.git
+cmake -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
+make -j4; make install
 
-# build sup-mvvm library
+# Install sequencer
+git clone https://git.iter.org/scm/coa/sequencer.git
+cmake -DCMAKE_PREFIX_PATH=<path-to-local-install> -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
+make -j4; make install
+
+# Install sup-mvvm library
 git clone https://git.iter.org/scm/coa/sup-mvvm.git
-mkdir <build>; cd <build>
-cmake <path-to-repo> && make -j4 && ctest
+cmake -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
+make -j4; ctest; make install
 
-# build coa-compact library
-git clone https://git.iter.org/scm/coa/coa-compact.git
-mkdir <build>; cd <build>
-cmake <source> && make -j4
-
-# build Sequencer GUI
+# build sequencer GUI
 git clone -b develop https://git.iter.org/scm/coa/sequencer-gui.git
-mkdir <build>; cd <build>
-cmake <source> && make -j4 && ctest
+cmake -DCMAKE_PREFIX_PATH=<path-to-local-install> <path-to-repo>
+make -j4; ctest;
 
 # Run
 <build>/bin/sequencer-gui
