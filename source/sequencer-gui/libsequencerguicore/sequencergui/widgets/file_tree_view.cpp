@@ -147,7 +147,7 @@ void FileTreeView::WriteSettings()
 void FileTreeView::ReadSettings()
 {
   QSettings settings;
-  m_current_workdir = QDir::homePath();
+  m_current_workdir = QDir::currentPath();
 
   if (settings.contains(GetWorkdirSettingName()))
   {
