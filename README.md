@@ -51,7 +51,7 @@ git clone -b develop https://git.iter.org/scm/coa/sequencer-gui.git
 
 # Compile
 <build>mkdir build; cd build
-cmake <path-to-repo>
+cmake -DSEQUENCERGUI_CODAC=ON <path-to-repo>
 make -j4 && ctest
 
 # Run
