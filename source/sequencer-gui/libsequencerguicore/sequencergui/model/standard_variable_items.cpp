@@ -74,9 +74,9 @@ void ChannelAccessVariableItem::SetJsonValue(const std::string &value)
 
 void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
+  if (variable->HasAttribute(domainconstants::kTypeAttribute))
   {
-    SetDataType(variable->GetAttribute(domainconstants::kDataTypeAttribute));
+    SetDataType(variable->GetAttribute(domainconstants::kTypeAttribute));
   }
 
   if (variable->HasAttribute(domainconstants::kChannelAttribute))
@@ -88,7 +88,7 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
   variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
 }
 
@@ -237,9 +237,9 @@ std::string PVClientVariableItem::GetJsonValue()
 
 void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
+  if (variable->HasAttribute(domainconstants::kTypeAttribute))
   {
-    SetDataType(variable->GetAttribute(domainconstants::kDataTypeAttribute));
+    SetDataType(variable->GetAttribute(domainconstants::kTypeAttribute));
   }
 
   if (variable->HasAttribute(domainconstants::kChannelAttribute))
@@ -252,7 +252,7 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
   variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
 }
 
@@ -304,9 +304,9 @@ std::string PVServerVariableItem::GetJsonValue() const
 
 void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(domainconstants::kDataTypeAttribute))
+  if (variable->HasAttribute(domainconstants::kTypeAttribute))
   {
-    SetDataType(variable->GetAttribute(domainconstants::kDataTypeAttribute));
+    SetDataType(variable->GetAttribute(domainconstants::kTypeAttribute));
   }
 
   if (variable->HasAttribute(domainconstants::kChannelAttribute))
@@ -326,7 +326,7 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kDataTypeAttribute, GetDataType());
+  variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
   variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
   if (!GetJsonValue().empty())
   {

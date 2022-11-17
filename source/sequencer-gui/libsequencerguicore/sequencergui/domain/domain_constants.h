@@ -56,7 +56,6 @@ const std::string kPVServerVariableType = "PVServerVariable";
 
 // attributes
 const std::string kChannelAttribute = "channel";
-const std::string kDataTypeAttribute = "datatype";
 const std::string kDescriptionAttribute = "description";
 const std::string kFailureThresholdAttribute = "failureThreshold";
 const std::string kFileAttribute = "file";
@@ -76,7 +75,7 @@ const std::string kRightHandAttribute = "rhs";
 const std::string kInstanceAttribute = "instance";
 
 // attributes (instruction specific)
-const std::string kConditionVarNameAttribute = "var_name";
+const std::string kConditionVarNameAttribute = "varName";
 const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
 const std::string kWaitTimeoutAttribute = "timeout";

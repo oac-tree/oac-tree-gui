@@ -66,7 +66,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
         DomainUtils::CreateDomainVariable(domainconstants::kChannelAccessVariableType);
     ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
     ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
-    ca_variable->AddAttribute(domainconstants::kDataTypeAttribute, expected_datatype);
+    ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
     ChannelAccessVariableItem ca_variable_item;
     ca_variable_item.InitFromDomain(ca_variable.get());
@@ -94,7 +94,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
     EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
   }
 }
 
@@ -259,7 +259,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
     auto ca_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
     ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
     ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
-    ca_variable->AddAttribute(domainconstants::kDataTypeAttribute, expected_datatype);
+    ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
     PVClientVariableItem ca_variable_item;
     ca_variable_item.InitFromDomain(ca_variable.get());
@@ -287,7 +287,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
   }
 }
 
@@ -328,7 +328,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
     auto pvxs_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVServerVariableType);
     pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
     pvxs_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
-    pvxs_variable->AddAttribute(domainconstants::kDataTypeAttribute, expected_datatype);
+    pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
     pvxs_variable->AddAttribute(domainconstants::kInstanceAttribute, expected_instance);
 
     PVServerVariableItem pvxs_variable_item;
@@ -361,7 +361,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
       EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
       EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kInstanceAttribute));
     }
 
@@ -377,7 +377,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
       EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDataTypeAttribute), expected_datatype);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInstanceAttribute), expected_instance);
     }
   }
