@@ -1,11 +1,4 @@
-set(executable_name sequencer-gui)
-
-if (SEQUENCERGUI_CODAC)
-  add_definitions(-DSEQUENCERGUI_CODAC)
-endif()
-
-add_executable(${executable_name} main.cpp)
+# Sequencer GUI main applicationa dn libraries
 
 add_subdirectory(libsequencerguicore)
-
-target_link_libraries(${executable_name} sequencerguicore Qt${QT_VERSION_MAJOR}::Widgets)
+add_subdirectory(app)
