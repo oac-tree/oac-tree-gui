@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/main_window.h"
+#include "main_window.h"
 
 #include <anyvalueeditor/editor_widget.h>
 

@@ -20,8 +20,6 @@ target_sources(${library_name} PRIVATE
   dto_types_fwd.h
   editor_widget.cpp
   editor_widget.h
-  main_window.cpp
-  main_window.h
   scalar_conversion_utils.cpp
   scalar_conversion_utils.h
 )

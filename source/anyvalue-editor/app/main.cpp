@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/main_window.h"
+#include "main_window.h"
 
 #include <QApplication>
 #include <QLocale>
