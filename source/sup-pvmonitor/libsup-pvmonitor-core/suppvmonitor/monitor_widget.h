@@ -23,6 +23,12 @@
 #include <QWidget>
 #include <memory>
 
+namespace mvvm
+{
+class AllItemsTreeView;
+}
+
+
 namespace suppvmonitor
 {
 
@@ -37,7 +43,10 @@ public:
   ~MonitorWidget() override;
 
 private:
+  void PopulateModel();
+
   std::unique_ptr<MonitorModel> m_model;
+  mvvm::AllItemsTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace suppvmonitor
