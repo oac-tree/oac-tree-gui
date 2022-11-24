@@ -1,4 +1,4 @@
-set(library_name sequencerguicore)
+set(library_name sequencer-gui-core)
 
 set(CMAKE_AUTOMOC ON)
 

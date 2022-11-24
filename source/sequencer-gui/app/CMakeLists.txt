@@ -6,4 +6,4 @@ endif()
 
 add_executable(${executable_name} main.cpp)
 
-target_link_libraries(${executable_name} sequencerguicore Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${executable_name} sequencer-gui-core Qt${QT_VERSION_MAJOR}::Widgets)
