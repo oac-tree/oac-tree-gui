@@ -19,7 +19,7 @@
 
 #include "main_window.h"
 
-#include <suppvmonitor/editor_widget.h>
+#include <suppvmonitor/monitor_widget.h>
 
 #include <QCoreApplication>
 #include <QFileDialog>
@@ -74,8 +74,8 @@ void MainWindow::InitMenu()
 
 void MainWindow::InitComponents()
 {
-  m_editor_widget = new EditorWidget;
-  setCentralWidget(m_editor_widget);
+  m_monitor_widget = new MonitorWidget;
+  setCentralWidget(m_monitor_widget);
 }
 
 void MainWindow::WriteSettings()

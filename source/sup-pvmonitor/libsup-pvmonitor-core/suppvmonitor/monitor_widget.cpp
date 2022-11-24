@@ -17,21 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_EDITOR_WIDGET_H_
-#define SUPPVMONITOR_EDITOR_WIDGET_H_
+#include "suppvmonitor/monitor_widget.h"
 
-#include <QWidget>
+#include <suppvmonitor/monitor_model.h>
 
 namespace suppvmonitor
 {
 
-class EditorWidget : public QWidget
+MonitorWidget::MonitorWidget(QWidget *parent)
+    : QWidget(parent), m_model(std::make_unique<MonitorModel>())
 {
-  Q_OBJECT
-public:
-  explicit EditorWidget(QWidget* parent = nullptr);
-};
+}
+
+MonitorWidget::~MonitorWidget() = default;
 
 }  // namespace suppvmonitor
-
-#endif  // SUPPVMONITOR_EDITOR_WIDGET_H_

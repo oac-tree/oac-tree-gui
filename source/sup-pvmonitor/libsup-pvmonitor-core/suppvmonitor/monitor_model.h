@@ -27,10 +27,8 @@ namespace suppvmonitor
 
 class MonitorModel : public mvvm::ApplicationModel
 {
-
 public:
   MonitorModel();
-
 };
 
 }  // namespace suppvmonitor

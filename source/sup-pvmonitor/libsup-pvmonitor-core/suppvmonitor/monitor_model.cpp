@@ -19,12 +19,20 @@
 
 #include "suppvmonitor/monitor_model.h"
 
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
+
 namespace suppvmonitor
 {
 
 MonitorModel::MonitorModel()
 {
-
+  RegisterItem<sequencergui::ChannelAccessVariableItem>();
+  RegisterItem<sequencergui::LocalVariableItem>();
+  RegisterItem<sequencergui::PVClientVariableItem>();
+  RegisterItem<sequencergui::PVServerVariableItem>();
+  RegisterItem<sequencergui::UnknownVariableItem>();
+  RegisterItem<sequencergui::WorkspaceItem>();
 }
 
-}
+}  // namespace suppvmonitor

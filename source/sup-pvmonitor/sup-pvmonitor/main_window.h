@@ -28,7 +28,7 @@ class QCloseEvent;
 namespace suppvmonitor
 {
 
-class EditorWidget;
+class MonitorWidget;
 
 //! The main window of this application.
 
@@ -49,7 +49,7 @@ private:
   void InitComponents();
   void WriteSettings();
 
-  EditorWidget* m_editor_widget{nullptr};
+  MonitorWidget* m_monitor_widget{nullptr};
 };
 
 }  // namespace suppvmonitor
