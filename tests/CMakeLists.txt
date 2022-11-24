@@ -6,11 +6,11 @@ find_package(Threads)
 include(GoogleTest)
 
 add_subdirectory(libtestmachinery)
-add_subdirectory(testsequencerguicore)
-add_subdirectory(testsequencerguievents)
+add_subdirectory(testsequencer-gui-core)
+add_subdirectory(testsequencer-gui-core-events)
 
 if (NOT SEQUENCERGUI_CODAC)
-  add_subdirectory(testanyvalueeditor)
+  add_subdirectory(testanyvalue-editor-core)
 endif()
 
 # Add custom target `make testall` which will run test executables one after another.
@@ -19,7 +19,7 @@ endif()
 # instantiations of QApplication.
 
 add_custom_target(testall
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testanyvalueeditorcore
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencerguievents
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testanyvalueeditorcore
+  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testanyvalue-editor-core
+  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencer-gui-core
+  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
 )

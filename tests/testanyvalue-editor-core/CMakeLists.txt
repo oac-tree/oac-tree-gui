@@ -1,4 +1,4 @@
-set(test testanyvalueeditorcore)
+set(test testanyvalue-editor-core)
 
 file(GLOB source_files "*.cpp")
 file(GLOB include_files "*.h")
