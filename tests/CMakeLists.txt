@@ -8,6 +8,7 @@ include(GoogleTest)
 add_subdirectory(libtestmachinery)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-core-events)
+add_subdirectory(testsup-pvmonitor-core)
 
 if (NOT SEQUENCERGUI_CODAC)
   add_subdirectory(testanyvalue-editor-core)
@@ -22,4 +23,5 @@ add_custom_target(testall
   COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testanyvalue-editor-core
   COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencer-gui-core
   COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
+  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsup-pvmonitor-core
 )
