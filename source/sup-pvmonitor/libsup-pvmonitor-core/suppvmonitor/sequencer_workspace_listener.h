@@ -31,8 +31,9 @@ class Workspace;
 namespace suppvmonitor
 {
 
-//! Listens sequencer's Workspace for update in variables. Collect updated values in a queue and
-//! notifies consumers from the GUI-thread via queued connection.
+//! Listens to sequencer's Workspace for an update in variables. Collect updated values in a queue
+//! and notifies consumers from the GUI-thread via the queued connection. The idea is to process a
+//! callback from the Workspace as fast as possible and not let callback go inside our GUI thread.
 
 class SequencerWorkspaceListener : public QObject
 {

@@ -32,12 +32,18 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
 
   workspace_t *m_workspace{nullptr};
   callback_guard_t m_guard{nullptr, nullptr};
+  SequencerWorkspaceListener *m_self{nullptr};
 
   void AttachToWorkspace(workspace_t *workspace)
   {
     if (m_workspace)
     {
       throw sequencergui::RuntimeException("Already existing workspace");
+    }
+
+    if (!workspace)
+    {
+      throw sequencergui::RuntimeException("Non initialised workspace");
     }
 
     m_workspace = workspace;
@@ -52,11 +58,14 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
     }
 
     m_guard = callback_guard_t{nullptr, nullptr};
+    m_workspace = nullptr;
   }
+
+  SequencerWorkspaceListenerImpl(SequencerWorkspaceListener *self) : m_self(self){};
 };
 
 SequencerWorkspaceListener::SequencerWorkspaceListener(QObject *parent)
-    : QObject(parent), p_impl(std::make_unique<SequencerWorkspaceListenerImpl>())
+    : QObject(parent), p_impl(std::make_unique<SequencerWorkspaceListenerImpl>(this))
 {
 }
 

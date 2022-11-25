@@ -20,6 +20,8 @@
 #include "suppvmonitor/sequencer_workspace_listener.h"
 
 #include <gtest/gtest.h>
+#include <sequencergui/core/exceptions.h>
+#include <sup/sequencer/workspace.h>
 
 using namespace suppvmonitor;
 
@@ -29,7 +31,22 @@ class SequencerWorkspaceListenerTests : public ::testing::Test
 {
 };
 
-TEST_F(SequencerWorkspaceListenerTests, InitialState)
+//! Checking exceptions during start/stop listening.
+
+TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
 {
-  EXPECT_EQ(1, 1);
+  SequencerWorkspaceListener listener;
+
+  EXPECT_THROW(listener.StartListening(nullptr), sequencergui::RuntimeException);
+  EXPECT_THROW(listener.StopListening(), sequencergui::RuntimeException);
+
+  sup::sequencer::Workspace workspace;
+
+  // it is possible to start listening to the given workspace only once
+  EXPECT_NO_THROW(listener.StartListening(&workspace));
+  EXPECT_THROW(listener.StartListening(nullptr), sequencergui::RuntimeException);
+
+  // it is possible to stop listening given workspace only once
+  EXPECT_NO_THROW(listener.StopListening());
+  EXPECT_THROW(listener.StopListening(), sequencergui::RuntimeException);
 }
