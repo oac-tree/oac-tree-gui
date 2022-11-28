@@ -46,7 +46,11 @@ public:
   void StartListening(sup::sequencer::Workspace* workspace);
   void StopListening();
 
+  int GetEventCount() const;
+
 signals:
+  //! Signal that will be triggered on new variable update. Must be connected with the GUI thread
+  //! via queued connection.
   void VariabledUpdated();
 
 private:

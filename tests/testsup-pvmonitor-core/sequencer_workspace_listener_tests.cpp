@@ -37,6 +37,7 @@ TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
 {
   SequencerWorkspaceListener listener;
 
+  EXPECT_EQ(listener.GetEventCount(), 0);
   EXPECT_THROW(listener.StartListening(nullptr), sequencergui::RuntimeException);
   EXPECT_THROW(listener.StopListening(), sequencergui::RuntimeException);
 

@@ -17,6 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <mvvm/utils/threadsafe_queue.h>
 #include <sequencergui/core/exceptions.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
@@ -34,6 +35,13 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
   callback_guard_t m_guard{nullptr, nullptr};
   SequencerWorkspaceListener *m_self{nullptr};
 
+  struct UpdateResult
+  {
+    std::string m_variable_name;
+    sup::dto::AnyValue m_value;
+  };
+  mvvm::threadsafe_queue<UpdateResult> m_workspace_events;
+
   void AttachToWorkspace(workspace_t *workspace)
   {
     if (m_workspace)
@@ -43,11 +51,18 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
 
     if (!workspace)
     {
-      throw sequencergui::RuntimeException("Non initialised workspace");
+      throw sequencergui::RuntimeException("Not initialised workspace");
     }
 
     m_workspace = workspace;
     m_guard = m_workspace->GetCallbackGuard(this);
+
+    auto on_variable_updated = [this](const std::string &name, const sup::dto::AnyValue &value)
+    {
+      m_workspace_events.push({name, value});
+      emit m_self->VariabledUpdated();
+    };
+    m_workspace->RegisterGenericCallback(on_variable_updated);
   }
 
   void StopListening()
@@ -79,6 +94,11 @@ void SequencerWorkspaceListener::StartListening(sup::sequencer::Workspace *works
 void SequencerWorkspaceListener::StopListening()
 {
   p_impl->StopListening();
+}
+
+int SequencerWorkspaceListener::GetEventCount() const
+{
+  return p_impl->m_workspace_events.size();
 }
 
 }  // namespace suppvmonitor
