@@ -28,6 +28,8 @@ int main(int argc, char** argv)
 
   QApplication app(argc, argv);
 
+  Q_INIT_RESOURCE(sequencericons);
+
   suppvmonitor::MainWindow win;
 
   win.show();

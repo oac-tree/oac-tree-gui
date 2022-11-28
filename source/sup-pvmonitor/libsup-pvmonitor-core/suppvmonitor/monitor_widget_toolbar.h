@@ -17,43 +17,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_MONITOR_WIDGET_H_
-#define SUPPVMONITOR_MONITOR_WIDGET_H_
+#ifndef SUPPVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
+#define SUPPVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
 
-#include <QWidget>
-#include <memory>
+#include <QToolBar>
 
-namespace mvvm
-{
-class AllItemsTreeView;
-}
-
+class QToolButton;
 
 namespace suppvmonitor
 {
 
-class MonitorModel;
-class WorkspaceController;
-class MonitorWidgetToolBar;
-
-class MonitorWidget : public QWidget
+class MonitorWidgetToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
-  explicit MonitorWidget(QWidget* parent = nullptr);
-  ~MonitorWidget() override;
+  explicit MonitorWidgetToolBar(QWidget* parent = nullptr);
+
+signals:
+  void SetupWorkspace();
 
 private:
-  void PopulateModel();
-
-  MonitorWidgetToolBar* m_tool_bar{nullptr};
-
-  std::unique_ptr<MonitorModel> m_model;
-  std::unique_ptr<WorkspaceController> m_workspace_controller;
-  mvvm::AllItemsTreeView* m_tree_view{nullptr};
+  QToolButton* m_setup_workspace_button{nullptr};
 };
 
 }  // namespace suppvmonitor
 
-#endif  // SUPPVMONITOR_MONITOR_WIDGET_H_
+#endif  // SUPPVMONITOR_MONITOR_WIDGET_TOOLBAR_H_

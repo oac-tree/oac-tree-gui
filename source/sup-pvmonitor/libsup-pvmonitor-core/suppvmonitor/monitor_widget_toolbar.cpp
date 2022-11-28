@@ -17,43 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_MONITOR_WIDGET_H_
-#define SUPPVMONITOR_MONITOR_WIDGET_H_
+#include "suppvmonitor/monitor_widget_toolbar.h"
 
-#include <QWidget>
-#include <memory>
+#include <sequencergui/utils/style_utils.h>
 
-namespace mvvm
-{
-class AllItemsTreeView;
-}
-
+#include <QToolButton>
 
 namespace suppvmonitor
 {
 
-class MonitorModel;
-class WorkspaceController;
-class MonitorWidgetToolBar;
-
-class MonitorWidget : public QWidget
+MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
+    : QToolBar(parent), m_setup_workspace_button(new QToolButton)
 {
-  Q_OBJECT
-
-public:
-  explicit MonitorWidget(QWidget* parent = nullptr);
-  ~MonitorWidget() override;
-
-private:
-  void PopulateModel();
-
-  MonitorWidgetToolBar* m_tool_bar{nullptr};
-
-  std::unique_ptr<MonitorModel> m_model;
-  std::unique_ptr<WorkspaceController> m_workspace_controller;
-  mvvm::AllItemsTreeView* m_tree_view{nullptr};
-};
+  m_setup_workspace_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_setup_workspace_button->setText("Send to SUP");
+  m_setup_workspace_button->setIcon(
+      sequencergui::styleutils::GetIcon("chevron-right-circle-outline.svg"));
+  connect(m_setup_workspace_button, &QToolButton::clicked, this,
+          &MonitorWidgetToolBar::SetupWorkspace);
+  addWidget(m_setup_workspace_button);
+}
 
 }  // namespace suppvmonitor
-
-#endif  // SUPPVMONITOR_MONITOR_WIDGET_H_

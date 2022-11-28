@@ -1,7 +1,5 @@
 set(library_name sequencer-gui-core)
 
-set(CMAKE_AUTOMOC ON)
-
 add_library(${library_name} SHARED "")
 
 if (SEQUENCERGUI_CODAC)
