@@ -23,6 +23,8 @@
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
 
+#include <QDebug>
+
 namespace suppvmonitor
 {
 
@@ -52,12 +54,15 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
     m_workspace = workspace;
     m_guard = m_workspace->GetCallbackGuard(this);
 
+    qDebug() << "xxx subscribing";
+
     auto on_variable_updated = [this](const std::string &name, const sup::dto::AnyValue &value)
     {
+      qDebug() << "xxx updated";
       m_workspace_events.push({name, value});
       emit m_self->VariabledUpdated();
     };
-    m_workspace->RegisterGenericCallback(on_variable_updated);
+    m_workspace->RegisterGenericCallback(on_variable_updated, this);
   }
 
   void StopListening()
@@ -94,6 +99,13 @@ void SequencerWorkspaceListener::StopListening()
 int SequencerWorkspaceListener::GetEventCount() const
 {
   return p_impl->m_workspace_events.size();
+}
+
+WorkspaceEvent SequencerWorkspaceListener::PopEvent() const
+{
+  WorkspaceEvent result;
+  p_impl->m_workspace_events.try_pop(result);
+  return result;
 }
 
 }  // namespace suppvmonitor
