@@ -21,6 +21,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
+#include <suppvmonitor/workspace_event.h>
 
 namespace suppvmonitor
 {
@@ -34,13 +35,7 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
   workspace_t *m_workspace{nullptr};
   callback_guard_t m_guard{nullptr, nullptr};
   SequencerWorkspaceListener *m_self{nullptr};
-
-  struct UpdateResult
-  {
-    std::string m_variable_name;
-    sup::dto::AnyValue m_value;
-  };
-  mvvm::threadsafe_queue<UpdateResult> m_workspace_events;
+  mvvm::threadsafe_queue<WorkspaceEvent> m_workspace_events;
 
   void AttachToWorkspace(workspace_t *workspace)
   {
