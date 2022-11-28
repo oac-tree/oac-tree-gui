@@ -30,11 +30,11 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
     : QToolBar(parent), m_setup_workspace_button(new QToolButton)
 {
   m_setup_workspace_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_setup_workspace_button->setText("Send to SUP");
+  m_setup_workspace_button->setText("Connect");
   m_setup_workspace_button->setIcon(
       sequencergui::styleutils::GetIcon("chevron-right-circle-outline.svg"));
   connect(m_setup_workspace_button, &QToolButton::clicked, this,
-          &MonitorWidgetToolBar::SetupWorkspace);
+          &MonitorWidgetToolBar::SetupWorkspaceRequest);
   addWidget(m_setup_workspace_button);
 }
 

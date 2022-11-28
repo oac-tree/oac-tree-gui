@@ -35,7 +35,7 @@ public:
   explicit MonitorWidgetToolBar(QWidget* parent = nullptr);
 
 signals:
-  void SetupWorkspace();
+  void SetupWorkspaceRequest();
 
 private:
   QToolButton* m_setup_workspace_button{nullptr};

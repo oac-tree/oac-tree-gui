@@ -22,11 +22,11 @@
 namespace suppvmonitor
 {
 
-WorkspaceController::WorkspaceController(MonitorModel *model) : m_model(model) {}
-
-void WorkspaceController::InitController()
+WorkspaceController::WorkspaceController(MonitorModel* model, QObject* parent)
+    : QObject(parent), m_model(model)
 {
-
 }
+
+void WorkspaceController::OnSetupWorkspaceRequest() {}
 
 }  // namespace suppvmonitor

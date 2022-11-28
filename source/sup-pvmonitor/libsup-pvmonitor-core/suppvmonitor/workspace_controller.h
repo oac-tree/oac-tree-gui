@@ -20,6 +20,7 @@
 #ifndef SUPPVMONITOR_WORKSPACE_CONTROLLER_H_
 #define SUPPVMONITOR_WORKSPACE_CONTROLLER_H_
 
+#include <QObject>
 #include <memory>
 
 namespace suppvmonitor
@@ -28,13 +29,16 @@ namespace suppvmonitor
 class MonitorModel;
 class SequencerWorkspaceListener;
 
-class WorkspaceController
+class WorkspaceController : public QObject
 {
+  Q_OBJECT
+
 public:
-  WorkspaceController(MonitorModel* model);
+  WorkspaceController(MonitorModel* model, QObject* parent = nullptr);
+
+  void OnSetupWorkspaceRequest();
 
 private:
-  void InitController();
   MonitorModel* m_model{nullptr};
 };
 

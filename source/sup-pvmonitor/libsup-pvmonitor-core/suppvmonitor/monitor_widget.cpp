@@ -43,6 +43,7 @@ MonitorWidget::MonitorWidget(QWidget *parent)
   layout->addWidget(m_tree_view);
 
   PopulateModel();
+  SetupConnections();
 
   m_tree_view->SetApplicationModel(m_model.get());
 }
@@ -55,6 +56,12 @@ void MonitorWidget::PopulateModel()
 
   auto channel_access_variable =
       workspace->InsertItem<sequencergui::ChannelAccessVariableItem>(mvvm::TagIndex::Append());
+}
+
+void MonitorWidget::SetupConnections()
+{
+  connect(m_tool_bar, &MonitorWidgetToolBar::SetupWorkspaceRequest, m_workspace_controller.get(),
+          &WorkspaceController::OnSetupWorkspaceRequest);
 }
 
 }  // namespace suppvmonitor

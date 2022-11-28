@@ -46,6 +46,7 @@ public:
 
 private:
   void PopulateModel();
+  void SetupConnections();
 
   MonitorWidgetToolBar* m_tool_bar{nullptr};
 
