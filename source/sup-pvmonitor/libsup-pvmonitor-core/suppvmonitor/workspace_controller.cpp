@@ -17,40 +17,16 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_MONITOR_WIDGET_H_
-#define SUPPVMONITOR_MONITOR_WIDGET_H_
-
-#include <QWidget>
-#include <memory>
-
-namespace mvvm
-{
-class AllItemsTreeView;
-}
-
+#include "suppvmonitor/workspace_controller.h"
 
 namespace suppvmonitor
 {
 
-class MonitorModel;
-class WorkspaceController;
+WorkspaceController::WorkspaceController(MonitorModel *model) : m_model(model) {}
 
-class MonitorWidget : public QWidget
+void WorkspaceController::InitController()
 {
-  Q_OBJECT
 
-public:
-  explicit MonitorWidget(QWidget* parent = nullptr);
-  ~MonitorWidget() override;
-
-private:
-  void PopulateModel();
-
-  std::unique_ptr<MonitorModel> m_model;
-  std::unique_ptr<WorkspaceController> m_workspace_controller;
-  mvvm::AllItemsTreeView* m_tree_view{nullptr};
-};
+}
 
 }  // namespace suppvmonitor
-
-#endif  // SUPPVMONITOR_MONITOR_WIDGET_H_

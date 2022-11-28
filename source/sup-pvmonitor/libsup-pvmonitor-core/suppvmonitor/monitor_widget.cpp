@@ -23,6 +23,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
+#include <suppvmonitor/workspace_controller.h>
 
 #include <QVBoxLayout>
 
@@ -32,6 +33,7 @@ namespace suppvmonitor
 MonitorWidget::MonitorWidget(QWidget *parent)
     : QWidget(parent)
     , m_model(std::make_unique<MonitorModel>())
+    , m_workspace_controller(std::make_unique<WorkspaceController>(m_model.get()))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -42,6 +44,8 @@ MonitorWidget::MonitorWidget(QWidget *parent)
   m_tree_view->SetApplicationModel(m_model.get());
 }
 
+MonitorWidget::~MonitorWidget() = default;
+
 void MonitorWidget::PopulateModel()
 {
   auto workspace = m_model->InsertItem<sequencergui::WorkspaceItem>();
@@ -49,7 +53,5 @@ void MonitorWidget::PopulateModel()
   auto channel_access_variable =
       workspace->InsertItem<sequencergui::ChannelAccessVariableItem>(mvvm::TagIndex::Append());
 }
-
-MonitorWidget::~MonitorWidget() = default;
 
 }  // namespace suppvmonitor
