@@ -29,8 +29,15 @@ namespace suppvmonitor
 MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
     : QToolBar(parent), m_setup_workspace_button(new QToolButton)
 {
+  setIconSize(sequencergui::styleutils::ToolBarIconSize());
+
+  auto font = m_setup_workspace_button->font();
+  auto psize = font.pointSize() * 1.05;
+  font.setPointSize(psize);
+
   m_setup_workspace_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_setup_workspace_button->setText("Connect");
+  m_setup_workspace_button->setFont(font);
   m_setup_workspace_button->setIcon(
       sequencergui::styleutils::GetIcon("chevron-right-circle-outline.svg"));
   connect(m_setup_workspace_button, &QToolButton::clicked, this,

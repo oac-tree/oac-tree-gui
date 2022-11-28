@@ -19,14 +19,32 @@
 
 #include "suppvmonitor/workspace_controller.h"
 
+#include <sup/sequencer/workspace.h>
+#include <suppvmonitor/monitor_model.h>
+#include <suppvmonitor/sequencer_workspace_listener.h>
+
+#include <QDebug>
+
 namespace suppvmonitor
 {
 
 WorkspaceController::WorkspaceController(MonitorModel* model, QObject* parent)
-    : QObject(parent), m_model(model)
+    : QObject(parent)
+    , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
+    , m_model(model)
 {
 }
 
-void WorkspaceController::OnSetupWorkspaceRequest() {}
+WorkspaceController::~WorkspaceController() = default;
+
+void WorkspaceController::OnSetupWorkspaceRequest()
+{
+  qDebug() << "OnSetupWorkspaceRequest";
+  m_workspace = std::make_unique<sup::sequencer::Workspace>();
+
+  m_workspace_listener->StartListening(m_workspace.get());
+}
+
+void WorkspaceController::ProcessVariable() {}
 
 }  // namespace suppvmonitor

@@ -23,6 +23,14 @@
 #include <QObject>
 #include <memory>
 
+namespace sup
+{
+namespace sequencer
+{
+class Workspace;
+}
+}  // namespace sup
+
 namespace suppvmonitor
 {
 
@@ -35,10 +43,15 @@ class WorkspaceController : public QObject
 
 public:
   WorkspaceController(MonitorModel* model, QObject* parent = nullptr);
+  ~WorkspaceController() override;
 
   void OnSetupWorkspaceRequest();
 
+  void ProcessVariable();
+
 private:
+  std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
+  std::unique_ptr<sup::sequencer::Workspace> m_workspace;
   MonitorModel* m_model{nullptr};
 };
 
