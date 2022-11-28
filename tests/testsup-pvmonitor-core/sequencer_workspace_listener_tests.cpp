@@ -86,6 +86,7 @@ TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
 }
 
 //! Single local variable is created in the workspace.
+//! We change it's value several times, check signaling, and validate workspace events.
 
 TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 {
@@ -140,4 +141,37 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
   auto empty_event = listener.PopEvent();
   EXPECT_TRUE(empty_event.m_variable_name.empty());
   EXPECT_TRUE(sup::dto::IsEmptyValue(empty_event.m_value));
+}
+
+//! Single local variable is created in the workspace.
+//! After first update we stop listening and check that no signals have been issued after.
+
+TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
+{
+  SequencerWorkspaceListener listener;
+  QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
+
+  // creating workspace with single variable
+  sup::sequencer::Workspace workspace;
+  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  auto local_variable = CreateLocalVariable("abc", value0);
+  workspace.AddVariable("abcdef", local_variable.release());
+
+  EXPECT_NO_THROW(listener.StartListening(&workspace));
+
+  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  EXPECT_TRUE(workspace.SetValue("abcdef", value1));
+
+  EXPECT_EQ(spy_upate.count(), 1);
+  EXPECT_EQ(listener.GetEventCount(), 1);
+
+  // stop listening
+  listener.StopListening();
+
+  sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  EXPECT_TRUE(workspace.SetValue("abcdef", value2));
+
+  // no other signals
+  EXPECT_EQ(spy_upate.count(), 1);
+  EXPECT_EQ(listener.GetEventCount(), 1);
 }
