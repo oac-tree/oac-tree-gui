@@ -175,3 +175,5 @@ TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
   EXPECT_EQ(spy_upate.count(), 1);
   EXPECT_EQ(listener.GetEventCount(), 1);
 }
+
+
