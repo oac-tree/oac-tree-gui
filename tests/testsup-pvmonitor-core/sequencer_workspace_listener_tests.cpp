@@ -22,11 +22,13 @@
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/domain_utils.h>
+#include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/workspace_event.h>
 
 #include <QSignalSpy>
+#include <iostream>
 
 using namespace suppvmonitor;
 
@@ -35,7 +37,20 @@ using namespace suppvmonitor;
 class SequencerWorkspaceListenerTests : public ::testing::Test
 {
 public:
-
+  std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
+                                                  const sup::dto::AnyValue& initial_value)
+  {
+    auto local_variable = sequencergui::DomainUtils::CreateDomainVariable(
+        sequencergui::domainconstants::kLocalVariableType);
+    local_variable->SetName(name);
+    local_variable->AddAttribute("type", sup::dto::AnyTypeToJSONString(initial_value.GetType()));
+    local_variable->Setup();
+    if (!local_variable->SetValue(initial_value))
+    {
+      throw std::runtime_error("Can't create variable");
+    }
+    return local_variable;
+  }
 };
 
 //! Initial state.
@@ -83,16 +98,8 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
   EXPECT_EQ(spy_upate.count(), 0);
 
   // creating local variable
-  const std::string expected_name("abc");
-  const std::string expected_type(R"RAW({"type":"int32"})RAW");
-  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
-  auto local_variable = sequencergui::DomainUtils::CreateDomainVariable(
-      sequencergui::domainconstants::kLocalVariableType);
-  local_variable->SetName(expected_name);
-  local_variable->AddAttribute("type", expected_type);
-  local_variable->Setup();
-
-  EXPECT_TRUE(local_variable->SetValue(expected_anyvalue));
+  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  auto local_variable = CreateLocalVariable("abc", value0);
   auto local_variable_ptr = local_variable.get();
 
   // adding it to the workspace, expecting no signals
@@ -105,9 +112,32 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
   EXPECT_EQ(spy_upate.count(), 0);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
-  // changing variable
-  //  local_variable_ptr->SetValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  EXPECT_TRUE(workspace.SetValue("abcdef", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}));
+  // changing variable via workspace
+  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  EXPECT_TRUE(workspace.SetValue("abcdef", value1));
   EXPECT_EQ(spy_upate.count(), 1);
   EXPECT_EQ(listener.GetEventCount(), 1);
+
+  // changing variable via variable pointer
+  sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  local_variable_ptr->SetValue(value2);
+  EXPECT_EQ(spy_upate.count(), 2);
+  EXPECT_EQ(listener.GetEventCount(), 2);
+
+  // getting back first value
+  auto workspace_event = listener.PopEvent();
+  EXPECT_EQ(workspace_event.m_variable_name, std::string("abcdef"));
+  EXPECT_EQ(workspace_event.m_value, value1);
+  EXPECT_EQ(listener.GetEventCount(), 1);
+
+  // getting back second value
+  workspace_event = listener.PopEvent();
+  EXPECT_EQ(workspace_event.m_variable_name, std::string("abcdef"));
+  EXPECT_EQ(workspace_event.m_value, value2);
+  EXPECT_EQ(listener.GetEventCount(), 0);
+
+  // there are no events left
+  auto empty_event = listener.PopEvent();
+  EXPECT_TRUE(empty_event.m_variable_name.empty());
+  EXPECT_TRUE(sup::dto::IsEmptyValue(empty_event.m_value));
 }
