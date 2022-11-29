@@ -46,6 +46,14 @@ public:
   explicit RuntimeException(const std::string& message);
 };
 
+//! Generic exception to throw as a consequence of faulty logic (viloated preconditions etc).
+
+class LogicErrorException : public MessageException
+{
+public:
+  explicit LogicErrorException(const std::string& message);
+};
+
 //! Error detected in the Sequencer domain during the attempt to convert UI classes to
 //! sequencer classes.
 

@@ -31,6 +31,8 @@ const char* MessageException::what() const noexcept
 
 RuntimeException::RuntimeException(const std::string& message) : MessageException{message} {}
 
+LogicErrorException::LogicErrorException(const std::string& message) : MessageException{message} {}
+
 TransformToDomainException::TransformToDomainException(const std::string& message)
     : MessageException{message}
 {
