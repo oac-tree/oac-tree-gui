@@ -19,10 +19,6 @@
 
 #include "sequencergui/model/domain_procedure_builder.h"
 
-#include <sup/sequencer/instruction.h>
-#include <sup/sequencer/procedure.h>
-#include <sup/sequencer/workspace.h>
-
 #include <mvvm/model/sessionmodel.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -30,6 +26,9 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/workspace.h>
 
 #include <QDebug>
 
@@ -70,7 +69,7 @@ namespace sequencergui
 DomainProcedureBuilder::~DomainProcedureBuilder() = default;
 
 void DomainProcedureBuilder::Iterate(const sequencergui::InstructionItem* instruction,
-                                  instruction_t* parent)
+                                     instruction_t* parent)
 {
   for (auto& instruction : instruction->GetInstructions())
   {
@@ -85,7 +84,7 @@ void DomainProcedureBuilder::Iterate(const sequencergui::InstructionItem* instru
 }
 
 void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
-                                                     procedure_t* procedure)
+                                                        procedure_t* procedure)
 {
   if (!procedure->GetInstructions().empty())
   {
@@ -105,7 +104,7 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
 }
 
 void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace,
-                                                  procedure_t* procedure)
+                                                     procedure_t* procedure)
 {
   if (!procedure->GetWorkspace()->VariableNames().empty())
   {
@@ -139,9 +138,7 @@ std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
   }
 
   auto result = std::make_unique<procedure_t>();
-
-  PopulateDomainInstructions(procedure_item->GetInstructionContainer(), result.get());
-  PopulateDomainWorkspace(procedure_item->GetWorkspace(), result.get());
+  PopulateProcedure(procedure_item, result.get());
 
   return result;
 }
@@ -159,12 +156,25 @@ void DomainProcedureBuilder::BuildProcedure(const ProcedureItem* procedure_item)
   m_procedure = CreateProcedure(procedure_item);
 }
 
+void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_item,
+                                               procedure_t* procedure)
+{
+  if (!procedure_item)
+  {
+    throw RuntimeException("Procedure is not initialised");
+  }
+
+  PopulateDomainInstructions(procedure_item->GetInstructionContainer(), procedure);
+  PopulateDomainWorkspace(procedure_item->GetWorkspace(), procedure);
+}
+
 procedure_t* DomainProcedureBuilder::GetProcedure() const
 {
   return m_procedure.get();
 }
 
-std::string DomainProcedureBuilder::FindInstructionIdentifier(const instruction_t* instruction) const
+std::string DomainProcedureBuilder::FindInstructionIdentifier(
+    const instruction_t* instruction) const
 {
   if (!m_procedure_item || !GetProcedure())
   {
@@ -186,7 +196,8 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
   return it == m_variable_to_id.end() ? std::string() : it->second;
 }
 
-std::string DomainProcedureBuilder::FindVariableItemIdentifier(const std::string& variable_name) const
+std::string DomainProcedureBuilder::FindVariableItemIdentifier(
+    const std::string& variable_name) const
 {
   if (!m_procedure_item || !GetProcedure())
   {

@@ -44,6 +44,8 @@ public:
 
   void BuildProcedure(const ProcedureItem* procedure_item);
 
+  void PopulateProcedure(const ProcedureItem* procedure_item, procedure_t* procedure);
+
   procedure_t* GetProcedure() const;
 
   std::string FindInstructionIdentifier(const instruction_t* instruction) const;
