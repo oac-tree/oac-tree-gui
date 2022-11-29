@@ -21,6 +21,7 @@
 
 #include <mvvm/model/sessionmodel.h>
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -106,39 +107,9 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
 void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace,
                                                      procedure_t* procedure)
 {
-  if (!procedure->GetWorkspace()->VariableNames().empty())
-  {
-    throw std::runtime_error("Error in DomainObjectBuilder non-empty domain workspace.");
-  }
-
-  m_variable_to_id.clear();
-  m_variablename_to_id.clear();
-
-  for (const auto variable_item : workspace->GetVariables())
-  {
-    auto domain_variable = variable_item->CreateDomainVariable();
-    m_variable_to_id.insert({domain_variable.get(), variable_item->GetIdentifier()});
-
-    auto it = m_variablename_to_id.find(variable_item->GetName());
-    if (it != m_variablename_to_id.end())
-    {
-      throw std::runtime_error("Error in DomainObjectBuilder: such variable name '"
-                               + variable_item->GetName() + "' already exist");
-    }
-
-    m_variablename_to_id.insert({variable_item->GetName(), variable_item->GetIdentifier()});
-
-    procedure->AddVariable(variable_item->GetName(), domain_variable.release());
-  }
-}
-
-std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
-    const ProcedureItem* procedure_item)
-{
-  DomainProcedureBuilder builder;
-  auto result = std::make_unique<procedure_t>();
-  builder.PopulateProcedure(procedure_item, result.get());
-  return result;
+  m_workspace_builder = std::make_unique<DomainWorkspaceBuilder>();
+  m_workspace_builder->PopulateDomainWorkspace(workspace,
+                                               const_cast<workspace_t*>(procedure->GetWorkspace()));
 }
 
 void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_item,
@@ -162,15 +133,16 @@ std::string DomainProcedureBuilder::FindInstructionIdentifier(
 
 std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t* variable) const
 {
-  auto it = m_variable_to_id.find(variable);
-  return it == m_variable_to_id.end() ? std::string() : it->second;
+  return m_workspace_builder->GetVariableItemFromDomainVariableName(variable->GetName())
+      ->GetIdentifier();
 }
 
-std::string DomainProcedureBuilder::FindVariableItemIdentifier(
-    const std::string& variable_name) const
+std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(const ProcedureItem* procedure_item)
 {
-  auto it = m_variablename_to_id.find(variable_name);
-  return it == m_variablename_to_id.end() ? std::string() : it->second;
+  DomainProcedureBuilder builder;
+  auto result = std::make_unique<procedure_t>();
+  builder.PopulateProcedure(procedure_item, result.get());
+  return result;
 }
 
 }  // namespace sequencergui

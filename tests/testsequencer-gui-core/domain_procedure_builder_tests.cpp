@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <mvvm/model/sessionitem.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_types.h>
@@ -244,8 +245,6 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
   builder.PopulateProcedure(&procedure_item, procedure.get());
 
   EXPECT_EQ(procedure->VariableNames(), std::vector<std::string>({"var0", "var1"}));
-  EXPECT_EQ(builder.FindVariableItemIdentifier(var_item0->GetName()), var_item0->GetIdentifier());
-  EXPECT_EQ(builder.FindVariableItemIdentifier(var_item1->GetName()), var_item1->GetIdentifier());
 
   auto domain_var0 = procedure->GetWorkspace()->GetVariable("var0");
   auto domain_var1 = procedure->GetWorkspace()->GetVariable("var1");

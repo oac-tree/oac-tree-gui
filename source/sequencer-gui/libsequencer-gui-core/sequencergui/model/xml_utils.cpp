@@ -25,6 +25,7 @@
 #include <sequencergui/model/transform_from_domain.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/sequence_parser.h>
+#include <sequencergui/model/domain_workspace_builder.h>
 
 #include <iostream>
 #include <stdexcept>

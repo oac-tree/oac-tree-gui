@@ -32,6 +32,7 @@ class ProcedureItem;
 class InstructionItem;
 class InstructionContainerItem;
 class WorkspaceItem;
+class DomainWorkspaceBuilder;
 
 //! Creates domain Procedure from ProcedureItem.
 //! Saves correspondence of SessionItem identifiers to newly created domain objects.
@@ -48,7 +49,6 @@ public:
   std::string FindInstructionIdentifier(const instruction_t* instruction) const;
 
   std::string FindVariableItemIdentifier(const variable_t* variable) const;
-  std::string FindVariableItemIdentifier(const std::string& variable_name) const;
 
 private:
   void Iterate(const sequencergui::InstructionItem* instruction, instruction_t* parent);
@@ -57,8 +57,7 @@ private:
   void PopulateDomainWorkspace(const WorkspaceItem* workspace, procedure_t* procedure);
 
   std::map<const instruction_t*, std::string> m_instruction_to_id;
-  std::map<const variable_t*, std::string> m_variable_to_id;
-  std::map<std::string, std::string> m_variablename_to_id;
+  std::unique_ptr<DomainWorkspaceBuilder> m_workspace_builder;
 };
 
 }  // namespace sequencergui
