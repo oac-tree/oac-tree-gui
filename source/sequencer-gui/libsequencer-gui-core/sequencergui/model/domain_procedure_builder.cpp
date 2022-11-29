@@ -30,8 +30,6 @@
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
 
-#include <QDebug>
-
 namespace
 {
 //! Creates domain instruction corresponding to a given InstructionItem, and pushes it
@@ -143,19 +141,6 @@ std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
   return result;
 }
 
-//! Build procedure. Ownership remains in the procedure.
-//! FIXME confusing logic: BuildProcedure .vs. CreateProcedure.
-//! BuildProcedure ownership is kept, CreateProcedure ownership
-//! is passed outside, but methods FindInstructionIdentifier stop working
-// void DomainProcedureBuilder::BuildProcedure(const ProcedureItem* procedure_item)
-//{
-//   m_procedure_item = procedure_item;
-//   m_instruction_to_id.clear();
-//   m_variable_to_id.clear();
-//   m_variablename_to_id.clear();
-//   m_procedure = CreateProcedure(procedure_item);
-// }
-
 void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_item,
                                                procedure_t* procedure)
 {
@@ -168,30 +153,15 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_it
   PopulateDomainWorkspace(procedure_item->GetWorkspace(), procedure);
 }
 
-//procedure_t* DomainProcedureBuilder::GetProcedure() const
-//{
-//  return m_procedure.get();
-//}
-
 std::string DomainProcedureBuilder::FindInstructionIdentifier(
     const instruction_t* instruction) const
 {
-//  if (!m_procedure_item || !GetProcedure())
-//  {
-//    throw std::runtime_error("Error in FindInstructionItem:");
-//  }
-
   auto it = m_instruction_to_id.find(instruction);
   return it == m_instruction_to_id.end() ? std::string() : it->second;
 }
 
 std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t* variable) const
 {
-//  if (!m_procedure_item || !GetProcedure())
-//  {
-//    throw std::runtime_error("Error in FindVariableItemIdentifier:");
-//  }
-
   auto it = m_variable_to_id.find(variable);
   return it == m_variable_to_id.end() ? std::string() : it->second;
 }
@@ -199,11 +169,6 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
 std::string DomainProcedureBuilder::FindVariableItemIdentifier(
     const std::string& variable_name) const
 {
-//  if (!m_procedure_item || !GetProcedure())
-//  {
-//    throw std::runtime_error("Error in FindVariableItemIdentifier:");
-//  }
-
   auto it = m_variablename_to_id.find(variable_name);
   return it == m_variablename_to_id.end() ? std::string() : it->second;
 }
