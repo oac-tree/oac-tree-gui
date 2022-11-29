@@ -55,7 +55,7 @@ TEST_F(WorkspaceControllerTest, InitialState)
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
-//! Setting up the workspace and checking that
+//! Setting up the workspace and checking that proper domain variable has been created.
 
 TEST_F(WorkspaceControllerTest, OnSetupWorkspaceRequest)
 {
@@ -78,4 +78,24 @@ TEST_F(WorkspaceControllerTest, OnSetupWorkspaceRequest)
   sup::dto::AnyValue domain_value;
   EXPECT_TRUE(domain_variable0->GetValue(domain_value));
   EXPECT_EQ(domain_value, value0);
+}
+
+//! Setting up the workspace with single variable.
+//! Changing domain variable and checking that WorkspaceItem was properly updated.
+
+TEST_F(WorkspaceControllerTest, OnVariableUpdated)
+{
+  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  MonitorModel model;
+  auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
+  auto variable_item0 =
+      workspace_item->InsertItem(CreateLocalVariable("abc", value0), mvvm::TagIndex::Append());
+
+  WorkspaceController controller(&model);
+  controller.OnSetupWorkspaceRequest();
+
+  // changing the value via domain workspace
+  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  EXPECT_TRUE(controller.GetWorkspace()->SetValue("abc", value1));
 }

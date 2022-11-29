@@ -37,6 +37,8 @@ WorkspaceController::WorkspaceController(MonitorModel* model, QObject* parent)
     , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
     , m_model(model)
 {
+  connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
+          &WorkspaceController::OnVariableUpdated);
 }
 
 WorkspaceController::~WorkspaceController() = default;
@@ -59,7 +61,10 @@ void WorkspaceController::OnSetupWorkspaceRequest()
   m_workspace->Setup();
 }
 
-void WorkspaceController::ProcessVariable() {}
+void WorkspaceController::OnVariableUpdated()
+{
+  qDebug() << "OnVariableUpdated";
+}
 
 sup::sequencer::Workspace* WorkspaceController::GetWorkspace() const
 {

@@ -55,7 +55,7 @@ public:
 
   void OnSetupWorkspaceRequest();
 
-  void ProcessVariable();
+  void OnVariableUpdated();
 
   sup::sequencer::Workspace* GetWorkspace() const;
 
