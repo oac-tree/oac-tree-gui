@@ -49,6 +49,8 @@ public:
 
   void ProcessVariable();
 
+  sup::sequencer::Workspace* GetWorkspace() const;
+
 private:
   std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
   std::unique_ptr<sup::sequencer::Workspace> m_workspace;

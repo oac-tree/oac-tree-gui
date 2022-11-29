@@ -96,6 +96,9 @@ int SequencerWorkspaceListener::GetEventCount() const
   return p_impl->m_workspace_events.size();
 }
 
+//! Takes a workspace event from the queue and returns it to the user.
+//! Intended for call from the GUI thread.
+
 WorkspaceEvent SequencerWorkspaceListener::PopEvent() const
 {
   WorkspaceEvent result;

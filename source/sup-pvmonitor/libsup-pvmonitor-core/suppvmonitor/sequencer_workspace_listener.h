@@ -33,7 +33,7 @@ namespace suppvmonitor
 
 class WorkspaceEvent;
 
-//! Listens to sequencer's Workspace for variable updates. Collect updated values in a queue
+//! Listens to sequencer's Workspace for variable updates. Collects updated values in a queue
 //! and notifies consumers from the GUI-thread via the queued connection. The idea is to prevent
 //! a callback from the Workspace going inside our GUI thread.
 

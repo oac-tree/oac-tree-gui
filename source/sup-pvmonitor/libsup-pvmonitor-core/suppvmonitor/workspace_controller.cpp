@@ -47,4 +47,9 @@ void WorkspaceController::OnSetupWorkspaceRequest()
 
 void WorkspaceController::ProcessVariable() {}
 
+sup::sequencer::Workspace *WorkspaceController::GetWorkspace() const
+{
+  return m_workspace.get();
+}
+
 }  // namespace suppvmonitor
