@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_DOMAIN_OBJECT_BUILDER_H_
-#define SEQUENCERGUI_MODEL_DOMAIN_OBJECT_BUILDER_H_
+#ifndef SEQUENCERGUI_MODEL_DOMAIN_PROCEDURE_BUILDER_H_
+#define SEQUENCERGUI_MODEL_DOMAIN_PROCEDURE_BUILDER_H_
 
 #include <sequencergui/model/sequencer_types.h>
 
@@ -36,11 +36,11 @@ class WorkspaceItem;
 //! Creates domain Procedure from ProcedureItem.
 //! Saves correspondence of SessionItem identifiers to newly created domain objects.
 
-class DomainObjectBuilder
+class DomainProcedureBuilder
 {
 public:
   [[nodiscard]] std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem* procedure_item);
-  ~DomainObjectBuilder();
+  ~DomainProcedureBuilder();
 
   void BuildProcedure(const ProcedureItem* procedure_item);
 
@@ -66,4 +66,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_DOMAIN_OBJECT_BUILDER_H_
+#endif  // SEQUENCERGUI_MODEL_DOMAIN_PROCEDURE_BUILDER_H_

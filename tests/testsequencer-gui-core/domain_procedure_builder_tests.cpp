@@ -35,19 +35,19 @@
 
 using namespace sequencergui;
 
-//! Testing DomainObjectBuilder class.
+//! Testing DomainProcedureBuilder class.
 
-class DomainObjectBuilderTest : public ::testing::Test
+class DomainProcedureBuilderTest : public ::testing::Test
 {
 };
 
 //! Building domain procedure from empty ProcedureItem.
 
-TEST_F(DomainObjectBuilderTest, EmptyProcedure)
+TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 {
   ProcedureItem procedure_item;
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Test constructed
@@ -64,14 +64,14 @@ TEST_F(DomainObjectBuilderTest, EmptyProcedure)
 
 //! Building domain procedure from ProcedureItem with a single sequence.
 
-TEST_F(DomainObjectBuilderTest, ProcedureWithSingleInstruction)
+TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
   auto sequence_item = container->InsertItem<SequenceItem>({"", -1});
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
@@ -84,7 +84,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithSingleInstruction)
 
 //! Building domain procedure from ProcedureItem with two instructions.
 
-TEST_F(DomainObjectBuilderTest, ProcedureWithTwoInstructions)
+TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
@@ -94,7 +94,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithTwoInstructions)
   auto wait1 = container->InsertItem<WaitItem>({"", -1});
   wait1->SetTimeout(0.2);
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
@@ -110,7 +110,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithTwoInstructions)
 
 //! Building domain procedure from ProcedureItem containing Sequence and wait in it.
 
-TEST_F(DomainObjectBuilderTest, ProcedureWithParentAndChild)
+TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
@@ -118,7 +118,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParentAndChild)
   auto sequence = container->InsertItem<SequenceItem>({"", -1});
   auto wait = sequence->InsertItem<WaitItem>({"", -1});
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list
@@ -135,7 +135,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParentAndChild)
 //! Using build with BuildProcedure method, check correspondance between domain objects in
 //! InstructionItems.
 
-TEST_F(DomainObjectBuilderTest, BuildProcedureWithParentAndChild)
+TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
@@ -143,7 +143,7 @@ TEST_F(DomainObjectBuilderTest, BuildProcedureWithParentAndChild)
   auto sequence = container->InsertItem<SequenceItem>({"", -1});
   auto wait = sequence->InsertItem<WaitItem>({"", -1});
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   builder.BuildProcedure(&procedure_item);
   auto procedure = builder.GetProcedure();
 
@@ -165,7 +165,7 @@ TEST_F(DomainObjectBuilderTest, BuildProcedureWithParentAndChild)
 
 //! Procedure containing inverter instruction with sequence, containing in turn a wait instruction
 
-TEST_F(DomainObjectBuilderTest, InverterWithSequence)
+TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
@@ -175,7 +175,7 @@ TEST_F(DomainObjectBuilderTest, InverterWithSequence)
   EXPECT_EQ(inverter->GetItem<SequenceItem>("", 0), sequence);
   auto wait = sequence->InsertItem<WaitItem>({"", -1});
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   builder.BuildProcedure(&procedure_item);
   auto procedure = builder.GetProcedure();
 
@@ -201,7 +201,7 @@ TEST_F(DomainObjectBuilderTest, InverterWithSequence)
 
 //! Procedure containing inverter instruction with sequence, containing in turn a wait instruction
 
-TEST_F(DomainObjectBuilderTest, RepeatWithSingleInstruction)
+TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
@@ -210,7 +210,7 @@ TEST_F(DomainObjectBuilderTest, RepeatWithSingleInstruction)
   auto sequence = repeater->InsertItem<SequenceItem>({"", -1});
   EXPECT_EQ(repeater->GetItem<SequenceItem>("", 0), sequence);
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   builder.BuildProcedure(&procedure_item);
   auto procedure = builder.GetProcedure();
 
@@ -232,7 +232,7 @@ TEST_F(DomainObjectBuilderTest, RepeatWithSingleInstruction)
 
 //! Building domain procedure from ProcedureItem with a single sequence.
 
-TEST_F(DomainObjectBuilderTest, ProcedureWithVariable)
+TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 {
   ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
@@ -242,7 +242,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithVariable)
   auto var_item1 = workspace->InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   builder.BuildProcedure(&procedure_item);
 
   auto procedure = builder.GetProcedure();
@@ -258,7 +258,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithVariable)
   EXPECT_EQ(builder.FindVariableItemIdentifier(domain_var1), var_item1->GetIdentifier());
 }
 
-TEST_F(DomainObjectBuilderTest, ProcedureWithParallelSequence)
+TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
 {
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
@@ -267,7 +267,7 @@ TEST_F(DomainObjectBuilderTest, ProcedureWithParallelSequence)
   auto wait0 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
   auto wait1 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);
 
   // Empty instruction list

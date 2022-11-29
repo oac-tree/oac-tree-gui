@@ -86,3 +86,5 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   EXPECT_EQ(domain_var0->GetName(), var_item0->GetName());
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
 }
+
+

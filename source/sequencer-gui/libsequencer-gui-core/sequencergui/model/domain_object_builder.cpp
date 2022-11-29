@@ -67,9 +67,9 @@ instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instructi
 
 namespace sequencergui
 {
-DomainObjectBuilder::~DomainObjectBuilder() = default;
+DomainProcedureBuilder::~DomainProcedureBuilder() = default;
 
-void DomainObjectBuilder::Iterate(const sequencergui::InstructionItem* instruction,
+void DomainProcedureBuilder::Iterate(const sequencergui::InstructionItem* instruction,
                                   instruction_t* parent)
 {
   for (auto& instruction : instruction->GetInstructions())
@@ -84,7 +84,7 @@ void DomainObjectBuilder::Iterate(const sequencergui::InstructionItem* instructi
   }
 }
 
-void DomainObjectBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
+void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
                                                      procedure_t* procedure)
 {
   if (!procedure->GetInstructions().empty())
@@ -104,7 +104,7 @@ void DomainObjectBuilder::PopulateDomainInstructions(const InstructionContainerI
   }
 }
 
-void DomainObjectBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace,
+void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace,
                                                   procedure_t* procedure)
 {
   if (!procedure->GetWorkspace()->VariableNames().empty())
@@ -130,7 +130,7 @@ void DomainObjectBuilder::PopulateDomainWorkspace(const WorkspaceItem* workspace
   }
 }
 
-std::unique_ptr<procedure_t> DomainObjectBuilder::CreateProcedure(
+std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
     const ProcedureItem* procedure_item)
 {
   if (!procedure_item)
@@ -150,7 +150,7 @@ std::unique_ptr<procedure_t> DomainObjectBuilder::CreateProcedure(
 //! FIXME confusing logic: BuildProcedure .vs. CreateProcedure.
 //! BuildProcedure ownership is kept, CreateProcedure ownership
 //! is passed outside, but methods FindInstructionIdentifier stop working
-void DomainObjectBuilder::BuildProcedure(const ProcedureItem* procedure_item)
+void DomainProcedureBuilder::BuildProcedure(const ProcedureItem* procedure_item)
 {
   m_procedure_item = procedure_item;
   m_instruction_to_id.clear();
@@ -159,12 +159,12 @@ void DomainObjectBuilder::BuildProcedure(const ProcedureItem* procedure_item)
   m_procedure = CreateProcedure(procedure_item);
 }
 
-procedure_t* DomainObjectBuilder::GetProcedure() const
+procedure_t* DomainProcedureBuilder::GetProcedure() const
 {
   return m_procedure.get();
 }
 
-std::string DomainObjectBuilder::FindInstructionIdentifier(const instruction_t* instruction) const
+std::string DomainProcedureBuilder::FindInstructionIdentifier(const instruction_t* instruction) const
 {
   if (!m_procedure_item || !GetProcedure())
   {
@@ -175,7 +175,7 @@ std::string DomainObjectBuilder::FindInstructionIdentifier(const instruction_t* 
   return it == m_instruction_to_id.end() ? std::string() : it->second;
 }
 
-std::string DomainObjectBuilder::FindVariableItemIdentifier(const variable_t* variable) const
+std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t* variable) const
 {
   if (!m_procedure_item || !GetProcedure())
   {
@@ -186,7 +186,7 @@ std::string DomainObjectBuilder::FindVariableItemIdentifier(const variable_t* va
   return it == m_variable_to_id.end() ? std::string() : it->second;
 }
 
-std::string DomainObjectBuilder::FindVariableItemIdentifier(const std::string& variable_name) const
+std::string DomainProcedureBuilder::FindVariableItemIdentifier(const std::string& variable_name) const
 {
   if (!m_procedure_item || !GetProcedure())
   {

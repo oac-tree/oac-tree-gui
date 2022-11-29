@@ -63,7 +63,7 @@ void JobContext::onPrepareJobRequest()
   }
 
   // building domain procedure
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   m_domain_procedure = builder.CreateProcedure(m_job_item->GetProcedure());
 
   // to perform all necessary internal clones

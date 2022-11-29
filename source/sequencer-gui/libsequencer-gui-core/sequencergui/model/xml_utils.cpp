@@ -47,7 +47,7 @@ std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 
 std::string ExportToXMLString(const ProcedureItem *procedure_item)
 {
-  DomainObjectBuilder builder;
+  DomainProcedureBuilder builder;
   auto domain_procedure = builder.CreateProcedure(procedure_item);
   return GetXMLString(*domain_procedure);
 }
