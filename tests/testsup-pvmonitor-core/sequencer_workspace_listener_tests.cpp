@@ -32,7 +32,7 @@
 
 using namespace suppvmonitor;
 
-//! Tests for InstructionViewItemMap class.
+//! Tests for SequencerWorkspaceListener class.
 
 class SequencerWorkspaceListenerTests : public ::testing::Test
 {

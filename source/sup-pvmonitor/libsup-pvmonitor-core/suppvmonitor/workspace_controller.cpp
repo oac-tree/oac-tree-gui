@@ -19,6 +19,10 @@
 
 #include "suppvmonitor/workspace_controller.h"
 
+#include <mvvm/model/model_utils.h>
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/domain_workspace_builder.h>
+#include <sequencergui/model/workspace_item.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
@@ -39,17 +43,32 @@ WorkspaceController::~WorkspaceController() = default;
 
 void WorkspaceController::OnSetupWorkspaceRequest()
 {
+  if (!GetWorkspaceItem())
+  {
+    throw sequencergui::LogicErrorException("No WorkspaceItem");
+  }
+
   qDebug() << "OnSetupWorkspaceRequest";
   m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
+  m_workspace_builder = std::make_unique<sequencergui::DomainWorkspaceBuilder>();
+  m_workspace_builder->PopulateDomainWorkspace(GetWorkspaceItem(), m_workspace.get());
+
   m_workspace_listener->StartListening(m_workspace.get());
+
+  m_workspace->Setup();
 }
 
 void WorkspaceController::ProcessVariable() {}
 
-sup::sequencer::Workspace *WorkspaceController::GetWorkspace() const
+sup::sequencer::Workspace* WorkspaceController::GetWorkspace() const
 {
   return m_workspace.get();
+}
+
+sequencergui::WorkspaceItem* WorkspaceController::GetWorkspaceItem()
+{
+  return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
 }
 
 }  // namespace suppvmonitor

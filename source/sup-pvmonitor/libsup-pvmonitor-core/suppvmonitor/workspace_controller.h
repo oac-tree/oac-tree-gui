@@ -31,11 +31,19 @@ class Workspace;
 }
 }  // namespace sup
 
+namespace sequencergui
+{
+class WorkspaceItem;
+class DomainWorkspaceBuilder;
+}
+
 namespace suppvmonitor
 {
 
 class MonitorModel;
 class SequencerWorkspaceListener;
+
+//!
 
 class WorkspaceController : public QObject
 {
@@ -52,7 +60,10 @@ public:
   sup::sequencer::Workspace* GetWorkspace() const;
 
 private:
+  sequencergui::WorkspaceItem* GetWorkspaceItem();
+
   std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
+  std::unique_ptr<sequencergui::DomainWorkspaceBuilder> m_workspace_builder;
   std::unique_ptr<sup::sequencer::Workspace> m_workspace;
   MonitorModel* m_model{nullptr};
 };
