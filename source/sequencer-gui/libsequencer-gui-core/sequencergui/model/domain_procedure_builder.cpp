@@ -91,6 +91,8 @@ void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContain
     throw std::runtime_error("Error in DomainObjectBuilder non-empty domain.");
   }
 
+  m_instruction_to_id.clear();
+
   for (const auto instruction_item : container->GetInstructions())
   {
     auto domain_instruction = ProcessInstruction(instruction_item, procedure);
@@ -110,6 +112,9 @@ void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* worksp
   {
     throw std::runtime_error("Error in DomainObjectBuilder non-empty domain workspace.");
   }
+
+  m_variable_to_id.clear();
+  m_variablename_to_id.clear();
 
   for (const auto variable_item : workspace->GetVariables())
   {
@@ -132,14 +137,9 @@ void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* worksp
 std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
     const ProcedureItem* procedure_item)
 {
-  if (!procedure_item)
-  {
-    throw RuntimeException("Procedure is not initialised");
-  }
-
+  DomainProcedureBuilder builder;
   auto result = std::make_unique<procedure_t>();
-  PopulateProcedure(procedure_item, result.get());
-
+  builder.PopulateProcedure(procedure_item, result.get());
   return result;
 }
 
@@ -147,14 +147,14 @@ std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
 //! FIXME confusing logic: BuildProcedure .vs. CreateProcedure.
 //! BuildProcedure ownership is kept, CreateProcedure ownership
 //! is passed outside, but methods FindInstructionIdentifier stop working
-void DomainProcedureBuilder::BuildProcedure(const ProcedureItem* procedure_item)
-{
-  m_procedure_item = procedure_item;
-  m_instruction_to_id.clear();
-  m_variable_to_id.clear();
-  m_variablename_to_id.clear();
-  m_procedure = CreateProcedure(procedure_item);
-}
+// void DomainProcedureBuilder::BuildProcedure(const ProcedureItem* procedure_item)
+//{
+//   m_procedure_item = procedure_item;
+//   m_instruction_to_id.clear();
+//   m_variable_to_id.clear();
+//   m_variablename_to_id.clear();
+//   m_procedure = CreateProcedure(procedure_item);
+// }
 
 void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_item,
                                                procedure_t* procedure)
@@ -168,18 +168,18 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_it
   PopulateDomainWorkspace(procedure_item->GetWorkspace(), procedure);
 }
 
-procedure_t* DomainProcedureBuilder::GetProcedure() const
-{
-  return m_procedure.get();
-}
+//procedure_t* DomainProcedureBuilder::GetProcedure() const
+//{
+//  return m_procedure.get();
+//}
 
 std::string DomainProcedureBuilder::FindInstructionIdentifier(
     const instruction_t* instruction) const
 {
-  if (!m_procedure_item || !GetProcedure())
-  {
-    throw std::runtime_error("Error in FindInstructionItem:");
-  }
+//  if (!m_procedure_item || !GetProcedure())
+//  {
+//    throw std::runtime_error("Error in FindInstructionItem:");
+//  }
 
   auto it = m_instruction_to_id.find(instruction);
   return it == m_instruction_to_id.end() ? std::string() : it->second;
@@ -187,10 +187,10 @@ std::string DomainProcedureBuilder::FindInstructionIdentifier(
 
 std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t* variable) const
 {
-  if (!m_procedure_item || !GetProcedure())
-  {
-    throw std::runtime_error("Error in FindVariableItemIdentifier:");
-  }
+//  if (!m_procedure_item || !GetProcedure())
+//  {
+//    throw std::runtime_error("Error in FindVariableItemIdentifier:");
+//  }
 
   auto it = m_variable_to_id.find(variable);
   return it == m_variable_to_id.end() ? std::string() : it->second;
@@ -199,10 +199,10 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
 std::string DomainProcedureBuilder::FindVariableItemIdentifier(
     const std::string& variable_name) const
 {
-  if (!m_procedure_item || !GetProcedure())
-  {
-    throw std::runtime_error("Error in FindVariableItemIdentifier:");
-  }
+//  if (!m_procedure_item || !GetProcedure())
+//  {
+//    throw std::runtime_error("Error in FindVariableItemIdentifier:");
+//  }
 
   auto it = m_variablename_to_id.find(variable_name);
   return it == m_variablename_to_id.end() ? std::string() : it->second;

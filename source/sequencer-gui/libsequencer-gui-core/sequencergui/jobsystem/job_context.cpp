@@ -37,17 +37,6 @@
 #include <QDebug>
 #include <iostream>
 
-namespace
-{
-std::unique_ptr<procedure_t> CreateProcedure(const sequencergui::ProcedureItem *procedure_item)
-{
-  auto result = std::make_unique<procedure_t>();
-  sequencergui::DomainProcedureBuilder builder;
-  builder.PopulateProcedure(procedure_item, result.get());
-  return result;
-}
-}  // namespace
-
 namespace sequencergui
 {
 
@@ -74,7 +63,7 @@ void JobContext::onPrepareJobRequest()
   }
 
   // building domain procedure
-  m_domain_procedure = CreateProcedure(m_job_item->GetProcedure());
+  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
 
   // to perform all necessary internal clones
   if (!m_domain_procedure->Setup())

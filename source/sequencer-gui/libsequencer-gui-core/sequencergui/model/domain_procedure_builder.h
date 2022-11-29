@@ -39,14 +39,15 @@ class WorkspaceItem;
 class DomainProcedureBuilder
 {
 public:
-  [[nodiscard]] std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem* procedure_item);
+  static std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem* procedure_item);
+
   ~DomainProcedureBuilder();
 
-  void BuildProcedure(const ProcedureItem* procedure_item);
+//  void BuildProcedure(const ProcedureItem* procedure_item);
 
   void PopulateProcedure(const ProcedureItem* procedure_item, procedure_t* procedure);
 
-  procedure_t* GetProcedure() const;
+//  procedure_t* GetProcedure() const;
 
   std::string FindInstructionIdentifier(const instruction_t* instruction) const;
 
@@ -59,8 +60,8 @@ private:
                                   procedure_t* procedure);
   void PopulateDomainWorkspace(const WorkspaceItem* workspace, procedure_t* procedure);
 
-  std::unique_ptr<procedure_t> m_procedure;        //!< domain procedure
-  const ProcedureItem* m_procedure_item{nullptr};  //!< item used to build domain procedure
+//  procedure_t* m_procedure{nullptr};        //!< domain procedure
+//  const ProcedureItem* m_procedure_item{nullptr};  //!< item used to build domain procedure
   std::map<const instruction_t*, std::string> m_instruction_to_id;
   std::map<const variable_t*, std::string> m_variable_to_id;
   std::map<std::string, std::string> m_variablename_to_id;

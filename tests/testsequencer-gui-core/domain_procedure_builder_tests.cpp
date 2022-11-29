@@ -143,13 +143,10 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
   auto sequence = container->InsertItem<SequenceItem>({"", -1});
   auto wait = sequence->InsertItem<WaitItem>({"", -1});
 
+  auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.BuildProcedure(&procedure_item);
-  auto procedure = builder.GetProcedure();
+  builder.PopulateProcedure(&procedure_item, procedure.get());
 
-  ASSERT_TRUE(procedure != nullptr);
-
-  // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
   auto domain_sequence = procedure->GetInstructions().at(0);
@@ -175,9 +172,9 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
   EXPECT_EQ(inverter->GetItem<SequenceItem>("", 0), sequence);
   auto wait = sequence->InsertItem<WaitItem>({"", -1});
 
+  auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.BuildProcedure(&procedure_item);
-  auto procedure = builder.GetProcedure();
+  builder.PopulateProcedure(&procedure_item, procedure.get());
 
   ASSERT_TRUE(procedure != nullptr);
 
@@ -210,9 +207,9 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   auto sequence = repeater->InsertItem<SequenceItem>({"", -1});
   EXPECT_EQ(repeater->GetItem<SequenceItem>("", 0), sequence);
 
+  auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.BuildProcedure(&procedure_item);
-  auto procedure = builder.GetProcedure();
+  builder.PopulateProcedure(&procedure_item, procedure.get());
 
   ASSERT_TRUE(procedure != nullptr);
 
@@ -242,10 +239,10 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
   auto var_item1 = workspace->InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
 
+  auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.BuildProcedure(&procedure_item);
+  builder.PopulateProcedure(&procedure_item, procedure.get());
 
-  auto procedure = builder.GetProcedure();
   EXPECT_EQ(procedure->VariableNames(), std::vector<std::string>({"var0", "var1"}));
   EXPECT_EQ(builder.FindVariableItemIdentifier(var_item0->GetName()), var_item0->GetIdentifier());
   EXPECT_EQ(builder.FindVariableItemIdentifier(var_item1->GetName()), var_item1->GetIdentifier());
