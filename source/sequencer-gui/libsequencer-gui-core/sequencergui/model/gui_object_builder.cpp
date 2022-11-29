@@ -44,8 +44,8 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
   }
 
   m_to_instruction_item.clear();
-  m_variable_to_id.clear();
-  m_variablename_to_id.clear();
+  m_domain_variable_to_item.clear();
+  m_variablename_to_item.clear();
 
   auto instruction_container = procedure_item->GetInstructionContainer();
   PopulateInstructionContainerItem(procedure, instruction_container, root_only);
@@ -80,14 +80,14 @@ InstructionItem *GUIObjectBuilder::FindInstructionItem(const instruction_t *inst
 
 VariableItem *GUIObjectBuilder::FindVariableItem(const variable_t *variable) const
 {
-  auto it = m_variable_to_id.find(variable);
-  return it == m_variable_to_id.end() ? nullptr : it->second;
+  auto it = m_domain_variable_to_item.find(variable);
+  return it == m_domain_variable_to_item.end() ? nullptr : it->second;
 }
 
 VariableItem *GUIObjectBuilder::FindVariableItem(const std::string &variable_name) const
 {
-  auto it = m_variablename_to_id.find(variable_name);
-  return it == m_variablename_to_id.end() ? nullptr : it->second;
+  auto it = m_variablename_to_item.find(variable_name);
+  return it == m_variablename_to_item.end() ? nullptr : it->second;
 }
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
@@ -162,14 +162,14 @@ void GUIObjectBuilder::Save(const instruction_t *instruction, InstructionItem *i
 
 void GUIObjectBuilder::Save(const variable_t *variable, VariableItem *item)
 {
-  auto it = m_variablename_to_id.find(variable->GetName());
-  if (it != m_variablename_to_id.end())
+  auto it = m_variablename_to_item.find(variable->GetName());
+  if (it != m_variablename_to_item.end())
   {
     throw std::runtime_error("Error in GUIObjectBuilder: domain variable already present");
   }
 
-  m_variable_to_id.insert({variable, item});
-  m_variablename_to_id.insert({variable->GetName(), item});
+  m_domain_variable_to_item.insert({variable, item});
+  m_variablename_to_item.insert({variable->GetName(), item});
 }
 
 }  // namespace sequencergui

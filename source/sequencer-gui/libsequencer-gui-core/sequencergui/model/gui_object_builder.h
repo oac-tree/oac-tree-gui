@@ -70,8 +70,8 @@ private:
 
   std::map<const instruction_t*, InstructionItem*> m_to_instruction_item;
 
-  std::map<const variable_t*, VariableItem*> m_variable_to_id;
-  std::map<std::string, VariableItem*> m_variablename_to_id;
+  std::map<const variable_t*, VariableItem*> m_domain_variable_to_item;
+  std::map<std::string, VariableItem*> m_variablename_to_item;
 };
 
 }  // namespace sequencergui
