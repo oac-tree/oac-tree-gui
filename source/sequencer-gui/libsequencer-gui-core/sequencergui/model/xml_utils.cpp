@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/xml_utils.h"
 
-#include <sequencergui/model/domain_object_builder.h>
+#include <sequencergui/model/domain_procedure_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/transform_from_domain.h>

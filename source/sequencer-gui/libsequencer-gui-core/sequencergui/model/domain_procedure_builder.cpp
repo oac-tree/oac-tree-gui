@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/domain_object_builder.h"
+#include "sequencergui/model/domain_procedure_builder.h"
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
