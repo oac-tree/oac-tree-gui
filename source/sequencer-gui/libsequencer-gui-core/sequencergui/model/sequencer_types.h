@@ -30,6 +30,7 @@ class Instruction;
 class Variable;
 class Runner;
 class UserInterface;
+class Workspace;
 }  // namespace sup::sequencer
 
 using procedure_t = sup::sequencer::Procedure;
@@ -37,5 +38,6 @@ using instruction_t = sup::sequencer::Instruction;
 using variable_t = sup::sequencer::Variable;
 using runner_t = sup::sequencer::Runner;
 using userinterface_t = sup::sequencer::UserInterface;
+using workspace_t = sup::sequencer::Workspace;
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_TYPES_H_
