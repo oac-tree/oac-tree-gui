@@ -20,6 +20,7 @@
 #include "sequencergui/model/anyvalue_utils.h"
 
 #include <sup/dto/anyvalue_helper.h>
+#include <sup/dto/anytype_helper.h>
 #include <sup/sequencer/variable.h>
 
 #include <sstream>
@@ -100,16 +101,29 @@ static std::map<std::string, ParseFunction> &GetParserMap()
 namespace sequencergui::DomainUtils
 {
 
-std::string GetJsonString(const anyvalue_t *value)
+//! Returns JSON string representing AnyValue.
+std::string GetAnyValueToJSONString(const anyvalue_t *value)
+{
+  return sup::dto::AnyValueToJSONString(*value);
+}
+
+//! Returns JSON string representing AnyType.
+std::string GetAnyTypeToJSONString(const anyvalue_t *value)
+{
+  return sup::dto::AnyTypeToJSONString(value->GetType());
+}
+
+//! Returns JSON string representing the values of an AnyValue.
+std::string GetValuesToJSONString(const anyvalue_t *value)
 {
   return sup::dto::ValuesToJSONString(*value);
 }
 
-std::string GetValueJsonString(const variable_t *value)
+std::string GetValuesToJSONString(const variable_t *value)
 {
   sup::dto::AnyValue anyvalue;
   value->GetValue(anyvalue);
-  return GetJsonString(&anyvalue);
+  return GetValuesToJSONString(&anyvalue);
 }
 
 bool ParseStringToScalarAnyvalue(const std::string &str, sup::dto::AnyValue &value)
@@ -124,5 +138,6 @@ bool ParseStringToScalarAnyvalue(const std::string &str, sup::dto::AnyValue &val
   auto parse_function = parser_map[type_name];
   return parse_function(value, str);
 }
+
 
 }  // namespace sequencergui::DomainUtils

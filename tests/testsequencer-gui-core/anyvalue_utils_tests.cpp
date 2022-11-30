@@ -49,5 +49,5 @@ TEST_F(AnyValueUtilsTest, GetJsonString)
 
   EXPECT_TRUE(variable->GetValue(any_value));
 
-  EXPECT_EQ(DomainUtils::GetJsonString(&any_value), "42");
+  EXPECT_EQ(DomainUtils::GetValuesToJSONString(&any_value), "42");
 }

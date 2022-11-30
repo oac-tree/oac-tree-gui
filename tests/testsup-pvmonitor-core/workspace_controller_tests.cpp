@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/model/anyvalue_utils.h>
 #include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>

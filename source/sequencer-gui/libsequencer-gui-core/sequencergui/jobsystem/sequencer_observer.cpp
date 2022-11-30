@@ -48,21 +48,21 @@ void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instru
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,
                                             const sup::dto::AnyValue &value)
 {
-  auto value_string = DomainUtils::GetJsonString(&value);
+  auto value_string = DomainUtils::GetValuesToJSONString(&value);
   m_procedure_runner->onVariableChange(name, value_string);
 }
 
 bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
-  auto value_string = DomainUtils::GetJsonString(&value);
+  auto value_string = DomainUtils::GetValuesToJSONString(&value);
   m_procedure_runner->onLogMessage(description + value_string, JobMessageType::kHighlight);
   return true;
 }
 
 bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
 {
-  auto value_string = DomainUtils::GetJsonString(&value);
+  auto value_string = DomainUtils::GetValuesToJSONString(&value);
   auto user_input = m_procedure_runner->onUserInput(value_string, description);
   if (!DomainUtils::ParseStringToScalarAnyvalue(user_input, value))
   {

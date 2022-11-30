@@ -83,7 +83,7 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
   {
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
-  SetJsonValue(DomainUtils::GetValueJsonString(variable));
+  SetJsonValue(DomainUtils::GetValuesToJSONString(variable));
 }
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -247,7 +247,7 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
-  SetJsonValue(DomainUtils::GetValueJsonString(variable));
+  SetJsonValue(DomainUtils::GetValuesToJSONString(variable));
 }
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -320,7 +320,7 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
   }
   else
   {
-    SetJsonValue(DomainUtils::GetValueJsonString(variable));
+    SetJsonValue(DomainUtils::GetValuesToJSONString(variable));
   }
 }
 

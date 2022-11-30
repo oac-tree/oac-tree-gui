@@ -31,9 +31,13 @@
 namespace sequencergui::DomainUtils
 {
 
-std::string GetJsonString(const anyvalue_t* value);
+std::string GetAnyValueToJSONString(const anyvalue_t* value);
 
-std::string GetValueJsonString(const variable_t* value);
+std::string GetAnyTypeToJSONString(const anyvalue_t* value);
+
+std::string GetValuesToJSONString(const anyvalue_t* value);
+
+std::string GetValuesToJSONString(const variable_t* value);
 
 bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
 
