@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/shall_not_be_named_value_utils.h"
+#include "sequencergui/model/anyvalue_utils.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -29,14 +29,14 @@ using namespace sequencergui;
 
 //! Testing methods from ShallNotBeNamedValueUtils
 
-class ShallNotBeNamedValueUtilsTest : public ::testing::Test
+class AnyValueUtilsTest : public ::testing::Test
 {
 public:
 };
 
 //! Importing xml Procedure containing a single instruction.
 
-TEST_F(ShallNotBeNamedValueUtilsTest, GetJsonString)
+TEST_F(AnyValueUtilsTest, GetJsonString)
 {
   auto variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
   variable->AddAttribute(domainconstants::kTypeAttribute, R"({"type":"uint32"})");

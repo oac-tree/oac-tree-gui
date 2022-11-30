@@ -3,6 +3,8 @@ target_sources(${library_name} PRIVATE
   aggregate_examples.h
   aggregate_factory.cpp
   aggregate_factory.h
+  anyvalue_utils.cpp
+  anyvalue_utils.h
   application_models.cpp
   application_models.h
   domain_procedure_builder.cpp
@@ -32,8 +34,6 @@ target_sources(${library_name} PRIVATE
   sequencer_model.h
   sequencer_utils.cpp
   sequencer_utils.h
-  shall_not_be_named_value_utils.cpp
-  shall_not_be_named_value_utils.h
   standard_instruction_items.cpp
   standard_instruction_items.h
   standard_variable_items.cpp
