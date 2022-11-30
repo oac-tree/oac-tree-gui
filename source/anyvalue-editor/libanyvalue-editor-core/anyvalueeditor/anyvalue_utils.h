@@ -57,8 +57,6 @@ bool IsScalarTypeName(const std::string& name);
 //! Returns true if given name corresponds to a struct.
 bool IsStructTypeName(const std::string& name);
 
-sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename);
-
 }  // namespace anyvalueeditor
 
 #endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_UTILS_H_

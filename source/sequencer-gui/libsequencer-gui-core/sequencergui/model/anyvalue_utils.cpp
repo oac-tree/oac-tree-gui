@@ -22,6 +22,7 @@
 #include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/anytype_helper.h>
 #include <sup/sequencer/variable.h>
+#include <sup/dto/json_value_parser.h>
 
 #include <sstream>
 #include <stdexcept>
@@ -137,6 +138,13 @@ bool ParseStringToScalarAnyvalue(const std::string &str, sup::dto::AnyValue &val
   }
   auto parse_function = parser_map[type_name];
   return parse_function(value, str);
+}
+
+sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename)
+{
+  sup::dto::JSONAnyValueParser parser;
+  parser.ParseFile(filename);
+  return parser.MoveAnyValue();
 }
 
 

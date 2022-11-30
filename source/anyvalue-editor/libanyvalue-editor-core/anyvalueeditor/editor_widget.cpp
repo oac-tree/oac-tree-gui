@@ -23,6 +23,7 @@
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/anyvalue_item.h>
 #include <anyvalueeditor/anyvalue_utils.h>
+#include <sequencergui/model/anyvalue_utils.h>
 #include <anyvalueeditor/anyvalue_viewmodel.h>
 #include <anyvalueeditor/conversion_utils.h>
 #include <anyvalueeditor/highlighter/qsourcehighliter.h>
@@ -93,7 +94,7 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
   m_component_provider->SetApplicationModel(nullptr);
 
-  auto anyvalue = AnyValueFromJSONFile(file_name.toStdString());
+  auto anyvalue = sequencergui::DomainUtils::AnyValueFromJSONFile(file_name.toStdString());
   auto item =
       m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
   item->SetDisplayName("AnyValue");

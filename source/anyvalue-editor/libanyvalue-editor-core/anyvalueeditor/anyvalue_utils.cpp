@@ -24,7 +24,6 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/basic_scalar_types.h>
-#include <sup/dto/json_value_parser.h>
 
 #include <algorithm>
 #include <fstream>
@@ -163,13 +162,6 @@ bool IsScalarTypeName(const std::string& name)
 bool IsStructTypeName(const std::string& name)
 {
   return name == kStructTypeName;
-}
-
-sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename)
-{
-  sup::dto::JSONAnyValueParser parser;
-  parser.ParseFile(filename);
-  return parser.MoveAnyValue();
 }
 
 }  // namespace anyvalueeditor
