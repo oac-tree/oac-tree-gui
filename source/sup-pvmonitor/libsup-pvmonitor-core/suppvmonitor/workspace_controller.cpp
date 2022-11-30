@@ -38,7 +38,7 @@ WorkspaceController::WorkspaceController(MonitorModel* model, QObject* parent)
     , m_model(model)
 {
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
-          &WorkspaceController::OnVariableUpdated);
+          &WorkspaceController::OnVariableUpdated, Qt::QueuedConnection);
 }
 
 WorkspaceController::~WorkspaceController() = default;
