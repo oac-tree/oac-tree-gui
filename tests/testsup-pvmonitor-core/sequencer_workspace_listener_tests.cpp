@@ -21,8 +21,8 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/anyvalue_utils.h>
 #include <sequencergui/model/domain_utils.h>
-#include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/workspace_event.h>
@@ -43,7 +43,8 @@ public:
     auto local_variable = sequencergui::DomainUtils::CreateDomainVariable(
         sequencergui::domainconstants::kLocalVariableType);
     local_variable->SetName(name);
-    local_variable->AddAttribute("type", sup::dto::AnyTypeToJSONString(initial_value.GetType()));
+    local_variable->AddAttribute("type",
+                                 sequencergui::DomainUtils::GetAnyTypeToJSONString(&initial_value));
     local_variable->Setup();
     if (!local_variable->SetValue(initial_value))
     {
@@ -175,5 +176,3 @@ TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
   EXPECT_EQ(spy_upate.count(), 1);
   EXPECT_EQ(listener.GetEventCount(), 1);
 }
-
-

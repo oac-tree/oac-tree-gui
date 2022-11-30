@@ -19,10 +19,10 @@
 
 #include "sequencergui/model/anyvalue_utils.h"
 
-#include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/anytype_helper.h>
-#include <sup/sequencer/variable.h>
+#include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/json_value_parser.h>
+#include <sup/sequencer/variable.h>
 
 #include <sstream>
 #include <stdexcept>
@@ -103,9 +103,9 @@ namespace sequencergui::DomainUtils
 {
 
 //! Returns JSON string representing AnyValue.
-std::string GetAnyValueToJSONString(const anyvalue_t *value)
+std::string GetAnyValueToJSONString(const anyvalue_t *value, bool is_pretty)
 {
-  return sup::dto::AnyValueToJSONString(*value);
+  return sup::dto::AnyValueToJSONString(*value, is_pretty);
 }
 
 //! Returns JSON string representing AnyType.
@@ -140,12 +140,11 @@ bool ParseStringToScalarAnyvalue(const std::string &str, sup::dto::AnyValue &val
   return parse_function(value, str);
 }
 
-sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename)
+sup::dto::AnyValue AnyValueFromJSONFile(const std::string &filename)
 {
   sup::dto::JSONAnyValueParser parser;
   parser.ParseFile(filename);
   return parser.MoveAnyValue();
 }
-
 
 }  // namespace sequencergui::DomainUtils

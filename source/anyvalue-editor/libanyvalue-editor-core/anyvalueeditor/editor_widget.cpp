@@ -22,8 +22,6 @@
 #include <anyvalueeditor/anyvalue_editor_actions.h>
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/conversion_utils.h>
-#include <sequencergui/model/anyvalue_utils.h>
 #include <anyvalueeditor/anyvalue_viewmodel.h>
 #include <anyvalueeditor/conversion_utils.h>
 #include <anyvalueeditor/highlighter/qsourcehighliter.h>
@@ -31,8 +29,8 @@
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
+#include <sequencergui/model/anyvalue_utils.h>
 #include <sup/dto/anyvalue.h>
-#include <sup/dto/anyvalue_helper.h>
 
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -102,7 +100,7 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
   m_component_provider->SetApplicationModel(m_model.get());
 
   // setting the editor
-  auto str = sup::dto::AnyValueToJSONString(anyvalue, true);
+  auto str = sequencergui::DomainUtils::GetAnyValueToJSONString(&anyvalue, true);
   m_text_edit->setText(QString::fromStdString(str));
 
   m_all_items_tree_view->expandAll();
@@ -155,7 +153,7 @@ void EditorWidget::UpdateJson(AnyValueItem *item)
   try
   {
     auto any_value = CreateAnyValue(*item);
-    auto str = sup::dto::AnyValueToJSONString(any_value, true);
+    auto str = sequencergui::DomainUtils::GetAnyValueToJSONString(&any_value, true);
     m_text_edit->setText(QString::fromStdString(str));
   }
   catch (const std::exception &ex)

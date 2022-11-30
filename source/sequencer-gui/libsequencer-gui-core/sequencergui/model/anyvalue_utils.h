@@ -31,7 +31,7 @@
 namespace sequencergui::DomainUtils
 {
 
-std::string GetAnyValueToJSONString(const anyvalue_t* value);
+std::string GetAnyValueToJSONString(const anyvalue_t* value, bool is_pretty = false);
 
 std::string GetAnyTypeToJSONString(const anyvalue_t* value);
 
