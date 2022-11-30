@@ -21,7 +21,7 @@
 
 #include <anyvalueeditor/add_field_dialog.h>
 #include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/anyvalue_utils.h>
+#include <anyvalueeditor/conversion_utils.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/widget_utils.h>
 

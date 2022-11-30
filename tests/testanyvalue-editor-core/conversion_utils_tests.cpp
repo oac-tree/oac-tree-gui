@@ -17,19 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_utils.h"
+#include "anyvalueeditor/conversion_utils.h"
 
 #include <gtest/gtest.h>
 #include <sup/dto/anytype.h>
 
 using namespace anyvalueeditor;
 
-class AnyValueItemUtilsTest : public ::testing::Test
+class ConversionUtilsTest : public ::testing::Test
 {
 public:
 };
 
-TEST_F(AnyValueItemUtilsTest, GetTypeCode)
+TEST_F(ConversionUtilsTest, GetTypeCode)
 {
   using sup::dto::TypeCode;
 
@@ -56,7 +56,7 @@ TEST_F(AnyValueItemUtilsTest, GetTypeCode)
 
 //! Checking function to get variant_t from sup::dto type names.
 
-TEST_F(AnyValueItemUtilsTest, GetVariantForAnyTypeName)
+TEST_F(ConversionUtilsTest, GetVariantForAnyTypeName)
 {
   EXPECT_TRUE(
       std::holds_alternative<bool>(GetVariantForAnyValueTypeName(sup::dto::kBooleanTypeName)));
@@ -88,7 +88,7 @@ TEST_F(AnyValueItemUtilsTest, GetVariantForAnyTypeName)
       GetVariantForAnyValueTypeName(sup::dto::kStringTypeName)));
 }
 
-TEST_F(AnyValueItemUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
+TEST_F(ConversionUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
 {
   EXPECT_EQ(std::get<bool>(GetVariantForAnyValueTypeName(sup::dto::kBooleanTypeName)), false);
 
@@ -113,7 +113,7 @@ TEST_F(AnyValueItemUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
 
 //! Testing IsScalarTypeName utility function.
 
-TEST_F(AnyValueItemUtilsTest, IsScalarTypeName)
+TEST_F(ConversionUtilsTest, IsScalarTypeName)
 {
   EXPECT_FALSE(IsScalarTypeName(std::string("")));
 
@@ -136,7 +136,7 @@ TEST_F(AnyValueItemUtilsTest, IsScalarTypeName)
 
 //! Testing IsStructTypeName utility function.
 
-TEST_F(AnyValueItemUtilsTest, IsStructTypeName)
+TEST_F(ConversionUtilsTest, IsStructTypeName)
 {
   EXPECT_FALSE(IsStructTypeName(std::string("")));
 

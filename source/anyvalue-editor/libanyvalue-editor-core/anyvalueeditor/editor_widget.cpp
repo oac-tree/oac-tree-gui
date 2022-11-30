@@ -22,7 +22,7 @@
 #include <anyvalueeditor/anyvalue_editor_actions.h>
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/anyvalue_utils.h>
+#include <anyvalueeditor/conversion_utils.h>
 #include <sequencergui/model/anyvalue_utils.h>
 #include <anyvalueeditor/anyvalue_viewmodel.h>
 #include <anyvalueeditor/conversion_utils.h>

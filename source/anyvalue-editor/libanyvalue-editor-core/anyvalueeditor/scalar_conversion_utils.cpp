@@ -20,7 +20,7 @@
 #include "anyvalueeditor/scalar_conversion_utils.h"
 
 #include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/anyvalue_utils.h>
+#include <anyvalueeditor/conversion_utils.h>
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>

@@ -20,7 +20,7 @@
 #include "anyvalueeditor/anyvalue_editor_toolbar.h"
 
 #include <anyvalueeditor/anyvalue_editor_actions.h>
-#include <anyvalueeditor/anyvalue_utils.h>
+#include <anyvalueeditor/conversion_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMenu>

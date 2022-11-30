@@ -21,13 +21,44 @@
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
 
 #include <anyvalueeditor/dto_types_fwd.h>
+#include <mvvm/core/variant.h>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace anyvalueeditor
 {
 
 class AnyValueItem;
+
+struct FieldContext
+{
+  std::string name;     //! Name of the field
+  std::string type;     //! Major type (scalar, array, struct)
+  std::string subtype;  //! Scalar type
+};
+
+const std::string kStructTypeName = "struct";
+const std::string kArrayTypeName = "array";
+const std::string kScalarTypeName = "scalar";
+
+std::vector<std::string> GetMainTypeNames();
+
+std::vector<std::string> GetScalarTypeNames();
+
+//! Returns any_value type code from the name.
+sup::dto::TypeCode GetTypeCode(const std::string& name);
+
+//! Returns variant carrying type corresponding to AnyValue type name. The value of the variant will
+//! be default initialized. See implementation for more explanations.
+variant_t GetVariantForAnyValueTypeName(const std::string& type_name);
+
+//! Returns true if given name corresponds to a scalar.
+bool IsScalarTypeName(const std::string& name);
+
+//! Returns true if given name corresponds to a struct.
+bool IsStructTypeName(const std::string& name);
 
 //! Creates AnyValue from given item.
 sup::dto::AnyValue CreateAnyValue(const AnyValueItem& item);

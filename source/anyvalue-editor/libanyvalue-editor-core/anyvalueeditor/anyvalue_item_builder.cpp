@@ -20,7 +20,7 @@
 #include "anyvalueeditor/anyvalue_item_builder.h"
 
 #include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/anyvalue_utils.h>
+#include <anyvalueeditor/conversion_utils.h>
 #include <anyvalueeditor/scalar_conversion_utils.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/sessionitem.h>
