@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
 #define SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_
 
-//! @file sequenceritemincludes.h
+//! @file sequencer_item_includes.h
 //! Includes for all sequencer related items.
 
 #include <sequencergui/model/instruction_container_item.h>
