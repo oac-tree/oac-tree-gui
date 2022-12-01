@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
-#define SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
+#ifndef SEQUENCERGUI_DOMAIN_ANYVALUE_UTILS_H_
+#define SEQUENCERGUI_DOMAIN_ANYVALUE_UTILS_H_
 
-//! @file shallnotbenamedvalueutils.h
+//! @file anyvalue_utils.h
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
 
+#include <sequencergui/domain/dto_types_fwd.h>
 #include <sequencergui/model/sequencer_types.h>
 
-#include <sequencergui/model/dto_types_fwd.h>
 #include <string>
 
 namespace sequencergui::DomainUtils
@@ -45,4 +45,4 @@ sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename);
 
 }  // namespace sequencergui::DomainUtils
 
-#endif  // SEQUENCERGUI_MODEL_SHALL_NOT_BE_NAMED_VALUE_UTILS_H_
+#endif  // SEQUENCERGUI_DOMAIN_ANYVALUE_UTILS_H_

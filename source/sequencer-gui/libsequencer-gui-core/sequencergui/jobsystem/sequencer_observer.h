@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_
 #define SEQUENCERGUI_JOBSYSTEM_SEQUENCER_OBSERVER_H_
 
-#include <sequencergui/model/dto_types_fwd.h>
+#include <sequencergui/domain/dto_types_fwd.h>
 #include <sup/sequencer/user_interface.h>
 
 namespace sequencergui

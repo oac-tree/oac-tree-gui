@@ -20,12 +20,12 @@
 #include "sequencergui/model/xml_utils.h"
 
 #include <sequencergui/model/domain_procedure_builder.h>
+#include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/transform_from_domain.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/sequence_parser.h>
-#include <sequencergui/model/domain_workspace_builder.h>
 
 #include <iostream>
 #include <stdexcept>

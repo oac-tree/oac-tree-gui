@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_ANYVALUE_TYPE_H_
-#define SEQUENCERGUI_MODEL_ANYVALUE_TYPE_H_
+#ifndef SEQUENCERGUI_DOMAIN_ANYVALUE_TYPE_H_
+#define SEQUENCERGUI_DOMAIN_ANYVALUE_TYPE_H_
 
 //! @file dto_types_fwd.h
 //! Forward declaration of AnyValue related types.
@@ -32,4 +32,4 @@ enum class TypeCode;
 
 using anyvalue_t = sup::dto::AnyValue;
 
-#endif  // SEQUENCERGUI_MODEL_ANYVALUE_TYPE_H_
+#endif  // SEQUENCERGUI_DOMAIN_ANYVALUE_TYPE_H_

@@ -9,7 +9,6 @@ target_sources(${library_name} PRIVATE
   domain_procedure_builder.h
   domain_workspace_builder.cpp
   domain_workspace_builder.h
-  dto_types_fwd.h
   gui_object_builder.cpp
   gui_object_builder.h
   instruction_container_item.cpp
