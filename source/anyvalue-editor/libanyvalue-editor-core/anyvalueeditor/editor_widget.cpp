@@ -29,7 +29,7 @@
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
-#include <sequencergui/model/anyvalue_utils.h>
+#include <sequencergui/domain/anyvalue_utils.h>
 #include <sup/dto/anyvalue.h>
 
 #include <QHBoxLayout>

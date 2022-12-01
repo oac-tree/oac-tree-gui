@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/anyvalue_utils.h"
+#include "sequencergui/domain/anyvalue_utils.h"
 
 #include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue_helper.h>

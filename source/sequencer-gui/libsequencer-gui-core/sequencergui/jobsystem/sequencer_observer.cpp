@@ -20,7 +20,7 @@
 #include "sequencergui/jobsystem/sequencer_observer.h"
 
 #include <sequencergui/jobsystem/procedure_runner.h>
-#include <sequencergui/model/anyvalue_utils.h>
+#include <sequencergui/domain/anyvalue_utils.h>
 #include <sup/sequencer/instruction.h>
 
 namespace

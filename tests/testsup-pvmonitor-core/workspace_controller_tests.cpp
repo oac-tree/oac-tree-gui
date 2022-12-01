@@ -20,7 +20,7 @@
 #include "suppvmonitor/workspace_controller.h"
 
 #include <gtest/gtest.h>
-#include <sequencergui/model/anyvalue_utils.h>
+#include <sequencergui/domain/anyvalue_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sup/dto/anyvalue.h>

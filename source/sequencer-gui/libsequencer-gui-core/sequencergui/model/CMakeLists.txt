@@ -3,8 +3,6 @@ target_sources(${library_name} PRIVATE
   aggregate_examples.h
   aggregate_factory.cpp
   aggregate_factory.h
-  anyvalue_utils.cpp
-  anyvalue_utils.h
   application_models.cpp
   application_models.h
   domain_procedure_builder.cpp
