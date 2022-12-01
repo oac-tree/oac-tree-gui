@@ -26,7 +26,7 @@
 //! in the code.
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types.h>
 
 #include <map>
 #include <memory>

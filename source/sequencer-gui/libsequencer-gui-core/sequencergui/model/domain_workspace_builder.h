@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_DOMAIN_WORKSPACE_BUILDER_H_
 #define SEQUENCERGUI_MODEL_DOMAIN_WORKSPACE_BUILDER_H_
 
-#include <sequencergui/model/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types.h>
 
 #include <map>
 #include <string>

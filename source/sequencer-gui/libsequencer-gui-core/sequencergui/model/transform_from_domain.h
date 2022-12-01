@@ -20,10 +20,10 @@
 #ifndef SEQUENCERGUI_MODEL_TRANSFORM_FROM_DOMAIN_H_
 #define SEQUENCERGUI_MODEL_TRANSFORM_FROM_DOMAIN_H_
 
-//! @file transformfromdomain.h
+//! @file transform_from_domain.h
 //! Collection of utility functions to convert sup::sequencer::Procedure into SessionModel.
 
-#include <sequencergui/model/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types.h>
 
 #include <memory>
 #include <string>

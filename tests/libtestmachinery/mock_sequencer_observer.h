@@ -21,7 +21,7 @@
 #define MOCKSEQUENCEROBSERVER_H
 
 #include <sup/sequencer/user_interface.h>
-#include <sequencergui/model/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types.h>
 
 namespace ccs::types
 {

@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types.h>
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>

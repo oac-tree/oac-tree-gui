@@ -7,5 +7,6 @@ target_sources(${library_name} PRIVATE
   domain_utils.cpp
   domain_utils.h
   dto_types_fwd.h
+  sequencer_types.h
 )
 

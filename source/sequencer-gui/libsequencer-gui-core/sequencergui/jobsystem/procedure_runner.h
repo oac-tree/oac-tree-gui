@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
 #define SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
 
+#include <sequencergui/domain/sequencer_types.h>
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_controller.h>
-#include <sequencergui/model/sequencer_types.h>
 
 #include <QObject>
 #include <memory>

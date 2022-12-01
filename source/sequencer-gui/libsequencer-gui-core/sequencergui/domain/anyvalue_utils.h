@@ -24,7 +24,7 @@
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
 
 #include <sequencergui/domain/dto_types_fwd.h>
-#include <sequencergui/model/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types.h>
 
 #include <string>
 
