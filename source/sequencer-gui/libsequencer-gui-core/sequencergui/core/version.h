@@ -38,21 +38,21 @@ inline int ProjectVersionMajor()
 //! Returns minor project version.
 inline int ProjectVersionMinor()
 {
-    const int project_version_minor = 3;
+    const int project_version_minor = 4;
     return project_version_minor;
 }
 
 //! Returns patch project version.
 inline int ProjectVersionPatch()
 {
-    const int project_version_path = 99;
+    const int project_version_path = 0;
     return project_version_path;
 }
 
 //! Returns project version string
 inline std::string ProjectVersion()
 {
-    const std::string project_version = "0.3.99";
+    const std::string project_version = "0.4.0";
     return project_version;
 }
 
