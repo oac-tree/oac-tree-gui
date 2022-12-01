@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sup/sequencer/instruction.h>
-#include <sup/sequencer/procedure.h>
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include <gtest/gtest.h>
 #include <mvvm/core/exceptions.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/transform_from_domain.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
 
 using namespace sequencergui;
 

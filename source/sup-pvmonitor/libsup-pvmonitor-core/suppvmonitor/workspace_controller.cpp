@@ -43,6 +43,8 @@ WorkspaceController::WorkspaceController(MonitorModel* model, QObject* parent)
 
 WorkspaceController::~WorkspaceController() = default;
 
+//! Creates domain workspace corresponding to WorkspaceItem and start listening.
+
 void WorkspaceController::OnSetupWorkspaceRequest()
 {
   if (!GetWorkspaceItem())

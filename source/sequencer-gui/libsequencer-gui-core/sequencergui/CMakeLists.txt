@@ -1,6 +1,7 @@
 add_subdirectory(components)
 add_subdirectory(composer)
 add_subdirectory(core)
+add_subdirectory(domain)
 add_subdirectory(explorer)
 add_subdirectory(jobsystem)
 add_subdirectory(mainwindow)

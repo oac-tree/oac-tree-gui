@@ -35,7 +35,7 @@ namespace sequencergui
 {
 class WorkspaceItem;
 class DomainWorkspaceBuilder;
-}
+}  // namespace sequencergui
 
 namespace suppvmonitor
 {
@@ -43,7 +43,11 @@ namespace suppvmonitor
 class MonitorModel;
 class SequencerWorkspaceListener;
 
-//!
+//! Provides communication of WorkspaceItem with sequencer's Workspace.
+
+//! The PVs are represented by VariableItems stored in WorkspaceItem. The controller
+//! creates underlying sequencer Workspace, attaches to it, and then performs mutual updates
+//! between sequencer variables and their counterparts VariableItems.
 
 class WorkspaceController : public QObject
 {

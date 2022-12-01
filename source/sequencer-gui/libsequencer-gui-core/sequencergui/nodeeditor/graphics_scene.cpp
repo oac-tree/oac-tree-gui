@@ -24,8 +24,8 @@
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/core/message_handler_interface.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/aggregate_factory.h>
-#include <sequencergui/model/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -108,8 +108,9 @@ GraphicsScene::GraphicsScene(QObject *parent)
   //  (class destructor may have already run)", file /usr/include/qt6/QtCore/qobjectdefs_impl.h,
   //  line 155 Aborted (core dumped)
 
-  connect(this, &GraphicsScene::selectionChanged, this, [this](){onSelectionChanged();});
-  //  connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged); <-- crashes in Qt6.3
+  connect(this, &GraphicsScene::selectionChanged, this, [this]() { onSelectionChanged(); });
+  //  connect(this, &GraphicsScene::selectionChanged, this, &GraphicsScene::onSelectionChanged); <--
+  //  crashes in Qt6.3
 }
 
 GraphicsScene::~GraphicsScene() = default;

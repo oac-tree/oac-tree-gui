@@ -23,7 +23,7 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/procedure.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include "test_utils.h"
 
 using namespace sequencergui;

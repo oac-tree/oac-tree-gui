@@ -21,7 +21,7 @@
 
 #include <mvvm/core/exceptions.h>
 #include <sequencergui/model/aggregate_factory.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/sequencer_utils.h>

@@ -21,7 +21,7 @@
 
 #include <mvvm/utils/string_utils.h>
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sup/sequencer/instruction.h>
 

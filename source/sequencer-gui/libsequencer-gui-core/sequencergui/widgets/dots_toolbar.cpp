@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/dots_toolbar.h"
 
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>

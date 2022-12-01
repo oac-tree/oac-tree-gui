@@ -19,7 +19,7 @@
 
 #include "sequencergui/composer/workspace_list_widget.h"
 
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>

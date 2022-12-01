@@ -20,7 +20,7 @@
 #include "sequencergui/model/standard_variable_items.h"
 
 #include <gtest/gtest.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/transform_from_domain.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/variable.h>

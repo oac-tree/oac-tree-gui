@@ -22,7 +22,7 @@
 #include "sequencergui/model/standard_variable_items.h"
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sup/sequencer/variable.h>
 

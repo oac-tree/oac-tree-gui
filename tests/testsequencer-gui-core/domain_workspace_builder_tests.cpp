@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sup/sequencer/workspace.h>
@@ -86,5 +86,3 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   EXPECT_EQ(domain_var0->GetName(), var_item0->GetName());
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
 }
-
-

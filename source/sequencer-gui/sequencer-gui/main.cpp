@@ -20,7 +20,7 @@
 #include <mvvm/widgets/app_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/main_window.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 
 #include <QApplication>
 #include <QLocale>

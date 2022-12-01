@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/variable.h>
 

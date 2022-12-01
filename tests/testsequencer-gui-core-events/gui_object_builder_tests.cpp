@@ -24,7 +24,7 @@
 #include "test_domain_procedures.h"
 
 #include <gtest/gtest.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>

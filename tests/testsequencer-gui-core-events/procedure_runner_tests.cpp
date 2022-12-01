@@ -22,7 +22,7 @@
 #include "test_utils.h"
 
 #include <gtest/gtest.h>
-#include <sequencergui/model/domain_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_types.h>
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
