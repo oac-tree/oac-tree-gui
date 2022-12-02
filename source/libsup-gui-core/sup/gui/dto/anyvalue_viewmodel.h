@@ -27,7 +27,7 @@ namespace mvvm
 class SessionModelInterface;
 }
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 //! View model to show AnyValueItem with editable display name.

@@ -19,10 +19,18 @@
 
 #include "sequencergui/transform/variable_item_transform_utils.h"
 
+#include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_utils.h>
+#include <sup/sequencer/variable.h>
+
 namespace sequencergui
 {
 
+std::string GetValuesToJSONString(const variable_t *value)
+{
+  sup::dto::AnyValue anyvalue;
+  value->GetValue(anyvalue);
+  return sup::gui::GetValuesToJSONString(&anyvalue);
+}
+
 }  // namespace sequencergui
-
-
-

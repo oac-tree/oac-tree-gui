@@ -17,18 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_item_builder.h"
 #include "folder_based_test.h"
+#include "sup/gui/dto/anyvalue_item_builder.h"
 
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/conversion_utils.h>
 #include <gtest/gtest.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <iostream>
 
-using namespace anyvalueeditor;
+using namespace sup::gui;
 
 class AnyValueItemBuilderTests : public FolderBasedTest
 {

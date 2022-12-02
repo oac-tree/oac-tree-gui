@@ -20,11 +20,11 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
 
-#include <anyvalueeditor/dto_types_fwd.h>
+#include <sup/gui/dto/dto_types_fwd.h>
 
 #include <memory>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 class AnyValueItem;

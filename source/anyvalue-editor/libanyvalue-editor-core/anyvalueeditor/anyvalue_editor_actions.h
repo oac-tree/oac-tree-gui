@@ -28,10 +28,13 @@ namespace mvvm
 class ApplicationModel;
 }
 
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace anyvalueeditor
 {
-
-class AnyValueItem;
 
 //! Actions for AnyValueEditor
 
@@ -40,7 +43,7 @@ class AnyValueEditorActions : public QObject
   Q_OBJECT
 
 public:
-  using callback_t = std::function<AnyValueItem*()>;
+  using callback_t = std::function<sup::gui::AnyValueItem*()>;
   AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent,
                                  callback_t get_selected_callback);
 

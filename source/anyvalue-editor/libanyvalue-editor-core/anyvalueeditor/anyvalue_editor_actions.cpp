@@ -20,10 +20,10 @@
 #include "anyvalueeditor/anyvalue_editor_actions.h"
 
 #include <anyvalueeditor/add_field_dialog.h>
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/conversion_utils.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/widget_utils.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -44,7 +44,7 @@ void AnyValueEditorActions::OnAddAnyValueStruct(bool to_selected)
     auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
-      m_model->InsertItem<AnyValueStructItem>(parent, mvvm::TagIndex::Append())
+      m_model->InsertItem<sup::gui::AnyValueStructItem>(parent, mvvm::TagIndex::Append())
           ->SetDisplayName("struct");
     }
   }
@@ -61,7 +61,7 @@ void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
     auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
-      m_model->InsertItem<AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
+      m_model->InsertItem<sup::gui::AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
           ->SetDisplayName("array");
     }
   }
@@ -78,7 +78,8 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
     auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
-      auto scalar = m_model->InsertItem<AnyValueScalarItem>(parent, mvvm::TagIndex::Append());
+      auto scalar =
+          m_model->InsertItem<sup::gui::AnyValueScalarItem>(parent, mvvm::TagIndex::Append());
       scalar->SetAnyTypeName(scalar_type);
       scalar->SetDisplayName(scalar_type);
     }

@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_item.h"
+#include "sup/gui/dto/anyvalue_item.h"
 
-#include <anyvalueeditor/conversion_utils.h>
+#include <sup/gui/dto/conversion_utils.h>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 static inline const std::string kChildren = "kChildren";

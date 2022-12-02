@@ -20,8 +20,8 @@
 #include "sequencergui/model/standard_variable_items.h"
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/anyvalue_utils.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 #include <sup/sequencer/variable.h>
 
 namespace sequencergui
@@ -83,7 +83,7 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
   {
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
-  SetJsonValue(DomainUtils::GetValuesToJSONString(variable));
+  SetJsonValue(sequencergui::GetValuesToJSONString(variable));
 }
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -247,7 +247,7 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
-  SetJsonValue(DomainUtils::GetValuesToJSONString(variable));
+  SetJsonValue(sequencergui::GetValuesToJSONString(variable));
 }
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -320,7 +320,7 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
   }
   else
   {
-    SetJsonValue(DomainUtils::GetValuesToJSONString(variable));
+    SetJsonValue(sequencergui::GetValuesToJSONString(variable));
   }
 }
 

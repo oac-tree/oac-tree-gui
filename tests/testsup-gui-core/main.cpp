@@ -17,19 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_ANYVALUE_TYPE_H_
-#define SEQUENCERGUI_DOMAIN_ANYVALUE_TYPE_H_
+#include <gtest/gtest.h>
 
-//! @file dto_types_fwd.h
-//! Forward declaration of AnyValue related types.
-
-namespace sup::dto
+int main(int argc, char** argv)
 {
-class AnyValue;
-class AnyType;
-enum class TypeCode;
-}  // namespace sup::dto
+  ::testing::InitGoogleTest(&argc, argv);
 
-using anyvalue_t = sup::dto::AnyValue;
-
-#endif  // SEQUENCERGUI_DOMAIN_ANYVALUE_TYPE_H_
+  // run all google tests
+  return RUN_ALL_TESTS();
+}

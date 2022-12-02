@@ -20,8 +20,8 @@
 #include "anyvalueeditor/anyvalue_editor_toolbar.h"
 
 #include <anyvalueeditor/anyvalue_editor_actions.h>
-#include <anyvalueeditor/conversion_utils.h>
 #include <mvvm/widgets/widget_utils.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <QMenu>
 #include <QPushButton>
@@ -91,7 +91,7 @@ std::unique_ptr<QMenu> AnyValueEditorToolBar::AddAnyValueMenu(bool to_selected)
 
   {
     auto scalar_menu = result->addMenu("scalar");
-    for (const auto &name : GetScalarTypeNames())
+    for (const auto &name : sup::gui::GetScalarTypeNames())
     {
       auto on_action = [name, this, to_selected]()
       { m_actions->OnAddAnyValueScalar(name, to_selected); };

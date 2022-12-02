@@ -22,7 +22,7 @@
 
 #include <mvvm/model/compound_item.h>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 //! Base class for all AnyValueItems
@@ -94,6 +94,6 @@ public:
   bool IsArray() const override;
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_H_

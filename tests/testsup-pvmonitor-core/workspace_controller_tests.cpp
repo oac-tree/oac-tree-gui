@@ -20,10 +20,10 @@
 #include "suppvmonitor/workspace_controller.h"
 
 #include <gtest/gtest.h>
-#include <sequencergui/domain/anyvalue_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
 
@@ -40,8 +40,8 @@ public:
   {
     auto result = std::make_unique<sequencergui::LocalVariableItem>();
     result->SetName(name);
-    result->SetJsonType(sequencergui::DomainUtils::GetAnyTypeToJSONString(&initial_value));
-    result->SetJsonValue(sequencergui::DomainUtils::GetValuesToJSONString(&initial_value));
+    result->SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
+    result->SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
     return result;
   }
 };

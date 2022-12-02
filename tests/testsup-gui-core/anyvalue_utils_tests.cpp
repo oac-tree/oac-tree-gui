@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/domain/anyvalue_utils.h"
+#include "sup/gui/dto/anyvalue_utils.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -49,5 +49,5 @@ TEST_F(AnyValueUtilsTest, GetJsonString)
 
   EXPECT_TRUE(variable->GetValue(any_value));
 
-  EXPECT_EQ(DomainUtils::GetValuesToJSONString(&any_value), "42");
+  EXPECT_EQ(sup::gui::GetValuesToJSONString(&any_value), "42");
 }

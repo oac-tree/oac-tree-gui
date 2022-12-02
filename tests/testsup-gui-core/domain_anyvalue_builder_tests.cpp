@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/domain_anyvalue_builder.h"
+#include "sup/gui/dto/domain_anyvalue_builder.h"
 
-#include <anyvalueeditor/anyvalue_item.h>
+#include <sup/gui/dto/anyvalue_item.h>
 #include <gtest/gtest.h>
 #include <sup/dto/anyvalue.h>
 
-using namespace anyvalueeditor;
+using namespace sup::gui;
 
 class DomainAnyValueBuilderTest : public ::testing::Test
 {

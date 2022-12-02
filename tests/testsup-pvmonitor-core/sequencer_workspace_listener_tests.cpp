@@ -22,8 +22,8 @@
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/domain/anyvalue_utils.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/workspace_event.h>
 
@@ -43,8 +43,7 @@ public:
     auto local_variable = sequencergui::DomainUtils::CreateDomainVariable(
         sequencergui::domainconstants::kLocalVariableType);
     local_variable->SetName(name);
-    local_variable->AddAttribute("type",
-                                 sequencergui::DomainUtils::GetAnyTypeToJSONString(&initial_value));
+    local_variable->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(&initial_value));
     local_variable->Setup();
     if (!local_variable->SetValue(initial_value))
     {

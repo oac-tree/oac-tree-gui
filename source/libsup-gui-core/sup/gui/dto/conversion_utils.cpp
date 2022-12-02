@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/anyvalue_item_builder.h>
-#include <anyvalueeditor/conversion_utils.h>
-#include <anyvalueeditor/domain_anyvalue_builder.h>
 #include <sup/dto/anytype.h>
 #include <sup/dto/anytype_registry.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/basic_scalar_types.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/anyvalue_item_builder.h>
+#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/dto/domain_anyvalue_builder.h>
 
 #include <algorithm>
 #include <fstream>
@@ -39,8 +39,8 @@ namespace
 
 const std::map<sup::dto::TypeCode, std::string> kTypeCodeNameMap = {
     {sup::dto::TypeCode::Empty, sup::dto::kEmptyTypeName},
-    {sup::dto::TypeCode::Struct, anyvalueeditor::kStructTypeName},
-    {sup::dto::TypeCode::Array, anyvalueeditor::kArrayTypeName},
+    {sup::dto::TypeCode::Struct, sup::gui::kStructTypeName},
+    {sup::dto::TypeCode::Array, sup::gui::kArrayTypeName},
     {sup::dto::TypeCode::Bool, sup::dto::kBooleanTypeName},
     {sup::dto::TypeCode::Char8, sup::dto::kChar8TypeName},
     {sup::dto::TypeCode::Int8, sup::dto::kInt8TypeName},
@@ -95,7 +95,7 @@ variant_t ScalarToItemT<sup::dto::uint32>()
 
 }  // namespace
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 std::vector<std::string> GetMainTypeNames()

@@ -23,9 +23,9 @@
 //! @file scalar_conversion_utils.h
 //! Utility functions to convert scalar AnyValue to AnyValueItem and back.
 
-#include <anyvalueeditor/dto_types_fwd.h>
+#include <sup/gui/dto/dto_types_fwd.h>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 class AnyValueItem;

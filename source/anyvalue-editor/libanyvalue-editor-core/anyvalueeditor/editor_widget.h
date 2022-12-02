@@ -35,12 +35,16 @@ class ModelHasChangedController;
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace anyvalueeditor
 {
 
 class AnyValueEditorToolBar;
 class AnyValueEditorActions;
-class AnyValueItem;
 
 class EditorWidget : public QWidget
 {
@@ -51,11 +55,11 @@ public:
 
   void ImportAnyValueFromFile(const QString& filename);
 
-  AnyValueItem* GetSelectedItem();
+  sup::gui::AnyValueItem* GetSelectedItem();
 
 private:
   void PopulateModel();
-  void UpdateJson(AnyValueItem *item);
+  void UpdateJson(sup::gui::AnyValueItem *item);
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
 

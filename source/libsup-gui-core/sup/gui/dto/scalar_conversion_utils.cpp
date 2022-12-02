@@ -17,19 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/scalar_conversion_utils.h"
+#include "sup/gui/dto/scalar_conversion_utils.h"
 
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/conversion_utils.h>
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <functional>
 #include <map>
 #include <stdexcept>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 //! Assigns scalar value from PVXS value to pre-created AnyValue value.
@@ -129,4 +129,4 @@ sup::dto::AnyValue GetAnyValueFromScalar(const AnyValueItem &item)
   return result;
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

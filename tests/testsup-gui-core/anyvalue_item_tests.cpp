@@ -17,18 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_item.h"
+#include "sup/gui/dto/anyvalue_item.h"
 
-#include <anyvalueeditor/conversion_utils.h>
 #include <gtest/gtest.h>
 #include <sup/dto/anytype.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 namespace
 {
 const int kAnyTypeNameRole = 10;  // defined in anyvalue_item.cpp
 }
 
-using namespace anyvalueeditor;
+using namespace sup::gui;
 
 class AnyValueItemTest : public ::testing::Test
 {

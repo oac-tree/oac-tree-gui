@@ -21,16 +21,16 @@
 
 #include <anyvalueeditor/anyvalue_editor_actions.h>
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/anyvalue_viewmodel.h>
-#include <anyvalueeditor/conversion_utils.h>
 #include <anyvalueeditor/highlighter/qsourcehighliter.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
-#include <sequencergui/domain/anyvalue_utils.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/anyvalue_utils.h>
+#include <sup/gui/dto/anyvalue_viewmodel.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -49,7 +49,7 @@ EditorWidget::EditorWidget(QWidget *parent)
     , m_all_items_tree_view(new QTreeView)
     , m_text_edit(new QTextEdit)
     , m_splitter(new QSplitter)
-    , m_component_provider(mvvm::CreateProvider<AnyValueViewModel>(m_all_items_tree_view))
+    , m_component_provider(mvvm::CreateProvider<sup::gui::AnyValueViewModel>(m_all_items_tree_view))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -62,9 +62,9 @@ EditorWidget::EditorWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_model->RegisterItem<AnyValueStructItem>();
-  m_model->RegisterItem<AnyValueArrayItem>();
-  m_model->RegisterItem<AnyValueScalarItem>();
+  m_model->RegisterItem<sup::gui::AnyValueStructItem>();
+  m_model->RegisterItem<sup::gui::AnyValueArrayItem>();
+  m_model->RegisterItem<sup::gui::AnyValueScalarItem>();
 
   PopulateModel();
 
@@ -92,23 +92,23 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
 {
   m_component_provider->SetApplicationModel(nullptr);
 
-  auto anyvalue = sequencergui::DomainUtils::AnyValueFromJSONFile(file_name.toStdString());
-  auto item =
-      m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
+  auto anyvalue = sup::gui::AnyValueFromJSONFile(file_name.toStdString());
+  auto item = m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
+                                  mvvm::TagIndex::Append());
   item->SetDisplayName("AnyValue");
 
   m_component_provider->SetApplicationModel(m_model.get());
 
   // setting the editor
-  auto str = sequencergui::DomainUtils::GetAnyValueToJSONString(&anyvalue, true);
+  auto str = sup::gui::GetAnyValueToJSONString(&anyvalue, true);
   m_text_edit->setText(QString::fromStdString(str));
 
   m_all_items_tree_view->expandAll();
 }
 
-AnyValueItem *EditorWidget::GetSelectedItem()
+sup::gui::AnyValueItem *EditorWidget::GetSelectedItem()
 {
-  return m_component_provider->GetSelected<AnyValueItem>();
+  return m_component_provider->GetSelected<sup::gui::AnyValueItem>();
 }
 
 EditorWidget::~EditorWidget() = default;
@@ -143,7 +143,7 @@ void EditorWidget::PopulateModel()
 
 //}
 
-void EditorWidget::UpdateJson(AnyValueItem *item)
+void EditorWidget::UpdateJson(sup::gui::AnyValueItem *item)
 {
   if (!item)
   {
@@ -153,7 +153,7 @@ void EditorWidget::UpdateJson(AnyValueItem *item)
   try
   {
     auto any_value = CreateAnyValue(*item);
-    auto str = sequencergui::DomainUtils::GetAnyValueToJSONString(&any_value, true);
+    auto str = sup::gui::GetAnyValueToJSONString(&any_value, true);
     m_text_edit->setText(QString::fromStdString(str));
   }
   catch (const std::exception &ex)

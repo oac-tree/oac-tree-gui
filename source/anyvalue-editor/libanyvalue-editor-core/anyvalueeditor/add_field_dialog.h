@@ -25,18 +25,20 @@
 class QLineEdit;
 class QComboBox;
 
+namespace sup::gui
+{
+struct FieldContext;
+}
+
 namespace anyvalueeditor
 {
-
-struct FieldContext;
-
 class AddFieldDialog : public QDialog
 {
   Q_OBJECT
 public:
   explicit AddFieldDialog(QWidget* parent = nullptr);
 
-  FieldContext GetFieldContext() const;
+  sup::gui::FieldContext GetFieldContext() const;
 
 private:
   QLineEdit* m_name_field;

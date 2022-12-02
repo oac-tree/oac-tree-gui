@@ -24,9 +24,13 @@
 //! Collection of utility functions to transform VariableItem to/from domain.
 
 #include <memory>
+#include <string>
+#include <sequencergui/domain/sequencer_types.h>
 
 namespace sequencergui
 {
+
+std::string GetValuesToJSONString(const variable_t* value);
 
 //class VariableItem;
 //class AnyValueItem;
@@ -37,3 +41,4 @@ namespace sequencergui
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
+

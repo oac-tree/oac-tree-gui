@@ -17,15 +17,16 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/domain/anyvalue_utils.h"
+#include "sup/gui/dto/anyvalue_utils.h"
 
 #include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue_helper.h>
+#include <sup/dto/anyvalue.h>
 #include <sup/dto/json_value_parser.h>
-#include <sup/sequencer/variable.h>
 
 #include <sstream>
 #include <stdexcept>
+#include <map>
 
 namespace
 {
@@ -99,7 +100,7 @@ static std::map<std::string, ParseFunction> &GetParserMap()
 
 }  // namespace
 
-namespace sequencergui::DomainUtils
+namespace sup::gui
 {
 
 //! Returns JSON string representing AnyValue.
@@ -118,13 +119,6 @@ std::string GetAnyTypeToJSONString(const anyvalue_t *value)
 std::string GetValuesToJSONString(const anyvalue_t *value)
 {
   return sup::dto::ValuesToJSONString(*value);
-}
-
-std::string GetValuesToJSONString(const variable_t *value)
-{
-  sup::dto::AnyValue anyvalue;
-  value->GetValue(anyvalue);
-  return GetValuesToJSONString(&anyvalue);
 }
 
 bool ParseStringToScalarAnyvalue(const std::string &str, sup::dto::AnyValue &value)

@@ -19,9 +19,8 @@
 
 #include "anyvalueeditor/add_field_dialog.h"
 
-#include <anyvalueeditor/conversion_utils.h>
-
 #include <mvvm/widgets/widget_utils.h>
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <QComboBox>
 #include <QDialogButtonBox>
@@ -34,7 +33,7 @@ namespace
 {
 QStringList CreateListOfScalars()
 {
-  return mvvm::utils::GetStringList(anyvalueeditor::GetScalarTypeNames());
+  return mvvm::utils::GetStringList(sup::gui::GetScalarTypeNames());
 }
 }  // namespace
 
@@ -82,7 +81,7 @@ AddFieldDialog::AddFieldDialog(QWidget* parent)
   layout->addWidget(button_box);
 }
 
-FieldContext AddFieldDialog::GetFieldContext() const
+sup::gui::FieldContext AddFieldDialog::GetFieldContext() const
 {
   return {m_name_field->text().toStdString(), m_type_combo->currentText().toStdString(),
           m_scalar_type_combo->currentText().toStdString()};

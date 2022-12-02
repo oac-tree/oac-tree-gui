@@ -20,14 +20,14 @@
 #ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
 #define ANYVALUEEDITOR_ANYVALUEEDITOR_CONVERSION_UTILS_H_
 
-#include <anyvalueeditor/dto_types_fwd.h>
 #include <mvvm/core/variant.h>
+#include <sup/gui/dto/dto_types_fwd.h>
 
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 class AnyValueItem;

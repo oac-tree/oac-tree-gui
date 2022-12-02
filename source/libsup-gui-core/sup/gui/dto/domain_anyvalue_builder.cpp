@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/domain_anyvalue_builder.h"
+#include "sup/gui/dto/domain_anyvalue_builder.h"
 
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/scalar_conversion_utils.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_composer.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/scalar_conversion_utils.h>
 
 #include <cassert>
 #include <stack>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 enum NodeContext

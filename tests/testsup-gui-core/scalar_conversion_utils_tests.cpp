@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/scalar_conversion_utils.h"
+#include "sup/gui/dto/scalar_conversion_utils.h"
 
-#include <anyvalueeditor/anyvalue_item.h>
-#include <anyvalueeditor/conversion_utils.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/conversion_utils.h>
 #include <gtest/gtest.h>
 #include <mvvm/core/variant.h>
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
 
-using namespace anyvalueeditor;
+using namespace sup::gui;
 
 class ScalarConversionUtilsTests : public ::testing::Test
 {

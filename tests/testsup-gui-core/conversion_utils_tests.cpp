@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/conversion_utils.h"
+#include "sup/gui/dto/conversion_utils.h"
 
 #include <gtest/gtest.h>
 #include <sup/dto/anytype.h>
 
-using namespace anyvalueeditor;
+using namespace sup::gui;
 
 class ConversionUtilsTest : public ::testing::Test
 {
