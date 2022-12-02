@@ -1,0 +1,15 @@
+target_sources(${library_name} PRIVATE
+  anyvalue_item.cpp
+  anyvalue_item.h
+  anyvalue_item_builder.cpp
+  anyvalue_item_builder.h
+  anyvalue_viewmodel.cpp
+  anyvalue_viewmodel.h
+  conversion_utils.cpp
+  conversion_utils.h
+  domain_anyvalue_builder.cpp
+  domain_anyvalue_builder.h
+  dto_types_fwd.h
+  scalar_conversion_utils.cpp
+  scalar_conversion_utils.h
+)

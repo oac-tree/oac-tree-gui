@@ -5,21 +5,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_editor_actions.h
   anyvalue_editor_toolbar.cpp
   anyvalue_editor_toolbar.h
-  anyvalue_item.cpp
-  anyvalue_item.h
-  anyvalue_item_builder.cpp
-  anyvalue_item_builder.h
-  anyvalue_viewmodel.cpp
-  anyvalue_viewmodel.h
-  conversion_utils.cpp
-  conversion_utils.h
-  domain_anyvalue_builder.cpp
-  domain_anyvalue_builder.h
-  dto_types_fwd.h
   editor_widget.cpp
   editor_widget.h
-  scalar_conversion_utils.cpp
-  scalar_conversion_utils.h
 )
 
 add_subdirectory(highlighter)
