@@ -23,9 +23,12 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
+#include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
+#include <suppvmonitor/workspace_event.h>
 
 #include <QDebug>
 
@@ -65,7 +68,16 @@ void WorkspaceController::OnSetupWorkspaceRequest()
 
 void WorkspaceController::OnVariableUpdated()
 {
-  qDebug() << "OnVariableUpdated";
+  qDebug() << "OnVariableUpdated \n\n";
+  auto event = m_workspace_listener->PopEvent();
+  qDebug() << "OnVariableUpdated" << QString::fromStdString(event.m_variable_name);
+  if (!event.m_variable_name.empty())
+  {
+    qDebug() << "OnVariableUpdated 1.2";
+    auto variable_item =
+        m_workspace_builder->GetVariableItemFromDomainVariableName(event.m_variable_name);
+    sequencergui::UpdateAnyValue(event.m_value, *variable_item);
+  }
 }
 
 sup::sequencer::Workspace* WorkspaceController::GetWorkspace() const

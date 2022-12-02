@@ -24,6 +24,7 @@
 //! Collection of utility functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types.h>
+#include <sup/gui/dto/dto_types_fwd.h>
 
 #include <memory>
 #include <string>
@@ -40,9 +41,8 @@ class VariableItem;
 
 std::string GetValuesToJSONString(const variable_t* value);
 
-//! Updates AnyValueItem on board of variable item.
-void UpdateAnyValue(std::unique_ptr<sup::gui::AnyValueItem> anyvalue_item,
-                    VariableItem& variable_item);
+//! Updates AnyValueItem on board of variable item using given `anyvalue`.
+void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 }  // namespace sequencergui
 

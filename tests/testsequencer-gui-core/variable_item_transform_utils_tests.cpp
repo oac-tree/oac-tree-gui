@@ -19,32 +19,29 @@
 
 #include "sequencergui/transform/variable_item_transform_utils.h"
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
-#include <sequencergui/model/variable_item.h>
+#include <gtest/gtest.h>
+#include <sequencergui/model/standard_variable_items.h>
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
-#include <sup/sequencer/variable.h>
 
-namespace sequencergui
-{
+using namespace sequencergui;
 
-std::string GetValuesToJSONString(const variable_t *value)
+//! Tests for functions from variable_item_transform_utils.h
+
+class VariableItemTransformUtilsTests : public ::testing::Test
 {
-  sup::dto::AnyValue anyvalue;
-  value->GetValue(anyvalue);
-  return sup::gui::GetValuesToJSONString(&anyvalue);
+};
+
+TEST_F(VariableItemTransformUtilsTests, UpdateAnyValue)
+{
+  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  LocalVariableItem item;
+  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+
+  UpdateAnyValue(anyvalue, item);
+  EXPECT_NE(item.GetAnyValueItem(), nullptr);
+
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(anyvalue, stored_anyvalue);
 }
-
-void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
-{
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
-  if (auto prev_item = variable_item.GetAnyValueItem(); prev_item)
-  {
-    variable_item.GetModel()->RemoveItem(prev_item);
-  }
-  variable_item.InsertItem(std::move(anyvalue_item), {});
-}
-
-}  // namespace sequencergui

@@ -24,8 +24,11 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_utils.h>
+#include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
+
+#include <QTest>
 
 using namespace suppvmonitor;
 
@@ -39,10 +42,16 @@ public:
       const std::string& name, const sup::dto::AnyValue& initial_value)
   {
     auto result = std::make_unique<sequencergui::LocalVariableItem>();
-    result->SetName(name);
-    result->SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
-    result->SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
+    SetupVariable(name, initial_value, *result.get());
     return result;
+  }
+
+  static void SetupVariable(const std::string& name, const sup::dto::AnyValue& initial_value,
+                            sequencergui::LocalVariableItem& item)
+  {
+    item.SetName(name);
+    item.SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
+    item.SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
   }
 };
 
@@ -89,12 +98,24 @@ TEST_F(WorkspaceControllerTest, OnVariableUpdated)
   MonitorModel model;
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
   auto variable_item0 =
-      workspace_item->InsertItem(CreateLocalVariable("abc", value0), mvvm::TagIndex::Append());
+      workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  SetupVariable("abc", value0, *variable_item0);
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceController controller(&model);
   controller.OnSetupWorkspaceRequest();
 
+  // FIXME current implementation doesn't update AnyValueItem on first connection
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+
   // changing the value via domain workspace
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   EXPECT_TRUE(controller.GetWorkspace()->SetValue("abc", value1));
+
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
+
+  ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value1, stored_anyvalue);
 }
