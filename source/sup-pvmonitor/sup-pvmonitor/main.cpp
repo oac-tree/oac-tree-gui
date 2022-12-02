@@ -19,6 +19,7 @@
 
 #include "main_window.h"
 #include <mvvm/widgets/app_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -32,6 +33,12 @@ int main(int argc, char** argv)
   QApplication app(argc, argv);
 
   Q_INIT_RESOURCE(sequencericons);
+
+#ifdef SEQUENCERGUI_CODAC
+  sequencergui::DomainUtils::LoadCodacPlugins();
+#else
+  sequencergui::DomainUtils::LoadLocalPlugins();
+#endif
 
   suppvmonitor::MainWindow win;
 
