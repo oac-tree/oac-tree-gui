@@ -23,22 +23,27 @@
 //! @file variable_item_transform_utils.h
 //! Collection of utility functions to transform VariableItem to/from domain.
 
+#include <sequencergui/domain/sequencer_types.h>
+
 #include <memory>
 #include <string>
-#include <sequencergui/domain/sequencer_types.h>
+
+namespace sup::gui
+{
+class AnyValueItem;
+}
 
 namespace sequencergui
 {
 
+class VariableItem;
+
 std::string GetValuesToJSONString(const variable_t* value);
 
-//class VariableItem;
-//class AnyValueItem;
-
-////! Updates AnyValueItem on board
-//void UpdateAnyValue(std::unique_ptr<AnyValueItem& anyvalue_item, VariableItem& variable_item);
+//! Updates AnyValueItem on board of variable item.
+void UpdateAnyValue(std::unique_ptr<sup::gui::AnyValueItem> anyvalue_item,
+                    VariableItem& variable_item);
 
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
-

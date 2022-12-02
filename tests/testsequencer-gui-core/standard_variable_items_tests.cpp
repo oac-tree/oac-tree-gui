@@ -24,6 +24,7 @@
 #include <sequencergui/model/transform_from_domain.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/variable.h>
+#include <sup/gui/dto/anyvalue_item.h>
 
 using namespace sequencergui;
 
@@ -156,6 +157,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetJsonType().empty());
   EXPECT_TRUE(item.GetJsonValue().empty());
+  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -165,6 +167,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
 
   item.SetJsonValue("fjk");
   EXPECT_EQ(item.GetJsonValue(), std::string("fjk"));
+
+  auto anyvalue_item = item.InsertItem<sup::gui::AnyValueScalarItem>({});
+  EXPECT_EQ(item.GetAnyValueItem(), anyvalue_item);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)

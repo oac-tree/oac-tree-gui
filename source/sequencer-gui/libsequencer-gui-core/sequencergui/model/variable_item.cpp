@@ -19,12 +19,20 @@
 
 #include "sequencergui/model/variable_item.h"
 
-#include "sequencergui/model/standard_variable_items.h"
-
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sup/gui/dto/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
+
+namespace
+{
+const std::vector<std::string> kExpectedAnyValueItemTypes{
+    sup::gui::AnyValueEmptyItem::Type, sup::gui::AnyValueScalarItem::Type,
+    sup::gui::AnyValueArrayItem::Type, sup::gui::AnyValueStructItem::Type};
+
+}
 
 namespace sequencergui
 {
@@ -33,10 +41,13 @@ namespace sequencergui
 // ----------------------------------------------------------------------------
 
 static inline const std::string kName = "kName";
+static inline const std::string kAnyValueTag = "kAnyValueTag";
 
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
 {
   AddProperty(kName, std::string())->SetDisplayName("name");
+
+  RegisterTag(mvvm::TagInfo(kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
 }
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
@@ -80,5 +91,10 @@ std::string VariableItem::GetName() const
 void VariableItem::SetName(const std::string &value)
 {
   SetProperty(kName, value);
+}
+
+sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
+{
+  return GetItem<sup::gui::AnyValueItem>(kAnyValueTag);
 }
 }  // namespace sequencergui

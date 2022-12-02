@@ -24,6 +24,12 @@
 
 #include <mvvm/model/compound_item.h>
 
+
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace sequencergui
 {
 //! Base class for all variable items.
@@ -43,6 +49,8 @@ public:
   std::string GetName() const;
 
   void SetName(const std::string& value);
+
+  sup::gui::AnyValueItem* GetAnyValueItem() const;
 
 private:
   virtual void InitFromDomainImpl(const variable_t* variable) = 0;

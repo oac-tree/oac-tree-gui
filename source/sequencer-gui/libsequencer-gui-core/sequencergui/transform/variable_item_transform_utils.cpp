@@ -33,4 +33,9 @@ std::string GetValuesToJSONString(const variable_t *value)
   return sup::gui::GetValuesToJSONString(&anyvalue);
 }
 
+void UpdateAnyValue(std::unique_ptr<sup::gui::AnyValueItem> anyvalue_item,
+                    VariableItem &variable_item)
+{
+}
+
 }  // namespace sequencergui
