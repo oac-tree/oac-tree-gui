@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_VIEWMODEL_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_VIEWMODEL_H_
+#ifndef SUP_GUI_DTO_ANYVALUE_VIEWMODEL_H_
+#define SUP_GUI_DTO_ANYVALUE_VIEWMODEL_H_
 
 #include <mvvm/viewmodel/viewmodel.h>
 
@@ -42,4 +42,4 @@ public:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_VIEWMODEL_H_
+#endif  // SUP_GUI_DTO_ANYVALUE_VIEWMODEL_H_

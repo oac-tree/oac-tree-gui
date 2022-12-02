@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
+#ifndef SUP_GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
+#define SUP_GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
 
 #include <sup/gui/dto/dto_types_fwd.h>
 
@@ -46,4 +46,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_DOMAIN_ANYVALUE_BUILDER_H_
+#endif  // SUP_GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_

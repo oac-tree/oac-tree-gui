@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_H_
+#ifndef SUP_GUI_DTO_ANYVALUE_ITEM_H_
+#define SUP_GUI_DTO_ANYVALUE_ITEM_H_
 
 #include <mvvm/model/compound_item.h>
 
@@ -30,8 +30,6 @@ namespace sup::gui
 class AnyValueItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "AnyValue";
-
   explicit AnyValueItem(const std::string& item_type);
 
   virtual void SetAnyTypeName(const std::string& type_name);
@@ -96,4 +94,4 @@ public:
 
 }  // namespace sup::gui
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ANYVALUE_ITEM_H_
+#endif  // SUP_GUI_DTO_ANYVALUE_ITEM_H_

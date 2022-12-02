@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_ANYVALUE_UTILS_H_
-#define SEQUENCERGUI_DOMAIN_ANYVALUE_UTILS_H_
+#ifndef SUP_GUI_DTO_ANYVALUE_UTILS_H_
+#define SUP_GUI_DTO_ANYVALUE_UTILS_H_
 
 //! @file anyvalue_utils.h
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
@@ -42,4 +42,4 @@ sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename);
 
 }  // namespace sup::gui
 
-#endif  // SEQUENCERGUI_DOMAIN_ANYVALUE_UTILS_H_
+#endif  // SUP_GUI_DTO_ANYVALUE_UTILS_H_
