@@ -147,4 +147,14 @@ void LoadLocalPlugins()
   }
 }
 
+void LoadPlugins()
+{
+#ifdef SEQUENCERGUI_CODAC
+  LoadCodacPlugins();
+#else
+  LoadLocalPlugins();
+#endif
+
+}
+
 }  // namespace sequencergui::DomainUtils

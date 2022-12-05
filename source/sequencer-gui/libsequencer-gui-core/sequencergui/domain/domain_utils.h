@@ -57,6 +57,8 @@ bool IsPVAccessAvailable();
 void LoadCodacPlugins();
 void LoadLocalPlugins();
 
+void LoadPlugins();
+
 }  // namespace sequencergui::DomainUtils
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_

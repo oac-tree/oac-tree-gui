@@ -18,9 +18,9 @@
  *****************************************************************************/
 
 #include <mvvm/widgets/app_utils.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/main_window.h>
-#include <sequencergui/domain/domain_utils.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -51,11 +51,7 @@ int main(int argc, char** argv)
 
   Q_INIT_RESOURCE(sequencericons);
 
-#ifdef SEQUENCERGUI_CODAC
-  sequencergui::DomainUtils::LoadCodacPlugins();
-#else
-  sequencergui::DomainUtils::LoadLocalPlugins();
-#endif
+  sequencergui::DomainUtils::LoadPlugins();
 
   sequencergui::MainWindow win;
 

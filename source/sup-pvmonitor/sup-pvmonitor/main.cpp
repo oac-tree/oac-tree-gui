@@ -34,11 +34,7 @@ int main(int argc, char** argv)
 
   Q_INIT_RESOURCE(sequencericons);
 
-#ifdef SEQUENCERGUI_CODAC
-  sequencergui::DomainUtils::LoadCodacPlugins();
-#else
-  sequencergui::DomainUtils::LoadLocalPlugins();
-#endif
+  sequencergui::DomainUtils::LoadPlugins();
 
   suppvmonitor::MainWindow win;
 

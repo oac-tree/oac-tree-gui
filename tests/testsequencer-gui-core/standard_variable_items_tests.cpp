@@ -237,24 +237,6 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   }
 }
 
-//! Check domain variable construction when "value" attribute is not set
-//! (real-life bug: LocalVariable doesn't like value=""
-
-TEST_F(StandardVariableItemsTest, LocalVariableItemToDomainMissedValue)
-{
-  const std::string expected_name("abc");
-  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
-  const std::string expected_value("");
-
-  sequencergui::LocalVariableItem item;
-  item.SetName(expected_name);
-  item.SetJsonType(expected_type);
-  item.SetJsonValue(expected_value);
-
-  auto domain_item = item.CreateDomainVariable();
-  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
-}
-
 //! ---------------------------------------------------------------------------
 //! PVClientVariableItem
 //! ---------------------------------------------------------------------------

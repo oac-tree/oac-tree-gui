@@ -19,6 +19,7 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_item.h>
 
 #include <gmock/gmock.h>
@@ -35,6 +36,8 @@ int main(int argc, char** argv)
   qRegisterMetaType<const sequencergui::InstructionItem*>("const sequi::InstructionItem*");
   qRegisterMetaType<instruction_t*>("instruction_t*");
   qRegisterMetaType<const instruction_t*>("const instruction_t*");
+
+  sequencergui::DomainUtils::LoadPlugins();
 
   // run all google tests
   return RUN_ALL_TESTS();
