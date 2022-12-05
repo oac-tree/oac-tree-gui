@@ -30,8 +30,6 @@
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
 
-#include <QDebug>
-
 namespace suppvmonitor
 {
 
@@ -55,7 +53,6 @@ void WorkspaceController::OnSetupWorkspaceRequest()
     throw sequencergui::LogicErrorException("No WorkspaceItem");
   }
 
-  qDebug() << "OnSetupWorkspaceRequest";
   m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
   m_workspace_builder = std::make_unique<sequencergui::DomainWorkspaceBuilder>();
@@ -68,12 +65,9 @@ void WorkspaceController::OnSetupWorkspaceRequest()
 
 void WorkspaceController::OnVariableUpdated()
 {
-  qDebug() << "OnVariableUpdated \n\n";
   auto event = m_workspace_listener->PopEvent();
-  qDebug() << "OnVariableUpdated" << QString::fromStdString(event.m_variable_name);
   if (!event.m_variable_name.empty())
   {
-    qDebug() << "OnVariableUpdated 1.2";
     auto variable_item =
         m_workspace_builder->GetVariableItemFromDomainVariableName(event.m_variable_name);
     sequencergui::UpdateAnyValue(event.m_value, *variable_item);
