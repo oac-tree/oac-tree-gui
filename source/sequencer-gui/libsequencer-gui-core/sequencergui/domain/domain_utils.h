@@ -50,9 +50,13 @@ std::map<std::string, std::string> GetAttributes(const variable_t* variable);
 
 bool IsRootInstruction(const instruction_t* instruction);
 
-bool IsChannelAccessAvailable();
+bool IsVariableTypeAvailable(const std::string& domain_variable_type);
 
-bool IsPVAccessAvailable();
+bool IsChannelAccessClientAvailable();
+
+bool IsPVAccessClientAvailable();
+
+bool IsPVAccessServerAvailable();
 
 void LoadCodacPlugins();
 void LoadLocalPlugins();

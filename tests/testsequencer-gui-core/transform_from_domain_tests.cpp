@@ -89,12 +89,12 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
       domainconstants::kLocalVariableType));
   EXPECT_TRUE(
       CanCreateVariableForType<sequencergui::FileVariableItem>(domainconstants::kFileVariableType));
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsChannelAccessClientAvailable())
   {
     EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
         domainconstants::kChannelAccessVariableType));
   }
-  if (DomainUtils::IsPVAccessAvailable())
+  if (DomainUtils::IsPVAccessClientAvailable())
   {
     EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
         domainconstants::kPVClientVariableType));

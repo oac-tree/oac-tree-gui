@@ -61,7 +61,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsChannelAccessClientAvailable())
   {
     auto ca_variable =
         DomainUtils::CreateDomainVariable(domainconstants::kChannelAccessVariableType);
@@ -84,7 +84,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsChannelAccessAvailable())
+  if (DomainUtils::IsChannelAccessClientAvailable())
   {
     {  // case with empty attributes
       ChannelAccessVariableItem item;
@@ -268,7 +268,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsPVAccessAvailable())
+  if (DomainUtils::IsPVAccessClientAvailable())
   {
     auto pv_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
     pv_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -290,7 +290,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  if (DomainUtils::IsPVAccessAvailable())
+  if (DomainUtils::IsPVAccessClientAvailable())
   {
     {  // normal case
       PVClientVariableItem item;
@@ -351,7 +351,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   const std::string expected_datatype("expected_datatype");
   const std::string expected_instance("expected_instance");
 
-  if (DomainUtils::IsPVAccessAvailable())
+  if (DomainUtils::IsPVAccessServerAvailable())
   {
     auto pvxs_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVServerVariableType);
     pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -376,7 +376,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
   const std::string expected_datatype("expected_datatype");
   const std::string expected_instance("expected_instance");
 
-  if (DomainUtils::IsPVAccessAvailable())
+  if (DomainUtils::IsPVAccessServerAvailable())
   {
     // case with initial value
     {

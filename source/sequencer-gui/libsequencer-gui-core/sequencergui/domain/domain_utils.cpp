@@ -105,18 +105,25 @@ bool IsRootInstruction(const instruction_t* instruction)
   return std::find(expected_values.begin(), expected_values.end(), value) != expected_values.end();
 }
 
-bool IsChannelAccessAvailable()
+bool IsChannelAccessClientAvailable()
 {
-  static const std::vector<std::string> names = GetDomainVariableNames();
-  return std::find(names.begin(), names.end(), domainconstants::kChannelAccessVariableType)
-         != names.end();
+  return IsVariableTypeAvailable(domainconstants::kChannelAccessVariableType);
 }
 
-bool IsPVAccessAvailable()
+bool IsPVAccessClientAvailable()
+{
+  return IsVariableTypeAvailable(domainconstants::kPVClientVariableType);
+}
+
+bool IsPVAccessServerAvailable()
+{
+  return IsVariableTypeAvailable(domainconstants::kPVServerVariableType);
+}
+
+bool IsVariableTypeAvailable(const std::string& domain_variable_type)
 {
   static const std::vector<std::string> names = GetDomainVariableNames();
-  return std::find(names.begin(), names.end(), domainconstants::kPVClientVariableType)
-         != names.end();
+  return std::find(names.begin(), names.end(), domain_variable_type) != names.end();
 }
 
 //! Loads codac plugins.
@@ -154,7 +161,7 @@ void LoadPlugins()
 #else
   LoadLocalPlugins();
 #endif
-
 }
+
 
 }  // namespace sequencergui::DomainUtils
