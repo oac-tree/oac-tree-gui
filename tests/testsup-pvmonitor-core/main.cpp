@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include <gtest/gtest.h>
+#include <sequencergui/domain/domain_utils.h>
 
 #include <QApplication>
 
@@ -25,7 +26,9 @@ int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
 
-  QApplication app(argc, argv); // need application for queueued connections
+  QApplication app(argc, argv);  // need application for queued connections
+
+  sequencergui::DomainUtils::LoadPlugins();
 
   // run all google tests
   return RUN_ALL_TESTS();

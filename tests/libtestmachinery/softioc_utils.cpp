@@ -47,6 +47,12 @@ record (bo,"CA-TESTS:BOOL")
     field(VAL,"0")
 }
 
+record (longin,"CA-TESTS:INT")
+{
+  field(DESC,"Test is running flag")
+  field(VAL,"1")
+}
+
 record (ao,"CA-TESTS:FLOAT")
 {
     field(DESC,"Some EPICSv3 record")
