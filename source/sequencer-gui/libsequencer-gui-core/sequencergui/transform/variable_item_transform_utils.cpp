@@ -39,12 +39,32 @@ std::string GetValuesToJSONString(const variable_t *value)
 
 void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  // we will be acting through the model, if it exists, to allow signaling
+  auto model = variable_item.GetModel();
+
+  // in current implementation we remove old AnyValueItem, if it exists
   if (auto prev_item = variable_item.GetAnyValueItem(); prev_item)
   {
-    variable_item.GetModel()->RemoveItem(prev_item);
+    if (model)
+    {
+      model->RemoveItem(prev_item);
+    }
+    else
+    {
+      variable_item.TakeItem(variable_item.TagIndexOfItem(prev_item));
+    }
   }
-  variable_item.InsertItem(std::move(anyvalue_item), {});
+
+  // Inserting new AnyValueItem
+  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  if (model)
+  {
+    model->InsertItem(std::move(anyvalue_item), &variable_item, {});
+  }
+  else
+  {
+    variable_item.InsertItem(std::move(anyvalue_item), {});
+  }
 }
 
 }  // namespace sequencergui

@@ -17,14 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "mock_model_listener.h"
 #include "sequencergui/transform/variable_item_transform_utils.h"
 
 #include <gtest/gtest.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/conversion_utils.h>
 
 using namespace sequencergui;
+using ::testing::_;
 
 //! Tests for functions from variable_item_transform_utils.h
 
@@ -32,16 +35,47 @@ class VariableItemTransformUtilsTests : public ::testing::Test
 {
 };
 
+//! Checking UpdateAnyValue function.
+
 TEST_F(VariableItemTransformUtilsTests, UpdateAnyValue)
 {
-  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-
+  // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
+  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  // After update it receives AnyValueItem representing anyvalue
   UpdateAnyValue(anyvalue, item);
   EXPECT_NE(item.GetAnyValueItem(), nullptr);
+  auto prev_anyvalue_item = item.GetAnyValueItem();
 
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(anyvalue, stored_anyvalue);
+
+  // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
+  // FIXME Provide update if AnyValueItem is exists and layout of it corresponds to AnyValue.
+  UpdateAnyValue(anyvalue, item);
+  EXPECT_NE(item.GetAnyValueItem(), prev_anyvalue_item);
+}
+
+//! Same as above, except that LocalVariableItem is a part of the model.
+
+TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
+{
+  SequencerModel model;
+  auto item = model.InsertItem<LocalVariableItem>();
+
+  MockModelListener listener(&model);
+
+  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  mvvm::TagIndex expected_tag_index{"kAnyValueTag", 0};
+  {
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, OnAboutToInsertItem(item, expected_tag_index)).Times(1);
+    EXPECT_CALL(listener, OnItemInserted(item, expected_tag_index)).Times(1);
+  }
+
+  UpdateAnyValue(anyvalue, *item);
 }

@@ -120,9 +120,9 @@ TEST_F(WorkspaceControllerSoftIocTest, ListeningWorkspaceWithSingleCAVariable)
   // attaching listener to the workspace
   EXPECT_EQ(spy_upate.count(), 0);
 
+  // changing the value and waiting for update
   value = 42;
   EXPECT_TRUE(workspace.SetValue("var", value));
-
   auto worker = [&workspace]()
   {
     sup::dto::AnyValue tmp;
