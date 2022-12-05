@@ -29,7 +29,7 @@ namespace sequencergui
 static inline const std::string kValue = "kValue";
 
 // ----------------------------------------------------------------------------
-// LocalVariableItem
+// ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
 
 static inline const std::string kDataType = "kDataType";
@@ -66,6 +66,11 @@ void ChannelAccessVariableItem::SetChannel(const std::string &value)
   SetProperty(kChannel, value);
 }
 
+std::string ChannelAccessVariableItem::GetJsonValue() const
+{
+  return Property<std::string>(kValue);
+}
+
 // Temporary method to update value from SequencerObserver
 void ChannelAccessVariableItem::SetJsonValue(const std::string &value)
 {
@@ -83,13 +88,24 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
   {
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
+
   SetJsonValue(sequencergui::GetValuesToJSONString(variable));
 }
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
-  variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  if (!GetDataType().empty())
+  {
+    variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
+  }
+  if (!GetChannel().empty())
+  {
+    variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  }
+  if (!GetJsonValue().empty())
+  {
+    variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -182,7 +198,10 @@ void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
+  if (!GetJsonType().empty())
+  {
+    variable->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
+  }
   if (!GetJsonValue().empty())
   {
     variable->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
@@ -230,7 +249,7 @@ void PVClientVariableItem::SetJsonValue(const std::string &value)
   SetProperty(kValue, value);
 }
 
-std::string PVClientVariableItem::GetJsonValue()
+std::string PVClientVariableItem::GetJsonValue() const
 {
   return Property<std::string>(kValue);
 }
@@ -252,8 +271,18 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
-  variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  if (!GetDataType().empty())
+  {
+    variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
+  }
+  if (!GetChannel().empty())
+  {
+    variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  }
+  if (!GetJsonValue().empty())
+  {
+    variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -326,8 +355,14 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
-  variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  if (!GetDataType().empty())
+  {
+    variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
+  }
+  if (!GetChannel().empty())
+  {
+    variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  }
   if (!GetJsonValue().empty())
   {
     variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());

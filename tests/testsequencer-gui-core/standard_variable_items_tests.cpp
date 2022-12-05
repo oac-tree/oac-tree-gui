@@ -22,9 +22,9 @@
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/transform_from_domain.h>
+#include <sup/gui/dto/anyvalue_item.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/variable.h>
-#include <sup/gui/dto/anyvalue_item.h>
 
 using namespace sequencergui;
 
@@ -86,16 +86,30 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
 
   if (DomainUtils::IsChannelAccessAvailable())
   {
-    ChannelAccessVariableItem item;
-    item.SetName(expected_name);
-    item.SetChannel(expected_channel);
-    item.SetDataType(expected_datatype);
+    {  // case with empty attributes
+      ChannelAccessVariableItem item;
+      item.SetName(expected_name);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+    }
+
+    {  // normal case
+      ChannelAccessVariableItem item;
+      item.SetName(expected_name);
+      item.SetChannel(expected_channel);
+      item.SetDataType(expected_datatype);
+
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+    }
   }
 }
 
@@ -197,17 +211,30 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  sequencergui::LocalVariableItem item;
-  item.SetName(expected_name);
-  item.SetJsonType(expected_type);
-  item.SetJsonValue(expected_value);
+  {  // normal case
+    sequencergui::LocalVariableItem item;
+    item.SetName(expected_name);
+    item.SetJsonType(expected_type);
+    item.SetJsonValue(expected_value);
 
-  auto domain_item = item.CreateDomainVariable();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
-  EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
+    EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
+  }
+
+  {  // case with empty attributes
+    sequencergui::LocalVariableItem item;
+    item.SetName(expected_name);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+  }
 }
 
 //! Check domain variable construction when "value" attribute is not set
@@ -261,13 +288,13 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
   if (DomainUtils::IsPVAccessAvailable())
   {
-    auto ca_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
-    ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
-    ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
-    ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
+    auto pv_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
+    pv_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+    pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
+    pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
     PVClientVariableItem ca_variable_item;
-    ca_variable_item.InitFromDomain(ca_variable.get());
+    ca_variable_item.InitFromDomain(pv_variable.get());
 
     EXPECT_EQ(ca_variable_item.GetName(), expected_name);
     EXPECT_EQ(ca_variable_item.GetChannel(), expected_channel);
@@ -283,16 +310,30 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
 
   if (DomainUtils::IsPVAccessAvailable())
   {
-    PVClientVariableItem item;
-    item.SetName(expected_name);
-    item.SetChannel(expected_channel);
-    item.SetDataType(expected_datatype);
+    {  // normal case
+      PVClientVariableItem item;
+      item.SetName(expected_name);
+      item.SetChannel(expected_channel);
+      item.SetDataType(expected_datatype);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+    }
+
+    {  // case with empty attributes
+      PVClientVariableItem item;
+      item.SetName(expected_name);
+
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+    }
   }
 }
 
@@ -355,21 +396,6 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
 
   if (DomainUtils::IsPVAccessAvailable())
   {
-    // case when no initial value is defined
-    {
-      PVServerVariableItem item;
-      item.SetName(expected_name);
-      item.SetChannel(expected_channel);
-      item.SetDataType(expected_datatype);
-
-      auto domain_item = item.CreateDomainVariable();
-      EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
-      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
-      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kInstanceAttribute));
-    }
-
     // case with initial value
     {
       PVServerVariableItem item;
@@ -384,6 +410,18 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
       EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInstanceAttribute), expected_instance);
+    }
+
+    {  // case with empty attributes
+      PVServerVariableItem item;
+      item.SetName(expected_name);
+
+      auto domain_item = item.CreateDomainVariable();
+      EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
+      EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+      EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kInstanceAttribute));
     }
   }
 }
