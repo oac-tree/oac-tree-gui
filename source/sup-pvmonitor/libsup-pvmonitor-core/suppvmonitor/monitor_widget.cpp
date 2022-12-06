@@ -35,7 +35,7 @@ MonitorWidget::MonitorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(std::make_unique<MonitorModel>())
-    , m_workspace_controller(std::make_unique<WorkspaceController>(m_model.get()))
+    , m_workspace_controller(std::make_unique<WorkspaceSyncronizer>(m_model.get()))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -64,7 +64,7 @@ void MonitorWidget::PopulateModel()
 void MonitorWidget::SetupConnections()
 {
   connect(m_tool_bar, &MonitorWidgetToolBar::SetupWorkspaceRequest, m_workspace_controller.get(),
-          &WorkspaceController::OnSetupWorkspaceRequest);
+          &WorkspaceSyncronizer::OnSetupWorkspaceRequest);
 }
 
 }  // namespace suppvmonitor

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_WORKSPACE_CONTROLLER_H_
-#define SUPPVMONITOR_WORKSPACE_CONTROLLER_H_
+#ifndef SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
+#define SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
 
 #include <QObject>
 #include <memory>
@@ -43,19 +43,19 @@ namespace suppvmonitor
 class MonitorModel;
 class SequencerWorkspaceListener;
 
-//! Provides communication of WorkspaceItem with sequencer's Workspace.
+//! Provides syncronization of WorkspaceItem with sequencer's Workspace.
 
 //! The PVs are represented by VariableItems stored in WorkspaceItem. The controller
 //! creates underlying sequencer Workspace, attaches to it, and then performs mutual updates
 //! between sequencer variables and their counterparts VariableItems.
 
-class WorkspaceController : public QObject
+class WorkspaceSyncronizer : public QObject
 {
   Q_OBJECT
 
 public:
-  WorkspaceController(MonitorModel* model, QObject* parent = nullptr);
-  ~WorkspaceController() override;
+  WorkspaceSyncronizer(MonitorModel* model, QObject* parent = nullptr);
+  ~WorkspaceSyncronizer() override;
 
   void OnSetupWorkspaceRequest();
 
@@ -74,4 +74,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // SUPPVMONITOR_WORKSPACE_CONTROLLER_H_
+#endif  // SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_

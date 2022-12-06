@@ -33,7 +33,7 @@ namespace suppvmonitor
 {
 
 class MonitorModel;
-class WorkspaceController;
+class WorkspaceSyncronizer;
 class MonitorWidgetToolBar;
 
 class MonitorWidget : public QWidget
@@ -51,7 +51,7 @@ private:
   MonitorWidgetToolBar* m_tool_bar{nullptr};
 
   std::unique_ptr<MonitorModel> m_model;
-  std::unique_ptr<WorkspaceController> m_workspace_controller;
+  std::unique_ptr<WorkspaceSyncronizer> m_workspace_controller;
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
 };
 

@@ -58,7 +58,7 @@ public:
 TEST_F(WorkspaceControllerTest, InitialState)
 {
   MonitorModel model;
-  WorkspaceController controller(&model);
+  WorkspaceSyncronizer controller(&model);
   EXPECT_EQ(controller.GetWorkspace(), nullptr);
 }
 
@@ -74,7 +74,7 @@ TEST_F(WorkspaceControllerTest, OnSetupWorkspaceRequest)
   auto variable_item0 =
       workspace_item->InsertItem(CreateLocalVariable("abc", value0), mvvm::TagIndex::Append());
 
-  WorkspaceController controller(&model);
+  WorkspaceSyncronizer controller(&model);
   controller.OnSetupWorkspaceRequest();
 
   ASSERT_TRUE(controller.GetWorkspace() != nullptr);
@@ -102,7 +102,7 @@ TEST_F(WorkspaceControllerTest, OnVariableUpdated)
   SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
-  WorkspaceController controller(&model);
+  WorkspaceSyncronizer controller(&model);
   controller.OnSetupWorkspaceRequest();
 
   // FIXME current implementation doesn't update AnyValueItem on first connection

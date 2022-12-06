@@ -33,20 +33,20 @@
 namespace suppvmonitor
 {
 
-WorkspaceController::WorkspaceController(MonitorModel* model, QObject* parent)
+WorkspaceSyncronizer::WorkspaceSyncronizer(MonitorModel* model, QObject* parent)
     : QObject(parent)
     , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
     , m_model(model)
 {
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
-          &WorkspaceController::OnVariableUpdated, Qt::QueuedConnection);
+          &WorkspaceSyncronizer::OnVariableUpdated, Qt::QueuedConnection);
 }
 
-WorkspaceController::~WorkspaceController() = default;
+WorkspaceSyncronizer::~WorkspaceSyncronizer() = default;
 
 //! Creates domain workspace corresponding to WorkspaceItem and start listening.
 
-void WorkspaceController::OnSetupWorkspaceRequest()
+void WorkspaceSyncronizer::OnSetupWorkspaceRequest()
 {
   if (!GetWorkspaceItem())
   {
@@ -63,7 +63,7 @@ void WorkspaceController::OnSetupWorkspaceRequest()
   m_workspace->Setup();
 }
 
-void WorkspaceController::OnVariableUpdated()
+void WorkspaceSyncronizer::OnVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
   if (!event.m_variable_name.empty())
@@ -74,12 +74,12 @@ void WorkspaceController::OnVariableUpdated()
   }
 }
 
-sup::sequencer::Workspace* WorkspaceController::GetWorkspace() const
+sup::sequencer::Workspace* WorkspaceSyncronizer::GetWorkspace() const
 {
   return m_workspace.get();
 }
 
-sequencergui::WorkspaceItem* WorkspaceController::GetWorkspaceItem()
+sequencergui::WorkspaceItem* WorkspaceSyncronizer::GetWorkspaceItem()
 {
   return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
 }
