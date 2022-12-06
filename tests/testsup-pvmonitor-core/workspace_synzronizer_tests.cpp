@@ -34,7 +34,7 @@ using namespace suppvmonitor;
 
 //! Tests for WorkspaceSyncronizer class.
 
-class WorkspaceSyncronizerTest : public ::testing::Test
+class WorkspaceSyncronizerTests : public ::testing::Test
 {
 public:
   //! Helper function to create LocalVariableItem with given name and initial AnyValue.
@@ -55,17 +55,17 @@ public:
   }
 };
 
-TEST_F(WorkspaceSyncronizerTest, InitialState)
+TEST_F(WorkspaceSyncronizerTests, InitialState)
 {
   MonitorModel model;
-  WorkspaceSyncronizer controller(&model);
-  EXPECT_EQ(controller.GetWorkspace(), nullptr);
+  WorkspaceSyncronizer syncronizer(&model);
+  EXPECT_EQ(syncronizer.GetWorkspace(), nullptr);
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Setting up the workspace and checking that proper domain variable has been created.
 
-TEST_F(WorkspaceSyncronizerTest, OnSetupWorkspaceRequest)
+TEST_F(WorkspaceSyncronizerTests, OnSetupWorkspaceRequest)
 {
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -74,14 +74,14 @@ TEST_F(WorkspaceSyncronizerTest, OnSetupWorkspaceRequest)
   auto variable_item0 =
       workspace_item->InsertItem(CreateLocalVariable("abc", value0), mvvm::TagIndex::Append());
 
-  WorkspaceSyncronizer controller(&model);
-  controller.OnSetupWorkspaceRequest();
+  WorkspaceSyncronizer syncronizer(&model);
+  syncronizer.OnSetupWorkspaceRequest();
 
-  ASSERT_TRUE(controller.GetWorkspace() != nullptr);
-  EXPECT_EQ(controller.GetWorkspace()->GetVariables().size(), 1);
-  ASSERT_TRUE(controller.GetWorkspace()->HasVariable("abc"));
+  ASSERT_TRUE(syncronizer.GetWorkspace() != nullptr);
+  EXPECT_EQ(syncronizer.GetWorkspace()->GetVariables().size(), 1);
+  ASSERT_TRUE(syncronizer.GetWorkspace()->HasVariable("abc"));
 
-  auto domain_variable0 = controller.GetWorkspace()->GetVariable("abc");
+  auto domain_variable0 = syncronizer.GetWorkspace()->GetVariable("abc");
   EXPECT_EQ(domain_variable0->GetName(), "abc");
   sup::dto::AnyValue domain_value;
   EXPECT_TRUE(domain_variable0->GetValue(domain_value));
@@ -91,7 +91,7 @@ TEST_F(WorkspaceSyncronizerTest, OnSetupWorkspaceRequest)
 //! Setting up the workspace with single variable.
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 
-TEST_F(WorkspaceSyncronizerTest, OnVariableUpdated)
+TEST_F(WorkspaceSyncronizerTests, OnVariableUpdated)
 {
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -102,15 +102,15 @@ TEST_F(WorkspaceSyncronizerTest, OnVariableUpdated)
   SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
-  WorkspaceSyncronizer controller(&model);
-  controller.OnSetupWorkspaceRequest();
+  WorkspaceSyncronizer syncronizer(&model);
+  syncronizer.OnSetupWorkspaceRequest();
 
   // FIXME current implementation doesn't update AnyValueItem on first connection
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   // changing the value via domain workspace
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  EXPECT_TRUE(controller.GetWorkspace()->SetValue("abc", value1));
+  EXPECT_TRUE(syncronizer.GetWorkspace()->SetValue("abc", value1));
 
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
