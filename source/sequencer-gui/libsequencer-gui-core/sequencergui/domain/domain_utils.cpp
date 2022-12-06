@@ -55,13 +55,7 @@ namespace sequencergui::DomainUtils
 {
 std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain_name)
 {
-  auto result = ::sup::sequencer::GlobalInstructionRegistry().Create(domain_name);
-  if (!result)
-  {
-    throw TransformToDomainException("Error in GlobalInstructionRegistry: can create instruction '"
-                                     + domain_name + "'");
-  }
-  return result;
+  return ::sup::sequencer::GlobalInstructionRegistry().Create(domain_name);
 }
 
 std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name)

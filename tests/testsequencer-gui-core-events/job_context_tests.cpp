@@ -34,6 +34,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 
 #include <QSignalSpy>
@@ -98,7 +99,7 @@ TEST_F(JobContextTest, InvalidProcedure)
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
-  EXPECT_THROW(job_context.onPrepareJobRequest(), TransformToDomainException);
+  EXPECT_THROW(job_context.onPrepareJobRequest(), sup::sequencer::InvalidOperationException);
   EXPECT_FALSE(job_context.IsValid());
 }
 

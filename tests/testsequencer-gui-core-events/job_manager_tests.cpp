@@ -17,9 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/jobsystem/job_manager.h"
+#include "test_procedure_items.h"
+
+#include <gtest/gtest.h>
+#include <mvvm/model/model_utils.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_context.h>
-#include "sequencergui/jobsystem/job_manager.h"
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_item.h>
@@ -29,11 +33,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/message_panel.h>
-#include "test_procedure_items.h"
-
-#include <mvvm/model/model_utils.h>
-
-#include <gtest/gtest.h>
+#include <sup/sequencer/exceptions.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -105,7 +105,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 
   JobManager manager;
 
-  EXPECT_THROW(manager.SubmitJob(m_job_item), sequencergui::TransformToDomainException);
+  EXPECT_THROW(manager.SubmitJob(m_job_item), sup::sequencer::InvalidOperationException);
 }
 
 //! Set first procedure to the JobManager and execute it.
