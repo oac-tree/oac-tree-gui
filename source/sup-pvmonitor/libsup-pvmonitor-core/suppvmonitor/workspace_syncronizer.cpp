@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_controller.h"
+#include "suppvmonitor/workspace_syncronizer.h"
 
 #include <mvvm/model/model_utils.h>
 #include <sequencergui/core/exceptions.h>

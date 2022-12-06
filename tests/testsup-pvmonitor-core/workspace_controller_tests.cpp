@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_controller.h"
+#include "suppvmonitor/workspace_syncronizer.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -32,9 +32,9 @@
 
 using namespace suppvmonitor;
 
-//! Tests for WorkspaceController class.
+//! Tests for WorkspaceSyncronizer class.
 
-class WorkspaceControllerTest : public ::testing::Test
+class WorkspaceSyncronizerTest : public ::testing::Test
 {
 public:
   //! Helper function to create LocalVariableItem with given name and initial AnyValue.
@@ -55,7 +55,7 @@ public:
   }
 };
 
-TEST_F(WorkspaceControllerTest, InitialState)
+TEST_F(WorkspaceSyncronizerTest, InitialState)
 {
   MonitorModel model;
   WorkspaceSyncronizer controller(&model);
@@ -65,7 +65,7 @@ TEST_F(WorkspaceControllerTest, InitialState)
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Setting up the workspace and checking that proper domain variable has been created.
 
-TEST_F(WorkspaceControllerTest, OnSetupWorkspaceRequest)
+TEST_F(WorkspaceSyncronizerTest, OnSetupWorkspaceRequest)
 {
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -91,7 +91,7 @@ TEST_F(WorkspaceControllerTest, OnSetupWorkspaceRequest)
 //! Setting up the workspace with single variable.
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 
-TEST_F(WorkspaceControllerTest, OnVariableUpdated)
+TEST_F(WorkspaceSyncronizerTest, OnVariableUpdated)
 {
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 

@@ -20,7 +20,6 @@
 #include "softioc_runner.h"
 #include "softioc_utils.h"
 #include "suppvmonitor/sequencer_workspace_listener.h"
-#include "suppvmonitor/workspace_controller.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>

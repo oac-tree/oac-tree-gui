@@ -24,7 +24,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget_toolbar.h>
-#include <suppvmonitor/workspace_controller.h>
+#include <suppvmonitor/workspace_syncronizer.h>
 
 #include <QVBoxLayout>
 

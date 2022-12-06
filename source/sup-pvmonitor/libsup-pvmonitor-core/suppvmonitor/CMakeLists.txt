@@ -7,7 +7,7 @@ target_sources(${library_name} PRIVATE
   monitor_widget_toolbar.h
   sequencer_workspace_listener.cpp
   sequencer_workspace_listener.h
-  workspace_controller.cpp
-  workspace_controller.h
+  workspace_syncronizer.cpp
+  workspace_syncronizer.h
   workspace_event.h
 )
