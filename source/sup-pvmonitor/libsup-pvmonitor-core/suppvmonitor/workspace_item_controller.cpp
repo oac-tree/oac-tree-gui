@@ -39,6 +39,8 @@ void WorkspaceItemController::ProcessDomainEvent(const WorkspaceEvent& event)
   {
     sequencergui::UpdateAnyValue(event.m_value, *item);
   }
+
+
 }
 
 sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)
@@ -61,6 +63,11 @@ sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const
 sequencergui::WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
 {
   return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
+}
+
+void WorkspaceItemController::SetCallback(const std::function<void (const WorkspaceEvent &)> &callback)
+{
+  m_report_callback = callback;
 }
 
 }  // namespace suppvmonitor

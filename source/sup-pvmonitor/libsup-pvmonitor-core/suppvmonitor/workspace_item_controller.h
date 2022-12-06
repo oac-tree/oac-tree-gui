@@ -47,8 +47,13 @@ public:
 
   sequencergui::WorkspaceItem* GetWorkspaceItem();
 
+  void SetCallback(const std::function<void(const WorkspaceEvent& event)>& callback);
+
+  void OnDataChanged();
+
 private:
   MonitorModel* m_model{nullptr};
+  std::function<void(const WorkspaceEvent& event)> m_report_callback;
 };
 
 }  // namespace suppvmonitor
