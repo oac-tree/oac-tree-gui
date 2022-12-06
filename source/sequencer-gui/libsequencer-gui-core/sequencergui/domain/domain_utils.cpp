@@ -30,6 +30,26 @@
 
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
+
+namespace
+{
+bool LoadPlugin(const std::string& name)
+{
+  bool is_success{false};
+  try
+  {
+    ::sup::sequencer::LoadPlugin(name);
+    is_success = true;
+  }
+  catch (const std::exception&)
+  {
+    is_success = false;
+  }
+  std::cout << "Loading " + name + " plugin, result:" << is_success << std::endl;
+  return is_success;
+}
+}  // namespace
 
 namespace sequencergui::DomainUtils
 {
@@ -135,8 +155,7 @@ void LoadCodacPlugins()
 
   for (const auto& name : plugins)
   {
-    auto result = ::sup::sequencer::LoadPlugin(name);
-    std::cout << "Loading " + name + " plugin, result:" << result << std::endl;
+    LoadPlugin(name);
   }
 }
 
@@ -149,8 +168,7 @@ void LoadLocalPlugins()
 
   for (const auto& name : plugins)
   {
-    auto result = ::sup::sequencer::LoadPlugin(name);
-    std::cout << "Loading " + name + " plugin, result:" << result << std::endl;
+    LoadPlugin(name);
   }
 }
 
@@ -162,6 +180,5 @@ void LoadPlugins()
   LoadLocalPlugins();
 #endif
 }
-
 
 }  // namespace sequencergui::DomainUtils

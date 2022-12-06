@@ -33,12 +33,6 @@ using namespace sequencergui;
 class StandardInstructionItemsTest : public ::testing::Test
 {
 public:
-  //! Returns true if domain instruction is valid.
-  bool IsValid(::sup::sequencer::Instruction* instruction)
-  {
-    return instruction->Setup(m_procedure);
-  }
-
   ::sup::sequencer::Procedure m_procedure;
 };
 
@@ -80,7 +74,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kIsRootAttribute), "true");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -124,7 +118,7 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInputAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kOutputAttribute), "cde");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -167,7 +161,7 @@ TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kLeftHandAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "cde");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -246,7 +240,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kForceSuccessInstructionType);
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -337,7 +331,7 @@ TEST_F(StandardInstructionItemsTest, InputItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDescriptionAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInputTargetAttribute), "var");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -364,7 +358,7 @@ TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kInverterInstructionType);
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -413,7 +407,7 @@ TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kListenVarNamesAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kListenForceSuccessAttribute), "true");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -454,7 +448,7 @@ TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTextAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kIsRootAttribute), "true");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -493,7 +487,7 @@ TEST_F(StandardInstructionItemsTest, OutputItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDescriptionAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kOutputSourceAttribute), "var");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -542,7 +536,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kSuccessThresholdAttribute), "42");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFailureThresholdAttribute), "43");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 //! This checks that no kSuccessThresholdAttribute attribute created on domain side,
@@ -560,7 +554,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomainWhenNoSuccessThresh
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kSuccessThresholdAttribute));
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFailureThresholdAttribute), "43");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -602,7 +596,7 @@ TEST_F(StandardInstructionItemsTest, RepeatItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kRepeatInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kMaxCountAttribute), "42");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -633,7 +627,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -674,7 +668,7 @@ TEST_F(StandardInstructionItemsTest, UserChoiceItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kUserChoiceInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDescriptionAttribute), "abc");
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------
@@ -733,7 +727,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kWaitTimeoutAttribute), "0.0");
   EXPECT_EQ(domain_item->GetType(), domainconstants::kWaitInstructionType);
 
-  EXPECT_TRUE(IsValid(domain_item.get()));
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 //! UnknownInstructionItem tests.

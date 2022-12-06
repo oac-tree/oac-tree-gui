@@ -54,10 +54,7 @@ instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instructi
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
   auto ptr = domain_instruction.get();
-  if (!procedure->PushInstruction(domain_instruction.release()))
-  {
-    throw std::runtime_error("Error while trying to push instruction");
-  }
+  procedure->PushInstruction(domain_instruction.release());
   return ptr;
 }
 
