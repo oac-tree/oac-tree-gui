@@ -281,18 +281,21 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 {
+  // we are testing only "local include" instruction
   IncludeItem item;
-  item.SetFileName("abc");
   item.SetPath("def");
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFileAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kPathAttribute), "def");
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileAttribute));
 
-  // Test below will fail since it requires valid instruction on disk.
-  // Too difficult to test.
-  // EXPECT_TRUE(IsValid(domain_item.get()));
+  // Setup of Input instruction requires existance of instruction to include
+  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait->SetName("def");
+  m_procedure.InsertInstruction(wait.release(), 0);
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------

@@ -259,7 +259,11 @@ void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void IncludeItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kFileAttribute, GetFileName());
+  if (!GetFileName().empty())
+  {
+    instruction->AddAttribute(domainconstants::kFileAttribute, GetFileName());
+  }
+
   instruction->AddAttribute(domainconstants::kPathAttribute, GetPath());
 }
 
