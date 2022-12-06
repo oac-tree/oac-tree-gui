@@ -29,6 +29,7 @@
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
+#include <suppvmonitor/workspace_item_controller.h>
 
 namespace suppvmonitor
 {
@@ -36,6 +37,7 @@ namespace suppvmonitor
 WorkspaceSyncronizer::WorkspaceSyncronizer(MonitorModel* model, QObject* parent)
     : QObject(parent)
     , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
+    , m_workspace_item_controller(std::make_unique<WorkspaceItemController>(model))
     , m_model(model)
 {
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
@@ -66,12 +68,7 @@ void WorkspaceSyncronizer::OnSetupWorkspaceRequest()
 void WorkspaceSyncronizer::OnVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
-  if (!event.m_variable_name.empty())
-  {
-    auto variable_item =
-        m_workspace_builder->GetVariableItemFromDomainVariableName(event.m_variable_name);
-    sequencergui::UpdateAnyValue(event.m_value, *variable_item);
-  }
+  m_workspace_item_controller->ProcessDomainEvent(event);
 }
 
 sup::sequencer::Workspace* WorkspaceSyncronizer::GetWorkspace() const
