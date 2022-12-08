@@ -77,7 +77,7 @@ TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 
 TEST_F(WorkspaceItemControllerTests, ProcessDomainEvent)
 {
-  MockCallbackListener<WorkspaceEvent> listener;
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -113,7 +113,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  MockCallbackListener<WorkspaceEvent> listener;
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   MonitorModel model;
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();

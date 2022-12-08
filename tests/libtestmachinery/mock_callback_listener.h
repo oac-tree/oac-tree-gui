@@ -24,6 +24,9 @@
 
 #include <functional>
 
+namespace testutils
+{
+
 //! Convenience class to test callbacks with gmock. Template parameter defines callback signature
 //! std::function(void(const T&)).
 
@@ -48,5 +51,7 @@ public:
 
   MOCK_METHOD(void, OnCallback, (const T& arg));
 };
+
+}
 
 #endif  // TESTS_LIBTESTMACHINERY_MOCK_CALLBACK_LISTENER_H

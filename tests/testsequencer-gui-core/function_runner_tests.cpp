@@ -19,7 +19,7 @@
 
 #include "sequencergui/jobsystem/function_runner.h"
 
-#include "mock_runner_listener.h"
+#include "mock_callback_listener.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -34,17 +34,18 @@ using msec = std::chrono::milliseconds;
 
 class FunctionRunnerTest : public ::testing::Test
 {
+public:
+  using listener_t = testutils::MockCallbackListener<sequencergui::RunnerStatus>;
+  listener_t m_listener;
 };
 
 //! Checking that listener works as expected.
 
 TEST_F(FunctionRunnerTest, CheckListener)
 {
-  testutils::MockRunnerListener listener;
+  EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
 
-  EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-
-  auto callback = listener.CreateCallback();
+  auto callback = m_listener.CreateCallback();
   callback(RunnerStatus::kRunning);
 }
 
@@ -62,14 +63,13 @@ TEST_F(FunctionRunnerTest, InitialState)
 
 TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 {
-  testutils::MockRunnerListener listener;
   auto worker = []() { return false; };  // worker asks to exit immediately
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
@@ -82,18 +82,17 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 
 TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
 {
-  testutils::MockRunnerListener listener;
   auto worker = []()
   {
     throw std::runtime_error("Failed during runtime");
     return true;
   };
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kFailed));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kFailed));
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
@@ -129,19 +128,18 @@ TEST_F(FunctionRunnerTest, PrematureDeletionDuringRun)
 
 TEST_F(FunctionRunnerTest, StartAndTerminate)
 {
-  testutils::MockRunnerListener listener;
   auto worker = []()
   {
     std::this_thread::sleep_for(msec(10));
     return true;
   };  // executes forever
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
@@ -160,19 +158,18 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
 
 TEST_F(FunctionRunnerTest, PrematureDeletion)
 {
-  testutils::MockRunnerListener listener;
   auto worker = []()
   {
     std::this_thread::sleep_for(msec(10));
     return true;
   };  // executes forever
 
-  auto runner = std::make_unique<FunctionRunner>(worker, listener.CreateCallback());
+  auto runner = std::make_unique<FunctionRunner>(worker, m_listener.CreateCallback());
 
   // The feature of FunctionRunner that the last signal is RunningState on sudden destruction
   {
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
   }
 
   EXPECT_TRUE(runner->Start());  // triggering action
@@ -225,7 +222,6 @@ TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
 
 TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
 {
-  testutils::MockRunnerListener listener;
   int nsteps{0};
   auto worker = [&nsteps]()
   {
@@ -234,14 +230,14 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
     return nsteps < 2;  // should stop when nsteps==2
   };
 
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
   EXPECT_TRUE(runner.Step());  // triggering action
@@ -263,7 +259,6 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
 
 TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
 {
-  testutils::MockRunnerListener listener;
   int nsteps{0};
   auto worker = [&nsteps]()
   {
@@ -272,14 +267,14 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
     return nsteps < 2;  // should stop when nsteps==2
   };
 
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
   }
 
   EXPECT_TRUE(runner.Step());  // triggering action
@@ -301,7 +296,6 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
 
 TEST_F(FunctionRunnerTest, RunPauseRun)
 {
-  testutils::MockRunnerListener listener;
   int nsteps{0};
   bool is_continue{true};
   auto worker = [&nsteps, &is_continue]()
@@ -311,14 +305,14 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
     return is_continue;
   };
 
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
@@ -350,7 +344,6 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
 
 TEST_F(FunctionRunnerTest, RunPauseStepRun)
 {
-  testutils::MockRunnerListener listener;
   int nsteps{0};
   bool is_continue{true};
   auto worker = [&nsteps, &is_continue]()
@@ -360,16 +353,16 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
     return is_continue;
   };
 
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
@@ -409,7 +402,6 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
 
 TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
 {
-  testutils::MockRunnerListener listener;
   int nsteps{0};
   bool is_continue{true};
   auto worker = [&nsteps, &is_continue]()
@@ -419,14 +411,14 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
     return nsteps % 10 != 0;  // will exit after each 10 counts
   };
 
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
@@ -457,7 +449,6 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
 
 TEST_F(FunctionRunnerTest, ContinueAfterStopInStepMode)
 {
-  testutils::MockRunnerListener listener;
   int nsteps{0};
   auto worker = [&nsteps]()
   {
@@ -466,16 +457,16 @@ TEST_F(FunctionRunnerTest, ContinueAfterStopInStepMode)
     return nsteps / 10 != 1;  // should stop when nsteps==10
   };
 
-  FunctionRunner runner(worker, listener.CreateCallback());
+  FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kPaused));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopping));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kStopped));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kRunning));
-    EXPECT_CALL(listener, StatusChanged(RunnerStatus::kCompleted));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
   EXPECT_TRUE(runner.Step());  // triggering action
