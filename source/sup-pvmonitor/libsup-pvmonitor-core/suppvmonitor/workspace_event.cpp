@@ -17,23 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_WORKSPACE_EVENT_H_
-#define SUPPVMONITOR_WORKSPACE_EVENT_H_
-
-#include <sup/dto/anyvalue.h>
+#include "suppvmonitor/workspace_event.h"
 
 namespace suppvmonitor
 {
 
-struct WorkspaceEvent
+bool WorkspaceEvent::operator==(const WorkspaceEvent& other) const
 {
-  std::string m_variable_name;
-  sup::dto::AnyValue m_value;
+  return m_variable_name == other.m_variable_name && m_value == other.m_value;
+}
 
-  bool operator==(const WorkspaceEvent& other) const;
-  bool operator!=(const WorkspaceEvent& other) const;
-};
+bool WorkspaceEvent::operator!=(const WorkspaceEvent& other) const
+{
+  return !(*this == other);
+}
 
 }  // namespace suppvmonitor
-
-#endif  // SUPPVMONITOR_WORKSPACE_EVENT_H_
