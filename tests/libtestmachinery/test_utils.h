@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TESTUTILS_H
-#define TESTUTILS_H
+#ifndef TEST_UTILS_H
+#define TEST_UTILS_H
 
 //! @file test_utils.h
 //! Collection of utility functions for various unit tests.
 
 #include <algorithm>
-#include <memory>
-#include <vector>
 #include <chrono>
+#include <memory>
 #include <thread>
+#include <vector>
 
 //! Various common utils for unit tests.
 
@@ -79,7 +79,7 @@ std::string GetTextFileContent(const std::string& file_name);
 //! Create ASCII file with given content.
 void CreateTextFile(const std::string& file_name, const std::string& content);
 
-template<typename T>
+template <typename T>
 bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 {
   const std::chrono::milliseconds timeout_precision_msec(10);
@@ -99,4 +99,4 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
 }  // namespace testutils
 
-#endif
+#endif  // TEST_UTILS_H

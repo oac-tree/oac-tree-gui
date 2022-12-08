@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "mock_callback_listener.h"
+#include "test_gui_domain_utils.h"
 #include "suppvmonitor/workspace_item_controller.h"
 
 #include <gmock/gmock.h>
@@ -26,7 +27,6 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
@@ -41,14 +41,6 @@ using ::testing::_;
 
 class WorkspaceItemControllerTests : public ::testing::Test
 {
-public:
-  static void SetupVariable(const std::string& name, const sup::dto::AnyValue& initial_value,
-                            sequencergui::LocalVariableItem& item)
-  {
-    item.SetName(name);
-    item.SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
-    item.SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
-  }
 };
 
 TEST_F(WorkspaceItemControllerTests, InitialState)
@@ -86,7 +78,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
   auto variable_item0 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
 
-  SetupVariable("abc", value, *variable_item0);
+  testutils::SetupVariable("abc", value, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceItemController controller(&model);
@@ -119,7 +111,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
   auto variable_item0 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
-  SetupVariable("abc", value, *variable_item0);
+  testutils::SetupVariable("abc", value, *variable_item0);
   sequencergui::UpdateAnyValue(value, *variable_item0);
 
   WorkspaceItemController controller(&model);
@@ -150,12 +142,12 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariables)
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
   auto variable_item0 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
-  SetupVariable("var0", value0, *variable_item0);
+  testutils::SetupVariable("var0", value0, *variable_item0);
   sequencergui::UpdateAnyValue(value0, *variable_item0);
 
   auto variable_item1 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
-  SetupVariable("var1", value1, *variable_item1);
+  testutils::SetupVariable("var1", value1, *variable_item1);
   sequencergui::UpdateAnyValue(value1, *variable_item1);
 
   WorkspaceItemController controller(&model);

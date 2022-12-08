@@ -18,13 +18,13 @@
  *****************************************************************************/
 
 #include "suppvmonitor/workspace_syncronizer.h"
+#include "test_gui_domain_utils.h"
 #include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
@@ -43,17 +43,10 @@ public:
       const std::string& name, const sup::dto::AnyValue& initial_value)
   {
     auto result = std::make_unique<sequencergui::LocalVariableItem>();
-    SetupVariable(name, initial_value, *result.get());
+    testutils::SetupVariable(name, initial_value, *result.get());
     return result;
   }
 
-  static void SetupVariable(const std::string& name, const sup::dto::AnyValue& initial_value,
-                            sequencergui::LocalVariableItem& item)
-  {
-    item.SetName(name);
-    item.SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
-    item.SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
-  }
 };
 
 TEST_F(WorkspaceSyncronizerTests, InitialState)
@@ -103,7 +96,7 @@ TEST_F(WorkspaceSyncronizerTests, OnDomainVariableUpdated)
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
   auto variable_item0 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
-  SetupVariable("abc", value0, *variable_item0);
+  testutils::SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceSyncronizer syncronizer(&model);
