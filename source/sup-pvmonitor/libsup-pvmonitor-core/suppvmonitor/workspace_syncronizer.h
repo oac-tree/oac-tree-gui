@@ -43,6 +43,7 @@ namespace suppvmonitor
 class MonitorModel;
 class SequencerWorkspaceListener;
 class WorkspaceItemController;
+class WorkspaceEvent;
 
 //! Provides syncronization of WorkspaceItem with sequencer's Workspace.
 
@@ -60,11 +61,11 @@ public:
 
   void OnSetupWorkspaceRequest();
 
-  void OnDomainVariableUpdated();
-
   sup::sequencer::Workspace* GetWorkspace() const;
 
 private:
+  void OnDomainVariableUpdated();
+  void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
   sequencergui::WorkspaceItem* GetWorkspaceItem();
 
   std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;

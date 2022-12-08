@@ -27,6 +27,8 @@
 namespace sequencergui
 {
 
+//! Populates empty sequencer workspace with the content of WorkspaceItem.
+
 void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
                                                      workspace_t* workspace)
 {

@@ -19,11 +19,11 @@
 
 #include "suppvmonitor/workspace_syncronizer.h"
 #include "test_gui_domain_utils.h"
-#include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
@@ -46,7 +46,6 @@ public:
     testutils::SetupVariable(name, initial_value, *result.get());
     return result;
   }
-
 };
 
 TEST_F(WorkspaceSyncronizerTests, InitialState)
@@ -117,29 +116,30 @@ TEST_F(WorkspaceSyncronizerTests, OnDomainVariableUpdated)
   EXPECT_EQ(value1, stored_anyvalue);
 }
 
-//TEST_F(WorkspaceSyncronizerTests, OnModelVariableUpdate)
-//{
-//  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+TEST_F(WorkspaceSyncronizerTests, OnModelVariableUpdate)
+{
+  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-//  MonitorModel model;
-//  auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
-//  auto variable_item0 =
-//      workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
-//  SetupVariable("abc", value0, *variable_item0);
-//  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
-//  sequencergui::UpdateAnyValue(value0, *variable_item0);
+  MonitorModel model;
+  auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
+  auto variable_item0 =
+      workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  testutils::SetupVariable("abc", value0, *variable_item0);
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+  sequencergui::UpdateAnyValue(value0, *variable_item0);
 
-////  WorkspaceSyncronizer syncronizer(&model);
-////  syncronizer.OnSetupWorkspaceRequest();
+  WorkspaceSyncronizer syncronizer(&model);
+  syncronizer.OnSetupWorkspaceRequest();
 
-////  // changing the value via domain workspace
-////  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-////  EXPECT_TRUE(syncronizer.GetWorkspace()->SetValue("abc", value1));
+  // changing the value via the model
+  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sequencergui::UpdateAnyValue(value1, *variable_item0);
 
-////  // We are testing here queued signals, need special waiting
-////  QTest::qWait(100);
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
 
-////  ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
-////  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-////  EXPECT_EQ(value1, stored_anyvalue);
-//}
+  auto domain_variable0 = syncronizer.GetWorkspace()->GetVariable("abc");
+  sup::dto::AnyValue domain_value;
+  EXPECT_TRUE(domain_variable0->GetValue(domain_value));
+  EXPECT_EQ(domain_value, value1);
+}
