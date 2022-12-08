@@ -17,19 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "mock_callback_listener.h"
 #include "suppvmonitor/workspace_item_controller.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_event.h>
-#include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <stdexcept>
 
@@ -48,18 +49,6 @@ public:
     item.SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
     item.SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
   }
-
-  template <typename T>
-  class MockCallbackListener
-  {
-  public:
-    MOCK_METHOD1(OnCallback, void(const T& arg));
-
-    std::function<void(const T&)> CreateCallback()
-    {
-      return [this](const T& arg) { OnCallback(arg); };
-    }
-  };
 };
 
 TEST_F(WorkspaceItemControllerTests, InitialState)
