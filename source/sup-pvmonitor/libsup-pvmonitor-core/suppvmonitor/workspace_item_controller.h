@@ -45,7 +45,7 @@ namespace suppvmonitor
 class WorkspaceEvent;
 class MonitorModel;
 
-//! Controls changes in WorkspaceItem and provide callbacks about those that
+//! Controls changes in WorkspaceItem and provide callbacks for those that
 //! are relevant for the domain workspace.
 
 class WorkspaceItemController
@@ -62,7 +62,9 @@ public:
   void SetCallback(const std::function<void(const WorkspaceEvent& event)>& callback);
 
 private:
-  void OnModelEvent(const mvvm::event_variant_t& event);
+  void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
+  void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event);
+
   void ProcessEventToDomain(sequencergui::VariableItem* variable_item);
 
   MonitorModel* m_model{nullptr};

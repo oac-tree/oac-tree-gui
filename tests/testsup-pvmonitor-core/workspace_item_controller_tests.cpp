@@ -18,8 +18,8 @@
  *****************************************************************************/
 
 #include "mock_callback_listener.h"
-#include "test_gui_domain_utils.h"
 #include "suppvmonitor/workspace_item_controller.h"
+#include "test_gui_domain_utils.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -99,9 +99,9 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
 }
 
 //! Setting up the WorkspaceItem with single variable.
-//! Changing AnyValueItem through the model and expecting callback toward the domain.
+//! Replacing AnyValueItem through the model and expecting callback toward the domain.
 
-TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
+TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -127,10 +127,10 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
   sequencergui::UpdateAnyValue(expected_event.m_value, *variable_item0);
 }
 
-//! Setting up the workspace with two variables. Modifying variables one after another and checking
+//! Setting up the workspace with two variables. Replacing variables one after another and checking
 //! the order of callbacks.
 
-TEST_F(WorkspaceItemControllerTests, ModifyTwoVariables)
+TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
 {
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});

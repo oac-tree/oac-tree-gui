@@ -19,6 +19,7 @@
 
 #include "suppvmonitor/workspace_item_controller.h"
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/model_event_handler.h>
 #include <sequencergui/model/variable_item.h>
@@ -37,8 +38,13 @@ namespace suppvmonitor
 WorkspaceItemController::WorkspaceItemController(MonitorModel* model)
     : m_model(model), m_slot(std::make_unique<mvvm::Slot>())
 {
-  m_model->GetEventHandler()->Connect<mvvm::ItemInsertedEvent>(
-      this, &WorkspaceItemController::OnModelEvent, m_slot.get());
+  auto on_item_insert = [this](auto event)
+  { OnItemInsertedEvent(std::get<mvvm::ItemInsertedEvent>(event)); };
+  m_model->GetEventHandler()->Connect<mvvm::ItemInsertedEvent>(on_item_insert, m_slot.get());
+
+  auto on_data_changed = [this](auto event)
+  { OnDataChangedEvent(std::get<mvvm::DataChangedEvent>(event)); };
+  m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(on_data_changed, m_slot.get());
 }
 
 //! Process an event coming from sequencer workspace
@@ -87,19 +93,36 @@ void WorkspaceItemController::SetCallback(
   m_report_callback = callback;
 }
 
-//! Process event in MonitorModel. Currently handles ItemInsertedEvents only.
-
-void WorkspaceItemController::OnModelEvent(const mvvm::event_variant_t& event)
+//! Process data changed event.
+void WorkspaceItemController::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
-  if (m_report_callback)
-  {
-    auto concrete_event = std::get<mvvm::ItemInsertedEvent>(event);
+  qDebug() << "DataChangedEvent";
+  // FIXME refactor the way we find VariableItem corresponding to DataChangedEvent
 
-    // ItemInsertedEvents is a sign that AnyValueItem has been regenerated.
-    if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(concrete_event.m_parent))
+  // finding VariableItem which is a parent of the item with changed data
+  for (auto variable_item : GetWorkspaceItem()->GetVariables())
+  {
+    if (mvvm::utils::IsItemAncestor(event.m_item, variable_item))
     {
+      qDebug() << "DataChangedEvent ---";
       ProcessEventToDomain(variable_item);
+      break;
     }
+  }
+}
+
+//! Process model insert event.
+void WorkspaceItemController::OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event)
+{
+  if (!m_report_callback)
+  {
+    return;
+  }
+
+  // If parent is VariableItem, then insert event denotes that AnyValueItem has been regenerated.
+  if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(event.m_parent))
+  {
+    ProcessEventToDomain(variable_item);
   }
 }
 
@@ -108,6 +131,11 @@ void WorkspaceItemController::OnModelEvent(const mvvm::event_variant_t& event)
 
 void WorkspaceItemController::ProcessEventToDomain(sequencergui::VariableItem* variable_item)
 {
+  if (!m_report_callback)
+  {
+    return;
+  }
+
   // do not send an event if it was initially triggered from the domain
   if (m_block_update_to_domain[variable_item->GetName()])
   {
@@ -115,8 +143,12 @@ void WorkspaceItemController::ProcessEventToDomain(sequencergui::VariableItem* v
   }
 
   // generate AnyValue from current AnyValueItem
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
-  m_report_callback({variable_item->GetName(), stored_anyvalue});
+
+  if (variable_item->GetAnyValueItem())
+  {
+    auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
+    m_report_callback({variable_item->GetName(), stored_anyvalue});
+  }
 }
 
 }  // namespace suppvmonitor
