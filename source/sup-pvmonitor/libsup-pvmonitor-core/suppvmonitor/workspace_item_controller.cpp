@@ -37,19 +37,13 @@ namespace suppvmonitor
 WorkspaceItemController::WorkspaceItemController(MonitorModel* model)
     : m_model(model), m_slot(std::make_unique<mvvm::Slot>())
 {
-  //  auto adapter = [this](const mvvm::event_variant_t& event)
-  //  {
-  //    auto concrete_event = std::get<mvvm::DataChangedEvent>(event);
-  //    OnDataChangedEvent(concrete_event.m_item, concrete_event.m_data_role);
-  //  };
-
-  //  m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(adapter, m_slot.get());
-
   m_model->GetEventHandler()->Connect<mvvm::ItemInsertedEvent>(
       this, &WorkspaceItemController::OnModelEvent, m_slot.get());
 }
 
-void WorkspaceItemController::ProcessDomainEvent(const WorkspaceEvent& event)
+//! Process an event coming from sequencer workspace
+
+void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event)
 {
   m_block_update_to_domain[event.m_variable_name] = true;
 
@@ -61,11 +55,13 @@ void WorkspaceItemController::ProcessDomainEvent(const WorkspaceEvent& event)
   m_block_update_to_domain[event.m_variable_name] = false;
 }
 
+//!
+
 sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)
 {
   if (!GetWorkspaceItem())
   {
-    throw std::logic_error("No WOrkspaceItem exists");
+    throw std::logic_error("No WorkspaceItem exists");
   }
 
   for (auto variable_item : GetWorkspaceItem()->GetVariables())
@@ -78,33 +74,51 @@ sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const
   return nullptr;
 }
 
+//! Returns WorkspaceItem from the model.
+
 sequencergui::WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
 {
   return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
 }
 
 //! Sets the callback to report GUI events.
+
 void WorkspaceItemController::SetCallback(
     const std::function<void(const WorkspaceEvent&)>& callback)
 {
   m_report_callback = callback;
 }
 
+//! Process event in MonitorModel. Currently handles ItemInsertedEvents only.
+
 void WorkspaceItemController::OnModelEvent(const mvvm::event_variant_t& event)
 {
   if (m_report_callback)
   {
     auto concrete_event = std::get<mvvm::ItemInsertedEvent>(event);
+
+    // ItemInsertedEvents is a sign that AnyValueItem has been regenerated.
     if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(concrete_event.m_parent))
     {
-      if (m_block_update_to_domain[variable_item->GetName()])
-      {
-        return;
-      }
-      auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
-      m_report_callback({variable_item->GetName(), stored_anyvalue});
+      ProcessEventToDomain(variable_item);
     }
   }
+}
+
+//! Processes an event in WorkspaceItem, and, if necessary, send it to the domain via callback
+//! provided.
+
+void WorkspaceItemController::ProcessEventToDomain(sequencergui::VariableItem* variable_item)
+{
+  // do not send an event if it was initially triggered from the domain
+  if (m_block_update_to_domain[variable_item->GetName()])
+  {
+    return;
+  }
+
+  // generate AnyValue from current AnyValueItem
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
+  m_report_callback({variable_item->GetName(), stored_anyvalue});
 }
 
 }  // namespace suppvmonitor

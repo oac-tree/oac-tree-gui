@@ -75,7 +75,7 @@ TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 //! Triggering domain workspace event and validating AnyValueItem update.
 //! Expecting no callbacks on item update.
 
-TEST_F(WorkspaceItemControllerTests, ProcessDomainEvent)
+TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
 {
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
@@ -99,7 +99,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessDomainEvent)
   EXPECT_CALL(listener, OnCallback(_)).Times(0);
 
   // triggering domain workspace event
-  controller.ProcessDomainEvent({"abc", value});
+  controller.ProcessEventFromDomain({"abc", value});
 
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
@@ -122,7 +122,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
   SetupVariable("abc", value, *variable_item0);
 
   WorkspaceItemController controller(&model);
-  controller.ProcessDomainEvent({"abc", value});
+  controller.ProcessEventFromDomain({"abc", value});
 
   controller.SetCallback(listener.CreateCallback());
 

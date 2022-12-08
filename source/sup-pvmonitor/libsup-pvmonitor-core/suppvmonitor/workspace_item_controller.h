@@ -50,7 +50,8 @@ class WorkspaceItemController
 {
 public:
   WorkspaceItemController(MonitorModel* model);
-  void ProcessDomainEvent(const WorkspaceEvent& event);
+
+  void ProcessEventFromDomain(const WorkspaceEvent& event);
 
   sequencergui::VariableItem* GeVariableItemForName(const std::string& name);
 
@@ -58,9 +59,9 @@ public:
 
   void SetCallback(const std::function<void(const WorkspaceEvent& event)>& callback);
 
-  void OnModelEvent(const mvvm::event_variant_t &event);
-
 private:
+  void OnModelEvent(const mvvm::event_variant_t &event);
+  void ProcessEventToDomain(sequencergui::VariableItem* variable_item);
 
   MonitorModel* m_model{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;

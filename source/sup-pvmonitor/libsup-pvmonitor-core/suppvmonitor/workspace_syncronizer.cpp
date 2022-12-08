@@ -68,7 +68,7 @@ void WorkspaceSyncronizer::OnSetupWorkspaceRequest()
 void WorkspaceSyncronizer::OnVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
-  m_workspace_item_controller->ProcessDomainEvent(event);
+  m_workspace_item_controller->ProcessEventFromDomain(event);
 }
 
 sup::sequencer::Workspace* WorkspaceSyncronizer::GetWorkspace() const
