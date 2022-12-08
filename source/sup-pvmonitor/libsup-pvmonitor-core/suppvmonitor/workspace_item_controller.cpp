@@ -25,6 +25,8 @@
 #include <sequencergui/transform/variable_item_transform_utils.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_event.h>
+#include <mvvm/signals/model_event_handler.h>
+#include <mvvm/signals/model_event_handler.h>
 
 #include <stdexcept>
 
@@ -65,6 +67,7 @@ sequencergui::WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
   return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
 }
 
+//! Sets the callback to report GUI events.
 void WorkspaceItemController::SetCallback(const std::function<void (const WorkspaceEvent &)> &callback)
 {
   m_report_callback = callback;

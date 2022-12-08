@@ -19,6 +19,7 @@
 
 #include "suppvmonitor/workspace_item_controller.h"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
@@ -28,10 +29,12 @@
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_event.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <stdexcept>
 
 using namespace suppvmonitor;
+using ::testing::_;
 
 //! Tests for WorkspaceItemController class.
 
@@ -45,6 +48,18 @@ public:
     item.SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
     item.SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
   }
+
+  template <typename T>
+  class MockCallbackListener
+  {
+  public:
+    MOCK_METHOD1(OnCallback, void(const T& arg));
+
+    std::function<void(const T&)> CreateCallback()
+    {
+      return [this](const T& arg) { OnCallback(arg); };
+    }
+  };
 };
 
 TEST_F(WorkspaceItemControllerTests, InitialState)
@@ -67,11 +82,14 @@ TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
   EXPECT_EQ(controller.GeVariableItemForName("abc"), variable_item);
 }
 
-//! Setting up the workspace with single variable.
-//! Changing domain variable and checking that WorkspaceItem was properly updated.
+//! Setting up the WorkspaceItem with single variable.
+//! Triggering domain workspace event and validating AnyValueItem update.
+//! Expecting no callbacks on item update.
 
-TEST_F(WorkspaceItemControllerTests, OnVariableUpdated)
+TEST_F(WorkspaceItemControllerTests, ProcessDomainEvent)
 {
+  MockCallbackListener<WorkspaceEvent> listener;
+
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   MonitorModel model;
@@ -83,14 +101,47 @@ TEST_F(WorkspaceItemControllerTests, OnVariableUpdated)
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceItemController controller(&model);
+  controller.SetCallback(listener.CreateCallback());
 
   // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
-  // changing the value via domain workspace
+  // expecting no callbacks on processing domain events
+  EXPECT_CALL(listener, OnCallback(_)).Times(0);
+
+  // triggering domain workspace event
   controller.ProcessDomainEvent({"abc", value});
 
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value, stored_anyvalue);
+}
+
+//! Setting up the WorkspaceItem with single variable.
+//! Changing AnyValueItem through the model and expecting callback toward the domain.
+
+TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
+{
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  MockCallbackListener<WorkspaceEvent> listener;
+
+  MonitorModel model;
+  auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
+  auto variable_item0 =
+      workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+
+  WorkspaceItemController controller(&model);
+  controller.ProcessDomainEvent({"abc", value});
+
+  controller.SetCallback(listener.CreateCallback());
+
+  // preparing callback expectations
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  WorkspaceEvent expected_event{"abc", new_value};
+
+//  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+
+  // modifying value from the model
+  sequencergui::UpdateAnyValue(expected_event.m_value, *variable_item0);
 }
