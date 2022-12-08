@@ -23,6 +23,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <map>
 #include <mvvm/signals/signal_slot.h>
 #include <mvvm/signals/event_types.h>
 
@@ -60,9 +61,11 @@ public:
   void OnModelEvent(const mvvm::event_variant_t &event);
 
 private:
+
   MonitorModel* m_model{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;
   std::unique_ptr<mvvm::Slot> m_slot;
+  std::map<std::string, bool> m_block_update_to_domain;
 };
 
 }  // namespace suppvmonitor

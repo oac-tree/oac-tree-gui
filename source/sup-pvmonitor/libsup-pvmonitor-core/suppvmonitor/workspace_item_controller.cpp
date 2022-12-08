@@ -51,10 +51,14 @@ WorkspaceItemController::WorkspaceItemController(MonitorModel* model)
 
 void WorkspaceItemController::ProcessDomainEvent(const WorkspaceEvent& event)
 {
+  m_block_update_to_domain[event.m_variable_name] = true;
+
   if (auto item = GeVariableItemForName(event.m_variable_name); item)
   {
     sequencergui::UpdateAnyValue(event.m_value, *item);
   }
+
+  m_block_update_to_domain[event.m_variable_name] = false;
 }
 
 sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)
@@ -93,6 +97,10 @@ void WorkspaceItemController::OnModelEvent(const mvvm::event_variant_t& event)
     auto concrete_event = std::get<mvvm::ItemInsertedEvent>(event);
     if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(concrete_event.m_parent))
     {
+      if (m_block_update_to_domain[variable_item->GetName()])
+      {
+        return;
+      }
       auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
       m_report_callback({variable_item->GetName(), stored_anyvalue});
     }
