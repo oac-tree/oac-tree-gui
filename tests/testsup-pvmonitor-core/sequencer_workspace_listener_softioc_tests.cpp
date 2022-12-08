@@ -59,7 +59,7 @@ using namespace suppvmonitor;
 
 //! Tests for WorkspaceController class.
 
-class WorkspaceControllerSoftIocTest : public ::testing::Test
+class SequencerWorkspaceListenerSoftIocTests : public ::testing::Test
 {
 public:
   static void ValidateChannelAccessPresence()
@@ -88,12 +88,12 @@ public:
   static SoftIocRunner m_softioc_service;
 };
 
-SoftIocRunner WorkspaceControllerSoftIocTest::m_softioc_service{};
+SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softioc_service{};
 
 //! The sequencer Workspace contains a single channel access variable.
 //! Validating that SequencerWorkspaceListener gets notifications.
 
-TEST_F(WorkspaceControllerSoftIocTest, ListeningWorkspaceWithSingleCAVariable)
+TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVariable)
 {
   // creating ChannelAccessVariable
   auto variable = sequencergui::DomainUtils::CreateDomainVariable(
