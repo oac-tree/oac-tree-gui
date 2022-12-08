@@ -21,13 +21,21 @@
 #define SUPPVMONITOR_WORKSPACE_ITEM_CONRTOLLER_H_
 
 #include <functional>
+#include <memory>
 #include <string>
+#include <mvvm/signals/signal_slot.h>
+#include <mvvm/signals/event_types.h>
+
+namespace mvvm
+{
+class SessionItem;
+}
 
 namespace sequencergui
 {
 class VariableItem;
 class WorkspaceItem;
-}
+}  // namespace sequencergui
 
 namespace suppvmonitor
 {
@@ -49,11 +57,12 @@ public:
 
   void SetCallback(const std::function<void(const WorkspaceEvent& event)>& callback);
 
-  void OnDataChanged();
+  void OnModelEvent(const mvvm::event_variant_t &event);
 
 private:
   MonitorModel* m_model{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;
+  std::unique_ptr<mvvm::Slot> m_slot;
 };
 
 }  // namespace suppvmonitor

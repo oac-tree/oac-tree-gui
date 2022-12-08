@@ -130,6 +130,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
   auto variable_item0 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  SetupVariable("abc", value, *variable_item0);
 
   WorkspaceItemController controller(&model);
   controller.ProcessDomainEvent({"abc", value});
@@ -140,7 +141,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   WorkspaceEvent expected_event{"abc", new_value};
 
-//  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
 
   // modifying value from the model
   sequencergui::UpdateAnyValue(expected_event.m_value, *variable_item0);
