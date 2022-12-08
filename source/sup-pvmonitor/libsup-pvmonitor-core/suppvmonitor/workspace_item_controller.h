@@ -20,12 +20,13 @@
 #ifndef SUPPVMONITOR_WORKSPACE_ITEM_CONRTOLLER_H_
 #define SUPPVMONITOR_WORKSPACE_ITEM_CONRTOLLER_H_
 
+#include <mvvm/signals/event_types.h>
+#include <mvvm/signals/signal_slot.h>
+
 #include <functional>
+#include <map>
 #include <memory>
 #include <string>
-#include <map>
-#include <mvvm/signals/signal_slot.h>
-#include <mvvm/signals/event_types.h>
 
 namespace mvvm
 {
@@ -44,7 +45,8 @@ namespace suppvmonitor
 class WorkspaceEvent;
 class MonitorModel;
 
-//!
+//! Controls changes in WorkspaceItem and provide callbacks about those that
+//! are relevant for the domain workspace.
 
 class WorkspaceItemController
 {
@@ -60,7 +62,7 @@ public:
   void SetCallback(const std::function<void(const WorkspaceEvent& event)>& callback);
 
 private:
-  void OnModelEvent(const mvvm::event_variant_t &event);
+  void OnModelEvent(const mvvm::event_variant_t& event);
   void ProcessEventToDomain(sequencergui::VariableItem* variable_item);
 
   MonitorModel* m_model{nullptr};

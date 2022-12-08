@@ -41,7 +41,7 @@ WorkspaceSyncronizer::WorkspaceSyncronizer(MonitorModel* model, QObject* parent)
     , m_model(model)
 {
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
-          &WorkspaceSyncronizer::OnVariableUpdated, Qt::QueuedConnection);
+          &WorkspaceSyncronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
 }
 
 WorkspaceSyncronizer::~WorkspaceSyncronizer() = default;
@@ -63,9 +63,11 @@ void WorkspaceSyncronizer::OnSetupWorkspaceRequest()
   m_workspace_listener->StartListening(m_workspace.get());
 
   m_workspace->Setup();
+
+  // FIXME implement setting of initial values here
 }
 
-void WorkspaceSyncronizer::OnVariableUpdated()
+void WorkspaceSyncronizer::OnDomainVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
   m_workspace_item_controller->ProcessEventFromDomain(event);

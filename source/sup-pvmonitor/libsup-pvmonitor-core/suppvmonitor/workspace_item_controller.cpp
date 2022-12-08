@@ -55,8 +55,6 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
   m_block_update_to_domain[event.m_variable_name] = false;
 }
 
-//!
-
 sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)
 {
   if (!GetWorkspaceItem())

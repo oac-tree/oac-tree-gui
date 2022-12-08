@@ -46,7 +46,7 @@ class WorkspaceItemController;
 
 //! Provides syncronization of WorkspaceItem with sequencer's Workspace.
 
-//! The PVs are represented by VariableItems stored in WorkspaceItem. The controller
+//! The PVs are represented by VariableItems stored in WorkspaceItem. The synchronizer object
 //! creates underlying sequencer Workspace, attaches to it, and then performs mutual updates
 //! between sequencer variables and their counterparts VariableItems.
 
@@ -60,7 +60,7 @@ public:
 
   void OnSetupWorkspaceRequest();
 
-  void OnVariableUpdated();
+  void OnDomainVariableUpdated();
 
   sup::sequencer::Workspace* GetWorkspace() const;
 

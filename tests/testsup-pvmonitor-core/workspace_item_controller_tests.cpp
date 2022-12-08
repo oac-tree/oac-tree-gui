@@ -120,10 +120,9 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
   auto variable_item0 =
       workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
   SetupVariable("abc", value, *variable_item0);
+  sequencergui::UpdateAnyValue(value, *variable_item0);
 
   WorkspaceItemController controller(&model);
-  controller.ProcessEventFromDomain({"abc", value});
-
   controller.SetCallback(listener.CreateCallback());
 
   // preparing callback expectations
@@ -134,4 +133,45 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModel)
 
   // modifying value from the model
   sequencergui::UpdateAnyValue(expected_event.m_value, *variable_item0);
+}
+
+//! Setting up the workspace with two variables. Modifying variables one after another and checking
+//! the order of callbacks.
+
+TEST_F(WorkspaceItemControllerTests, ModifyTwoVariables)
+{
+  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
+
+  MonitorModel model;
+  auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
+  auto variable_item0 =
+      workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  SetupVariable("var0", value0, *variable_item0);
+  sequencergui::UpdateAnyValue(value0, *variable_item0);
+
+  auto variable_item1 =
+      workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  SetupVariable("var1", value1, *variable_item1);
+  sequencergui::UpdateAnyValue(value1, *variable_item1);
+
+  WorkspaceItemController controller(&model);
+  controller.SetCallback(listener.CreateCallback());
+
+  // preparing callback expectations
+  WorkspaceEvent expected_event0{"var0", new_value};
+  WorkspaceEvent expected_event1{"var1", new_value};
+
+  {
+    ::testing::InSequence seq;
+    EXPECT_CALL(listener, OnCallback(expected_event0)).Times(1);
+    EXPECT_CALL(listener, OnCallback(expected_event1)).Times(1);
+  }
+
+  // modifying value from the model
+  sequencergui::UpdateAnyValue(expected_event0.m_value, *variable_item0);
+  sequencergui::UpdateAnyValue(expected_event1.m_value, *variable_item1);
 }

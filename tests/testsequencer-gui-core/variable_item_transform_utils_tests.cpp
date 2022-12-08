@@ -54,7 +54,7 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValue)
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
-  // FIXME Provide update if AnyValueItem is exists and layout of it corresponds to AnyValue.
+  // FIXME Provide update if AnyValueItem exists and layout of it corresponds to AnyValue.
   UpdateAnyValue(anyvalue, item);
   EXPECT_NE(item.GetAnyValueItem(), prev_anyvalue_item);
 }
