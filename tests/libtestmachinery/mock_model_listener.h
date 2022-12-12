@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
-#define TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
+#ifndef TESTS_LIBTESTMACHINERY_MOCK_MODEL_LISTENER_H_
+#define TESTS_LIBTESTMACHINERY_MOCK_MODEL_LISTENER_H_
 
 #include <gmock/gmock.h>
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -40,23 +40,23 @@ class MockModelListener : public mvvm::ModelListener<mvvm::SessionModelInterface
 public:
   explicit MockModelListener(mvvm::SessionModelInterface* model);
 
-  MOCK_METHOD2(OnAboutToInsertItem,
-               void(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index));
+  MOCK_METHOD(void, OnAboutToInsertItem,
+              (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
 
-  MOCK_METHOD2(OnItemInserted, void(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index));
+  MOCK_METHOD(void, OnItemInserted, (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
 
-  MOCK_METHOD2(OnAboutToRemoveItem,
-               void(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index));
+  MOCK_METHOD(void, OnAboutToRemoveItem,
+              (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
 
-  MOCK_METHOD2(OnItemRemoved, void(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index));
+  MOCK_METHOD(void, OnItemRemoved, (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
 
-  MOCK_METHOD2(OnDataChanged, void(mvvm::SessionItem* item, int role));
+  MOCK_METHOD(void, OnDataChanged, (mvvm::SessionItem * item, int role));
 
-  MOCK_METHOD1(OnModelAboutToBeReset, void(mvvm::SessionModelInterface* model));
+  MOCK_METHOD(void, OnModelAboutToBeReset, (mvvm::SessionModelInterface * model));
 
-  MOCK_METHOD1(OnModelReset, void(mvvm::SessionModelInterface* model));
+  MOCK_METHOD(void, OnModelReset, (mvvm::SessionModelInterface * model));
 
-  MOCK_METHOD1(OnModelAboutToBeDestroyed, void(mvvm::SessionModelInterface* model));
+  MOCK_METHOD(void, OnModelAboutToBeDestroyed, (mvvm::SessionModelInterface * model));
 };
 
-#endif  // TESTS_LIBTESTMACHINERY_MOCKMODELLISTENER_H
+#endif  // TESTS_LIBTESTMACHINERY_MOCK_MODEL_LISTENER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TESTS_LIBTESTMACHINERY_MOCKITEMLISTENER_H
-#define TESTS_LIBTESTMACHINERY_MOCKITEMLISTENER_H
+#ifndef TESTS_LIBTESTMACHINERY_MOCK_ITEM_LISTENER_H_
+#define TESTS_LIBTESTMACHINERY_MOCK_ITEM_LISTENER_H_
 
 #include <mvvm/signals/item_listener.h>
 
@@ -40,16 +40,15 @@ class MockItemListener : public mvvm::ItemListener<mvvm::SessionItem>
 public:
   explicit MockItemListener(mvvm::SessionItem* item) { SetItem(item); }
 
-  MOCK_METHOD2(OnItemInserted, void(mvvm::SessionItem* item, const mvvm::TagIndex& tagindex));
-  MOCK_METHOD2(OnAboutToRemoveItem, void(mvvm::SessionItem* item, const mvvm::TagIndex& tagindex));
-  MOCK_METHOD2(OnItemRemoved, void(mvvm::SessionItem* item, const mvvm::TagIndex& tagindex));
-  MOCK_METHOD2(OnDataChanged, void(mvvm::SessionItem* item, int role));
-  MOCK_METHOD2(OnPropertyChanged, void(mvvm::SessionItem* item, std::string name));
-
-  MOCK_METHOD0(Unsubscribe, void(void));
+  MOCK_METHOD(void, OnItemInserted, (mvvm::SessionItem* item, const mvvm::TagIndex& tagindex));
+  MOCK_METHOD(void, OnAboutToRemoveItem, (mvvm::SessionItem* item, const mvvm::TagIndex& tagindex));
+  MOCK_METHOD(void, OnItemRemoved, (mvvm::SessionItem* item, const mvvm::TagIndex& tagindex));
+  MOCK_METHOD(void, OnDataChanged, (mvvm::SessionItem* item, int role));
+  MOCK_METHOD(void, OnPropertyChanged, (mvvm::SessionItem* item, std::string name));
+  MOCK_METHOD(void, Unsubscribe, ());
 
 protected:
   void Subscribe() override;
 };
 
-#endif  // TESTS_LIBTESTMACHINERY_MOCKITEMLISTENER_H
+#endif  // TESTS_LIBTESTMACHINERY_MOCK_ITEM_LISTENER_H_

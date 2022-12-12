@@ -20,8 +20,8 @@
 #ifndef MOCKSEQUENCEROBSERVER_H
 #define MOCKSEQUENCEROBSERVER_H
 
-#include <sup/sequencer/user_interface.h>
 #include <sequencergui/domain/sequencer_types.h>
+#include <sup/sequencer/user_interface.h>
 
 namespace ccs::types
 {
@@ -39,18 +39,18 @@ namespace testutils
 class MockSequencerObserver : public userinterface_t
 {
 public:
-  MOCK_METHOD1(UpdateInstructionStatusImpl, void(const instruction_t* instruction));
-  MOCK_METHOD2(VariableUpdatedImpl, void(const std::string& name, const anyvalue_t& value));
+  MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction));
+  MOCK_METHOD(void, VariableUpdatedImpl, (const std::string& name, const anyvalue_t& value));
 
-  MOCK_METHOD2(PutValueImpl, bool(const anyvalue_t& value, const std::string& description));
-  MOCK_METHOD2(GetUserValueImpl, bool(const anyvalue_t& value, const std::string& description));
+  MOCK_METHOD(bool, PutValueImpl, (const anyvalue_t& value, const std::string& description));
+  MOCK_METHOD(bool, GetUserValueImpl, (const anyvalue_t& value, const std::string& description));
 
-  MOCK_METHOD2(GetUserChoiceImpl,
-               int(const std::vector<std::string>& choices, const std::string& description));
-  MOCK_METHOD0(StartSingleStepImpl, void(void));
-  MOCK_METHOD0(EndSingleStepImpl, void(void));
+  MOCK_METHOD(int, GetUserChoiceImpl,
+              (const std::vector<std::string>& choices, const std::string& description));
+  MOCK_METHOD(void, StartSingleStepImpl, ());
+  MOCK_METHOD(void, EndSingleStepImpl, ());
 
-  MOCK_METHOD1(MessageImpl, void(const std::string& message));
+  MOCK_METHOD(void, MessageImpl, (const std::string& message));
 };
 
 }  // namespace testutils

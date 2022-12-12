@@ -20,9 +20,8 @@
 #ifndef MOCKMESSAGEHANDLER_H
 #define MOCKMESSAGEHANDLER_H
 
-#include <sequencergui/core/message_handler_interface.h>
-
 #include <gmock/gmock.h>
+#include <sequencergui/core/message_handler_interface.h>
 
 #include <memory>
 #include <string>
@@ -32,7 +31,7 @@
 class MockMessageHandler : public sequencergui::MessageHandlerInterface
 {
 public:
-  MOCK_METHOD1(SendMessage, void(const std::string&));
+  MOCK_METHOD(void, SendMessage, (const std::string&));
 };
 
 //! Create decorator around MockMessageHandler.

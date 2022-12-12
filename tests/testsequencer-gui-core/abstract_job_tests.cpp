@@ -32,11 +32,11 @@ public:
   class TestJob : public sequencergui::AbstractJob
   {
   public:
-    MOCK_METHOD0(StartRequest, void(void));
-    MOCK_METHOD0(PauseModeOnRequest, void(void));
-    MOCK_METHOD0(PauseModeOffRequest, void(void));
-    MOCK_METHOD0(StepRequest, void(void));
-    MOCK_METHOD0(StopRequest, void(void));
+    MOCK_METHOD(void, StartRequest, ());
+    MOCK_METHOD(void, PauseModeOnRequest, ());
+    MOCK_METHOD(void, PauseModeOffRequest, ());
+    MOCK_METHOD(void, StepRequest, ());
+    MOCK_METHOD(void, StopRequest, ());
   };
 };
 

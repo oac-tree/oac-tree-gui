@@ -48,4 +48,5 @@ MockModelListener::MockModelListener(mvvm::SessionModelInterface *model) : Model
 
   auto on_model_about_destroyed = [this](auto model) { OnModelAboutToBeDestroyed(model); };
   SetOnModelAboutToBeDestroyed(on_model_about_destroyed);
+
 }
