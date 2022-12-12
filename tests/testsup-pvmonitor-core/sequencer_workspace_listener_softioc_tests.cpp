@@ -17,8 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "softioc_runner.h"
-#include "softioc_utils.h"
 #include "suppvmonitor/sequencer_workspace_listener.h"
 
 #include <gtest/gtest.h>
@@ -30,6 +28,8 @@
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
+#include <testutils/softioc_runner.h>
+#include <testutils/softioc_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>

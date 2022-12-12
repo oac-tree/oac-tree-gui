@@ -18,7 +18,6 @@
  *****************************************************************************/
 
 #include "sequencergui/monitor/sequencer_monitor_actions.h"
-#include "test_procedure_items.h"
 
 #include <gtest/gtest.h>
 #include <mvvm/model/model_utils.h>
@@ -30,6 +29,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <testutils/test_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>

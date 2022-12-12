@@ -18,7 +18,6 @@
  *****************************************************************************/
 
 #include "sequencergui/jobsystem/job_manager.h"
-#include "test_procedure_items.h"
 
 #include <gtest/gtest.h>
 #include <mvvm/model/model_utils.h>
@@ -34,6 +33,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sup/sequencer/exceptions.h>
+#include <testutils/test_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>

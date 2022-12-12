@@ -1,0 +1,24 @@
+target_sources(${library_name} PRIVATE
+  folder_based_test.cpp
+  folder_based_test.h
+  mock_callback_listener.h
+  mock_item_listener.cpp
+  mock_item_listener.h
+  mock_message_handler.cpp
+  mock_message_handler.h
+  mock_model_listener.cpp
+  mock_model_listener.h
+  mock_sequencer_observer.h
+  softioc_runner.cpp
+  softioc_runner.h
+  softioc_utils.cpp
+  softioc_utils.h
+  test_domain_procedures.cpp
+  test_domain_procedures.h
+  test_gui_domain_utils.cpp
+  test_gui_domain_utils.h
+  test_procedure_items.cpp
+  test_procedure_items.h
+  test_utils.cpp
+  test_utils.h
+)

@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "folder_based_test.h"
 #include "sequencergui/model/sequencer_model.h"
 
 #include <gtest/gtest.h>
@@ -26,6 +25,7 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <testutils/folder_based_test.h>
 
 using namespace sequencergui;
 

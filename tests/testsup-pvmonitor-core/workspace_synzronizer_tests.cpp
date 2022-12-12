@@ -18,7 +18,6 @@
  *****************************************************************************/
 
 #include "suppvmonitor/workspace_syncronizer.h"
-#include "test_gui_domain_utils.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -28,6 +27,7 @@
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
+#include <testutils/test_gui_domain_utils.h>
 
 #include <QTest>
 

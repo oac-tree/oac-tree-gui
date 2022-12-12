@@ -19,10 +19,9 @@
 
 #include "sequencergui/jobsystem/function_runner.h"
 
-#include "mock_callback_listener.h"
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <testutils/mock_callback_listener.h>
 
 #include <stdexcept>
 #include <thread>

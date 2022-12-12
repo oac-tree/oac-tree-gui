@@ -18,8 +18,6 @@
  *****************************************************************************/
 
 #include "sequencergui/jobsystem/procedure_runner.h"
-#include "test_domain_procedures.h"
-#include "test_utils.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
@@ -28,6 +26,8 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
+#include <testutils/test_domain_procedures.h>
+#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>

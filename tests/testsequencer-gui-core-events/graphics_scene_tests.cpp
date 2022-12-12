@@ -17,9 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "mock_message_handler.h"
 #include "sequencergui/nodeeditor/graphics_scene.h"
-#include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
 #include <gtest/gtest.h>
 #include <mvvm/core/exceptions.h>
@@ -30,8 +28,10 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/graphics_scene_controller.h>
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
+#include <testutils/mock_message_handler.h>
 
 #include <QSignalSpy>
 #include <QTest>

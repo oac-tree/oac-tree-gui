@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "folder_based_test.h"
 #include "sequencergui/model/xml_utils.h"
-#include "test_utils.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <testutils/folder_based_test.h>
+#include <testutils/test_utils.h>
 
 //! Testing methods from importutils.h
 
