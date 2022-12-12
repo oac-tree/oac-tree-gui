@@ -31,7 +31,7 @@ using namespace sequencergui;
 
 //! Tests for SequencerModel class.
 
-class SequencerModelTest : public FolderBasedTest
+class SequencerModelTest : public testutils::FolderBasedTest
 {
 public:
   SequencerModelTest() : FolderBasedTest("test_SequencerModel") {}

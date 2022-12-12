@@ -135,7 +135,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 
   // setting message handler
-  MockMessageHandler mock_handler;
+  testutils::MockMessageHandler mock_handler;
   m_actions.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called
@@ -199,7 +199,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 
   // setting message handler
-  MockMessageHandler mock_handler;
+  testutils::MockMessageHandler mock_handler;
   m_actions.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called

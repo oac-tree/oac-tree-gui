@@ -32,6 +32,9 @@ class SessionItem;
 class TagIndex;
 }  // namespace mvvm
 
+namespace testutils
+{
+
 //! Mocking class to test ModelEventListenerInterface reactions on notifications issued by
 //! ModelEventNotifier.
 
@@ -58,5 +61,7 @@ public:
 
   MOCK_METHOD(void, OnModelAboutToBeDestroyed, (mvvm::SessionModelInterface * model));
 };
+
+}  // namespace testutils
 
 #endif  // TESTS_LIBTESTMACHINERY_MOCK_MODEL_LISTENER_H_

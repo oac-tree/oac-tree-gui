@@ -30,7 +30,7 @@
 
 using namespace sup::gui;
 
-class AnyValueItemBuilderTests : public FolderBasedTest
+class AnyValueItemBuilderTests : public testutils::FolderBasedTest
 {
 public:
   AnyValueItemBuilderTests() : FolderBasedTest("test_AnyValueItemBuilder") {}

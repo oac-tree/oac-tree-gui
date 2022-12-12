@@ -29,7 +29,7 @@
 
 //! Testing methods from importutils.h
 
-class XmlUtilsTest : public FolderBasedTest
+class XmlUtilsTest : public testutils::FolderBasedTest
 {
 public:
   XmlUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}

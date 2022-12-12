@@ -21,6 +21,9 @@
 
 #include <mvvm/model/sessionitem.h>
 
+namespace testutils
+{
+
 MockModelListener::MockModelListener(mvvm::SessionModelInterface *model) : ModelListener(model)
 {
   auto on_about_to_insert = [this](auto item, auto tagindex)
@@ -48,5 +51,6 @@ MockModelListener::MockModelListener(mvvm::SessionModelInterface *model) : Model
 
   auto on_model_about_destroyed = [this](auto model) { OnModelAboutToBeDestroyed(model); };
   SetOnModelAboutToBeDestroyed(on_model_about_destroyed);
-
 }
+
+}  // namespace testutils

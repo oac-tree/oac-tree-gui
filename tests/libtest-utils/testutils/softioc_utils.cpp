@@ -77,6 +77,9 @@ record (waveform,"CA-TESTS:CHARRAY")
 
 }  // unnamed namespace
 
+namespace testutils
+{
+
 std::string GetEPICSBinaryPath()
 {
   return std::string(std::getenv("EPICS_BASE")) + "/bin/"
@@ -141,3 +144,5 @@ std::string PvPut(const std::string &variable_name, const std::string &value)
 
   return sstr.str();
 }
+
+}  // namespace testutils

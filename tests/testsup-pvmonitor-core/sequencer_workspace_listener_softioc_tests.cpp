@@ -76,7 +76,7 @@ public:
   static void SetUpTestSuite()
   {
     ValidateChannelAccessPresence();
-    m_softioc_service.Start(GetEpicsDBContentString());
+    m_softioc_service.Start(testutils::GetEpicsDBContentString());
   }
 
   static void TearDownTestSuite()
@@ -85,10 +85,10 @@ public:
     m_softioc_service.Stop();
   }
 
-  static SoftIocRunner m_softioc_service;
+  static testutils::SoftIocRunner m_softioc_service;
 };
 
-SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softioc_service{};
+testutils::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softioc_service{};
 
 //! The sequencer Workspace contains a single channel access variable.
 //! Validating that SequencerWorkspaceListener gets notifications.

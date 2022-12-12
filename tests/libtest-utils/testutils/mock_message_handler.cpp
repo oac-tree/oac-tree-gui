@@ -21,8 +21,13 @@
 
 #include <sequencergui/core/message_handler_decorator.h>
 
+namespace testutils
+{
+
 std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
     MockMessageHandler *mock_handler)
 {
   return sequencergui::MessageHandlerDecorator::Create(mock_handler);
 }
+
+}  // namespace testutils

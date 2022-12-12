@@ -166,7 +166,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
   auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
   auto wait = instructions.at(0);
 
-  MockItemListener listener(wait);
+  testutils::MockItemListener listener(wait);
 
   EXPECT_CALL(listener, OnPropertyChanged(wait, itemconstants::kStatus)).Times(2);
 

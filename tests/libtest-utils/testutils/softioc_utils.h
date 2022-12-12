@@ -23,6 +23,9 @@
 #include <string>
 #include <vector>
 
+namespace testutils
+{
+
 //! Returns path where EPICS binaries are located.
 std::string GetEPICSBinaryPath();
 
@@ -41,5 +44,7 @@ std::string GetPvGetOutput(const std::string& variable_name, const std::string& 
 
 //! Put the value into PV with `pvput` command, returns string representing command output.
 std::string PvPut(const std::string& variable_name, const std::string& value);
+
+}
 
 #endif  // SUP_EPICS_SOFTIOCUTILS_H_

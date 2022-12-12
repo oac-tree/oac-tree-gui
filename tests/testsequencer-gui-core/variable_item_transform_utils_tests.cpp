@@ -66,7 +66,7 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
   SequencerModel model;
   auto item = model.InsertItem<LocalVariableItem>();
 
-  MockModelListener listener(&model);
+  testutils::MockModelListener listener(&model);
 
   sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 

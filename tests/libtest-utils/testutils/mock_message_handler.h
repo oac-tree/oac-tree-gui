@@ -26,6 +26,9 @@
 #include <memory>
 #include <string>
 
+namespace testutils
+{
+
 //! Mock class to use as MessageHandler.
 
 class MockMessageHandler : public sequencergui::MessageHandlerInterface
@@ -40,5 +43,7 @@ public:
 
 std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
     MockMessageHandler* mock_handler);
+
+}
 
 #endif  //  MOCKMESSAGEHANDLER_H

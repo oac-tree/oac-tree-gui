@@ -22,6 +22,9 @@
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/tagindex.h>
 
+namespace testutils
+{
+
 void MockItemListener::Subscribe()
 {
   auto on_item_inserted = [this](mvvm::SessionItem* item, const mvvm::TagIndex& tag_index)
@@ -43,3 +46,5 @@ void MockItemListener::Subscribe()
   { OnPropertyChanged(item, name); };
   SetOnPropertyChanged(on_property_changed);
 }
+
+}  // namespace testutils

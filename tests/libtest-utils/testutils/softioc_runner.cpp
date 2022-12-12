@@ -38,6 +38,9 @@ void GenerateEpicDatabaseFile(const std::string& name, const std::string& db_fil
 
 }  // unnamed namespace
 
+namespace testutils
+{
+
 SoftIocRunner::SoftIocRunner(const std::string& session_name) : m_is_active(false)
 {
   m_session_name = session_name.empty() ? "temp-softioc" : session_name;
@@ -90,3 +93,5 @@ std::string SoftIocRunner::GetDataBaseFileName() const
 {
   return m_session_name + ".db";
 }
+
+}  // namespace testutils

@@ -169,7 +169,7 @@ TEST_F(GraphicsSceneTest, OnInvalidConnectionRequest)
   // attempt to connect to leaves together
   EXPECT_THROW(m_scene.onConnectionRequest(view0, view1), mvvm::InvalidOperationException);
 
-  MockMessageHandler mock_handler;
+  testutils::MockMessageHandler mock_handler;
   m_scene.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called

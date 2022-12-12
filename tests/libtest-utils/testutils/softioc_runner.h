@@ -24,6 +24,9 @@
 
 #include <string>
 
+namespace testutils
+{
+
 //! Provides possibility to start/stop 'softIoc' service on request.
 //! Intended for use with google-test and its SetUpTestCase/TearDownTestCase machinery.
 //! The goal is to isolate the user from startup/shutdown details of softIoc service
@@ -50,5 +53,7 @@ protected:
   bool m_is_active;
   std::string m_session_name;
 };
+
+}
 
 #endif  // SUP_EPICS_SOFTIOCRUNNER_H_
