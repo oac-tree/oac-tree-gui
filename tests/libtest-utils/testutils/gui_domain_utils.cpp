@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "test_gui_domain_utils.h"
+#include "gui_domain_utils.h"
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sup/gui/dto/anyvalue_utils.h>

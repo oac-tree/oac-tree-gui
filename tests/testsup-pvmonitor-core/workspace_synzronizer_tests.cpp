@@ -27,7 +27,7 @@
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
-#include <testutils/test_gui_domain_utils.h>
+#include <testutils/gui_domain_utils.h>
 
 #include <QTest>
 

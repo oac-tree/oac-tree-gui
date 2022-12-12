@@ -15,8 +15,8 @@ target_sources(${library_name} PRIVATE
   softioc_utils.h
   standard_procedures.cpp
   standard_procedures.h
-  test_gui_domain_utils.cpp
-  test_gui_domain_utils.h
+  gui_domain_utils.cpp
+  gui_domain_utils.h
   test_procedure_items.cpp
   test_procedure_items.h
   test_utils.cpp

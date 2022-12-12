@@ -29,8 +29,8 @@
 #include <sup/sequencer/workspace.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_event.h>
+#include <testutils/gui_domain_utils.h>
 #include <testutils/mock_callback_listener.h>
-#include <testutils/test_gui_domain_utils.h>
 
 #include <stdexcept>
 
