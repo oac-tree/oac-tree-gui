@@ -5,7 +5,7 @@ find_package(Qt5 COMPONENTS Widgets Core Test REQUIRED)
 find_package(Threads)
 include(GoogleTest)
 
-add_subdirectory(libtestmachinery)
+add_subdirectory(libtest-utils)
 add_subdirectory(testsup-gui-core)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-core-events)

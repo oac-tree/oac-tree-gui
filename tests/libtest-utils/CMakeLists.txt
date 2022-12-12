@@ -1,4 +1,4 @@
-set(library_name testmachinery)
+set(library_name test-utils)
 
 add_library(${library_name} STATIC "")
 
