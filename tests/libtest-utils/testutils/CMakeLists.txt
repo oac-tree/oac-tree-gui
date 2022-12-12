@@ -13,8 +13,8 @@ target_sources(${library_name} PRIVATE
   softioc_runner.h
   softioc_utils.cpp
   softioc_utils.h
-  test_domain_procedures.cpp
-  test_domain_procedures.h
+  standard_procedures.cpp
+  standard_procedures.h
   test_gui_domain_utils.cpp
   test_gui_domain_utils.h
   test_procedure_items.cpp

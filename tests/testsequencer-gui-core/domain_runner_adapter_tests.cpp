@@ -25,7 +25,7 @@
 #include <sup/sequencer/runner.h>
 #include <testutils/mock_callback_listener.h>
 #include <testutils/mock_sequencer_observer.h>
-#include <testutils/test_domain_procedures.h>
+#include <testutils/standard_procedures.h>
 
 #include <chrono>
 #include <memory>

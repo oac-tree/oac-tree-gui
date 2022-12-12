@@ -17,14 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "test_domain_procedures.h"
+#include "standard_procedures.h"
 
+#include "test_utils.h"
+
+#include <sequencergui/domain/domain_utils.h>
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
-#include <sup/sequencer/variable.h>
 #include <sup/sequencer/procedure.h>
-#include <sequencergui/domain/domain_utils.h>
-#include "test_utils.h"
+#include <sup/sequencer/variable.h>
 
 using namespace sequencergui;
 
