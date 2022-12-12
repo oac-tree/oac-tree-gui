@@ -29,7 +29,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <testutils/test_procedure_items.h>
+#include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>

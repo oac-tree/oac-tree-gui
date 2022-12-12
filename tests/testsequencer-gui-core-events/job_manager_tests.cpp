@@ -33,7 +33,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sup/sequencer/exceptions.h>
-#include <testutils/test_procedure_items.h>
+#include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>

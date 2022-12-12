@@ -17,8 +17,8 @@ target_sources(${library_name} PRIVATE
   standard_procedures.h
   gui_domain_utils.cpp
   gui_domain_utils.h
-  test_procedure_items.cpp
-  test_procedure_items.h
+  standard_procedure_items.cpp
+  standard_procedure_items.h
   test_utils.cpp
   test_utils.h
 )

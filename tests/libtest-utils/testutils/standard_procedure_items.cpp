@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "test_procedure_items.h"
+#include "standard_procedure_items.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>

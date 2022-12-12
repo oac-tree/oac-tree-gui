@@ -35,7 +35,7 @@
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 #include <testutils/mock_item_listener.h>
-#include <testutils/test_procedure_items.h>
+#include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>
