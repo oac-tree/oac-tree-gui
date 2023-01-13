@@ -19,6 +19,8 @@
 
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
+#include <mvvm/model/application_model.h>
+#include <mvvm/model/item_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
@@ -26,9 +28,6 @@
 #include <sequencergui/nodeeditor/connectable_view_map.h>
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/view_factory_interface.h>
-
-#include <mvvm/model/application_model.h>
-#include <mvvm/model/item_utils.h>
 
 #include <QDebug>
 
@@ -175,7 +174,7 @@ GraphicsSceneController::GraphicsSceneController(mvvm::ApplicationModel* model,
                                                  GraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {
-  Subscribe(model->GetEventHandler());
+  Subscribe(model);
 }
 
 void GraphicsSceneController::SetAlignStrategy(
@@ -186,18 +185,17 @@ void GraphicsSceneController::SetAlignStrategy(
 
 GraphicsSceneController::~GraphicsSceneController() = default;
 
-void GraphicsSceneController::OnItemInserted(mvvm::SessionItem* parent,
-                                             const mvvm::TagIndex& tag_index)
+void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 {
-  if (p_impl->IsInScope(parent))
+  if (p_impl->IsInScope(event.m_parent))
   {
-    p_impl->InsertView(parent, tag_index);
+    p_impl->InsertView(event.m_parent, event.m_tag_index);
   }
 }
 
-void GraphicsSceneController::OnAboutToRemoveItem(mvvm::SessionItem* parent,
-                                                  const mvvm::TagIndex& tag_index)
+void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& event)
 {
+  auto [parent, tag_index] = event;
   auto item_to_remove = parent->GetItem(tag_index.tag, tag_index.index);
 
   // Special case when user removes procedure owning our instruction container.
@@ -214,9 +212,9 @@ void GraphicsSceneController::OnAboutToRemoveItem(mvvm::SessionItem* parent,
   }
 }
 
-void GraphicsSceneController::OnDataChanged(mvvm::SessionItem* item, int role)
+void GraphicsSceneController::OnModelEvent(const mvvm::DataChangedEvent& event)
 {
-  p_impl->OnDataChanged(item, role);
+  p_impl->OnDataChanged(event.m_item, event.m_data_role);
 }
 
 void GraphicsSceneController::Init(InstructionContainerItem* root_item)

@@ -26,40 +26,17 @@
 
 #include <memory>
 
-namespace mvvm
-{
-class SessionItem;
-class TagIndex;
-}  // namespace mvvm
-
 namespace testutils
 {
 
-//! Mocking class to test ModelEventListenerInterface reactions on notifications issued by
-//! ModelEventNotifier.
+//! Mocking class to test events coming from the model.
 
 class MockModelListener : public mvvm::ModelListener<mvvm::SessionModelInterface>
 {
 public:
   explicit MockModelListener(mvvm::SessionModelInterface* model);
 
-  MOCK_METHOD(void, OnAboutToInsertItem,
-              (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
-
-  MOCK_METHOD(void, OnItemInserted, (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
-
-  MOCK_METHOD(void, OnAboutToRemoveItem,
-              (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
-
-  MOCK_METHOD(void, OnItemRemoved, (mvvm::SessionItem * parent, const mvvm::TagIndex& tag_index));
-
-  MOCK_METHOD(void, OnDataChanged, (mvvm::SessionItem * item, int role));
-
-  MOCK_METHOD(void, OnModelAboutToBeReset, (mvvm::SessionModelInterface * model));
-
-  MOCK_METHOD(void, OnModelReset, (mvvm::SessionModelInterface * model));
-
-  MOCK_METHOD(void, OnModelAboutToBeDestroyed, (mvvm::SessionModelInterface * model));
+  MOCK_METHOD(void, OnEvent, (const mvvm::event_variant_t& event));
 };
 
 }  // namespace testutils

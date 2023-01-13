@@ -46,11 +46,11 @@ public:
 
   void SetAlignStrategy(std::function<void(InstructionContainerItem *)> strategy);
 
-  void OnItemInserted(mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index) override;
+  void OnModelEvent(const mvvm::ItemInsertedEvent &event) override;
 
-  void OnAboutToRemoveItem(mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index) override;
+  void OnModelEvent(const mvvm::AboutToRemoveItemEvent &event) override;
 
-  void OnDataChanged(mvvm::SessionItem *item, int role) override;
+  void OnModelEvent(const mvvm::DataChangedEvent &event) override;
 
   void Init(InstructionContainerItem *root_item);
 
