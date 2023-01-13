@@ -20,6 +20,7 @@
 #include "sequencergui/domain/domain_utils.h"
 
 #include <gtest/gtest.h>
+
 #include <sup/sequencer/instruction.h>
 
 #include <chrono>

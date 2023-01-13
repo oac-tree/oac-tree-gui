@@ -17,14 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/viewmodel/procedure_viewmodel.h"
+
+#include <gtest/gtest.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include "sequencergui/viewmodel/procedure_viewmodel.h"
 
 #include <mvvm/standarditems/container_item.h>
-
-#include <gtest/gtest.h>
 
 #include <QSignalSpy>
 

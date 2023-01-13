@@ -22,9 +22,10 @@
 #include <gtest/gtest.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <testutils/mock_model_listener.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/conversion_utils.h>
-#include <testutils/mock_model_listener.h>
 
 using namespace sequencergui;
 using ::testing::_;

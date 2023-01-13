@@ -23,11 +23,12 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
+#include <suppvmonitor/monitor_model.h>
+#include <testutils/gui_domain_utils.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
-#include <suppvmonitor/monitor_model.h>
-#include <testutils/gui_domain_utils.h>
 
 #include <QTest>
 

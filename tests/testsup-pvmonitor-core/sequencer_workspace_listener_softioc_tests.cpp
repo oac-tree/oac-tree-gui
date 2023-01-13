@@ -23,13 +23,14 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <suppvmonitor/monitor_model.h>
+#include <testutils/softioc_runner.h>
+#include <testutils/softioc_utils.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
-#include <suppvmonitor/monitor_model.h>
-#include <testutils/softioc_runner.h>
-#include <testutils/softioc_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>

@@ -19,9 +19,8 @@
 
 #include "sequencergui/nodeeditor/connectable_instruction_adapter.h"
 
-#include <sequencergui/model/standard_instruction_items.h>
-
 #include <gtest/gtest.h>
+#include <sequencergui/model/standard_instruction_items.h>
 
 #include <QString>
 

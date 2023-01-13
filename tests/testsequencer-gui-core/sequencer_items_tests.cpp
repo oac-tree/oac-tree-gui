@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sup/sequencer/instruction.h>
+#include <gtest/gtest.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 
-#include <gtest/gtest.h>
+#include <sup/sequencer/instruction.h>
 
 using namespace sequencergui;
 

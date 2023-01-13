@@ -20,6 +20,7 @@
 #include "sup/gui/dto/conversion_utils.h"
 
 #include <gtest/gtest.h>
+
 #include <sup/dto/anytype.h>
 
 using namespace sup::gui;

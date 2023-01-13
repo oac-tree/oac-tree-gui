@@ -20,6 +20,7 @@
 #include "sup/gui/dto/anyvalue_item.h"
 
 #include <gtest/gtest.h>
+
 #include <sup/dto/anytype.h>
 #include <sup/gui/dto/conversion_utils.h>
 

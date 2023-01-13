@@ -20,8 +20,6 @@
 #include "sequencergui/nodeeditor/graphics_scene.h"
 
 #include <gtest/gtest.h>
-#include <mvvm/core/exceptions.h>
-#include <mvvm/model/model_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -32,6 +30,9 @@
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
 #include <testutils/mock_message_handler.h>
+
+#include <mvvm/core/exceptions.h>
+#include <mvvm/model/model_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>

@@ -19,9 +19,10 @@
 
 #include "sup/gui/dto/domain_anyvalue_builder.h"
 
-#include <sup/gui/dto/anyvalue_item.h>
 #include <gtest/gtest.h>
+
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_item.h>
 
 using namespace sup::gui;
 

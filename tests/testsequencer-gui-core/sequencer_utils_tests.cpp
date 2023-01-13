@@ -19,13 +19,12 @@
 
 #include "sequencergui/model/sequencer_utils.h"
 
+#include <gtest/gtest.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 
 #include <mvvm/factories/item_catalogue_factory.h>
 #include <mvvm/interfaces/item_manager_interface.h>
-
-#include <gtest/gtest.h>
 
 using namespace sequencergui;
 

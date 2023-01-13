@@ -22,10 +22,11 @@
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <suppvmonitor/workspace_event.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
-#include <suppvmonitor/workspace_event.h>
 
 #include <QSignalSpy>
 #include <iostream>

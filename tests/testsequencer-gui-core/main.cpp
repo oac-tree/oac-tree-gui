@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sup/sequencer/instruction.h>
-#include <sequencergui/domain/sequencer_types.h>
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/instruction_item.h>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/model/instruction_item.h>
+
+#include <sup/sequencer/instruction.h>
 
 #include <QMetaType>
 

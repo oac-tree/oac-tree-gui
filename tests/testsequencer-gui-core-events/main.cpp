@@ -22,6 +22,7 @@
 #include <sequencergui/domain/sequencer_types.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
+
 #include <sup/sequencer/instruction.h>
 
 #include <QApplication>

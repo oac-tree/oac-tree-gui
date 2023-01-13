@@ -22,12 +22,13 @@
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types.h>
+#include <testutils/standard_procedures.h>
+#include <testutils/test_utils.h>
+
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
-#include <testutils/standard_procedures.h>
-#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>

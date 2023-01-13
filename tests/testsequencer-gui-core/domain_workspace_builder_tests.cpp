@@ -24,6 +24,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+
 #include <sup/sequencer/workspace.h>
 
 using namespace sequencergui;

@@ -19,13 +19,12 @@
 
 #include "sequencergui/components/procedure_list_widget.h"
 
+#include <gtest/gtest.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/viewmodel/viewmodel.h>
-
-#include <gtest/gtest.h>
 
 #include <QDebug>
 #include <QListView>
@@ -131,7 +130,8 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndex)
 
   // selecting an item and checking results
   auto indexes = view.GetViewModel()->GetIndexOfSessionItem(procedure);
-  ASSERT_EQ(indexes.size(), 1); // ProcedureViewModel for the moment generate the row with single entry only
+  ASSERT_EQ(indexes.size(),
+            1);  // ProcedureViewModel for the moment generate the row with single entry only
   view.GetListView()->setCurrentIndex(indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);

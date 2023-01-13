@@ -19,13 +19,12 @@
 
 #include "sequencergui/monitor/job_list_widget.h"
 
+#include <gtest/gtest.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
-#include <sequencergui/model/item_constants.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
-
-#include <gtest/gtest.h>
 
 #include <QSignalSpy>
 #include <QTreeView>
@@ -121,7 +120,8 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
   auto job_indexes = view.GetViewModel()->GetIndexOfSessionItem(job);
   ASSERT_EQ(job_indexes.size(), 1);
 
-  auto job_status_indexes = view.GetViewModel()->GetIndexOfSessionItem(job->GetItem(itemconstants::kStatus));
+  auto job_status_indexes =
+      view.GetViewModel()->GetIndexOfSessionItem(job->GetItem(itemconstants::kStatus));
   ASSERT_EQ(job_status_indexes.size(), 1);
 
   view.GetTreeView()->setCurrentIndex(job_indexes.at(0));

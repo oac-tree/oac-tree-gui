@@ -20,7 +20,6 @@
 #include "sequencergui/model/domain_procedure_builder.h"
 
 #include <gtest/gtest.h>
-#include <mvvm/model/sessionitem.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/sequencer_types.h>
 #include <sequencergui/model/domain_workspace_builder.h>
@@ -29,6 +28,9 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+
+#include <mvvm/model/sessionitem.h>
+
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>

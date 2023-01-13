@@ -21,11 +21,12 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
-#include <sup/sequencer/procedure.h>
-#include <sup/sequencer/runner.h>
 #include <testutils/mock_callback_listener.h>
 #include <testutils/mock_sequencer_observer.h>
 #include <testutils/standard_procedures.h>
+
+#include <sup/sequencer/procedure.h>
+#include <sup/sequencer/runner.h>
 
 #include <chrono>
 #include <memory>

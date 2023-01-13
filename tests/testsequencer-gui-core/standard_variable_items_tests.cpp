@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/transform_from_domain.h>
+
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/variable.h>

@@ -27,10 +27,11 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/transform_from_domain.h>
 #include <sequencergui/model/workspace_item.h>
+#include <testutils/standard_procedures.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
-#include <testutils/standard_procedures.h>
 
 using namespace sequencergui;
 

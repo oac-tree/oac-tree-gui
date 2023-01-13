@@ -20,13 +20,15 @@
 #include "sequencergui/nodeeditor/scene_utils.h"
 
 #include <gtest/gtest.h>
-#include <mvvm/standarditems/container_item.h>
-#include <mvvm/utils/numeric_utils.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/utils/numeric_utils.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
 

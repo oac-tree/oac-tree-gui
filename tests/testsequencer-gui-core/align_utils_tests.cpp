@@ -19,9 +19,8 @@
 
 #include "sequencergui/utils/align_utils.h"
 
-#include <sequencergui/utils/align_node.h>
-
 #include <gtest/gtest.h>
+#include <sequencergui/utils/align_node.h>
 
 using namespace sequencergui::algorithm;
 
