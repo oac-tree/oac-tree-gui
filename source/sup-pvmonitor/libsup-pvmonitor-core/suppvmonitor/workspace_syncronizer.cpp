@@ -26,6 +26,7 @@
 #include <sequencergui/transform/variable_item_transform_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
+#include <mvvm/model/sessionmodel.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>

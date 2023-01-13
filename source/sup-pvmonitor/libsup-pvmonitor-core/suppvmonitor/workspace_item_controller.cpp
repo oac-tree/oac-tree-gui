@@ -21,7 +21,7 @@
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/model_utils.h>
-#include <mvvm/signals/model_event_handler.h>
+#include <mvvm/signals/model_listener.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
@@ -36,16 +36,14 @@ namespace suppvmonitor
 {
 
 WorkspaceItemController::WorkspaceItemController(MonitorModel* model)
-    : m_model(model), m_slot(std::make_unique<mvvm::Slot>())
+    : m_model(model)
+    , m_listener(std::make_unique<mvvm::ModelListener<mvvm::SessionModelInterface>>(model))
 {
-  auto on_item_insert = [this](auto event)
-  { OnItemInsertedEvent(std::get<mvvm::ItemInsertedEvent>(event)); };
-  m_model->GetEventHandler()->Connect<mvvm::ItemInsertedEvent>(on_item_insert, m_slot.get());
-
-  auto on_data_changed = [this](auto event)
-  { OnDataChangedEvent(std::get<mvvm::DataChangedEvent>(event)); };
-  m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(on_data_changed, m_slot.get());
+  m_listener->Connect<mvvm::ItemInsertedEvent>(this, &WorkspaceItemController::OnItemInsertedEvent);
+  m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemController::OnDataChangedEvent);
 }
+
+WorkspaceItemController::~WorkspaceItemController() = default;
 
 //! Process an event coming from sequencer workspace
 

@@ -21,7 +21,6 @@
 #define SUPPVMONITOR_WORKSPACE_ITEM_CONRTOLLER_H_
 
 #include <mvvm/signals/event_types.h>
-#include <mvvm/signals/signal_slot.h>
 
 #include <functional>
 #include <map>
@@ -31,6 +30,8 @@
 namespace mvvm
 {
 class SessionItem;
+template <typename T>
+class ModelListener;
 }
 
 namespace sequencergui
@@ -52,6 +53,7 @@ class WorkspaceItemController
 {
 public:
   WorkspaceItemController(MonitorModel* model);
+  ~WorkspaceItemController();
 
   void ProcessEventFromDomain(const WorkspaceEvent& event);
 
@@ -69,7 +71,7 @@ private:
 
   MonitorModel* m_model{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;
-  std::unique_ptr<mvvm::Slot> m_slot;
+  std::unique_ptr<mvvm::ModelListener<mvvm::SessionModelInterface>> m_listener;
   std::map<std::string, bool> m_block_update_to_domain;
 };
 
