@@ -21,8 +21,8 @@
  *
  */
 
-#ifndef QSOURCEHIGHLITERTHEMES_H
-#define QSOURCEHIGHLITERTHEMES_H
+#ifndef ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITERTHEMES_H_
+#define ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITERTHEMES_H_
 
 #include "qsourcehighliter.h"
 
@@ -35,4 +35,4 @@ namespace QSourceHighliterTheme
 } // namespace QSourceHighliterTheme
 
 } // namespace QSourceHighlite
-#endif // QSOURCEHIGHLITERTHEMES_H
+#endif  // ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITERTHEMES_H_

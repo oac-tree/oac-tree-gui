@@ -21,14 +21,14 @@
  *
  */
 
-#ifndef QSOURCEHIGHLITER_H
-#define QSOURCEHIGHLITER_H
+#ifndef ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITER_H_
+#define ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITER_H_
 
 #include <QSyntaxHighlighter>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QStringView>
-#endif
+#endif  // ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITER_H_
 
 namespace QSourceHighlite {
 
@@ -160,10 +160,10 @@ private:
     {
         return str.midRef(position, n);
     }
-#endif
+#endif  // ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITER_H_
 
     QHash<Token, QTextCharFormat> _formats;
     Language _language;
 };
 }
-#endif // QSOURCEHIGHLITER_H
+#endif  // ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITER_H_

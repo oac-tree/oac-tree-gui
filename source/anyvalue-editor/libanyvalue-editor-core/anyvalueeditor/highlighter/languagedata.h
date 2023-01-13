@@ -21,8 +21,8 @@
  *
  */
 
-#ifndef QOWNLANGUAGEDATA_H
-#define QOWNLANGUAGEDATA_H
+#ifndef ANYVALUEEDITOR_HIGHLIGHTER_LANGUAGEDATA_H_
+#define ANYVALUEEDITOR_HIGHLIGHTER_LANGUAGEDATA_H_
 
 template<typename key, typename val>
 class QMultiHash;
@@ -219,4 +219,4 @@ void loadAsmData(QMultiHash<char, QLatin1String>& types,
     QMultiHash<char, QLatin1String>& literals,
     QMultiHash<char, QLatin1String>& other);
 }
-#endif
+#endif  // ANYVALUEEDITOR_HIGHLIGHTER_LANGUAGEDATA_H_

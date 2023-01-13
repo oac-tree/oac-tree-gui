@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_ADD_FIELD_DIALOG_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_ADD_FIELD_DIALOG_H_
+#ifndef LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ADD_FIELD_DIALOG_H_
+#define LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ADD_FIELD_DIALOG_H_
 
 #include <QDialog>
 
@@ -48,4 +48,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_ADD_FIELD_DIALOG_H_
+#endif  // LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ADD_FIELD_DIALOG_H_

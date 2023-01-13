@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef ANYVALUEEDITOR_ANYVALUEEDITOR_EDITOR_WIDGET_H_
-#define ANYVALUEEDITOR_ANYVALUEEDITOR_EDITOR_WIDGET_H_
+#ifndef LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
+#define LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -74,4 +74,4 @@ private:
 
 }  // namespace anyvalueeditor
 
-#endif  // ANYVALUEEDITOR_ANYVALUEEDITOR_EDITOR_WIDGET_H_
+#endif  // LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_

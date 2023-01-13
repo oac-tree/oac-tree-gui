@@ -58,4 +58,4 @@ inline std::string ProjectVersion()
 
 } // namespace sequencergui
 
-#endif // SEQUENCERGUI_CORE_VERSION_H_
+#endif  // SEQUENCERGUI_CORE_VERSION_H_

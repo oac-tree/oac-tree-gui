@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_MONITOR_WIDGET_H_
-#define SUPPVMONITOR_MONITOR_WIDGET_H_
+#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
+#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -57,4 +57,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // SUPPVMONITOR_MONITOR_WIDGET_H_
+#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_

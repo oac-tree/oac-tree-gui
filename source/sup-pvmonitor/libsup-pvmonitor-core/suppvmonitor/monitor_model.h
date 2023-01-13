@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_MONITOR_MODEL_H_
-#define SUPPVMONITOR_MONITOR_MODEL_H_
+#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_MODEL_H_
+#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_MODEL_H_
 
 #include <mvvm/model/application_model.h>
 
@@ -33,4 +33,4 @@ public:
 
 }  // namespace suppvmonitor
 
-#endif  // SUPPVMONITOR_MONITOR_MODEL_H_
+#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_MODEL_H_

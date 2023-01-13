@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_GUI_DTO_DTO_TYPES_H_
-#define SUP_GUI_DTO_DTO_TYPES_H_
+#ifndef GUI_DTO_DTO_TYPES_FWD_H_
+#define GUI_DTO_DTO_TYPES_FWD_H_
 
 //! @file dto_types_fwd.h
 //! Forward declaration of AnyValue related types.
@@ -32,4 +32,4 @@ enum class TypeCode;
 
 using anyvalue_t = sup::dto::AnyValue;
 
-#endif  // SUP_GUI_DTO_DTO_TYPES_H_
+#endif  // GUI_DTO_DTO_TYPES_FWD_H_

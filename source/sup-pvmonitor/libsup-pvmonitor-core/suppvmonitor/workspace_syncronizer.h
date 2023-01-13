@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
-#define SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
+#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
+#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
 
 #include <QObject>
 #include <memory>
@@ -77,4 +77,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
+#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H_
-#define SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H_
+#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
+#define SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
 
 //! @file domain_constants.h
 //! Collection of constants used by domain objects. The existence of this file (and unavoidable data
@@ -84,4 +84,4 @@ const std::string kListenForceSuccessAttribute = "forceSuccess";
 
 }  // namespace sequencergui::domainconstants
 
-#endif  // SEQUENCERGUI_MODEL_DOMAIN_CONSTANTS_H_
+#endif  // SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_

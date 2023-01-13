@@ -61,7 +61,7 @@ private:
   QRegExp m_xmlCommentRegex;
 };
 
-#endif
+#endif  // SEQUENCERGUI_WIDGETS_XML_SYNTAX_HIGHLIGHTER_H_
 
 }  // namespace sequencergui
 

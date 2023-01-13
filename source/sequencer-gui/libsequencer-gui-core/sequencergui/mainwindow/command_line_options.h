@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_APP_UTILS_H_
-#define SEQUENCERGUI_MAINWINDOW_APP_UTILS_H_
+#ifndef SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#define SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
 
 //! @file app_utils.h
 //! Collection of utils for main() function.
@@ -46,4 +46,4 @@ Options ParseOptions(int argc, char** argv);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_APP_UTILS_H_
+#endif  // SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_

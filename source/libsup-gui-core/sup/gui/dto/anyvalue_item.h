@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_GUI_DTO_ANYVALUE_ITEM_H_
-#define SUP_GUI_DTO_ANYVALUE_ITEM_H_
+#ifndef GUI_DTO_ANYVALUE_ITEM_H_
+#define GUI_DTO_ANYVALUE_ITEM_H_
 
 #include <mvvm/model/compound_item.h>
 
@@ -94,4 +94,4 @@ public:
 
 }  // namespace sup::gui
 
-#endif  // SUP_GUI_DTO_ANYVALUE_ITEM_H_
+#endif  // GUI_DTO_ANYVALUE_ITEM_H_
