@@ -36,8 +36,7 @@ namespace suppvmonitor
 {
 
 WorkspaceItemController::WorkspaceItemController(MonitorModel* model)
-    : m_model(model)
-    , m_listener(std::make_unique<mvvm::ModelListener<mvvm::SessionModelInterface>>(model))
+    : m_model(model), m_listener(std::make_unique<mvvm::ModelListener<MonitorModel>>(model))
 {
   m_listener->Connect<mvvm::ItemInsertedEvent>(this, &WorkspaceItemController::OnItemInsertedEvent);
   m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemController::OnDataChangedEvent);

@@ -71,7 +71,7 @@ private:
 
   MonitorModel* m_model{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;
-  std::unique_ptr<mvvm::ModelListener<mvvm::SessionModelInterface>> m_listener;
+  std::unique_ptr<mvvm::ModelListener<MonitorModel>> m_listener;
   std::map<std::string, bool> m_block_update_to_domain;
 };
 
