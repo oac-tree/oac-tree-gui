@@ -1,14 +1,12 @@
 /******************************************************************************
- * $HeadURL: $
- * $Id: $
  *
- * Project       : Pulse Counter Service
+ * Project       : Graphical User Interface for SUP Sequencer
  *
- * Description   : Pulse Counter Service of Supervision and Automation System
+ * Description   : Integrated development environment for Sequencer procedures
  *
- * Author        : Gennady Pospelov
+ * Author        : Gennady Pospelov (IO)
  *
- * Copyright (c) : 2010-2021 ITER Organization,
+ * Copyright (c) : 2010-2023 ITER Organization,
  *                 CS 90 046
  *                 13067 St. Paul-lez-Durance Cedex
  *                 France

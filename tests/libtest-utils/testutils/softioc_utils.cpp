@@ -1,12 +1,12 @@
 /******************************************************************************
  *
- * Project       : Supervision and automation system EPICS interface
+ * Project       : Graphical User Interface for SUP Sequencer
  *
- * Description   : Library of SUP components for EPICS network protocol
+ * Description   : Integrated development environment for Sequencer procedures
  *
- * Author        : Walter Van Herck (IO)
+ * Author        : Gennady Pospelov (IO)
  *
- * Copyright (c) : 2010-2022 ITER Organization,
+ * Copyright (c) : 2010-2023 ITER Organization,
  *                 CS 90 046
  *                 13067 St. Paul-lez-Durance Cedex
  *                 France

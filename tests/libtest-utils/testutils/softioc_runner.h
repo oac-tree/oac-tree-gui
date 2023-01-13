@@ -1,14 +1,12 @@
 /******************************************************************************
- * $HeadURL: $
- * $Id: $
  *
- * Project       : CODAC Core System
+ * Project       : Graphical User Interface for SUP Sequencer
  *
- * Description   : EPICS 7 C++ wrapper classes
+ * Description   : Integrated development environment for Sequencer procedures
  *
- * Author        : Gennady Pospelov
+ * Author        : Gennady Pospelov (IO)
  *
- * Copyright (c) : 2010-2021 ITER Organization,
+ * Copyright (c) : 2010-2023 ITER Organization,
  *                 CS 90 046
  *                 13067 St. Paul-lez-Durance Cedex
  *                 France
