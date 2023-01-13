@@ -35,6 +35,6 @@ void SetDataFromScalar(const anyvalue_t& value, AnyValueItem& item);
 //! Returns scalar AnyValue from AnyValueItem containing a scalar.
 sup::dto::AnyValue GetAnyValueFromScalar(const AnyValueItem& item);
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // GUI_DTO_SCALAR_CONVERSION_UTILS_H_

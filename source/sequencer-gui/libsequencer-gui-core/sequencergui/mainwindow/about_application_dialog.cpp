@@ -19,10 +19,11 @@
 
 #include "sequencergui/mainwindow/about_application_dialog.h"
 
-#include <mvvm/editors/custom_event_filters.h>
-#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/core/version.h>
 #include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/editors/custom_event_filters.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QDate>
 #include <QHBoxLayout>

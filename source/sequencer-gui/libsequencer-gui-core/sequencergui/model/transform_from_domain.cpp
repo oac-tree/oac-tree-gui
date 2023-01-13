@@ -19,14 +19,16 @@
 
 #include "sequencergui/model/transform_from_domain.h"
 
-#include <mvvm/model/function_types.h>
-#include <mvvm/model/item_catalogue.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/gui_object_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+
+#include <mvvm/model/function_types.h>
+#include <mvvm/model/item_catalogue.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>

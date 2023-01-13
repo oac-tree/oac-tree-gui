@@ -28,7 +28,6 @@ namespace mvvm
 class AllItemsTreeView;
 }
 
-
 namespace suppvmonitor
 {
 

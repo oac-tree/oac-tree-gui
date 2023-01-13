@@ -61,6 +61,6 @@ private:
   std::string m_member_name;
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // GUI_DTO_ANYVALUE_ITEM_BUILDER_H_

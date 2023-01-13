@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
+
 #include <sup/sequencer/variable.h>
 
 namespace sequencergui

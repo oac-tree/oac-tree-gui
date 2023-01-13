@@ -22,6 +22,7 @@
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/tagindex.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/gui/dto/conversion_utils.h>
@@ -174,4 +175,4 @@ void AnyValueItemBuilder::AddItem(std::unique_ptr<AnyValueItem> item)
   m_current_item = item_ptr;
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

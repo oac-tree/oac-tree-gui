@@ -19,7 +19,6 @@
 
 #include "sequencergui/jobsystem/job_context.h"
 
-#include <mvvm/standarditems/container_item.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
@@ -31,6 +30,9 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
+
+#include <mvvm/standarditems/container_item.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 

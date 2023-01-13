@@ -21,6 +21,7 @@
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/workspace.h>
 

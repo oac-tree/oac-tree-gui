@@ -40,7 +40,7 @@ class OverlayWidgetPositionStrategy : public QObject
 
 public:
   explicit OverlayWidgetPositionStrategy(QWidget* overlay_widget, QWidget* area,
-                                           QObject* parent = nullptr);
+                                         QObject* parent = nullptr);
 
 protected:
   bool eventFilter(QObject* obj, QEvent* event) override;

@@ -45,7 +45,7 @@ class AnyValueEditorActions : public QObject
 public:
   using callback_t = std::function<sup::gui::AnyValueItem*()>;
   AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent,
-                                 callback_t get_selected_callback);
+                        callback_t get_selected_callback);
 
   void OnAddAnyValueStruct(bool to_selected);
 

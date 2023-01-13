@@ -19,18 +19,20 @@
 
 #include "suppvmonitor/workspace_syncronizer.h"
 
-#include <mvvm/model/model_utils.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
-#include <sup/gui/dto/conversion_utils.h>
-#include <sup/sequencer/workspace.h>
-#include <mvvm/model/sessionmodel.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
 #include <suppvmonitor/workspace_item_controller.h>
+
+#include <mvvm/model/model_utils.h>
+#include <mvvm/model/sessionmodel.h>
+
+#include <sup/gui/dto/conversion_utils.h>
+#include <sup/sequencer/workspace.h>
 
 namespace suppvmonitor
 {

@@ -27,7 +27,7 @@ namespace mvvm
 {
 class ItemPool;
 class ApplicationModel;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {

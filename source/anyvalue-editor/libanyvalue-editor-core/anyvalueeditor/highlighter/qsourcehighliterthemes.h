@@ -26,13 +26,14 @@
 
 #include "qsourcehighliter.h"
 
-namespace QSourceHighlite {
+namespace QSourceHighlite
+{
 
 namespace QSourceHighliterTheme
 {
-    QHash<QSourceHighliter::Token, QTextCharFormat> theme(QSourceHighliter::Themes);
+QHash<QSourceHighliter::Token, QTextCharFormat> theme(QSourceHighliter::Themes);
 
-} // namespace QSourceHighliterTheme
+}  // namespace QSourceHighliterTheme
 
-} // namespace QSourceHighlite
+}  // namespace QSourceHighlite
 #endif  // ANYVALUEEDITOR_HIGHLIGHTER_QSOURCEHIGHLITERTHEMES_H_

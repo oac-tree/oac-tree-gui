@@ -21,7 +21,6 @@
 
 #include <sequencergui/widgets/widget_overlay_message_publisher.h>
 
-
 namespace sequencergui
 {
 

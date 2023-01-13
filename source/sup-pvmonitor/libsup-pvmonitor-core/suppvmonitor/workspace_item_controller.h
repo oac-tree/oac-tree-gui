@@ -32,7 +32,7 @@ namespace mvvm
 class SessionItem;
 template <typename T>
 class ModelListener;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {

@@ -19,8 +19,6 @@
 
 #include "sequencergui/composer/composer_procedure_editor.h"
 
-#include <mvvm/widgets/property_tree_view.h>
-#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/composer/composer_actions.h>
 #include <sequencergui/composer/instruction_tree_widget.h>
 #include <sequencergui/composer/workspace_list_widget.h>
@@ -30,6 +28,9 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/widgets/property_tree_view.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QSplitter>
 #include <QTabWidget>

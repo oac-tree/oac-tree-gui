@@ -19,15 +19,17 @@
 
 #include "suppvmonitor/workspace_item_controller.h"
 
-#include <mvvm/model/item_utils.h>
-#include <mvvm/model/model_utils.h>
-#include <mvvm/signals/model_listener.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
-#include <sup/gui/dto/conversion_utils.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_event.h>
+
+#include <mvvm/model/item_utils.h>
+#include <mvvm/model/model_utils.h>
+#include <mvvm/signals/model_listener.h>
+
+#include <sup/gui/dto/conversion_utils.h>
 
 #include <QDebug>
 #include <stdexcept>

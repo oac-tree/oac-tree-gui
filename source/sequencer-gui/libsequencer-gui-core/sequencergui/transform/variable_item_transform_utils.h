@@ -24,6 +24,7 @@
 //! Collection of utility functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types.h>
+
 #include <sup/gui/dto/dto_types_fwd.h>
 
 #include <memory>

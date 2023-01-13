@@ -23,9 +23,10 @@
 #include <sequencergui/composer/aggregate_panel.h>
 #include <sequencergui/composer/instruction_item_panel.h>
 #include <sequencergui/model/procedure_item.h>
-#include <mvvm/widgets/collapsible_list_view.h>
 #include <sequencergui/widgets/item_list_widget.h>
 #include <sequencergui/widgets/panel_toolbar.h>
+
+#include <mvvm/widgets/collapsible_list_view.h>
 
 #include <QLabel>
 #include <QToolBar>

@@ -21,8 +21,6 @@
 
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
-#include <mvvm/core/exceptions.h>
-#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/core/message_handler_interface.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/aggregate_factory.h>
@@ -36,6 +34,9 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/utils/sequencer_align_utils.h>
 #include <sequencergui/widgets/item_list_widget.h>
+
+#include <mvvm/core/exceptions.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>

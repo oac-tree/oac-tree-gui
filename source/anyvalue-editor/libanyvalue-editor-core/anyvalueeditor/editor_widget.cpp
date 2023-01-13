@@ -22,10 +22,12 @@
 #include <anyvalueeditor/anyvalue_editor_actions.h>
 #include <anyvalueeditor/anyvalue_editor_toolbar.h>
 #include <anyvalueeditor/highlighter/qsourcehighliter.h>
+
 #include <mvvm/model/application_model.h>
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/gui/dto/anyvalue_utils.h>

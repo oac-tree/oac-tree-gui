@@ -59,7 +59,7 @@ public:
 
 private:
   void PopulateModel();
-  void UpdateJson(sup::gui::AnyValueItem *item);
+  void UpdateJson(sup::gui::AnyValueItem* item);
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
 

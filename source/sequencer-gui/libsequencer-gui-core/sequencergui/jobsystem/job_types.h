@@ -41,7 +41,7 @@ enum class RunnerStatus
   kRunning,    //! running
   kPaused,     //! paused
   kCompleted,  //! completed
-  kStopping,  //! in the process of stopping (performed Halt of procedure)
+  kStopping,   //! in the process of stopping (performed Halt of procedure)
   kStopped,    //! was stopped
   kFailed      //! something went wrong in the domain runner
 };

@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_variable_items.h>
+
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
 

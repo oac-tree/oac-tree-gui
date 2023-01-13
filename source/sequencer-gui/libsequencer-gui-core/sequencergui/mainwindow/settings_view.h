@@ -49,7 +49,7 @@ private:
   void SetupGeneralSettingWidgets();
 
   DotsToolBar* m_tool_bar{nullptr};
-  QListWidget* m_list_widget{nullptr};                 //!< selector for specific settings window on the left
+  QListWidget* m_list_widget{nullptr};        //!< selector for specific settings window on the left
   QStackedWidget* m_stacked_widget{nullptr};  //!< stack with settings widgets
 
   ApplicationModels* m_models{nullptr};

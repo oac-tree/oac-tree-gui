@@ -26,7 +26,8 @@
 namespace sequencergui
 {
 
-//! Wide toolbar with dots menu for dynamic content. Intended for vertical panels with switcheable content.
+//! Wide toolbar with dots menu for dynamic content. Intended for vertical panels with switcheable
+//! content.
 
 class DotsToolBar : public QToolBar
 {

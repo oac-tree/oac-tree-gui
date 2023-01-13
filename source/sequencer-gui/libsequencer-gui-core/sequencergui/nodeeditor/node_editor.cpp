@@ -21,7 +21,6 @@
 
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 
-#include <mvvm/model/application_model.h>
 #include <sequencergui/core/message_handler_factory.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -33,6 +32,8 @@
 #include <sequencergui/nodeeditor/graphics_view.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/utils/sequencer_align_utils.h>
+
+#include <mvvm/model/application_model.h>
 
 #include <QDebug>
 #include <QPointF>

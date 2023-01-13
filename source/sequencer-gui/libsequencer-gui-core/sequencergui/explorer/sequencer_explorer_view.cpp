@@ -19,9 +19,6 @@
 
 #include "sequencergui/explorer/sequencer_explorer_view.h"
 
-#include <mvvm/signals/model_event_handler.h>
-#include <mvvm/standarditems/standard_item_includes.h>
-#include <mvvm/utils/file_utils.h>
 #include <sequencergui/explorer/explorer_panel.h>
 #include <sequencergui/explorer/procedure_trees_widget.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -31,6 +28,10 @@
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/widget_utils.h>
 #include <sequencergui/widgets/xml_editor.h>
+
+#include <mvvm/signals/model_event_handler.h>
+#include <mvvm/standarditems/standard_item_includes.h>
+#include <mvvm/utils/file_utils.h>
 
 #include <QApplication>
 #include <QDebug>

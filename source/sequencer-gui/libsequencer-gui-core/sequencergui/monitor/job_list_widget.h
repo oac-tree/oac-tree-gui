@@ -29,7 +29,7 @@ namespace mvvm
 {
 class ViewModel;
 class ItemViewComponentProvider;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {

@@ -19,9 +19,10 @@
 
 #include "sequencergui/composer/instruction_item_panel.h"
 
-#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/widgets/item_list_widget.h>
+
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QVBoxLayout>
 

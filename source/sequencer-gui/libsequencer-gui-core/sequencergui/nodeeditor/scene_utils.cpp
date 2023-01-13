@@ -19,15 +19,16 @@
 
 #include "sequencergui/nodeeditor/scene_utils.h"
 
-#include <mvvm/core/exceptions.h>
-#include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/sequencer_utils.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/transform_from_domain.h>
 #include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/core/exceptions.h>
 
 #include <QDebug>
 #include <QLinearGradient>
@@ -128,7 +129,7 @@ InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContaine
   {
     auto item_type = GetItemType(domain_type);
     return dynamic_cast<InstructionItem*>(
-          model->InsertItem(model->GetFactory()->CreateItem(item_type), container, {}));
+        model->InsertItem(model->GetFactory()->CreateItem(item_type), container, {}));
   }
   catch (const mvvm::KeyNotFoundException& ex)
   {

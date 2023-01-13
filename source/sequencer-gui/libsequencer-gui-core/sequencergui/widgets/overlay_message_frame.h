@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_FRAME_H_
 #define SEQUENCERGUI_WIDGETS_OVERLAY_MESSAGE_FRAME_H_
 
-#include <QFrame>
 #include <QFont>
+#include <QFrame>
 
 namespace sequencergui
 {
@@ -36,7 +36,7 @@ class OverlayMessageFrame : public QFrame
 public:
   explicit OverlayMessageFrame(const QString& text, QWidget* parent = nullptr);
 
-//  void SetRectangle(const QRect& rect);
+  //  void SetRectangle(const QRect& rect);
   void SetPosition(int x, int y);
 
 protected:

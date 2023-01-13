@@ -34,8 +34,7 @@ class WarningSignWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit WarningSignWidget(const QString& message,
-                            QWidget* parent = nullptr);
+  explicit WarningSignWidget(const QString& message, QWidget* parent = nullptr);
 
   void SetHeader(const QString& header);
 

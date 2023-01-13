@@ -123,4 +123,4 @@ bool AnyValueArrayItem::IsArray() const
   return true;
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

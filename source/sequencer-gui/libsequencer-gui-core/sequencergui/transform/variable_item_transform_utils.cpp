@@ -19,8 +19,10 @@
 
 #include "sequencergui/transform/variable_item_transform_utils.h"
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
 #include <sequencergui/model/variable_item.h>
+
+#include <mvvm/interfaces/sessionmodel_interface.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/gui/dto/anyvalue_utils.h>

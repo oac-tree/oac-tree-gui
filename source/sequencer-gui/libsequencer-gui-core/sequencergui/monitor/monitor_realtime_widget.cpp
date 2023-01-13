@@ -27,8 +27,9 @@
 #include <sequencergui/monitor/monitor_realtime_tree_widget.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
-#include <mvvm/widgets/collapsible_list_view.h>
 #include <sequencergui/widgets/item_stack_widget.h>
+
+#include <mvvm/widgets/collapsible_list_view.h>
 
 #include <QSplitter>
 #include <QStackedWidget>

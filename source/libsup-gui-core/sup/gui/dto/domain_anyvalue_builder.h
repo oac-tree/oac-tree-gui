@@ -44,6 +44,6 @@ private:
   std::unique_ptr<DomainAnyValueBuilderImpl> p_impl;
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_

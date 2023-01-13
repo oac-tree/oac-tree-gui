@@ -19,8 +19,6 @@
 
 #include "sequencergui/composer/sequencer_composer_view.h"
 
-#include <mvvm/project/model_has_changed_controller.h>
-#include <mvvm/standarditems/container_item.h>
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_procedure_editor.h>
 #include <sequencergui/core/message_handler_interface.h>
@@ -33,6 +31,9 @@
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/xml_editor.h>
+
+#include <mvvm/project/model_has_changed_controller.h>
+#include <mvvm/standarditems/container_item.h>
 
 #include <QDebug>
 #include <QSplitter>

@@ -32,9 +32,7 @@ static inline const std::string kExpandedProcedure = "kExpandedProcedure";
 
 JobItem::JobItem() : CompoundItem(Type)
 {
-  AddProperty(itemconstants::kStatus, std::string())
-      ->SetDisplayName("Status")
-      ->SetEditable(false);
+  AddProperty(itemconstants::kStatus, std::string())->SetDisplayName("Status")->SetEditable(false);
   AddProperty<mvvm::LinkedItem>(kLink)->SetDisplayName("Link");
 
   RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::Type}), /*as_default*/ true);

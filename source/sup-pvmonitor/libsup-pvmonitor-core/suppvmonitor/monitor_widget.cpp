@@ -19,12 +19,13 @@
 
 #include "suppvmonitor/monitor_widget.h"
 
-#include <mvvm/widgets/all_items_tree_view.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget_toolbar.h>
 #include <suppvmonitor/workspace_syncronizer.h>
+
+#include <mvvm/widgets/all_items_tree_view.h>
 
 #include <QVBoxLayout>
 

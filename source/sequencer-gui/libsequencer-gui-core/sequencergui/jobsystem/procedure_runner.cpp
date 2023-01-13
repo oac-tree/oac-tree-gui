@@ -23,6 +23,7 @@
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
@@ -30,8 +31,8 @@
 #include <QDebug>
 #include <algorithm>
 #include <cmath>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 
 namespace sequencergui
 {

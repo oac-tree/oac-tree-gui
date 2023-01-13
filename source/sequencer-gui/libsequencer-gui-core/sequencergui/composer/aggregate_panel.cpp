@@ -19,9 +19,10 @@
 
 #include "sequencergui/composer/aggregate_panel.h"
 
-#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/widgets/item_list_widget.h>
+
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QListWidget>
 #include <QVBoxLayout>

@@ -63,7 +63,6 @@ private:
 
   std::unique_ptr<QMenu> m_insert_after_menu;
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
-
 };
 
 }  // namespace sequencergui

@@ -40,6 +40,6 @@ public:
   explicit AnyValueViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // GUI_DTO_ANYVALUE_VIEWMODEL_H_

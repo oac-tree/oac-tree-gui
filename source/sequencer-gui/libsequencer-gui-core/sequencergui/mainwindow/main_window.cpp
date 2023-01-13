@@ -19,7 +19,6 @@
 
 #include "sequencergui/mainwindow/main_window.h"
 
-#include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <sequencergui/composer/sequencer_composer_view.h>
 #include <sequencergui/explorer/sequencer_explorer_view.h>
 #include <sequencergui/mainwindow/action_manager.h>
@@ -30,6 +29,8 @@
 #include <sequencergui/model/procedure_examples.h>
 #include <sequencergui/monitor/sequencer_monitor_view.h>
 #include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/widgets/main_vertical_bar_widget.h>
 
 #include <QCloseEvent>
 #include <QCoreApplication>

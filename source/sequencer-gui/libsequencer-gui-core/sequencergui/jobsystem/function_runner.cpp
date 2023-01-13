@@ -26,9 +26,9 @@
 #include <atomic>
 #include <chrono>
 #include <cmath>
+#include <iostream>
 #include <mutex>
 #include <thread>
-#include <iostream>
 
 namespace sequencergui
 {

@@ -34,15 +34,15 @@ class CustomHeaderView : public QHeaderView
   Q_OBJECT
 
 public:
-  explicit CustomHeaderView(QWidget* parent);
+  explicit CustomHeaderView(QWidget *parent);
 
   void RestoreSize();
 
   bool IsAdjustedByUser();
 
 protected:
-  void 	mousePressEvent(QMouseEvent *event) override;
-  void 	mouseReleaseEvent(QMouseEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
   void OnSectionResize(int index, int prev_size, int new_size);

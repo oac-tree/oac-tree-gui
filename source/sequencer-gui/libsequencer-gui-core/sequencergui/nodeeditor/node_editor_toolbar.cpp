@@ -19,10 +19,11 @@
 
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 
-#include <mvvm/widgets/widget_utils.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/nodeeditor/graphics_view.h>
 #include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QButtonGroup>
 #include <QMenu>

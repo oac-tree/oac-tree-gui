@@ -2,7 +2,7 @@
 include(ClangFormat)
 
 # List of targets for project code beautification.
-set(BEAUTIFICATION_TARGETS sequencerguicore testsequencerguicore testsequencerguievents)
+set(BEAUTIFICATION_TARGETS sequencer-gui-core sup-gui-core sup-pvmonitor-core)
 
 # Defines new target for 'clangformat' to beautify whole project.
 # Use 'make clangformat' or 'cmake --build . --target clangformat' to beautify the code.

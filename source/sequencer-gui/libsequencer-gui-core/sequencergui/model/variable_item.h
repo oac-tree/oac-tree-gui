@@ -24,7 +24,6 @@
 
 #include <mvvm/model/compound_item.h>
 
-
 namespace sup::gui
 {
 class AnyValueItem;

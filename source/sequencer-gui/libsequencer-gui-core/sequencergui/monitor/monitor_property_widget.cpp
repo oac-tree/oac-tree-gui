@@ -19,14 +19,15 @@
 
 #include "sequencergui/monitor/monitor_property_widget.h"
 
-#include <mvvm/widgets/all_items_tree_view.h>
-#include <mvvm/widgets/property_tree_view.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/widgets/panel_toolbar.h>
+
+#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/property_tree_view.h>
 
 #include <QSplitter>
 #include <QTreeView>

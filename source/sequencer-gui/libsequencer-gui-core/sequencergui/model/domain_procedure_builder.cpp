@@ -19,7 +19,6 @@
 
 #include "sequencergui/model/domain_procedure_builder.h"
 
-#include <mvvm/model/sessionmodel.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -27,6 +26,9 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+
+#include <mvvm/model/sessionmodel.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
@@ -134,7 +136,8 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
       ->GetIdentifier();
 }
 
-std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(const ProcedureItem* procedure_item)
+std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
+    const ProcedureItem* procedure_item)
 {
   DomainProcedureBuilder builder;
   auto result = std::make_unique<procedure_t>();

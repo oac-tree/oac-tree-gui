@@ -20,6 +20,7 @@
 #include "anyvalueeditor/add_field_dialog.h"
 
 #include <mvvm/widgets/widget_utils.h>
+
 #include <sup/gui/dto/conversion_utils.h>
 
 #include <QComboBox>

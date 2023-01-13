@@ -17,11 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <mvvm/utils/threadsafe_queue.h>
 #include <sequencergui/core/exceptions.h>
-#include <sup/sequencer/workspace.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
+
+#include <mvvm/utils/threadsafe_queue.h>
+
+#include <sup/sequencer/workspace.h>
 
 namespace suppvmonitor
 {

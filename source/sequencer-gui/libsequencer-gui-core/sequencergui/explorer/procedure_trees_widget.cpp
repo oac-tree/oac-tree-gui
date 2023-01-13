@@ -19,12 +19,13 @@
 
 #include "sequencergui/explorer/procedure_trees_widget.h"
 
-#include <mvvm/widgets/property_tree_view.h>
-#include <mvvm/widgets/top_items_tree_view.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/panel_toolbar.h>
+
+#include <mvvm/widgets/property_tree_view.h>
+#include <mvvm/widgets/top_items_tree_view.h>
 
 #include <QSplitter>
 #include <QTreeView>

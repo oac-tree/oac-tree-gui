@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_CORE_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
 
 #include <sequencergui/core/message_handler_interface.h>
+
 #include <memory>
 
 class QWidget;

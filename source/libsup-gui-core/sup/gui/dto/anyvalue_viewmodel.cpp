@@ -24,6 +24,7 @@
 #include <mvvm/viewmodel/standard_row_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
+
 #include <sup/gui/dto/anyvalue_item.h>
 
 namespace sup::gui
@@ -56,4 +57,4 @@ AnyValueViewModel::AnyValueViewModel(mvvm::SessionModelInterface *model, QObject
   SetController(mvvm::factory::CreateController<mvvm::TopItemsStrategy, RowStrategy>(model, this));
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

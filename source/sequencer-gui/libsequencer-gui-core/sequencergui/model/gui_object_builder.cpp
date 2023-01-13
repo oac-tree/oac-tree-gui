@@ -26,6 +26,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/transform_from_domain.h>
 #include <sequencergui/model/workspace_item.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>

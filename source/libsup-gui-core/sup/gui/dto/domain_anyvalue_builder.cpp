@@ -200,4 +200,4 @@ sup::dto::AnyValue DomainAnyValueBuilder::GetAnyValue() const
   return p_impl->m_builder.MoveAnyValue();
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

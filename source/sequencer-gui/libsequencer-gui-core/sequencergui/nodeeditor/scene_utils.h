@@ -71,11 +71,10 @@ QColor GetBaseColor(const InstructionItem* instruction);
 //! user. If the model doesn't have given InstructionItem registered, create UnknownInstructionItem
 //! instead.
 InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContainerItem* container,
-                                const std::string& domain_type);
+                                      const std::string& domain_type);
 
 InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* container,
-                                const std::string& aggregate_name);
-
+                              const std::string& aggregate_name);
 
 }  // namespace sequencergui
 

@@ -21,6 +21,7 @@
 #define GUI_DTO_CONVERSION_UTILS_H_
 
 #include <mvvm/core/variant.h>
+
 #include <sup/gui/dto/dto_types_fwd.h>
 
 #include <memory>
@@ -66,6 +67,6 @@ sup::dto::AnyValue CreateAnyValue(const AnyValueItem& item);
 //! Creates AnyValueItem from given AnyValue.
 std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue& any_value);
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // GUI_DTO_CONVERSION_UTILS_H_

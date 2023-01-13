@@ -20,13 +20,13 @@
 #include "sup/gui/dto/anyvalue_utils.h"
 
 #include <sup/dto/anytype_helper.h>
-#include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/json_value_parser.h>
 
+#include <map>
 #include <sstream>
 #include <stdexcept>
-#include <map>
 
 namespace
 {
@@ -141,4 +141,4 @@ sup::dto::AnyValue AnyValueFromJSONFile(const std::string &filename)
   return parser.MoveAnyValue();
 }
 
-}  // namespace sequencergui::DomainUtils
+}  // namespace sup::gui

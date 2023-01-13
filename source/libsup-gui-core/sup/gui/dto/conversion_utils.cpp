@@ -179,4 +179,4 @@ std::unique_ptr<AnyValueItem> CreateItem(const sup::dto::AnyValue& any_value)
   return std::move(builder.MoveAnyValueItem());
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
