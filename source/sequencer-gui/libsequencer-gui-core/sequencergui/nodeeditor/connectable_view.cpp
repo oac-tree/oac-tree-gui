@@ -41,6 +41,12 @@ QRectF label_rectangle(const QRectF& rect)
   return QRectF(rect.x(), rect.y(), rect.width(), rect.height() / 4);
 }
 
+int GetSmallFontSize()
+{
+  static const int kSmallFontSize(sequencergui::styleutils::AppFontSize() * 0.8);
+  return kSmallFontSize;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -92,7 +98,7 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
   painter->drawRoundedRect(boundingRect(), round_par, round_par);
 
   painter->setPen(Qt::black);
-  QFont serifFont("Monospace", 8, QFont::Normal);
+  QFont serifFont("Monospace", GetSmallFontSize(), QFont::Normal);
   painter->setFont(serifFont);
   painter->drawText(label_rectangle(boundingRect()), Qt::AlignCenter, GetLabel());
 
