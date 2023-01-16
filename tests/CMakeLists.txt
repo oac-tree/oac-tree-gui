@@ -1,7 +1,7 @@
 enable_testing()
 
 find_package(GTest REQUIRED)
-find_package(Qt5 COMPONENTS Widgets Core Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Test REQUIRED)
 find_package(Threads)
 include(GoogleTest)
 
