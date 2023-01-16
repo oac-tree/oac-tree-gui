@@ -45,7 +45,7 @@ QSize NarrowToolBarIconSize();
 QIcon GetIcon(const std::string& icon_name);
 
 //! Sets style for the tree to better look on CODAC systems.
-void SetBreezePropertyStyle(QTreeView* tree);
+void SetUnifiedPropertyStyle(QTreeView* tree);
 
 }  // namespace sequencergui::styleutils
 

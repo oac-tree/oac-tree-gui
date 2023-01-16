@@ -58,7 +58,7 @@ MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
   };
   connect(m_tree_view, &QTreeView::clicked, this, on_click);
 
-  sequencergui::styleutils::SetBreezePropertyStyle(m_tree_view);
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 }
 
 MonitorRealTimeTreeWidget::~MonitorRealTimeTreeWidget() = default;

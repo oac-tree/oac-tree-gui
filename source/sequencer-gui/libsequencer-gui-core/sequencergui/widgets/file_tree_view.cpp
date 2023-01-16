@@ -76,7 +76,7 @@ FileTreeView::FileTreeView(QWidget *parent)
 
   SetCurrentDir(m_current_workdir);
 
-  sequencergui::styleutils::SetBreezePropertyStyle(m_tree_view);
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 }
 
 FileTreeView::~FileTreeView()

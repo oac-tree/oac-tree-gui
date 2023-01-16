@@ -50,7 +50,7 @@ InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
   connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
           [this](auto) { emit InstructionSelected(GetSelectedInstruction()); });
 
-  sequencergui::styleutils::SetBreezePropertyStyle(m_tree_view->GetTreeView());
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view->GetTreeView());
 }
 
 void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)

@@ -69,10 +69,10 @@ QIcon GetIcon(const std::string &icon_name)
   return QIcon(name);
 }
 
-void SetBreezePropertyStyle(QTreeView *tree)
+void SetUnifiedPropertyStyle(QTreeView *tree)
 {
-  // sets "breeze" property style only if current theme is a "fusion", which is what CODAC's gnome
-  // has by default
+  // Sets "breeze" property style only if current theme is a "fusion", which is the default theme
+  // on CODAC systems.
   if (QApplication::style()->objectName() == QString("fusion"))
   {
     mvvm::utils::SetBreezePropertyStyle(tree);
