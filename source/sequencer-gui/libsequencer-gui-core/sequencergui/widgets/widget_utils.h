@@ -35,7 +35,8 @@ namespace sequencergui
 //! Provides busy-sign while executing, and warning dialog on exception catch.
 
 template <typename T>
-bool InvokeAndCatch(T method, const QString& description = {"Exception was caught"})
+bool InvokeAndCatch(T method, const QString& text = {"Exception was caught"},
+                    const QString& informative_text = {})
 {
   try
   {
@@ -48,9 +49,20 @@ bool InvokeAndCatch(T method, const QString& description = {"Exception was caugh
   {
     QApplication::restoreOverrideCursor();
     QMessageBox msg_box;
-    msg_box.setText(description);
-    msg_box.setDetailedText("Loren ipsum");
-    msg_box.setInformativeText(QString(ex.what()));
+    msg_box.setText(text);
+
+    QString exception_message(ex.what());
+
+    if (informative_text.isEmpty())
+    {
+      msg_box.setInformativeText(exception_message);
+    }
+    else
+    {
+      msg_box.setInformativeText(informative_text);
+      msg_box.setDetailedText(exception_message);
+    }
+
     msg_box.setIcon(msg_box.Critical);
     msg_box.exec();
     return false;
