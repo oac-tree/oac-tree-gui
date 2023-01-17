@@ -20,16 +20,11 @@
 #ifndef MOCKSEQUENCEROBSERVER_H
 #define MOCKSEQUENCEROBSERVER_H
 
-#include <sequencergui/domain/sequencer_types.h>
-#include <sup/sequencer/user_interface.h>
-
-namespace ccs::types
-{
-class AnyValue;
-}
-using anyvalue_t = ccs::types::AnyValue;
-
 #include <gmock/gmock.h>
+#include <sequencergui/domain/sequencer_types.h>
+
+#include <sup/gui/dto/dto_types_fwd.h>
+#include <sup/sequencer/user_interface.h>
 
 namespace testutils
 {
@@ -39,18 +34,23 @@ namespace testutils
 class MockSequencerObserver : public userinterface_t
 {
 public:
-  MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction));
-  MOCK_METHOD(void, VariableUpdatedImpl, (const std::string& name, const anyvalue_t& value));
+  MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction), (override));
+  MOCK_METHOD(void, VariableUpdatedImpl, (const std::string& name, const anyvalue_t& value),
+              (override));
 
-  MOCK_METHOD(bool, PutValueImpl, (const anyvalue_t& value, const std::string& description));
-  MOCK_METHOD(bool, GetUserValueImpl, (const anyvalue_t& value, const std::string& description));
+  MOCK_METHOD(bool, PutValueImpl, (const anyvalue_t& value, const std::string& description),
+              (override));
+  MOCK_METHOD(bool, GetUserValueImpl, (anyvalue_t & value, const std::string& description),
+              (override));
 
   MOCK_METHOD(int, GetUserChoiceImpl,
-              (const std::vector<std::string>& choices, const std::string& description));
-  MOCK_METHOD(void, StartSingleStepImpl, ());
-  MOCK_METHOD(void, EndSingleStepImpl, ());
+              (const std::vector<std::string>& choices, const std::string& description),
+              (override));
+  MOCK_METHOD(void, StartSingleStepImpl, (), (override));
+  MOCK_METHOD(void, EndSingleStepImpl, (), (override));
 
-  MOCK_METHOD(void, MessageImpl, (const std::string& message));
+  MOCK_METHOD(void, MessageImpl, (const std::string& message), (override));
+  MOCK_METHOD(void, LogImpl, (int level, const std::string& str), (override));
 };
 
 }  // namespace testutils
