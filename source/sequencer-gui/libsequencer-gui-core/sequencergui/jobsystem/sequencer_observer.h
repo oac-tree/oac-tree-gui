@@ -51,6 +51,8 @@ public:
 
   void MessageImpl(const std::string& message) override;
 
+  void LogImpl(int severity, const std::string& message) override;
+
 private:
   ProcedureRunner* m_procedure_runner{nullptr};
 };

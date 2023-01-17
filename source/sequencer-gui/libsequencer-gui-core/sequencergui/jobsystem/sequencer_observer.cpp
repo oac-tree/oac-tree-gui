@@ -88,4 +88,10 @@ void SequencerObserver::MessageImpl(const std::string &message)
   m_procedure_runner->onLogMessage(message, JobMessageType::kHighlight);
 }
 
+void SequencerObserver::LogImpl(int severity, const std::string &message)
+{
+  QString result = QString("%1 %2").arg(severity).arg(QString::fromStdString(message));
+  m_procedure_runner->onLogMessage(result.toStdString(), JobMessageType::kHighlight);
+}
+
 }  // namespace sequencergui
