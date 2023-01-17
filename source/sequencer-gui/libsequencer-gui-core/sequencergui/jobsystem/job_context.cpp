@@ -156,7 +156,6 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction, con
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
   std::cout << "JobContext::onInstructionStatusChange() " << instruction << " "
             << status.toStdString() << std::endl;
-  ;
   if (instruction_item)
   {
     instruction_item->SetStatus(status.toStdString());

@@ -17,41 +17,26 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOB_LOG_H_
-#define SEQUENCERGUI_MONITOR_JOB_LOG_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
+#define SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
 
-#include <sequencergui/jobsystem/job_log_severity.h>
-
-#include <string>
-#include <vector>
+//! @file job_log_severity.h
+//! Provide log severity levels and accompanying utility functions.
 
 namespace sequencergui
 {
 
-class MessagePanel;
-
-//! Holds all messages of running job in chronological order.
-//! When MessagePanel is set, updates it with arriving messages.
-class JobLog
+//! Defines message types that JobLog is aware of.
+enum class JobMessageType
 {
-public:
-  JobLog();
-
-  void SetMessagePanel(MessagePanel* message_panel);
-  void Append(const std::string& text, JobMessageType type);
-  void ClearLog();
-
-private:
-  struct Record
-  {
-    std::string m_text;
-    JobMessageType m_type;
-  };
-
-  std::vector<Record> m_records;
-  MessagePanel* m_message_panel;
+  kDefault,
+  kSuccess,
+  kHighlight,
+  kWarning,
+  kError
 };
 
-}  // namespace sequencergui
+}
 
-#endif  // SEQUENCERGUI_MONITOR_JOB_LOG_H_
+#endif
+

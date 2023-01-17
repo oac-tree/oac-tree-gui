@@ -46,16 +46,6 @@ enum class RunnerStatus
   kFailed      //! something went wrong in the domain runner
 };
 
-//! Defines message types that JobLog is aware of.
-enum class JobMessageType
-{
-  kDefault,
-  kSuccess,
-  kHighlight,
-  kWarning,
-  kError
-};
-
 //! Defines actions which can be performed on a job.
 enum class JobAction
 {

@@ -30,6 +30,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <QAbstractTableModel>
+
 namespace
 {
 

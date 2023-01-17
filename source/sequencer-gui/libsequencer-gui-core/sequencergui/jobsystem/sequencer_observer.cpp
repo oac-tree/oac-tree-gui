@@ -20,6 +20,7 @@
 #include "sequencergui/jobsystem/sequencer_observer.h"
 
 #include <sequencergui/jobsystem/procedure_runner.h>
+#include <sequencergui/jobsystem/job_log_severity.h>
 
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/sequencer/instruction.h>

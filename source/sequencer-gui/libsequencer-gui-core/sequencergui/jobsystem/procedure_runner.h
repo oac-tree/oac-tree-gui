@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_controller.h>
 
