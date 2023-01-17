@@ -19,7 +19,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 

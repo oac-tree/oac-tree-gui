@@ -23,7 +23,7 @@
 //! @file transform_from_domain.h
 //! Collection of utility functions to convert sup::sequencer::Procedure into SessionModel.
 
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <memory>
 #include <string>

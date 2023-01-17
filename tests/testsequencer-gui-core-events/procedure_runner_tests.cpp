@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 

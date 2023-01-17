@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>

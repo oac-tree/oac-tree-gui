@@ -23,7 +23,7 @@
 //! @file test_domain_procedures.h
 //! Collection of domain procedures for testing purpose.
 
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <chrono>
 #include <memory>

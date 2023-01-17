@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_CONTEXT_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_CONTEXT_H_
 
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_context.h>
 

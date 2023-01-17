@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MODEL_INSTRUCTION_ITEM_H_
 #define SEQUENCERGUI_MODEL_INSTRUCTION_ITEM_H_
 
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <mvvm/model/compound_item.h>
 

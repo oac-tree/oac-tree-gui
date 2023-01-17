@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
 #define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
 
-#include <sequencergui/domain/sequencer_types.h>
+#include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/abstract_job.h>
 #include <sequencergui/jobsystem/job_types.h>
 
