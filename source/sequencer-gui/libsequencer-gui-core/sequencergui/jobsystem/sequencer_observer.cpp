@@ -58,7 +58,7 @@ bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
   auto value_string = sup::gui::GetValuesToJSONString(&value);
-  m_procedure_runner->onLogMessage(description + value_string, JobMessageType::kHighlight);
+  m_procedure_runner->onLogMessage(description + value_string, Severity::kNotice);
   return true;
 }
 
@@ -86,13 +86,13 @@ void SequencerObserver::EndSingleStepImpl() {}
 
 void SequencerObserver::MessageImpl(const std::string &message)
 {
-  m_procedure_runner->onLogMessage(message, JobMessageType::kHighlight);
+  m_procedure_runner->onLogMessage(message, Severity::kNotice);
 }
 
 void SequencerObserver::LogImpl(int severity, const std::string &message)
 {
   QString result = QString("%1 %2").arg(severity).arg(QString::fromStdString(message));
-  m_procedure_runner->onLogMessage(result.toStdString(), JobMessageType::kHighlight);
+  m_procedure_runner->onLogMessage(result.toStdString(), Severity::kNotice);
 }
 
 }  // namespace sequencergui

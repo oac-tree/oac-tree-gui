@@ -169,7 +169,7 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction, con
 
 void JobContext::onLogMessage(const QString &message, int message_type)
 {
-  m_job_log->Append(message.toStdString(), static_cast<JobMessageType>(message_type));
+  m_job_log->Append(message.toStdString(), static_cast<Severity>(message_type));
 }
 
 void JobContext::onVariableChange(const QString &variable_name, const QString &value)

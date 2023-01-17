@@ -26,17 +26,21 @@
 namespace sequencergui
 {
 
-//! Defines message types that JobLog is aware of.
-enum class JobMessageType
+//! Defines severity levels for messages.
+
+enum class Severity
 {
-  kDefault,
-  kSuccess,
-  kHighlight,
+  kEmergency,
+  kAlert,
+  kCritical,
+  kError,
   kWarning,
-  kError
+  kNotice,
+  kInfo,
+  kDebug,
+  kTrace
 };
 
-}
+}  // namespace sequencergui
 
 #endif
-

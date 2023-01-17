@@ -67,7 +67,7 @@ bool ProcedureRunner::Stop()
   auto is_valid_request = m_domain_runner_adapter->Stop();
   if (is_valid_request)
   {
-    onLogMessage("ProcedureRunner::Stop()", JobMessageType::kWarning);
+    onLogMessage("ProcedureRunner::Stop()", Severity::kWarning);
   }
 
   return is_valid_request;
@@ -108,7 +108,7 @@ void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction
 
 //! Propagate log message from observer up in the form of signals.
 
-void ProcedureRunner::onLogMessage(const std::string &message, JobMessageType message_type)
+void ProcedureRunner::onLogMessage(const std::string &message, Severity message_type)
 {
   emit LogMessageRequest(QString::fromStdString(message), static_cast<int>(message_type));
 }

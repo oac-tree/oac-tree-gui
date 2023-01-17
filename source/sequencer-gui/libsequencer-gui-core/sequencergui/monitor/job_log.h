@@ -38,14 +38,14 @@ public:
   JobLog();
 
   void SetMessagePanel(MessagePanel* message_panel);
-  void Append(const std::string& text, JobMessageType type);
+  void Append(const std::string& text, Severity type);
   void ClearLog();
 
 private:
   struct Record
   {
     std::string m_text;
-    JobMessageType m_type;
+    Severity m_type;
   };
 
   std::vector<Record> m_records;
