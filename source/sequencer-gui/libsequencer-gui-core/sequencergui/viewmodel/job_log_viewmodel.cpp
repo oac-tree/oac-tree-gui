@@ -109,7 +109,7 @@ Qt::ItemFlags JobLogViewModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled;
   }
 
-  return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+  return QAbstractTableModel::flags(index) | Qt::ItemIsSelectable;
 }
 
 }  // namespace sequencergui

@@ -36,7 +36,7 @@ TEST_F(JobLogViewModelTests, InitialState)
 
   JobLogViewModel view_model(&job_log);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
-  EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // source, severity, date, time, message
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // date, time, severity, source, message
 }
 
 //! JobLog contains a single event.
@@ -50,7 +50,7 @@ TEST_F(JobLogViewModelTests, SingleRowData)
 
   JobLogViewModel view_model(&job_log);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
-  EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // source, severity, date, time, message
+  EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);
 
   EXPECT_EQ(view_model.data(view_model.index(0, 0), Qt::DisplayRole), QString("date"));
   EXPECT_EQ(view_model.data(view_model.index(0, 1), Qt::DisplayRole), QString("time"));
@@ -62,16 +62,27 @@ TEST_F(JobLogViewModelTests, SingleRowData)
 TEST_F(JobLogViewModelTests, HeaderData)
 {
   JobLog job_log;
-//  LogEvent log_event{"source", Severity::kNotice, "date", "time", "message"};
-//  job_log.Append(log_event);
-
   JobLogViewModel view_model(&job_log);
-//  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
-//  EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // source, severity, date, time, message
 
   EXPECT_EQ(view_model.headerData(0, Qt::Horizontal, Qt::DisplayRole), QString("date"));
   EXPECT_EQ(view_model.headerData(1, Qt::Horizontal, Qt::DisplayRole), QString("time"));
   EXPECT_EQ(view_model.headerData(2, Qt::Horizontal, Qt::DisplayRole), QString("severity"));
   EXPECT_EQ(view_model.headerData(3, Qt::Horizontal, Qt::DisplayRole), QString("source"));
   EXPECT_EQ(view_model.headerData(4, Qt::Horizontal, Qt::DisplayRole), QString("message"));
+}
+
+TEST_F(JobLogViewModelTests, Flags)
+{
+  JobLog job_log;
+  LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
+  job_log.Append(log_event);
+
+  JobLogViewModel view_model(&job_log);
+
+  for (int col = 0; col < 5; ++col)
+  {
+    EXPECT_TRUE(view_model.flags(view_model.index(0, col)) & Qt::ItemIsSelectable);
+    EXPECT_TRUE(view_model.flags(view_model.index(0, col)) & Qt::ItemIsEnabled);
+    EXPECT_FALSE(view_model.flags(view_model.index(0, col)) & Qt::ItemIsEditable);
+  }
 }
