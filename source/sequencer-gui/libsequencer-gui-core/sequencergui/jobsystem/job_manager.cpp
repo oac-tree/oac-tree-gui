@@ -99,8 +99,8 @@ JobContext *JobManager::GetCurrentContext()
 
 JobContext *JobManager::GetContext(JobItem *job)
 {
-  auto it = m_context_map.find(job);
-  return it == m_context_map.end() ? nullptr : it->second.get();
+  auto iter = m_context_map.find(job);
+  return iter == m_context_map.end() ? nullptr : iter->second.get();
 }
 
 //! Returns current job. It is the one that is attached to the MessagePanel and is the recipient

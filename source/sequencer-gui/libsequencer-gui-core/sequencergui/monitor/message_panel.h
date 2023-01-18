@@ -26,6 +26,7 @@
 
 class QTextEdit;
 class QAction;
+class QTreeView;
 
 namespace sequencergui
 {
@@ -42,6 +43,7 @@ public:
 private:
   QTextEdit* m_text_edit{nullptr};
   QAction* m_remove_selected_action{nullptr};
+  QTreeView* m_tree_view{nullptr};
 };
 }  // namespace sequencergui
 

@@ -25,6 +25,7 @@
 #include <QScrollBar>
 #include <QTextEdit>
 #include <QToolButton>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace
@@ -45,7 +46,10 @@ namespace sequencergui
 {
 
 MessagePanel::MessagePanel(QWidget* parent)
-    : QWidget(parent), m_text_edit(new QTextEdit), m_remove_selected_action(new QAction(this))
+    : QWidget(parent)
+    , m_text_edit(new QTextEdit)
+    , m_remove_selected_action(new QAction(this))
+    , m_tree_view(new QTreeView)
 {
   setWindowTitle("LOG");
 
@@ -53,6 +57,7 @@ MessagePanel::MessagePanel(QWidget* parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_text_edit);
+  layout->addWidget(m_tree_view);
 
   m_text_edit->setReadOnly(true);
   QFont font("unexistent");
