@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_MONITOR_MESSAGE_PANEL_H_
 #define SEQUENCERGUI_MONITOR_MESSAGE_PANEL_H_
 
+#include <sequencergui/jobsystem/log_event.h>
+
 #include <QWidget>
 
 class QTextEdit;
@@ -33,9 +35,9 @@ class MessagePanel : public QWidget
 public:
   explicit MessagePanel(QWidget* parent = nullptr);
 
-  void onClearLog();
+  void OnClearLog();
 
-  void onMessage(const QString& message, const QColor& color = QColor(Qt::black));
+  void OnMessage(const LogEvent& log_event);
 
 private:
   QTextEdit* m_text_edit{nullptr};

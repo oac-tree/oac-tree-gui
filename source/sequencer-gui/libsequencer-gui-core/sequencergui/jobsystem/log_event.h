@@ -40,7 +40,7 @@ struct LogEvent
   bool operator!=(const LogEvent& other) const;
 };
 
-//! Creates log event for the current moment of time with given severity level and message text.
+//! Creates log event for the current moment of time with a given severity level and message text.
 LogEvent CreateLogEvent(Severity severity, const std::string& message);
 
 }  // namespace sequencergui

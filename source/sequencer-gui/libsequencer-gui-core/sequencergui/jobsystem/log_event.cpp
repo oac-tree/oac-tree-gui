@@ -24,9 +24,8 @@ namespace sequencergui
 
 bool LogEvent::operator==(const LogEvent& other) const
 {
-  return source == other.source && severity == other.severity;
-//  return source == other.source && severity == other.severity && date == other.date
-//         && time == other.time && message == other.message;
+  return source == other.source && severity == other.severity && date == other.date
+         && time == other.time && message == other.message;
 }
 
 bool LogEvent::operator!=(const LogEvent& other) const

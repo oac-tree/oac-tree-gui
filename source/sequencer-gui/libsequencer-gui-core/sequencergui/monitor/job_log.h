@@ -22,7 +22,6 @@
 
 #include <sequencergui/jobsystem/log_event.h>
 
-#include <string>
 #include <vector>
 
 namespace sequencergui

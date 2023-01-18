@@ -110,8 +110,6 @@ void JobContext::onStopRequest()
   {
     m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
   }
-
-  m_procedure_runner->Stop();
 }
 
 bool JobContext::IsRunning() const

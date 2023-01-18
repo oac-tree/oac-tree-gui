@@ -27,10 +27,24 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+namespace
+{
+QColor GetColor(sequencergui::Severity message_type)
+{
+  static const std::map<sequencergui::Severity, std::string> message_to_colorname = {
+      {sequencergui::Severity::kInfo, "gray"},
+      {sequencergui::Severity::kNotice, "darkorchid"},
+      {sequencergui::Severity::kWarning, "orange"},
+      {sequencergui::Severity::kError, "firebrick"}};
+  auto iter = message_to_colorname.find(message_type);
+  return iter == message_to_colorname.end() ? QColor(Qt::red) : QColor(iter->second.c_str());
+}
+}  // namespace
+
 namespace sequencergui
 {
 
-MessagePanel::MessagePanel(QWidget *parent)
+MessagePanel::MessagePanel(QWidget* parent)
     : QWidget(parent), m_text_edit(new QTextEdit), m_remove_selected_action(new QAction(this))
 {
   setWindowTitle("LOG");
@@ -41,30 +55,32 @@ MessagePanel::MessagePanel(QWidget *parent)
   layout->addWidget(m_text_edit);
 
   m_text_edit->setReadOnly(true);
-  QFont f("unexistent");
-  f.setStyleHint(QFont::Monospace);
-  m_text_edit->setFont(f);
+  QFont font("unexistent");
+  font.setStyleHint(QFont::Monospace);
+  m_text_edit->setFont(font);
 
   m_remove_selected_action->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   addAction(m_remove_selected_action);
 }
 
-void MessagePanel::onClearLog()
+void MessagePanel::OnClearLog()
 {
   m_text_edit->clear();
 }
 
-void MessagePanel::onMessage(const QString &message, const QColor &color)
+void MessagePanel::OnMessage(const LogEvent& log_event)
 {
+  auto color = GetColor(log_event.severity);
+
   auto scrollbar = m_text_edit->verticalScrollBar();
   bool autoscroll = scrollbar->value() == scrollbar->maximum();
   m_text_edit->setTextColor(color);
-  m_text_edit->append(message);
+  m_text_edit->append(QString::fromStdString(log_event.message));
   if (autoscroll)
   {
-    QTextCursor c = m_text_edit->textCursor();
-    c.movePosition(QTextCursor::End);
-    m_text_edit->setTextCursor(c);
+    auto text_cursor = m_text_edit->textCursor();
+    text_cursor.movePosition(QTextCursor::End);
+    m_text_edit->setTextCursor(text_cursor);
   }
 }
 

@@ -77,7 +77,7 @@ void JobManager::SetCurrentJob(JobItem *job)
     current_context->SetMessagePanel(nullptr);
     if (m_message_panel)
     {
-      m_message_panel->onClearLog();
+      m_message_panel->OnClearLog();
     }
   }
 

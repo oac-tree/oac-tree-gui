@@ -21,20 +21,6 @@
 
 #include <sequencergui/monitor/message_panel.h>
 
-namespace
-{
-QColor GetColor(sequencergui::Severity message_type)
-{
-  static const std::map<sequencergui::Severity, std::string> message_to_colorname = {
-      {sequencergui::Severity::kInfo, "gray"},
-      {sequencergui::Severity::kNotice, "darkorchid"},
-      {sequencergui::Severity::kWarning, "orange"},
-      {sequencergui::Severity::kError, "firebrick"}};
-  auto it = message_to_colorname.find(message_type);
-  return it == message_to_colorname.end() ? QColor(Qt::red) : QColor(it->second.c_str());
-}
-}  // namespace
-
 namespace sequencergui
 {
 
@@ -48,12 +34,12 @@ void JobLog::SetMessagePanel(MessagePanel* message_panel)
     return;
   }
 
-  m_message_panel->onClearLog();
+  m_message_panel->OnClearLog();
 
   // Write all accumulated messages to MessagePanel
   for (auto& record : m_records)
   {
-    m_message_panel->onMessage(QString::fromStdString(record.message), QColor(Qt::gray));
+    m_message_panel->OnMessage(record);
   }
 }
 
@@ -63,8 +49,7 @@ void JobLog::Append(const LogEvent& log_event)
 
   if (m_message_panel)
   {
-    m_message_panel->onMessage(QString::fromStdString(log_event.message),
-                               GetColor(log_event.severity));
+    m_message_panel->OnMessage(log_event);
   }
 }
 
@@ -73,7 +58,7 @@ void JobLog::ClearLog()
   m_records.clear();
   if (m_message_panel)
   {
-    m_message_panel->onClearLog();
+    m_message_panel->OnClearLog();
   }
 }
 
