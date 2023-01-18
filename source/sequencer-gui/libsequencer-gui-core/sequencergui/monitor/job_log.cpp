@@ -53,17 +53,18 @@ void JobLog::SetMessagePanel(MessagePanel* message_panel)
   // Write all accumulated messages to MessagePanel
   for (auto& record : m_records)
   {
-    m_message_panel->onMessage(QString::fromStdString(record.m_text), QColor(Qt::gray));
+    m_message_panel->onMessage(QString::fromStdString(record.message), QColor(Qt::gray));
   }
 }
 
-void JobLog::Append(const std::string& text, Severity type)
+void JobLog::Append(const LogEvent& log_event)
 {
-  m_records.push_back({text, type});
+  m_records.push_back(log_event);
 
   if (m_message_panel)
   {
-    m_message_panel->onMessage(QString::fromStdString(text), GetColor(type));
+    m_message_panel->onMessage(QString::fromStdString(log_event.message),
+                               GetColor(log_event.severity));
   }
 }
 

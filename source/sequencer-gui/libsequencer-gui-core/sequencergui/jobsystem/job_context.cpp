@@ -19,6 +19,7 @@
 
 #include "sequencergui/jobsystem/job_context.h"
 
+#include <mvvm/standarditems/container_item.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
@@ -30,9 +31,6 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
-
-#include <mvvm/standarditems/container_item.h>
-
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 
@@ -110,7 +108,7 @@ void JobContext::onStopRequest()
   auto is_valid_request = m_procedure_runner->Stop();
   if (is_valid_request)
   {
-    m_job_log->Append("Stop request", static_cast<Severity>(Severity::kWarning));
+    m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
   }
 
   m_procedure_runner->Stop();
@@ -175,7 +173,7 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction, con
 
 void JobContext::onLogMessage(const QString &message, int message_type)
 {
-  m_job_log->Append(message.toStdString(), static_cast<Severity>(message_type));
+  m_job_log->Append(CreateLogEvent(static_cast<Severity>(message_type), message.toStdString()));
 }
 
 void JobContext::onVariableChange(const QString &variable_name, const QString &value)

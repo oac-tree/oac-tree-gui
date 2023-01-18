@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_MONITOR_JOB_LOG_H_
 #define SEQUENCERGUI_MONITOR_JOB_LOG_H_
 
-#include <sequencergui/jobsystem/job_log_severity.h>
+#include <sequencergui/jobsystem/log_event.h>
 
 #include <string>
 #include <vector>
@@ -38,17 +38,11 @@ public:
   JobLog();
 
   void SetMessagePanel(MessagePanel* message_panel);
-  void Append(const std::string& text, Severity type);
+  void Append(const LogEvent& log_event);
   void ClearLog();
 
 private:
-  struct Record
-  {
-    std::string m_text;
-    Severity m_type;
-  };
-
-  std::vector<Record> m_records;
+  std::vector<LogEvent> m_records;
   MessagePanel* m_message_panel;
 };
 
