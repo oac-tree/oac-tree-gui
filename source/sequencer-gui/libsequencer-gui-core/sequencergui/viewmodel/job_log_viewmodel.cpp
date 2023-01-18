@@ -1,0 +1,115 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2023 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "job_log_viewmodel.h"
+
+#include <sequencergui/monitor/job_log.h>
+
+namespace
+{
+const int kColumnCount = 5;  // number of members in LogEvent
+QStringList GetColumnNames()
+{
+  return QStringList() << "source"
+                       << "severity"
+                       << "date"
+                       << "time"
+                       << "message";
+}
+
+}  // namespace
+
+namespace sequencergui
+{
+
+JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent) : m_job_log(job_log) {}
+
+int JobLogViewModel::rowCount(const QModelIndex &parent) const
+{
+  return parent.isValid() ? 0 : m_job_log->GetSize();
+}
+
+int JobLogViewModel::columnCount(const QModelIndex &parent) const
+{
+  return parent.isValid() ? 0 : kColumnCount;
+}
+
+QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
+{
+  if (!index.isValid())
+  {
+    return {};
+  }
+
+  if (index.row() >= m_job_log->GetSize() || index.row() < 0)
+  {
+    return {};
+  }
+
+  if (role == Qt::DisplayRole)
+  {
+    const auto &record = m_job_log->At(index.row());
+
+    switch (index.column())
+    {
+    case 0:
+      return QString::fromStdString(record.source);
+    case 1:
+      return QString();
+    case 2:
+      return QString::fromStdString(record.date);
+    case 3:
+      return QString::fromStdString(record.time);
+    case 4:
+      return QString::fromStdString(record.message);
+    default:
+      break;
+    }
+  }
+  return {};
+}
+
+QVariant JobLogViewModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+  static QStringList column_names = GetColumnNames();
+
+  if (role != Qt::DisplayRole)
+  {
+    return {};
+  }
+
+  if (orientation == Qt::Horizontal)
+  {
+    return column_names.at(section);
+  }
+
+  return {};
+}
+
+Qt::ItemFlags JobLogViewModel::flags(const QModelIndex &index) const
+{
+  if (!index.isValid())
+  {
+    return Qt::ItemIsEnabled;
+  }
+
+  return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+}
+
+}  // namespace sequencergui

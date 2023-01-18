@@ -17,38 +17,39 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_JOB_LOG_H_
-#define SEQUENCERGUI_MONITOR_JOB_LOG_H_
+#ifndef SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_
 
-#include <sequencergui/jobsystem/log_event.h>
-
-#include <vector>
+#include <QAbstractTableModel>
 
 namespace sequencergui
 {
 
-class MessagePanel;
+class JobLog;
 
-//! Holds all messages of running job in chronological order.
-//! When MessagePanel is set, updates it with arriving messages.
-class JobLog
+//! View model to represent JobLog in Qt tree in a form of a table.
+
+class JobLogViewModel : public QAbstractTableModel
 {
+  Q_OBJECT
+
 public:
-  JobLog();
+  explicit JobLogViewModel(JobLog *job_log, QObject *parent = nullptr);
 
-  void SetMessagePanel(MessagePanel* message_panel);
-  void Append(const LogEvent& log_event);
-  void ClearLog();
+  int rowCount(const QModelIndex &parent) const override;
 
-  int GetSize() const;
+  int columnCount(const QModelIndex &parent) const override;
 
-  LogEvent& At(int index);
+  QVariant data(const QModelIndex &index, int role) const override;
+
+  QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+
+  Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
-  std::vector<LogEvent> m_records;
-  MessagePanel* m_message_panel;
+  JobLog *m_job_log{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_JOB_LOG_H_
+#endif  // SEQUENCERGUI_VIEWMODEL_JOB_LOG_VIEWMODEL_H_

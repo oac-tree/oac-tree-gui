@@ -62,4 +62,14 @@ void JobLog::ClearLog()
   }
 }
 
+int JobLog::GetSize() const
+{
+  return static_cast<int>(m_records.size());
+}
+
+LogEvent &JobLog::At(int index)
+{
+  return  m_records.at(index);
+}
+
 };  // namespace sequencergui
