@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
 
-//! @file jobutils.h
+//! @file job_utils.h
 //! Collection of various utility functions for job execution.
 
 #include <sequencergui/jobsystem/job_types.h>

@@ -17,30 +17,26 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
-#define SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
-
-//! @file job_log_severity.h
-//! Provide log severity levels and accompanying utility functions.
+#include "log_event.h"
 
 namespace sequencergui
 {
 
-//! Defines severity levels for messages.
-
-enum class Severity
+bool LogEvent::operator==(const LogEvent& other) const
 {
-  kEmergency = 0,
-  kAlert,
-  kCritical,
-  kError,
-  kWarning,
-  kNotice,
-  kInfo,
-  kDebug,
-  kTrace
-};
+  return source == other.source && severity == other.severity;
+//  return source == other.source && severity == other.severity && date == other.date
+//         && time == other.time && message == other.message;
+}
+
+bool LogEvent::operator!=(const LogEvent& other) const
+{
+  return !(*this == other);
+}
+
+LogEvent CreateLogEvent(Severity severity, const std::string& message)
+{
+  return {std::string(), severity, std::string(), std::string(), message};
+}
 
 }  // namespace sequencergui
-
-#endif

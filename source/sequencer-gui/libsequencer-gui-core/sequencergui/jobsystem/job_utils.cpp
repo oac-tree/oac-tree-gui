@@ -42,20 +42,20 @@ namespace sequencergui
 
 std::string RunnerStatusToString(RunnerStatus status)
 {
-  auto it = kRunnerStatusMap.find(status);
-  return it == kRunnerStatusMap.end() ? std::string("Unknown") : it->second;
+  auto iter = kRunnerStatusMap.find(status);
+  return iter == kRunnerStatusMap.end() ? std::string("Unknown") : iter->second;
 }
 
 RunnerStatus GetRunnerStatus(const std::string &status_name)
 {
-  auto it = std::find_if(kRunnerStatusMap.begin(), kRunnerStatusMap.end(),
-                         [status_name](auto element) { return element.second == status_name; });
+  auto iter = std::find_if(kRunnerStatusMap.begin(), kRunnerStatusMap.end(),
+                           [status_name](auto element) { return element.second == status_name; });
 
-  if (it == kRunnerStatusMap.end())
+  if (iter == kRunnerStatusMap.end())
   {
     throw std::runtime_error("Can't convert name to RunnerStatus");
   }
-  return it->first;
+  return iter->first;
 }
 
 int GetDefaultTickTimeoutMsc()
