@@ -107,6 +107,12 @@ void JobContext::onMakeStepRequest()
 void JobContext::onStopRequest()
 {
   CheckRunner();
+  auto is_valid_request = m_procedure_runner->Stop();
+  if (is_valid_request)
+  {
+    m_job_log->Append("Stop request", static_cast<Severity>(Severity::kWarning));
+  }
+
   m_procedure_runner->Stop();
 }
 

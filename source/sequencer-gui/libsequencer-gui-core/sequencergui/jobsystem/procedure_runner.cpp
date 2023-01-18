@@ -23,7 +23,6 @@
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
-
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
@@ -64,13 +63,7 @@ bool ProcedureRunner::Step()
 
 bool ProcedureRunner::Stop()
 {
-  auto is_valid_request = m_domain_runner_adapter->Stop();
-  if (is_valid_request)
-  {
-    onLogMessage("ProcedureRunner::Stop()", Severity::kWarning);
-  }
-
-  return is_valid_request;
+  return m_domain_runner_adapter->Stop();
 }
 
 bool ProcedureRunner::Pause()
