@@ -36,13 +36,13 @@ TEST_F(LogEventTests, EqualityOperator)
   EXPECT_TRUE(event1 == event2);
   EXPECT_FALSE(event1 != event2);
 
-  LogEvent event3{"sup", Severity::kWarning, "2022-12-01", "18:52:01.001", "message"};
-  LogEvent event4{"sup", Severity::kWarning, "2022-12-01", "18:52:01.001", "message"};
+  LogEvent event3{"2022-12-01", "18:52:01.001", Severity::kWarning, "sup", "message"};
+  LogEvent event4{"2022-12-01", "18:52:01.001", Severity::kWarning, "sup", "message"};
   EXPECT_TRUE(event3 == event4);
   EXPECT_FALSE(event3 != event4);
 
-  LogEvent event5{"sup", Severity::kWarning, "2022-12-01", "18:52:01.001", "message"};
-  LogEvent event6{"sup", Severity::kError, "2022-12-01", "18:52:01.001", "message"};
+  LogEvent event5{"2022-12-01", "18:52:01.001", Severity::kWarning, "sup", "message"};
+  LogEvent event6{"2022-12-01", "18:52:01.001", Severity::kError, "sup", "message"};
   EXPECT_FALSE(event5 == event6);
   EXPECT_TRUE(event5 != event6);
 }

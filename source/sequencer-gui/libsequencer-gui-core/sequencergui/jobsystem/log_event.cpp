@@ -35,7 +35,7 @@ bool LogEvent::operator!=(const LogEvent& other) const
 
 LogEvent CreateLogEvent(Severity severity, const std::string& message)
 {
-  return {std::string(), severity, std::string(), std::string(), message};
+  return {std::string(), std::string(), severity, std::string(), message};
 }
 
 }  // namespace sequencergui

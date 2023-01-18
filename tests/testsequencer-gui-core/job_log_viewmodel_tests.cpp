@@ -45,17 +45,17 @@ TEST_F(JobLogViewModelTests, InitialState)
 TEST_F(JobLogViewModelTests, SingleRowData)
 {
   JobLog job_log;
-  LogEvent log_event{"source", Severity::kNotice, "date", "time", "message"};
+  LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
   job_log.Append(log_event);
 
   JobLogViewModel view_model(&job_log);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
   EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // source, severity, date, time, message
 
-  EXPECT_EQ(view_model.data(view_model.index(0, 0), Qt::DisplayRole), QString("source"));
-  EXPECT_EQ(view_model.data(view_model.index(0, 1), Qt::DisplayRole), QString(""));
-  EXPECT_EQ(view_model.data(view_model.index(0, 2), Qt::DisplayRole), QString("date"));
-  EXPECT_EQ(view_model.data(view_model.index(0, 3), Qt::DisplayRole), QString("time"));
+  EXPECT_EQ(view_model.data(view_model.index(0, 0), Qt::DisplayRole), QString("date"));
+  EXPECT_EQ(view_model.data(view_model.index(0, 1), Qt::DisplayRole), QString("time"));
+  EXPECT_EQ(view_model.data(view_model.index(0, 2), Qt::DisplayRole), QString(""));
+  EXPECT_EQ(view_model.data(view_model.index(0, 3), Qt::DisplayRole), QString("source"));
   EXPECT_EQ(view_model.data(view_model.index(0, 4), Qt::DisplayRole), QString("message"));
 }
 
@@ -69,9 +69,9 @@ TEST_F(JobLogViewModelTests, HeaderData)
 //  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
 //  EXPECT_EQ(view_model.columnCount(QModelIndex()), 5);  // source, severity, date, time, message
 
-  EXPECT_EQ(view_model.headerData(0, Qt::Horizontal, Qt::DisplayRole), QString("source"));
-  EXPECT_EQ(view_model.headerData(1, Qt::Horizontal, Qt::DisplayRole), QString("severity"));
-  EXPECT_EQ(view_model.headerData(2, Qt::Horizontal, Qt::DisplayRole), QString("date"));
-  EXPECT_EQ(view_model.headerData(3, Qt::Horizontal, Qt::DisplayRole), QString("time"));
+  EXPECT_EQ(view_model.headerData(0, Qt::Horizontal, Qt::DisplayRole), QString("date"));
+  EXPECT_EQ(view_model.headerData(1, Qt::Horizontal, Qt::DisplayRole), QString("time"));
+  EXPECT_EQ(view_model.headerData(2, Qt::Horizontal, Qt::DisplayRole), QString("severity"));
+  EXPECT_EQ(view_model.headerData(3, Qt::Horizontal, Qt::DisplayRole), QString("source"));
   EXPECT_EQ(view_model.headerData(4, Qt::Horizontal, Qt::DisplayRole), QString("message"));
 }

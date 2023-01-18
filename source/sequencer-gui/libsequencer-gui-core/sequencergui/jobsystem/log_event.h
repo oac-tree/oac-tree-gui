@@ -30,10 +30,10 @@ namespace sequencergui
 //! Represents a log event during sequencer procedure execution.
 struct LogEvent
 {
-  std::string source;                     //!< source of the message
-  Severity severity = Severity::kNotice;  //!< log message severity level
   std::string date;                       //!< date of the message in the format yyyy-mm-dd
   std::string time;                       //!< time of the message in the format hh:mm:ss.zzz
+  Severity severity = Severity::kNotice;  //!< log message severity level
+  std::string source;                     //!< source of the message
   std::string message;                    //!< text of the message
 
   bool operator==(const LogEvent& other) const;

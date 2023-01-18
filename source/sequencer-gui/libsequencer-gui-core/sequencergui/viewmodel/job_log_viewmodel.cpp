@@ -26,10 +26,10 @@ namespace
 const int kColumnCount = 5;  // number of members in LogEvent
 QStringList GetColumnNames()
 {
-  return QStringList() << "source"
-                       << "severity"
-                       << "date"
+  return QStringList() << "date"
                        << "time"
+                       << "severity"
+                       << "source"
                        << "message";
 }
 
@@ -69,13 +69,13 @@ QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
     switch (index.column())
     {
     case 0:
-      return QString::fromStdString(record.source);
-    case 1:
-      return QString();
-    case 2:
       return QString::fromStdString(record.date);
-    case 3:
+    case 1:
       return QString::fromStdString(record.time);
+    case 2:
+      return QString();
+    case 3:
+      return QString::fromStdString(record.source);
     case 4:
       return QString::fromStdString(record.message);
     default:
