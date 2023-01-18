@@ -69,8 +69,7 @@ public:
 
   void onInstructionStatusChange(const instruction_t* instruction, const std::string& value);
 
-  void onLogMessage(const std::string& message,
-                    Severity message_type = Severity::kInfo);
+  void onLogMessage(const std::string& message, Severity message_type);
 
   void onVariableChange(const std::string& variable_name, const std::string& value);
 
