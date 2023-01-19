@@ -24,7 +24,7 @@
 namespace sequencergui
 {
 
-JobLog::JobLog() : m_message_panel(nullptr) {}
+JobLog::JobLog(QObject* parent) : m_message_panel(nullptr), QObject(parent) {}
 
 void JobLog::SetMessagePanel(MessagePanel* message_panel)
 {
@@ -51,6 +51,7 @@ void JobLog::Append(const LogEvent& log_event)
   {
     m_message_panel->OnMessage(log_event);
   }
+  emit LogEventAppended();
 }
 
 void JobLog::ClearLog()
@@ -60,6 +61,7 @@ void JobLog::ClearLog()
   {
     m_message_panel->OnClearLog();
   }
+  emit LogCleared();
 }
 
 int JobLog::GetSize() const
@@ -67,9 +69,9 @@ int JobLog::GetSize() const
   return static_cast<int>(m_records.size());
 }
 
-LogEvent &JobLog::At(int index)
+LogEvent& JobLog::At(int index)
 {
-  return  m_records.at(index);
+  return m_records.at(index);
 }
 
 };  // namespace sequencergui

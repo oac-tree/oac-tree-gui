@@ -21,6 +21,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
+
 using namespace sequencergui;
 
 //! Tests for JobItem class.
@@ -40,8 +42,32 @@ TEST_F(JobLogTests, Append)
   JobLog job_log;
 
   auto log_event = CreateLogEvent(Severity::kNotice, "abc");
+  QSignalSpy spy_appended(&job_log, &JobLog::LogEventAppended);
+  QSignalSpy spy_cleared(&job_log, &JobLog::LogCleared);
+
   job_log.Append(log_event);
 
   EXPECT_EQ(job_log.GetSize(), 1);
   EXPECT_EQ(job_log.At(0), log_event);
+
+  EXPECT_EQ(spy_appended.count(), 1);
+  EXPECT_EQ(spy_cleared.count(), 0);
+}
+
+TEST_F(JobLogTests, ClearLog)
+{
+  JobLog job_log;
+
+  auto log_event = CreateLogEvent(Severity::kNotice, "abc");
+  job_log.Append(log_event);
+
+  QSignalSpy spy_appended(&job_log, &JobLog::LogEventAppended);
+  QSignalSpy spy_cleared(&job_log, &JobLog::LogCleared);
+
+  job_log.ClearLog();
+
+  EXPECT_EQ(job_log.GetSize(), 0);
+
+  EXPECT_EQ(spy_appended.count(), 0);
+  EXPECT_EQ(spy_cleared.count(), 1);
 }

@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_MONITOR_JOB_LOG_H_
 
 #include <sequencergui/jobsystem/log_event.h>
+#include <QObject>
 
 #include <vector>
 
@@ -31,10 +32,12 @@ class MessagePanel;
 
 //! Holds all messages of running job in chronological order.
 //! When MessagePanel is set, updates it with arriving messages.
-class JobLog
+class JobLog : public QObject
 {
+  Q_OBJECT
+
 public:
-  JobLog();
+  JobLog(QObject* parent = nullptr);
 
   void SetMessagePanel(MessagePanel* message_panel);
   void Append(const LogEvent& log_event);
@@ -43,6 +46,10 @@ public:
   int GetSize() const;
 
   LogEvent& At(int index);
+
+signals:
+  void LogEventAppended();
+  void LogCleared();
 
 private:
   std::vector<LogEvent> m_records;
