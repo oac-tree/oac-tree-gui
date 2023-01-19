@@ -51,9 +51,14 @@ public:
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  void OnJobLogNewEntry();
+private:
+  void OnLogEventAppended();
+
+  void OnLogCleared();
 
 private:
+  void SetConnected(bool value);
+
   //!< current container with LogEvents
   JobLog *m_job_log{nullptr};
 

@@ -42,14 +42,30 @@ namespace sequencergui
 JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent) : m_job_log(job_log)
 {
   m_row_count = m_job_log ? m_job_log->GetSize() : 0;
+  SetConnected(true);
 }
 
 void JobLogViewModel::SetLog(JobLog *job_log)
 {
+  if (m_job_log == job_log)
+  {
+    return;
+  }
+
+  if (m_job_log)
+  {
+    SetConnected(false);
+  }
+
   beginResetModel();
   m_row_count = job_log ? job_log->GetSize() : 0;
   m_job_log = job_log;
   endResetModel();
+
+  if (m_job_log)
+  {
+    SetConnected(true);
+  }
 }
 
 int JobLogViewModel::rowCount(const QModelIndex &parent) const
@@ -125,11 +141,9 @@ Qt::ItemFlags JobLogViewModel::flags(const QModelIndex &index) const
 }
 
 //! Provides necessary ViewModel-related bookkeeping when a new LogEvent is added to a JobLog.
-//!
-//! This method should be called manually by someone, who knows, that LogEvent has gotten a new
-//! entry. The method will generate necessary signals. Will be refactored later.
+//! This method should be connected with JobLog::LogEventAppended.
 
-void JobLogViewModel::OnJobLogNewEntry()
+void JobLogViewModel::OnLogEventAppended()
 {
   int current_row_count = rowCount(QModelIndex());
 
@@ -141,6 +155,36 @@ void JobLogViewModel::OnJobLogNewEntry()
   beginInsertRows(QModelIndex(), current_row_count, current_row_count);
   m_row_count = m_job_log->GetSize();
   endInsertRows();
+}
+
+//! Clean the table. This method should be connected with JobLog::LogCleared.
+void JobLogViewModel::OnLogCleared()
+{
+  beginResetModel();
+  m_row_count = 0;
+  endResetModel();
+}
+
+//! Set connections (or disconnect) the table and
+void JobLogViewModel::SetConnected(bool value)
+{
+  if (!m_job_log)
+  {
+    throw LogicErrorException("Can't connect or disconnect non existing log");
+  }
+
+  if (value)
+  {
+    connect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended,
+            Qt::UniqueConnection);
+    connect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared,
+            Qt::UniqueConnection);
+  }
+  else
+  {
+    disconnect(m_job_log, &JobLog::LogEventAppended, this, &JobLogViewModel::OnLogEventAppended);
+    disconnect(m_job_log, &JobLog::LogCleared, this, &JobLogViewModel::OnLogCleared);
+  }
 }
 
 }  // namespace sequencergui
