@@ -28,7 +28,7 @@ namespace sequencergui
 class JobLog;
 
 //! View model to represent JobLog in Qt tree in a form of a table.
-//! The view model is designed for performance. It looks at JobLog as an underlying data container.
+//! The view model is designed for performance. It uses JobLog as an underlying data container.
 //! It is the responsibility of the user to call OnAppend, OnClear when a corresponding change
 //! occurs with underlying JobLog.
 
@@ -49,8 +49,11 @@ public:
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
+  void OnJobLogNewEntry();
+
 private:
   JobLog *m_job_log{nullptr};
+  int m_row_count{0};
 };
 
 }  // namespace sequencergui

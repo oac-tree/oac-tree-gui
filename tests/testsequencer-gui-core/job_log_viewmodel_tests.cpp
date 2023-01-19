@@ -22,6 +22,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
+
 using namespace sequencergui;
 
 //! Tests for JobItem class.
@@ -85,4 +87,26 @@ TEST_F(JobLogViewModelTests, Flags)
     EXPECT_TRUE(view_model.flags(view_model.index(0, col)) & Qt::ItemIsEnabled);
     EXPECT_FALSE(view_model.flags(view_model.index(0, col)) & Qt::ItemIsEditable);
   }
+}
+
+TEST_F(JobLogViewModelTests, AppendRow)
+{
+  JobLog job_log;
+
+  JobLogViewModel view_model(&job_log);
+  QSignalSpy spy_insert(&view_model, &JobLogViewModel::rowsInserted);
+
+  job_log.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+
+  view_model.OnJobLogNewEntry();
+
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+
+  EXPECT_EQ(spy_insert.count(), 1);
+
+  QList<QVariant> arguments = spy_insert.takeFirst();
+  EXPECT_EQ(arguments.size(), 3);  // QModelIndex &parent, int first, int last
+  EXPECT_EQ(arguments.at(0).value<QModelIndex>(), QModelIndex());
+  EXPECT_EQ(arguments.at(1).value<int>(), 0);
+  EXPECT_EQ(arguments.at(2).value<int>(), 0);
 }

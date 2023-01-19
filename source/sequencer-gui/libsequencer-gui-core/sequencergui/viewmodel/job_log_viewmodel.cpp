@@ -19,6 +19,7 @@
 
 #include "job_log_viewmodel.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/monitor/job_log.h>
 
 namespace
@@ -38,11 +39,14 @@ QStringList GetColumnNames()
 namespace sequencergui
 {
 
-JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent) : m_job_log(job_log) {}
+JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent) : m_job_log(job_log)
+{
+  m_row_count = m_job_log->GetSize();
+}
 
 int JobLogViewModel::rowCount(const QModelIndex &parent) const
 {
-  return parent.isValid() ? 0 : m_job_log->GetSize();
+  return parent.isValid() ? 0 : m_row_count;
 }
 
 int JobLogViewModel::columnCount(const QModelIndex &parent) const
@@ -110,6 +114,25 @@ Qt::ItemFlags JobLogViewModel::flags(const QModelIndex &index) const
   }
 
   return QAbstractTableModel::flags(index) | Qt::ItemIsSelectable;
+}
+
+//! Provides necessary ViewModel-related bookkeeping when a new LogEvent is added to a JobLog.
+//!
+//! This method should be called manually by someone, who knows, that LogEvent has gotten a new
+//! entry. The method will generate necessary signals. Will be refactored later.
+
+void JobLogViewModel::OnJobLogNewEntry()
+{
+  int current_row_count = rowCount(QModelIndex());
+
+  if (current_row_count + 1 != m_job_log->GetSize())
+  {
+    throw LogicErrorException("ViewModel is out-of-sync");
+  }
+
+  beginInsertRows(QModelIndex(), current_row_count, current_row_count);
+  m_row_count = m_job_log->GetSize();
+  endInsertRows();
 }
 
 }  // namespace sequencergui
