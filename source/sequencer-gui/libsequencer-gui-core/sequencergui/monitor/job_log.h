@@ -39,7 +39,7 @@ class JobLog : public QObject
 public:
   JobLog(QObject* parent = nullptr);
 
-  void SetMessagePanel(MessagePanel* message_panel);
+//  void SetMessagePanel(MessagePanel* message_panel);
   void Append(const LogEvent& log_event);
   void ClearLog();
 
@@ -53,7 +53,7 @@ signals:
 
 private:
   std::vector<LogEvent> m_records;
-  MessagePanel* m_message_panel;
+//  MessagePanel* m_message_panel;
 };
 
 }  // namespace sequencergui

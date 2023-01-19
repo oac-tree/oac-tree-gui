@@ -72,21 +72,25 @@ void JobManager::SetCurrentJob(JobItem *job)
   }
 
   // previous context, if exists,  will be detached from the message panel
-  if (auto current_context = GetCurrentContext(); current_context)
-  {
-    current_context->SetMessagePanel(nullptr);
-    if (m_message_panel)
-    {
-      m_message_panel->OnClearLog();
-    }
-  }
+  //  if (auto current_context = GetCurrentContext(); current_context)
+  //  {
+  ////    current_context->SetMessagePanel(nullptr);
+  //    if (m_message_panel)
+  //    {
+  //      m_message_panel->OnClearLog();
+  //    }
+  //  }
 
   m_current_job = job;
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
     // new context will be attached to the message panel
-    current_context->SetMessagePanel(m_message_panel);
+    //    current_context->SetMessagePanel(m_message_panel);
+    if (m_message_panel)
+    {
+      m_message_panel->SetLog(current_context->GetJobLog());
+    }
   }
 }
 
@@ -205,7 +209,7 @@ std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
   { return onUserChoiceRequest(choices, description); };
 
   auto context = std::make_unique<JobContext>(item);
-  context->SetMessagePanel(m_message_panel);
+  //  context->SetMessagePanel(m_message_panel);
   connect(context.get(), &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
 

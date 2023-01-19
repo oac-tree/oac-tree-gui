@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include "sequencergui/monitor/message_panel.h"
+#include <sequencergui/viewmodel/job_log_viewmodel.h>
 
 #include <sequencergui/utils/style_utils.h>
 
@@ -50,6 +51,7 @@ MessagePanel::MessagePanel(QWidget* parent)
     , m_text_edit(new QTextEdit)
     , m_remove_selected_action(new QAction(this))
     , m_tree_view(new QTreeView)
+    , m_view_model(new JobLogViewModel(nullptr))
 {
   setWindowTitle("LOG");
 
@@ -66,27 +68,34 @@ MessagePanel::MessagePanel(QWidget* parent)
 
   m_remove_selected_action->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   addAction(m_remove_selected_action);
+
+  m_tree_view->setModel(m_view_model);
 }
 
-void MessagePanel::OnClearLog()
+void MessagePanel::SetLog(JobLog *job_log)
 {
-  m_text_edit->clear();
+  m_view_model->SetLog(job_log);
 }
 
-void MessagePanel::OnMessage(const LogEvent& log_event)
-{
-  auto color = GetColor(log_event.severity);
+//void MessagePanel::OnClearLog()
+//{
+//  m_text_edit->clear();
+//}
 
-  auto scrollbar = m_text_edit->verticalScrollBar();
-  bool autoscroll = scrollbar->value() == scrollbar->maximum();
-  m_text_edit->setTextColor(color);
-  m_text_edit->append(QString::fromStdString(log_event.message));
-  if (autoscroll)
-  {
-    auto text_cursor = m_text_edit->textCursor();
-    text_cursor.movePosition(QTextCursor::End);
-    m_text_edit->setTextCursor(text_cursor);
-  }
-}
+//void MessagePanel::OnMessage(const LogEvent& log_event)
+//{
+//  auto color = GetColor(log_event.severity);
+
+//  auto scrollbar = m_text_edit->verticalScrollBar();
+//  bool autoscroll = scrollbar->value() == scrollbar->maximum();
+//  m_text_edit->setTextColor(color);
+//  m_text_edit->append(QString::fromStdString(log_event.message));
+//  if (autoscroll)
+//  {
+//    auto text_cursor = m_text_edit->textCursor();
+//    text_cursor.movePosition(QTextCursor::End);
+//    m_text_edit->setTextCursor(text_cursor);
+//  }
+//}
 
 }  // namespace sequencergui

@@ -117,12 +117,12 @@ bool JobContext::IsRunning() const
   return m_procedure_runner ? m_procedure_runner->IsBusy() : false;
 }
 
-//! Sets message panel to report text information.
+////! Sets message panel to report text information.
 
-void JobContext::SetMessagePanel(MessagePanel *panel)
-{
-  m_job_log->SetMessagePanel(panel);
-}
+//void JobContext::SetMessagePanel(MessagePanel *panel)
+//{
+//  m_job_log->SetMessagePanel(panel);
+//}
 
 void JobContext::SetSleepTime(int time_msec)
 {
@@ -151,6 +151,11 @@ RunnerStatus JobContext::GetRunnerStatus() const
 {
   CheckRunner();
   return m_procedure_runner->GetRunnerStatus();
+}
+
+JobLog *JobContext::GetJobLog() const
+{
+  return m_job_log;
 }
 
 void JobContext::onInstructionStatusChange(const instruction_t *instruction, const QString &status)

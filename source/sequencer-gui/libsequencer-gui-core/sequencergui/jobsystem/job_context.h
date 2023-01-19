@@ -61,7 +61,7 @@ public:
 
   // Methods to setup procedure execution.
 
-  void SetMessagePanel(MessagePanel* panel);
+//  void SetMessagePanel(MessagePanel* panel);
 
   void SetSleepTime(int time_msec);
 
@@ -74,6 +74,8 @@ public:
   bool IsValid() const;  // FIXME find better name
 
   RunnerStatus GetRunnerStatus() const;
+
+  JobLog* GetJobLog() const;
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);

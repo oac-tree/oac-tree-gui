@@ -41,8 +41,11 @@ namespace sequencergui
 
 JobLogViewModel::JobLogViewModel(JobLog *job_log, QObject *parent) : m_job_log(job_log)
 {
-  m_row_count = m_job_log ? m_job_log->GetSize() : 0;
-  SetConnected(true);
+  if (m_job_log)
+  {
+    m_row_count = m_job_log->GetSize();
+    SetConnected(true);
+  }
 }
 
 void JobLogViewModel::SetLog(JobLog *job_log)
