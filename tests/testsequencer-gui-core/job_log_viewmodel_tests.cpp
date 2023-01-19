@@ -56,7 +56,7 @@ TEST_F(JobLogViewModelTests, SingleRowData)
 
   EXPECT_EQ(view_model.data(view_model.index(0, 0), Qt::DisplayRole), QString("date"));
   EXPECT_EQ(view_model.data(view_model.index(0, 1), Qt::DisplayRole), QString("time"));
-  EXPECT_EQ(view_model.data(view_model.index(0, 2), Qt::DisplayRole), QString(""));
+  EXPECT_FALSE(view_model.data(view_model.index(0, 2), Qt::DisplayRole).toString().isEmpty());
   EXPECT_EQ(view_model.data(view_model.index(0, 3), Qt::DisplayRole), QString("source"));
   EXPECT_EQ(view_model.data(view_model.index(0, 4), Qt::DisplayRole), QString("message"));
 }

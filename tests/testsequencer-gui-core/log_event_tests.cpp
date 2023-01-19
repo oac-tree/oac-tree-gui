@@ -21,6 +21,10 @@
 
 #include <gtest/gtest.h>
 
+#include <QDate>
+#include <QDateTime>
+#include <QTime>
+
 using namespace sequencergui;
 
 //! Tests for SequencerObserver class.
@@ -52,4 +56,8 @@ TEST_F(LogEventTests, CreateLogEvent)
   auto event = CreateLogEvent(Severity::kWarning, "abc");
   EXPECT_EQ(event.severity, Severity::kWarning);
   EXPECT_EQ(event.message, std::string("abc"));
+
+  auto date = QDate::fromString(QString::fromStdString(event.date), "dd.MM.yyyy");
+  auto time = QTime::fromString(QString::fromStdString(event.time), "hh:mm:ss.zzz");
+  EXPECT_TRUE(QDateTime(date, time).isValid());
 }

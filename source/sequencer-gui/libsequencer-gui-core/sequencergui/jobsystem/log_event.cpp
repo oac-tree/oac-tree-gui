@@ -19,6 +19,9 @@
 
 #include "log_event.h"
 
+#include <QDate>
+#include <QTime>
+
 namespace sequencergui
 {
 
@@ -35,7 +38,10 @@ bool LogEvent::operator!=(const LogEvent& other) const
 
 LogEvent CreateLogEvent(Severity severity, const std::string& message)
 {
-  return {std::string(), std::string(), severity, std::string(), message};
+  auto date = QDate::currentDate().toString("dd.MM.yyyy").toStdString();
+  auto time = QTime::currentTime().toString("hh:mm:ss.zzz").toStdString();
+
+  return {date, time, severity, std::string(), message};
 }
 
 }  // namespace sequencergui
