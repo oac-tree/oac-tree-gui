@@ -20,6 +20,7 @@
 #include "job_log_viewmodel.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/monitor/job_log.h>
 
 namespace
@@ -104,7 +105,7 @@ QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
     case 1:
       return QString::fromStdString(record.time);
     case 2:
-      return QString();
+      return QString::fromStdString(SeverityToString(record.severity));
     case 3:
       return QString::fromStdString(record.source);
     case 4:

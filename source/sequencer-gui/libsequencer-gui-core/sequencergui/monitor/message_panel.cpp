@@ -61,6 +61,11 @@ MessagePanel::MessagePanel(QWidget* parent)
   addAction(m_remove_selected_action);
 
   m_tree_view->setModel(m_view_model);
+
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setRootIsDecorated(false);
+
+
 }
 
 void MessagePanel::SetLog(JobLog* job_log)

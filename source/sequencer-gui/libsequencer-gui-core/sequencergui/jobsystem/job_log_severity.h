@@ -23,6 +23,8 @@
 //! @file job_log_severity.h
 //! Provide log severity levels and accompanying utility functions.
 
+#include <string>
+
 namespace sequencergui
 {
 
@@ -40,6 +42,8 @@ enum class Severity
   kDebug,
   kTrace
 };
+
+std::string SeverityToString(Severity severity);
 
 }  // namespace sequencergui
 
