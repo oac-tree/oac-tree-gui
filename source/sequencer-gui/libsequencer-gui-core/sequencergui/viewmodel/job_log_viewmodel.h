@@ -39,6 +39,8 @@ class JobLogViewModel : public QAbstractTableModel
 public:
   explicit JobLogViewModel(JobLog *job_log, QObject *parent = nullptr);
 
+  void SetLog(JobLog *job_log);
+
   int rowCount(const QModelIndex &parent) const override;
 
   int columnCount(const QModelIndex &parent) const override;
@@ -52,7 +54,11 @@ public:
   void OnJobLogNewEntry();
 
 private:
+  //!< current container with LogEvents
   JobLog *m_job_log{nullptr};
+
+  //!< Number of rows shown by the table table. May differ from the actual number of LogEvents in
+  //!< the container.
   int m_row_count{0};
 };
 

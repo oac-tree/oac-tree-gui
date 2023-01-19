@@ -110,3 +110,47 @@ TEST_F(JobLogViewModelTests, AppendRow)
   EXPECT_EQ(arguments.at(1).value<int>(), 0);
   EXPECT_EQ(arguments.at(2).value<int>(), 0);
 }
+
+TEST_F(JobLogViewModelTests, ResetJobLog)
+{
+  JobLog job_log;
+  job_log.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+
+  JobLogViewModel view_model(&job_log);
+
+  QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
+  QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+
+  view_model.SetLog(nullptr);
+
+  EXPECT_EQ(spy_about_to_reset.count(), 1);
+  EXPECT_EQ(spy_reset.count(), 1);
+
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
+}
+
+TEST_F(JobLogViewModelTests, SwitchToAnotherJobLog)
+{
+  JobLog job_log1;
+  job_log1.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+
+  JobLog job_log2;
+  job_log2.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+  job_log2.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+
+  JobLogViewModel view_model(&job_log1);
+
+  QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
+  QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
+
+  view_model.SetLog(&job_log2);
+
+  EXPECT_EQ(spy_about_to_reset.count(), 1);
+  EXPECT_EQ(spy_reset.count(), 1);
+
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
+}
