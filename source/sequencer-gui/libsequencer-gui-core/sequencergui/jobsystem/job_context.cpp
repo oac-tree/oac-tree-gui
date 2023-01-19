@@ -117,13 +117,6 @@ bool JobContext::IsRunning() const
   return m_procedure_runner ? m_procedure_runner->IsBusy() : false;
 }
 
-////! Sets message panel to report text information.
-
-//void JobContext::SetMessagePanel(MessagePanel *panel)
-//{
-//  m_job_log->SetMessagePanel(panel);
-//}
-
 void JobContext::SetSleepTime(int time_msec)
 {
   CheckRunner();

@@ -33,7 +33,6 @@ class ProcedureItem;
 class ProcedureRunner;
 class JobLog;
 class JobItem;
-class MessagePanel;
 class InstructionItem;
 class GUIObjectBuilder;
 
@@ -60,8 +59,6 @@ public:
   bool IsRunning() const;
 
   // Methods to setup procedure execution.
-
-//  void SetMessagePanel(MessagePanel* panel);
 
   void SetSleepTime(int time_msec);
 

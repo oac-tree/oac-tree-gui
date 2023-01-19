@@ -160,7 +160,7 @@ void JobLogViewModel::OnLogEventAppended()
   endInsertRows();
 }
 
-//! Clean the table. This method should be connected with JobLog::LogCleared.
+//! Clean the table.
 void JobLogViewModel::OnLogCleared()
 {
   beginResetModel();
@@ -168,7 +168,7 @@ void JobLogViewModel::OnLogCleared()
   endResetModel();
 }
 
-//! Set connections (or disconnect) the table and
+//! Connect or disconnect the view to the JobLog.
 void JobLogViewModel::SetConnected(bool value)
 {
   if (!m_job_log)

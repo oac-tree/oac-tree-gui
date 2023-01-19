@@ -17,24 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/job_manager.h"
+#include "job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_utils.h>
-#include <sequencergui/jobsystem/user_context.h>
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/job_item.h>
-#include <sequencergui/model/job_model.h>
 #include <sequencergui/monitor/message_panel.h>
-#include <sequencergui/monitor/monitor_realtime_toolbar.h>
-#include <sequencergui/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QInputDialog>
-#include <iostream>
-#include <sstream>
 
 namespace sequencergui
 {
@@ -71,22 +62,10 @@ void JobManager::SetCurrentJob(JobItem *job)
     return;
   }
 
-  // previous context, if exists,  will be detached from the message panel
-  //  if (auto current_context = GetCurrentContext(); current_context)
-  //  {
-  ////    current_context->SetMessagePanel(nullptr);
-  //    if (m_message_panel)
-  //    {
-  //      m_message_panel->OnClearLog();
-  //    }
-  //  }
-
   m_current_job = job;
 
   if (auto current_context = GetCurrentContext(); current_context)
   {
-    // new context will be attached to the message panel
-    //    current_context->SetMessagePanel(m_message_panel);
     if (m_message_panel)
     {
       m_message_panel->SetLog(current_context->GetJobLog());
@@ -117,7 +96,6 @@ JobItem *JobManager::GetCurrentJob()
 
 void JobManager::OnStartJobRequest()
 {
-  qDebug() << "JobManager::onStartProcedureRequest()";
   if (auto current_context = GetCurrentContext(); current_context)
   {
     current_context->onStartRequest();
@@ -126,7 +104,6 @@ void JobManager::OnStartJobRequest()
 
 void JobManager::OnPauseJobRequest()
 {
-  qDebug() << "JobManager::onPauseProcedureRequest()";
   if (auto context = GetCurrentContext(); context)
   {
     context->onPauseRequest();
@@ -135,7 +112,6 @@ void JobManager::OnPauseJobRequest()
 
 void JobManager::OnStopJobRequest()
 {
-  qDebug() << "JobManager::onStopProcedureRequest()";
   if (auto context = GetCurrentContext(); context)
   {
     context->onStopRequest();
@@ -209,7 +185,6 @@ std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
   { return onUserChoiceRequest(choices, description); };
 
   auto context = std::make_unique<JobContext>(item);
-  //  context->SetMessagePanel(m_message_panel);
   connect(context.get(), &JobContext::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
 

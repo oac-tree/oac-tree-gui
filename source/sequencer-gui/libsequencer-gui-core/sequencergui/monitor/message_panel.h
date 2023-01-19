@@ -24,7 +24,6 @@
 
 #include <QWidget>
 
-class QTextEdit;
 class QAction;
 class QTreeView;
 
@@ -39,14 +38,9 @@ class MessagePanel : public QWidget
 public:
   explicit MessagePanel(QWidget* parent = nullptr);
 
-//  void OnClearLog();
-
-//  void OnMessage(const LogEvent& log_event);
-
   void SetLog(JobLog* job_log);
 
 private:
-  QTextEdit* m_text_edit{nullptr};
   QAction* m_remove_selected_action{nullptr};
   QTreeView* m_tree_view{nullptr};
   JobLogViewModel* m_view_model{nullptr};

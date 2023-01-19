@@ -19,48 +19,20 @@
 
 #include "sequencergui/monitor/job_log.h"
 
-#include <sequencergui/monitor/message_panel.h>
-
 namespace sequencergui
 {
 
 JobLog::JobLog(QObject* parent) : QObject(parent) {}
 
-//void JobLog::SetMessagePanel(MessagePanel* message_panel)
-//{
-//  m_message_panel = message_panel;
-//  if (!m_message_panel)
-//  {
-//    return;
-//  }
-
-//  m_message_panel->OnClearLog();
-
-//  // Write all accumulated messages to MessagePanel
-//  for (auto& record : m_records)
-//  {
-//    m_message_panel->OnMessage(record);
-//  }
-//}
-
 void JobLog::Append(const LogEvent& log_event)
 {
   m_records.push_back(log_event);
-
-//  if (m_message_panel)
-//  {
-//    m_message_panel->OnMessage(log_event);
-//  }
   emit LogEventAppended();
 }
 
 void JobLog::ClearLog()
 {
   m_records.clear();
-//  if (m_message_panel)
-//  {
-//    m_message_panel->OnClearLog();
-//  }
   emit LogCleared();
 }
 
