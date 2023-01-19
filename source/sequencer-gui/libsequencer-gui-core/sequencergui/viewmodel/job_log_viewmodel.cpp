@@ -48,6 +48,7 @@ void JobLogViewModel::SetLog(JobLog *job_log)
 {
   beginResetModel();
   m_row_count = job_log ? job_log->GetSize() : 0;
+  m_job_log = job_log;
   endResetModel();
 }
 

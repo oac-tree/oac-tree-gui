@@ -98,6 +98,8 @@ TEST_F(JobLogViewModelTests, AppendRow)
 
   job_log.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
 
+  // Manually calling notification that record has been added,
+  // that will trigger all model signaling. Later we will automatize it.
   view_model.OnJobLogNewEntry();
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
@@ -140,17 +142,27 @@ TEST_F(JobLogViewModelTests, SwitchToAnotherJobLog)
   job_log2.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
   job_log2.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
 
+  // initialise ViewModel with the first log
   JobLogViewModel view_model(&job_log1);
 
   QSignalSpy spy_about_to_reset(&view_model, &JobLogViewModel::modelAboutToBeReset);
   QSignalSpy spy_reset(&view_model, &JobLogViewModel::modelReset);
+  QSignalSpy spy_insert(&view_model, &JobLogViewModel::rowsInserted);
 
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 1);
 
+  // switch to a second log
   view_model.SetLog(&job_log2);
 
   EXPECT_EQ(spy_about_to_reset.count(), 1);
   EXPECT_EQ(spy_reset.count(), 1);
-
+  EXPECT_EQ(spy_insert.count(), 0);
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 2);
+
+  // check that viewmodel keeps functioning
+  job_log2.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
+  view_model.OnJobLogNewEntry();
+
+  EXPECT_EQ(spy_insert.count(), 1);
+  EXPECT_EQ(view_model.rowCount(QModelIndex()), 3);
 }
