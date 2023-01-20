@@ -80,7 +80,7 @@ public:
 
 signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
-  void LogMessageRequest(const sequencergui::LogEvent& event);
+  void LogEventReceived(const sequencergui::LogEvent& event);
   void RunnerStatusChanged();
   void VariableChanged(const QString& variable_name, const QString& value);
 

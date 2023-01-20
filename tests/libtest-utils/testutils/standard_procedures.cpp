@@ -67,11 +67,11 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
   return result;
 }
 
-std::unique_ptr<procedure_t> CreateMessageProcedure()
+std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string &text)
 {
   auto result = std::make_unique<procedure_t>();
   auto message = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
-  message->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
+  message->AddAttribute(sequencergui::domainconstants::kTextAttribute, text);
   result->PushInstruction(message.release());
 
   return result;

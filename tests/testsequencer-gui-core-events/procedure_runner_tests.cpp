@@ -22,13 +22,13 @@
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <testutils/standard_procedures.h>
-#include <testutils/test_utils.h>
-
+#include <sequencergui/utils/custom_meta_types.h>
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
+#include <testutils/standard_procedures.h>
+#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>
@@ -290,12 +290,13 @@ TEST_F(ProcedureRunnerTest, UserChoice)
 
 TEST_F(ProcedureRunnerTest, LogEvents)
 {
-  auto procedure = testutils::CreateMessageProcedure();
+  const std::string expected_message("abc");
+  auto procedure = testutils::CreateMessageProcedure(expected_message);
   procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
-  QSignalSpy spy_log_message(runner.get(), &ProcedureRunner::LogMessageRequest);
+  QSignalSpy spy_log_message(runner.get(), &ProcedureRunner::LogEventReceived);
 
   EXPECT_TRUE(runner->Start());
 
@@ -305,9 +306,16 @@ TEST_F(ProcedureRunnerTest, LogEvents)
 
   EXPECT_EQ(spy_log_message.count(), 2);
 
-//  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
-//  // first signal should come with status "Not finished"
-//  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
-//  // Second signal should come with status "Success"
-//  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
+  // event reported by SequencerObserver::StartSingleStepImpl()
+  QList<QVariant> arguments = spy_log_message.at(0);
+  auto event1 = arguments.at(0).value<sequencergui::LogEvent>();
+  EXPECT_EQ(event1.severity, Severity::kDebug);
+  // FIXME message will probably change, how to make test robust?
+  EXPECT_EQ(event1.message, std::string("StartSingleStep()"));
+
+  // event reported by SequencerObserver::LogImpl()
+  arguments = spy_log_message.at(1);
+  auto event2 = arguments.at(0).value<sequencergui::LogEvent>();
+  EXPECT_EQ(event2.severity, Severity::kInfo);
+  EXPECT_EQ(event2.message, expected_message);
 }

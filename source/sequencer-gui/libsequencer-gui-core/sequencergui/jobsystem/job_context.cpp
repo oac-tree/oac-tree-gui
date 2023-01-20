@@ -167,7 +167,7 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction, con
   }
 }
 
-void JobContext::onLogMessage(const sequencergui::LogEvent& event)
+void JobContext::onLogEvent(const sequencergui::LogEvent& event)
 {
   m_job_log->Append(event);
 }
@@ -221,7 +221,7 @@ std::unique_ptr<ProcedureRunner> JobContext::CreateProcedureRunner(procedure_t *
   connect(result.get(), &ProcedureRunner::InstructionStatusChanged, this,
           &JobContext::onInstructionStatusChange, Qt::QueuedConnection);
 
-  connect(result.get(), &ProcedureRunner::LogMessageRequest, this, &JobContext::onLogMessage,
+  connect(result.get(), &ProcedureRunner::LogEventReceived, this, &JobContext::onLogEvent,
           Qt::QueuedConnection);
 
   connect(result.get(), &ProcedureRunner::VariableChanged, this, &JobContext::onVariableChange,
