@@ -43,6 +43,14 @@ struct LogEvent
 //! Creates log event for the current moment of time with a given severity level and message text.
 LogEvent CreateLogEvent(Severity severity, const std::string& message);
 
+//! Returns format used for the date accross the whole app.
+//! For the moment using "yyyy.MM.dd".
+std::string GetLogEventDateFormat();
+
+//! Returns format used for the time accross the whole app.
+//! For the moment using "hh:mm:ss.zzz".
+std::string GetLogEventTimeFormat();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_

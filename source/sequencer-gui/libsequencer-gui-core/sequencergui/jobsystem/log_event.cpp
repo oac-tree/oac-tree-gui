@@ -38,10 +38,20 @@ bool LogEvent::operator!=(const LogEvent& other) const
 
 LogEvent CreateLogEvent(Severity severity, const std::string& message)
 {
-  auto date = QDate::currentDate().toString("dd.MM.yyyy").toStdString();
+  auto date = QDate::currentDate().toString("yyyy.MM.dd").toStdString();
   auto time = QTime::currentTime().toString("hh:mm:ss.zzz").toStdString();
 
   return {date, time, severity, std::string(), message};
+}
+
+std::string GetLogEventDateFormat()
+{
+  return {"yyyy.MM.dd"};
+}
+
+std::string GetLogEventTimeFormat()
+{
+  return {"hh:mm:ss.zzz"};
 }
 
 }  // namespace sequencergui
