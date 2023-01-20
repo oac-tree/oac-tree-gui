@@ -287,3 +287,27 @@ TEST_F(ProcedureRunnerTest, UserChoice)
   EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
   EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
 }
+
+TEST_F(ProcedureRunnerTest, LogEvents)
+{
+  auto procedure = testutils::CreateMessageProcedure();
+  procedure->Setup();
+
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+
+  QSignalSpy spy_log_message(runner.get(), &ProcedureRunner::LogMessageRequest);
+
+  EXPECT_TRUE(runner->Start());
+
+  std::this_thread::sleep_for(msec(20));
+  EXPECT_FALSE(runner->IsBusy());
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+
+  EXPECT_EQ(spy_log_message.count(), 2);
+
+//  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
+//  // first signal should come with status "Not finished"
+//  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
+//  // Second signal should come with status "Success"
+//  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
+}

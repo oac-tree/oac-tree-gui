@@ -37,6 +37,9 @@ std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds
 //! Returns procedure that makes a single copy.
 std::unique_ptr<procedure_t> CreateCopyProcedure();
 
+//! Returns procedure with single message instruction.
+std::unique_ptr<procedure_t> CreateMessageProcedure();
+
 //! Returns procedure with sequence and wait instruction in it.
 std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout);
 

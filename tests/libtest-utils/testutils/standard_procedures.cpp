@@ -67,6 +67,16 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateMessageProcedure()
+{
+  auto result = std::make_unique<procedure_t>();
+  auto message = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  message->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
+  result->PushInstruction(message.release());
+
+  return result;
+}
+
 std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<procedure_t>();
