@@ -32,6 +32,7 @@ namespace sequencergui
 {
 class SequencerObserver;
 class DomainRunnerAdapter;
+class LogEvent;
 
 //! Executes sequencer's procedure in a separate thread.
 //! Observes sequence execution and converts sequencer UI calls into signals.
@@ -69,7 +70,7 @@ public:
 
   void onInstructionStatusChange(const instruction_t* instruction, const std::string& value);
 
-  void onLogMessage(const std::string& message, Severity message_type);
+  void OnLogEvent(const LogEvent& event);
 
   void onVariableChange(const std::string& variable_name, const std::string& value);
 

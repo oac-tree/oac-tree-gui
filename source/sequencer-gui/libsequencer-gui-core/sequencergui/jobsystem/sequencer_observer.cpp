@@ -20,6 +20,7 @@
 #include "sequencergui/jobsystem/sequencer_observer.h"
 
 #include <sequencergui/jobsystem/job_log_severity.h>
+#include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/sequencer/instruction.h>
@@ -57,7 +58,7 @@ bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
   auto value_string = sup::gui::GetValuesToJSONString(&value);
-  m_procedure_runner->onLogMessage(description + value_string, Severity::kNotice);
+  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, description + value_string));
   return true;
 }
 
@@ -85,12 +86,13 @@ void SequencerObserver::EndSingleStepImpl() {}
 
 void SequencerObserver::MessageImpl(const std::string &message)
 {
-  m_procedure_runner->onLogMessage(message, Severity::kNotice);
+  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, message));
 }
 
 void SequencerObserver::LogImpl(int severity, const std::string &message)
 {
-  m_procedure_runner->onLogMessage(message, static_cast<Severity>(severity));
+  // assuming sequencer severity is the same as GUI severity
+  m_procedure_runner->OnLogEvent(CreateLogEvent(static_cast<Severity>(severity), message));
 }
 
 }  // namespace sequencergui

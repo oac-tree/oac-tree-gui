@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
@@ -101,9 +102,9 @@ void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction
 
 //! Propagate log message from observer up in the form of signals.
 
-void ProcedureRunner::onLogMessage(const std::string &message, Severity message_type)
+void ProcedureRunner::OnLogEvent(const LogEvent &event)
 {
-  emit LogMessageRequest(QString::fromStdString(message), static_cast<int>(message_type));
+  emit LogMessageRequest(QString::fromStdString(event.message), static_cast<int>(event.severity));
 }
 
 void ProcedureRunner::onVariableChange(const std::string &variable_name, const std::string &value)
