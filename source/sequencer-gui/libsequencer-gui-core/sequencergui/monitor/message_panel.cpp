@@ -23,6 +23,8 @@
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
 
 #include <QAction>
+#include <QRegularExpression>
+#include <QSortFilterProxyModel>
 #include <QToolButton>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -49,6 +51,7 @@ MessagePanel::MessagePanel(QWidget* parent)
     , m_remove_selected_action(new QAction(this))
     , m_tree_view(new QTreeView)
     , m_view_model(new JobLogViewModel(nullptr))
+    , m_proxy_model(new QSortFilterProxyModel)
 {
   setWindowTitle("LOG");
 
@@ -60,12 +63,16 @@ MessagePanel::MessagePanel(QWidget* parent)
   m_remove_selected_action->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   addAction(m_remove_selected_action);
 
-  m_tree_view->setModel(m_view_model);
-
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setRootIsDecorated(false);
+  m_tree_view->setModel(m_proxy_model);
+  m_tree_view->setSortingEnabled(true);
 
-
+  m_proxy_model->setSourceModel(m_view_model);
+  //  QRegularExpression regexp("\b(?:WARNING|DEBUG)\b");
+  QRegularExpression regexp("(WARNING|DEBUG)");
+  m_proxy_model->setFilterRegularExpression(regexp);
+  m_proxy_model->setFilterKeyColumn(2);
 }
 
 void MessagePanel::SetLog(JobLog* job_log)

@@ -26,6 +26,7 @@
 
 class QAction;
 class QTreeView;
+class QSortFilterProxyModel;
 
 namespace sequencergui
 {
@@ -44,6 +45,7 @@ private:
   QAction* m_remove_selected_action{nullptr};
   QTreeView* m_tree_view{nullptr};
   JobLogViewModel* m_view_model{nullptr};
+  QSortFilterProxyModel* m_proxy_model{nullptr};
 };
 }  // namespace sequencergui
 
