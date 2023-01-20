@@ -80,7 +80,10 @@ int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices
   return m_procedure_runner->onUserChoice(choices, description);
 }
 
-void SequencerObserver::StartSingleStepImpl() {}
+void SequencerObserver::StartSingleStepImpl()
+{
+  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kDebug, "StartSingleStep()"));
+}
 
 void SequencerObserver::EndSingleStepImpl() {}
 

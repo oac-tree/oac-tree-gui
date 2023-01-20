@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>
+  <Repeat name="" isRoot="false" maxCount="100">
+    <Sequence name="" isRoot="false">
+      <Wait name="" isRoot="false" timeout="0.5"/>
+      <Message name="" isRoot="false" text="Hello"/>
+      <Wait name="" isRoot="false" timeout="0.5"/>
+      <Output name="" isRoot="false" from="monitor" description=""/>
+    </Sequence>
+  </Repeat>
+  <Workspace>
+    <Local name="monitor" type="{&quot;type&quot;:&quot;uint64&quot;}" value="42"/>
+  </Workspace>
+</Procedure>
+
