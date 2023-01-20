@@ -23,10 +23,15 @@
 #include <sequencergui/jobsystem/log_event.h>
 
 #include <QWidget>
+#include <map>
+#include <memory>
 
 class QAction;
 class QTreeView;
 class QSortFilterProxyModel;
+class QToolButton;
+class QWidgetAction;
+class QMenu;
 
 namespace sequencergui
 {
@@ -38,14 +43,22 @@ class MessagePanel : public QWidget
 {
 public:
   explicit MessagePanel(QWidget* parent = nullptr);
+  ~MessagePanel() override;
 
   void SetLog(JobLog* job_log);
 
 private:
+  std::unique_ptr<QWidget> CreateSeveritySelectionWidget();
+  std::unique_ptr<QMenu> CreateSeverityChoiceMenu();
+  void UpdateSeverityFilter();
+
   QAction* m_remove_selected_action{nullptr};
   QTreeView* m_tree_view{nullptr};
   JobLogViewModel* m_view_model{nullptr};
   QSortFilterProxyModel* m_proxy_model{nullptr};
+  QWidgetAction* m_test_action{nullptr};
+  std::map<QString, bool> m_show_severity_flag;
+  std::unique_ptr<QMenu> m_selection_menu{nullptr};
 };
 }  // namespace sequencergui
 
