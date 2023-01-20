@@ -19,9 +19,8 @@
 
 #include "sequencergui/jobsystem/sequencer_observer.h"
 
-#include <sequencergui/jobsystem/procedure_runner.h>
 #include <sequencergui/jobsystem/job_log_severity.h>
-
+#include <sequencergui/jobsystem/procedure_runner.h>
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/sequencer/instruction.h>
 
@@ -91,8 +90,7 @@ void SequencerObserver::MessageImpl(const std::string &message)
 
 void SequencerObserver::LogImpl(int severity, const std::string &message)
 {
-  QString result = QString("%1 %2").arg(severity).arg(QString::fromStdString(message));
-  m_procedure_runner->onLogMessage(result.toStdString(), Severity::kNotice);
+  m_procedure_runner->onLogMessage(message, static_cast<Severity>(severity));
 }
 
 }  // namespace sequencergui
