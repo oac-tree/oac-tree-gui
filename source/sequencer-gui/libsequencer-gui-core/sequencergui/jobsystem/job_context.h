@@ -35,6 +35,7 @@ class JobLog;
 class JobItem;
 class InstructionItem;
 class GUIObjectBuilder;
+class LogEvent;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
 class JobContext : public QObject
@@ -79,7 +80,7 @@ signals:
 
 private:
   void onInstructionStatusChange(const instruction_t* instruction, const QString& status);
-  void onLogMessage(const QString& message, int message_type);
+  void onLogMessage(const sequencergui::LogEvent& event);
   void onVariableChange(const QString& variable_name, const QString& value);
   void onRunnerStatusChanged();
 

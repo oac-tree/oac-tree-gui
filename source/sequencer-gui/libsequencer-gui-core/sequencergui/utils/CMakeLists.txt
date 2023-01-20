@@ -3,6 +3,8 @@ target_sources(${library_name} PRIVATE
   align_node.h
   align_utils.cpp
   align_utils.h
+  custom_meta_types.cpp
+  custom_meta_types.h
   sequencer_align_utils.cpp
   sequencer_align_utils.h
   style_utils.cpp

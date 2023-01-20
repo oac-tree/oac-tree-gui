@@ -21,6 +21,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/main_window.h>
+#include <sequencergui/utils/custom_meta_types.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -41,6 +42,8 @@ int main(int argc, char** argv)
   mvvm::utils::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
+
+  sequencergui::RegisterCustomMetaTypes();
 
   mvvm::utils::SetApplicationFontSize(options.system_font_psize);
 

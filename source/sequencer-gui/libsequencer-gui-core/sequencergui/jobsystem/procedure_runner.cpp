@@ -104,7 +104,7 @@ void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction
 
 void ProcedureRunner::OnLogEvent(const LogEvent &event)
 {
-  emit LogMessageRequest(QString::fromStdString(event.message), static_cast<int>(event.severity));
+  emit LogMessageRequest(event);
 }
 
 void ProcedureRunner::onVariableChange(const std::string &variable_name, const std::string &value)

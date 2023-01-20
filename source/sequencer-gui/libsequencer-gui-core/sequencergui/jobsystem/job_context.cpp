@@ -167,9 +167,9 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction, con
   }
 }
 
-void JobContext::onLogMessage(const QString &message, int message_type)
+void JobContext::onLogMessage(const sequencergui::LogEvent& event)
 {
-  m_job_log->Append(CreateLogEvent(static_cast<Severity>(message_type), message.toStdString()));
+  m_job_log->Append(event);
 }
 
 void JobContext::onVariableChange(const QString &variable_name, const QString &value)

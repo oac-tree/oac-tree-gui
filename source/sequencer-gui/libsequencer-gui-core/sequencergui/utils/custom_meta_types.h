@@ -17,22 +17,24 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <sequencergui/utils/custom_meta_types.h>
+#ifndef SEQUENCERGUI_UTILS_CUSTOM_META_TYPES_H_
+#define SEQUENCERGUI_UTILS_CUSTOM_META_TYPES_H_
 
-#include <QApplication>
+//! @file custom_meta_types.h
+//! Registration of custom types in Qt meta type system to provide support in signal/slot and
+//! QVariant.
 
-int main(int argc, char** argv)
+#include <sequencergui/jobsystem/log_event.h>
+
+#include <QMetaType>
+
+Q_DECLARE_METATYPE(sequencergui::LogEvent)
+
+namespace sequencergui
 {
-  ::testing::InitGoogleTest(&argc, argv);
-  ::testing::InitGoogleMock(&argc, argv);
 
-  sequencergui::RegisterCustomMetaTypes();
+void RegisterCustomMetaTypes();
 
-  QApplication app(argc, argv);
-  Q_UNUSED(app)
+}  // namespace sequencergui
 
-  // run all google tests
-  return RUN_ALL_TESTS();
-}
+#endif  // SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
