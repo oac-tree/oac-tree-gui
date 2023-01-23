@@ -52,11 +52,6 @@ void DomainRunnerAdapter::SetStatus(RunnerStatus status)
   m_function_runner->SetStatus(status);
 }
 
-bool DomainRunnerAdapter::WaitForCompletion(std::chrono::milliseconds timeout_msec)
-{
-  return ::sequencergui::WaitForCompletion(*m_function_runner, timeout_msec);
-}
-
 void DomainRunnerAdapter::SetTickTimeout(int msec)
 {
   m_tick_timeout_ms.store(msec);

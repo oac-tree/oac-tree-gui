@@ -53,8 +53,6 @@ public:
 
   void SetStatus(RunnerStatus status) override;
 
-  bool WaitForCompletion(std::chrono::milliseconds timeout_msec);
-
   void SetTickTimeout(int msec);
 
   bool IsBusy() const;

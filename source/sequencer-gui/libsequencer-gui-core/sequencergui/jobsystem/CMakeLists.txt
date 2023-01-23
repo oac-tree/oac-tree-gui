@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   function_runner.h
   job_context.cpp
   job_context.h
+  job_log_severity.cpp
+  job_log_severity.h
   job_manager.cpp
   job_manager.h
   job_types.h
@@ -18,13 +20,13 @@ target_sources(${library_name} PRIVATE
   job_utils.h
   log_event.cpp
   log_event.h
-  job_log_severity.cpp
-  job_log_severity.h
   procedure_runner.cpp
   procedure_runner.h
   runner_interface.h
   sequencer_observer.cpp
   sequencer_observer.h
+  time_utils.cpp
+  time_utils.h
   user_context.h
   user_controller.cpp
   user_controller.h

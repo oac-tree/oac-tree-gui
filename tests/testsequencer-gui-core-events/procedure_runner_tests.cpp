@@ -116,7 +116,7 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
 
 //! Short procedure which is executed normally.
 
-TEST_F(ProcedureRunnerTest, StartAndStop)
+TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
   procedure->Setup();

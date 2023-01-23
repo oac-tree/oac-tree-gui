@@ -19,6 +19,8 @@
 
 #include "sequencergui/jobsystem/function_runner.h"
 
+#include "sequencergui/jobsystem/time_utils.h"
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -36,6 +38,11 @@ class FunctionRunnerTest : public ::testing::Test
 public:
   using listener_t = testutils::MockCallbackListener<sequencergui::RunnerStatus>;
   listener_t m_listener;
+
+  bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout)
+  {
+    return BusyWaitFor([&runner](){return runner.IsBusy();}, timeout);
+  }
 };
 
 //! Checking that listener works as expected.

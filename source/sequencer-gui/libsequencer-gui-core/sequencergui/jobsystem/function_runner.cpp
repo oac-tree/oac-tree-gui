@@ -180,19 +180,4 @@ void FunctionRunner::OnStatusChange(RunnerStatus status)
   }
 }
 
-bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout_msec)
-{
-  const std::chrono::milliseconds timeout_precision_msec(10);
-  auto timeout = std::chrono::system_clock::now() + timeout_msec;
-  while (std::chrono::system_clock::now() < timeout)
-  {
-    if (!runner.IsBusy())
-    {
-      return true;
-    }
-    std::this_thread::sleep_for(timeout_precision_msec);
-  }
-  return false;
-}
-
 }  // namespace sequencergui
