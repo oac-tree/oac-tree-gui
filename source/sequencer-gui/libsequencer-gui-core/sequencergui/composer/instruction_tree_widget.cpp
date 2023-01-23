@@ -31,6 +31,7 @@
 
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 namespace sequencergui
 {
@@ -51,6 +52,8 @@ InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
           [this](auto) { emit InstructionSelected(GetSelectedInstruction()); });
 
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view->GetTreeView());
+
+  SetupActions();
 }
 
 void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
@@ -80,9 +83,11 @@ InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const
   return selected.empty() ? nullptr : selected.front();
 }
 
-QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
+void InstructionTreeWidget::SetupActions()
 {
-  QList<QWidget *> result;
+  // we are using QToolButon wrapped into QWidgetAction here because
+  // 1. we want to pass around QList<QAction*>
+  // 2. QAction with menu doesn't provide InstantPopup capabilities
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("After");
@@ -91,7 +96,9 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
   insert_after_button->setToolTip("Insert instruction after current selection");
-  result.push_back(insert_after_button);
+  m_insert_after_action = new QWidgetAction(this);
+  m_insert_after_action->setDefaultWidget(insert_after_button);
+  addAction(m_insert_after_action);
 
   auto insert_into_button = new QToolButton;
   insert_into_button->setText("Into");
@@ -100,7 +107,9 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
   insert_into_button->setPopupMode(QToolButton::InstantPopup);
   insert_into_button->setMenu(m_insert_into_menu.get());
   insert_into_button->setToolTip("Insert instruction into currently selected instruction");
-  result.push_back(insert_into_button);
+  m_insert_into_action = new QWidgetAction(this);
+  m_insert_into_action->setDefaultWidget(insert_into_button);
+  addAction(m_insert_into_action);
 
   auto remove_button = new QToolButton;
   remove_button->setText("Into");
@@ -109,9 +118,9 @@ QList<QWidget *> InstructionTreeWidget::GetToolBarWidgets()
   remove_button->setToolTip("Remove currently selected instruction together with its children");
   connect(remove_button, &QToolButton::clicked, this,
           &InstructionTreeWidget::RemoveSelectedRequest);
-  result.push_back(remove_button);
-
-  return result;
+  m_remove_action = new QWidgetAction(this);
+  m_remove_action->setDefaultWidget(remove_button);
+  addAction(m_remove_action);
 }
 
 std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertAfterMenu()

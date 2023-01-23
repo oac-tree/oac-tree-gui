@@ -32,16 +32,20 @@
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QDebug>
 #include <QSplitter>
 #include <QTabWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(
     std::unique_ptr<MessageHandlerInterface> message_handler, QWidget* parent)
     : QWidget(parent)
+    , m_tool_bar(new QToolBar)
+    , m_tool_bar_action(new QWidgetAction(this))
     , m_tab_widget(new QTabWidget)
     , m_instruction_tree(new InstructionTreeWidget)
     , m_workspace_tree(new WorkspaceListWidget)
@@ -69,21 +73,17 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   m_composer_actions->SetMessageHandler(std::move(message_handler));
   m_composer_actions->SetContext(CreateComposerContext());
 
-  auto on_tabbar_changed = [this](int index)
+  auto on_tabbar_changed = [this]()
   {
-    // FIXME simplify
-    if (index == 0)
-    {
-      SetToolBarWidgets(m_instruction_tree->GetToolBarWidgets());
-    }
-    else
-    {
-      SetToolBarWidgets(m_workspace_tree->GetToolBarWidgets());
-    }
+    // toolbar will show actions of currently shown widget
+    m_tool_bar->clear();
+    m_tool_bar->addActions(m_tab_widget->currentWidget()->actions());
   };
   connect(m_tab_widget, &QTabWidget::currentChanged, this, on_tabbar_changed);
+  on_tabbar_changed();
 
   SetupConnections();
+  SetupToolBar();
 }
 
 ComposerProcedureEditor::~ComposerProcedureEditor() = default;
@@ -118,23 +118,16 @@ InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
   return selected.empty() ? nullptr : selected.front();
 }
 
-std::unique_ptr<QToolBar> ComposerProcedureEditor::CreateToolBar()
-{
-  auto result = std::make_unique<QToolBar>();
-  result->setIconSize(styleutils::ToolBarIconSize());
-  // ownership will go to external caller, but we have to keep pointer for later  anipulations
-  m_tool_bar = result.get();
-  SetToolBarWidgets(m_instruction_tree->GetToolBarWidgets());
-  return result;
-}
+//! Setup tool bar for this widget. The toolbar is intended for embedding in the other widget's
+//! toolbar. It will be wrapped into QWidgetAction and added to the list of actions of given widget.
 
-void ComposerProcedureEditor::SetToolBarWidgets(const QList<QWidget*>& widgets)
+void ComposerProcedureEditor::SetupToolBar()
 {
-  m_tool_bar->clear();
-  for (auto widget : widgets)
-  {
-    m_tool_bar->addWidget(widget);
-  }
+  m_tool_bar->setIconSize(styleutils::ToolBarIconSize());
+  m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
+  m_tool_bar->layout()->setSpacing(0);
+  m_tool_bar_action->setDefaultWidget(m_tool_bar);
+  addAction(m_tool_bar_action);
 }
 
 void ComposerProcedureEditor::SetupConnections()

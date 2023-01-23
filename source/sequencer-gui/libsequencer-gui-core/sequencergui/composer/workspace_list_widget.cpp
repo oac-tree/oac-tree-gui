@@ -32,6 +32,7 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 namespace sequencergui
 {
@@ -48,6 +49,8 @@ WorkspaceListWidget::WorkspaceListWidget(QWidget *parent)
 
   connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
           [this](auto) { emit VariableSelected(GetSelectedVariable()); });
+
+  SetupActions();
 }
 
 WorkspaceListWidget::~WorkspaceListWidget() = default;
@@ -62,9 +65,11 @@ VariableItem *WorkspaceListWidget::GetSelectedVariable() const
   return m_tree_view->GetSelected<VariableItem>();
 }
 
-QList<QWidget *> WorkspaceListWidget::GetToolBarWidgets()
+void WorkspaceListWidget::SetupActions()
 {
-  QList<QWidget *> result;
+  // we are using QToolButon wrapped into QWidgetAction here because
+  // 1. we want to pass around QList<QAction*>
+  // 2. QAction with menu doesn't provide InstantPopup capabilities
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("After");
@@ -73,7 +78,9 @@ QList<QWidget *> WorkspaceListWidget::GetToolBarWidgets()
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
   insert_after_button->setToolTip("Insert variable after current selection");
-  result.push_back(insert_after_button);
+  m_insert_after_action = new QWidgetAction(this);
+  m_insert_after_action->setDefaultWidget(insert_after_button);
+  addAction(m_insert_after_action);
 
   auto remove_button = new QToolButton;
   remove_button->setText("Into");
@@ -81,9 +88,9 @@ QList<QWidget *> WorkspaceListWidget::GetToolBarWidgets()
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove currently selected variable");
   connect(remove_button, &QToolButton::clicked, this, &WorkspaceListWidget::RemoveSelectedRequest);
-  result.push_back(remove_button);
-
-  return result;
+  m_insert_after_action = new QWidgetAction(this);
+  m_insert_after_action->setDefaultWidget(remove_button);
+  addAction(m_insert_after_action);
 }
 
 //! Creates menu to insert Variables in a workspace.

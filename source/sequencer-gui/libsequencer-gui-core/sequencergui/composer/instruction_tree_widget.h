@@ -26,6 +26,7 @@
 #include <memory>
 
 class QAction;
+class QWidgetAction;
 
 namespace mvvm
 {
@@ -58,8 +59,6 @@ public:
 
   InstructionItem* GetSelectedInstruction() const;
 
-  QList<QWidget*> GetToolBarWidgets();
-
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
   void InsertIntoRequest(const QString& name);
@@ -73,6 +72,10 @@ private:
 
   std::unique_ptr<QMenu> m_insert_into_menu;
   std::unique_ptr<QMenu> m_insert_after_menu;
+
+  QWidgetAction* m_insert_after_action{nullptr};
+  QWidgetAction* m_insert_into_action{nullptr};
+  QWidgetAction* m_remove_action{nullptr};
 
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
 };

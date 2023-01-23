@@ -24,6 +24,7 @@
 #include <memory>
 
 class QMenu;
+class QWidgetAction;
 
 namespace mvvm
 {
@@ -51,17 +52,19 @@ public:
 
   VariableItem* GetSelectedVariable() const;
 
-  QList<QWidget*> GetToolBarWidgets();
-
 signals:
   void VariableSelected(sequencergui::VariableItem* variable);
   void InsertAfterRequest(const QString& name);
   void RemoveSelectedRequest();
 
 private:
+  void SetupActions();
+
   std::unique_ptr<QMenu> CreateInsertAfterMenu();
 
   std::unique_ptr<QMenu> m_insert_after_menu;
+  QWidgetAction* m_insert_after_action{nullptr};
+  QWidgetAction* m_remove_action{nullptr};
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
 };
 

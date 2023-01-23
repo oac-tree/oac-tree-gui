@@ -55,12 +55,9 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
-  //  layout->setSpacing(0);
-  //  layout->setMargin(0);
 
   m_central_panel->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
-  m_right_panel->AddWidget(m_composer_procedure_editor,
-                           m_composer_procedure_editor->CreateToolBar());
+  m_right_panel->AddWidget(m_composer_procedure_editor, m_composer_procedure_editor->actions());
   m_right_panel->AddWidget(m_xml_editor);
 
   m_splitter->addWidget(m_composer_panel);

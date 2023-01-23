@@ -25,6 +25,7 @@
 class QSplitter;
 class QTabWidget;
 class QToolBar;
+class QWidgetAction;
 
 namespace mvvm
 {
@@ -65,18 +66,17 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
-  std::unique_ptr<QToolBar> CreateToolBar();
-
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 
 private:
-  void SetToolBarWidgets(const QList<QWidget*>& widgets);
-
+  void SetupToolBar();
   void SetupConnections();
   ComposerContext CreateComposerContext();
 
   QToolBar* m_tool_bar{nullptr};
+  QWidgetAction* m_tool_bar_action{nullptr}; //!< wrapper to send our tool bar outside
+
   QTabWidget* m_tab_widget{nullptr};
   InstructionTreeWidget* m_instruction_tree{nullptr};
   WorkspaceListWidget* m_workspace_tree{nullptr};
