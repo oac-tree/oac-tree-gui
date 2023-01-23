@@ -23,8 +23,9 @@
 //! @file test_utils.h
 //! Collection of utility functions for various unit tests.
 
+#include <sequencergui/jobsystem/time_utils.h>
+
 #include <algorithm>
-#include <chrono>
 #include <memory>
 #include <thread>
 #include <vector>
@@ -79,20 +80,13 @@ std::string GetTextFileContent(const std::string& file_name);
 //! Create ASCII file with given content.
 void CreateTextFile(const std::string& file_name, const std::string& content);
 
+//! hard-coded value in Wait instruction
+const std::chrono::milliseconds kDefaultWaitPrecision(50);
+
 template <typename T>
 bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 {
-  const std::chrono::milliseconds timeout_precision_msec(10);
-  auto timeout = std::chrono::system_clock::now() + timeout_msec;
-  while (std::chrono::system_clock::now() < timeout)
-  {
-    if (!runner.IsBusy())
-    {
-      return true;
-    }
-    std::this_thread::sleep_for(timeout_precision_msec);
-  }
-  return false;
+  return sequencergui::BusyWaitFor([&runner]() { return runner.IsBusy(); }, timeout_msec);
 }
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout);

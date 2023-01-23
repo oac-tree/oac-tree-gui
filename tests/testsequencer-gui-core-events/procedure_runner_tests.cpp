@@ -23,12 +23,13 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/utils/custom_meta_types.h>
+#include <testutils/standard_procedures.h>
+#include <testutils/test_utils.h>
+
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
-#include <testutils/standard_procedures.h>
-#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>
@@ -44,7 +45,6 @@ using msec = std::chrono::milliseconds;
 
 class ProcedureRunnerTest : public ::testing::Test
 {
-public:
 };
 
 TEST_F(ProcedureRunnerTest, InitialState)
@@ -80,6 +80,35 @@ TEST_F(ProcedureRunnerTest, InitialState)
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 //}
 
+//! Short procedure which is executed normally.
+
+TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
+{
+  auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
+  procedure->Setup();
+
+  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+
+  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+
+  EXPECT_TRUE(runner->Start());
+
+  EXPECT_TRUE(testutils::WaitForCompletion(*runner, testutils::kDefaultWaitPrecision + msec(20)));
+
+  EXPECT_FALSE(runner->IsBusy());
+  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+
+  EXPECT_EQ(spy_instruction_status.count(), 2);
+  EXPECT_EQ(spy_runner_status.count(), 2);
+
+  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
+  // first signal should come with status "Not finished"
+  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
+  // Second signal should come with status "Success"
+  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
+}
+
 //! Terminates procedure which runs too long.
 
 TEST_F(ProcedureRunnerTest, StartAndTerminate)
@@ -112,55 +141,6 @@ TEST_F(ProcedureRunnerTest, StartAndTerminate)
 
   EXPECT_EQ(spy_instruction_status.count(), 2);
   EXPECT_EQ(spy_runner_status.count(), 3);  // running, canceling, canceled
-}
-
-//! Short procedure which is executed normally.
-
-TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
-{
-  auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
-  procedure->Setup();
-
-  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-
-  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
-  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  EXPECT_TRUE(runner->Start());
-
-  std::this_thread::sleep_for(msec(100));
-  EXPECT_FALSE(runner->IsBusy());
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-
-  EXPECT_EQ(spy_instruction_status.count(), 2);
-  EXPECT_EQ(spy_runner_status.count(), 2);
-
-  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
-  // first signal should come with status "Not finished"
-  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
-  // Second signal should come with status "Success"
-  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
-}
-
-//! Short procedure which is executed normally.
-//! Testing method WaitForCompletion.
-
-TEST_F(ProcedureRunnerTest, WaitForCompletion)
-{
-  auto procedure = testutils::CreateSingleWaitProcedure(msec(100));
-  procedure->Setup();
-
-  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-
-  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
-  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  EXPECT_TRUE(runner->Start());
-
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-  EXPECT_TRUE(testutils::WaitForCompletion(*runner, msec(1000)));
-  EXPECT_FALSE(runner->IsBusy());
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
 }
 
 //! Short procedure which is executed normally.

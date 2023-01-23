@@ -19,11 +19,10 @@
 
 #include "sequencergui/jobsystem/function_runner.h"
 
-#include "sequencergui/jobsystem/time_utils.h"
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
+#include <testutils/test_utils.h>
 
 #include <stdexcept>
 #include <thread>
@@ -38,11 +37,6 @@ class FunctionRunnerTest : public ::testing::Test
 public:
   using listener_t = testutils::MockCallbackListener<sequencergui::RunnerStatus>;
   listener_t m_listener;
-
-  bool WaitForCompletion(const FunctionRunner& runner, std::chrono::milliseconds timeout)
-  {
-    return BusyWaitFor([&runner](){return runner.IsBusy();}, timeout);
-  }
 };
 
 //! Checking that listener works as expected.
@@ -62,7 +56,7 @@ TEST_F(FunctionRunnerTest, InitialState)
   FunctionRunner runner([]() { return false; });
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kIdle);
   EXPECT_FALSE(runner.IsBusy());
-  EXPECT_TRUE(WaitForCompletion(runner, msec(1)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(1)));
 }
 
 //! Start and normal completion of the short task.
@@ -79,7 +73,7 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -102,7 +96,7 @@ TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kFailed);
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -152,7 +146,7 @@ TEST_F(FunctionRunnerTest, StartAndTerminate)
   EXPECT_TRUE(runner.IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_FALSE(WaitForCompletion(runner, msec(10)));
+  EXPECT_FALSE(testutils::WaitForCompletion(runner, msec(10)));
 
   runner.Stop();
   std::this_thread::sleep_for(msec(10));
@@ -182,7 +176,7 @@ TEST_F(FunctionRunnerTest, PrematureDeletion)
   EXPECT_TRUE(runner->IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_FALSE(WaitForCompletion(*runner, msec(10)));
+  EXPECT_FALSE(testutils::WaitForCompletion(*runner, msec(10)));
 
   EXPECT_NO_FATAL_FAILURE(runner.reset());
 }
@@ -341,7 +335,7 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
   runner.Start();
   std::this_thread::sleep_for(msec(10));
   is_continue = false;  // terminating in natural way
-  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }
@@ -398,7 +392,7 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   runner.Start();
   std::this_thread::sleep_for(msec(10));
   is_continue = false;  // terminating in natural way
-  EXPECT_TRUE(WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }
@@ -434,7 +428,7 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
 
   // waiting until completion
-  EXPECT_TRUE(WaitForCompletion(runner, msec(100)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(100)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(nsteps, 10);
 
@@ -445,7 +439,7 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
   EXPECT_TRUE(nsteps > 0);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
 
-  EXPECT_TRUE(WaitForCompletion(runner, msec(100)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(100)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(nsteps, 20);
 }
@@ -492,7 +486,7 @@ TEST_F(FunctionRunnerTest, ContinueAfterStopInStepMode)
   // run from the beginning
   nsteps = 0;
   runner.Start();
-  EXPECT_TRUE(WaitForCompletion(runner, msec(100)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(100)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(nsteps, 10);
 }

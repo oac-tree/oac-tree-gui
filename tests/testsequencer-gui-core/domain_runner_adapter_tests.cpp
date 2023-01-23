@@ -24,7 +24,7 @@
 #include <testutils/mock_callback_listener.h>
 #include <testutils/mock_sequencer_observer.h>
 #include <testutils/standard_procedures.h>
-#include "sequencergui/jobsystem/time_utils.h"
+#include <testutils/test_utils.h>
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
@@ -32,15 +32,6 @@
 #include <chrono>
 #include <memory>
 #include <thread>
-
-namespace
-{
-const auto duration = [](auto time_interval)
-{ return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
-
-//! hard-coded value in Wait instruction
-const std::chrono::milliseconds kDefaultWaitPrecision(50);
-}  // namespace
 
 using namespace sequencergui;
 using ::testing::_;
@@ -74,11 +65,6 @@ public:
     return result;
   }
 
-  bool WaitForCompletion(const DomainRunnerAdapter& runner, std::chrono::milliseconds timeout)
-  {
-    return BusyWaitFor([&runner](){return runner.IsBusy();}, timeout);
-  }
-
   testutils::MockSequencerObserver m_observer;
   testutils::MockCallbackListener<sequencergui::RunnerStatus> m_listener;
 };
@@ -97,7 +83,7 @@ TEST_F(DomainRunnerAdapterTest, InitialState)
 
 TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
-  std::chrono::milliseconds timeout_msec(10);
+  std::chrono::milliseconds timeout_msec(20);
   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -121,7 +107,8 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   // triggering action
   EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(WaitForCompletion(*adapter, kDefaultWaitPrecision + msec(timeout_msec)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter,
+                                           testutils::kDefaultWaitPrecision + msec(timeout_msec)));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
@@ -158,7 +145,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
   EXPECT_TRUE(adapter->IsBusy());
   std::this_thread::sleep_for(msec(20));
 
-  EXPECT_FALSE(WaitForCompletion(*adapter, msec(10)));
+  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
 
   adapter->Stop();
   std::this_thread::sleep_for(msec(10));
@@ -246,7 +233,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
   time_t start_time = clock_used::now();
   EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(WaitForCompletion(*adapter, kDefaultWaitPrecision + 2 * msec(timeout_msec)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, testutils::kDefaultWaitPrecision + 2 * msec(timeout_msec)));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
@@ -256,7 +243,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
   // Here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
   // since we have only one child that gets executed during single step.
   EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
-              < msec(kDefaultWaitPrecision * 2));
+              < msec(testutils::kDefaultWaitPrecision * 2));
 }
 
 //! Sequence with single wait in normal start mode.
@@ -294,7 +281,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
   time_t start_time = clock_used::now();
   EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
@@ -337,11 +324,11 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
   // triggering action
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
-  std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
+  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(adapter->Step());
 
-  EXPECT_TRUE(WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
@@ -378,7 +365,7 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
 
   // triggering action
   EXPECT_TRUE(adapter->Start());
-  EXPECT_TRUE(WaitForCompletion(*adapter, msec(50)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
@@ -417,12 +404,12 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
   // triggering action
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
-  std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
+  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
 
   // stopping job
   EXPECT_TRUE(adapter->Stop());
-  EXPECT_TRUE(WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
@@ -459,12 +446,12 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
   // triggering action
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
-  std::this_thread::sleep_for(msec(kDefaultWaitPrecision * 3));
+  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
 
   // stopping job
   EXPECT_TRUE(adapter->Stop());
-  EXPECT_TRUE(WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
@@ -505,7 +492,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 
   // triggering action
   EXPECT_TRUE(adapter->Start());
-  EXPECT_TRUE(WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 

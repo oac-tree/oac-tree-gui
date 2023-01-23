@@ -29,6 +29,9 @@
 namespace sequencergui
 {
 
+const auto duration = [](auto time_interval)
+{ return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
+
 //! Will wait a given amount of msec for runner completion. Returns `true` is runner has finished
 //! before the timeout, `false` otherwise. Internally has a precision of 10 msec.
 bool BusyWaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout);
