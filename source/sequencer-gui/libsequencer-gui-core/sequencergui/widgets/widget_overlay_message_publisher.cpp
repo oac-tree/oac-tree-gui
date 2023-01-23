@@ -28,7 +28,7 @@ namespace sequencergui
 {
 
 WidgetOverlayMessagePublisher::WidgetOverlayMessagePublisher(QWidget *widget)
-    : m_target_widget(widget), m_timer(new QTimer)
+    : m_target_widget(widget), m_timer(new QTimer(this))
 {
   m_timer->setSingleShot(true);
   m_timer->setInterval(5000);

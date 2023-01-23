@@ -38,8 +38,8 @@ namespace sequencergui
 
 ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     : QWidget(parent)
-    , m_new_procedure_action(new QAction)
-    , m_remove_selected_action(new QAction)
+    , m_new_procedure_action(new QAction(this))
+    , m_remove_selected_action(new QAction(this))
     , m_list_view(new QListView)
     , m_component_provider(mvvm::CreateProvider<ProcedureViewModel>(m_list_view))
 {
