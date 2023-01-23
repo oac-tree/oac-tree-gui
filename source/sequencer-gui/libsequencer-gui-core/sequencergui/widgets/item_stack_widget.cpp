@@ -48,28 +48,30 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
 
 ItemStackWidget::~ItemStackWidget() = default;
 
-void ItemStackWidget::AddWidget(QWidget *widget, std::unique_ptr<QToolBar> toolbar,
-                                bool toolbar_is_always_visible)
+void ItemStackWidget::AddWidget(QWidget *widget)
 {
   m_stacked_widget->addWidget(widget);
-
   AddMenuEntry(widget);
-  AddGuestToolBar(std::move(toolbar), toolbar_is_always_visible);
+}
+
+void ItemStackWidget::AddWidget(QWidget *widget, std::unique_ptr<QWidget> control_widget,
+                                bool is_always_visible)
+{
+  AddWidget(widget);
+  AddGuestControlWidget(std::move(control_widget), is_always_visible);
 }
 
 void ItemStackWidget::AddWidget(QWidget *widget, const QList<QAction *> &actions,
-                                bool toolbar_is_always_visible)
+                                bool is_always_visible)
 {
-  m_stacked_widget->addWidget(widget);
-
-  AddMenuEntry(widget);
-  AddGuestActions(actions, toolbar_is_always_visible);
+  AddWidget(widget);
+  AddGuestActions(actions, is_always_visible);
 }
 
 void ItemStackWidget::SetCurrentIndex(int index)
 {
   m_stacked_widget->setCurrentIndex(index);
-  UpdateToolBarVisibility();
+  UpdateControlElementsVisibility();
 }
 
 //! Add entry to corner menu to switch to this widget.
@@ -84,26 +86,26 @@ void ItemStackWidget::AddMenuEntry(QWidget *widget)
 
 //! Adds guest toolbar to the main toolbar.
 //! Saves also corresponding actions, to be able to hide guest toolbar when widget is inactive.
-void ItemStackWidget::AddGuestToolBar(std::unique_ptr<QToolBar> toolbar,
-                                      bool toolbar_is_always_visible)
+void ItemStackWidget::AddGuestControlWidget(std::unique_ptr<QWidget> control_widget,
+                                            bool is_always_visible)
 {
-  if (!toolbar)
+  if (!control_widget)
   {
     return;
   }
 
-  toolbar->layout()->setContentsMargins(0, 0, 0, 0);
-  toolbar->layout()->setSpacing(0);
+  control_widget->layout()->setContentsMargins(0, 0, 0, 0);
+  control_widget->layout()->setSpacing(0);
 
   QList<QAction *> actions;
   if (m_stacked_widget->count() > 1)
   {
     actions.append(m_main_toolbar->AppendSeparator());
   }
-  actions.append(m_main_toolbar->InsertElement(toolbar.release()));
+  actions.append(m_main_toolbar->InsertElement(control_widget.release()));
 
-  m_toolbar_data.append({actions, toolbar_is_always_visible});
-  UpdateToolBarVisibility();
+  m_toolbar_data.append({actions, is_always_visible});
+  UpdateControlElementsVisibility();
 }
 
 void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_always_visible)
@@ -121,14 +123,14 @@ void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_a
   }
 
   m_toolbar_data.append({actions, is_always_visible});
-  UpdateToolBarVisibility();
+  UpdateControlElementsVisibility();
 }
 
 //! Updates visibility of guest toolbars.
 //! It will be visible for current widget in the stack, and hidded for others (unless
 //! is_always_visible flag is present);
 
-void ItemStackWidget::UpdateToolBarVisibility()
+void ItemStackWidget::UpdateControlElementsVisibility()
 {
   for (int i = 0; i < m_toolbar_data.size(); ++i)
   {

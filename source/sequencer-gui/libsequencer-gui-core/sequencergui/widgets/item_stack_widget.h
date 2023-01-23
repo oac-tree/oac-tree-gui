@@ -44,22 +44,21 @@ public:
   explicit ItemStackWidget(QWidget* parent = nullptr);
   ~ItemStackWidget() override;
 
-  void AddWidget(QWidget* widget, std::unique_ptr<QToolBar> toolbar = {},
-                 bool toolbar_is_always_visible = false);
+  void AddWidget(QWidget* widget);
 
-  void AddWidget(QWidget* widget, const QList<QAction*>& actions,
-                 bool toolbar_is_always_visible = false);
+  void AddWidget(QWidget* widget, std::unique_ptr<QWidget> control_widget,
+                 bool is_always_visible = false);
+
+  void AddWidget(QWidget* widget, const QList<QAction*>& control_actions,
+                 bool is_always_visible = false);
 
   void SetCurrentIndex(int index);
 
 private:
   void AddMenuEntry(QWidget* widget);
-  void AddGuestToolBar(std::unique_ptr<QToolBar> toolbar = {},
-                       bool is_always_visible = false);
-
-  void AddGuestActions(const QList<QAction*>& actions, bool is_always_visible = false);
-
-  void UpdateToolBarVisibility();
+  void AddGuestControlWidget(std::unique_ptr<QWidget> control_widget, bool is_always_visible);
+  void AddGuestActions(const QList<QAction*>& actions, bool is_always_visible);
+  void UpdateControlElementsVisibility();
 
   struct GuestToolBarData
   {
