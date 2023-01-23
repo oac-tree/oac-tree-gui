@@ -26,6 +26,7 @@
 #include <sequencergui/jobsystem/job_types.h>
 
 #include <string>
+#include <vector>
 
 namespace sequencergui
 {
@@ -38,6 +39,10 @@ RunnerStatus GetRunnerStatus(const std::string& status_name);
 
 //! Returns default tick timeout in msec.
 int GetDefaultTickTimeoutMsc();
+
+//! Returns reg-exp pattern for vector with labels.
+//! example: {"INFO", "DEBUG"} -> "(INFO|DEBUG)"
+std::string GetRegExpPattern(const std::vector<std::string>& data);
 
 }  // namespace sequencergui
 

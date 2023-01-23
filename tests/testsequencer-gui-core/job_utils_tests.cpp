@@ -50,3 +50,11 @@ TEST_F(JobUtilsTest, GetRunnerStatus)
   EXPECT_EQ(GetRunnerStatus("Stopped"), RunnerStatus::kStopped);
   EXPECT_EQ(GetRunnerStatus("Failed"), RunnerStatus::kFailed);
 }
+
+TEST_F(JobUtilsTest, GetRegExpPattern)
+{
+  EXPECT_EQ(GetRegExpPattern(std::vector<std::string>()), std::string("()"));
+  EXPECT_EQ(GetRegExpPattern(std::vector<std::string>({"abc"})), std::string("(abc)"));
+  EXPECT_EQ(GetRegExpPattern(std::vector<std::string>({"INFO", "DEBUG"})),
+            std::string("(INFO|DEBUG)"));
+}

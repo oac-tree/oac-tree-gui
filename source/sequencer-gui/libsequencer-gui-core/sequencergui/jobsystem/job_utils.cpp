@@ -21,6 +21,7 @@
 
 #include <algorithm>
 #include <map>
+#include <numeric>
 #include <stdexcept>
 
 namespace
@@ -62,6 +63,14 @@ int GetDefaultTickTimeoutMsc()
 {
   const int kDefaultTimeout{200};
   return kDefaultTimeout;
+}
+
+std::string GetRegExpPattern(const std::vector<std::string> &data)
+{
+  auto fold = [](std::string result, std::string label) { return std::move(result) + '|' + label; };
+  return data.empty()
+             ? std::string("()")
+             : "(" + std::accumulate(std::next(data.begin()), data.end(), data[0], fold) + ")";
 }
 
 }  // namespace sequencergui

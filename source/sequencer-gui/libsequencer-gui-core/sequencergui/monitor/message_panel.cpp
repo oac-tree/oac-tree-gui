@@ -19,10 +19,12 @@
 
 #include "sequencergui/monitor/message_panel.h"
 
-#include <mvvm/editors/selectable_combobox_editor.h>
 #include <sequencergui/jobsystem/job_log_severity.h>
+#include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
+
+#include <mvvm/editors/selectable_combobox_editor.h>
 
 #include <QAction>
 #include <QDebug>
@@ -101,14 +103,13 @@ std::unique_ptr<QMenu> MessagePanel::CreateSeverityChoiceMenu()
 
   for (auto severity : kSeveritiesToSelect)
   {
-    auto name = QString::fromStdString(SeverityToString(severity));
-    m_show_severity_flag[name] = true;
-    auto action = result->addAction(name);
+    m_show_severity_flag[severity] = true;
+    auto action = result->addAction(QString::fromStdString(SeverityToString(severity)));
     action->setCheckable(true);
     action->setChecked(true);
-    auto on_action = [this, name, action]()
+    auto on_action = [this, severity, action]()
     {
-      m_show_severity_flag[name] = action->isChecked();
+      m_show_severity_flag[severity] = action->isChecked();
       UpdateSeverityFilter();
     };
     connect(action, &QAction::triggered, this, on_action);
@@ -119,24 +120,18 @@ std::unique_ptr<QMenu> MessagePanel::CreateSeverityChoiceMenu()
 
 void MessagePanel::UpdateSeverityFilter()
 {
-  QString pattern;
-  for (auto [severity, flag] : m_show_severity_flag)
+  std::vector<std::string> names;
+
+  for (const auto& [severity, flag] : m_show_severity_flag)
   {
-    qDebug() << severity << flag;
     if (flag)
     {
-      if (!pattern.isEmpty())
-      {
-        pattern.append("|");
-      }
-      pattern.append(severity);
+      names.push_back(SeverityToString(severity));
     }
   }
 
-  QRegularExpression regexp(QString("(%1)").arg(pattern));
+  QRegularExpression regexp(QString::fromStdString(GetRegExpPattern(names)));
   m_proxy_model->setFilterRegularExpression(regexp);
-
-  qDebug() << "severity change " << pattern;
 }
 
 }  // namespace sequencergui

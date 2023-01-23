@@ -57,7 +57,7 @@ private:
   JobLogViewModel* m_view_model{nullptr};
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_test_action{nullptr};
-  std::map<QString, bool> m_show_severity_flag;
+  std::map<Severity, bool> m_show_severity_flag;
   std::unique_ptr<QMenu> m_selection_menu{nullptr};
 };
 }  // namespace sequencergui
