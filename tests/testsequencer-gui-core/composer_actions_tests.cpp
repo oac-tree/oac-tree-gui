@@ -46,10 +46,11 @@ public:
 
   //! Creates ComposerContext for testing purposes. It contains callbacks to mimick
   //! user choice regarding the selected procedure, instruction, and variable.
-  ComposerContext CreateContext(InstructionItem* instruction, VariableItem* variable)
+  ComposerContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction,
+                                VariableItem* variable)
   {
     ComposerContext result;
-    result.selected_procedure = [this]() { return m_procedure; };
+    result.selected_procedure = [procedure]() { return procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
     result.selected_variable = [variable]() { return variable; };
     return result;
@@ -59,6 +60,19 @@ public:
   ComposerActions m_actions;
   ProcedureItem* m_procedure{nullptr};
 };
+
+//! Insertion instruction after selected instruction, when no more insertions is allowed.
+
+TEST_F(ComposerActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
+{
+  // creating the context pretending that no procedures/instructions are selected
+  auto context = CreateContext(nullptr, nullptr, nullptr);
+  m_actions.SetContext(context);
+
+  // It is not possible to add second instruction to repeat instruction
+  EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
+               sequencergui::RuntimeException);
+}
 
 //! Insertion instruction after selected instruction.
 
@@ -72,7 +86,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfter)
   sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
-  auto context = CreateContext(sequence, nullptr);
+  auto context = CreateContext(m_procedure, sequence, nullptr);
   m_actions.SetContext(context);
 
   // appending instruction to the container
@@ -101,7 +115,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfter)
 TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating the context mimicking "no instruction selected"
-  auto context = CreateContext(nullptr, nullptr);
+  auto context = CreateContext(m_procedure, nullptr, nullptr);
   m_actions.SetContext(context);
 
   // appending instruction to the container
@@ -126,7 +140,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
   auto sequence = m_model.InsertItem<SequenceItem>(repeat);
 
   // creating the context mimicking `sequence` instruction selected
-  auto context = CreateContext(sequence, nullptr);
+  auto context = CreateContext(m_procedure, sequence, nullptr);
   m_actions.SetContext(context);
 
   // It is not possible to add second instruction to repeat instruction
@@ -157,7 +171,7 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
   sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
-  auto context = CreateContext(sequence, nullptr);
+  auto context = CreateContext(m_procedure, sequence, nullptr);
   m_actions.SetContext(context);
 
   // inserting instruction into selected instruction
@@ -191,7 +205,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
 
   // creating the context mimicking `wait` instruction selected
-  auto context = CreateContext(wait, nullptr);
+  auto context = CreateContext(m_procedure, wait, nullptr);
   m_actions.SetContext(context);
 
   // inserting instruction into selected instruction
@@ -216,14 +230,14 @@ TEST_F(ComposerActionsTest, RemoveInstruction)
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // creating the context mimicking no instruction selected
-  m_actions.SetContext(CreateContext(nullptr, nullptr));
+  m_actions.SetContext(CreateContext(m_procedure, nullptr, nullptr));
 
   // nothing selected, remove request does nothing
   m_actions.OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // creating the context mimicking sequencer selected
-  m_actions.SetContext(CreateContext(sequence, nullptr));
+  m_actions.SetContext(CreateContext(m_procedure, sequence, nullptr));
 
   // remove request should remove item
   m_actions.OnRemoveInstructionRequest();
@@ -239,7 +253,7 @@ TEST_F(ComposerActionsTest, InsertVariableAfter)
   auto variable1 = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
 
   // creating the context mimicking variable0 selected
-  auto context = CreateContext(nullptr, variable0);
+  auto context = CreateContext(m_procedure, nullptr, variable0);
   m_actions.SetContext(context);
 
   // appending variable to the container
@@ -258,7 +272,7 @@ TEST_F(ComposerActionsTest, InsertVariableAfter)
 TEST_F(ComposerActionsTest, InsertVariableAfterWhenInAppendMode)
 {
   // creating the context mimicking "no variable selected"
-  auto context = CreateContext(nullptr, nullptr);
+  auto context = CreateContext(m_procedure, nullptr, nullptr);
   m_actions.SetContext(context);
 
   // appending variable to the container
@@ -282,14 +296,14 @@ TEST_F(ComposerActionsTest, RemoveVariable)
   auto variable = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
 
   // creating the context mimicking no instruction selected
-  m_actions.SetContext(CreateContext(nullptr, nullptr));
+  m_actions.SetContext(CreateContext(m_procedure, nullptr, nullptr));
 
   // nothing selected, remove request does nothing
   m_actions.OnRemoveVariableRequest();
   ASSERT_EQ(m_procedure->GetWorkspace()->GetVariables().size(), 1);
 
   // creating the context mimicking sequencer selected
-  m_actions.SetContext(CreateContext(nullptr, variable));
+  m_actions.SetContext(CreateContext(m_procedure, nullptr, variable));
 
   // remove request should remove item
   m_actions.OnRemoveVariableRequest();

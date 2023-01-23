@@ -88,6 +88,12 @@ void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
   ValidatePrecoditions();
 
   auto procedure = m_context.selected_procedure();
+  if (!procedure)
+  {
+    m_message_handler->SendMessage("No procedure selected");
+    return;
+  }
+
   auto item = m_context.selected_instruction();
 
   auto parent = item ? item->GetParent() : procedure->GetInstructionContainer();
