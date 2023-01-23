@@ -47,12 +47,18 @@ public:
   void AddWidget(QWidget* widget, std::unique_ptr<QToolBar> toolbar = {},
                  bool toolbar_is_always_visible = false);
 
+  void AddWidget(QWidget* widget, const QList<QAction*>& actions,
+                 bool toolbar_is_always_visible = false);
+
   void SetCurrentIndex(int index);
 
 private:
   void AddMenuEntry(QWidget* widget);
   void AddGuestToolBar(std::unique_ptr<QToolBar> toolbar = {},
-                       bool toolbar_is_always_visible = false);
+                       bool is_always_visible = false);
+
+  void AddGuestActions(const QList<QAction*>& actions, bool is_always_visible = false);
+
   void UpdateToolBarVisibility();
 
   struct GuestToolBarData

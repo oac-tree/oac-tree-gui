@@ -57,6 +57,15 @@ void ItemStackWidget::AddWidget(QWidget *widget, std::unique_ptr<QToolBar> toolb
   AddGuestToolBar(std::move(toolbar), toolbar_is_always_visible);
 }
 
+void ItemStackWidget::AddWidget(QWidget *widget, const QList<QAction *> &actions,
+                                bool toolbar_is_always_visible)
+{
+  m_stacked_widget->addWidget(widget);
+
+  AddMenuEntry(widget);
+  AddGuestActions(actions, toolbar_is_always_visible);
+}
+
 void ItemStackWidget::SetCurrentIndex(int index)
 {
   m_stacked_widget->setCurrentIndex(index);
@@ -94,6 +103,25 @@ void ItemStackWidget::AddGuestToolBar(std::unique_ptr<QToolBar> toolbar,
   actions.append(m_main_toolbar->InsertElement(toolbar.release()));
 
   m_toolbar_data.append({actions, toolbar_is_always_visible});
+  UpdateToolBarVisibility();
+}
+
+void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_always_visible)
+{
+  QList<QAction *> hide_actions;  // handles to hide actions
+
+  if (m_stacked_widget->count() > 1)
+  {
+    hide_actions.append(m_main_toolbar->AppendSeparator());
+  }
+
+  for (auto action : actions)
+  {
+    m_main_toolbar->addAction(action);
+    hide_actions.append(action);
+  }
+
+  m_toolbar_data.append({actions, is_always_visible});
   UpdateToolBarVisibility();
 }
 
