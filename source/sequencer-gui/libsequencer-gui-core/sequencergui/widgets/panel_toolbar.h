@@ -44,6 +44,7 @@ public:
   void AddDotsMenu();
 
   QAction* InsertElement(QWidget* widget);
+  QAction* InsertElement(QAction* action);
 
   void SetDotsMenu(QMenu* dots_menu);
 

@@ -59,6 +59,12 @@ QAction *PanelToolBar::InsertElement(QWidget *widget)
   return insertWidget(m_spacer_action, widget);
 }
 
+QAction *PanelToolBar::InsertElement(QAction *action)
+{
+  insertAction(m_spacer_action, action);
+  return action;
+}
+
 //! Sets a menu to the button with dots. The menu ownership remains on caller side.
 
 void PanelToolBar::SetDotsMenu(QMenu *dots_menu)

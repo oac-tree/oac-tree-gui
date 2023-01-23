@@ -117,8 +117,7 @@ void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_a
 
   for (auto action : actions)
   {
-    m_main_toolbar->addAction(action);
-    hide_actions.append(action);
+    hide_actions.append(m_main_toolbar->InsertElement(action));
   }
 
   m_toolbar_data.append({actions, is_always_visible});
@@ -127,7 +126,7 @@ void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_a
 
 //! Updates visibility of guest toolbars.
 //! It will be visible for current widget in the stack, and hidded for others (unless
-//! is_always_visible flag iis present);
+//! is_always_visible flag is present);
 
 void ItemStackWidget::UpdateToolBarVisibility()
 {
