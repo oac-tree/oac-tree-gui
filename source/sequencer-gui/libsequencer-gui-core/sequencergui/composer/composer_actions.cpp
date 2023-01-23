@@ -85,15 +85,7 @@ void ComposerActions::SetMessageHandler(std::unique_ptr<MessageHandlerInterface>
 //! The selection is retrieved via a callback.
 void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
 {
-  if (!m_model)
-  {
-    throw NullException("Model is not defined");
-  }
-
-  if (!m_context.selected_instruction || !m_context.selected_procedure)
-  {
-    throw RuntimeException("Callbacks are not defined");
-  }
+  ValidatePrecoditions();
 
   auto procedure = m_context.selected_procedure();
   auto item = m_context.selected_instruction();
@@ -109,21 +101,11 @@ void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
 //! The selection is retrieved via a callback.
 void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
 {
-  if (!m_model)
-  {
-    throw NullException("Model is not defined");
-  }
-
-  if (!m_context.selected_instruction || !m_context.selected_procedure)
-  {
-    throw RuntimeException("Callbacks are not defined");
-  }
+  ValidatePrecoditions();
 
   auto selected_instruction = m_context.selected_instruction();
-
-  auto item = m_context.selected_instruction();
-  auto child = InsertItem(item_type.toStdString(), item, mvvm::TagIndex::Append());
-  UpdateChildCoordinate(item, child);
+  auto child = InsertItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
+  UpdateChildCoordinate(selected_instruction, child);
 }
 
 //! Removes currently selected instruction.
@@ -140,15 +122,7 @@ void ComposerActions::OnRemoveInstructionRequest()
 
 void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
 {
-  if (!m_model)
-  {
-    throw NullException("Model is not defined");
-  }
-
-  if (!m_context.selected_variable || !m_context.selected_procedure)
-  {
-    throw RuntimeException("Callbacks are not defined");
-  }
+  ValidatePrecoditions();
 
   auto procedure = m_context.selected_procedure();
   auto item = m_context.selected_variable();
@@ -184,6 +158,19 @@ mvvm::SessionItem *ComposerActions::InsertItem(const std::string &item_type,
     m_message_handler->SendMessage(ostr.str());
   }
   return result;
+}
+
+void ComposerActions::ValidatePrecoditions()
+{
+  if (!m_model)
+  {
+    throw NullException("Model is not defined");
+  }
+
+  if (!m_context.selected_variable || !m_context.selected_procedure)
+  {
+    throw RuntimeException("Callbacks are not defined");
+  }
 }
 
 }  // namespace sequencergui

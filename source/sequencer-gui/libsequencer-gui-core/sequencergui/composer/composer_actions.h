@@ -65,6 +65,7 @@ public:
 private:
   ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
                                   const ::mvvm::TagIndex& index);
+  void ValidatePrecoditions();
 
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
