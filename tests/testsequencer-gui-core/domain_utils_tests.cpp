@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/variable.h>
 
 #include <chrono>
 #include <future>
@@ -64,4 +65,15 @@ TEST_F(DomainUtilsTest, IsRootInstruction)
 
   item->SetAttribute(kIsRootAttribute, "false");
   EXPECT_FALSE(DomainUtils::IsRootInstruction(item.get()));
+}
+
+TEST_F(DomainUtilsTest, AddNonEmptyAttribute)
+{
+  auto variable = DomainUtils::CreateDomainVariable(kLocalVariableType);
+
+  DomainUtils::AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "");
+  EXPECT_FALSE(variable->HasAttribute("custom_attribute_name"));
+
+  DomainUtils::AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "abc");
+  EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
 }

@@ -200,8 +200,10 @@ TEST_F(StandardInstructionItemsTest, FallbackItemToDomain)
   // Correctly initialised item
   FallbackItem item;
 
-  auto domain_instruction = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_instruction->GetType(), sequencergui::domainconstants::kFallbackInstructionType);
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kFallbackInstructionType);
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
 // ----------------------------------------------------------------------------

@@ -95,18 +95,9 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  if (!GetDataType().empty())
-  {
-    variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
-  }
-  if (!GetChannel().empty())
-  {
-    variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
-  }
-  if (!GetJsonValue().empty())
-  {
-    variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());
-  }
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetDataType());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kInstanceAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -144,7 +135,7 @@ void FileVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  variable->AddAttribute(domainconstants::kFileAttribute, GetFileName());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kFileAttribute, GetFileName());
 }
 
 // ----------------------------------------------------------------------------
@@ -199,14 +190,8 @@ void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  if (!GetJsonType().empty())
-  {
-    variable->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
-  }
-  if (!GetJsonValue().empty())
-  {
-    variable->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
-  }
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kValueAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -272,18 +257,9 @@ void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  if (!GetDataType().empty())
-  {
-    variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
-  }
-  if (!GetChannel().empty())
-  {
-    variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
-  }
-  if (!GetJsonValue().empty())
-  {
-    variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());
-  }
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetDataType());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kInstanceAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -356,18 +332,9 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  if (!GetDataType().empty())
-  {
-    variable->AddAttribute(domainconstants::kTypeAttribute, GetDataType());
-  }
-  if (!GetChannel().empty())
-  {
-    variable->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
-  }
-  if (!GetJsonValue().empty())
-  {
-    variable->AddAttribute(domainconstants::kInstanceAttribute, GetJsonValue());
-  }
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetDataType());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kInstanceAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -388,7 +355,7 @@ void UnknownVariableItem::InitFromDomainImpl(const variable_t *variable)
   SetDisplayName(variable->GetType() + " (unknown)");
 
   // creating string properties for every domain attribute found
-  for (auto [name, value] : DomainUtils::GetAttributes(variable))
+  for (const auto& [name, value] : DomainUtils::GetAttributes(variable))
   {
     m_domain_attributes.push_back(name);
     AddProperty(name, value);
