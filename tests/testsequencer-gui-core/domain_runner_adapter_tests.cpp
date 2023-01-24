@@ -159,7 +159,8 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 //! Runner dies before procedure has finished.
 //! Test is commented. For the moment an attempt to delete the runner during procedure execution
 //! will lead to UB. It is not clear how to provide mutual safety for time of life of Procedure
-//! and DomainRunnerAdapter.
+//! and DomainRunnerAdapter. The problem lies in JobContext::onPrepareJobRequest which rebuild
+//! procedure and then initialises the DOmainRunnerAdapter.
 
 // TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
 //{
@@ -167,14 +168,14 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 //   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
 //   auto runner = CreateRunner(procedure.get());
 
-//  auto adapter =
-//      std::make_unique<DomainRunnerAdapter>(std::move(runner), m_listener.CreateCallback());
+//  auto adapter = CreateRunnerAdapter(procedure.get());
+
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
 //  {  // signaling related to the runner status change
 //    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, StatusChanged(RunnerStatus::kRunning));
+//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
 //    // We do not expect any ohter signals during premature DomainRunnerAdapter destruction.
 //    // This is how internal FunctionRunner is implemented.
 //  }
@@ -192,7 +193,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 //  EXPECT_TRUE(adapter->IsBusy());
 //  std::this_thread::sleep_for(msec(20));
 
-//  EXPECT_FALSE(adapter->WaitForCompletion(msec(10)));
+//  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
 
 //  // delete before end
 //  EXPECT_NO_FATAL_FAILURE(adapter.reset());
