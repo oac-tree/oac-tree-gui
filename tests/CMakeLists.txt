@@ -17,10 +17,10 @@ add_subdirectory(libtest-utils)
 add_subdirectory(testsup-gui-core)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-core-events)
-add_subdirectory(testsup-pvmonitor-core)
 
 if (NOT SEQUENCERGUI_CODAC)
   add_subdirectory(testanyvalue-editor-core)
+  add_subdirectory(testsup-pvmonitor-core)
 endif()
 
 # Add custom target `make testall` which will run test executables one after another.
