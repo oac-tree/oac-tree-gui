@@ -60,7 +60,7 @@ private:
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_test_action{nullptr};
   std::map<Severity, bool> m_show_severity_flag;
-  std::unique_ptr<QMenu> m_selection_menu{nullptr};
+  std::unique_ptr<QMenu> m_selection_menu;
 };
 }  // namespace sequencergui
 
