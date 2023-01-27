@@ -41,6 +41,8 @@ class JobLogViewModel;
 
 class MessagePanel : public QWidget
 {
+  Q_OBJECT
+
 public:
   explicit MessagePanel(QWidget* parent = nullptr);
   ~MessagePanel() override;
