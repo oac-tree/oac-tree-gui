@@ -188,9 +188,9 @@ GraphicsSceneController::~GraphicsSceneController() = default;
 
 void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 {
-  if (p_impl->IsInScope(event.m_parent))
+  if (p_impl->IsInScope(event.m_item))
   {
-    p_impl->InsertView(event.m_parent, event.m_tag_index);
+    p_impl->InsertView(event.m_item, event.m_tag_index);
   }
 }
 
