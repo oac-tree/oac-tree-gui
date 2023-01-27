@@ -119,7 +119,7 @@ void WorkspaceItemController::OnItemInsertedEvent(const mvvm::ItemInsertedEvent&
   }
 
   // If parent is VariableItem, then insert event denotes that AnyValueItem has been regenerated.
-  if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(event.m_parent))
+  if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(event.m_item))
   {
     ProcessEventToDomain(variable_item);
   }

@@ -42,7 +42,7 @@ class SequencerWorkspaceListener : public QObject
   Q_OBJECT
 
 public:
-  SequencerWorkspaceListener(QObject* parent = nullptr);
+  explicit SequencerWorkspaceListener(QObject* parent = nullptr);
   ~SequencerWorkspaceListener() override;
 
   void StartListening(sup::sequencer::Workspace* workspace);
