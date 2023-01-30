@@ -1,7 +1,7 @@
 set(executable_name sequencer-gui)
 
-if (SEQUENCERGUI_CODAC)
-  add_definitions(-DSEQUENCERGUI_CODAC)
+if(CODAC)
+    add_definitions(-DSEQUENCERGUI_CODAC)
 endif()
 
 add_executable(${executable_name} main.cpp)

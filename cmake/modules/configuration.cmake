@@ -7,17 +7,16 @@ include(CodeTools)
 include(GNUInstallDirs)
 
 # -----------------------------------------------------------------------------
-# Find if we are on CODAC infrastructure
+# CODAC enviorenment
 # -----------------------------------------------------------------------------
 
-if (SEQUENCERGUI_CODAC)
-  if (DEFINED ENV{CODAC_ROOT})
-    message(STATUS "CODAC environment detected at $ENV{CODAC_ROOT}")
-  else()
-    message(FATAL "No CODAC environment detected")
-  endif()
+if (NOT NO_CODAC AND DEFINED ENV{CODAC_ROOT})
+  message(STATUS "CODAC environment detected at $ENV{CODAC_ROOT}")
+  list(APPEND CMAKE_PREFIX_PATH $ENV{CODAC_ROOT} $ENV{CODAC_ROOT}/common)
+  set(CODAC TRUE)
 else()
   message(STATUS "Compiling without CODAC")
+  set(CODAC FALSE)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -69,10 +68,9 @@ message(STATUS " Core library: ${QtWidgets_location}")
 find_package(Threads)
 
 find_package(sup-mvvm REQUIRED)
+find_package(sup-dto REQUIRED)
 
-if (NOT SEQUENCERGUI_CODAC)
-  find_package(sequencer REQUIRED)
-endif()
+find_package(sequencer REQUIRED)
 
 # -----------------------------------------------------------------------------
 # Generating config files

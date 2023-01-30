@@ -17,11 +17,8 @@ add_subdirectory(libtest-utils)
 add_subdirectory(testsup-gui-core)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-core-events)
-
-if (NOT SEQUENCERGUI_CODAC)
-  add_subdirectory(testanyvalue-editor-core)
-  add_subdirectory(testsup-pvmonitor-core)
-endif()
+add_subdirectory(testsup-pvmonitor-core)
+add_subdirectory(testanyvalue-editor-core)
 
 # Add custom target `make testall` which will run test executables one after another.
 # This can be used instead of usual `make test` or `ctest` while running tests via an ssh
