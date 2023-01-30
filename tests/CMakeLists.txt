@@ -26,9 +26,9 @@ add_subdirectory(testanyvalue-editor-core)
 # instantiations of QApplication.
 
 add_custom_target(testall
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsup-gui-core
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testanyvalue-editor-core
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencer-gui-core
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
-  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testsup-pvmonitor-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-gui-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testanyvalue-editor-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core
 )
