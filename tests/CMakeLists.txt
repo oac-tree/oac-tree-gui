@@ -32,3 +32,18 @@ add_custom_target(testall
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core
 )
+
+file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
+"#!/bin/bash
+export QT_QPA_PLATFORM=offscreen
+fail=0
+" ${TEST_OUTPUT_DIRECTORY}/testsup-gui-core " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testanyvalue-editor-core " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core " || fail=1
+exit $fail
+")
+
+configure_file(${TEST_OUTPUT_DIRECTORY}/test.sh ${TEST_OUTPUT_DIRECTORY}/test.sh 
+               FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
