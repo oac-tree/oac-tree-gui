@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_WIDGETS_WIDGET_UTILS_H_
 #define SEQUENCERGUI_WIDGETS_WIDGET_UTILS_H_
 
-//! @file widgetutils.h
 //! Collection of general widget-related utility functions.
 
 #include <QApplication>

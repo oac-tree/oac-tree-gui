@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
 #define SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
 
-//! @file app_utils.h
 //! Collection of utils for main() function.
 
 #include <memory>

@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_
 #define SEQUENCERGUI_MODEL_STANDARD_INSTRUCTION_ITEMS_H_
 
-//! @file standardinstructionitems.h
 //! Collection of classes to represent Sequencer instructions.
 
 #include <sequencergui/model/instruction_item.h>

@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_
 
-//! @file job_log_severity.h
 //! Provide log severity levels and accompanying utility functions.
 
 #include <string>

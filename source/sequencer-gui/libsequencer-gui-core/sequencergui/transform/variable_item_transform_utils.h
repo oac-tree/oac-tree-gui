@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
 #define SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
 
-//! @file variable_item_transform_utils.h
 //! Collection of utility functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>

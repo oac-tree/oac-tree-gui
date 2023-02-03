@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
 #define SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
 
-//! @file alignutils.h
 //! Collection of utility function for node positioning of the general tree.
 //! The tree is represented by AlignNode classes.
 

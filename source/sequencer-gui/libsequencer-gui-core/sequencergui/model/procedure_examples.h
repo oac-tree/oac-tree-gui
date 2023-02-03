@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_PROCEDURE_EXAMPLES_H_
 #define SEQUENCERGUI_MODEL_PROCEDURE_EXAMPLES_H_
 
-//! @file procedure_examples.h
 //! Collection of example procedures to populate the model for debugging purposes.
 
 #include <memory>

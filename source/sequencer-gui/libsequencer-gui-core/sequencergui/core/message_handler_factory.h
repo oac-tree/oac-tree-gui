@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_FACTORY_H_
 #define SEQUENCERGUI_CORE_MESSAGE_HANDLER_FACTORY_H_
 
-//! @file messagehandlerfactory.h
 //! Factory functions to create various message reporters.
 
 #include <sequencergui/core/message_handler_interface.h>

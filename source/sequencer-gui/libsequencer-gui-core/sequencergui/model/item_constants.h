@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H_
 #define SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H_
 
-//! @file item_constants.h
 //! Collection of constants for sequencer items.
 
 #include <string>

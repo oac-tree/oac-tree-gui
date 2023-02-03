@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
 #define SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
 
-//! @file domain_constants.h
 //! Collection of constants used by domain objects. The existence of this file (and unavoidable data
 //! duplication) is dictated by the fact that many Sequencer's headers are not exposed, and many
 //! constants are literals in code.

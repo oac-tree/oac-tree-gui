@@ -20,7 +20,6 @@
 #ifndef TEST_GUI_DOMAIN_UTILS_H
 #define TEST_GUI_DOMAIN_UTILS_H
 
-//! @file test_gui_domain_utils.h
 //! Collection of utility functions to test gui/domain transformations.
 
 #include <string>

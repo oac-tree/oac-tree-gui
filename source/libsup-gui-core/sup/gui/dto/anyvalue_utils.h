@@ -20,7 +20,6 @@
 #ifndef GUI_DTO_ANYVALUE_UTILS_H_
 #define GUI_DTO_ANYVALUE_UTILS_H_
 
-//! @file anyvalue_utils.h
 //! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
 
 #include <sup/gui/dto/dto_types_fwd.h>

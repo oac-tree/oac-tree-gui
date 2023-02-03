@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_TIME_UTILS_H_
 #define SEQUENCERGUI_JOBSYSTEM_TIME_UTILS_H_
 
-//! @file time_utils.h
 //! Collection of time related utils.
 
 #include <chrono>

@@ -20,7 +20,6 @@
 #ifndef TEST_UTILS_H
 #define TEST_UTILS_H
 
-//! @file test_utils.h
 //! Collection of utility functions for various unit tests.
 
 #include <sequencergui/jobsystem/time_utils.h>

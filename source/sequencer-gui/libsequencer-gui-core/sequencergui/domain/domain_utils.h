@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
 #define SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
 
-//! @file domain_utils.h
 //! Collection of utility functions to access/create various Sequencer related objects.
 //! With this file we want to decrease as much as possible the visibility of sequencer headers
 //! in the code.

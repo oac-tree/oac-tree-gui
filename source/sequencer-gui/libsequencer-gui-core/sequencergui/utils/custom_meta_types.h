@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_UTILS_CUSTOM_META_TYPES_H_
 #define SEQUENCERGUI_UTILS_CUSTOM_META_TYPES_H_
 
-//! @file custom_meta_types.h
 //! Registration of custom types in Qt meta type system to provide support in signal/slot and
 //! QVariant.
 

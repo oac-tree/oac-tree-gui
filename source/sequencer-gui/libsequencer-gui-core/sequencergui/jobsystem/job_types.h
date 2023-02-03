@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
 
-//! @file job_types.h
 //! Provide conveniece types for procedure execution in the JobManager.
 
 namespace sequencergui

@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
 #define SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
 
-//! @file sequencerutils.h
 //! Various utils for GUI items.
 
 #include <memory>

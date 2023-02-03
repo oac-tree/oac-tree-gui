@@ -20,7 +20,6 @@
 #ifndef GUI_DTO_SCALAR_CONVERSION_UTILS_H_
 #define GUI_DTO_SCALAR_CONVERSION_UTILS_H_
 
-//! @file scalar_conversion_utils.h
 //! Utility functions to convert scalar AnyValue to AnyValueItem and back.
 
 #include <sup/gui/dto/dto_types_fwd.h>

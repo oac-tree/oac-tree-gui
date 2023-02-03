@@ -20,7 +20,6 @@
 #ifndef GUI_DTO_DTO_TYPES_FWD_H_
 #define GUI_DTO_DTO_TYPES_FWD_H_
 
-//! @file dto_types_fwd.h
 //! Forward declaration of AnyValue related types.
 
 namespace sup::dto

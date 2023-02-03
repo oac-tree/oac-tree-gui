@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_H_
 #define SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_H_
 
-//! @file sequencer_types.h
 //! Type aliases for main Sequencer types.
 
 namespace sup::sequencer

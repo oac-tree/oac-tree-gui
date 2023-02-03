@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_CORE_VERSION_H_
 #define SEQUENCERGUI_CORE_VERSION_H_
 
-//! @file version.h
 //! Automatically generated from version.h.in
 
 #include <string>

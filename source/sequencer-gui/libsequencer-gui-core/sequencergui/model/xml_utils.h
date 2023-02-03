@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_XML_UTILS_H_
 #define SEQUENCERGUI_MODEL_XML_UTILS_H_
 
-//! @file importutils.h
 //! Collection of utility functions to import xml files from disk into SessionModel.
 
 #include <memory>

@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_UTILS_SEQUENCER_ALIGN_UTILS_H_
 #define SEQUENCERGUI_UTILS_SEQUENCER_ALIGN_UTILS_H_
 
-//! @file sequenceralign_utils.h
 //! Collection of utility functions to align Sequencer instruction tree on the graphics scene.
 
 #include <memory>

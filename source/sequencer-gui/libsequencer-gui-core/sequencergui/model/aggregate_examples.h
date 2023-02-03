@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_AGGREGATE_EXAMPLES_H_
 #define SEQUENCERGUI_MODEL_AGGREGATE_EXAMPLES_H_
 
-//! @file aggregate_examples.h
 //! Collection of factory functions to create complex instructions.
 
 #include <memory>

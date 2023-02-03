@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_
 #define SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_
 
-//! @file standardvariableitems.h
 //! Collection of classes to represent Sequencer variables.
 
 #include <sequencergui/model/variable_item.h>

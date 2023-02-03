@@ -20,7 +20,6 @@
 #ifndef TEST_PROCEDURE_ITEMS_H
 #define TEST_PROCEDURE_ITEMS_H
 
-//! @file test_procedure_items.h
 //! Collection of pocedure items for testing purpose.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>

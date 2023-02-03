@@ -20,7 +20,6 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
 #define SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
 
-//! @file sceneutils.h
 //! Collection of utility functions for graphics scene.
 
 #include <memory>

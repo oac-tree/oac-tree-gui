@@ -20,7 +20,6 @@
 #ifndef TEST_DOMAIN_PROCEDURES_H
 #define TEST_DOMAIN_PROCEDURES_H
 
-//! @file test_domain_procedures.h
 //! Collection of domain procedures for testing purpose.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
