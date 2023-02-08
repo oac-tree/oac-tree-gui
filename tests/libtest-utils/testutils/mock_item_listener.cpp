@@ -19,6 +19,8 @@
 
 #include "mock_item_listener.h"
 
+#include "mvvm/signals/event_types.h"
+
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/tagindex.h>
 
@@ -27,24 +29,11 @@ namespace testutils
 
 void MockItemListener::Subscribe()
 {
-  auto on_item_inserted = [this](mvvm::SessionItem* item, const mvvm::TagIndex& tag_index)
-  { OnItemInserted(item, tag_index); };
-  SetOnItemInserted(on_item_inserted);
-
-  auto on_about_to_remove_item = [this](mvvm::SessionItem* item, const mvvm::TagIndex& tag_index)
-  { OnAboutToRemoveItem(item, tag_index); };
-  SetOnAboutToRemoveItem(on_about_to_remove_item);
-
-  auto on_item_removed = [this](mvvm::SessionItem* item, const mvvm::TagIndex& tag_index)
-  { OnItemRemoved(item, tag_index); };
-  SetOnItemRemoved(on_item_removed);
-
-  auto on_data_changed = [this](mvvm::SessionItem* item, int role) { OnDataChanged(item, role); };
-  SetOnDataChanged(on_data_changed);
-
-  auto on_property_changed = [this](mvvm::SessionItem* item, const std::string& name)
-  { OnPropertyChanged(item, name); };
-  SetOnPropertyChanged(on_property_changed);
+  Connect<mvvm::ItemInsertedEvent>(this, &MockItemListener::OnEvent);
+  Connect<mvvm::AboutToRemoveItemEvent>(this, &MockItemListener::OnEvent);
+  Connect<mvvm::ItemRemovedEvent>(this, &MockItemListener::OnEvent);
+  Connect<mvvm::DataChangedEvent>(this, &MockItemListener::OnEvent);
+  Connect<mvvm::PropertyChangedEvent>(this, &MockItemListener::OnEvent);
 }
 
 }  // namespace testutils

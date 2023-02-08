@@ -20,6 +20,8 @@
 #include "sequencergui/jobsystem/job_context.h"
 
 #include <gtest/gtest.h>
+#include <mvvm/model/model_utils.h>
+#include <mvvm/standarditems/container_item.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/application_models.h>
@@ -30,14 +32,10 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <testutils/mock_item_listener.h>
-#include <testutils/standard_procedure_items.h>
-
-#include <mvvm/model/model_utils.h>
-#include <mvvm/standarditems/container_item.h>
-
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
+#include <testutils/mock_item_listener.h>
+#include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -170,7 +168,8 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 
   testutils::MockItemListener listener(wait);
 
-  EXPECT_CALL(listener, OnPropertyChanged(wait, itemconstants::kStatus)).Times(2);
+  mvvm::PropertyChangedEvent expected_event{wait, itemconstants::kStatus};
+  EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
 
   job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
