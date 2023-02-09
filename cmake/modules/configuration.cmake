@@ -10,10 +10,15 @@ include(GNUInstallDirs)
 # CODAC enviorenment
 # -----------------------------------------------------------------------------
 
-if (NOT NO_CODAC AND DEFINED ENV{CODAC_ROOT})
-  message(STATUS "CODAC environment detected at $ENV{CODAC_ROOT}")
-  list(APPEND CMAKE_PREFIX_PATH $ENV{CODAC_ROOT} $ENV{CODAC_ROOT}/common)
-  set(CODAC TRUE)
+if(NOT NO_CODAC)
+  # cmake warns for the existance of ``<PackageName>_ROOT`` (CODAC_ROOT in this case) variables and ignores them
+  # for compatibility reasons, we set the related policy to NEW behaviour to suppress warnings and enable desired behaviour
+  cmake_policy(SET CMP0074 NEW)
+  find_package(CODAC)
+endif()
+if (CODAC_FOUND)
+  # Append CODAC_CMAKE_PREFIXES to cmake seard directories, this helps cmake find packages installed in the CODAC enviorenment 
+  list(APPEND CMAKE_PREFIX_PATH ${CODAC_CMAKE_PREFIXES})
 else()
   message(STATUS "Compiling without CODAC")
   set(CODAC FALSE)
