@@ -90,6 +90,7 @@ bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
+
 }  // namespace testutils
 
 #endif  // TEST_UTILS_H

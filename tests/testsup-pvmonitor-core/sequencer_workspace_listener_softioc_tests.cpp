@@ -19,18 +19,19 @@
 
 #include "suppvmonitor/sequencer_workspace_listener.h"
 
+#include <sup/dto/anyvalue.h>
+#include <sup/epics-test/softioc_runner.h>
+#include <sup/epics-test/unit_test_helper.h>
+#include <sup/gui/dto/anyvalue_utils.h>
+#include <sup/gui/dto/conversion_utils.h>
+#include <sup/sequencer/workspace.h>
+
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
-#include <testutils/softioc_runner.h>
-#include <testutils/softioc_utils.h>
-
-#include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_utils.h>
-#include <sup/gui/dto/conversion_utils.h>
-#include <sup/sequencer/workspace.h>
+#include <testutils/epics_test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -39,22 +40,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <thread>
-
-namespace
-{
-// temporary from sup-sequencer-plugin-epics
-
-bool BusyWaitFor(double timeout_sec, std::function<bool()> predicate)
-{
-  long timeout_ns = std::lround(timeout_sec * 1e9);
-  auto time_end = std::chrono::system_clock::now() + std::chrono::nanoseconds(timeout_ns);
-  while (!predicate() && std::chrono::system_clock::now() < time_end)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(20));
-  }
-  return predicate();
-}
-}  // namespace
 
 using namespace suppvmonitor;
 
@@ -86,10 +71,10 @@ public:
     m_softioc_service.Stop();
   }
 
-  static testutils::SoftIocRunner m_softioc_service;
+  static sup::epics::test::SoftIocRunner m_softioc_service;
 };
 
-testutils::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softioc_service{};
+sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softioc_service{};
 
 //! The sequencer Workspace contains a single channel access variable.
 //! Validating that SequencerWorkspaceListener gets notifications.
@@ -128,7 +113,7 @@ TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVar
     sup::dto::AnyValue tmp;
     return workspace.GetValue("var", tmp) && tmp.As<sup::dto::uint32>() == 42;
   };
-  EXPECT_TRUE(BusyWaitFor(2.0, worker));
+  EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 
   EXPECT_EQ(spy_upate.count(), 1);
 }

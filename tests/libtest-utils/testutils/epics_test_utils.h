@@ -26,25 +26,9 @@
 namespace testutils
 {
 
-//! Returns path where EPICS binaries are located.
-std::string GetEPICSBinaryPath();
-
 //! Returns string representing EPICS database file with several testing variables.
 std::string GetEpicsDBContentString();
 
-//! Removes file with given name from disk.
-void RemoveFile(const std::string& file_name);
-
-//! Returns string representing PVGet output for given variable names.
-std::string GetPvGetOutput(const std::vector<std::string>& variable_names,
-                           const std::string& file_name = {});
-
-//! Returns string representing `pvget` output for given variable name.
-std::string GetPvGetOutput(const std::string& variable_name, const std::string& file_name = {});
-
-//! Put the value into PV with `pvput` command, returns string representing command output.
-std::string PvPut(const std::string& variable_name, const std::string& value);
-
-}
+}  // namespace testutils
 
 #endif  // SUP_EPICS_SOFTIOCUTILS_H_

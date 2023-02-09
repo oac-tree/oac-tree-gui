@@ -9,10 +9,8 @@ target_sources(${library_name} PRIVATE
   mock_model_listener.cpp
   mock_model_listener.h
   mock_sequencer_observer.h
-  softioc_runner.cpp
-  softioc_runner.h
-  softioc_utils.cpp
-  softioc_utils.h
+  epics_test_utils.cpp
+  epics_test_utils.h
   standard_procedures.cpp
   standard_procedures.h
   gui_domain_utils.cpp
