@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 option(SEQUENCERGUI_BUMP_VERSION "Propagate version number" OFF)
 option(SEQUENCERGUI_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
 option(SEQUENCERGUI_USE_QT6 "Compile with Qt6" OFF)
+option(COA_BUILD_DOCUMENTATION "Build documentation" OFF)
 option(NO_CODAC "Don't look for the presence of CODAC environment" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
@@ -14,7 +15,9 @@ include(configuration)
 
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(doc)
+if(COA_BUILD_DOCUMENTATION)
+    add_subdirectory(doc)
+endif()
 
 # Defines 'clangformat' target. See CodeTools.cmake for details.
 project_codetools_setup()
