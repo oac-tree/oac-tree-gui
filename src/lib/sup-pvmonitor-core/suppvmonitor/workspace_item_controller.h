@@ -52,7 +52,7 @@ class MonitorModel;
 class WorkspaceItemController
 {
 public:
-  WorkspaceItemController(MonitorModel* model);
+  explicit WorkspaceItemController(MonitorModel* model);
   ~WorkspaceItemController();
 
   void ProcessEventFromDomain(const WorkspaceEvent& event);
