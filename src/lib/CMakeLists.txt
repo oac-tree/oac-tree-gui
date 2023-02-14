@@ -1,5 +1,5 @@
-add_subdirectory(libanyvalue-editor-core)
-add_subdirectory(libsequencer-gui-core)
-add_subdirectory(libsup-gui-core)
-add_subdirectory(libsup-pvmonitor-core)
+add_subdirectory(anyvalue-editor-core)
+add_subdirectory(sequencer-gui-core)
+add_subdirectory(sup-gui-core)
+add_subdirectory(sup-pvmonitor-core)
 
