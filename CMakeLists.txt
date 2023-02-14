@@ -12,8 +12,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
 set(CMAKE_CONFIG_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/configs)
 include(configuration)
 
-add_subdirectory(source)
-add_subdirectory(tests)
+add_subdirectory(src)
+add_subdirectory(test)
 add_subdirectory(doc)
 
 # Defines 'clangformat' target. See CodeTools.cmake for details.
