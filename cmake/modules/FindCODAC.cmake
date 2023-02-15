@@ -4,6 +4,7 @@
 #   CODAC_DIR: root directory of CODAC Enviorenment
 #   CODAC_VERSION: version of CODAC Enviorenment
 #   CODAC_CMAKE_PREFIXES: list of prefixes to help cmake find CODAC packages
+#   CODAC_CICD: operating in a CODAC CICD system if true
 #   CODAC_FOUND: required variable for find_package, helps check if we are in a CODAC Enviorenment
 # 
 # Additional optional components:
@@ -111,6 +112,13 @@ if(DEFINED ENV{CODAC_ROOT})
 
     # Prefixes to help cmake find config files for CODAC packages
     set(CODAC_CMAKE_PREFIXES ${CODAC_DIR} ${CODAC_DIR}/common)
+
+    if(DEFINED ENV{CI} AND $ENV{CI})
+      # Inside CODAC CICD system
+      set(CODAC_CICD TRUE)
+    else()
+      set(CODAC_CICD FALSE)
+    endif()
 
     set(CODAC_FOUND TRUE)
 else()
