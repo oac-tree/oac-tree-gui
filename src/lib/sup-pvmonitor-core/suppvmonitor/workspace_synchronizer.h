@@ -23,13 +23,10 @@
 #include <QObject>
 #include <memory>
 
-namespace sup
-{
-namespace sequencer
+namespace sup::sequencer
 {
 class Workspace;
-}
-}  // namespace sup
+}  // namespace sup::sequencer
 
 namespace sequencergui
 {
@@ -57,6 +54,8 @@ class WorkspaceSynchronizer : public QObject
 
 public:
   WorkspaceSynchronizer(MonitorModel* model, QObject* parent = nullptr);
+  WorkspaceSynchronizer(sequencergui::WorkspaceItem* workspace_item,
+                        sup::sequencer::Workspace* domain_workspace, QObject* parent = nullptr);
   ~WorkspaceSynchronizer() override;
 
   void OnSetupWorkspaceRequest();
@@ -73,6 +72,9 @@ private:
   std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
   std::unique_ptr<sup::sequencer::Workspace> m_workspace;
   MonitorModel* m_model{nullptr};
+
+  sup::sequencer::Workspace* m_domain_workspace{nullptr};
+  sequencergui::WorkspaceItem* m_workspace_item{nullptr};
 };
 
 }  // namespace suppvmonitor

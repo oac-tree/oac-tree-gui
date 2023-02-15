@@ -23,6 +23,11 @@
 #include <QWidget>
 #include <memory>
 
+namespace sup::sequencer
+{
+class Workspace;
+}  // namespace sup::sequencer
+
 namespace mvvm
 {
 class AllItemsTreeView;
@@ -50,7 +55,8 @@ private:
   MonitorWidgetToolBar* m_tool_bar{nullptr};
 
   std::unique_ptr<MonitorModel> m_model;
-  std::unique_ptr<WorkspaceSynchronizer> m_workspace_controller;
+  std::unique_ptr<sup::sequencer::Workspace> m_workspace;
+  std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
 };
 

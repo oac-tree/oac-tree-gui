@@ -50,6 +50,18 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(MonitorModel* model, QObject* paren
                                            { OnWorkspaceEventFromGUI(event); });
 }
 
+WorkspaceSynchronizer::WorkspaceSynchronizer(sequencergui::WorkspaceItem* workspace_item,
+                                             sup::sequencer::Workspace* domain_workspace,
+                                             QObject* parent)
+    : QObject(parent), m_domain_workspace(domain_workspace), m_workspace_item(workspace_item)
+{
+  connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
+          &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
+
+  m_workspace_item_controller->SetCallback([this](const auto& event)
+                                           { OnWorkspaceEventFromGUI(event); });
+}
+
 WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 //! Creates domain workspace corresponding to WorkspaceItem and start listening.

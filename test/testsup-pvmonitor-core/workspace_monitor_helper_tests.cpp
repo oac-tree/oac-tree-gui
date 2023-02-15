@@ -69,6 +69,7 @@ TEST_F(WorkspaceMonitorHelperTests, SetupDomainWorkspaceSingleVariables)
   auto var_item1 =
       workspace_item.InsertItem<sequencergui::FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
+  var_item1->SetFileName("filename");
 
   SetupDomainWorkspace(workspace_item, workspace);
   EXPECT_EQ(workspace.VariableNames(), std::vector<std::string>({"var0", "var1"}));
