@@ -7,7 +7,7 @@ option(SEQUENCERGUI_BUMP_VERSION "Propagate version number" OFF)
 option(SEQUENCERGUI_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
 option(SEQUENCERGUI_USE_QT6 "Compile with Qt6" OFF)
 option(COA_BUILD_DOCUMENTATION "Build documentation" OFF)
-option(NO_CODAC "Don't look for the presence of CODAC environment" OFF)
+option(COA_NO_CODAC "Don't look for the presence of CODAC environment" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
 set(CMAKE_CONFIG_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/configs)
