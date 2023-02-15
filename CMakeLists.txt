@@ -15,9 +15,7 @@ include(configuration)
 
 add_subdirectory(src)
 add_subdirectory(test)
-if(COA_BUILD_DOCUMENTATION)
-    add_subdirectory(doc)
-endif()
+add_subdirectory(doc)
 
 # Defines 'clangformat' target. See CodeTools.cmake for details.
 project_codetools_setup()
