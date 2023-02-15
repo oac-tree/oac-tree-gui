@@ -32,7 +32,7 @@ namespace suppvmonitor
 {
 
 //! Setup domain workspace with the content in WorkspaceItem.
-void SetupDomainWorkspace(const sequencergui::WorkspaceItem* item, workspace_t* workspace);
+void SetupDomainWorkspace(const sequencergui::WorkspaceItem& item, workspace_t& workspace);
 
 }  // namespace suppvmonitor
 

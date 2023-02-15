@@ -19,12 +19,18 @@
 
 #include "workspace_monitor_helper.h"
 
+#include <sequencergui/model/domain_workspace_builder.h>
+
+#include <sup/sequencer/workspace.h>
+
 namespace suppvmonitor
 {
 
-void SetupDomainWorkspace(const sequencergui::WorkspaceItem *item, workspace_t *workspace)
+void SetupDomainWorkspace(const sequencergui::WorkspaceItem &item, workspace_t &workspace)
 {
-
+  sequencergui::DomainWorkspaceBuilder builder;
+  builder.PopulateDomainWorkspace(&item, &workspace);
+  workspace.Setup();
 }
 
 }  // namespace suppvmonitor
