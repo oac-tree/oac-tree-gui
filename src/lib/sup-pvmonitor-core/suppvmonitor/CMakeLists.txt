@@ -11,6 +11,8 @@ target_sources(${library_name} PRIVATE
   workspace_event.h
   workspace_item_controller.cpp
   workspace_item_controller.h
-  workspace_syncronizer.cpp
-  workspace_syncronizer.h
+  workspace_synchronizer.cpp
+  workspace_synchronizer.h
+  workspace_monitor_helper.cpp
+  workspace_monitor_helper.h
 )

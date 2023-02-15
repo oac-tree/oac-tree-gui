@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
+#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_
 
 #include <QObject>
 #include <memory>
@@ -51,13 +51,13 @@ class WorkspaceEvent;
 //! creates underlying sequencer Workspace, attaches to it, and then performs mutual updates
 //! between sequencer variables and their counterparts VariableItems.
 
-class WorkspaceSyncronizer : public QObject
+class WorkspaceSynchronizer : public QObject
 {
   Q_OBJECT
 
 public:
-  WorkspaceSyncronizer(MonitorModel* model, QObject* parent = nullptr);
-  ~WorkspaceSyncronizer() override;
+  WorkspaceSynchronizer(MonitorModel* model, QObject* parent = nullptr);
+  ~WorkspaceSynchronizer() override;
 
   void OnSetupWorkspaceRequest();
 
@@ -77,4 +77,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCRONIZER_H_
+#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_

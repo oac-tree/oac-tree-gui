@@ -17,43 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
-
-#include <QWidget>
-#include <memory>
-
-namespace mvvm
-{
-class AllItemsTreeView;
-}
+#include "workspace_monitor_helper.h"
 
 namespace suppvmonitor
 {
 
-class MonitorModel;
-class WorkspaceSynchronizer;
-class MonitorWidgetToolBar;
-
-class MonitorWidget : public QWidget
+void SetupDomainWorkspace(const sequencergui::WorkspaceItem *item, workspace_t *workspace)
 {
-  Q_OBJECT
 
-public:
-  explicit MonitorWidget(QWidget* parent = nullptr);
-  ~MonitorWidget() override;
-
-private:
-  void PopulateModel();
-  void SetupConnections();
-
-  MonitorWidgetToolBar* m_tool_bar{nullptr};
-
-  std::unique_ptr<MonitorModel> m_model;
-  std::unique_ptr<WorkspaceSynchronizer> m_workspace_controller;
-  mvvm::AllItemsTreeView* m_tree_view{nullptr};
-};
+}
 
 }  // namespace suppvmonitor
-
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_

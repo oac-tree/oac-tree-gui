@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_syncronizer.h"
+#include "suppvmonitor/workspace_synchronizer.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/domain_workspace_builder.h>
@@ -37,24 +37,24 @@
 namespace suppvmonitor
 {
 
-WorkspaceSyncronizer::WorkspaceSyncronizer(MonitorModel* model, QObject* parent)
+WorkspaceSynchronizer::WorkspaceSynchronizer(MonitorModel* model, QObject* parent)
     : QObject(parent)
     , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
     , m_workspace_item_controller(std::make_unique<WorkspaceItemController>(model))
     , m_model(model)
 {
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
-          &WorkspaceSyncronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
+          &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
 
   m_workspace_item_controller->SetCallback([this](const auto& event)
                                            { OnWorkspaceEventFromGUI(event); });
 }
 
-WorkspaceSyncronizer::~WorkspaceSyncronizer() = default;
+WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 //! Creates domain workspace corresponding to WorkspaceItem and start listening.
 
-void WorkspaceSyncronizer::OnSetupWorkspaceRequest()
+void WorkspaceSynchronizer::OnSetupWorkspaceRequest()
 {
   if (!GetWorkspaceItem())
   {
@@ -66,31 +66,31 @@ void WorkspaceSyncronizer::OnSetupWorkspaceRequest()
   m_workspace_builder = std::make_unique<sequencergui::DomainWorkspaceBuilder>();
   m_workspace_builder->PopulateDomainWorkspace(GetWorkspaceItem(), m_workspace.get());
 
-  m_workspace_listener->StartListening(m_workspace.get());
-
   m_workspace->Setup();
+
+  m_workspace_listener->StartListening(m_workspace.get());
 
   // FIXME implement setting of domain initial values here, block OnDomainVariableUpdated
   // notifications
 }
 
-sup::sequencer::Workspace* WorkspaceSyncronizer::GetWorkspace() const
+sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
 {
   return m_workspace.get();
 }
 
-void WorkspaceSyncronizer::OnDomainVariableUpdated()
+void WorkspaceSynchronizer::OnDomainVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
   m_workspace_item_controller->ProcessEventFromDomain(event);
 }
 
-void WorkspaceSyncronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
+void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
 {
   m_workspace->SetValue(event.m_variable_name, event.m_value);
 }
 
-sequencergui::WorkspaceItem* WorkspaceSyncronizer::GetWorkspaceItem()
+sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem()
 {
   return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
 }

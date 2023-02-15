@@ -23,7 +23,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget_toolbar.h>
-#include <suppvmonitor/workspace_syncronizer.h>
+#include <suppvmonitor/workspace_synchronizer.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
 
@@ -36,7 +36,7 @@ MonitorWidget::MonitorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(std::make_unique<MonitorModel>())
-    , m_workspace_controller(std::make_unique<WorkspaceSyncronizer>(m_model.get()))
+    , m_workspace_controller(std::make_unique<WorkspaceSynchronizer>(m_model.get()))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -65,7 +65,7 @@ void MonitorWidget::PopulateModel()
 void MonitorWidget::SetupConnections()
 {
   connect(m_tool_bar, &MonitorWidgetToolBar::SetupWorkspaceRequest, m_workspace_controller.get(),
-          &WorkspaceSyncronizer::OnSetupWorkspaceRequest);
+          &WorkspaceSynchronizer::OnSetupWorkspaceRequest);
 }
 
 }  // namespace suppvmonitor

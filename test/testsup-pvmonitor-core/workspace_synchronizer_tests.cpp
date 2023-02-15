@@ -17,7 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_syncronizer.h"
+#include "suppvmonitor/workspace_synchronizer.h"
+
+#include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/conversion_utils.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -26,17 +30,13 @@
 #include <suppvmonitor/monitor_model.h>
 #include <testutils/gui_domain_utils.h>
 
-#include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/conversion_utils.h>
-#include <sup/sequencer/workspace.h>
-
 #include <QTest>
 
 using namespace suppvmonitor;
 
 //! Tests for WorkspaceSyncronizer class.
 
-class WorkspaceSyncronizerTests : public ::testing::Test
+class WorkspaceSynchronizerTests : public ::testing::Test
 {
 public:
   //! Helper function to create LocalVariableItem with given name and initial AnyValue.
@@ -49,26 +49,26 @@ public:
   }
 };
 
-TEST_F(WorkspaceSyncronizerTests, InitialState)
+TEST_F(WorkspaceSynchronizerTests, InitialState)
 {
   MonitorModel model;
-  WorkspaceSyncronizer syncronizer(&model);
+  WorkspaceSynchronizer syncronizer(&model);
   EXPECT_EQ(syncronizer.GetWorkspace(), nullptr);
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Setting up the workspace and checking that proper domain variable has been created.
 
-TEST_F(WorkspaceSyncronizerTests, OnSetupWorkspaceRequest)
+TEST_F(WorkspaceSynchronizerTests, OnSetupWorkspaceRequest)
 {
-  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   MonitorModel model;
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
   auto variable_item0 =
       workspace_item->InsertItem(CreateLocalVariable("abc", value0), mvvm::TagIndex::Append());
 
-  WorkspaceSyncronizer syncronizer(&model);
+  WorkspaceSynchronizer syncronizer(&model);
   syncronizer.OnSetupWorkspaceRequest();
 
   ASSERT_TRUE(syncronizer.GetWorkspace() != nullptr);
@@ -88,9 +88,9 @@ TEST_F(WorkspaceSyncronizerTests, OnSetupWorkspaceRequest)
 //! Setting up the workspace with single variable.
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 
-TEST_F(WorkspaceSyncronizerTests, OnDomainVariableUpdated)
+TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
 {
-  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   MonitorModel model;
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
@@ -99,14 +99,14 @@ TEST_F(WorkspaceSyncronizerTests, OnDomainVariableUpdated)
   testutils::SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
-  WorkspaceSyncronizer syncronizer(&model);
+  WorkspaceSynchronizer syncronizer(&model);
   syncronizer.OnSetupWorkspaceRequest();
 
   // FIXME current implementation doesn't update AnyValueItem on first connection
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   // changing the value via domain workspace
-  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   EXPECT_TRUE(syncronizer.GetWorkspace()->SetValue("abc", value1));
 
   // We are testing here queued signals, need special waiting
@@ -117,9 +117,9 @@ TEST_F(WorkspaceSyncronizerTests, OnDomainVariableUpdated)
   EXPECT_EQ(value1, stored_anyvalue);
 }
 
-TEST_F(WorkspaceSyncronizerTests, OnModelVariableUpdate)
+TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 {
-  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   MonitorModel model;
   auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
@@ -129,11 +129,11 @@ TEST_F(WorkspaceSyncronizerTests, OnModelVariableUpdate)
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
   sequencergui::UpdateAnyValue(value0, *variable_item0);
 
-  WorkspaceSyncronizer syncronizer(&model);
+  WorkspaceSynchronizer syncronizer(&model);
   syncronizer.OnSetupWorkspaceRequest();
 
   // changing the value via the model
-  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   sequencergui::UpdateAnyValue(value1, *variable_item0);
 
   // We are testing here queued signals, need special waiting

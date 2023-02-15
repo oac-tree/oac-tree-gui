@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
+
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-
-#include <sup/sequencer/variable.h>
-#include <sup/sequencer/workspace.h>
 
 namespace sequencergui
 {
@@ -45,8 +45,8 @@ void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
   {
     auto domain_variable = variable_item->CreateDomainVariable();
 
-    auto it = m_domain_name_to_item.find(variable_item->GetName());
-    if (it != m_domain_name_to_item.end())
+    auto iter = m_domain_name_to_item.find(variable_item->GetName());
+    if (iter != m_domain_name_to_item.end())
     {
       throw ExistingKeyException("Variable name '" + variable_item->GetName() + "' already exist");
     }
@@ -61,8 +61,8 @@ void DomainWorkspaceBuilder::PopulateDomainWorkspace(const WorkspaceItem* item,
 VariableItem* DomainWorkspaceBuilder::GetVariableItemFromDomainVariableName(
     const std::string& name) const
 {
-  auto it = m_domain_name_to_item.find(name);
-  return it == m_domain_name_to_item.end() ? nullptr : it->second;
+  auto iter = m_domain_name_to_item.find(name);
+  return iter == m_domain_name_to_item.end() ? nullptr : iter->second;
 }
 
 }  // namespace sequencergui
