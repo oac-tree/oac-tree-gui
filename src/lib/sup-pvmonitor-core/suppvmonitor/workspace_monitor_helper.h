@@ -31,7 +31,8 @@ class DomainWorkspaceBuilder;
 namespace suppvmonitor
 {
 
-//! Setup domain workspace with the content in WorkspaceItem.
+//! Setup empty domain workspace with the content in WorkspaceItem.
+//! If domain workspace is non-empty, will throw.
 void SetupDomainWorkspace(const sequencergui::WorkspaceItem& item, workspace_t& workspace);
 
 }  // namespace suppvmonitor

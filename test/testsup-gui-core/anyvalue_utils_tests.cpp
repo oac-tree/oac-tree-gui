@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 
+#include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/variable.h>
 
@@ -51,4 +52,26 @@ TEST_F(AnyValueUtilsTest, GetJsonString)
   EXPECT_TRUE(variable->GetValue(any_value));
 
   EXPECT_EQ(sup::gui::GetValuesToJSONString(&any_value), "42");
+}
+
+//! Validating method AnyTypeFromJSONString.
+
+TEST_F(AnyValueUtilsTest, AnyTypeFromJSONString)
+{
+  {  // malformed type
+    EXPECT_THROW(sup::gui::AnyTypeFromJSONString(R"RAW({"type":"int32")RAW"), std::runtime_error);
+  }
+
+  {  // scalar
+    sup::dto::AnyType expected_anytype(sup::dto::SignedInteger32Type);
+    EXPECT_EQ(sup::gui::AnyTypeFromJSONString(R"RAW({"type":"int32"})RAW"), expected_anytype);
+  }
+
+  {  // struct with a single field
+    sup::dto::AnyType expected_anytype = {{{"signed", {sup::dto::SignedInteger32Type}}},
+                                          "structname"};
+    std::string json_str(
+        R"RAW({"type":"structname","attributes":[{"signed":{"type":"int32"}}]})RAW");
+    EXPECT_EQ(sup::gui::AnyTypeFromJSONString(json_str), expected_anytype);
+  }
 }

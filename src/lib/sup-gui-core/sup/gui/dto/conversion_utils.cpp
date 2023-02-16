@@ -146,7 +146,6 @@ variant_t GetVariantForAnyValueTypeName(const std::string& type_name)
       {TypeCode::Float64, ScalarToItemT<sup::dto::float64>},
       {TypeCode::String, ScalarToItemT<std::string>}};
 
-  auto code = GetTypeCode(type_name);
   auto iter = conversion_map.find(GetTypeCode(type_name));
   if (iter == conversion_map.end())
   {

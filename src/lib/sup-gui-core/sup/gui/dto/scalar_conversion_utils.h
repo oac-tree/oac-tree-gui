@@ -29,6 +29,9 @@ namespace sup::gui
 
 class AnyValueItem;
 
+
+//! Sets the data of AnyValueItem using scalar AnyValue.
+//! Will throw if AnyValue is not a scalar.
 void SetDataFromScalar(const anyvalue_t& value, AnyValueItem& item);
 
 //! Returns scalar AnyValue from AnyValueItem containing a scalar.

@@ -20,7 +20,7 @@
 #ifndef GUI_DTO_ANYVALUE_UTILS_H_
 #define GUI_DTO_ANYVALUE_UTILS_H_
 
-//! Collection of utility functions to pretend that AnyValue doesn't exist in this world.
+//! Collection of sup::dto::AnyValue related utility functions.
 
 #include <sup/gui/dto/dto_types_fwd.h>
 
@@ -38,6 +38,8 @@ std::string GetValuesToJSONString(const anyvalue_t* value);
 bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
 
 sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename);
+
+sup::dto::AnyType AnyTypeFromJSONString(const std::string& str);
 
 }  // namespace sup::gui
 
