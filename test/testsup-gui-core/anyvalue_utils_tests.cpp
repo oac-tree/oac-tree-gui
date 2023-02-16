@@ -58,7 +58,7 @@ TEST_F(AnyValueUtilsTest, GetJsonString)
 
 TEST_F(AnyValueUtilsTest, AnyTypeFromJSONString)
 {
-  {  // malformed type
+  {  // malformed type (missed closing bracket)
     EXPECT_THROW(sup::gui::AnyTypeFromJSONString(R"RAW({"type":"int32")RAW"), std::runtime_error);
   }
 
