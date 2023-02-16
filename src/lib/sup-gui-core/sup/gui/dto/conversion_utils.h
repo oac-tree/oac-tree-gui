@@ -33,13 +33,6 @@ namespace sup::gui
 
 class AnyValueItem;
 
-struct FieldContext
-{
-  std::string name;     //! Name of the field
-  std::string type;     //! Major type (scalar, array, struct)
-  std::string subtype;  //! Scalar type
-};
-
 const std::string kStructTypeName = "struct";
 const std::string kArrayTypeName = "array";
 const std::string kScalarTypeName = "scalar";
