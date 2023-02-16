@@ -37,7 +37,6 @@ class DomainWorkspaceBuilder;
 namespace suppvmonitor
 {
 
-class MonitorModel;
 class SequencerWorkspaceListener;
 class WorkspaceItemController;
 class WorkspaceEvent;
@@ -53,7 +52,6 @@ class WorkspaceSynchronizer : public QObject
   Q_OBJECT
 
 public:
-  WorkspaceSynchronizer(MonitorModel* model, QObject* parent = nullptr);
   WorkspaceSynchronizer(sequencergui::WorkspaceItem* workspace_item,
                         sup::sequencer::Workspace* domain_workspace, QObject* parent = nullptr);
   ~WorkspaceSynchronizer() override;
@@ -70,8 +68,6 @@ private:
   std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
   std::unique_ptr<sequencergui::DomainWorkspaceBuilder> m_workspace_builder;
   std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
-  std::unique_ptr<sup::sequencer::Workspace> m_workspace;
-  MonitorModel* m_model{nullptr};
 
   sup::sequencer::Workspace* m_domain_workspace{nullptr};
   sequencergui::WorkspaceItem* m_workspace_item{nullptr};

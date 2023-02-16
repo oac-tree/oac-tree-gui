@@ -23,6 +23,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget_toolbar.h>
+#include <suppvmonitor/workspace_monitor_helper.h>
 #include <suppvmonitor/workspace_synchronizer.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
@@ -69,7 +70,10 @@ void MonitorWidget::SetupConnections()
   {
     m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
-    m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(m_model.get());
+    SetupDomainWorkspace(*m_model->GetWorkspaceItem(), *m_workspace);
+
+    m_workspace_synchronizer =
+        std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->OnSetupWorkspaceRequest();
   };
   connect(m_tool_bar, &MonitorWidgetToolBar::SetupWorkspaceRequest, this, on_setup_workspace);
