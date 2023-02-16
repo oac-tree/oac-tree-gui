@@ -113,7 +113,8 @@ if(DEFINED ENV{CODAC_ROOT})
     # Prefixes to help cmake find config files for CODAC packages
     set(CODAC_CMAKE_PREFIXES ${CODAC_DIR} ${CODAC_DIR}/common)
 
-    if(DEFINED ENV{CI} AND $ENV{CI})
+    set(_codac_ci_env $ENV{CI})
+    if(_codac_ci_env STREQUAL "true")
       # Inside CODAC CICD system
       set(CODAC_CICD TRUE)
     else()
