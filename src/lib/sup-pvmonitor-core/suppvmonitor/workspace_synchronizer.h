@@ -31,7 +31,6 @@ class Workspace;
 namespace sequencergui
 {
 class WorkspaceItem;
-class DomainWorkspaceBuilder;
 }  // namespace sequencergui
 
 namespace suppvmonitor
@@ -60,16 +59,16 @@ public:
 
   sup::sequencer::Workspace* GetWorkspace() const;
 
+  sequencergui::WorkspaceItem* GetWorkspaceItem() const;
+
 private:
   void OnDomainVariableUpdated();
   void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
-  sequencergui::WorkspaceItem* GetWorkspaceItem();
 
   std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
-  std::unique_ptr<sequencergui::DomainWorkspaceBuilder> m_workspace_builder;
   std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
 
-  sup::sequencer::Workspace* m_domain_workspace{nullptr};
+  sup::sequencer::Workspace* m_workspace{nullptr};
   sequencergui::WorkspaceItem* m_workspace_item{nullptr};
 };
 

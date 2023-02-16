@@ -37,8 +37,8 @@
 namespace suppvmonitor
 {
 
-WorkspaceItemController::WorkspaceItemController(MonitorModel* model)
-    : m_model(model), m_listener(std::make_unique<mvvm::ModelListener<MonitorModel>>(model))
+WorkspaceItemController::WorkspaceItemController(sequencergui::WorkspaceItem* item)
+    : m_workspace_item(item), m_listener(std::make_unique<listener_t>(item->GetModel()))
 {
   m_listener->Connect<mvvm::ItemInsertedEvent>(this, &WorkspaceItemController::OnItemInsertedEvent);
   m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemController::OnDataChangedEvent);
@@ -81,7 +81,7 @@ sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const
 
 sequencergui::WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
 {
-  return m_model->GetWorkspaceItem();
+  return m_workspace_item;
 }
 
 //! Sets the callback to report GUI events.

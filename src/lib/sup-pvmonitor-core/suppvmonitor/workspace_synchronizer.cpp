@@ -23,9 +23,9 @@
 #include <sequencergui/model/domain_workspace_builder.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
+#include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
-#include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_item_controller.h>
 
 #include <mvvm/model/model_utils.h>
@@ -42,11 +42,15 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(sequencergui::WorkspaceItem* worksp
                                              QObject* parent)
     : QObject(parent)
     , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
-//        , m_workspace_item_controller(std::make_unique<WorkspaceItemController>(model))
-    , m_domain_workspace(domain_workspace), m_workspace_item(workspace_item)
+    , m_workspace_item_controller(std::make_unique<WorkspaceItemController>(workspace_item))
+    , m_workspace(domain_workspace)
+    , m_workspace_item(workspace_item)
 {
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
           &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
+
+  m_workspace_item_controller->SetCallback([this](const auto& event)
+                                           { OnWorkspaceEventFromGUI(event); });
 }
 
 WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
@@ -55,12 +59,6 @@ WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 void WorkspaceSynchronizer::OnSetupWorkspaceRequest()
 {
-
-  auto model = dynamic_cast<MonitorModel*>(GetWorkspaceItem()->GetModel());
-  m_workspace_item_controller = std::make_unique<WorkspaceItemController>(model);
-  m_workspace_item_controller->SetCallback([this](const auto& event)
-                                           { OnWorkspaceEventFromGUI(event); });
-
   m_workspace_listener->StartListening(GetWorkspace());
   // FIXME implement setting of domain initial values here, block OnDomainVariableUpdated
   // notifications
@@ -68,7 +66,12 @@ void WorkspaceSynchronizer::OnSetupWorkspaceRequest()
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
 {
-  return m_domain_workspace;
+  return m_workspace;
+}
+
+sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
+{
+  return m_workspace_item;
 }
 
 void WorkspaceSynchronizer::OnDomainVariableUpdated()
@@ -80,11 +83,6 @@ void WorkspaceSynchronizer::OnDomainVariableUpdated()
 void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
 {
   GetWorkspace()->SetValue(event.m_variable_name, event.m_value);
-}
-
-sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem()
-{
-  return m_workspace_item;
 }
 
 }  // namespace suppvmonitor
