@@ -68,6 +68,7 @@ void MonitorWidget::SetupConnections()
   auto on_setup_workspace = [this]()
   {
     m_workspace = std::make_unique<sup::sequencer::Workspace>();
+
     m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(m_model.get());
     m_workspace_synchronizer->OnSetupWorkspaceRequest();
   };

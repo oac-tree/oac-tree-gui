@@ -81,7 +81,7 @@ sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const
 
 sequencergui::WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
 {
-  return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
+  return m_model->GetWorkspaceItem();
 }
 
 //! Sets the callback to report GUI events.

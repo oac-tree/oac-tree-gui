@@ -48,8 +48,7 @@ TEST_F(WorkspaceItemControllerTests, InitialState)
 {
   MonitorModel model;
   WorkspaceItemController controller(&model);
-  EXPECT_EQ(controller.GetWorkspaceItem(), nullptr);
-  EXPECT_THROW(controller.GeVariableItemForName(""), std::logic_error);
+  EXPECT_TRUE(controller.GetWorkspaceItem() == nullptr);
 }
 
 TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)

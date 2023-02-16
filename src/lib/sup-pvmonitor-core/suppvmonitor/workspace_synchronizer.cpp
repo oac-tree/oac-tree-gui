@@ -104,7 +104,7 @@ void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
 
 sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem()
 {
-  return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(m_model);
+  return m_model->GetWorkspaceItem();
 }
 
 }  // namespace suppvmonitor

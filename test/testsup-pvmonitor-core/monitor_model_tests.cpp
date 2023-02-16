@@ -19,27 +19,18 @@
 
 #include "suppvmonitor/monitor_model.h"
 
-#include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/workspace_item.h>
+#include <gtest/gtest.h>
 
-#include <mvvm/model/model_utils.h>
+using namespace suppvmonitor;
 
-namespace suppvmonitor
+//! Tests for WorkspaceSyncronizer class.
+
+class MonitorModelTests : public ::testing::Test
 {
+};
 
-MonitorModel::MonitorModel()
+TEST_F(MonitorModelTests, InitialState)
 {
-  RegisterItem<sequencergui::ChannelAccessVariableItem>();
-  RegisterItem<sequencergui::LocalVariableItem>();
-  RegisterItem<sequencergui::PVClientVariableItem>();
-  RegisterItem<sequencergui::PVServerVariableItem>();
-  RegisterItem<sequencergui::UnknownVariableItem>();
-  RegisterItem<sequencergui::WorkspaceItem>();
+  MonitorModel model;
+  EXPECT_TRUE(model.GetWorkspaceItem() == nullptr);
 }
-
-sequencergui::WorkspaceItem *MonitorModel::GetWorkspaceItem() const
-{
-  return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(this);
-}
-
-}  // namespace suppvmonitor
