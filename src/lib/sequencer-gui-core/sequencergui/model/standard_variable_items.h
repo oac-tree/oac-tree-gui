@@ -27,6 +27,27 @@
 namespace sequencergui
 {
 
+//! Represent EPICS variable
+class ConnectableVariableItem : public VariableItem
+{
+public:
+  explicit ConnectableVariableItem(const std::string& variable_type);
+
+  std::string GetChannel() const;
+
+  void SetChannel(const std::string& value);
+
+  std::string GetJsonType() const;
+
+  void SetJsonType(const std::string& value);
+
+  std::string GetJsonValue() const;
+
+  void SetJsonValue(const std::string& value);
+
+  bool IsAvailable() const override;
+};
+
 //! Represent ChannelAccessVariable.
 class ChannelAccessVariableItem : public VariableItem
 {

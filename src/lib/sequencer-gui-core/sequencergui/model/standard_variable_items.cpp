@@ -33,6 +33,55 @@ static inline const std::string kJsonValue = "kJsonValue";
 static inline const std::string kIsAvailable = "kIsAvailable";
 
 // ----------------------------------------------------------------------------
+// ConnectableVariableItem
+// ----------------------------------------------------------------------------
+
+ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_type)
+    : VariableItem(variable_type)
+{
+  AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kJsonType, std::string())->SetDisplayName("json type");
+  AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
+  AddProperty(kIsAvailable, false)->SetDisplayName("connected");
+}
+
+std::string ConnectableVariableItem::GetChannel() const
+{
+  return Property<std::string>(kChannel);
+}
+
+void ConnectableVariableItem::SetChannel(const std::string &value)
+{
+  SetProperty(kChannel, value);
+}
+
+std::string ConnectableVariableItem::GetJsonType() const
+{
+  return Property<std::string>(kJsonType);
+}
+
+void ConnectableVariableItem::SetJsonType(const std::string &value)
+{
+  SetProperty(kJsonType, value);
+}
+
+std::string ConnectableVariableItem::GetJsonValue() const
+{
+  return Property<std::string>(kJsonValue);
+}
+
+// Temporary method to update value from SequencerObserver
+void ConnectableVariableItem::SetJsonValue(const std::string &value)
+{
+  SetProperty(kJsonValue, value);
+}
+
+bool ConnectableVariableItem::IsAvailable() const
+{
+  return Property<bool>(kIsAvailable);
+}
+
+// ----------------------------------------------------------------------------
 // ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
 
