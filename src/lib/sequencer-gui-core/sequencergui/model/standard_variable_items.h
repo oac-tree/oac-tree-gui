@@ -49,27 +49,13 @@ public:
 };
 
 //! Represent ChannelAccessVariable.
-class ChannelAccessVariableItem : public VariableItem
+class ChannelAccessVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "ChannelAccessVariable";
   ChannelAccessVariableItem();
 
   std::string GetDomainType() const override;
-
-  std::string GetChannel() const;
-
-  void SetChannel(const std::string& value);
-
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
-
-  bool IsAvailable() const override;
 
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
@@ -117,7 +103,7 @@ private:
 };
 
 //! Represent PVClientVariable.
-class PVClientVariableItem : public VariableItem
+class PVClientVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "PVClientVariable";
@@ -125,47 +111,19 @@ public:
 
   std::string GetDomainType() const override;
 
-  std::string GetChannel() const;
-
-  void SetChannel(const std::string& value);
-
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
-
-  bool IsAvailable() const override;
-
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent PVServerVariable.
-class PVServerVariableItem : public VariableItem
+class PVServerVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "PVServerVariable";
   PVServerVariableItem();
 
   std::string GetDomainType() const override;
-
-  std::string GetChannel() const;
-
-  void SetChannel(const std::string& value);
-
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
-
-  bool IsAvailable() const override;
 
 private:
   void InitFromDomainImpl(const variable_t* variable) override;

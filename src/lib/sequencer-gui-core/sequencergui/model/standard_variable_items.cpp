@@ -85,53 +85,11 @@ bool ConnectableVariableItem::IsAvailable() const
 // ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
 
-ChannelAccessVariableItem::ChannelAccessVariableItem() : VariableItem(Type)
-{
-  AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
-  AddProperty(kIsAvailable, false)->SetDisplayName("connected");
-}
+ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(Type) {}
 
 std::string ChannelAccessVariableItem::GetDomainType() const
 {
   return domainconstants::kChannelAccessVariableType;
-}
-
-std::string ChannelAccessVariableItem::GetChannel() const
-{
-  return Property<std::string>(kChannel);
-}
-
-void ChannelAccessVariableItem::SetChannel(const std::string &value)
-{
-  SetProperty(kChannel, value);
-}
-
-std::string ChannelAccessVariableItem::GetJsonType() const
-{
-  return Property<std::string>(kJsonType);
-}
-
-void ChannelAccessVariableItem::SetJsonType(const std::string &value)
-{
-  SetProperty(kJsonType, value);
-}
-
-std::string ChannelAccessVariableItem::GetJsonValue() const
-{
-  return Property<std::string>(kJsonValue);
-}
-
-// Temporary method to update value from SequencerObserver
-void ChannelAccessVariableItem::SetJsonValue(const std::string &value)
-{
-  SetProperty(kJsonValue, value);
-}
-
-bool ChannelAccessVariableItem::IsAvailable() const
-{
-  return Property<bool>(kIsAvailable);
 }
 
 void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
@@ -251,52 +209,11 @@ void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 // PVClientVariableItem
 // ----------------------------------------------------------------------------
 
-PVClientVariableItem::PVClientVariableItem() : VariableItem(Type)
-{
-  AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
-  AddProperty(kIsAvailable, false)->SetDisplayName("available");
-}
+PVClientVariableItem::PVClientVariableItem() : ConnectableVariableItem(Type) {}
 
 std::string PVClientVariableItem::GetDomainType() const
 {
   return domainconstants::kPVClientVariableType;
-}
-
-std::string PVClientVariableItem::GetChannel() const
-{
-  return Property<std::string>(kChannel);
-}
-
-void PVClientVariableItem::SetChannel(const std::string &value)
-{
-  SetProperty(kChannel, value);
-}
-
-std::string PVClientVariableItem::GetJsonType() const
-{
-  return Property<std::string>(kJsonType);
-}
-
-void PVClientVariableItem::SetJsonType(const std::string &value)
-{
-  SetProperty(kJsonType, value);
-}
-
-std::string PVClientVariableItem::GetJsonValue() const
-{
-  return Property<std::string>(kJsonValue);
-}
-
-void PVClientVariableItem::SetJsonValue(const std::string &value)
-{
-  SetProperty(kJsonValue, value);
-}
-
-bool PVClientVariableItem::IsAvailable() const
-{
-  return Property<bool>(kIsAvailable);
 }
 
 void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
@@ -324,52 +241,11 @@ void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 // PVServerVariableItem
 // ----------------------------------------------------------------------------
 
-PVServerVariableItem::PVServerVariableItem() : VariableItem(Type)
-{
-  AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
-  AddProperty(kIsAvailable, false)->SetDisplayName("connected");
-}
+PVServerVariableItem::PVServerVariableItem() : ConnectableVariableItem(Type) {}
 
 std::string PVServerVariableItem::GetDomainType() const
 {
   return domainconstants::kPVServerVariableType;
-}
-
-std::string PVServerVariableItem::GetChannel() const
-{
-  return Property<std::string>(kChannel);
-}
-
-void PVServerVariableItem::SetChannel(const std::string &value)
-{
-  SetProperty(kChannel, value);
-}
-
-std::string PVServerVariableItem::GetJsonType() const
-{
-  return Property<std::string>(kJsonType);
-}
-
-void PVServerVariableItem::SetJsonType(const std::string &value)
-{
-  SetProperty(kJsonType, value);
-}
-
-std::string PVServerVariableItem::GetJsonValue() const
-{
-  return Property<std::string>(kJsonValue);
-}
-
-void PVServerVariableItem::SetJsonValue(const std::string &value)
-{
-  SetProperty(kJsonValue, value);
-}
-
-bool PVServerVariableItem::IsAvailable() const
-{
-  return Property<bool>(kIsAvailable);
 }
 
 void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
