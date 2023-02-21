@@ -51,7 +51,7 @@ const std::string kLocalVariableType = "Local";
 const std::string kFileVariableType = "File";
 const std::string kChannelAccessVariableType = "ChannelAccessClient";
 const std::string kPVClientVariableType = "PvAccessClient";
-const std::string kPVServerVariableType = "PVServerVariable";
+const std::string kPVServerVariableType = "PvAccessServer";
 
 // attributes
 const std::string kChannelAttribute = "channel";

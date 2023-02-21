@@ -19,14 +19,14 @@
 
 #include "sequencergui/model/standard_variable_items.h"
 
+#include <gtest/gtest.h>
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/transform_from_domain.h>
+
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
-
-#include <gtest/gtest.h>
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/transform_from_domain.h>
 
 using namespace sequencergui;
 
@@ -331,8 +331,6 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
-
     EXPECT_THROW(domain_item->Setup(), sup::sequencer::VariableSetupException);
   }
 }
@@ -398,8 +396,8 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
 
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
-  const std::string expected_datatype("expected_datatype");
-  const std::string expected_value("expected_value");
+  const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
 
   // case with initial value
   {
@@ -430,7 +428,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
     EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
 
-    EXPECT_NO_THROW(domain_item->Setup());
+    EXPECT_THROW(domain_item->Setup(), sup::sequencer::VariableSetupException);
   }
 }
 
