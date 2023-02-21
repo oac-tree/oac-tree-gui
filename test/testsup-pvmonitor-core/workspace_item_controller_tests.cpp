@@ -125,7 +125,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
   EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
 
   // modifying value from the model
-  sequencergui::UpdateAnyValue(expected_event.m_value, *variable_item0);
+  sequencergui::UpdateAnyValue(expected_event.value, *variable_item0);
 }
 
 //! Setting up the workspace with two variables. Replacing variables one after another and checking
@@ -163,6 +163,6 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   }
 
   // modifying value from the model
-  sequencergui::UpdateAnyValue(expected_event0.m_value, *variable_item0);
-  sequencergui::UpdateAnyValue(expected_event1.m_value, *variable_item1);
+  sequencergui::UpdateAnyValue(expected_event0.value, *variable_item0);
+  sequencergui::UpdateAnyValue(expected_event1.value, *variable_item1);
 }

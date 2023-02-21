@@ -62,8 +62,8 @@ TEST_F(SequencerWorkspaceListenerTests, InitialState)
 
   EXPECT_EQ(listener.GetEventCount(), 0);
   auto event = listener.PopEvent();
-  EXPECT_TRUE(event.m_variable_name.empty());
-  EXPECT_TRUE(sup::dto::IsEmptyValue(event.m_value));
+  EXPECT_TRUE(event.variable_name.empty());
+  EXPECT_TRUE(sup::dto::IsEmptyValue(event.value));
 }
 
 //! Checking exceptions during start/stop listening.
@@ -128,20 +128,20 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 
   // getting back first value
   auto workspace_event = listener.PopEvent();
-  EXPECT_EQ(workspace_event.m_variable_name, std::string("abcdef"));
-  EXPECT_EQ(workspace_event.m_value, value1);
+  EXPECT_EQ(workspace_event.variable_name, std::string("abcdef"));
+  EXPECT_EQ(workspace_event.value, value1);
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // getting back second value
   workspace_event = listener.PopEvent();
-  EXPECT_EQ(workspace_event.m_variable_name, std::string("abcdef"));
-  EXPECT_EQ(workspace_event.m_value, value2);
+  EXPECT_EQ(workspace_event.variable_name, std::string("abcdef"));
+  EXPECT_EQ(workspace_event.value, value2);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // there are no events left
   auto empty_event = listener.PopEvent();
-  EXPECT_TRUE(empty_event.m_variable_name.empty());
-  EXPECT_TRUE(sup::dto::IsEmptyValue(empty_event.m_value));
+  EXPECT_TRUE(empty_event.variable_name.empty());
+  EXPECT_TRUE(sup::dto::IsEmptyValue(empty_event.value));
 }
 
 //! Single local variable is created in the workspace.

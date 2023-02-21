@@ -82,7 +82,7 @@ void WorkspaceSynchronizer::OnDomainVariableUpdated()
 
 void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
 {
-  GetWorkspace()->SetValue(event.m_variable_name, event.m_value);
+  GetWorkspace()->SetValue(event.variable_name, event.value);
 }
 
 }  // namespace suppvmonitor

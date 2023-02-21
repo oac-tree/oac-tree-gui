@@ -50,14 +50,14 @@ WorkspaceItemController::~WorkspaceItemController() = default;
 
 void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event)
 {
-  m_block_update_to_domain[event.m_variable_name] = true;
+  m_block_update_to_domain[event.variable_name] = true;
 
-  if (auto item = GeVariableItemForName(event.m_variable_name); item)
+  if (auto item = GeVariableItemForName(event.variable_name); item)
   {
-    sequencergui::UpdateAnyValue(event.m_value, *item);
+    sequencergui::UpdateAnyValue(event.value, *item);
   }
 
-  m_block_update_to_domain[event.m_variable_name] = false;
+  m_block_update_to_domain[event.variable_name] = false;
 }
 
 sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)

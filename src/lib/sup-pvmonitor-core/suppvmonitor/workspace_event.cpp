@@ -24,7 +24,7 @@ namespace suppvmonitor
 
 bool WorkspaceEvent::operator==(const WorkspaceEvent& other) const
 {
-  return m_variable_name == other.m_variable_name && m_value == other.m_value;
+  return variable_name == other.variable_name && value == other.value;
 }
 
 bool WorkspaceEvent::operator!=(const WorkspaceEvent& other) const

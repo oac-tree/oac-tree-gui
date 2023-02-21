@@ -27,8 +27,8 @@ namespace suppvmonitor
 
 struct WorkspaceEvent
 {
-  std::string m_variable_name;
-  sup::dto::AnyValue m_value;
+  std::string variable_name;
+  sup::dto::AnyValue value;
 
   bool operator==(const WorkspaceEvent& other) const;
   bool operator!=(const WorkspaceEvent& other) const;
