@@ -65,4 +65,11 @@ TEST_F(WorkspaceEventTests, EqualityOperators)
     EXPECT_FALSE(event1 == event2);
     EXPECT_TRUE(event1 != event2);
   }
+
+  {  // same names and values, different is_available
+    WorkspaceEvent event1{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, false};
+    WorkspaceEvent event2{"abc", sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, true};
+    EXPECT_FALSE(event1 == event2);
+    EXPECT_TRUE(event1 != event2);
+  }
 }
