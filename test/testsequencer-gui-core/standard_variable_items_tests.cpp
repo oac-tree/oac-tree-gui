@@ -181,6 +181,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   EXPECT_TRUE(item.GetJsonType().empty());
   EXPECT_TRUE(item.GetJsonValue().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  EXPECT_TRUE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));

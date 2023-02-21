@@ -98,4 +98,9 @@ sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
 {
   return GetItem<sup::gui::AnyValueItem>(kAnyValueTag);
 }
+
+bool VariableItem::IsAvailable() const
+{
+  return true;
+}
 }  // namespace sequencergui

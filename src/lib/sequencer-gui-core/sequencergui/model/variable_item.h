@@ -51,6 +51,8 @@ public:
 
   sup::gui::AnyValueItem* GetAnyValueItem() const;
 
+  virtual bool IsAvailable() const;
+
 private:
   virtual void InitFromDomainImpl(const variable_t* variable) = 0;
   virtual void SetupDomainImpl(variable_t* variable) const = 0;
