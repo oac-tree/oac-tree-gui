@@ -42,7 +42,7 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kJsonType, std::string())->SetDisplayName("json type");
   AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
-  AddProperty(kIsAvailable, false)->SetDisplayName("connected");
+  AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
 }
 
 std::string ConnectableVariableItem::GetChannel() const
@@ -79,6 +79,11 @@ void ConnectableVariableItem::SetJsonValue(const std::string &value)
 bool ConnectableVariableItem::IsAvailable() const
 {
   return Property<bool>(kIsAvailable);
+}
+
+void ConnectableVariableItem::SetIsAvailable(bool value)
+{
+  SetProperty(kIsAvailable, value);
 }
 
 // ----------------------------------------------------------------------------

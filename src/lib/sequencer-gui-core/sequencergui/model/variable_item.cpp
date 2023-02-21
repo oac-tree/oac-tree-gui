@@ -19,6 +19,7 @@
 
 #include "sequencergui/model/variable_item.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -103,4 +104,10 @@ bool VariableItem::IsAvailable() const
 {
   return true;
 }
+
+void VariableItem::SetIsAvailable(bool value)
+{
+  throw LogicErrorException("Not implemented");
+}
+
 }  // namespace sequencergui

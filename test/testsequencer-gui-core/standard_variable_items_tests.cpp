@@ -20,6 +20,7 @@
 #include "sequencergui/model/standard_variable_items.h"
 
 #include <gtest/gtest.h>
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/transform_from_domain.h>
 
@@ -56,6 +57,9 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 
   item.SetJsonType("jkl");
   EXPECT_EQ(item.GetJsonType(), std::string("jkl"));
+
+  item.SetIsAvailable(true);
+  EXPECT_TRUE(item.IsAvailable());
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
@@ -149,11 +153,11 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(domainconstants::kFileAttribute, expected_file_name);
 
-  sequencergui::FileVariableItem local_variable_item;
-  local_variable_item.InitFromDomain(local_variable.get());
+  sequencergui::FileVariableItem item;
+  item.InitFromDomain(local_variable.get());
 
-  EXPECT_EQ(local_variable_item.GetName(), expected_name);
-  EXPECT_EQ(local_variable_item.GetFileName(), expected_file_name);
+  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetFileName(), expected_file_name);
 }
 
 TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
@@ -197,6 +201,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
 
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueScalarItem>({});
   EXPECT_EQ(item.GetAnyValueItem(), anyvalue_item);
+
+  EXPECT_THROW(item.SetIsAvailable(true), LogicErrorException);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
@@ -210,12 +216,12 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   local_variable->AddAttribute("type", expected_type);
   local_variable->AddAttribute("value", expected_value);
 
-  sequencergui::LocalVariableItem local_variable_item;
-  local_variable_item.InitFromDomain(local_variable.get());
+  sequencergui::LocalVariableItem item;
+  item.InitFromDomain(local_variable.get());
 
-  EXPECT_EQ(local_variable_item.GetName(), expected_name);
-  EXPECT_EQ(local_variable_item.GetJsonType(), expected_type);
-  EXPECT_EQ(local_variable_item.GetJsonValue(), expected_value);
+  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetJsonType(), expected_type);
+  EXPECT_EQ(item.GetJsonValue(), expected_value);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
@@ -294,12 +300,12 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  PVClientVariableItem ca_variable_item;
-  ca_variable_item.InitFromDomain(pv_variable.get());
+  PVClientVariableItem item;
+  item.InitFromDomain(pv_variable.get());
 
-  EXPECT_EQ(ca_variable_item.GetName(), expected_name);
-  EXPECT_EQ(ca_variable_item.GetChannel(), expected_channel);
-  EXPECT_EQ(ca_variable_item.GetJsonType(), expected_datatype);
+  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetChannel(), expected_channel);
+  EXPECT_EQ(item.GetJsonType(), expected_datatype);
 }
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
