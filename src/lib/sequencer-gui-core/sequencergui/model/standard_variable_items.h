@@ -48,6 +48,8 @@ public:
 
   void SetJsonValue(const std::string& value);
 
+  bool IsAvailable() const override;
+
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
@@ -114,6 +116,8 @@ public:
 
   void SetJsonValue(const std::string& value);
 
+  bool IsAvailable() const override;
+
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
@@ -139,6 +143,8 @@ public:
   std::string GetJsonValue() const;
 
   void SetJsonValue(const std::string& value);
+
+  bool IsAvailable() const override;
 
 private:
   void InitFromDomainImpl(const variable_t* variable) override;

@@ -46,6 +46,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_TRUE(item.GetJsonType().empty());
+  EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -73,12 +74,13 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  ChannelAccessVariableItem ca_variable_item;
-  ca_variable_item.InitFromDomain(ca_variable.get());
+  ChannelAccessVariableItem item;
+  item.InitFromDomain(ca_variable.get());
 
-  EXPECT_EQ(ca_variable_item.GetName(), expected_name);
-  EXPECT_EQ(ca_variable_item.GetChannel(), expected_channel);
-  EXPECT_EQ(ca_variable_item.GetJsonType(), expected_datatype);
+  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetChannel(), expected_channel);
+  EXPECT_EQ(item.GetJsonType(), expected_datatype);
+  EXPECT_FALSE(item.IsAvailable());
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
@@ -129,6 +131,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItem)
   FileVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetFileName().empty());
+  EXPECT_TRUE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -260,6 +263,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_TRUE(item.GetJsonType().empty());
   EXPECT_TRUE(item.GetJsonValue().empty());
+  EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -346,6 +350,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_TRUE(item.GetJsonType().empty());
   EXPECT_TRUE(item.GetJsonValue().empty());
+  EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -378,13 +383,14 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
   pvxs_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
-  PVServerVariableItem pvxs_variable_item;
-  pvxs_variable_item.InitFromDomain(pvxs_variable.get());
+  PVServerVariableItem item;
+  item.InitFromDomain(pvxs_variable.get());
 
-  EXPECT_EQ(pvxs_variable_item.GetName(), expected_name);
-  EXPECT_EQ(pvxs_variable_item.GetChannel(), expected_channel);
-  EXPECT_EQ(pvxs_variable_item.GetJsonType(), expected_datatype);
-  EXPECT_EQ(pvxs_variable_item.GetJsonValue(), expected_value);
+  EXPECT_EQ(item.GetName(), expected_name);
+  EXPECT_EQ(item.GetChannel(), expected_channel);
+  EXPECT_EQ(item.GetJsonType(), expected_datatype);
+  EXPECT_EQ(item.GetJsonValue(), expected_value);
+  EXPECT_FALSE(item.IsAvailable());
 }
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)

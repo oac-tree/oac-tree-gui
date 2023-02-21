@@ -27,9 +27,10 @@
 
 namespace sequencergui
 {
-static inline const std::string kJsonValue = "kJsonValue";
-static inline const std::string kJsonType = "kJsonType";
 static inline const std::string kChannel = "kChannel";
+static inline const std::string kJsonType = "kJsonType";
+static inline const std::string kJsonValue = "kJsonValue";
+static inline const std::string kIsAvailable = "kIsAvailable";
 
 // ----------------------------------------------------------------------------
 // ChannelAccessVariableItem
@@ -40,6 +41,7 @@ ChannelAccessVariableItem::ChannelAccessVariableItem() : VariableItem(Type)
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kJsonType, std::string())->SetDisplayName("json type");
   AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
+  AddProperty(kIsAvailable, false)->SetDisplayName("connected");
 }
 
 std::string ChannelAccessVariableItem::GetDomainType() const
@@ -76,6 +78,11 @@ std::string ChannelAccessVariableItem::GetJsonValue() const
 void ChannelAccessVariableItem::SetJsonValue(const std::string &value)
 {
   SetProperty(kJsonValue, value);
+}
+
+bool ChannelAccessVariableItem::IsAvailable() const
+{
+  return Property<bool>(kIsAvailable);
 }
 
 void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
@@ -200,6 +207,7 @@ PVClientVariableItem::PVClientVariableItem() : VariableItem(Type)
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kJsonType, std::string())->SetDisplayName("json type");
   AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
+  AddProperty(kIsAvailable, false)->SetDisplayName("available");
 }
 
 std::string PVClientVariableItem::GetDomainType() const
@@ -237,6 +245,11 @@ void PVClientVariableItem::SetJsonValue(const std::string &value)
   SetProperty(kJsonValue, value);
 }
 
+bool PVClientVariableItem::IsAvailable() const
+{
+  return Property<bool>(kIsAvailable);
+}
+
 void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(domainconstants::kTypeAttribute))
@@ -267,6 +280,7 @@ PVServerVariableItem::PVServerVariableItem() : VariableItem(Type)
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kJsonType, std::string())->SetDisplayName("json type");
   AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
+  AddProperty(kIsAvailable, false)->SetDisplayName("connected");
 }
 
 std::string PVServerVariableItem::GetDomainType() const
@@ -302,6 +316,11 @@ std::string PVServerVariableItem::GetJsonValue() const
 void PVServerVariableItem::SetJsonValue(const std::string &value)
 {
   SetProperty(kJsonValue, value);
+}
+
+bool PVServerVariableItem::IsAvailable() const
+{
+  return Property<bool>(kIsAvailable);
 }
 
 void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
