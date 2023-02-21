@@ -36,13 +36,13 @@ public:
 
   std::string GetDomainType() const override;
 
-  std::string GetDataType() const;
-
-  void SetDataType(const std::string& value);
-
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
+
+  std::string GetJsonType() const;
+
+  void SetJsonType(const std::string& value);
 
   std::string GetJsonValue() const;
 
@@ -102,17 +102,17 @@ public:
 
   std::string GetDomainType() const override;
 
-  std::string GetDataType() const;
-
-  void SetDataType(const std::string& value);
-
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
 
-  void SetJsonValue(const std::string& value);
+  std::string GetJsonType() const;
+
+  void SetJsonType(const std::string& value);
 
   std::string GetJsonValue() const;
+
+  void SetJsonValue(const std::string& value);
 
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
@@ -128,13 +128,13 @@ public:
 
   std::string GetDomainType() const override;
 
-  std::string GetDataType() const;
-
-  void SetDataType(const std::string& value);
-
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
+
+  std::string GetJsonType() const;
+
+  void SetJsonType(const std::string& value);
 
   std::string GetJsonValue() const;
 

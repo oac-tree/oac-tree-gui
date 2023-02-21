@@ -61,7 +61,7 @@ void MonitorWidget::PopulateModel()
       workspace->InsertItem<sequencergui::ChannelAccessVariableItem>(mvvm::TagIndex::Append());
   channel_access_variable->SetName("var1");
   channel_access_variable->SetChannel("IS_RUNNING");
-  channel_access_variable->SetDataType(R"RAW({"type":"uint32"})RAW");
+  channel_access_variable->SetJsonType(R"RAW({"type":"uint32"})RAW");
 }
 
 void MonitorWidget::SetupConnections()
