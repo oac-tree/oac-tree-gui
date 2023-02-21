@@ -97,7 +97,6 @@ void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kInstanceAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -257,7 +256,6 @@ void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kInstanceAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -318,9 +316,9 @@ void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
-  if (variable->HasAttribute(domainconstants::kInstanceAttribute))
+  if (variable->HasAttribute(domainconstants::kValueAttribute))
   {
-    SetJsonValue(variable->GetAttribute(domainconstants::kInstanceAttribute));
+    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
   }
   else
   {
@@ -332,7 +330,7 @@ void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kInstanceAttribute, GetJsonValue());
+  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kValueAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
