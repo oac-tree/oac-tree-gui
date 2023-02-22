@@ -38,16 +38,16 @@ class VariableItemTransformUtilsTests : public ::testing::Test
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(VariableItemTransformUtilsTests, UpdateAnyValue)
+TEST_F(VariableItemTransformUtilsTests, SetAnyValue)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
-  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   // After update it receives AnyValueItem representing anyvalue
-  UpdateAnyValue(anyvalue, item);
+  SetAnyValue(anyvalue, item);
   EXPECT_NE(item.GetAnyValueItem(), nullptr);
   auto prev_anyvalue_item = item.GetAnyValueItem();
 
@@ -56,7 +56,7 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValue)
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
   // FIXME Provide update if AnyValueItem exists and layout of it corresponds to AnyValue.
-  UpdateAnyValue(anyvalue, item);
+  SetAnyValue(anyvalue, item);
   EXPECT_NE(item.GetAnyValueItem(), prev_anyvalue_item);
 }
 
@@ -71,7 +71,8 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
 
   sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  mvvm::TagIndex tag_index{"kAnyValueTag", 0};
+  const mvvm::TagIndex tag_index{"kAnyValueTag", 0};
+
   {
     ::testing::InSequence seq;
     auto expected_event1 = mvvm::event_variant_t(mvvm::AboutToInsertItemEvent{item, tag_index});
@@ -80,5 +81,5 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
     EXPECT_CALL(listener, OnEvent(expected_event2)).Times(1);
   }
 
-  UpdateAnyValue(anyvalue, *item);
+  SetAnyValue(anyvalue, *item);
 }

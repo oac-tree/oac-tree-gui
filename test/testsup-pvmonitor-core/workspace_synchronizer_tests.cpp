@@ -132,14 +132,14 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
       mvvm::TagIndex::Append());
   testutils::SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
-  sequencergui::UpdateAnyValue(value0, *variable_item0);
+  sequencergui::SetAnyValue(value0, *variable_item0);
 
   auto synchronizer = CreateSynchronizer();
   synchronizer->OnSetupWorkspaceRequest();
 
   // changing the value via the model
   const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  sequencergui::UpdateAnyValue(value1, *variable_item0);
+  sequencergui::SetAnyValue(value1, *variable_item0);
 
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);

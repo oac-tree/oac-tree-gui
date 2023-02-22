@@ -113,7 +113,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
   auto variable_item0 =
       m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("abc", value, *variable_item0);
-  sequencergui::UpdateAnyValue(value, *variable_item0);
+  sequencergui::SetAnyValue(value, *variable_item0);
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -125,7 +125,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
   EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
 
   // modifying value from the model
-  sequencergui::UpdateAnyValue(expected_event.value, *variable_item0);
+  sequencergui::SetAnyValue(expected_event.value, *variable_item0);
 }
 
 //! Setting up the workspace with two variables. Replacing variables one after another and checking
@@ -142,12 +142,12 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   auto variable_item0 =
       m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("var0", value0, *variable_item0);
-  sequencergui::UpdateAnyValue(value0, *variable_item0);
+  sequencergui::SetAnyValue(value0, *variable_item0);
 
   auto variable_item1 =
       m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("var1", value1, *variable_item1);
-  sequencergui::UpdateAnyValue(value1, *variable_item1);
+  sequencergui::SetAnyValue(value1, *variable_item1);
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -163,6 +163,6 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   }
 
   // modifying value from the model
-  sequencergui::UpdateAnyValue(expected_event0.value, *variable_item0);
-  sequencergui::UpdateAnyValue(expected_event1.value, *variable_item1);
+  sequencergui::SetAnyValue(expected_event0.value, *variable_item0);
+  sequencergui::SetAnyValue(expected_event1.value, *variable_item1);
 }

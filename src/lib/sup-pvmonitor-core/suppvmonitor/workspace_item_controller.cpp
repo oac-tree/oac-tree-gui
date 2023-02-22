@@ -54,7 +54,7 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
 
   if (auto item = GeVariableItemForName(event.variable_name); item)
   {
-    sequencergui::UpdateAnyValue(event.value, *item);
+    sequencergui::SetAnyValue(event.value, *item);
   }
 
   m_block_update_to_domain[event.variable_name] = false;

@@ -41,8 +41,9 @@ class VariableItem;
 
 std::string GetValuesToJSONString(const variable_t* value);
 
-//! Updates AnyValueItem on board of variable item using given `anyvalue`.
-void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
+//! Sets AnyValueItem on board of variable item using given `anyvalue`.
+//! If AnyValueItem already exist, it will be replaced.
+void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 }  // namespace sequencergui
 

@@ -39,7 +39,7 @@ std::string GetValuesToJSONString(const variable_t *value)
   return sup::gui::GetValuesToJSONString(&anyvalue);
 }
 
-void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
+void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
   // we will be acting through the model, if it exists, to allow signaling
   auto model = variable_item.GetModel();
