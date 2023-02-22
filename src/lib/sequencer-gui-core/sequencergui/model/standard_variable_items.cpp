@@ -88,14 +88,14 @@ void ConnectableVariableItem::SetIsAvailable(bool value)
 
 void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-  }
-
   if (variable->HasAttribute(domainconstants::kChannelAttribute))
   {
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
+  }
+
+  if (variable->HasAttribute(domainconstants::kTypeAttribute))
+  {
+    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
   }
 
   if (variable->HasAttribute(domainconstants::kValueAttribute))

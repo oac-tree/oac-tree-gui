@@ -25,6 +25,7 @@
 #include <suppvmonitor/monitor_widget_toolbar.h>
 #include <suppvmonitor/workspace_monitor_helper.h>
 #include <suppvmonitor/workspace_synchronizer.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
 
@@ -62,6 +63,7 @@ void MonitorWidget::PopulateModel()
   channel_access_variable->SetName("var1");
   channel_access_variable->SetChannel("IS_RUNNING");
   channel_access_variable->SetJsonType(R"RAW({"type":"uint32"})RAW");
+  SetAnyValueFromJsonType(R"RAW({"type":"uint32"})RAW", *channel_access_variable);
 }
 
 void MonitorWidget::SetupConnections()

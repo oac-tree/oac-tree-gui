@@ -32,12 +32,12 @@
 namespace sequencergui
 {
 
-std::string GetValuesToJSONString(const variable_t *value)
-{
-  sup::dto::AnyValue anyvalue;
-  value->GetValue(anyvalue);
-  return sup::gui::GetValuesToJSONString(&anyvalue);
-}
+//std::string GetValuesToJSONString(const variable_t *value)
+//{
+//  sup::dto::AnyValue anyvalue;
+//  value->GetValue(anyvalue);
+//  return sup::gui::GetValuesToJSONString(&anyvalue);
+//}
 
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
@@ -67,6 +67,13 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   {
     variable_item.InsertItem(std::move(anyvalue_item), {});
   }
+}
+
+void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variable_item)
+{
+  auto anytype = ::sup::gui::AnyTypeFromJSONString(json_type);
+  const sup::dto::AnyValue anyvalue(anytype);
+  SetAnyValue(anyvalue, variable_item);
 }
 
 }  // namespace sequencergui

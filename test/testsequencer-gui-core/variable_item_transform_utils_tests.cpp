@@ -69,12 +69,12 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
 
   testutils::MockModelListener listener(&model);
 
-  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   const mvvm::TagIndex tag_index{"kAnyValueTag", 0};
 
   {
-    ::testing::InSequence seq;
+    const ::testing::InSequence seq;
     auto expected_event1 = mvvm::event_variant_t(mvvm::AboutToInsertItemEvent{item, tag_index});
     auto expected_event2 = mvvm::event_variant_t(mvvm::ItemInsertedEvent{item, tag_index});
     EXPECT_CALL(listener, OnEvent(expected_event1)).Times(1);
