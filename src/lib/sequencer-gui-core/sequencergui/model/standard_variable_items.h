@@ -48,6 +48,9 @@ public:
   bool IsAvailable() const override;
 
   void SetIsAvailable(bool value) override;
+
+private:
+  void InitFromDomainImpl(const variable_t* variable) override;
 };
 
 //! Represent ChannelAccessVariable.
@@ -60,7 +63,6 @@ public:
   std::string GetDomainType() const override;
 
 private:
-  void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
@@ -114,7 +116,6 @@ public:
   std::string GetDomainType() const override;
 
 private:
-  void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
@@ -128,7 +129,6 @@ public:
   std::string GetDomainType() const override;
 
 private:
-  void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
 };
 

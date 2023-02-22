@@ -86,18 +86,7 @@ void ConnectableVariableItem::SetIsAvailable(bool value)
   SetProperty(kIsAvailable, value);
 }
 
-// ----------------------------------------------------------------------------
-// ChannelAccessVariableItem
-// ----------------------------------------------------------------------------
-
-ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(Type) {}
-
-std::string ChannelAccessVariableItem::GetDomainType() const
-{
-  return domainconstants::kChannelAccessVariableType;
-}
-
-void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
+void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(domainconstants::kTypeAttribute))
   {
@@ -109,7 +98,21 @@ void ChannelAccessVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
-  SetJsonValue(sequencergui::GetValuesToJSONString(variable));
+  if (variable->HasAttribute(domainconstants::kValueAttribute))
+  {
+    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
+  }
+}
+
+// ----------------------------------------------------------------------------
+// ChannelAccessVariableItem
+// ----------------------------------------------------------------------------
+
+ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(Type) {}
+
+std::string ChannelAccessVariableItem::GetDomainType() const
+{
+  return domainconstants::kChannelAccessVariableType;
 }
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -221,21 +224,6 @@ std::string PVClientVariableItem::GetDomainType() const
   return domainconstants::kPVClientVariableType;
 }
 
-void PVClientVariableItem::InitFromDomainImpl(const variable_t *variable)
-{
-  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-  }
-
-  if (variable->HasAttribute(domainconstants::kChannelAttribute))
-  {
-    SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
-  }
-
-  SetJsonValue(sequencergui::GetValuesToJSONString(variable));
-}
-
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
@@ -251,28 +239,6 @@ PVServerVariableItem::PVServerVariableItem() : ConnectableVariableItem(Type) {}
 std::string PVServerVariableItem::GetDomainType() const
 {
   return domainconstants::kPVServerVariableType;
-}
-
-void PVServerVariableItem::InitFromDomainImpl(const variable_t *variable)
-{
-  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-  }
-
-  if (variable->HasAttribute(domainconstants::kChannelAttribute))
-  {
-    SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
-  }
-
-  if (variable->HasAttribute(domainconstants::kValueAttribute))
-  {
-    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
-  }
-  else
-  {
-    SetJsonValue(sequencergui::GetValuesToJSONString(variable));
-  }
 }
 
 void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const

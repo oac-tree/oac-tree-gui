@@ -58,7 +58,7 @@ class AnyValueScalarItem : public AnyValueItem
 public:
   static inline const std::string Type = "AnyValueScalar";
 
-  explicit AnyValueScalarItem();
+  AnyValueScalarItem();
 
   void SetAnyTypeName(const std::string& type_name) override;
 
@@ -72,7 +72,7 @@ class AnyValueStructItem : public AnyValueItem
 public:
   static inline const std::string Type = "AnyValueStruct";
 
-  explicit AnyValueStructItem();
+  AnyValueStructItem();
 
   bool IsStruct() const override;
 
@@ -87,7 +87,7 @@ class AnyValueArrayItem : public AnyValueItem
 public:
   static inline const std::string Type = "AnyValueArray";
 
-  explicit AnyValueArrayItem();
+  AnyValueArrayItem();
 
   bool IsArray() const override;
 };
