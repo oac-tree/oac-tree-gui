@@ -1,3 +1,5 @@
+# Collection of files related to the presentation model (GUI items representing sequencer domain)
+
 target_sources(${library_name} PRIVATE
   aggregate_examples.cpp
   aggregate_examples.h
@@ -5,12 +7,6 @@ target_sources(${library_name} PRIVATE
   aggregate_factory.h
   application_models.cpp
   application_models.h
-  domain_procedure_builder.cpp
-  domain_procedure_builder.h
-  domain_workspace_builder.cpp
-  domain_workspace_builder.h
-  gui_object_builder.cpp
-  gui_object_builder.h
   instruction_container_item.cpp
   instruction_container_item.h
   instruction_item.cpp
@@ -33,8 +29,6 @@ target_sources(${library_name} PRIVATE
   standard_instruction_items.h
   standard_variable_items.cpp
   standard_variable_items.h
-  transform_from_domain.cpp
-  transform_from_domain.h
   variable_item.cpp
   variable_item.h
   workspace_item.cpp
@@ -42,4 +36,3 @@ target_sources(${library_name} PRIVATE
   xml_utils.cpp
   xml_utils.h
 )
-

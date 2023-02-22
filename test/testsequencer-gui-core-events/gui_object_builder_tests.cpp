@@ -17,21 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/gui_object_builder.h"
+#include "sequencergui/transform/gui_object_builder.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/transform_from_domain.h>
 #include <sequencergui/model/workspace_item.h>
-#include <testutils/standard_procedures.h>
+#include <sequencergui/transform/transform_from_domain.h>
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
+
+#include <gtest/gtest.h>
+#include <testutils/standard_procedures.h>
 
 using namespace sequencergui;
 

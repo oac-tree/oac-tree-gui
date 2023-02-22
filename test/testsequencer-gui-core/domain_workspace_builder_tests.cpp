@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/domain_workspace_builder.h"
+#include "sequencergui/transform/domain_workspace_builder.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>

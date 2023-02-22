@@ -19,14 +19,15 @@
 
 #include "sequencergui/model/standard_instruction_items.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/transform_from_domain.h>
+#include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/core/exceptions.h>
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 

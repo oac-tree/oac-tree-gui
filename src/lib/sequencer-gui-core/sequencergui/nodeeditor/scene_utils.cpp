@@ -25,7 +25,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/sequencer_utils.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/transform_from_domain.h>
+#include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/core/exceptions.h>

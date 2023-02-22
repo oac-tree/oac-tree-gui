@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/transform_from_domain.h"
+#include "sequencergui/transform/transform_from_domain.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>

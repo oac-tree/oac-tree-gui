@@ -19,7 +19,7 @@
 
 #include "workspace_monitor_helper.h"
 
-#include <sequencergui/model/domain_workspace_builder.h>
+#include <sequencergui/transform/domain_workspace_builder.h>
 
 #include <sup/sequencer/workspace.h>
 
