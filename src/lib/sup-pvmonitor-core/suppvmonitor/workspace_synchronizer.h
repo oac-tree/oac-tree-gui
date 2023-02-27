@@ -55,7 +55,7 @@ public:
                         sup::sequencer::Workspace* domain_workspace, QObject* parent = nullptr);
   ~WorkspaceSynchronizer() override;
 
-  void OnSetupWorkspaceRequest();
+  void Start();
 
   sup::sequencer::Workspace* GetWorkspace() const;
 

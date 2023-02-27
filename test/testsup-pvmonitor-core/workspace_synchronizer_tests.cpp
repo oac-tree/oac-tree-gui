@@ -54,6 +54,7 @@ public:
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
   {
     PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
+    m_workspace.Setup(); // current convention: has to be setup before starting listening
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 
@@ -70,7 +71,7 @@ TEST_F(WorkspaceSynchronizerTests, InitialState)
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Setting up the workspace and checking that proper domain variable has been created.
 
-TEST_F(WorkspaceSynchronizerTests, OnSetupWorkspaceRequest)
+TEST_F(WorkspaceSynchronizerTests, Start)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -78,7 +79,7 @@ TEST_F(WorkspaceSynchronizerTests, OnSetupWorkspaceRequest)
                                                                mvvm::TagIndex::Append());
 
   auto synchronizer = CreateSynchronizer();
-  synchronizer->OnSetupWorkspaceRequest();
+  synchronizer->Start();
 
   ASSERT_TRUE(synchronizer->GetWorkspace() != nullptr);
   EXPECT_EQ(synchronizer->GetWorkspace()->GetVariables().size(), 1);
@@ -107,7 +108,7 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   auto synchronizer = CreateSynchronizer();
-  synchronizer->OnSetupWorkspaceRequest();
+  synchronizer->Start();
 
   // FIXME current implementation doesn't update AnyValueItem on first connection
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
@@ -135,7 +136,7 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
   sequencergui::SetAnyValue(value0, *variable_item0);
 
   auto synchronizer = CreateSynchronizer();
-  synchronizer->OnSetupWorkspaceRequest();
+  synchronizer->Start();
 
   // changing the value via the model
   const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});

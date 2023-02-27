@@ -57,11 +57,16 @@ WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 //! Creates domain workspace corresponding to WorkspaceItem and start listening.
 
-void WorkspaceSynchronizer::OnSetupWorkspaceRequest()
+void WorkspaceSynchronizer::Start()
 {
+  // FIXME for the moment we assume that the Workspace has been already setup
+  // It is not clear how to handle cases a) we get workspace that needs setup
+  // b) the workspace was already setup
+
   m_workspace_listener->StartListening(GetWorkspace());
   // FIXME implement setting of domain initial values here, block OnDomainVariableUpdated
   // notifications
+
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
