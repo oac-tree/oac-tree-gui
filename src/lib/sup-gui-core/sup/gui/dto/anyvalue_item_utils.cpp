@@ -19,17 +19,35 @@
 
 #include "anyvalue_item_utils.h"
 
+#include <sup/gui/dto/anyvalue_item.h>
+
 #include <stack>
+#include <stdexcept>
 
 namespace sup::gui
 {
 
-void UpdateAnyValueItemData(const AnyValueItem &target, AnyValueItem &source)
+void UpdateAnyValueItemScalarData(const AnyValueItem &source, AnyValueItem &target)
+{
+  if (!source.IsScalar() || ! target.IsScalar())
+  {
+    throw std::logic_error("Item(s) are not scalars");
+  }
+
+  if (source.GetAnyTypeName() != target.GetAnyTypeName())
+  {
+    throw std::logic_error("Item tpes do not match");
+  }
+
+  target.SetData(source.Data());
+}
+
+void UpdateAnyValueItemData(const AnyValueItem &source, AnyValueItem &target)
 {
   struct Node
   {
-    const AnyValueItem* target{nullptr};
-    const AnyValueItem* source{nullptr};
+    const AnyValueItem *target{nullptr};
+    const AnyValueItem *source{nullptr};
   };
 
   std::stack<Node> nodes;
@@ -37,12 +55,8 @@ void UpdateAnyValueItemData(const AnyValueItem &target, AnyValueItem &source)
 
   while (!nodes.empty())
   {
-    auto& node = nodes.top();
-
+    auto &node = nodes.top();
   }
-
-
-
 }
 
 }  // namespace sup::gui

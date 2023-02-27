@@ -21,7 +21,10 @@
 
 #include <gtest/gtest.h>
 
+#include <sup/dto/anytype.h>
 #include <sup/gui/dto/anyvalue_item.h>
+
+#include <stdexcept>
 
 using namespace sup::gui;
 
@@ -30,8 +33,36 @@ class AnyValueItemUtilsTests : public ::testing::Test
 public:
 };
 
-TEST_F(AnyValueItemUtilsTests, InitialState)
+TEST_F(AnyValueItemUtilsTests, UpdateAnyValueItemScalarData)
 {
+  {  // empty items
+    AnyValueEmptyItem source;
+    AnyValueEmptyItem target;
+    EXPECT_THROW(UpdateAnyValueItemScalarData(source, target), std::logic_error);
+  }
 
-  EXPECT_EQ(1, 1);
+  {  // two scalars, same type
+    AnyValueScalarItem source;
+    source.SetAnyTypeName(sup::dto::kInt32TypeName);
+    source.SetData(42);
+
+    AnyValueScalarItem target;
+    target.SetAnyTypeName(sup::dto::kInt8TypeName);
+
+    EXPECT_THROW(UpdateAnyValueItemScalarData(source, target), std::logic_error);
+  }
+
+  {  // two scalars, same type
+    AnyValueScalarItem source;
+    source.SetAnyTypeName(sup::dto::kInt32TypeName);
+    source.SetData(42);
+
+    AnyValueScalarItem target;
+    target.SetAnyTypeName(sup::dto::kInt32TypeName);
+    target.SetData(0);
+    EXPECT_EQ(target.Data<int>(), 0);
+
+    EXPECT_NO_THROW(UpdateAnyValueItemScalarData(source, target));
+    EXPECT_EQ(target.Data<int>(), 42);
+  }
 }

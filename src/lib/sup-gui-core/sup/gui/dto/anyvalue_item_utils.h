@@ -27,9 +27,13 @@ namespace sup::gui
 
 class AnyValueItem;
 
-//! Update the data stored in leaves of \it source from the data stored in leaves of \it target.
+//! Update the data stored in \it target from the data of \it source.
+//! It is assumed that both items represent scalars, and the scalar types are the same.
+void UpdateAnyValueItemScalarData(const AnyValueItem& source, AnyValueItem& target);
+
+//! Update the data stored in leaves of \it target from the data stored in leaves of \it source.
 //! The layout of two items should be the same.
-void UpdateAnyValueItemData(const AnyValueItem& target, AnyValueItem& source);
+void UpdateAnyValueItemData(const AnyValueItem& source, AnyValueItem& target);
 
 }  // namespace sup::gui
 
