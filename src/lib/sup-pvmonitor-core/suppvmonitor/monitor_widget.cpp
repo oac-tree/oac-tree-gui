@@ -72,11 +72,13 @@ void MonitorWidget::SetupConnections()
   {
     m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
-    SetupDomainWorkspace(*m_model->GetWorkspaceItem(), *m_workspace);
+    PopulateDomainWorkspace(*m_model->GetWorkspaceItem(), *m_workspace);
 
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->OnSetupWorkspaceRequest();
+
+    m_workspace->Setup();
   };
   connect(m_tool_bar, &MonitorWidgetToolBar::SetupWorkspaceRequest, this, on_setup_workspace);
 }

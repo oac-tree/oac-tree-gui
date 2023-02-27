@@ -26,11 +26,10 @@
 namespace suppvmonitor
 {
 
-void SetupDomainWorkspace(const sequencergui::WorkspaceItem &item, workspace_t &workspace)
+void PopulateDomainWorkspace(const sequencergui::WorkspaceItem &item, workspace_t &workspace)
 {
   sequencergui::DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&item, &workspace);
-  workspace.Setup();
 }
 
 }  // namespace suppvmonitor

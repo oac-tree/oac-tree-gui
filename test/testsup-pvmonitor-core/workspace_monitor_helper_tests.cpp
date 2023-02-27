@@ -38,16 +38,16 @@ class WorkspaceMonitorHelperTests : public ::testing::Test
 {
 };
 
-TEST_F(WorkspaceMonitorHelperTests, SetupDomainWorkspaceEmptyWorkspaces)
+TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceEmptyWorkspaces)
 {
   const sequencergui::WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
 
-  EXPECT_NO_THROW(SetupDomainWorkspace(workspace_item, workspace));
+  EXPECT_NO_THROW(PopulateDomainWorkspace(workspace_item, workspace));
   EXPECT_TRUE(workspace.VariableNames().empty());
 }
 
-TEST_F(WorkspaceMonitorHelperTests, SetupDomainWorkspaceAttemptToPopulateNonEmptyWorkspace)
+TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonEmptyWorkspace)
 {
   const sequencergui::WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
@@ -55,10 +55,10 @@ TEST_F(WorkspaceMonitorHelperTests, SetupDomainWorkspaceAttemptToPopulateNonEmpt
                                    sequencergui::domainconstants::kLocalVariableType)
                                    .release());
 
-  EXPECT_THROW(SetupDomainWorkspace(workspace_item, workspace), sequencergui::LogicErrorException);
+  EXPECT_THROW(PopulateDomainWorkspace(workspace_item, workspace), sequencergui::LogicErrorException);
 }
 
-TEST_F(WorkspaceMonitorHelperTests, SetupDomainWorkspaceSingleVariables)
+TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
 {
   sequencergui::WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
@@ -71,7 +71,7 @@ TEST_F(WorkspaceMonitorHelperTests, SetupDomainWorkspaceSingleVariables)
   var_item1->SetName("var1");
   var_item1->SetFileName("filename");
 
-  SetupDomainWorkspace(workspace_item, workspace);
+  PopulateDomainWorkspace(workspace_item, workspace);
   EXPECT_EQ(workspace.VariableNames(), std::vector<std::string>({"var0", "var1"}));
 
   auto domain_var0 = workspace.GetVariable("var0");

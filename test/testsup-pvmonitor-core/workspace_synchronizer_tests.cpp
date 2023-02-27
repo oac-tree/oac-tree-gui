@@ -53,7 +53,7 @@ public:
 
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
   {
-    SetupDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
+    PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 
