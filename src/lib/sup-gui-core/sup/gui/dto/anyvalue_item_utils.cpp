@@ -21,6 +21,7 @@
 
 #include <sup/gui/dto/anyvalue_item.h>
 
+#include <algorithm>
 #include <stack>
 #include <stdexcept>
 
@@ -29,14 +30,14 @@ namespace sup::gui
 
 void UpdateAnyValueItemScalarData(const AnyValueItem &source, AnyValueItem &target)
 {
-  if (!source.IsScalar() || ! target.IsScalar())
+  if (!source.IsScalar() || !target.IsScalar())
   {
     throw std::logic_error("Item(s) are not scalars");
   }
 
   if (source.GetAnyTypeName() != target.GetAnyTypeName())
   {
-    throw std::logic_error("Item tpes do not match");
+    throw std::logic_error("Item types do not match");
   }
 
   target.SetData(source.Data());
@@ -46,16 +47,47 @@ void UpdateAnyValueItemData(const AnyValueItem &source, AnyValueItem &target)
 {
   struct Node
   {
-    const AnyValueItem *target{nullptr};
     const AnyValueItem *source{nullptr};
+    AnyValueItem *target{nullptr};
   };
 
   std::stack<Node> nodes;
-  nodes.push({&target, &source});
+  nodes.push({&source, &target});
 
   while (!nodes.empty())
   {
     auto &node = nodes.top();
+
+    if (node.source->IsScalar())
+    {
+      UpdateAnyValueItemScalarData(*node.source, *node.target);
+      nodes.pop();
+    }
+    else
+    {
+      auto source_children = node.source->GetChildren();
+      auto target_children = node.target->GetChildren();
+      nodes.pop();
+
+      if (source_children.size() != target_children.size())
+      {
+        throw std::logic_error("Number of children do not match");
+      }
+
+      // preparing vector containing pairs of children
+      std::vector<Node> new_children;
+      auto on_transform = [&nodes](const AnyValueItem *source, AnyValueItem *target) {
+        return Node{source, target};
+      };
+      std::transform(source_children.begin(), source_children.end(), target_children.begin(),
+                     std::back_inserter(new_children), on_transform);
+
+      // adding to the stack in reverse order
+      for (auto it = new_children.rbegin(); it != new_children.rend(); ++it)
+      {
+        nodes.push(*it);
+      }
+    }
   }
 }
 
