@@ -170,7 +170,7 @@ struct DomainAnyValueBuilder::DomainAnyValueBuilderImpl
 
   void AddChildren(Node& node, NodeContext context)
   {
-    auto children = node.m_item->GetItems<AnyValueItem>("");
+    auto children = node.m_item->GetChildren();
     // iteration in reverse order
     for (auto it = children.rbegin(); it != children.rend(); ++it)
     {

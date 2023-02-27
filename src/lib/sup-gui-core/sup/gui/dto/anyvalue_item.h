@@ -39,6 +39,8 @@ public:
   virtual bool IsScalar() const;
   virtual bool IsStruct() const;
   virtual bool IsArray() const;
+
+  virtual std::vector<AnyValueItem*> GetChildren() const;
 };
 
 //! The item to represent AnyValue empty item.
@@ -78,6 +80,8 @@ public:
 
   AnyValueScalarItem* AddScalarField(const std::string& field_name, const std::string& field_type,
                                      const variant_t& value);
+
+  std::vector<AnyValueItem*> GetChildren() const override;
 };
 
 //! The item to represent AnyValue array.
@@ -90,6 +94,8 @@ public:
   AnyValueArrayItem();
 
   bool IsArray() const override;
+
+  std::vector<AnyValueItem*> GetChildren() const override;
 };
 
 }  // namespace sup::gui

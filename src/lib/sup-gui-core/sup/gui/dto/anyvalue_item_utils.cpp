@@ -19,9 +19,30 @@
 
 #include "anyvalue_item_utils.h"
 
+#include <stack>
+
 namespace sup::gui
 {
 
-void UpdateAnyValueItemData(const AnyValueItem &target, AnyValueItem &source) {}
+void UpdateAnyValueItemData(const AnyValueItem &target, AnyValueItem &source)
+{
+  struct Node
+  {
+    const AnyValueItem* target{nullptr};
+    const AnyValueItem* source{nullptr};
+  };
+
+  std::stack<Node> nodes;
+  nodes.push({&target, &source});
+
+  while (!nodes.empty())
+  {
+    auto& node = nodes.top();
+
+  }
+
+
+
+}
 
 }  // namespace sup::gui

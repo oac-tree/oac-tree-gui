@@ -47,6 +47,7 @@ TEST_F(AnyValueItemTest, InitialState)
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
     EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+    EXPECT_TRUE(item.GetChildren().empty());
   }
 
   {  // AnyValueScalarItem
@@ -58,6 +59,7 @@ TEST_F(AnyValueItemTest, InitialState)
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
     EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+    EXPECT_TRUE(item.GetChildren().empty());
   }
 
   {  // AnyValueStructItem
@@ -69,6 +71,7 @@ TEST_F(AnyValueItemTest, InitialState)
     EXPECT_EQ(item.GetDisplayName(), kStructTypeName);
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
+    EXPECT_TRUE(item.GetChildren().empty());
   }
 
   {  // AnyValueArrayItem
@@ -80,6 +83,7 @@ TEST_F(AnyValueItemTest, InitialState)
     EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
     EXPECT_FALSE(item.HasData(mvvm::DataRole::kData));
     EXPECT_FALSE(item.HasData(kAnyTypeNameRole));
+    EXPECT_TRUE(item.GetChildren().empty());
   }
 }
 
@@ -118,4 +122,5 @@ TEST_F(AnyValueItemTest, AddScalarField)
   EXPECT_EQ(scalar->GetDisplayName(), "signed");
   EXPECT_EQ(scalar->GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_EQ(scalar->Data<int>(), 42);
+  EXPECT_EQ(item.GetChildren(), std::vector<AnyValueItem*>({scalar}));
 }

@@ -58,6 +58,11 @@ bool AnyValueItem::IsArray() const
   return false;
 }
 
+std::vector<AnyValueItem *> AnyValueItem::GetChildren() const
+{
+  return {};
+}
+
 // ----------------------------------------------------------------------------
 // AnyValueEmptyItem
 // ----------------------------------------------------------------------------
@@ -108,6 +113,11 @@ AnyValueScalarItem* AnyValueStructItem::AddScalarField(const std::string& field_
   return child;
 }
 
+std::vector<AnyValueItem *> AnyValueStructItem::GetChildren() const
+{
+  return GetItems<AnyValueItem>("");
+}
+
 // ----------------------------------------------------------------------------
 // AnyValueArrayItem
 // ----------------------------------------------------------------------------
@@ -121,6 +131,11 @@ AnyValueArrayItem::AnyValueArrayItem() : AnyValueItem(Type)
 bool AnyValueArrayItem::IsArray() const
 {
   return true;
+}
+
+std::vector<AnyValueItem *> AnyValueArrayItem::GetChildren() const
+{
+  return GetItems<AnyValueItem>("");
 }
 
 }  // namespace sup::gui
