@@ -28,6 +28,8 @@
 #include <testutils/gui_domain_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 
@@ -54,7 +56,7 @@ public:
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
   {
     PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
-    m_workspace.Setup(); // current convention: has to be setup before starting listening
+    m_workspace.Setup();  // current convention: has to be setup before starting listening
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 
@@ -88,14 +90,12 @@ TEST_F(WorkspaceSynchronizerTests, Start)
   auto domain_variable0 = synchronizer->GetWorkspace()->GetVariable("abc");
   EXPECT_EQ(domain_variable0->GetName(), "abc");
 
-  // In current implementation of SetupRequest we do nothing with initial values of AnyValue.
-  // Let's test this by checking an emptiness of AnyValue, we will return to it later.
   sup::dto::AnyValue domain_value;
   EXPECT_TRUE(domain_variable0->GetValue(domain_value));
   EXPECT_EQ(domain_value, value0);
 }
 
-//! Setting up the workspace with single variable.
+//! Creating WorkspaceItem with one LocalVariableItem.
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 
 TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
@@ -110,8 +110,10 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
 
-  // FIXME current implementation doesn't update AnyValueItem on first connection
-  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+  // AnyValueItem on board should represent proper AnyValue
+  ASSERT_TRUE(variable_item0->GetAnyValueItem() != nullptr);
+  auto stored_anyvalue0 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value0, stored_anyvalue0);
 
   // changing the value via domain workspace
   const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
@@ -121,8 +123,8 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
   QTest::qWait(100);
 
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value1, stored_anyvalue);
+  auto stored_anyvalue1 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value1, stored_anyvalue1);
 }
 
 TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)

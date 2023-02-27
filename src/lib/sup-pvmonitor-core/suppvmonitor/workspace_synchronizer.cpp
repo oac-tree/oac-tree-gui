@@ -59,14 +59,13 @@ WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 void WorkspaceSynchronizer::Start()
 {
-  // FIXME for the moment we assume that the Workspace has been already setup
-  // It is not clear how to handle cases a) we get workspace that needs setup
-  // b) the workspace was already setup
+  // For the moment we assume that the Workspace has been already setup.
+  // It means that we have to propagate initial values from the domain to WorkspaceItem,
+  // and then start listening the domain.
+
+  UpdateValuesFromDomain();
 
   m_workspace_listener->StartListening(GetWorkspace());
-  // FIXME implement setting of domain initial values here, block OnDomainVariableUpdated
-  // notifications
-
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
@@ -77,6 +76,22 @@ sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
 sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 {
   return m_workspace_item;
+}
+
+//! Updates all values in WorkspaceItem from the domain's workspace.
+
+void WorkspaceSynchronizer::UpdateValuesFromDomain()
+{
+  for (const auto& name : m_workspace->VariableNames())
+  {
+    auto variable = m_workspace->GetVariable(name);
+
+    sup::dto::AnyValue anyvalue;
+    variable->GetValue(anyvalue);
+    WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
+
+    m_workspace_item_controller->ProcessEventFromDomain(event);
+  }
 }
 
 void WorkspaceSynchronizer::OnDomainVariableUpdated()

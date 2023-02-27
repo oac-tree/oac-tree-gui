@@ -32,5 +32,6 @@ public:
 
 TEST_F(AnyValueItemUtilsTests, InitialState)
 {
+
   EXPECT_EQ(1, 1);
 }
