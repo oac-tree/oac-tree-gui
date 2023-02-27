@@ -3,6 +3,10 @@ target_sources(${library_name} PRIVATE
   anyvalue_item.h
   anyvalue_item_builder.cpp
   anyvalue_item_builder.h
+  anyvalue_item_utils.cpp
+  anyvalue_item_utils.cpp
+  anyvalue_item_utils.h
+  anyvalue_item_utils.h
   anyvalue_utils.cpp
   anyvalue_utils.h
   anyvalue_viewmodel.cpp
