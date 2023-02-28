@@ -19,16 +19,17 @@
 
 #include "sequencergui/model/standard_variable_items.h"
 
+#include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
+
+#include <mvvm/model/property_item.h>
 
 #include <sup/gui/dto/anyvalue_item.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
-
-#include <gtest/gtest.h>
 
 using namespace sequencergui;
 
@@ -61,6 +62,37 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 
   item.SetIsAvailable(true);
   EXPECT_TRUE(item.IsAvailable());
+}
+
+//! Testing appearance of properties.
+
+TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
+{
+  ChannelAccessVariableItem item;
+  auto children = item.GetAllItems();
+
+  ASSERT_EQ(children.size(), 5);
+  auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
+  ASSERT_NE(name, nullptr);
+  EXPECT_EQ(name->GetDisplayName(), std::string("name"));
+
+  auto channel = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
+  ASSERT_NE(channel, nullptr);
+  EXPECT_EQ(channel->GetDisplayName(), std::string("channel"));
+
+  auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(2));
+  ASSERT_NE(available, nullptr);
+  EXPECT_EQ(available->GetDisplayName(), std::string("connected"));
+
+  auto json_type = dynamic_cast<mvvm::PropertyItem*>(children.at(3));
+  ASSERT_NE(json_type, nullptr);
+  EXPECT_EQ(json_type->GetDisplayName(), std::string("json type"));
+  EXPECT_FALSE(json_type->IsVisible());
+
+  auto json_value = dynamic_cast<mvvm::PropertyItem*>(children.at(4));
+  ASSERT_NE(json_value, nullptr);
+  EXPECT_EQ(json_value->GetDisplayName(), std::string("json value"));
+  EXPECT_FALSE(json_value->IsVisible());
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
@@ -145,6 +177,23 @@ TEST_F(StandardVariableItemsTest, FileVariableItem)
   EXPECT_EQ(item.GetFileName(), std::string("edf"));
 }
 
+//! Testing appearance of properties.
+
+TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
+{
+  FileVariableItem item;
+  auto children = item.GetAllItems();
+
+  ASSERT_EQ(children.size(), 2);
+  auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
+  ASSERT_NE(name, nullptr);
+  EXPECT_EQ(name->GetDisplayName(), std::string("name"));
+
+  auto file_name = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
+  ASSERT_NE(file_name, nullptr);
+  EXPECT_EQ(file_name->GetDisplayName(), std::string("File name"));
+}
+
 TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
 {
   const std::string expected_name("abc");
@@ -204,6 +253,29 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   EXPECT_EQ(item.GetAnyValueItem(), anyvalue_item);
 
   EXPECT_THROW(item.SetIsAvailable(true), LogicErrorException);
+}
+
+//! Testing appearance of properties.
+
+TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
+{
+  LocalVariableItem item;
+  auto children = item.GetAllItems();
+
+  ASSERT_EQ(children.size(), 3);
+  auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
+  ASSERT_NE(name, nullptr);
+  EXPECT_EQ(name->GetDisplayName(), std::string("name"));
+
+  auto json_type = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
+  ASSERT_NE(json_type, nullptr);
+  EXPECT_EQ(json_type->GetDisplayName(), std::string("json type"));
+  EXPECT_FALSE(json_type->IsVisible());
+
+  auto json_value = dynamic_cast<mvvm::PropertyItem*>(children.at(2));
+  ASSERT_NE(json_value, nullptr);
+  EXPECT_EQ(json_value->GetDisplayName(), std::string("json value"));
+  EXPECT_FALSE(json_value->IsVisible());
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
