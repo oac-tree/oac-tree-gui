@@ -33,11 +33,19 @@ class MonitorWidgetToolBar : public QToolBar
 
 public:
   explicit MonitorWidgetToolBar(QWidget* parent = nullptr);
+  ~MonitorWidgetToolBar();
 
 signals:
   void SetupWorkspaceRequest();
+  void InsertVariableRequest(const QString& variable_type_name);
 
 private:
+  std::unique_ptr<QMenu> CreateAddVariableMenu();
+  void InsertStrech();
+
+  std::unique_ptr<QMenu> m_add_variable_menu;
+  QToolButton* m_add_button{nullptr};
+  QToolButton* m_remove_button{nullptr};
   QToolButton* m_start_button{nullptr};
   QToolButton* m_stop_button{nullptr};
 };

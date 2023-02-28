@@ -19,15 +19,24 @@
 
 #include "suppvmonitor/monitor_widget_toolbar.h"
 
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/utils/style_utils.h>
 
+#include <mvvm/widgets/widget_utils.h>
+
+#include <QMenu>
 #include <QToolButton>
 
 namespace suppvmonitor
 {
 
 MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
-    : QToolBar(parent), m_start_button(new QToolButton), m_stop_button(new QToolButton)
+    : QToolBar(parent)
+    , m_add_variable_menu(CreateAddVariableMenu())
+    , m_add_button(new QToolButton)
+    , m_remove_button(new QToolButton)
+    , m_start_button(new QToolButton)
+    , m_stop_button(new QToolButton)
 {
   setIconSize(sequencergui::styleutils::ToolBarIconSize());
 
@@ -35,9 +44,29 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   auto psize = font.pointSize() * 1.05;
   font.setPointSize(psize);
 
+  using sequencergui::styleutils::GetIcon;
+
+  m_add_button->setText("Add");
+  m_add_button->setIcon(GetIcon("plus-circle-outline.svg"));
+  m_add_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_add_button->setPopupMode(QToolButton::InstantPopup);
+  m_add_button->setMenu(m_add_variable_menu.get());
+  m_add_button->setToolTip("Add variable after current selection");
+  addWidget(m_add_button);
+
+  m_remove_button->setText("Remove");
+  m_remove_button->setIcon(GetIcon("beaker-remove-outline.svg"));
+  m_remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_remove_button->setToolTip("Remove currently selected variable");
+  addWidget(m_remove_button);
+
+  //  InsertStrech();
+
+  addSeparator();
+
   m_start_button->setText("Start");
   m_start_button->setFont(font);
-  m_start_button->setIcon(sequencergui::styleutils::GetIcon("chevron-right-circle-outline.svg"));
+  m_start_button->setIcon(GetIcon("chevron-right-circle-outline.svg"));
   m_start_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_start_button->setToolTip("Start monitoring workspace variables");
   connect(m_start_button, &QToolButton::clicked, this,
@@ -46,10 +75,35 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
 
   m_stop_button->setText("Stop");
   m_stop_button->setFont(font);
-  m_stop_button->setIcon(sequencergui::styleutils::GetIcon("stop-circle-outline.svg"));
+  m_stop_button->setIcon(GetIcon("stop-circle-outline.svg"));
   m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_stop_button->setToolTip("Stop monitoring");
   addWidget(m_stop_button);
+}
+
+MonitorWidgetToolBar::~MonitorWidgetToolBar() = default;
+
+std::unique_ptr<QMenu> MonitorWidgetToolBar::CreateAddVariableMenu()
+{
+  auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
+
+  auto names = mvvm::utils::GetStringList(sequencergui::DomainUtils::GetDomainVariableNames());
+  for (const auto &name : names)
+  {
+    auto action = result->addAction(name);
+    auto on_action = [this, name]() { emit InsertVariableRequest(name); };
+    connect(action, &QAction::triggered, this, on_action);
+  }
+
+  return result;
+}
+
+void MonitorWidgetToolBar::InsertStrech()
+{
+  auto empty = new QWidget(this);
+  empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+  addWidget(empty);
 }
 
 }  // namespace suppvmonitor

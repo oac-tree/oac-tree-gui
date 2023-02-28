@@ -49,7 +49,6 @@ MonitorWidget::MonitorWidget(QWidget *parent)
   PopulateModel();
   SetupConnections();
 
-//  m_tree_view->SetApplicationModel(m_model.get());
   m_tree_view->SetItem(m_model->GetWorkspaceItem());
 }
 
