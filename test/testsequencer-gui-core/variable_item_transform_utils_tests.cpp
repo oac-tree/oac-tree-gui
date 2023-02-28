@@ -60,7 +60,6 @@ TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromScalar)
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
-  // FIXME Provide update if AnyValueItem exists and layout of it corresponds to AnyValue.
   auto prev_anyvalue_item = item.GetAnyValueItem();
   SetAnyValue(anyvalue, item);
   EXPECT_NE(item.GetAnyValueItem(), prev_anyvalue_item);
@@ -105,3 +104,26 @@ TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromJsonType)
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(expected_anyvalue, stored_anyvalue);
 }
+
+//! Checking UpdateAnyValue function.
+
+TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueFromScalar)
+{
+  // LocalVariableItem doesn't have AnyValuteItem at the beginning
+  LocalVariableItem item;
+  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+
+  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+
+  // After update it receives AnyValueItem representing anyvalue
+  SetAnyValue(anyvalue, item);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(anyvalue, stored_anyvalue);
+
+  const sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  UpdateAnyValue(new_anyvalue, item);
+
+  auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(new_anyvalue, stored_anyvalue2);
+}
+

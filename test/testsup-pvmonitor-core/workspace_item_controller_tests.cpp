@@ -102,6 +102,50 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
 }
 
 //! Setting up the WorkspaceItem with single variable.
+//! Triggering domain workspace event twice and validating AnyValueItem update.
+//! The difference with the precvious test: on first update AnyValueItem should be created,
+//! on second update it should be updated (not re-created).
+
+TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
+{
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
+
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto variable_item0 =
+      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+
+  testutils::SetupVariable("abc", value, *variable_item0);
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+
+  WorkspaceItemController controller(m_workspace_item);
+  controller.SetCallback(listener.CreateCallback());
+
+  // initially VariableItem doesn't have AnyValueItem
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+
+  // expecting no callbacks on processing domain events
+  EXPECT_CALL(listener, OnCallback(_)).Times(0);
+
+  // triggering domain workspace event
+  controller.ProcessEventFromDomain({"abc", value});
+
+  auto anyvalue_item =variable_item0->GetAnyValueItem();
+  ASSERT_NE(anyvalue_item, nullptr);
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value, stored_anyvalue);
+
+  // triggering the second domain workspace event
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  controller.ProcessEventFromDomain({"abc", new_value});
+
+  auto new_anyvalue_item =variable_item0->GetAnyValueItem();
+  ASSERT_EQ(anyvalue_item, new_anyvalue_item);
+  auto new_stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(new_value, new_stored_anyvalue);
+}
+
+//! Setting up the WorkspaceItem with single variable.
 //! Replacing AnyValueItem through the model and expecting callback toward the domain.
 
 TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)

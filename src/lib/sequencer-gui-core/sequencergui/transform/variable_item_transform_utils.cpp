@@ -25,6 +25,7 @@
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/dto/anyvalue_item_utils.h>
 #include <sup/gui/dto/anyvalue_utils.h>
 #include <sup/gui/dto/conversion_utils.h>
 #include <sup/sequencer/variable.h>
@@ -32,12 +33,12 @@
 namespace sequencergui
 {
 
-//std::string GetValuesToJSONString(const variable_t *value)
+// std::string GetValuesToJSONString(const variable_t *value)
 //{
-//  sup::dto::AnyValue anyvalue;
-//  value->GetValue(anyvalue);
-//  return sup::gui::GetValuesToJSONString(&anyvalue);
-//}
+//   sup::dto::AnyValue anyvalue;
+//   value->GetValue(anyvalue);
+//   return sup::gui::GetValuesToJSONString(&anyvalue);
+// }
 
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
@@ -80,6 +81,23 @@ void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variabl
   auto anytype = ::sup::gui::AnyTypeFromJSONString(json_type);
   const sup::dto::AnyValue anyvalue(anytype);
   SetAnyValue(anyvalue, variable_item);
+}
+
+void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
+{
+  if (auto existing_anyvalue_item = variable_item.GetAnyValueItem(); existing_anyvalue_item)
+  {
+    // If AnyValueItem already exists, we assume that its layout coincide with AnyValue.
+
+    // updating existing AnyValueItem using temporary AnyValueItem
+    auto temp_anyvalue_item = sup::gui::CreateItem(anyvalue);
+    sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item.get(), *existing_anyvalue_item);
+  }
+  else
+  {
+    // If AnyValueItem doesn't exist, we create new AnyValueItem using AnyValue provided.
+    SetAnyValue(anyvalue, variable_item);
+  }
 }
 
 }  // namespace sequencergui

@@ -41,11 +41,16 @@ class VariableItem;
 
 //std::string GetValuesToJSONString(const variable_t* value);
 
-//! Sets AnyValueItem on board of variable item using given `anyvalue`.
+//! Sets AnyValueItem on board of \it variable_item using given \it anyvalue.
 //! If AnyValueItem already exist, it will be replaced.
 void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
+//! Sets AnyValueItem on board of \it variable_item using \it json_type provided.
 void SetAnyValueFromJsonType(const std::string& json_type, VariableItem& variable_item);
+
+//! Updates existing AnyValueItem on board of \it variable_item using given \it anyvalue.
+//! It is expected that the layout of existing AnyValueItem matches the layout of \it anyvalue.
+void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 }  // namespace sequencergui
 
