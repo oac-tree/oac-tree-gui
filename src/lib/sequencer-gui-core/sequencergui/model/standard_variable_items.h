@@ -49,7 +49,7 @@ private:
 class ChannelAccessVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = "ChannelAccessVariable";
+  static inline const std::string Type = "ChannelAccessClient";
   ChannelAccessVariableItem();
 
   std::string GetDomainType() const override;
@@ -94,7 +94,7 @@ private:
 class PVClientVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = "PVClientVariable";
+  static inline const std::string Type = "PvAccessClient";
   PVClientVariableItem();
 
   std::string GetDomainType() const override;
@@ -107,7 +107,7 @@ private:
 class PVServerVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = "PVServerVariable";
+  static inline const std::string Type = "PvAccessServer";
   PVServerVariableItem();
 
   std::string GetDomainType() const override;

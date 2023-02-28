@@ -64,6 +64,7 @@ public:
 
 TEST_F(TransformFromDomainTest, GetItemType)
 {
+  // for instructions
   EXPECT_EQ(ConditionItem::Type, GetItemType(domainconstants::kConditionInstructionType));
   EXPECT_EQ(CopyItem::Type, GetItemType(domainconstants::kCopyInstructionType));
   EXPECT_EQ(EqualsItem::Type, GetItemType(domainconstants::kEqualsInstructionType));
@@ -80,6 +81,12 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(SequenceItem::Type, GetItemType(domainconstants::kSequenceInstructionType));
   EXPECT_EQ(UserChoiceItem::Type, GetItemType(domainconstants::kUserChoiceInstructionType));
   EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
+
+  // for variables
+  EXPECT_EQ(ChannelAccessVariableItem::Type, GetItemType(domainconstants::kChannelAccessVariableType));
+  EXPECT_EQ(FileVariableItem::Type, GetItemType(domainconstants::kFileVariableType));
+  EXPECT_EQ(LocalVariableItem::Type, GetItemType(domainconstants::kLocalVariableType));
+  EXPECT_EQ(PVClientVariableItem::Type, GetItemType(domainconstants::kPVClientVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.

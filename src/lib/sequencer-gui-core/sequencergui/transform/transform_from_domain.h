@@ -35,7 +35,7 @@ class WorkspaceItem;
 class VariableItem;
 class ProcedureItem;
 
-//! Translates instruction's `domain_type` name to UI `model_type` name.
+//! Translates domain's type name to the model type of corresponding GUI item.
 std::string GetItemType(const std::string& domain_type);
 
 //! Creates VariableItem from string representing Type of sup::sequencer::Variable.
