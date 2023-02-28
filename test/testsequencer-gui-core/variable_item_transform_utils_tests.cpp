@@ -25,6 +25,7 @@
 #include <testutils/mock_model_listener.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/dto/anyvalue_item.h>
 #include <sup/gui/dto/conversion_utils.h>
 
 using namespace sequencergui;
@@ -38,7 +39,7 @@ class VariableItemTransformUtilsTests : public ::testing::Test
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(VariableItemTransformUtilsTests, SetAnyValue)
+TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -48,14 +49,19 @@ TEST_F(VariableItemTransformUtilsTests, SetAnyValue)
 
   // After update it receives AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
-  EXPECT_NE(item.GetAnyValueItem(), nullptr);
-  auto prev_anyvalue_item = item.GetAnyValueItem();
+
+  // checking constructed AnyValueItem and its visual properties
+  auto anyvalue_item = item.GetAnyValueItem();
+  EXPECT_NE(anyvalue_item, nullptr);
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), std::string("value"));
+  EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
   // FIXME Provide update if AnyValueItem exists and layout of it corresponds to AnyValue.
+  auto prev_anyvalue_item = item.GetAnyValueItem();
   SetAnyValue(anyvalue, item);
   EXPECT_NE(item.GetAnyValueItem(), prev_anyvalue_item);
 }

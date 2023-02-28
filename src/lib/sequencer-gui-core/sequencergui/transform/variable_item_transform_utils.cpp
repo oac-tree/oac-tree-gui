@@ -59,6 +59,12 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 
   // Inserting new AnyValueItem
   auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  if (anyvalue_item->IsScalar())
+  {
+    anyvalue_item->SetDisplayName("value");
+    anyvalue_item->SetToolTip(anyvalue_item->GetAnyTypeName());
+  }
+
   if (model)
   {
     model->InsertItem(std::move(anyvalue_item), &variable_item, {});
