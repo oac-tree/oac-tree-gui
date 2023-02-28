@@ -133,10 +133,8 @@ void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
   auto procedure = m_context.selected_procedure();
   auto item = m_context.selected_variable();
 
-  auto parent = item ? item->GetParent() : procedure->GetWorkspace();
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-
-  InsertItem(item_type.toStdString(), parent, tagindex);
+  InsertItem(item_type.toStdString(), procedure->GetWorkspace(), tagindex);
 }
 
 void ComposerActions::OnRemoveVariableRequest()
