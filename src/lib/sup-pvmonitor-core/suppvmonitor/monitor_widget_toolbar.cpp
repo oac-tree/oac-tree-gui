@@ -27,22 +27,29 @@ namespace suppvmonitor
 {
 
 MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
-    : QToolBar(parent), m_setup_workspace_button(new QToolButton)
+    : QToolBar(parent), m_start_button(new QToolButton), m_stop_button(new QToolButton)
 {
   setIconSize(sequencergui::styleutils::ToolBarIconSize());
 
-  auto font = m_setup_workspace_button->font();
+  auto font = m_start_button->font();
   auto psize = font.pointSize() * 1.05;
   font.setPointSize(psize);
 
-  m_setup_workspace_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_setup_workspace_button->setText("Connect");
-  m_setup_workspace_button->setFont(font);
-  m_setup_workspace_button->setIcon(
-      sequencergui::styleutils::GetIcon("chevron-right-circle-outline.svg"));
-  connect(m_setup_workspace_button, &QToolButton::clicked, this,
+  m_start_button->setText("Start");
+  m_start_button->setFont(font);
+  m_start_button->setIcon(sequencergui::styleutils::GetIcon("chevron-right-circle-outline.svg"));
+  m_start_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_start_button->setToolTip("Start monitoring workspace variables");
+  connect(m_start_button, &QToolButton::clicked, this,
           &MonitorWidgetToolBar::SetupWorkspaceRequest);
-  addWidget(m_setup_workspace_button);
+  addWidget(m_start_button);
+
+  m_stop_button->setText("Stop");
+  m_stop_button->setFont(font);
+  m_stop_button->setIcon(sequencergui::styleutils::GetIcon("stop-circle-outline.svg"));
+  m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_stop_button->setToolTip("Stop monitoring");
+  addWidget(m_stop_button);
 }
 
 }  // namespace suppvmonitor

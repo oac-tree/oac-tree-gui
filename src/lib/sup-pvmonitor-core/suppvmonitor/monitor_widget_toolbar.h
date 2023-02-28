@@ -38,7 +38,8 @@ signals:
   void SetupWorkspaceRequest();
 
 private:
-  QToolButton* m_setup_workspace_button{nullptr};
+  QToolButton* m_start_button{nullptr};
+  QToolButton* m_stop_button{nullptr};
 };
 
 }  // namespace suppvmonitor
