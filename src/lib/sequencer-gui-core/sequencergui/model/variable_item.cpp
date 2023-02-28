@@ -34,7 +34,10 @@ const std::vector<std::string> kExpectedAnyValueItemTypes{
     sup::gui::AnyValueEmptyItem::Type, sup::gui::AnyValueScalarItem::Type,
     sup::gui::AnyValueArrayItem::Type, sup::gui::AnyValueStructItem::Type};
 
-}
+static inline const std::string kJsonType = "kJsonType";
+static inline const std::string kJsonValue = "kJsonValue";
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -93,6 +96,26 @@ void VariableItem::SetName(const std::string &value)
   SetProperty(kName, value);
 }
 
+std::string VariableItem::GetJsonType() const
+{
+  return Property<std::string>(kJsonType);
+}
+
+void VariableItem::SetJsonType(const std::string &value)
+{
+  SetProperty(kJsonType, value);
+}
+
+std::string VariableItem::GetJsonValue() const
+{
+  return Property<std::string>(kJsonValue);
+}
+
+void VariableItem::SetJsonValue(const std::string &value)
+{
+  SetProperty(kJsonValue, value);
+}
+
 sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
 {
   return GetItem<sup::gui::AnyValueItem>(kAnyValueTag);
@@ -106,6 +129,20 @@ bool VariableItem::IsAvailable() const
 void VariableItem::SetIsAvailable(bool value)
 {
   throw LogicErrorException("Not implemented");
+}
+
+//! Register properties representing json type and value.
+
+void VariableItem::RegisterJsonTypeAndValue()
+{
+  AddProperty(kJsonType, std::string())
+      ->SetDisplayName("json type")
+      ->SetVisible(false)
+      ->SetEditable(false);
+  AddProperty(kJsonValue, std::string())
+      ->SetDisplayName("json value")
+      ->SetVisible(false)
+      ->SetEditable(false);
 }
 
 //! Provides tag registration for AnyValueItem insertion.

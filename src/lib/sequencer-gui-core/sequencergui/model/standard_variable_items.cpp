@@ -28,8 +28,6 @@
 namespace sequencergui
 {
 static inline const std::string kChannel = "kChannel";
-static inline const std::string kJsonType = "kJsonType";
-static inline const std::string kJsonValue = "kJsonValue";
 static inline const std::string kIsAvailable = "kIsAvailable";
 
 // ----------------------------------------------------------------------------
@@ -41,8 +39,7 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
 {
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type")->SetVisible(false);
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value")->SetVisible(false);
+  RegisterJsonTypeAndValue();
   RegisterAnyValueItemTag();
 }
 
@@ -54,27 +51,6 @@ std::string ConnectableVariableItem::GetChannel() const
 void ConnectableVariableItem::SetChannel(const std::string &value)
 {
   SetProperty(kChannel, value);
-}
-
-std::string ConnectableVariableItem::GetJsonType() const
-{
-  return Property<std::string>(kJsonType);
-}
-
-void ConnectableVariableItem::SetJsonType(const std::string &value)
-{
-  SetProperty(kJsonType, value);
-}
-
-std::string ConnectableVariableItem::GetJsonValue() const
-{
-  return Property<std::string>(kJsonValue);
-}
-
-// Temporary method to update value from SequencerObserver
-void ConnectableVariableItem::SetJsonValue(const std::string &value)
-{
-  SetProperty(kJsonValue, value);
 }
 
 bool ConnectableVariableItem::IsAvailable() const
@@ -167,34 +143,13 @@ void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 
 LocalVariableItem::LocalVariableItem() : VariableItem(Type)
 {
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type")->SetVisible(false);
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value")->SetVisible(false);
+  RegisterJsonTypeAndValue();
   RegisterAnyValueItemTag();
 }
 
 std::string LocalVariableItem::GetDomainType() const
 {
   return domainconstants::kLocalVariableType;
-}
-
-std::string LocalVariableItem::GetJsonType() const
-{
-  return Property<std::string>(kJsonType);
-}
-
-void LocalVariableItem::SetJsonType(const std::string &value)
-{
-  SetProperty(kJsonType, value);
-}
-
-std::string LocalVariableItem::GetJsonValue() const
-{
-  return Property<std::string>(kJsonValue);
-}
-
-void LocalVariableItem::SetJsonValue(const std::string &value)
-{
-  SetProperty(kJsonValue, value);
 }
 
 void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)

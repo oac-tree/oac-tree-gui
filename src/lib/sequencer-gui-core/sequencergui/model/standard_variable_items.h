@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 
-//! Represent EPICS variable
+//! Represent EPICS variable.
 class ConnectableVariableItem : public VariableItem
 {
 public:
@@ -36,14 +36,6 @@ public:
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
-
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
 
   bool IsAvailable() const override;
 
@@ -92,14 +84,6 @@ public:
   LocalVariableItem();
 
   std::string GetDomainType() const override;
-
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
 
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
