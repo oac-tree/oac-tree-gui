@@ -36,7 +36,7 @@ class DomainUtilsTest : public ::testing::Test
 
 //! An attempt to catch if our duplication of domain constants diverges from the domain.
 
-TEST_F(DomainUtilsTest, DomainTypeConstants)
+TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 {
   std::vector<std::string> domain_types = {
       kConditionInstructionType, kCopyInstructionType,         kEqualsInstructionType,
@@ -49,6 +49,36 @@ TEST_F(DomainUtilsTest, DomainTypeConstants)
   for (const auto& domain_type : domain_types)
   {
     EXPECT_EQ(DomainUtils::CreateDomainInstruction(domain_type)->GetType(), domain_type);
+  }
+}
+
+//! An attempt to catch if our duplication of domain constants diverges from the domain.
+
+TEST_F(DomainUtilsTest, DomainVariableTypeConstants)
+{
+  std::vector<std::string> domain_types = {kFileVariableType, kLocalVariableType};
+
+  for (const auto& domain_type : domain_types)
+  {
+    EXPECT_EQ(DomainUtils::CreateDomainVariable(domain_type)->GetType(), domain_type);
+  }
+
+  if (DomainUtils::IsChannelAccessClientAvailable())
+  {
+    EXPECT_EQ(DomainUtils::CreateDomainVariable(kChannelAccessVariableType)->GetType(),
+              kChannelAccessVariableType);
+  }
+
+  if (DomainUtils::IsPVAccessClientAvailable())
+  {
+    EXPECT_EQ(DomainUtils::CreateDomainVariable(kPVClientVariableType)->GetType(),
+              kPVClientVariableType);
+  }
+
+  if (DomainUtils::IsPVAccessServerAvailable())
+  {
+    EXPECT_EQ(DomainUtils::CreateDomainVariable(kPVServerVariableType)->GetType(),
+              kPVServerVariableType);
   }
 }
 
