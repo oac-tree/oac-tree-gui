@@ -22,6 +22,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
+#include <sequencergui/widgets/widget_utils.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget_toolbar.h>
 #include <suppvmonitor/workspace_monitor_helper.h>
@@ -69,7 +70,19 @@ void MonitorWidget::PopulateModel()
 
 void MonitorWidget::SetupConnections()
 {
-  auto on_setup_workspace = [this]()
+  connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
+          &MonitorWidget::OnStartMonitoringRequest);
+
+  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this,
+          &MonitorWidget::OnAddVariableRequest);
+
+  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
+          &MonitorWidget::OnRemoveVariableRequest);
+}
+
+void MonitorWidget::OnStartMonitoringRequest()
+{
+  auto on_start = [this]()
   {
     m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
@@ -80,25 +93,19 @@ void MonitorWidget::SetupConnections()
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
   };
-  connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this, on_setup_workspace);
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this,
-          &MonitorWidget::OnAddVariableRequest);
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
-          &MonitorWidget::OnRemoveVariableRequest);
+  sequencergui::InvokeAndCatch(on_start, "Can't setup workspace");
 }
 
 void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
 {
-  auto selected_item = m_tree_view->GetSelected<sequencergui::VariableItem>();
-
-  auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-
-  m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
-                      m_model->GetWorkspaceItem(), tagindex);
-
-  qDebug() << variable_type_name << selected_item;
+  auto on_insert = [this, variable_type_name]()
+  {
+    auto selected_item = m_tree_view->GetSelected<sequencergui::VariableItem>();
+    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+    m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
+                        m_model->GetWorkspaceItem(), tagindex);
+  };
+  sequencergui::InvokeAndCatch(on_insert, "Can't add variable");
 }
 
 void MonitorWidget::OnRemoveVariableRequest()

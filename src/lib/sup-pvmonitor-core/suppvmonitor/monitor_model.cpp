@@ -34,6 +34,7 @@ MonitorModel::MonitorModel()
   RegisterItem<sequencergui::PVClientVariableItem>();
   RegisterItem<sequencergui::PVServerVariableItem>();
   RegisterItem<sequencergui::UnknownVariableItem>();
+  RegisterItem<sequencergui::FileVariableItem>();
   RegisterItem<sequencergui::WorkspaceItem>();
 }
 

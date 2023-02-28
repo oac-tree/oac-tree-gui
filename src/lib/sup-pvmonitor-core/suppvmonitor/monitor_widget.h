@@ -51,6 +51,7 @@ public:
 private:
   void PopulateModel();
   void SetupConnections();
+  void OnStartMonitoringRequest();
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();
 
