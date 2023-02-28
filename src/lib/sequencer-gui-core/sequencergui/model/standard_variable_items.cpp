@@ -40,9 +40,10 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
     : VariableItem(variable_type)
 {
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
   AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
+  AddProperty(kJsonType, std::string())->SetDisplayName("json type")->SetVisible(false);
+  AddProperty(kJsonValue, std::string())->SetDisplayName("json value")->SetVisible(false);
+  RegisterAnyValueItemTag();
 }
 
 std::string ConnectableVariableItem::GetChannel() const
@@ -129,6 +130,7 @@ static inline const std::string kFileName = "kFileName";
 FileVariableItem::FileVariableItem() : VariableItem(Type)
 {
   AddProperty(kFileName, std::string())->SetDisplayName("File name");
+  RegisterAnyValueItemTag();
 }
 
 std::string FileVariableItem::GetDomainType() const
@@ -165,8 +167,9 @@ void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 
 LocalVariableItem::LocalVariableItem() : VariableItem(Type)
 {
-  AddProperty(kJsonType, std::string())->SetDisplayName("json type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("json value");
+  AddProperty(kJsonType, std::string())->SetDisplayName("json type")->SetVisible(false);
+  AddProperty(kJsonValue, std::string())->SetDisplayName("json value")->SetVisible(false);
+  RegisterAnyValueItemTag();
 }
 
 std::string LocalVariableItem::GetDomainType() const
@@ -252,7 +255,10 @@ void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 // UnknownVariableItem
 // ----------------------------------------------------------------------------
 
-UnknownVariableItem::UnknownVariableItem() : VariableItem(Type) {}
+UnknownVariableItem::UnknownVariableItem() : VariableItem(Type)
+{
+  RegisterAnyValueItemTag();
+}
 
 std::string UnknownVariableItem::GetDomainType() const
 {

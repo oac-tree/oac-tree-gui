@@ -54,6 +54,9 @@ public:
   virtual bool IsAvailable() const;
   virtual void SetIsAvailable(bool value);
 
+protected:
+  void RegisterAnyValueItemTag();
+
 private:
   virtual void InitFromDomainImpl(const variable_t* variable) = 0;
   virtual void SetupDomainImpl(variable_t* variable) const = 0;

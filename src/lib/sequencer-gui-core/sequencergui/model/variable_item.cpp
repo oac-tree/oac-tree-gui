@@ -48,8 +48,6 @@ static inline const std::string kAnyValueTag = "kAnyValueTag";
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
 {
   AddProperty(kName, std::string())->SetDisplayName("name");
-
-  RegisterTag(mvvm::TagInfo(kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
 }
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
@@ -108,6 +106,15 @@ bool VariableItem::IsAvailable() const
 void VariableItem::SetIsAvailable(bool value)
 {
   throw LogicErrorException("Not implemented");
+}
+
+//! Provides tag registration for AnyValueItem insertion.
+//! The method is protected to allow derived classes to call it at the proper moment and so
+//! manipulate the order of children.
+
+void VariableItem::RegisterAnyValueItemTag()
+{
+  RegisterTag(mvvm::TagInfo(kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
 }
 
 }  // namespace sequencergui
