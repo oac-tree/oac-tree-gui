@@ -36,8 +36,10 @@ public:
   ~MonitorWidgetToolBar();
 
 signals:
-  void SetupWorkspaceRequest();
-  void InsertVariableRequest(const QString& variable_type_name);
+  void AddVariableRequest(const QString& variable_type_name);
+  void RemoveVariableRequest();
+  void StartMonitoringRequest();
+  void StopMonitoringRequest();
 
 private:
   std::unique_ptr<QMenu> CreateAddVariableMenu();

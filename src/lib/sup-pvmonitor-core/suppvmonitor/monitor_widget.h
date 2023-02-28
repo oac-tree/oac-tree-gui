@@ -51,6 +51,8 @@ public:
 private:
   void PopulateModel();
   void SetupConnections();
+  void OnAddVariableRequest(const QString& variable_type_name);
+  void OnRemoveVariableRequest();
 
   MonitorWidgetToolBar* m_tool_bar{nullptr};
 

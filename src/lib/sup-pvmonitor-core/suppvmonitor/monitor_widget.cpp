@@ -21,16 +21,17 @@
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget_toolbar.h>
 #include <suppvmonitor/workspace_monitor_helper.h>
 #include <suppvmonitor/workspace_synchronizer.h>
-#include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
 
 #include <sup/sequencer/workspace.h>
 
+#include <QDebug>
 #include <QVBoxLayout>
 
 namespace suppvmonitor
@@ -79,7 +80,30 @@ void MonitorWidget::SetupConnections()
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
   };
-  connect(m_tool_bar, &MonitorWidgetToolBar::SetupWorkspaceRequest, this, on_setup_workspace);
+  connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this, on_setup_workspace);
+
+  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this,
+          &MonitorWidget::OnAddVariableRequest);
+
+  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
+          &MonitorWidget::OnRemoveVariableRequest);
+}
+
+void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
+{
+  auto selected_item = m_tree_view->GetSelected<sequencergui::VariableItem>();
+
+  auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+  m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
+                      m_model->GetWorkspaceItem(), tagindex);
+
+  qDebug() << variable_type_name << selected_item;
+}
+
+void MonitorWidget::OnRemoveVariableRequest()
+{
+  qDebug() << "Remove variable request";
 }
 
 }  // namespace suppvmonitor

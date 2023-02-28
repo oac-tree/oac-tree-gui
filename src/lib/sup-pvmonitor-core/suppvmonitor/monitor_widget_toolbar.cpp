@@ -58,9 +58,9 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_remove_button->setIcon(GetIcon("beaker-remove-outline.svg"));
   m_remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_remove_button->setToolTip("Remove currently selected variable");
+  connect(m_remove_button, &QToolButton::clicked, this,
+          &MonitorWidgetToolBar::RemoveVariableRequest);
   addWidget(m_remove_button);
-
-  //  InsertStrech();
 
   addSeparator();
 
@@ -70,7 +70,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_start_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_start_button->setToolTip("Start monitoring workspace variables");
   connect(m_start_button, &QToolButton::clicked, this,
-          &MonitorWidgetToolBar::SetupWorkspaceRequest);
+          &MonitorWidgetToolBar::StartMonitoringRequest);
   addWidget(m_start_button);
 
   m_stop_button->setText("Stop");
@@ -78,6 +78,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_stop_button->setIcon(GetIcon("stop-circle-outline.svg"));
   m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_stop_button->setToolTip("Stop monitoring");
+  connect(m_stop_button, &QToolButton::clicked, this, &MonitorWidgetToolBar::StopMonitoringRequest);
   addWidget(m_stop_button);
 }
 
@@ -92,7 +93,7 @@ std::unique_ptr<QMenu> MonitorWidgetToolBar::CreateAddVariableMenu()
   for (const auto &name : names)
   {
     auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit InsertVariableRequest(name); };
+    auto on_action = [this, name]() { emit AddVariableRequest(name); };
     connect(action, &QAction::triggered, this, on_action);
   }
 
