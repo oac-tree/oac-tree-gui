@@ -93,7 +93,16 @@ void SequencerComposerView::UpdateXML()
 {
   if (auto selected = m_composer_panel->GetSelectedProcedure(); selected)
   {
-    m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(selected)));
+    try
+    {
+      m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(selected)));
+    }
+    catch (const std::exception &ex)
+    {
+      // Procedure is in unconsistent state. For example, variable items all have the same names
+      // which makes domain's Workspace unhappy.
+      m_xml_editor->ClearText();
+    }
   }
 }
 
