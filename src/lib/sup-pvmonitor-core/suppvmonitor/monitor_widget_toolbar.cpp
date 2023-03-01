@@ -51,13 +51,14 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_add_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_button->setPopupMode(QToolButton::InstantPopup);
   m_add_button->setMenu(m_add_variable_menu.get());
-  m_add_button->setToolTip("Add variable after current selection");
+  m_add_button->setToolTip(
+      "Add variable after currently selected variable.\nWill add at the end if no selection.");
   addWidget(m_add_button);
 
   m_remove_button->setText("Remove");
   m_remove_button->setIcon(GetIcon("beaker-remove-outline.svg"));
   m_remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_remove_button->setToolTip("Remove currently selected variable");
+  m_remove_button->setToolTip("Remove currently selected variable.");
   connect(m_remove_button, &QToolButton::clicked, this,
           &MonitorWidgetToolBar::RemoveVariableRequest);
   addWidget(m_remove_button);

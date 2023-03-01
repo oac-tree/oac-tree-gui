@@ -110,7 +110,10 @@ void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
 
 void MonitorWidget::OnRemoveVariableRequest()
 {
-  qDebug() << "Remove variable request";
+  if (auto selected = m_tree_view->GetSelected<sequencergui::VariableItem>(); selected)
+  {
+    m_model->RemoveItem(selected);
+  }
 }
 
 }  // namespace suppvmonitor
