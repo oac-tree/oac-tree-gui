@@ -161,7 +161,7 @@ void EditorWidget::UpdateJson(sup::gui::AnyValueItem *item)
   catch (const std::exception &ex)
   {
     // Current simplified approach calls the method `UpdateJson` on every
-    // model change. If model is unconsistent, CreateAnyValue merhod will fail.
+    // model change. If model is inconsistent, CreateAnyValue method will fail.
     m_text_edit->clear();
   }
 }

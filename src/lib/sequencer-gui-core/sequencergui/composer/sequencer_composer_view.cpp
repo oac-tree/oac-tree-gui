@@ -99,7 +99,7 @@ void SequencerComposerView::UpdateXML()
     }
     catch (const std::exception &ex)
     {
-      // Procedure is in unconsistent state. For example, variable items all have the same names
+      // Procedure is in inconsistent state. For example, variable items all have the same names
       // which makes domain's Workspace unhappy.
       m_xml_editor->ClearText();
     }
