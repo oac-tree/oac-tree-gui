@@ -19,7 +19,7 @@
 
 #include "main_window.h"
 
-#include <anyvalueeditor/editor_widget.h>
+#include <anyvalueeditor/anyvalue_editor.h>
 
 #include <QCoreApplication>
 #include <QFileDialog>
@@ -80,7 +80,7 @@ void MainWindow::InitMenu()
     QString file_name = QFileDialog::getOpenFileName(this);
     if (!file_name.isEmpty())
     {
-      m_editor_widget->ImportAnyValueFromFile(file_name);
+      m_anyvalue_editor->ImportAnyValueFromFile(file_name);
     }
   };
   connect(open_action, &QAction::triggered, on_open_action);
@@ -88,8 +88,8 @@ void MainWindow::InitMenu()
 
 void MainWindow::InitComponents()
 {
-  m_editor_widget = new EditorWidget;
-  setCentralWidget(m_editor_widget);
+  m_anyvalue_editor = new AnyValueEditor;
+  setCentralWidget(m_anyvalue_editor);
 }
 
 void MainWindow::WriteSettings()

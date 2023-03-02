@@ -28,7 +28,7 @@ class QCloseEvent;
 namespace anyvalueeditor
 {
 
-class EditorWidget;
+class AnyValueEditor;
 
 //! The main window of this application.
 
@@ -49,7 +49,7 @@ private:
   void InitComponents();
   void WriteSettings();
 
-  EditorWidget* m_editor_widget{nullptr};
+  AnyValueEditor* m_anyvalue_editor{nullptr};
 };
 
 }  // namespace anyvalueeditor

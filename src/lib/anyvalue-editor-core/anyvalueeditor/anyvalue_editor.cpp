@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/editor_widget.h"
+#include "anyvalue_editor.h"
 
-#include <anyvalueeditor/anyvalue_editor_actions.h>
-#include <anyvalueeditor/anyvalue_editor_toolbar.h>
-#include <anyvalueeditor/highlighter/qsourcehighliter.h>
+#include "anyvalue_editor_actions.h"
+#include "anyvalue_editor_toolbar.h"
+#include "highlighter/qsourcehighliter.h"
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/project/model_has_changed_controller.h>
@@ -29,10 +29,10 @@
 #include <mvvm/widgets/item_view_component_provider.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/core/anyvalue_conversion_utils.h>
 #include <sup/gui/core/anyvalue_item.h>
 #include <sup/gui/core/anyvalue_utils.h>
 #include <sup/gui/core/anyvalue_viewmodel.h>
-#include <sup/gui/core/anyvalue_conversion_utils.h>
 
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -42,7 +42,7 @@
 namespace anyvalueeditor
 {
 
-EditorWidget::EditorWidget(QWidget *parent)
+AnyValueEditor::AnyValueEditor(QWidget *parent)
     : QWidget(parent)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_actions(
@@ -83,14 +83,12 @@ EditorWidget::EditorWidget(QWidget *parent)
   auto highlighter = new QSourceHighlite::QSourceHighliter(m_text_edit->document());
   highlighter->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJSON);
 
-  //  highlighter->setTheme((QSourceHighlite::QSourceHighliter::Themes)1);
-
   auto on_model_changed = [this]() { UpdateJson(GetSelectedItem()); };
   m_model_changed_controller =
       std::make_unique<mvvm::ModelHasChangedController>(m_model.get(), on_model_changed);
 }
 
-void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
+void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
 {
   m_component_provider->SetApplicationModel(nullptr);
 
@@ -108,44 +106,14 @@ void EditorWidget::ImportAnyValueFromFile(const QString &file_name)
   m_all_items_tree_view->expandAll();
 }
 
-sup::gui::AnyValueItem *EditorWidget::GetSelectedItem()
+sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem()
 {
   return m_component_provider->GetSelected<sup::gui::AnyValueItem>();
 }
 
-EditorWidget::~EditorWidget() = default;
+AnyValueEditor::~AnyValueEditor() = default;
 
-void EditorWidget::PopulateModel()
-{
-  //  {  // two members
-  //    sup::dto::AnyValue anyvalue = {
-  //        {{"signed", {sup::dto::SignedInteger32Type, 42}}, {"bool", {sup::dto::BooleanType,
-  //        true}}}};
-  //    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
-  //  }
-
-  //  {  // Nested structure
-  //    sup::dto::AnyValue two_scalars = {
-  //        {{"signed", {sup::dto::SignedInteger8Type, 1}}, {"bool", {sup::dto::BooleanType, 12}}}};
-  //    sup::dto::AnyValue anyvalue{{
-  //        {"scalars", two_scalars},
-  //    }};
-  //    m_model->InsertItem(CreateItem(anyvalue), m_model->GetRootItem(), mvvm::TagIndex::Append());
-  //  }
-}
-
-// void EditorWidget::OnSelectionChanged(AnyValueItem *item)
-//{
-//   if (!item)
-//   {
-//     return;
-//   }
-
-//  m_actions->SetSelectedItem(item);
-
-//}
-
-void EditorWidget::UpdateJson(sup::gui::AnyValueItem *item)
+void AnyValueEditor::UpdateJson(sup::gui::AnyValueItem *item)
 {
   if (!item)
   {

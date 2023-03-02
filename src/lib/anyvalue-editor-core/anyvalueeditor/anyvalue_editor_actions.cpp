@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_editor_actions.h"
+#include "anyvalue_editor_actions.h"
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <sup/gui/core/anyvalue_item.h>
 #include <sup/gui/core/anyvalue_conversion_utils.h>
+#include <sup/gui/core/anyvalue_item.h>
 
 #include <QMainWindow>
 #include <QMessageBox>

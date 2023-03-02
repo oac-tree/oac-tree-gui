@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
-#define LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
+#ifndef LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
+#define LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -46,12 +46,12 @@ namespace anyvalueeditor
 class AnyValueEditorToolBar;
 class AnyValueEditorActions;
 
-class EditorWidget : public QWidget
+class AnyValueEditor : public QWidget
 {
   Q_OBJECT
 public:
-  explicit EditorWidget(QWidget* parent = nullptr);
-  ~EditorWidget() override;
+  explicit AnyValueEditor(QWidget* parent = nullptr);
+  ~AnyValueEditor() override;
 
   void ImportAnyValueFromFile(const QString& filename);
 
