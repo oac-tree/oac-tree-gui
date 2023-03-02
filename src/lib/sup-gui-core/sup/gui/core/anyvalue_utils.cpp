@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/anyvalue_utils.h"
+#include "anyvalue_utils.h"
 
 #include <sup/dto/anytype_helper.h>
 #include <sup/dto/anyvalue.h>

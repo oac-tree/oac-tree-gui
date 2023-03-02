@@ -25,8 +25,8 @@
 #include <testutils/mock_model_listener.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/anyvalue_item.h>
+#include <sup/gui/core/conversion_utils.h>
 
 using namespace sequencergui;
 using ::testing::_;

@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/anyvalue_viewmodel.h"
+#include "anyvalue_viewmodel.h"
+
+#include "anyvalue_item.h"
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/standard_row_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
-
-#include <sup/gui/dto/anyvalue_item.h>
 
 namespace sup::gui
 {

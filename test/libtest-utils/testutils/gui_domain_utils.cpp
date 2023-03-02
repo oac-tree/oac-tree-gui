@@ -20,7 +20,7 @@
 #include "gui_domain_utils.h"
 
 #include <sequencergui/model/standard_variable_items.h>
-#include <sup/gui/dto/anyvalue_utils.h>
+#include <sup/gui/core/anyvalue_utils.h>
 
 namespace testutils
 {

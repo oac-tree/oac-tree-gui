@@ -23,7 +23,7 @@
 #include <gmock/gmock.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
-#include <sup/gui/dto/dto_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
 #include <sup/sequencer/user_interface.h>
 
 namespace testutils

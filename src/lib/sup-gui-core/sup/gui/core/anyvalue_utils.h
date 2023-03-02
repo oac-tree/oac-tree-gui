@@ -17,26 +17,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef GUI_DTO_SCALAR_CONVERSION_UTILS_H_
-#define GUI_DTO_SCALAR_CONVERSION_UTILS_H_
+#ifndef GUI_DTO_ANYVALUE_UTILS_H_
+#define GUI_DTO_ANYVALUE_UTILS_H_
 
-//! Utility functions to convert scalar AnyValue to AnyValueItem and back.
+//! Collection of sup::dto::AnyValue related utility functions.
 
-#include <sup/gui/dto/dto_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
+
+#include <string>
 
 namespace sup::gui
 {
 
-class AnyValueItem;
+std::string GetAnyValueToJSONString(const anyvalue_t* value, bool is_pretty = false);
 
+std::string GetAnyTypeToJSONString(const anyvalue_t* value);
 
-//! Sets the data of AnyValueItem using scalar AnyValue.
-//! Will throw if AnyValue is not a scalar.
-void SetDataFromScalar(const anyvalue_t& value, AnyValueItem& item);
+std::string GetValuesToJSONString(const anyvalue_t* value);
 
-//! Returns scalar AnyValue from AnyValueItem containing a scalar.
-sup::dto::AnyValue GetAnyValueFromScalar(const AnyValueItem& item);
+bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
+
+sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename);
+
+sup::dto::AnyType AnyTypeFromJSONString(const std::string& str);
 
 }  // namespace sup::gui
 
-#endif  // GUI_DTO_SCALAR_CONVERSION_UTILS_H_
+#endif  // GUI_DTO_ANYVALUE_UTILS_H_

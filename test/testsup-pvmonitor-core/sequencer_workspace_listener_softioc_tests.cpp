@@ -22,8 +22,8 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/softioc_runner.h>
 #include <sup/epics-test/unit_test_helper.h>
-#include <sup/gui/dto/anyvalue_utils.h>
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/anyvalue_utils.h>
+#include <sup/gui/core/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>

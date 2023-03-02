@@ -17,16 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/anyvalue_item_builder.h"
+#include "anyvalue_item_builder.h"
+
+#include "anyvalue_item.h"
+#include "conversion_utils.h"
+#include "scalar_conversion_utils.h"
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/tagindex.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/conversion_utils.h>
-#include <sup/gui/dto/scalar_conversion_utils.h>
 
 #include <cassert>
 #include <iostream>

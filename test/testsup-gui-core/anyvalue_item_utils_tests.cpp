@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/anyvalue_item_utils.h"
+#include "sup/gui/core/anyvalue_item_utils.h"
 
 #include <gtest/gtest.h>
 
 #include <sup/dto/anytype.h>
-#include <sup/gui/dto/anyvalue_item.h>
+#include <sup/gui/core/anyvalue_item.h>
 
 #include <stdexcept>
 

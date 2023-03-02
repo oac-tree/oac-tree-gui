@@ -22,7 +22,7 @@
 
 #include <mvvm/core/variant.h>
 
-#include <sup/gui/dto/dto_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
 #include <string>

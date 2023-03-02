@@ -17,30 +17,33 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef GUI_DTO_ANYVALUE_UTILS_H_
-#define GUI_DTO_ANYVALUE_UTILS_H_
+#ifndef GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
+#define GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
 
-//! Collection of sup::dto::AnyValue related utility functions.
+#include <sup/gui/core/dto_types_fwd.h>
 
-#include <sup/gui/dto/dto_types_fwd.h>
-
-#include <string>
+#include <memory>
 
 namespace sup::gui
 {
 
-std::string GetAnyValueToJSONString(const anyvalue_t* value, bool is_pretty = false);
+class AnyValueItem;
 
-std::string GetAnyTypeToJSONString(const anyvalue_t* value);
+//! The builder to create AnyValue from AnyValueItem.
 
-std::string GetValuesToJSONString(const anyvalue_t* value);
+class DomainAnyValueBuilder
+{
+public:
+  explicit DomainAnyValueBuilder(const AnyValueItem& item);
+  ~DomainAnyValueBuilder();
 
-bool ParseStringToScalarAnyvalue(const std::string& str, anyvalue_t& value);
+  sup::dto::AnyValue GetAnyValue() const;
 
-sup::dto::AnyValue AnyValueFromJSONFile(const std::string& filename);
-
-sup::dto::AnyType AnyTypeFromJSONString(const std::string& str);
+private:
+  struct DomainAnyValueBuilderImpl;
+  std::unique_ptr<DomainAnyValueBuilderImpl> p_impl;
+};
 
 }  // namespace sup::gui
 
-#endif  // GUI_DTO_ANYVALUE_UTILS_H_
+#endif  // GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_

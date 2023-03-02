@@ -17,13 +17,14 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/scalar_conversion_utils.h"
+#include "scalar_conversion_utils.h"
+
+#include "anyvalue_item.h"
+#include "conversion_utils.h"
 
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/conversion_utils.h>
 
 #include <functional>
 #include <map>

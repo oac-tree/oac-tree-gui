@@ -21,7 +21,7 @@
 #define GUI_DTO_ANYVALUE_ITEM_BUILDER_H_
 
 #include <sup/dto/i_any_visitor.h>
-#include <sup/gui/dto/dto_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
 

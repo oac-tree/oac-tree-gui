@@ -17,15 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "conversion_utils.h"
+
+#include "anyvalue_item.h"
+#include "anyvalue_item_builder.h"
+#include "domain_anyvalue_builder.h"
+
 #include <sup/dto/anytype.h>
 #include <sup/dto/anytype_registry.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
 #include <sup/dto/basic_scalar_types.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/anyvalue_item_builder.h>
-#include <sup/gui/dto/conversion_utils.h>
-#include <sup/gui/dto/domain_anyvalue_builder.h>
 
 #include <algorithm>
 #include <fstream>

@@ -28,9 +28,9 @@
 #include <testutils/gui_domain_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/anyvalue_utils.h>
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/anyvalue_item.h>
+#include <sup/gui/core/anyvalue_utils.h>
+#include <sup/gui/core/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QTest>

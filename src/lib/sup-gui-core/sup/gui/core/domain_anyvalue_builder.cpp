@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/domain_anyvalue_builder.h"
+#include "domain_anyvalue_builder.h"
 
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_composer.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/scalar_conversion_utils.h>
+#include "anyvalue_item.h"
+#include "scalar_conversion_utils.h"
 
 #include <cassert>
 #include <stack>

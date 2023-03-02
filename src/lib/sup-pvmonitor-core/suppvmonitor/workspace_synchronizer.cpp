@@ -31,7 +31,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/sessionmodel.h>
 
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 
 namespace suppvmonitor

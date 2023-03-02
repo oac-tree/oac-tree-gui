@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/scalar_conversion_utils.h"
+#include "sup/gui/core/scalar_conversion_utils.h"
 
 #include <gtest/gtest.h>
 
@@ -26,8 +26,8 @@
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/basic_scalar_types.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/anyvalue_item.h>
+#include <sup/gui/core/conversion_utils.h>
 
 using namespace sup::gui;
 

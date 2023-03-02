@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/anyvalue_item.h"
+#include "anyvalue_item.h"
 
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/conversion_utils.h>
 
 namespace sup::gui
 {

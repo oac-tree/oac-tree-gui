@@ -30,7 +30,7 @@
 #include <testutils/mock_callback_listener.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <stdexcept>
@@ -130,7 +130,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
   // triggering domain workspace event
   controller.ProcessEventFromDomain({"abc", value});
 
-  auto anyvalue_item =variable_item0->GetAnyValueItem();
+  auto anyvalue_item = variable_item0->GetAnyValueItem();
   ASSERT_NE(anyvalue_item, nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value, stored_anyvalue);
@@ -139,7 +139,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   controller.ProcessEventFromDomain({"abc", new_value});
 
-  auto new_anyvalue_item =variable_item0->GetAnyValueItem();
+  auto new_anyvalue_item = variable_item0->GetAnyValueItem();
   ASSERT_EQ(anyvalue_item, new_anyvalue_item);
   auto new_stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(new_value, new_stored_anyvalue);

@@ -19,7 +19,7 @@
 
 #include "anyvalue_item_utils.h"
 
-#include <sup/gui/dto/anyvalue_item.h>
+#include "anyvalue_item.h"
 
 #include <algorithm>
 #include <stack>

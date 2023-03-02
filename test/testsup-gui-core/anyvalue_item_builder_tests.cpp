@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/anyvalue_item_builder.h"
+#include "sup/gui/core/anyvalue_item_builder.h"
 
 #include <gtest/gtest.h>
 #include <testutils/folder_based_test.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/dto/anyvalue_helper.h>
-#include <sup/gui/dto/anyvalue_item.h>
-#include <sup/gui/dto/conversion_utils.h>
+#include <sup/gui/core/anyvalue_item.h>
+#include <sup/gui/core/conversion_utils.h>
 
 #include <iostream>
 

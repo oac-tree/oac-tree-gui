@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/dto/conversion_utils.h"
+#include "sup/gui/core/conversion_utils.h"
 
 #include <gtest/gtest.h>
 

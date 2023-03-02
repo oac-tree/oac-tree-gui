@@ -17,33 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
-#define GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
+#ifndef GUI_DTO_SCALAR_CONVERSION_UTILS_H_
+#define GUI_DTO_SCALAR_CONVERSION_UTILS_H_
 
-#include <sup/gui/dto/dto_types_fwd.h>
+//! Utility functions to convert scalar AnyValue to AnyValueItem and back.
 
-#include <memory>
+#include <sup/gui/core/dto_types_fwd.h>
 
 namespace sup::gui
 {
 
 class AnyValueItem;
 
-//! The builder to create AnyValue from AnyValueItem.
+//! Sets the data of AnyValueItem using scalar AnyValue.
+//! Will throw if AnyValue is not a scalar.
+void SetDataFromScalar(const anyvalue_t& value, AnyValueItem& item);
 
-class DomainAnyValueBuilder
-{
-public:
-  explicit DomainAnyValueBuilder(const AnyValueItem& item);
-  ~DomainAnyValueBuilder();
-
-  sup::dto::AnyValue GetAnyValue() const;
-
-private:
-  struct DomainAnyValueBuilderImpl;
-  std::unique_ptr<DomainAnyValueBuilderImpl> p_impl;
-};
+//! Returns scalar AnyValue from AnyValueItem containing a scalar.
+sup::dto::AnyValue GetAnyValueFromScalar(const AnyValueItem& item);
 
 }  // namespace sup::gui
 
-#endif  // GUI_DTO_DOMAIN_ANYVALUE_BUILDER_H_
+#endif  // GUI_DTO_SCALAR_CONVERSION_UTILS_H_
