@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/core/conversion_utils.h"
+#include "sup/gui/core/anyvalue_conversion_utils.h"
 
 #include <gtest/gtest.h>
 
@@ -25,12 +25,12 @@
 
 using namespace sup::gui;
 
-class ConversionUtilsTest : public ::testing::Test
+class AnyValueConversionUtilsTest : public ::testing::Test
 {
 public:
 };
 
-TEST_F(ConversionUtilsTest, GetTypeCode)
+TEST_F(AnyValueConversionUtilsTest, GetTypeCode)
 {
   using sup::dto::TypeCode;
 
@@ -57,7 +57,7 @@ TEST_F(ConversionUtilsTest, GetTypeCode)
 
 //! Checking function to get variant_t from sup::dto type names.
 
-TEST_F(ConversionUtilsTest, GetVariantForAnyTypeName)
+TEST_F(AnyValueConversionUtilsTest, GetVariantForAnyTypeName)
 {
   EXPECT_TRUE(
       std::holds_alternative<bool>(GetVariantForAnyValueTypeName(sup::dto::kBooleanTypeName)));
@@ -89,7 +89,7 @@ TEST_F(ConversionUtilsTest, GetVariantForAnyTypeName)
       GetVariantForAnyValueTypeName(sup::dto::kStringTypeName)));
 }
 
-TEST_F(ConversionUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
+TEST_F(AnyValueConversionUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
 {
   EXPECT_EQ(std::get<bool>(GetVariantForAnyValueTypeName(sup::dto::kBooleanTypeName)), false);
 
@@ -114,7 +114,7 @@ TEST_F(ConversionUtilsTest, DefaultVariantValuesConstructedFromAnyTypeName)
 
 //! Testing IsScalarTypeName utility function.
 
-TEST_F(ConversionUtilsTest, IsScalarTypeName)
+TEST_F(AnyValueConversionUtilsTest, IsScalarTypeName)
 {
   EXPECT_FALSE(IsScalarTypeName(std::string("")));
 
@@ -137,7 +137,7 @@ TEST_F(ConversionUtilsTest, IsScalarTypeName)
 
 //! Testing IsStructTypeName utility function.
 
-TEST_F(ConversionUtilsTest, IsStructTypeName)
+TEST_F(AnyValueConversionUtilsTest, IsStructTypeName)
 {
   EXPECT_FALSE(IsStructTypeName(std::string("")));
 

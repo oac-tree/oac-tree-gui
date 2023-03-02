@@ -25,8 +25,8 @@
 #include <testutils/mock_model_listener.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/core/anyvalue_conversion_utils.h>
 #include <sup/gui/core/anyvalue_item.h>
-#include <sup/gui/core/conversion_utils.h>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -126,4 +126,3 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueFromScalar)
   auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(new_anyvalue, stored_anyvalue2);
 }
-

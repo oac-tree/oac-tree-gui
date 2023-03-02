@@ -23,7 +23,7 @@
 
 #include <mvvm/widgets/widget_utils.h>
 
-#include <sup/gui/core/conversion_utils.h>
+#include <sup/gui/core/anyvalue_conversion_utils.h>
 
 #include <QMenu>
 #include <QPushButton>

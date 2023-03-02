@@ -29,7 +29,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/model_listener.h>
 
-#include <sup/gui/core/conversion_utils.h>
+#include <sup/gui/core/anyvalue_conversion_utils.h>
 
 #include <QDebug>
 #include <stdexcept>

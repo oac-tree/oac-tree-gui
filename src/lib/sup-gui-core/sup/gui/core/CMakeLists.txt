@@ -11,8 +11,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_utils.h
   anyvalue_viewmodel.cpp
   anyvalue_viewmodel.h
-  conversion_utils.cpp
-  conversion_utils.h
+  anyvalue_conversion_utils.cpp
+  anyvalue_conversion_utils.h
   domain_anyvalue_builder.cpp
   domain_anyvalue_builder.h
   dto_types_fwd.h

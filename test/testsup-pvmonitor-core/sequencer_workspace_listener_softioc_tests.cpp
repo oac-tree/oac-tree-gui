@@ -19,19 +19,19 @@
 
 #include "suppvmonitor/sequencer_workspace_listener.h"
 
-#include <sup/dto/anyvalue.h>
-#include <sup/epics-test/softioc_runner.h>
-#include <sup/epics-test/unit_test_helper.h>
-#include <sup/gui/core/anyvalue_utils.h>
-#include <sup/gui/core/conversion_utils.h>
-#include <sup/sequencer/workspace.h>
-
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
 #include <testutils/epics_test_utils.h>
+
+#include <sup/dto/anyvalue.h>
+#include <sup/epics-test/softioc_runner.h>
+#include <sup/epics-test/unit_test_helper.h>
+#include <sup/gui/core/anyvalue_conversion_utils.h>
+#include <sup/gui/core/anyvalue_utils.h>
+#include <sup/sequencer/workspace.h>
 
 #include <QSignalSpy>
 #include <QTest>
