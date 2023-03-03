@@ -17,11 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/core/message_handler_decorator.h"
+#include "message_handler_decorator.h"
 
-#include <QDebug>
-
-namespace sequencergui
+namespace sup::gui
 {
 
 MessageHandlerDecorator::MessageHandlerDecorator(MessageHandlerInterface *component)

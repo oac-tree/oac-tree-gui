@@ -22,7 +22,7 @@
 
 //! Factory functions to create various message reporters.
 
-#include <sequencergui/core/message_handler_interface.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <memory>
 
@@ -32,20 +32,20 @@ namespace sequencergui
 {
 
 //! Creates message handler that simply throws further
-std::unique_ptr<MessageHandlerInterface> CreateNullMessageHandler();
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateNullMessageHandler();
 
 //! Creates message handler that prints messages to standard output.
-std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler();
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateStdMessageHandler();
 
 //! Creates message handler intended to work with the graphics view.
-std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget* view);
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget* view);
 
 //! Creates message handler decorator.
-std::unique_ptr<MessageHandlerInterface> CreateMessageHandlerDecorator(
-    MessageHandlerInterface* component);
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
+    sup::gui::MessageHandlerInterface* component);
 
 //! Creates message handler that pop's up a message box.
-std::unique_ptr<MessageHandlerInterface> CreateMessageBoxHandler();
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageBoxHandler();
 
 }  // namespace sequencergui
 

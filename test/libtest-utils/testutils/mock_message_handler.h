@@ -20,8 +20,9 @@
 #ifndef MOCKMESSAGEHANDLER_H
 #define MOCKMESSAGEHANDLER_H
 
+#include <sup/gui/components/message_handler_interface.h>
+
 #include <gmock/gmock.h>
-#include <sequencergui/core/message_handler_interface.h>
 
 #include <memory>
 #include <string>
@@ -31,7 +32,7 @@ namespace testutils
 
 //! Mock class to use as MessageHandler.
 
-class MockMessageHandler : public sequencergui::MessageHandlerInterface
+class MockMessageHandler : public sup::gui::MessageHandlerInterface
 {
 public:
   MOCK_METHOD(void, SendMessage, (const std::string&));
@@ -41,9 +42,9 @@ public:
 //! This is to avoid pasing unique_ptr<MockMessageHandler> directly, since it triggers
 //! googletest warnings related to testing::Mock::AllowLeak.
 
-std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
     MockMessageHandler* mock_handler);
 
-}
+}  // namespace testutils
 
 #endif  //  MOCKMESSAGEHANDLER_H

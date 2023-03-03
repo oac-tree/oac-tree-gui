@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_CORE_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
 #define SEQUENCERGUI_CORE_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
 
-#include <sequencergui/core/message_handler_interface.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <memory>
 
@@ -33,11 +33,11 @@ class WidgetOverlayMessagePublisher;
 
 //! Display messages in widget corner.
 
-class WidgetOverlayMessageHandler : public MessageHandlerInterface
+class WidgetOverlayMessageHandler : public sup::gui::MessageHandlerInterface
 {
 public:
   explicit WidgetOverlayMessageHandler(QWidget* view);
-  ~WidgetOverlayMessageHandler();
+  ~WidgetOverlayMessageHandler() override;
 
   void SendMessage(const std::string& text) override;
 

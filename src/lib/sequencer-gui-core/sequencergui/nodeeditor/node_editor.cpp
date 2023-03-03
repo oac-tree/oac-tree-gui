@@ -108,7 +108,7 @@ void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &i
 //! Creates message handler that can be used to publish messages at the lower right corner of
 //! graphics view.
 
-std::unique_ptr<MessageHandlerInterface> NodeEditor::CreateMessageHandler()
+std::unique_ptr<sup::gui::MessageHandlerInterface> NodeEditor::CreateMessageHandler()
 {
   return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
 }

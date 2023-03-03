@@ -17,23 +17,30 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/core/standard_message_handlers.h"
+#ifndef SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H_
+#define SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H_
 
-#include <sequencergui/core/exceptions.h>
+#include <sup/gui/components/message_handler_interface.h>
 
-#include <QDebug>
-
-namespace sequencergui
+namespace sup::gui
 {
 
-void StdMessageHandler::SendMessage(const std::string &text)
-{
-  qInfo("%s", text.c_str());
-}
+//! Simple message handler that prints messages to standard output.
 
-void NullMessageHandler::SendMessage(const std::string &text)
+class StdMessageHandler : public MessageHandlerInterface
 {
-  throw RuntimeException(text);
-}
+public:
+  void SendMessage(const std::string& text) override;
+};
+
+//! Create null message handlers. It simply throws the message.
+
+class NullMessageHandler : public MessageHandlerInterface
+{
+public:
+  void SendMessage(const std::string& text) override;
+};
 
 }  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H_

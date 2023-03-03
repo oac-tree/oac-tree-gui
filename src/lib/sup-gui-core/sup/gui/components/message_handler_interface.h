@@ -17,30 +17,22 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H_
-#define SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H_
+#ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
+#define SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
 
-#include <sequencergui/core/message_handler_interface.h>
+#include <string>
 
-namespace sequencergui
+namespace sup::gui
 {
 
-//! Simple message handler that prints messages to standard output.
-
-class StdMessageHandler : public MessageHandlerInterface
-{
-public:
-  void SendMessage(const std::string& text) override;
-};
-
-//! Create null message handlers. It simply throws the message.
-
-class NullMessageHandler : public MessageHandlerInterface
+//! Interface class to send messages to the user.
+class MessageHandlerInterface
 {
 public:
-  void SendMessage(const std::string& text) override;
+  virtual ~MessageHandlerInterface() = default;
+  virtual void SendMessage(const std::string& text) = 0;
 };
 
-}  // namespace sequencergui
+}  // namespace sup::gui
 
-#endif  // SEQUENCERGUI_CORE_STANDARD_MESSAGE_HANDLERS_H_
+#endif  // SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_

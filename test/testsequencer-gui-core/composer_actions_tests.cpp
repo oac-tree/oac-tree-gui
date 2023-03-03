@@ -19,17 +19,19 @@
 
 #include "sequencergui/composer/composer_actions.h"
 
-#include <gtest/gtest.h>
-#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <testutils/mock_message_handler.h>
 
 #include <mvvm/standarditems/container_item.h>
+
+#include <sup/gui/core/exceptions.h>
+
+#include <gtest/gtest.h>
+#include <testutils/mock_message_handler.h>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -71,7 +73,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 
   // It is not possible to add second instruction to repeat instruction
   EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
-               sequencergui::RuntimeException);
+               sup::gui::RuntimeException);
 }
 
 //! Insertion instruction after selected instruction.
@@ -145,7 +147,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
 
   // It is not possible to add second instruction to repeat instruction
   EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
-               sequencergui::RuntimeException);
+               sup::gui::RuntimeException);
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 
@@ -210,7 +212,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
 
   // inserting instruction into selected instruction
   EXPECT_THROW(m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
-               sequencergui::RuntimeException);
+               sup::gui::RuntimeException);
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 
   // setting message handler

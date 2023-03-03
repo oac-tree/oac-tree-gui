@@ -20,10 +20,17 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_
 #define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_
 
+#include "sup/gui/components/message_handler_interface.h"
+
 #include <QWidget>
 
 class QKeyEvent;
 class QToolBar;
+
+namespace sup::gui
+{
+class MessageHandlerInterface;
+}
 
 namespace mvvm
 {
@@ -38,7 +45,6 @@ class GraphicsSceneController;
 class InstructionItem;
 class NodeEditorToolBar;
 class ProcedureItem;
-class MessageHandlerInterface;
 
 //! NodeEditor widget (central part of SequencerComposerView).
 
@@ -56,7 +62,7 @@ public:
 
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
-  std::unique_ptr<MessageHandlerInterface> CreateMessageHandler();
+  std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandler();
 
   std::unique_ptr<QToolBar> CreateToolBar();
 
@@ -69,7 +75,7 @@ private:
   GraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
-  std::unique_ptr<MessageHandlerInterface> m_graphics_view_message_handler;
+  std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;
 
   ProcedureItem* m_procedure_item{nullptr};
 };

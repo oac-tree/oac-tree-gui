@@ -20,13 +20,13 @@
 #ifndef SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_
 #define SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_
 
-#include <sequencergui/core/message_handler_interface.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 namespace sequencergui
 {
 
 //! Shows simple message box on message.
-class DialogMessageHandler : public MessageHandlerInterface
+class DialogMessageHandler : public sup::gui::MessageHandlerInterface
 {
 public:
   void SendMessage(const std::string& text) override;

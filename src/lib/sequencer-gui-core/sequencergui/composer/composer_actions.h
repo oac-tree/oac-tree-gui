@@ -31,10 +31,14 @@ class SessionItem;
 class TagIndex;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class MessageHandlerInterface;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
-class MessageHandlerInterface;
 
 //! Collection of actions
 
@@ -50,7 +54,7 @@ public:
 
   void SetContext(ComposerContext context);
 
-  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
+  void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
   void OnInsertInstructionAfterRequest(const QString& item_type);
 
@@ -69,7 +73,7 @@ private:
 
   SequencerModel* m_model{nullptr};
   ComposerContext m_context;
-  std::unique_ptr<MessageHandlerInterface> m_message_handler;
+  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui

@@ -38,7 +38,7 @@ namespace
 //! Invokes
 template <typename T>
 bool InvokeAndCatch(T method, const std::string &message,
-                    sequencergui::MessageHandlerInterface *message_interface)
+                    sup::gui::MessageHandlerInterface *message_interface)
 {
   try
   {
@@ -74,7 +74,7 @@ SequencerMonitorActions::SequencerMonitorActions(JobManager *job_manager,
 SequencerMonitorActions::~SequencerMonitorActions() = default;
 
 void SequencerMonitorActions::SetMessageHandler(
-    std::unique_ptr<MessageHandlerInterface> message_handler)
+    std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
 {
   m_message_handler = std::move(message_handler);
 }

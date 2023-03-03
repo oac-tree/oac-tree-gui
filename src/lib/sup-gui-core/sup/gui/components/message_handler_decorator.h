@@ -20,11 +20,11 @@
 #ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_DECORATOR_H_
 #define SEQUENCERGUI_CORE_MESSAGE_HANDLER_DECORATOR_H_
 
-#include <sequencergui/core/message_handler_interface.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <memory>
 
-namespace sequencergui
+namespace sup::gui
 {
 
 //! Decorator for message handler. Used when we have to use MessageHandler with unique_ptr but still

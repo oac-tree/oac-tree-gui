@@ -24,6 +24,11 @@
 #include <functional>
 #include <memory>
 
+namespace sup::gui
+{
+class MessageHandlerInterface;
+}
+
 namespace sequencergui
 {
 
@@ -31,7 +36,6 @@ class JobModel;
 class JobManager;
 class JobItem;
 class ProcedureItem;
-class MessageHandlerInterface;
 
 //! High level actions for SequencerMonitorView. Provides coordination between JobModel and
 //! JobManager. Provides reporting on exception throw.
@@ -49,7 +53,7 @@ public:
 
   ~SequencerMonitorActions() override;
 
-  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
+  void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
   void SetJobModel(JobModel* job_model);
 
@@ -78,7 +82,7 @@ private:
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   selection_callback_t m_job_selection_callback;
-  std::unique_ptr<MessageHandlerInterface> m_message_handler;
+  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui

@@ -17,22 +17,23 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
-#define SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
+#include "standard_message_handlers.h"
 
-#include <string>
+#include <sup/gui/core/exceptions.h>
 
-namespace sequencergui
+#include <QDebug>
+
+namespace sup::gui
 {
 
-//! Interface class to send messages to the user.
-class MessageHandlerInterface
+void StdMessageHandler::SendMessage(const std::string &text)
 {
-public:
-  virtual ~MessageHandlerInterface() = default;
-  virtual void SendMessage(const std::string& text) = 0;
-};
+  qInfo("%s", text.c_str());
+}
 
-}  // namespace sequencergui
+void NullMessageHandler::SendMessage(const std::string &text)
+{
+  throw RuntimeException(text);
+}
 
-#endif  // SEQUENCERGUI_CORE_MESSAGE_HANDLER_INTERFACE_H_
+}  // namespace sup::gui

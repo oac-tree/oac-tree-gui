@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/core/widget_overlay_message_handler.h"
+#include "widget_overlay_message_handler.h"
 
 #include <sequencergui/widgets/widget_overlay_message_publisher.h>
 

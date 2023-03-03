@@ -17,38 +17,38 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/core/message_handler_factory.h"
+#include "message_handler_factory.h"
 
-#include <sequencergui/core/message_handler_decorator.h>
-#include <sequencergui/core/standard_message_handlers.h>
+#include <sup/gui/components/standard_message_handlers.h>
+#include <sup/gui/components/message_handler_decorator.h>
 #include <sequencergui/core/widget_overlay_message_handler.h>
 #include <sequencergui/widgets/dialog_message_handler.h>
 
 namespace sequencergui
 {
 
-std::unique_ptr<MessageHandlerInterface> CreateNullMessageHandler()
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateNullMessageHandler()
 {
-  return std::make_unique<NullMessageHandler>();
+  return std::make_unique<sup::gui::NullMessageHandler>();
 }
 
-std::unique_ptr<MessageHandlerInterface> CreateStdMessageHandler()
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateStdMessageHandler()
 {
-  return std::make_unique<StdMessageHandler>();
+  return std::make_unique<sup::gui::StdMessageHandler>();
 }
 
-std::unique_ptr<MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget *view)
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateWidgetOverlayMessageHandler(QWidget *view)
 {
   return std::make_unique<WidgetOverlayMessageHandler>(view);
 }
 
-std::unique_ptr<MessageHandlerInterface> CreateMessageHandlerDecorator(
-    MessageHandlerInterface *component)
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
+    sup::gui::MessageHandlerInterface *component)
 {
-  return MessageHandlerDecorator::Create(component);
+  return sup::gui::MessageHandlerDecorator::Create(component);
 }
 
-std::unique_ptr<MessageHandlerInterface> CreateMessageBoxHandler()
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageBoxHandler()
 {
   return std::make_unique<DialogMessageHandler>();
 }

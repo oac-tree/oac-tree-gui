@@ -19,15 +19,15 @@
 
 #include "mock_message_handler.h"
 
-#include <sequencergui/core/message_handler_decorator.h>
+#include <sup/gui/components/message_handler_decorator.h>
 
 namespace testutils
 {
 
-std::unique_ptr<sequencergui::MessageHandlerInterface> CreateMessageHandlerDecorator(
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator(
     MockMessageHandler *mock_handler)
 {
-  return sequencergui::MessageHandlerDecorator::Create(mock_handler);
+  return sup::gui::MessageHandlerDecorator::Create(mock_handler);
 }
 
 }  // namespace testutils

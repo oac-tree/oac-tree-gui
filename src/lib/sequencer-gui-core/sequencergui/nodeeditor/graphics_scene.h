@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
 
+#include "sup/gui/components/message_handler_interface.h"
+
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <QGraphicsScene>
@@ -31,6 +33,11 @@ class ViewItem;
 class ApplicationModel;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class MessageHandlerInterface;
+}
+
 namespace sequencergui
 {
 class ConnectableView;
@@ -38,7 +45,6 @@ class NodeController;
 class NodeConnection;
 class InstructionItem;
 class InstructionContainerItem;
-class MessageHandlerInterface;
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -50,7 +56,7 @@ public:
 
   void SetInstructionContainer(InstructionContainerItem* root_item);
 
-  void SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler);
+  void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
   bool HasContext();
 
@@ -86,7 +92,7 @@ private:
 
   InstructionContainerItem* m_root_item{nullptr};
   std::unique_ptr<NodeController> m_node_controller;
-  std::unique_ptr<MessageHandlerInterface> m_message_handler;
+  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 
 template <typename T>

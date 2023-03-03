@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_viewmodel.h
   anyvalue_conversion_utils.cpp
   anyvalue_conversion_utils.h
+  exceptions.cpp
+  exceptions.h
   domain_anyvalue_builder.cpp
   domain_anyvalue_builder.h
   dto_types_fwd.h

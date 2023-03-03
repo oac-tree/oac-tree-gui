@@ -21,7 +21,6 @@
 
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
-#include <sequencergui/core/message_handler_interface.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -37,6 +36,8 @@
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
@@ -121,7 +122,7 @@ void GraphicsScene::SetInstructionContainer(InstructionContainerItem *root_item)
   m_root_item = root_item;
 }
 
-void GraphicsScene::SetMessageHandler(std::unique_ptr<MessageHandlerInterface> message_handler)
+void GraphicsScene::SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
 {
   m_message_handler = std::move(message_handler);
 }

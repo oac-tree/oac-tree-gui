@@ -19,7 +19,6 @@
 
 #include "sequencergui/monitor/sequencer_monitor_actions.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -28,9 +27,13 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <testutils/standard_procedure_items.h>
 
 #include <mvvm/model/model_utils.h>
+
+#include <sup/gui/core/exceptions.h>
+
+#include <gtest/gtest.h>
+#include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -125,7 +128,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
 
   JobManager manager;
 
-  EXPECT_THROW(m_actions.OnSubmitJobRequest(procedure), sequencergui::RuntimeException);
+  EXPECT_THROW(m_actions.OnSubmitJobRequest(procedure), sup::gui::RuntimeException);
 
   // After unsuccessfull submission JobItem remains there
   ASSERT_EQ(GetJobItems().size(), 1);
@@ -201,7 +204,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
   EXPECT_TRUE(context->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it
-  EXPECT_THROW(m_actions.OnRemoveJobRequest(), RuntimeException);
+  EXPECT_THROW(m_actions.OnRemoveJobRequest(), sup::gui::RuntimeException);
   QTest::qWait(20);
 
   m_actions.OnStopJobRequest();
@@ -270,7 +273,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
 
   // regenerating a job
   m_selected_item = job_item;
-  EXPECT_THROW(m_actions.OnRegenerateJobRequest(), RuntimeException);
+  EXPECT_THROW(m_actions.OnRegenerateJobRequest(), sup::gui::RuntimeException);
 
   // job item has lost it's procedure and expanded procedure
   EXPECT_FALSE(job_item->GetProcedure());

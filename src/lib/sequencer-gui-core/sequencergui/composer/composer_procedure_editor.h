@@ -32,6 +32,11 @@ namespace mvvm
 class PropertyTreeView;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class MessageHandlerInterface;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
@@ -42,7 +47,6 @@ class ComposerActions;
 class InstructionTreeWidget;
 class WorkspaceListWidget;
 class ComposerContext;
-class MessageHandlerInterface;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -53,7 +57,7 @@ class ComposerProcedureEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit ComposerProcedureEditor(std::unique_ptr<MessageHandlerInterface> message_handler,
+  explicit ComposerProcedureEditor(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler,
                                    QWidget* parent = nullptr);
   ~ComposerProcedureEditor() override;
 
