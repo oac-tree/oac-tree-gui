@@ -68,8 +68,6 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
   m_model->RegisterItem<sup::gui::AnyValueArrayItem>();
   m_model->RegisterItem<sup::gui::AnyValueScalarItem>();
 
-  PopulateModel();
-
   m_component_provider->SetApplicationModel(m_model.get());
   m_all_items_tree_view->expandAll();
   auto on_selected = [this](auto) { UpdateJson(GetSelectedItem()); };
