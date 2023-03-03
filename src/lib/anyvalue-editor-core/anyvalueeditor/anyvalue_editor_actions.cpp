@@ -37,21 +37,10 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
 {
 }
 
-void AnyValueEditorActions::OnAddAnyValueStruct(bool to_selected)
+void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 {
-  try
-  {
-    auto parent = to_selected ? m_context.get_selected_callback() : m_model->GetRootItem();
-    if (parent)
-    {
-      m_model->InsertItem<sup::gui::AnyValueStructItem>(parent, mvvm::TagIndex::Append())
-          ->SetDisplayName("struct");
-    }
-  }
-  catch (const std::exception& ex)
-  {
-    QMessageBox::warning(nullptr, "Logic error", "Can't insert field into selected item");
-  }
+  AddAnyValueStruct(selected_as_parent ? m_context.get_selected_callback()
+                                       : m_model->GetRootItem());
 }
 
 void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
@@ -93,6 +82,24 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
 void AnyValueEditorActions::OnRemoveSelected()
 {
   m_model->RemoveItem(m_context.get_selected_callback());
+}
+
+void AnyValueEditorActions::AddAnyValueStruct(mvvm::SessionItem* parent)
+{
+  if (!parent)
+  {
+    return;
+  }
+
+  try
+  {
+    m_model->InsertItem<sup::gui::AnyValueStructItem>(parent, mvvm::TagIndex::Append())
+        ->SetDisplayName("struct");
+  }
+  catch (const std::exception& ex)
+  {
+    QMessageBox::warning(nullptr, "Logic error", "Can't insert field into selected item");
+  }
 }
 
 }  // namespace anyvalueeditor

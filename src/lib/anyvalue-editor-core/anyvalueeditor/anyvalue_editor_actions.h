@@ -27,6 +27,7 @@
 namespace mvvm
 {
 class ApplicationModel;
+class SessionItem;
 }
 
 namespace sup::gui
@@ -47,7 +48,10 @@ public:
   AnyValueEditorActions(AnyValueEditorContext context, mvvm::ApplicationModel* model,
                         QObject* parent);
 
-  void OnAddAnyValueStruct(bool to_selected);
+//  void OnCreateAnyValueStruct();
+//  void OnAddStructField();
+
+  void OnAddAnyValueStruct(bool selected_as_parent);
 
   void OnAddAnyValueArray(bool to_selected);
 
@@ -56,6 +60,8 @@ public:
   void OnRemoveSelected();
 
 private:
+  void AddAnyValueStruct(mvvm::SessionItem* parent);
+
   mvvm::ApplicationModel* m_model{nullptr};
   AnyValueEditorContext m_context;
 };
