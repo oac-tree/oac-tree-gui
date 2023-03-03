@@ -20,8 +20,9 @@
 #ifndef LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 #define LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 
+#include <anyvalueeditor/anyvalue_editor_context.h>
+
 #include <QObject>
-#include <functional>
 
 namespace mvvm
 {
@@ -43,9 +44,8 @@ class AnyValueEditorActions : public QObject
   Q_OBJECT
 
 public:
-  using callback_t = std::function<sup::gui::AnyValueItem*()>;
-  AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent,
-                        callback_t get_selected_callback);
+  AnyValueEditorActions(AnyValueEditorContext context, mvvm::ApplicationModel* model,
+                        QObject* parent);
 
   void OnAddAnyValueStruct(bool to_selected);
 
@@ -57,7 +57,7 @@ public:
 
 private:
   mvvm::ApplicationModel* m_model{nullptr};
-  callback_t m_get_selected_callback;
+  AnyValueEditorContext m_context;
 };
 
 }  // namespace anyvalueeditor

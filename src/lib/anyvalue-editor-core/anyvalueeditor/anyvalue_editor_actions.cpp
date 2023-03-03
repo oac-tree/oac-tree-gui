@@ -31,9 +31,9 @@
 namespace anyvalueeditor
 {
 
-AnyValueEditorActions::AnyValueEditorActions(mvvm::ApplicationModel* model, QObject* parent,
-                                             callback_t get_selected_callback)
-    : QObject(parent), m_model(model), m_get_selected_callback(get_selected_callback)
+AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
+                                             mvvm::ApplicationModel* model, QObject* parent)
+    : QObject(parent), m_model(model), m_context(context)
 {
 }
 
@@ -41,7 +41,7 @@ void AnyValueEditorActions::OnAddAnyValueStruct(bool to_selected)
 {
   try
   {
-    auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
+    auto parent = to_selected ? m_context.get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       m_model->InsertItem<sup::gui::AnyValueStructItem>(parent, mvvm::TagIndex::Append())
@@ -58,7 +58,7 @@ void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
 {
   try
   {
-    auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
+    auto parent = to_selected ? m_context.get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       m_model->InsertItem<sup::gui::AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
@@ -75,7 +75,7 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
 {
   try
   {
-    auto parent = to_selected ? m_get_selected_callback() : m_model->GetRootItem();
+    auto parent = to_selected ? m_context.get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       auto scalar =
@@ -92,11 +92,7 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
 
 void AnyValueEditorActions::OnRemoveSelected()
 {
-  if (!m_get_selected_callback())
-  {
-    return;
-  }
-  m_model->RemoveItem(m_get_selected_callback());
+  m_model->RemoveItem(m_context.get_selected_callback());
 }
 
 }  // namespace anyvalueeditor

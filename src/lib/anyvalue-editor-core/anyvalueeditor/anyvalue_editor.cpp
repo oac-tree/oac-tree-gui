@@ -45,8 +45,7 @@ namespace anyvalueeditor
 AnyValueEditor::AnyValueEditor(QWidget *parent)
     : QWidget(parent)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
-    , m_actions(
-          new AnyValueEditorActions(m_model.get(), this, [this]() { return GetSelectedItem(); }))
+    , m_actions(new AnyValueEditorActions(CreateContext(), m_model.get(), this))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
     , m_all_items_tree_view(new QTreeView)
     , m_text_edit(new QTextEdit)
@@ -104,7 +103,7 @@ void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
   m_all_items_tree_view->expandAll();
 }
 
-sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem()
+sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem() const
 {
   return m_component_provider->GetSelected<sup::gui::AnyValueItem>();
 }
@@ -130,6 +129,12 @@ void AnyValueEditor::UpdateJson(sup::gui::AnyValueItem *item)
     // model change. If model is inconsistent, CreateAnyValue method will fail.
     m_text_edit->clear();
   }
+}
+
+AnyValueEditorContext AnyValueEditor::CreateContext() const
+{
+  auto get_selected_callback = [this]() { return GetSelectedItem(); };
+  return {get_selected_callback, {}};
 }
 
 }  // namespace anyvalueeditor

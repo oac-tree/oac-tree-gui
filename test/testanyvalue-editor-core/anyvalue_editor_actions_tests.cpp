@@ -19,6 +19,8 @@
 
 #include "anyvalueeditor/anyvalue_editor_actions.h"
 
+#include <anyvalueeditor/anyvalue_editor_context.h>
+
 #include <gtest/gtest.h>
 
 #include <mvvm/model/application_model.h>
@@ -28,17 +30,18 @@ using namespace anyvalueeditor;
 class AnyValueEditorActionsTest : public ::testing::Test
 {
 public:
-  //! Creates a callback that mimics the selection of AnyValueItem by the user.
-  //! This callback is necessary for AnyValueEditActions to function.
-  static AnyValueEditorActions::callback_t CreateCallback(sup::gui::AnyValueItem* item)
+
+  //! Creates context necessary for AnyValueEditActions to function.
+  AnyValueEditorContext CreateContext(sup::gui::AnyValueItem* item)
   {
-    return [item]() { return item; };
+    auto get_selected_callback = [item]() { return item; };
+    return {get_selected_callback, {}};
   }
 
   //! Creates AnyValueEditorActions for testing.
   std::unique_ptr<AnyValueEditorActions> CreateActions(sup::gui::AnyValueItem* selection)
   {
-    return std::make_unique<AnyValueEditorActions>(&m_model, nullptr, CreateCallback(selection));
+    return std::make_unique<AnyValueEditorActions>(CreateContext(selection), &m_model, nullptr);
   }
 
   mvvm::ApplicationModel m_model;

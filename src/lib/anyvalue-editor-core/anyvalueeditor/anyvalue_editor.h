@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <memory>
 
+#include <anyvalueeditor/anyvalue_editor_context.h>
+
 class QTextEdit;
 class QSplitter;
 class QTreeView;
@@ -55,10 +57,12 @@ public:
 
   void ImportAnyValueFromFile(const QString& filename);
 
-  sup::gui::AnyValueItem* GetSelectedItem();
+  sup::gui::AnyValueItem* GetSelectedItem() const;
 
 private:
   void UpdateJson(sup::gui::AnyValueItem* item);
+
+  AnyValueEditorContext CreateContext() const;
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
 
