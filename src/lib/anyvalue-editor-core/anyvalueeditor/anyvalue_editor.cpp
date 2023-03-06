@@ -35,6 +35,7 @@
 #include <sup/gui/core/anyvalue_viewmodel.h>
 
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include <QSplitter>
 #include <QTextEdit>
 #include <QTreeView>
@@ -137,12 +138,17 @@ AnyValueEditorContext AnyValueEditor::CreateActionContext() const
 {
   auto get_selected_callback = [this]() { return GetSelectedItem(); };
 
-//  auto notify_error_callback = [this]()
-//  {
+  auto notify_warning_callback = [this](const sup::gui::MessageEvent &event)
+  {
+    QMessageBox msg_box;
+    msg_box.setText(QString::fromStdString(event.text));
+    msg_box.setInformativeText(QString::fromStdString(event.informative));
+    msg_box.setDetailedText(QString::fromStdString(event.detailed));
+    msg_box.setIcon(msg_box.Warning);
+    msg_box.exec();
+  };
 
-//  }
-
-  return {get_selected_callback, {}};
+  return {get_selected_callback, notify_warning_callback};
 }
 
 }  // namespace anyvalueeditor

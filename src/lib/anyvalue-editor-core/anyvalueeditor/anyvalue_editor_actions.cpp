@@ -98,7 +98,8 @@ void AnyValueEditorActions::AddAnyValueStruct(mvvm::SessionItem* parent)
   }
   catch (const std::exception& ex)
   {
-    QMessageBox::warning(nullptr, "Logic error", "Can't insert field into selected item");
+    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
+    m_context.send_message_callback(message);
   }
 }
 

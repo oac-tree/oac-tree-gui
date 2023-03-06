@@ -32,15 +32,22 @@ struct MessageEvent
   //!< A message title (i.e. the title of message dialog).
   std::string title;
 
-  //!< A primary text to alert the user of the situation ("document was modified")
+  //!< A primary text to alert the user of the situation ("document was modified").
   std::string text;
 
-  //!< Further explanations or may be a question ("do you want to save")
+  //!< Further explanations or may be a question ("do you want to save").
   std::string informative;
 
-  //!< Optional details that can be shown on the request (exception's what())
-  std::string details;
+  //!< Optional details that can be shown on the request (exception's what()).
+  std::string detailed;
+
+  bool operator==(const MessageEvent& other) const;
+  bool operator!=(const MessageEvent& other) const;
 };
+
+MessageEvent CreateInvalidOperationMessage(const std::string& text,
+                                           const std::string& informative = {},
+                                           const std::string& details = {});
 
 }  // namespace sup::gui
 

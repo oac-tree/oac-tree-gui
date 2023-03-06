@@ -18,6 +18,7 @@ target_sources(${library_name} PRIVATE
   domain_anyvalue_builder.cpp
   domain_anyvalue_builder.h
   dto_types_fwd.h
+  message_event.cpp
   message_event.h
   scalar_conversion_utils.cpp
   scalar_conversion_utils.h

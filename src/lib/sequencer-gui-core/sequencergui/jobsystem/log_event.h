@@ -43,7 +43,7 @@ struct LogEvent
 //! Creates log event for the current moment of time with a given severity level and message text.
 LogEvent CreateLogEvent(Severity severity, const std::string& message);
 
-//! Returns format used for the date accross the whole app.
+//! Returns format used for the date accross the wphole app.
 //! For the moment using "yyyy.MM.dd".
 std::string GetLogEventDateFormat();
 

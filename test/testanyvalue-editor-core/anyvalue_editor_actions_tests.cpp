@@ -19,15 +19,17 @@
 
 #include "anyvalueeditor/anyvalue_editor_actions.h"
 
+#include <anyvalueeditor/anyvalue_editor_context.h>
+#include <gtest/gtest.h>
+
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
 
 #include <sup/gui/core/anyvalue_item.h>
-
-#include <anyvalueeditor/anyvalue_editor_context.h>
-#include <gtest/gtest.h>
+#include <testutils/mock_callback_listener.h>
 
 using namespace anyvalueeditor;
+using ::testing::_;
 
 class AnyValueEditorActionsTest : public ::testing::Test
 {
@@ -37,7 +39,7 @@ public:
   {
     // callback returns given item, pretending it is user's selection
     auto get_selected_callback = [item]() { return item; };
-    return {get_selected_callback, {}};
+    return {get_selected_callback, m_listener.CreateCallback()};
   }
 
   //! Creates AnyValueEditorActions for testing.
@@ -47,6 +49,7 @@ public:
   }
 
   mvvm::ApplicationModel m_model;
+  testutils::MockCallbackListener<sup::gui::MessageEvent> m_listener;
 };
 
 //! Adding structure to the empty model.
@@ -64,9 +67,36 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToEmptyModel)
   auto inserted_item = mvvm::utils::GetTopItem<sup::gui::AnyValueStructItem>(&m_model);
   EXPECT_NE(inserted_item, nullptr);
 
+  // expecting no callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+
   // adding another AnyValueItem to "selected" item as field
   actions->OnAddAnyValueStruct(/*add to selected*/ true);
 
   // since our context doesn't report any selection, the amount of items should stay the same
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+};
+
+//! Adding structure as a field to another structure (which is marked as selected).
+
+TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToAnotherStruct)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+
+  // creating action for the context, when parent is selected
+  auto actions = CreateActions(parent);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+
+  // adding AnyValueItem struct as a field
+  actions->OnAddAnyValueStruct(/*add to selected*/ true);
+
+  // validating that parent got new child
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(parent->GetChildren().size(), 1);
+
+  auto inserted_item = parent->GetChildren().at(0);
+  EXPECT_EQ(inserted_item->GetType(), std::string("AnyValueStruct"));
+  EXPECT_EQ(inserted_item->GetDisplayName(), std::string("struct"));
 };
