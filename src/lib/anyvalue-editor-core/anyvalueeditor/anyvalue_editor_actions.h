@@ -64,33 +64,39 @@ public:
   void OnRemoveSelected();
 
 private:
-  void AddAnyValueStruct(mvvm::SessionItem* parent);
+  mvvm::SessionItem* GetParent(bool selected_as_parent) const;
 
   template <typename T>
-  T* AddAnyValueItem(mvvm::SessionItem* parent);
+  T* AddAnyValueItem(bool selected_as_parent);
 
   mvvm::ApplicationModel* m_model{nullptr};
   AnyValueEditorContext m_context;
 };
 
 template <typename T>
-inline T* AnyValueEditorActions::AddAnyValueItem(mvvm::SessionItem* parent)
+inline T* AnyValueEditorActions::AddAnyValueItem(bool selected_as_parent)
 {
   T* result{nullptr};
 
-  if (!parent)
+  // only one top level item is allowed
+  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
   {
+    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
+    m_context.send_message_callback(message);
     return nullptr;
   }
 
-  try
+  if (auto parent = GetParent(selected_as_parent); parent)
   {
-    result = m_model->InsertItem<T>(parent, mvvm::TagIndex::Append());
-  }
-  catch (const std::exception& ex)
-  {
-    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert item");
-    m_context.send_message_callback(message);
+    try
+    {
+      result = m_model->InsertItem<T>(parent, mvvm::TagIndex::Append());
+    }
+    catch (const std::exception& ex)
+    {
+      auto message = sup::gui::CreateInvalidOperationMessage("Can't insert item", "", ex.what());
+      m_context.send_message_callback(message);
+    }
   }
 
   return result;

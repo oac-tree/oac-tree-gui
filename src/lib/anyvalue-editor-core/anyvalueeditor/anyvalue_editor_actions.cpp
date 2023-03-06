@@ -27,9 +27,6 @@
 #include <sup/gui/core/anyvalue_item.h>
 #include <sup/gui/core/anyvalue_item_utils.h>
 
-#include <QMainWindow>
-#include <QMessageBox>
-
 namespace anyvalueeditor
 {
 
@@ -39,20 +36,9 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
 {
 }
 
-
-
 void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 {
-  // only one top level item is allowed
-  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
-  {
-    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
-    m_context.send_message_callback(message);
-    return;
-  }
-
-  auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
-  if (auto result = AddAnyValueItem<sup::gui::AnyValueStructItem>(parent); result)
+  if (auto result = AddAnyValueItem<sup::gui::AnyValueStructItem>(selected_as_parent); result)
   {
     result->SetDisplayName(::sup::gui::kStructTypeName);
   }
@@ -60,45 +46,18 @@ void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 
 void AnyValueEditorActions::OnAddAnyValueArray(bool selected_as_parent)
 {
-  // only one top level item is allowed
-  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
+  if (auto result = AddAnyValueItem<sup::gui::AnyValueArrayItem>(selected_as_parent); result)
   {
-    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
-    m_context.send_message_callback(message);
-    return;
-  }
-
-  try
-  {
-    auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
-    if (parent)
-    {
-      m_model->InsertItem<sup::gui::AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
-          ->SetDisplayName(::sup::gui::kArrayTypeName);
-    }
-  }
-  catch (const std::exception& ex)
-  {
-    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
-    m_context.send_message_callback(message);
+    result->SetDisplayName(::sup::gui::kArrayTypeName);
   }
 }
 
 void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
                                                 bool selected_as_parent)
 {
-  // only one top level item is allowed
-  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
-  {
-    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
-    m_context.send_message_callback(message);
-    return;
-  }
-
   if (selected_as_parent)
   {
-    if (auto array_item = mvvm::utils::GetTopItem<sup::gui::AnyValueArrayItem>(m_model);
-        array_item)
+    if (auto array_item = mvvm::utils::GetTopItem<sup::gui::AnyValueArrayItem>(m_model); array_item)
     {
       if (!sup::gui::IsSuitableScalarType(*array_item, scalar_type))
       {
@@ -109,46 +68,25 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
     }
   }
 
-  try
+  if (auto result = AddAnyValueItem<sup::gui::AnyValueScalarItem>(selected_as_parent); result)
   {
-    auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
-    if (parent)
-    {
-      auto scalar =
-          m_model->InsertItem<sup::gui::AnyValueScalarItem>(parent, mvvm::TagIndex::Append());
-      scalar->SetAnyTypeName(scalar_type);
-      scalar->SetDisplayName(scalar_type);
-    }
-  }
-  catch (const std::exception& ex)
-  {
-    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
-    m_context.send_message_callback(message);
+    result->SetAnyTypeName(scalar_type);
+    result->SetDisplayName(scalar_type);
   }
 }
 
 void AnyValueEditorActions::OnRemoveSelected()
 {
-  m_model->RemoveItem(m_context.get_selected_callback());
+  if (auto selected = m_context.get_selected_callback(); selected)
+  {
+    m_model->RemoveItem(selected);
+  }
 }
 
-void AnyValueEditorActions::AddAnyValueStruct(mvvm::SessionItem* parent)
+//! Returns parent item to use for insertion.
+mvvm::SessionItem* AnyValueEditorActions::GetParent(bool selected_as_parent) const
 {
-  if (!parent)
-  {
-    return;
-  }
-
-  try
-  {
-    m_model->InsertItem<sup::gui::AnyValueStructItem>(parent, mvvm::TagIndex::Append())
-        ->SetDisplayName(::sup::gui::kStructTypeName);
-  }
-  catch (const std::exception& ex)
-  {
-    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
-    m_context.send_message_callback(message);
-  }
+  return selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
 }
 
 }  // namespace anyvalueeditor

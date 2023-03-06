@@ -388,3 +388,38 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
   // checking that model still have a single item
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
+
+// -------------------------------------------------------------------------------------------------
+// Remove item
+// -------------------------------------------------------------------------------------------------
+
+//! Remove item when nothing is selected.
+
+TEST_F(AnyValueEditorActionsTest, RemoveItemWhenNothingIsSelected)
+{
+  auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
+
+  EXPECT_NO_FATAL_FAILURE(actions->OnRemoveSelected());
+
+  // validating that still has an item
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+};
+
+//! Remove selected item.
+
+TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
+{
+  auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+
+  // creating action for the context, pretending item is selected
+  auto actions = CreateActions(struct_item);
+
+  actions->OnRemoveSelected();
+
+  // validating that there is no ietm anymore
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 0);
+};
