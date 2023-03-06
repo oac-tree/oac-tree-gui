@@ -39,7 +39,13 @@ class AnyValueItem;
 namespace anyvalueeditor
 {
 
-//! Actions for AnyValueEditor
+//! The AnyValueEditorActions class implements actions for AnyValueEditor that can be triggered from
+//! its main toolbar.
+//!
+//! It allows to add to the model AnyValueItems representing scalars, structs, and arrays. Depending
+//! on passed parameters, items can be added either as top-level items, or as a field to already
+//! existing items. The class rely on callbacks to query currently selected item and to report an
+//! error if the action is not possible.
 
 class AnyValueEditorActions : public QObject
 {
@@ -49,14 +55,11 @@ public:
   AnyValueEditorActions(AnyValueEditorContext context, mvvm::ApplicationModel* model,
                         QObject* parent);
 
-  //  void OnCreateAnyValueStruct();
-  //  void OnAddStructField();
-
   void OnAddAnyValueStruct(bool selected_as_parent);
 
-  void OnAddAnyValueArray(bool to_selected);
+  void OnAddAnyValueArray(bool selected_as_parent);
 
-  void OnAddAnyValueScalar(const std::string& scalar_type, bool to_selected);
+  void OnAddAnyValueScalar(const std::string& scalar_type, bool selected_as_parent);
 
   void OnRemoveSelected();
 

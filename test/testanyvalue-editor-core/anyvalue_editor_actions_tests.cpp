@@ -265,6 +265,37 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
 
+//! Attempt to add a scalar as an array element when array is contasining diffierent scalar types.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+  m_model.InsertItem<sup::gui::AnyValueScalarItem>(parent)->SetAnyTypeName(
+      sup::dto::kInt32TypeName);
+
+  // creating action for the context, when parent is selected
+  auto actions = CreateActions(parent);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+
+  // adding AnyValueItem struct as a field. The type matches what is already in the array.
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+
+  // validating that parent got new child
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(parent->GetChildren().size(), 2);
+
+  // expecting erro callback
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // attempt to add mismatching type
+  actions->OnAddAnyValueScalar(sup::dto::kInt16TypeName, /*add to selected*/ true);
+
+  // array still has two element
+  EXPECT_EQ(parent->GetChildren().size(), 2);
+};
+
 // -------------------------------------------------------------------------------------------------
 // Adding array
 // -------------------------------------------------------------------------------------------------

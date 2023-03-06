@@ -145,3 +145,28 @@ TEST_F(AnyValueItemUtilsTests, UpdateAnyValueItemDataFromStructWithNestedField)
   EXPECT_EQ(target_scalar0->Data<int>(), 42);
   EXPECT_EQ(target_scalar1->Data<bool>(), true);
 }
+
+TEST_F(AnyValueItemUtilsTests, IsSuitableScalarType)
+{
+  {  // empty array
+    AnyValueArrayItem item;
+    EXPECT_TRUE(IsSuitableScalarType(item, sup::dto::kInt32TypeName));
+  }
+
+  {  // array with matching type
+    AnyValueArrayItem item;
+    item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append())
+        ->SetAnyTypeName(sup::dto::kInt32TypeName);
+    EXPECT_TRUE(IsSuitableScalarType(item, sup::dto::kInt32TypeName));
+    EXPECT_FALSE(IsSuitableScalarType(item, sup::dto::kInt16TypeName));
+  }
+
+  {  // array with wrong type
+    AnyValueArrayItem item;
+    item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append())
+        ->SetAnyTypeName(sup::dto::kInt32TypeName);
+    item.InsertItem<AnyValueScalarItem>(mvvm::TagIndex::Append())
+        ->SetAnyTypeName(sup::dto::kInt32TypeName);
+    EXPECT_FALSE(IsSuitableScalarType(item, sup::dto::kInt16TypeName));
+  }
+}

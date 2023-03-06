@@ -20,10 +20,12 @@
 #include "anyvalue_editor_actions.h"
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/model_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/gui/core/anyvalue_conversion_utils.h>
 #include <sup/gui/core/anyvalue_item.h>
+#include <sup/gui/core/anyvalue_item_utils.h>
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -36,6 +38,8 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
     : QObject(parent), m_model(model), m_context(context)
 {
 }
+
+
 
 void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 {
@@ -89,6 +93,20 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
     auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
     m_context.send_message_callback(message);
     return;
+  }
+
+  if (selected_as_parent)
+  {
+    if (auto array_item = mvvm::utils::GetTopItem<sup::gui::AnyValueArrayItem>(m_model);
+        array_item)
+    {
+      if (!sup::gui::IsSuitableScalarType(*array_item, scalar_type))
+      {
+        auto message = sup::gui::CreateInvalidOperationMessage("Array element mismatch");
+        m_context.send_message_callback(message);
+        return;
+      }
+    }
   }
 
   try

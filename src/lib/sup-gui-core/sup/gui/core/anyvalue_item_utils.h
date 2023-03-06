@@ -22,10 +22,13 @@
 
 //! Collection of sup::gui::AnyValueItem related utility functions.
 
+#include <string>
+
 namespace sup::gui
 {
 
 class AnyValueItem;
+class AnyValueArrayItem;
 
 //! Update the data stored in \it target from the data of \it source.
 //! It is assumed that both items represent scalars, and the scalar types are the same.
@@ -34,6 +37,11 @@ void UpdateAnyValueItemScalarData(const AnyValueItem& source, AnyValueItem& targ
 //! Update the data stored in leaves of \it target from the data stored in leaves of \it source.
 //! The layout of two items should be the same.
 void UpdateAnyValueItemData(const AnyValueItem& source, AnyValueItem& target);
+
+//! Returns true if given \it scalar_type is suitable for the array.
+//! If array is empty, will always return true. If array is not empty, \it scalar_type should
+//! coincide with what is already in the array.
+bool IsSuitableScalarType(const AnyValueArrayItem& array, const std::string& scalar_type);
 
 }  // namespace sup::gui
 
