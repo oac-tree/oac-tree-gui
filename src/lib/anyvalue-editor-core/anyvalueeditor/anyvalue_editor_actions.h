@@ -82,11 +82,11 @@ inline T* AnyValueEditorActions::AddAnyValueItem(mvvm::SessionItem* parent)
 
   try
   {
-    m_model->InsertItem<T>(parent, mvvm::TagIndex::Append());
+    result = m_model->InsertItem<T>(parent, mvvm::TagIndex::Append());
   }
   catch (const std::exception& ex)
   {
-    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
+    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert item");
     m_context.send_message_callback(message);
   }
 

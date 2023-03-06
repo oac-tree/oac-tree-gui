@@ -39,22 +39,38 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
 
 void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 {
+  // only one top level item is allowed
+  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
+  {
+    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
+    m_context.send_message_callback(message);
+    return;
+  }
+
   auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
   if (auto result = AddAnyValueItem<sup::gui::AnyValueStructItem>(parent); result)
   {
-    result->SetDisplayName("struct");
+    result->SetDisplayName(::sup::gui::kStructTypeName);
   }
 }
 
-void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
+void AnyValueEditorActions::OnAddAnyValueArray(bool selected_as_parent)
 {
+  // only one top level item is allowed
+  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
+  {
+    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
+    m_context.send_message_callback(message);
+    return;
+  }
+
   try
   {
-    auto parent = to_selected ? m_context.get_selected_callback() : m_model->GetRootItem();
+    auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       m_model->InsertItem<sup::gui::AnyValueArrayItem>(parent, mvvm::TagIndex::Append())
-          ->SetDisplayName("array");
+          ->SetDisplayName(::sup::gui::kArrayTypeName);
     }
   }
   catch (const std::exception& ex)
@@ -64,11 +80,20 @@ void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
   }
 }
 
-void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, bool to_selected)
+void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
+                                                bool selected_as_parent)
 {
+  // only one top level item is allowed
+  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
+  {
+    auto message = sup::gui::CreateInvalidOperationMessage("Only one top AnyValue is allowed");
+    m_context.send_message_callback(message);
+    return;
+  }
+
   try
   {
-    auto parent = to_selected ? m_context.get_selected_callback() : m_model->GetRootItem();
+    auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
     if (parent)
     {
       auto scalar =
@@ -99,7 +124,7 @@ void AnyValueEditorActions::AddAnyValueStruct(mvvm::SessionItem* parent)
   try
   {
     m_model->InsertItem<sup::gui::AnyValueStructItem>(parent, mvvm::TagIndex::Append())
-        ->SetDisplayName("struct");
+        ->SetDisplayName(::sup::gui::kStructTypeName);
   }
   catch (const std::exception& ex)
   {

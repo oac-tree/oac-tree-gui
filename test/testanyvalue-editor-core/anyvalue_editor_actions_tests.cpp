@@ -128,6 +128,25 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddStructToScalar)
   ASSERT_EQ(parent->GetChildren().size(), 0);
 };
 
+//! Attempt to add second top level structure to the model.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelStruct)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // attempt to add second top level structure
+  actions->OnAddAnyValueStruct(/*add to selected*/ false);
+
+  // validating that model has only one item of necessary type
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+};
+
 // -------------------------------------------------------------------------------------------------
 // Adding scalars
 // -------------------------------------------------------------------------------------------------
@@ -227,6 +246,25 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
   ASSERT_EQ(parent->GetChildren().size(), 0);
 };
 
+//! Attempt to add second top level scalar to the model.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
+{
+  m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
+
+  // expecting warning callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // attempt to add second top level scalar
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ false);
+
+  // checking that model still have a single item
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+};
+
 // -------------------------------------------------------------------------------------------------
 // Adding array
 // -------------------------------------------------------------------------------------------------
@@ -299,4 +337,23 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
   // validating that nothing can changed in the model
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
   ASSERT_EQ(parent->GetChildren().size(), 0);
+};
+
+//! Attempt to add second top level array to the model.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
+{
+  m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
+
+  // expecting warning callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // attempt to add second top level array
+  actions->OnAddAnyValueArray(/*add to selected*/ false);
+
+  // checking that model still have a single item
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
