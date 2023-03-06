@@ -109,6 +109,12 @@ sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem() const
   return m_component_provider->GetSelected<sup::gui::AnyValueItem>();
 }
 
+//! Set up all connections.
+
+void AnyValueEditor::SetupConnections()
+{
+}
+
 AnyValueEditor::~AnyValueEditor() = default;
 
 void AnyValueEditor::UpdateJson(sup::gui::AnyValueItem *item)

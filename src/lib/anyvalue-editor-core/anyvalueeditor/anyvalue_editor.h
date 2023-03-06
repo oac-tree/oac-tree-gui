@@ -60,6 +60,7 @@ public:
   sup::gui::AnyValueItem* GetSelectedItem() const;
 
 private:
+  void SetupConnections();
   void UpdateJson(sup::gui::AnyValueItem* item);
 
   AnyValueEditorContext CreateActionContext() const;
