@@ -22,11 +22,12 @@
 
 #include <anyvalueeditor/anyvalue_editor_context.h>
 
+#include <mvvm/model/application_model.h>
+
 #include <QObject>
 
 namespace mvvm
 {
-class ApplicationModel;
 class SessionItem;
 }
 
@@ -48,8 +49,8 @@ public:
   AnyValueEditorActions(AnyValueEditorContext context, mvvm::ApplicationModel* model,
                         QObject* parent);
 
-//  void OnCreateAnyValueStruct();
-//  void OnAddStructField();
+  //  void OnCreateAnyValueStruct();
+  //  void OnAddStructField();
 
   void OnAddAnyValueStruct(bool selected_as_parent);
 
@@ -62,9 +63,35 @@ public:
 private:
   void AddAnyValueStruct(mvvm::SessionItem* parent);
 
+  template <typename T>
+  T* AddAnyValueItem(mvvm::SessionItem* parent);
+
   mvvm::ApplicationModel* m_model{nullptr};
   AnyValueEditorContext m_context;
 };
+
+template <typename T>
+inline T* AnyValueEditorActions::AddAnyValueItem(mvvm::SessionItem* parent)
+{
+  T* result{nullptr};
+
+  if (!parent)
+  {
+    return nullptr;
+  }
+
+  try
+  {
+    m_model->InsertItem<T>(parent, mvvm::TagIndex::Append());
+  }
+  catch (const std::exception& ex)
+  {
+    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
+    m_context.send_message_callback(message);
+  }
+
+  return result;
+}
 
 }  // namespace anyvalueeditor
 

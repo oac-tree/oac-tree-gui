@@ -78,7 +78,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToEmptyModel)
   EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
 
   // adding another AnyValueItem to "selected" item as field
-  actions->OnAddAnyValueStruct(/*add to selected*/ true);
+  actions->OnAddAnyValueStruct(/*add to selected*/ true);  // no-op
 
   // since our context doesn't report any selection, the amount of items should stay the same
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -97,7 +97,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToAnotherStruct)
   EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
-  actions->OnAddAnyValueStruct(/*add to selected*/ true);  // no-op
+  actions->OnAddAnyValueStruct(/*add to selected*/ true);
 
   // validating that parent got new child
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -106,6 +106,26 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToAnotherStruct)
   auto inserted_item = parent->GetChildren().at(0);
   EXPECT_EQ(inserted_item->GetType(), std::string("AnyValueStruct"));
   EXPECT_EQ(inserted_item->GetDisplayName(), ::sup::gui::kStructTypeName);
+};
+
+//! Attempt to add a structure as a field to a scalar.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddStructToScalar)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+
+  // creating action for the context, when parent is selected
+  auto actions = CreateActions(parent);
+
+  // expecting error callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // adding AnyValueItem struct as a field to
+  actions->OnAddAnyValueStruct(/*add to selected*/ true);
+
+  // validating that nothing can changed in the model
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(parent->GetChildren().size(), 0);
 };
 
 // -------------------------------------------------------------------------------------------------
@@ -163,6 +183,50 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToStruct)
   EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
 };
 
+//! Adding a scalar as an array element (which is marked as selected).
+
+TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToArray)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+
+  // creating action for the context, when parent is selected
+  auto actions = CreateActions(parent);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+
+  // adding AnyValueItem struct as a field
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+
+  // validating that parent got new child
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(parent->GetChildren().size(), 1);
+
+  auto inserted_item = parent->GetChildren().at(0);
+  EXPECT_EQ(inserted_item->GetDisplayName(), sup::dto::kInt32TypeName);
+  EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
+};
+
+//! Attempt to add scalar as a field to another scalar.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+
+  // creating action for the context, when parent is selected
+  auto actions = CreateActions(parent);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // adding AnyValueItem struct as a field
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+
+  // validating that nothing can changed in the model
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(parent->GetChildren().size(), 0);
+};
+
 // -------------------------------------------------------------------------------------------------
 // Adding array
 // -------------------------------------------------------------------------------------------------
@@ -215,4 +279,24 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
   auto inserted_item = parent->GetChildren().at(0);
   EXPECT_EQ(inserted_item->GetType(), std::string("AnyValueArray"));
   EXPECT_EQ(inserted_item->GetDisplayName(), ::sup::gui::kArrayTypeName);
+};
+
+//! Attempt to add array as a field to a scalar.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
+{
+  auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+
+  // creating action for the context, when parent is selected
+  auto actions = CreateActions(parent);
+
+  // expecting error callbacks
+  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+
+  // adding AnyValueItem struct as a field to
+  actions->OnAddAnyValueArray(/*add to selected*/ true);
+
+  // validating that nothing can changed in the model
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(parent->GetChildren().size(), 0);
 };

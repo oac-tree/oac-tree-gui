@@ -39,8 +39,11 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
 
 void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 {
-  AddAnyValueStruct(selected_as_parent ? m_context.get_selected_callback()
-                                       : m_model->GetRootItem());
+  auto parent = selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
+  if (auto result = AddAnyValueItem<sup::gui::AnyValueStructItem>(parent); result)
+  {
+    result->SetDisplayName("struct");
+  }
 }
 
 void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
@@ -56,7 +59,8 @@ void AnyValueEditorActions::OnAddAnyValueArray(bool to_selected)
   }
   catch (const std::exception& ex)
   {
-    QMessageBox::warning(nullptr, "Logic error", "Can't insert field into selected item");
+    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
+    m_context.send_message_callback(message);
   }
 }
 
@@ -75,7 +79,8 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type, 
   }
   catch (const std::exception& ex)
   {
-    QMessageBox::warning(nullptr, "Logic error", "Can't insert field into selected item");
+    auto message = sup::gui::CreateInvalidOperationMessage("Can't insert structure");
+    m_context.send_message_callback(message);
   }
 }
 
