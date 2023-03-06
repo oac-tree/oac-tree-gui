@@ -45,7 +45,7 @@ namespace anyvalueeditor
 AnyValueEditor::AnyValueEditor(QWidget *parent)
     : QWidget(parent)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
-    , m_actions(new AnyValueEditorActions(CreateContext(), m_model.get(), this))
+    , m_actions(new AnyValueEditorActions(CreateActionContext(), m_model.get(), this))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
     , m_all_items_tree_view(new QTreeView)
     , m_text_edit(new QTextEdit)
@@ -131,9 +131,17 @@ void AnyValueEditor::UpdateJson(sup::gui::AnyValueItem *item)
   }
 }
 
-AnyValueEditorContext AnyValueEditor::CreateContext() const
+//! Creates a context with all callbacks necessary for AnyValueEditorActions to function.
+
+AnyValueEditorContext AnyValueEditor::CreateActionContext() const
 {
   auto get_selected_callback = [this]() { return GetSelectedItem(); };
+
+//  auto notify_error_callback = [this]()
+//  {
+
+//  }
+
   return {get_selected_callback, {}};
 }
 

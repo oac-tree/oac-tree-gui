@@ -62,7 +62,7 @@ public:
 private:
   void UpdateJson(sup::gui::AnyValueItem* item);
 
-  AnyValueEditorContext CreateContext() const;
+  AnyValueEditorContext CreateActionContext() const;
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
 

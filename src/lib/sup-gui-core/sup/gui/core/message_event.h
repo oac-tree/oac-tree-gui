@@ -17,32 +17,31 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_CONTEXT_H_
-#define LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_CONTEXT_H_
+#ifndef SUP_GUI_CORE_MESSAGE_EVENT_H_
+#define SUP_GUI_CORE_MESSAGE_EVENT_H_
 
-#include <functional>
 #include <string>
-
-#include <sup/gui/core/message_event.h>
 
 namespace sup::gui
 {
-class AnyValueItem;
-}
 
-namespace anyvalueeditor
+//! A MessageEvent is a simple  aggregate to send messages to the user as a reaction to his
+//! interactions with UI elements.
+struct MessageEvent
 {
+  //!< A message title (i.e. the title of message dialog).
+  std::string title;
 
-//! Context to setup AnyvalueEditorActions.
-struct AnyValueEditorContext
-{
-  //!< callback to retrieve currently selected AnyValueItem
-  std::function<sup::gui::AnyValueItem*()> get_selected_callback;
+  //!< A primary text to alert the user of the situation ("document was modified")
+  std::string text;
 
-  //!< callback to report an error
-  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
+  //!< Further explanations or may be a question ("do you want to save")
+  std::string informative;
+
+  //!< Optional details that can be shown on the request (exception's what())
+  std::string details;
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
-#endif
+#endif  // SUP_GUI_CORE_MESSAGE_EVENT_H_
