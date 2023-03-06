@@ -38,18 +38,12 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
 
 void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
 {
-  if (auto result = AddAnyValueItem<sup::gui::AnyValueStructItem>(selected_as_parent); result)
-  {
-    result->SetDisplayName(::sup::gui::kStructTypeName);
-  }
+  AddAnyValueItem<sup::gui::AnyValueStructItem>(selected_as_parent, ::sup::gui::kStructTypeName);
 }
 
 void AnyValueEditorActions::OnAddAnyValueArray(bool selected_as_parent)
 {
-  if (auto result = AddAnyValueItem<sup::gui::AnyValueArrayItem>(selected_as_parent); result)
-  {
-    result->SetDisplayName(::sup::gui::kArrayTypeName);
-  }
+  AddAnyValueItem<sup::gui::AnyValueArrayItem>(selected_as_parent, ::sup::gui::kArrayTypeName);
 }
 
 void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
@@ -61,17 +55,16 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
     {
       if (!sup::gui::IsSuitableScalarType(*array_item, scalar_type))
       {
-        auto message = sup::gui::CreateInvalidOperationMessage("Array element mismatch");
-        m_context.send_message_callback(message);
+        SendMessage("Array element mismatch");
         return;
       }
     }
   }
 
-  if (auto result = AddAnyValueItem<sup::gui::AnyValueScalarItem>(selected_as_parent); result)
+  if (auto result = AddAnyValueItem<sup::gui::AnyValueScalarItem>(selected_as_parent, scalar_type);
+      result)
   {
     result->SetAnyTypeName(scalar_type);
-    result->SetDisplayName(scalar_type);
   }
 }
 
@@ -87,6 +80,13 @@ void AnyValueEditorActions::OnRemoveSelected()
 mvvm::SessionItem* AnyValueEditorActions::GetParent(bool selected_as_parent) const
 {
   return selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
+}
+
+void AnyValueEditorActions::SendMessage(const std::string& text, const std::string& informative,
+                                        const std::string& details)
+{
+  auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
+  m_context.send_message_callback(message);
 }
 
 }  // namespace anyvalueeditor

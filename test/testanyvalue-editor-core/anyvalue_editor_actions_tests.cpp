@@ -420,6 +420,6 @@ TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
 
   actions->OnRemoveSelected();
 
-  // validating that there is no ietm anymore
+  // validating that there is no item anymore
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 0);
 };
