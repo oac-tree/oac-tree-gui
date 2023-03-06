@@ -24,6 +24,12 @@
 
 class QTextEdit;
 
+namespace mvvm
+{
+class ApplicationModel;
+class ModelHasChangedController;
+}
+
 namespace anyvalueeditor
 {
 
@@ -35,10 +41,15 @@ class AnyValueEditorTextPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit AnyValueEditorTextPanel(QWidget* parent = nullptr);
+  explicit AnyValueEditorTextPanel(mvvm::ApplicationModel* model, QWidget* parent = nullptr);
+  ~AnyValueEditorTextPanel();
 
 private:
+  void UpdateJson();
+
   QTextEdit* m_text_edit{nullptr};
+  mvvm::ApplicationModel* m_model{nullptr};
+  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
 };
 
 }  // namespace anyvalueeditor

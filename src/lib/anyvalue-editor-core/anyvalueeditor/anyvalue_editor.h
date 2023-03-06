@@ -25,7 +25,7 @@
 
 #include <anyvalueeditor/anyvalue_editor_context.h>
 
-class QTextEdit;
+//class QTextEdit;
 class QSplitter;
 class QTreeView;
 
@@ -33,7 +33,6 @@ namespace mvvm
 {
 class ApplicationModel;
 class AllItemsTreeView;
-class ModelHasChangedController;
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
@@ -47,6 +46,7 @@ namespace anyvalueeditor
 
 class AnyValueEditorToolBar;
 class AnyValueEditorActions;
+class AnyValueEditorTextPanel;
 
 class AnyValueEditor : public QWidget
 {
@@ -61,7 +61,6 @@ public:
 
 private:
   void SetupConnections();
-  void UpdateJson(sup::gui::AnyValueItem* item);
 
   AnyValueEditorContext CreateActionContext() const;
 
@@ -70,9 +69,8 @@ private:
   AnyValueEditorActions* m_actions{nullptr};
   AnyValueEditorToolBar* m_tool_bar{nullptr};
   QTreeView* m_all_items_tree_view{nullptr};
-  QTextEdit* m_text_edit{nullptr};
+  AnyValueEditorTextPanel* m_text_edit{nullptr};
   QSplitter* m_splitter{nullptr};
-  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 

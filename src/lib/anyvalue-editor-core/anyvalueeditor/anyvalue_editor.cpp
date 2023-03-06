@@ -20,8 +20,8 @@
 #include "anyvalue_editor.h"
 
 #include "anyvalue_editor_actions.h"
+#include "anyvalue_editor_textpanel.h"
 #include "anyvalue_editor_toolbar.h"
-#include "highlighter/qsourcehighliter.h"
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/project/model_has_changed_controller.h>
@@ -37,7 +37,6 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QSplitter>
-#include <QTextEdit>
 #include <QTreeView>
 
 namespace anyvalueeditor
@@ -49,7 +48,7 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
     , m_actions(new AnyValueEditorActions(CreateActionContext(), m_model.get(), this))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
     , m_all_items_tree_view(new QTreeView)
-    , m_text_edit(new QTextEdit)
+    , m_text_edit(new AnyValueEditorTextPanel(m_model.get()))
     , m_splitter(new QSplitter)
     , m_component_provider(mvvm::CreateProvider<sup::gui::AnyValueViewModel>(m_all_items_tree_view))
 {
@@ -70,20 +69,6 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
 
   m_component_provider->SetApplicationModel(m_model.get());
   m_all_items_tree_view->expandAll();
-  auto on_selected = [this](auto) { UpdateJson(GetSelectedItem()); };
-  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
-          on_selected);
-
-  QFont textFont("Monospace");
-  m_text_edit->setFont(textFont);
-  m_text_edit->setLineWrapMode(QTextEdit::NoWrap);
-
-  auto highlighter = new QSourceHighlite::QSourceHighliter(m_text_edit->document());
-  highlighter->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJSON);
-
-  auto on_model_changed = [this]() { UpdateJson(GetSelectedItem()); };
-  m_model_changed_controller =
-      std::make_unique<mvvm::ModelHasChangedController>(m_model.get(), on_model_changed);
 }
 
 void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
@@ -97,10 +82,6 @@ void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
 
   m_component_provider->SetApplicationModel(m_model.get());
 
-  // setting the editor
-  auto str = sup::gui::GetAnyValueToJSONString(&anyvalue, true);
-  m_text_edit->setText(QString::fromStdString(str));
-
   m_all_items_tree_view->expandAll();
 }
 
@@ -111,32 +92,9 @@ sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem() const
 
 //! Set up all connections.
 
-void AnyValueEditor::SetupConnections()
-{
-}
+void AnyValueEditor::SetupConnections() {}
 
 AnyValueEditor::~AnyValueEditor() = default;
-
-void AnyValueEditor::UpdateJson(sup::gui::AnyValueItem *item)
-{
-  if (!item)
-  {
-    return;
-  }
-
-  try
-  {
-    auto any_value = CreateAnyValue(*item);
-    auto str = sup::gui::GetAnyValueToJSONString(&any_value, true);
-    m_text_edit->setText(QString::fromStdString(str));
-  }
-  catch (const std::exception &ex)
-  {
-    // Current simplified approach calls the method `UpdateJson` on every
-    // model change. If model is inconsistent, CreateAnyValue method will fail.
-    m_text_edit->clear();
-  }
-}
 
 //! Creates a context with all callbacks necessary for AnyValueEditorActions to function.
 
