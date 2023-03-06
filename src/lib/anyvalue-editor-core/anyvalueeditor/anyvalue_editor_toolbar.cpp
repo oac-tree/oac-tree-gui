@@ -36,6 +36,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
     , m_add_anyvalue_button(new QToolButton)
     , m_add_field_button(new QToolButton)
     , m_remove_button(new QToolButton)
+    , m_hide_pannel_button(new QToolButton)
     , m_actions(actions)
     , m_create_anyvalue_menu(AddAnyValueMenu(false))
     , m_add_field_menu(AddAnyValueMenu(true))
@@ -63,6 +64,15 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   connect(m_remove_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnRemoveSelected);
   addWidget(m_remove_button);
+
+  InsertStrech();
+
+  m_hide_pannel_button->setText("JSON");
+  m_hide_pannel_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_hide_pannel_button->setToolTip("Hide/show the panel with JSON presentation");
+  connect(m_hide_pannel_button, &QToolButton::clicked, this,
+          &AnyValueEditorToolBar::HidePannelButtonRequest);
+  addWidget(m_hide_pannel_button);
 }
 
 AnyValueEditorToolBar::~AnyValueEditorToolBar() = default;

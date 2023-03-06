@@ -41,13 +41,18 @@ public:
   explicit AnyValueEditorToolBar(AnyValueEditorActions* actions, QWidget* parent = nullptr);
   ~AnyValueEditorToolBar() override;
 
-private:
+
+signals:
+  void HidePannelButtonRequest();
+
+  private:
   void InsertStrech();
   std::unique_ptr<QMenu> AddAnyValueMenu(bool to_selected);
 
   QToolButton* m_add_anyvalue_button{nullptr};
   QToolButton* m_add_field_button{nullptr};
   QToolButton* m_remove_button{nullptr};
+  QToolButton* m_hide_pannel_button{nullptr};
 
   AnyValueEditorActions* m_actions{nullptr};
 

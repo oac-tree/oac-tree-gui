@@ -69,6 +69,8 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
 
   m_component_provider->SetApplicationModel(m_model.get());
   m_all_items_tree_view->expandAll();
+
+  SetupConnections();
 }
 
 void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
@@ -92,7 +94,11 @@ sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem() const
 
 //! Set up all connections.
 
-void AnyValueEditor::SetupConnections() {}
+void AnyValueEditor::SetupConnections()
+{
+  auto on_panel = [this]() { m_text_edit->setVisible(!m_text_edit->isVisible()); };
+  connect(m_tool_bar, &AnyValueEditorToolBar::HidePannelButtonRequest, this, on_panel);
+}
 
 AnyValueEditor::~AnyValueEditor() = default;
 
