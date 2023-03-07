@@ -29,8 +29,8 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/softioc_runner.h>
 #include <sup/epics-test/unit_test_helper.h>
-#include <sup/gui/core/anyvalue_conversion_utils.h>
-#include <sup/gui/core/anyvalue_utils.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QSignalSpy>

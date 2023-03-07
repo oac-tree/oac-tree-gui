@@ -1,25 +1,5 @@
 target_sources(${library_name} PRIVATE
-  anyvalue_item.cpp
-  anyvalue_item.h
-  anyvalue_item_builder.cpp
-  anyvalue_item_builder.h
-  anyvalue_item_utils.cpp
-  anyvalue_item_utils.cpp
-  anyvalue_item_utils.h
-  anyvalue_item_utils.h
-  anyvalue_utils.cpp
-  anyvalue_utils.h
-  anyvalue_viewmodel.cpp
-  anyvalue_viewmodel.h
-  anyvalue_conversion_utils.cpp
-  anyvalue_conversion_utils.h
   exceptions.cpp
   exceptions.h
-  domain_anyvalue_builder.cpp
-  domain_anyvalue_builder.h
   dto_types_fwd.h
-  message_event.cpp
-  message_event.h
-  scalar_conversion_utils.cpp
-  scalar_conversion_utils.h
 )

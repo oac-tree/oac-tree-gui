@@ -23,9 +23,9 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <sup/gui/core/anyvalue_conversion_utils.h>
-#include <sup/gui/core/anyvalue_item.h>
-#include <sup/gui/core/anyvalue_item_utils.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
 
 namespace anyvalueeditor
 {

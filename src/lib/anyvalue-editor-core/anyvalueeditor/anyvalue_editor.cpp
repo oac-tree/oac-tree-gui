@@ -29,10 +29,10 @@
 #include <mvvm/widgets/item_view_component_provider.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/core/anyvalue_conversion_utils.h>
-#include <sup/gui/core/anyvalue_item.h>
-#include <sup/gui/core/anyvalue_utils.h>
-#include <sup/gui/core/anyvalue_viewmodel.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_utils.h>
+#include <sup/gui/viewmodel/anyvalue_viewmodel.h>
 
 #include <QHBoxLayout>
 #include <QMessageBox>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/core/anyvalue_utils.h"
+#include "sup/gui/model/anyvalue_utils.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>

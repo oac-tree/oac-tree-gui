@@ -25,7 +25,7 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_variable_items.h>
 
-#include <sup/gui/core/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
 
 namespace

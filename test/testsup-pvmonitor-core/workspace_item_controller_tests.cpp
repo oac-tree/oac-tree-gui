@@ -30,7 +30,7 @@
 #include <testutils/mock_callback_listener.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/core/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <stdexcept>

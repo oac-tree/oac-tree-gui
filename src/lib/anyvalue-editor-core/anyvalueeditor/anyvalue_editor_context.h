@@ -23,7 +23,7 @@
 #include <functional>
 #include <string>
 
-#include <sup/gui/core/message_event.h>
+#include <sup/gui/components/message_event.h>
 
 namespace sup::gui
 {

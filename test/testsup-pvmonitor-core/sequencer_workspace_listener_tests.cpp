@@ -25,7 +25,7 @@
 #include <suppvmonitor/workspace_event.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/core/anyvalue_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QSignalSpy>

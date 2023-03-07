@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sup/gui/core/message_event.h"
+#include "sup/gui/components/message_event.h"
 
 #include <gtest/gtest.h>
 
