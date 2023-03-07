@@ -18,7 +18,7 @@ add_subdirectory(testsup-gui-core)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-core-events)
 add_subdirectory(testsup-pvmonitor-core)
-add_subdirectory(testanyvalue-editor-core)
+add_subdirectory(testsup-gui-tools)
 
 # Add custom target `make testall` which will run test executables one after another.
 # This can be used instead of usual `make test` or `ctest` while running tests via an ssh
@@ -27,7 +27,7 @@ add_subdirectory(testanyvalue-editor-core)
 
 add_custom_target(testall
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-gui-core
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testanyvalue-editor-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-gui-tools
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core
@@ -38,7 +38,7 @@ file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
 export QT_QPA_PLATFORM=offscreen
 fail=0
 " ${TEST_OUTPUT_DIRECTORY}/testsup-gui-core " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testanyvalue-editor-core " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsup-gui-tools " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core " || fail=1

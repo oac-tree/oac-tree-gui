@@ -1,4 +1,4 @@
-set(library_name anyvalue-editor-core)
+set(library_name sup-gui-tools)
 
 set(CMAKE_AUTOMOC ON)
 

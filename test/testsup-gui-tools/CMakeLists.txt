@@ -1,11 +1,11 @@
-set(test testanyvalue-editor-core)
+set(test testsup-gui-tools)
 
 file(GLOB source_files "*.cpp")
 file(GLOB include_files "*.h")
 
 add_executable(${test} ${source_files} ${include_files})
 
-target_link_libraries(${test} PRIVATE anyvalue-editor-core test-utils)
+target_link_libraries(${test} PRIVATE sup-gui-tools test-utils)
 
 set_target_properties(${test} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIRECTORY})
 
