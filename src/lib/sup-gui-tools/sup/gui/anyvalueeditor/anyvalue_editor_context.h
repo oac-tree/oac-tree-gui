@@ -30,7 +30,7 @@ namespace sup::gui
 class AnyValueItem;
 }
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 //! Context to setup AnyvalueEditorActions.

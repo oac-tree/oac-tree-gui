@@ -33,7 +33,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 AnyValueEditorTextPanel::AnyValueEditorTextPanel(mvvm::ApplicationModel *model, QWidget *parent)
@@ -82,4 +82,4 @@ void AnyValueEditorTextPanel::UpdateJson()
   }
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

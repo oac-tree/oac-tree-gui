@@ -27,7 +27,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,

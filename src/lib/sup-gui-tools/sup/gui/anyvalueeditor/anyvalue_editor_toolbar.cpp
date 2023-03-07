@@ -29,7 +29,7 @@
 #include <QPushButton>
 #include <QToolButton>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWidget *parent)
     : QToolBar(parent)

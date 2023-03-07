@@ -30,7 +30,7 @@ class ApplicationModel;
 class ModelHasChangedController;
 }
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 //! Collapsible panel on the right of AnyValueEditor with json representation of AnyValueItem being

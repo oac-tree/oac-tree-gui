@@ -39,7 +39,7 @@
 #include <QSplitter>
 #include <QTreeView>
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 AnyValueEditor::AnyValueEditor(QWidget *parent)

@@ -26,7 +26,7 @@
 class QToolButton;
 class QMenu;
 
-namespace anyvalueeditor
+namespace sup::gui
 {
 
 class AnyValueEditorActions;

@@ -30,7 +30,7 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-using namespace anyvalueeditor;
+using namespace sup::gui;
 using ::testing::_;
 
 class AnyValueEditorActionsTest : public ::testing::Test

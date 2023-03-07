@@ -25,7 +25,6 @@
 
 #include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 
-//class QTextEdit;
 class QSplitter;
 class QTreeView;
 
@@ -38,12 +37,8 @@ class ItemViewComponentProvider;
 
 namespace sup::gui
 {
+
 class AnyValueItem;
-}
-
-namespace anyvalueeditor
-{
-
 class AnyValueEditorToolBar;
 class AnyValueEditorActions;
 class AnyValueEditorTextPanel;

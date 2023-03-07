@@ -33,11 +33,8 @@ class SessionItem;
 
 namespace sup::gui
 {
-class AnyValueItem;
-}
 
-namespace anyvalueeditor
-{
+class AnyValueItem;
 
 //! The AnyValueEditorActions class implements actions for AnyValueEditor that can be triggered from
 //! its main toolbar.

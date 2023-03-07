@@ -88,7 +88,7 @@ void MainWindow::InitMenu()
 
 void MainWindow::InitComponents()
 {
-  m_anyvalue_editor = new AnyValueEditor;
+  m_anyvalue_editor = new sup::gui::AnyValueEditor;
   setCentralWidget(m_anyvalue_editor);
 }
 
