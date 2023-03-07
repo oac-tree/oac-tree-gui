@@ -23,7 +23,7 @@
 #include <QWidget>
 #include <memory>
 
-#include <anyvalueeditor/anyvalue_editor_context.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 
 //class QTextEdit;
 class QSplitter;

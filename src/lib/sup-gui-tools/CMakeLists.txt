@@ -4,7 +4,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} SHARED "")
 
-add_subdirectory(anyvalueeditor)
+add_subdirectory(sup)
 
 target_link_libraries(${library_name} PUBLIC pthread sup-gui-core)
 

@@ -20,7 +20,7 @@
 #ifndef LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 #define LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 
-#include <anyvalueeditor/anyvalue_editor_context.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 
 #include <mvvm/model/application_model.h>
 

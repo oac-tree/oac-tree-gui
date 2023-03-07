@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_editor_toolbar.h"
+#include "anyvalue_editor_toolbar.h"
 
-#include <anyvalueeditor/anyvalue_editor_actions.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor_actions.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

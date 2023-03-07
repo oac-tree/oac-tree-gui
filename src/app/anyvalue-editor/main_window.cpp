@@ -19,7 +19,7 @@
 
 #include "main_window.h"
 
-#include <anyvalueeditor/anyvalue_editor.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor.h>
 
 #include <QCoreApplication>
 #include <QFileDialog>

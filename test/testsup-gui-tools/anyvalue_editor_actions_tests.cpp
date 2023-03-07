@@ -17,9 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalueeditor/anyvalue_editor_actions.h"
+#include "sup/gui/anyvalueeditor/anyvalue_editor_actions.h"
 
-#include <anyvalueeditor/anyvalue_editor_context.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
 
@@ -27,6 +26,7 @@
 #include <mvvm/model/model_utils.h>
 
 #include <sup/dto/anytype.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
