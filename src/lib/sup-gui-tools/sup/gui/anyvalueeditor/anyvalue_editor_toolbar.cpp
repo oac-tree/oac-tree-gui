@@ -23,6 +23,7 @@
 
 #include <sup/gui/anyvalueeditor/anyvalue_editor_actions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QPushButton>
@@ -53,10 +54,11 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
     , m_create_anyvalue_menu(AddAnyValueMenu(false))
     , m_add_field_menu(AddAnyValueMenu(true))
 {
-  setIconSize(QSize(24, 24));
+  setIconSize(sup::gui::utils::ToolBarIconSize());
 
   m_add_anyvalue_button->setText("Create AnyValue");
-  m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_add_anyvalue_button->setIcon(GetIcon("plus-circle-outline"));
+  m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_anyvalue_button->setToolTip(
       "Creates new top level AnyValue. \nIt will be appended to the list of existing anyvalues");
   m_add_anyvalue_button->setPopupMode(QToolButton::InstantPopup);
@@ -64,14 +66,16 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   addWidget(m_add_anyvalue_button);
 
   m_add_field_button->setText("Add field");
-  m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_add_field_button->setIcon(GetIcon("plus-circle-multiple-outline"));
+  m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_field_button->setToolTip("Add field after current selection.");
   m_add_field_button->setPopupMode(QToolButton::InstantPopup);
   m_add_field_button->setMenu(m_add_field_menu.get());
   addWidget(m_add_field_button);
 
   m_remove_button->setText("Remove");
-  m_remove_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_remove_button->setIcon(GetIcon("beaker-remove-outline"));
+  m_remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_remove_button->setToolTip("Remove selected item and all it's children");
   connect(m_remove_button, &QToolButton::clicked, actions,
           &AnyValueEditorActions::OnRemoveSelected);
