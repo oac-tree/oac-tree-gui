@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons</file>
+        <file>icons/dock-right.svg</file>
+        <file>icons/beaker-remove-outline.svg</file>
+        <file>icons/code-json.svg</file>
+        <file>icons/plus-circle-multiple-outline.svg</file>
+        <file>icons/plus-circle-outline.svg</file>
+    </qresource>
+</RCC>

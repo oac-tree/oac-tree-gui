@@ -19,12 +19,16 @@
 
 #include "main_window.h"
 
+#include <mvvm/widgets/app_utils.h>
+
 #include <QApplication>
 #include <QLocale>
 
 int main(int argc, char** argv)
 {
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
+
+  mvvm::utils::SetupHighDpiScaling();
 
   QApplication app(argc, argv);
 

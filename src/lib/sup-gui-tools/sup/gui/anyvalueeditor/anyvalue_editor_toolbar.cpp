@@ -19,15 +19,27 @@
 
 #include "anyvalue_editor_toolbar.h"
 
-#include <sup/gui/anyvalueeditor/anyvalue_editor_actions.h>
-
 #include <mvvm/widgets/widget_utils.h>
 
+#include <sup/gui/anyvalueeditor/anyvalue_editor_actions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <QMenu>
 #include <QPushButton>
 #include <QToolButton>
+
+namespace
+{
+
+//! Returns icon from name. For the moment expects that png version of icon is available in the
+//! resource folder.
+QIcon GetIcon(const QString &icon_name)
+{
+  const QString icon_extension("svg");
+  return QIcon(QString(":/icons/%1.%2").arg(icon_name, icon_extension));
+}
+
+}  // namespace
 
 namespace sup::gui
 {
@@ -68,7 +80,8 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   InsertStrech();
 
   m_hide_pannel_button->setText("JSON");
-  m_hide_pannel_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  m_hide_pannel_button->setIcon(GetIcon("code-json"));
+  m_hide_pannel_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_hide_pannel_button->setToolTip("Hide/show the panel with JSON presentation");
   connect(m_hide_pannel_button, &QToolButton::clicked, this,
           &AnyValueEditorToolBar::HidePannelButtonRequest);
@@ -115,4 +128,4 @@ std::unique_ptr<QMenu> AnyValueEditorToolBar::AddAnyValueMenu(bool to_selected)
   return result;
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
