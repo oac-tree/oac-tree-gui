@@ -33,7 +33,7 @@ class MonitorWidgetToolBar : public QToolBar
 
 public:
   explicit MonitorWidgetToolBar(QWidget* parent = nullptr);
-  ~MonitorWidgetToolBar();
+  ~MonitorWidgetToolBar() override;
 
 signals:
   void AddVariableRequest(const QString& variable_type_name);
@@ -48,6 +48,7 @@ private:
   std::unique_ptr<QMenu> m_add_variable_menu;
   QToolButton* m_add_button{nullptr};
   QToolButton* m_remove_button{nullptr};
+  QToolButton* m_edit_anyvalue_button{nullptr};
   QToolButton* m_start_button{nullptr};
   QToolButton* m_stop_button{nullptr};
 };
