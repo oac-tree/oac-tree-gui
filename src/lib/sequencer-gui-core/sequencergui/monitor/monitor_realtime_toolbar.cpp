@@ -23,6 +23,7 @@
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
 #include <QLabel>
@@ -51,7 +52,7 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
     , m_delay_button(new QToolButton)
     , m_delay_menu(CreateDelayMenu())
 {
-  setIconSize(styleutils::ToolBarIconSize());
+  setIconSize(sup::gui::utils::ToolBarIconSize());
 
   m_run_button->setText("Run");
   m_run_button->setIcon(styleutils::GetIcon("arrow-right-drop-circle-outline.svg"));

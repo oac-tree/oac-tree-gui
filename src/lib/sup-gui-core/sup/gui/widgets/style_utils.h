@@ -17,22 +17,21 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_STYLE_UTILS_H_
-#define SEQUENCERGUI_UTILS_STYLE_UTILS_H_
+#ifndef SUP_GUI_WIDGETS_STYLE_UTILS_H_
+#define SUP_GUI_WIDGETS_STYLE_UTILS_H_
 
 #include <QWidget>
 
-class QTreeView;
 class QIcon;
 
-namespace sequencergui::styleutils
+namespace sup::gui::utils
 {
 
-//! Sets style for the tree to better look on CODAC systems.
-void SetUnifiedPropertyStyle(QTreeView* tree);
+//! Size of tolbar icons.
+QSize ToolBarIconSize();
 
-QIcon GetIcon(const std::string& icon_name);
+//! Size of tolbar icons.
+QSize NarrowToolBarIconSize();
+}  // namespace sup::gui::utils
 
-}  // namespace sequencergui::styleutils
-
-#endif  // SEQUENCERGUI_UTILS_STYLE_UTILS_H_
+#endif  // SUP_GUI_WIDGETS_STYLE_UTILS_H_

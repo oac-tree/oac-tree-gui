@@ -39,6 +39,8 @@
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/top_items_tree_view.h>
 
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -64,8 +66,9 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
   m_splitter->addWidget(m_monitor_panel);
   m_splitter->addWidget(m_realtime_widget);
   m_splitter->addWidget(m_property_widget);
-  m_splitter->setSizes(QList<int>() << styleutils::UnitSize(30) << styleutils::UnitSize(90)
-                                    << styleutils::UnitSize(30));
+  m_splitter->setSizes(QList<int>()
+                       << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
+                       << mvvm::utils::UnitSize(30));
 
   layout->addWidget(m_splitter);
 

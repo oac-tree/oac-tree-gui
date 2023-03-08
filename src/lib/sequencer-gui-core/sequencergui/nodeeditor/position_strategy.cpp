@@ -21,13 +21,14 @@
 
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/node_port.h>
-#include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/widgets/widget_utils.h>
 
 namespace
 {
 double port_radius()
 {
-  return sequencergui::styleutils::UnitSize(0.4);
+  return mvvm::utils::UnitSize(0.4);
 }
 }  // namespace
 

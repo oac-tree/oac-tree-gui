@@ -31,6 +31,7 @@
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QCloseEvent>
 #include <QCoreApplication>
@@ -78,9 +79,9 @@ void MainWindow::InitApplication()
   if (settings.childGroups().contains(main_window_group))
   {
     settings.beginGroup(main_window_group);
-    resize(settings.value(size_key, QSize(styleutils::UnitSize(80), styleutils::UnitSize(60)))
+    resize(settings.value(size_key, QSize(mvvm::utils::UnitSize(80), mvvm::utils::UnitSize(60)))
                .toSize());
-    move(settings.value(pos_key, QPoint(styleutils::UnitSize(20), styleutils::UnitSize(40)))
+    move(settings.value(pos_key, QPoint(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(40)))
              .toPoint());
     settings.endGroup();
   }

@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/warning_sign_widget.h"
 
-#include <sequencergui/utils/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QIcon>
 #include <QMessageBox>
@@ -30,7 +30,7 @@ namespace
 {
 QRect GetPixmapRect()
 {
-  auto size = sequencergui::styleutils::ToolBarIconSize();
+  auto size = sup::gui::utils::ToolBarIconSize();
   return {0, 0, 32, 32};
 }
 

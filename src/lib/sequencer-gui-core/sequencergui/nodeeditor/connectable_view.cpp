@@ -24,7 +24,8 @@
 #include <sequencergui/nodeeditor/node_port.h>
 #include <sequencergui/nodeeditor/position_strategy.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
-#include <sequencergui/utils/style_utils.h>
+
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QDebug>
 #include <QPainter>
@@ -43,7 +44,7 @@ QRectF label_rectangle(const QRectF& rect)
 
 int GetSmallFontSize()
 {
-  static const int kSmallFontSize(sequencergui::styleutils::AppFontSize() * 0.8);
+  static const int kSmallFontSize(mvvm::utils::AppFontSize() * 0.8);
   return kSmallFontSize;
 }
 
@@ -105,7 +106,7 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
   if (option->state & (QStyle::State_Selected | QStyle::State_HasFocus))
   {
     auto rect = QRectF(boundingRect().width() * 0.4, boundingRect().height() * 0.7,
-                       styleutils::UnitSize(1.75), styleutils::UnitSize(1.75));
+                       mvvm::utils::UnitSize(1.75), mvvm::utils::UnitSize(1.75));
     painter->drawPixmap(rect, pixmap, QRectF(0.0, 0.0, pixmap.width(), pixmap.height()));
   }
 }

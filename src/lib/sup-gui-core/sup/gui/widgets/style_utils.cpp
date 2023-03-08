@@ -17,22 +17,27 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_STYLE_UTILS_H_
-#define SEQUENCERGUI_UTILS_STYLE_UTILS_H_
+#include "style_utils.h"
 
-#include <QWidget>
+#include <mvvm/widgets/widget_utils.h>
 
-class QTreeView;
-class QIcon;
+#include <QIcon>
+#include <QSize>
+#include <cmath>
 
-namespace sequencergui::styleutils
+namespace sup::gui::utils
 {
 
-//! Sets style for the tree to better look on CODAC systems.
-void SetUnifiedPropertyStyle(QTreeView* tree);
+QSize ToolBarIconSize()
+{
+  const int width = mvvm::utils::UnitSize(2.3);
+  return {width, width};
+}
 
-QIcon GetIcon(const std::string& icon_name);
+QSize NarrowToolBarIconSize()
+{
+  const int width = std::round(mvvm::utils::UnitSize(1.75));
+  return {width, width};
+}
 
-}  // namespace sequencergui::styleutils
-
-#endif  // SEQUENCERGUI_UTILS_STYLE_UTILS_H_
+}  // namespace sup::gui::utils

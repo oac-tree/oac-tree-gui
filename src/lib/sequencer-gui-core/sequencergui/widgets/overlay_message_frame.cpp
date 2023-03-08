@@ -19,7 +19,7 @@
 
 #include "sequencergui/widgets/overlay_message_frame.h"
 
-#include <sequencergui/utils/style_utils.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QColor>
 #include <QDebug>
@@ -31,13 +31,13 @@ namespace
 //! Returns width of message box.
 int GetMaximumBoxWidth()
 {
-  return sequencergui::styleutils::UnitSize(40);
+  return mvvm::utils::UnitSize(40);
 }
 
 //! Returns height of message box.
 int GetMinimumBoxHeight()
 {
-  return sequencergui::styleutils::UnitSize(4);
+  return mvvm::utils::UnitSize(4);
 }
 
 }  // namespace
@@ -49,7 +49,7 @@ OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
     : QFrame(parent)
     , m_text(text)
     , m_bounding_rect(0, 0, GetMaximumBoxWidth(), GetMinimumBoxHeight())
-    , m_font("Monospace", styleutils::AppFontSize(), QFont::Normal, true)
+    , m_font("Monospace", mvvm::utils::AppFontSize(), QFont::Normal, true)
 {
   setAttribute(Qt::WA_TransparentForMouseEvents);
   setAttribute(Qt::WA_NoSystemBackground);
@@ -68,7 +68,7 @@ void OverlayMessageFrame::paintEvent(QPaintEvent* event)
   painter.setBrush(QColor(Qt::lightGray));
   painter.setFont(m_font);
   painter.drawRect(m_bounding_rect);
-  auto margin = styleutils::UnitSize();
+  auto margin = mvvm::utils::UnitSize();
   painter.drawText(m_bounding_rect.marginsRemoved(QMargins(margin, margin, margin, margin)),
                    Qt::TextWordWrap, m_text);
 }

@@ -24,6 +24,7 @@
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QButtonGroup>
 #include <QMenu>
@@ -45,7 +46,7 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
     , m_zoom_button(new QToolButton)
     , m_align_button(new QToolButton)
 {
-  setIconSize(styleutils::ToolBarIconSize());
+  setIconSize(sup::gui::utils::ToolBarIconSize());
 
   m_pointer_button->setIcon(styleutils::GetIcon("arrow-top-left.svg"));
   m_pointer_button->setToolButtonStyle(Qt::ToolButtonIconOnly);

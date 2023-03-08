@@ -20,6 +20,8 @@
 #include "suppvmonitor/monitor_widget_toolbar.h"
 
 #include <sequencergui/domain/domain_utils.h>
+
+#include <sup/gui/widgets/style_utils.h>
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -38,7 +40,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
     , m_start_button(new QToolButton)
     , m_stop_button(new QToolButton)
 {
-  setIconSize(sequencergui::styleutils::ToolBarIconSize());
+  setIconSize(sup::gui::utils::ToolBarIconSize());
 
   auto font = m_start_button->font();
   auto psize = font.pointSize() * 1.05;

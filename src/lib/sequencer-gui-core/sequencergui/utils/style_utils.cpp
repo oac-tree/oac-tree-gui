@@ -20,13 +20,9 @@
 #include "sequencergui/utils/style_utils.h"
 
 #include <mvvm/widgets/style_utils.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <QApplication>
-#include <QIcon>
-#include <QSize>
-#include <QTreeView>
-#include <cmath>
+#include <QStyle>
 
 namespace
 {
@@ -37,26 +33,14 @@ const bool kSvgIcons = false;
 namespace sequencergui::styleutils
 {
 
-int UnitSize(double scale)
+void SetUnifiedPropertyStyle(QTreeView *tree)
 {
-  return static_cast<int>(std::round(mvvm::utils::WidthOfLetterM() * scale));
-}
-
-int AppFontSize()
-{
-  return mvvm::utils::SystemPointSize();
-}
-
-QSize ToolBarIconSize()
-{
-  const int width = UnitSize(2.3);
-  return {width, width};
-}
-
-QSize NarrowToolBarIconSize()
-{
-  const int width = std::round(UnitSize(1.75));
-  return {width, width};
+  // Sets "breeze" property style only if current theme is a "fusion", which is the default theme
+  // on CODAC systems.
+  if (QApplication::style()->objectName() == QString("fusion"))
+  {
+    mvvm::utils::SetBreezePropertyStyle(tree);
+  }
 }
 
 QIcon GetIcon(const std::string &icon_name)
@@ -67,16 +51,6 @@ QIcon GetIcon(const std::string &icon_name)
     name.replace(".svg", ".png");
   }
   return QIcon(name);
-}
-
-void SetUnifiedPropertyStyle(QTreeView *tree)
-{
-  // Sets "breeze" property style only if current theme is a "fusion", which is the default theme
-  // on CODAC systems.
-  if (QApplication::style()->objectName() == QString("fusion"))
-  {
-    mvvm::utils::SetBreezePropertyStyle(tree);
-  }
 }
 
 }  // namespace sequencergui::styleutils

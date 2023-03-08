@@ -23,6 +23,7 @@
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
 #include <QLabel>
@@ -34,7 +35,7 @@ namespace sequencergui
 {
 DotsToolBar::DotsToolBar(QWidget *parent) : QToolBar(parent)
 {
-  setIconSize(styleutils::ToolBarIconSize());
+  setIconSize(sup::gui::utils::ToolBarIconSize());
 }
 
 void DotsToolBar::SetActions(const QList<QAction *> &actions)
@@ -65,7 +66,7 @@ void DotsToolBar::AddDotsMenu()
 
   auto button = new QToolButton;
   button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
-  button->setIconSize(styleutils::ToolBarIconSize());
+  button->setIconSize(sup::gui::utils::ToolBarIconSize());
   addWidget(button);
 }
 

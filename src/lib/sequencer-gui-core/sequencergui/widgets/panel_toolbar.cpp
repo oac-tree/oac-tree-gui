@@ -20,6 +20,7 @@
 #include "sequencergui/widgets/panel_toolbar.h"
 
 #include <sequencergui/utils/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QLabel>
 #include <QToolButton>
@@ -28,7 +29,7 @@ namespace sequencergui
 {
 PanelToolBar::PanelToolBar(QWidget *parent) : QToolBar(parent), m_label(new QLabel)
 {
-  setIconSize(styleutils::ToolBarIconSize());
+  setIconSize(sup::gui::utils::ToolBarIconSize());
   //  setStyleSheet("QToolButton:!hover {background-color:#eff6fc} QToolBar {background: #eff6fc}");
 
   addWidget(m_label);
@@ -47,7 +48,7 @@ void PanelToolBar::AddDotsMenu()
 
   m_dots_button = new QToolButton;
   m_dots_button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
-  m_dots_button->setIconSize(styleutils::ToolBarIconSize());
+  m_dots_button->setIconSize(sup::gui::utils::ToolBarIconSize());
   addWidget(m_dots_button);
 }
 

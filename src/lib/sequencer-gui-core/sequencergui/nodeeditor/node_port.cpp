@@ -23,6 +23,8 @@
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/utils/style_utils.h>
 
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QFont>
 #include <QPen>
 
@@ -30,7 +32,7 @@ namespace
 {
 double port_radius()
 {
-  return sequencergui::styleutils::UnitSize(0.4);
+  return mvvm::utils::UnitSize(0.4);
 }
 
 }  // namespace

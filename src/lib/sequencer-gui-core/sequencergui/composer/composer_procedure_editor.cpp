@@ -32,6 +32,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QDebug>
 #include <QSplitter>
@@ -124,7 +125,7 @@ InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
 
 void ComposerProcedureEditor::SetupToolBar()
 {
-  m_tool_bar->setIconSize(styleutils::ToolBarIconSize());
+  m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
   m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
   m_tool_bar->layout()->setSpacing(0);
   m_tool_bar_action->setDefaultWidget(m_tool_bar);

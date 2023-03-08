@@ -25,6 +25,8 @@
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/dots_toolbar.h>
 
+#include <mvvm/widgets/widget_utils.h>
+
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 
@@ -91,9 +93,9 @@ void SettingsView::SetupModelWidgets()
 
 void SettingsView::SetupListSelector()
 {
-  const int width = styleutils::UnitSize(15.0);
+  const int width = mvvm::utils::UnitSize(15.0);
   m_list_widget->setFixedWidth(width);
-  m_list_widget->setIconSize(QSize(styleutils::UnitSize(1.2), styleutils::UnitSize(1.2)));
+  m_list_widget->setIconSize(QSize(mvvm::utils::UnitSize(1.2), mvvm::utils::UnitSize(1.2)));
 
   connect(m_list_widget, &QListWidget::currentRowChanged, this,
           [this](int row) { m_stacked_widget->setCurrentIndex(row); });

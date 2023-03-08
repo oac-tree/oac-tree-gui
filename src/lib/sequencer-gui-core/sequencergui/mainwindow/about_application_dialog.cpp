@@ -20,7 +20,6 @@
 #include "sequencergui/mainwindow/about_application_dialog.h"
 
 #include <sequencergui/core/version.h>
-#include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/editors/custom_event_filters.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -51,7 +50,7 @@ QLabel* createCopyrightLabel()
   QString copyright = QString("Copyright: 2010-%1 ITER Organization ").arg(date.toString("yyyy"));
 
   auto result = new QLabel(copyright);
-  result->setContentsMargins(0, 0, 0, sequencergui::styleutils::UnitSize());
+  result->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
   return result;
 }
 
@@ -59,8 +58,8 @@ QLabel* createLogoLabel()
 {
   QPixmap logo(":/icons/about_logo.awk", "JPG");
   auto result = new QLabel;
-  result->setPixmap(logo.scaled(sequencergui::styleutils::UnitSize(50),
-                                sequencergui::styleutils::UnitSize(50), Qt::KeepAspectRatio));
+  result->setPixmap(logo.scaled(mvvm::utils::UnitSize(50), mvvm::utils::UnitSize(50),
+                                Qt::KeepAspectRatio));
   return result;
 }
 }  // namespace
@@ -99,12 +98,12 @@ QBoxLayout* AboutApplicationDialog::createLogoLayout()
 
   QPixmap logo(":/icons/iter_logo.png");
   auto label = new QLabel;
-  label->setPixmap(
-      logo.scaled(styleutils::UnitSize(10), styleutils::UnitSize(10), Qt::KeepAspectRatio));
+  label->setPixmap(logo.scaled(mvvm::utils::UnitSize(10), mvvm::utils::UnitSize(10),
+                               Qt::KeepAspectRatio));
 
   result->addWidget(label);
   result->addStretch(1);
-  auto gap = styleutils::UnitSize(1.0);
+  auto gap = mvvm::utils::UnitSize(1.0);
   result->setContentsMargins(0, gap, gap, gap);
 
   return result;
@@ -118,7 +117,7 @@ QBoxLayout* AboutApplicationDialog::createTextLayout()
   auto about_title_label = new QLabel(
       QString("Sequencer GUI version ").append(QString::fromStdString(ProjectVersion())));
   mvvm::utils::ScaleLabelFont(about_title_label, 1.2, true);
-  about_title_label->setContentsMargins(0, 0, 0, styleutils::UnitSize());
+  about_title_label->setContentsMargins(0, 0, 0, mvvm::utils::UnitSize());
 
   // copyright
   auto copyright_label = createCopyrightLabel();
@@ -138,7 +137,7 @@ QBoxLayout* AboutApplicationDialog::createTextLayout()
   result->addWidget(createLinkLabel());
   result->addStretch(1);
 
-  auto gap = styleutils::UnitSize(1.0);
+  auto gap = mvvm::utils::UnitSize(1.0);
   result->setContentsMargins(0, gap, gap, gap);
 
   return result;

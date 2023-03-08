@@ -21,6 +21,8 @@
 
 #include <sequencergui/utils/style_utils.h>
 
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QAbstractScrollArea>
 #include <QApplication>
 #include <QEvent>
@@ -32,13 +34,13 @@ namespace
 //! Returns horizontal distance to the widget corner.
 int GetXposOffset()
 {
-  return sequencergui::styleutils::UnitSize();
+  return mvvm::utils::UnitSize();
 }
 
 //! Returns horizontal distance to the widget corner.
 int GetYposOffset()
 {
-  return sequencergui::styleutils::UnitSize();
+  return mvvm::utils::UnitSize();
 }
 
 }  // namespace

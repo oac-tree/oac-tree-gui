@@ -20,7 +20,6 @@
 #include "sequencergui/widgets/item_list_widget.h"
 
 #include <sequencergui/nodeeditor/scene_utils.h>
-#include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -33,8 +32,7 @@ namespace
 {
 QPixmap createPixmap()
 {
-  QRect rect =
-      QRect(0, 0, sequencergui::styleutils::UnitSize(4), sequencergui::styleutils::UnitSize(4));
+  QRect rect = QRect(0, 0, mvvm::utils::UnitSize(4), mvvm::utils::UnitSize(4));
   QPixmap pixmap(rect.width() + 1, rect.height() + 1);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
