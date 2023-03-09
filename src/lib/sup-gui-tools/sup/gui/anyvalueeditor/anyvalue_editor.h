@@ -55,6 +55,8 @@ public:
 
   sup::gui::AnyValueItem* GetSelectedItem() const;
 
+  void SetInitialValue(const sup::gui::AnyValueItem& item);
+
 private:
   void SetupConnections();
 

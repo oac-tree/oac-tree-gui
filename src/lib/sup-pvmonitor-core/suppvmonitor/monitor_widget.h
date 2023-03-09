@@ -33,6 +33,11 @@ namespace mvvm
 class AllItemsTreeView;
 }
 
+namespace sequencergui
+{
+class VariableItem;
+}
+
 namespace suppvmonitor
 {
 
@@ -47,6 +52,8 @@ class MonitorWidget : public QWidget
 public:
   explicit MonitorWidget(QWidget* parent = nullptr);
   ~MonitorWidget() override;
+
+  sequencergui::VariableItem* GetSelectedVariable();
 
 private:
   void PopulateModel();

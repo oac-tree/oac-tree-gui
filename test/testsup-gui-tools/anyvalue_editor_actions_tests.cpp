@@ -19,9 +19,6 @@
 
 #include "sup/gui/anyvalueeditor/anyvalue_editor_actions.h"
 
-#include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
-
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
 
@@ -30,18 +27,28 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <gtest/gtest.h>
+#include <testutils/mock_callback_listener.h>
+
 using namespace sup::gui;
 using ::testing::_;
 
 class AnyValueEditorActionsTest : public ::testing::Test
 {
 public:
+  AnyValueEditorActionsTest()
+  {
+    m_model.RegisterItem<sup::gui::AnyValueStructItem>();
+    m_model.RegisterItem<sup::gui::AnyValueArrayItem>();
+    m_model.RegisterItem<sup::gui::AnyValueScalarItem>();
+  }
+
   //! Creates context necessary for AnyValueEditActions to function.
   AnyValueEditorContext CreateContext(sup::gui::AnyValueItem* item)
   {
     // callback returns given item, pretending it is user's selection
     auto get_selected_callback = [item]() { return item; };
-    return {get_selected_callback, m_listener.CreateCallback()};
+    return {get_selected_callback, m_warning_listener.CreateCallback()};
   }
 
   //! Creates AnyValueEditorActions for testing.
@@ -51,8 +58,40 @@ public:
   }
 
   mvvm::ApplicationModel m_model;
-  testutils::MockCallbackListener<sup::gui::MessageEvent> m_listener;
+  testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
 };
+
+//! Testing initial state of AnyValueEditorActions object.
+
+TEST_F(AnyValueEditorActionsTest, InitialState)
+{
+  auto actions = CreateActions(nullptr);
+  EXPECT_EQ(actions->GetTopItem(), nullptr);
+}
+
+//! Testing AnyValueEditorActions::SetInitialValue method.
+
+TEST_F(AnyValueEditorActionsTest, SetInitialValue)
+{
+  AnyValueScalarItem item;
+  item.SetAnyTypeName(sup::dto::kInt32TypeName);
+  item.SetData(42);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  auto actions = CreateActions(nullptr);
+  actions->SetInitialValue(item);
+  ASSERT_NE(actions->GetTopItem(), nullptr);
+
+  // validating
+  auto copied_item = dynamic_cast<AnyValueScalarItem*>(actions->GetTopItem());
+  ASSERT_NE(copied_item, nullptr);
+  EXPECT_NE(copied_item, &item);
+  EXPECT_EQ(copied_item->GetAnyTypeName(), item.GetAnyTypeName());
+  EXPECT_EQ(copied_item->Data<int>(), item.Data<int>());
+//  EXPECT_EQ(copied_item->GetIdentifier(), item.GetIdentifier()); FIXME uncomment after implementing
+}
 
 // -------------------------------------------------------------------------------------------------
 // Adding structures
@@ -75,7 +114,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToEmptyModel)
   EXPECT_EQ(inserted_item->GetDisplayName(), ::sup::gui::kStructTypeName);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding another AnyValueItem to "selected" item as field
   actions->OnAddAnyValueStruct(/*add to selected*/ true);  // no-op
@@ -94,7 +133,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToAnotherStruct)
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
   actions->OnAddAnyValueStruct(/*add to selected*/ true);
@@ -118,7 +157,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddStructToScalar)
   auto actions = CreateActions(parent);
 
   // expecting error callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // adding AnyValueItem struct as a field to
   actions->OnAddAnyValueStruct(/*add to selected*/ true);
@@ -138,7 +177,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelStruct)
   auto actions = CreateActions(nullptr);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add second top level structure
   actions->OnAddAnyValueStruct(/*add to selected*/ false);
@@ -169,7 +208,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToEmptyModel)
   EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding another scalar to "selected" item as field
   actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);  // no-op
@@ -188,7 +227,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToStruct)
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
   actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
@@ -212,7 +251,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToArray)
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
   actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
@@ -236,7 +275,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // adding AnyValueItem struct as a field
   actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
@@ -256,7 +295,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
   auto actions = CreateActions(nullptr);
 
   // expecting warning callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add second top level scalar
   actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ false);
@@ -277,7 +316,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field. The type matches what is already in the array.
   actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
@@ -287,7 +326,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
   ASSERT_EQ(parent->GetChildren().size(), 2);
 
   // expecting erro callback
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add mismatching type
   actions->OnAddAnyValueScalar(sup::dto::kInt16TypeName, /*add to selected*/ true);
@@ -317,7 +356,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToEmptyModel)
   EXPECT_EQ(inserted_item->GetDisplayName(), ::sup::gui::kArrayTypeName);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding another array to "selected" item as field
   actions->OnAddAnyValueArray(/*add to selected*/ true);  // no-op
@@ -336,7 +375,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
   actions->OnAddAnyValueArray(/*add to selected*/ true);
@@ -360,7 +399,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
   auto actions = CreateActions(parent);
 
   // expecting error callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // adding AnyValueItem struct as a field to
   actions->OnAddAnyValueArray(/*add to selected*/ true);
@@ -380,7 +419,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
   auto actions = CreateActions(nullptr);
 
   // expecting warning callbacks
-  EXPECT_CALL(m_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add second top level array
   actions->OnAddAnyValueArray(/*add to selected*/ false);

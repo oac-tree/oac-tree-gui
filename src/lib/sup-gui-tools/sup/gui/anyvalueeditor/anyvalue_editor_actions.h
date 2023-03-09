@@ -20,9 +20,9 @@
 #ifndef LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 #define LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_
 
-#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
-
 #include <mvvm/model/application_model.h>
+
+#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 
 #include <QObject>
 
@@ -60,6 +60,10 @@ public:
 
   void OnRemoveSelected();
 
+  void SetInitialValue(const AnyValueItem& item);
+
+  AnyValueItem* GetTopItem();
+
 private:
   mvvm::SessionItem* GetParent(bool selected_as_parent) const;
   void SendMessage(const std::string& text, const std::string& informative = {},
@@ -79,7 +83,7 @@ inline T* AnyValueEditorActions::AddAnyValueItem(bool selected_as_parent,
   T* result{nullptr};
 
   // only one top level item is allowed
-  if (!selected_as_parent && m_model->GetRootItem()->GetTotalItemCount() > 0)
+  if (!selected_as_parent && GetTopItem())
   {
     SendMessage("Only one item is allowed");
     return nullptr;
@@ -101,6 +105,6 @@ inline T* AnyValueEditorActions::AddAnyValueItem(bool selected_as_parent,
   return result;
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_ANYVALUE_EDITOR_ACTIONS_H_

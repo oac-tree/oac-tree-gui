@@ -87,9 +87,19 @@ void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
   m_all_items_tree_view->expandAll();
 }
 
+//! Returns AnyValueItem selected by the user in item tree.
+
 sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem() const
 {
   return m_component_provider->GetSelected<sup::gui::AnyValueItem>();
+}
+
+//! Sets initial value. The given value will be cloned inside the editor's model and used as
+//! a starting point for editing.
+
+void AnyValueEditor::SetInitialValue(const AnyValueItem &item)
+{
+  m_actions->SetInitialValue(item);
 }
 
 //! Set up all connections.
@@ -121,4 +131,4 @@ AnyValueEditorContext AnyValueEditor::CreateActionContext() const
   return {get_selected_callback, notify_warning_callback};
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

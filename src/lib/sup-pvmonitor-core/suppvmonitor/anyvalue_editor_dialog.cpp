@@ -33,6 +33,8 @@ namespace suppvmonitor
 AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
     : QDialog(parent), m_anyvalue_editor(new sup::gui::AnyValueEditor)
 {
+  setWindowTitle("AnyValueEditor");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
@@ -40,12 +42,17 @@ AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
   layout->addLayout(CreateButtonLayout());
 }
 
+void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem &item)
+{
+  m_anyvalue_editor->SetInitialValue(item);
+}
+
 //! Creates layout with OK/CANCEL buttons.
 
 QBoxLayout* AnyValueEditorDialog::CreateButtonLayout()
 {
   auto button_box = new QDialogButtonBox;
-  auto button = button_box->addButton("Add field", QDialogButtonBox::AcceptRole);
+  auto button = button_box->addButton("Set AnyValue", QDialogButtonBox::AcceptRole);
   button->setAutoDefault(false);
   button->setDefault(false);
   button = button_box->addButton("Cancel", QDialogButtonBox::RejectRole);

@@ -32,7 +32,7 @@ namespace sup::gui
 
 AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
                                              mvvm::ApplicationModel* model, QObject* parent)
-    : QObject(parent), m_model(model), m_context(context)
+    : QObject(parent), m_model(model), m_context(std::move(context))
 {
 }
 
@@ -74,6 +74,24 @@ void AnyValueEditorActions::OnRemoveSelected()
   {
     m_model->RemoveItem(selected);
   }
+}
+
+//! Set initial value. The given value will be cloned inside the editor's model and used as
+//! a starting point for editing.
+
+void AnyValueEditorActions::SetInitialValue(const AnyValueItem &item)
+{
+  if (auto item = GetTopItem(); item)
+  {
+    SendMessage("Only one top item is allowed");
+  }
+
+  mvvm::utils::CopyItem(&item, m_model, m_model->GetRootItem(), mvvm::TagIndex::Append());
+}
+
+AnyValueItem *AnyValueEditorActions::GetTopItem()
+{
+  return mvvm::utils::GetTopItem<AnyValueItem>(m_model);
 }
 
 //! Returns parent item to use for insertion.

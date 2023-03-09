@@ -36,6 +36,7 @@
 
 #include <QDebug>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 namespace suppvmonitor
 {
@@ -54,6 +55,11 @@ MonitorWidget::MonitorWidget(QWidget *parent)
   SetupConnections();
 
   m_tree_view->SetItem(m_model->GetWorkspaceItem());
+}
+
+sequencergui::VariableItem *MonitorWidget::GetSelectedVariable()
+{
+  return m_tree_view->GetSelected<sequencergui::VariableItem>();
 }
 
 MonitorWidget::~MonitorWidget() = default;
@@ -99,7 +105,15 @@ void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
 
 void MonitorWidget::OnEditAnyvalueRequest()
 {
+//  auto selected = GetSelectedVariable();
+//  if(!selected)
+//  {
+//    QMessageBox::warning(this, "Select item", "Please select AnyValue you want to edit");
+//    return;
+//  }
+
   AnyValueEditorDialog dialog(this);
+
 
   if (dialog.exec() == QDialog::Accepted)
   {

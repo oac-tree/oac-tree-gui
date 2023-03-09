@@ -29,6 +29,7 @@ class QBoxLayout;
 namespace sup::gui
 {
 class AnyValueEditor;
+class AnyValueItem;
 }
 
 namespace suppvmonitor
@@ -40,6 +41,8 @@ class AnyValueEditorDialog : public QDialog
 
 public:
   explicit AnyValueEditorDialog(QWidget* parent = nullptr);
+
+  void SetInitialValue(const sup::gui::AnyValueItem& item);
 
 private:
   QBoxLayout* CreateButtonLayout();
