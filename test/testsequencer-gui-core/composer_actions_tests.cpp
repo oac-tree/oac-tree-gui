@@ -302,12 +302,12 @@ TEST_F(ComposerActionsTest, RemoveVariable)
 
   // nothing selected, remove request does nothing
   m_actions.OnRemoveVariableRequest();
-  ASSERT_EQ(m_procedure->GetWorkspace()->GetVariables().size(), 1);
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetVariableCount(), 1);
 
   // creating the context mimicking sequencer selected
   m_actions.SetContext(CreateContext(m_procedure, nullptr, variable));
 
   // remove request should remove item
   m_actions.OnRemoveVariableRequest();
-  ASSERT_EQ(m_procedure->GetWorkspace()->GetVariables().size(), 0);
+  ASSERT_EQ(m_procedure->GetWorkspace()->GetVariableCount(), 0);
 }

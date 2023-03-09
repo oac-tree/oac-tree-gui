@@ -17,9 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 
@@ -31,8 +32,10 @@ TEST_F(WorkspaceItemTest, WorkspaceItem)
 {
   WorkspaceItem item;
   EXPECT_TRUE(item.GetVariables().empty());
+  EXPECT_EQ(item.GetVariableCount(), 0);
 
   auto var0 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   auto var1 = item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(item.GetVariables(), std::vector<VariableItem*>({var0, var1}));
+  EXPECT_EQ(item.GetVariableCount(), 2);
 }

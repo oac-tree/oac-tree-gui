@@ -35,6 +35,8 @@ public:
   WorkspaceItem();
 
   std::vector<VariableItem*> GetVariables() const;
+
+  int GetVariableCount() const;
 };
 }  // namespace sequencergui
 

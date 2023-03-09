@@ -79,7 +79,7 @@ void MonitorWidgetActions::SendMessage(const std::string &text, const std::strin
 
 std::string MonitorWidgetActions::ProposeVariableName() const
 {
-  return "var" + std::to_string(m_model->GetWorkspaceItem()->GetVariables().size() - 1);
+  return "var" + std::to_string(m_model->GetWorkspaceItem()->GetVariableCount() - 1);
 }
 
 }  // namespace suppvmonitor

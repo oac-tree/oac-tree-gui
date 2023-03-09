@@ -35,4 +35,9 @@ std::vector<VariableItem *> WorkspaceItem::GetVariables() const
   return GetItems<VariableItem>(kVariableItems);
 }
 
+int WorkspaceItem::GetVariableCount() const
+{
+  return static_cast<int>(GetVariables().size());
+}
+
 }  // namespace sequencergui

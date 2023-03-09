@@ -136,7 +136,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   auto procedure = context->GetExpandedProcedure();
   ASSERT_TRUE(procedure != nullptr);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetInstructions().size(), 1);
-  EXPECT_EQ(procedure->GetWorkspace()->GetVariables().size(), 2);
+  EXPECT_EQ(procedure->GetWorkspace()->GetVariableCount(), 2);
 
   // starting procedure
   manager.OnStartJobRequest();

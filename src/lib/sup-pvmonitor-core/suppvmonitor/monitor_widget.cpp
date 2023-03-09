@@ -37,6 +37,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace suppvmonitor
@@ -69,19 +70,21 @@ MonitorWidget::~MonitorWidget() = default;
 void MonitorWidget::PopulateModel()
 {
   auto workspace = m_model->InsertItem<sequencergui::WorkspaceItem>();
-
-  auto channel_access_variable =
-      workspace->InsertItem<sequencergui::ChannelAccessVariableItem>(mvvm::TagIndex::Append());
-  channel_access_variable->SetName("var1");
-  channel_access_variable->SetChannel("IS_RUNNING");
-  channel_access_variable->SetJsonType(R"RAW({"type":"uint32"})RAW");
-  SetAnyValueFromJsonType(R"RAW({"type":"uint32"})RAW", *channel_access_variable);
 }
 
 void MonitorWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_actions,
-          &MonitorWidgetActions::OnAddVariableRequest);
+  auto on_add_variable = [this](const QString &name)
+  {
+    m_actions->OnAddVariableRequest(name);
+    // provide tree adjustment
+    if (m_model->GetWorkspaceItem()->GetVariableCount() > 0)
+    {
+      m_tree_view->GetTreeView()->expandToDepth(2);
+      m_tree_view->GetTreeView()->resizeColumnToContents(0);
+    }
+  };
+  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this, on_add_variable);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
           &MonitorWidget::OnRemoveVariableRequest);

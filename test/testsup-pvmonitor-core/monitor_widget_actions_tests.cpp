@@ -74,7 +74,7 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
 
   // validating default values of just inserted variable
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 1);
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
   auto inserted_variable0 = dynamic_cast<sequencergui::LocalVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
@@ -91,7 +91,7 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   // adding another variable
   actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 2);
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 = dynamic_cast<sequencergui::LocalVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable1, nullptr);
@@ -120,7 +120,7 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
   // adding variable
   actions->OnAddVariableRequest(QString::fromStdString(sequencergui::FileVariableItem::Type));
 
-  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 3);
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 = dynamic_cast<sequencergui::FileVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable0, nullptr);
