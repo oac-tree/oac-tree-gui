@@ -45,8 +45,11 @@ public:
   explicit MonitorWidgetActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
 
   void OnAddVariableRequest(const QString& variable_type_name);
+  void OnRemoveVariableRequest();
 
 private:
+  sequencergui::VariableItem* GetSelectedVariable();
+
   void SetupVariable(sequencergui::VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});

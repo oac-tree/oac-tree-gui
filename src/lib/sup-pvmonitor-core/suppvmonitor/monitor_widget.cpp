@@ -74,20 +74,11 @@ void MonitorWidget::PopulateModel()
 
 void MonitorWidget::SetupConnections()
 {
-  auto on_add_variable = [this](const QString &name)
-  {
-    m_actions->OnAddVariableRequest(name);
-    // provide tree adjustment
-    if (m_model->GetWorkspaceItem()->GetVariableCount() > 0)
-    {
-      m_tree_view->GetTreeView()->expandToDepth(2);
-      m_tree_view->GetTreeView()->resizeColumnToContents(0);
-    }
-  };
-  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this, on_add_variable);
+  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_actions,
+          &MonitorWidgetActions::OnAddVariableRequest);
 
-  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
-          &MonitorWidget::OnRemoveVariableRequest);
+  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, m_actions,
+          &MonitorWidgetActions::OnRemoveVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
           &MonitorWidget::OnStartMonitoringRequest);
@@ -109,14 +100,6 @@ void MonitorWidget::OnEditAnyvalueRequest()
 
   if (dialog.exec() == QDialog::Accepted)
   {
-  }
-}
-
-void MonitorWidget::OnRemoveVariableRequest()
-{
-  if (auto selected = m_tree_view->GetSelected<sequencergui::VariableItem>(); selected)
-  {
-    m_model->RemoveItem(selected);
   }
 }
 

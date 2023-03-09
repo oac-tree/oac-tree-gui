@@ -126,3 +126,42 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
 }
+
+//! Removing variable.
+
+TEST_F(MonitorWidgetActionsTest, OnRemoveVariableRequest)
+{
+  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+
+  // pretending that var0 is selected
+  auto actions = CreateActions(var0);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // removing variable
+  actions->OnRemoveVariableRequest();
+
+  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 0);
+}
+
+//! Attempt to remove variable when nothing is selected.
+
+TEST_F(MonitorWidgetActionsTest, OnAttemptToRemoveVariable)
+{
+  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+
+  // nothing is selected
+  auto actions = CreateActions(nullptr);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // removing variable
+  actions->OnRemoveVariableRequest();
+
+  // still same amount of variables
+  EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+}

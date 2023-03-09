@@ -61,7 +61,6 @@ private:
   void PopulateModel();
   void SetupConnections();
   void OnEditAnyvalueRequest();
-  void OnRemoveVariableRequest();
   void OnStartMonitoringRequest();
 
   MonitorWidgetContext CreateContext();

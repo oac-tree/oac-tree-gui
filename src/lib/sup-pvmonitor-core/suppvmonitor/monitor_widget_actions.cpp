@@ -38,7 +38,7 @@ MonitorWidgetActions::MonitorWidgetActions(MonitorWidgetContext context, Monitor
 
 void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_name)
 {
-  auto selected_item = m_context.get_selected_variable_callback();
+  auto selected_item = GetSelectedVariable();
 
   try
   {
@@ -52,6 +52,20 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
   {
     SendMessage("Can't add variable to the selection");
   }
+}
+
+void MonitorWidgetActions::OnRemoveVariableRequest()
+{
+  if (auto selected = GetSelectedVariable(); selected)
+  {
+    m_model->RemoveItem(selected);
+  }
+}
+
+sequencergui::VariableItem *MonitorWidgetActions::GetSelectedVariable()
+{
+  return m_context.get_selected_variable_callback ? m_context.get_selected_variable_callback()
+                                                  : nullptr;
 }
 
 //! Set reasonlable initial values for just created variable.
