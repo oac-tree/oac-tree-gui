@@ -20,8 +20,14 @@
 #ifndef SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
 #define SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
 
-#include <QObject>
 #include <suppvmonitor/monitor_widget_context.h>
+
+#include <QObject>
+
+namespace sequencergui
+{
+class VariableItem;
+}
 
 namespace suppvmonitor
 {
@@ -38,11 +44,14 @@ class MonitorWidgetActions : public QObject
 public:
   explicit MonitorWidgetActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
 
-  void OnAddVariableRequest(const QString &variable_type_name);
+  void OnAddVariableRequest(const QString& variable_type_name);
 
 private:
+  void SetupVariable(sequencergui::VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
+
+  std::string ProposeVariableName() const;
 
   MonitorModel* m_model{nullptr};
   MonitorWidgetContext m_context;

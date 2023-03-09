@@ -40,8 +40,10 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
   try
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
-                        m_model->GetWorkspaceItem(), tagindex);
+    auto inserted =
+        m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
+                            m_model->GetWorkspaceItem(), tagindex);
+    SetupVariable(dynamic_cast<sequencergui::VariableItem *>(inserted));
   }
   catch (const std::exception &ex)
   {
@@ -49,11 +51,28 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
   }
 }
 
+//! Set reasonlable initial values for just created variable.
+
+void MonitorWidgetActions::SetupVariable(sequencergui::VariableItem *item)
+{
+  if (!item)
+  {
+    return;
+  }
+
+  item->SetName(ProposeVariableName());
+}
+
 void MonitorWidgetActions::SendMessage(const std::string &text, const std::string &informative,
                                        const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
+}
+
+std::string MonitorWidgetActions::ProposeVariableName() const
+{
+  return "var" + std::to_string(m_model->GetWorkspaceItem()->GetVariables().size() - 1);
 }
 
 }  // namespace suppvmonitor

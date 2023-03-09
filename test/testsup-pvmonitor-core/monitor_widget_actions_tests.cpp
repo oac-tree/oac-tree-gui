@@ -67,10 +67,49 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
+  // adding variable
   actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 1);
-  auto inserted_variable = dynamic_cast<sequencergui::LocalVariableItem*>(
+  auto inserted_variable0 = dynamic_cast<sequencergui::LocalVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(0));
-  ASSERT_NE(inserted_variable, nullptr);
+  ASSERT_NE(inserted_variable0, nullptr);
+  EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
+
+  // adding variable
+  actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
+
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 2);
+  auto inserted_variable1 = dynamic_cast<sequencergui::LocalVariableItem*>(
+      m_model.GetWorkspaceItem()->GetVariables().at(1));
+  ASSERT_NE(inserted_variable1, nullptr);
+  EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
+
+  // expecting further a warning
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  actions->OnAddVariableRequest("non-existing-type");
+}
+
+//! Inserting variable between two existing variables.
+
+TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
+{
+  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+
+  // pretending that var0 is selected
+  auto actions = CreateActions(var0);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // adding variable
+  actions->OnAddVariableRequest(QString::fromStdString(sequencergui::FileVariableItem::Type));
+
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 3);
+  auto inserted_variable0 = dynamic_cast<sequencergui::FileVariableItem*>(
+      m_model.GetWorkspaceItem()->GetVariables().at(1));
+  ASSERT_NE(inserted_variable0, nullptr);
+  EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
 }
