@@ -19,6 +19,11 @@
 
 #include "monitor_widget_actions.h"
 
+#include "monitor_model.h"
+
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
+
 namespace suppvmonitor
 {
 
@@ -26,6 +31,29 @@ MonitorWidgetActions::MonitorWidgetActions(MonitorWidgetContext context, Monitor
                                            QObject *parent)
     : QObject(parent), m_context(std::move(context)), m_model(model)
 {
+}
+
+void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_name)
+{
+  auto selected_item = m_context.get_selected_variable_callback();
+
+  try
+  {
+    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+    m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
+                        m_model->GetWorkspaceItem(), tagindex);
+  }
+  catch (const std::exception &ex)
+  {
+    SendMessage("Can't add variable to the selection");
+  }
+}
+
+void MonitorWidgetActions::SendMessage(const std::string &text, const std::string &informative,
+                                       const std::string &details)
+{
+  auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
+  m_context.send_message_callback(message);
 }
 
 }  // namespace suppvmonitor

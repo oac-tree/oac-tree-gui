@@ -38,7 +38,12 @@ class MonitorWidgetActions : public QObject
 public:
   explicit MonitorWidgetActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
 
+  void OnAddVariableRequest(const QString &variable_type_name);
+
 private:
+  void SendMessage(const std::string& text, const std::string& informative = {},
+                   const std::string& details = {});
+
   MonitorModel* m_model{nullptr};
   MonitorWidgetContext m_context;
 };

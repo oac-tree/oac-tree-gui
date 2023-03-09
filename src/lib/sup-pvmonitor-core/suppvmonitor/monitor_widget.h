@@ -60,7 +60,6 @@ public:
 private:
   void PopulateModel();
   void SetupConnections();
-  void OnAddVariableRequest(const QString& variable_type_name);
   void OnEditAnyvalueRequest();
   void OnRemoveVariableRequest();
   void OnStartMonitoringRequest();

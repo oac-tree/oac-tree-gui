@@ -80,8 +80,8 @@ void MonitorWidget::PopulateModel()
 
 void MonitorWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this,
-          &MonitorWidget::OnAddVariableRequest);
+  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_actions,
+          &MonitorWidgetActions::OnAddVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
           &MonitorWidget::OnRemoveVariableRequest);
@@ -91,18 +91,6 @@ void MonitorWidget::SetupConnections()
 
   connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, this,
           &MonitorWidget::OnEditAnyvalueRequest);
-}
-
-void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
-{
-  auto on_insert = [this, variable_type_name]()
-  {
-    auto selected_item = m_tree_view->GetSelected<sequencergui::VariableItem>();
-    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
-                        m_model->GetWorkspaceItem(), tagindex);
-  };
-  sequencergui::InvokeAndCatch(on_insert, "Can't add variable");
 }
 
 void MonitorWidget::OnEditAnyvalueRequest()
@@ -147,7 +135,20 @@ void MonitorWidget::OnStartMonitoringRequest()
 
 MonitorWidgetContext MonitorWidget::CreateContext()
 {
-  return {};
+  auto get_selected_callback = [this]()
+  { return m_tree_view->GetSelected<sequencergui::VariableItem>(); };
+
+  auto notify_warning_callback = [this](const sup::gui::MessageEvent &event)
+  {
+    QMessageBox msg_box;
+    msg_box.setText(QString::fromStdString(event.text));
+    msg_box.setInformativeText(QString::fromStdString(event.informative));
+    msg_box.setDetailedText(QString::fromStdString(event.detailed));
+    msg_box.setIcon(msg_box.Warning);
+    msg_box.exec();
+  };
+
+  return {get_selected_callback, notify_warning_callback};
 }
 
 }  // namespace suppvmonitor

@@ -57,7 +57,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_add_button->setToolTip(
       "Add sequencer variable to the workspace\n\n"
       "- If existing variable is selected, new variable\n"
-      "  will be added right after it");
+      "  will be inserted after");
   addWidget(m_add_button);
 
   m_edit_anyvalue_button->setText("Edit");
