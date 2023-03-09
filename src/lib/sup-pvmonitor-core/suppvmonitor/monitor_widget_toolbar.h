@@ -37,6 +37,7 @@ public:
 
 signals:
   void AddVariableRequest(const QString& variable_type_name);
+  void EditAnyvalueRequest();
   void RemoveVariableRequest();
   void StartMonitoringRequest();
   void StopMonitoringRequest();

@@ -19,14 +19,16 @@
 
 #include "suppvmonitor/monitor_widget.h"
 
+#include "anyvalue_editor_dialog.h"
+#include "monitor_model.h"
+#include "monitor_widget_toolbar.h"
+#include "workspace_monitor_helper.h"
+#include "workspace_synchronizer.h"
+
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_item_transform_utils.h>
 #include <sequencergui/widgets/widget_utils.h>
-#include <suppvmonitor/monitor_model.h>
-#include <suppvmonitor/monitor_widget_toolbar.h>
-#include <suppvmonitor/workspace_monitor_helper.h>
-#include <suppvmonitor/workspace_synchronizer.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
 
@@ -70,14 +72,46 @@ void MonitorWidget::PopulateModel()
 
 void MonitorWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
-          &MonitorWidget::OnStartMonitoringRequest);
-
   connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, this,
           &MonitorWidget::OnAddVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, this,
           &MonitorWidget::OnRemoveVariableRequest);
+
+  connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
+          &MonitorWidget::OnStartMonitoringRequest);
+
+  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, this,
+          &MonitorWidget::OnEditAnyvalueRequest);
+}
+
+void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
+{
+  auto on_insert = [this, variable_type_name]()
+  {
+    auto selected_item = m_tree_view->GetSelected<sequencergui::VariableItem>();
+    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+    m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
+                        m_model->GetWorkspaceItem(), tagindex);
+  };
+  sequencergui::InvokeAndCatch(on_insert, "Can't add variable");
+}
+
+void MonitorWidget::OnEditAnyvalueRequest()
+{
+  AnyValueEditorDialog dialog(this);
+
+  if (dialog.exec() == QDialog::Accepted)
+  {
+  }
+}
+
+void MonitorWidget::OnRemoveVariableRequest()
+{
+  if (auto selected = m_tree_view->GetSelected<sequencergui::VariableItem>(); selected)
+  {
+    m_model->RemoveItem(selected);
+  }
 }
 
 void MonitorWidget::OnStartMonitoringRequest()
@@ -94,26 +128,6 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer->Start();
   };
   sequencergui::InvokeAndCatch(on_start, "Can't setup workspace");
-}
-
-void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
-{
-  auto on_insert = [this, variable_type_name]()
-  {
-    auto selected_item = m_tree_view->GetSelected<sequencergui::VariableItem>();
-    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
-                        m_model->GetWorkspaceItem(), tagindex);
-  };
-  sequencergui::InvokeAndCatch(on_insert, "Can't add variable");
-}
-
-void MonitorWidget::OnRemoveVariableRequest()
-{
-  if (auto selected = m_tree_view->GetSelected<sequencergui::VariableItem>(); selected)
-  {
-    m_model->RemoveItem(selected);
-  }
 }
 
 }  // namespace suppvmonitor

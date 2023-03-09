@@ -20,11 +20,11 @@
 #include "suppvmonitor/monitor_widget_toolbar.h"
 
 #include <sequencergui/domain/domain_utils.h>
-
-#include <sup/gui/widgets/style_utils.h>
 #include <sequencergui/utils/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QToolButton>
@@ -54,16 +54,20 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_add_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_button->setPopupMode(QToolButton::InstantPopup);
   m_add_button->setMenu(m_add_variable_menu.get());
-  m_add_button->setToolTip("Add sequencer variable to the workspace.\n\n"
-                           "If existing variable is selected, new variable\n"
-                           "will be added right after it.");
+  m_add_button->setToolTip(
+      "Add sequencer variable to the workspace.\n\n"
+      "If existing variable is selected, new variable\n"
+      "will be added right after it.");
   addWidget(m_add_button);
 
   m_edit_anyvalue_button->setText("Edit");
   m_edit_anyvalue_button->setIcon(GetIcon("file-tree-outline.svg"));
   m_edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_edit_anyvalue_button->setToolTip("Edit AnyValue on board of currently selected\n"
-                                     "using external editor.");
+  m_edit_anyvalue_button->setToolTip(
+      "Edit AnyValue on board of currently selected\n"
+      "using external editor.");
+  connect(m_edit_anyvalue_button, &QToolButton::clicked, this,
+          &MonitorWidgetToolBar::EditAnyvalueRequest);
   addWidget(m_edit_anyvalue_button);
 
   m_remove_button->setText("Remove");
