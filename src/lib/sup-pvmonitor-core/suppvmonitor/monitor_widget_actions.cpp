@@ -23,6 +23,9 @@
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
+
+#include <sup/dto/anyvalue.h>
 
 namespace suppvmonitor
 {
@@ -52,6 +55,7 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
 }
 
 //! Set reasonlable initial values for just created variable.
+//! Might be changed in the future.
 
 void MonitorWidgetActions::SetupVariable(sequencergui::VariableItem *item)
 {
@@ -61,6 +65,9 @@ void MonitorWidgetActions::SetupVariable(sequencergui::VariableItem *item)
   }
 
   item->SetName(ProposeVariableName());
+  // By default we always set scalar anyvalue to any VariableItem added to the WorkspaceItem.
+  // If user wants something else, he has to start AnyValueEditor.
+  sequencergui::SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
 }
 
 void MonitorWidgetActions::SendMessage(const std::string &text, const std::string &informative,

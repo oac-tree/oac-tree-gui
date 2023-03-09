@@ -23,6 +23,9 @@
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
 
+#include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
+
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
 
@@ -70,13 +73,22 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   // adding variable
   actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
 
+  // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 1);
   auto inserted_variable0 = dynamic_cast<sequencergui::LocalVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
 
-  // adding variable
+  // it has scalar AnyValueItem on board by default
+  auto anyvalue_item =
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(inserted_variable0->GetAnyValueItem());
+  ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), std::string("value"));
+  EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
+  EXPECT_EQ(anyvalue_item->Data<int>(), 0);
+
+  // adding another variable
   actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariables().size(), 2);
@@ -85,9 +97,10 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   ASSERT_NE(inserted_variable1, nullptr);
   EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
 
-  // expecting further a warning
+  // expecting warning below
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
+  // attempty to add unknown variable type
   actions->OnAddVariableRequest("non-existing-type");
 }
 
