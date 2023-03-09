@@ -22,6 +22,10 @@
 namespace suppvmonitor
 {
 
-MonitorWidgetActions::MonitorWidgetActions(QObject *parent) : QObject(parent) {}
+MonitorWidgetActions::MonitorWidgetActions(MonitorWidgetContext context, MonitorModel *model,
+                                           QObject *parent)
+    : QObject(parent), m_context(std::move(context)), m_model(model)
+{
+}
 
 }  // namespace suppvmonitor

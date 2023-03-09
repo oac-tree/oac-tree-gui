@@ -21,9 +21,12 @@
 #define SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
 
 #include <QObject>
+#include <suppvmonitor/monitor_widget_context.h>
 
 namespace suppvmonitor
 {
+
+class MonitorModel;
 
 //! The MonitorWidgetActions class implements actions for MonitorWidget that can be triggered from
 //! its main toolbar.
@@ -33,7 +36,11 @@ class MonitorWidgetActions : public QObject
   Q_OBJECT
 
 public:
-  explicit MonitorWidgetActions(QObject* parent);
+  explicit MonitorWidgetActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
+
+private:
+  MonitorModel* m_model{nullptr};
+  MonitorWidgetContext m_context;
 };
 
 }  // namespace suppvmonitor

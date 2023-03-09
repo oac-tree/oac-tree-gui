@@ -46,7 +46,7 @@ MonitorWidget::MonitorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(std::make_unique<MonitorModel>())
-    , m_actions(new MonitorWidgetActions(this))
+    , m_actions(new MonitorWidgetActions(CreateContext(), m_model.get(), this))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -143,6 +143,11 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer->Start();
   };
   sequencergui::InvokeAndCatch(on_start, "Can't setup workspace");
+}
+
+MonitorWidgetContext MonitorWidget::CreateContext()
+{
+  return {};
 }
 
 }  // namespace suppvmonitor

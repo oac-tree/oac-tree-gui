@@ -17,16 +17,38 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/monitor_widget_actions.h"
+#ifndef SUP_PVMONITOR_CORE_MONITOR_WIDGET_CONTEXT_H_
+#define SUP_PVMONITOR_CORE_MONITOR_WIDGET_CONTEXT_H_
 
-#include <gtest/gtest.h>
+#include <sup/gui/components/message_event.h>
 
-class MonitorWidgetActionsTest : public ::testing::Test
+#include <functional>
+#include <string>
+
+namespace mvvm
 {
-};
-
-TEST_F(MonitorWidgetActionsTest, InitialState)
-{
-  EXPECT_EQ(1,1);
+class SessionItem;
 }
 
+namespace sequencergui
+{
+class VariableItem;
+}
+
+namespace suppvmonitor
+{
+
+//! Context to setup MonitorWidgetActions.
+
+struct MonitorWidgetContext
+{
+  //!< callback to retrieve currently selected AnyValueItem
+  std::function<sequencergui::VariableItem*()> get_selected_variable_callback;
+
+  //!< callback to report an error
+  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
+};
+
+}  // namespace suppvmonitor
+
+#endif
