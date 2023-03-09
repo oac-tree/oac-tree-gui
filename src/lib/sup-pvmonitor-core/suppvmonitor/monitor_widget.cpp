@@ -21,6 +21,7 @@
 
 #include "anyvalue_editor_dialog.h"
 #include "monitor_model.h"
+#include "monitor_widget_actions.h"
 #include "monitor_widget_toolbar.h"
 #include "workspace_monitor_helper.h"
 #include "workspace_synchronizer.h"
@@ -35,8 +36,8 @@
 #include <sup/sequencer/workspace.h>
 
 #include <QDebug>
-#include <QVBoxLayout>
 #include <QMessageBox>
+#include <QVBoxLayout>
 
 namespace suppvmonitor
 {
@@ -45,6 +46,7 @@ MonitorWidget::MonitorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(std::make_unique<MonitorModel>())
+    , m_actions(new MonitorWidgetActions(this))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -105,15 +107,14 @@ void MonitorWidget::OnAddVariableRequest(const QString &variable_type_name)
 
 void MonitorWidget::OnEditAnyvalueRequest()
 {
-//  auto selected = GetSelectedVariable();
-//  if(!selected)
-//  {
-//    QMessageBox::warning(this, "Select item", "Please select AnyValue you want to edit");
-//    return;
-//  }
+  //  auto selected = GetSelectedVariable();
+  //  if(!selected)
+  //  {
+  //    QMessageBox::warning(this, "Select item", "Please select AnyValue you want to edit");
+  //    return;
+  //  }
 
   AnyValueEditorDialog dialog(this);
-
 
   if (dialog.exec() == QDialog::Accepted)
   {

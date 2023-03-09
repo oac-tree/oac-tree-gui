@@ -5,6 +5,8 @@ target_sources(${library_name} PRIVATE
   monitor_model.h
   monitor_widget.cpp
   monitor_widget.h
+  monitor_widget_actions.cpp
+  monitor_widget_actions.h
   monitor_widget_toolbar.cpp
   monitor_widget_toolbar.h
   sequencer_workspace_listener.cpp
@@ -13,8 +15,8 @@ target_sources(${library_name} PRIVATE
   workspace_event.h
   workspace_item_controller.cpp
   workspace_item_controller.h
-  workspace_synchronizer.cpp
-  workspace_synchronizer.h
   workspace_monitor_helper.cpp
   workspace_monitor_helper.h
+  workspace_synchronizer.cpp
+  workspace_synchronizer.h
 )
