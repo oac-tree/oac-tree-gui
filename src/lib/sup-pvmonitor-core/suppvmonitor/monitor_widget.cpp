@@ -87,19 +87,23 @@ void MonitorWidget::SetupConnections()
           &MonitorWidget::OnEditAnyvalueRequest);
 }
 
+// FIXME try to move it to MonitorWidgetActions and cover with tests
+
 void MonitorWidget::OnEditAnyvalueRequest()
 {
-  //  auto selected = GetSelectedVariable();
-  //  if(!selected)
-  //  {
-  //    QMessageBox::warning(this, "Select item", "Please select AnyValue you want to edit");
-  //    return;
-  //  }
+  auto selected = GetSelectedVariable();
+  if (!selected)
+  {
+    QMessageBox::warning(this, "Select item", "Please select AnyValue you want to edit");
+    return;
+  }
 
   AnyValueEditorDialog dialog(this);
+  dialog.SetInitialValue(selected->GetAnyValueItem());
 
   if (dialog.exec() == QDialog::Accepted)
   {
+//    m_model->RemoveItem(selected->GetAnyValueItem());
   }
 }
 
@@ -121,8 +125,7 @@ void MonitorWidget::OnStartMonitoringRequest()
 
 MonitorWidgetContext MonitorWidget::CreateContext()
 {
-  auto get_selected_callback = [this]()
-  { return m_tree_view->GetSelected<sequencergui::VariableItem>(); };
+  auto get_selected_callback = [this]() { return GetSelectedVariable(); };
 
   auto notify_warning_callback = [this](const sup::gui::MessageEvent &event)
   {

@@ -19,9 +19,9 @@
 
 #include "anyvalue_editor_dialog.h"
 
-#include <sup/gui/anyvalueeditor/anyvalue_editor.h>
-
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/anyvalueeditor/anyvalue_editor.h>
 
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -42,9 +42,12 @@ AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
   layout->addLayout(CreateButtonLayout());
 }
 
-void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem &item)
+void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
 {
-  m_anyvalue_editor->SetInitialValue(item);
+  if (item)
+  {
+    m_anyvalue_editor->SetInitialValue(*item);
+  }
 }
 
 //! Creates layout with OK/CANCEL buttons.

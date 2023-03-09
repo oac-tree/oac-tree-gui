@@ -46,7 +46,7 @@ struct MonitorWidgetContext
   std::function<sequencergui::VariableItem*()> get_selected_variable_callback;
 
   //!< callback to report an error
-  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
+  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;  
 };
 
 }  // namespace suppvmonitor

@@ -42,7 +42,7 @@ class AnyValueEditorDialog : public QDialog
 public:
   explicit AnyValueEditorDialog(QWidget* parent = nullptr);
 
-  void SetInitialValue(const sup::gui::AnyValueItem& item);
+  void SetInitialValue(const sup::gui::AnyValueItem *item);
 
 private:
   QBoxLayout* CreateButtonLayout();
