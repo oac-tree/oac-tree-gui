@@ -24,6 +24,12 @@
 
 class QLineEdit;
 class QComboBox;
+class QBoxLayout;
+
+namespace sup::gui
+{
+class AnyValueEditor;
+}
 
 namespace suppvmonitor
 {
@@ -33,7 +39,12 @@ class AnyValueEditorDialog : public QDialog
   Q_OBJECT
 
 public:
-  AnyValueEditorDialog(QWidget* parent = nullptr);
+  explicit AnyValueEditorDialog(QWidget* parent = nullptr);
+
+private:
+  QBoxLayout* CreateButtonLayout();
+
+  sup::gui::AnyValueEditor* m_anyvalue_editor{nullptr};
 };
 
 }  // namespace suppvmonitor

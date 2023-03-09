@@ -20,10 +20,10 @@
 #ifndef LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
 #define LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_
 
+#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
+
 #include <QWidget>
 #include <memory>
-
-#include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 
 class QSplitter;
 class QTreeView;
@@ -46,6 +46,7 @@ class AnyValueEditorTextPanel;
 class AnyValueEditor : public QWidget
 {
   Q_OBJECT
+
 public:
   explicit AnyValueEditor(QWidget* parent = nullptr);
   ~AnyValueEditor() override;
@@ -69,6 +70,6 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif  // LIBANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_WIDGET_H_

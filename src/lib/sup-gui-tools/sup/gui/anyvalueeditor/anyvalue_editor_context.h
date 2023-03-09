@@ -20,10 +20,10 @@
 #ifndef LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_CONTEXT_H_
 #define LIBANYVALUE_ANYVALUE_EDITOR_CORE_ANYVALUEEDITOR_EDITOR_CONTEXT_H_
 
+#include <sup/gui/components/message_event.h>
+
 #include <functional>
 #include <string>
-
-#include <sup/gui/components/message_event.h>
 
 namespace sup::gui
 {
@@ -43,6 +43,6 @@ struct AnyValueEditorContext
   std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
 };
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui
 
 #endif
