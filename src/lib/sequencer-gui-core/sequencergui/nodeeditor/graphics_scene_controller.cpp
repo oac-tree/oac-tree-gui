@@ -197,7 +197,7 @@ void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& event)
 {
   auto [parent, tag_index] = event;
-  auto item_to_remove = parent->GetItem(tag_index.tag, tag_index.index);
+  auto item_to_remove = parent->GetItem(tag_index);
 
   // Special case when user removes procedure owning our instruction container.
   if (item_to_remove == p_impl->m_root_item->GetParent())
