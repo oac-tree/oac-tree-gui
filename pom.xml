@@ -40,6 +40,7 @@
         <sonar.sources.cpp>src</sonar.sources.cpp>
         <sonar.tests.cpp>test</sonar.tests.cpp>
         <sonar.exclusions>test/**</sonar.exclusions>
+        <valgrind.enable>false</valgrind.enable>
         <coverage>false</coverage>
     </properties>
 
