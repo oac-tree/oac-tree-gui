@@ -72,8 +72,8 @@ public:
   public:
     UnknownDomainInstruction() : Instruction(Type) {}
 
-    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface* ui,
-                                                        ::sup::sequencer::Workspace* ws) override
+    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface& ui,
+                                                        ::sup::sequencer::Workspace& ws) override
     {
       return {};
     }

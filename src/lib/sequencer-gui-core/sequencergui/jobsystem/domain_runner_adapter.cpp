@@ -36,7 +36,7 @@ DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t
                                          std::function<void(RunnerStatus)> status_changed_callback)
     : m_procedure(procedure), m_userinterface(interface)
 {
-  m_domain_runner = std::make_unique<runner_t>(m_userinterface);
+  m_domain_runner = std::make_unique<runner_t>(*m_userinterface);
   m_domain_runner->SetProcedure(m_procedure);
   auto worker = [this] { return ExecuteSingle(); };
   m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));

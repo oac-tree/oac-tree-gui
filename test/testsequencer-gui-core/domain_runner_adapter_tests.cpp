@@ -47,7 +47,7 @@ public:
 
   std::unique_ptr<runner_t> CreateRunner(procedure_t* procedure)
   {
-    auto result = std::make_unique<runner_t>(&m_observer);
+    auto result = std::make_unique<runner_t>(m_observer);
     procedure->Setup();
     result->SetProcedure(procedure);
     return result;
