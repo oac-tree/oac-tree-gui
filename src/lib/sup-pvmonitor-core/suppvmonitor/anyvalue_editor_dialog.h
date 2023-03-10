@@ -21,6 +21,7 @@
 #define SUP_PVMONITOR_CORE_ANYVALUEEEDITOR_DIALOG_H_
 
 #include <QDialog>
+#include <memory>
 
 class QLineEdit;
 class QComboBox;
@@ -43,6 +44,8 @@ public:
   explicit AnyValueEditorDialog(QWidget* parent = nullptr);
 
   void SetInitialValue(const sup::gui::AnyValueItem *item);
+
+  std::unique_ptr<sup::gui::AnyValueItem> GetResult();
 
 private:
   QBoxLayout* CreateButtonLayout();

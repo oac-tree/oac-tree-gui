@@ -19,9 +19,11 @@
 
 #include "anyvalue_editor_dialog.h"
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/gui/anyvalueeditor/anyvalue_editor.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -48,6 +50,18 @@ void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
   {
     m_anyvalue_editor->SetInitialValue(*item);
   }
+}
+
+//! Returns result of the editing.
+//! It is supposed to be used after the dialog close.
+
+std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
+{
+  // FIXME refactor after appearance of item->clone machinery
+  auto item_clone = mvvm::utils::CloneItem(*m_anyvalue_editor->GetTopItem());
+  auto result = std::unique_ptr<sup::gui::AnyValueItem>(
+      dynamic_cast<sup::gui::AnyValueItem*>(item_clone.release()));
+  return result;
 }
 
 //! Creates layout with OK/CANCEL buttons.

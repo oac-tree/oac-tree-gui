@@ -29,6 +29,11 @@ namespace sequencergui
 class VariableItem;
 }
 
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace suppvmonitor
 {
 
@@ -46,9 +51,11 @@ public:
 
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();
+  void OnEditAnyvalueRequest();
 
 private:
   sequencergui::VariableItem* GetSelectedVariable();
+  sup::gui::AnyValueItem* GetSelectedAnyValueItem();
 
   void SetupVariable(sequencergui::VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},

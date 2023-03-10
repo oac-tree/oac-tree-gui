@@ -33,6 +33,7 @@
 
 #include <mvvm/widgets/all_items_tree_view.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QDebug>
@@ -103,7 +104,7 @@ void MonitorWidget::OnEditAnyvalueRequest()
 
   if (dialog.exec() == QDialog::Accepted)
   {
-//    m_model->RemoveItem(selected->GetAnyValueItem());
+    //    m_model->RemoveItem(selected->GetAnyValueItem());
   }
 }
 
@@ -127,7 +128,7 @@ MonitorWidgetContext MonitorWidget::CreateContext()
 {
   auto get_selected_callback = [this]() { return GetSelectedVariable(); };
 
-  auto notify_warning_callback = [this](const sup::gui::MessageEvent &event)
+  auto send_message_callback = [this](const sup::gui::MessageEvent &event)
   {
     QMessageBox msg_box;
     msg_box.setText(QString::fromStdString(event.text));
@@ -137,7 +138,19 @@ MonitorWidgetContext MonitorWidget::CreateContext()
     msg_box.exec();
   };
 
-  return {get_selected_callback, notify_warning_callback};
+  auto get_anyvalue_callback =
+      [this](const sup::gui::AnyValueItem &item) -> std::unique_ptr<sup::gui::AnyValueItem>
+  {
+    AnyValueEditorDialog dialog(this);
+    dialog.SetInitialValue(&item);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+      return dialog.GetResult();
+    }
+    return {};
+  };
+
+  return {get_selected_callback, send_message_callback, get_anyvalue_callback};
 }
 
 }  // namespace suppvmonitor

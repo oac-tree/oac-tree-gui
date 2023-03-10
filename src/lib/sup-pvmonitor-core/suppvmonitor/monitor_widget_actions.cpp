@@ -26,6 +26,7 @@
 #include <sequencergui/transform/variable_item_transform_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 namespace suppvmonitor
 {
@@ -62,10 +63,32 @@ void MonitorWidgetActions::OnRemoveVariableRequest()
   }
 }
 
+void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
+{
+  auto selected_anyvalue = GetSelectedAnyValueItem();
+  if (!selected_anyvalue)
+  {
+    SendMessage("Please select AnyValue you want to modify",
+                "You can also select workspace variable itself");
+    return;
+  }
+
+  auto edited_anyvalue = m_context.get_anyvalue_callback(*selected_anyvalue);
+  if (edited_anyvalue)
+  {
+
+  }
+}
+
 sequencergui::VariableItem *MonitorWidgetActions::GetSelectedVariable()
 {
   return m_context.get_selected_variable_callback ? m_context.get_selected_variable_callback()
                                                   : nullptr;
+}
+
+sup::gui::AnyValueItem *MonitorWidgetActions::GetSelectedAnyValueItem()
+{
+  return GetSelectedVariable() ? GetSelectedVariable()->GetAnyValueItem() : nullptr;
 }
 
 //! Set reasonlable initial values for just created variable.

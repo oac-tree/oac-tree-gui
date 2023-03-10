@@ -102,6 +102,11 @@ void AnyValueEditor::SetInitialValue(const AnyValueItem &item)
   m_actions->SetInitialValue(item);
 }
 
+AnyValueItem *AnyValueEditor::GetTopItem()
+{
+  return m_actions->GetTopItem();
+}
+
 //! Set up all connections.
 
 void AnyValueEditor::SetupConnections()

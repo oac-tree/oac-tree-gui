@@ -57,6 +57,8 @@ public:
 
   void SetInitialValue(const sup::gui::AnyValueItem& item);
 
+  AnyValueItem* GetTopItem();
+
 private:
   void SetupConnections();
 
