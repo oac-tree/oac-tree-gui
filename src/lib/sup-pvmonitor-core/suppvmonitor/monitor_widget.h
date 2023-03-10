@@ -60,7 +60,6 @@ public:
 private:
   void PopulateModel();
   void SetupConnections();
-  void OnEditAnyvalueRequest();
   void OnStartMonitoringRequest();
 
   MonitorWidgetContext CreateContext();

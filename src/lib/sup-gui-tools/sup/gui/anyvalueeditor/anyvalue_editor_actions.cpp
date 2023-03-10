@@ -86,6 +86,7 @@ void AnyValueEditorActions::SetInitialValue(const AnyValueItem &item)
     SendMessage("Only one top item is allowed");
   }
 
+  // FIXME provide clone, not copy, to preserve identifier of the item being edited
   mvvm::utils::CopyItem(&item, m_model, m_model->GetRootItem(), mvvm::TagIndex::Append());
 }
 

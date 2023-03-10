@@ -84,28 +84,8 @@ void MonitorWidget::SetupConnections()
   connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
           &MonitorWidget::OnStartMonitoringRequest);
 
-  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, this,
-          &MonitorWidget::OnEditAnyvalueRequest);
-}
-
-// FIXME try to move it to MonitorWidgetActions and cover with tests
-
-void MonitorWidget::OnEditAnyvalueRequest()
-{
-  auto selected = GetSelectedVariable();
-  if (!selected)
-  {
-    QMessageBox::warning(this, "Select item", "Please select AnyValue you want to edit");
-    return;
-  }
-
-  AnyValueEditorDialog dialog(this);
-  dialog.SetInitialValue(selected->GetAnyValueItem());
-
-  if (dialog.exec() == QDialog::Accepted)
-  {
-    //    m_model->RemoveItem(selected->GetAnyValueItem());
-  }
+  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
+          &MonitorWidgetActions::OnEditAnyvalueRequest);
 }
 
 void MonitorWidget::OnStartMonitoringRequest()

@@ -19,15 +19,15 @@
 
 #include "suppvmonitor/monitor_widget_actions.h"
 
+#include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_item_transform_utils.h>
 #include <suppvmonitor/monitor_model.h>
+#include <testutils/mock_callback_listener.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_item.h>
-
-#include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
 
 using namespace suppvmonitor;
 using ::testing::_;
@@ -36,6 +36,31 @@ class MonitorWidgetActionsTest : public ::testing::Test
 {
 public:
   MonitorWidgetActionsTest() { m_model.InsertItem<sequencergui::WorkspaceItem>(); }
+
+  //! Mock dialog that pretend to take an item for editing and return the result to the user.
+  class MockDialog
+  {
+  public:
+    MockDialog(std::unique_ptr<sup::gui::AnyValueItem> item_to_return)
+        : m_item_to_return(std::move(item_to_return))
+    {
+    }
+
+    MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem& item));
+
+    //! Creates a callback that mimicking editing request and returning the result to the user
+    std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem&)>
+    CreateCallback()
+    {
+      return [this](const sup::gui::AnyValueItem& item) -> std::unique_ptr<sup::gui::AnyValueItem>
+      {
+        OnEditingRequest(item);
+        return std::move(m_item_to_return);
+      };
+    }
+
+    std::unique_ptr<sup::gui::AnyValueItem> m_item_to_return;
+  };
 
   //! Creates context necessary for AnyValueEditActions to function.
   MonitorWidgetContext CreateContext(sequencergui::VariableItem* item)
@@ -164,4 +189,52 @@ TEST_F(MonitorWidgetActionsTest, OnAttemptToRemoveVariable)
 
   // still same amount of variables
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+}
+
+//! Attempt to edit variable when nothing is selected.
+
+TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothingIsSelected)
+{
+  // pretending that var0 is selected
+  auto actions = CreateActions(nullptr);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  // removing variabl
+  actions->OnEditAnyvalueRequest();
+}
+
+//! Full scenario: editing AnyValueItem on board of LocalVariableItem.
+
+TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothing)
+{
+  // creating variable with AnyValue on board
+  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  sequencergui::SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+  auto initial_anyvalue_item = var0->GetAnyValueItem();
+
+  // item mimicking editing result
+  auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
+  auto editing_result_ptr = editing_result.get();
+
+  // preparing context
+  MockDialog mock_dialog(std::move(editing_result));
+  auto get_selected_callback = [var0]() { return var0; };
+  MonitorWidgetContext context{get_selected_callback, m_warning_listener.CreateCallback(),
+                               mock_dialog.CreateCallback()};
+
+  // preparing actions
+  MonitorWidgetActions actions(context, &m_model, nullptr);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  // expecting call to editing widget
+  EXPECT_CALL(mock_dialog, OnEditingRequest(_)).Times(1);
+
+  // editing request
+  actions.OnEditAnyvalueRequest();
+
+  // checking that variable got new AnyValueItem
+  EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
 }

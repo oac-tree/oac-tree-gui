@@ -76,7 +76,8 @@ void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
   auto edited_anyvalue = m_context.get_anyvalue_callback(*selected_anyvalue);
   if (edited_anyvalue)
   {
-
+    m_model->RemoveItem(selected_anyvalue);
+    m_model->InsertItem(std::move(edited_anyvalue), GetSelectedVariable(), {});
   }
 }
 
