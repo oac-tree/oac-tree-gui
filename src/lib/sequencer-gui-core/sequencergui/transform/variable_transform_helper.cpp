@@ -19,6 +19,7 @@
 
 #include "variable_transform_helper.h"
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/variable_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -100,13 +101,23 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   }
 }
 
-void AddNonEmptyAttribute(const std::string& attribute_name,
-                          const std::string& attribute_value, variable_t* variable)
+void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
+                          variable_t *variable)
 {
   if (!attribute_value.empty())
   {
     variable->AddAttribute(attribute_name, attribute_value);
   }
+}
+
+void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
+{
+  AddNonEmptyAttribute(domainconstants::kTypeAttribute, item.GetJsonType(), &variable);
+}
+
+void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
+{
+  AddNonEmptyAttribute(domainconstants::kValueAttribute, item.GetJsonValue(), &variable);
 }
 
 }  // namespace sequencergui

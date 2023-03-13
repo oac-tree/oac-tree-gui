@@ -139,3 +139,27 @@ TEST_F(VariableTransformHelperTests, AddNonEmptyAttribute)
   AddNonEmptyAttribute("custom_attribute_name", "abc", variable.get());
   EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
 }
+
+TEST_F(VariableTransformHelperTests, SetJsonTypeAttribute)
+{
+  LocalVariableItem item;
+  item.SetJsonType("json_type");
+
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  SetJsonTypeAttribute(item, *variable);
+
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_EQ(variable->GetAttribute(domainconstants::kTypeAttribute), "json_type");
+}
+
+TEST_F(VariableTransformHelperTests, SetJsonValueAttribute)
+{
+  LocalVariableItem item;
+  item.SetJsonValue("json_value");
+
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  SetJsonValueAttribute(item, *variable);
+
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
+  EXPECT_EQ(variable->GetAttribute(domainconstants::kValueAttribute), "json_value");
+}
