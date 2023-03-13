@@ -100,8 +100,8 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   }
 }
 
-void AddNonEmptyAttribute(variable_t* variable, const std::string& attribute_name,
-                          const std::string& attribute_value)
+void AddNonEmptyAttribute(const std::string& attribute_name,
+                          const std::string& attribute_value, variable_t* variable)
 {
   if (!attribute_value.empty())
   {

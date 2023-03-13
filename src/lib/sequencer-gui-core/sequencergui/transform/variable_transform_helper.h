@@ -53,8 +53,8 @@ void SetAnyValueFromJsonType(const std::string& json_type, VariableItem& variabl
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 //! Set attribute to given value. If the value is empty string, do nothing.
-void AddNonEmptyAttribute(variable_t* variable, const std::string& attribute_name,
-                          const std::string& attribute_value);
+void AddNonEmptyAttribute(const std::string& attribute_name,
+                          const std::string& attribute_value, variable_t* variable);
 
 }  // namespace sequencergui
 

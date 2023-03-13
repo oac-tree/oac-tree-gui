@@ -133,9 +133,9 @@ TEST_F(VariableTransformHelperTests, AddNonEmptyAttribute)
 {
   auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
-  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "");
+  AddNonEmptyAttribute("custom_attribute_name", "", variable.get());
   EXPECT_FALSE(variable->HasAttribute("custom_attribute_name"));
 
-  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "abc");
+  AddNonEmptyAttribute("custom_attribute_name", "abc", variable.get());
   EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
 }
