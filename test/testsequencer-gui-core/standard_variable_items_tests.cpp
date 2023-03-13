@@ -23,6 +23,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 
 #include <mvvm/model/property_item.h>
 
@@ -148,6 +149,23 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
     item.SetJsonType(expected_datatype);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+
+    EXPECT_NO_THROW(domain_item->Setup());
+  }
+
+  {  // normal case (in the course of refactoring)
+    ChannelAccessVariableItem item;
+    item.SetName(expected_name);
+    item.SetChannel(expected_channel);
+
+    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
@@ -317,6 +335,22 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
   }
 
+
+  {  // normal case (in the course of refactoring)
+    sequencergui::LocalVariableItem item;
+    item.SetName(expected_name);
+
+    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    SetAnyValue(anyvalue, item);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
+    EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
+  }
+
   {  // case with empty attributes
     sequencergui::LocalVariableItem item;
     item.SetName(expected_name);
@@ -397,6 +431,21 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
     item.SetJsonType(expected_datatype);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+  }
+
+  {  // normal case (in the course of refactoring)
+    PVClientVariableItem item;
+    item.SetName(expected_name);
+    item.SetChannel(expected_channel);
+
+    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
@@ -491,6 +540,24 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
     item.SetChannel(expected_channel);
     item.SetJsonType(expected_datatype);
     item.SetJsonValue(expected_value);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
+
+    EXPECT_NO_THROW(domain_item->Setup());
+  }
+
+  {  // normal case (in the course of refactoring)
+    PVServerVariableItem item;
+    item.SetChannel(expected_channel);
+    item.SetName(expected_name);
+
+    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
