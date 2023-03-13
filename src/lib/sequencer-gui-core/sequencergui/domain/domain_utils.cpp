@@ -52,7 +52,7 @@ bool LoadPlugin(const std::string& name)
 }
 }  // namespace
 
-namespace sequencergui::DomainUtils
+namespace sequencergui
 {
 std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain_name)
 {

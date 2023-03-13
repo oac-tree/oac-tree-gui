@@ -41,8 +41,8 @@ public:
   std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
                                                   const sup::dto::AnyValue& initial_value)
   {
-    auto local_variable = sequencergui::DomainUtils::CreateDomainVariable(
-        sequencergui::domainconstants::kLocalVariableType);
+    auto local_variable =
+        sequencergui::CreateDomainVariable(sequencergui::domainconstants::kLocalVariableType);
     local_variable->SetName(name);
     local_variable->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(&initial_value));
     local_variable->Setup();

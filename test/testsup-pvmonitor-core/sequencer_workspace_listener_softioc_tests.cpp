@@ -50,7 +50,7 @@ class SequencerWorkspaceListenerSoftIocTests : public ::testing::Test
 public:
   static void ValidateChannelAccessPresence()
   {
-    if (!sequencergui::DomainUtils::IsChannelAccessClientAvailable())
+    if (!sequencergui::IsChannelAccessClientAvailable())
     {
       // Will disable all tests in the Fixture.
       GTEST_SKIP();
@@ -82,7 +82,7 @@ sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softio
 TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVariable)
 {
   // creating ChannelAccessVariable
-  auto variable = sequencergui::DomainUtils::CreateDomainVariable(
+  auto variable = sequencergui::CreateDomainVariable(
       sequencergui::domainconstants::kChannelAccessVariableType);
   variable->AddAttribute("channel", "CA-TESTS:INT");
   variable->AddAttribute("type", R"RAW({"type":"uint32"})RAW");

@@ -97,7 +97,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 {
-  if (!DomainUtils::IsChannelAccessClientAvailable())
+  if (!IsChannelAccessClientAvailable())
   {
     GTEST_SKIP();
   }
@@ -106,7 +106,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  auto ca_variable = DomainUtils::CreateDomainVariable(domainconstants::kChannelAccessVariableType);
+  auto ca_variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);
   ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
@@ -122,7 +122,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
 {
-  if (!DomainUtils::IsChannelAccessClientAvailable())
+  if (!IsChannelAccessClientAvailable())
   {
     GTEST_SKIP();
   }
@@ -199,7 +199,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   const std::string expected_name("abc");
   const std::string expected_file_name("edf");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kFileVariableType);
+  auto local_variable = CreateDomainVariable(domainconstants::kFileVariableType);
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(domainconstants::kFileAttribute, expected_file_name);
 
@@ -284,7 +284,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   local_variable->AddAttribute("name", expected_name);
   local_variable->AddAttribute("type", expected_type);
   local_variable->AddAttribute("value", expected_value);
@@ -359,7 +359,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 {
-  if (!DomainUtils::IsPVAccessClientAvailable())
+  if (!IsPVAccessClientAvailable())
   {
     GTEST_SKIP();
   }
@@ -368,7 +368,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype("expected_datatype");
 
-  auto pv_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVClientVariableType);
+  auto pv_variable = CreateDomainVariable(domainconstants::kPVClientVariableType);
   pv_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
@@ -383,7 +383,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
 {
-  if (!DomainUtils::IsPVAccessClientAvailable())
+  if (!IsPVAccessClientAvailable())
   {
     GTEST_SKIP();
   }
@@ -446,7 +446,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 {
-  if (!DomainUtils::IsPVAccessServerAvailable())
+  if (!IsPVAccessServerAvailable())
   {
     GTEST_SKIP();
   }
@@ -456,7 +456,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   const std::string expected_datatype("expected_datatype");
   const std::string expected_value("expected_instance");
 
-  auto pvxs_variable = DomainUtils::CreateDomainVariable(domainconstants::kPVServerVariableType);
+  auto pvxs_variable = CreateDomainVariable(domainconstants::kPVServerVariableType);
   pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   pvxs_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
@@ -474,7 +474,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
 {
-  if (!DomainUtils::IsPVAccessServerAvailable())
+  if (!IsPVAccessServerAvailable())
   {
     GTEST_SKIP();
   }
@@ -527,7 +527,7 @@ TEST_F(StandardVariableItemsTest, UnknownVariableItemFromLocalVariable)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto domain_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   domain_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   domain_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
   domain_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);

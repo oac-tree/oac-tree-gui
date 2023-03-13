@@ -99,7 +99,7 @@ std::unique_ptr<QMenu> WorkspaceListWidget::CreateInsertAfterMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = mvvm::utils::GetStringList(sequencergui::DomainUtils::GetDomainVariableNames());
+  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainVariableNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);

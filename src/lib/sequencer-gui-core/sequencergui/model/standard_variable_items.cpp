@@ -94,8 +94,8 @@ std::string ChannelAccessVariableItem::GetDomainType() const
 
 void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
+  AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
+  AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
 }
 
 // ----------------------------------------------------------------------------
@@ -134,7 +134,7 @@ void FileVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kFileAttribute, GetFileName());
+  AddNonEmptyAttribute(variable, domainconstants::kFileAttribute, GetFileName());
 }
 
 // ----------------------------------------------------------------------------
@@ -167,8 +167,8 @@ void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kValueAttribute, GetJsonValue());
+  AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
+  AddNonEmptyAttribute(variable, domainconstants::kValueAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -184,8 +184,8 @@ std::string PVClientVariableItem::GetDomainType() const
 
 void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
+  AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
+  AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
 }
 
 // ----------------------------------------------------------------------------
@@ -201,9 +201,9 @@ std::string PVServerVariableItem::GetDomainType() const
 
 void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
-  DomainUtils::AddNonEmptyAttribute(variable, domainconstants::kValueAttribute, GetJsonValue());
+  AddNonEmptyAttribute(variable, domainconstants::kChannelAttribute, GetChannel());
+  AddNonEmptyAttribute(variable, domainconstants::kTypeAttribute, GetJsonType());
+  AddNonEmptyAttribute(variable, domainconstants::kValueAttribute, GetJsonValue());
 }
 
 // ----------------------------------------------------------------------------
@@ -227,7 +227,7 @@ void UnknownVariableItem::InitFromDomainImpl(const variable_t *variable)
   SetDisplayName(variable->GetType() + " (unknown)");
 
   // creating string properties for every domain attribute found
-  for (const auto &[name, value] : DomainUtils::GetAttributes(variable))
+  for (const auto &[name, value] : GetAttributes(variable))
   {
     m_domain_attributes.push_back(name);
     AddProperty(name, value);

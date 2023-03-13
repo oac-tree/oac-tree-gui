@@ -48,7 +48,7 @@ TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 
   for (const auto& domain_type : domain_types)
   {
-    EXPECT_EQ(DomainUtils::CreateDomainInstruction(domain_type)->GetType(), domain_type);
+    EXPECT_EQ(CreateDomainInstruction(domain_type)->GetType(), domain_type);
   }
 }
 
@@ -60,50 +60,48 @@ TEST_F(DomainUtilsTest, DomainVariableTypeConstants)
 
   for (const auto& domain_type : domain_types)
   {
-    EXPECT_EQ(DomainUtils::CreateDomainVariable(domain_type)->GetType(), domain_type);
+    EXPECT_EQ(CreateDomainVariable(domain_type)->GetType(), domain_type);
   }
 
-  if (DomainUtils::IsChannelAccessClientAvailable())
+  if (IsChannelAccessClientAvailable())
   {
-    EXPECT_EQ(DomainUtils::CreateDomainVariable(kChannelAccessVariableType)->GetType(),
+    EXPECT_EQ(CreateDomainVariable(kChannelAccessVariableType)->GetType(),
               kChannelAccessVariableType);
   }
 
-  if (DomainUtils::IsPVAccessClientAvailable())
+  if (IsPVAccessClientAvailable())
   {
-    EXPECT_EQ(DomainUtils::CreateDomainVariable(kPVClientVariableType)->GetType(),
-              kPVClientVariableType);
+    EXPECT_EQ(CreateDomainVariable(kPVClientVariableType)->GetType(), kPVClientVariableType);
   }
 
-  if (DomainUtils::IsPVAccessServerAvailable())
+  if (IsPVAccessServerAvailable())
   {
-    EXPECT_EQ(DomainUtils::CreateDomainVariable(kPVServerVariableType)->GetType(),
-              kPVServerVariableType);
+    EXPECT_EQ(CreateDomainVariable(kPVServerVariableType)->GetType(), kPVServerVariableType);
   }
 }
 
 TEST_F(DomainUtilsTest, IsRootInstruction)
 {
-  auto item = DomainUtils::CreateDomainInstruction(kWaitInstructionType);
-  EXPECT_FALSE(DomainUtils::IsRootInstruction(item.get()));
+  auto item = CreateDomainInstruction(kWaitInstructionType);
+  EXPECT_FALSE(IsRootInstruction(item.get()));
 
   item->AddAttribute(kIsRootAttribute, "true");
-  EXPECT_TRUE(DomainUtils::IsRootInstruction(item.get()));
+  EXPECT_TRUE(IsRootInstruction(item.get()));
 
   item->SetAttribute(kIsRootAttribute, "yEs");
-  EXPECT_TRUE(DomainUtils::IsRootInstruction(item.get()));
+  EXPECT_TRUE(IsRootInstruction(item.get()));
 
   item->SetAttribute(kIsRootAttribute, "false");
-  EXPECT_FALSE(DomainUtils::IsRootInstruction(item.get()));
+  EXPECT_FALSE(IsRootInstruction(item.get()));
 }
 
 TEST_F(DomainUtilsTest, AddNonEmptyAttribute)
 {
-  auto variable = DomainUtils::CreateDomainVariable(kLocalVariableType);
+  auto variable = CreateDomainVariable(kLocalVariableType);
 
-  DomainUtils::AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "");
+  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "");
   EXPECT_FALSE(variable->HasAttribute("custom_attribute_name"));
 
-  DomainUtils::AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "abc");
+  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "abc");
   EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
 }

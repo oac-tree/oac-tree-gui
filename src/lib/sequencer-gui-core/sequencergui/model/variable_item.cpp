@@ -55,7 +55,7 @@ VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_typ
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
-  auto result = DomainUtils::CreateDomainVariable(GetDomainType());
+  auto result = ::sequencergui::CreateDomainVariable(GetDomainType());
 
   if (GetType() != UnknownVariableItem::Type)
   {

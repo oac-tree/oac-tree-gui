@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   qRegisterMetaType<instruction_t*>("instruction_t*");
   qRegisterMetaType<const instruction_t*>("const instruction_t*");
 
-  sequencergui::DomainUtils::LoadPlugins();
+  sequencergui::LoadPlugins();
 
   // run all google tests
   return RUN_ALL_TESTS();

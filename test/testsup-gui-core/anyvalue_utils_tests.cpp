@@ -40,7 +40,7 @@ public:
 
 TEST_F(AnyValueUtilsTest, GetJsonString)
 {
-  auto variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   variable->AddAttribute(domainconstants::kTypeAttribute, R"({"type":"uint32"})");
   variable->AddAttribute(domainconstants::kValueAttribute, "42");
   variable->Setup();

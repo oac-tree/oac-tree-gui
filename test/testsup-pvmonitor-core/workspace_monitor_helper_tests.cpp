@@ -51,7 +51,7 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonE
 {
   const sequencergui::WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
-  workspace.AddVariable("abc", sequencergui::DomainUtils::CreateDomainVariable(
+  workspace.AddVariable("abc", sequencergui::CreateDomainVariable(
                                    sequencergui::domainconstants::kLocalVariableType)
                                    .release());
 

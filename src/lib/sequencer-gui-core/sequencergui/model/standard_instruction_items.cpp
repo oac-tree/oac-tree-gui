@@ -760,7 +760,7 @@ void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction
   SetDisplayName(instruction->GetType());
 
   // creating string properties for every domain attribute found
-  for (auto [name, value] : DomainUtils::GetAttributes(instruction))
+  for (auto& [name, value] : GetAttributes(instruction))
   {
     m_domain_attributes.push_back(name);
     AddProperty(name, value);

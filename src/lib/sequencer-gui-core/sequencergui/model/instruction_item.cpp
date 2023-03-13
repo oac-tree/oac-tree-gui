@@ -65,14 +65,14 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
     }
   }
 
-  SetIsRootFlag(DomainUtils::IsRootInstruction(instruction));
+  SetIsRootFlag(IsRootInstruction(instruction));
 
   InitFromDomainImpl(instruction);
 }
 
 std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 {
-  auto result = DomainUtils::CreateDomainInstruction(GetDomainType());
+  auto result = ::sequencergui::CreateDomainInstruction(GetDomainType());
 
   // Set common attributes (that exist in every instruction)
   if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation

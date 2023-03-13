@@ -32,7 +32,7 @@
 #include <string>
 #include <vector>
 
-namespace sequencergui::DomainUtils
+namespace sequencergui
 {
 
 std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain_name);

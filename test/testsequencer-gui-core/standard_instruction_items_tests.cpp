@@ -55,7 +55,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItem)
 
 TEST_F(StandardInstructionItemsTest, ConditionItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kConditionInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kConditionInstructionType);
   input->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
   input->AddAttribute(domainconstants::kIsRootAttribute, "true");
 
@@ -99,7 +99,7 @@ TEST_F(StandardInstructionItemsTest, CopyItem)
 
 TEST_F(StandardInstructionItemsTest, CopyItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kCopyInstructionType);
   input->AddAttribute(domainconstants::kInputAttribute, "abc");
   input->AddAttribute(domainconstants::kOutputAttribute, "cde");
 
@@ -142,7 +142,7 @@ TEST_F(StandardInstructionItemsTest, EqualsItem)
 
 TEST_F(StandardInstructionItemsTest, EqualsItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kEqualsInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kEqualsInstructionType);
   input->AddAttribute(domainconstants::kLeftHandAttribute, "abc");
   input->AddAttribute(domainconstants::kRightHandAttribute, "cde");
 
@@ -184,7 +184,7 @@ TEST_F(StandardInstructionItemsTest, FallbackItem)
 
 TEST_F(StandardInstructionItemsTest, FallbackItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kFallbackInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kFallbackInstructionType);
   input->AddAttribute(domainconstants::kNameAttribute, "abc");
 
   // Correctly initialised item
@@ -225,7 +225,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItem)
 
 TEST_F(StandardInstructionItemsTest, ForceSuccessItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kForceSuccessInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kForceSuccessInstructionType);
   input->AddAttribute(domainconstants::kNameAttribute, "abc");
 
   // Correctly initialised item
@@ -273,7 +273,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
 
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
   input->AddAttribute(domainconstants::kFileAttribute, "abc");
   input->AddAttribute(domainconstants::kPathAttribute, "def");
 
@@ -296,7 +296,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileAttribute));
 
   // Setup of Input instruction requires existance of instruction to include
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->SetName("def");
   m_procedure.InsertInstruction(wait.release(), 0);
 
@@ -317,7 +317,7 @@ TEST_F(StandardInstructionItemsTest, InputItem)
 
 TEST_F(StandardInstructionItemsTest, InputItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kInputInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kInputInstructionType);
   input->AddAttribute(domainconstants::kDescriptionAttribute, "abc");
   input->AddAttribute(domainconstants::kInputTargetAttribute, "var");
 
@@ -393,7 +393,7 @@ TEST_F(StandardInstructionItemsTest, ListenItem)
 
 TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kListenInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kListenInstructionType);
   input->AddAttribute(domainconstants::kListenVarNamesAttribute, "abc");
   input->AddAttribute(domainconstants::kListenForceSuccessAttribute, "true");
 
@@ -434,7 +434,7 @@ TEST_F(StandardInstructionItemsTest, MessageItem)
 
 TEST_F(StandardInstructionItemsTest, MessageItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   input->AddAttribute(domainconstants::kTextAttribute, "abc");
   input->AddAttribute(domainconstants::kIsRootAttribute, "true");
 
@@ -473,7 +473,7 @@ TEST_F(StandardInstructionItemsTest, OutputItem)
 
 TEST_F(StandardInstructionItemsTest, OutputItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kOutputInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kOutputInstructionType);
   input->AddAttribute(domainconstants::kDescriptionAttribute, "abc");
   input->AddAttribute(domainconstants::kOutputSourceAttribute, "var");
 
@@ -522,7 +522,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
 
 TEST_F(StandardInstructionItemsTest, ParallelSequenceFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kParallelInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kParallelInstructionType);
   input->AddAttribute(domainconstants::kSuccessThresholdAttribute, "42");
   input->AddAttribute(domainconstants::kFailureThresholdAttribute, "1");
 
@@ -586,7 +586,7 @@ TEST_F(StandardInstructionItemsTest, RepeatItem)
 
 TEST_F(StandardInstructionItemsTest, RepeatItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
   input->AddAttribute(domainconstants::kMaxCountAttribute, "42");
 
   RepeatItem item;
@@ -658,7 +658,7 @@ TEST_F(StandardInstructionItemsTest, UserChoiceItem)
 
 TEST_F(StandardInstructionItemsTest, UserChoiceItemFromDomain)
 {
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
   input->AddAttribute(domainconstants::kDescriptionAttribute, "abc");
 
   UserChoiceItem item;
@@ -694,7 +694,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 
   // wait with timeout attribute
   {
-    auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     wait->AddAttribute(domainconstants::kWaitTimeoutAttribute, "42");
 
     wait_item.InitFromDomain(wait.get());
@@ -703,14 +703,14 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 
   // Wait instruction without timeout without attribute
   {
-    auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     EXPECT_NO_THROW(wait_item.InitFromDomain(wait.get()));
     EXPECT_EQ(wait_item.GetTimeout(), 0.0);
   }
 
   // Wait instruction with name
   {
-    auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     wait->AddAttribute(domainconstants::kNameAttribute, "First");
 
     WaitItem wait_item;
@@ -745,7 +745,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
 {
   auto domain_item =
-      DomainUtils::CreateDomainInstruction(domainconstants::kConditionInstructionType);
+      CreateDomainInstruction(domainconstants::kConditionInstructionType);
   domain_item->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
 
   // from domain

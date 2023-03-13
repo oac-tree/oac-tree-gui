@@ -97,12 +97,12 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
       domainconstants::kLocalVariableType));
   EXPECT_TRUE(
       CanCreateVariableForType<sequencergui::FileVariableItem>(domainconstants::kFileVariableType));
-  if (DomainUtils::IsChannelAccessClientAvailable())
+  if (IsChannelAccessClientAvailable())
   {
     EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
         domainconstants::kChannelAccessVariableType));
   }
-  if (DomainUtils::IsPVAccessClientAvailable())
+  if (IsPVAccessClientAvailable())
   {
     EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
         domainconstants::kPVClientVariableType));
@@ -167,7 +167,7 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
   procedure.PushInstruction(wait.release());
 
@@ -185,11 +185,11 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithTwoWaits)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
   procedure.PushInstruction(wait0.release());
 
-  auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait1->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
   wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "43");
   procedure.PushInstruction(wait1.release());
@@ -207,10 +207,10 @@ TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
 
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   sequence->InsertInstruction(wait.release(), 0);
 
   procedure.PushInstruction(sequence.release());
@@ -243,7 +243,7 @@ TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromProcedureWithLocalVaria
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   local_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
   local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 

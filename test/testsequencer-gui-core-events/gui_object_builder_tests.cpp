@@ -62,7 +62,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
   auto wait_ptr = wait.get();
   procedure.PushInstruction(wait.release());
@@ -82,11 +82,11 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
 
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
   wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
 
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
   sequence->InsertInstruction(wait.release(), 0);
 
@@ -115,7 +115,7 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  auto local_variable = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   local_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
   local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
   auto local_variable_ptr = local_variable.get();

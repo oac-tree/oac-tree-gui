@@ -128,7 +128,7 @@ std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertAfterMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = mvvm::utils::GetStringList(sequencergui::DomainUtils::GetDomainInstructionNames());
+  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);
@@ -148,7 +148,7 @@ std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertIntoMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = mvvm::utils::GetStringList(sequencergui::DomainUtils::GetDomainInstructionNames());
+  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);

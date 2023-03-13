@@ -22,6 +22,7 @@
 #include "test_utils.h"
 
 #include <sequencergui/domain/domain_utils.h>
+
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
@@ -35,7 +36,7 @@ namespace testutils
 std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<procedure_t>();
-  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
   result->PushInstruction(wait0.release());
@@ -47,18 +48,18 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
 {
   auto result = std::make_unique<procedure_t>();
 
-  auto copy = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
+  auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
   copy->AddAttribute(domainconstants::kInputAttribute, "var0");
   copy->AddAttribute(domainconstants::kOutputAttribute, "var1");
   result->PushInstruction(copy.release());
 
-  auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var0->AddAttribute(domainconstants::kNameAttribute, "var0");
   var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var0->AddAttribute(domainconstants::kValueAttribute, "42");
   result->AddVariable("var0", var0.release());
 
-  auto var1 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto var1 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var1->AddAttribute(domainconstants::kNameAttribute, "var1");
   var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var1->AddAttribute(domainconstants::kValueAttribute, "0");
@@ -70,7 +71,7 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
 std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string &text)
 {
   auto result = std::make_unique<procedure_t>();
-  auto message = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  auto message = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message->AddAttribute(sequencergui::domainconstants::kTextAttribute, text);
   result->PushInstruction(message.release());
 
@@ -80,8 +81,8 @@ std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string &text)
 std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<procedure_t>();
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
@@ -95,11 +96,11 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
                                                                  std::chrono::milliseconds timeout2)
 {
   auto result = std::make_unique<procedure_t>();
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout1)));
-  auto wait1 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout2)));
 
@@ -113,8 +114,8 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
 std::unique_ptr<procedure_t> CreateSequenceWithSingleMessageProcedure()
 {
   auto result = std::make_unique<procedure_t>();
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto message0 = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto message0 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message0->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
 
   sequence->InsertInstruction(message0.release(), 0);
@@ -126,10 +127,10 @@ std::unique_ptr<procedure_t> CreateSequenceWithSingleMessageProcedure()
 std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure()
 {
   auto result = std::make_unique<procedure_t>();
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto message0 = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto message0 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message0->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
-  auto message1 = DomainUtils::CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  auto message1 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message1->AddAttribute(sequencergui::domainconstants::kTextAttribute, "efg");
 
   sequence->InsertInstruction(message0.release(), 0);
@@ -142,14 +143,14 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure()
 std::unique_ptr<procedure_t> CreateInputProcedure()
 {
   auto result = std::make_unique<procedure_t>();
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto input = DomainUtils::CreateDomainInstruction(domainconstants::kInputInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kInputInstructionType);
   input->AddAttribute(domainconstants::kInputTargetAttribute, "var0");
   input->AddAttribute(domainconstants::kDescriptionAttribute, "description");
   sequence->InsertInstruction(input.release(), 0);
   result->PushInstruction(sequence.release());
 
-  auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var0->AddAttribute(domainconstants::kNameAttribute, "var0");
   var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var0->AddAttribute(domainconstants::kValueAttribute, "0");
@@ -161,27 +162,26 @@ std::unique_ptr<procedure_t> CreateInputProcedure()
 std::unique_ptr<procedure_t> CreateUserChoiceProcedure()
 {
   auto result = std::make_unique<procedure_t>();
-  auto userchoice =
-      DomainUtils::CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
+  auto userchoice = CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
   userchoice->AddAttribute(domainconstants::kDescriptionAttribute, "it's your choice");
 
-  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "10");  // 10 sec
 
-  auto copy = DomainUtils::CreateDomainInstruction(domainconstants::kCopyInstructionType);
+  auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
   copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
   copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
 
   userchoice->InsertInstruction(wait0.release(), 0);
   userchoice->InsertInstruction(copy.release(), 1);
 
-  auto var0 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var0->AddAttribute(domainconstants::kNameAttribute, "var0");
   var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var0->AddAttribute(domainconstants::kValueAttribute, "42");
   result->AddVariable("var0", var0.release());
 
-  auto var1 = DomainUtils::CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto var1 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var1->AddAttribute(domainconstants::kNameAttribute, "var1");
   var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var1->AddAttribute(domainconstants::kValueAttribute, "0");
@@ -195,12 +195,12 @@ std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
                                                            std::chrono::milliseconds timeout)
 {
   auto result = std::make_unique<procedure_t>();
-  auto repeat = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
   repeat->AddAttribute(domainconstants::kMaxCountAttribute,
                        std::to_string(count));  // number of prepetitions
 
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto wait0 = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
@@ -216,23 +216,19 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
   auto result = std::make_unique<procedure_t>();
 
   // Sequence with wait instruction
-  auto wait = DomainUtils::CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  auto wait_ptr = wait.get();
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
 
-  auto sequence = DomainUtils::CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  auto sequence_ptr = sequence.get();
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");
   sequence->InsertInstruction(wait.release(), 0);
 
   // Repeat with include instruction
-  auto include = DomainUtils::CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  auto include_ptr = include.get();
+  auto include = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
   include->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MyInclude");
   include->AddAttribute(sequencergui::domainconstants::kPathAttribute, "MySequence");
 
-  auto repeat = DomainUtils::CreateDomainInstruction(domainconstants::kRepeatInstructionType);
-  auto repeat_ptr = repeat.get();
+  auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
   repeat->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
   repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute, "10");
   repeat->InsertInstruction(include.release(), 0);
