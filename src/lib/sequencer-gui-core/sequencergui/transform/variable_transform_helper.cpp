@@ -112,12 +112,38 @@ void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &
 
 void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
 {
-  AddNonEmptyAttribute(domainconstants::kTypeAttribute, item.GetJsonType(), variable);
+  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
+  {
+    // if AnyValueItem is defined, jenerate JSON TYPE attribute from it
+    auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
+
+    AddNonEmptyAttribute(domainconstants::kTypeAttribute,
+                         sup::gui::GetAnyTypeToJSONString(&anyvalue), variable);
+  }
+  else
+  {
+    // if no AnyValueItem is defined, take JSON attribute from corresponding property
+    // FIXME remove after removal of property
+    AddNonEmptyAttribute(domainconstants::kTypeAttribute, item.GetJsonType(), variable);
+  }
 }
 
 void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
 {
-  AddNonEmptyAttribute(domainconstants::kValueAttribute, item.GetJsonValue(), variable);
+  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
+  {
+    // if AnyValueItem is defined, jenerate JSON TYPE attribute from it
+    auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
+
+    AddNonEmptyAttribute(domainconstants::kValueAttribute,
+                         sup::gui::GetValuesToJSONString(&anyvalue), variable);
+  }
+  else
+  {
+    // if no AnyValueItem is defined, take JSON attribute from corresponding property
+    // FIXME remove after removal of property
+    AddNonEmptyAttribute(domainconstants::kValueAttribute, item.GetJsonValue(), variable);
+  }
 }
 
 }  // namespace sequencergui
