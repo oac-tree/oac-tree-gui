@@ -62,10 +62,6 @@ void LoadLocalPlugins();
 
 void LoadPlugins();
 
-//! Set attribute to given value. If the value is empty string, do nothing.
-void AddNonEmptyAttribute(variable_t* variable, const std::string& attribute_name,
-                          const std::string& attribute_value);
-
 }  // namespace sequencergui::DomainUtils
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_

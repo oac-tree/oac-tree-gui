@@ -52,6 +52,10 @@ void SetAnyValueFromJsonType(const std::string& json_type, VariableItem& variabl
 //! It is expected that the layout of existing AnyValueItem matches the layout of \it anyvalue.
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
+//! Set attribute to given value. If the value is empty string, do nothing.
+void AddNonEmptyAttribute(variable_t* variable, const std::string& attribute_name,
+                          const std::string& attribute_value);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_

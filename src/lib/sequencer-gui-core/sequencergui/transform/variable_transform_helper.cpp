@@ -100,4 +100,13 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   }
 }
 
+void AddNonEmptyAttribute(variable_t* variable, const std::string& attribute_name,
+                          const std::string& attribute_value)
+{
+  if (!attribute_value.empty())
+  {
+    variable->AddAttribute(attribute_name, attribute_value);
+  }
+}
+
 }  // namespace sequencergui

@@ -20,6 +20,7 @@
 #include "sequencergui/transform/variable_transform_helper.h"
 
 #include <gtest/gtest.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <testutils/mock_model_listener.h>
@@ -27,6 +28,7 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/sequencer/variable.h>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -125,4 +127,15 @@ TEST_F(VariableTransformHelperTests, UpdateAnyValueFromScalar)
 
   auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(new_anyvalue, stored_anyvalue2);
+}
+
+TEST_F(VariableTransformHelperTests, AddNonEmptyAttribute)
+{
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+
+  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "");
+  EXPECT_FALSE(variable->HasAttribute("custom_attribute_name"));
+
+  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "abc");
+  EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
 }

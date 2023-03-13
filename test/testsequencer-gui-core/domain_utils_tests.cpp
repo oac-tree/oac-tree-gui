@@ -95,13 +95,3 @@ TEST_F(DomainUtilsTest, IsRootInstruction)
   EXPECT_FALSE(IsRootInstruction(item.get()));
 }
 
-TEST_F(DomainUtilsTest, AddNonEmptyAttribute)
-{
-  auto variable = CreateDomainVariable(kLocalVariableType);
-
-  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "");
-  EXPECT_FALSE(variable->HasAttribute("custom_attribute_name"));
-
-  AddNonEmptyAttribute(variable.get(), "custom_attribute_name", "abc");
-  EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
-}
