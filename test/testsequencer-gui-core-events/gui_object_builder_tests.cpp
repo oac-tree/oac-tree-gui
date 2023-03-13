@@ -166,10 +166,10 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeProcedure)
   EXPECT_EQ(procedure_item.GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto repeat_item =
-      procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>("", 1);
+      procedure_item.GetInstructionContainer()->GetItem<sequencergui::RepeatItem>({"", 1});
   auto include_item = repeat_item->GetItem<sequencergui::IncludeItem>("");
   auto sequence_item =
-      procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>("", 0);
+      procedure_item.GetInstructionContainer()->GetItem<sequencergui::SequenceItem>({"", 0});
   auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
 
   // Repeat and Include instructions corresponds to their domain counterpart

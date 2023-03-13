@@ -94,7 +94,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   //! Inserts view(s) for the child instruction with a given index.
   void InsertView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
-    auto new_child = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
+    auto new_child = parent->GetItem<InstructionItem>(tag_index);
     auto parent_view = FindView(dynamic_cast<InstructionItem*>(parent));
     auto next_parent_view = ProcessInstruction(new_child, parent_view);
     if (next_parent_view)
@@ -107,7 +107,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
 
   void RemoveView(mvvm::SessionItem* parent, const mvvm::TagIndex& tag_index)
   {
-    auto item_to_remove = parent->GetItem<InstructionItem>(tag_index.tag, tag_index.index);
+    auto item_to_remove = parent->GetItem<InstructionItem>(tag_index);
     // Removing view of item, and all views of child items.
     for (auto view : m_instruction_to_view.FindRelatedViews(item_to_remove))
     {
