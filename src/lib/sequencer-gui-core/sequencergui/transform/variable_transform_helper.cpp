@@ -102,22 +102,22 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 }
 
 void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
-                          variable_t *variable)
+                          variable_t &variable)
 {
   if (!attribute_value.empty())
   {
-    variable->AddAttribute(attribute_name, attribute_value);
+    variable.AddAttribute(attribute_name, attribute_value);
   }
 }
 
 void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
 {
-  AddNonEmptyAttribute(domainconstants::kTypeAttribute, item.GetJsonType(), &variable);
+  AddNonEmptyAttribute(domainconstants::kTypeAttribute, item.GetJsonType(), variable);
 }
 
 void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
 {
-  AddNonEmptyAttribute(domainconstants::kValueAttribute, item.GetJsonValue(), &variable);
+  AddNonEmptyAttribute(domainconstants::kValueAttribute, item.GetJsonValue(), variable);
 }
 
 }  // namespace sequencergui
