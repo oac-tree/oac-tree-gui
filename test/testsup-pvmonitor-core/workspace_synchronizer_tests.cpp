@@ -22,7 +22,7 @@
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/variable_item_transform_utils.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_monitor_helper.h>
 #include <testutils/gui_domain_utils.h>

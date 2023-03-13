@@ -21,7 +21,7 @@
 
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/variable_item_transform_utils.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_event.h>
 

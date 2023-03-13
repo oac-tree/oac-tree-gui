@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
-#define SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
+#ifndef SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_
+#define SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_
 
-//! Collection of utility functions to transform VariableItem to/from domain.
+//! Collection of helper functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
@@ -39,7 +39,7 @@ namespace sequencergui
 
 class VariableItem;
 
-//std::string GetValuesToJSONString(const variable_t* value);
+// std::string GetValuesToJSONString(const variable_t* value);
 
 //! Sets AnyValueItem on board of \it variable_item using given \it anyvalue.
 //! If AnyValueItem already exist, it will be replaced.
@@ -54,4 +54,4 @@ void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_ITEM_TRANSFORM_UTILS_H_
+#endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_

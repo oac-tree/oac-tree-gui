@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/variable_item_transform_utils.h"
+#include "sequencergui/transform/variable_transform_helper.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -33,13 +33,13 @@ using ::testing::_;
 
 //! Tests for functions from variable_item_transform_utils.h
 
-class VariableItemTransformUtilsTests : public ::testing::Test
+class VariableTransformHelperTests : public ::testing::Test
 {
 };
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromScalar)
+TEST_F(VariableTransformHelperTests, SetAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -67,7 +67,7 @@ TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromScalar)
 
 //! Same as above, except that LocalVariableItem is a part of the model.
 
-TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
+TEST_F(VariableTransformHelperTests, UpdateAnyValueSignaling)
 {
   SequencerModel model;
   auto item = model.InsertItem<LocalVariableItem>();
@@ -89,7 +89,7 @@ TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueSignaling)
   SetAnyValue(anyvalue, *item);
 }
 
-TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromJsonType)
+TEST_F(VariableTransformHelperTests, SetAnyValueFromJsonType)
 {
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
@@ -107,7 +107,7 @@ TEST_F(VariableItemTransformUtilsTests, SetAnyValueFromJsonType)
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(VariableItemTransformUtilsTests, UpdateAnyValueFromScalar)
+TEST_F(VariableTransformHelperTests, UpdateAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;

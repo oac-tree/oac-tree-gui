@@ -23,7 +23,7 @@
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/variable_item_transform_utils.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_item.h>

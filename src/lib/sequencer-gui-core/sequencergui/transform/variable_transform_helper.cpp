@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/transform/variable_item_transform_utils.h"
+#include "variable_transform_helper.h"
 
 #include <sequencergui/model/variable_item.h>
 

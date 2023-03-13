@@ -9,6 +9,6 @@ target_sources(${library_name} PRIVATE
   gui_object_builder.h
   transform_from_domain.cpp
   transform_from_domain.h
-  variable_item_transform_utils.cpp
-  variable_item_transform_utils.h
+  variable_transform_helper.cpp
+  variable_transform_helper.h
 )

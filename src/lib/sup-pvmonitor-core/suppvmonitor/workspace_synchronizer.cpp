@@ -22,7 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
-#include <sequencergui/transform/variable_item_transform_utils.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/sequencer_workspace_listener.h>
 #include <suppvmonitor/workspace_event.h>
