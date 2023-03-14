@@ -44,18 +44,17 @@
 namespace suppvmonitor
 {
 
-MonitorWidget::MonitorWidget(QWidget *parent)
+MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
-    , m_model(std::make_unique<MonitorModel>())
-    , m_actions(new MonitorWidgetActions(CreateContext(), m_model.get(), this))
+    , m_model(model)
+    , m_actions(new MonitorWidgetActions(CreateContext(), m_model, this))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
 
-  PopulateModel();
   SetupConnections();
 
   m_tree_view->SetItem(m_model->GetWorkspaceItem());
@@ -67,11 +66,6 @@ sequencergui::VariableItem *MonitorWidget::GetSelectedVariable()
 }
 
 MonitorWidget::~MonitorWidget() = default;
-
-void MonitorWidget::PopulateModel()
-{
-  auto workspace = m_model->InsertItem<sequencergui::WorkspaceItem>();
-}
 
 void MonitorWidget::SetupConnections()
 {

@@ -34,6 +34,7 @@ namespace suppvmonitor
 {
 
 class MonitorWidget;
+class MonitorModel;
 
 //! The main window of this application.
 
@@ -49,12 +50,13 @@ protected:
   void closeEvent(QCloseEvent* event) override;
 
 private:
+  void PopulateModel();
   void InitApplication();
-  void InitMenu();
   void InitComponents();
   void WriteSettings();
 
   MonitorWidget* m_monitor_widget{nullptr};
+  std::unique_ptr<MonitorModel> m_model;
 };
 
 }  // namespace suppvmonitor

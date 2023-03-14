@@ -52,7 +52,7 @@ class MonitorWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit MonitorWidget(QWidget* parent = nullptr);
+  explicit MonitorWidget(MonitorModel* model, QWidget* parent = nullptr);
   ~MonitorWidget() override;
 
   sequencergui::VariableItem* GetSelectedVariable();
@@ -66,7 +66,7 @@ private:
 
   MonitorWidgetToolBar* m_tool_bar{nullptr};
 
-  std::unique_ptr<MonitorModel> m_model;
+  MonitorModel* m_model{nullptr};
   std::unique_ptr<sup::sequencer::Workspace> m_workspace;
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
   MonitorWidgetActions* m_actions{nullptr};

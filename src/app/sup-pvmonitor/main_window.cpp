@@ -19,6 +19,8 @@
 
 #include "main_window.h"
 
+#include <sequencergui/model/workspace_item.h>
+#include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/monitor_widget.h>
 
 #include <QCoreApplication>
@@ -35,8 +37,10 @@ const QString pos_key = "pos";
 
 namespace suppvmonitor
 {
-MainWindow::MainWindow()
+MainWindow::MainWindow() : m_model(std::make_unique<MonitorModel>())
+
 {
+  PopulateModel();
   InitApplication();
 }
 
@@ -46,6 +50,11 @@ void MainWindow::closeEvent(QCloseEvent* event)
 {
   WriteSettings();
   QMainWindow::closeEvent(event);
+}
+
+void MainWindow::PopulateModel()
+{
+  m_model->InsertItem<sequencergui::WorkspaceItem>();
 }
 
 void MainWindow::InitApplication()
@@ -63,18 +72,12 @@ void MainWindow::InitApplication()
     settings.endGroup();
   }
 
-  InitMenu();
   InitComponents();
-}
-
-void MainWindow::InitMenu()
-{
-  auto file_menu = menuBar()->addMenu("&File");
 }
 
 void MainWindow::InitComponents()
 {
-  m_monitor_widget = new MonitorWidget;
+  m_monitor_widget = new MonitorWidget(m_model.get());
   setCentralWidget(m_monitor_widget);
 }
 
