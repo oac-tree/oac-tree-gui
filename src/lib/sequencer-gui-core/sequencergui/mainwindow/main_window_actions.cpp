@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/action_manager.h"
+#include "main_window_actions.h"
 
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/mainwindow/project_handler.h>
@@ -33,7 +33,7 @@
 namespace sequencergui
 {
 
-ActionManager::ActionManager(mvvm::SessionModelInterface *model, QMainWindow *mainwindow)
+MainWindowActions::MainWindowActions(mvvm::SessionModelInterface *model, QMainWindow *mainwindow)
     : QObject(mainwindow), m_project_handler(new ProjectHandler(model, mainwindow))
 
 {
@@ -44,16 +44,16 @@ ActionManager::ActionManager(mvvm::SessionModelInterface *model, QMainWindow *ma
 //! Returns 'true' if application can be closed.
 //! Internally will perform check for unsaved data, and proceed via save/discard/cancel dialog.
 
-bool ActionManager::CanCloseApplication() const
+bool MainWindowActions::CanCloseApplication() const
 {
   return m_project_handler->CanCloseProject();
 }
 
-ActionManager::~ActionManager() = default;
+MainWindowActions::~MainWindowActions() = default;
 
 //! Create main actions.
 
-void ActionManager::CreateActions(QMainWindow *mainwindow)
+void MainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
   m_create_new_project_action = new QAction("&New Project", this);
   m_create_new_project_action->setShortcuts(QKeySequence::New);
@@ -87,15 +87,15 @@ void ActionManager::CreateActions(QMainWindow *mainwindow)
 
   m_about_action = new QAction("About application", this);
   m_about_action->setStatusTip("About application");
-  connect(m_about_action, &QAction::triggered, this, &ActionManager::OnAbout);
+  connect(m_about_action, &QAction::triggered, this, &MainWindowActions::OnAbout);
 }
 
 //! Equips menu with actions.
 
-void ActionManager::SetupMenus(QMenuBar *menubar)
+void MainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   auto file_menu = menubar->addMenu("&File");
-  connect(file_menu, &QMenu::aboutToShow, this, &ActionManager::AboutToShowFileMenu);
+  connect(file_menu, &QMenu::aboutToShow, this, &MainWindowActions::AboutToShowFileMenu);
   file_menu->addAction(m_create_new_project_action);
   file_menu->addAction(m_open_existing_project_action);
   m_recent_project_menu = file_menu->addMenu("Recent Projects");
@@ -111,7 +111,7 @@ void ActionManager::SetupMenus(QMenuBar *menubar)
   help_menu->addAction(m_about_action);
 }
 
-void ActionManager::AboutToShowFileMenu()
+void MainWindowActions::AboutToShowFileMenu()
 {
   auto recent_projects = m_project_handler->GetRecentProjectList();
   m_recent_project_menu->clear();
@@ -136,7 +136,7 @@ void ActionManager::AboutToShowFileMenu()
   }
 }
 
-void ActionManager::OnAbout()
+void MainWindowActions::OnAbout()
 {
   AboutApplicationDialog dialog(mvvm::utils::FindMainWindow());
   dialog.exec();

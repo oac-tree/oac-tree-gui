@@ -25,6 +25,11 @@
 
 class QCloseEvent;
 
+namespace sequencergui
+{
+class ActionManager;
+}
+
 namespace suppvmonitor
 {
 

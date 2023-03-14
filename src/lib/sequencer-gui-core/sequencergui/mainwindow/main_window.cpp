@@ -17,17 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/main_window.h"
+#include "main_window.h"
+
+#include "main_window_actions.h"
 
 #include <sequencergui/composer/sequencer_composer_view.h>
 #include <sequencergui/explorer/sequencer_explorer_view.h>
-#include <sequencergui/mainwindow/action_manager.h>
 #include <sequencergui/mainwindow/settings_view.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
-#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/procedure_examples.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/sequencer_monitor_view.h>
 #include <sequencergui/utils/style_utils.h>
 
@@ -92,7 +93,7 @@ void MainWindow::InitApplication()
 
 void MainWindow::InitComponents()
 {
-  m_action_manager = new ActionManager(m_models->GetSequencerModel(), this);
+  m_action_manager = new MainWindowActions(m_models->GetSequencerModel(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
