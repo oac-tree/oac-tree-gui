@@ -103,9 +103,6 @@ void MainWindowActions::SetupMenus(QMenuBar *menubar)
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
-
-  auto help_menu = menubar->addMenu("&Help");
-  help_menu->addAction(m_about_action);
 }
 
 void MainWindowActions::AboutToShowFileMenu()

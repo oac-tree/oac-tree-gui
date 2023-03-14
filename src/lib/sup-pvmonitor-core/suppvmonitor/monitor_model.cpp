@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/model_utils.h>
 
@@ -36,6 +37,10 @@ MonitorModel::MonitorModel()
   RegisterItem<sequencergui::UnknownVariableItem>();
   RegisterItem<sequencergui::FileVariableItem>();
   RegisterItem<sequencergui::WorkspaceItem>();
+  RegisterItem<sup::gui::AnyValueEmptyItem>();
+  RegisterItem<sup::gui::AnyValueScalarItem>();
+  RegisterItem<sup::gui::AnyValueArrayItem>();
+  RegisterItem<sup::gui::AnyValueStructItem>();
 }
 
 sequencergui::WorkspaceItem *MonitorModel::GetWorkspaceItem() const
