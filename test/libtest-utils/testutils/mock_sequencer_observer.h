@@ -35,8 +35,8 @@ class MockSequencerObserver : public userinterface_t
 {
 public:
   MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction), (override));
-  MOCK_METHOD(void, VariableUpdatedImpl, (const std::string& name, const anyvalue_t& value),
-              (override));
+  MOCK_METHOD(void, VariableUpdatedImpl,
+              (const std::string& name, const anyvalue_t& value, bool available), (override));
 
   MOCK_METHOD(bool, PutValueImpl, (const anyvalue_t& value, const std::string& description),
               (override));

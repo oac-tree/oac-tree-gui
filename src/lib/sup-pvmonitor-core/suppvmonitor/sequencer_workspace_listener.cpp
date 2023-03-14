@@ -31,11 +31,10 @@ namespace suppvmonitor
 struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
 {
   using workspace_t = sup::sequencer::Workspace;
-  using manager_t = sup::sequencer::NamedCallbackManager<const sup::dto::AnyValue &>;
-  using callback_guard_t = sup::sequencer::CallbackGuard<manager_t>;
+  using callback_guard_t = sup::sequencer::ScopeGuard;
 
   workspace_t *m_workspace{nullptr};
-  callback_guard_t m_guard{nullptr, nullptr};
+  callback_guard_t m_guard;
   SequencerWorkspaceListener *m_self{nullptr};
   mvvm::threadsafe_queue<WorkspaceEvent> m_workspace_events;
 
@@ -54,7 +53,8 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
     m_workspace = workspace;
     m_guard = m_workspace->GetCallbackGuard(this);
 
-    auto on_variable_updated = [this](const std::string &name, const sup::dto::AnyValue &value)
+    auto on_variable_updated =
+        [this](const std::string &name, const sup::dto::AnyValue &value, bool is_available)
     {
       m_workspace_events.push({name, value});
       emit m_self->VariabledUpdated();
@@ -69,7 +69,7 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
       throw sequencergui::RuntimeException("Nothing to listen");
     }
 
-    m_guard = callback_guard_t{nullptr, nullptr};
+    m_guard = callback_guard_t{};
     m_workspace = nullptr;
   }
 
