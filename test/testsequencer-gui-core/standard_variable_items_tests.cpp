@@ -270,7 +270,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueScalarItem>({});
   EXPECT_EQ(item.GetAnyValueItem(), anyvalue_item);
 
-  EXPECT_THROW(item.SetIsAvailable(true), LogicErrorException);
+  EXPECT_NO_THROW(item.SetIsAvailable(true));
 }
 
 //! Testing appearance of properties.

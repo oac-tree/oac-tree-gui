@@ -128,7 +128,9 @@ bool VariableItem::IsAvailable() const
 
 void VariableItem::SetIsAvailable(bool value)
 {
-  throw LogicErrorException("Not implemented");
+  // Nothing to do for the base class. ConnectableItem::SetIsAvailable overrides that to show
+  // connectable status in UI.
+  (void)value;
 }
 
 //! Register properties representing json type and value.
