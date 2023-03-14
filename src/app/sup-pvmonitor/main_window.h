@@ -25,16 +25,12 @@
 
 class QCloseEvent;
 
-namespace sequencergui
-{
-class ActionManager;
-}
-
 namespace suppvmonitor
 {
 
 class MonitorWidget;
 class MonitorModel;
+class MainWindowActions;
 
 //! The main window of this application.
 
@@ -52,11 +48,12 @@ protected:
 private:
   void PopulateModel();
   void InitApplication();
-  void InitComponents();
   void WriteSettings();
 
-  MonitorWidget* m_monitor_widget{nullptr};
   std::unique_ptr<MonitorModel> m_model;
+
+  MonitorWidget* m_monitor_widget{nullptr};
+  MainWindowActions* m_actions{nullptr};
 };
 
 }  // namespace suppvmonitor

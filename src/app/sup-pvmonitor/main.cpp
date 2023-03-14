@@ -27,12 +27,13 @@
 int main(int argc, char** argv)
 {
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
+  QCoreApplication::setApplicationName("sup-pvmonitor");
+  QCoreApplication::setApplicationVersion("0.1");
+  QCoreApplication::setOrganizationName("sequencer");
 
-  mvvm::utils::SetupHighDpiScaling(false);
+  mvvm::utils::SetupHighDpiScaling();
 
   QApplication app(argc, argv);
-
-  Q_INIT_RESOURCE(sequencericons);
 
   sequencergui::LoadPlugins();
 
