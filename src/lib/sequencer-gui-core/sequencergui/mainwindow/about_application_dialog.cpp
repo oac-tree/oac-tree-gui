@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/about_application_dialog.h"
+#include "about_application_dialog.h"
 
 #include <sequencergui/core/version.h>
 

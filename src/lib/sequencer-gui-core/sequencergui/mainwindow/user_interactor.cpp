@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/user_interactor.h"
+#include "user_interactor.h"
 
-#include <sequencergui/mainwindow/recent_project_settings.h>
+#include "recent_project_settings.h"
 
 #include <mvvm/project/project_types.h>
 #include <mvvm/project/project_utils.h>

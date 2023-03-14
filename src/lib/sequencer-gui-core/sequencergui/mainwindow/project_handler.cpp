@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/project_handler.h"
+#include "project_handler.h"
 
-#include <sequencergui/mainwindow/recent_project_settings.h>
-#include <sequencergui/mainwindow/user_interactor.h>
+#include "recent_project_settings.h"
+#include "user_interactor.h"
 
 #include <mvvm/factories/project_manager_factory.h>
 #include <mvvm/model/application_model.h>

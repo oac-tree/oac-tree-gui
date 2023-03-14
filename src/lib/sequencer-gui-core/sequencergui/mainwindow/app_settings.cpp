@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/app_settings.h"
+#include "app_settings.h"
 
 namespace sequencergui
 {

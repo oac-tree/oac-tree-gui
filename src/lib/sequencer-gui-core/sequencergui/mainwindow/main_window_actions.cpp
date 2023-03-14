@@ -19,8 +19,9 @@
 
 #include "main_window_actions.h"
 
-#include <sequencergui/mainwindow/about_application_dialog.h>
-#include <sequencergui/mainwindow/project_handler.h>
+#include "about_application_dialog.h"
+#include "project_handler.h"
+
 #include <sequencergui/model/sequencer_model.h>
 
 #include <mvvm/widgets/widget_utils.h>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/recent_project_settings.h"
+#include "recent_project_settings.h"
 
 #include <mvvm/utils/file_utils.h>
 

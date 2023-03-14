@@ -20,10 +20,10 @@
 #include "main_window.h"
 
 #include "main_window_actions.h"
+#include "settings_view.h"
 
 #include <sequencergui/composer/sequencer_composer_view.h>
 #include <sequencergui/explorer/sequencer_explorer_view.h>
-#include <sequencergui/mainwindow/settings_view.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>

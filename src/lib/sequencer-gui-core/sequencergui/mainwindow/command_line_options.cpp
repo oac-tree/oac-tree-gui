@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/command_line_options.h"
+#include "command_line_options.h"
 
 #include <QCommandLineOption>
 #include <QCommandLineParser>

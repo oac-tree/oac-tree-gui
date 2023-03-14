@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/mainwindow/settings_view.h"
+#include "settings_view.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_model.h>
@@ -25,10 +25,9 @@
 #include <sequencergui/utils/style_utils.h>
 #include <sequencergui/widgets/dots_toolbar.h>
 
-#include <mvvm/widgets/widget_utils.h>
-
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QHBoxLayout>
 #include <QListView>
