@@ -33,6 +33,7 @@
 
 #include <QDebug>
 #include <stdexcept>
+#include <iostream>
 
 namespace suppvmonitor
 {

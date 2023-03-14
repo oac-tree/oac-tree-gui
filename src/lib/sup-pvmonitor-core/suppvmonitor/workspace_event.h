@@ -29,7 +29,7 @@ struct WorkspaceEvent
 {
   std::string variable_name;
   sup::dto::AnyValue value;
-  bool is_available{false};
+  bool connected{false};
 
   bool operator==(const WorkspaceEvent& other) const;
   bool operator!=(const WorkspaceEvent& other) const;

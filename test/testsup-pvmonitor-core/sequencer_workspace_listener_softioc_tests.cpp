@@ -24,6 +24,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <suppvmonitor/monitor_model.h>
+#include <suppvmonitor/workspace_event.h>
 #include <testutils/epics_test_utils.h>
 
 #include <sup/dto/anyvalue.h>
@@ -82,11 +83,10 @@ sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softio
 TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVariable)
 {
   // creating ChannelAccessVariable
-  auto variable = sequencergui::CreateDomainVariable(
-      sequencergui::domainconstants::kChannelAccessVariableType);
+  auto variable =
+      sequencergui::CreateDomainVariable(sequencergui::domainconstants::kChannelAccessVariableType);
   variable->AddAttribute("channel", "CA-TESTS:INT");
   variable->AddAttribute("type", R"RAW({"type":"uint32"})RAW");
-  auto variable_ptr = variable.get();
 
   // adding it to the workspace and validating values
   sup::sequencer::Workspace workspace;
@@ -116,4 +116,12 @@ TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVar
   EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 
   EXPECT_EQ(spy_upate.count(), 1);
+
+  // checking accumulated event
+  sup::dto::AnyValue expected_value(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+  EXPECT_EQ(listener.GetEventCount(), 1);
+  auto event = listener.PopEvent();
+  EXPECT_EQ(event.variable_name, std::string("var"));
+  EXPECT_EQ(event.value, expected_value);
+  EXPECT_TRUE(event.connected);
 }

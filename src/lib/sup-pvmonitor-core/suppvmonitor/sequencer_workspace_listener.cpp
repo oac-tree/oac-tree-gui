@@ -54,9 +54,9 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
     m_guard = m_workspace->GetCallbackGuard(this);
 
     auto on_variable_updated =
-        [this](const std::string &name, const sup::dto::AnyValue &value, bool is_available)
+        [this](const std::string &name, const sup::dto::AnyValue &value, bool connected)
     {
-      m_workspace_events.push({name, value});
+      m_workspace_events.push({name, value, connected});
       emit m_self->VariabledUpdated();
     };
     m_workspace->RegisterGenericCallback(on_variable_updated, this);

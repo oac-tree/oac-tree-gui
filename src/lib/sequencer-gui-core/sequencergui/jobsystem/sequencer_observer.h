@@ -38,7 +38,8 @@ public:
 
   void UpdateInstructionStatusImpl(const ::sup::sequencer::Instruction* instruction) override;
 
-  void VariableUpdatedImpl(const std::string& name, const sup::dto::AnyValue& value, bool available) override;
+  void VariableUpdatedImpl(const std::string& name, const sup::dto::AnyValue& value,
+                           bool connected) override;
 
   bool PutValueImpl(const sup::dto::AnyValue& value, const std::string& description) override;
 

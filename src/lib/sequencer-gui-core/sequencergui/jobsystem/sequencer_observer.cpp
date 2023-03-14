@@ -49,9 +49,9 @@ void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instru
 }
 
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,
-                                            const sup::dto::AnyValue &value, bool available)
+                                            const sup::dto::AnyValue &value, bool connected)
 {
-  (void)available;
+  (void)connected;
   auto value_string = sup::gui::GetValuesToJSONString(&value);
   m_procedure_runner->onVariableChange(name, value_string);
 }
