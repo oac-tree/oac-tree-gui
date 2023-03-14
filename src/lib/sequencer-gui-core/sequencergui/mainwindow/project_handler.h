@@ -29,7 +29,7 @@ class QWidget;
 namespace mvvm
 {
 class ProjectManagerInterface;
-class ApplicationModel;
+class SessionModelInterface;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -48,7 +48,7 @@ class ProjectHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit ProjectHandler(mvvm::ApplicationModel* model, QWidget* parent);
+  explicit ProjectHandler(mvvm::SessionModelInterface* model, QWidget* parent);
   ~ProjectHandler() override;
 
   bool CanCloseProject() const;
@@ -74,7 +74,7 @@ private:
   std::unique_ptr<RecentProjectSettings> m_recent_project_settings;
   std::unique_ptr<UserInteractor> m_user_interactor;
   std::unique_ptr<mvvm::ProjectManagerInterface> m_project_manager;
-  mvvm::ApplicationModel* m_model{nullptr};
+  mvvm::SessionModelInterface* m_model{nullptr};
 };
 
 }  // namespace sequencergui

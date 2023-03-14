@@ -26,6 +26,7 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/procedure_examples.h>
 #include <sequencergui/monitor/sequencer_monitor_view.h>
 #include <sequencergui/utils/style_utils.h>

@@ -33,7 +33,7 @@
 namespace sequencergui
 {
 
-ActionManager::ActionManager(SequencerModel *model, QMainWindow *mainwindow)
+ActionManager::ActionManager(mvvm::SessionModelInterface *model, QMainWindow *mainwindow)
     : QObject(mainwindow), m_project_handler(new ProjectHandler(model, mainwindow))
 
 {

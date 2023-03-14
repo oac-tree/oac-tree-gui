@@ -27,11 +27,15 @@ class QAction;
 class QMenuBar;
 class QMenu;
 
+namespace mvvm
+{
+class SessionModelInterface;
+}
+
 namespace sequencergui
 {
 
 class ProjectHandler;
-class SequencerModel;
 
 //! Vertical panel located on the left of XMLTreeView
 
@@ -40,7 +44,7 @@ class ActionManager : public QObject
   Q_OBJECT
 
 public:
-  explicit ActionManager(SequencerModel* model, QMainWindow* mainwindow);
+  explicit ActionManager(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
   ~ActionManager() override;
 
   bool CanCloseApplication() const;
