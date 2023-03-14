@@ -70,7 +70,6 @@ TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 
 //! Setting up the WorkspaceItem with single variable.
 //! Triggering domain workspace event and validating AnyValueItem update.
-//! Expecting no callbacks on item update.
 
 TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
 {
@@ -82,20 +81,21 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
       m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
 
   testutils::SetupVariable("abc", value, *variable_item0);
+  // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
 
-  // initially VariableItem doesn't have AnyValueItem
-  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
-
   // expecting no callbacks on processing domain events
   EXPECT_CALL(listener, OnCallback(_)).Times(0);
 
-  // triggering domain workspace event
-  controller.ProcessEventFromDomain({"abc", value});
+  // triggering domain workspace event (pretending it is disconnected)
+  controller.ProcessEventFromDomain({"abc", value, false});
 
+   // local variable doesn't care about connected status
+  EXPECT_TRUE(variable_item0->IsAvailable());
+  // checking updated value
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value, stored_anyvalue);
@@ -116,13 +116,11 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
       m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
 
   testutils::SetupVariable("abc", value, *variable_item0);
+  // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
-
-  // initially VariableItem doesn't have AnyValueItem
-  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   // expecting no callbacks on processing domain events
   EXPECT_CALL(listener, OnCallback(_)).Times(0);
@@ -209,4 +207,39 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   // modifying value from the model
   sequencergui::SetAnyValue(expected_event0.value, *variable_item0);
   sequencergui::SetAnyValue(expected_event1.value, *variable_item1);
+}
+
+//! Setting up the WorkspaceItem with single ChannelAccessVariableItem.
+//! Triggering domain workspace event and validating AnyValueItem update.
+//! There is no any real SoftIoc behind. The main purpose of the test is to validate
+//! that "connected" status is propagated from WorkspaceEvent to the item.
+
+TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
+{
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
+
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto variable_item0 =
+      m_workspace_item->InsertItem<sequencergui::ChannelAccessVariableItem>(mvvm::TagIndex::Append());
+  variable_item0->SetName("abc");
+
+  // initially it doesn't have a value on board and it is disconnected
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+  EXPECT_FALSE(variable_item0->IsAvailable());
+
+  WorkspaceItemController controller(m_workspace_item);
+  controller.SetCallback(listener.CreateCallback());
+
+  // expecting no callbacks on processing domain events
+  EXPECT_CALL(listener, OnCallback(_)).Times(0);
+
+  // triggering domain workspace event, pretending connected status
+  controller.ProcessEventFromDomain({"abc", value, true});
+
+   // status become connected, value updated
+  EXPECT_TRUE(variable_item0->IsAvailable());
+  ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value, stored_anyvalue);
 }
