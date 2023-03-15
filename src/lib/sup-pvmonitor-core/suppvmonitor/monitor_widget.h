@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <memory>
 
+class QAbstractItemModel;
+
 namespace sup::sequencer
 {
 class Workspace;
@@ -31,6 +33,12 @@ class Workspace;
 namespace mvvm
 {
 class AllItemsTreeView;
+class SessionItem;
+template <typename T>
+class ModelListener;
+class SessionModelInterface;
+struct ItemInsertedEvent;
+class ViewModel;
 }
 
 namespace sequencergui
@@ -52,12 +60,17 @@ class MonitorWidget : public QWidget
   Q_OBJECT
 
 public:
+  using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
+
   explicit MonitorWidget(MonitorModel* model, QWidget* parent = nullptr);
   ~MonitorWidget() override;
 
   sequencergui::VariableItem* GetSelectedVariable();
 
 private:
+  void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event);
+  mvvm::ViewModel* GetViewModel();
+
   void PopulateModel();
   void SetupConnections();
   void OnStartMonitoringRequest();
@@ -71,6 +84,7 @@ private:
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
   MonitorWidgetActions* m_actions{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
+  std::unique_ptr<listener_t> m_listener;
 };
 
 }  // namespace suppvmonitor

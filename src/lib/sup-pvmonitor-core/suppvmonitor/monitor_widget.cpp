@@ -31,7 +31,10 @@
 #include <sequencergui/transform/variable_transform_helper.h>
 #include <sequencergui/widgets/widget_utils.h>
 
+#include <mvvm/signals/model_listener.h>
+#include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
@@ -50,22 +53,43 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     , m_model(model)
     , m_actions(new MonitorWidgetActions(CreateContext(), m_model, this))
     , m_tree_view(new mvvm::AllItemsTreeView)
+    , m_listener(std::make_unique<listener_t>(m_model))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
 
-  SetupConnections();
-
   m_tree_view->SetItem(m_model->GetWorkspaceItem());
+  SetupConnections();  // should be after tree view got its model
+
+  m_listener->Connect<mvvm::ItemInsertedEvent>(this, &MonitorWidget::OnItemInsertedEvent);
 }
+
+MonitorWidget::~MonitorWidget() = default;
 
 sequencergui::VariableItem *MonitorWidget::GetSelectedVariable()
 {
   return m_tree_view->GetSelected<sequencergui::VariableItem>();
 }
 
-MonitorWidget::~MonitorWidget() = default;
+//! Provide automatic selection in tree view for just inserted variable
+
+void MonitorWidget::OnItemInsertedEvent(const mvvm::ItemInsertedEvent &event)
+{
+  m_tree_view->SetSelectedItem(event.m_item);
+  auto index_of_inserted = GetViewModel()->GetIndexOfSessionItem(event.m_item);
+  if (!index_of_inserted.empty())
+  {
+    m_tree_view->GetTreeView()->setExpanded(index_of_inserted.front(), true);
+  }
+}
+
+//! Returns underlying view model to which QTreeView is pointing.
+
+mvvm::ViewModel *MonitorWidget::GetViewModel()
+{
+  return dynamic_cast<mvvm::ViewModel *>(m_tree_view->GetTreeView()->model());
+}
 
 void MonitorWidget::SetupConnections()
 {
