@@ -76,26 +76,31 @@ void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
   auto edited_anyvalue = m_context.get_anyvalue_callback(*selected_anyvalue);
   if (edited_anyvalue)
   {
+    auto prev_parent = selected_anyvalue->GetParent();
     m_model->RemoveItem(selected_anyvalue);
-    m_model->InsertItem(std::move(edited_anyvalue), GetSelectedVariable(), {});
+    m_model->InsertItem(std::move(edited_anyvalue), prev_parent, {});
   }
 }
 
 sequencergui::VariableItem *MonitorWidgetActions::GetSelectedVariable()
 {
-  return dynamic_cast<sequencergui::VariableItem*>(m_context.get_selected_item_callback());
+  return dynamic_cast<sequencergui::VariableItem *>(m_context.get_selected_item_callback());
+}
+
+//! Returns selected AnyValueItem.
+sup::gui::AnyValueItem *MonitorWidgetActions::GetSelectedAnyValueItem()
+{
+  return dynamic_cast<sup::gui::AnyValueItem *>(m_context.get_selected_item_callback());
 }
 
 //! Returns AnyValueItem intended for editing.
 
 sup::gui::AnyValueItem *MonitorWidgetActions::GetAnyValueItemToEdit()
 {
-  if (auto selected_variable = GetSelectedVariable(); selected_variable)
-  {
-    return GetSelectedVariable()->GetAnyValueItem();
-  }
-
-  return nullptr;
+  // If top level VariableItem is selected, it will return its underlying AnyValueItem.
+  // Otherwise it will return selected AnyValueItem, if any.
+  return GetSelectedVariable() ? GetSelectedVariable()->GetAnyValueItem()
+                               : GetSelectedAnyValueItem();
 }
 
 //! Set reasonlable initial values for just created variable.

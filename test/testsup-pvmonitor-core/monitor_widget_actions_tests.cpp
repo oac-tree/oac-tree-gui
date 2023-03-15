@@ -206,8 +206,9 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothingIsSelected)
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
+//! Initially we have VariableItem selected.
 
-TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothing)
+TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -221,6 +222,41 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothing)
   // preparing context
   MockDialog mock_dialog(std::move(editing_result));
   auto get_selected_callback = [var0]() { return var0; };
+  MonitorWidgetContext context{get_selected_callback, m_warning_listener.CreateCallback(),
+                               mock_dialog.CreateCallback()};
+
+  // preparing actions
+  MonitorWidgetActions actions(context, &m_model, nullptr);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  // expecting call to editing widget
+  EXPECT_CALL(mock_dialog, OnEditingRequest(_)).Times(1);
+
+  // editing request
+  actions.OnEditAnyvalueRequest();
+
+  // checking that variable got new AnyValueItem
+  EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
+}
+
+//! Full scenario: editing AnyValueItem on board of LocalVariableItem.
+//! The only difference with previous test is that
+
+TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenAnyValueIsSelected)
+{
+  // creating variable with AnyValue on board
+  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  sequencergui::SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+  auto initial_anyvalue_item = var0->GetAnyValueItem();
+
+  // item mimicking editing result
+  auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
+  auto editing_result_ptr = editing_result.get();
+
+  // preparing context
+  MockDialog mock_dialog(std::move(editing_result));
+  auto get_selected_callback = [initial_anyvalue_item]() { return initial_anyvalue_item; };
   MonitorWidgetContext context{get_selected_callback, m_warning_listener.CreateCallback(),
                                mock_dialog.CreateCallback()};
 
