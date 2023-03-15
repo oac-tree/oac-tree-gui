@@ -49,8 +49,8 @@ private:
   void OnLabelClick(const QString& link);
   void OnTreeDoubleClick(const QModelIndex& index);
   void OnTreeSingleClick(const QModelIndex& index);
-  void WriteSettings();
   void ReadSettings();
+  void WriteSettings();
 
   QFileSystemModel* m_file_system_model{nullptr};
   QTreeView* m_tree_view{nullptr};

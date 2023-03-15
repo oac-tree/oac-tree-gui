@@ -42,12 +42,16 @@ class AnyValueEditorDialog : public QDialog
 
 public:
   explicit AnyValueEditorDialog(QWidget* parent = nullptr);
+  ~AnyValueEditorDialog() override;
 
   void SetInitialValue(const sup::gui::AnyValueItem *item);
 
   std::unique_ptr<sup::gui::AnyValueItem> GetResult();
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+
   QBoxLayout* CreateButtonLayout();
 
   sup::gui::AnyValueEditor* m_anyvalue_editor{nullptr};

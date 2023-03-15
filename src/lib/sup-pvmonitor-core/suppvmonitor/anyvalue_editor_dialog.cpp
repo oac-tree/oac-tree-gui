@@ -27,7 +27,16 @@
 
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QSettings>
 #include <QVBoxLayout>
+
+namespace
+{
+QString GetDialogSizeSettingName()
+{
+  return "AnyValueEditorDialog/window_size";
+}
+}  // namespace
 
 namespace suppvmonitor
 {
@@ -36,12 +45,18 @@ AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
     : QDialog(parent), m_anyvalue_editor(new sup::gui::AnyValueEditor)
 {
   setWindowTitle("AnyValueEditor");
+  ReadSettings();
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_anyvalue_editor);
   layout->addLayout(CreateButtonLayout());
+}
+
+AnyValueEditorDialog::~AnyValueEditorDialog()
+{
+  WriteSettings();
 }
 
 void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
@@ -62,6 +77,20 @@ std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
   auto result = std::unique_ptr<sup::gui::AnyValueItem>(
       dynamic_cast<sup::gui::AnyValueItem*>(item_clone.release()));
   return result;
+}
+
+//! Loads persistence widget settings from disk.
+void AnyValueEditorDialog::ReadSettings()
+{
+  const QSettings settings;
+  resize(settings.value(GetDialogSizeSettingName(), QSize(800, 600)).toSize());
+}
+
+//! Writes persistence widget settings on disk.
+void AnyValueEditorDialog::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(GetDialogSizeSettingName(), size());
 }
 
 //! Creates layout with OK/CANCEL buttons.

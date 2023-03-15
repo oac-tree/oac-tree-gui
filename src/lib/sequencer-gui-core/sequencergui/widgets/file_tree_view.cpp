@@ -137,13 +137,6 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
   }
 }
 
-//! Write widget settings to file.
-void FileTreeView::WriteSettings()
-{
-  QSettings settings;
-  settings.setValue(GetWorkdirSettingName(), m_current_workdir);
-}
-
 //! Reads widget settings from file.
 void FileTreeView::ReadSettings()
 {
@@ -154,6 +147,13 @@ void FileTreeView::ReadSettings()
   {
     m_current_workdir = settings.value(GetWorkdirSettingName()).toString();
   }
+}
+
+//! Write widget settings to file.
+void FileTreeView::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(GetWorkdirSettingName(), m_current_workdir);
 }
 
 }  // namespace sequencergui
