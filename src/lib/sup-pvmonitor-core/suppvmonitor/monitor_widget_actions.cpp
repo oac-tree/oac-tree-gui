@@ -103,7 +103,7 @@ sup::gui::AnyValueItem *MonitorWidgetActions::GetAnyValueItemToEdit()
                                : GetSelectedAnyValueItem();
 }
 
-//! Set reasonlable initial values for just created variable.
+//! Set reasonable initial values for just created variable.
 //! Might be changed in the future.
 
 void MonitorWidgetActions::SetupVariable(sequencergui::VariableItem *item)

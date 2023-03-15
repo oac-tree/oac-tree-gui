@@ -72,6 +72,7 @@ private:
   void PopulateModel();
   void SetupConnections();
   void OnStartMonitoringRequest();
+  void OnStopMonitoringRequest();
 
   MonitorWidgetContext CreateContext();
 

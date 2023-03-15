@@ -97,6 +97,9 @@ void MonitorWidget::SetupConnections()
   connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
           &MonitorWidget::OnStartMonitoringRequest);
 
+  connect(m_tool_bar, &MonitorWidgetToolBar::StopMonitoringRequest, this,
+          &MonitorWidget::OnStopMonitoringRequest);
+
   connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
           &MonitorWidgetActions::OnEditAnyvalueRequest);
 }
@@ -115,6 +118,15 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer->Start();
   };
   sequencergui::InvokeAndCatch(on_start, "Can't setup workspace");
+}
+
+void MonitorWidget::OnStopMonitoringRequest()
+{
+  m_workspace->Reset();
+  for (auto item : m_model->GetWorkspaceItem()->GetVariables())
+  {
+    item->SetIsAvailable(false);
+  }
 }
 
 MonitorWidgetContext MonitorWidget::CreateContext()
