@@ -48,8 +48,8 @@ namespace suppvmonitor
 
 struct MonitorWidgetContext
 {
-  //!< callback to retrieve currently selected AnyValueItem
-  std::function<sequencergui::VariableItem*()> get_selected_variable_callback;
+  //!< callback to retrieve currently selected item
+  std::function<mvvm::SessionItem*()> get_selected_item_callback;
 
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message_callback;

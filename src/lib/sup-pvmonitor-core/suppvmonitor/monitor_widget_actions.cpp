@@ -51,7 +51,7 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
   }
   catch (const std::exception &ex)
   {
-    SendMessage("Can't add variable to the selection");
+    SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
   }
 }
 
@@ -65,7 +65,7 @@ void MonitorWidgetActions::OnRemoveVariableRequest()
 
 void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
 {
-  auto selected_anyvalue = GetSelectedAnyValueItem();
+  auto selected_anyvalue = GetAnyValueItemToEdit();
   if (!selected_anyvalue)
   {
     SendMessage("Please select AnyValue you want to modify",
@@ -83,13 +83,19 @@ void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
 
 sequencergui::VariableItem *MonitorWidgetActions::GetSelectedVariable()
 {
-  return m_context.get_selected_variable_callback ? m_context.get_selected_variable_callback()
-                                                  : nullptr;
+  return dynamic_cast<sequencergui::VariableItem*>(m_context.get_selected_item_callback());
 }
 
-sup::gui::AnyValueItem *MonitorWidgetActions::GetSelectedAnyValueItem()
+//! Returns AnyValueItem intended for editing.
+
+sup::gui::AnyValueItem *MonitorWidgetActions::GetAnyValueItemToEdit()
 {
-  return GetSelectedVariable() ? GetSelectedVariable()->GetAnyValueItem() : nullptr;
+  if (auto selected_variable = GetSelectedVariable(); selected_variable)
+  {
+    return GetSelectedVariable()->GetAnyValueItem();
+  }
+
+  return nullptr;
 }
 
 //! Set reasonlable initial values for just created variable.

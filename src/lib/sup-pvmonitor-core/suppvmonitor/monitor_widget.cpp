@@ -67,11 +67,6 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
 
 MonitorWidget::~MonitorWidget() = default;
 
-sequencergui::VariableItem *MonitorWidget::GetSelectedVariable()
-{
-  return m_tree_view->GetSelected<sequencergui::VariableItem>();
-}
-
 //! Provide automatic selection in tree view for just inserted variable
 
 void MonitorWidget::OnItemInsertedEvent(const mvvm::ItemInsertedEvent &event)
@@ -124,7 +119,7 @@ void MonitorWidget::OnStartMonitoringRequest()
 
 MonitorWidgetContext MonitorWidget::CreateContext()
 {
-  auto get_selected_callback = [this]() { return GetSelectedVariable(); };
+  auto get_selected_callback = [this]() { return m_tree_view->GetSelectedItem(); };
 
   auto send_message_callback = [this](const sup::gui::MessageEvent &event)
   {

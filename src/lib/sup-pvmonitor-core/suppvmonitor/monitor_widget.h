@@ -65,8 +65,6 @@ public:
   explicit MonitorWidget(MonitorModel* model, QWidget* parent = nullptr);
   ~MonitorWidget() override;
 
-  sequencergui::VariableItem* GetSelectedVariable();
-
 private:
   void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event);
   mvvm::ViewModel* GetViewModel();

@@ -55,7 +55,7 @@ public:
 
 private:
   sequencergui::VariableItem* GetSelectedVariable();
-  sup::gui::AnyValueItem* GetSelectedAnyValueItem();
+  sup::gui::AnyValueItem* GetAnyValueItemToEdit();
 
   void SetupVariable(sequencergui::VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},
