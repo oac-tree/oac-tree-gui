@@ -140,13 +140,8 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
 //! Reads widget settings from file.
 void FileTreeView::ReadSettings()
 {
-  QSettings settings;
-  m_current_workdir = QDir::currentPath();
-
-  if (settings.contains(GetWorkdirSettingName()))
-  {
-    m_current_workdir = settings.value(GetWorkdirSettingName()).toString();
-  }
+  const QSettings settings;
+  m_current_workdir = settings.value(GetWorkdirSettingName(), QDir::currentPath()).toString();
 }
 
 //! Write widget settings to file.
