@@ -28,7 +28,7 @@
 namespace suppvmonitor
 {
 
-MonitorModel::MonitorModel()
+MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
 {
   RegisterItem<sequencergui::ChannelAccessVariableItem>();
   RegisterItem<sequencergui::LocalVariableItem>();
