@@ -33,6 +33,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/viewmodel/anyvalue_viewmodel.h>
 
+#include <QFileDialog>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QSplitter>
@@ -72,13 +73,15 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
   SetupConnections();
 }
 
-void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
+//! Imports AnyValueFromFile
+
+void AnyValueEditor::OnImportFromFileRequest()
 {
-  // temporarily disabling the model to speed-up loading of large files
-  m_component_provider->SetApplicationModel(nullptr);
-  m_actions->OnImportFromFileRequest(file_name.toStdString());
-  m_component_provider->SetApplicationModel(m_model.get());
-  m_tree_view->expandAll();
+  QString file_name = QFileDialog::getOpenFileName(this);
+  if (!file_name.isEmpty())
+  {
+    ImportAnyValueFromFile(file_name);
+  }
 }
 
 //! Returns AnyValueItem selected by the user in item tree.
@@ -128,6 +131,15 @@ AnyValueEditorContext AnyValueEditor::CreateActionContext() const
   };
 
   return {get_selected_callback, notify_warning_callback};
+}
+
+void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
+{
+  // temporarily disabling the model to speed-up loading of large files
+  m_component_provider->SetApplicationModel(nullptr);
+  m_actions->OnImportFromFileRequest(file_name.toStdString());
+  m_component_provider->SetApplicationModel(m_model.get());
+  m_tree_view->expandAll();
 }
 
 }  // namespace sup::gui

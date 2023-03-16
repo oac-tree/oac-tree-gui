@@ -59,27 +59,21 @@ void MainWindow::InitApplication()
     settings.endGroup();
   }
 
-  InitMenu();
   InitComponents();
+  InitMenu();
 }
 
 void MainWindow::InitMenu()
 {
+  Q_ASSERT(m_anyvalue_editor);
+
   auto file_menu = menuBar()->addMenu("&File");
 
   // open file
   auto open_action = new QAction("&Open...", this);
   file_menu->addAction(open_action);
-
-  auto on_open_action = [&]()
-  {
-    QString file_name = QFileDialog::getOpenFileName(this);
-    if (!file_name.isEmpty())
-    {
-      m_anyvalue_editor->ImportAnyValueFromFile(file_name);
-    }
-  };
-  connect(open_action, &QAction::triggered, on_open_action);
+  connect(open_action, &QAction::triggered, m_anyvalue_editor,
+          &sup::gui::AnyValueEditor::OnImportFromFileRequest);
 }
 
 void MainWindow::InitComponents()

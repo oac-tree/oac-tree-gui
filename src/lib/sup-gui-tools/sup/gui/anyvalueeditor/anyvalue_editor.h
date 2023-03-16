@@ -51,7 +51,7 @@ public:
   explicit AnyValueEditor(QWidget* parent = nullptr);
   ~AnyValueEditor() override;
 
-  void ImportAnyValueFromFile(const QString& filename);
+  void OnImportFromFileRequest();
 
   sup::gui::AnyValueItem* GetSelectedItem() const;
 
@@ -61,6 +61,7 @@ public:
 
 private:
   void SetupConnections();
+  void ImportAnyValueFromFile(const QString& filename);
 
   AnyValueEditorContext CreateActionContext() const;
 
