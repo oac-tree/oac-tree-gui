@@ -27,6 +27,9 @@
 int main(int argc, char** argv)
 {
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
+  QCoreApplication::setApplicationName("anyvalue-editor");
+  QCoreApplication::setApplicationVersion("0.1");
+  QCoreApplication::setOrganizationName("sequencer");
 
   mvvm::utils::SetupHighDpiScaling();
 

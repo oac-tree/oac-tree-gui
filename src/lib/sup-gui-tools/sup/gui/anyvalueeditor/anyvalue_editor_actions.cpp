@@ -26,6 +26,8 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
+#include <sup/dto/anyvalue.h>
 
 namespace sup::gui
 {
@@ -74,6 +76,14 @@ void AnyValueEditorActions::OnRemoveSelected()
   {
     m_model->RemoveItem(selected);
   }
+}
+
+void AnyValueEditorActions::OnImportFromFileRequest(const std::string &file_name)
+{
+  auto anyvalue = sup::gui::AnyValueFromJSONFile(file_name);
+  auto item = m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
+                                  mvvm::TagIndex::Append());
+  item->SetDisplayName("AnyValue");
 }
 
 //! Set initial value. The given value will be cloned inside the editor's model and used as

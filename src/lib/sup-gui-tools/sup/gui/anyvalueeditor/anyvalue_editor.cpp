@@ -31,7 +31,6 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/gui/viewmodel/anyvalue_viewmodel.h>
 
 #include <QHBoxLayout>
@@ -47,15 +46,15 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
     , m_model(std::make_unique<mvvm::ApplicationModel>())
     , m_actions(new AnyValueEditorActions(CreateActionContext(), m_model.get(), this))
     , m_tool_bar(new AnyValueEditorToolBar(m_actions))
-    , m_all_items_tree_view(new QTreeView)
+    , m_tree_view(new QTreeView)
     , m_text_edit(new AnyValueEditorTextPanel(m_model.get()))
     , m_splitter(new QSplitter)
-    , m_component_provider(mvvm::CreateProvider<sup::gui::AnyValueViewModel>(m_all_items_tree_view))
+    , m_component_provider(mvvm::CreateProvider<sup::gui::AnyValueViewModel>(m_tree_view))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
 
-  m_splitter->addWidget(m_all_items_tree_view);
+  m_splitter->addWidget(m_tree_view);
   m_splitter->addWidget(m_text_edit);
 
   layout->addWidget(m_splitter);
@@ -68,23 +67,18 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
   m_model->RegisterItem<sup::gui::AnyValueScalarItem>();
 
   m_component_provider->SetApplicationModel(m_model.get());
-  m_all_items_tree_view->expandAll();
+  m_tree_view->expandAll();
 
   SetupConnections();
 }
 
 void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
 {
+  // temporarily disabling the model to speed-up loading of large files
   m_component_provider->SetApplicationModel(nullptr);
-
-  auto anyvalue = sup::gui::AnyValueFromJSONFile(file_name.toStdString());
-  auto item = m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
-                                  mvvm::TagIndex::Append());
-  item->SetDisplayName("AnyValue");
-
+  m_actions->OnImportFromFileRequest(file_name.toStdString());
   m_component_provider->SetApplicationModel(m_model.get());
-
-  m_all_items_tree_view->expandAll();
+  m_tree_view->expandAll();
 }
 
 //! Returns AnyValueItem selected by the user in item tree.

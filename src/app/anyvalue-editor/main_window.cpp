@@ -50,10 +50,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::InitApplication()
 {
-  QCoreApplication::setApplicationName("anyvalue-editor");
-  QCoreApplication::setApplicationVersion("0.1");
-  QCoreApplication::setOrganizationName("sequencer");
-
   QSettings settings;
   if (settings.childGroups().contains(main_window_group))
   {

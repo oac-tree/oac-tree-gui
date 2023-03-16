@@ -60,6 +60,8 @@ public:
 
   void OnRemoveSelected();
 
+  void OnImportFromFileRequest(const std::string& file_name);
+
   void SetInitialValue(const AnyValueItem& item);
 
   AnyValueItem* GetTopItem();

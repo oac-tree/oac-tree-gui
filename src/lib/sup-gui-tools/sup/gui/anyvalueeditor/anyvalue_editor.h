@@ -68,7 +68,7 @@ private:
 
   AnyValueEditorActions* m_actions{nullptr};
   AnyValueEditorToolBar* m_tool_bar{nullptr};
-  QTreeView* m_all_items_tree_view{nullptr};
+  QTreeView* m_tree_view{nullptr};
   AnyValueEditorTextPanel* m_text_edit{nullptr};
   QSplitter* m_splitter{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
