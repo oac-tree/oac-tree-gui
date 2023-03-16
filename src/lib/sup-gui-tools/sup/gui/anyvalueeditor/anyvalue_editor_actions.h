@@ -52,11 +52,11 @@ public:
   AnyValueEditorActions(AnyValueEditorContext context, mvvm::ApplicationModel* model,
                         QObject* parent);
 
-  void OnAddAnyValueStruct(bool selected_as_parent);
+  void OnAddAnyValueStruct(bool selected_as_parent = false);
 
-  void OnAddAnyValueArray(bool selected_as_parent);
+  void OnAddAnyValueArray(bool selected_as_parent = false);
 
-  void OnAddAnyValueScalar(const std::string& scalar_type, bool selected_as_parent);
+  void OnAddAnyValueScalar(const std::string& scalar_type, bool selected_as_parent = false);
 
   void OnRemoveSelected();
 
@@ -68,8 +68,10 @@ public:
 
   AnyValueItem* GetTopItem();
 
+  sup::gui::AnyValueItem* GetSelectedItem() const;
+
 private:
-  mvvm::SessionItem* GetParent(bool selected_as_parent) const;
+  mvvm::SessionItem* GetParent(bool selected_as_parent = false) const;
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
 
@@ -86,12 +88,18 @@ inline T* AnyValueEditorActions::AddAnyValueItem(bool selected_as_parent,
 {
   T* result{nullptr};
 
-  // only one top level item is allowed
-  if (!selected_as_parent && GetTopItem())
+  if(!GetSelectedItem() && GetTopItem())
   {
-    SendMessage("Only one item is allowed");
+    SendMessage("Please select an item where you want to add a field");
     return nullptr;
   }
+
+//  // only one top level item is allowed
+//  if (!selected_as_parent && GetTopItem())
+//  {
+//    SendMessage("Only one item is allowed");
+//    return nullptr;
+//  }
 
   if (auto parent = GetParent(selected_as_parent); parent)
   {

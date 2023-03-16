@@ -52,8 +52,6 @@ void AnyValueEditorActions::OnAddAnyValueArray(bool selected_as_parent)
 void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
                                                 bool selected_as_parent)
 {
-  if (selected_as_parent)
-  {
     if (auto array_item = mvvm::utils::GetTopItem<sup::gui::AnyValueArrayItem>(m_model); array_item)
     {
       if (!sup::gui::IsSuitableScalarType(*array_item, scalar_type))
@@ -62,7 +60,6 @@ void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
         return;
       }
     }
-  }
 
   if (auto result = AddAnyValueItem<sup::gui::AnyValueScalarItem>(selected_as_parent, scalar_type);
       result)
@@ -131,10 +128,15 @@ AnyValueItem* AnyValueEditorActions::GetTopItem()
   return mvvm::utils::GetTopItem<AnyValueItem>(m_model);
 }
 
+AnyValueItem* AnyValueEditorActions::GetSelectedItem() const
+{
+  return m_context.get_selected_callback ? m_context.get_selected_callback() : nullptr;
+}
+
 //! Returns parent item to use for insertion.
 mvvm::SessionItem* AnyValueEditorActions::GetParent(bool selected_as_parent) const
 {
-  return selected_as_parent ? m_context.get_selected_callback() : m_model->GetRootItem();
+  return GetSelectedItem() ? GetSelectedItem() : m_model->GetRootItem();
 }
 
 void AnyValueEditorActions::SendMessage(const std::string& text, const std::string& informative,

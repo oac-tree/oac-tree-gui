@@ -72,6 +72,7 @@ TEST_F(AnyValueEditorActionsTest, InitialState)
 {
   auto actions = CreateActions(nullptr);
   EXPECT_EQ(actions->GetTopItem(), nullptr);
+  EXPECT_EQ(actions->GetSelectedItem(), nullptr);
 }
 
 //! Testing AnyValueEditorActions::SetInitialValue method.
@@ -103,29 +104,45 @@ TEST_F(AnyValueEditorActionsTest, SetInitialValue)
 // Adding structures
 // -------------------------------------------------------------------------------------------------
 
-//! Adding structure to the empty model.
+//! Adding structure to an empty model.
 
 TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToEmptyModel)
 {
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
 
+  EXPECT_EQ(actions->GetSelectedItem(), nullptr);
+
+  // expecting no warnings
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
   // adding AnyValueItem struct as top level item
-  actions->OnAddAnyValueStruct(/*add to selected*/ false);
+  actions->OnAddAnyValueStruct();
 
   // validating that model got top level item of the correct type
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
   auto inserted_item = mvvm::utils::GetTopItem<sup::gui::AnyValueStructItem>(&m_model);
   ASSERT_NE(inserted_item, nullptr);
   EXPECT_EQ(inserted_item->GetDisplayName(), ::sup::gui::kStructTypeName);
+};
 
-  // expecting no callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+//! Attempt to add a structure to a non-empty model when nothing is selected.
 
-  // adding another AnyValueItem to "selected" item as field
-  actions->OnAddAnyValueStruct(/*add to selected*/ true);  // no-op
+TEST_F(AnyValueEditorActionsTest, AttemptToAddToNonEmptyModel)
+{
+  // non-empty model
+  m_model.InsertItem<sup::gui::AnyValueStructItem>();
 
-  // since our context doesn't report any selection, the amount of items should stay the same
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
+
+  // expecting warning
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  // attempt to add another top level item
+  actions->OnAddAnyValueStruct();
+
+  // validating that there is still one item
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
 
@@ -137,12 +154,13 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueStructToAnotherStruct)
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
+  EXPECT_EQ(actions->GetSelectedItem(), parent);
 
   // expecting no callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
-  actions->OnAddAnyValueStruct(/*add to selected*/ true);
+  actions->OnAddAnyValueStruct();
 
   // validating that parent got new child
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -173,28 +191,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddStructToScalar)
   ASSERT_EQ(parent->GetChildren().size(), 0);
 };
 
-//! Attempt to add second top level structure to the model.
-
-TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelStruct)
-{
-  auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
-
-  // creating action for the context, when nothing is selected by the user
-  auto actions = CreateActions(nullptr);
-
-  // expecting no callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
-
-  // attempt to add second top level structure
-  actions->OnAddAnyValueStruct(/*add to selected*/ false);
-
-  // validating that model has only one item of necessary type
-  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
-};
-
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Adding scalars
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 
 //! Adding a scalar to an empty model.
 
@@ -204,7 +203,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToEmptyModel)
   auto actions = CreateActions(nullptr);
 
   // adding AnyValueItem struct as top level item
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ false);
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
   // validating that model got top level item of the correct type
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -213,13 +212,13 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToEmptyModel)
   EXPECT_EQ(inserted_item->GetDisplayName(), sup::dto::kInt32TypeName);
   EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
 
-  // expecting no callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  // expecting warning callback further down
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
-  // adding another scalar to "selected" item as field
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);  // no-op
+  // adding another scalar when nothing is selected should trigger the warning
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
-  // since our context doesn't report any selection, the amount of items should stay the same
+  // the amount of items should stay the same
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
 
@@ -229,7 +228,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToStruct)
 {
   auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
 
-  // creating action for the context, when parent is selected
+  // creating an action for the context, when parent is selected
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
@@ -253,14 +252,14 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToArray)
 {
   auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
 
-  // creating action for the context, when parent is selected
+  // creating an action for the context, when parent is selected
   auto actions = CreateActions(parent);
 
   // expecting no callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
   // validating that parent got new child
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -284,7 +283,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // adding AnyValueItem struct as a field
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
   // validating that nothing can changed in the model
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -293,9 +292,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Attempt to add second top level scalar to the model.
 
-TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
+ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
 {
-  m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+   m_model.InsertItem<sup::gui::AnyValueScalarItem>();
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -304,7 +303,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add second top level scalar
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ false);
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
   // checking that model still have a single item
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -312,11 +311,11 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
 
 //! Attempt to add a scalar as an array element when array is contasining diffierent scalar types.
 
-TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
+ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
 {
-  auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
-  m_model.InsertItem<sup::gui::AnyValueScalarItem>(parent)->SetAnyTypeName(
-      sup::dto::kInt32TypeName);
+   auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+   m_model.InsertItem<sup::gui::AnyValueScalarItem>(parent)->SetAnyTypeName(
+       sup::dto::kInt32TypeName);
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
@@ -325,35 +324,35 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field. The type matches what is already in the array.
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
   // validating that parent got new child
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
   ASSERT_EQ(parent->GetChildren().size(), 2);
 
-  // expecting erro callback
+  // expecting error callback
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add mismatching type
-  actions->OnAddAnyValueScalar(sup::dto::kInt16TypeName, /*add to selected*/ true);
+  actions->OnAddAnyValueScalar(sup::dto::kInt16TypeName);
 
   // array still has two element
   EXPECT_EQ(parent->GetChildren().size(), 2);
 };
 
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Adding array
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 
 //! Adding a scalar to an empty model.
 
-TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToEmptyModel)
+ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToEmptyModel)
 {
-  // creating action for the context, when nothing is selected by the user
-  auto actions = CreateActions(nullptr);
+   // creating action for the context, when nothing is selected by the user
+   auto actions = CreateActions(nullptr);
 
   // adding AnyValueItem struct as top level item
-  actions->OnAddAnyValueArray(/*add to selected*/ false);
+  actions->OnAddAnyValueArray();
 
   // validating that model got top level item of the correct type
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -362,20 +361,20 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToEmptyModel)
   EXPECT_EQ(inserted_item->GetDisplayName(), ::sup::gui::kArrayTypeName);
 
   // expecting no callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
-  // adding another array to "selected" item as field
-  actions->OnAddAnyValueArray(/*add to selected*/ true);  // no-op
+  // attempt to add second top-level item
+  actions->OnAddAnyValueArray(/*add to selected*/ true);
 
-  // since our context doesn't report any selection, the amount of items should stay the same
+  // the amount of items should stay the same
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
 
 //! Adding array as a field to another structure (which is marked as selected).
 
-TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
+ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
 {
-  auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+   auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
@@ -384,7 +383,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
-  actions->OnAddAnyValueArray(/*add to selected*/ true);
+  actions->OnAddAnyValueArray();
 
   // validating that parent got new child
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -397,9 +396,9 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
 
 //! Attempt to add array as a field to a scalar.
 
-TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
+ TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
 {
-  auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+   auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
@@ -408,7 +407,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // adding AnyValueItem struct as a field to
-  actions->OnAddAnyValueArray(/*add to selected*/ true);
+  actions->OnAddAnyValueArray();
 
   // validating that nothing can changed in the model
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -417,9 +416,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
 
 //! Attempt to add second top level array to the model.
 
-TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
+ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
 {
-  m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+   m_model.InsertItem<sup::gui::AnyValueArrayItem>();
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -434,15 +433,15 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
 
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Remove item
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 
 //! Remove item when nothing is selected.
 
-TEST_F(AnyValueEditorActionsTest, RemoveItemWhenNothingIsSelected)
+ TEST_F(AnyValueEditorActionsTest, RemoveItemWhenNothingIsSelected)
 {
-  auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+   auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -455,10 +454,10 @@ TEST_F(AnyValueEditorActionsTest, RemoveItemWhenNothingIsSelected)
 
 //! Remove selected item.
 
-TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
+ TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
 {
-  auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
-  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+   auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 
   // creating action for the context, pretending item is selected
   auto actions = CreateActions(struct_item);
@@ -469,19 +468,19 @@ TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 0);
 };
 
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Import/export
-// -------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 
 //! Validates import of JSON from file.
 
-TEST_F(AnyValueEditorActionsTest, ImportFromFile)
+ TEST_F(AnyValueEditorActionsTest, ImportFromFile)
 {
-  // preparing file with content for further import
-  const auto file_path = GetFilePath("AnyValueScalar.xml");
-  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
-  auto json_content = GetAnyValueToJSONString(&anyvalue);
-  testutils::CreateTextFile(file_path, json_content);
+   // preparing file with content for further import
+   const auto file_path = GetFilePath("AnyValueScalar.xml");
+   sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
+   auto json_content = GetAnyValueToJSONString(&anyvalue);
+   testutils::CreateTextFile(file_path, json_content);
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -508,12 +507,12 @@ TEST_F(AnyValueEditorActionsTest, ImportFromFile)
 
 //! Validates export of top level item to JSON file.
 
-TEST_F(AnyValueEditorActionsTest, ExportToFile)
+ TEST_F(AnyValueEditorActionsTest, ExportToFile)
 {
-  // preparing scalar
-  auto scalar = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
-  scalar->SetAnyTypeName(sup::dto::kInt32TypeName);
-  scalar->SetData(99);
+   // preparing scalar
+   auto scalar = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+   scalar->SetAnyTypeName(sup::dto::kInt32TypeName);
+   scalar->SetData(99);
 
   // preparing file with content for further import
   const auto file_path = GetFilePath("AnyValueScalarExportResults.xml");
@@ -538,10 +537,10 @@ TEST_F(AnyValueEditorActionsTest, ExportToFile)
 
 //! Attempt to export to JSON file from epmpty model.
 
-TEST_F(AnyValueEditorActionsTest, AttemptToExportEmptyModelToFile)
+ TEST_F(AnyValueEditorActionsTest, AttemptToExportEmptyModelToFile)
 {
-  // preparing file with content for further import
-  const auto file_path = GetFilePath("AnyValueScalarExportResultsV2.xml");
+   // preparing file with content for further import
+   const auto file_path = GetFilePath("AnyValueScalarExportResultsV2.xml");
 
   // creating action when nothing is selected
   auto actions = CreateActions(nullptr);
