@@ -27,9 +27,18 @@
 
 namespace
 {
-const QString main_window_group = "MainWindow";
-const QString size_key = "size";
-const QString pos_key = "pos";
+const QString kMainWindowGroupName("MainWindow");
+
+QString GetWindowSizeSettingName()
+{
+  return kMainWindowGroupName + "/" + "size";
+}
+
+QString GetWindowPosSettingName()
+{
+  return kMainWindowGroupName + "/" + "position";
+}
+
 }  // namespace
 
 namespace anyvalueeditor
@@ -49,15 +58,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::InitApplication()
 {
-  QSettings settings;
-  if (settings.childGroups().contains(main_window_group))
-  {
-    settings.beginGroup(main_window_group);
-    resize(settings.value(size_key, QSize(400, 400)).toSize());
-    move(settings.value(pos_key, QPoint(200, 200)).toPoint());
-    settings.endGroup();
-  }
-
+  ReadSettings();
   InitComponents();
   InitMenu();
 }
@@ -81,13 +82,18 @@ void MainWindow::InitComponents()
   setCentralWidget(m_anyvalue_editor);
 }
 
+void MainWindow::ReadSettings()
+{
+  const QSettings settings;
+  resize(settings.value(GetWindowSizeSettingName(), QSize(800, 600)).toSize());
+  move(settings.value(GetWindowPosSettingName(), QPoint(200, 200)).toPoint());
+}
+
 void MainWindow::WriteSettings()
 {
   QSettings settings;
-  settings.beginGroup(main_window_group);
-  settings.setValue(size_key, size());
-  settings.setValue(pos_key, pos());
-  settings.endGroup();
+  settings.setValue(GetWindowSizeSettingName(), size());
+  settings.setValue(GetWindowPosSettingName(), pos());
 }
 
 }  // namespace anyvalueeditor

@@ -2,7 +2,7 @@ set(library_name sup-pvmonitor-core)
 
 set(CMAKE_AUTOMOC ON)
 
-add_library(${library_name} SHARED "")
+add_library(${library_name} SHARED)
 
 add_subdirectory(suppvmonitor)
 

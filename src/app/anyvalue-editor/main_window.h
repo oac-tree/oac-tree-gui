@@ -50,6 +50,7 @@ private:
   void InitApplication();
   void InitMenu();
   void InitComponents();
+  void ReadSettings();
   void WriteSettings();
 
   sup::gui::AnyValueEditor* m_anyvalue_editor{nullptr};

@@ -31,9 +31,18 @@
 
 namespace
 {
-const QString main_window_group = "MainWindow";
-const QString size_key = "size";
-const QString pos_key = "pos";
+const QString kMainWindowGroupName("MainWindow");
+
+QString GetWindowSizeSettingName()
+{
+  return kMainWindowGroupName + "/" + "size";
+}
+
+QString GetWindowPosSettingName()
+{
+  return kMainWindowGroupName + "/" + "position";
+}
+
 }  // namespace
 
 namespace suppvmonitor
@@ -60,14 +69,7 @@ void MainWindow::PopulateModel()
 
 void MainWindow::InitApplication()
 {
-  QSettings settings;
-  if (settings.childGroups().contains(main_window_group))
-  {
-    settings.beginGroup(main_window_group);
-    resize(settings.value(size_key, QSize(400, 400)).toSize());
-    move(settings.value(pos_key, QPoint(200, 200)).toPoint());
-    settings.endGroup();
-  }
+  ReadSettings();
 
   m_monitor_widget = new MonitorWidget(m_model.get());
   setCentralWidget(m_monitor_widget);
@@ -75,13 +77,18 @@ void MainWindow::InitApplication()
   m_actions = new MainWindowActions(m_model.get(), this);
 }
 
+void MainWindow::ReadSettings()
+{
+  const QSettings settings;
+  resize(settings.value(GetWindowSizeSettingName(), QSize(800, 600)).toSize());
+  move(settings.value(GetWindowPosSettingName(), QPoint(200, 200)).toPoint());
+}
+
 void MainWindow::WriteSettings()
 {
   QSettings settings;
-  settings.beginGroup(main_window_group);
-  settings.setValue(size_key, size());
-  settings.setValue(pos_key, pos());
-  settings.endGroup();
+  settings.setValue(GetWindowSizeSettingName(), size());
+  settings.setValue(GetWindowPosSettingName(), pos());
 }
 
 }  // namespace suppvmonitor

@@ -48,6 +48,7 @@ protected:
 private:
   void PopulateModel();
   void InitApplication();
+  void ReadSettings();
   void WriteSettings();
 
   std::unique_ptr<MonitorModel> m_model;

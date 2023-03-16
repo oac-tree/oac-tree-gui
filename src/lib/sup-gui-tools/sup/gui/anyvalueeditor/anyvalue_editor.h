@@ -53,6 +53,7 @@ public:
   ~AnyValueEditor() override;
 
   void OnImportFromFileRequest();
+  void OnExportToFileRequest();
 
   sup::gui::AnyValueItem* GetSelectedItem() const;
 

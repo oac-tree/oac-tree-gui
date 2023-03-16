@@ -110,6 +110,11 @@ void AnyValueEditor::OnImportFromFileRequest()
   }
 }
 
+void AnyValueEditor::OnExportToFileRequest()
+{
+
+}
+
 //! Returns AnyValueItem selected by the user in item tree.
 
 sup::gui::AnyValueItem *AnyValueEditor::GetSelectedItem() const
