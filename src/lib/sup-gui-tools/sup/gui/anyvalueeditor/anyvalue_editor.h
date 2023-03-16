@@ -22,6 +22,7 @@
 
 #include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 
+#include <QString>
 #include <QWidget>
 #include <memory>
 
@@ -60,19 +61,22 @@ public:
   AnyValueItem* GetTopItem();
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupConnections();
-  void ImportAnyValueFromFile(const QString& filename);
-
+  void ImportAnyValueFromFile(const QString& file_name);
   AnyValueEditorContext CreateActionContext() const;
+  void UpdateCurrentWorkdir(const QString& file_name);
 
   std::unique_ptr<mvvm::ApplicationModel> m_model;
-
   AnyValueEditorActions* m_actions{nullptr};
   AnyValueEditorToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};
   AnyValueEditorTextPanel* m_text_edit{nullptr};
   QSplitter* m_splitter{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+
+  QString m_current_workdir;  //! directory used during import/export operations
 };
 
 }  // namespace sup::gui

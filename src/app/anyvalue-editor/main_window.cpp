@@ -22,7 +22,6 @@
 #include <sup/gui/anyvalueeditor/anyvalue_editor.h>
 
 #include <QCoreApplication>
-#include <QFileDialog>
 #include <QMenuBar>
 #include <QSettings>
 

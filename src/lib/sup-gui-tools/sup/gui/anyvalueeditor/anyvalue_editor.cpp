@@ -25,6 +25,7 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/project/model_has_changed_controller.h>
+#include <mvvm/utils/file_utils.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
@@ -36,8 +37,19 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QSettings>
 #include <QSplitter>
 #include <QTreeView>
+
+namespace
+{
+const QString kAnyValueEditorGroupName("AnyValueEditor");
+
+QString GetCurrentWorkdirSettingName()
+{
+  return kAnyValueEditorGroupName + "/" + "workdir";
+}
+}  // namespace
 
 namespace sup::gui
 {
@@ -52,6 +64,8 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_component_provider(mvvm::CreateProvider<sup::gui::AnyValueViewModel>(m_tree_view))
 {
+  ReadSettings();
+
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
 
@@ -73,14 +87,26 @@ AnyValueEditor::AnyValueEditor(QWidget *parent)
   SetupConnections();
 }
 
-//! Imports AnyValueFromFile
+AnyValueEditor::~AnyValueEditor()
+{
+  WriteSettings();
+}
+
+//! Imports AnyValue from JSON file.
 
 void AnyValueEditor::OnImportFromFileRequest()
 {
-  QString file_name = QFileDialog::getOpenFileName(this);
+  QFileDialog dialog(this, "Select JSON file to load", m_current_workdir);
+  dialog.setFileMode(QFileDialog::ExistingFile);
+  dialog.setNameFilter("All JSON files (*.json *.JSON)");
+  //  dialog.setOption(QFileDialog::DontUseNativeDialog);
+  QStringList selected_files = dialog.exec() ? dialog.selectedFiles() : QStringList();
+  auto file_name = selected_files.empty() ? QString() : selected_files.at(0);
+
   if (!file_name.isEmpty())
   {
     ImportAnyValueFromFile(file_name);
+    UpdateCurrentWorkdir(file_name);
   }
 }
 
@@ -104,6 +130,18 @@ AnyValueItem *AnyValueEditor::GetTopItem()
   return m_actions->GetTopItem();
 }
 
+void AnyValueEditor::ReadSettings()
+{
+  const QSettings settings;
+  m_current_workdir = settings.value(GetCurrentWorkdirSettingName(), QDir::homePath()).toString();
+}
+
+void AnyValueEditor::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(GetCurrentWorkdirSettingName(), m_current_workdir);
+}
+
 //! Set up all connections.
 
 void AnyValueEditor::SetupConnections()
@@ -111,8 +149,6 @@ void AnyValueEditor::SetupConnections()
   auto on_panel = [this]() { m_text_edit->setVisible(!m_text_edit->isVisible()); };
   connect(m_tool_bar, &AnyValueEditorToolBar::HidePannelButtonRequest, this, on_panel);
 }
-
-AnyValueEditor::~AnyValueEditor() = default;
 
 //! Creates a context with all callbacks necessary for AnyValueEditorActions to function.
 
@@ -133,9 +169,18 @@ AnyValueEditorContext AnyValueEditor::CreateActionContext() const
   return {get_selected_callback, notify_warning_callback};
 }
 
+//! Updates cached value for last working directory for later saving in widget's persistent settings
+void AnyValueEditor::UpdateCurrentWorkdir(const QString &file_name)
+{
+  auto parent_path = mvvm::utils::GetParentPath(file_name.toStdString());
+  m_current_workdir = QString::fromStdString(parent_path);
+}
+
+//! Imports AnyValue from JSON file.
+
 void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
 {
-  // temporarily disabling the model to speed-up loading of large files
+  // temporarily disabling the model to speed-up the loading of large files
   m_component_provider->SetApplicationModel(nullptr);
   m_actions->OnImportFromFileRequest(file_name.toStdString());
   m_component_provider->SetApplicationModel(m_model.get());
