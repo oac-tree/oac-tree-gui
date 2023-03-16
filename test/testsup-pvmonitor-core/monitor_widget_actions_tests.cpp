@@ -241,7 +241,8 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
-//! The only difference with previous test is that
+//! The only difference with previous test is that we mimick selection of AnyValueItem instead
+//! of VariableItem.
 
 TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenAnyValueIsSelected)
 {
@@ -254,7 +255,7 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenAnyValueIsSelected)
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing context
+  // preparing context pretending that AnyValueItem is selected
   MockDialog mock_dialog(std::move(editing_result));
   auto get_selected_callback = [initial_anyvalue_item]() { return initial_anyvalue_item; };
   MonitorWidgetContext context{get_selected_callback, m_warning_listener.CreateCallback(),
