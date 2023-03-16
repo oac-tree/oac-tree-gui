@@ -492,7 +492,7 @@ TEST_F(AnyValueEditorActionsTest, ImportFromFile)
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
   auto inserted_item = mvvm::utils::GetTopItem<sup::gui::AnyValueScalarItem>(&m_model);
   ASSERT_NE(inserted_item, nullptr);
-//  EXPECT_EQ(inserted_item->GetDisplayName(), sup::gui::kScalarTypeName);
+  EXPECT_EQ(inserted_item->GetDisplayName(), sup::gui::kScalarTypeName);
   EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_EQ(inserted_item->Data<int>(), 42);
 

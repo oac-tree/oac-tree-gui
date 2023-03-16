@@ -75,7 +75,7 @@ AnyValueEmptyItem::AnyValueEmptyItem() : AnyValueItem(Type) {}
 
 AnyValueScalarItem::AnyValueScalarItem() : AnyValueItem(Type)
 {
-
+  SetDisplayName(kScalarTypeName);
 }
 
 void AnyValueScalarItem::SetAnyTypeName(const std::string& type_name)
