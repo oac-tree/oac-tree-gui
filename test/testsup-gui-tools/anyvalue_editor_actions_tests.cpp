@@ -184,7 +184,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddStructToScalar)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // adding AnyValueItem struct as a field to
-  actions->OnAddAnyValueStruct(/*add to selected*/ true);
+  actions->OnAddAnyValueStruct();
 
   // validating that nothing can changed in the model
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -235,7 +235,7 @@ TEST_F(AnyValueEditorActionsTest, OnAddAnyValueScalarToStruct)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding AnyValueItem struct as a field
-  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName, /*add to selected*/ true);
+  actions->OnAddAnyValueScalar(sup::dto::kInt32TypeName);
 
   // validating that parent got new child
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -364,7 +364,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add second top-level item
-  actions->OnAddAnyValueArray(/*add to selected*/ true);
+  actions->OnAddAnyValueArray();
 
   // the amount of items should stay the same
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
@@ -427,7 +427,7 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempt to add second top level array
-  actions->OnAddAnyValueArray(/*add to selected*/ false);
+  actions->OnAddAnyValueArray();
 
   // checking that model still have a single item
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);

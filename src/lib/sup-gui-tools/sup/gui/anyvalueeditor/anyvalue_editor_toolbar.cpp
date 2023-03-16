@@ -109,21 +109,20 @@ std::unique_ptr<QMenu> AnyValueEditorToolBar::AddAnyValueMenu(bool to_selected)
   {  // struct
     auto action = result->addAction("struct");
     connect(action, &QAction::triggered, this,
-            [this, to_selected]() { m_actions->OnAddAnyValueStruct(to_selected); });
+            [this, to_selected]() { m_actions->OnAddAnyValueStruct(); });
   }
 
   {  // array
     auto action = result->addAction("array");
     connect(action, &QAction::triggered, this,
-            [this, to_selected]() { m_actions->OnAddAnyValueArray(to_selected); });
+            [this, to_selected]() { m_actions->OnAddAnyValueArray(); });
   }
 
   {
     auto scalar_menu = result->addMenu("scalar");
     for (const auto &name : sup::gui::GetScalarTypeNames())
     {
-      auto on_action = [name, this, to_selected]()
-      { m_actions->OnAddAnyValueScalar(name, to_selected); };
+      auto on_action = [name, this, to_selected]() { m_actions->OnAddAnyValueScalar(name); };
       auto action = scalar_menu->addAction(QString::fromStdString(name));
       connect(action, &QAction::triggered, this, on_action);
     }

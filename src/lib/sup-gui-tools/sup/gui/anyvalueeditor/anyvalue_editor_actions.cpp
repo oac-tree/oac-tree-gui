@@ -39,30 +39,28 @@ AnyValueEditorActions::AnyValueEditorActions(AnyValueEditorContext context,
 {
 }
 
-void AnyValueEditorActions::OnAddAnyValueStruct(bool selected_as_parent)
+void AnyValueEditorActions::OnAddAnyValueStruct()
 {
-  AddAnyValueItem<sup::gui::AnyValueStructItem>(selected_as_parent, ::sup::gui::kStructTypeName);
+  AddAnyValueItem<sup::gui::AnyValueStructItem>(::sup::gui::kStructTypeName);
 }
 
-void AnyValueEditorActions::OnAddAnyValueArray(bool selected_as_parent)
+void AnyValueEditorActions::OnAddAnyValueArray()
 {
-  AddAnyValueItem<sup::gui::AnyValueArrayItem>(selected_as_parent, ::sup::gui::kArrayTypeName);
+  AddAnyValueItem<sup::gui::AnyValueArrayItem>(::sup::gui::kArrayTypeName);
 }
 
-void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type,
-                                                bool selected_as_parent)
+void AnyValueEditorActions::OnAddAnyValueScalar(const std::string& scalar_type)
 {
-    if (auto array_item = mvvm::utils::GetTopItem<sup::gui::AnyValueArrayItem>(m_model); array_item)
+  if (auto array_item = mvvm::utils::GetTopItem<sup::gui::AnyValueArrayItem>(m_model); array_item)
+  {
+    if (!sup::gui::IsSuitableScalarType(*array_item, scalar_type))
     {
-      if (!sup::gui::IsSuitableScalarType(*array_item, scalar_type))
-      {
-        SendMessage("Array element mismatch");
-        return;
-      }
+      SendMessage("Array element mismatch");
+      return;
     }
+  }
 
-  if (auto result = AddAnyValueItem<sup::gui::AnyValueScalarItem>(selected_as_parent, scalar_type);
-      result)
+  if (auto result = AddAnyValueItem<sup::gui::AnyValueScalarItem>(scalar_type); result)
   {
     result->SetAnyTypeName(scalar_type);
   }
@@ -134,7 +132,7 @@ AnyValueItem* AnyValueEditorActions::GetSelectedItem() const
 }
 
 //! Returns parent item to use for insertion.
-mvvm::SessionItem* AnyValueEditorActions::GetParent(bool selected_as_parent) const
+mvvm::SessionItem* AnyValueEditorActions::GetParent() const
 {
   return GetSelectedItem() ? GetSelectedItem() : m_model->GetRootItem();
 }
