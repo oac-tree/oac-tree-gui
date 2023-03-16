@@ -47,31 +47,22 @@ namespace sup::gui
 AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWidget *parent)
     : QToolBar(parent)
     , m_add_anyvalue_button(new QToolButton)
-    , m_add_field_button(new QToolButton)
     , m_remove_button(new QToolButton)
     , m_hide_pannel_button(new QToolButton)
     , m_actions(actions)
-    , m_create_anyvalue_menu(AddAnyValueMenu(false))
-    , m_add_field_menu(AddAnyValueMenu(true))
+    , m_create_anyvalue_menu(CreateAddAnyValueMenu())
 {
   setIconSize(sup::gui::utils::ToolBarIconSize());
 
-  m_add_anyvalue_button->setText("Create AnyValue");
+  m_add_anyvalue_button->setText("Add");
   m_add_anyvalue_button->setIcon(GetIcon("plus-circle-outline"));
   m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_anyvalue_button->setToolTip(
-      "Creates new top level AnyValue. \nIt will be appended to the list of existing anyvalues");
+      "Add new AnyValue to the model. If the model already\n"
+      "contains AnyValue, will try to add a field to current selection");
   m_add_anyvalue_button->setPopupMode(QToolButton::InstantPopup);
   m_add_anyvalue_button->setMenu(m_create_anyvalue_menu.get());
   addWidget(m_add_anyvalue_button);
-
-  m_add_field_button->setText("Add field");
-  m_add_field_button->setIcon(GetIcon("plus-circle-multiple-outline"));
-  m_add_field_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_add_field_button->setToolTip("Add field after current selection.");
-  m_add_field_button->setPopupMode(QToolButton::InstantPopup);
-  m_add_field_button->setMenu(m_add_field_menu.get());
-  addWidget(m_add_field_button);
 
   m_remove_button->setText("Remove");
   m_remove_button->setIcon(GetIcon("beaker-remove-outline"));
@@ -101,28 +92,26 @@ void AnyValueEditorToolBar::InsertStrech()
   addWidget(empty);
 }
 
-std::unique_ptr<QMenu> AnyValueEditorToolBar::AddAnyValueMenu(bool to_selected)
+std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateAddAnyValueMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
   {  // struct
     auto action = result->addAction("struct");
-    connect(action, &QAction::triggered, this,
-            [this, to_selected]() { m_actions->OnAddAnyValueStruct(); });
+    connect(action, &QAction::triggered, this, [this]() { m_actions->OnAddAnyValueStruct(); });
   }
 
   {  // array
     auto action = result->addAction("array");
-    connect(action, &QAction::triggered, this,
-            [this, to_selected]() { m_actions->OnAddAnyValueArray(); });
+    connect(action, &QAction::triggered, this, [this]() { m_actions->OnAddAnyValueArray(); });
   }
 
   {
     auto scalar_menu = result->addMenu("scalar");
     for (const auto &name : sup::gui::GetScalarTypeNames())
     {
-      auto on_action = [name, this, to_selected]() { m_actions->OnAddAnyValueScalar(name); };
+      auto on_action = [name, this]() { m_actions->OnAddAnyValueScalar(name); };
       auto action = scalar_menu->addAction(QString::fromStdString(name));
       connect(action, &QAction::triggered, this, on_action);
     }
