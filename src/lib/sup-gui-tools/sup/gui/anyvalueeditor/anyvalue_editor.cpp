@@ -164,6 +164,9 @@ void AnyValueEditor::SetupConnections()
 
   connect(m_tool_bar, &AnyValueEditorToolBar::ImportFromFileRequest, this,
           &AnyValueEditor::OnImportFromFileRequest);
+
+  connect(m_tool_bar, &AnyValueEditorToolBar::ExportToFileRequest, this,
+          &AnyValueEditor::OnExportToFileRequest);
 }
 
 //! Creates a context with all callbacks necessary for AnyValueEditorActions to function.

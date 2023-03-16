@@ -6,5 +6,6 @@
         <file>icons/code-json.svg</file>
         <file>icons/plus-circle-multiple-outline.svg</file>
         <file>icons/plus-circle-outline.svg</file>
+        <file>icons/file-export-outline.svg</file>
     </qresource>
 </RCC>

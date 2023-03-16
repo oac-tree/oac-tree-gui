@@ -49,6 +49,7 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
     , m_add_anyvalue_button(new QToolButton)
     , m_remove_button(new QToolButton)
     , m_hide_pannel_button(new QToolButton)
+    , m_export_button(new QToolButton)
     , m_actions(actions)
     , m_create_anyvalue_menu(CreateAddAnyValueMenu())
 {
@@ -59,8 +60,8 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_anyvalue_button->setToolTip(
       "Add new AnyValue to the view. If the view already\n"
-      "contains AnyValue, will try to add new AnyValue\n"
-      "as a field to current selection");
+      "contains AnyValue, try to add new AnyValue as a\n"
+      "field to current selection");
   m_add_anyvalue_button->setPopupMode(QToolButton::InstantPopup);
   m_add_anyvalue_button->setMenu(m_create_anyvalue_menu.get());
   addWidget(m_add_anyvalue_button);
@@ -82,6 +83,14 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   connect(m_hide_pannel_button, &QToolButton::clicked, this,
           &AnyValueEditorToolBar::HidePannelButtonRequest);
   addWidget(m_hide_pannel_button);
+
+  m_export_button->setText("Export");
+  m_export_button->setIcon(GetIcon("file-export-outline"));
+  m_export_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_export_button->setToolTip("Export AnyValue to JSON file");
+  connect(m_export_button, &QToolButton::clicked, this,
+          &AnyValueEditorToolBar::ExportToFileRequest);
+  addWidget(m_export_button);
 }
 
 AnyValueEditorToolBar::~AnyValueEditorToolBar() = default;

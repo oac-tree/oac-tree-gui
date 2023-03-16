@@ -44,6 +44,7 @@ public:
 signals:
   void HidePannelButtonRequest();
   void ImportFromFileRequest();
+  void ExportToFileRequest();
 
 private:
   void InsertStrech();
@@ -52,6 +53,7 @@ private:
   QToolButton* m_add_anyvalue_button{nullptr};
   QToolButton* m_remove_button{nullptr};
   QToolButton* m_hide_pannel_button{nullptr};
+  QToolButton* m_export_button{nullptr};
 
   AnyValueEditorActions* m_actions{nullptr};
 
