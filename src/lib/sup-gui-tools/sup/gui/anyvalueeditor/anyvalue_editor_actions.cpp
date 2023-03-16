@@ -23,11 +23,11 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
-#include <sup/dto/anyvalue.h>
 
 namespace sup::gui
 {
@@ -78,18 +78,23 @@ void AnyValueEditorActions::OnRemoveSelected()
   }
 }
 
-void AnyValueEditorActions::OnImportFromFileRequest(const std::string &file_name)
+void AnyValueEditorActions::OnImportFromFileRequest(const std::string& file_name)
 {
+  if (GetTopItem())
+  {
+    SendMessage("Only one item is allowed");
+    return;
+  }
+
   auto anyvalue = sup::gui::AnyValueFromJSONFile(file_name);
-  auto item = m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
-                                  mvvm::TagIndex::Append());
-  item->SetDisplayName("AnyValue");
+  m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
+                      mvvm::TagIndex::Append());
 }
 
 //! Set initial value. The given value will be cloned inside the editor's model and used as
 //! a starting point for editing.
 
-void AnyValueEditorActions::SetInitialValue(const AnyValueItem &item)
+void AnyValueEditorActions::SetInitialValue(const AnyValueItem& item)
 {
   if (auto item = GetTopItem(); item)
   {
@@ -100,7 +105,7 @@ void AnyValueEditorActions::SetInitialValue(const AnyValueItem &item)
   mvvm::utils::CopyItem(&item, m_model, m_model->GetRootItem(), mvvm::TagIndex::Append());
 }
 
-AnyValueItem *AnyValueEditorActions::GetTopItem()
+AnyValueItem* AnyValueEditorActions::GetTopItem()
 {
   return mvvm::utils::GetTopItem<AnyValueItem>(m_model);
 }
@@ -118,4 +123,4 @@ void AnyValueEditorActions::SendMessage(const std::string& text, const std::stri
   m_context.send_message_callback(message);
 }
 
-}  // namespace anyvalueeditor
+}  // namespace sup::gui

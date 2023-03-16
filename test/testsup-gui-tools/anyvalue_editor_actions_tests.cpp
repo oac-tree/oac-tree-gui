@@ -19,24 +19,28 @@
 
 #include "sup/gui/anyvalueeditor/anyvalue_editor_actions.h"
 
+#include <gtest/gtest.h>
+#include <testutils/folder_based_test.h>
+#include <testutils/mock_callback_listener.h>
+#include <testutils/test_utils.h>
+
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
 
 #include <sup/dto/anytype.h>
+#include <sup/dto/anyvalue.h>
 #include <sup/gui/anyvalueeditor/anyvalue_editor_context.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
-
-#include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 using namespace sup::gui;
 using ::testing::_;
 
-class AnyValueEditorActionsTest : public ::testing::Test
+class AnyValueEditorActionsTest : public testutils::FolderBasedTest
 {
 public:
-  AnyValueEditorActionsTest()
+  AnyValueEditorActionsTest() : testutils::FolderBasedTest("test_AnyValueEditorAction")
   {
     m_model.RegisterItem<sup::gui::AnyValueStructItem>();
     m_model.RegisterItem<sup::gui::AnyValueArrayItem>();
@@ -90,7 +94,8 @@ TEST_F(AnyValueEditorActionsTest, SetInitialValue)
   EXPECT_NE(copied_item, &item);
   EXPECT_EQ(copied_item->GetAnyTypeName(), item.GetAnyTypeName());
   EXPECT_EQ(copied_item->Data<int>(), item.Data<int>());
-//  EXPECT_EQ(copied_item->GetIdentifier(), item.GetIdentifier()); FIXME uncomment after implementing
+  //  EXPECT_EQ(copied_item->GetIdentifier(), item.GetIdentifier()); FIXME uncomment after
+  //  implementing
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -461,4 +466,39 @@ TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
 
   // validating that there is no item anymore
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 0);
+};
+
+// -------------------------------------------------------------------------------------------------
+// Import/export
+// -------------------------------------------------------------------------------------------------
+
+TEST_F(AnyValueEditorActionsTest, ImportFromFile)
+{
+  // preparing file with content for further import
+  const auto file_path = GetFilePath("AnyValueScalar.xml");
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
+  auto json_content = GetAnyValueToJSONString(&anyvalue);
+  testutils::CreateTextFile(file_path, json_content);
+
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  actions->OnImportFromFileRequest(file_path);
+
+  // validating that model got top level item of the correct type
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  auto inserted_item = mvvm::utils::GetTopItem<sup::gui::AnyValueScalarItem>(&m_model);
+  ASSERT_NE(inserted_item, nullptr);
+//  EXPECT_EQ(inserted_item->GetDisplayName(), sup::gui::kScalarTypeName);
+  EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
+  EXPECT_EQ(inserted_item->Data<int>(), 42);
+
+  // attempt to import again
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  actions->OnImportFromFileRequest(file_path);
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };

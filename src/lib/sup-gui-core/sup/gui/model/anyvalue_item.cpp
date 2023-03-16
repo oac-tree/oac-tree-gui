@@ -73,7 +73,10 @@ AnyValueEmptyItem::AnyValueEmptyItem() : AnyValueItem(Type) {}
 // AnyValueScalarItem
 // ----------------------------------------------------------------------------
 
-AnyValueScalarItem::AnyValueScalarItem() : AnyValueItem(Type) {}
+AnyValueScalarItem::AnyValueScalarItem() : AnyValueItem(Type)
+{
+
+}
 
 void AnyValueScalarItem::SetAnyTypeName(const std::string& type_name)
 {
