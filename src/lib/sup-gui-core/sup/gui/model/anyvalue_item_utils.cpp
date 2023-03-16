@@ -21,9 +21,10 @@
 
 #include "anyvalue_item.h"
 
+#include <sup/gui/core/exceptions.h>
+
 #include <algorithm>
 #include <stack>
-#include <stdexcept>
 
 namespace sup::gui
 {
@@ -71,7 +72,10 @@ void UpdateAnyValueItemData(const AnyValueItem &source, AnyValueItem &target)
 
       if (source_children.size() != target_children.size())
       {
-        throw std::logic_error("Number of children do not match");
+        throw RuntimeException(
+            "While updating target AnyValue from source the different layout "
+            "of target and source has been detected. The number of children "
+            "does not match");
       }
 
       // preparing vector containing pairs of children

@@ -23,6 +23,7 @@
 
 #include <sup/dto/anytype.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/core/exceptions.h>
 
 #include <stdexcept>
 
@@ -107,7 +108,7 @@ TEST_F(AnyValueItemUtilsTests, UpdateAnyValueItemDataFromDifferentStructs)
 
   AnyValueStructItem target;
 
-  EXPECT_THROW(UpdateAnyValueItemData(source, target), std::logic_error);
+  EXPECT_THROW(UpdateAnyValueItemData(source, target), RuntimeException);
 }
 
 //! Testing UpdateAnyValueItemData method.
