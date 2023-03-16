@@ -292,9 +292,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Attempt to add second top level scalar to the model.
 
- TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
+TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelScalar)
 {
-   m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+  m_model.InsertItem<sup::gui::AnyValueScalarItem>();
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -311,11 +311,11 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Attempt to add a scalar as an array element when array is contasining diffierent scalar types.
 
- TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
+TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToArrayWhenTypeMismath)
 {
-   auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
-   m_model.InsertItem<sup::gui::AnyValueScalarItem>(parent)->SetAnyTypeName(
-       sup::dto::kInt32TypeName);
+  auto parent = m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+  m_model.InsertItem<sup::gui::AnyValueScalarItem>(parent)->SetAnyTypeName(
+      sup::dto::kInt32TypeName);
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
@@ -346,10 +346,10 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Adding a scalar to an empty model.
 
- TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToEmptyModel)
+TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToEmptyModel)
 {
-   // creating action for the context, when nothing is selected by the user
-   auto actions = CreateActions(nullptr);
+  // creating action for the context, when nothing is selected by the user
+  auto actions = CreateActions(nullptr);
 
   // adding AnyValueItem struct as top level item
   actions->OnAddAnyValueArray();
@@ -372,9 +372,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Adding array as a field to another structure (which is marked as selected).
 
- TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
+TEST_F(AnyValueEditorActionsTest, OnAddAnyValueArrayToStruct)
 {
-   auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+  auto parent = m_model.InsertItem<sup::gui::AnyValueStructItem>();
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
@@ -396,9 +396,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Attempt to add array as a field to a scalar.
 
- TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
+TEST_F(AnyValueEditorActionsTest, AttemptToAddArrayToScalar)
 {
-   auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+  auto parent = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
 
   // creating action for the context, when parent is selected
   auto actions = CreateActions(parent);
@@ -416,9 +416,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Attempt to add second top level array to the model.
 
- TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
+TEST_F(AnyValueEditorActionsTest, AttemptToAddSecondTopLevelArray)
 {
-   m_model.InsertItem<sup::gui::AnyValueArrayItem>();
+  m_model.InsertItem<sup::gui::AnyValueArrayItem>();
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -439,9 +439,9 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Remove item when nothing is selected.
 
- TEST_F(AnyValueEditorActionsTest, RemoveItemWhenNothingIsSelected)
+TEST_F(AnyValueEditorActionsTest, RemoveItemWhenNothingIsSelected)
 {
-   auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+  auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -454,10 +454,10 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Remove selected item.
 
- TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
+TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
 {
-   auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
-   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  auto struct_item = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 
   // creating action for the context, pretending item is selected
   auto actions = CreateActions(struct_item);
@@ -474,13 +474,13 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Validates import of JSON from file.
 
- TEST_F(AnyValueEditorActionsTest, ImportFromFile)
+TEST_F(AnyValueEditorActionsTest, ImportFromFile)
 {
-   // preparing file with content for further import
-   const auto file_path = GetFilePath("AnyValueScalar.xml");
-   sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
-   auto json_content = GetAnyValueToJSONString(&anyvalue);
-   testutils::CreateTextFile(file_path, json_content);
+  // preparing file with content for further import
+  const auto file_path = GetFilePath("AnyValueScalar.xml");
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
+  auto json_content = GetAnyValueToJSONString(&anyvalue);
+  testutils::CreateTextFile(file_path, json_content);
 
   // creating action for the context, when nothing is selected by the user
   auto actions = CreateActions(nullptr);
@@ -505,14 +505,47 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
 };
 
+//! Validates import of JSON from file, where imported value goes as a field to selected
+//! structure.
+
+TEST_F(AnyValueEditorActionsTest, ImportFromFileToStructField)
+{
+  // preparing file with content for further import
+  const auto file_path = GetFilePath("AnyValueScalar.xml");
+  sup::dto::AnyValue anyvalue{sup::dto::SignedInteger32Type, 42};
+  auto json_content = GetAnyValueToJSONString(&anyvalue);
+  testutils::CreateTextFile(file_path, json_content);
+
+  // creating a
+  auto structure = m_model.InsertItem<sup::gui::AnyValueStructItem>();
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+
+  // creating action for the context, making structure selected
+  auto actions = CreateActions(structure);
+
+  // expecting no callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  actions->OnImportFromFileRequest(file_path);
+
+  // testing new child of the structure
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+  ASSERT_EQ(structure->GetChildren().size(), 1);
+  auto inserted_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(structure->GetChildren().at(0));
+  ASSERT_NE(inserted_item, nullptr);
+  EXPECT_EQ(inserted_item->GetDisplayName(), sup::gui::kScalarTypeName);
+  EXPECT_EQ(inserted_item->GetAnyTypeName(), sup::dto::kInt32TypeName);
+  EXPECT_EQ(inserted_item->Data<int>(), 42);
+};
+
 //! Validates export of top level item to JSON file.
 
- TEST_F(AnyValueEditorActionsTest, ExportToFile)
+TEST_F(AnyValueEditorActionsTest, ExportToFile)
 {
-   // preparing scalar
-   auto scalar = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
-   scalar->SetAnyTypeName(sup::dto::kInt32TypeName);
-   scalar->SetData(99);
+  // preparing scalar
+  auto scalar = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+  scalar->SetAnyTypeName(sup::dto::kInt32TypeName);
+  scalar->SetData(99);
 
   // preparing file with content for further import
   const auto file_path = GetFilePath("AnyValueScalarExportResults.xml");
@@ -537,10 +570,10 @@ TEST_F(AnyValueEditorActionsTest, AttemptToAddScalarToScalar)
 
 //! Attempt to export to JSON file from epmpty model.
 
- TEST_F(AnyValueEditorActionsTest, AttemptToExportEmptyModelToFile)
+TEST_F(AnyValueEditorActionsTest, AttemptToExportEmptyModelToFile)
 {
-   // preparing file with content for further import
-   const auto file_path = GetFilePath("AnyValueScalarExportResultsV2.xml");
+  // preparing file with content for further import
+  const auto file_path = GetFilePath("AnyValueScalarExportResultsV2.xml");
 
   // creating action when nothing is selected
   auto actions = CreateActions(nullptr);

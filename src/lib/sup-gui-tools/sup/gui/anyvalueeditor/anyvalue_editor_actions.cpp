@@ -76,15 +76,14 @@ void AnyValueEditorActions::OnRemoveSelected()
 
 void AnyValueEditorActions::OnImportFromFileRequest(const std::string& file_name)
 {
-  if (GetTopItem())
+  if (!GetSelectedItem() && GetTopItem())
   {
-    SendMessage("Only one item is allowed");
+    SendMessage("Please select an item where you want to add a field");
     return;
   }
 
   auto anyvalue = sup::gui::AnyValueFromJSONFile(file_name);
-  m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
-                      mvvm::TagIndex::Append());
+  m_model->InsertItem(sup::gui::CreateItem(anyvalue), GetParent(), mvvm::TagIndex::Append());
 }
 
 void AnyValueEditorActions::OnExportToFileRequest(const std::string& file_name)

@@ -196,11 +196,13 @@ void AnyValueEditor::UpdateCurrentWorkdir(const QString &file_name)
 
 void AnyValueEditor::ImportAnyValueFromFile(const QString &file_name)
 {
-  // temporarily disabling the model to speed-up the loading of large files
-  m_component_provider->SetApplicationModel(nullptr);
+  // FIXME expandAll will not work if uncomment. Check this after the refactoring of
+  // ViewModelConrtoller
+
+  //  m_component_provider->SetApplicationModel(nullptr);
   m_actions->OnImportFromFileRequest(file_name.toStdString());
-  m_component_provider->SetApplicationModel(m_model.get());
-  m_tree_view->expandAll();
+  //  m_component_provider->SetApplicationModel(m_model.get());
+  //  m_tree_view->expandAll();
 }
 
 }  // namespace sup::gui
