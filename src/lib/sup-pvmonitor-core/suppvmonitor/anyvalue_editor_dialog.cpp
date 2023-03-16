@@ -72,11 +72,16 @@ void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
 
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
 {
-  // FIXME refactor after appearance of item->clone machinery
-  auto item_clone = mvvm::utils::CloneItem(*m_anyvalue_editor->GetTopItem());
-  auto result = std::unique_ptr<sup::gui::AnyValueItem>(
-      dynamic_cast<sup::gui::AnyValueItem*>(item_clone.release()));
-  return result;
+  if (auto top_item = m_anyvalue_editor->GetTopItem(); top_item)
+  {
+    // FIXME refactor after appearance of item->clone machinery
+    auto item_clone = mvvm::utils::CloneItem(*top_item);
+    auto result = std::unique_ptr<sup::gui::AnyValueItem>(
+        dynamic_cast<sup::gui::AnyValueItem*>(item_clone.release()));
+    return result;
+  }
+
+  return {};
 }
 
 //! Loads persistence widget settings from disk.
