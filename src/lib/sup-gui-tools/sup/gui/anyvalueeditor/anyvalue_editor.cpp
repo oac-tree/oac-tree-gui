@@ -161,6 +161,9 @@ void AnyValueEditor::SetupConnections()
 {
   auto on_panel = [this]() { m_text_edit->setVisible(!m_text_edit->isVisible()); };
   connect(m_tool_bar, &AnyValueEditorToolBar::HidePannelButtonRequest, this, on_panel);
+
+  connect(m_tool_bar, &AnyValueEditorToolBar::ImportFromFileRequest, this,
+          &AnyValueEditor::OnImportFromFileRequest);
 }
 
 //! Creates a context with all callbacks necessary for AnyValueEditorActions to function.

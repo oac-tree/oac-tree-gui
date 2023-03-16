@@ -43,6 +43,7 @@ public:
 
 signals:
   void HidePannelButtonRequest();
+  void ImportFromFileRequest();
 
 private:
   void InsertStrech();

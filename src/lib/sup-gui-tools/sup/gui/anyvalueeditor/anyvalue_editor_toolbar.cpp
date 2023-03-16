@@ -58,8 +58,9 @@ AnyValueEditorToolBar::AnyValueEditorToolBar(AnyValueEditorActions *actions, QWi
   m_add_anyvalue_button->setIcon(GetIcon("plus-circle-outline"));
   m_add_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_anyvalue_button->setToolTip(
-      "Add new AnyValue to the model. If the model already\n"
-      "contains AnyValue, will try to add a field to current selection");
+      "Add new AnyValue to the view. If the view already\n"
+      "contains AnyValue, will try to add new AnyValue\n"
+      "as a field to current selection");
   m_add_anyvalue_button->setPopupMode(QToolButton::InstantPopup);
   m_add_anyvalue_button->setMenu(m_create_anyvalue_menu.get());
   addWidget(m_add_anyvalue_button);
@@ -116,6 +117,11 @@ std::unique_ptr<QMenu> AnyValueEditorToolBar::CreateAddAnyValueMenu()
       connect(action, &QAction::triggered, this, on_action);
     }
   }
+
+  result->addSeparator();
+
+  auto action = result->addAction("Import from file");
+  connect(action, &QAction::triggered, this, &AnyValueEditorToolBar::ImportFromFileRequest);
 
   return result;
 }
