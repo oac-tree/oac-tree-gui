@@ -69,11 +69,17 @@ void MainWindow::InitMenu()
 
   auto file_menu = menuBar()->addMenu("&File");
 
-  // open file
-  auto open_action = new QAction("&Open...", this);
+  auto open_action = new QAction("Open", this);
+  open_action->setShortcuts(QKeySequence::Open);
   file_menu->addAction(open_action);
   connect(open_action, &QAction::triggered, m_anyvalue_editor,
           &sup::gui::AnyValueEditor::OnImportFromFileRequest);
+
+  auto save_action = new QAction("Save", this);
+  save_action->setShortcuts(QKeySequence::Save);
+  file_menu->addAction(save_action);
+  connect(save_action, &QAction::triggered, m_anyvalue_editor,
+          &sup::gui::AnyValueEditor::OnExportToFileRequest);
 }
 
 void MainWindow::InitComponents()

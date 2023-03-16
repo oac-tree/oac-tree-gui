@@ -34,6 +34,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/viewmodel/anyvalue_viewmodel.h>
 
+#include <QDebug>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QMessageBox>
@@ -112,7 +113,14 @@ void AnyValueEditor::OnImportFromFileRequest()
 
 void AnyValueEditor::OnExportToFileRequest()
 {
+  auto file_name = QFileDialog::getSaveFileName(
+      this, "Save File", m_current_workdir + "/untitled.json", tr("Images (*.json *.JSON)"));
 
+  if (!file_name.isEmpty())
+  {
+    m_actions->OnExportToFileRequest(file_name.toStdString());
+    UpdateCurrentWorkdir(file_name);
+  }
 }
 
 //! Returns AnyValueItem selected by the user in item tree.

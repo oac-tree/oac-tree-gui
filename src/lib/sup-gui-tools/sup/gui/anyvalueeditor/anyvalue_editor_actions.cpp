@@ -24,6 +24,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
@@ -89,6 +90,26 @@ void AnyValueEditorActions::OnImportFromFileRequest(const std::string& file_name
   auto anyvalue = sup::gui::AnyValueFromJSONFile(file_name);
   m_model->InsertItem(sup::gui::CreateItem(anyvalue), m_model->GetRootItem(),
                       mvvm::TagIndex::Append());
+}
+
+void AnyValueEditorActions::OnExportToFileRequest(const std::string& file_name)
+{
+  if (!GetTopItem())
+  {
+    SendMessage("Nothing to save");
+    return;
+  }
+
+  try
+  {
+    auto anyvalue = CreateAnyValue(*GetTopItem());
+    sup::dto::AnyValueToJSONFile(anyvalue, file_name, /*pretty*/ true);
+  }
+  catch (const std::exception& ex)
+  {
+    SendMessage("Can't generate valid JSON presentation from current item", "Exception was thrown",
+                ex.what());
+  }
 }
 
 //! Set initial value. The given value will be cloned inside the editor's model and used as

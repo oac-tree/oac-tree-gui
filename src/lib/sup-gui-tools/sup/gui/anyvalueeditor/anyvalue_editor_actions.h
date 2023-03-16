@@ -62,6 +62,8 @@ public:
 
   void OnImportFromFileRequest(const std::string& file_name);
 
+  void OnExportToFileRequest(const std::string& file_name);
+
   void SetInitialValue(const AnyValueItem& item);
 
   AnyValueItem* GetTopItem();

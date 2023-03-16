@@ -26,6 +26,7 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
+#include <mvvm/utils/file_utils.h>
 
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
@@ -472,6 +473,8 @@ TEST_F(AnyValueEditorActionsTest, RemoveSelectedItem)
 // Import/export
 // -------------------------------------------------------------------------------------------------
 
+//! Validates import of JSON from file.
+
 TEST_F(AnyValueEditorActionsTest, ImportFromFile)
 {
   // preparing file with content for further import
@@ -501,4 +504,54 @@ TEST_F(AnyValueEditorActionsTest, ImportFromFile)
 
   actions->OnImportFromFileRequest(file_path);
   EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+};
+
+//! Validates export of top level item to JSON file.
+
+TEST_F(AnyValueEditorActionsTest, ExportToFile)
+{
+  // preparing scalar
+  auto scalar = m_model.InsertItem<sup::gui::AnyValueScalarItem>();
+  scalar->SetAnyTypeName(sup::dto::kInt32TypeName);
+  scalar->SetData(99);
+
+  // preparing file with content for further import
+  const auto file_path = GetFilePath("AnyValueScalarExportResults.xml");
+
+  // creating action when nothing is selected
+  auto actions = CreateActions(nullptr);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // exporting file
+  actions->OnExportToFileRequest(file_path);
+
+  // model should be the same
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 1);
+
+  // reading our exported file for the validation
+  auto exported_value = sup::gui::AnyValueFromJSONFile(file_path);
+
+  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 99};
+  EXPECT_EQ(exported_value, expected_anyvalue);
+};
+
+//! Attempt to export to JSON file from epmpty model.
+
+TEST_F(AnyValueEditorActionsTest, AttemptToExportEmptyModelToFile)
+{
+  // preparing file with content for further import
+  const auto file_path = GetFilePath("AnyValueScalarExportResultsV2.xml");
+
+  // creating action when nothing is selected
+  auto actions = CreateActions(nullptr);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  // exporting file
+  actions->OnExportToFileRequest(file_path);
+
+  // model empty as it was, file wasn't created
+  EXPECT_EQ(m_model.GetRootItem()->GetTotalItemCount(), 0);
+  EXPECT_FALSE(mvvm::utils::IsExists(file_path));
 };
