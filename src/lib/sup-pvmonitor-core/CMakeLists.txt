@@ -4,9 +4,9 @@ set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} SHARED)
 
-add_subdirectory(suppvmonitor)
+target_link_libraries(${library_name} PUBLIC pthread sequencer-gui-core sup-gui-core::tools)
 
-target_link_libraries(${library_name} PUBLIC pthread sequencer-gui-core sup-gui-tools)
+add_subdirectory(suppvmonitor)
 
 target_include_directories(${library_name} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}$<SEMICOLON>${SEQUENCERGUI_AUTOGEN_DIR}>)
 

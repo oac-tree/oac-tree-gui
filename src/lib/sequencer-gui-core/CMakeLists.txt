@@ -1,12 +1,12 @@
 set(library_name sequencer-gui-core)
 
-add_library(${library_name} SHARED "")
+add_library(${library_name} SHARED)
 
 if(CODAC)
     add_definitions(-DSEQUENCERGUI_CODAC)
 endif()
 
-target_link_libraries(${library_name} PUBLIC pthread sequencer::sequencer sup-dto::sup-dto sup-gui-core)
+target_link_libraries(${library_name} PUBLIC pthread sequencer::sequencer sup-gui-core::core)
 
 add_subdirectory(sequencergui)
 
