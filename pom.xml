@@ -108,10 +108,12 @@
                             <!-- Package dependencies -->
                             <requires codac="true">sequencer</requires>
                             <requires codac="true">sup-mvvm</requires>
+                            <requires codac="true">sup-gui-core</requires>
                             <requires codac="true">sup-dto</requires>
                             <requires codac="true">sup-epics</requires>
                             <requires codac="true" buildOnly="true">sequencer-devel</requires>
                             <requires codac="true" buildOnly="true">sup-mvvm-devel</requires>
+                            <requires codac="true" buildOnly="true">sup-gui-core-devel</requires>
                             <requires codac="true" buildOnly="true">sup-dto-devel</requires>
                             <requires codac="true" buildOnly="true">gtest-1.12.1-devel</requires>
                             <requires version="current" buildOnly="true">cmake</requires>
