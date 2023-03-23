@@ -101,7 +101,6 @@
                             </include>
                             <!-- Programs -->
                             <include type="file" source="bin" target="bin">
-                                <include>anyvalue-editor</include>
                                 <include>sequencer-gui</include>
                                 <include>sup-pvmonitor</include>
                             </include>
