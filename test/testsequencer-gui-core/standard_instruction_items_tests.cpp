@@ -37,17 +37,6 @@ using namespace sequencergui;
 class StandardInstructionItemsTest : public ::testing::Test
 {
 public:
-  //! Returns true if clone method is implemented.
-  template <typename T>
-  bool IsCloneImplemented()
-  {
-    // We expect that the specified object can be created, cloned, and the result of clone can
-    // be casted to the object type itself.
-    T item;
-    auto clone = item.Clone(/*make_unique_id*/ false);
-    return testutils::CanCast<T>(clone.get());
-  }
-
   ::sup::sequencer::Procedure m_procedure;
 };
 
@@ -775,6 +764,8 @@ TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
 
 TEST_F(StandardInstructionItemsTest, Clone)
 {
+  using testutils::IsCloneImplemented;
+
   EXPECT_TRUE(IsCloneImplemented<ConditionItem>());
   EXPECT_TRUE(IsCloneImplemented<CopyItem>());
   EXPECT_TRUE(IsCloneImplemented<EqualsItem>());

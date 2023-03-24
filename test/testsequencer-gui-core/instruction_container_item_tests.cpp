@@ -17,29 +17,20 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_INSTRUCTION_CONTAINER_ITEM_H_
-#define SEQUENCERGUI_MODEL_INSTRUCTION_CONTAINER_ITEM_H_
+#include "sequencergui/model/instruction_container_item.h"
 
-#include <mvvm/model/compound_item.h>
+#include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
-namespace sequencergui
+using namespace sequencergui;
+
+class InstructionContainerItemTest : public ::testing::Test
 {
-class InstructionItem;
-
-//! Represents Instructions.
-class InstructionContainerItem : public mvvm::CompoundItem
-{
-public:
-  static inline const std::string Type = "InstructionContainer";
-
-  using CompoundItem::CompoundItem;
-  InstructionContainerItem();
-
-  std::vector<InstructionItem*> GetInstructions() const;
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 };
 
-}  // namespace sequencergui
+TEST_F(InstructionContainerItemTest, Clone)
+{
+  using testutils::IsCloneImplemented;
 
-#endif  // SEQUENCERGUI_MODEL_INSTRUCTION_CONTAINER_ITEM_H_
+  EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
+}
