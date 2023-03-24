@@ -67,11 +67,9 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<CopyItem>();
   result->RegisterItem<EqualsItem>();
   result->RegisterItem<FallbackItem>();
-  result->RegisterItem<FileVariableItem>();
   result->RegisterItem<ForceSuccessItem>();
   result->RegisterItem<IncludeItem>();
   result->RegisterItem<InputItem>();
-  result->RegisterItem<InstructionContainerItem>();
   result->RegisterItem<InverterItem>();
   result->RegisterItem<ListenItem>();
   result->RegisterItem<MessageItem>();
@@ -85,6 +83,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
 
   // variables
   result->RegisterItem<ChannelAccessVariableItem>();
+  result->RegisterItem<FileVariableItem>();
   result->RegisterItem<LocalVariableItem>();
   result->RegisterItem<PVClientVariableItem>();
   result->RegisterItem<PVServerVariableItem>();
@@ -94,6 +93,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<WorkspaceItem>();
   result->RegisterItem<ProcedureItem>();
   result->RegisterItem<JobItem>();
+  result->RegisterItem<InstructionContainerItem>();
   return result;
 }
 

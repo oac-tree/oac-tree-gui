@@ -40,6 +40,11 @@ ConditionItem::ConditionItem() : InstructionItem(Type)
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
 }
 
+std::unique_ptr<mvvm::SessionItem> ConditionItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ConditionItem>(*this, make_unique_id);
+}
+
 std::string ConditionItem::GetDomainType() const
 {
   return domainconstants::kConditionInstructionType;
@@ -78,6 +83,11 @@ CopyItem::CopyItem() : InstructionItem(Type)
 {
   AddProperty(kInput, std::string())->SetDisplayName("Input");
   AddProperty(kOutput, std::string())->SetDisplayName("Output");
+}
+
+std::unique_ptr<mvvm::SessionItem> CopyItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<CopyItem>(*this, make_unique_id);
 }
 
 std::string CopyItem::GetDomainType() const
@@ -139,6 +149,11 @@ EqualsItem::EqualsItem() : InstructionItem(Type)
   AddProperty(kRightHandSide, std::string())->SetDisplayName("rhs");
 }
 
+std::unique_ptr<mvvm::SessionItem> EqualsItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<EqualsItem>(*this, make_unique_id);
+}
+
 std::string EqualsItem::GetDomainType() const
 {
   return domainconstants::kEqualsInstructionType;
@@ -191,6 +206,11 @@ FallbackItem::FallbackItem() : InstructionItem(Type)
               /*as_default*/ true);
 }
 
+std::unique_ptr<mvvm::SessionItem> FallbackItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<FallbackItem>(*this, make_unique_id);
+}
+
 std::string FallbackItem::GetDomainType() const
 {
   return domainconstants::kFallbackInstructionType;
@@ -210,6 +230,11 @@ void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
 ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
 {
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+}
+
+std::unique_ptr<mvvm::SessionItem> ForceSuccessItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ForceSuccessItem>(*this, make_unique_id);
 }
 
 std::string ForceSuccessItem::GetDomainType() const
@@ -239,6 +264,11 @@ IncludeItem::IncludeItem() : InstructionItem(Type)
   AddProperty(kFile, std::string())->SetDisplayName("File name");
   AddProperty(kPath, std::string())->SetDisplayName("Path");
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+}
+
+std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<IncludeItem>(*this, make_unique_id);
 }
 
 std::string IncludeItem::GetDomainType() const
@@ -300,6 +330,11 @@ InputItem::InputItem() : InstructionItem(Type)
   AddProperty(kTarget, std::string())->SetDisplayName("Target");
 }
 
+std::unique_ptr<mvvm::SessionItem> InputItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<InputItem>(*this, make_unique_id);
+}
+
 std::string InputItem::GetDomainType() const
 {
   return domainconstants::kInputInstructionType;
@@ -353,6 +388,11 @@ InverterItem::InverterItem() : InstructionItem(Type)
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
+std::unique_ptr<mvvm::SessionItem> InverterItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<InverterItem>(*this, make_unique_id);
+}
+
 std::string InverterItem::GetDomainType() const
 {
   return domainconstants::kInverterInstructionType;
@@ -379,6 +419,11 @@ ListenItem::ListenItem() : InstructionItem(Type)
   AddProperty(kForceSuccess, false)->SetDisplayName("Force success");
   AddProperty(kVarNames, std::string())->SetDisplayName("Var names");
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
+}
+
+std::unique_ptr<mvvm::SessionItem> ListenItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ListenItem>(*this, make_unique_id);
 }
 
 std::string ListenItem::GetDomainType() const
@@ -438,6 +483,11 @@ MessageItem::MessageItem() : InstructionItem(Type)
   AddProperty(kText, std::string())->SetDisplayName("text");
 }
 
+std::unique_ptr<mvvm::SessionItem> MessageItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<MessageItem>(*this, make_unique_id);
+}
+
 std::string MessageItem::GetDomainType() const
 {
   return domainconstants::kMessageInstructionType;
@@ -476,6 +526,11 @@ OutputItem::OutputItem() : InstructionItem(Type)
 {
   AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kSource, std::string())->SetDisplayName("Source");
+}
+
+std::unique_ptr<mvvm::SessionItem> OutputItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<OutputItem>(*this, make_unique_id);
 }
 
 std::string OutputItem::GetDomainType() const
@@ -537,6 +592,11 @@ ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
   AddProperty(kFailureThreshold, 1)->SetDisplayName("Failure threshold");
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
+}
+
+std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ParallelSequenceItem>(*this, make_unique_id);
 }
 
 std::string ParallelSequenceItem::GetDomainType() const
@@ -601,6 +661,11 @@ RepeatItem::RepeatItem() : InstructionItem(Type)
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*default*/ true);
 }
 
+std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<RepeatItem>(*this, make_unique_id);
+}
+
 std::string RepeatItem::GetDomainType() const
 {
   return domainconstants::kRepeatInstructionType;
@@ -636,6 +701,11 @@ void RepeatItem::SetRepeatCount(int value)
 // ----------------------------------------------------------------------------
 // SequenceItem
 // ----------------------------------------------------------------------------
+std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<SequenceItem>(*this, make_unique_id);
+}
+
 SequenceItem::SequenceItem() : InstructionItem(Type)
 {
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
@@ -663,6 +733,11 @@ UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
   AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
+}
+
+std::unique_ptr<mvvm::SessionItem> UserChoiceItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<UserChoiceItem>(*this, make_unique_id);
 }
 
 std::string UserChoiceItem::GetDomainType() const
@@ -701,6 +776,11 @@ static inline const std::string kTimeout = "kTimeout";
 WaitItem::WaitItem() : InstructionItem(Type)
 {
   AddProperty(kTimeout, 0.0)->SetDisplayName("Timeout");
+}
+
+std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<WaitItem>(*this, make_unique_id);
 }
 
 std::string WaitItem::GetDomainType() const
@@ -745,6 +825,11 @@ UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
               /*as_default*/ true);
 }
 
+std::unique_ptr<mvvm::SessionItem> UnknownInstructionItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<UnknownInstructionItem>(*this, make_unique_id);
+}
+
 std::string UnknownInstructionItem::GetDomainType() const
 {
   return m_domain_name;
@@ -760,7 +845,7 @@ void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction
   SetDisplayName(instruction->GetType());
 
   // creating string properties for every domain attribute found
-  for (auto& [name, value] : GetAttributes(instruction))
+  for (auto &[name, value] : GetAttributes(instruction))
   {
     m_domain_attributes.push_back(name);
     AddProperty(name, value);

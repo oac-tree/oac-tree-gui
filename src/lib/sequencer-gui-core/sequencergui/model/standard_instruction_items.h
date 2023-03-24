@@ -31,7 +31,11 @@ class ConditionItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Condition";
+
+  using InstructionItem::InstructionItem;
   ConditionItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -49,7 +53,11 @@ class CopyItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Copy";
+
+  using InstructionItem::InstructionItem;
   CopyItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -71,7 +79,11 @@ class EqualsItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Equals";
+
+  using InstructionItem::InstructionItem;
   EqualsItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -91,7 +103,11 @@ class FallbackItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Fallback";
+
+  using InstructionItem::InstructionItem;
   FallbackItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -105,7 +121,11 @@ class ForceSuccessItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "ForceSuccess";
+
+  using InstructionItem::InstructionItem;
   ForceSuccessItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -119,7 +139,11 @@ class IncludeItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Include";
+
+  using InstructionItem::InstructionItem;
   IncludeItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -141,7 +165,11 @@ class InputItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Input";
+
+  using InstructionItem::InstructionItem;
   InputItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -163,7 +191,11 @@ class InverterItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Inverter";
+
+  using InstructionItem::InstructionItem;
   InverterItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -177,7 +209,11 @@ class ListenItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Listen";
+
+  using InstructionItem::InstructionItem;
   ListenItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -197,7 +233,11 @@ class MessageItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Message";
+
+  using InstructionItem::InstructionItem;
   MessageItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -215,7 +255,11 @@ class OutputItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Output";
+
+  using InstructionItem::InstructionItem;
   OutputItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -237,7 +281,11 @@ class ParallelSequenceItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "ParallelSequence";
+
+  using InstructionItem::InstructionItem;
   ParallelSequenceItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -259,7 +307,11 @@ class RepeatItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Repeat";
+
+  using InstructionItem::InstructionItem;
   RepeatItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -277,6 +329,10 @@ class SequenceItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Sequence";
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  using InstructionItem::InstructionItem;
   SequenceItem();
 
   std::string GetDomainType() const override;
@@ -291,7 +347,11 @@ class UserChoiceItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "UserChoice";
+
+  using InstructionItem::InstructionItem;
   UserChoiceItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -309,7 +369,11 @@ class WaitItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "Wait";
+
+  using InstructionItem::InstructionItem;
   WaitItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -327,7 +391,11 @@ class UnknownInstructionItem : public InstructionItem
 {
 public:
   static inline const std::string Type = "UnknownInstruction";
+
+  using InstructionItem::InstructionItem;
   UnknownInstructionItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 

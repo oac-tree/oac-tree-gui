@@ -30,6 +30,7 @@ namespace sequencergui
 class InstructionItem : public mvvm::CompoundItem
 {
 public:
+  using CompoundItem::CompoundItem;
   explicit InstructionItem(const std::string& item_type);
 
   virtual std::string GetDomainType() const = 0;

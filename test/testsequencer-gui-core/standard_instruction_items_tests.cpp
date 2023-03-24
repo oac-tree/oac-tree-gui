@@ -28,6 +28,7 @@
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
 using namespace sequencergui;
 
@@ -36,6 +37,17 @@ using namespace sequencergui;
 class StandardInstructionItemsTest : public ::testing::Test
 {
 public:
+  //! Returns true if clone method is implemented.
+  template <typename T>
+  bool IsCloneImplemented()
+  {
+    // We expect that the specified object can be created, cloned, and the result of clone can
+    // be casted to the object type itself.
+    T item;
+    auto clone = item.Clone(/*make_unique_id*/ false);
+    return testutils::CanCast<T>(clone.get());
+  }
+
   ::sup::sequencer::Procedure m_procedure;
 };
 
@@ -630,7 +642,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
 TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 {
   // Correctly initialised item
-  SequenceItem item;
+  const SequenceItem item;
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
@@ -727,7 +739,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 {
   // Correctly initialised item
-  WaitItem wait_item;
+  const WaitItem wait_item;
   EXPECT_EQ(wait_item.GetTimeout(), 0.0);
 
   auto domain_item = wait_item.CreateDomainInstruction();
@@ -744,8 +756,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
 {
-  auto domain_item =
-      CreateDomainInstruction(domainconstants::kConditionInstructionType);
+  auto domain_item = CreateDomainInstruction(domainconstants::kConditionInstructionType);
   domain_item->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
 
   // from domain
@@ -758,4 +769,27 @@ TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
   auto new_domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
   EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
+}
+
+//! Testing if clone method is implemented
+
+TEST_F(StandardInstructionItemsTest, Clone)
+{
+  EXPECT_TRUE(IsCloneImplemented<ConditionItem>());
+  EXPECT_TRUE(IsCloneImplemented<CopyItem>());
+  EXPECT_TRUE(IsCloneImplemented<EqualsItem>());
+  EXPECT_TRUE(IsCloneImplemented<FallbackItem>());
+  EXPECT_TRUE(IsCloneImplemented<ForceSuccessItem>());
+  EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
+  EXPECT_TRUE(IsCloneImplemented<InputItem>());
+  EXPECT_TRUE(IsCloneImplemented<InverterItem>());
+  EXPECT_TRUE(IsCloneImplemented<ListenItem>());
+  EXPECT_TRUE(IsCloneImplemented<MessageItem>());
+  EXPECT_TRUE(IsCloneImplemented<OutputItem>());
+  EXPECT_TRUE(IsCloneImplemented<ParallelSequenceItem>());
+  EXPECT_TRUE(IsCloneImplemented<RepeatItem>());
+  EXPECT_TRUE(IsCloneImplemented<SequenceItem>());
+  EXPECT_TRUE(IsCloneImplemented<UnknownInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
+  EXPECT_TRUE(IsCloneImplemented<WaitItem>());
 }
