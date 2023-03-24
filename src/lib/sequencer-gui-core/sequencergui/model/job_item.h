@@ -32,7 +32,11 @@ class JobItem : public mvvm::CompoundItem
 {
 public:
   static inline const std::string Type = "Job";
+
+  using CompoundItem::CompoundItem;
   JobItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetStatus() const;
 

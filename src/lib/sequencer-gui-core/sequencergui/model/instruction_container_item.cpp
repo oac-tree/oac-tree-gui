@@ -31,14 +31,14 @@ InstructionContainerItem::InstructionContainerItem() : CompoundItem(Type)
               /*as_default*/ true);
 }
 
-std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
-{
-  return GetItems<InstructionItem>(itemconstants::kChildInstructions);
-}
-
 std::unique_ptr<mvvm::SessionItem> InstructionContainerItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<InstructionContainerItem>(*this, make_unique_id);
+}
+
+std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
+{
+  return GetItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
 }  // namespace sequencergui

@@ -38,6 +38,11 @@ JobItem::JobItem() : CompoundItem(Type)
   RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::Type}), /*as_default*/ true);
 }
 
+std::unique_ptr<mvvm::SessionItem> JobItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<JobItem>(*this, make_unique_id);
+}
+
 std::string JobItem::GetStatus() const
 {
   return Property<std::string>(itemconstants::kStatus);

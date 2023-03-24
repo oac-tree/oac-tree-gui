@@ -19,9 +19,7 @@
 
 #include "sequencergui/model/sequencer_utils.h"
 
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/sequencer_item_includes.h>
 
 #include <mvvm/factories/item_catalogue_factory.h>
 #include <mvvm/interfaces/item_manager_interface.h>
@@ -111,4 +109,7 @@ TEST_F(SequencerUtilsTest, Clone)
 
   // other
   EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
+  EXPECT_TRUE(IsCloneImplemented<JobItem>());
+  EXPECT_TRUE(IsCloneImplemented<ProcedureItem>());
+  EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
 }

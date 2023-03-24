@@ -35,9 +35,9 @@ public:
   using CompoundItem::CompoundItem;
   InstructionContainerItem();
 
-  std::vector<InstructionItem*> GetInstructions() const;
-
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::vector<InstructionItem*> GetInstructions() const;
 };
 
 }  // namespace sequencergui

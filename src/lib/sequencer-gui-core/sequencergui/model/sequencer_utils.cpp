@@ -90,10 +90,11 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<UnknownVariableItem>();
 
   // other items
-  result->RegisterItem<WorkspaceItem>();
-  result->RegisterItem<ProcedureItem>();
-  result->RegisterItem<JobItem>();
   result->RegisterItem<InstructionContainerItem>();
+  result->RegisterItem<JobItem>();
+  result->RegisterItem<ProcedureItem>();
+  result->RegisterItem<WorkspaceItem>();
+
   return result;
 }
 

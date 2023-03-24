@@ -37,6 +37,11 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
 }
 
+std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ProcedureItem>(*this, make_unique_id);
+}
+
 std::string ProcedureItem::GetName() const
 {
   return Property<std::string>(itemconstants::kName);

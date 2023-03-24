@@ -30,6 +30,11 @@ WorkspaceItem::WorkspaceItem() : CompoundItem(Type)
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(kVariableItems), /*as_default*/ true);
 }
 
+std::unique_ptr<mvvm::SessionItem> WorkspaceItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<WorkspaceItem>(*this, make_unique_id);
+}
+
 std::vector<VariableItem *> WorkspaceItem::GetVariables() const
 {
   return GetItems<VariableItem>(kVariableItems);
