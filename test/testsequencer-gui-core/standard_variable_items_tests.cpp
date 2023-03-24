@@ -616,17 +616,3 @@ TEST_F(StandardVariableItemsTest, UnknownVariableItemFromLocalVariable)
 
   EXPECT_NO_THROW(new_domain_item->Setup());
 }
-
-//! Testing clone method
-
-TEST_F(StandardVariableItemsTest, Clone)
-{
-  using testutils::IsCloneImplemented;
-
-  EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<PVClientVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<PVServerVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<UnknownVariableItem>());
-}

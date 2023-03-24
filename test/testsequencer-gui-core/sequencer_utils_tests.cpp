@@ -19,13 +19,15 @@
 
 #include "sequencergui/model/sequencer_utils.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
 
 #include <mvvm/factories/item_catalogue_factory.h>
 #include <mvvm/interfaces/item_manager_interface.h>
 
+#include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 using namespace sequencergui;
 
 //! Tests for SequencerObserver class.
@@ -74,4 +76,39 @@ TEST_F(SequencerUtilsTest, CreateSequencerItemManager)
 
   auto item = manager->CreateItem(SequenceItem::Type);
   EXPECT_EQ(item->GetType(), SequenceItem::Type);
+}
+
+TEST_F(SequencerUtilsTest, Clone)
+{
+  using testutils::IsCloneImplemented;
+
+  // instructions
+  EXPECT_TRUE(IsCloneImplemented<ConditionItem>());
+  EXPECT_TRUE(IsCloneImplemented<CopyItem>());
+  EXPECT_TRUE(IsCloneImplemented<EqualsItem>());
+  EXPECT_TRUE(IsCloneImplemented<FallbackItem>());
+  EXPECT_TRUE(IsCloneImplemented<ForceSuccessItem>());
+  EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
+  EXPECT_TRUE(IsCloneImplemented<InputItem>());
+  EXPECT_TRUE(IsCloneImplemented<InverterItem>());
+  EXPECT_TRUE(IsCloneImplemented<ListenItem>());
+  EXPECT_TRUE(IsCloneImplemented<MessageItem>());
+  EXPECT_TRUE(IsCloneImplemented<OutputItem>());
+  EXPECT_TRUE(IsCloneImplemented<ParallelSequenceItem>());
+  EXPECT_TRUE(IsCloneImplemented<RepeatItem>());
+  EXPECT_TRUE(IsCloneImplemented<SequenceItem>());
+  EXPECT_TRUE(IsCloneImplemented<UnknownInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
+  EXPECT_TRUE(IsCloneImplemented<WaitItem>());
+
+  // variables
+  EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<PVClientVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<PVServerVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<UnknownVariableItem>());
+
+  // other
+  EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
 }

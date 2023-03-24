@@ -20,7 +20,6 @@
 #include "sequencergui/model/instruction_container_item.h"
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 using namespace sequencergui;
 
@@ -28,9 +27,8 @@ class InstructionContainerItemTest : public ::testing::Test
 {
 };
 
-TEST_F(InstructionContainerItemTest, Clone)
+TEST_F(InstructionContainerItemTest, InitialState)
 {
-  using testutils::IsCloneImplemented;
-
-  EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
+  InstructionContainerItem item;
+  EXPECT_TRUE(item.GetInstructions().empty());
 }

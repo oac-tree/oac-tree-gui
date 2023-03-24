@@ -759,28 +759,3 @@ TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
   EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
   EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
 }
-
-//! Testing if clone method is implemented
-
-TEST_F(StandardInstructionItemsTest, Clone)
-{
-  using testutils::IsCloneImplemented;
-
-  EXPECT_TRUE(IsCloneImplemented<ConditionItem>());
-  EXPECT_TRUE(IsCloneImplemented<CopyItem>());
-  EXPECT_TRUE(IsCloneImplemented<EqualsItem>());
-  EXPECT_TRUE(IsCloneImplemented<FallbackItem>());
-  EXPECT_TRUE(IsCloneImplemented<ForceSuccessItem>());
-  EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
-  EXPECT_TRUE(IsCloneImplemented<InputItem>());
-  EXPECT_TRUE(IsCloneImplemented<InverterItem>());
-  EXPECT_TRUE(IsCloneImplemented<ListenItem>());
-  EXPECT_TRUE(IsCloneImplemented<MessageItem>());
-  EXPECT_TRUE(IsCloneImplemented<OutputItem>());
-  EXPECT_TRUE(IsCloneImplemented<ParallelSequenceItem>());
-  EXPECT_TRUE(IsCloneImplemented<RepeatItem>());
-  EXPECT_TRUE(IsCloneImplemented<SequenceItem>());
-  EXPECT_TRUE(IsCloneImplemented<UnknownInstructionItem>());
-  EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
-  EXPECT_TRUE(IsCloneImplemented<WaitItem>());
-}
