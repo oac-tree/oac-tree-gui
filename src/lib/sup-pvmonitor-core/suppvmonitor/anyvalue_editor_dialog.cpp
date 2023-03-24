@@ -74,11 +74,7 @@ std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
 {
   if (auto top_item = m_anyvalue_editor->GetTopItem(); top_item)
   {
-    // FIXME refactor after appearance of item->clone machinery
-    auto item_clone = mvvm::utils::CloneItem(*top_item);
-    auto result = std::unique_ptr<sup::gui::AnyValueItem>(
-        dynamic_cast<sup::gui::AnyValueItem*>(item_clone.release()));
-    return result;
+    return mvvm::utils::CloneItem(*top_item);
   }
 
   return {};
