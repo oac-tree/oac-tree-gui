@@ -19,6 +19,7 @@
 
 #include "sequencergui/model/standard_variable_items.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/variable_transform_helper.h>
@@ -41,6 +42,13 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
   AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
   RegisterJsonTypeAndValue();
   RegisterAnyValueItemTag();
+}
+
+std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone(bool make_unique_id) const
+{
+  (void)make_unique_id;
+  // This base is not intended to be used directly
+  throw NotImplementedException("Clone for ConnectableVariableItem is not implemented");
 }
 
 std::string ConnectableVariableItem::GetChannel() const
@@ -87,6 +95,11 @@ void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem(Type) {}
 
+std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ChannelAccessVariableItem>(*this, make_unique_id);
+}
+
 std::string ChannelAccessVariableItem::GetDomainType() const
 {
   return domainconstants::kChannelAccessVariableType;
@@ -107,6 +120,11 @@ FileVariableItem::FileVariableItem() : VariableItem(Type)
 {
   AddProperty(kFileName, std::string())->SetDisplayName("File name");
   RegisterAnyValueItemTag();
+}
+
+std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<FileVariableItem>(*this, make_unique_id);
 }
 
 std::string FileVariableItem::GetDomainType() const
@@ -147,6 +165,11 @@ LocalVariableItem::LocalVariableItem() : VariableItem(Type)
   RegisterAnyValueItemTag();
 }
 
+std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<LocalVariableItem>(*this, make_unique_id);
+}
+
 std::string LocalVariableItem::GetDomainType() const
 {
   return domainconstants::kLocalVariableType;
@@ -175,6 +198,11 @@ void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 // PVClientVariableItem
 // ----------------------------------------------------------------------------
 
+std::unique_ptr<mvvm::SessionItem> PVClientVariableItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<PVClientVariableItem>(*this, make_unique_id);
+}
+
 PVClientVariableItem::PVClientVariableItem() : ConnectableVariableItem(Type) {}
 
 std::string PVClientVariableItem::GetDomainType() const
@@ -191,6 +219,11 @@ void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
 // ----------------------------------------------------------------------------
 // PVServerVariableItem
 // ----------------------------------------------------------------------------
+
+std::unique_ptr<mvvm::SessionItem> PVServerVariableItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<PVServerVariableItem>(*this, make_unique_id);
+}
 
 PVServerVariableItem::PVServerVariableItem() : ConnectableVariableItem(Type) {}
 
@@ -213,6 +246,11 @@ void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
 UnknownVariableItem::UnknownVariableItem() : VariableItem(Type)
 {
   RegisterAnyValueItemTag();
+}
+
+std::unique_ptr<mvvm::SessionItem> UnknownVariableItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<UnknownVariableItem>(*this, make_unique_id);
 }
 
 std::string UnknownVariableItem::GetDomainType() const

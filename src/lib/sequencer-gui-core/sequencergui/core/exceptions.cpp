@@ -29,6 +29,11 @@ const char* MessageException::what() const noexcept
   return message.c_str();
 }
 
+NotImplementedException::NotImplementedException(const std::string& message)
+    : MessageException{message}
+{
+}
+
 RuntimeException::RuntimeException(const std::string& message) : MessageException{message} {}
 
 LogicErrorException::LogicErrorException(const std::string& message) : MessageException{message} {}

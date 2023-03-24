@@ -31,7 +31,10 @@ namespace sequencergui
 class ConnectableVariableItem : public VariableItem
 {
 public:
+  using VariableItem::VariableItem;
   explicit ConnectableVariableItem(const std::string& variable_type);
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetChannel() const;
 
@@ -50,7 +53,11 @@ class ChannelAccessVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "ChannelAccessClient";
+
+  using ConnectableVariableItem::ConnectableVariableItem;
   ChannelAccessVariableItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -63,7 +70,11 @@ class FileVariableItem : public VariableItem
 {
 public:
   static inline const std::string Type = "File";
+
+  using VariableItem::VariableItem;
   FileVariableItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -81,7 +92,11 @@ class LocalVariableItem : public VariableItem
 {
 public:
   static inline const std::string Type = "Local";
+
+  using VariableItem::VariableItem;
   LocalVariableItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
@@ -95,6 +110,10 @@ class PVClientVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "PvAccessClient";
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  using ConnectableVariableItem::ConnectableVariableItem;
   PVClientVariableItem();
 
   std::string GetDomainType() const override;
@@ -108,6 +127,10 @@ class PVServerVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "PvAccessServer";
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  using ConnectableVariableItem::ConnectableVariableItem;
   PVServerVariableItem();
 
   std::string GetDomainType() const override;
@@ -121,7 +144,11 @@ class UnknownVariableItem : public VariableItem
 {
 public:
   static inline const std::string Type = "UnknownVariable";
+
+  using VariableItem::VariableItem;
   UnknownVariableItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 

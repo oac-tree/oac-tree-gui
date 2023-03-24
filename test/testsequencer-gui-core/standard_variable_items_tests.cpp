@@ -19,7 +19,6 @@
 
 #include "sequencergui/model/standard_variable_items.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
@@ -31,6 +30,9 @@
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
+
+#include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
 using namespace sequencergui;
 
@@ -335,7 +337,6 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
   }
 
-
   {  // normal case (in the course of refactoring)
     sequencergui::LocalVariableItem item;
     item.SetName(expected_name);
@@ -614,4 +615,18 @@ TEST_F(StandardVariableItemsTest, UnknownVariableItemFromLocalVariable)
   EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
 
   EXPECT_NO_THROW(new_domain_item->Setup());
+}
+
+//! Testing clone method
+
+TEST_F(StandardVariableItemsTest, Clone)
+{
+  using testutils::IsCloneImplemented;
+
+  EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<PVClientVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<PVServerVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<UnknownVariableItem>());
 }

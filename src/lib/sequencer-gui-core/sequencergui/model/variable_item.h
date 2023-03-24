@@ -35,6 +35,7 @@ namespace sequencergui
 class VariableItem : public mvvm::CompoundItem
 {
 public:
+  using CompoundItem::CompoundItem;
   explicit VariableItem(const std::string& item_type);
 
   virtual std::string GetDomainType() const = 0;
