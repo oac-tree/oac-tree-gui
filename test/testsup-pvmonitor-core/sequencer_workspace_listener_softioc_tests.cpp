@@ -45,31 +45,36 @@
 using namespace suppvmonitor;
 
 //! Tests for WorkspaceController class.
+//! Sequencer workspace is populated with ChannelAccessVariable.
 
 class SequencerWorkspaceListenerSoftIocTests : public ::testing::Test
 {
 public:
-  static void ValidateChannelAccessPresence()
+  static bool IsChannelAccessAvailable() { return sequencergui::IsChannelAccessClientAvailable(); }
+
+  //! Disables all tests in the fixture if ChannelAccess is not available
+  void SetUp() override
   {
-    if (!sequencergui::IsChannelAccessClientAvailable())
+    if (!IsChannelAccessAvailable())
     {
-      // Will disable all tests in the Fixture.
       GTEST_SKIP();
     }
   }
 
-  void SetUp() override { ValidateChannelAccessPresence(); }
-
   static void SetUpTestSuite()
   {
-    ValidateChannelAccessPresence();
-    m_softioc_service.Start(testutils::GetEpicsDBContentString());
+    if (IsChannelAccessAvailable())
+    {
+      m_softioc_service.Start(testutils::GetEpicsDBContentString());
+    }
   }
 
   static void TearDownTestSuite()
   {
-    ValidateChannelAccessPresence();
-    m_softioc_service.Stop();
+    if (IsChannelAccessAvailable())
+    {
+      m_softioc_service.Stop();
+    }
   }
 
   static sup::epics::test::SoftIocRunner m_softioc_service;
