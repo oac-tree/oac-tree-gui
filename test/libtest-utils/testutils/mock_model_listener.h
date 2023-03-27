@@ -34,7 +34,7 @@ namespace testutils
 class MockModelListener : public mvvm::ModelListener<mvvm::SessionModelInterface>
 {
 public:
-  explicit MockModelListener(mvvm::SessionModelInterface* model);
+  explicit MockModelListener(const mvvm::SessionModelInterface* model);
 
   MOCK_METHOD(void, OnEvent, (const mvvm::event_variant_t& event));
 };

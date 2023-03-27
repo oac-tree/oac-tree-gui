@@ -28,6 +28,7 @@
 #include <testutils/gui_domain_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
@@ -53,8 +54,10 @@ public:
     return result;
   }
 
+  //! Creates syncronizer for testing.
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
   {
+    // populate sequencer workspace so it match WorkspaceItem
     PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
     m_workspace.Setup();  // current convention: has to be setup before starting listening
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
@@ -70,8 +73,34 @@ TEST_F(WorkspaceSynchronizerTests, InitialState)
   EXPECT_EQ(synchronizer->GetWorkspace(), &m_workspace);
 }
 
+TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
+{
+  {  // empty workspaces
+    sup::sequencer::Workspace workspace;
+
+    mvvm::ApplicationModel model;
+    auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
+    WorkspaceSynchronizer syncronizer(workspace_item, &workspace);
+    EXPECT_THROW(syncronizer.Start(), sup::gui::LogicErrorException);
+  }
+
+  {  // variables do not match
+    const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+    auto variable_item = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+    variable_item->SetName("var0");
+
+    auto synchronizer = CreateSynchronizer();
+
+    // changing the name to make mismatch in workspaces
+    variable_item->SetName("abc");
+
+    EXPECT_THROW(synchronizer->Start(), sup::gui::LogicErrorException);
+  }
+
+}
+
 //! Creating WorkspaceItem with one LocalVariableItem.
-//! Setting up the workspace and checking that proper domain variable has been created.
+//! Validating initial values after syncronization was started.
 
 TEST_F(WorkspaceSynchronizerTests, Start)
 {
@@ -126,6 +155,9 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
   auto stored_anyvalue1 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value1, stored_anyvalue1);
 }
+
+//! Creating WorkspaceItem with one LocalVariableItem.
+//! Changing GUI variable and checking that domain was properly updated.
 
 TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 {

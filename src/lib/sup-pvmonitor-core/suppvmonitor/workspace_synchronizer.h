@@ -40,11 +40,12 @@ class SequencerWorkspaceListener;
 class WorkspaceItemController;
 class WorkspaceEvent;
 
-//! Provides syncronization of WorkspaceItem with sequencer's Workspace.
-
-//! The PVs are represented by VariableItems stored in WorkspaceItem. The synchronizer object
-//! creates underlying sequencer Workspace, attaches to it, and then performs mutual updates
-//! between sequencer variables and their counterparts VariableItems.
+//! Provides data syncronization between WorkspaceItem and sequencer's Workspace. All AnyValue
+//! updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all DataChangedEvent
+//! on GUI model side will be propagated to Sequencer Workspace.
+//!
+//! It is required, that WorkspaceItem and Workspace have same mount of variables and their
+//! names are the  same.
 
 class WorkspaceSynchronizer : public QObject
 {

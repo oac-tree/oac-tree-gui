@@ -22,7 +22,7 @@
 namespace testutils
 {
 
-MockModelListener::MockModelListener(mvvm::SessionModelInterface *model) : ModelListener(model)
+MockModelListener::MockModelListener(const mvvm::SessionModelInterface *model) : ModelListener(model)
 {
   Connect<mvvm::DataChangedEvent>(this, &MockModelListener::OnEvent);
   Connect<mvvm::AboutToInsertItemEvent>(this, &MockModelListener::OnEvent);

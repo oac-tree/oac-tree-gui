@@ -20,6 +20,7 @@
 #include "suppvmonitor/workspace_synchronizer.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/variable_transform_helper.h>
@@ -31,8 +32,35 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/sessionmodel.h>
 
+#include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/sequencer/workspace.h>
+
+namespace
+{
+
+//! Validates that workspace
+void ValidateWorkspaces(const sequencergui::WorkspaceItem& workspace_item,
+                        const sup::sequencer::Workspace& domain_workspace)
+{
+  if (domain_workspace.VariableNames().empty())
+  {
+    throw sup::gui::LogicErrorException("Workspace doesn't not contain variables");
+  }
+
+  std::vector<std::string> variable_item_names;
+  for (const auto variable_item : workspace_item.GetVariables())
+  {
+    variable_item_names.push_back(variable_item->GetName());
+  }
+
+  if (domain_workspace.VariableNames() != variable_item_names)
+  {
+    throw sup::gui::LogicErrorException("Workspace and WorkspaceItem have different variable set");
+  }
+}
+
+}  // namespace
 
 namespace suppvmonitor
 {
@@ -59,9 +87,11 @@ WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 void WorkspaceSynchronizer::Start()
 {
-  // For the moment we assume that the Workspace has been already setup.
-  // It means that we have to propagate initial values from the domain to WorkspaceItem,
-  // and then start listening the domain.
+  ValidateWorkspaces(*m_workspace_item, *m_workspace);
+
+  // For the moment we assume that the Workspace has been already setup. It means that we have to
+  // manually propagate initial values from the domain to WorkspaceItem, and only then start
+  // listening the domain.
 
   UpdateValuesFromDomain();
 
