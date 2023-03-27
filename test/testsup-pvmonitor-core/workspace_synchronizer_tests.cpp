@@ -27,6 +27,7 @@
 #include <suppvmonitor/workspace_monitor_helper.h>
 #include <testutils/gui_domain_utils.h>
 #include <testutils/mock_model_listener.h>
+#include <testutils/mock_domain_workspace_listener.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/core/exceptions.h>
@@ -38,6 +39,7 @@
 #include <QTest>
 
 using namespace suppvmonitor;
+using ::testing::_;
 
 //! Tests for WorkspaceSyncronizer class.
 
@@ -205,11 +207,14 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
 
-  testutils::MockModelListener listener(&m_model);
+  testutils::MockModelListener model_listener(&m_model);
+  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
 
   auto expected_event = mvvm::event_variant_t(
       mvvm::DataChangedEvent{variable_item->GetAnyValueItem(), mvvm::DataRole::kData});
-  EXPECT_CALL(listener, OnEvent(expected_event)).Times(1);
+
+  EXPECT_CALL(model_listener, OnEvent(expected_event)).Times(1);
+  EXPECT_CALL(domain_listener, OnEvent(_, _, _)).Times(0);
 
   // changing the value via domain workspace
   const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
