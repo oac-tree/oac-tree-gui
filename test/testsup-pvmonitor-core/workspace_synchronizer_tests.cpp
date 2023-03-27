@@ -26,6 +26,7 @@
 #include <suppvmonitor/monitor_model.h>
 #include <suppvmonitor/workspace_monitor_helper.h>
 #include <testutils/gui_domain_utils.h>
+#include <testutils/mock_model_listener.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/core/exceptions.h>
@@ -86,7 +87,8 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
 
   {  // variables do not match
     const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-    auto variable_item = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+    auto variable_item =
+        m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
     variable_item->SetName("var0");
 
     auto synchronizer = CreateSynchronizer();
@@ -96,7 +98,6 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
 
     EXPECT_THROW(synchronizer->Start(), sup::gui::LogicErrorException);
   }
-
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
@@ -144,6 +145,8 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
   auto stored_anyvalue0 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value0, stored_anyvalue0);
 
+  auto prev_anyvalue_item = variable_item0->GetAnyValueItem();
+
   // changing the value via domain workspace
   const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   EXPECT_TRUE(synchronizer->GetWorkspace()->SetValue("abc", value1));
@@ -151,7 +154,7 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 
-  ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), prev_anyvalue_item);
   auto stored_anyvalue1 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value1, stored_anyvalue1);
 }
@@ -183,4 +186,37 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
   sup::dto::AnyValue domain_value;
   EXPECT_TRUE(domain_variable0->GetValue(domain_value));
   EXPECT_EQ(domain_value, value1);
+}
+
+//! Creating WorkspaceItem with one LocalVariableItem.
+//! Update domain variable and check signaling.
+
+TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
+{
+  const std::string var_name("abc");
+
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::LocalVariableItem>(
+      mvvm::TagIndex::Append());
+  variable_item->SetName(var_name);
+  sequencergui::SetAnyValue(value, *variable_item);
+
+  auto synchronizer = CreateSynchronizer();
+  synchronizer->Start();
+
+  testutils::MockModelListener listener(&m_model);
+
+  auto expected_event = mvvm::event_variant_t(
+      mvvm::DataChangedEvent{variable_item->GetAnyValueItem(), mvvm::DataRole::kData});
+  EXPECT_CALL(listener, OnEvent(expected_event)).Times(1);
+
+  // changing the value via domain workspace
+  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  EXPECT_TRUE(synchronizer->GetWorkspace()->SetValue(var_name, new_value));
+
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
+
+  EXPECT_EQ(variable_item->GetAnyValueItem()->Data<int>(), 43);
 }
