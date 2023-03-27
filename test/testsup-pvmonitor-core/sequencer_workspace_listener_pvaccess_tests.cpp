@@ -66,7 +66,7 @@ public:
     auto result =
         sequencergui::CreateDomainVariable(sequencergui::domainconstants::kPVServerVariableType);
     result->AddAttribute("channel", channel_name);
-    result->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(&anyvalue));
+    result->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(anyvalue));
     return result;
   }
 };

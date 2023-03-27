@@ -29,8 +29,8 @@ void SetupVariable(const std::string &name, const sup::dto::AnyValue &initial_va
                    sequencergui::LocalVariableItem &item)
 {
   item.SetName(name);
-  item.SetJsonType(sup::gui::GetAnyTypeToJSONString(&initial_value));
-  item.SetJsonValue(sup::gui::GetValuesToJSONString(&initial_value));
+  item.SetJsonType(sup::gui::GetAnyTypeToJSONString(initial_value));
+  item.SetJsonValue(sup::gui::GetValuesToJSONString(initial_value));
 }
 
 }  // namespace testutils

@@ -52,21 +52,21 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
                                             const sup::dto::AnyValue &value, bool connected)
 {
   (void)connected;
-  auto value_string = sup::gui::GetValuesToJSONString(&value);
+  auto value_string = sup::gui::GetValuesToJSONString(value);
   m_procedure_runner->onVariableChange(name, value_string);
 }
 
 bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
-  auto value_string = sup::gui::GetValuesToJSONString(&value);
+  auto value_string = sup::gui::GetValuesToJSONString(value);
   m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, description + value_string));
   return true;
 }
 
 bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
 {
-  auto value_string = sup::gui::GetValuesToJSONString(&value);
+  auto value_string = sup::gui::GetValuesToJSONString(value);
   auto user_input = m_procedure_runner->onUserInput(value_string, description);
   if (!sup::gui::ParseStringToScalarAnyvalue(user_input, value))
   {

@@ -118,7 +118,7 @@ void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
     auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
 
     AddNonEmptyAttribute(domainconstants::kTypeAttribute,
-                         sup::gui::GetAnyTypeToJSONString(&anyvalue), variable);
+                         sup::gui::GetAnyTypeToJSONString(anyvalue), variable);
   }
   else
   {
@@ -136,7 +136,7 @@ void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
     auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
 
     AddNonEmptyAttribute(domainconstants::kValueAttribute,
-                         sup::gui::GetValuesToJSONString(&anyvalue), variable);
+                         sup::gui::GetValuesToJSONString(anyvalue), variable);
   }
   else
   {

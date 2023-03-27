@@ -44,7 +44,7 @@ public:
     auto local_variable =
         sequencergui::CreateDomainVariable(sequencergui::domainconstants::kLocalVariableType);
     local_variable->SetName(name);
-    local_variable->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(&initial_value));
+    local_variable->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(initial_value));
     local_variable->Setup();
     if (!local_variable->SetValue(initial_value))
     {
