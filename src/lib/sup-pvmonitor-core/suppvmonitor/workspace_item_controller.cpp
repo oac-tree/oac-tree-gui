@@ -32,8 +32,8 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <QDebug>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 
 namespace suppvmonitor
 {
@@ -47,7 +47,7 @@ WorkspaceItemController::WorkspaceItemController(sequencergui::WorkspaceItem* it
 
 WorkspaceItemController::~WorkspaceItemController() = default;
 
-//! Process an event coming from sequencer workspace
+//! Processes an event coming from sequencer workspace.
 
 void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event)
 {

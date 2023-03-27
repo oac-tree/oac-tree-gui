@@ -45,8 +45,9 @@ namespace suppvmonitor
 
 class WorkspaceEvent;
 
-//! Controls changes in WorkspaceItem and provide callbacks for those that
-//! are relevant for the domain workspace.
+//! The WorkspaceItemController class listens for changes on the GUI side (WorkspaceItem) and
+//! provide notifications that is relevant to domain Workspace using a callback.
+//! It also processes WorkspaceEvent and update GUI model accordningly.
 
 class WorkspaceItemController
 {

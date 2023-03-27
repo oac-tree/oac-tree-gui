@@ -31,6 +31,7 @@
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <stdexcept>
@@ -93,7 +94,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
   // triggering domain workspace event (pretending it is disconnected)
   controller.ProcessEventFromDomain({"abc", value, false});
 
-   // local variable doesn't care about connected status
+  // local variable doesn't care about connected status
   EXPECT_TRUE(variable_item0->IsAvailable());
   // checking updated value
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
@@ -103,7 +104,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
 
 //! Setting up the WorkspaceItem with single variable.
 //! Triggering domain workspace event twice and validating AnyValueItem update.
-//! The difference with the precvious test: on first update AnyValueItem should be created,
+//! The difference with the previous test: on first update AnyValueItem should be created,
 //! on second update it should be updated (not re-created).
 
 TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
@@ -220,8 +221,8 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 =
-      m_workspace_item->InsertItem<sequencergui::ChannelAccessVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = m_workspace_item->InsertItem<sequencergui::ChannelAccessVariableItem>(
+      mvvm::TagIndex::Append());
   variable_item0->SetName("abc");
 
   // initially it doesn't have a value on board and it is disconnected
@@ -237,9 +238,44 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
   // triggering domain workspace event, pretending connected status
   controller.ProcessEventFromDomain({"abc", value, true});
 
-   // status become connected, value updated
+  // status become connected, value updated
   EXPECT_TRUE(variable_item0->IsAvailable());
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(value, stored_anyvalue);
+}
+
+//! Setting up the WorkspaceItem with single scalar variable. Setting the value through the model
+//! and expecting notification to the domain. The purpose of the test is to validate propagation
+//! of DataChangedEvent from the model to the domain.
+
+TEST_F(WorkspaceItemControllerTests, SetDataFromScalar)
+{
+  const std::string var_name("abc");
+
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
+
+  auto variable_item0 =
+      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  variable_item0->SetName(var_name);
+  sequencergui::SetAnyValue(value, *variable_item0);
+
+  auto scalar_anyvalue_item =
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(variable_item0->GetAnyValueItem());
+  ASSERT_NE(scalar_anyvalue_item, nullptr);
+  EXPECT_EQ(scalar_anyvalue_item->Data<int>(), 42);
+
+  WorkspaceItemController controller(m_workspace_item);
+  controller.SetCallback(listener.CreateCallback());
+
+  // preparing callback expectations
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  WorkspaceEvent expected_event{var_name, new_value};
+
+  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+
+  // modifying value from the model
+  scalar_anyvalue_item->SetData(43);
 }
