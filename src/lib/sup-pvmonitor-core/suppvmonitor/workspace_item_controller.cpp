@@ -31,8 +31,6 @@
 
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
-#include <QDebug>
-#include <iostream>
 #include <stdexcept>
 
 namespace suppvmonitor
@@ -97,15 +95,11 @@ void WorkspaceItemController::SetCallback(
 //! Process data changed event.
 void WorkspaceItemController::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
-  qDebug() << "DataChangedEvent";
-  // FIXME refactor the way we find VariableItem corresponding to DataChangedEvent
-
   // finding VariableItem which is a parent of the item with changed data
   for (auto variable_item : GetWorkspaceItem()->GetVariables())
   {
     if (mvvm::utils::IsItemAncestor(event.m_item, variable_item))
     {
-      qDebug() << "DataChangedEvent ---";
       ProcessEventToDomain(variable_item);
       break;
     }

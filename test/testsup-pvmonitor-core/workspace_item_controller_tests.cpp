@@ -217,17 +217,17 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
 
 TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 {
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
-
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 = m_workspace_item->InsertItem<sequencergui::ChannelAccessVariableItem>(
+  auto variable_item = m_workspace_item->InsertItem<sequencergui::ChannelAccessVariableItem>(
       mvvm::TagIndex::Append());
-  variable_item0->SetName("abc");
+  variable_item->SetName("abc");
 
   // initially it doesn't have a value on board and it is disconnected
-  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
-  EXPECT_FALSE(variable_item0->IsAvailable());
+  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+  EXPECT_FALSE(variable_item->IsAvailable());
+
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -239,9 +239,9 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
   controller.ProcessEventFromDomain({"abc", value, true});
 
   // status become connected, value updated
-  EXPECT_TRUE(variable_item0->IsAvailable());
-  ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_TRUE(variable_item->IsAvailable());
+  ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
   EXPECT_EQ(value, stored_anyvalue);
 }
 
@@ -249,23 +249,23 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 //! and expecting notification to the domain. The purpose of the test is to validate propagation
 //! of DataChangedEvent from the model to the domain.
 
-TEST_F(WorkspaceItemControllerTests, SetDataFromScalar)
+TEST_F(WorkspaceItemControllerTests, SetScalarData)
 {
   const std::string var_name("abc");
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
-
-  auto variable_item0 =
+  auto variable_item =
       m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
-  variable_item0->SetName(var_name);
-  sequencergui::SetAnyValue(value, *variable_item0);
+  variable_item->SetName(var_name);
+  sequencergui::SetAnyValue(value, *variable_item);
 
   auto scalar_anyvalue_item =
-      dynamic_cast<sup::gui::AnyValueScalarItem*>(variable_item0->GetAnyValueItem());
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(variable_item->GetAnyValueItem());
   ASSERT_NE(scalar_anyvalue_item, nullptr);
   EXPECT_EQ(scalar_anyvalue_item->Data<int>(), 42);
+
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -278,4 +278,33 @@ TEST_F(WorkspaceItemControllerTests, SetDataFromScalar)
 
   // modifying value from the model
   scalar_anyvalue_item->SetData(43);
+}
+
+//! Setting up the WorkspaceItem with struct variable with a scalar on board. Setting scalar value
+//! through the model and expecting notification to the domain.
+
+TEST_F(WorkspaceItemControllerTests, SetScalarDataInStruct)
+{
+  const std::string var_name("abc");
+
+  auto variable_item =
+      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+  variable_item->SetName(var_name);
+
+  auto struct_item = variable_item->InsertItem<sup::gui::AnyValueStructItem>({});
+  auto scalar_item = struct_item->AddScalarField("value", sup::dto::kInt32TypeName, 42);
+  EXPECT_EQ(scalar_item->Data<int>(), 42);
+
+  testutils::MockCallbackListener<WorkspaceEvent> listener;
+
+  WorkspaceItemController controller(m_workspace_item);
+  controller.SetCallback(listener.CreateCallback());
+
+  // preparing callback expectations
+  sup::dto::AnyValue new_value({{"value", {sup::dto::SignedInteger32Type, 43}}});
+  WorkspaceEvent expected_event{var_name, new_value};
+  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+
+  // modifying value from the model
+  scalar_item->SetData(43);
 }
