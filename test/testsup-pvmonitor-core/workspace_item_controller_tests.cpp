@@ -72,7 +72,7 @@ TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 //! Setting up the WorkspaceItem with single variable.
 //! Triggering domain workspace event and validating AnyValueItem update.
 
-TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
+TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainWhenConnected)
 {
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
@@ -92,14 +92,21 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomain)
   EXPECT_CALL(listener, OnCallback(_)).Times(0);
 
   // triggering domain workspace event (pretending it is disconnected)
-  controller.ProcessEventFromDomain({"abc", value, false});
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  controller.ProcessEventFromDomain({"abc", new_value, false});
 
-  // local variable doesn't care about connected status
+  EXPECT_TRUE(variable_item0->IsAvailable());
+  // current implementation: for disconnected status do not update the value
+  ASSERT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+
+  // triggering domain workspace event (pretending it is connected)
+  controller.ProcessEventFromDomain({"abc", new_value, true});
+
   EXPECT_TRUE(variable_item0->IsAvailable());
   // checking updated value
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value, stored_anyvalue);
+  EXPECT_EQ(new_value, stored_anyvalue);
 }
 
 //! Setting up the WorkspaceItem with single variable.
@@ -127,7 +134,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
   EXPECT_CALL(listener, OnCallback(_)).Times(0);
 
   // triggering domain workspace event
-  controller.ProcessEventFromDomain({"abc", value});
+  controller.ProcessEventFromDomain({"abc", value, true});
 
   auto anyvalue_item = variable_item0->GetAnyValueItem();
   ASSERT_NE(anyvalue_item, nullptr);
@@ -136,7 +143,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
 
   // triggering the second domain workspace event
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  controller.ProcessEventFromDomain({"abc", new_value});
+  controller.ProcessEventFromDomain({"abc", new_value, true});
 
   auto new_anyvalue_item = variable_item0->GetAnyValueItem();
   ASSERT_EQ(anyvalue_item, new_anyvalue_item);

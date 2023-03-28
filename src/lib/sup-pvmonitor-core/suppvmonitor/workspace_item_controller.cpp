@@ -53,8 +53,15 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
 
   if (auto item = GeVariableItemForName(event.variable_name); item)
   {
-    sequencergui::UpdateAnyValue(event.value, *item);
     item->SetIsAvailable(event.connected);
+    if (event.connected)
+    {
+      sequencergui::UpdateAnyValue(event.value, *item);
+    }
+    else
+    {
+      // Not sure what to do if variable is disconnected
+    }
   }
 
   m_block_update_to_domain[event.variable_name] = false;
