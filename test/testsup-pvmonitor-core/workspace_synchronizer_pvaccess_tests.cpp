@@ -133,3 +133,46 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   auto gui_value = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
   EXPECT_EQ(gui_value, initial_value);
 }
+
+//! Single server variable (struct) in a workspace.
+//! The data is set on the GUI side, validating updates on the domain side.
+
+TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
+{
+  const std::string var_name("var");
+  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+
+  // creating PVServerVariableItem in the model
+  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
+      mvvm::TagIndex::Append());
+  variable_item->SetChannel(kStructChannelName);
+  variable_item->SetName(var_name);
+  sequencergui::SetAnyValue(initial_value, *variable_item);
+
+  EXPECT_FALSE(variable_item->IsAvailable());
+
+  // creating syncronizer (and underlying domain  workspace)
+  auto synchronizer = CreateSynchronizer();
+  synchronizer->Start();
+
+  // Creating domain and setting callback expectations.
+  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  auto anyvalue_item = variable_item->GetAnyValueItem();
+  sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
+  EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
+
+  // creating model listener and setting expectations
+  testutils::MockModelListener model_listener(&m_model);
+  auto scalar_field = anyvalue_item->GetChildren().at(0);
+  auto expected_event =
+      mvvm::event_variant_t(mvvm::DataChangedEvent{scalar_field, mvvm::DataRole::kData});
+  EXPECT_CALL(model_listener, OnEvent(expected_event)).Times(1);
+
+  // setting the data from GUI (will trigger expectation)
+  scalar_field->SetData(42);
+
+  // validating the data in the domain
+  sup::dto::AnyValue domain_value;
+  m_workspace.GetValue(var_name, domain_value);
+  EXPECT_EQ(domain_value, expected_value);
+}
