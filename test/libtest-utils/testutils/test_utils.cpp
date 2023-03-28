@@ -24,6 +24,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
+
+#include <QTest>
 
 namespace
 {
@@ -67,6 +70,19 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout)
 {
   auto value = std::chrono::duration_cast<std::chrono::milliseconds>(timeout).count();
   return static_cast<double>(value) / 1000;
+}
+
+bool WaitInEventLoop(double timeout_sec, std::function<bool ()> predicate)
+{
+  long timeout_ns = std::lround(timeout_sec * 1e9);
+  auto time_end = std::chrono::system_clock::now() + std::chrono::nanoseconds(timeout_ns);
+  while (!predicate() && std::chrono::system_clock::now() < time_end)
+  {
+    QTest::qWait(50);  // wait in event loop 10 msec
+//    std::this_thread::sleep_for(std::chrono::milliseconds(20));
+  }
+  return predicate();
+
 }
 
 }  // namespace testutils
