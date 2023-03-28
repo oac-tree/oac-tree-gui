@@ -45,7 +45,6 @@ using ::testing::_;
 namespace
 {
 const std::string kTestPrefix("WorkspaceSynchronizerPVAccessTests:");
-const std::string kStructChannelName(kTestPrefix + "STRUCT");
 }  // namespace
 
 //! Tests for WorkspaceSyncronizer class.
@@ -84,17 +83,18 @@ public:
 
 //! Single server variable (struct) in a workspace.
 //! Creating variable on GUI side, duplicating in the domain workspace. Starting listening,
-//! making sure that no signals are flying and initial values coincide.
+//! making sure that correct signals are flying and initial values coincide.
 
 TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
 {
+  const std::string kChannelName(kTestPrefix + "STRUCT1");
   const std::string var_name("var");
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
       mvvm::TagIndex::Append());
-  variable_item->SetChannel(kStructChannelName);
+  variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   sequencergui::SetAnyValue(initial_value, *variable_item);
 
@@ -139,13 +139,14 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
 
 TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
 {
+  const std::string kChannelName(kTestPrefix + "STRUCT2");
   const std::string var_name("var");
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
       mvvm::TagIndex::Append());
-  variable_item->SetChannel(kStructChannelName);
+  variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   sequencergui::SetAnyValue(initial_value, *variable_item);
 
@@ -182,13 +183,14 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
 
 TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
 {
+  const std::string kChannelName(kTestPrefix + "STRUCT3");
   const std::string var_name("var");
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
       mvvm::TagIndex::Append());
-  variable_item->SetChannel(kStructChannelName);
+  variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   sequencergui::SetAnyValue(initial_value, *variable_item);
 
@@ -224,4 +226,53 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
   // validating the data in the GUI
   auto gui_anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
   EXPECT_EQ(gui_anyvalue, expected_value);
+}
+
+//! One server and one client variable (struct) in a workspace.
+//! Creating variables on a GUI side, duplicating in the domain workspace. Starting listening,
+//! making sure that correct signals are flying and initial values coincide.
+
+TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
+{
+  const std::string kChannelName(kTestPrefix + "STRUCT4");
+  const std::string server_var_name("server");
+  const std::string client_var_name("client");
+  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+
+  // creating PVServerVariableItem in the model
+  auto server_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
+      mvvm::TagIndex::Append());
+  server_item->SetChannel(kChannelName);
+  server_item->SetName(server_var_name);
+  sequencergui::SetAnyValue(initial_value, *server_item);
+
+  // creating PVServerClientItem in the model
+  auto client_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVClientVariableItem>(
+      mvvm::TagIndex::Append());
+  client_item->SetChannel(kChannelName);
+  client_item->SetName(client_var_name);
+  sequencergui::SetAnyValue(initial_value, *client_item);
+
+  EXPECT_FALSE(server_item->IsAvailable());
+  EXPECT_FALSE(client_item->IsAvailable());
+  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
+
+  // creating syncronizer (and underlying domain  workspace)
+  auto synchronizer = CreateSynchronizer();
+
+  // Creating domain listener and setting callback expectations.
+  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+
+  {
+    ::testing::InSequence seq;
+    sup::dto::AnyValue empty_value;
+    EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
+    EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
+  }
+
+  synchronizer->Start();
+
+  EXPECT_TRUE(m_workspace.WaitForVariable(server_var_name, 1.0));
+  EXPECT_TRUE(m_workspace.WaitForVariable(client_var_name, 1.0));
 }

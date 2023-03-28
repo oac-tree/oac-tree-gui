@@ -22,6 +22,7 @@
 
 #include <gmock/gmock.h>
 
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
 namespace testutils
@@ -36,8 +37,12 @@ public:
   {
     m_guard = m_workspace.GetCallbackGuard(this);
 
-    auto on_variable_updated = [this](const std::string& name, const sup::dto::AnyValue& value,
-                                      bool connected) { OnEvent(name, value, connected); };
+    auto on_variable_updated =
+        [this](const std::string& name, const sup::dto::AnyValue& value, bool connected)
+    {
+      std::cout << sup::gui::GetAnyValueToJSONString(value) << std::endl;
+      OnEvent(name, value, connected);
+    };
 
     workspace.RegisterGenericCallback(on_variable_updated, this);
   }

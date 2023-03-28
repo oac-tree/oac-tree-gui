@@ -34,7 +34,10 @@
 
 #include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
+
+#include <algorithm>
 
 namespace
 {
@@ -53,8 +56,13 @@ void ValidateWorkspaces(const sequencergui::WorkspaceItem& workspace_item,
   {
     variable_item_names.push_back(variable_item->GetName());
   }
+  auto domain_names = domain_workspace.VariableNames();
 
-  if (domain_workspace.VariableNames() != variable_item_names)
+  // sequencer stores everything in a map, sorting is necessary for comparison
+  std::sort(domain_names.begin(), domain_names.end());
+  std::sort(variable_item_names.begin(), variable_item_names.end());
+
+  if (domain_names != variable_item_names)
   {
     throw sup::gui::LogicErrorException("Workspace and WorkspaceItem have different variable set");
   }
@@ -119,7 +127,6 @@ void WorkspaceSynchronizer::UpdateValuesFromDomain()
     sup::dto::AnyValue anyvalue;
     variable->GetValue(anyvalue);
     WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
-
     m_workspace_item_controller->ProcessEventFromDomain(event);
   }
 }
