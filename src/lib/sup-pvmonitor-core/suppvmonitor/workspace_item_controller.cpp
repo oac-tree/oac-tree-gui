@@ -53,6 +53,12 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
 
   if (auto item = GeVariableItemForName(event.variable_name); item)
   {
+    if (event.connected && sup::dto::IsEmptyValue(event.value) && !item->IsAvailable())
+    {
+      item->SetIsAvailable(event.connected);
+      return;
+    }
+
     item->SetIsAvailable(event.connected);
     if (event.connected)
     {

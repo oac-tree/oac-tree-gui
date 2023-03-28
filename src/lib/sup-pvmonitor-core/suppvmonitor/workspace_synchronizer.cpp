@@ -91,16 +91,23 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(sequencergui::WorkspaceItem* worksp
 
 WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
-//! Creates domain workspace corresponding to WorkspaceItem and start listening.
+//! Starts synchronization between domain WOrkspace and GUI's WorkspaceItem.
 
 void WorkspaceSynchronizer::Start()
 {
   ValidateWorkspaces(*m_workspace_item, *m_workspace);
 
-  // For the moment we assume that the Workspace has been already setup. It means that we have to
-  // manually propagate initial values from the domain to WorkspaceItem, and only then start
-  // listening the domain.
+  // In sequencer GUI two scenarios are possible: 1) Workspace is generated from WorkspaceItem.
+  // 2) WorkspaceItem is generated from Workspace. It is not clear, at which moment the method
+  // Workspace::Setup() will be called. That complicates the logic when synchronization starts:
+  // Should we populate workspaces? Should we call Setup? How to set initial values in GUI variables
+  // reliably, having in mind all issues with IsAvailable?
 
+  // Thus, we assume that both Workspace and WorkspaceItem have been already populated with
+  // identical set of variables, and that Workspace::Setup() has been already called.
+
+  // Before we attach to Workspace and start listening, we still have to pick up all Workspace
+  // values that could be updated already after the Setup call.
   UpdateValuesFromDomain();
 
   m_workspace_listener->StartListening(GetWorkspace());
@@ -117,17 +124,22 @@ sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 }
 
 //! Updates all values in WorkspaceItem from the domain's workspace.
+//! The method is expected to be called once during syncronization startup.
 
 void WorkspaceSynchronizer::UpdateValuesFromDomain()
 {
   for (const auto& name : m_workspace->VariableNames())
   {
-    auto variable = m_workspace->GetVariable(name);
+    // we wait for variable becoming available, before picking up initial values for the GUI
+    if (m_workspace->WaitForVariable(name, 1.0))
+    {
+      auto variable = m_workspace->GetVariable(name);
 
-    sup::dto::AnyValue anyvalue;
-    variable->GetValue(anyvalue);
-    WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
-    m_workspace_item_controller->ProcessEventFromDomain(event);
+      sup::dto::AnyValue anyvalue;
+      variable->GetValue(anyvalue);
+      WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
+      m_workspace_item_controller->ProcessEventFromDomain(event);
+    }
   }
 }
 

@@ -44,8 +44,11 @@ class WorkspaceEvent;
 //! updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all DataChangedEvent
 //! on GUI model side will be propagated to Sequencer Workspace.
 //!
-//! It is required, that WorkspaceItem and Workspace have same mount of variables and their
-//! names are the  same.
+//! @note It is required, that WorkspaceItem and domain Workspace have same mount of variables and
+//! their names are the  same.
+//!
+//! @note It is expected that the method Workspace::Setup() in the domain has been already called.
+//! See explanation in code of ::Start() method.
 
 class WorkspaceSynchronizer : public QObject
 {

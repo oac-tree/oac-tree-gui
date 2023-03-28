@@ -29,6 +29,7 @@
 #include <testutils/gui_domain_utils.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/mock_model_listener.h>
+#include <testutils/test_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/core/exceptions.h>
@@ -37,10 +38,10 @@
 #include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
-#include <QTest>
-
 using namespace suppvmonitor;
 using ::testing::_;
+
+#include <QTest>
 
 namespace
 {
@@ -261,9 +262,21 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
   // creating syncronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
 
+  testutils::MockModelListener model_listener(&m_model);
+
+  {
+    ::testing::InSequence seq;
+    auto expected_event1 =
+        mvvm::DataChangedEvent{client_item->GetItem("kIsAvailable"), mvvm::DataRole::kData};
+    EXPECT_CALL(model_listener, OnEvent(mvvm::event_variant_t(expected_event1))).Times(1);
+
+    auto expected_event2 =
+        mvvm::DataChangedEvent{server_item->GetItem("kIsAvailable"), mvvm::DataRole::kData};
+    EXPECT_CALL(model_listener, OnEvent(mvvm::event_variant_t(expected_event2))).Times(1);
+  }
+
   // Creating domain listener and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-
   {
     ::testing::InSequence seq;
     sup::dto::AnyValue empty_value;
@@ -275,4 +288,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
 
   EXPECT_TRUE(m_workspace.WaitForVariable(server_var_name, 1.0));
   EXPECT_TRUE(m_workspace.WaitForVariable(client_var_name, 1.0));
+
+  // queued connection toward the GUI requires special waiting with qWaitFor
+  EXPECT_TRUE(QTest::qWaitFor([server_item]() { return server_item->IsAvailable(); }, 3000));
+  EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 3000));
+
+  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
 }
