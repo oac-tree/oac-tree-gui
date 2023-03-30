@@ -24,7 +24,7 @@
 
 class QToolButton;
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 class MonitorWidgetToolBar : public QToolBar

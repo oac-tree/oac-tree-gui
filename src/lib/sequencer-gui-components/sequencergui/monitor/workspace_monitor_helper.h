@@ -28,13 +28,13 @@ class WorkspaceItem;
 class DomainWorkspaceBuilder;
 }  // namespace sequencergui
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 //! Populate empty domain workspace with the content in WorkspaceItem.
 //! If domain workspace is non-empty, will throw.
-void PopulateDomainWorkspace(const sequencergui::WorkspaceItem& item, workspace_t& workspace);
+void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace);
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_MONITOR_HELPER_H_

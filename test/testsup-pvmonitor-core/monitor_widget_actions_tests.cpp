@@ -19,23 +19,24 @@
 
 #include "sequencergui/monitor/monitor_widget_actions.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/monitor_model.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <testutils/mock_callback_listener.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-using namespace suppvmonitor;
+#include <sup/dto/anyvalue.h>
+
+#include <gtest/gtest.h>
+#include <testutils/mock_callback_listener.h>
+
+using namespace sequencergui;
 using ::testing::_;
 
 class MonitorWidgetActionsTest : public ::testing::Test
 {
 public:
-  MonitorWidgetActionsTest() { m_model.InsertItem<sequencergui::WorkspaceItem>(); }
+  MonitorWidgetActionsTest() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Mock dialog that pretend to take an item for editing and return the result to the user.
   class MockDialog
@@ -63,7 +64,7 @@ public:
   };
 
   //! Creates context necessary for AnyValueEditActions to function.
-  MonitorWidgetContext CreateContext(sequencergui::VariableItem* item)
+  MonitorWidgetContext CreateContext(VariableItem* item)
   {
     // callback returns given item, pretending it is user's selection
     auto get_selected_callback = [item]() { return item; };
@@ -71,7 +72,7 @@ public:
   }
 
   //! Creates AnyValueEditorActions for testing.
-  std::unique_ptr<MonitorWidgetActions> CreateActions(sequencergui::VariableItem* selection)
+  std::unique_ptr<MonitorWidgetActions> CreateActions(VariableItem* selection)
   {
     return std::make_unique<MonitorWidgetActions>(CreateContext(selection), &m_model, nullptr);
   }
@@ -96,11 +97,11 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding variable
-  actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
+  actions->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
-  auto inserted_variable0 = dynamic_cast<sequencergui::LocalVariableItem*>(
+  auto inserted_variable0 = dynamic_cast<LocalVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
@@ -114,10 +115,10 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 
   // adding another variable
-  actions->OnAddVariableRequest(QString::fromStdString(sequencergui::LocalVariableItem::Type));
+  actions->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
-  auto inserted_variable1 = dynamic_cast<sequencergui::LocalVariableItem*>(
+  auto inserted_variable1 = dynamic_cast<LocalVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable1, nullptr);
   EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
@@ -133,8 +134,8 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
 
 TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
 {
-  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
-  auto var1 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 
   // pretending that var0 is selected
   auto actions = CreateActions(var0);
@@ -143,10 +144,10 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding variable
-  actions->OnAddVariableRequest(QString::fromStdString(sequencergui::FileVariableItem::Type));
+  actions->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
-  auto inserted_variable0 = dynamic_cast<sequencergui::FileVariableItem*>(
+  auto inserted_variable0 = dynamic_cast<FileVariableItem*>(
       m_model.GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
@@ -156,7 +157,7 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
 
 TEST_F(MonitorWidgetActionsTest, OnRemoveVariableRequest)
 {
-  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 
   // pretending that var0 is selected
@@ -175,7 +176,7 @@ TEST_F(MonitorWidgetActionsTest, OnRemoveVariableRequest)
 
 TEST_F(MonitorWidgetActionsTest, OnAttemptToRemoveVariable)
 {
-  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 
   // nothing is selected
@@ -211,8 +212,8 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothingIsSelected)
 TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
 {
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
-  sequencergui::SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
   auto initial_anyvalue_item = var0->GetAnyValueItem();
 
   // item mimicking editing result
@@ -247,8 +248,8 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
 TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenAnyValueIsSelected)
 {
   // creating variable with AnyValue on board
-  auto var0 = m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
-  sequencergui::SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
   auto initial_anyvalue_item = var0->GetAnyValueItem();
 
   // item mimicking editing result

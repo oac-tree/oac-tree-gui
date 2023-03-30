@@ -19,11 +19,11 @@
 
 #include "anyvalue_editor_dialog.h"
 
-#include <mvvm/model/item_utils.h>
-#include <mvvm/widgets/widget_utils.h>
-
 #include <sup/gui/anyvalueeditor/anyvalue_editor.h>
 #include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/item_utils.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -38,7 +38,7 @@ QString GetDialogSizeSettingName()
 }
 }  // namespace
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
@@ -115,4 +115,4 @@ QBoxLayout* AnyValueEditorDialog::CreateButtonLayout()
   return result;
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

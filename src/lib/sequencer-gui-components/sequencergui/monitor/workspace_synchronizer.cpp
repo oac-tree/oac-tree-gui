@@ -28,13 +28,13 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/sessionmodel.h>
 
-#include <sup/gui/core/exceptions.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <algorithm>
@@ -70,10 +70,10 @@ void ValidateWorkspaces(const sequencergui::WorkspaceItem& workspace_item,
 
 }  // namespace
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
-WorkspaceSynchronizer::WorkspaceSynchronizer(sequencergui::WorkspaceItem* workspace_item,
+WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
                                              sup::sequencer::Workspace* domain_workspace,
                                              QObject* parent)
     : QObject(parent)
@@ -118,7 +118,7 @@ sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
   return m_workspace;
 }
 
-sequencergui::WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
+WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 {
   return m_workspace_item;
 }
@@ -154,4 +154,4 @@ void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
   GetWorkspace()->SetValue(event.variable_name, event.value);
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

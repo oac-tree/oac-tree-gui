@@ -29,11 +29,11 @@
 #include <QMenu>
 #include <QMenuBar>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 MainWindowActions::MainWindowActions(mvvm::SessionModelInterface *model, QMainWindow *mainwindow)
-    : QObject(mainwindow), m_project_handler(new sequencergui::ProjectHandler(model, mainwindow))
+    : QObject(mainwindow), m_project_handler(new ProjectHandler(model, mainwindow))
 
 {
   CreateActions(mainwindow);
@@ -54,8 +54,6 @@ MainWindowActions::~MainWindowActions() = default;
 
 void MainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
-  using sequencergui::ProjectHandler;
-
   m_create_new_project_action = new QAction("&New Project", this);
   m_create_new_project_action->setShortcuts(QKeySequence::New);
   m_create_new_project_action->setStatusTip("Create a new project");
@@ -126,8 +124,8 @@ void MainWindowActions::AboutToShowFileMenu()
     m_recent_project_menu->addSeparator();
     auto action = m_recent_project_menu->addAction("Clear Menu");
     connect(action, &QAction::triggered, m_project_handler,
-            &sequencergui::ProjectHandler::ClearRecentProjectsList);
+            &ProjectHandler::ClearRecentProjectsList);
   }
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

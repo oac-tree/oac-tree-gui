@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
   sequencergui::LoadPlugins();
 
-  suppvmonitor::MainWindow win;
+  sequencergui::MainWindow win;
 
   win.show();
 

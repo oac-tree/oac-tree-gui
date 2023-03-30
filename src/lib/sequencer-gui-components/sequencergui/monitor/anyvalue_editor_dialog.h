@@ -33,7 +33,7 @@ class AnyValueEditor;
 class AnyValueItem;
 }
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 class AnyValueEditorDialog : public QDialog

@@ -31,18 +31,15 @@ namespace mvvm
 class SessionItem;
 }
 
-namespace sequencergui
-{
-class VariableItem;
-}
-
 namespace sup::gui
 {
 class AnyValueItem;
 }
 
-namespace suppvmonitor
+namespace sequencergui
 {
+
+class VariableItem;
 
 //! Context to setup MonitorWidgetActions.
 
@@ -60,6 +57,6 @@ struct MonitorWidgetContext
       get_anyvalue_callback;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif

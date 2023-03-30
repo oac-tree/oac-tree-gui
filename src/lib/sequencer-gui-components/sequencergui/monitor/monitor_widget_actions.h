@@ -24,19 +24,15 @@
 
 #include <QObject>
 
-namespace sequencergui
-{
-class VariableItem;
-}
-
 namespace sup::gui
 {
 class AnyValueItem;
 }
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
+class VariableItem;
 class MonitorModel;
 
 //! The MonitorWidgetActions class implements actions for MonitorWidget that can be triggered from
@@ -54,11 +50,11 @@ public:
   void OnEditAnyvalueRequest();
 
 private:
-  sequencergui::VariableItem* GetSelectedVariable();
+  VariableItem* GetSelectedVariable();
   sup::gui::AnyValueItem* GetSelectedAnyValueItem();
   sup::gui::AnyValueItem* GetAnyValueItemToEdit();
 
-  void SetupVariable(sequencergui::VariableItem* item);
+  void SetupVariable(VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
 

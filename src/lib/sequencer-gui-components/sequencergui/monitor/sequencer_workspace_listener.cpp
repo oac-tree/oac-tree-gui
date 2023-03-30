@@ -27,7 +27,7 @@
 
 #include <sup/sequencer/workspace.h>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
@@ -44,12 +44,12 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
   {
     if (m_workspace)
     {
-      throw sequencergui::RuntimeException("Already existing workspace");
+      throw RuntimeException("Already existing workspace");
     }
 
     if (!workspace)
     {
-      throw sequencergui::RuntimeException("Not initialised workspace");
+      throw RuntimeException("Not initialised workspace");
     }
 
     m_workspace = workspace;
@@ -68,7 +68,7 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
   {
     if (!m_workspace)
     {
-      throw sequencergui::RuntimeException("Nothing to listen");
+      throw RuntimeException("Nothing to listen");
     }
 
     m_guard = callback_guard_t{};
@@ -110,4 +110,4 @@ WorkspaceEvent SequencerWorkspaceListener::PopEvent() const
   return result;
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

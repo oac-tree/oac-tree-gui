@@ -19,7 +19,7 @@
 
 #include "workspace_event.h"
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 bool WorkspaceEvent::operator==(const WorkspaceEvent& other) const

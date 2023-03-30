@@ -30,13 +30,13 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
 #include <sequencergui/widgets/widget_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/signals/model_listener.h>
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QDebug>
@@ -44,7 +44,7 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
@@ -117,7 +117,7 @@ void MonitorWidget::OnStartMonitoringRequest()
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
   };
-  sequencergui::InvokeAndCatch(on_start, "Can't setup workspace");
+  InvokeAndCatch(on_start, "Can't setup workspace");
 }
 
 void MonitorWidget::OnStopMonitoringRequest()
@@ -158,4 +158,4 @@ MonitorWidgetContext MonitorWidget::CreateContext()
   return {get_selected_callback, send_message_callback, get_anyvalue_callback};
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

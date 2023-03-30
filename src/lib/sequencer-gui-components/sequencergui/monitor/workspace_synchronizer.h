@@ -30,12 +30,8 @@ class Workspace;
 
 namespace sequencergui
 {
+
 class WorkspaceItem;
-}  // namespace sequencergui
-
-namespace suppvmonitor
-{
-
 class SequencerWorkspaceListener;
 class WorkspaceItemController;
 class WorkspaceEvent;
@@ -55,15 +51,15 @@ class WorkspaceSynchronizer : public QObject
   Q_OBJECT
 
 public:
-  WorkspaceSynchronizer(sequencergui::WorkspaceItem* workspace_item,
-                        sup::sequencer::Workspace* domain_workspace, QObject* parent = nullptr);
+  WorkspaceSynchronizer(WorkspaceItem* workspace_item, sup::sequencer::Workspace* domain_workspace,
+                        QObject* parent = nullptr);
   ~WorkspaceSynchronizer() override;
 
   void Start();
 
   sup::sequencer::Workspace* GetWorkspace() const;
 
-  sequencergui::WorkspaceItem* GetWorkspaceItem() const;
+  WorkspaceItem* GetWorkspaceItem() const;
 
 private:
   void UpdateValuesFromDomain();
@@ -74,9 +70,9 @@ private:
   std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
 
   sup::sequencer::Workspace* m_workspace{nullptr};
-  sequencergui::WorkspaceItem* m_workspace_item{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_

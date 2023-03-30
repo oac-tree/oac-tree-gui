@@ -25,7 +25,7 @@
 
 class QCloseEvent;
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 class MonitorWidget;
@@ -57,6 +57,6 @@ private:
   MainWindowActions* m_actions{nullptr};
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SUP_PVMONITOR_SUP_PVMONITOR_MAIN_WINDOW_H_

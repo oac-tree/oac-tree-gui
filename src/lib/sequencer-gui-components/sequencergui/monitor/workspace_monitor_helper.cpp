@@ -23,13 +23,13 @@
 
 #include <sup/sequencer/workspace.h>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
-void PopulateDomainWorkspace(const sequencergui::WorkspaceItem &item, workspace_t &workspace)
+void PopulateDomainWorkspace(const WorkspaceItem &item, workspace_t &workspace)
 {
-  sequencergui::DomainWorkspaceBuilder builder;
+  DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&item, &workspace);
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

@@ -19,14 +19,15 @@
 
 #include "sequencergui/monitor/sequencer_workspace_listener.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/monitor/workspace_event.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/unit_test_helper.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -37,7 +38,7 @@ const std::string kTestPrefix("SUP-GUI-CORE-PVTESTS:");
 const std::string kStructChannelName(kTestPrefix + "STRUCT");
 }  // namespace
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 
 //! Tests for WorkspaceController class.
 //! Sequencer workspace is populated with PVAccessServer and PVAccessChannel variables.
@@ -47,7 +48,7 @@ class SequencerWorkspaceListenerPVAccessTests : public ::testing::Test
 public:
   static bool IsPVAccessAvailable()
   {
-    return sequencergui::IsPVAccessServerAvailable() && sequencergui::IsPVAccessClientAvailable();
+    return IsPVAccessServerAvailable() && IsPVAccessClientAvailable();
   }
 
   //! Disables all tests in the fixture if PVAccess is not available
@@ -63,8 +64,7 @@ public:
   std::unique_ptr<sup::sequencer::Variable> CreateServerVariable(const std::string& channel_name,
                                                                  const sup::dto::AnyValue& anyvalue)
   {
-    auto result =
-        sequencergui::CreateDomainVariable(sequencergui::domainconstants::kPVServerVariableType);
+    auto result = CreateDomainVariable(domainconstants::kPVServerVariableType);
     result->AddAttribute("channel", channel_name);
     result->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(anyvalue));
     return result;

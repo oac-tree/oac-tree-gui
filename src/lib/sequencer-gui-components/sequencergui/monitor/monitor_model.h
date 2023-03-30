@@ -28,7 +28,7 @@ namespace sequencergui
 class WorkspaceItem;
 }
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 class MonitorModel : public mvvm::ApplicationModel

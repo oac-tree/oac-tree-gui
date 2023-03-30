@@ -38,7 +38,7 @@
 
 #include <QTest>
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 using ::testing::_;
 
 //! Tests for WorkspaceSyncronizer class.
@@ -46,13 +46,13 @@ using ::testing::_;
 class WorkspaceSynchronizerTests : public ::testing::Test
 {
 public:
-  WorkspaceSynchronizerTests() { m_model.InsertItem<sequencergui::WorkspaceItem>(); }
+  WorkspaceSynchronizerTests() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Helper function to create LocalVariableItem with given name and initial AnyValue.
-  static std::unique_ptr<sequencergui::LocalVariableItem> CreateLocalVariable(
+  static std::unique_ptr<LocalVariableItem> CreateLocalVariable(
       const std::string& name, const sup::dto::AnyValue& initial_value)
   {
-    auto result = std::make_unique<sequencergui::LocalVariableItem>();
+    auto result = std::make_unique<LocalVariableItem>();
     testutils::SetupVariable(name, initial_value, *result.get());
     return result;
   }
@@ -82,7 +82,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
     sup::sequencer::Workspace workspace;
 
     mvvm::ApplicationModel model;
-    auto workspace_item = model.InsertItem<sequencergui::WorkspaceItem>();
+    auto workspace_item = model.InsertItem<WorkspaceItem>();
     WorkspaceSynchronizer syncronizer(workspace_item, &workspace);
     EXPECT_THROW(syncronizer.Start(), sup::gui::LogicErrorException);
   }
@@ -90,7 +90,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
   {  // variables do not match
     const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
     auto variable_item =
-        m_model.InsertItem<sequencergui::LocalVariableItem>(m_model.GetWorkspaceItem());
+        m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
     variable_item->SetName("var0");
 
     auto synchronizer = CreateSynchronizer();
@@ -134,7 +134,7 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 = m_model.GetWorkspaceItem()->InsertItem<sequencergui::LocalVariableItem>(
+  auto variable_item0 = m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(
       mvvm::TagIndex::Append());
   testutils::SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
@@ -170,11 +170,11 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::LocalVariableItem>(
+  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(
       mvvm::TagIndex::Append());
   testutils::SetupVariable(var_name, value0, *variable_item);
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
-  sequencergui::SetAnyValue(value0, *variable_item);
+  SetAnyValue(value0, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   testutils::MockModelListener model_listener(&m_model);
@@ -192,7 +192,7 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
   EXPECT_CALL(model_listener, OnEvent(_)).Times(4);
 
   // no need to wait, domain is notified via direct connections
-  sequencergui::SetAnyValue(new_value, *variable_item);
+  SetAnyValue(new_value, *variable_item);
 
   auto domain_variable0 = synchronizer->GetWorkspace()->GetVariable(var_name);
   sup::dto::AnyValue domain_value;
@@ -209,10 +209,10 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::LocalVariableItem>(
+  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(
       mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
-  sequencergui::SetAnyValue(value, *variable_item);
+  SetAnyValue(value, *variable_item);
 
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();

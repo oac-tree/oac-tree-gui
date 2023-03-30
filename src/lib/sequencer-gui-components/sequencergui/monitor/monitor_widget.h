@@ -39,16 +39,11 @@ class ModelListener;
 class SessionModelInterface;
 struct ItemInsertedEvent;
 class ViewModel;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {
 class VariableItem;
-}
-
-namespace suppvmonitor
-{
-
 class MonitorModel;
 class WorkspaceSynchronizer;
 class MonitorWidgetToolBar;
@@ -86,6 +81,6 @@ private:
   std::unique_ptr<listener_t> m_listener;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_

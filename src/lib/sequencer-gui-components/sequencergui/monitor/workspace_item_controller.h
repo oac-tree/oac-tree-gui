@@ -36,13 +36,9 @@ class ModelListener;
 
 namespace sequencergui
 {
+
 class VariableItem;
 class WorkspaceItem;
-}  // namespace sequencergui
-
-namespace suppvmonitor
-{
-
 class WorkspaceEvent;
 
 //! The WorkspaceItemController class listens for changes on the GUI side (WorkspaceItem) and
@@ -54,14 +50,14 @@ class WorkspaceItemController
 public:
   using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
 
-  explicit WorkspaceItemController(sequencergui::WorkspaceItem* item);
+  explicit WorkspaceItemController(WorkspaceItem* item);
   ~WorkspaceItemController();
 
   void ProcessEventFromDomain(const WorkspaceEvent& event);
 
-  sequencergui::VariableItem* GeVariableItemForName(const std::string& name);
+  VariableItem* GeVariableItemForName(const std::string& name);
 
-  sequencergui::WorkspaceItem* GetWorkspaceItem();
+  WorkspaceItem* GetWorkspaceItem();
 
   void SetCallback(const std::function<void(const WorkspaceEvent& event)>& callback);
 
@@ -69,9 +65,9 @@ private:
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
   void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event);
 
-  void ProcessEventToDomain(sequencergui::VariableItem* variable_item);
+  void ProcessEventToDomain(VariableItem* variable_item);
 
-  sequencergui::WorkspaceItem* m_workspace_item{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;
   std::unique_ptr<listener_t> m_listener;
   std::map<std::string, bool> m_block_update_to_domain;

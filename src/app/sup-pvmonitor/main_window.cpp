@@ -45,7 +45,7 @@ QString GetWindowPosSettingName()
 
 }  // namespace
 
-namespace suppvmonitor
+namespace sequencergui
 {
 MainWindow::MainWindow() : m_model(std::make_unique<MonitorModel>())
 {

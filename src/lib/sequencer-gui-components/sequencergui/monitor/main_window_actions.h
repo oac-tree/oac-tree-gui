@@ -37,7 +37,7 @@ namespace sequencergui
 class ProjectHandler;
 }
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 //! Vertical panel located on the left of XMLTreeView

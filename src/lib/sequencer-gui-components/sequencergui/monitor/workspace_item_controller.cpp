@@ -24,19 +24,18 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/model_listener.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-
 #include <stdexcept>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
-WorkspaceItemController::WorkspaceItemController(sequencergui::WorkspaceItem* item)
+WorkspaceItemController::WorkspaceItemController(WorkspaceItem* item)
     : m_workspace_item(item), m_listener(std::make_unique<listener_t>(item->GetModel()))
 {
   m_listener->Connect<mvvm::ItemInsertedEvent>(this, &WorkspaceItemController::OnItemInsertedEvent);
@@ -62,7 +61,7 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
     item->SetIsAvailable(event.connected);
     if (event.connected)
     {
-      sequencergui::UpdateAnyValue(event.value, *item);
+      UpdateAnyValue(event.value, *item);
     }
     else
     {
@@ -73,7 +72,7 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
   m_block_update_to_domain[event.variable_name] = false;
 }
 
-sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)
+VariableItem* WorkspaceItemController::GeVariableItemForName(const std::string& name)
 {
   if (!GetWorkspaceItem())
   {
@@ -92,7 +91,7 @@ sequencergui::VariableItem* WorkspaceItemController::GeVariableItemForName(const
 
 //! Returns WorkspaceItem from the model.
 
-sequencergui::WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
+WorkspaceItem* WorkspaceItemController::GetWorkspaceItem()
 {
   return m_workspace_item;
 }
@@ -128,7 +127,7 @@ void WorkspaceItemController::OnItemInsertedEvent(const mvvm::ItemInsertedEvent&
   }
 
   // If parent is VariableItem, then insert event denotes that AnyValueItem has been regenerated.
-  if (auto variable_item = dynamic_cast<sequencergui::VariableItem*>(event.m_item))
+  if (auto variable_item = dynamic_cast<VariableItem*>(event.m_item))
   {
     ProcessEventToDomain(variable_item);
   }
@@ -137,7 +136,7 @@ void WorkspaceItemController::OnItemInsertedEvent(const mvvm::ItemInsertedEvent&
 //! Processes an event in WorkspaceItem, and, if necessary, send it to the domain via callback
 //! provided.
 
-void WorkspaceItemController::ProcessEventToDomain(sequencergui::VariableItem* variable_item)
+void WorkspaceItemController::ProcessEventToDomain(VariableItem* variable_item)
 {
   if (!m_report_callback)
   {
@@ -159,4 +158,4 @@ void WorkspaceItemController::ProcessEventToDomain(sequencergui::VariableItem* v
   }
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

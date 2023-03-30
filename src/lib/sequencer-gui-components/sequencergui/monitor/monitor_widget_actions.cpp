@@ -24,11 +24,11 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-namespace suppvmonitor
+#include <sup/dto/anyvalue.h>
+
+namespace sequencergui
 {
 
 MonitorWidgetActions::MonitorWidgetActions(MonitorWidgetContext context, MonitorModel *model,
@@ -47,7 +47,7 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
     auto inserted =
         m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
                             m_model->GetWorkspaceItem(), tagindex);
-    SetupVariable(dynamic_cast<sequencergui::VariableItem *>(inserted));
+    SetupVariable(dynamic_cast<VariableItem *>(inserted));
   }
   catch (const std::exception &ex)
   {
@@ -63,7 +63,7 @@ void MonitorWidgetActions::OnRemoveVariableRequest()
   }
 }
 
-void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
+void MonitorWidgetActions::OnEditAnyvalueRequest()
 {
   auto selected_anyvalue = GetAnyValueItemToEdit();
   if (!selected_anyvalue)
@@ -82,9 +82,9 @@ void suppvmonitor::MonitorWidgetActions::OnEditAnyvalueRequest()
   }
 }
 
-sequencergui::VariableItem *MonitorWidgetActions::GetSelectedVariable()
+VariableItem *MonitorWidgetActions::GetSelectedVariable()
 {
-  return dynamic_cast<sequencergui::VariableItem *>(m_context.get_selected_item_callback());
+  return dynamic_cast<VariableItem *>(m_context.get_selected_item_callback());
 }
 
 //! Returns selected AnyValueItem.
@@ -106,7 +106,7 @@ sup::gui::AnyValueItem *MonitorWidgetActions::GetAnyValueItemToEdit()
 //! Set reasonable initial values for just created variable.
 //! Might be changed in the future.
 
-void MonitorWidgetActions::SetupVariable(sequencergui::VariableItem *item)
+void MonitorWidgetActions::SetupVariable(VariableItem *item)
 {
   if (!item)
   {
@@ -116,7 +116,7 @@ void MonitorWidgetActions::SetupVariable(sequencergui::VariableItem *item)
   item->SetName(ProposeVariableName());
   // By default we always set scalar anyvalue to any VariableItem added to the WorkspaceItem.
   // If user wants something else, he has to start AnyValueEditor.
-  sequencergui::SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
 }
 
 void MonitorWidgetActions::SendMessage(const std::string &text, const std::string &informative,
@@ -131,4 +131,4 @@ std::string MonitorWidgetActions::ProposeVariableName() const
   return "var" + std::to_string(m_model->GetWorkspaceItem()->GetVariableCount() - 1);
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

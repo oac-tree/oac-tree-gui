@@ -30,7 +30,7 @@
 #include <gtest/gtest.h>
 #include <testutils/gui_domain_utils.h>
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 
 //! Tests for methods from workspace_monitor_helper.h.
 
@@ -40,7 +40,7 @@ class WorkspaceMonitorHelperTests : public ::testing::Test
 
 TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceEmptyWorkspaces)
 {
-  const sequencergui::WorkspaceItem workspace_item;
+  const WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
 
   EXPECT_NO_THROW(PopulateDomainWorkspace(workspace_item, workspace));
@@ -49,25 +49,25 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceEmptyWorkspaces)
 
 TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonEmptyWorkspace)
 {
-  const sequencergui::WorkspaceItem workspace_item;
+  const WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
-  workspace.AddVariable("abc", sequencergui::CreateDomainVariable(
-                                   sequencergui::domainconstants::kLocalVariableType)
+  workspace.AddVariable("abc", CreateDomainVariable(
+                                   domainconstants::kLocalVariableType)
                                    .release());
 
-  EXPECT_THROW(PopulateDomainWorkspace(workspace_item, workspace), sequencergui::LogicErrorException);
+  EXPECT_THROW(PopulateDomainWorkspace(workspace_item, workspace), LogicErrorException);
 }
 
 TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
 {
-  sequencergui::WorkspaceItem workspace_item;
+  WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
 
   auto var_item0 =
-      workspace_item.InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
   auto var_item1 =
-      workspace_item.InsertItem<sequencergui::FileVariableItem>(mvvm::TagIndex::Append());
+      workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
   var_item1->SetFileName("filename");
 

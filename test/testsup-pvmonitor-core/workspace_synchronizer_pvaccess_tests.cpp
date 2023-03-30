@@ -19,26 +19,27 @@
 
 #include "sequencergui/monitor/workspace_synchronizer.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/monitor_model.h>
 #include <sequencergui/monitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_utils.h>
+
+#include <sup/dto/anyvalue.h>
+#include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
 #include <testutils/gui_domain_utils.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/mock_model_listener.h>
 #include <testutils/test_utils.h>
 
-#include <sup/dto/anyvalue.h>
-#include <sup/gui/core/exceptions.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/anyvalue_utils.h>
-#include <sup/sequencer/workspace.h>
-
-using namespace suppvmonitor;
+using namespace sequencergui;
 using ::testing::_;
 
 #include <QTest>
@@ -53,7 +54,7 @@ const std::string kTestPrefix("WorkspaceSynchronizerPVAccessTests:");
 class WorkspaceSynchronizerPVAccessTests : public ::testing::Test
 {
 public:
-  WorkspaceSynchronizerPVAccessTests() { m_model.InsertItem<sequencergui::WorkspaceItem>(); }
+  WorkspaceSynchronizerPVAccessTests() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Creates syncronizer for testing.
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
@@ -66,7 +67,7 @@ public:
 
   static bool IsPVAccessAvailable()
   {
-    return sequencergui::IsPVAccessServerAvailable() && sequencergui::IsPVAccessClientAvailable();
+    return IsPVAccessServerAvailable() && IsPVAccessClientAvailable();
   }
 
   //! Disables all tests in the fixture if PVAccess is not available
@@ -93,11 +94,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item =
+      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
-  sequencergui::SetAnyValue(initial_value, *variable_item);
+  SetAnyValue(initial_value, *variable_item);
 
   EXPECT_FALSE(variable_item->IsAvailable());
 
@@ -145,11 +146,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item =
+      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
-  sequencergui::SetAnyValue(initial_value, *variable_item);
+  SetAnyValue(initial_value, *variable_item);
 
   EXPECT_FALSE(variable_item->IsAvailable());
 
@@ -189,11 +190,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item =
+      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
-  sequencergui::SetAnyValue(initial_value, *variable_item);
+  SetAnyValue(initial_value, *variable_item);
 
   EXPECT_FALSE(variable_item->IsAvailable());
 
@@ -241,18 +242,18 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
-  auto server_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVServerVariableItem>(
-      mvvm::TagIndex::Append());
+  auto server_item =
+      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
   server_item->SetChannel(kChannelName);
   server_item->SetName(server_var_name);
-  sequencergui::SetAnyValue(initial_value, *server_item);
+  SetAnyValue(initial_value, *server_item);
 
   // creating PVServerClientItem in the model
-  auto client_item = m_model.GetWorkspaceItem()->InsertItem<sequencergui::PVClientVariableItem>(
-      mvvm::TagIndex::Append());
+  auto client_item =
+      m_model.GetWorkspaceItem()->InsertItem<PVClientVariableItem>(mvvm::TagIndex::Append());
   client_item->SetChannel(kChannelName);
   client_item->SetName(client_var_name);
-  sequencergui::SetAnyValue(initial_value, *client_item);
+  SetAnyValue(initial_value, *client_item);
 
   EXPECT_FALSE(server_item->IsAvailable());
   EXPECT_FALSE(client_item->IsAvailable());

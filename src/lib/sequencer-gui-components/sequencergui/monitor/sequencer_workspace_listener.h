@@ -28,7 +28,7 @@ namespace sup::sequencer
 class Workspace;
 }
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 class WorkspaceEvent;

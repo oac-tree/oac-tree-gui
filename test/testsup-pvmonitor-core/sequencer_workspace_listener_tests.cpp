@@ -31,7 +31,7 @@
 #include <QSignalSpy>
 #include <iostream>
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 
 //! Tests for SequencerWorkspaceListener class.
 
@@ -42,7 +42,7 @@ public:
                                                   const sup::dto::AnyValue& initial_value)
   {
     auto local_variable =
-        sequencergui::CreateDomainVariable(sequencergui::domainconstants::kLocalVariableType);
+        CreateDomainVariable(domainconstants::kLocalVariableType);
     local_variable->SetName(name);
     local_variable->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(initial_value));
     local_variable->Setup();
@@ -72,18 +72,18 @@ TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
 {
   SequencerWorkspaceListener listener;
 
-  EXPECT_THROW(listener.StartListening(nullptr), sequencergui::RuntimeException);
-  EXPECT_THROW(listener.StopListening(), sequencergui::RuntimeException);
+  EXPECT_THROW(listener.StartListening(nullptr), RuntimeException);
+  EXPECT_THROW(listener.StopListening(), RuntimeException);
 
   sup::sequencer::Workspace workspace;
 
   // it is possible to start listening to the given workspace only once
   EXPECT_NO_THROW(listener.StartListening(&workspace));
-  EXPECT_THROW(listener.StartListening(nullptr), sequencergui::RuntimeException);
+  EXPECT_THROW(listener.StartListening(nullptr), RuntimeException);
 
   // it is possible to stop listening given workspace only once
   EXPECT_NO_THROW(listener.StopListening());
-  EXPECT_THROW(listener.StopListening(), sequencergui::RuntimeException);
+  EXPECT_THROW(listener.StopListening(), RuntimeException);
 }
 
 //! Single local variable is created in the workspace.

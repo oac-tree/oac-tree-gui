@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 
 //! Tests for WorkspaceSyncronizer class.
 

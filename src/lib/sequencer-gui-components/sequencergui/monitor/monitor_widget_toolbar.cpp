@@ -21,15 +21,14 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/utils/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
-
-#include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QToolButton>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
@@ -47,7 +46,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   auto psize = font.pointSize() * 1.05;
   font.setPointSize(psize);
 
-  using sequencergui::styleutils::GetIcon;
+  using styleutils::GetIcon;
 
   m_add_button->setText("Add");
   m_add_button->setIcon(GetIcon("plus-circle-outline.svg"));
@@ -103,7 +102,7 @@ std::unique_ptr<QMenu> MonitorWidgetToolBar::CreateAddVariableMenu()
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainVariableNames());
+  auto names = mvvm::utils::GetStringList(GetDomainVariableNames());
   for (const auto &name : names)
   {
     auto action = result->addAction(name);
@@ -121,4 +120,4 @@ void MonitorWidgetToolBar::InsertStrech()
   addWidget(empty);
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

@@ -42,7 +42,7 @@
 #include <iostream>
 #include <thread>
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 
 //! Tests for WorkspaceController class.
 //! Sequencer workspace is populated with ChannelAccessVariable.
@@ -50,7 +50,7 @@ using namespace suppvmonitor;
 class SequencerWorkspaceListenerSoftIocTests : public ::testing::Test
 {
 public:
-  static bool IsChannelAccessAvailable() { return sequencergui::IsChannelAccessClientAvailable(); }
+  static bool IsChannelAccessAvailable() { return IsChannelAccessClientAvailable(); }
 
   //! Disables all tests in the fixture if ChannelAccess is not available
   void SetUp() override
@@ -89,7 +89,7 @@ TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVar
 {
   // creating ChannelAccessVariable
   auto variable =
-      sequencergui::CreateDomainVariable(sequencergui::domainconstants::kChannelAccessVariableType);
+      CreateDomainVariable(domainconstants::kChannelAccessVariableType);
   variable->AddAttribute("channel", "CA-TESTS:INT");
   variable->AddAttribute("type", R"RAW({"type":"uint32"})RAW");
 

@@ -36,7 +36,7 @@
 
 #include <stdexcept>
 
-using namespace suppvmonitor;
+using namespace sequencergui;
 using ::testing::_;
 
 //! Tests for WorkspaceItemController class.
@@ -46,11 +46,11 @@ class WorkspaceItemControllerTests : public ::testing::Test
 public:
   WorkspaceItemControllerTests()
   {
-    m_workspace_item = m_model.InsertItem<sequencergui::WorkspaceItem>();
+    m_workspace_item = m_model.InsertItem<WorkspaceItem>();
   }
 
   MonitorModel m_model;
-  sequencergui::WorkspaceItem* m_workspace_item{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
 };
 
 TEST_F(WorkspaceItemControllerTests, InitialState)
@@ -62,7 +62,7 @@ TEST_F(WorkspaceItemControllerTests, InitialState)
 TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 {
   auto variable_item =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName("abc");
 
   WorkspaceItemController controller(m_workspace_item);
@@ -79,7 +79,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainWhenConnected)
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item0 =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
   testutils::SetupVariable("abc", value, *variable_item0);
   // initially VariableItem doesn't have AnyValueItem
@@ -121,7 +121,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item0 =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
   testutils::SetupVariable("abc", value, *variable_item0);
   // initially VariableItem doesn't have AnyValueItem
@@ -161,9 +161,9 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   auto variable_item0 =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("abc", value, *variable_item0);
-  sequencergui::SetAnyValue(value, *variable_item0);
+  SetAnyValue(value, *variable_item0);
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -175,7 +175,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
   EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
 
   // modifying value from the model
-  sequencergui::SetAnyValue(expected_event.value, *variable_item0);
+  SetAnyValue(expected_event.value, *variable_item0);
 }
 
 //! Setting up the workspace with two variables. Replacing variables one after another and checking
@@ -190,14 +190,14 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   auto variable_item0 =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("var0", value0, *variable_item0);
-  sequencergui::SetAnyValue(value0, *variable_item0);
+  SetAnyValue(value0, *variable_item0);
 
   auto variable_item1 =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("var1", value1, *variable_item1);
-  sequencergui::SetAnyValue(value1, *variable_item1);
+  SetAnyValue(value1, *variable_item1);
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -213,8 +213,8 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   }
 
   // modifying value from the model
-  sequencergui::SetAnyValue(expected_event0.value, *variable_item0);
-  sequencergui::SetAnyValue(expected_event1.value, *variable_item1);
+  SetAnyValue(expected_event0.value, *variable_item0);
+  SetAnyValue(expected_event1.value, *variable_item1);
 }
 
 //! Setting up the WorkspaceItem with single ChannelAccessVariableItem.
@@ -226,7 +226,7 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item = m_workspace_item->InsertItem<sequencergui::ChannelAccessVariableItem>(
+  auto variable_item = m_workspace_item->InsertItem<ChannelAccessVariableItem>(
       mvvm::TagIndex::Append());
   variable_item->SetName("abc");
 
@@ -263,9 +263,9 @@ TEST_F(WorkspaceItemControllerTests, SetScalarData)
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
-  sequencergui::SetAnyValue(value, *variable_item);
+  SetAnyValue(value, *variable_item);
 
   auto scalar_anyvalue_item =
       dynamic_cast<sup::gui::AnyValueScalarItem*>(variable_item->GetAnyValueItem());
@@ -295,7 +295,7 @@ TEST_F(WorkspaceItemControllerTests, SetScalarDataInStruct)
   const std::string var_name("abc");
 
   auto variable_item =
-      m_workspace_item->InsertItem<sequencergui::LocalVariableItem>(mvvm::TagIndex::Append());
+      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
 
   auto struct_item = variable_item->InsertItem<sup::gui::AnyValueStructItem>({});

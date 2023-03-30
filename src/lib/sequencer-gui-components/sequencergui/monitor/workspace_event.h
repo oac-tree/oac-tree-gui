@@ -22,7 +22,7 @@
 
 #include <sup/dto/anyvalue.h>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 struct WorkspaceEvent

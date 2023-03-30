@@ -25,27 +25,27 @@
 
 #include <mvvm/model/model_utils.h>
 
-namespace suppvmonitor
+namespace sequencergui
 {
 
 MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
 {
-  RegisterItem<sequencergui::ChannelAccessVariableItem>();
-  RegisterItem<sequencergui::LocalVariableItem>();
-  RegisterItem<sequencergui::PVClientVariableItem>();
-  RegisterItem<sequencergui::PVServerVariableItem>();
-  RegisterItem<sequencergui::UnknownVariableItem>();
-  RegisterItem<sequencergui::FileVariableItem>();
-  RegisterItem<sequencergui::WorkspaceItem>();
+  RegisterItem<ChannelAccessVariableItem>();
+  RegisterItem<LocalVariableItem>();
+  RegisterItem<PVClientVariableItem>();
+  RegisterItem<PVServerVariableItem>();
+  RegisterItem<UnknownVariableItem>();
+  RegisterItem<FileVariableItem>();
+  RegisterItem<WorkspaceItem>();
   RegisterItem<sup::gui::AnyValueEmptyItem>();
   RegisterItem<sup::gui::AnyValueScalarItem>();
   RegisterItem<sup::gui::AnyValueArrayItem>();
   RegisterItem<sup::gui::AnyValueStructItem>();
 }
 
-sequencergui::WorkspaceItem *MonitorModel::GetWorkspaceItem() const
+WorkspaceItem *MonitorModel::GetWorkspaceItem() const
 {
-  return mvvm::utils::GetTopItem<sequencergui::WorkspaceItem>(this);
+  return mvvm::utils::GetTopItem<WorkspaceItem>(this);
 }
 
 }  // namespace suppvmonitor
