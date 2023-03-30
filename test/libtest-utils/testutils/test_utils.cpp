@@ -25,6 +25,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <thread>
 
 #include <QTest>
 
@@ -64,6 +65,22 @@ void CreateTextFile(const std::string &file_name, const std::string &content)
 {
   std::ofstream file_out(file_name);
   file_out.write(content.c_str(), content.size());
+}
+
+bool BusyWaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout)
+{
+  const std::chrono::milliseconds timeout_precision_msec(10);
+  const std::chrono::milliseconds wait_time(timeout);
+  auto time_end = std::chrono::system_clock::now() + timeout;
+  while (std::chrono::system_clock::now() < time_end)
+  {
+    if (!runner())
+    {
+      return true;
+    }
+    std::this_thread::sleep_for(timeout_precision_msec);
+  }
+  return false;
 }
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout)

@@ -22,12 +22,12 @@
 
 //! Collection of utility functions for various unit tests.
 
-#include <sequencergui/jobsystem/time_utils.h>
-
 #include <algorithm>
 #include <memory>
 #include <thread>
 #include <vector>
+#include <functional>
+#include <chrono>
 
 //! Various common utils for unit tests.
 
@@ -100,10 +100,17 @@ bool IsCloneImplemented()
 //! hard-coded value in Wait instruction
 const std::chrono::milliseconds kDefaultWaitPrecision(50);
 
+const auto duration = [](auto time_interval)
+{ return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
+
+//! Will wait a given amount of msec for runner completion. Returns `true` is runner has finished
+//! before the timeout, `false` otherwise. Internally has a precision of 10 msec.
+bool BusyWaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout);
+
 template <typename T>
 bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 {
-  return sequencergui::BusyWaitFor([&runner]() { return runner.IsBusy(); }, timeout_msec);
+  return BusyWaitFor([&runner]() { return runner.IsBusy(); }, timeout_msec);
 }
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout);

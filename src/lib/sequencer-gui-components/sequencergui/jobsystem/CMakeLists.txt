@@ -25,8 +25,6 @@ target_sources(${library_name} PRIVATE
   runner_interface.h
   sequencer_observer.cpp
   sequencer_observer.h
-  time_utils.cpp
-  time_utils.h
   user_context.h
   user_controller.cpp
   user_controller.h
