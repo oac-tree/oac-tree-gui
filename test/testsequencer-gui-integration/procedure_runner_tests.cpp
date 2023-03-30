@@ -19,17 +19,18 @@
 
 #include "sequencergui/jobsystem/procedure_runner.h"
 
-#include <gtest/gtest.h>
+#include <sequencergui/components/custom_meta_types.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/widgets/custom_meta_types.h>
-#include <testutils/standard_procedures.h>
-#include <testutils/test_utils.h>
 
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
+
+#include <gtest/gtest.h>
+#include <testutils/standard_procedures.h>
+#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>

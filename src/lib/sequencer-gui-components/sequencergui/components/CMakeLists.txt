@@ -1,6 +1,8 @@
 # Collection of sequencer-related components that are used in more than one window.
 
 target_sources(${library_name} PRIVATE
+  custom_meta_types.cpp
+  custom_meta_types.h
   message_handler_factory.cpp
   message_handler_factory.h
   procedure_list_widget.cpp

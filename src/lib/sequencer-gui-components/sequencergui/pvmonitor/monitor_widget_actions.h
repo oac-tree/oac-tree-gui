@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
-#define SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
+#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
+#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
 
 #include <sequencergui/pvmonitor/monitor_widget_context.h>
 
@@ -66,4 +66,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
+#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_

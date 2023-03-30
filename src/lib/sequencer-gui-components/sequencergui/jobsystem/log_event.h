@@ -53,4 +53,4 @@ std::string GetLogEventTimeFormat();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_LOG_EVENT_H_

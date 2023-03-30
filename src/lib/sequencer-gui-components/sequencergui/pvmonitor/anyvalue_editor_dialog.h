@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_PVMONITOR_CORE_ANYVALUEEEDITOR_DIALOG_H_
-#define SUP_PVMONITOR_CORE_ANYVALUEEEDITOR_DIALOG_H_
+#ifndef SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_
+#define SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_
 
 #include <QDialog>
 #include <memory>
@@ -59,4 +59,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // SUP_PVMONITOR_CORE_ANYVALUEEEDITOR_DIALOG_H_
+#endif  // SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_

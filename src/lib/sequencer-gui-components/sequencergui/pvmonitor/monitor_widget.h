@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
+#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_H_
+#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -83,4 +83,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_H_
+#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_H_

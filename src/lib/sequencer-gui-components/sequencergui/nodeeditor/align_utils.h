@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
-#define SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
+#ifndef SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_
+#define SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_
 
 //! Collection of utility function for node positioning of the general tree.
 //! The tree is represented by AlignNode classes.
@@ -56,4 +56,4 @@ void AlignNodes(AlignNode& node);
 
 }  // namespace sequencergui::algorithm
 
-#endif  // SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
+#endif  // SEQUENCERGUI_NODEEDITOR_ALIGN_UTILS_H_

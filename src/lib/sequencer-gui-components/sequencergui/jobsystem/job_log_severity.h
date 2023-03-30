@@ -46,4 +46,4 @@ std::string SeverityToString(Severity severity);
 
 }  // namespace sequencergui
 
-#endif
+#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_LOG_SEVERITY_H_

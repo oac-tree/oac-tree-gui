@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
+#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
+#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
 
 #include <QToolBar>
 
@@ -56,4 +56,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_MONITOR_WIDGET_TOOLBAR_H_
+#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_TOOLBAR_H_

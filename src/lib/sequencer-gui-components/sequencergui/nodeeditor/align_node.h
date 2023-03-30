@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_ALIGN_NODE_H_
-#define SEQUENCERGUI_UTILS_ALIGN_NODE_H_
+#ifndef SEQUENCERGUI_NODEEDITOR_ALIGN_NODE_H_
+#define SEQUENCERGUI_NODEEDITOR_ALIGN_NODE_H_
 
 #include <memory>
 #include <string>
@@ -98,4 +98,4 @@ inline T* AlignNode::Add()
 
 }  // namespace sequencergui::algorithm
 
-#endif  // SEQUENCERGUI_UTILS_ALIGN_NODE_H_
+#endif  // SEQUENCERGUI_NODEEDITOR_ALIGN_NODE_H_

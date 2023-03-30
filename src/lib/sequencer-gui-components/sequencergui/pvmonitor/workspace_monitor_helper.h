@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_MONITOR_HELPER_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_MONITOR_HELPER_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
@@ -37,4 +37,4 @@ void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace);
 
 }  // namespace sequencergui
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_MONITOR_HELPER_H_
+#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_

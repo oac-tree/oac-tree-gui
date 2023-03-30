@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_UTILS_CUSTOM_META_TYPES_H_
-#define SEQUENCERGUI_UTILS_CUSTOM_META_TYPES_H_
+#ifndef SEQUENCERGUI_WIDGETS_CUSTOM_META_TYPES_H_
+#define SEQUENCERGUI_WIDGETS_CUSTOM_META_TYPES_H_
 
 //! Registration of custom types in Qt meta type system to provide support in signal/slot and
 //! QVariant.
@@ -36,4 +36,4 @@ void RegisterCustomMetaTypes();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_UTILS_ALIGN_UTILS_H_
+#endif  // SEQUENCERGUI_WIDGETS_CUSTOM_META_TYPES_H_

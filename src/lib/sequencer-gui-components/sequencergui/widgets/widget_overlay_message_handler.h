@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
-#define SEQUENCERGUI_CORE_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
+#ifndef SEQUENCERGUI_WIDGETS_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
+#define SEQUENCERGUI_WIDGETS_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
 
 #include <sup/gui/components/message_handler_interface.h>
 
@@ -47,4 +47,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_CORE_WIDGET_OVERLAY_MESSAGE_HANDLER_H_
+#endif  // SEQUENCERGUI_WIDGETS_WIDGET_OVERLAY_MESSAGE_HANDLER_H_

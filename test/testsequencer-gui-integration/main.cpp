@@ -19,7 +19,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <sequencergui/widgets/custom_meta_types.h>
+#include <sequencergui/components/custom_meta_types.h>
 
 #include <QApplication>
 

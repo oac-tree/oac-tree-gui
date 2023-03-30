@@ -3,8 +3,6 @@
 target_sources(${library_name} PRIVATE
   custom_header_view.cpp
   custom_header_view.h
-  custom_meta_types.cpp
-  custom_meta_types.h
   dialog_message_handler.cpp
   dialog_message_handler.h
   dots_toolbar.cpp

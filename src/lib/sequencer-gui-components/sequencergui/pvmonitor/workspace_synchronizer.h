@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_
 
 #include <QObject>
 #include <memory>
@@ -75,4 +75,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_SYNCHRONIZER_H_
+#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_SYNCHRONIZER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_
 
 #include <mvvm/signals/event_types.h>
 
@@ -75,4 +75,4 @@ private:
 
 }  // namespace suppvmonitor
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_
+#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_

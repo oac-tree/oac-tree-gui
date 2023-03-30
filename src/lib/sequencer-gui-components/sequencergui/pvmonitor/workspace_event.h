@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_EVENT_H_
-#define LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_EVENT_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EVENT_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EVENT_H_
 
 #include <sup/dto/anyvalue.h>
 
@@ -37,4 +37,4 @@ struct WorkspaceEvent
 
 }  // namespace suppvmonitor
 
-#endif  // LIBSUP_PVMONITOR_CORE_SUPPVMONITOR_WORKSPACE_EVENT_H_
+#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EVENT_H_

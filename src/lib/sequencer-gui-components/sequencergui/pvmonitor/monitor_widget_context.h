@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_PVMONITOR_CORE_MONITOR_WIDGET_CONTEXT_H_
-#define SUP_PVMONITOR_CORE_MONITOR_WIDGET_CONTEXT_H_
+#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_CONTEXT_H_
+#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_CONTEXT_H_
 
 #include <sup/gui/components/message_event.h>
 
@@ -59,4 +59,4 @@ struct MonitorWidgetContext
 
 }  // namespace sequencergui
 
-#endif
+#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_CONTEXT_H_
