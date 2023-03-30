@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_PVMONITOR_SUP_PVMONITOR_MAIN_WINDOW_H_
-#define SUP_PVMONITOR_SUP_PVMONITOR_MAIN_WINDOW_H_
+#ifndef SUP_PVMONITOR_PVMONITOR_MAIN_WINDOW_H_
+#define SUP_PVMONITOR_PVMONITOR_MAIN_WINDOW_H_
 
 #include <QMainWindow>
 #include <memory>
@@ -59,4 +59,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SUP_PVMONITOR_SUP_PVMONITOR_MAIN_WINDOW_H_
+#endif  // SUP_PVMONITOR_PVMONITOR_MAIN_WINDOW_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MOCKSEQUENCEROBSERVER_H
-#define MOCKSEQUENCEROBSERVER_H
+#ifndef LIBTEST_UTILS_TESTUTILS_MOCK_SEQUENCER_OBSERVER_H_
+#define LIBTEST_UTILS_TESTUTILS_MOCK_SEQUENCER_OBSERVER_H_
 
 #include <gmock/gmock.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
@@ -55,4 +55,4 @@ public:
 
 }  // namespace testutils
 
-#endif  //  MOCKSEQUENCEROBSERVER_H
+#endif  // LIBTEST_UTILS_TESTUTILS_MOCK_SEQUENCER_OBSERVER_H_

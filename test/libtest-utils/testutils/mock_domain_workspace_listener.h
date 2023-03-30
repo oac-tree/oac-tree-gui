@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TESTS_LIBTESTMACHINERY_MOCK_DOMAIN_WORKSPACE_LISTENER_H_
-#define TESTS_LIBTESTMACHINERY_MOCK_DOMAIN_WORKSPACE_LISTENER_H_
+#ifndef LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_WORKSPACE_LISTENER_H_
+#define LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_WORKSPACE_LISTENER_H_
 
 #include <gmock/gmock.h>
 
@@ -56,4 +56,4 @@ public:
 
 }  // namespace testutils
 
-#endif  // TESTS_LIBTESTMACHINERY_MOCK_DOMAIN_WORKSPACE_LISTENER_H_
+#endif  // LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_WORKSPACE_LISTENER_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TEST_PROCEDURE_ITEMS_H
-#define TEST_PROCEDURE_ITEMS_H
+#ifndef LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_
+#define LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_
 
 //! Collection of pocedure items for testing purpose.
 
@@ -57,4 +57,4 @@ sequencergui::ProcedureItem* CreateUserChoiceProcedure(sequencergui::SequencerMo
 
 }  // namespace testutils
 
-#endif  // TEST_PROCEDURE_ITEMS_H
+#endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_

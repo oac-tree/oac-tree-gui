@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef MOCKMESSAGEHANDLER_H
-#define MOCKMESSAGEHANDLER_H
+#ifndef LIBTEST_UTILS_TESTUTILS_MOCK_MESSAGE_HANDLER_H_
+#define LIBTEST_UTILS_TESTUTILS_MOCK_MESSAGE_HANDLER_H_
 
 #include <sup/gui/components/message_handler_interface.h>
 
@@ -47,4 +47,4 @@ std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator
 
 }  // namespace testutils
 
-#endif  //  MOCKMESSAGEHANDLER_H
+#endif  // LIBTEST_UTILS_TESTUTILS_MOCK_MESSAGE_HANDLER_H_

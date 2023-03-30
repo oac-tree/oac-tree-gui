@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TEST_GUI_DOMAIN_UTILS_H
-#define TEST_GUI_DOMAIN_UTILS_H
+#ifndef LIBTEST_UTILS_TESTUTILS_GUI_DOMAIN_UTILS_H_
+#define LIBTEST_UTILS_TESTUTILS_GUI_DOMAIN_UTILS_H_
 
 //! Collection of utility functions to test gui/domain transformations.
 
@@ -43,4 +43,4 @@ void SetupVariable(const std::string& name, const sup::dto::AnyValue& initial_va
 
 }  // namespace testutils
 
-#endif  // TEST_GUI_DOMAIN_UTILS_H
+#endif  // LIBTEST_UTILS_TESTUTILS_GUI_DOMAIN_UTILS_H_

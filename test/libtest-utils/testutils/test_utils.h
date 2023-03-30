@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TEST_UTILS_H
-#define TEST_UTILS_H
+#ifndef LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_
+#define LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_
 
 //! Collection of utility functions for various unit tests.
 
@@ -122,4 +122,4 @@ bool WaitInEventLoop(double timeout_sec, std::function<bool()> predicate);
 
 }  // namespace testutils
 
-#endif  // TEST_UTILS_H
+#endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

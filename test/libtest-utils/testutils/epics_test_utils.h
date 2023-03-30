@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SUP_EPICS_SOFTIOCUTILS_H_
-#define SUP_EPICS_SOFTIOCUTILS_H_
+#ifndef LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_
+#define LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_
 
 #include <string>
 #include <vector>
@@ -31,4 +31,4 @@ std::string GetEpicsDBContentString();
 
 }  // namespace testutils
 
-#endif  // SUP_EPICS_SOFTIOCUTILS_H_
+#endif  // LIBTEST_UTILS_TESTUTILS_EPICS_TEST_UTILS_H_

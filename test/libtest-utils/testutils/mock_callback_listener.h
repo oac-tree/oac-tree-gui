@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TESTS_LIBTESTMACHINERY_MOCK_CALLBACK_LISTENER_H
-#define TESTS_LIBTESTMACHINERY_MOCK_CALLBACK_LISTENER_H
+#ifndef LIBTEST_UTILS_TESTUTILS_MOCK_CALLBACK_LISTENER_H_
+#define LIBTEST_UTILS_TESTUTILS_MOCK_CALLBACK_LISTENER_H_
 
 #include <gmock/gmock.h>
 
@@ -54,4 +54,4 @@ public:
 
 }
 
-#endif  // TESTS_LIBTESTMACHINERY_MOCK_CALLBACK_LISTENER_H
+#endif  // LIBTEST_UTILS_TESTUTILS_MOCK_CALLBACK_LISTENER_H_

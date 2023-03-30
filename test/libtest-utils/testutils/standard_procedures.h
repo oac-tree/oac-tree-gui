@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef TEST_DOMAIN_PROCEDURES_H
-#define TEST_DOMAIN_PROCEDURES_H
+#ifndef LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURES_H_
+#define LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURES_H_
 
 //! Collection of domain procedures for testing purpose.
 
@@ -74,4 +74,4 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure();
 
 }  // namespace testutils
 
-#endif  // TEST_DOMAIN_PROCEDURES_H
+#endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURES_H_
