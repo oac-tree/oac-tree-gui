@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/style_utils.h"
+#include "style_utils.h"
 
 #include <mvvm/widgets/style_utils.h>
 

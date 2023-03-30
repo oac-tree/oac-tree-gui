@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/xml_syntax_highlighter.h"
+#include "xml_syntax_highlighter.h"
 
 namespace sequencergui
 {

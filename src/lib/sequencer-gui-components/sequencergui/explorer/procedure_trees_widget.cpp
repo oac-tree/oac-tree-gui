@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/explorer/procedure_trees_widget.h"
+#include "procedure_trees_widget.h"
 
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>

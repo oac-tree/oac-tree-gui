@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/message_panel.h"
+#include "message_panel.h"
 
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_utils.h>

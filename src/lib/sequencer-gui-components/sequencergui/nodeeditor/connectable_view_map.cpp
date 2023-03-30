@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/connectable_view_map.h"
+#include "connectable_view_map.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_item.h>

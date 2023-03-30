@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/dialog_message_handler.h"
+#include "dialog_message_handler.h"
 
 #include <QMessageBox>
 

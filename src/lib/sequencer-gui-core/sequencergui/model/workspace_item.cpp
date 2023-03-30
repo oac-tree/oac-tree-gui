@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/workspace_item.h"
+#include "workspace_item.h"
 
 #include <sequencergui/model/variable_item.h>
 

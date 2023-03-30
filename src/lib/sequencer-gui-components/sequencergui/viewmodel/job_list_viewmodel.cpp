@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/job_list_viewmodel.h"
+#include "job_list_viewmodel.h"
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>

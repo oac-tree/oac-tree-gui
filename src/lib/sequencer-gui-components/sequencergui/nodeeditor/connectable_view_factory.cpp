@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/connectable_view_factory.h"
+#include "connectable_view_factory.h"
 
 #include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/nodeeditor/connectable_instruction_adapter.h>

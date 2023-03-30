@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/aggregate_panel.h"
+#include "aggregate_panel.h"
 
 #include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/widgets/item_list_widget.h>

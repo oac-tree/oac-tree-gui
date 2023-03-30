@@ -17,9 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/abstract_job.h"
-
-#include <iostream>
+#include "abstract_job.h"
 
 namespace
 {
@@ -76,11 +74,9 @@ bool AbstractJob::Start()
 
 bool AbstractJob::Stop()
 {
-  std::cout << " AbstractJob::Stop() 1.1 " << static_cast<int>(GetStatus()) << std::endl;
   bool is_valid_request{false};
   if (CanStopJob(GetStatus()))
   {
-    std::cout << " AbstractJob::Stop() 1.2 " << static_cast<int>(GetStatus()) << std::endl;
     StopRequest();
     is_valid_request = true;
   }

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/sequencer_monitor_actions.h"
+#include "sequencer_monitor_actions.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/components/message_handler_factory.h>

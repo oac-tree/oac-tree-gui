@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/scene_utils.h"
+#include "scene_utils.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/aggregate_factory.h>

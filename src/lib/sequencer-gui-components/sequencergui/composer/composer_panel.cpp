@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composer_panel.h"
+#include "composer_panel.h"
 
 #include <sequencergui/components/procedure_list_widget.h>
 #include <sequencergui/composer/aggregate_panel.h>

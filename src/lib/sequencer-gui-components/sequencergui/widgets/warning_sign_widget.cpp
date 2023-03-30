@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/warning_sign_widget.h"
+#include "warning_sign_widget.h"
 
 #include <sup/gui/widgets/style_utils.h>
 

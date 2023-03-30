@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/sequencer_model.h"
+#include "sequencer_model.h"
 
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_utils.h>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/align_node.h"
+#include "align_node.h"
 
 #include <mvvm/utils/container_utils.h>
 

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/sequencer_observer.h"
+#include "sequencer_observer.h"
 
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/log_event.h>

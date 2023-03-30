@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitor_realtime_widget.h"
+#include "monitor_realtime_widget.h"
 
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>

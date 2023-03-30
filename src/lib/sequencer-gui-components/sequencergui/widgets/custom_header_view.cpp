@@ -17,9 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/custom_header_view.h"
-
-#include <QDebug>
+#include "custom_header_view.h"
 
 namespace sequencergui
 {

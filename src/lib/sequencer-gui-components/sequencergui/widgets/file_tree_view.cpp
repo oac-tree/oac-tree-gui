@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/file_tree_view.h"
+#include "file_tree_view.h"
 
 #include <sequencergui/widgets/style_utils.h>
 

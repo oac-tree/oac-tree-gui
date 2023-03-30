@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/dots_toolbar.h"
+#include "dots_toolbar.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/widgets/style_utils.h>

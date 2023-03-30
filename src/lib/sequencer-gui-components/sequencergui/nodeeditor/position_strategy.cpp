@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/position_strategy.h"
+#include "position_strategy.h"
 
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/node_port.h>

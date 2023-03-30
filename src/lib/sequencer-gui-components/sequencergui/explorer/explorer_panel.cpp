@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/explorer/explorer_panel.h"
+#include "explorer_panel.h"
 
 #include <sequencergui/components/procedure_list_widget.h>
 #include <sequencergui/model/procedure_item.h>

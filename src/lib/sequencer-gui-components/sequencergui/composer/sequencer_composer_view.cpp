@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/sequencer_composer_view.h"
+#include "sequencer_composer_view.h"
 
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_procedure_editor.h>

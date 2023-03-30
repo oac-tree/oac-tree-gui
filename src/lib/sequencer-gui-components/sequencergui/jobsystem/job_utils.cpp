@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/job_utils.h"
+#include "job_utils.h"
 
 #include <algorithm>
 #include <map>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/overlay_widget_position_strategy.h"
+#include "overlay_widget_position_strategy.h"
 
 #include <sequencergui/widgets/style_utils.h>
 

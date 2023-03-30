@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composer_actions.h"
+#include "composer_actions.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/components/message_handler_factory.h>

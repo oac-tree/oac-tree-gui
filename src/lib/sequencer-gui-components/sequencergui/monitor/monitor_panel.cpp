@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitor_panel.h"
+#include "monitor_panel.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>

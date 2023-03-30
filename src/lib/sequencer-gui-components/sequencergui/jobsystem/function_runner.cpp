@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/function_runner.h"
+#include "function_runner.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/flow_controller.h>

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/item_stack_widget.h"
+#include "item_stack_widget.h"
 
 #include <sequencergui/widgets/panel_toolbar.h>
 

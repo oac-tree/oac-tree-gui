@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/xml_editor.h"
+#include "xml_editor.h"
 
 #include <sequencergui/widgets/xml_syntax_highlighter.h>
 

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/job_property_widget.h"
+#include "job_property_widget.h"
 
 #include <sequencergui/model/job_item.h>
 

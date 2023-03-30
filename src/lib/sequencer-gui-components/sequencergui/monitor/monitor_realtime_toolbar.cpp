@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitor_realtime_toolbar.h"
+#include "monitor_realtime_toolbar.h"
 
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/widgets/style_utils.h>

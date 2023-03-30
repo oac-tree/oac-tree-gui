@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/user_controller.h"
+#include "user_controller.h"
 
 #include <mvvm/widgets/widget_utils.h>
 

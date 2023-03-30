@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/instruction_item_panel.h"
+#include "instruction_item_panel.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/widgets/item_list_widget.h>

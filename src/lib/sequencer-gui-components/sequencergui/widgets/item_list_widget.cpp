@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/widgets/item_list_widget.h"
+#include "item_list_widget.h"
 
 #include <sequencergui/nodeeditor/scene_utils.h>
 

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/sequencer_utils.h"
+#include "sequencer_utils.h"
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>

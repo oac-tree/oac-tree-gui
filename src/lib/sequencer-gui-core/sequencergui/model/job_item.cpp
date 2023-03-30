@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/job_item.h"
+#include "job_item.h"
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/procedure_item.h>

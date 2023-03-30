@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/aggregate_factory.h"
+#include "aggregate_factory.h"
 
 #include <sequencergui/model/aggregate_examples.h>
 #include <sequencergui/model/instruction_item.h>

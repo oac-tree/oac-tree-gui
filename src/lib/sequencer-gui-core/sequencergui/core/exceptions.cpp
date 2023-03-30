@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/core/exceptions.h"
+#include "exceptions.h"
 
 namespace sequencergui
 {

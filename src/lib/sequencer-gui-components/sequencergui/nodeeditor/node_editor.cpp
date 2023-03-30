@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/node_editor.h"
+#include "node_editor.h"
 
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 

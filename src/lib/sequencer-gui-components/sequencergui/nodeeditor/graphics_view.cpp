@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/nodeeditor/graphics_view.h"
+#include "graphics_view.h"
 
 #include <sequencergui/nodeeditor/graphics_scene.h>
 

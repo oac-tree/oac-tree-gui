@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/procedure_viewmodel.h"
+#include "procedure_viewmodel.h"
 
 #include <sequencergui/model/procedure_item.h>
 

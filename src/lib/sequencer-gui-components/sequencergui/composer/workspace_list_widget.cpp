@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/workspace_list_widget.h"
+#include "workspace_list_widget.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/procedure_item.h>
