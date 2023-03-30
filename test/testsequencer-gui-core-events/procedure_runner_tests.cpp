@@ -22,7 +22,7 @@
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/utils/custom_meta_types.h>
+#include <sequencergui/widgets/custom_meta_types.h>
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 

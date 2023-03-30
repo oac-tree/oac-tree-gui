@@ -20,7 +20,7 @@
 #include "monitor_widget_toolbar.h"
 
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/utils/style_utils.h>
+#include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>

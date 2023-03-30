@@ -21,7 +21,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/sequencer_main_window.h>
-#include <sequencergui/utils/custom_meta_types.h>
+#include <sequencergui/widgets/custom_meta_types.h>
 
 #include <QApplication>
 #include <QLocale>

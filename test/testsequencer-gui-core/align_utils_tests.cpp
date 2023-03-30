@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/utils/align_utils.h"
+#include "sequencergui/nodeeditor/align_utils.h"
 
 #include <gtest/gtest.h>
-#include <sequencergui/utils/align_node.h>
+#include <sequencergui/nodeeditor/align_node.h>
 
 using namespace sequencergui::algorithm;
 

@@ -1,0 +1,42 @@
+# Collection of general purpose widgets that doesn't contain any Sequencer UI related specifics.
+
+target_sources(${library_name} PRIVATE
+  custom_header_view.cpp
+  custom_header_view.h
+  custom_meta_types.cpp
+  custom_meta_types.h
+  dialog_message_handler.cpp
+  dialog_message_handler.h
+  dots_toolbar.cpp
+  dots_toolbar.h
+  file_tree_view.cpp
+  file_tree_view.h
+  item_list_widget.cpp
+  item_list_widget.h
+  item_stack_widget.cpp
+  item_stack_widget.h
+  message_handler_factory.cpp
+  message_handler_factory.h
+  overlay_message.cpp
+  overlay_message_frame.cpp
+  overlay_message_frame.h
+  overlay_message.h
+  overlay_widget_position_strategy.cpp
+  overlay_widget_position_strategy.h
+  panel_toolbar.cpp
+  panel_toolbar.h
+  style_utils.cpp
+  style_utils.h
+  warning_sign_widget.cpp
+  warning_sign_widget.h
+  widget_overlay_message_handler.cpp
+  widget_overlay_message_handler.h
+  widget_overlay_message_publisher.cpp
+  widget_overlay_message_publisher.h
+  widget_utils.cpp
+  widget_utils.h
+  xml_editor.cpp
+  xml_editor.h
+  xml_syntax_highlighter.cpp
+  xml_syntax_highlighter.h
+)

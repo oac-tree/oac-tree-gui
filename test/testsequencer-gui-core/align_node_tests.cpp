@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/utils/align_node.h"
+#include "sequencergui/nodeeditor/align_node.h"
 
 #include <gtest/gtest.h>
 
