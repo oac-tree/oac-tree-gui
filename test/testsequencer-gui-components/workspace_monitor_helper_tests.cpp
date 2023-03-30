@@ -51,9 +51,7 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonE
 {
   const WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
-  workspace.AddVariable("abc", CreateDomainVariable(
-                                   domainconstants::kLocalVariableType)
-                                   .release());
+  workspace.AddVariable("abc", CreateDomainVariable(domainconstants::kLocalVariableType).release());
 
   EXPECT_THROW(PopulateDomainWorkspace(workspace_item, workspace), LogicErrorException);
 }
@@ -63,11 +61,9 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
   WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
 
-  auto var_item0 =
-      workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
-  auto var_item1 =
-      workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
+  auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
   var_item1->SetFileName("filename");
 

@@ -21,9 +21,9 @@
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
+#include <sequencergui/transform/transform_from_domain.h>
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/sequence_parser.h>

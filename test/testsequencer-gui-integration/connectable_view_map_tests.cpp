@@ -19,11 +19,12 @@
 
 #include "sequencergui/nodeeditor/connectable_view_map.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/connectable_view_factory.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 

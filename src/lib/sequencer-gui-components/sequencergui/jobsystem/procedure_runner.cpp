@@ -24,6 +24,7 @@
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>

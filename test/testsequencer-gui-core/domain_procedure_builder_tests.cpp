@@ -19,15 +19,14 @@
 
 #include "sequencergui/transform/domain_procedure_builder.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/domain_workspace_builder.h>
 
 #include <mvvm/model/sessionitem.h>
 
@@ -35,6 +34,8 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 

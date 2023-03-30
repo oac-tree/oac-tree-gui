@@ -48,4 +48,4 @@ WorkspaceItem *MonitorModel::GetWorkspaceItem() const
   return mvvm::utils::GetTopItem<WorkspaceItem>(this);
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

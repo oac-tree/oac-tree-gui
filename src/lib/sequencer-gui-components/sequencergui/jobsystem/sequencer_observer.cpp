@@ -22,8 +22,8 @@
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
-
 #include <sup/gui/model/anyvalue_utils.h>
+
 #include <sup/sequencer/instruction.h>
 
 namespace

@@ -19,7 +19,6 @@
 
 #include "sequencergui/transform/transform_from_domain.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -30,6 +29,8 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 
@@ -83,7 +84,8 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
 
   // for variables
-  EXPECT_EQ(ChannelAccessVariableItem::Type, GetItemType(domainconstants::kChannelAccessVariableType));
+  EXPECT_EQ(ChannelAccessVariableItem::Type,
+            GetItemType(domainconstants::kChannelAccessVariableType));
   EXPECT_EQ(FileVariableItem::Type, GetItemType(domainconstants::kFileVariableType));
   EXPECT_EQ(LocalVariableItem::Type, GetItemType(domainconstants::kLocalVariableType));
   EXPECT_EQ(PVClientVariableItem::Type, GetItemType(domainconstants::kPVClientVariableType));

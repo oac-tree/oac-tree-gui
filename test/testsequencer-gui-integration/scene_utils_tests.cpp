@@ -19,7 +19,6 @@
 
 #include "sequencergui/nodeeditor/scene_utils.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -31,6 +30,8 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
+
+#include <gtest/gtest.h>
 
 #include <QDebug>
 #include <QPointF>

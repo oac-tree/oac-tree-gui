@@ -22,9 +22,9 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/custom_header_view.h>
+#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 

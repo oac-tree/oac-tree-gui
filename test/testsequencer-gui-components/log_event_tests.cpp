@@ -57,7 +57,9 @@ TEST_F(LogEventTests, CreateLogEvent)
   EXPECT_EQ(event.severity, Severity::kWarning);
   EXPECT_EQ(event.message, std::string("abc"));
 
-  auto date = QDate::fromString(QString::fromStdString(event.date), GetLogEventDateFormat().c_str());
-  auto time = QTime::fromString(QString::fromStdString(event.time), GetLogEventTimeFormat().c_str());
+  auto date =
+      QDate::fromString(QString::fromStdString(event.date), GetLogEventDateFormat().c_str());
+  auto time =
+      QTime::fromString(QString::fromStdString(event.time), GetLogEventTimeFormat().c_str());
   EXPECT_TRUE(QDateTime(date, time).isValid());
 }

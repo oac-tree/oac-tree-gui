@@ -21,9 +21,9 @@
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/align_node.h>
 #include <sequencergui/nodeeditor/align_utils.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
 
 #include <mvvm/model/sessionmodel.h>
 

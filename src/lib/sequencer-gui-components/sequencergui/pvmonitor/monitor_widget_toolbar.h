@@ -54,6 +54,6 @@ private:
   QToolButton* m_stop_button{nullptr};
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_TOOLBAR_H_

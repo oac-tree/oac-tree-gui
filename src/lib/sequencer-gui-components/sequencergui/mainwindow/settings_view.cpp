@@ -22,8 +22,8 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/dots_toolbar.h>
+#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/widgets/all_items_tree_view.h>

@@ -19,15 +19,16 @@
 
 #include "sequencergui/nodeeditor/sequencer_align_utils.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/align_node.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
 
 #include <mvvm/standarditems/container_item.h>
+
+#include <gtest/gtest.h>
 
 #include <QPointF>
 

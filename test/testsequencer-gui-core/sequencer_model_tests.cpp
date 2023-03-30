@@ -19,14 +19,15 @@
 
 #include "sequencergui/model/sequencer_model.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <testutils/folder_based_test.h>
 
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
+
+#include <gtest/gtest.h>
+#include <testutils/folder_based_test.h>
 
 using namespace sequencergui;
 

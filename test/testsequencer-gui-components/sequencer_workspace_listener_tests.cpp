@@ -19,14 +19,15 @@
 
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
 
 #include <QSignalSpy>
 #include <iostream>
@@ -41,8 +42,7 @@ public:
   std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
                                                   const sup::dto::AnyValue& initial_value)
   {
-    auto local_variable =
-        CreateDomainVariable(domainconstants::kLocalVariableType);
+    auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
     local_variable->SetName(name);
     local_variable->AddAttribute("type", sup::gui::GetAnyTypeToJSONString(initial_value));
     local_variable->Setup();

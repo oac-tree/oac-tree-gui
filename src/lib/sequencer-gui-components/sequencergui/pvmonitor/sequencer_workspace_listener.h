@@ -62,6 +62,6 @@ private:
   std::unique_ptr<SequencerWorkspaceListenerImpl> p_impl;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_SEQUENCER_WORKSPACE_LISTENER_H_

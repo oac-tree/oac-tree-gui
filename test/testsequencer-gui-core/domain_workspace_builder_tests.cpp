@@ -19,13 +19,14 @@
 
 #include "sequencergui/transform/domain_workspace_builder.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 
 #include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 
@@ -54,8 +55,7 @@ TEST_F(DomainWorkspaceBuilderTest, EmptyWorkspace)
 TEST_F(DomainWorkspaceBuilderTest, AttemptToPopulateNonEmptyWorkspace)
 {
   sup::sequencer::Workspace workspace;
-  workspace.AddVariable(
-      "abc", CreateDomainVariable(domainconstants::kLocalVariableType).release());
+  workspace.AddVariable("abc", CreateDomainVariable(domainconstants::kLocalVariableType).release());
 
   WorkspaceItem workspace_item;
 

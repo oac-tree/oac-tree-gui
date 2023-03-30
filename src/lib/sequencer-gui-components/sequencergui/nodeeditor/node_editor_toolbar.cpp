@@ -22,9 +22,9 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/nodeeditor/graphics_view.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <QButtonGroup>
 #include <QMenu>

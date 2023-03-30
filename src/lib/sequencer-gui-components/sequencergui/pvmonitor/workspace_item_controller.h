@@ -73,6 +73,6 @@ private:
   std::map<std::string, bool> m_block_update_to_domain;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_

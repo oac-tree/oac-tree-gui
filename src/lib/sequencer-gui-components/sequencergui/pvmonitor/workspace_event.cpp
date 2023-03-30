@@ -33,4 +33,4 @@ bool WorkspaceEvent::operator!=(const WorkspaceEvent& other) const
   return !(*this == other);
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui

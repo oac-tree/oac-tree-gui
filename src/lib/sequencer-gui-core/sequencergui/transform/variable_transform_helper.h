@@ -23,7 +23,6 @@
 //! Collection of helper functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
@@ -53,9 +52,8 @@ void SetAnyValueFromJsonType(const std::string& json_type, VariableItem& variabl
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 //! Set attribute to given value. If the value is empty string, do nothing.
-void AddNonEmptyAttribute(const std::string& attribute_name,
-                          const std::string& attribute_value, variable_t& variable);
-
+void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
+                          variable_t& variable);
 
 //! Sets JSON type attribute from given \it item to the domain variable.
 void SetJsonTypeAttribute(const VariableItem& item, variable_t& variable);

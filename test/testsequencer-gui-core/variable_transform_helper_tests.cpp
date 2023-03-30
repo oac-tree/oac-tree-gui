@@ -19,16 +19,17 @@
 
 #include "sequencergui/transform/variable_transform_helper.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <testutils/mock_model_listener.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/variable.h>
+
+#include <gtest/gtest.h>
+#include <testutils/mock_model_listener.h>
 
 using namespace sequencergui;
 using ::testing::_;

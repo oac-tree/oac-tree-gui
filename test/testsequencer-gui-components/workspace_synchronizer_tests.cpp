@@ -19,22 +19,23 @@
 
 #include "sequencergui/pvmonitor/workspace_synchronizer.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/variable_transform_helper.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
-#include <testutils/gui_domain_utils.h>
-#include <testutils/mock_domain_workspace_listener.h>
-#include <testutils/mock_model_listener.h>
-
-#include <sup/dto/anyvalue.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 #include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
+#include <testutils/gui_domain_utils.h>
+#include <testutils/mock_domain_workspace_listener.h>
+#include <testutils/mock_model_listener.h>
 
 #include <QTest>
 
@@ -89,8 +90,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
 
   {  // variables do not match
     const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-    auto variable_item =
-        m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+    auto variable_item = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
     variable_item->SetName("var0");
 
     auto synchronizer = CreateSynchronizer();
@@ -134,8 +134,8 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 = m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item0 =
+      m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("abc", value0, *variable_item0);
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
@@ -170,8 +170,8 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item =
+      m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable(var_name, value0, *variable_item);
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
   SetAnyValue(value0, *variable_item);
@@ -209,8 +209,8 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item = m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item =
+      m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
   SetAnyValue(value, *variable_item);
 

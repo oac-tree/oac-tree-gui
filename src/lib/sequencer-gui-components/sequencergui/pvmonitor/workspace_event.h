@@ -35,6 +35,6 @@ struct WorkspaceEvent
   bool operator!=(const WorkspaceEvent& other) const;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EVENT_H_

@@ -64,6 +64,6 @@ private:
   MonitorWidgetContext m_context;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_

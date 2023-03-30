@@ -31,7 +31,7 @@ namespace sup::gui
 {
 class AnyValueEditor;
 class AnyValueItem;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -44,7 +44,7 @@ public:
   explicit AnyValueEditorDialog(QWidget* parent = nullptr);
   ~AnyValueEditorDialog() override;
 
-  void SetInitialValue(const sup::gui::AnyValueItem *item);
+  void SetInitialValue(const sup::gui::AnyValueItem* item);
 
   std::unique_ptr<sup::gui::AnyValueItem> GetResult();
 
@@ -57,6 +57,6 @@ private:
   sup::gui::AnyValueEditor* m_anyvalue_editor{nullptr};
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_

@@ -22,7 +22,6 @@
 
 #include <mvvm/model/application_model.h>
 
-
 namespace sequencergui
 {
 class WorkspaceItem;
@@ -39,6 +38,6 @@ public:
   sequencergui::WorkspaceItem* GetWorkspaceItem() const;
 };
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_MONITOR_MODEL_H_

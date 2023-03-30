@@ -19,10 +19,10 @@
 
 #include "sequencergui/domain/domain_utils.h"
 
-#include <gtest/gtest.h>
-
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
+
+#include <gtest/gtest.h>
 
 #include <chrono>
 #include <future>
@@ -94,4 +94,3 @@ TEST_F(DomainUtilsTest, IsRootInstruction)
   item->SetAttribute(kIsRootAttribute, "false");
   EXPECT_FALSE(IsRootInstruction(item.get()));
 }
-

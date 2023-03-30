@@ -27,14 +27,13 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/nodeeditor/node_editor.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
+#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/xml_editor.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/standarditems/container_item.h>
-
-#include <sup/gui/components/message_handler_interface.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDebug>
@@ -65,9 +64,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_central_panel);
   m_splitter->addWidget(m_right_panel);
-  m_splitter->setSizes(QList<int>()
-                       << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
-                       << mvvm::utils::UnitSize(30));
+  m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
+                                    << mvvm::utils::UnitSize(30));
 
   layout->addWidget(m_splitter);
 

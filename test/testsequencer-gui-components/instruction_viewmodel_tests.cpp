@@ -19,11 +19,12 @@
 
 #include "sequencergui/viewmodel/instruction_viewmodel.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 
 #include <mvvm/model/application_model.h>
+
+#include <gtest/gtest.h>
 
 #include <QSignalSpy>
 

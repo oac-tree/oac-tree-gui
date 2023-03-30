@@ -62,6 +62,6 @@ void LoadLocalPlugins();
 
 void LoadPlugins();
 
-}  // namespace sequencergui::DomainUtils
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_

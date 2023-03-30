@@ -19,18 +19,17 @@
 
 #include "sequencer_monitor_actions.h"
 
-#include <sequencergui/core/exceptions.h>
 #include <sequencergui/components/message_handler_factory.h>
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 
+#include <QAbstractTableModel>
 #include <iostream>
 #include <sstream>
-
-#include <QAbstractTableModel>
 
 namespace
 {

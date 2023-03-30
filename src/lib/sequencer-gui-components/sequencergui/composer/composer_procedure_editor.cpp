@@ -27,12 +27,11 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
-
-#include <sup/gui/components/message_handler_interface.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <QDebug>
 #include <QSplitter>

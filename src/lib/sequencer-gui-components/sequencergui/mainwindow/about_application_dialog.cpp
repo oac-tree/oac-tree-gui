@@ -58,8 +58,8 @@ QLabel* createLogoLabel()
 {
   QPixmap logo(":/icons/about_logo.awk", "JPG");
   auto result = new QLabel;
-  result->setPixmap(logo.scaled(mvvm::utils::UnitSize(50), mvvm::utils::UnitSize(50),
-                                Qt::KeepAspectRatio));
+  result->setPixmap(
+      logo.scaled(mvvm::utils::UnitSize(50), mvvm::utils::UnitSize(50), Qt::KeepAspectRatio));
   return result;
 }
 }  // namespace
@@ -98,8 +98,8 @@ QBoxLayout* AboutApplicationDialog::createLogoLayout()
 
   QPixmap logo(":/icons/iter_logo.png");
   auto label = new QLabel;
-  label->setPixmap(logo.scaled(mvvm::utils::UnitSize(10), mvvm::utils::UnitSize(10),
-                               Qt::KeepAspectRatio));
+  label->setPixmap(
+      logo.scaled(mvvm::utils::UnitSize(10), mvvm::utils::UnitSize(10), Qt::KeepAspectRatio));
 
   result->addWidget(label);
   result->addStretch(1);

@@ -17,8 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
+
+#include <gtest/gtest.h>
 
 #include <QApplication>
 

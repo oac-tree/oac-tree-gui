@@ -24,6 +24,7 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+
 #include <testutils/folder_based_test.h>
 #include <testutils/test_utils.h>
 

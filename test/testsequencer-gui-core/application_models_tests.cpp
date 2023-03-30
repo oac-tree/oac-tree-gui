@@ -19,10 +19,11 @@
 
 #include "sequencergui/model/application_models.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+
+#include <gtest/gtest.h>
 
 using namespace sequencergui;
 

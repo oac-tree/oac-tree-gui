@@ -57,8 +57,9 @@ class ComposerProcedureEditor : public QWidget
   Q_OBJECT
 
 public:
-  explicit ComposerProcedureEditor(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler,
-                                   QWidget* parent = nullptr);
+  explicit ComposerProcedureEditor(
+      std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler,
+      QWidget* parent = nullptr);
   ~ComposerProcedureEditor() override;
 
   void SetModel(SequencerModel* model);
@@ -79,7 +80,7 @@ private:
   ComposerContext CreateComposerContext();
 
   QToolBar* m_tool_bar{nullptr};
-  QWidgetAction* m_tool_bar_action{nullptr}; //!< wrapper to send our tool bar outside
+  QWidgetAction* m_tool_bar_action{nullptr};  //!< wrapper to send our tool bar outside
 
   QTabWidget* m_tab_widget{nullptr};
   InstructionTreeWidget* m_instruction_tree{nullptr};

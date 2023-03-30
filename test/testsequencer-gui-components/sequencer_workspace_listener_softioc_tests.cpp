@@ -19,20 +19,21 @@
 
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
-#include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
-#include <testutils/epics_test_utils.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/softioc_runner.h>
 #include <sup/epics-test/unit_test_helper.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
+
+#include <gtest/gtest.h>
+#include <testutils/epics_test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -88,8 +89,7 @@ sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softio
 TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVariable)
 {
   // creating ChannelAccessVariable
-  auto variable =
-      CreateDomainVariable(domainconstants::kChannelAccessVariableType);
+  auto variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);
   variable->AddAttribute("channel", "CA-TESTS:INT");
   variable->AddAttribute("type", R"RAW({"type":"uint32"})RAW");
 

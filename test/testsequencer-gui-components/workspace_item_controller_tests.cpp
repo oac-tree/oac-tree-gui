@@ -19,20 +19,21 @@
 
 #include "sequencergui/pvmonitor/workspace_item_controller.h"
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <testutils/gui_domain_utils.h>
-#include <testutils/mock_callback_listener.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <testutils/gui_domain_utils.h>
+#include <testutils/mock_callback_listener.h>
 
 #include <stdexcept>
 
@@ -44,10 +45,7 @@ using ::testing::_;
 class WorkspaceItemControllerTests : public ::testing::Test
 {
 public:
-  WorkspaceItemControllerTests()
-  {
-    m_workspace_item = m_model.InsertItem<WorkspaceItem>();
-  }
+  WorkspaceItemControllerTests() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
   MonitorModel m_model;
   WorkspaceItem* m_workspace_item{nullptr};
@@ -61,8 +59,7 @@ TEST_F(WorkspaceItemControllerTests, InitialState)
 
 TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 {
-  auto variable_item =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName("abc");
 
   WorkspaceItemController controller(m_workspace_item);
@@ -78,8 +75,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainWhenConnected)
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
   testutils::SetupVariable("abc", value, *variable_item0);
   // initially VariableItem doesn't have AnyValueItem
@@ -120,8 +116,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
   testutils::SetupVariable("abc", value, *variable_item0);
   // initially VariableItem doesn't have AnyValueItem
@@ -160,8 +155,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
 
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
-  auto variable_item0 =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("abc", value, *variable_item0);
   SetAnyValue(value, *variable_item0);
 
@@ -189,13 +183,11 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
 
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
-  auto variable_item0 =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("var0", value0, *variable_item0);
   SetAnyValue(value0, *variable_item0);
 
-  auto variable_item1 =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item1 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   testutils::SetupVariable("var1", value1, *variable_item1);
   SetAnyValue(value1, *variable_item1);
 
@@ -226,8 +218,8 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item = m_workspace_item->InsertItem<ChannelAccessVariableItem>(
-      mvvm::TagIndex::Append());
+  auto variable_item =
+      m_workspace_item->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName("abc");
 
   // initially it doesn't have a value on board and it is disconnected
@@ -262,8 +254,7 @@ TEST_F(WorkspaceItemControllerTests, SetScalarData)
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
   SetAnyValue(value, *variable_item);
 
@@ -294,8 +285,7 @@ TEST_F(WorkspaceItemControllerTests, SetScalarDataInStruct)
 {
   const std::string var_name("abc");
 
-  auto variable_item =
-      m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto variable_item = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
 
   auto struct_item = variable_item->InsertItem<sup::gui::AnyValueStructItem>({});

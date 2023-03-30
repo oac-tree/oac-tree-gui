@@ -19,8 +19,8 @@
 
 #include "composer_actions.h"
 
-#include <sequencergui/core/exceptions.h>
 #include <sequencergui/components/message_handler_factory.h>
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -76,7 +76,8 @@ void ComposerActions::SetContext(ComposerContext context)
   m_context = std::move(context);
 }
 
-void ComposerActions::SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
+void ComposerActions::SetMessageHandler(
+    std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
 {
   m_message_handler = std::move(message_handler);
 }

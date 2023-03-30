@@ -17,9 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <sequencergui/components/custom_meta_types.h>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <sequencergui/components/custom_meta_types.h>
 
 #include <QApplication>
 

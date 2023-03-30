@@ -25,8 +25,8 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/job_list_widget.h>
 #include <sequencergui/monitor/job_property_widget.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/panel_toolbar.h>
+#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
 #include <mvvm/widgets/collapsible_toolbar.h>

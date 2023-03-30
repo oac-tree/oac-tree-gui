@@ -25,10 +25,9 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sup/gui/core/exceptions.h>
 
 #include <mvvm/standarditems/container_item.h>
-
-#include <sup/gui/core/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_message_handler.h>

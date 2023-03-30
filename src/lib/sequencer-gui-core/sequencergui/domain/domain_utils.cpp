@@ -176,4 +176,4 @@ void LoadPlugins()
 #endif
 }
 
-}  // namespace sequencergui::DomainUtils
+}  // namespace sequencergui

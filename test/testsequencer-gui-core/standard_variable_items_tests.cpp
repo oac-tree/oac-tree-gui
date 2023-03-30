@@ -23,10 +23,10 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
