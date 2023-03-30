@@ -1,11 +1,24 @@
-// ************************************************************************** //
-//
-//  Operational Applications UI Foundation
-//
-// ************************************************************************** //
+/******************************************************************************
+ *
+ * Project       : Operational Applications UI Foundation
+ *
+ * Description   : The model-view-viewmodel library of generic UI components
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2023 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
 
-#ifndef SCRIPTS_TESTCONFIG_H
-#define SCRIPTS_TESTCONFIG_H
+#ifndef AUTOGEN_SEQUENCERGUI_TESTCONFIG_H_
+#define AUTOGEN_SEQUENCERGUI_TESTCONFIG_H_
 
 #include <string>
 
@@ -21,5 +34,5 @@ inline std::string ProjectSourceDir() { return "@SEQUENCERGUI_PROJECT_DIR@"; }
 
 }
 
-#endif
+#endif  // AUTOGEN_SEQUENCERGUI_TESTCONFIG_H_
 
