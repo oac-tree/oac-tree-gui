@@ -22,7 +22,7 @@ endfunction()
 # Setups targets for code processing.
 
 function(project_codetools_setup)
-    if (SEQUENCERGUI_SETUP_CLANGFORMAT)
+    if (COA_SETUP_CLANGFORMAT)
         project_clangformat_setup()
     endif()
 endfunction()

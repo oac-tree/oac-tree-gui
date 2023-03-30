@@ -25,8 +25,8 @@ add_subdirectory(testsequencer-gui-components)
 
 add_custom_target(testall
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration
 )
 
 file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
@@ -34,8 +34,8 @@ file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
 export QT_QPA_PLATFORM=offscreen
 fail=0
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core-events " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsup-pvmonitor-core " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration " || fail=1
 exit $fail
 ")
 

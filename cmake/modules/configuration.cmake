@@ -78,7 +78,7 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_AUTOGEN_DIR})
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-if (SEQUENCERGUI_USE_QT6)
+if (COA_USE_QT6)
   find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets Core Gui PrintSupport Test)
 else()
   find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets Core Gui PrintSupport Test)
@@ -100,10 +100,7 @@ find_package(sequencer REQUIRED)
 # -----------------------------------------------------------------------------
 
 configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/testconfig.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/testconfig.h @ONLY)
-
-if (SEQUENCERGUI_BUMP_VERSION)
-    configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version.h.in  ${SEQUENCERGUI_PROJECT_DIR}/source/sequencer-gui/libsequencer-gui-core/sequencergui/core/version.h @ONLY)
-endif()
+configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/version.h @ONLY)
 
 # -----------------------------------------------------------------------------
 # Compile options

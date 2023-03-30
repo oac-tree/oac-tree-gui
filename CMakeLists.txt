@@ -3,9 +3,8 @@ project(sequencer-gui VERSION 0.4.99 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-option(SEQUENCERGUI_BUMP_VERSION "Propagate version number" OFF)
-option(SEQUENCERGUI_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
-option(SEQUENCERGUI_USE_QT6 "Compile with Qt6" OFF)
+option(COA_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
+option(COA_USE_QT6 "Compile with Qt6" OFF)
 option(COA_BUILD_DOCUMENTATION "Build documentation" OFF)
 option(COA_NO_CODAC "Don't look for the presence of CODAC environment" OFF)
 
