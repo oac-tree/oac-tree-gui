@@ -19,7 +19,10 @@ IncludeCategories:
     Priority:        1
   # Headers in <> without extension.
   - Regex:           '<([A-Za-z0-9\Q/-_\E])+>'
-    Priority:        5
+    Priority:        6
+  # Headers in "" from specific internal libraries.
+  - Regex:           '<((sup)\/(gui)|sequencergui)\/'
+    Priority:        2
   # Headers in "" from specific internal libraries.
   - Regex:           '<(mvvm)\/'
     Priority:        3
@@ -28,5 +31,6 @@ IncludeCategories:
     Priority:        4
   # Headers in <> with extension.
   - Regex:           '<([A-Za-z0-9.\Q/-_\E])+>'
-    Priority:        2
+    Priority:        5
+
 
