@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/monitor_model.h"
+#include "monitor_model.h"
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>

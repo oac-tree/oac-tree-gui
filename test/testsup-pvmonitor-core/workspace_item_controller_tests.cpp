@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_item_controller.h"
+#include "sequencergui/monitor/workspace_item_controller.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/monitor/monitor_model.h>
+#include <sequencergui/monitor/workspace_event.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <suppvmonitor/monitor_model.h>
-#include <suppvmonitor/workspace_event.h>
 #include <testutils/gui_domain_utils.h>
 #include <testutils/mock_callback_listener.h>
 

@@ -17,9 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencer_workspace_listener.h"
+
+#include "workspace_event.h"
+
 #include <sequencergui/core/exceptions.h>
-#include <suppvmonitor/sequencer_workspace_listener.h>
-#include <suppvmonitor/workspace_event.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 

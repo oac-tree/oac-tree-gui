@@ -20,7 +20,7 @@
 #ifndef SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
 #define SUP_PVMONITOR_CORE_MONITOR_EDITOR_ACTIONS_H_
 
-#include <suppvmonitor/monitor_widget_context.h>
+#include <sequencergui/monitor/monitor_widget_context.h>
 
 #include <QObject>
 

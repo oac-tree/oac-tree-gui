@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/monitor_widget_actions.h"
+#include "sequencergui/monitor/monitor_widget_actions.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/monitor/monitor_model.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <suppvmonitor/monitor_model.h>
 #include <testutils/mock_callback_listener.h>
 
 #include <sup/dto/anyvalue.h>

@@ -17,17 +17,17 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_synchronizer.h"
+#include "workspace_synchronizer.h"
+
+#include "sequencer_workspace_listener.h"
+#include "workspace_event.h"
+#include "workspace_item_controller.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <suppvmonitor/monitor_model.h>
-#include <suppvmonitor/sequencer_workspace_listener.h>
-#include <suppvmonitor/workspace_event.h>
-#include <suppvmonitor/workspace_item_controller.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/sessionmodel.h>

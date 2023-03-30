@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/sequencer_workspace_listener.h"
+#include "sequencergui/monitor/sequencer_workspace_listener.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <suppvmonitor/workspace_event.h>
+#include <sequencergui/monitor/workspace_event.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/epics-test/unit_test_helper.h>

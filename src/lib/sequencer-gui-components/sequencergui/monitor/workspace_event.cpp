@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/workspace_event.h"
+#include "workspace_event.h"
 
 namespace suppvmonitor
 {

@@ -20,9 +20,9 @@
 #include "main_window.h"
 
 #include <sequencergui/model/workspace_item.h>
-#include <suppvmonitor/main_window_actions.h>
-#include <suppvmonitor/monitor_model.h>
-#include <suppvmonitor/monitor_widget.h>
+#include <sequencergui/monitor/main_window_actions.h>
+#include <sequencergui/monitor/monitor_model.h>
+#include <sequencergui/monitor/monitor_widget.h>
 
 #include <QCoreApplication>
 #include <QFileDialog>
@@ -47,8 +47,7 @@ QString GetWindowPosSettingName()
 
 namespace suppvmonitor
 {
-MainWindow::MainWindow()
-    : m_model(std::make_unique<MonitorModel>())
+MainWindow::MainWindow() : m_model(std::make_unique<MonitorModel>())
 {
   PopulateModel();
   InitApplication();

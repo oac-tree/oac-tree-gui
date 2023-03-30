@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/monitor_widget_toolbar.h"
+#include "monitor_widget_toolbar.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/utils/style_utils.h>

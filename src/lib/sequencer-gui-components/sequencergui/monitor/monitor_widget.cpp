@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "suppvmonitor/monitor_widget.h"
+#include "monitor_widget.h"
 
 #include "anyvalue_editor_dialog.h"
 #include "monitor_model.h"
