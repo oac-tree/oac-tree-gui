@@ -20,7 +20,7 @@
 #include <mvvm/widgets/app_utils.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
-#include <sequencergui/mainwindow/main_window.h>
+#include <sequencergui/mainwindow/sequencer_main_window.h>
 #include <sequencergui/utils/custom_meta_types.h>
 
 #include <QApplication>
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
   sequencergui::LoadPlugins();
 
-  sequencergui::MainWindow win;
+  sequencergui::SequencerMainWindow win;
 
   win.show();
 

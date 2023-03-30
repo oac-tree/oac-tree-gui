@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "main_window.h"
+#include "sequencer_main_window.h"
 
-#include "main_window_actions.h"
+#include "sequencer_main_window_actions.h"
 #include "settings_view.h"
 
 #include <sequencergui/composer/sequencer_composer_view.h>
@@ -48,7 +48,7 @@ const QString pos_key = "pos";
 
 namespace sequencergui
 {
-MainWindow::MainWindow() : m_models(std::make_unique<ApplicationModels>())
+SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
   PopulateModel();
 
@@ -60,9 +60,9 @@ MainWindow::MainWindow() : m_models(std::make_unique<ApplicationModels>())
   m_settings_view->SetApplicationModels(m_models.get());
 }
 
-MainWindow::~MainWindow() = default;
+SequencerMainWindow::~SequencerMainWindow() = default;
 
-void MainWindow::closeEvent(QCloseEvent* event)
+void SequencerMainWindow::closeEvent(QCloseEvent* event)
 {
   if (m_action_manager->CanCloseApplication())
   {
@@ -75,7 +75,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
   }
 }
 
-void MainWindow::InitApplication()
+void SequencerMainWindow::InitApplication()
 {
   QSettings settings;
   if (settings.childGroups().contains(main_window_group))
@@ -91,9 +91,9 @@ void MainWindow::InitApplication()
   InitComponents();
 }
 
-void MainWindow::InitComponents()
+void SequencerMainWindow::InitComponents()
 {
-  m_action_manager = new MonitorMainWindowActions(m_models->GetSequencerModel(), this);
+  m_action_manager = new SequencerMainWindowActions(m_models->GetSequencerModel(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
@@ -120,7 +120,7 @@ void MainWindow::InitComponents()
   setCentralWidget(m_tab_widget);
 }
 
-void MainWindow::WriteSettings()
+void SequencerMainWindow::WriteSettings()
 {
   QSettings settings;
   settings.beginGroup(main_window_group);
@@ -129,7 +129,7 @@ void MainWindow::WriteSettings()
   settings.endGroup();
 }
 
-void MainWindow::PopulateModel()
+void SequencerMainWindow::PopulateModel()
 {
   //  Examples::AddCopyProcedure(m_models->GetSequencerModel());
   //  Examples::AddLocalIncludeProcedure(m_models->GetSequencerModel());

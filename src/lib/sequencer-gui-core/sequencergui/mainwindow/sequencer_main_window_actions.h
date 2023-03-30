@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_ACTIONS_H
-#define SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_ACTIONS_H
+#ifndef SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H
+#define SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H
 
 #include <QWidget>
 
@@ -39,13 +39,13 @@ class ProjectHandler;
 
 //! Vertical panel located on the left of XMLTreeView
 
-class MonitorMainWindowActions : public QObject
+class SequencerMainWindowActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit MonitorMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
-  ~MonitorMainWindowActions() override;
+  explicit SequencerMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
+  ~SequencerMainWindowActions() override;
 
   bool CanCloseApplication() const;
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_ACTIONS_H
+#endif  // SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H

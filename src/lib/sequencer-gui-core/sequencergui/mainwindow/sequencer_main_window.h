@@ -38,18 +38,18 @@ class SequencerTreeView;
 class SequencerMonitorView;
 class SequencerComposerView;
 class SettingsView;
-class MonitorMainWindowActions;
+class SequencerMainWindowActions;
 class ApplicationModels;
 
 //! The main window of this application.
 
-class MainWindow : public QMainWindow
+class SequencerMainWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  MainWindow();
-  ~MainWindow() override;
+  SequencerMainWindow();
+  ~SequencerMainWindow() override;
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -62,7 +62,7 @@ private:
 
   std::unique_ptr<ApplicationModels> m_models;
 
-  MonitorMainWindowActions* m_action_manager{nullptr};
+  SequencerMainWindowActions* m_action_manager{nullptr};
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 
   SequencerExplorerView* m_explorer_view{nullptr};
