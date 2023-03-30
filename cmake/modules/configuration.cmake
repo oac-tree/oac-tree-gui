@@ -100,7 +100,7 @@ find_package(sequencer REQUIRED)
 # -----------------------------------------------------------------------------
 
 configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/testconfig.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/testconfig.h @ONLY)
-configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/version.h @ONLY)
+configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version_constants.h.in  ${SEQUENCERGUI_AUTOGEN_DIR}/version_constants.h @ONLY)
 
 # -----------------------------------------------------------------------------
 # Compile options

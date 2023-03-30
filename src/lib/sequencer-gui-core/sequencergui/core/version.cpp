@@ -17,28 +17,29 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_CORE_VERSION_H_
-#define SEQUENCERGUI_CORE_VERSION_H_
-
-//! Project version information as defined by CMake project
-
-#include <string>
+#include "version_constants.h"  // from <build>/autogen
 
 namespace sequencergui
 {
 
-//! Returns major project version.
-int ProjectVersionMajor();
+int ProjectVersionMajor()
+{
+  return kProjectVersionMajor;
+}
 
-//! Returns minor project version.
-int ProjectVersionMinor();
+int ProjectVersionMinor()
+{
+  return kProjectVersionMinor;
+}
 
-//! Returns patch project version.
-int ProjectVersionPatch();
+int ProjectVersionPatch()
+{
+  return kProjectVersionPatch;
+}
 
-//! Returns project version string.
-std::string ProjectVersion();
+std::string ProjectVersion()
+{
+  return kProjectVersionString;
+}
 
-}  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_CORE_VERSION_H_
+}

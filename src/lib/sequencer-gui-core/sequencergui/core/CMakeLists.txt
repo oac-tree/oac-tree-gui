@@ -4,6 +4,7 @@ target_sources(${library_name} PRIVATE
   factory.h
   exceptions.cpp
   exceptions.h
+  version.cpp
   version.h
 )
 
