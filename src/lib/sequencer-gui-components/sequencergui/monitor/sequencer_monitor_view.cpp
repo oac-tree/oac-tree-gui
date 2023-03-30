@@ -19,7 +19,7 @@
 
 #include "sequencergui/monitor/sequencer_monitor_view.h"
 
-#include <sequencergui/widgets/message_handler_factory.h>
+#include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_context.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>

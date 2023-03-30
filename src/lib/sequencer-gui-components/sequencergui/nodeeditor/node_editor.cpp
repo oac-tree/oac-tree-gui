@@ -21,7 +21,7 @@
 
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 
-#include <sequencergui/widgets/message_handler_factory.h>
+#include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>

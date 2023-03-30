@@ -15,8 +15,6 @@ target_sources(${library_name} PRIVATE
   item_list_widget.h
   item_stack_widget.cpp
   item_stack_widget.h
-  message_handler_factory.cpp
-  message_handler_factory.h
   overlay_message.cpp
   overlay_message_frame.cpp
   overlay_message_frame.h
