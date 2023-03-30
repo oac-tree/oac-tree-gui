@@ -34,13 +34,13 @@ class MonitorMainWindowActions;
 
 //! The main window of this application.
 
-class MonitorMainWindow : public QMainWindow
+class PvMonitorMainWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  MonitorMainWindow();
-  ~MonitorMainWindow() override;
+  PvMonitorMainWindow();
+  ~PvMonitorMainWindow() override;
 
 protected:
   void closeEvent(QCloseEvent* event) override;

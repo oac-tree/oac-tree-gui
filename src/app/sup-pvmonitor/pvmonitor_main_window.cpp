@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "monitor_main_window.h"
+#include "pvmonitor_main_window.h"
 
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/monitor/monitor_main_window_actions.h>
-#include <sequencergui/monitor/monitor_model.h>
-#include <sequencergui/monitor/monitor_widget.h>
+#include <sequencergui/pvmonitor/monitor_main_window_actions.h>
+#include <sequencergui/pvmonitor/monitor_model.h>
+#include <sequencergui/pvmonitor/monitor_widget.h>
 
 #include <QCoreApplication>
 #include <QFileDialog>
@@ -47,26 +47,26 @@ QString GetWindowPosSettingName()
 
 namespace sequencergui
 {
-MonitorMainWindow::MonitorMainWindow() : m_model(std::make_unique<MonitorModel>())
+PvMonitorMainWindow::PvMonitorMainWindow() : m_model(std::make_unique<MonitorModel>())
 {
   PopulateModel();
   InitApplication();
 }
 
-MonitorMainWindow::~MonitorMainWindow() = default;
+PvMonitorMainWindow::~PvMonitorMainWindow() = default;
 
-void MonitorMainWindow::closeEvent(QCloseEvent* event)
+void PvMonitorMainWindow::closeEvent(QCloseEvent* event)
 {
   WriteSettings();
   QMainWindow::closeEvent(event);
 }
 
-void MonitorMainWindow::PopulateModel()
+void PvMonitorMainWindow::PopulateModel()
 {
   m_model->InsertItem<WorkspaceItem>();
 }
 
-void MonitorMainWindow::InitApplication()
+void PvMonitorMainWindow::InitApplication()
 {
   ReadSettings();
 
@@ -76,14 +76,14 @@ void MonitorMainWindow::InitApplication()
   m_actions = new MonitorMainWindowActions(m_model.get(), this);
 }
 
-void MonitorMainWindow::ReadSettings()
+void PvMonitorMainWindow::ReadSettings()
 {
   const QSettings settings;
   resize(settings.value(GetWindowSizeSettingName(), QSize(800, 600)).toSize());
   move(settings.value(GetWindowPosSettingName(), QPoint(200, 200)).toPoint());
 }
 
-void MonitorMainWindow::WriteSettings()
+void PvMonitorMainWindow::WriteSettings()
 {
   QSettings settings;
   settings.setValue(GetWindowSizeSettingName(), size());

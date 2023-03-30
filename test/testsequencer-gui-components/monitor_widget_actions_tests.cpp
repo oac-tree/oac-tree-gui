@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitor_widget_actions.h"
+#include "sequencergui/pvmonitor/monitor_widget_actions.h"
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/monitor/monitor_model.h>
+#include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/variable_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -101,8 +101,8 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
-  auto inserted_variable0 = dynamic_cast<LocalVariableItem*>(
-      m_model.GetWorkspaceItem()->GetVariables().at(0));
+  auto inserted_variable0 =
+      dynamic_cast<LocalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
 
@@ -118,8 +118,8 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
   actions->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
-  auto inserted_variable1 = dynamic_cast<LocalVariableItem*>(
-      m_model.GetWorkspaceItem()->GetVariables().at(1));
+  auto inserted_variable1 =
+      dynamic_cast<LocalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable1, nullptr);
   EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
 
@@ -147,8 +147,8 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
   actions->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
-  auto inserted_variable0 = dynamic_cast<FileVariableItem*>(
-      m_model.GetWorkspaceItem()->GetVariables().at(1));
+  auto inserted_variable0 =
+      dynamic_cast<FileVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(1));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
 }

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/workspace_event.h"
+#include "sequencergui/pvmonitor/workspace_event.h"
 
 #include <gtest/gtest.h>
 

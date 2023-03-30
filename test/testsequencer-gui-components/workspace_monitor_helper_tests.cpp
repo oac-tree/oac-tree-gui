@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/workspace_monitor_helper.h"
+#include "sequencergui/pvmonitor/workspace_monitor_helper.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>

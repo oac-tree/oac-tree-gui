@@ -17,12 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/sequencer_workspace_listener.h"
+#include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
 #include <gtest/gtest.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/monitor/workspace_event.h>
+#include <sequencergui/pvmonitor/workspace_event.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_utils.h>

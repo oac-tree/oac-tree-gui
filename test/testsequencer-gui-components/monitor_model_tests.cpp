@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/monitor_model.h"
+#include "sequencergui/pvmonitor/monitor_model.h"
 
 #include <gtest/gtest.h>
 

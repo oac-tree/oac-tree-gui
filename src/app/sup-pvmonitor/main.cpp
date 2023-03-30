@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "monitor_main_window.h"
+#include "pvmonitor_main_window.h"
 #include <mvvm/widgets/app_utils.h>
 #include <sequencergui/domain/domain_utils.h>
 
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
   sequencergui::LoadPlugins();
 
-  sequencergui::MonitorMainWindow win;
+  sequencergui::PvMonitorMainWindow win;
 
   win.show();
 

@@ -17,13 +17,13 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/workspace_synchronizer.h"
+#include "sequencergui/pvmonitor/workspace_synchronizer.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/monitor/monitor_model.h>
-#include <sequencergui/monitor/workspace_monitor_helper.h>
+#include <sequencergui/pvmonitor/monitor_model.h>
+#include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/variable_transform_helper.h>
 #include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
