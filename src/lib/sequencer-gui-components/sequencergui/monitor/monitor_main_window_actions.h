@@ -42,13 +42,13 @@ namespace sequencergui
 
 //! Vertical panel located on the left of XMLTreeView
 
-class MainWindowActions : public QObject
+class MonitorMainWindowActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit MainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
-  ~MainWindowActions() override;
+  explicit MonitorMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
+  ~MonitorMainWindowActions() override;
 
   bool CanCloseApplication() const;
 
@@ -65,7 +65,7 @@ private:
 
   QMenu* m_recent_project_menu{nullptr};
 
-  sequencergui::ProjectHandler* m_project_handler{nullptr};
+  ProjectHandler* m_project_handler{nullptr};
 };
 
 }  // namespace sequencergui

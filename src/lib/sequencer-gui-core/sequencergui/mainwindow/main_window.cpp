@@ -93,7 +93,7 @@ void MainWindow::InitApplication()
 
 void MainWindow::InitComponents()
 {
-  m_action_manager = new MainWindowActions(m_models->GetSequencerModel(), this);
+  m_action_manager = new MonitorMainWindowActions(m_models->GetSequencerModel(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");

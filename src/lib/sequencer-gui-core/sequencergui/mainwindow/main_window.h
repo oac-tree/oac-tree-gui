@@ -38,7 +38,7 @@ class SequencerTreeView;
 class SequencerMonitorView;
 class SequencerComposerView;
 class SettingsView;
-class MainWindowActions;
+class MonitorMainWindowActions;
 class ApplicationModels;
 
 //! The main window of this application.
@@ -62,7 +62,7 @@ private:
 
   std::unique_ptr<ApplicationModels> m_models;
 
-  MainWindowActions* m_action_manager{nullptr};
+  MonitorMainWindowActions* m_action_manager{nullptr};
   mvvm::MainVerticalBarWidget* m_tab_widget{nullptr};
 
   SequencerExplorerView* m_explorer_view{nullptr};

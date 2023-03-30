@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "main_window_actions.h"
+#include "monitor_main_window_actions.h"
 
 #include <sequencergui/mainwindow/project_handler.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -32,7 +32,7 @@
 namespace sequencergui
 {
 
-MainWindowActions::MainWindowActions(mvvm::SessionModelInterface *model, QMainWindow *mainwindow)
+MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *model, QMainWindow *mainwindow)
     : QObject(mainwindow), m_project_handler(new ProjectHandler(model, mainwindow))
 
 {
@@ -43,16 +43,16 @@ MainWindowActions::MainWindowActions(mvvm::SessionModelInterface *model, QMainWi
 //! Returns 'true' if application can be closed.
 //! Internally will perform check for unsaved data, and proceed via save/discard/cancel dialog.
 
-bool MainWindowActions::CanCloseApplication() const
+bool MonitorMainWindowActions::CanCloseApplication() const
 {
   return m_project_handler->CanCloseProject();
 }
 
-MainWindowActions::~MainWindowActions() = default;
+MonitorMainWindowActions::~MonitorMainWindowActions() = default;
 
 //! Create main actions.
 
-void MainWindowActions::CreateActions(QMainWindow *mainwindow)
+void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
   m_create_new_project_action = new QAction("&New Project", this);
   m_create_new_project_action->setShortcuts(QKeySequence::New);
@@ -87,10 +87,10 @@ void MainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 //! Equips menu with actions.
 
-void MainWindowActions::SetupMenus(QMenuBar *menubar)
+void MonitorMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   auto file_menu = menubar->addMenu("&File");
-  connect(file_menu, &QMenu::aboutToShow, this, &MainWindowActions::AboutToShowFileMenu);
+  connect(file_menu, &QMenu::aboutToShow, this, &MonitorMainWindowActions::AboutToShowFileMenu);
   file_menu->addAction(m_create_new_project_action);
   file_menu->addAction(m_open_existing_project_action);
   m_recent_project_menu = file_menu->addMenu("Recent Projects");
@@ -103,7 +103,7 @@ void MainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addAction(m_exit_action);
 }
 
-void MainWindowActions::AboutToShowFileMenu()
+void MonitorMainWindowActions::AboutToShowFileMenu()
 {
   auto recent_projects = m_project_handler->GetRecentProjectList();
   m_recent_project_menu->clear();

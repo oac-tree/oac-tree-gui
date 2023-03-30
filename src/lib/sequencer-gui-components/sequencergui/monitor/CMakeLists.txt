@@ -1,12 +1,12 @@
 target_sources(${library_name} PRIVATE
   anyvalue_editor_dialog.cpp
   anyvalue_editor_dialog.h
-  main_window_actions.cpp
-  main_window_actions.h
+  monitor_main_window_actions.cpp
+  monitor_main_window_actions.h
   monitor_model.cpp
   monitor_model.h
-  monitor_widget
   monitor_widget.cpp
+  monitor_widget.h
   monitor_widget.h
   monitor_widget_actions.cpp
   monitor_widget_actions.h

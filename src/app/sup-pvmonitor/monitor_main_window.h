@@ -30,17 +30,17 @@ namespace sequencergui
 
 class MonitorWidget;
 class MonitorModel;
-class MainWindowActions;
+class MonitorMainWindowActions;
 
 //! The main window of this application.
 
-class MainWindow : public QMainWindow
+class MonitorMainWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  MainWindow();
-  ~MainWindow() override;
+  MonitorMainWindow();
+  ~MonitorMainWindow() override;
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -54,7 +54,7 @@ private:
   std::unique_ptr<MonitorModel> m_model;
 
   MonitorWidget* m_monitor_widget{nullptr};
-  MainWindowActions* m_actions{nullptr};
+  MonitorMainWindowActions* m_actions{nullptr};
 };
 
 }  // namespace sequencergui

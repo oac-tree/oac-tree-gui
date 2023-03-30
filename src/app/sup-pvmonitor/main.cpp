@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "main_window.h"
+#include "monitor_main_window.h"
 #include <mvvm/widgets/app_utils.h>
 #include <sequencergui/domain/domain_utils.h>
 
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
   QCoreApplication::setApplicationName("sup-pvmonitor");
   QCoreApplication::setApplicationVersion("0.1");
-  QCoreApplication::setOrganizationName("sequencer");
+  QCoreApplication::setOrganizationName("coa");
 
   mvvm::utils::SetupHighDpiScaling();
 
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
   sequencergui::LoadPlugins();
 
-  sequencergui::MainWindow win;
+  sequencergui::MonitorMainWindow win;
 
   win.show();
 

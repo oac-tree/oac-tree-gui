@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "main_window.h"
+#include "monitor_main_window.h"
 
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/monitor/main_window_actions.h>
+#include <sequencergui/monitor/monitor_main_window_actions.h>
 #include <sequencergui/monitor/monitor_model.h>
 #include <sequencergui/monitor/monitor_widget.h>
 
@@ -47,43 +47,43 @@ QString GetWindowPosSettingName()
 
 namespace sequencergui
 {
-MainWindow::MainWindow() : m_model(std::make_unique<MonitorModel>())
+MonitorMainWindow::MonitorMainWindow() : m_model(std::make_unique<MonitorModel>())
 {
   PopulateModel();
   InitApplication();
 }
 
-MainWindow::~MainWindow() = default;
+MonitorMainWindow::~MonitorMainWindow() = default;
 
-void MainWindow::closeEvent(QCloseEvent* event)
+void MonitorMainWindow::closeEvent(QCloseEvent* event)
 {
   WriteSettings();
   QMainWindow::closeEvent(event);
 }
 
-void MainWindow::PopulateModel()
+void MonitorMainWindow::PopulateModel()
 {
-  m_model->InsertItem<sequencergui::WorkspaceItem>();
+  m_model->InsertItem<WorkspaceItem>();
 }
 
-void MainWindow::InitApplication()
+void MonitorMainWindow::InitApplication()
 {
   ReadSettings();
 
   m_monitor_widget = new MonitorWidget(m_model.get());
   setCentralWidget(m_monitor_widget);
 
-  m_actions = new MainWindowActions(m_model.get(), this);
+  m_actions = new MonitorMainWindowActions(m_model.get(), this);
 }
 
-void MainWindow::ReadSettings()
+void MonitorMainWindow::ReadSettings()
 {
   const QSettings settings;
   resize(settings.value(GetWindowSizeSettingName(), QSize(800, 600)).toSize());
   move(settings.value(GetWindowPosSettingName(), QPoint(200, 200)).toPoint());
 }
 
-void MainWindow::WriteSettings()
+void MonitorMainWindow::WriteSettings()
 {
   QSettings settings;
   settings.setValue(GetWindowSizeSettingName(), size());

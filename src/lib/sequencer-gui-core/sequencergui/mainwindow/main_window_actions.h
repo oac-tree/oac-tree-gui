@@ -39,13 +39,13 @@ class ProjectHandler;
 
 //! Vertical panel located on the left of XMLTreeView
 
-class MainWindowActions : public QObject
+class MonitorMainWindowActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit MainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
-  ~MainWindowActions() override;
+  explicit MonitorMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
+  ~MonitorMainWindowActions() override;
 
   bool CanCloseApplication() const;
 

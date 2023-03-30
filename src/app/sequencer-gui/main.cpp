@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
   QCoreApplication::setApplicationName("sequencer-gui");
   QCoreApplication::setApplicationVersion("0.1");
-  QCoreApplication::setOrganizationName("sequencer");
+  QCoreApplication::setOrganizationName("coa");
 
   auto options = sequencergui::ParseOptions(argc, argv);
 
