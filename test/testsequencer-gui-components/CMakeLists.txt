@@ -1,4 +1,4 @@
-set(test testsup-pvmonitor-core)
+set(test testsequencer-gui-components)
 
 find_package(sup-epics REQUIRED)
 
@@ -7,7 +7,7 @@ file(GLOB include_files "*.h")
 
 add_executable(${test} ${source_files} ${include_files})
 
-target_link_libraries(${test} PRIVATE sup-pvmonitor-core test-utils PRIVATE sup-epics::sup-epics-test)
+target_link_libraries(${test} PRIVATE sequencer-gui-components test-utils PRIVATE sup-epics::sup-epics-test)
 
 set_target_properties(${test} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_OUTPUT_DIRECTORY})
 

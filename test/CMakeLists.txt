@@ -16,7 +16,7 @@ include(GoogleTest)
 add_subdirectory(libtest-utils)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-core-events)
-add_subdirectory(testsup-pvmonitor-core)
+add_subdirectory(testsequencer-gui-components)
 
 # Add custom target `make testall` which will run test executables one after another.
 # This can be used instead of usual `make test` or `ctest` while running tests via an ssh

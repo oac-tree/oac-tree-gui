@@ -1,4 +1,4 @@
-set(library_name sup-pvmonitor-core)
+set(library_name sequencer-gui-components)
 
 set(CMAKE_AUTOMOC ON)
 
