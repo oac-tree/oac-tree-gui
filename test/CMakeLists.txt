@@ -15,7 +15,7 @@ include(GoogleTest)
 
 add_subdirectory(libtest-utils)
 add_subdirectory(testsequencer-gui-core)
-add_subdirectory(testsequencer-gui-core-events)
+add_subdirectory(testsequencer-gui-integration)
 add_subdirectory(testsequencer-gui-components)
 
 # Add custom target `make testall` which will run test executables one after another.
