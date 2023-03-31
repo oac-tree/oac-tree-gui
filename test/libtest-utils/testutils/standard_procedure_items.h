@@ -55,6 +55,10 @@ sequencergui::ProcedureItem* CreateInputProcedureItem(sequencergui::SequencerMod
 //! Creates procedure that requires user choice.
 sequencergui::ProcedureItem* CreateUserChoiceProcedureItem(sequencergui::SequencerModel* model);
 
+//! Creates procedure with message instruction.
+sequencergui::ProcedureItem* CreateMessageProcedureItem(sequencergui::SequencerModel* model,
+                                                        const std::string& text);
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_

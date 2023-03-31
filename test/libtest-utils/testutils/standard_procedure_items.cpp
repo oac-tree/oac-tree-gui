@@ -131,4 +131,13 @@ ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
   return procedure_item;
 }
 
+ProcedureItem* CreateMessageProcedureItem(sequencergui::SequencerModel* model,
+                                          const std::string& text)
+{
+  auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+  auto message = model->InsertItem<MessageItem>(procedure_item->GetInstructionContainer());
+  message->SetText(text);
+  return procedure_item;
+}
+
 }  // namespace testutils

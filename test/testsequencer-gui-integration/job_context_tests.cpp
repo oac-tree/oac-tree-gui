@@ -29,6 +29,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/monitor/job_log.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -280,7 +281,8 @@ TEST_F(JobContextTest, UserChoiceScenario)
 
 TEST_F(JobContextTest, StopLongRunningJob)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
+  auto procedure =
+      testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -302,4 +304,45 @@ TEST_F(JobContextTest, StopLongRunningJob)
 
   EXPECT_FALSE(job_context.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
+}
+
+//! Control log events with the help of MessageInstruction.
+
+TEST_F(JobContextTest, LogEvents)
+{
+  const std::string expected_message("abc");
+  auto procedure =
+      testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), expected_message);
+  m_job_item->SetProcedure(procedure);
+
+  JobContext job_context(m_job_item);
+  EXPECT_FALSE(job_context.IsValid());
+  job_context.onPrepareJobRequest();
+  EXPECT_TRUE(job_context.IsValid());
+
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+
+  job_context.onStartRequest();
+  QTest::qWait(50);
+  //  EXPECT_TRUE(QTest::qWaitFor([&job_context]() { return !job_context.IsRunning(); }, 10));
+
+  EXPECT_FALSE(job_context.IsRunning());
+
+  EXPECT_EQ(spy_instruction_status.count(), 2);
+
+  auto instructions = mvvm::utils::FindItems<MessageItem>(m_models.GetJobModel());
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
+
+  ASSERT_EQ(job_context.GetJobLog()->GetSize(), 2);
+
+  auto event1 = job_context.GetJobLog()->At(0);
+  EXPECT_EQ(event1.severity, Severity::kDebug);
+  // FIXME message will probably change, how to make test robust?
+  EXPECT_EQ(event1.message, std::string("StartSingleStep()"));
+
+  auto event2 = job_context.GetJobLog()->At(1);
+  EXPECT_EQ(event2.severity, Severity::kInfo);
+  EXPECT_EQ(event2.message, expected_message);
 }
