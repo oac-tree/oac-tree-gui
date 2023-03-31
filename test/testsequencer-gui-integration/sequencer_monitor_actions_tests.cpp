@@ -84,7 +84,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToUseWhenMisconfigured)
 
 TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10));
 
   QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
 
@@ -123,7 +123,7 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 
 TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
 {
-  auto procedure = testutils::CreateInvalidProcedure(GetSequencerModel());
+  auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
   JobManager manager;
 
@@ -137,7 +137,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
 
 TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(20));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(20));
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -170,7 +170,7 @@ TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
 
 TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
 {
-  auto procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
   m_actions.OnSubmitJobRequest(procedure);
   EXPECT_EQ(GetJobItems().size(), 1);
@@ -189,7 +189,7 @@ TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
 
 TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10000));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
   m_actions.OnSubmitJobRequest(procedure);
 
@@ -216,7 +216,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
 
 TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10));
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -254,7 +254,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 
 TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10));
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -290,7 +290,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
 
 TEST_F(SequencerMonitorActionsTests, ExecuteSameJobTwice)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(50));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(50));
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);

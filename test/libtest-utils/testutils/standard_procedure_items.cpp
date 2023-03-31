@@ -19,6 +19,8 @@
 
 #include "standard_procedure_items.h"
 
+#include "test_utils.h"
+
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -28,14 +30,12 @@
 
 #include <mvvm/standarditems/container_item.h>
 
-#include "test_utils.h"
-
 using namespace sequencergui;
 
 namespace testutils
 {
 
-sequencergui::ProcedureItem* CreateInvalidProcedure(sequencergui::SequencerModel* model)
+sequencergui::ProcedureItem* CreateInvalidProcedureItem(sequencergui::SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   // InstructionItem that doesn't have counterpart in SequencerDomain
@@ -43,7 +43,8 @@ sequencergui::ProcedureItem* CreateInvalidProcedure(sequencergui::SequencerModel
   return procedure_item;
 }
 
-ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model, std::chrono::milliseconds timeout)
+ProcedureItem* CreateSingleWaitProcedureItem(SequencerModel* model,
+                                             std::chrono::milliseconds timeout)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto wait = model->InsertItem<WaitItem>(procedure_item->GetInstructionContainer());
@@ -51,7 +52,7 @@ ProcedureItem* CreateSingleWaitProcedure(SequencerModel* model, std::chrono::mil
   return procedure_item;
 }
 
-ProcedureItem* CreateCopyProcedure(SequencerModel* model)
+ProcedureItem* CreateCopyProcedureItem(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto copy = model->InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
@@ -71,7 +72,7 @@ ProcedureItem* CreateCopyProcedure(SequencerModel* model)
   return procedure_item;
 }
 
-ProcedureItem* CreateIncludeProcedure(SequencerModel* model)
+ProcedureItem* CreateIncludeProcedureItem(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
@@ -87,7 +88,7 @@ ProcedureItem* CreateIncludeProcedure(SequencerModel* model)
   return procedure_item;
 }
 
-ProcedureItem* CreateInputProcedure(SequencerModel* model)
+ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
@@ -106,7 +107,7 @@ ProcedureItem* CreateInputProcedure(SequencerModel* model)
   return procedure_item;
 }
 
-ProcedureItem* CreateUserChoiceProcedure(SequencerModel* model)
+ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());

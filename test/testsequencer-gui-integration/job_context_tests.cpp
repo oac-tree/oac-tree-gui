@@ -71,7 +71,7 @@ TEST_F(JobContextTest, InitialState)
 
 TEST_F(JobContextTest, PrepareJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -98,7 +98,7 @@ TEST_F(JobContextTest, PrepareJobRequest)
 
 TEST_F(JobContextTest, InvalidProcedure)
 {
-  auto procedure = testutils::CreateInvalidProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -106,11 +106,11 @@ TEST_F(JobContextTest, InvalidProcedure)
   EXPECT_FALSE(job_context.IsValid());
 }
 
-//! Normal execution of the procedure with single wait instruction.
+//! Delete JobCOntext after procedure start.
 
 TEST_F(JobContextTest, PrematureDeletion)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
   {
@@ -126,7 +126,7 @@ TEST_F(JobContextTest, PrematureDeletion)
 
 TEST_F(JobContextTest, ProcedureWithSingleWait)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
@@ -156,7 +156,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
 
 TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
@@ -185,7 +185,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 
 TEST_F(JobContextTest, ProcedureWithVariableCopy)
 {
-  auto procedure = testutils::CreateCopyProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateCopyProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   auto vars = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
@@ -208,7 +208,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
 
 TEST_F(JobContextTest, LocalIncludeScenario)
 {
-  auto procedure = testutils::CreateIncludeProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateIncludeProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -229,7 +229,7 @@ TEST_F(JobContextTest, LocalIncludeScenario)
 
 TEST_F(JobContextTest, UserInputScenario)
 {
-  auto procedure = testutils::CreateInputProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -252,7 +252,7 @@ TEST_F(JobContextTest, UserInputScenario)
 
 TEST_F(JobContextTest, UserChoiceScenario)
 {
-  auto procedure = testutils::CreateUserChoiceProcedure(m_models.GetSequencerModel());
+  auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
@@ -280,7 +280,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
 
 TEST_F(JobContextTest, StopLongRunningJob)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(m_models.GetSequencerModel(), msec(10000));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);

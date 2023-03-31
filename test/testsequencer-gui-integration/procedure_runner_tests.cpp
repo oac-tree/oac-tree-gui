@@ -57,30 +57,6 @@ TEST_F(ProcedureRunnerTest, InitialState)
   EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kIdle);
 }
 
-//! ProcedureRunner dies before execution of procedure finished.
-//! FIXME uncomment
-// TEST_F(ProcedureRunnerTest, PrematureDeletion)
-//{
-//   auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
-//   procedure->Setup();
-//   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
-
-//  auto runner = std::make_unique<ProcedureRunner>();
-//  runner->SetProcedure(procedure.get());
-
-//  runner->Start();
-
-//  std::this_thread::sleep_for(msec(100));
-//  EXPECT_TRUE(runner->IsBusy());
-//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
-
-//  // sudden runner destruction
-//  runner.reset();
-
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
-//}
-
 //! Short procedure which is executed normally.
 
 TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)

@@ -37,23 +37,23 @@ namespace testutils
 {
 
 //! Creates invalid procedure that will cause JobContext to crash during the preparation.
-sequencergui::ProcedureItem* CreateInvalidProcedure(sequencergui::SequencerModel* model);
+sequencergui::ProcedureItem* CreateInvalidProcedureItem(sequencergui::SequencerModel* model);
 
 //! Creates procedure with single wait instruction.
-sequencergui::ProcedureItem* CreateSingleWaitProcedure(sequencergui::SequencerModel* model,
-                                                       std::chrono::milliseconds timeout);
+sequencergui::ProcedureItem* CreateSingleWaitProcedureItem(sequencergui::SequencerModel* model,
+                                                           std::chrono::milliseconds timeout);
 
 //! Creates procedure with two variables and single Copy instruction.
-sequencergui::ProcedureItem* CreateCopyProcedure(sequencergui::SequencerModel* model);
+sequencergui::ProcedureItem* CreateCopyProcedureItem(sequencergui::SequencerModel* model);
 
 //! Creates procedure with local include.
-sequencergui::ProcedureItem* CreateIncludeProcedure(sequencergui::SequencerModel* model);
+sequencergui::ProcedureItem* CreateIncludeProcedureItem(sequencergui::SequencerModel* model);
 
 //! Creates procedure that requires input from the user.
-sequencergui::ProcedureItem* CreateInputProcedure(sequencergui::SequencerModel* model);
+sequencergui::ProcedureItem* CreateInputProcedureItem(sequencergui::SequencerModel* model);
 
 //! Creates procedure that requires user choice.
-sequencergui::ProcedureItem* CreateUserChoiceProcedure(sequencergui::SequencerModel* model);
+sequencergui::ProcedureItem* CreateUserChoiceProcedureItem(sequencergui::SequencerModel* model);
 
 }  // namespace testutils
 

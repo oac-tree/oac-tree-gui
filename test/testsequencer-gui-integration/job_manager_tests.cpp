@@ -69,7 +69,7 @@ TEST_F(JobManagerTest, InitialState)
 
 TEST_F(JobManagerTest, SubmitProcedure)
 {
-  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
   EXPECT_EQ(m_job_item->GetExpandedProcedure(), nullptr);
@@ -85,7 +85,7 @@ TEST_F(JobManagerTest, SubmitProcedure)
 
 TEST_F(JobManagerTest, AttemptToSubmitProcedure)
 {
-  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(copy_procedure);
 
   JobManager manager;
@@ -103,7 +103,7 @@ TEST_F(JobManagerTest, AttemptToSubmitProcedure)
 
 TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 {
-  auto invalid_procedure = testutils::CreateInvalidProcedure(GetSequencerModel());
+  auto invalid_procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
   m_job_item->SetProcedure(invalid_procedure);
 
   JobManager manager;
@@ -115,7 +115,7 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 
 TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 {
-  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
   MessagePanel panel;
   m_job_item->SetProcedure(copy_procedure);
@@ -163,7 +163,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
 TEST_F(JobManagerTest, OnRemoveJobRequest)
 {
-  auto copy_procedure = testutils::CreateCopyProcedure(GetSequencerModel());
+  auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
   MessagePanel panel;
   m_job_item->SetProcedure(copy_procedure);
@@ -189,7 +189,7 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
 
 TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(GetSequencerModel(), msec(10000));
+  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
   MessagePanel panel;
   m_job_item->SetProcedure(procedure);
