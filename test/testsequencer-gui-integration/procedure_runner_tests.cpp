@@ -58,10 +58,14 @@ TEST_F(ProcedureRunnerTest, InitialState)
 }
 
 //! Short procedure which is executed normally.
+//! FIXME test is duplicated in DomainRunnerAdapterTest, remove after ProcedureRunner ->
+//! ProcedureReporter
 
 TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(msec(10));
+  const std::chrono::milliseconds wait_timeout(10);
+
+  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
   procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>(procedure.get());
@@ -71,7 +75,8 @@ TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
 
   EXPECT_TRUE(runner->Start());
 
-  EXPECT_TRUE(testutils::WaitForCompletion(*runner, testutils::kDefaultWaitPrecision + msec(20)));
+  EXPECT_TRUE(
+      testutils::WaitForCompletion(*runner, testutils::kDefaultWaitPrecision + wait_timeout * 2));
 
   EXPECT_FALSE(runner->IsBusy());
   EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
@@ -87,10 +92,14 @@ TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
 }
 
 //! Terminates procedure which runs too long.
+//! FIXME test is duplicated in DomainRunnerAdapterTest, remove after ProcedureRunner ->
+//! ProcedureReporter
 
 TEST_F(ProcedureRunnerTest, StartAndTerminate)
 {
-  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
+  const std::chrono::milliseconds wait_timeout(10000);
+
+  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
   procedure->Setup();
 
   auto runner = std::make_unique<ProcedureRunner>(procedure.get());

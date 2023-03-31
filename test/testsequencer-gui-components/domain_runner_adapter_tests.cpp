@@ -72,8 +72,8 @@ public:
 
 TEST_F(DomainRunnerAdapterTest, InitialState)
 {
-  std::chrono::milliseconds timeout_msec(10);
-  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+  const std::chrono::milliseconds timeout(10);
+  auto procedure = testutils::CreateSingleWaitProcedure(timeout);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
   EXPECT_FALSE(adapter->IsBusy());
@@ -84,8 +84,9 @@ TEST_F(DomainRunnerAdapterTest, InitialState)
 
 TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
-  std::chrono::milliseconds timeout_msec(20);
-  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+  const std::chrono::milliseconds wait_timeout(10);
+
+  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
 
@@ -108,8 +109,8 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   // triggering action
   EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(testutils::WaitForCompletion(*adapter,
-                                           testutils::kDefaultWaitPrecision + msec(timeout_msec)));
+  EXPECT_TRUE(
+      testutils::WaitForCompletion(*adapter, testutils::kDefaultWaitPrecision + wait_timeout * 2));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
@@ -118,8 +119,9 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 
 TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 {
-  std::chrono::milliseconds timeout_msec(10000);
-  auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
+  const std::chrono::milliseconds wait_timeout(10000);
+
+  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
 
@@ -156,52 +158,6 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
   // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
-
-//! Runner dies before procedure has finished.
-//! Test is commented. For the moment an attempt to delete the runner during procedure execution
-//! will lead to UB. It is not clear how to provide mutual safety for time of life of Procedure
-//! and DomainRunnerAdapter. The problem lies in JobContext::onPrepareJobRequest which rebuild
-//! procedure and then initialises the DOmainRunnerAdapter.
-
-// TEST_F(DomainRunnerAdapterTest, PrematureDeletion)
-//{
-//   std::chrono::milliseconds timeout_msec(10000);
-//   auto procedure = testutils::CreateSingleWaitProcedure(timeout_msec);
-//   auto runner = CreateRunner(procedure.get());
-
-//  auto adapter = CreateRunnerAdapter(procedure.get());
-
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
-
-//  {  // signaling related to the runner status change
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    // We do not expect any ohter signals during premature DomainRunnerAdapter destruction.
-//    // This is how internal FunctionRunner is implemented.
-//  }
-
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-//    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-//  }
-
-//  // triggering action
-//  EXPECT_TRUE(adapter->Start());  // trigger action
-
-//  EXPECT_TRUE(adapter->IsBusy());
-//  std::this_thread::sleep_for(msec(20));
-
-//  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
-
-//  // delete before end
-//  EXPECT_NO_FATAL_FAILURE(adapter.reset());
-//  std::this_thread::sleep_for(msec(10));
-
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
-//}
 
 //! Sequence with single wait in normal start mode.
 
