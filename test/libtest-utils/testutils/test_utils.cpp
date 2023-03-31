@@ -89,17 +89,4 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout)
   return static_cast<double>(value) / 1000;
 }
 
-bool WaitInEventLoop(double timeout_sec, std::function<bool ()> predicate)
-{
-  long timeout_ns = std::lround(timeout_sec * 1e9);
-  auto time_end = std::chrono::system_clock::now() + std::chrono::nanoseconds(timeout_ns);
-  while (!predicate() && std::chrono::system_clock::now() < time_end)
-  {
-    QTest::qWait(50);  // wait in event loop 10 msec
-//    std::this_thread::sleep_for(std::chrono::milliseconds(20));
-  }
-  return predicate();
-
-}
-
 }  // namespace testutils

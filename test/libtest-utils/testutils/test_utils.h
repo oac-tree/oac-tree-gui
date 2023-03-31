@@ -115,11 +115,6 @@ bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
-
-//! Wait untill predicate return true, but not more than given amount of timeout_sec.
-//! While waiting, let event loop to breath
-bool WaitInEventLoop(double timeout_sec, std::function<bool()> predicate);
-
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_

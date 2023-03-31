@@ -41,6 +41,7 @@ class LogEvent;
 class JobContext : public QObject
 {
   Q_OBJECT
+
 public:
   explicit JobContext(JobItem* job_item);
   ~JobContext() override;
