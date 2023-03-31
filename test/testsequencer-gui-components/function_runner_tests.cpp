@@ -53,16 +53,20 @@ TEST_F(FunctionRunnerTest, CheckListener)
 
 TEST_F(FunctionRunnerTest, InitialState)
 {
+  const auto timeout = msec(50);
+
   FunctionRunner runner([]() { return false; });
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kIdle);
   EXPECT_FALSE(runner.IsBusy());
-  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(1)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, timeout));
 }
 
 //! Start and normal completion of the short task.
 
 TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 {
+  const auto timeout = msec(50);
+
   auto worker = []() { return false; };  // worker asks to exit immediately
   FunctionRunner runner(worker, m_listener.CreateCallback());
 
@@ -73,7 +77,7 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, timeout));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -82,6 +86,8 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
 
 TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
 {
+  const auto timeout = msec(50);
+
   auto worker = []()
   {
     throw std::runtime_error("Failed during runtime");
@@ -96,7 +102,7 @@ TEST_F(FunctionRunnerTest, TaskFailingDuringExecution)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, timeout));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kFailed);
   EXPECT_FALSE(runner.IsBusy());
 }
@@ -189,7 +195,7 @@ TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
   int nsteps{0};
   auto worker = [&nsteps]()
   {
-    std::this_thread::sleep_for(msec(10));
+    std::this_thread::sleep_for(msec(5));
     nsteps++;
     return nsteps < 3;  // should stop when nsteps==3
   };
@@ -225,7 +231,7 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
   int nsteps{0};
   auto worker = [&nsteps]()
   {
-    std::this_thread::sleep_for(msec(10));
+    std::this_thread::sleep_for(msec(5));
     nsteps++;
     return nsteps < 2;  // should stop when nsteps==2
   };
@@ -317,8 +323,12 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
 
   EXPECT_TRUE(runner.Start());  // triggering action
   std::this_thread::sleep_for(msec(20));
+
+  auto predicate = [&nsteps, &runner]() { return (runner.IsBusy() && nsteps > 0); };
+  EXPECT_TRUE(testutils::WaitFor(predicate, msec(50)));
   EXPECT_TRUE(runner.IsBusy());
   EXPECT_TRUE(nsteps > 0);
+
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
 
   // let's pause
@@ -335,7 +345,7 @@ TEST_F(FunctionRunnerTest, RunPauseRun)
   runner.Start();
   std::this_thread::sleep_for(msec(10));
   is_continue = false;  // terminating in natural way
-  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(50)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }
@@ -392,7 +402,7 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   runner.Start();
   std::this_thread::sleep_for(msec(10));
   is_continue = false;  // terminating in natural way
-  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(20)));
+  EXPECT_TRUE(testutils::WaitForCompletion(runner, msec(50)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_TRUE(nsteps > last_step);
 }
@@ -422,7 +432,9 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  std::this_thread::sleep_for(msec(10));
+
+  auto predicate = [&nsteps, &runner]() { return (runner.IsBusy() && nsteps > 0); };
+  EXPECT_TRUE(testutils::WaitFor(predicate, msec(50)));
   EXPECT_TRUE(runner.IsBusy());
   EXPECT_TRUE(nsteps > 0);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
@@ -434,7 +446,7 @@ TEST_F(FunctionRunnerTest, TwoConsequitiveRuns)
 
   // running again should
   EXPECT_TRUE(runner.Start());  // triggering action
-  std::this_thread::sleep_for(msec(10));
+  EXPECT_TRUE(testutils::WaitFor(predicate, msec(50)));
   EXPECT_TRUE(runner.IsBusy());
   EXPECT_TRUE(nsteps > 0);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);

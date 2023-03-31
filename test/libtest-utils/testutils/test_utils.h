@@ -103,8 +103,8 @@ const std::chrono::milliseconds kDefaultWaitPrecision(50);
 const auto duration = [](auto time_interval)
 { return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
 
-//! Wait for timeout in milisseconds or until runner returns false.
-bool WaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout);
+//! Wait for timeout in milisseconds or until predicate returns true.
+bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout);
 
 template <typename T>
 bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)

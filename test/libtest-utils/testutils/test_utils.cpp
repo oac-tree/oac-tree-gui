@@ -36,6 +36,7 @@ const std::string header{R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 const std::string footer{R"RAW(</root>
 )RAW"};
 
+using clock = std::chrono::high_resolution_clock;
 }  // namespace
 
 namespace testutils
@@ -66,14 +67,14 @@ void CreateTextFile(const std::string &file_name, const std::string &content)
   file_out.write(content.c_str(), content.size());
 }
 
-bool WaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout)
+bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout)
 {
-  const std::chrono::milliseconds timeout_precision_msec(10);
+  const std::chrono::milliseconds timeout_precision_msec(5);
   const std::chrono::milliseconds wait_time(timeout);
-  auto time_end = std::chrono::system_clock::now() + timeout;
-  while (std::chrono::system_clock::now() < time_end)
+  auto time_end = clock::now() + timeout;
+  while (clock::now() < time_end)
   {
-    if (runner())
+    if (predicate())
     {
       return true;
     }

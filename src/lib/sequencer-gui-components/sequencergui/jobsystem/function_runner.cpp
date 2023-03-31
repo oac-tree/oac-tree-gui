@@ -26,7 +26,6 @@
 #include <atomic>
 #include <chrono>
 #include <cmath>
-#include <iostream>
 #include <mutex>
 #include <thread>
 
@@ -166,10 +165,7 @@ void FunctionRunner::StepRequest()
 
 void FunctionRunner::StopRequest()
 {
-  std::cout << "FunctionRunner::StopRequest() 1.1" << std::endl;
-
   p_impl->Stop();
-  std::cout << "FunctionRunner::StopRequest() 1.2" << std::endl;
 }
 
 void FunctionRunner::OnStatusChange(RunnerStatus status)

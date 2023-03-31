@@ -41,7 +41,6 @@ public:
 
   bool IsBusy() const;
 
-public:
   void StartRequest() override;
   void PauseModeOnRequest() override;
   void PauseModeOffRequest() override;
@@ -49,6 +48,7 @@ public:
   void StopRequest() override;
   void OnStatusChange(RunnerStatus status) override;
 
+private:
   struct FunctionRunnerImpl;
   std::unique_ptr<FunctionRunnerImpl> p_impl;
 };
