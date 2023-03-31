@@ -23,11 +23,11 @@
 //! Collection of utility functions for various unit tests.
 
 #include <algorithm>
+#include <chrono>
+#include <functional>
 #include <memory>
 #include <thread>
 #include <vector>
-#include <functional>
-#include <chrono>
 
 //! Various common utils for unit tests.
 
@@ -103,14 +103,13 @@ const std::chrono::milliseconds kDefaultWaitPrecision(50);
 const auto duration = [](auto time_interval)
 { return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
 
-//! Will wait a given amount of msec for runner completion. Returns `true` is runner has finished
-//! before the timeout, `false` otherwise. Internally has a precision of 10 msec.
-bool BusyWaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout);
+//! Wait for timeout in milisseconds or until runner returns false.
+bool WaitFor(std::function<bool()> runner, std::chrono::milliseconds timeout);
 
 template <typename T>
 bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 {
-  return BusyWaitFor([&runner]() { return runner.IsBusy(); }, timeout_msec);
+  return WaitFor([&runner]() { return !runner.IsBusy(); }, timeout_msec);
 }
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout);

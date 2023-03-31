@@ -67,7 +67,7 @@ TEST_F(FunctionRunnerTest, ShortTaskNormalCompletion)
   FunctionRunner runner(worker, m_listener.CreateCallback());
 
   {  // expecting calls with status change in this order
-    ::testing::InSequence seq;
+    const ::testing::InSequence seq;
     EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
     EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
