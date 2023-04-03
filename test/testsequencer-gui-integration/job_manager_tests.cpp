@@ -30,10 +30,12 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/message_panel.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
 
 #include <sup/sequencer/exceptions.h>
+#include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
@@ -115,6 +117,9 @@ TEST_F(JobManagerTest, AttemptToSubmitMalformedProcedure)
 
 TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 {
+  const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
+  const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
+
   auto copy_procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
   MessagePanel panel;
@@ -150,13 +155,18 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   // variables inside are changed
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(GetJobModel());
-  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
-  EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
+  auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
+  auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0);
 
   // variables at original model remained unchanged
   auto inside = mvvm::utils::FindItems<LocalVariableItem>(GetSequencerModel());
-  EXPECT_EQ(inside.at(0)->GetJsonValue(), std::string("42"));
-  EXPECT_EQ(inside.at(1)->GetJsonValue(), std::string("43"));
+  auto initial_anyvalue_item0 = inside.at(0)->GetAnyValueItem();
+  auto initial_anyvalue_item1 = inside.at(1)->GetAnyValueItem();
+  EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item1), anyvalue1);
 }
 
 //! Removing submitted job.

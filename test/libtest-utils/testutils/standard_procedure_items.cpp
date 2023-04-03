@@ -27,8 +27,10 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <sup/dto/anyvalue.h>
 
 using namespace sequencergui;
 
@@ -61,13 +63,11 @@ ProcedureItem* CreateCopyProcedureItem(SequencerModel* model)
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("var0");
-  var0->SetJsonType(R"({"type":"uint32"})");
-  var0->SetJsonValue("42");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var0);
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
-  var1->SetJsonType(R"({"type":"uint32"})");
-  var1->SetJsonValue("43");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}, *var1);
 
   return procedure_item;
 }
@@ -101,8 +101,7 @@ ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
-  var1->SetJsonType(R"({"type":"uint32"})");
-  var1->SetJsonValue(R"(0)");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var1);
 
   return procedure_item;
 }
