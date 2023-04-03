@@ -31,7 +31,6 @@ namespace sequencergui
 {
 class InstructionItem;
 class InstructionContainerItem;
-class WorkspaceItem;
 class VariableItem;
 class ProcedureItem;
 
@@ -44,16 +43,9 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 //! Creates InstructionItem from string representing Type of sup::sequencer::Instruction.
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type);
 
-//! Populates empty InstructionContainerItem with the content from sequencer Procedure.
-void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                      InstructionContainerItem* container, bool root_only);
-
-//! Populates empty WorkspaceItem with the content from sequencer Procedure.
-void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace);
-
-//! Populates empty ProcedureItem with the content from sequencer Procedure.
-void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
-                           bool root_only);
+//! Creates ProcedureItem from given domain procedure. If flag `root_only` is true, will use process
+//! one top-level root instruction.
+std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
 //! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
 //! the default attribute map from the domain. See explanations in the implementation.

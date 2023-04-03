@@ -36,6 +36,14 @@
 namespace sequencergui
 {
 
+std::unique_ptr<ProcedureItem> GUIObjectBuilder::CreateProcedureItem(const procedure_t *procedure,
+                                                                     bool root_only)
+{
+  auto result = std::make_unique<ProcedureItem>();
+  PopulateProcedureItem(procedure, result.get(), root_only);
+  return result;
+}
+
 void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
                                              ProcedureItem *procedure_item, bool root_only)
 {

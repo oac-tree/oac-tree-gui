@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/transform/gui_object_builder.h>
@@ -136,24 +137,10 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
   return catalogue->Create(domain_type);
 }
 
-void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace)
+std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only)
 {
   GUIObjectBuilder builder;
-  builder.PopulateWorkspaceItem(procedure, workspace);
-}
-
-void PopulateInstructionContainerItem(const procedure_t* procedure,
-                                      InstructionContainerItem* container, bool root_only)
-{
-  GUIObjectBuilder builder;
-  builder.PopulateInstructionContainerItem(procedure, container, root_only);
-}
-
-void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
-                           bool root_only)
-{
-  GUIObjectBuilder builder;
-  builder.PopulateProcedureItem(procedure, procedure_item, root_only);
+  return builder.CreateProcedureItem(procedure, root_only);
 }
 
 std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)

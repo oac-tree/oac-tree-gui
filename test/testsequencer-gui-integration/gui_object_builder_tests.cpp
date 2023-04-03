@@ -76,6 +76,32 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
   EXPECT_EQ(builder.FindInstructionItem(wait_ptr), item);
 }
 
+//! Populate InstructionContainerItem from Procedure with two Wait instruction.
+//! One is marked as root instruction, root_only=true is used
+
+TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithTwoWaits)
+{
+  ::sup::sequencer::Procedure procedure;
+
+  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  procedure.PushInstruction(wait0.release());
+
+  auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait1->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
+  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "43");
+  procedure.PushInstruction(wait1.release());
+
+  sequencergui::ProcedureItem procedure_item;
+  GUIObjectBuilder builder;
+  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ true);
+
+  EXPECT_EQ(procedure_item.GetInstructionContainer()->GetInstructionCount(), 1);
+
+  auto item = procedure_item.GetInstructionContainer()->GetItem<sequencergui::WaitItem>("");
+  EXPECT_EQ(item->GetTimeout(), 43.0);
+}
+
 //! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
 
 TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)

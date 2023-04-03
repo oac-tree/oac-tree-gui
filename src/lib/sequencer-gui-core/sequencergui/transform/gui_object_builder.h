@@ -24,6 +24,7 @@
 
 #include <map>
 #include <string>
+#include <memory>
 
 namespace mvvm
 {
@@ -48,6 +49,9 @@ class VariableItem;
 class GUIObjectBuilder
 {
 public:
+
+  std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
+
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
                              bool root_only);
 

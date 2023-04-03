@@ -21,14 +21,8 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/workspace_item.h>
-
-#include <sup/sequencer/instruction.h>
-#include <sup/sequencer/procedure.h>
-#include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
 
@@ -149,115 +143,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       domainconstants::kUserChoiceInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::WaitItem>(domainconstants::kWaitInstructionType));
-}
-
-//! Populate InstructionContainerItem from empty Procedure.
-
-TEST_F(TransformFromDomainTest, PopulateItemContainerFromEmptyProcedure)
-{
-  ::sup::sequencer::Procedure procedure;
-
-  sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ false);
-
-  EXPECT_EQ(container.GetTotalItemCount(), 0);
-}
-
-//! Populate InstructionContainerItem from Procedure with a single Wait instruction.
-
-TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithWait)
-{
-  ::sup::sequencer::Procedure procedure;
-
-  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
-  procedure.PushInstruction(wait.release());
-
-  sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ false);
-
-  auto item = container.GetItem<sequencergui::WaitItem>("");
-  EXPECT_EQ(item->GetTimeout(), 42.0);
-}
-
-//! Populate InstructionContainerItem from Procedure with two Wait instruction.
-//! One is marked as root instruction, root_only=true is used
-
-TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithTwoWaits)
-{
-  ::sup::sequencer::Procedure procedure;
-
-  auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
-  procedure.PushInstruction(wait0.release());
-
-  auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait1->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
-  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "43");
-  procedure.PushInstruction(wait1.release());
-
-  sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ true);
-
-  auto item = container.GetItem<sequencergui::WaitItem>("");
-  EXPECT_EQ(item->GetTimeout(), 43.0);
-}
-
-//! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
-
-TEST_F(TransformFromDomainTest, PopulateItemContainerFromProcedureWithSequence)
-{
-  ::sup::sequencer::Procedure procedure;
-
-  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
-
-  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  sequence->InsertInstruction(wait.release(), 0);
-
-  procedure.PushInstruction(sequence.release());
-
-  sequencergui::InstructionContainerItem container;
-  sequencergui::PopulateInstructionContainerItem(&procedure, &container, /*root_only*/ false);
-
-  auto sequence_item = container.GetItem<sequencergui::SequenceItem>("");
-  auto wait_item = sequence_item->GetItem<sequencergui::WaitItem>("");
-  EXPECT_EQ(wait_item->GetTimeout(), 42.0);
-}
-
-//! Populate WorkspaceItem from empty procedure.
-
-TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromEmtpyProcedure)
-{
-  ::sup::sequencer::Procedure procedure;
-
-  sequencergui::WorkspaceItem workspace_item;
-  sequencergui::PopulateWorkspaceItem(&procedure, &workspace_item);
-  EXPECT_EQ(workspace_item.GetTotalItemCount(), 0);
-}
-
-//! Populate WorkspaceItem from empty procedure.
-
-TEST_F(TransformFromDomainTest, PopulateWorkspaceItemFromProcedureWithLocalVariable)
-{
-  ::sup::sequencer::Procedure procedure;
-
-  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
-  const std::string expected_value("42");
-
-  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  local_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
-  local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
-
-  procedure.AddVariable("abc", local_variable.release());
-
-  sequencergui::WorkspaceItem workspace_item;
-  sequencergui::PopulateWorkspaceItem(&procedure, &workspace_item);
-  EXPECT_EQ(workspace_item.GetTotalItemCount(), 1);
-
-  auto variable_item = workspace_item.GetItem<sequencergui::LocalVariableItem>("");
-  EXPECT_EQ(variable_item->GetJsonType(), expected_type);
-  EXPECT_EQ(variable_item->GetJsonValue(), expected_value);
 }
 
 TEST_F(TransformFromDomainTest, CreateUnknownInstructionItem)

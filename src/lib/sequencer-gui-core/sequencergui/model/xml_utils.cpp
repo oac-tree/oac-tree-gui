@@ -34,7 +34,6 @@ namespace sequencergui
 {
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
 {
-  auto result = std::make_unique<ProcedureItem>();
   auto procedure = sup::sequencer::ParseProcedureFile(file_name);
 
   if (!procedure)
@@ -42,9 +41,7 @@ std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  PopulateProcedureItem(procedure.get(), result.get(), /*root_only*/ false);
-
-  return result;
+  return CreateProcedureItem(procedure.get(), /*root_only*/ false);
 }
 
 std::string ExportToXMLString(const ProcedureItem *procedure_item)
