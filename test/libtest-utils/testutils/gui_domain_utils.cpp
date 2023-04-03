@@ -25,12 +25,13 @@
 namespace testutils
 {
 
+// FIXME remove after AnyValueItem cleanup
 void SetupVariable(const std::string &name, const sup::dto::AnyValue &initial_value,
                    sequencergui::LocalVariableItem &item)
 {
   item.SetName(name);
-  item.SetJsonType(sup::gui::GetAnyTypeToJSONString(initial_value));
-  item.SetJsonValue(sup::gui::GetValuesToJSONString(initial_value));
+  item.SetJsonType(sup::gui::AnyTypeToJSONString(initial_value));
+  item.SetJsonValue(sup::gui::ValuesToJSONString(initial_value));
 }
 
 }  // namespace testutils

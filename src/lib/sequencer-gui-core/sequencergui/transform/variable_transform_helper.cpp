@@ -84,6 +84,12 @@ void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variabl
   SetAnyValue(anyvalue, variable_item);
 }
 
+void SetAnyValueFromJsonTypeAndValue(const std::string &json_type, const std::string &json_value,
+                                     VariableItem &variable_item)
+{
+
+}
+
 void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
   if (auto existing_anyvalue_item = variable_item.GetAnyValueItem(); existing_anyvalue_item)
@@ -118,7 +124,7 @@ void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
     auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
 
     AddNonEmptyAttribute(domainconstants::kTypeAttribute,
-                         sup::gui::GetAnyTypeToJSONString(anyvalue), variable);
+                         sup::gui::AnyTypeToJSONString(anyvalue), variable);
   }
   else
   {
@@ -136,7 +142,7 @@ void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
     auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
 
     AddNonEmptyAttribute(domainconstants::kValueAttribute,
-                         sup::gui::GetValuesToJSONString(anyvalue), variable);
+                         sup::gui::ValuesToJSONString(anyvalue), variable);
   }
   else
   {

@@ -54,7 +54,7 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
                                             const sup::dto::AnyValue &value, bool connected)
 {
   (void)connected;
-  auto value_string = sup::gui::GetValuesToJSONString(value);
+  auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
   ostr << "VariableUpdatedImpl(): " << name << ", " << value_string;
   m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kDebug, ostr.str()));
@@ -63,7 +63,7 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
 bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
-  auto value_string = sup::gui::GetValuesToJSONString(value);
+  auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
   ostr << "PutValueImpl(): " << description << ", " << value_string;
   m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, ostr.str()));
@@ -72,13 +72,13 @@ bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
 
 bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
 {
-  auto value_string = sup::gui::GetValuesToJSONString(value);
-  auto user_input = m_procedure_runner->onUserInput(value_string, description);
-  if (!sup::gui::ParseStringToScalarAnyvalue(user_input, value))
-  {
-    throw std::runtime_error(
-        "Error in SequencerObserver::GetUserValueImpl: can't parse user input");
-  }
+//  auto value_string = sup::gui::GetValuesToJSONString(value);
+//  auto user_input = m_procedure_runner->onUserInput(value_string, description);
+//  if (!sup::gui::ParseStringToScalarAnyvalue(user_input, value))
+//  {
+//    throw std::runtime_error(
+//        "Error in SequencerObserver::GetUserValueImpl: can't parse user input");
+//  }
   return true;
 }
 
