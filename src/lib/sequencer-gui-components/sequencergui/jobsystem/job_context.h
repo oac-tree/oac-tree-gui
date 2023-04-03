@@ -36,6 +36,7 @@ class JobItem;
 class InstructionItem;
 class GUIObjectBuilder;
 class LogEvent;
+class WorkspaceSynchronizer;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
 class JobContext : public QObject
@@ -95,6 +96,7 @@ private:
   std::unique_ptr<procedure_t> m_domain_procedure;
 
   std::unique_ptr<ProcedureRunner> m_procedure_runner;
+  std::unique_ptr<WorkspaceSynchronizer> m_workspace_syncronizer;
   JobLog* m_job_log{nullptr};
 
   JobItem* m_job_item{nullptr};

@@ -27,7 +27,9 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/job_log.h>
+#include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
 
@@ -77,6 +79,14 @@ void JobContext::onPrepareJobRequest()
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
                                              /*root_only*/ true);
   job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+
+  auto workspace_item = m_job_item->GetExpandedProcedure()->GetWorkspace();
+  if (workspace_item->GetVariableCount() > 0)
+  {
+    auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
+    m_workspace_syncronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
+    m_workspace_syncronizer->Start();
+  }
 
   m_procedure_runner = CreateProcedureRunner(m_domain_procedure.get());
 }
