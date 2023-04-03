@@ -72,8 +72,6 @@ public:
 
   void OnLogEvent(const LogEvent& event);
 
-  void onVariableChange(const std::string& variable_name, const std::string& value);
-
   std::string onUserInput(const std::string& current_value, const std::string& description);
 
   int onUserChoice(const std::vector<std::string>& choices, const std::string& description);

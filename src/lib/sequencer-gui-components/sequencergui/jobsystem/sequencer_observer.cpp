@@ -26,6 +26,8 @@
 
 #include <sup/sequencer/instruction.h>
 
+#include <sstream>
+
 namespace
 {
 std::string GetStatus(const instruction_t *instruction)
@@ -53,14 +55,18 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
 {
   (void)connected;
   auto value_string = sup::gui::GetValuesToJSONString(value);
-  m_procedure_runner->onVariableChange(name, value_string);
+  std::ostringstream ostr;
+  ostr << "VariableUpdatedImpl(): " << name << ", " << value_string;
+  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kDebug, ostr.str()));
 }
 
 bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
                                      const std::string &description)
 {
   auto value_string = sup::gui::GetValuesToJSONString(value);
-  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, description + value_string));
+  std::ostringstream ostr;
+  ostr << "PutValueImpl(): " << description << ", " << value_string;
+  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, ostr.str()));
   return true;
 }
 

@@ -108,11 +108,6 @@ void ProcedureRunner::OnLogEvent(const LogEvent &event)
   emit LogEventReceived(event);
 }
 
-void ProcedureRunner::onVariableChange(const std::string &variable_name, const std::string &value)
-{
-//  emit VariableChanged(QString::fromStdString(variable_name), QString::fromStdString(value));
-}
-
 std::string ProcedureRunner::onUserInput(const std::string &current_value,
                                          const std::string &description)
 {
