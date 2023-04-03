@@ -38,6 +38,8 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::vector<InstructionItem*> GetInstructions() const;
+
+  int GetInstructionCount() const;
 };
 
 }  // namespace sequencergui

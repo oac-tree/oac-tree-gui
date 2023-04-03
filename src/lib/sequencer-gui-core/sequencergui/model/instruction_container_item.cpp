@@ -41,4 +41,9 @@ std::vector<InstructionItem *> InstructionContainerItem::GetInstructions() const
   return GetItems<InstructionItem>(itemconstants::kChildInstructions);
 }
 
+int InstructionContainerItem::GetInstructionCount() const
+{
+  return static_cast<int>(GetInstructions().size());
+}
+
 }  // namespace sequencergui

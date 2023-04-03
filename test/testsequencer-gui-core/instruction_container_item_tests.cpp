@@ -19,6 +19,8 @@
 
 #include "sequencergui/model/instruction_container_item.h"
 
+#include <sequencergui/model/standard_instruction_items.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -31,4 +33,15 @@ TEST_F(InstructionContainerItemTest, InitialState)
 {
   InstructionContainerItem item;
   EXPECT_TRUE(item.GetInstructions().empty());
+  EXPECT_EQ(item.GetInstructionCount(), 0);
+}
+
+TEST_F(InstructionContainerItemTest, InsertItem)
+{
+  InstructionContainerItem item;
+  auto wait = item.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence = item.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
+  EXPECT_EQ(item.GetInstructionCount(), 2);
 }
