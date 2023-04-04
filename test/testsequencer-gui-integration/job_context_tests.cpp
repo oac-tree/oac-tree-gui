@@ -242,58 +242,54 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }
 
-// FIXME restore
+TEST_F(JobContextTest, DISABLED_UserInputScenario)
+{
+  auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//TEST_F(JobContextTest, UserInputScenario)
-//{
-//  auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
-//  m_job_item->SetProcedure(procedure);
+  JobContext job_context(m_job_item);
 
-//  JobContext job_context(m_job_item);
+  job_context.onPrepareJobRequest();
 
-//  job_context.onPrepareJobRequest();
+  auto on_user_input = [](auto, auto) { return "42"; };
+  job_context.SetUserContext({on_user_input});
 
-//  auto on_user_input = [](auto, auto) { return "42"; };
-//  job_context.SetUserContext({on_user_input});
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
-//  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  job_context.onStartRequest();
+  QTest::qWait(100);
 
-//  job_context.onStartRequest();
-//  QTest::qWait(100);
-
-//  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
 //  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
 
-//  EXPECT_FALSE(job_context.IsRunning());
-//}
+  EXPECT_FALSE(job_context.IsRunning());
+}
 
-// FIXME restore
+TEST_F(JobContextTest, DISABLED_UserChoiceScenario)
+{
+  auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//TEST_F(JobContextTest, UserChoiceScenario)
-//{
-//  auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
-//  m_job_item->SetProcedure(procedure);
+  JobContext job_context(m_job_item);
 
-//  JobContext job_context(m_job_item);
+  job_context.onPrepareJobRequest();
 
-//  job_context.onPrepareJobRequest();
+  // callback to select Copy instruction
+  auto on_user_choice = [](auto, auto) { return 1; };
+  job_context.SetUserContext({{}, on_user_choice});
 
-//  // callback to select Copy instruction
-//  auto on_user_choice = [](auto, auto) { return 1; };
-//  job_context.SetUserContext({{}, on_user_choice});
+  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
 
-//  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  job_context.onStartRequest();
+  QTest::qWait(100);
 
-//  job_context.onStartRequest();
-//  QTest::qWait(100);
+  EXPECT_EQ(spy_instruction_status.count(), 4);
 
-//  EXPECT_EQ(spy_instruction_status.count(), 4);
-
-//  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
 //  EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
 
-//  EXPECT_FALSE(job_context.IsRunning());
-//}
+  EXPECT_FALSE(job_context.IsRunning());
+}
 
 //! Stop long running job.
 
