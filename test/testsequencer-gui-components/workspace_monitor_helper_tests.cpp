@@ -23,12 +23,12 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 #include <sequencergui/model/workspace_item.h>
 
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/gui_domain_utils.h>
 
 using namespace sequencergui;
 
@@ -63,6 +63,8 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
 
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
+
   auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
   var_item1->SetFileName("filename");

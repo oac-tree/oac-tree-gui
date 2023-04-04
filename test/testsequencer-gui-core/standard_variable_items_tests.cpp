@@ -52,7 +52,6 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
   ChannelAccessVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
-  EXPECT_TRUE(item.GetJsonType().empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
@@ -60,9 +59,6 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 
   item.SetChannel("def");
   EXPECT_EQ(item.GetChannel(), std::string("def"));
-
-  item.SetJsonType("jkl");
-  EXPECT_EQ(item.GetJsonType(), std::string("jkl"));
 
   item.SetIsAvailable(true);
   EXPECT_TRUE(item.IsAvailable());
@@ -75,7 +71,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
   ChannelAccessVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 5);
+  ASSERT_EQ(children.size(), 3);
   auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(name->GetDisplayName(), std::string("name"));
@@ -87,16 +83,6 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
   auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(2));
   ASSERT_NE(available, nullptr);
   EXPECT_EQ(available->GetDisplayName(), std::string("connected"));
-
-  auto json_type = dynamic_cast<mvvm::PropertyItem*>(children.at(3));
-  ASSERT_NE(json_type, nullptr);
-  EXPECT_EQ(json_type->GetDisplayName(), std::string("json type"));
-  EXPECT_FALSE(json_type->IsVisible());
-
-  auto json_value = dynamic_cast<mvvm::PropertyItem*>(children.at(4));
-  ASSERT_NE(json_value, nullptr);
-  EXPECT_EQ(json_value->GetDisplayName(), std::string("json value"));
-  EXPECT_FALSE(json_value->IsVisible());
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
@@ -120,7 +106,6 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
-  //  EXPECT_EQ(item.GetJsonType(), expected_datatype);
   EXPECT_FALSE(item.IsAvailable());
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
@@ -143,31 +128,12 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
   {  // case with empty attributes
     ChannelAccessVariableItem item;
     item.SetName(expected_name);
-
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
-  }
-
-  {  // normal case
-    ChannelAccessVariableItem item;
-    item.SetName(expected_name);
     item.SetChannel(expected_channel);
-    item.SetJsonType(expected_datatype);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
-
-    EXPECT_NO_THROW(domain_item->Setup());
+    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
   }
 
-  {  // normal case (in the course of refactoring)
+  {  // when AnyValueItem is set
     ChannelAccessVariableItem item;
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
@@ -261,19 +227,11 @@ TEST_F(StandardVariableItemsTest, LocalVariableItem)
 {
   sequencergui::LocalVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
-  EXPECT_TRUE(item.GetJsonType().empty());
-  EXPECT_TRUE(item.GetJsonValue().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   EXPECT_TRUE(item.IsAvailable());
 
   item.SetName("abc");
   EXPECT_EQ(item.GetName(), std::string("abc"));
-
-  item.SetJsonType("cde");
-  EXPECT_EQ(item.GetJsonType(), std::string("cde"));
-
-  item.SetJsonValue("fjk");
-  EXPECT_EQ(item.GetJsonValue(), std::string("fjk"));
 
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueScalarItem>({});
   EXPECT_EQ(item.GetAnyValueItem(), anyvalue_item);
@@ -288,20 +246,10 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   LocalVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 3);
+  ASSERT_EQ(children.size(), 1);
   auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(name->GetDisplayName(), std::string("name"));
-
-  auto json_type = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
-  ASSERT_NE(json_type, nullptr);
-  EXPECT_EQ(json_type->GetDisplayName(), std::string("json type"));
-  EXPECT_FALSE(json_type->IsVisible());
-
-  auto json_value = dynamic_cast<mvvm::PropertyItem*>(children.at(2));
-  ASSERT_NE(json_value, nullptr);
-  EXPECT_EQ(json_value->GetDisplayName(), std::string("json value"));
-  EXPECT_FALSE(json_value->IsVisible());
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
@@ -332,21 +280,14 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  {  // normal case
-    sequencergui::LocalVariableItem item;
+  {  // case with empty attributes
+    ChannelAccessVariableItem item;
     item.SetName(expected_name);
-    item.SetJsonType(expected_type);
-    item.SetJsonValue(expected_value);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
-    EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
+    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
   }
 
-  {  // normal case (in the course of refactoring)
+  {  // case when AnyValueItem is set
     sequencergui::LocalVariableItem item;
     item.SetName(expected_name);
 
@@ -360,19 +301,6 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
     EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
   }
-
-  {  // case with empty attributes
-    sequencergui::LocalVariableItem item;
-    item.SetName(expected_name);
-
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
-
-    EXPECT_NO_THROW(domain_item->Setup());
-  }
 }
 
 //! ---------------------------------------------------------------------------
@@ -384,8 +312,6 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
   PVClientVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
-  EXPECT_TRUE(item.GetJsonType().empty());
-  EXPECT_TRUE(item.GetJsonValue().empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
@@ -393,12 +319,6 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
 
   item.SetChannel("def");
   EXPECT_EQ(item.GetChannel(), std::string("def"));
-
-  item.SetJsonType("jkl");
-  EXPECT_EQ(item.GetJsonType(), std::string("jkl"));
-
-  item.SetJsonValue("bnm");
-  EXPECT_EQ(item.GetJsonValue(), std::string("bnm"));
 }
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
@@ -422,7 +342,6 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
-//  EXPECT_EQ(item.GetJsonType(), expected_datatype);
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
@@ -441,20 +360,14 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
 
-  {  // normal case
+  {  // case with empty attributes
     PVClientVariableItem item;
     item.SetName(expected_name);
-    item.SetChannel(expected_channel);
-    item.SetJsonType(expected_datatype);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
+    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
   }
 
-  {  // normal case (in the course of refactoring)
+  {  // case when AnyValueItem is set
     PVClientVariableItem item;
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
@@ -468,18 +381,6 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
   }
-
-  {  // case with empty attributes
-    PVClientVariableItem item;
-    item.SetName(expected_name);
-
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
-    EXPECT_THROW(domain_item->Setup(), sup::sequencer::VariableSetupException);
-  }
 }
 
 //! ---------------------------------------------------------------------------
@@ -491,8 +392,6 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
   PVServerVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
-  EXPECT_TRUE(item.GetJsonType().empty());
-  EXPECT_TRUE(item.GetJsonValue().empty());
   EXPECT_FALSE(item.IsAvailable());
 
   item.SetName("abc");
@@ -500,12 +399,6 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
 
   item.SetChannel("def");
   EXPECT_EQ(item.GetChannel(), std::string("def"));
-
-  item.SetJsonType("jkl");
-  EXPECT_EQ(item.GetJsonType(), std::string("jkl"));
-
-  item.SetJsonValue("bnm");
-  EXPECT_EQ(item.GetJsonValue(), std::string("bnm"));
 }
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
@@ -531,15 +424,12 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
-//  EXPECT_EQ(item.GetJsonType(), expected_datatype);
-//  EXPECT_EQ(item.GetJsonValue(), expected_value);
   EXPECT_FALSE(item.IsAvailable());
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
-
 }
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
@@ -554,25 +444,14 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
-  // case with initial value
-  {
+  {  // case with empty attributes
     PVServerVariableItem item;
     item.SetName(expected_name);
-    item.SetChannel(expected_channel);
-    item.SetJsonType(expected_datatype);
-    item.SetJsonValue(expected_value);
 
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
-
-    EXPECT_NO_THROW(domain_item->Setup());
+    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
   }
 
-  {  // normal case (in the course of refactoring)
+  {  // case when AnyValueItem is set
     PVServerVariableItem item;
     item.SetChannel(expected_channel);
     item.SetName(expected_name);
@@ -588,20 +467,6 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
 
     EXPECT_NO_THROW(domain_item->Setup());
-  }
-
-  {  // case with empty attributes
-    PVServerVariableItem item;
-    item.SetName(expected_name);
-
-    auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
-    EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kChannelAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
-    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
-
-    EXPECT_THROW(domain_item->Setup(), sup::sequencer::VariableSetupException);
   }
 }
 

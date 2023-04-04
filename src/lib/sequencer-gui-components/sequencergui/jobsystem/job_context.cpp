@@ -186,30 +186,30 @@ void JobContext::onLogEvent(const sequencergui::LogEvent &event)
 
 void JobContext::onVariableChange(const QString &variable_name, const QString &value)
 {
-  auto variable_item = m_guiobject_builder->FindVariableItem(variable_name.toStdString());
-  if (variable_item)
-  {
-    if (auto local_var = dynamic_cast<LocalVariableItem *>(variable_item); local_var)
-    {
-      local_var->SetJsonValue(value.toStdString());
-    }
-    else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(variable_item))
-    {
-      local_var->SetJsonValue(value.toStdString());
-    }
-    else if (auto local_var = dynamic_cast<PVClientVariableItem *>(variable_item))
-    {
-      local_var->SetJsonValue(value.toStdString());
-    }
-    else if (auto local_var = dynamic_cast<PVServerVariableItem *>(variable_item))
-    {
-      local_var->SetJsonValue(value.toStdString());
-    }
-  }
-  else
-  {
-    std::cout << "Error in JobManager: can't find VariableItem" << std::endl;
-  }
+//  auto variable_item = m_guiobject_builder->FindVariableItem(variable_name.toStdString());
+//  if (variable_item)
+//  {
+//    if (auto local_var = dynamic_cast<LocalVariableItem *>(variable_item); local_var)
+//    {
+//      local_var->SetJsonValue(value.toStdString());
+//    }
+//    else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(variable_item))
+//    {
+//      local_var->SetJsonValue(value.toStdString());
+//    }
+//    else if (auto local_var = dynamic_cast<PVClientVariableItem *>(variable_item))
+//    {
+//      local_var->SetJsonValue(value.toStdString());
+//    }
+//    else if (auto local_var = dynamic_cast<PVServerVariableItem *>(variable_item))
+//    {
+//      local_var->SetJsonValue(value.toStdString());
+//    }
+//  }
+//  else
+//  {
+//    std::cout << "Error in JobManager: can't find VariableItem" << std::endl;
+//  }
 }
 
 void JobContext::onRunnerStatusChanged()

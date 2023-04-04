@@ -32,7 +32,6 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <testutils/gui_domain_utils.h>
 #include <testutils/mock_callback_listener.h>
 
 #include <stdexcept>
@@ -76,8 +75,8 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainWhenConnected)
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  variable_item0->SetName("abc");
 
-  testutils::SetupVariable("abc", value, *variable_item0);
   // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
@@ -117,8 +116,8 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  variable_item0->SetName("abc");
 
-  testutils::SetupVariable("abc", value, *variable_item0);
   // initially VariableItem doesn't have AnyValueItem
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
@@ -156,7 +155,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  testutils::SetupVariable("abc", value, *variable_item0);
+  variable_item0->SetName("abc");
   SetAnyValue(value, *variable_item0);
 
   WorkspaceItemController controller(m_workspace_item);
@@ -184,12 +183,12 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  testutils::SetupVariable("var0", value0, *variable_item0);
   SetAnyValue(value0, *variable_item0);
+  variable_item0->SetName("var0");
 
   auto variable_item1 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  testutils::SetupVariable("var1", value1, *variable_item1);
   SetAnyValue(value1, *variable_item1);
+  variable_item1->SetName("var1");
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());

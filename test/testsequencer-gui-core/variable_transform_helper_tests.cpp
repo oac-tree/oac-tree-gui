@@ -143,56 +143,30 @@ TEST_F(VariableTransformHelperTests, AddNonEmptyAttribute)
 
 TEST_F(VariableTransformHelperTests, SetJsonTypeAttribute)
 {
-  {  // case when property is defined
-    LocalVariableItem item;
-    item.SetJsonType("json_type");
+  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    SetJsonTypeAttribute(item, *variable);
+  LocalVariableItem item;
+  SetAnyValue(anyvalue, item);
 
-    EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
-    EXPECT_EQ(variable->GetAttribute(domainconstants::kTypeAttribute), "json_type");
-  }
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  SetJsonTypeAttribute(item, *variable);
 
-  {  // case when AnyValue is defined
-    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-
-    LocalVariableItem item;
-    SetAnyValue(anyvalue, item);
-
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    SetJsonTypeAttribute(item, *variable);
-
-    EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
-    EXPECT_EQ(variable->GetAttribute(domainconstants::kTypeAttribute), R"RAW({"type":"int32"})RAW");
-  }
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_EQ(variable->GetAttribute(domainconstants::kTypeAttribute), R"RAW({"type":"int32"})RAW");
 }
 
 TEST_F(VariableTransformHelperTests, SetJsonValueAttribute)
 {
-  {  // case when property is defined
-    LocalVariableItem item;
-    item.SetJsonValue("json_value");
+  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    SetJsonValueAttribute(item, *variable);
+  LocalVariableItem item;
+  SetAnyValue(anyvalue, item);
 
-    EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
-    EXPECT_EQ(variable->GetAttribute(domainconstants::kValueAttribute), "json_value");
-  }
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  SetJsonValueAttribute(item, *variable);
 
-  {  // case when AnyValue is defined
-    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-
-    LocalVariableItem item;
-    SetAnyValue(anyvalue, item);
-
-    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    SetJsonValueAttribute(item, *variable);
-
-    EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
-    EXPECT_EQ(variable->GetAttribute(domainconstants::kValueAttribute), "42");
-  }
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
+  EXPECT_EQ(variable->GetAttribute(domainconstants::kValueAttribute), "42");
 }
 
 //! Validate SetAnyValueFromDomainVariable helper method.

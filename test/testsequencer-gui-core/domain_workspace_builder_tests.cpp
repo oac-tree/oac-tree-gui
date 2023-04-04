@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 
 #include <sup/sequencer/workspace.h>
 
@@ -72,6 +73,7 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
 
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
   auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
 

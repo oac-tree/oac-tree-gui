@@ -40,7 +40,6 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
 {
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
-  RegisterJsonTypeAndValue();
   RegisterAnyValueItemTag();
 }
 
@@ -77,16 +76,6 @@ void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
   {
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
-
-//  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-//  {
-//    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-//  }
-
-//  if (variable->HasAttribute(domainconstants::kValueAttribute))
-//  {
-//    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
-//  }
 }
 
 // ----------------------------------------------------------------------------
@@ -161,7 +150,6 @@ void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 
 LocalVariableItem::LocalVariableItem() : VariableItem(Type)
 {
-  RegisterJsonTypeAndValue();
   RegisterAnyValueItemTag();
 }
 
@@ -177,15 +165,7 @@ std::string LocalVariableItem::GetDomainType() const
 
 void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-//  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-//  {
-//    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-//  }
-
-//  if (variable->HasAttribute(domainconstants::kValueAttribute))
-//  {
-//    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
-//  }
+  // nothing to od besides what is done in a base class
 }
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const

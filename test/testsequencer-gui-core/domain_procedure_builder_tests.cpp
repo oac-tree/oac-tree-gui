@@ -26,7 +26,9 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 
 #include <mvvm/model/sessionitem.h>
 
@@ -231,6 +233,22 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
 }
 
+//! Attempt to build a procedure when workspace has misconfigure VariableItem
+
+TEST_F(DomainProcedureBuilderTest, AttemptToBuildProcedureWithVariable)
+{
+  ProcedureItem procedure_item;
+  auto workspace = procedure_item.GetWorkspace();
+
+  auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  var_item0->SetName("var0");
+  // variable doesn't have AnyValueItem set
+
+  auto procedure = std::make_unique<procedure_t>();
+  DomainProcedureBuilder builder;
+  EXPECT_THROW(builder.PopulateProcedure(&procedure_item, procedure.get()), LogicErrorException);
+}
+
 //! Building domain procedure from ProcedureItem with a single sequence.
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
@@ -240,6 +258,8 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 
   auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
+
   auto var_item1 = workspace->InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
 

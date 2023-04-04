@@ -34,7 +34,6 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/gui_domain_utils.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/mock_model_listener.h>
 #include <testutils/test_utils.h>

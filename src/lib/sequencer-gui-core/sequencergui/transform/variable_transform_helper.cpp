@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
@@ -140,9 +141,7 @@ void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
   }
   else
   {
-    // if no AnyValueItem is defined, take JSON attribute from corresponding property
-    // FIXME remove after removal of property
-    AddNonEmptyAttribute(domainconstants::kTypeAttribute, item.GetJsonType(), variable);
+    throw LogicErrorException("Can't setup JSON type if AnyValueItem is absent");
   }
 }
 
@@ -158,9 +157,7 @@ void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
   }
   else
   {
-    // if no AnyValueItem is defined, take JSON attribute from corresponding property
-    // FIXME remove after removal of property
-    AddNonEmptyAttribute(domainconstants::kValueAttribute, item.GetJsonValue(), variable);
+    throw LogicErrorException("Can't setup JSON type if AnyValueItem is absent");
   }
 }
 

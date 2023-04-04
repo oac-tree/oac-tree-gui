@@ -21,8 +21,11 @@
 
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
+
+#include <sup/dto/anyvalue.h>
 
 namespace sequencergui::Examples
 {
@@ -60,29 +63,21 @@ ProcedureItem* AddCopyProcedure(SequencerModel* model)
   copy3->SetOutput("var0");
   model->InsertItem<WaitItem>(sequence);
 
-  //    auto equals = m_model->InsertItem<EqualsItem>(sequence);
-  //    equals->SetLeftHandSide("var_const42");
-  //    equals->SetRightHandSide("var_const0");
-
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("var0");
-  var0->SetJsonType(R"({"type":"uint32"})");
-  var0->SetJsonValue("0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}, *var0);
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
-  var1->SetJsonType(R"({"type":"uint32"})");
-  var1->SetJsonValue("0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}, *var1);
 
   auto var_const42 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var_const42->SetName("var_const42");
-  var_const42->SetJsonType(R"({"type":"uint32"})");
-  var_const42->SetJsonValue("42");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42}, *var1);
 
   auto var_const0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var_const0->SetName("var_const0");
-  var_const0->SetJsonType(R"({"type":"uint32"})");
-  var_const0->SetJsonValue("0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}, *var1);
 
   return procedure_item;
 }
@@ -114,14 +109,11 @@ ProcedureItem* AddInputProcedure(SequencerModel* model)
   input0->SetTargetVariableName("var1");
   input0->SetDescription("Your ID");
 
-  auto wait0 = model->InsertItem<WaitItem>(sequence);
+  model->InsertItem<WaitItem>(sequence);
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
-  //  var1->SetJsonType(R"({"type":"string"})");
-  //  var1->SetJsonValue(R"("abc")");
-  var1->SetJsonType(R"({"type":"uint32"})");
-  var1->SetJsonValue(R"(42)");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42}, *var1);
 
   procedure_item->SetDisplayName("UserInput");
   return procedure_item;
@@ -131,8 +123,8 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
-  auto wait0 = model->InsertItem<WaitItem>(userchoice);
-  auto wait1 = model->InsertItem<WaitItem>(userchoice);
+  model->InsertItem<WaitItem>(userchoice);
+  model->InsertItem<WaitItem>(userchoice);
 
   procedure_item->SetDisplayName("UserChoice");
   return procedure_item;

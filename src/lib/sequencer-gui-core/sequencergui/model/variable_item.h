@@ -50,21 +50,12 @@ public:
 
   void SetName(const std::string& value);
 
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
-
   sup::gui::AnyValueItem* GetAnyValueItem() const;
 
   virtual bool IsAvailable() const;
   virtual void SetIsAvailable(bool value);
 
 protected:
-  void RegisterJsonTypeAndValue();
   void RegisterAnyValueItemTag();
 
 private:

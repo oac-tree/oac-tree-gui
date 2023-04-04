@@ -14,8 +14,6 @@ target_sources(${library_name} PRIVATE
   epics_test_utils.h
   standard_procedures.cpp
   standard_procedures.h
-  gui_domain_utils.cpp
-  gui_domain_utils.h
   standard_procedure_items.cpp
   standard_procedure_items.h
   test_utils.cpp

@@ -97,7 +97,7 @@ ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
   input0->SetTargetVariableName("var1");
   input0->SetDescription("Your ID");
 
-  auto wait0 = model->InsertItem<WaitItem>(sequence);
+  model->InsertItem<WaitItem>(sequence);
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
@@ -119,13 +119,11 @@ ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("var0");
-  var0->SetJsonType(R"({"type":"uint32"})");
-  var0->SetJsonValue("42");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42}, *var0);
 
   auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var1->SetName("var1");
-  var1->SetJsonType(R"({"type":"uint32"})");
-  var1->SetJsonValue("0");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}, *var1);
 
   return procedure_item;
 }

@@ -33,7 +33,6 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/gui_domain_utils.h>
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/mock_model_listener.h>
 
@@ -54,7 +53,8 @@ public:
       const std::string& name, const sup::dto::AnyValue& initial_value)
   {
     auto result = std::make_unique<LocalVariableItem>();
-    testutils::SetupVariable(name, initial_value, *result.get());
+    result->SetName(name);
+    SetAnyValue(initial_value, *result);
     return result;
   }
 
@@ -92,6 +92,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
     const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
     auto variable_item = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
     variable_item->SetName("var0");
+    SetAnyValue(value, *variable_item);
 
     auto synchronizer = CreateSynchronizer();
 
@@ -113,6 +114,7 @@ TEST_F(WorkspaceSynchronizerTests, Start)
                                                                mvvm::TagIndex::Append());
 
   auto synchronizer = CreateSynchronizer();
+
   synchronizer->Start();
 
   ASSERT_TRUE(synchronizer->GetWorkspace() != nullptr);
@@ -136,8 +138,8 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
 
   auto variable_item0 =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  testutils::SetupVariable("abc", value0, *variable_item0);
-  EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
+  variable_item0->SetName("abc");
+  SetAnyValue(value0, *variable_item0);
 
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
@@ -172,8 +174,9 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 
   auto variable_item =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  testutils::SetupVariable(var_name, value0, *variable_item);
+  variable_item->SetName(var_name);
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+
   SetAnyValue(value0, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
