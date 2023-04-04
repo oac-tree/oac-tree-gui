@@ -194,3 +194,51 @@ TEST_F(VariableTransformHelperTests, SetJsonValueAttribute)
     EXPECT_EQ(variable->GetAttribute(domainconstants::kValueAttribute), "42");
   }
 }
+
+//! Validate SetAnyValueFromDomainVariable helper method.
+//! Domain sequencer variable with json type and value attributes is used to set AnyValueItem on
+//! board of VariableItem.
+
+TEST_F(VariableTransformHelperTests, SetAnyValueFromDomainVariable)
+{
+  {  // when domain variable has type attribute
+    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
+
+    const sup::dto::AnyValue expected_anyvalue(
+        sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+
+    LocalVariableItem item;
+    SetAnyValueFromDomainVariable(*variable, item);
+
+    ASSERT_NE(item.GetAnyValueItem(), nullptr);
+    auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+    EXPECT_EQ(expected_anyvalue, stored_anyvalue);
+  }
+
+  {  // when domain variable has type and value attribute
+    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
+    variable->AddAttribute(domainconstants::kValueAttribute, "42");
+
+    const sup::dto::AnyValue expected_anyvalue(
+        sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+    LocalVariableItem item;
+    SetAnyValueFromDomainVariable(*variable, item);
+
+    ASSERT_NE(item.GetAnyValueItem(), nullptr);
+    auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+    EXPECT_EQ(expected_anyvalue, stored_anyvalue);
+  }
+
+  {  // when domain variable has only value attribute
+    auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    variable->AddAttribute(domainconstants::kValueAttribute, "42");
+
+    LocalVariableItem item;
+    SetAnyValueFromDomainVariable(*variable, item);
+
+    EXPECT_NE(item.GetAnyValueItem(), nullptr);
+  }
+}

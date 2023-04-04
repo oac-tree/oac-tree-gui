@@ -34,13 +34,6 @@
 namespace sequencergui
 {
 
-// std::string GetValuesToJSONString(const variable_t *value)
-//{
-//   sup::dto::AnyValue anyvalue;
-//   value->GetValue(anyvalue);
-//   return sup::gui::GetValuesToJSONString(&anyvalue);
-// }
-
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
   // we will be acting through the model, if it exists, to allow signaling
@@ -84,10 +77,29 @@ void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variabl
   SetAnyValue(anyvalue, variable_item);
 }
 
-void SetAnyValueFromJsonTypeAndValue(const std::string &json_type, const std::string &json_value,
-                                     VariableItem &variable_item)
+void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item)
 {
+  if (variable.HasAttribute(domainconstants::kTypeAttribute))
+  {
+    auto anytype =
+        sup::gui::AnyTypeFromJSONString(variable.GetAttribute(domainconstants::kTypeAttribute));
 
+    auto get_anyvalue = [&anytype, &variable]()
+    {
+      if (variable.HasAttribute(domainconstants::kValueAttribute))
+      {
+        return sup::gui::AnyValueFromJSONString(
+            anytype, variable.GetAttribute(domainconstants::kValueAttribute));
+      }
+      else
+      {
+        return sup::dto::AnyValue(anytype);
+      }
+    };
+
+    sup::dto::AnyValue anyvalue = get_anyvalue(); // executing lambda at initialisation
+    SetAnyValue(anyvalue, variable_item);
+  }
 }
 
 void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
@@ -123,8 +135,8 @@ void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
     // if AnyValueItem is defined, jenerate JSON TYPE attribute from it
     auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
 
-    AddNonEmptyAttribute(domainconstants::kTypeAttribute,
-                         sup::gui::AnyTypeToJSONString(anyvalue), variable);
+    AddNonEmptyAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue),
+                         variable);
   }
   else
   {
@@ -141,8 +153,8 @@ void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
     // if AnyValueItem is defined, jenerate JSON TYPE attribute from it
     auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
 
-    AddNonEmptyAttribute(domainconstants::kValueAttribute,
-                         sup::gui::ValuesToJSONString(anyvalue), variable);
+    AddNonEmptyAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue),
+                         variable);
   }
   else
   {
