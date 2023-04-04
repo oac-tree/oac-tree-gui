@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
@@ -107,7 +108,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
-  const std::string expected_datatype("expected_datatype");
+  const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
 
   auto ca_variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);
   ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -119,8 +120,13 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
-  EXPECT_EQ(item.GetJsonType(), expected_datatype);
+  //  EXPECT_EQ(item.GetJsonType(), expected_datatype);
   EXPECT_FALSE(item.IsAvailable());
+
+  ASSERT_NE(item.GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
@@ -313,8 +319,11 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
-  EXPECT_EQ(item.GetJsonType(), expected_type);
-  EXPECT_EQ(item.GetJsonValue(), expected_value);
+
+  ASSERT_NE(item.GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
@@ -401,7 +410,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
-  const std::string expected_datatype("expected_datatype");
+  const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
 
   auto pv_variable = CreateDomainVariable(domainconstants::kPVClientVariableType);
   pv_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -413,7 +422,12 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
-  EXPECT_EQ(item.GetJsonType(), expected_datatype);
+//  EXPECT_EQ(item.GetJsonType(), expected_datatype);
+
+  ASSERT_NE(item.GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
@@ -503,8 +517,8 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
-  const std::string expected_datatype("expected_datatype");
-  const std::string expected_value("expected_instance");
+  const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
+  const std::string expected_value("42");
 
   auto pvxs_variable = CreateDomainVariable(domainconstants::kPVServerVariableType);
   pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
@@ -517,9 +531,15 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
-  EXPECT_EQ(item.GetJsonType(), expected_datatype);
-  EXPECT_EQ(item.GetJsonValue(), expected_value);
+//  EXPECT_EQ(item.GetJsonType(), expected_datatype);
+//  EXPECT_EQ(item.GetJsonValue(), expected_value);
   EXPECT_FALSE(item.IsAvailable());
+
+  ASSERT_NE(item.GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+
 }
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)

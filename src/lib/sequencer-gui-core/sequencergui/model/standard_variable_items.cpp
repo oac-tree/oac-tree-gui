@@ -78,15 +78,15 @@ void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
   }
 
-  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-  }
+//  if (variable->HasAttribute(domainconstants::kTypeAttribute))
+//  {
+//    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
+//  }
 
-  if (variable->HasAttribute(domainconstants::kValueAttribute))
-  {
-    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
-  }
+//  if (variable->HasAttribute(domainconstants::kValueAttribute))
+//  {
+//    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
+//  }
 }
 
 // ----------------------------------------------------------------------------
@@ -177,15 +177,15 @@ std::string LocalVariableItem::GetDomainType() const
 
 void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (variable->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
-  }
+//  if (variable->HasAttribute(domainconstants::kTypeAttribute))
+//  {
+//    SetJsonType(variable->GetAttribute(domainconstants::kTypeAttribute));
+//  }
 
-  if (variable->HasAttribute(domainconstants::kValueAttribute))
-  {
-    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
-  }
+//  if (variable->HasAttribute(domainconstants::kValueAttribute))
+//  {
+//    SetJsonValue(variable->GetAttribute(domainconstants::kValueAttribute));
+//  }
 }
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const

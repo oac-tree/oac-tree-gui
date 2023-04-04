@@ -24,6 +24,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/transform/variable_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/sequencer/variable.h>
@@ -82,6 +83,8 @@ void VariableItem::InitFromDomain(const variable_t *variable)
       SetProperty(kName, variable->GetAttribute(domainconstants::kNameAttribute));
     }
   }
+
+  SetAnyValueFromDomainVariable(*variable, *this);
 
   InitFromDomainImpl(variable);
 }

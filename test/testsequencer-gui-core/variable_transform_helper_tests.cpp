@@ -239,6 +239,6 @@ TEST_F(VariableTransformHelperTests, SetAnyValueFromDomainVariable)
     LocalVariableItem item;
     SetAnyValueFromDomainVariable(*variable, item);
 
-    EXPECT_NE(item.GetAnyValueItem(), nullptr);
+    EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   }
 }

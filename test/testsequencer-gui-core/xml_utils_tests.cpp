@@ -24,6 +24,9 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+
+#include <sup/dto/anyvalue.h>
 
 #include <testutils/folder_based_test.h>
 #include <testutils/test_utils.h>
@@ -90,8 +93,11 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
   auto variable_item = procedure_item->GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
-  EXPECT_EQ(variable_item->GetJsonType(), std::string(R"({"type":"uint32"})"));
-  EXPECT_EQ(variable_item->GetJsonValue(), std::string("7"));
+
+  ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 7});
+  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
 //! Exporting xml Procedure containing a single instruction.
