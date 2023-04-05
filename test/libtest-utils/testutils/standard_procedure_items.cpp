@@ -108,6 +108,9 @@ ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
 
 ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
 {
+  // UserChoice instruction will offer the user a choice between two instructions to execute
+  // 0) Wait instruction
+  // 1) Copy instruction
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
   auto wait0 = model->InsertItem<WaitItem>(userchoice);

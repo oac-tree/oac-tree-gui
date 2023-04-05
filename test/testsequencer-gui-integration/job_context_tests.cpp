@@ -30,11 +30,11 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 
@@ -218,7 +218,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
   QTest::qWait(100);
 
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
-  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0); // value was changed
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0);  // value was changed
 }
 
 TEST_F(JobContextTest, LocalIncludeScenario)
@@ -260,13 +260,17 @@ TEST_F(JobContextTest, DISABLED_UserInputScenario)
   QTest::qWait(100);
 
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-//  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
+  //  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
 
   EXPECT_FALSE(job_context.IsRunning());
 }
 
-TEST_F(JobContextTest, DISABLED_UserChoiceScenario)
+TEST_F(JobContextTest, UserChoiceScenario)
 {
+  // value defined in testutils::CreateUserChoiceProcedureItem
+  const sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
+
+  // creating test procedure offering user the choice between two instructions: 0) wait 1) copy
   auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
@@ -285,9 +289,11 @@ TEST_F(JobContextTest, DISABLED_UserChoiceScenario)
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 
+  // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
+  // var1
   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-//  EXPECT_EQ(vars_inside.at(1)->GetJsonValue(), std::string("42"));
-
+  auto anyvalue_item = vars_inside.at(1)->GetAnyValueItem();
+  EXPECT_EQ(sup::gui::CreateAnyValue(*anyvalue_item), expected_anyvalue);
   EXPECT_FALSE(job_context.IsRunning());
 }
 
