@@ -293,6 +293,46 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
+//! Stepwise procedure execution.
+
+TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
+{
+  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
+
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
+  }
+
+          // triggering action
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
+  std::this_thread::sleep_for(msec(10));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(adapter->Step());
+  std::this_thread::sleep_for(msec(10));
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+}
+
 //! Running procedure (sequence with message) and let is finish.
 //! Then run same procedure again.
 
