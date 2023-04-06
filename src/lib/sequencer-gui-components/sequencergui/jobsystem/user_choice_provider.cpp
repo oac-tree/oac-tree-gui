@@ -29,7 +29,7 @@ UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provide
           Qt::QueuedConnection);
 }
 
-UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs &args)
+UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
 {
   RequestData request_data;
 
@@ -54,7 +54,7 @@ void UserChoiceProvider::OnChoiceRequest()
   RequestData* request_data{nullptr};
   {
     std::unique_lock<std::mutex> lock(m_mutex);
-    request_data = m_stack.top();
+    request_data = m_stack.front();
     m_stack.pop();
   }
 
