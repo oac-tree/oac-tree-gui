@@ -31,10 +31,10 @@ UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provide
 UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
 {
   RequestData request_data;
+  request_data.args = args;
 
   {
     std::unique_lock<std::mutex> lock(m_mutex);
-    request_data.args = args;
     m_stack.push(&request_data);
   }
 
