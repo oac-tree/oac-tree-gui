@@ -33,13 +33,12 @@ namespace sequencergui
  * @tparam ArgT Type of arguments to get the data.
  * @tparam DataT Type of the data to return.
  */
-template <typename ArgT, typename DataT>
+template <typename DataT, typename ArgT>
 class RequestHandle
 {
 public:
   using data_request_callback_t = std::function<void(ArgT)>;
   RequestHandle() = default;
-  RequestHandle(data_request_callback_t callback) : m_data_request_callback(callback) {}
 
   /**
    * Gets the data for given arguments. This is a blocking method which shall be used from a
@@ -51,7 +50,6 @@ public:
    */
   DataT GetData(const ArgT& args)
   {
-    m_data_request_callback(args);
     m_arguments = args;
 
     auto future = promise.get_future();
