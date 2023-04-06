@@ -25,26 +25,26 @@
 
 using namespace sequencergui;
 
-//! Tests for UserController class.
+//! Tests for RequestHandler class.
 
-class RequestHandleTest : public ::testing::Test
+class RequestHandlerTest : public ::testing::Test
 {
 };
 
-TEST_F(RequestHandleTest, SetUserInput)
+TEST_F(RequestHandlerTest, SetUserInput)
 {
   const std::vector<std::string> choices({"a", "b", "c"});
   const std::string description("description");
   const UserChoiceArgs args{choices, description};
 
-  RequestHandler<UserChoiceResult, UserChoiceArgs> handle;
+  RequestHandler<UserChoiceResult, UserChoiceArgs> handler;
 
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)
-  auto consumer = [&handle, &ready_for_test, &args]()
+  auto consumer = [&handler, &ready_for_test, &args]()
   {
     ready_for_test.set_value();
-    return handle.GetData(args);
+    return handler.GetData(args);
   };
 
   std::future<UserChoiceResult> future_result = std::async(std::launch::async, consumer);
@@ -52,7 +52,7 @@ TEST_F(RequestHandleTest, SetUserInput)
   // waiting for consumer thread being ready
   ready_for_test.get_future().wait();
 
-  handle.SendData(UserChoiceResult{42, true});
+  handler.SendData(UserChoiceResult{42, true});
 
   // checking result
   auto result = future_result.get();  // making sure pushing thread has finished
