@@ -66,8 +66,14 @@ signals:
   void ChoiceRequest();
 
 private:
+  struct RequestData
+  {
+    UserChoiceArgs args;
+    request_handler_t request_handler;
+  };
+
   provider_callback_t m_provider_callback;
-  request_handler_t m_request_handler;
+  RequestData m_request_data;
 };
 
 }  // namespace sequencergui

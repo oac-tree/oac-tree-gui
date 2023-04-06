@@ -49,8 +49,6 @@ public:
    */
   DataT GetData(const ArgT& args)
   {
-    m_arguments = args;
-
     auto future = promise.get_future();
     return future.get();
   }
@@ -62,11 +60,8 @@ public:
    */
   void SendData(const DataT& value) { promise.set_value(value); }
 
-  ArgT GetArguments() const { return m_arguments; }
-
 private:
   std::promise<DataT> promise;
-  ArgT m_arguments;
 };
 
 }  // namespace sequencergui

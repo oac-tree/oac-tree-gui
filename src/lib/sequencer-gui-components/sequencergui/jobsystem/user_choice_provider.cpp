@@ -31,15 +31,17 @@ UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provide
 
 UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs &args)
 {
+  m_request_data.args = args;
+
   emit ChoiceRequest();
 
-  return m_request_handler.GetData(args);
+  return m_request_data.request_handler.GetData(args);
 }
 
 void UserChoiceProvider::OnChoiceRequest()
 {
-  auto args = m_request_handler.GetArguments();
-  m_request_handler.SendData(m_provider_callback(args));
+  auto args = m_request_data.args;
+  m_request_data.request_handler.SendData(m_provider_callback(args));
 }
 
 }  // namespace sequencergui
