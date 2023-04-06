@@ -22,7 +22,7 @@
 namespace sequencergui
 {
 
-UserChoiceProvider::UserChoiceProvider(provider_callback_t callback)
+UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provider_callback(callback)
 {
   // queued connection
   connect(this, &UserChoiceProvider::ChoiceRequest, this, &UserChoiceProvider::OnChoiceRequest,

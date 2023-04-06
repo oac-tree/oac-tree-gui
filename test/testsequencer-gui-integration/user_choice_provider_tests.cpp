@@ -74,6 +74,6 @@ TEST_F(UserChoiceProviderTest, SetUserChoice)
   auto result = result_obtained.get();
 
   // result from the thread should contain the result of concatenation
-  EXPECT_EQ(result.index, 43);
+  EXPECT_EQ(result.index, 42);
   EXPECT_EQ(result.processed, true);
 }
