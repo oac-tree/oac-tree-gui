@@ -30,10 +30,11 @@ namespace sequencergui
 {
 
 /**
- * @brief The UserChoiceProvider class provides sequencer thread with the result of user choice.
- * The request for user input (issued from sequencer thread) and actual answer (provided by the GUI
- * thread via callbacks) is disentangled via a queued connection. That allows having runner thread
- * waiting for input, and GUI thread responsive.
+ * @brief The UserChoiceProvider class provides consumer thread with the result of user choice.
+ *
+ * @details The request for user input (issued from sequencer thread, for example) and actual answer
+ * (provided by the GUI thread via callbacks) is disentangled via a queued connection. That allows
+ * having consumer thread waiting for input, and GUI thread responsive.
  */
 
 class UserChoiceProvider : public QObject
@@ -49,7 +50,7 @@ public:
   /**
    * @brief Returns result of user choice.
    *
-   * @details The call is blocking and it is intended for call from sequencer observer. Thread
+   * @details The call is blocking and it is intended for call from concumer thread. Thread
    * will be released when the result is available.
    *
    * @param args Arguments to provide

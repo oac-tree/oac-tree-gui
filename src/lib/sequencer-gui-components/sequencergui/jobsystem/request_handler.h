@@ -30,14 +30,13 @@ namespace sequencergui
 /**
  * @brief The RequestHandler class allow to request the data from another thread.
  *
- * @tparam ArgT Type of arguments to get the data.
+ * @tparam ArgT Type of input arguments to get the data.
  * @tparam DataT Type of the data to return.
  */
 template <typename DataT, typename ArgT>
 class RequestHandler
 {
 public:
-  using data_request_callback_t = std::function<void(ArgT)>;
   RequestHandler() = default;
 
   /**
@@ -66,7 +65,6 @@ public:
   ArgT GetArguments() const { return m_arguments; }
 
 private:
-  data_request_callback_t m_data_request_callback;
   std::promise<DataT> promise;
   ArgT m_arguments;
 };

@@ -24,6 +24,7 @@ namespace sequencergui
 
 UserChoiceProvider::UserChoiceProvider(provider_callback_t callback)
 {
+  // queued connection
   connect(this, &UserChoiceProvider::ChoiceRequest, this, &UserChoiceProvider::OnChoiceRequest,
           Qt::QueuedConnection);
 }
