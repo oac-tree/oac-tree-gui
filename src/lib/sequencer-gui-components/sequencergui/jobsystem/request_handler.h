@@ -30,24 +30,21 @@ namespace sequencergui
 /**
  * @brief The RequestHandler class allow to request the data from another thread.
  *
- * @tparam ArgT Type of input arguments to get the data.
  * @tparam DataT Type of the data to return.
  */
-template <typename DataT, typename ArgT>
+template <typename DataT>
 class RequestHandler
 {
 public:
   RequestHandler() = default;
 
   /**
-   * Gets the data for given arguments. This is a blocking method which shall be used from a
-   * thread that needs the data. Will return the data when it become available.
+   * Gets the data from another thread (blocking). Will return the data when it become available.
    *
-   * @param arg Necessary arguments to get the data.
    * @return Returns requested data.
    *
    */
-  DataT GetData(const ArgT& args)
+  DataT GetData()
   {
     auto future = promise.get_future();
     return future.get();

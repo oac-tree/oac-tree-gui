@@ -37,14 +37,14 @@ TEST_F(RequestHandlerTest, SetUserInput)
   const std::string description("description");
   const UserChoiceArgs args{choices, description};
 
-  RequestHandler<UserChoiceResult, UserChoiceArgs> handler;
+  RequestHandler<UserChoiceResult> handler;
 
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)
   auto consumer = [&handler, &ready_for_test, &args]()
   {
     ready_for_test.set_value();
-    return handler.GetData(args);
+    return handler.GetData();
   };
 
   std::future<UserChoiceResult> future_result = std::async(std::launch::async, consumer);

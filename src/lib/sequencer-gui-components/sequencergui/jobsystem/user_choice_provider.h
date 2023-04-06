@@ -45,7 +45,7 @@ class UserChoiceProvider : public QObject
 
 public:
   using provider_callback_t = std::function<UserChoiceResult(UserChoiceArgs)>;
-  using request_handler_t = RequestHandler<UserChoiceResult, UserChoiceArgs>;
+  using request_handler_t = RequestHandler<UserChoiceResult>;
 
   UserChoiceProvider(provider_callback_t callback);
 

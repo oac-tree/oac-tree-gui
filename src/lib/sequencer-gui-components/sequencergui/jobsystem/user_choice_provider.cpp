@@ -24,7 +24,6 @@ namespace sequencergui
 
 UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provider_callback(callback)
 {
-  // queued connection
   connect(this, &UserChoiceProvider::ChoiceRequest, this, &UserChoiceProvider::OnChoiceRequest,
           Qt::QueuedConnection);
 }
@@ -39,9 +38,9 @@ UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
     m_stack.push(&request_data);
   }
 
-  emit ChoiceRequest();
+  emit ChoiceRequest();  // queued connection
 
-  return request_data.request_handler.GetData(args);
+  return request_data.request_handler.GetData();
 }
 
 //! Processes user choice and send the data to the waiting thread.
@@ -49,11 +48,12 @@ UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
 
 void UserChoiceProvider::OnChoiceRequest()
 {
-  assert(!m_stack.empty());
-
   RequestData* request_data{nullptr};
+
   {
     std::unique_lock<std::mutex> lock(m_mutex);
+    assert(!m_stack.empty());
+
     request_data = m_stack.front();
     m_stack.pop();
   }
