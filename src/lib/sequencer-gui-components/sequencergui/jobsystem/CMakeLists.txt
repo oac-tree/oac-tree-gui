@@ -28,4 +28,8 @@ target_sources(${library_name} PRIVATE
   user_context.h
   user_controller.cpp
   user_controller.h
-  )
+  request_handle.h
+  request_provider.h
+  request_provider.cpp
+  request_types.h
+)
