@@ -28,17 +28,17 @@ namespace sequencergui
 {
 
 /**
- * @brief The RequestHandle class allow to request the data from another thread.
+ * @brief The RequestHandler class allow to request the data from another thread.
  *
  * @tparam ArgT Type of arguments to get the data.
  * @tparam DataT Type of the data to return.
  */
 template <typename DataT, typename ArgT>
-class RequestHandle
+class RequestHandler
 {
 public:
   using data_request_callback_t = std::function<void(ArgT)>;
-  RequestHandle() = default;
+  RequestHandler() = default;
 
   /**
    * Gets the data for given arguments. This is a blocking method which shall be used from a

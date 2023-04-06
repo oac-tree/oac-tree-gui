@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/request_handle.h"
+#include "sequencergui/jobsystem/request_handler.h"
 
 #include <sequencergui/jobsystem/request_types.h>
 
@@ -37,7 +37,7 @@ TEST_F(RequestHandleTest, SetUserInput)
   const std::string description("description");
   const UserChoiceArgs args{choices, description};
 
-  RequestHandle<UserChoiceResult, UserChoiceArgs> handle;
+  RequestHandler<UserChoiceResult, UserChoiceArgs> handle;
 
   std::promise<void> ready_for_test;
   // runner to ask for user input (blocking)

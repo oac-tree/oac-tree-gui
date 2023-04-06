@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_PROVIDER_H_
 #define SEQUENCERGUI_JOBSYSTEM_REQUEST_PROVIDER_H_
 
-#include <sequencergui/jobsystem/request_handle.h>
+#include <sequencergui/jobsystem/request_handler.h>
 #include <sequencergui/jobsystem/request_types.h>
 
 #include <QObject>
@@ -29,13 +29,20 @@
 namespace sequencergui
 {
 
+/**
+ * @brief The UserChoiceProvider class provides sequencer thread with the result of user choice.
+ * The request for user input (issued from sequencer thread) and actual answer (provided by the GUI
+ * thread via callbacks) is disentangled via a queued connection. That allows having runner thread
+ * waiting for input, and GUI thread responsive.
+ */
+
 class UserChoiceProvider : public QObject
 {
   Q_OBJECT
 
 public:
   using provider_callback_t = std::function<UserChoiceResult(UserChoiceArgs)>;
-  using choice_request_t = RequestHandle<UserChoiceResult, UserChoiceArgs>;
+  using request_handler_t = RequestHandler<UserChoiceResult, UserChoiceArgs>;
 
   UserChoiceProvider(provider_callback_t callback);
 
@@ -59,7 +66,7 @@ signals:
 
 private:
   provider_callback_t m_provider_callback;
-  choice_request_t m_choice_request;
+  request_handler_t m_request_handler;
 };
 
 }  // namespace sequencergui

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "request_provider.h"
+#include "user_choice_provider.h"
 
 namespace sequencergui
 {
@@ -32,13 +32,13 @@ UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs &args)
 {
   emit ChoiceRequest();
 
-  return m_choice_request.GetData(args);
+  return m_request_handler.GetData(args);
 }
 
 void UserChoiceProvider::OnChoiceRequest()
 {
-  auto args = m_choice_request.GetArguments();
-  m_choice_request.SendData(m_provider_callback(args));
+  auto args = m_request_handler.GetArguments();
+  m_request_handler.SendData(m_provider_callback(args));
 }
 
 }  // namespace sequencergui
