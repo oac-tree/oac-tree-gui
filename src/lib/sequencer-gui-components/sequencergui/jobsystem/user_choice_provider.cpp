@@ -31,17 +31,35 @@ UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provide
 
 UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs &args)
 {
-  m_request_data.args = args;
+  RequestData request_data;
+
+  {
+    std::unique_lock<std::mutex> lock(m_mutex);
+    request_data.args = args;
+    m_stack.push(&request_data);
+  }
 
   emit ChoiceRequest();
 
-  return m_request_data.request_handler.GetData(args);
+  return request_data.request_handler.GetData(args);
 }
+
+//! Processes user choice and send the data to the waiting thread.
+//! Method will be called by the GUI thread thanks to the queued connection.
 
 void UserChoiceProvider::OnChoiceRequest()
 {
-  auto args = m_request_data.args;
-  m_request_data.request_handler.SendData(m_provider_callback(args));
+  assert(!m_stack.empty());
+
+  RequestData* request_data{nullptr};
+  {
+    std::unique_lock<std::mutex> lock(m_mutex);
+    request_data = m_stack.top();
+    m_stack.pop();
+  }
+
+  auto args = request_data->args;
+  request_data->request_handler.SendData(m_provider_callback(args));
 }
 
 }  // namespace sequencergui

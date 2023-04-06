@@ -25,6 +25,8 @@
 
 #include <QObject>
 #include <functional>
+#include <mutex>
+#include <stack>
 
 namespace sequencergui
 {
@@ -72,8 +74,9 @@ private:
     request_handler_t request_handler;
   };
 
+  mutable std::mutex m_mutex;
   provider_callback_t m_provider_callback;
-  RequestData m_request_data;
+  std::stack<RequestData*> m_stack;
 };
 
 }  // namespace sequencergui

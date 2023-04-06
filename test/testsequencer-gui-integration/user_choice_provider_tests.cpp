@@ -34,10 +34,7 @@ class UserChoiceProviderTest : public ::testing::Test
 {
 };
 
-//! - Create a callback mimicking user responce.
-//! - Run a thread with blocking call GetUserInput().
-//! - Wait with QTest::qWait to make event loop rolling.
-//! - Checking user input as reported by runner thread.
+// Single consumer thread ask for user choice.
 
 TEST_F(UserChoiceProviderTest, SetUserChoice)
 {
@@ -55,14 +52,12 @@ TEST_F(UserChoiceProviderTest, SetUserChoice)
   // runner to ask for user input (blocking)
   auto runner = [&provider, &ready_for_test, &args]()
   {
-    const std::vector<std::string> choices({"a", "b", "c"});
-    const std::string description("description");
     ready_for_test.set_value();
     return provider.GetUserChoice(args);
   };
 
   // launching runner in a thread
-  std::future<UserChoiceResult> result_obtained = std::async(std::launch::async, runner);
+  std::future<UserChoiceResult> future_result = std::async(std::launch::async, runner);
 
   // waiting for threads being prepared for racing
   ready_for_test.get_future().wait();
@@ -71,9 +66,64 @@ TEST_F(UserChoiceProviderTest, SetUserChoice)
   QTest::qWait(100);
 
   // making sure the thread has finished
-  auto result = result_obtained.get();
+  auto result = future_result.get();
 
-  // result from the thread should contain the result of concatenation
+  // validating
   EXPECT_EQ(result.index, 42);
   EXPECT_EQ(result.processed, true);
+}
+
+TEST_F(UserChoiceProviderTest, SetUserChoiceTwoConsumers)
+{
+  const std::vector<std::string> choices({"a", "b", "c"});
+  const std::string description("description");
+  const UserChoiceArgs args{choices, description};
+
+  // User choice callback. Will prvide `0` for the first call, and `1` for the second.
+  int user_selection{0};
+  auto on_user_choice = [&user_selection](auto) {
+    return UserChoiceResult{user_selection++, true};
+  };
+
+  UserChoiceProvider provider(on_user_choice);
+
+  std::promise<void> ready_for_test1;
+
+  // runner to ask for user input (blocking)
+  auto consumer1 = [&provider, &ready_for_test1, &args]()
+  {
+    ready_for_test1.set_value();
+    return provider.GetUserChoice(args);
+  };
+
+  std::promise<void> ready_for_test2;
+  // runner to ask for user input (blocking)
+  auto consumer2 = [&provider, &ready_for_test2, &args]()
+  {
+    ready_for_test2.set_value();
+    return provider.GetUserChoice(args);
+  };
+
+  // launching runner in a thread
+  std::future<UserChoiceResult> future_result1 = std::async(std::launch::async, consumer1);
+  std::future<UserChoiceResult> future_result2 = std::async(std::launch::async, consumer2);
+
+  // waiting for threads being prepared for racing
+  ready_for_test1.get_future().wait();
+  ready_for_test2.get_future().wait();
+
+  // processing event loop to make queued connection passing in UserChoiceProvider
+  QTest::qWait(100);
+
+  // making sure the thread has finished
+  auto result1 = future_result1.get();
+  auto result2 = future_result2.get();
+
+  std::vector<int> user_choices;  // as reported by two threads
+  user_choices.push_back(result1.index);
+  user_choices.push_back(result2.index);
+  std::sort(user_choices.begin(), user_choices.end());
+  ASSERT_EQ(user_choices.size(), 2);
+  EXPECT_EQ(user_choices.at(0), 0);
+  EXPECT_EQ(user_choices.at(1), 1);
 }
