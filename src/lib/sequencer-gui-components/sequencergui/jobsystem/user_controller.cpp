@@ -104,7 +104,7 @@ void UserController::OnUserChoiceRequest(const QStringList &choices, const QStri
     // std::terminate() would cure everything, but we opt for more sneaky solution.
 
     // Let's provide the runner with some input and see if it can swallow it.
-    SetAsUserInput("No user input was provided");
+    SetAsUserChoice(-1);
   }
 }
 
