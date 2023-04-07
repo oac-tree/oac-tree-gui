@@ -29,6 +29,7 @@ target_sources(${library_name} PRIVATE
   user_controller.cpp
   user_controller.h
   request_handler.h
+  request_handler_queue.h
   user_choice_provider.h
   user_choice_provider.cpp
   request_types.h

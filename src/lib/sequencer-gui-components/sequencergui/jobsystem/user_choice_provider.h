@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_PROVIDER_H_
-#define SEQUENCERGUI_JOBSYSTEM_REQUEST_PROVIDER_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
+#define SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
 
 #include <sequencergui/jobsystem/request_handler.h>
 #include <sequencergui/jobsystem/request_types.h>
@@ -81,4 +81,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_PROVIDER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
