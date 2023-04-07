@@ -23,7 +23,7 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_types.h>
-#include <sequencergui/jobsystem/user_controller.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 #include <QObject>
 #include <memory>
@@ -34,6 +34,7 @@ class SequencerObserver;
 class DomainRunnerAdapter;
 class LogEvent;
 class UserChoiceProvider;
+class UserInputProvider;
 struct UserChoiceResult;
 
 //! Executes sequencer's procedure in a separate thread.
@@ -74,7 +75,7 @@ public:
 
   void OnLogEvent(const LogEvent& event);
 
-  std::string onUserInput(const std::string& current_value, const std::string& description);
+  UserInputResult onUserInput(const UserInputArgs& args);
 
   UserChoiceResult onUserChoice(const UserChoiceArgs& args);
 
@@ -88,7 +89,7 @@ private:
   std::unique_ptr<SequencerObserver> m_observer;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
-  UserController m_user_controller;
+  std::unique_ptr<UserInputProvider> m_input_provider;
 };
 
 }  // namespace sequencergui

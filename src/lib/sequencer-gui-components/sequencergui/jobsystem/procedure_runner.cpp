@@ -25,6 +25,7 @@
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
 #include <sequencergui/jobsystem/user_choice_provider.h>
+#include <sequencergui/jobsystem/user_input_provider.h>
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
@@ -82,7 +83,8 @@ void ProcedureRunner::SetSleepTime(int time_msec)
 void ProcedureRunner::SetUserContext(const UserContext &user_context)
 {
   m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
-  m_user_controller.SetUserContext(user_context);
+  m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
+//  m_user_controller.SetUserContext(user_context);
 }
 
 bool ProcedureRunner::IsBusy() const
@@ -110,10 +112,9 @@ void ProcedureRunner::OnLogEvent(const LogEvent &event)
   emit LogEventReceived(event);
 }
 
-std::string ProcedureRunner::onUserInput(const std::string &current_value,
-                                         const std::string &description)
+UserInputResult ProcedureRunner::onUserInput(const UserInputArgs& args)
 {
-  return m_user_controller.GetUserInput(current_value, description);
+  return m_input_provider->GetUserInput(args);
 }
 
 UserChoiceResult ProcedureRunner::onUserChoice(const UserChoiceArgs &args)

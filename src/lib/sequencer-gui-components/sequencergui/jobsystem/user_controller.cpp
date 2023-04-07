@@ -26,7 +26,7 @@ namespace sequencergui
 
 UserController::UserController(QObject *parent) : QObject(parent)
 {
-  SetupConnections();
+//  SetupConnections();
 }
 
 void UserController::SetUserContext(const UserContext &context)
@@ -37,15 +37,15 @@ void UserController::SetUserContext(const UserContext &context)
 //! Returns user input as a string.
 //! This call is blocking and is expected to be fired from the runner thread.
 
-std::string UserController::GetUserInput(const std::string &current_value,
-                                         const std::string &description)
-{
-  // queued connection
-  emit InputRequest(QString::fromStdString(current_value), QString::fromStdString(description));
+//std::string UserController::GetUserInput(const std::string &current_value,
+//                                         const std::string &description)
+//{
+//  // queued connection
+//  emit InputRequest(QString::fromStdString(current_value), QString::fromStdString(description));
 
-  auto result = m_input_data.wait_and_pop();  // wait for the result
-  return *result;
-}
+//  auto result = m_input_data.wait_and_pop();  // wait for the result
+//  return *result;
+//}
 
 //! Method to request the user one of the given option.
 
@@ -60,10 +60,10 @@ std::string UserController::GetUserInput(const std::string &current_value,
 //}
 
 //! Set given value as used input.
-void UserController::SetAsUserInput(const std::string &value)
-{
-  m_input_data.update_top(value);  // will release waiting in GetUserInput
-}
+//void UserController::SetAsUserInput(const std::string &value)
+//{
+//  m_input_data.update_top(value);  // will release waiting in GetUserInput
+//}
 
 //void UserController::SetAsUserChoice(int value)
 //{
@@ -71,23 +71,23 @@ void UserController::SetAsUserInput(const std::string &value)
 //}
 
 //! Processes user input. Expected to be called from the GUI thread
-void UserController::OnInputRequest(const QString &current_value, const QString &description)
-{
-  if (m_user_context.m_user_input_callback)
-  {
-    SetAsUserInput(m_user_context.m_user_input_callback(current_value, description).toStdString());
-  }
-  else
-  {
-    // This is an abnormal case when the user input is required from the runner thread, but a
-    // callback to ask the user wasn't set. Seems that throwing is not the right choice here, since
-    // the call was done in queued connection and nobody knows where throwing will end up.
-    // std::terminate() would cure everything, but we opt for more sneaky solution.
+//void UserController::OnInputRequest(const QString &current_value, const QString &description)
+//{
+//  if (m_user_context.m_user_input_callback)
+//  {
+//    SetAsUserInput(m_user_context.m_user_input_callback(current_value, description).toStdString());
+//  }
+//  else
+//  {
+//    // This is an abnormal case when the user input is required from the runner thread, but a
+//    // callback to ask the user wasn't set. Seems that throwing is not the right choice here, since
+//    // the call was done in queued connection and nobody knows where throwing will end up.
+//    // std::terminate() would cure everything, but we opt for more sneaky solution.
 
-    // Let's provide the runner with some input and see if it can swallow it.
-    SetAsUserInput("No user input was provided");
-  }
-}
+//    // Let's provide the runner with some input and see if it can swallow it.
+//    SetAsUserInput("No user input was provided");
+//  }
+//}
 
 //! Processes user choice. Expected to be called from the GUI thread
 //void UserController::OnUserChoiceRequest(const QStringList &choices, const QString &description)
@@ -109,15 +109,15 @@ void UserController::OnInputRequest(const QString &current_value, const QString 
 //}
 
 //! Connects requests issued from the runner thread, with the GUI thread.
-void UserController::SetupConnections() const
-{
-  // Connects input request.
-  connect(this, &UserController::InputRequest, this, &UserController::OnInputRequest,
-          Qt::QueuedConnection);
+//void UserController::SetupConnections() const
+//{
+//  // Connects input request.
+////  connect(this, &UserController::InputRequest, this, &UserController::OnInputRequest,
+////          Qt::QueuedConnection);
 
-//  // Connects choice request.
-//  connect(this, &UserController::ChoiceRequest, this, &UserController::OnUserChoiceRequest,
-//          Qt::QueuedConnection);
-}
+////  // Connects choice request.
+////  connect(this, &UserController::ChoiceRequest, this, &UserController::OnUserChoiceRequest,
+////          Qt::QueuedConnection);
+//}
 
 }  // namespace sequencergui

@@ -245,6 +245,8 @@ TEST_F(JobContextTest, LocalIncludeScenario)
 
 TEST_F(JobContextTest, DISABLED_UserInputScenario)
 {
+  const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 41};
+
   auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
@@ -252,7 +254,10 @@ TEST_F(JobContextTest, DISABLED_UserInputScenario)
 
   job_context.onPrepareJobRequest();
 
-  auto on_user_input = [](auto, auto) { return "42"; };
+  auto on_user_input = [initial_value](auto)
+  {
+    return UserInputResult{initial_value, true};
+  };
   job_context.SetUserContext({on_user_input});
 
   QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);

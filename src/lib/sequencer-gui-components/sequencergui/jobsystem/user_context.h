@@ -34,7 +34,7 @@ struct UserContext
 {
   //!< A callback to returns user input as a text.
   //! Initial vaue, and the description are provided as callback parameters.
-  using userinput_callback_t = std::function<QString(QString, QString)>;
+  using userinput_callback_t = std::function<UserInputResult(UserInputArgs)>;
   userinput_callback_t m_user_input_callback;
 
   //!< A callback to returns user choice as an integer.

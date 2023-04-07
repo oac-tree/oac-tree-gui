@@ -27,7 +27,8 @@ namespace sequencergui
 {
 struct UserChoiceResult;
 struct UserChoiceArgs;
-
+struct UserInputResult;
+struct UserInputArgs;
 class JobModel;
 class InstructionItem;
 class JobItem;
@@ -65,7 +66,7 @@ public:
   void SetMessagePanel(MessagePanel* panel);
   void onChangeDelayRequest(int msec);
 
-  QString onUserInputRequest(const QString& current_value, const QString& description);
+  UserInputResult onUserInputRequest(const UserInputArgs& args);
 
   UserChoiceResult onUserChoiceRequest(const UserChoiceArgs& args);
 

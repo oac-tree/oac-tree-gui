@@ -26,6 +26,7 @@
 #include <sequencergui/monitor/message_panel.h>
 
 #include <QInputDialog>
+#include <QMessageBox>
 
 namespace sequencergui
 {
@@ -158,10 +159,10 @@ void JobManager::onChangeDelayRequest(int msec)
   }
 }
 
-QString JobManager::onUserInputRequest(const QString &current_value, const QString &description)
+UserInputResult JobManager::onUserInputRequest(const UserInputArgs &args)
 {
-  return QInputDialog::getText(nullptr, "Input request", description, QLineEdit::Normal,
-                               current_value);
+  QMessageBox::warning(nullptr, "Not implemented", "Not implemented");
+  return {};
 }
 
 UserChoiceResult JobManager::onUserChoiceRequest(const UserChoiceArgs &args)
@@ -179,11 +180,9 @@ UserChoiceResult JobManager::onUserChoiceRequest(const UserChoiceArgs &args)
 
 std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
 {
-  auto on_user_input = [this](auto value, auto description)
-  { return onUserInputRequest(value, description); };
+  auto on_user_input = [this](const auto &args) { return onUserInputRequest(args); };
 
-  auto on_user_choice = [this](const auto& args)
-  { return onUserChoiceRequest(args); };
+  auto on_user_choice = [this](const auto &args) { return onUserChoiceRequest(args); };
 
   auto context = std::make_unique<JobContext>(item);
   connect(context.get(), &JobContext::InstructionStatusChanged, this,
