@@ -50,9 +50,9 @@ public:
 
   void SetCurrentJob(JobItem* job);
 
-  JobHandler* GetCurrentContext();
+  JobHandler* GetCurrentJobHandler();
 
-  JobHandler* GetContext(JobItem* job);
+  JobHandler* GetJobHandler(JobItem* job);
 
   JobItem* GetCurrentJob();
 
@@ -74,10 +74,10 @@ signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
-  std::unique_ptr<JobHandler> CreateContext(JobItem* item);
+  std::unique_ptr<JobHandler> CreateJobHandler(JobItem* item);
 
   JobItem* m_current_job{nullptr};
-  std::map<JobItem*, std::unique_ptr<JobHandler>> m_context_map;
+  std::map<JobItem*, std::unique_ptr<JobHandler>> m_job_map;
   MessagePanel* m_message_panel{nullptr};
   int m_current_delay{0};
 };

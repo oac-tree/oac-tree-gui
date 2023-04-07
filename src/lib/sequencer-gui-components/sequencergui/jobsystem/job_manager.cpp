@@ -25,12 +25,12 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <QInputDialog>
 #include <QMainWindow>
@@ -51,13 +51,13 @@ void JobManager::SubmitJob(JobItem *job)
     throw RuntimeException("Attempt to submit undefined job");
   }
 
-  if (auto context = GetContext(job); context)
+  if (auto job_handler = GetJobHandler(job); job_handler)
   {
     throw RuntimeException("Attempt to submit already existing job");
   }
 
-  auto context = CreateContext(job);
-  m_context_map.insert({job, std::move(context)});
+  auto job_handler = CreateJobHandler(job);
+  m_job_map.insert({job, std::move(job_handler)});
 }
 
 JobManager::~JobManager() = default;
@@ -73,26 +73,26 @@ void JobManager::SetCurrentJob(JobItem *job)
 
   m_current_job = job;
 
-  if (auto current_context = GetCurrentContext(); current_context)
+  if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
     if (m_message_panel)
     {
-      m_message_panel->SetLog(current_context->GetJobLog());
+      m_message_panel->SetLog(job_handler->GetJobLog());
     }
   }
 }
 
-JobHandler *JobManager::GetCurrentContext()
+JobHandler *JobManager::GetCurrentJobHandler()
 {
-  return GetContext(m_current_job);
+  return GetJobHandler(m_current_job);
 }
 
-//! Returns context for JobItem.
+//! Returns job handler for JobItem.
 
-JobHandler *JobManager::GetContext(JobItem *job)
+JobHandler *JobManager::GetJobHandler(JobItem *job)
 {
-  auto iter = m_context_map.find(job);
-  return iter == m_context_map.end() ? nullptr : iter->second.get();
+  auto iter = m_job_map.find(job);
+  return iter == m_job_map.end() ? nullptr : iter->second.get();
 }
 
 //! Returns current job. It is the one that is attached to the MessagePanel and is the recipient
@@ -105,41 +105,41 @@ JobItem *JobManager::GetCurrentJob()
 
 void JobManager::OnStartJobRequest()
 {
-  if (auto current_context = GetCurrentContext(); current_context)
+  if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    current_context->onStartRequest();
+    job_handler->onStartRequest();
   }
 }
 
 void JobManager::OnPauseJobRequest()
 {
-  if (auto context = GetCurrentContext(); context)
+  if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    context->onPauseRequest();
+    job_handler->onPauseRequest();
   }
 }
 
 void JobManager::OnStopJobRequest()
 {
-  if (auto context = GetCurrentContext(); context)
+  if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    context->onStopRequest();
+    job_handler->onStopRequest();
   }
 }
 
 void JobManager::OnMakeStepRequest()
 {
-  if (auto context = GetCurrentContext(); context)
+  if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    context->onMakeStepRequest();
+    job_handler->onMakeStepRequest();
   }
 }
 
 void JobManager::OnRemoveJobRequest(JobItem *job)
 {
-  if (auto context = GetContext(job); context)
+  if (auto job_handler = GetJobHandler(job); job_handler)
   {
-    if (context->IsRunning())
+    if (job_handler->IsRunning())
     {
       throw RuntimeException("Attempt to modify running job");
     }
@@ -149,7 +149,7 @@ void JobManager::OnRemoveJobRequest(JobItem *job)
       SetCurrentJob(nullptr);
     }
 
-    m_context_map.erase(job);
+    m_job_map.erase(job);
   }
 }
 
@@ -161,9 +161,9 @@ void JobManager::SetMessagePanel(MessagePanel *panel)
 void JobManager::OnChangeDelayRequest(int msec)
 {
   m_current_delay = msec;
-  if (auto context = GetCurrentContext(); context)
+  if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    context->SetSleepTime(m_current_delay);
+    job_handler->SetSleepTime(m_current_delay);
   }
 }
 
@@ -196,22 +196,22 @@ UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
   return {with_index_added.indexOf(selection), true};
 }
 
-std::unique_ptr<JobHandler> JobManager::CreateContext(JobItem *item)
+std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
   auto on_user_input = [this](const auto &args) { return OnUserInputRequest(args); };
 
   auto on_user_choice = [this](const auto &args) { return OnUserChoiceRequest(args); };
 
-  auto context = std::make_unique<JobHandler>(item);
-  connect(context.get(), &JobHandler::InstructionStatusChanged, this,
+  auto job_handler = std::make_unique<JobHandler>(item);
+  connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
 
-  context->onPrepareJobRequest();
-  // FIXME two calls below must be after onPrepareJobContext
-  context->SetUserContext({on_user_input, on_user_choice});
-  context->SetSleepTime(m_current_delay);
+  job_handler->onPrepareJobRequest();
+  // FIXME two calls below must be after onPrepareJobRequest
+  job_handler->SetUserContext({on_user_input, on_user_choice});
+  job_handler->SetSleepTime(m_current_delay);
 
-  return context;
+  return job_handler;
 }
 
 }  // namespace sequencergui

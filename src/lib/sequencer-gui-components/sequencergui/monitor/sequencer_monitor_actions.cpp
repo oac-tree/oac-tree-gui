@@ -207,7 +207,7 @@ void SequencerMonitorActions::CheckConditions()
 
 void SequencerMonitorActions::ResubmitIfNecessary()
 {
-  if (auto context = m_job_manager->GetCurrentContext(); context)
+  if (auto context = m_job_manager->GetCurrentJobHandler(); context)
   {
     auto status = context->GetRunnerStatus();
     if (status == RunnerStatus::kFailed || status == RunnerStatus::kCompleted

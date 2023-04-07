@@ -64,8 +64,8 @@ public:
 TEST_F(JobManagerTest, InitialState)
 {
   JobManager manager;
-  EXPECT_FALSE(manager.GetCurrentContext());
-  EXPECT_FALSE(manager.GetContext(m_job_item));
+  EXPECT_FALSE(manager.GetCurrentJobHandler());
+  EXPECT_FALSE(manager.GetJobHandler(m_job_item));
   EXPECT_FALSE(manager.GetCurrentJob());
 }
 
@@ -80,8 +80,8 @@ TEST_F(JobManagerTest, SubmitProcedure)
   manager.SubmitJob(m_job_item);
   EXPECT_FALSE(manager.GetCurrentJob());
 
-  ASSERT_TRUE(manager.GetContext(m_job_item));
-  EXPECT_EQ(manager.GetContext(m_job_item)->GetExpandedProcedure(),
+  ASSERT_TRUE(manager.GetJobHandler(m_job_item));
+  EXPECT_EQ(manager.GetJobHandler(m_job_item)->GetExpandedProcedure(),
             m_job_item->GetExpandedProcedure());
 }
 
@@ -134,7 +134,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
 
-  auto context = manager.GetCurrentContext();
+  auto context = manager.GetCurrentJobHandler();
   ASSERT_TRUE(context != nullptr);
 
   EXPECT_FALSE(context->IsRunning());
@@ -190,8 +190,8 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   // should be possible to remove submitted, but non-running job
   EXPECT_NO_THROW(manager.OnRemoveJobRequest(m_job_item));
 
-  EXPECT_EQ(manager.GetCurrentContext(), nullptr);
-  EXPECT_EQ(manager.GetContext(m_job_item), nullptr);
+  EXPECT_EQ(manager.GetCurrentJobHandler(), nullptr);
+  EXPECT_EQ(manager.GetJobHandler(m_job_item), nullptr);
   EXPECT_EQ(manager.GetCurrentJob(), nullptr);
 }
 
@@ -211,7 +211,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   manager.SetCurrentJob(m_job_item);
   manager.OnStartJobRequest();
 
-  auto context = manager.GetCurrentContext();
+  auto context = manager.GetCurrentJobHandler();
   EXPECT_TRUE(context->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it
