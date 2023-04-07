@@ -34,9 +34,9 @@ class UserChoiceProviderTest : public ::testing::Test
 {
 };
 
-// Single consumer thread ask for user choice.
+//! Single consumer thread asks for user choice.
 
-TEST_F(UserChoiceProviderTest, SetUserChoice)
+TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
 {
   const std::vector<std::string> choices({"a", "b", "c"});
   const std::string description("description");
@@ -73,7 +73,7 @@ TEST_F(UserChoiceProviderTest, SetUserChoice)
   EXPECT_EQ(result.processed, true);
 }
 
-TEST_F(UserChoiceProviderTest, SetUserChoiceTwoConsumers)
+TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
 {
   const std::vector<std::string> choices({"a", "b", "c"});
   const std::string description("description");

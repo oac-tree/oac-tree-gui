@@ -22,9 +22,7 @@
 #include <gtest/gtest.h>
 
 #include <QTest>
-#include <chrono>
 #include <future>
-#include <iostream>
 
 using namespace sequencergui;
 
@@ -83,7 +81,7 @@ TEST_F(UserControllerTest, SetUserInput)
 //! - Wait with QTest::qWait to make event loop rolling.
 //! - Checking user input as reported by runner thread.
 
-TEST_F(UserControllerTest, SetUserChoice)
+TEST_F(UserControllerTest, SeingleUserChoice)
 {
   const int user_choice = {42};
   // User choice callback.
