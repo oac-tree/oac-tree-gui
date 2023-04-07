@@ -247,14 +247,20 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
   }
 
   EXPECT_TRUE(runner.Step());  // triggering action
-  std::this_thread::sleep_for(msec(20));
+  std::this_thread::sleep_for(msec(5));
   EXPECT_TRUE(runner.IsBusy());
+
+  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kPaused;}, msec(50));
+
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(runner.IsBusy());
 
   runner.Step();
-  std::this_thread::sleep_for(msec(20));
+  std::this_thread::sleep_for(msec(5));
+
+  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kCompleted;}, msec(50));
+
   EXPECT_EQ(nsteps, 2);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_FALSE(runner.IsBusy());
