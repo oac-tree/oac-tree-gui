@@ -9,8 +9,8 @@ target_sources(${library_name} PRIVATE
   flow_controller.h
   function_runner.cpp
   function_runner.h
-  job_context.cpp
-  job_context.h
+  job_handler.cpp
+  job_handler.h
   job_log_severity.cpp
   job_log_severity.h
   job_manager.cpp

@@ -20,7 +20,7 @@
 #include "sequencergui/monitor/sequencer_monitor_actions.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/job_context.h>
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
@@ -151,7 +151,7 @@ TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
   m_actions.OnStartJobRequest();
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  // no item was selected, context is not switched
+  // no item was selected, job_handler is not switched
   EXPECT_FALSE(m_job_manager.GetCurrentJobHandler());
 
   // making item selected
@@ -201,8 +201,8 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
 
   m_actions.OnStartJobRequest();
 
-  auto context = m_job_manager.GetCurrentJobHandler();
-  EXPECT_TRUE(context->IsRunning());
+  auto job_handler = m_job_manager.GetCurrentJobHandler();
+  EXPECT_TRUE(job_handler->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_THROW(m_actions.OnRemoveJobRequest(), sup::gui::RuntimeException);
@@ -211,7 +211,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
   m_actions.OnStopJobRequest();
   QTest::qWait(20);
 
-  EXPECT_FALSE(context->IsRunning());
+  EXPECT_FALSE(job_handler->IsRunning());
 }
 
 //! Regenerate submitted job.
@@ -226,7 +226,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
-  auto context = m_job_manager.GetJobHandler(job_item);
+  auto job_handler = m_job_manager.GetJobHandler(job_item);
   auto expanded_procedure = job_item->GetExpandedProcedure();
 
   EXPECT_EQ(m_job_manager.GetJobHandler(job_item)->GetExpandedProcedure(),
@@ -246,9 +246,9 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 
   ASSERT_EQ(GetJobItems().size(), 1);
 
-  // it should be same JobItem, but different contexts
+  // it should be same JobItem, but different job_handler
   EXPECT_EQ(GetJobItems().at(0), job_item);
-  EXPECT_NE(m_job_manager.GetJobHandler(job_item), context);
+  EXPECT_NE(m_job_manager.GetJobHandler(job_item), job_handler);
   EXPECT_NE(job_item->GetExpandedProcedure(), expanded_procedure);
 }
 
@@ -264,7 +264,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
-  auto context = m_job_manager.GetJobHandler(job_item);
+  auto job_handler = m_job_manager.GetJobHandler(job_item);
   auto expanded_procedure = job_item->GetExpandedProcedure();
 
   // deleting procedure
@@ -283,7 +283,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
   EXPECT_EQ(spy_selected_request.count(), 0);
   ASSERT_EQ(GetJobItems().size(), 1);
 
-  // it should be same JobItem, but no context
+  // it should be same JobItem, but no job_handler
   EXPECT_EQ(GetJobItems().at(0), job_item);
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item));
 }

@@ -21,7 +21,7 @@
 
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/job_context.h>
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -207,9 +207,9 @@ void SequencerMonitorActions::CheckConditions()
 
 void SequencerMonitorActions::ResubmitIfNecessary()
 {
-  if (auto context = m_job_manager->GetCurrentJobHandler(); context)
+  if (auto job_handler = m_job_manager->GetCurrentJobHandler(); job_handler)
   {
-    auto status = context->GetRunnerStatus();
+    auto status = job_handler->GetRunnerStatus();
     if (status == RunnerStatus::kFailed || status == RunnerStatus::kCompleted
         || status == RunnerStatus::kStopped)
     {

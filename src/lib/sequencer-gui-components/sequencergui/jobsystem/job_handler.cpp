@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "job_context.h"
+#include "job_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_runner_adapter.h>

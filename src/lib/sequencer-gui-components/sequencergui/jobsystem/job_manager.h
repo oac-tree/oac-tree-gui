@@ -35,7 +35,7 @@ class JobItem;
 class MessagePanel;
 class JobHandler;
 
-//! Manages JobItem execution. Maps JobItem to the JobContext, containing all machinery to execute
+//! Manages JobItem execution. Maps JobItem to the JobHandler, containing all machinery to execute
 //! domain procedures in a thread.
 
 class JobManager : public QObject

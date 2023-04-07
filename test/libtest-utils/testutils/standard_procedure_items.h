@@ -36,7 +36,7 @@ class SequencerModel;
 namespace testutils
 {
 
-//! Creates invalid procedure that will cause JobContext to crash during the preparation.
+//! Creates invalid procedure that will cause JobHandler to crash during the preparation.
 sequencergui::ProcedureItem* CreateInvalidProcedureItem(sequencergui::SequencerModel* model);
 
 //! Creates procedure with single wait instruction.

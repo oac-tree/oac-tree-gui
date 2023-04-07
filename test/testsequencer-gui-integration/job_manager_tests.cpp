@@ -20,7 +20,7 @@
 #include "sequencergui/jobsystem/job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/job_context.h>
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_item.h>
@@ -134,23 +134,23 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
 
-  auto context = manager.GetCurrentJobHandler();
-  ASSERT_TRUE(context != nullptr);
+  auto job_handler = manager.GetCurrentJobHandler();
+  ASSERT_TRUE(job_handler != nullptr);
 
-  EXPECT_FALSE(context->IsRunning());
+  EXPECT_FALSE(job_handler->IsRunning());
 
-  auto procedure = context->GetExpandedProcedure();
+  auto procedure = job_handler->GetExpandedProcedure();
   ASSERT_TRUE(procedure != nullptr);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetInstructions().size(), 1);
   EXPECT_EQ(procedure->GetWorkspace()->GetVariableCount(), 2);
 
   // starting procedure
   manager.OnStartJobRequest();
-  EXPECT_TRUE(context->IsRunning());
+  EXPECT_TRUE(job_handler->IsRunning());
 
   // We are testing here queued signals, need special waiting to let procedure complete
   QTest::qWait(100);
-  EXPECT_FALSE(context->IsRunning());
+  EXPECT_FALSE(job_handler->IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
   // variables inside are changed
@@ -211,8 +211,8 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   manager.SetCurrentJob(m_job_item);
   manager.OnStartJobRequest();
 
-  auto context = manager.GetCurrentJobHandler();
-  EXPECT_TRUE(context->IsRunning());
+  auto job_handler = manager.GetCurrentJobHandler();
+  EXPECT_TRUE(job_handler->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
@@ -221,5 +221,5 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   manager.OnStopJobRequest();
   QTest::qWait(20);
 
-  EXPECT_FALSE(context->IsRunning());
+  EXPECT_FALSE(job_handler->IsRunning());
 }
