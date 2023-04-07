@@ -64,11 +64,11 @@ public:
   void OnRemoveJobRequest(JobItem* job);
 
   void SetMessagePanel(MessagePanel* panel);
-  void onChangeDelayRequest(int msec);
+  void OnChangeDelayRequest(int msec);
 
-  UserInputResult onUserInputRequest(const UserInputArgs& args);
+  UserInputResult OnUserInputRequest(const UserInputArgs& args);
 
-  UserChoiceResult onUserChoiceRequest(const UserChoiceArgs& args);
+  UserChoiceResult OnUserChoiceRequest(const UserChoiceArgs& args);
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);

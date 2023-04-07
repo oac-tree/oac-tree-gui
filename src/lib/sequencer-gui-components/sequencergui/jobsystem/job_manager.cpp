@@ -158,7 +158,7 @@ void JobManager::SetMessagePanel(MessagePanel *panel)
   m_message_panel = panel;
 }
 
-void JobManager::onChangeDelayRequest(int msec)
+void JobManager::OnChangeDelayRequest(int msec)
 {
   m_current_delay = msec;
   if (auto context = GetCurrentContext(); context)
@@ -167,7 +167,7 @@ void JobManager::onChangeDelayRequest(int msec)
   }
 }
 
-UserInputResult JobManager::onUserInputRequest(const UserInputArgs &args)
+UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
 {
   AnyValueEditorDialog dialog(mvvm::utils::FindMainWindow());
 
@@ -183,7 +183,7 @@ UserInputResult JobManager::onUserInputRequest(const UserInputArgs &args)
   return UserInputResult{{}, false};
 }
 
-UserChoiceResult JobManager::onUserChoiceRequest(const UserChoiceArgs &args)
+UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 {
   QStringList with_index_added;
   int index{0};
@@ -198,9 +198,9 @@ UserChoiceResult JobManager::onUserChoiceRequest(const UserChoiceArgs &args)
 
 std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
 {
-  auto on_user_input = [this](const auto &args) { return onUserInputRequest(args); };
+  auto on_user_input = [this](const auto &args) { return OnUserInputRequest(args); };
 
-  auto on_user_choice = [this](const auto &args) { return onUserChoiceRequest(args); };
+  auto on_user_choice = [this](const auto &args) { return OnUserChoiceRequest(args); };
 
   auto context = std::make_unique<JobContext>(item);
   connect(context.get(), &JobContext::InstructionStatusChanged, this,

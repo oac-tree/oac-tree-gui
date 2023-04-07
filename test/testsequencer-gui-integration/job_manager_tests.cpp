@@ -130,7 +130,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   manager.SubmitJob(m_job_item);
   manager.SetCurrentJob(m_job_item);
   EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
-  manager.onChangeDelayRequest(10);
+  manager.OnChangeDelayRequest(10);
 
   QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
 

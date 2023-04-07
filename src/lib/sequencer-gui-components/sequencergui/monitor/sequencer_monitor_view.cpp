@@ -119,7 +119,7 @@ void SequencerMonitorView::SetupConnections()
 
   // change delay request from MonitorRealTimeWidget to JobManager
   connect(m_realtime_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
-          &JobManager::onChangeDelayRequest);
+          &JobManager::OnChangeDelayRequest);
 
   // instruction selection request from RealTimeWidget to MonitorPropertyWidget
   connect(m_realtime_widget, &MonitorRealTimeWidget::InstructionClicked, m_property_widget,
