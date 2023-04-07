@@ -22,15 +22,17 @@ target_sources(${library_name} PRIVATE
   log_event.h
   procedure_runner.cpp
   procedure_runner.h
+  request_handler.h
+  request_handler_queue.h
+  request_types.h
   runner_interface.h
   sequencer_observer.cpp
   sequencer_observer.h
+  user_choice_provider.cpp
+  user_choice_provider.h
+  user_input_provider.cpp
+  user_input_provider.h
   user_context.h
   user_controller.cpp
   user_controller.h
-  request_handler.h
-  request_handler_queue.h
-  user_choice_provider.h
-  user_choice_provider.cpp
-  request_types.h
 )

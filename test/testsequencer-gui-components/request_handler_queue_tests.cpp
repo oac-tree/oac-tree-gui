@@ -58,8 +58,6 @@ TEST_F(RequestHandlerQueueTest, SingleThreadAskForData)
   // waiting for consumer thread being ready
   ready_for_test.get_future().wait();
 
-
-
   // checking result
   auto result = future_result.get();  // making sure thread has finished
   EXPECT_EQ(result, request_params.size());

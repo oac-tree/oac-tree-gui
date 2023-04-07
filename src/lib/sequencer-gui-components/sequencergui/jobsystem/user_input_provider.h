@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
-#define SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_
+#define SEQUENCERGUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_
 
 #include <sequencergui/jobsystem/request_handler_queue.h>
 #include <sequencergui/jobsystem/request_types.h>
@@ -29,44 +29,44 @@ namespace sequencergui
 {
 
 /**
- * @brief The UserChoiceProvider class provides consumer thread with the result of user choice.
+ * @brief The UserInputProvider class provides consumer thread with user input.
  *
  * @details The request for user input (issued from sequencer thread, for example) and actual answer
  * (provided by the GUI thread via callbacks) is disentangled via a queued connection. That allows
  * having consumer thread waiting for input, and GUI thread responsive.
  */
 
-class UserChoiceProvider : public QObject
+class UserInputProvider : public QObject
 {
   Q_OBJECT
 
 public:
-  using provider_callback_t = std::function<UserChoiceResult(UserChoiceArgs)>;
+  using provider_callback_t = std::function<UserInputResult(UserInputArgs)>;
 
-  explicit UserChoiceProvider(provider_callback_t callback);
+  explicit UserInputProvider(provider_callback_t callback);
 
   /**
-   * @brief Returns result of user choice.
+   * @brief Returns result of user input.
    *
    * @details The call is blocking and it is intended for call from consumer thread. Thread
    * will be released when the result is available.
    *
-   * @param args Arguments to provide
+   * @param args Arguments to provide.
    *
-   * @return Results of the user choice.
+   * @return Results of the user input.
    */
-  UserChoiceResult GetUserChoice(const UserChoiceArgs& args);
+  UserInputResult GetUserInput(const UserInputArgs& args);
 
 private slots:
-  void OnChoiceRequest();
+  void OnInputRequest();
 
 signals:
-  void ChoiceRequest();
+  void InputRequest();
 
 private:
-  RequestHandlerQueue<UserChoiceResult, UserChoiceArgs> m_request_queue;
+  RequestHandlerQueue<UserInputResult, UserInputArgs> m_request_queue;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_

@@ -17,27 +17,27 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "user_choice_provider.h"
+#include "user_input_provider.h"
 
 namespace sequencergui
 {
 
-UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_request_queue(callback)
+UserInputProvider::UserInputProvider(provider_callback_t callback) : m_request_queue(callback)
 {
-  connect(this, &UserChoiceProvider::ChoiceRequest, this, &UserChoiceProvider::OnChoiceRequest,
+  connect(this, &UserInputProvider::InputRequest, this, &UserInputProvider::OnInputRequest,
           Qt::QueuedConnection);
 }
 
-UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
+UserInputResult UserInputProvider::GetUserInput(const UserInputArgs& args)
 {
-  auto queued_request_for_data = [this]() { emit ChoiceRequest(); };
+  auto queued_request_for_data = [this]() { emit InputRequest(); };
   return m_request_queue.GetData(args, queued_request_for_data);
 }
 
 //! Processes the request and sends the data to the waiting thread.
 //! Method will be called by the GUI thread thanks to the queued connection.
 
-void UserChoiceProvider::OnChoiceRequest()
+void UserInputProvider::OnInputRequest()
 {
   m_request_queue.OnDataRequest();
 }
