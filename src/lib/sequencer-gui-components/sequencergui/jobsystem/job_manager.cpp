@@ -24,8 +24,16 @@
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/monitor/message_panel.h>
+#include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/widgets/widget_utils.h>
+
+#include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <QInputDialog>
+#include <QMainWindow>
 #include <QMessageBox>
 
 namespace sequencergui
@@ -161,8 +169,18 @@ void JobManager::onChangeDelayRequest(int msec)
 
 UserInputResult JobManager::onUserInputRequest(const UserInputArgs &args)
 {
-  QMessageBox::warning(nullptr, "Not implemented", "Not implemented");
-  return {};
+  AnyValueEditorDialog dialog(mvvm::utils::FindMainWindow());
+
+  auto anyvalue_item = sup::gui::CreateItem(args.value);
+
+  dialog.SetInitialValue(anyvalue_item.get());
+  if (dialog.exec() == QDialog::Accepted)
+  {
+    auto anyvalue = sup::gui::CreateAnyValue(*dialog.GetResult());
+    return UserInputResult{anyvalue, true};
+  }
+
+  return UserInputResult{{}, false};
 }
 
 UserChoiceResult JobManager::onUserChoiceRequest(const UserChoiceArgs &args)
