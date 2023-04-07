@@ -51,23 +51,23 @@ public:
 
   // Methods to control flow.
 
-  bool Start();
+//  bool Start();
 
-  bool Step();
+//  bool Step();
 
-  bool Stop();
+//  bool Stop();
 
-  bool Pause();
+//  bool Pause();
 
-  void SetSleepTime(int time_msec);
+//  void SetSleepTime(int time_msec);
 
   void SetUserContext(const UserContext& user_context);
 
   // Methods to retrieve status
 
-  bool IsBusy() const;
+//  bool IsBusy() const;
 
-  RunnerStatus GetRunnerStatus() const;
+//  RunnerStatus GetRunnerStatus() const;
 
   // Methods used by the domain to to report the activity.
 
@@ -79,6 +79,8 @@ public:
 
   UserChoiceResult OnUserChoice(const UserChoiceArgs& args);
 
+  SequencerObserver* GetObserver();
+
 signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
   void LogEventReceived(const sequencergui::LogEvent& event);
@@ -87,7 +89,7 @@ signals:
 
 private:
   std::unique_ptr<SequencerObserver> m_observer;
-  std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
+//  std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
 };

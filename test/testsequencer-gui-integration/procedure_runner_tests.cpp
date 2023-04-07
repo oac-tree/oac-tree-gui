@@ -48,242 +48,242 @@ class ProcedureRunnerTest : public ::testing::Test
 {
 };
 
-TEST_F(ProcedureRunnerTest, InitialState)
-{
-  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
-  procedure->Setup();
-  ProcedureRunner runner(procedure.get());
-  EXPECT_FALSE(runner.IsBusy());
-  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kIdle);
-}
-
-//! Short procedure which is executed normally.
-//! FIXME test is duplicated in DomainRunnerAdapterTest, remove after ProcedureRunner ->
-//! ProcedureReporter
-
-TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
-{
-  const std::chrono::milliseconds wait_timeout(10);
-
-  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
-  procedure->Setup();
-
-  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-
-  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
-  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  EXPECT_TRUE(runner->Start());
-
-  EXPECT_TRUE(
-      testutils::WaitForCompletion(*runner, testutils::kDefaultWaitPrecision + wait_timeout * 2));
-
-  EXPECT_FALSE(runner->IsBusy());
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-
-  EXPECT_EQ(spy_instruction_status.count(), 2);
-  EXPECT_EQ(spy_runner_status.count(), 2);
-
-  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
-  // first signal should come with status "Not finished"
-  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
-  // Second signal should come with status "Success"
-  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
-}
-
-//! Terminates procedure which runs too long.
-//! FIXME test is duplicated in DomainRunnerAdapterTest, remove after ProcedureRunner ->
-//! ProcedureReporter
-
-TEST_F(ProcedureRunnerTest, StartAndTerminate)
-{
-  const std::chrono::milliseconds wait_timeout(10000);
-
-  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
-  procedure->Setup();
-
-  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-
-  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
-  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  EXPECT_TRUE(runner->Start());
-
-  std::this_thread::sleep_for(msec(100));
-  EXPECT_TRUE(runner->IsBusy());
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
-
-  EXPECT_EQ(spy_instruction_status.count(), 1);
-  EXPECT_EQ(spy_runner_status.count(), 1);  // running
-
-  EXPECT_TRUE(runner->Stop());
-
-  std::this_thread::sleep_for(msec(10));
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kStopped);
-
-  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
-  EXPECT_FALSE(runner->IsBusy());
-
-  EXPECT_EQ(spy_instruction_status.count(), 2);
-  EXPECT_EQ(spy_runner_status.count(), 3);  // running, canceling, canceled
-}
-
-//! Short procedure which is executed normally.
-// FIXME remove after renaming ProcedureRunner -> ProcedureReporter
-//TEST_F(ProcedureRunnerTest, CopyVariable)
+//TEST_F(ProcedureRunnerTest, InitialState)
 //{
-//  auto procedure = testutils::CreateCopyProcedure();
+//  auto procedure = testutils::CreateSingleWaitProcedure(msec(10000));
+//  procedure->Setup();
+//  ProcedureRunner runner(procedure.get());
+//  EXPECT_FALSE(runner.IsBusy());
+//  EXPECT_EQ(runner.GetRunnerStatus(), RunnerStatus::kIdle);
+//}
+
+////! Short procedure which is executed normally.
+////! FIXME test is duplicated in DomainRunnerAdapterTest, remove after ProcedureRunner ->
+////! ProcedureReporter
+
+//TEST_F(ProcedureRunnerTest, ShortProcedureThatExecutesNormally)
+//{
+//  const std::chrono::milliseconds wait_timeout(10);
+
+//  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
 //  procedure->Setup();
 
 //  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
 
 //  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
 //  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-//  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
 //  EXPECT_TRUE(runner->Start());
 
-//  std::this_thread::sleep_for(msec(100));
+//  EXPECT_TRUE(
+//      testutils::WaitForCompletion(*runner, testutils::kDefaultWaitPrecision + wait_timeout * 2));
+
 //  EXPECT_FALSE(runner->IsBusy());
 //  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
 
 //  EXPECT_EQ(spy_instruction_status.count(), 2);
 //  EXPECT_EQ(spy_runner_status.count(), 2);
-//  EXPECT_EQ(spy_variable_changed.count(), 1);
 
-//  auto arguments = spy_variable_changed.takeFirst();
-//  EXPECT_EQ(arguments.size(), 2);
-//  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
-//  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+//  const int status_pos{1};  // position of status argument in InstructionStatusChanged signal
+//  // first signal should come with status "Not finished"
+//  EXPECT_EQ(spy_instruction_status.at(0).at(status_pos).value<QString>(), QString("Not finished"));
+//  // Second signal should come with status "Success"
+//  EXPECT_EQ(spy_instruction_status.at(1).at(status_pos).value<QString>(), QString("Success"));
 //}
 
-//! Stepwise procedure execution.
+////! Terminates procedure which runs too long.
+////! FIXME test is duplicated in DomainRunnerAdapterTest, remove after ProcedureRunner ->
+////! ProcedureReporter
 
-TEST_F(ProcedureRunnerTest, StepwiseExecution)
-{
-  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-  procedure->Setup();
-
-  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-
-  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
-  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kIdle);
-
-  EXPECT_TRUE(runner->Step());
-  std::this_thread::sleep_for(msec(10));
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kPaused);
-
-  EXPECT_TRUE(runner->Step());
-  std::this_thread::sleep_for(msec(10));
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-
-  EXPECT_EQ(spy_runner_status.count(), 4);  // running, paused, running, completed
-}
-
-//! Waiting for user input.
-// FIXME remove after renaming ProcedureRunner -> ProcedureReporter
-
-//TEST_F(ProcedureRunnerTest, UserInput)
+//TEST_F(ProcedureRunnerTest, StartAndTerminate)
 //{
-//  // User input callback.
-//  auto on_user_input = [](auto, auto) { return "42"; };
+//  const std::chrono::milliseconds wait_timeout(10000);
 
-//  auto procedure = testutils::CreateInputProcedure();
+//  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
 //  procedure->Setup();
 
 //  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-//  runner->SetUserContext({on_user_input});
 
 //  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
 //  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-//  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
 //  EXPECT_TRUE(runner->Start());
-//  std::this_thread::sleep_for(msec(50));
 
+//  std::this_thread::sleep_for(msec(100));
+//  EXPECT_TRUE(runner->IsBusy());
 //  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
 
-//  QTest::qWait(100);  // to make queued connection in UserController succeed
+//  EXPECT_EQ(spy_instruction_status.count(), 1);
+//  EXPECT_EQ(spy_runner_status.count(), 1);  // running
 
-//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(spy_runner_status.count(), 2);
-//  EXPECT_EQ(spy_variable_changed.count(), 1);
+//  EXPECT_TRUE(runner->Stop());
 
-//  auto arguments = spy_variable_changed.takeFirst();
-//  EXPECT_EQ(arguments.size(), 2);
-//  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var0"));
-//  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+//  std::this_thread::sleep_for(msec(10));
+//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kStopped);
+
+//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+//  EXPECT_FALSE(runner->IsBusy());
+
+//  EXPECT_EQ(spy_instruction_status.count(), 2);
+//  EXPECT_EQ(spy_runner_status.count(), 3);  // running, canceling, canceled
 //}
 
-//! Waiting for user choice.
-// FIXME remove after renaming ProcedureRunner -> ProcedureReporter
+////! Short procedure which is executed normally.
+//// FIXME remove after renaming ProcedureRunner -> ProcedureReporter
+////TEST_F(ProcedureRunnerTest, CopyVariable)
+////{
+////  auto procedure = testutils::CreateCopyProcedure();
+////  procedure->Setup();
 
-//TEST_F(ProcedureRunnerTest, UserChoice)
+////  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+
+////  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+////  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+////  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
+
+////  EXPECT_TRUE(runner->Start());
+
+////  std::this_thread::sleep_for(msec(100));
+////  EXPECT_FALSE(runner->IsBusy());
+////  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+
+////  EXPECT_EQ(spy_instruction_status.count(), 2);
+////  EXPECT_EQ(spy_runner_status.count(), 2);
+////  EXPECT_EQ(spy_variable_changed.count(), 1);
+
+////  auto arguments = spy_variable_changed.takeFirst();
+////  EXPECT_EQ(arguments.size(), 2);
+////  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
+////  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+////}
+
+////! Stepwise procedure execution.
+
+//TEST_F(ProcedureRunnerTest, StepwiseExecution)
 //{
-//  // User choice to select Copy instruction, and not long Wait.
-//  auto on_user_choice = [](auto, auto)
-//  {
-//    return 1;  // selecting second instruction
-//  };
-
-//  auto procedure = testutils::CreateUserChoiceProcedure();
+//  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
 //  procedure->Setup();
 
 //  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
-//  runner->SetUserContext({{}, on_user_choice});
 
 //  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
 //  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
-//  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-//  EXPECT_TRUE(runner->Start());
-//  std::this_thread::sleep_for(msec(50));
+//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kIdle);
 
-//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
-//  QTest::qWait(100);  // to make queued connection in UserController succeed
+//  EXPECT_TRUE(runner->Step());
+//  std::this_thread::sleep_for(msec(10));
+//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kPaused);
 
+//  EXPECT_TRUE(runner->Step());
+//  std::this_thread::sleep_for(msec(10));
 //  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(spy_runner_status.count(), 2);
-//  EXPECT_EQ(spy_instruction_status.count(), 4);  // UserChoice, Copy
-//  EXPECT_EQ(spy_variable_changed.count(), 1);
 
-//  auto arguments = spy_variable_changed.takeFirst();
-//  EXPECT_EQ(arguments.size(), 2);
-//  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
-//  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+//  EXPECT_EQ(spy_runner_status.count(), 4);  // running, paused, running, completed
 //}
 
-TEST_F(ProcedureRunnerTest, LogEvents)
-{
-  const std::string expected_message("abc");
-  auto procedure = testutils::CreateMessageProcedure(expected_message);
-  procedure->Setup();
+////! Waiting for user input.
+//// FIXME remove after renaming ProcedureRunner -> ProcedureReporter
 
-  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+////TEST_F(ProcedureRunnerTest, UserInput)
+////{
+////  // User input callback.
+////  auto on_user_input = [](auto, auto) { return "42"; };
 
-  QSignalSpy spy_log_message(runner.get(), &ProcedureRunner::LogEventReceived);
+////  auto procedure = testutils::CreateInputProcedure();
+////  procedure->Setup();
 
-  EXPECT_TRUE(runner->Start());
+////  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+////  runner->SetUserContext({on_user_input});
 
-  std::this_thread::sleep_for(msec(20));
-  EXPECT_FALSE(runner->IsBusy());
-  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+////  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+////  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+////  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
 
-  EXPECT_EQ(spy_log_message.count(), 2);
+////  EXPECT_TRUE(runner->Start());
+////  std::this_thread::sleep_for(msec(50));
 
-  // event reported by SequencerObserver::StartSingleStepImpl()
-  QList<QVariant> arguments = spy_log_message.at(0);
-  auto event1 = arguments.at(0).value<sequencergui::LogEvent>();
-  EXPECT_EQ(event1.severity, Severity::kDebug);
-  // FIXME message will probably change, how to make test robust?
-  EXPECT_EQ(event1.message, std::string("StartSingleStep()"));
+////  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
 
-  // event reported by SequencerObserver::LogImpl()
-  arguments = spy_log_message.at(1);
-  auto event2 = arguments.at(0).value<sequencergui::LogEvent>();
-  EXPECT_EQ(event2.severity, Severity::kInfo);
-  EXPECT_EQ(event2.message, expected_message);
-}
+////  QTest::qWait(100);  // to make queued connection in UserController succeed
+
+////  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+////  EXPECT_EQ(spy_runner_status.count(), 2);
+////  EXPECT_EQ(spy_variable_changed.count(), 1);
+
+////  auto arguments = spy_variable_changed.takeFirst();
+////  EXPECT_EQ(arguments.size(), 2);
+////  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var0"));
+////  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+////}
+
+////! Waiting for user choice.
+//// FIXME remove after renaming ProcedureRunner -> ProcedureReporter
+
+////TEST_F(ProcedureRunnerTest, UserChoice)
+////{
+////  // User choice to select Copy instruction, and not long Wait.
+////  auto on_user_choice = [](auto, auto)
+////  {
+////    return 1;  // selecting second instruction
+////  };
+
+////  auto procedure = testutils::CreateUserChoiceProcedure();
+////  procedure->Setup();
+
+////  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+////  runner->SetUserContext({{}, on_user_choice});
+
+////  QSignalSpy spy_instruction_status(runner.get(), &ProcedureRunner::InstructionStatusChanged);
+////  QSignalSpy spy_runner_status(runner.get(), &ProcedureRunner::RunnerStatusChanged);
+////  QSignalSpy spy_variable_changed(runner.get(), &ProcedureRunner::VariableChanged);
+
+////  EXPECT_TRUE(runner->Start());
+////  std::this_thread::sleep_for(msec(50));
+
+////  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kRunning);
+////  QTest::qWait(100);  // to make queued connection in UserController succeed
+
+////  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+////  EXPECT_EQ(spy_runner_status.count(), 2);
+////  EXPECT_EQ(spy_instruction_status.count(), 4);  // UserChoice, Copy
+////  EXPECT_EQ(spy_variable_changed.count(), 1);
+
+////  auto arguments = spy_variable_changed.takeFirst();
+////  EXPECT_EQ(arguments.size(), 2);
+////  EXPECT_EQ(arguments.at(0).value<QString>(), QStringLiteral("var1"));
+////  EXPECT_EQ(arguments.at(1).value<QString>(), QStringLiteral("42"));
+////}
+
+//TEST_F(ProcedureRunnerTest, LogEvents)
+//{
+//  const std::string expected_message("abc");
+//  auto procedure = testutils::CreateMessageProcedure(expected_message);
+//  procedure->Setup();
+
+//  auto runner = std::make_unique<ProcedureRunner>(procedure.get());
+
+//  QSignalSpy spy_log_message(runner.get(), &ProcedureRunner::LogEventReceived);
+
+//  EXPECT_TRUE(runner->Start());
+
+//  std::this_thread::sleep_for(msec(20));
+//  EXPECT_FALSE(runner->IsBusy());
+//  EXPECT_EQ(runner->GetRunnerStatus(), RunnerStatus::kCompleted);
+
+//  EXPECT_EQ(spy_log_message.count(), 2);
+
+//  // event reported by SequencerObserver::StartSingleStepImpl()
+//  QList<QVariant> arguments = spy_log_message.at(0);
+//  auto event1 = arguments.at(0).value<sequencergui::LogEvent>();
+//  EXPECT_EQ(event1.severity, Severity::kDebug);
+//  // FIXME message will probably change, how to make test robust?
+//  EXPECT_EQ(event1.message, std::string("StartSingleStep()"));
+
+//  // event reported by SequencerObserver::LogImpl()
+//  arguments = spy_log_message.at(1);
+//  auto event2 = arguments.at(0).value<sequencergui::LogEvent>();
+//  EXPECT_EQ(event2.severity, Severity::kInfo);
+//  EXPECT_EQ(event2.message, expected_message);
+//}
