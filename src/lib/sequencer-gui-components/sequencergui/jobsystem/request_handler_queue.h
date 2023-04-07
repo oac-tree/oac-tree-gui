@@ -22,6 +22,7 @@
 
 #include <sequencergui/jobsystem/request_handler.h>
 
+#include <cassert>
 #include <functional>
 #include <mutex>
 #include <queue>
@@ -47,7 +48,8 @@ public:
    * @brief Returns result of user choice.
    *
    * @details The call is blocking and it is intended for call from consumer thread. Thread
-   * will be released when the result is available. The method can be used by more than one thread.
+   * will be released when the result is available. The method can be used from more than one
+   * thread.
    *
    * @param args Arguments to provide if
    * @param request_for_data_callback Special non-blocking queued request.
@@ -64,8 +66,10 @@ public:
       m_stack.push(&request_data);
     }
 
+    // asking the GUI for a data via queued connection
     request_for_data_callback();
 
+    // waiting for data to become available
     return request_data.request_handler.GetData();
   }
 

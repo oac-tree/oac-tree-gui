@@ -22,7 +22,7 @@
 namespace sequencergui
 {
 
-UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provider_callback(callback)
+UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_request_queue(callback)
 {
   connect(this, &UserChoiceProvider::ChoiceRequest, this, &UserChoiceProvider::OnChoiceRequest,
           Qt::QueuedConnection);
@@ -30,17 +30,8 @@ UserChoiceProvider::UserChoiceProvider(provider_callback_t callback) : m_provide
 
 UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
 {
-  RequestData request_data;
-  request_data.args = args;
-
-  {
-    std::unique_lock<std::mutex> lock(m_mutex);
-    m_stack.push(&request_data);
-  }
-
-  emit ChoiceRequest();  // queued connection
-
-  return request_data.request_handler.GetData();
+  auto queued_request_for_data = [this]() { emit ChoiceRequest(); };
+  return m_request_queue.GetData(args, queued_request_for_data);
 }
 
 //! Processes user choice and send the data to the waiting thread.
@@ -48,18 +39,7 @@ UserChoiceResult UserChoiceProvider::GetUserChoice(const UserChoiceArgs& args)
 
 void UserChoiceProvider::OnChoiceRequest()
 {
-  RequestData* request_data{nullptr};
-
-  {
-    std::unique_lock<std::mutex> lock(m_mutex);
-    assert(!m_stack.empty());
-
-    request_data = m_stack.front();
-    m_stack.pop();
-  }
-
-  auto args = request_data->args;
-  request_data->request_handler.SendData(m_provider_callback(args));
+  m_request_queue.OnDataRequest();
 }
 
 }  // namespace sequencergui

@@ -20,13 +20,10 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
 #define SEQUENCERGUI_JOBSYSTEM_USER_CHOICE_PROVIDER_H_
 
-#include <sequencergui/jobsystem/request_handler.h>
+#include <sequencergui/jobsystem/request_handler_queue.h>
 #include <sequencergui/jobsystem/request_types.h>
 
 #include <QObject>
-#include <functional>
-#include <mutex>
-#include <queue>
 
 namespace sequencergui
 {
@@ -45,9 +42,8 @@ class UserChoiceProvider : public QObject
 
 public:
   using provider_callback_t = std::function<UserChoiceResult(UserChoiceArgs)>;
-  using request_handler_t = RequestHandler<UserChoiceResult>;
 
-  UserChoiceProvider(provider_callback_t callback);
+  explicit UserChoiceProvider(provider_callback_t callback);
 
   /**
    * @brief Returns result of user choice.
@@ -68,15 +64,7 @@ signals:
   void ChoiceRequest();
 
 private:
-  struct RequestData
-  {
-    UserChoiceArgs args;
-    request_handler_t request_handler;
-  };
-
-  mutable std::mutex m_mutex;
-  provider_callback_t m_provider_callback;
-  std::queue<RequestData*> m_stack;
+  RequestHandlerQueue<UserChoiceResult, UserChoiceArgs> m_request_queue;
 };
 
 }  // namespace sequencergui
