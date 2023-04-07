@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <functional>
 
+#include <sequencergui/jobsystem/request_types.h>
+
 namespace sequencergui
 {
 
@@ -37,7 +39,7 @@ struct UserContext
 
   //!< A callback to returns user choice as an integer.
   //! Initial vaues, and the description are provided as callback parameters.
-  using userchoice_callback_t = std::function<int(QStringList, QString)>;
+  using userchoice_callback_t = std::function<UserChoiceResult(const UserChoiceArgs&)>;
   userchoice_callback_t m_user_choice_callback;
 };
 

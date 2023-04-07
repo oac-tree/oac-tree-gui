@@ -77,5 +77,5 @@ TEST_F(UserInputProviderTests, SingleThreadAsksForUserInput)
 
   // validating
   EXPECT_EQ(result.value, expected_value);
-  EXPECT_EQ(result.processed, false);
+  EXPECT_EQ(result.processed, true);
 }

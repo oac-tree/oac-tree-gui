@@ -164,16 +164,17 @@ QString JobManager::onUserInputRequest(const QString &current_value, const QStri
                                current_value);
 }
 
-int JobManager::onUserChoiceRequest(const QStringList &choices, const QString &description)
+UserChoiceResult JobManager::onUserChoiceRequest(const UserChoiceArgs &args)
 {
   QStringList with_index_added;
   int index{0};
-  for (const auto &str : choices)
+  for (const auto &str : args.choices)
   {
-    with_index_added.push_back(QString("%1 %2").arg(index++).arg(str));
+    with_index_added.push_back(QString("%1 %2").arg(index++).arg(QString::fromStdString(str)));
   }
-  auto selection = QInputDialog::getItem(nullptr, "Input request", description, with_index_added);
-  return with_index_added.indexOf(selection);
+  auto selection = QInputDialog::getItem(
+      nullptr, "Input request", QString::fromStdString(args.description), with_index_added);
+  return {with_index_added.indexOf(selection), true};
 }
 
 std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
@@ -181,8 +182,8 @@ std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
   auto on_user_input = [this](auto value, auto description)
   { return onUserInputRequest(value, description); };
 
-  auto on_user_choice = [this](auto choices, auto description)
-  { return onUserChoiceRequest(choices, description); };
+  auto on_user_choice = [this](const auto& args)
+  { return onUserChoiceRequest(args); };
 
   auto context = std::make_unique<JobContext>(item);
   connect(context.get(), &JobContext::InstructionStatusChanged, this,

@@ -22,6 +22,7 @@
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
+#include <sequencergui/jobsystem/request_types.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/sequencer/instruction.h>
@@ -85,7 +86,7 @@ bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::s
 int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices,
                                          const std::string &description)
 {
-  return m_procedure_runner->onUserChoice(choices, description);
+  return m_procedure_runner->onUserChoice({choices, description}).index;
 }
 
 void SequencerObserver::StartSingleStepImpl()

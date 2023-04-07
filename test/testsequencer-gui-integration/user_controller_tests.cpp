@@ -81,42 +81,42 @@ TEST_F(UserControllerTest, SetUserInput)
 //! - Wait with QTest::qWait to make event loop rolling.
 //! - Checking user input as reported by runner thread.
 
-TEST_F(UserControllerTest, SeingleUserChoice)
-{
-  const int user_choice = {42};
-  // User choice callback.
-  auto on_user_choice = [user_choice](auto choices, auto description)
-  {
-    (void)choices;
-    (void)description;
-    return user_choice;
-  };
+//TEST_F(UserControllerTest, SeingleUserChoice)
+//{
+//  const int user_choice = {42};
+//  // User choice callback.
+//  auto on_user_choice = [user_choice](auto choices, auto description)
+//  {
+//    (void)choices;
+//    (void)description;
+//    return user_choice;
+//  };
 
-  UserController controller;
-  controller.SetUserContext({{}, on_user_choice});
+//  UserController controller;
+//  controller.SetUserContext({{}, on_user_choice});
 
-  std::promise<void> ready_for_test;
-  // runner to ask for user input (blocking)
-  auto runner = [&controller, &ready_for_test]()
-  {
-    const std::vector<std::string> choices({"a", "b", "c"});
-    const std::string description("description");
-    ready_for_test.set_value();
-    return controller.GetUserChoice(choices, description);
-  };
+//  std::promise<void> ready_for_test;
+//  // runner to ask for user input (blocking)
+//  auto runner = [&controller, &ready_for_test]()
+//  {
+//    const std::vector<std::string> choices({"a", "b", "c"});
+//    const std::string description("description");
+//    ready_for_test.set_value();
+//    return controller.GetUserChoice(choices, description);
+//  };
 
-  // launching runner in a thread
-  std::future<int> result_obtained = std::async(std::launch::async, runner);
+//  // launching runner in a thread
+//  std::future<int> result_obtained = std::async(std::launch::async, runner);
 
-  // waiting for threads being prepared for racing
-  ready_for_test.get_future().wait();
+//  // waiting for threads being prepared for racing
+//  ready_for_test.get_future().wait();
 
-  // processing event loop to make queued connection passing in UserController
-  QTest::qWait(100);
+//  // processing event loop to make queued connection passing in UserController
+//  QTest::qWait(100);
 
-  // making sure the thread has finished
-  auto result = result_obtained.get();
+//  // making sure the thread has finished
+//  auto result = result_obtained.get();
 
-  // result from the thread should contain the result of concatenation
-  EXPECT_EQ(result, user_choice);
-}
+//  // result from the thread should contain the result of concatenation
+//  EXPECT_EQ(result, user_choice);
+//}

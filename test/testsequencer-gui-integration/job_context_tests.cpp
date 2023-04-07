@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/jobsystem/request_types.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
@@ -279,7 +280,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
   job_context.onPrepareJobRequest();
 
   // callback to select Copy instruction
-  auto on_user_choice = [](auto, auto) { return 1; };
+  auto on_user_choice = [](auto) { return UserChoiceResult{1, true}; };
   job_context.SetUserContext({{}, on_user_choice});
 
   QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);

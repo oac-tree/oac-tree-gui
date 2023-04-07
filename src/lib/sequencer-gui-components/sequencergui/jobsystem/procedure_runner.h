@@ -33,6 +33,8 @@ namespace sequencergui
 class SequencerObserver;
 class DomainRunnerAdapter;
 class LogEvent;
+class UserChoiceProvider;
+struct UserChoiceResult;
 
 //! Executes sequencer's procedure in a separate thread.
 //! Observes sequence execution and converts sequencer UI calls into signals.
@@ -74,7 +76,7 @@ public:
 
   std::string onUserInput(const std::string& current_value, const std::string& description);
 
-  int onUserChoice(const std::vector<std::string>& choices, const std::string& description);
+  UserChoiceResult onUserChoice(const UserChoiceArgs& args);
 
 signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
@@ -85,6 +87,7 @@ signals:
 private:
   std::unique_ptr<SequencerObserver> m_observer;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
+  std::unique_ptr<UserChoiceProvider> m_choice_provider;
   UserController m_user_controller;
 };
 
