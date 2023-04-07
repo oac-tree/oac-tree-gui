@@ -84,7 +84,6 @@ void ProcedureRunner::SetUserContext(const UserContext &user_context)
 {
   m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
   m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
-//  m_user_controller.SetUserContext(user_context);
 }
 
 bool ProcedureRunner::IsBusy() const
@@ -97,11 +96,9 @@ RunnerStatus ProcedureRunner::GetRunnerStatus() const
   return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
 }
 
-void ProcedureRunner::onInstructionStatusChange(const instruction_t *instruction,
+void ProcedureRunner::OnInstructionStatusChange(const instruction_t *instruction,
                                                 const std::string &value)
 {
-  std::cout << "ProcedureRunner::onInstructionStatusChange" << instruction << " "
-            << static_cast<int>(instruction->GetStatus()) << "qqq" << value << std::endl;
   emit InstructionStatusChanged(instruction, QString::fromStdString(value));
 }
 
@@ -112,12 +109,12 @@ void ProcedureRunner::OnLogEvent(const LogEvent &event)
   emit LogEventReceived(event);
 }
 
-UserInputResult ProcedureRunner::onUserInput(const UserInputArgs& args)
+UserInputResult ProcedureRunner::OnUserInput(const UserInputArgs& args)
 {
   return m_input_provider->GetUserInput(args);
 }
 
-UserChoiceResult ProcedureRunner::onUserChoice(const UserChoiceArgs &args)
+UserChoiceResult ProcedureRunner::OnUserChoice(const UserChoiceArgs &args)
 {
   return m_choice_provider->GetUserChoice(args);
 }

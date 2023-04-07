@@ -71,13 +71,13 @@ public:
 
   // Methods used by the domain to to report the activity.
 
-  void onInstructionStatusChange(const instruction_t* instruction, const std::string& value);
+  void OnInstructionStatusChange(const instruction_t* instruction, const std::string& value);
 
   void OnLogEvent(const LogEvent& event);
 
-  UserInputResult onUserInput(const UserInputArgs& args);
+  UserInputResult OnUserInput(const UserInputArgs& args);
 
-  UserChoiceResult onUserChoice(const UserChoiceArgs& args);
+  UserChoiceResult OnUserChoice(const UserChoiceArgs& args);
 
 signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);

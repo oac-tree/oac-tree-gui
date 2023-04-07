@@ -48,7 +48,7 @@ SequencerObserver::~SequencerObserver() = default;
 
 void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instruction *instruction)
 {
-  m_procedure_runner->onInstructionStatusChange(instruction, GetStatus(instruction));
+  m_procedure_runner->OnInstructionStatusChange(instruction, GetStatus(instruction));
 }
 
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,
@@ -73,7 +73,7 @@ bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
 
 bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
 {
-  auto result = m_procedure_runner->onUserInput({value, description});
+  auto result = m_procedure_runner->OnUserInput({value, description});
   value = result.value;
   return result.processed;
 }
@@ -81,7 +81,7 @@ bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::s
 int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices,
                                          const std::string &description)
 {
-  return m_procedure_runner->onUserChoice({choices, description}).index;
+  return m_procedure_runner->OnUserChoice({choices, description}).index;
 }
 
 void SequencerObserver::StartSingleStepImpl()
