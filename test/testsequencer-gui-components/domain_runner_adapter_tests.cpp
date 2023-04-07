@@ -324,10 +324,13 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
           // triggering action
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
-  std::this_thread::sleep_for(msec(10));
+
+  testutils::WaitFor([&adapter]() {return adapter->GetStatus() == RunnerStatus::kPaused;}, msec(50));
+
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(adapter->Step());
-  std::this_thread::sleep_for(msec(10));
+
+  testutils::WaitFor([&adapter]() {return adapter->GetStatus() == RunnerStatus::kCompleted;}, msec(50));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
