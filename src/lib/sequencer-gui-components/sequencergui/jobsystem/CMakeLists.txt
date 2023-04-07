@@ -33,6 +33,4 @@ target_sources(${library_name} PRIVATE
   user_input_provider.cpp
   user_input_provider.h
   user_context.h
-  user_controller.cpp
-  user_controller.h
 )
