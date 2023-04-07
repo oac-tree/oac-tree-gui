@@ -31,8 +31,11 @@ namespace sequencergui
 {
 
 /**
- * @brief The RequestHandlerQueue class provides consumer thread with the result of user choice.
- * There can be more than one thread asking for user choice.
+ * @brief The RequestHandlerQueue class provides consumer thread with the result of user input.
+ * There can be more than one thread asking for input.
+ *
+ * @tparam DataT Type of input expected from the user.
+ * @tparam ArgT Arguments that should be given to the user.
  */
 
 template <typename DataT, typename ArgT>
@@ -45,20 +48,21 @@ public:
   explicit RequestHandlerQueue(provider_callback_t callback) : m_provider_callback(callback) {}
 
   /**
-   * @brief Returns result of user choice.
+   * @brief Returns the data .
    *
    * @details The call is blocking and it is intended for call from consumer thread. Thread
    * will be released when the result is available. The method can be used from more than one
    * thread.
    *
-   * @param args Arguments to provide if
-   * @param request_for_data_callback Special non-blocking queued request.
+   * @param args Arguments to provide.
+   * @param notify_callback Special non-blocking callback that will notify the GUI that we need
+   * data.
    *
    * @return Results of the user choice.
    */
-  DataT GetData(const ArgT& args, std::function<void(void)> request_for_data_callback)
+  DataT GetData(const ArgT& args, std::function<void(void)> notify_callback)
   {
-    RequestData request_data;
+    RequestPack request_data;
     request_data.args = args;
 
     {
@@ -67,7 +71,7 @@ public:
     }
 
     // asking the GUI for a data via queued connection
-    request_for_data_callback();
+    notify_callback();
 
     // waiting for data to become available
     return request_data.request_handler.GetData();
@@ -79,7 +83,7 @@ public:
    */
   void OnDataRequest()
   {
-    RequestData* request_data{nullptr};
+    RequestPack* request_data{nullptr};
 
     // accessing data request in a stack
     {
@@ -100,10 +104,12 @@ public:
   }
 
 private:
-  //! Aggregate to store
-  struct RequestData
+  struct RequestPack
   {
+    //! Request arguments.
     ArgT args;
+
+    //! Handler who knows how to pass data to the thread.
     request_handler_t request_handler;
   };
 
@@ -113,7 +119,7 @@ private:
   provider_callback_t m_provider_callback;
 
   //!< Queue of requests from various threads.
-  std::queue<RequestData*> m_stack;
+  std::queue<RequestPack*> m_stack;
 };
 
 }  // namespace sequencergui
