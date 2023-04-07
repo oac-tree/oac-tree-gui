@@ -65,7 +65,7 @@ public:
 
 TEST_F(JobContextTest, InitialState)
 {
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
 }
@@ -77,7 +77,7 @@ TEST_F(JobContextTest, PrepareJobRequest)
   auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   EXPECT_EQ(job_context.GetExpandedProcedure(), nullptr);
 
@@ -104,7 +104,7 @@ TEST_F(JobContextTest, InvalidProcedure)
   auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_THROW(job_context.onPrepareJobRequest(), sup::sequencer::InvalidOperationException);
   EXPECT_FALSE(job_context.IsValid());
 }
@@ -117,7 +117,7 @@ TEST_F(JobContextTest, PrematureDeletion)
   m_job_item->SetProcedure(procedure);
 
   {
-    JobContext job_context(m_job_item);
+    JobHandler job_context(m_job_item);
     job_context.onPrepareJobRequest();
     job_context.onStartRequest();
   }
@@ -134,12 +134,12 @@ TEST_F(JobContextTest, ProcedureWithSingleWait)
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   job_context.onPrepareJobRequest();
   EXPECT_TRUE(job_context.IsValid());
 
-  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobHandler::InstructionStatusChanged);
 
   job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
@@ -164,7 +164,7 @@ TEST_F(JobContextTest, ProcedureWithSingleWaitStatusChangedSignals)
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   job_context.onPrepareJobRequest();
   EXPECT_TRUE(job_context.IsValid());
@@ -203,7 +203,7 @@ TEST_F(JobContextTest, ProcedureWithVariableCopy)
   EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item0), anyvalue0);
   EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item1), anyvalue1);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   job_context.onPrepareJobRequest();
 
   // expanded procedure has different variables
@@ -227,10 +227,10 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   auto procedure = testutils::CreateIncludeProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   job_context.onPrepareJobRequest();
 
-  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobHandler::InstructionStatusChanged);
 
   job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
@@ -256,7 +256,7 @@ TEST_F(JobContextTest, UserInputScenario)
 
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
 
   job_context.onPrepareJobRequest();
 
@@ -267,7 +267,7 @@ TEST_F(JobContextTest, UserInputScenario)
   };
   job_context.SetUserContext({on_user_input});
 
-  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobHandler::InstructionStatusChanged);
 
   job_context.onStartRequest();
   QTest::qWait(100);
@@ -290,7 +290,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
   auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
 
   job_context.onPrepareJobRequest();
 
@@ -298,7 +298,7 @@ TEST_F(JobContextTest, UserChoiceScenario)
   auto on_user_choice = [](auto) { return UserChoiceResult{1, true}; };
   job_context.SetUserContext({{}, on_user_choice});
 
-  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobHandler::InstructionStatusChanged);
 
   job_context.onStartRequest();
   QTest::qWait(100);
@@ -321,12 +321,12 @@ TEST_F(JobContextTest, StopLongRunningJob)
       testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   job_context.onPrepareJobRequest();
   EXPECT_TRUE(job_context.IsValid());
 
-  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobHandler::InstructionStatusChanged);
 
   job_context.onStartRequest();
   // We are testing here queued signals, need special waiting
@@ -351,12 +351,12 @@ TEST_F(JobContextTest, LogEvents)
       testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), expected_message);
   m_job_item->SetProcedure(procedure);
 
-  JobContext job_context(m_job_item);
+  JobHandler job_context(m_job_item);
   EXPECT_FALSE(job_context.IsValid());
   job_context.onPrepareJobRequest();
   EXPECT_TRUE(job_context.IsValid());
 
-  QSignalSpy spy_instruction_status(&job_context, &JobContext::InstructionStatusChanged);
+  QSignalSpy spy_instruction_status(&job_context, &JobHandler::InstructionStatusChanged);
 
   job_context.onStartRequest();
   QTest::qWait(50);

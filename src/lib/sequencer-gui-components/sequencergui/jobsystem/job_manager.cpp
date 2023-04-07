@@ -82,14 +82,14 @@ void JobManager::SetCurrentJob(JobItem *job)
   }
 }
 
-JobContext *JobManager::GetCurrentContext()
+JobHandler *JobManager::GetCurrentContext()
 {
   return GetContext(m_current_job);
 }
 
 //! Returns context for JobItem.
 
-JobContext *JobManager::GetContext(JobItem *job)
+JobHandler *JobManager::GetContext(JobItem *job)
 {
   auto iter = m_context_map.find(job);
   return iter == m_context_map.end() ? nullptr : iter->second.get();
@@ -196,14 +196,14 @@ UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
   return {with_index_added.indexOf(selection), true};
 }
 
-std::unique_ptr<JobContext> JobManager::CreateContext(JobItem *item)
+std::unique_ptr<JobHandler> JobManager::CreateContext(JobItem *item)
 {
   auto on_user_input = [this](const auto &args) { return OnUserInputRequest(args); };
 
   auto on_user_choice = [this](const auto &args) { return OnUserChoiceRequest(args); };
 
-  auto context = std::make_unique<JobContext>(item);
-  connect(context.get(), &JobContext::InstructionStatusChanged, this,
+  auto context = std::make_unique<JobHandler>(item);
+  connect(context.get(), &JobHandler::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
 
   context->onPrepareJobRequest();

@@ -33,7 +33,7 @@ class JobModel;
 class InstructionItem;
 class JobItem;
 class MessagePanel;
-class JobContext;
+class JobHandler;
 
 //! Manages JobItem execution. Maps JobItem to the JobContext, containing all machinery to execute
 //! domain procedures in a thread.
@@ -50,9 +50,9 @@ public:
 
   void SetCurrentJob(JobItem* job);
 
-  JobContext* GetCurrentContext();
+  JobHandler* GetCurrentContext();
 
-  JobContext* GetContext(JobItem* job);
+  JobHandler* GetContext(JobItem* job);
 
   JobItem* GetCurrentJob();
 
@@ -74,10 +74,10 @@ signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
-  std::unique_ptr<JobContext> CreateContext(JobItem* item);
+  std::unique_ptr<JobHandler> CreateContext(JobItem* item);
 
   JobItem* m_current_job{nullptr};
-  std::map<JobItem*, std::unique_ptr<JobContext>> m_context_map;
+  std::map<JobItem*, std::unique_ptr<JobHandler>> m_context_map;
   MessagePanel* m_message_panel{nullptr};
   int m_current_delay{0};
 };

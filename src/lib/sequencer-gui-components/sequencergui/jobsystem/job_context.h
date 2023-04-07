@@ -40,13 +40,13 @@ class WorkspaceSynchronizer;
 class DomainRunnerAdapter;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
-class JobContext : public QObject
+class JobHandler : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit JobContext(JobItem* job_item);
-  ~JobContext() override;
+  explicit JobHandler(JobItem* job_item);
+  ~JobHandler() override;
 
   // Methods to control procedure execution.
 

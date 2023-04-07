@@ -46,14 +46,14 @@
 namespace sequencergui
 {
 
-JobContext::JobContext(JobItem *job_item)
+JobHandler::JobHandler(JobItem *job_item)
     : m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
 }
 
-void JobContext::onPrepareJobRequest()
+void JobHandler::onPrepareJobRequest()
 {
   if (IsRunning())
   {
@@ -98,9 +98,9 @@ void JobContext::onPrepareJobRequest()
       m_domain_procedure.get(), m_procedure_runner->GetObserver(), status_changed);
 }
 
-JobContext::~JobContext() = default;
+JobHandler::~JobHandler() = default;
 
-void JobContext::onStartRequest()
+void JobHandler::onStartRequest()
 {
   if (m_domain_runner_adapter->Start())
   {
@@ -108,17 +108,17 @@ void JobContext::onStartRequest()
   }
 }
 
-void JobContext::onPauseRequest()
+void JobHandler::onPauseRequest()
 {
   m_domain_runner_adapter->Pause();
 }
 
-void JobContext::onMakeStepRequest()
+void JobHandler::onMakeStepRequest()
 {
   m_domain_runner_adapter->Step();
 }
 
-void JobContext::onStopRequest()
+void JobHandler::onStopRequest()
 {
   if (m_domain_runner_adapter->Stop())
   {
@@ -126,43 +126,43 @@ void JobContext::onStopRequest()
   }
 }
 
-bool JobContext::IsRunning() const
+bool JobHandler::IsRunning() const
 {
   return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
 }
 
-void JobContext::SetSleepTime(int time_msec)
+void JobHandler::SetSleepTime(int time_msec)
 {
   m_domain_runner_adapter->SetTickTimeout(time_msec);
 }
 
-void JobContext::SetUserContext(const UserContext &user_context)
+void JobHandler::SetUserContext(const UserContext &user_context)
 {
   m_procedure_runner->SetUserContext(user_context);
 }
 
-ProcedureItem *JobContext::GetExpandedProcedure() const
+ProcedureItem *JobHandler::GetExpandedProcedure() const
 {
   return m_job_item->GetExpandedProcedure();
 }
 
 //! Returns true if this context is in valid state
-bool JobContext::IsValid() const
+bool JobHandler::IsValid() const
 {
   return m_domain_procedure != nullptr;
 }
 
-RunnerStatus JobContext::GetRunnerStatus() const
+RunnerStatus JobHandler::GetRunnerStatus() const
 {
   return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
 }
 
-JobLog *JobContext::GetJobLog() const
+JobLog *JobHandler::GetJobLog() const
 {
   return m_job_log;
 }
 
-void JobContext::onInstructionStatusChange(const instruction_t *instruction, const QString &status)
+void JobHandler::onInstructionStatusChange(const instruction_t *instruction, const QString &status)
 {
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
   if (instruction_item)
@@ -176,29 +176,29 @@ void JobContext::onInstructionStatusChange(const instruction_t *instruction, con
   }
 }
 
-void JobContext::onLogEvent(const sequencergui::LogEvent &event)
+void JobHandler::onLogEvent(const sequencergui::LogEvent &event)
 {
   m_job_log->Append(event);
 }
 
-void JobContext::onRunnerStatusChanged()
+void JobHandler::onRunnerStatusChanged()
 {
   auto status = m_domain_runner_adapter->GetStatus();
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
-std::unique_ptr<ProcedureRunner> JobContext::CreateProcedureRunner(procedure_t *procedure)
+std::unique_ptr<ProcedureRunner> JobHandler::CreateProcedureRunner(procedure_t *procedure)
 {
   auto result = std::make_unique<ProcedureRunner>(procedure);
 
   connect(result.get(), &ProcedureRunner::InstructionStatusChanged, this,
-          &JobContext::onInstructionStatusChange, Qt::QueuedConnection);
+          &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
 
-  connect(result.get(), &ProcedureRunner::LogEventReceived, this, &JobContext::onLogEvent,
+  connect(result.get(), &ProcedureRunner::LogEventReceived, this, &JobHandler::onLogEvent,
           Qt::QueuedConnection);
 
   connect(result.get(), &ProcedureRunner::RunnerStatusChanged, this,
-          &JobContext::onRunnerStatusChanged, Qt::QueuedConnection);
+          &JobHandler::onRunnerStatusChanged, Qt::QueuedConnection);
 
   return result;
 }
