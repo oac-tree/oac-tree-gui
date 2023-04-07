@@ -23,8 +23,8 @@
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_runner.h>
 #include <sequencergui/jobsystem/request_types.h>
-#include <sup/gui/model/anyvalue_utils.h>
 
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/instruction.h>
 
 #include <sstream>
@@ -73,14 +73,9 @@ bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
 
 bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
 {
-//  auto value_string = sup::gui::GetValuesToJSONString(value);
-//  auto user_input = m_procedure_runner->onUserInput(value_string, description);
-//  if (!sup::gui::ParseStringToScalarAnyvalue(user_input, value))
-//  {
-//    throw std::runtime_error(
-//        "Error in SequencerObserver::GetUserValueImpl: can't parse user input");
-//  }
-  return true;
+  auto result = m_procedure_runner->onUserInput({value, description});
+  value = result.value;
+  return result.processed;
 }
 
 int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices,

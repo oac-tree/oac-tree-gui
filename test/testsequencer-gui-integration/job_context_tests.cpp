@@ -243,20 +243,27 @@ TEST_F(JobContextTest, LocalIncludeScenario)
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }
 
-TEST_F(JobContextTest, DISABLED_UserInputScenario)
+TEST_F(JobContextTest, UserInputScenario)
 {
-  const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 41};
+  // value defined in testutils::CreateInputProcedureItem
+  const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 0};
 
   auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
+
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  ASSERT_EQ(vars_inside.size(), 1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*vars_inside.at(0)->GetAnyValueItem()), initial_value);
+
   m_job_item->SetProcedure(procedure);
 
   JobContext job_context(m_job_item);
 
   job_context.onPrepareJobRequest();
 
-  auto on_user_input = [initial_value](auto)
+  const sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, 42};
+  auto on_user_input = [new_value](auto)
   {
-    return UserInputResult{initial_value, true};
+    return UserInputResult{new_value, true};
   };
   job_context.SetUserContext({on_user_input});
 
@@ -265,10 +272,13 @@ TEST_F(JobContextTest, DISABLED_UserInputScenario)
   job_context.onStartRequest();
   QTest::qWait(100);
 
-  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-  //  EXPECT_EQ(vars_inside.at(0)->GetJsonValue(), std::string("42"));
+  EXPECT_EQ(spy_instruction_status.count(), 6); // 3 instructions
 
   EXPECT_FALSE(job_context.IsRunning());
+
+  vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  ASSERT_EQ(vars_inside.size(), 1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*vars_inside.at(0)->GetAnyValueItem()), new_value);
 }
 
 TEST_F(JobContextTest, UserChoiceScenario)
