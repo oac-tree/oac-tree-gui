@@ -284,7 +284,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   }
 
   EXPECT_TRUE(runner.Step());  // triggering action
-  std::this_thread::sleep_for(msec(20));
+  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kPaused;}, msec(50));
   EXPECT_TRUE(runner.IsBusy());
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
@@ -292,7 +292,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   // let's terminate while being in Pause mode
   runner.Stop();
 
-  std::this_thread::sleep_for(msec(20));
+  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kStopped;}, msec(50));
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kStopped);
   EXPECT_FALSE(runner.IsBusy());
