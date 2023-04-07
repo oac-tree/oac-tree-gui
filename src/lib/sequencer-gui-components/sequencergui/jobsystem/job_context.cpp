@@ -102,43 +102,25 @@ JobContext::~JobContext() = default;
 
 void JobContext::onStartRequest()
 {
-  CheckRunner();
-
-  //  if (m_procedure_runner->Start())
-//  {
-//    m_job_log->ClearLog();
-//  }
-
-    if (m_domain_runner_adapter->Start())
-    {
-      m_job_log->ClearLog();
-    }
-
-
+  if (m_domain_runner_adapter->Start())
+  {
+    m_job_log->ClearLog();
+  }
 }
 
 void JobContext::onPauseRequest()
 {
-  CheckRunner();
-//  m_procedure_runner->Pause();
   m_domain_runner_adapter->Pause();
 }
 
 void JobContext::onMakeStepRequest()
 {
-  CheckRunner();
-//  m_procedure_runner->Step();
   m_domain_runner_adapter->Step();
 }
 
 void JobContext::onStopRequest()
 {
-  CheckRunner();
-
-//  auto is_valid_request = m_procedure_runner->Stop();
-  auto is_valid_request = m_domain_runner_adapter->Stop();
-
-  if (is_valid_request)
+  if (m_domain_runner_adapter->Stop())
   {
     m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
   }
@@ -146,22 +128,17 @@ void JobContext::onStopRequest()
 
 bool JobContext::IsRunning() const
 {
-//  return m_procedure_runner ? m_procedure_runner->IsBusy() : false;
   return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
 }
 
 void JobContext::SetSleepTime(int time_msec)
 {
-  CheckRunner();
-//  m_procedure_runner->SetSleepTime(time_msec);
   m_domain_runner_adapter->SetTickTimeout(time_msec);
 }
 
 void JobContext::SetUserContext(const UserContext &user_context)
 {
-  CheckRunner();
   m_procedure_runner->SetUserContext(user_context);
-
 }
 
 ProcedureItem *JobContext::GetExpandedProcedure() const
@@ -177,8 +154,6 @@ bool JobContext::IsValid() const
 
 RunnerStatus JobContext::GetRunnerStatus() const
 {
-  CheckRunner();
-//  return m_procedure_runner->GetRunnerStatus();
   return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
 }
 
@@ -190,8 +165,6 @@ JobLog *JobContext::GetJobLog() const
 void JobContext::onInstructionStatusChange(const instruction_t *instruction, const QString &status)
 {
   auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
-  std::cout << "JobContext::onInstructionStatusChange() " << instruction << " "
-            << status.toStdString() << std::endl;
   if (instruction_item)
   {
     instruction_item->SetStatus(status.toStdString());
@@ -208,47 +181,10 @@ void JobContext::onLogEvent(const sequencergui::LogEvent &event)
   m_job_log->Append(event);
 }
 
-void JobContext::onVariableChange(const QString &variable_name, const QString &value)
-{
-  //  auto variable_item = m_guiobject_builder->FindVariableItem(variable_name.toStdString());
-  //  if (variable_item)
-  //  {
-  //    if (auto local_var = dynamic_cast<LocalVariableItem *>(variable_item); local_var)
-  //    {
-  //      local_var->SetJsonValue(value.toStdString());
-  //    }
-  //    else if (auto local_var = dynamic_cast<ChannelAccessVariableItem *>(variable_item))
-  //    {
-  //      local_var->SetJsonValue(value.toStdString());
-  //    }
-  //    else if (auto local_var = dynamic_cast<PVClientVariableItem *>(variable_item))
-  //    {
-  //      local_var->SetJsonValue(value.toStdString());
-  //    }
-  //    else if (auto local_var = dynamic_cast<PVServerVariableItem *>(variable_item))
-  //    {
-  //      local_var->SetJsonValue(value.toStdString());
-  //    }
-  //  }
-  //  else
-  //  {
-  //    std::cout << "Error in JobManager: can't find VariableItem" << std::endl;
-  //  }
-}
-
 void JobContext::onRunnerStatusChanged()
 {
-//  auto status = m_procedure_runner->GetRunnerStatus();
   auto status = m_domain_runner_adapter->GetStatus();
   m_job_item->SetStatus(RunnerStatusToString(status));
-}
-
-void JobContext::CheckRunner() const
-{
-  if (!m_procedure_runner)
-  {
-    throw RuntimeException("No runner defined");
-  }
 }
 
 std::unique_ptr<ProcedureRunner> JobContext::CreateProcedureRunner(procedure_t *procedure)
@@ -259,9 +195,6 @@ std::unique_ptr<ProcedureRunner> JobContext::CreateProcedureRunner(procedure_t *
           &JobContext::onInstructionStatusChange, Qt::QueuedConnection);
 
   connect(result.get(), &ProcedureRunner::LogEventReceived, this, &JobContext::onLogEvent,
-          Qt::QueuedConnection);
-
-  connect(result.get(), &ProcedureRunner::VariableChanged, this, &JobContext::onVariableChange,
           Qt::QueuedConnection);
 
   connect(result.get(), &ProcedureRunner::RunnerStatusChanged, this,

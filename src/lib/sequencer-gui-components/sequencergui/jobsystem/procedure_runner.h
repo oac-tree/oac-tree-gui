@@ -31,7 +31,6 @@
 namespace sequencergui
 {
 class SequencerObserver;
-class DomainRunnerAdapter;
 class LogEvent;
 class UserChoiceProvider;
 class UserInputProvider;
@@ -49,27 +48,7 @@ public:
   explicit ProcedureRunner(procedure_t* procedure, QObject* parent = nullptr);
   ~ProcedureRunner() override;
 
-  // Methods to control flow.
-
-//  bool Start();
-
-//  bool Step();
-
-//  bool Stop();
-
-//  bool Pause();
-
-//  void SetSleepTime(int time_msec);
-
   void SetUserContext(const UserContext& user_context);
-
-  // Methods to retrieve status
-
-//  bool IsBusy() const;
-
-//  RunnerStatus GetRunnerStatus() const;
-
-  // Methods used by the domain to to report the activity.
 
   void OnInstructionStatusChange(const instruction_t* instruction, const std::string& value);
 
@@ -85,11 +64,9 @@ signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
   void LogEventReceived(const sequencergui::LogEvent& event);
   void RunnerStatusChanged();
-  void VariableChanged(const QString& variable_name, const QString& value);
 
 private:
   std::unique_ptr<SequencerObserver> m_observer;
-//  std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
 };

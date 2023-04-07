@@ -84,10 +84,7 @@ signals:
 private:
   void onInstructionStatusChange(const instruction_t* instruction, const QString& status);
   void onLogEvent(const sequencergui::LogEvent& event);
-  void onVariableChange(const QString& variable_name, const QString& value);
   void onRunnerStatusChanged();
-
-  void CheckRunner() const;
 
   std::unique_ptr<ProcedureRunner> CreateProcedureRunner(procedure_t* procedure);
 
@@ -100,6 +97,7 @@ private:
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
 
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_syncronizer;
+
   JobLog* m_job_log{nullptr};
 
   JobItem* m_job_item{nullptr};

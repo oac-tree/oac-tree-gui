@@ -321,16 +321,18 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
-          // triggering action
+  // triggering action
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
 
-  testutils::WaitFor([&adapter]() {return adapter->GetStatus() == RunnerStatus::kPaused;}, msec(50));
+  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kPaused; },
+                     msec(50));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(adapter->Step());
 
-  testutils::WaitFor([&adapter]() {return adapter->GetStatus() == RunnerStatus::kCompleted;}, msec(50));
+  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kCompleted; },
+                     msec(50));
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
