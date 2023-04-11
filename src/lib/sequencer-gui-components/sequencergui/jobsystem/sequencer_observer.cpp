@@ -21,10 +21,10 @@
 
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/log_event.h>
-#include <sequencergui/jobsystem/procedure_runner.h>
+#include <sequencergui/jobsystem/procedure_reporter.h>
 #include <sequencergui/jobsystem/request_types.h>
-
 #include <sup/gui/model/anyvalue_utils.h>
+
 #include <sup/sequencer/instruction.h>
 
 #include <sstream>
@@ -39,7 +39,7 @@ std::string GetStatus(const instruction_t *instruction)
 
 namespace sequencergui
 {
-SequencerObserver::SequencerObserver(ProcedureRunner *procedure_runner)
+SequencerObserver::SequencerObserver(ProcedureReporter *procedure_runner)
     : m_procedure_runner(procedure_runner)
 {
 }

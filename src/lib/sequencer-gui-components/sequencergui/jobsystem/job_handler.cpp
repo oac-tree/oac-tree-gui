@@ -22,7 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/jobsystem/job_utils.h>
-#include <sequencergui/jobsystem/procedure_runner.h>
+#include <sequencergui/jobsystem/procedure_reporter.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -90,7 +90,7 @@ void JobHandler::onPrepareJobRequest()
     m_workspace_syncronizer->Start();
   }
 
-  m_procedure_runner = CreateProcedureRunner();
+  m_procedure_runner = CreateProcedureReporter();
 
   auto status_changed = [this](auto) { emit m_procedure_runner->RunnerStatusChanged(); };
 
@@ -187,17 +187,17 @@ void JobHandler::onRunnerStatusChanged()
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
-std::unique_ptr<ProcedureRunner> JobHandler::CreateProcedureRunner()
+std::unique_ptr<ProcedureReporter> JobHandler::CreateProcedureReporter()
 {
-  auto result = std::make_unique<ProcedureRunner>();
+  auto result = std::make_unique<ProcedureReporter>();
 
-  connect(result.get(), &ProcedureRunner::InstructionStatusChanged, this,
+  connect(result.get(), &ProcedureReporter::InstructionStatusChanged, this,
           &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
 
-  connect(result.get(), &ProcedureRunner::LogEventReceived, this, &JobHandler::onLogEvent,
+  connect(result.get(), &ProcedureReporter::LogEventReceived, this, &JobHandler::onLogEvent,
           Qt::QueuedConnection);
 
-  connect(result.get(), &ProcedureRunner::RunnerStatusChanged, this,
+  connect(result.get(), &ProcedureReporter::RunnerStatusChanged, this,
           &JobHandler::onRunnerStatusChanged, Qt::QueuedConnection);
 
   return result;

@@ -17,12 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
-#define SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_PROCEDURE_REPORTER_H_
+#define SEQUENCERGUI_JOBSYSTEM_PROCEDURE_REPORTER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/jobsystem/job_log_severity.h>
-#include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <QObject>
@@ -36,17 +34,15 @@ class UserChoiceProvider;
 class UserInputProvider;
 struct UserChoiceResult;
 
-//! Executes sequencer's procedure in a separate thread.
-//! Observes sequence execution and converts sequencer UI calls into signals.
-//! These signals must be connected with the rest of the GUI via queed connections.
+//! Reports events happening in the running sequencer procedure to the GUI, handles input requests.
 
-class ProcedureRunner : public QObject
+class ProcedureReporter : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit ProcedureRunner(QObject* parent = nullptr);
-  ~ProcedureRunner() override;
+  explicit ProcedureReporter(QObject* parent = nullptr);
+  ~ProcedureReporter() override;
 
   void SetUserContext(const UserContext& user_context);
 
@@ -73,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_PROCEDURE_RUNNER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_PROCEDURE_REPORTER_H_

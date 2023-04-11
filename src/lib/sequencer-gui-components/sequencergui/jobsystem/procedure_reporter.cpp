@@ -17,9 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "procedure_runner.h"
+#include "procedure_reporter.h"
 
-#include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
 #include <sequencergui/jobsystem/user_choice_provider.h>
@@ -27,20 +26,20 @@
 
 namespace sequencergui
 {
-ProcedureRunner::ProcedureRunner(QObject *parent)
+ProcedureReporter::ProcedureReporter(QObject *parent)
     : QObject(parent), m_observer(std::make_unique<SequencerObserver>(this))
 {
 }
 
-ProcedureRunner::~ProcedureRunner() = default;
+ProcedureReporter::~ProcedureReporter() = default;
 
-void ProcedureRunner::SetUserContext(const UserContext &user_context)
+void ProcedureReporter::SetUserContext(const UserContext &user_context)
 {
   m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
   m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
 }
 
-void ProcedureRunner::OnInstructionStatusChange(const instruction_t *instruction,
+void ProcedureReporter::OnInstructionStatusChange(const instruction_t *instruction,
                                                 const std::string &value)
 {
   emit InstructionStatusChanged(instruction, QString::fromStdString(value));
@@ -48,22 +47,22 @@ void ProcedureRunner::OnInstructionStatusChange(const instruction_t *instruction
 
 //! Propagate log message from observer up in the form of signals.
 
-void ProcedureRunner::OnLogEvent(const LogEvent &event)
+void ProcedureReporter::OnLogEvent(const LogEvent &event)
 {
   emit LogEventReceived(event);
 }
 
-UserInputResult ProcedureRunner::OnUserInput(const UserInputArgs &args)
+UserInputResult ProcedureReporter::OnUserInput(const UserInputArgs &args)
 {
   return m_input_provider->GetUserInput(args);
 }
 
-UserChoiceResult ProcedureRunner::OnUserChoice(const UserChoiceArgs &args)
+UserChoiceResult ProcedureReporter::OnUserChoice(const UserChoiceArgs &args)
 {
   return m_choice_provider->GetUserChoice(args);
 }
 
-SequencerObserver *ProcedureRunner::GetObserver()
+SequencerObserver *ProcedureReporter::GetObserver()
 {
   return m_observer.get();
 }

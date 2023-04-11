@@ -25,7 +25,7 @@
 
 namespace sequencergui
 {
-class ProcedureRunner;
+class ProcedureReporter;
 
 //! Sequencer observer which will be invoked during domain Procedure execution.
 //! Reports to ProcedureRunner.
@@ -33,7 +33,7 @@ class ProcedureRunner;
 class SequencerObserver : public ::sup::sequencer::UserInterface
 {
 public:
-  explicit SequencerObserver(ProcedureRunner* procedure_runner);
+  explicit SequencerObserver(ProcedureReporter* procedure_runner);
   ~SequencerObserver() override;
 
   void UpdateInstructionStatusImpl(const ::sup::sequencer::Instruction* instruction) override;
@@ -55,7 +55,7 @@ public:
   void LogImpl(int severity, const std::string& message) override;
 
 private:
-  ProcedureRunner* m_procedure_runner{nullptr};
+  ProcedureReporter* m_procedure_runner{nullptr};
 };
 
 }  // namespace sequencergui
