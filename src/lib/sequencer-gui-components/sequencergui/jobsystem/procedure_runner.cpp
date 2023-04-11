@@ -27,7 +27,7 @@
 
 namespace sequencergui
 {
-ProcedureRunner::ProcedureRunner(procedure_t *procedure, QObject *parent)
+ProcedureRunner::ProcedureRunner(QObject *parent)
     : QObject(parent), m_observer(std::make_unique<SequencerObserver>(this))
 {
 }

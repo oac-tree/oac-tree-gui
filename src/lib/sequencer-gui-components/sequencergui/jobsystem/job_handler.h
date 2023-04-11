@@ -86,7 +86,7 @@ private:
   void onLogEvent(const sequencergui::LogEvent& event);
   void onRunnerStatusChanged();
 
-  std::unique_ptr<ProcedureRunner> CreateProcedureRunner(procedure_t* procedure);
+  std::unique_ptr<ProcedureRunner> CreateProcedureRunner();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
 

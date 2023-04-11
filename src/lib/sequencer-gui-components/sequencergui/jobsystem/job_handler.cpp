@@ -90,7 +90,7 @@ void JobHandler::onPrepareJobRequest()
     m_workspace_syncronizer->Start();
   }
 
-  m_procedure_runner = CreateProcedureRunner(m_domain_procedure.get());
+  m_procedure_runner = CreateProcedureRunner();
 
   auto status_changed = [this](auto) { emit m_procedure_runner->RunnerStatusChanged(); };
 
@@ -187,9 +187,9 @@ void JobHandler::onRunnerStatusChanged()
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
-std::unique_ptr<ProcedureRunner> JobHandler::CreateProcedureRunner(procedure_t *procedure)
+std::unique_ptr<ProcedureRunner> JobHandler::CreateProcedureRunner()
 {
-  auto result = std::make_unique<ProcedureRunner>(procedure);
+  auto result = std::make_unique<ProcedureRunner>();
 
   connect(result.get(), &ProcedureRunner::InstructionStatusChanged, this,
           &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);

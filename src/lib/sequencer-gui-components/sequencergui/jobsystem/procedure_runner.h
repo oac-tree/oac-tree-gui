@@ -45,7 +45,7 @@ class ProcedureRunner : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureRunner(procedure_t* procedure, QObject* parent = nullptr);
+  explicit ProcedureRunner(QObject* parent = nullptr);
   ~ProcedureRunner() override;
 
   void SetUserContext(const UserContext& user_context);
