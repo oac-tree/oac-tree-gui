@@ -162,15 +162,18 @@ void JobHandler::onRunnerStatusChanged()
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
+JobModel *JobHandler::GetJobModel()
+{
+  return dynamic_cast<JobModel *>(m_job_item->GetModel());
+}
+
 void JobHandler::PrepareForRun()
 {
   m_domain_procedure.reset();
 
-  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
-
   if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
   {
-    job_model->RemoveItem(expanded_procedure);
+    GetJobModel()->RemoveItem(expanded_procedure);
   }
 
   m_workspace_syncronizer.reset();
@@ -196,12 +199,10 @@ void JobHandler::SetupDomainProcedure()
 
 void JobHandler::SetupExpandedProcedureItem()
 {
-  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
-
   auto expanded_procedure = std::make_unique<ProcedureItem>();
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
                                              /*root_only*/ true);
-  job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+  GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
 }
 
 //! Setup syncronization of workspace variables.
