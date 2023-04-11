@@ -60,38 +60,17 @@ void JobHandler::onPrepareJobRequest()
     throw RuntimeException("Attempt to reset already running job");
   }
 
-  // FIXME, refactor, provide unit tests (that JobModel notifies views correctly)
-  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
+  PrepareForRun();
 
-  if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
-  {
-    job_model->RemoveItem(expanded_procedure);
-  }
+  SetupDomainProcedure();
 
-  // building domain procedure
-  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
+  SetupExpandedProcedureItem();
 
-  // to perform all necessary internal clones
-  if (!m_domain_procedure->Setup())
-  {
-    throw InvalidOperationException("Can't setup procedure");
-  }
+  SetupWorkspaceSyncronizer();
 
-  auto expanded_procedure = std::make_unique<ProcedureItem>();
-  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
-                                             /*root_only*/ true);
-  job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+  SetupProcedureReporter();
 
-  auto workspace_item = m_job_item->GetExpandedProcedure()->GetWorkspace();
-  if (workspace_item->GetVariableCount() > 0)
-  {
-    auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
-    m_workspace_syncronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
-    m_workspace_syncronizer->Start();
-  }
-
-  m_procedure_reporter = CreateProcedureReporter();
-  m_domain_runner_adapter = CreateDomainRunnerAdapter();
+  SetupDomainRunnerAdapter();
 }
 
 JobHandler::~JobHandler() = default;
@@ -183,30 +162,85 @@ void JobHandler::onRunnerStatusChanged()
   m_job_item->SetStatus(RunnerStatusToString(status));
 }
 
-std::unique_ptr<ProcedureReporter> JobHandler::CreateProcedureReporter()
+void JobHandler::PrepareForRun()
 {
-  auto result = std::make_unique<ProcedureReporter>();
+  m_domain_procedure.reset();
 
-  connect(result.get(), &ProcedureReporter::InstructionStatusChanged, this,
-          &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
+  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
 
-  connect(result.get(), &ProcedureReporter::LogEventReceived, this, &JobHandler::onLogEvent,
-          Qt::QueuedConnection);
+  if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
+  {
+    job_model->RemoveItem(expanded_procedure);
+  }
 
-  connect(result.get(), &ProcedureReporter::RunnerStatusChanged, this,
-          &JobHandler::onRunnerStatusChanged, Qt::QueuedConnection);
-
-  return result;
+  m_workspace_syncronizer.reset();
+  m_procedure_reporter.reset();
+  m_domain_runner_adapter.reset();
 }
 
-std::unique_ptr<DomainRunnerAdapter> JobHandler::CreateDomainRunnerAdapter()
+//! Setup domain procedure.
+
+void JobHandler::SetupDomainProcedure()
+{
+  // building domain procedure
+  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
+
+  // to perform all necessary internal clones
+  if (!m_domain_procedure->Setup())
+  {
+    throw InvalidOperationException("Can't setup procedure");
+  }
+}
+
+//! Setup expanded procedure item
+
+void JobHandler::SetupExpandedProcedureItem()
+{
+  auto job_model = dynamic_cast<JobModel *>(m_job_item->GetModel());
+
+  auto expanded_procedure = std::make_unique<ProcedureItem>();
+  m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
+                                             /*root_only*/ true);
+  job_model->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+}
+
+//! Setup syncronization of workspace variables.
+
+void JobHandler::SetupWorkspaceSyncronizer()
+{
+  auto workspace_item = m_job_item->GetExpandedProcedure()->GetWorkspace();
+  if (workspace_item->GetVariableCount() > 0)
+  {
+    auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
+    m_workspace_syncronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
+    m_workspace_syncronizer->Start();
+  }
+}
+
+//! Setup procedure reporter.
+
+void JobHandler::SetupProcedureReporter()
+{
+  m_procedure_reporter = std::make_unique<ProcedureReporter>();
+
+  connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
+          &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
+
+  connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
+          &JobHandler::onLogEvent, Qt::QueuedConnection);
+
+  connect(m_procedure_reporter.get(), &ProcedureReporter::RunnerStatusChanged, this,
+          &JobHandler::onRunnerStatusChanged, Qt::QueuedConnection);
+}
+
+//! Setup adapter to run procedures.
+
+void JobHandler::SetupDomainRunnerAdapter()
 {
   auto status_changed = [this](auto) { emit m_procedure_reporter->RunnerStatusChanged(); };
 
-  auto result = std::make_unique<DomainRunnerAdapter>(
+  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(
       m_domain_procedure.get(), m_procedure_reporter->GetObserver(), status_changed);
-
-  return result;
 }
 
 }  // namespace sequencergui

@@ -86,8 +86,12 @@ private:
   void onLogEvent(const sequencergui::LogEvent& event);
   void onRunnerStatusChanged();
 
-  std::unique_ptr<ProcedureReporter> CreateProcedureReporter();
-  std::unique_ptr<DomainRunnerAdapter> CreateDomainRunnerAdapter();
+  void PrepareForRun();
+  void SetupDomainProcedure();
+  void SetupExpandedProcedureItem();
+  void SetupWorkspaceSyncronizer();
+  void SetupProcedureReporter();
+  void SetupDomainRunnerAdapter();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
 

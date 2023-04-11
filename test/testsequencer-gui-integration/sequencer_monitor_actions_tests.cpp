@@ -27,10 +27,9 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sup/gui/core/exceptions.h>
 
 #include <mvvm/model/model_utils.h>
-
-#include <sup/gui/core/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
