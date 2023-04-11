@@ -90,12 +90,8 @@ void JobHandler::onPrepareJobRequest()
     m_workspace_syncronizer->Start();
   }
 
-  m_procedure_runner = CreateProcedureReporter();
-
-  auto status_changed = [this](auto) { emit m_procedure_runner->RunnerStatusChanged(); };
-
-  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(
-      m_domain_procedure.get(), m_procedure_runner->GetObserver(), status_changed);
+  m_procedure_reporter = CreateProcedureReporter();
+  m_domain_runner_adapter = CreateDomainRunnerAdapter();
 }
 
 JobHandler::~JobHandler() = default;
@@ -138,7 +134,7 @@ void JobHandler::SetSleepTime(int time_msec)
 
 void JobHandler::SetUserContext(const UserContext &user_context)
 {
-  m_procedure_runner->SetUserContext(user_context);
+  m_procedure_reporter->SetUserContext(user_context);
 }
 
 ProcedureItem *JobHandler::GetExpandedProcedure() const
@@ -199,6 +195,16 @@ std::unique_ptr<ProcedureReporter> JobHandler::CreateProcedureReporter()
 
   connect(result.get(), &ProcedureReporter::RunnerStatusChanged, this,
           &JobHandler::onRunnerStatusChanged, Qt::QueuedConnection);
+
+  return result;
+}
+
+std::unique_ptr<DomainRunnerAdapter> JobHandler::CreateDomainRunnerAdapter()
+{
+  auto status_changed = [this](auto) { emit m_procedure_reporter->RunnerStatusChanged(); };
+
+  auto result = std::make_unique<DomainRunnerAdapter>(
+      m_domain_procedure.get(), m_procedure_reporter->GetObserver(), status_changed);
 
   return result;
 }

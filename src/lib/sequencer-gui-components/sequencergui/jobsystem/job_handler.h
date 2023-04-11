@@ -87,13 +87,14 @@ private:
   void onRunnerStatusChanged();
 
   std::unique_ptr<ProcedureReporter> CreateProcedureReporter();
+  std::unique_ptr<DomainRunnerAdapter> CreateDomainRunnerAdapter();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
 
   //!< domain procedure should live longer than the runner
   std::unique_ptr<procedure_t> m_domain_procedure;
 
-  std::unique_ptr<ProcedureReporter> m_procedure_runner;
+  std::unique_ptr<ProcedureReporter> m_procedure_reporter;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
 
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_syncronizer;
