@@ -110,15 +110,6 @@ bool DomainRunnerAdapter::ExecuteSingle()
   return is_running;
 }
 
-DomainRunnerAdapter::~DomainRunnerAdapter()
-{
-  // Line below is commented since we don't now if the underlying procedure is still alive.
-  // So attempt to delete the runner during procedure execution will lead to UB
-  //  if (m_domain_runner->IsRunning())
-  //  {
-  //    m_domain_runner->Halt();
-  //  }
-  // FIXME find solution, see comments DomainRunnerAdapterTest::PrematureDeletion
-}
+DomainRunnerAdapter::~DomainRunnerAdapter() = default;
 
 }  // namespace sequencergui
