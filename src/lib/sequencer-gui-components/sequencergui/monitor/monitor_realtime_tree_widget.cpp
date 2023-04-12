@@ -79,14 +79,17 @@ void MonitorRealTimeTreeWidget::SetSelectedInstruction(InstructionItem *item)
 
 void MonitorRealTimeTreeWidget::AdjustColumnWidth()
 {
-  if (m_custom_header->IsAdjustedByUser())
+  m_custom_header->RestoreFavoriteState();
+  if (m_custom_header->HasFavoriteState())
   {
-    m_custom_header->RestoreSize();
+    m_custom_header->RestoreFavoriteState();
   }
   else
   {
     m_tree_view->resizeColumnToContents(0);
   }
+}
+
 }
 
 }  // namespace sequencergui
