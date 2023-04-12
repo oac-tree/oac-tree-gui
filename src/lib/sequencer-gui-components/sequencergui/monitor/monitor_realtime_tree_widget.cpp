@@ -23,10 +23,11 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
-#include <sequencergui/widgets/custom_header_view.h>
 #include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
+
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -38,7 +39,7 @@ MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_tree_view))
-    , m_custom_header(new CustomHeaderView(this))
+    , m_custom_header(new sup::gui::CustomHeaderView(this))
 {
   setWindowTitle("InstructionTree");
 

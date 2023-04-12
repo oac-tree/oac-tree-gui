@@ -28,13 +28,17 @@ namespace mvvm
 class ItemViewComponentProvider;
 }
 
+namespace sup::gui
+{
+class CustomHeaderView;
+}
+
 class QTreeView;
 
 namespace sequencergui
 {
 
 class ProcedureItem;
-class CustomHeaderView;
 class InstructionItem;
 
 //! Widget with expanded instruction tree for realtime job execution.
@@ -60,7 +64,7 @@ private:
 
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  CustomHeaderView* m_custom_header{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
 };
 
 }  // namespace sequencergui

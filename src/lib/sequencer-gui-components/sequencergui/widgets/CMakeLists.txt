@@ -1,8 +1,6 @@
 # Collection of general purpose widgets that doesn't contain any Sequencer UI related specifics.
 
 target_sources(${library_name} PRIVATE
-  custom_header_view.cpp
-  custom_header_view.h
   dialog_message_handler.cpp
   dialog_message_handler.h
   dots_toolbar.cpp
