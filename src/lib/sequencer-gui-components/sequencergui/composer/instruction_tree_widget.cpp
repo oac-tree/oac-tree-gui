@@ -61,11 +61,6 @@ void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
   m_tree_view->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
 }
 
-void InstructionTreeWidget::SetSelectedInstruction(InstructionItem *instruction)
-{
-  m_tree_view->SetSelectedItem(instruction);
-}
-
 void InstructionTreeWidget::SetSelectedInstructions(
     const std::vector<InstructionItem *> &instructions)
 {

@@ -21,19 +21,19 @@
 
 #include <sequencergui/composer/composer_actions.h>
 #include <sequencergui/composer/instruction_tree_widget.h>
-#include <sequencergui/composer/workspace_list_widget.h>
+#include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/components/message_handler_interface.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
+#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/widgets/style_utils.h>
+
 #include <QSplitter>
 #include <QTabWidget>
 #include <QToolBar>
@@ -49,7 +49,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tool_bar_action(new QWidgetAction(this))
     , m_tab_widget(new QTabWidget)
     , m_instruction_tree(new InstructionTreeWidget)
-    , m_workspace_tree(new WorkspaceListWidget)
+    , m_workspace_tree(new WorkspaceEditorWidget)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
     , m_composer_actions(std::make_unique<ComposerActions>())
@@ -149,11 +149,11 @@ void ComposerProcedureEditor::SetupConnections()
           m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
 
   // propagate variable related operations from WorkspaceListWidget to ComposerActions
-  connect(m_workspace_tree, &WorkspaceListWidget::VariableSelected, m_property_tree,
+  connect(m_workspace_tree, &WorkspaceEditorWidget::VariableSelected, m_property_tree,
           &::mvvm::PropertyTreeView::SetItem);
-  connect(m_workspace_tree, &WorkspaceListWidget::InsertAfterRequest, m_composer_actions.get(),
+  connect(m_workspace_tree, &WorkspaceEditorWidget::InsertAfterRequest, m_composer_actions.get(),
           &ComposerActions::OnInsertVariableAfterRequest);
-  connect(m_workspace_tree, &WorkspaceListWidget::RemoveSelectedRequest, m_composer_actions.get(),
+  connect(m_workspace_tree, &WorkspaceEditorWidget::RemoveSelectedRequest, m_composer_actions.get(),
           &ComposerActions::OnRemoveVariableRequest);
 }
 

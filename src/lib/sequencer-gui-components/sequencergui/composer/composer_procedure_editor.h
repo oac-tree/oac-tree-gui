@@ -45,7 +45,7 @@ class DotsToolBar;
 class ProcedureItem;
 class ComposerActions;
 class InstructionTreeWidget;
-class WorkspaceListWidget;
+class WorkspaceEditorWidget;
 class ComposerContext;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
@@ -84,7 +84,7 @@ private:
 
   QTabWidget* m_tab_widget{nullptr};
   InstructionTreeWidget* m_instruction_tree{nullptr};
-  WorkspaceListWidget* m_workspace_tree{nullptr};
+  WorkspaceEditorWidget* m_workspace_tree{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
 

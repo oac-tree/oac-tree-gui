@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "workspace_list_widget.h"
+#include "workspace_editor_widget.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/procedure_item.h>
@@ -37,7 +37,7 @@
 namespace sequencergui
 {
 
-WorkspaceListWidget::WorkspaceListWidget(QWidget *parent)
+WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_insert_after_menu(CreateInsertAfterMenu())
     , m_tree_view(new mvvm::TopItemsTreeView)
@@ -53,19 +53,19 @@ WorkspaceListWidget::WorkspaceListWidget(QWidget *parent)
   SetupActions();
 }
 
-WorkspaceListWidget::~WorkspaceListWidget() = default;
+WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
 
-void WorkspaceListWidget::SetProcedure(ProcedureItem *procedure)
+void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   m_tree_view->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
 }
 
-VariableItem *WorkspaceListWidget::GetSelectedVariable() const
+VariableItem *WorkspaceEditorWidget::GetSelectedVariable() const
 {
   return m_tree_view->GetSelected<VariableItem>();
 }
 
-void WorkspaceListWidget::SetupActions()
+void WorkspaceEditorWidget::SetupActions()
 {
   // we are using QToolButon wrapped into QWidgetAction here because
   // 1. we want to pass around QList<QAction*>
@@ -87,14 +87,14 @@ void WorkspaceListWidget::SetupActions()
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove currently selected variable");
-  connect(remove_button, &QToolButton::clicked, this, &WorkspaceListWidget::RemoveSelectedRequest);
+  connect(remove_button, &QToolButton::clicked, this, &WorkspaceEditorWidget::RemoveSelectedRequest);
   m_insert_after_action = new QWidgetAction(this);
   m_insert_after_action->setDefaultWidget(remove_button);
   addAction(m_insert_after_action);
 }
 
 //! Creates menu to insert Variables in a workspace.
-std::unique_ptr<QMenu> WorkspaceListWidget::CreateInsertAfterMenu()
+std::unique_ptr<QMenu> WorkspaceEditorWidget::CreateInsertAfterMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);

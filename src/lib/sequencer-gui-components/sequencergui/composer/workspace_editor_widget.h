@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_LIST_WIDGET_H_
-#define SEQUENCERGUI_COMPOSER_WORKSPACE_LIST_WIDGET_H_
+#ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
+#define SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -40,13 +40,13 @@ class VariableItem;
 //! List of workspace variables at the right of SequencerComposerView.
 //! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
 
-class WorkspaceListWidget : public QWidget
+class WorkspaceEditorWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit WorkspaceListWidget(QWidget* parent = nullptr);
-  ~WorkspaceListWidget() override;
+  explicit WorkspaceEditorWidget(QWidget* parent = nullptr);
+  ~WorkspaceEditorWidget() override;
 
   void SetProcedure(ProcedureItem* procedure);
 
@@ -70,4 +70,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_LIST_WIDGET_H_
+#endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
