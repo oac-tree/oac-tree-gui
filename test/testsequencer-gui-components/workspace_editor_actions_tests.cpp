@@ -19,6 +19,7 @@
 
 #include "sequencergui/pvmonitor/workspace_editor_actions.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
@@ -72,8 +73,10 @@ public:
 
     m_mock_dialog.SetItemToReturn(std::move(item_to_return));
 
+    auto get_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
+
     return {get_selected_callback, m_warning_listener.CreateCallback(),
-            m_mock_dialog.CreateCallback()};
+            m_mock_dialog.CreateCallback(), get_workspace_callback};
   }
 
   //! Creates AnyValueEditorActions for testing.
@@ -81,7 +84,7 @@ public:
       mvvm::SessionItem* selection, std::unique_ptr<sup::gui::AnyValueItem> item_to_return = {})
   {
     return std::make_unique<WorkspaceEditorActions>(
-        CreateContext(selection, std::move(item_to_return)), GetWorkspaceItem(), nullptr);
+        CreateContext(selection, std::move(item_to_return)), nullptr);
   }
 
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
@@ -94,6 +97,7 @@ public:
 TEST_F(WorkspaceEditorActionsTest, InitialState)
 {
   EXPECT_TRUE(m_model.GetWorkspaceItem()->GetVariables().empty());
+  EXPECT_THROW(WorkspaceEditorActions({}, nullptr), RuntimeException);
 }
 
 //! Adding variables to an empty model.

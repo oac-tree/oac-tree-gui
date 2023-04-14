@@ -19,6 +19,7 @@
 
 #include "workspace_editor_actions.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
@@ -31,10 +32,25 @@
 namespace sequencergui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context,
-                                               WorkspaceItem *workspace, QObject *parent)
-    : QObject(parent), m_context(std::move(context)), m_workspace(workspace)
+WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, QObject *parent)
+    : QObject(parent), m_context(std::move(context))
 {
+  if (!m_context.get_selected_item_callback)
+  {
+    throw RuntimeException("Absent callback to retrieve currently selected item");
+  }
+  if (!m_context.send_message_callback)
+  {
+    throw RuntimeException("Absent callback to send messages");
+  }
+  if (!m_context.get_anyvalue_callback)
+  {
+    throw RuntimeException("Absent callback to get AnyValueItem");
+  }
+  if (!m_context.get_workspace_callback)
+  {
+    throw RuntimeException("Absent callback to get Workspace");
+  }
 }
 
 void WorkspaceEditorActions::OnAddVariableRequest(const QString &variable_type_name)
@@ -89,7 +105,7 @@ mvvm::SessionModelInterface *WorkspaceEditorActions::GetModel() const
 
 WorkspaceItem *WorkspaceEditorActions::GetWorkspaceItem() const
 {
-  return m_workspace;
+  return m_context.get_workspace_callback();
 }
 
 VariableItem *WorkspaceEditorActions::GetSelectedVariable()
