@@ -48,7 +48,7 @@ class WorkspaceEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorActions(WorkspaceEditorContext context, QObject* parent);
+  explicit WorkspaceEditorActions(WorkspaceEditorContext context, QObject* parent = nullptr);
 
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();

@@ -24,16 +24,20 @@
 #include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
+#include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <sup/gui/components/message_handler_interface.h>
-#include <sup/gui/widgets/style_utils.h>
-
+#include <QMessageBox>
 #include <QSplitter>
 #include <QTabWidget>
 #include <QToolBar>
@@ -50,7 +54,9 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tab_widget(new QTabWidget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
-    , m_composer_actions(std::make_unique<InstructionEditorActions>())
+    , m_instruction_editor_actions(std::make_unique<InstructionEditorActions>())
+    , m_workspace_editor_actions(
+          std::make_unique<WorkspaceEditorActions>(CreateWorkspaceEditorContext()))
 {
   setWindowTitle("Composer");
 
@@ -65,8 +71,8 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   layout->setSpacing(0);
 
   // setting up ComposerActions
-  m_composer_actions->SetMessageHandler(std::move(message_handler));
-  m_composer_actions->SetContext(CreateComposerContext());
+  m_instruction_editor_actions->SetMessageHandler(std::move(message_handler));
+  m_instruction_editor_actions->SetContext(CreateInstructionEditorContext());
 
   auto on_tabbar_changed = [this]()
   {
@@ -86,7 +92,7 @@ ComposerProcedureEditor::~ComposerProcedureEditor() = default;
 void ComposerProcedureEditor::SetModel(SequencerModel* model)
 {
   m_model = model;
-  m_composer_actions->SetModel(model);
+  m_instruction_editor_actions->SetModel(model);
 }
 
 void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)
@@ -132,27 +138,75 @@ void ComposerProcedureEditor::SetupConnections()
 
   // propagate instruction related operations from InstructionTreeWidget to ComposerActions
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertAfterRequest,
-          m_composer_actions.get(), &InstructionEditorActions::OnInsertInstructionAfterRequest);
-  connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertIntoRequest, m_composer_actions.get(),
+          m_instruction_editor_actions.get(),
+          &InstructionEditorActions::OnInsertInstructionAfterRequest);
+  connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertIntoRequest,
+          m_instruction_editor_actions.get(),
           &InstructionEditorActions::OnInsertInstructionIntoRequest);
   connect(m_instruction_editor_widget, &InstructionEditorWidget::RemoveSelectedRequest,
-          m_composer_actions.get(), &InstructionEditorActions::OnRemoveInstructionRequest);
+          m_instruction_editor_actions.get(),
+          &InstructionEditorActions::OnRemoveInstructionRequest);
 
   // propagate variable related operations from WorkspaceListWidget to ComposerActions
-  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest, m_composer_actions.get(),
-          &InstructionEditorActions::OnInsertVariableAfterRequest);
-  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest, m_composer_actions.get(),
-          &InstructionEditorActions::OnRemoveVariableRequest);
+  //  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
+  //          m_instruction_editor_actions.get(),
+  //          &InstructionEditorActions::OnInsertVariableAfterRequest);
+  //  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
+  //          m_instruction_editor_actions.get(),
+  //          &InstructionEditorActions::OnRemoveVariableRequest);
+
+  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
+          m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnAddVariableRequest);
+  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
+          m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnRemoveVariableRequest);
 }
 
-//! Create context to access current selections performed by the user.
-InstructionEditorContext ComposerProcedureEditor::CreateComposerContext()
+//! Create context necessary for InstructionEditorActions to function.
+InstructionEditorContext ComposerProcedureEditor::CreateInstructionEditorContext()
 {
   InstructionEditorContext context;
   context.selected_procedure = [this]() { return m_procedure; };
-  context.selected_instruction = [this]() { return m_instruction_editor_widget->GetSelectedInstruction(); };
+  context.selected_instruction = [this]()
+  { return m_instruction_editor_widget->GetSelectedInstruction(); };
   context.selected_variable = [this]() { return m_workspace_editor_widget->GetSelectedVariable(); };
   return context;
+}
+
+WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
+{
+  WorkspaceEditorContext result;
+
+  result.get_selected_item_callback = [this]()
+  { return m_workspace_editor_widget->GetSelectedVariable(); };
+
+  auto send_message_callback = [this](const sup::gui::MessageEvent& event)
+  {
+    QMessageBox msg_box;
+    msg_box.setText(QString::fromStdString(event.text));
+    msg_box.setInformativeText(QString::fromStdString(event.informative));
+    msg_box.setDetailedText(QString::fromStdString(event.detailed));
+    msg_box.setIcon(msg_box.Warning);
+    msg_box.exec();
+  };
+  result.send_message_callback = send_message_callback;
+
+  auto get_anyvalue_callback =
+      [this](const sup::gui::AnyValueItem& item) -> std::unique_ptr<sup::gui::AnyValueItem>
+  {
+    AnyValueEditorDialog dialog(this);
+    dialog.SetInitialValue(&item);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+      return dialog.GetResult();
+    }
+    return {};
+  };
+  result.get_anyvalue_callback = get_anyvalue_callback;
+
+  auto get_workspace_callback = [this]() { return m_procedure->GetWorkspace(); };
+  result.get_workspace_callback = get_workspace_callback;
+
+  return result;
 }
 
 }  // namespace sequencergui

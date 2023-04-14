@@ -33,15 +33,16 @@ class MessageHandlerInterface;
 
 namespace sequencergui
 {
-class SequencerModel;
-class InstructionItem;
-class DotsToolBar;
-class ProcedureItem;
+
 class InstructionEditorActions;
-class InstructionEditorWidget;
-class WorkspaceEditorActions;
-class WorkspaceEditorWidget;
 class InstructionEditorContext;
+class InstructionEditorWidget;
+class InstructionItem;
+class ProcedureItem;
+class SequencerModel;
+class WorkspaceEditorActions;
+class WorkspaceEditorContext;
+class WorkspaceEditorWidget;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
 //! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
@@ -72,7 +73,8 @@ signals:
 private:
   void SetupToolBar();
   void SetupConnections();
-  InstructionEditorContext CreateComposerContext();
+  InstructionEditorContext CreateInstructionEditorContext();
+  WorkspaceEditorContext CreateWorkspaceEditorContext();
 
   QToolBar* m_tool_bar{nullptr};
   QWidgetAction* m_tool_bar_action{nullptr};  //!< wrapper to send our tool bar outside
@@ -84,7 +86,8 @@ private:
   SequencerModel* m_model{nullptr};
   ProcedureItem* m_procedure{nullptr};
 
-  std::unique_ptr<InstructionEditorActions> m_composer_actions;
+  std::unique_ptr<InstructionEditorActions> m_instruction_editor_actions;
+  std::unique_ptr<WorkspaceEditorActions> m_workspace_editor_actions;
 };
 
 }  // namespace sequencergui
