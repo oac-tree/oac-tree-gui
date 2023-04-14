@@ -24,15 +24,15 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
 
 WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, MonitorModel *model,
-                                           QObject *parent)
+                                               QObject *parent)
     : QObject(parent), m_context(std::move(context)), m_model(model)
 {
 }
@@ -44,9 +44,9 @@ void WorkspaceEditorActions::OnAddVariableRequest(const QString &variable_type_n
   try
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    auto inserted =
-        m_model->InsertItem(m_model->GetFactory()->CreateItem(variable_type_name.toStdString()),
-                            m_model->GetWorkspaceItem(), tagindex);
+    auto inserted = GetModel()->InsertItem(
+        GetModel()->GetFactory()->CreateItem(variable_type_name.toStdString()), GetWorkspaceItem(),
+        tagindex);
     SetupVariable(dynamic_cast<VariableItem *>(inserted));
   }
   catch (const std::exception &ex)
@@ -59,7 +59,7 @@ void WorkspaceEditorActions::OnRemoveVariableRequest()
 {
   if (auto selected = GetSelectedVariable(); selected)
   {
-    m_model->RemoveItem(selected);
+    GetModel()->RemoveItem(selected);
   }
 }
 
@@ -77,9 +77,19 @@ void WorkspaceEditorActions::OnEditAnyvalueRequest()
   if (edited_anyvalue)
   {
     auto prev_parent = selected_anyvalue->GetParent();
-    m_model->RemoveItem(selected_anyvalue);
-    m_model->InsertItem(std::move(edited_anyvalue), prev_parent, {});
+    GetModel()->RemoveItem(selected_anyvalue);
+    GetModel()->InsertItem(std::move(edited_anyvalue), prev_parent, {});
   }
+}
+
+mvvm::ApplicationModel *WorkspaceEditorActions::GetModel() const
+{
+  return m_model;
+}
+
+WorkspaceItem *WorkspaceEditorActions::GetWorkspaceItem() const
+{
+  return m_model->GetWorkspaceItem();
 }
 
 VariableItem *WorkspaceEditorActions::GetSelectedVariable()
@@ -120,7 +130,7 @@ void WorkspaceEditorActions::SetupVariable(VariableItem *item)
 }
 
 void WorkspaceEditorActions::SendMessage(const std::string &text, const std::string &informative,
-                                       const std::string &details)
+                                         const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
@@ -128,7 +138,7 @@ void WorkspaceEditorActions::SendMessage(const std::string &text, const std::str
 
 std::string WorkspaceEditorActions::ProposeVariableName() const
 {
-  return "var" + std::to_string(m_model->GetWorkspaceItem()->GetVariableCount() - 1);
+  return "var" + std::to_string(GetWorkspaceItem()->GetVariableCount() - 1);
 }
 
 }  // namespace sequencergui

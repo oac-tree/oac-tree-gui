@@ -40,6 +40,7 @@ namespace sequencergui
 {
 
 class VariableItem;
+class WorkspaceItem;
 
 //! Context to setup WorkspaceEditorActions.
 
@@ -55,6 +56,9 @@ struct WorkspaceEditorContext
   //!< AnyValueItem back
   std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem&)>
       get_anyvalue_callback;
+
+  //!< callback to retrieve current workspace to operate
+  std::function<WorkspaceItem*()> get_workspace_callback;
 };
 
 }  // namespace sequencergui

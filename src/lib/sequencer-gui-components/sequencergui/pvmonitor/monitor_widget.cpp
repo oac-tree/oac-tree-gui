@@ -154,7 +154,10 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
     return {};
   };
 
-  return {get_selected_callback, send_message_callback, get_anyvalue_callback};
+  auto get_selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
+
+  return {get_selected_callback, send_message_callback, get_anyvalue_callback,
+          get_selected_workspace_callback};
 }
 
 }  // namespace sequencergui

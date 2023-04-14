@@ -24,6 +24,11 @@
 
 #include <QObject>
 
+namespace mvvm
+{
+class ApplicationModel;
+}
+
 namespace sup::gui
 {
 class AnyValueItem;
@@ -34,6 +39,7 @@ namespace sequencergui
 
 class VariableItem;
 class MonitorModel;
+class WorkspaceItem;
 
 //! The MonitorWidgetActions class implements actions for MonitorWidget that can be triggered from
 //! its main toolbar.
@@ -50,6 +56,8 @@ public:
   void OnEditAnyvalueRequest();
 
 private:
+  mvvm::ApplicationModel* GetModel() const;
+  WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable();
   sup::gui::AnyValueItem* GetSelectedAnyValueItem();
   sup::gui::AnyValueItem* GetAnyValueItemToEdit();
