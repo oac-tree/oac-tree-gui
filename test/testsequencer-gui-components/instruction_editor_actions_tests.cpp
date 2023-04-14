@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composer_actions.h"
+#include "sequencergui/composer/instruction_editor_actions.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -37,10 +37,10 @@ using ::testing::_;
 
 //! Tests for SequencerObserver class.
 
-class ComposerActionsTest : public ::testing::Test
+class InstructionEditorActionsTest : public ::testing::Test
 {
 public:
-  ComposerActionsTest() : m_actions(&m_model)
+  InstructionEditorActionsTest() : m_actions(&m_model)
   {
     m_procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }
@@ -58,13 +58,13 @@ public:
   }
 
   SequencerModel m_model;
-  ComposerActions m_actions;
+  InsrtuctionEditorActions m_actions;
   ProcedureItem* m_procedure{nullptr};
 };
 
 //! Insertion instruction after selected instruction, when no more insertions is allowed.
 
-TEST_F(ComposerActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
+TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
   auto context = CreateContext(nullptr, nullptr, nullptr);
@@ -77,7 +77,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 
 //! Insertion instruction after selected instruction.
 
-TEST_F(ComposerActionsTest, InsertInstructionAfter)
+TEST_F(InstructionEditorActionsTest, InsertInstructionAfter)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -113,7 +113,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfter)
 //! Mimicking the case when no instruction is actually selected.
 //! Items should be added one after another.
 
-TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
+TEST_F(InstructionEditorActionsTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating the context mimicking "no instruction selected"
   auto context = CreateContext(m_procedure, nullptr, nullptr);
@@ -134,7 +134,7 @@ TEST_F(ComposerActionsTest, InsertInstructionAfterWhenInAppendMode)
 
 //! Insertion instruction after selected instruction, when no more insertions is allowed.
 
-TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
+TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionAfter)
 {
   // inserting instruction in the container
   auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
@@ -162,7 +162,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionAfter)
 
 //! Insertion instruction in the selected instruction.
 
-TEST_F(ComposerActionsTest, InsertInstructionInto)
+TEST_F(InstructionEditorActionsTest, InsertInstructionInto)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -200,7 +200,7 @@ TEST_F(ComposerActionsTest, InsertInstructionInto)
 
 //! Attempt to insert instruction into the one, that can't have children.
 
-TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
+TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionInto)
 {
   // inserting instruction in the container
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
@@ -225,7 +225,7 @@ TEST_F(ComposerActionsTest, AttemptToInsertInstructionInto)
 
 //! Removing selected variable.
 
-TEST_F(ComposerActionsTest, RemoveInstruction)
+TEST_F(InstructionEditorActionsTest, RemoveInstruction)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -247,7 +247,7 @@ TEST_F(ComposerActionsTest, RemoveInstruction)
 
 //! Insertion variable after selected variable.
 
-TEST_F(ComposerActionsTest, InsertVariableAfter)
+TEST_F(InstructionEditorActionsTest, InsertVariableAfter)
 {
   // inserting variable in the container
   auto variable0 = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());
@@ -270,7 +270,7 @@ TEST_F(ComposerActionsTest, InsertVariableAfter)
 
 //! Insertion variable when no variable selected.
 
-TEST_F(ComposerActionsTest, InsertVariableAfterWhenInAppendMode)
+TEST_F(InstructionEditorActionsTest, InsertVariableAfterWhenInAppendMode)
 {
   // creating the context mimicking "no variable selected"
   auto context = CreateContext(m_procedure, nullptr, nullptr);
@@ -291,7 +291,7 @@ TEST_F(ComposerActionsTest, InsertVariableAfterWhenInAppendMode)
 
 //! Removing selected variable.
 
-TEST_F(ComposerActionsTest, RemoveVariable)
+TEST_F(InstructionEditorActionsTest, RemoveVariable)
 {
   // inserting instruction in the container
   auto variable = m_model.InsertItem<LocalVariableItem>(m_procedure->GetWorkspace());

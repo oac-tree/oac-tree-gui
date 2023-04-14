@@ -19,7 +19,7 @@
 
 #include "composer_procedure_editor.h"
 
-#include <sequencergui/composer/composer_actions.h>
+#include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -50,7 +50,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tab_widget(new QTabWidget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
-    , m_composer_actions(std::make_unique<ComposerActions>())
+    , m_composer_actions(std::make_unique<InsrtuctionEditorActions>())
 {
   setWindowTitle("Composer");
 
@@ -132,17 +132,17 @@ void ComposerProcedureEditor::SetupConnections()
 
   // propagate instruction related operations from InstructionTreeWidget to ComposerActions
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertAfterRequest,
-          m_composer_actions.get(), &ComposerActions::OnInsertInstructionAfterRequest);
+          m_composer_actions.get(), &InsrtuctionEditorActions::OnInsertInstructionAfterRequest);
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertIntoRequest, m_composer_actions.get(),
-          &ComposerActions::OnInsertInstructionIntoRequest);
+          &InsrtuctionEditorActions::OnInsertInstructionIntoRequest);
   connect(m_instruction_editor_widget, &InstructionEditorWidget::RemoveSelectedRequest,
-          m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
+          m_composer_actions.get(), &InsrtuctionEditorActions::OnRemoveInstructionRequest);
 
   // propagate variable related operations from WorkspaceListWidget to ComposerActions
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest, m_composer_actions.get(),
-          &ComposerActions::OnInsertVariableAfterRequest);
+          &InsrtuctionEditorActions::OnInsertVariableAfterRequest);
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest, m_composer_actions.get(),
-          &ComposerActions::OnRemoveVariableRequest);
+          &InsrtuctionEditorActions::OnRemoveVariableRequest);
 }
 
 //! Create context to access current selections performed by the user.

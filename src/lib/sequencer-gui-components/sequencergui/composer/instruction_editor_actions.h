@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_ACTIONS_H_
-#define SEQUENCERGUI_COMPOSER_COMPOSER_ACTIONS_H_
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_
+#define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_
 
 #include <sequencergui/composer/composer_context.h>
 
@@ -42,13 +42,13 @@ class SequencerModel;
 
 //! Collection of actions
 
-class ComposerActions : public QObject
+class InsrtuctionEditorActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit ComposerActions(SequencerModel* model = nullptr, QObject* parent = nullptr);
-  ~ComposerActions() override;
+  explicit InsrtuctionEditorActions(SequencerModel* model = nullptr, QObject* parent = nullptr);
+  ~InsrtuctionEditorActions() override;
 
   void SetModel(SequencerModel* model);
 
@@ -78,4 +78,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_ACTIONS_H_
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_

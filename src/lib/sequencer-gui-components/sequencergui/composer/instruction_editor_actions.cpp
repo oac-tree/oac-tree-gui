@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_actions.h"
+#include "instruction_editor_actions.h"
 
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/core/exceptions.h>
@@ -58,25 +58,25 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
 namespace sequencergui
 {
 
-ComposerActions::ComposerActions(SequencerModel *model, QObject *parent)
+InsrtuctionEditorActions::InsrtuctionEditorActions(SequencerModel *model, QObject *parent)
     : QObject(parent), m_message_handler(CreateNullMessageHandler())
 {
   SetModel(model);
 }
 
-ComposerActions::~ComposerActions() = default;
+InsrtuctionEditorActions::~InsrtuctionEditorActions() = default;
 
-void ComposerActions::SetModel(SequencerModel *model)
+void InsrtuctionEditorActions::SetModel(SequencerModel *model)
 {
   m_model = model;
 }
 
-void ComposerActions::SetContext(ComposerContext context)
+void InsrtuctionEditorActions::SetContext(ComposerContext context)
 {
   m_context = std::move(context);
 }
 
-void ComposerActions::SetMessageHandler(
+void InsrtuctionEditorActions::SetMessageHandler(
     std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
 {
   m_message_handler = std::move(message_handler);
@@ -84,7 +84,7 @@ void ComposerActions::SetMessageHandler(
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
+void InsrtuctionEditorActions::OnInsertInstructionAfterRequest(const QString &item_type)
 {
   ValidatePrecoditions();
 
@@ -106,7 +106,7 @@ void ComposerActions::OnInsertInstructionAfterRequest(const QString &item_type)
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
+void InsrtuctionEditorActions::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   ValidatePrecoditions();
 
@@ -117,7 +117,7 @@ void ComposerActions::OnInsertInstructionIntoRequest(const QString &item_type)
 
 //! Removes currently selected instruction.
 //! The selection is retrieved via a callback.
-void ComposerActions::OnRemoveInstructionRequest()
+void InsrtuctionEditorActions::OnRemoveInstructionRequest()
 {
   auto selected_instruction = m_context.selected_instruction();
 
@@ -127,7 +127,7 @@ void ComposerActions::OnRemoveInstructionRequest()
   }
 }
 
-void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
+void InsrtuctionEditorActions::OnInsertVariableAfterRequest(const QString &item_type)
 {
   ValidatePrecoditions();
 
@@ -138,7 +138,7 @@ void ComposerActions::OnInsertVariableAfterRequest(const QString &item_type)
   InsertItem(item_type.toStdString(), procedure->GetWorkspace(), tagindex);
 }
 
-void ComposerActions::OnRemoveVariableRequest()
+void InsrtuctionEditorActions::OnRemoveVariableRequest()
 {
   if (auto selected = m_context.selected_variable(); selected)
   {
@@ -146,9 +146,9 @@ void ComposerActions::OnRemoveVariableRequest()
   }
 }
 
-mvvm::SessionItem *ComposerActions::InsertItem(const std::string &item_type,
-                                               mvvm::SessionItem *parent,
-                                               const mvvm::TagIndex &index)
+mvvm::SessionItem *InsrtuctionEditorActions::InsertItem(const std::string &item_type,
+                                                        mvvm::SessionItem *parent,
+                                                        const mvvm::TagIndex &index)
 {
   mvvm::SessionItem *result{nullptr};
   try
@@ -165,7 +165,7 @@ mvvm::SessionItem *ComposerActions::InsertItem(const std::string &item_type,
   return result;
 }
 
-void ComposerActions::ValidatePrecoditions()
+void InsrtuctionEditorActions::ValidatePrecoditions()
 {
   if (!m_model)
   {
