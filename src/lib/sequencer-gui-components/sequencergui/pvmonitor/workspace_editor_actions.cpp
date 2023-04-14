@@ -31,7 +31,7 @@
 namespace sequencergui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(MonitorWidgetContext context, MonitorModel *model,
+WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, MonitorModel *model,
                                            QObject *parent)
     : QObject(parent), m_context(std::move(context)), m_model(model)
 {

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_CONTEXT_H_
-#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_CONTEXT_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
 
 #include <sup/gui/components/message_event.h>
 
@@ -41,9 +41,9 @@ namespace sequencergui
 
 class VariableItem;
 
-//! Context to setup MonitorWidgetActions.
+//! Context to setup WorkspaceEditorActions.
 
-struct MonitorWidgetContext
+struct WorkspaceEditorContext
 {
   //!< callback to retrieve currently selected item
   std::function<mvvm::SessionItem*()> get_selected_item_callback;
@@ -59,4 +59,4 @@ struct MonitorWidgetContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_CONTEXT_H_
+#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_

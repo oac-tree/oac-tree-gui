@@ -64,7 +64,7 @@ public:
   };
 
   //! Creates context necessary for AnyValueEditActions to function.
-  MonitorWidgetContext CreateContext(VariableItem* item)
+  WorkspaceEditorContext CreateContext(VariableItem* item)
   {
     // callback returns given item, pretending it is user's selection
     auto get_selected_callback = [item]() { return item; };
@@ -223,7 +223,7 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenVariableIsSelected)
   // preparing context
   MockDialog mock_dialog(std::move(editing_result));
   auto get_selected_callback = [var0]() { return var0; };
-  MonitorWidgetContext context{get_selected_callback, m_warning_listener.CreateCallback(),
+  WorkspaceEditorContext context{get_selected_callback, m_warning_listener.CreateCallback(),
                                mock_dialog.CreateCallback()};
 
   // preparing actions
@@ -259,7 +259,7 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
   // preparing context pretending that AnyValueItem is selected
   MockDialog mock_dialog(std::move(editing_result));
   auto get_selected_callback = [initial_anyvalue_item]() { return initial_anyvalue_item; };
-  MonitorWidgetContext context{get_selected_callback, m_warning_listener.CreateCallback(),
+  WorkspaceEditorContext context{get_selected_callback, m_warning_listener.CreateCallback(),
                                mock_dialog.CreateCallback()};
 
   // preparing actions

@@ -48,7 +48,7 @@ class MonitorModel;
 class WorkspaceSynchronizer;
 class MonitorWidgetToolBar;
 class WorkspaceEditorActions;
-class MonitorWidgetContext;
+class WorkspaceEditorContext;
 
 class MonitorWidget : public QWidget
 {
@@ -69,7 +69,7 @@ private:
   void OnStartMonitoringRequest();
   void OnStopMonitoringRequest();
 
-  MonitorWidgetContext CreateContext();
+  WorkspaceEditorContext CreateContext();
 
   MonitorWidgetToolBar* m_tool_bar{nullptr};
 

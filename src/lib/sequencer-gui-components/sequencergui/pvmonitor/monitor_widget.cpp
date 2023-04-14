@@ -128,7 +128,7 @@ void MonitorWidget::OnStopMonitoringRequest()
   }
 }
 
-MonitorWidgetContext MonitorWidget::CreateContext()
+WorkspaceEditorContext MonitorWidget::CreateContext()
 {
   auto get_selected_callback = [this]() { return m_tree_view->GetSelectedItem(); };
 

@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
 
-#include <sequencergui/pvmonitor/monitor_widget_context.h>
+#include <sequencergui/pvmonitor/workspace_editor_context.h>
 
 #include <QObject>
 
@@ -43,7 +43,7 @@ class WorkspaceEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
+  explicit WorkspaceEditorActions(WorkspaceEditorContext context, MonitorModel* model, QObject* parent);
 
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();
@@ -61,7 +61,7 @@ private:
   std::string ProposeVariableName() const;
 
   MonitorModel* m_model{nullptr};
-  MonitorWidgetContext m_context;
+  WorkspaceEditorContext m_context;
 };
 
 }  // namespace sequencergui
