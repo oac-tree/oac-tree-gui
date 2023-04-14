@@ -26,9 +26,11 @@
 #include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/utils/container_utils.h>
+#include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/top_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QSplitter>
 #include <QToolButton>
 #include <QVBoxLayout>
 #include <QWidgetAction>
@@ -41,15 +43,28 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_insert_into_menu(CreateInsertIntoMenu())
     , m_insert_after_menu(CreateInsertAfterMenu())
     , m_tree_view(new mvvm::TopItemsTreeView)
-
+    , m_property_tree(new mvvm::PropertyTreeView)
+    , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_tree_view);
 
+  m_splitter->setOrientation(Qt::Vertical);
+  m_splitter->addWidget(m_tree_view);
+  m_splitter->addWidget(m_property_tree);
+  m_splitter->setSizes(QList<int>() << 300 << 200);
+
+  layout->addWidget(m_splitter);
+
+  auto on_selected_instruction_changed = [this](auto)
+  {
+    auto selected = GetSelectedInstruction();
+    m_property_tree->SetItem(selected);
+    emit InstructionSelected(selected);
+  };
   connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
-          [this](auto) { emit InstructionSelected(GetSelectedInstruction()); });
+          on_selected_instruction_changed);
 
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view->GetTreeView());
 

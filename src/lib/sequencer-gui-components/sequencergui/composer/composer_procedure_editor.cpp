@@ -48,25 +48,19 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tool_bar(new QToolBar)
     , m_tool_bar_action(new QWidgetAction(this))
     , m_tab_widget(new QTabWidget)
-    , m_instruction_tree(new InstructionEditorWidget)
-    , m_workspace_tree(new WorkspaceEditorWidget)
-    , m_property_tree(new mvvm::PropertyTreeView)
-    , m_splitter(new QSplitter)
+    , m_instruction_editor_widget(new InstructionEditorWidget)
+    , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_composer_actions(std::make_unique<ComposerActions>())
 {
   setWindowTitle("Composer");
 
   auto layout = new QVBoxLayout(this);
-  m_splitter->setOrientation(Qt::Vertical);
 
-  m_tab_widget->addTab(m_instruction_tree, "Instructions");
-  m_tab_widget->addTab(m_workspace_tree, "Workspace");
+  m_tab_widget->addTab(m_instruction_editor_widget, "Instructions");
+  m_tab_widget->addTab(m_workspace_editor_widget, "Workspace");
   m_tab_widget->setTabPosition(QTabWidget::South);
-  m_splitter->addWidget(m_tab_widget);
-  m_splitter->addWidget(m_property_tree);
-  m_splitter->setSizes(QList<int>() << 300 << 200);
 
-  layout->addWidget(m_splitter);
+  layout->addWidget(m_tab_widget);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
@@ -98,19 +92,19 @@ void ComposerProcedureEditor::SetModel(SequencerModel* model)
 void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)
 {
   m_procedure = procedure;
-  m_instruction_tree->SetProcedure(m_procedure);
-  m_workspace_tree->SetProcedure(m_procedure);
+  m_instruction_editor_widget->SetProcedure(m_procedure);
+  m_workspace_editor_widget->SetProcedure(m_procedure);
 }
 
 void ComposerProcedureEditor::SetSelectedInstructions(
     const std::vector<InstructionItem*>& instructions)
 {
-  m_instruction_tree->SetSelectedInstructions(instructions);
+  m_instruction_editor_widget->SetSelectedInstructions(instructions);
 }
 
 std::vector<InstructionItem*> ComposerProcedureEditor::GetSelectedInstructions() const
 {
-  return m_instruction_tree->GetSelectedInstructions();
+  return m_instruction_editor_widget->GetSelectedInstructions();
 }
 
 InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
@@ -133,27 +127,21 @@ void ComposerProcedureEditor::SetupToolBar()
 
 void ComposerProcedureEditor::SetupConnections()
 {
-  auto on_selection_changed = [this](auto item)
-  {
-    m_property_tree->SetItem(item);
-    emit InstructionSelected(GetSelectedInstruction());
-  };
-  connect(m_instruction_tree, &InstructionEditorWidget::InstructionSelected, on_selection_changed);
+  connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
+          &ComposerProcedureEditor::InstructionSelected);
 
   // propagate instruction related operations from InstructionTreeWidget to ComposerActions
-  connect(m_instruction_tree, &InstructionEditorWidget::InsertAfterRequest,
+  connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertAfterRequest,
           m_composer_actions.get(), &ComposerActions::OnInsertInstructionAfterRequest);
-  connect(m_instruction_tree, &InstructionEditorWidget::InsertIntoRequest, m_composer_actions.get(),
+  connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertIntoRequest, m_composer_actions.get(),
           &ComposerActions::OnInsertInstructionIntoRequest);
-  connect(m_instruction_tree, &InstructionEditorWidget::RemoveSelectedRequest,
+  connect(m_instruction_editor_widget, &InstructionEditorWidget::RemoveSelectedRequest,
           m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
 
   // propagate variable related operations from WorkspaceListWidget to ComposerActions
-  connect(m_workspace_tree, &WorkspaceEditorWidget::VariableSelected, m_property_tree,
-          &::mvvm::PropertyTreeView::SetItem);
-  connect(m_workspace_tree, &WorkspaceEditorWidget::InsertAfterRequest, m_composer_actions.get(),
+  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest, m_composer_actions.get(),
           &ComposerActions::OnInsertVariableAfterRequest);
-  connect(m_workspace_tree, &WorkspaceEditorWidget::RemoveSelectedRequest, m_composer_actions.get(),
+  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest, m_composer_actions.get(),
           &ComposerActions::OnRemoveVariableRequest);
 }
 
@@ -162,8 +150,8 @@ ComposerContext ComposerProcedureEditor::CreateComposerContext()
 {
   ComposerContext context;
   context.selected_procedure = [this]() { return m_procedure; };
-  context.selected_instruction = [this]() { return m_instruction_tree->GetSelectedInstruction(); };
-  context.selected_variable = [this]() { return m_workspace_tree->GetSelectedVariable(); };
+  context.selected_instruction = [this]() { return m_instruction_editor_widget->GetSelectedInstruction(); };
+  context.selected_variable = [this]() { return m_workspace_editor_widget->GetSelectedVariable(); };
   return context;
 }
 

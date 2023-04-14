@@ -27,10 +27,12 @@
 
 class QAction;
 class QWidgetAction;
+class QSplitter;
 
 namespace mvvm
 {
 class TopItemsTreeView;
+class PropertyTreeView;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -76,6 +78,8 @@ private:
   QWidgetAction* m_remove_action{nullptr};
 
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
+  mvvm::PropertyTreeView* m_property_tree{nullptr};
+  QSplitter* m_splitter{nullptr};
 };
 
 }  // namespace sequencergui
