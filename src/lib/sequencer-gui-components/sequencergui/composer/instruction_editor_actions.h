@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_
 
-#include <sequencergui/composer/composer_context.h>
+#include <sequencergui/composer/instruction_editor_context.h>
 
 #include <QObject>
 #include <memory>
@@ -52,7 +52,7 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  void SetContext(ComposerContext context);
+  void SetContext(InstructionEditorContext context);
 
   void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
@@ -72,7 +72,7 @@ private:
   void ValidatePrecoditions();
 
   SequencerModel* m_model{nullptr};
-  ComposerContext m_context;
+  InstructionEditorContext m_context;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 

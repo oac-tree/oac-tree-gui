@@ -47,10 +47,10 @@ public:
 
   //! Creates ComposerContext for testing purposes. It contains callbacks to mimick
   //! user choice regarding the selected procedure, instruction, and variable.
-  ComposerContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction,
+  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction,
                                 VariableItem* variable)
   {
-    ComposerContext result;
+    InstructionEditorContext result;
     result.selected_procedure = [procedure]() { return procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
     result.selected_variable = [variable]() { return variable; };

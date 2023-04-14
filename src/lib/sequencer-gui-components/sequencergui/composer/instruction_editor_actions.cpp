@@ -71,7 +71,7 @@ void InsrtuctionEditorActions::SetModel(SequencerModel *model)
   m_model = model;
 }
 
-void InsrtuctionEditorActions::SetContext(ComposerContext context)
+void InsrtuctionEditorActions::SetContext(InstructionEditorContext context)
 {
   m_context = std::move(context);
 }

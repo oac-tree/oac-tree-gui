@@ -146,9 +146,9 @@ void ComposerProcedureEditor::SetupConnections()
 }
 
 //! Create context to access current selections performed by the user.
-ComposerContext ComposerProcedureEditor::CreateComposerContext()
+InstructionEditorContext ComposerProcedureEditor::CreateComposerContext()
 {
-  ComposerContext context;
+  InstructionEditorContext context;
   context.selected_procedure = [this]() { return m_procedure; };
   context.selected_instruction = [this]() { return m_instruction_editor_widget->GetSelectedInstruction(); };
   context.selected_variable = [this]() { return m_workspace_editor_widget->GetSelectedVariable(); };

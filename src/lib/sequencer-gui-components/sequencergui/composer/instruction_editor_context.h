@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_CONTEXT_H_
-#define SEQUENCERGUI_COMPOSER_COMPOSER_CONTEXT_H_
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_
+#define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_
 
 #include <functional>
 
@@ -29,10 +29,10 @@ class ProcedureItem;
 class InstructionItem;
 class VariableItem;
 
-//! Context representing current state of widgets related to the procedure composition.
-//! Allows to retrieve currently selected procedure, instruction and variable.
+//! Context representing current state of widgets related to the instruction composition.
+//! Allows to retrieve currently selected procedure and instruction.
 
-struct ComposerContext
+struct InstructionEditorContext
 {
   //! Callback to get currently selected procedure.
   std::function<ProcedureItem*()> selected_procedure;
@@ -46,4 +46,4 @@ struct ComposerContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_CONTEXT_H_
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_
