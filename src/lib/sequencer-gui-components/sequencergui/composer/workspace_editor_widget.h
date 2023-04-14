@@ -28,7 +28,7 @@ class QWidgetAction;
 
 namespace mvvm
 {
-class TopItemsTreeView;
+class AllItemsTreeView;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -65,7 +65,7 @@ private:
   std::unique_ptr<QMenu> m_insert_after_menu;
   QWidgetAction* m_insert_after_action{nullptr};
   QWidgetAction* m_remove_action{nullptr};
-  mvvm::TopItemsTreeView* m_tree_view{nullptr};
+  mvvm::AllItemsTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace sequencergui

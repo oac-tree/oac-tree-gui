@@ -26,7 +26,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/widgets/style_utils.h>
 
-#include <mvvm/widgets/top_items_tree_view.h>
+#include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMenu>
@@ -40,14 +40,14 @@ namespace sequencergui
 WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_insert_after_menu(CreateInsertAfterMenu())
-    , m_tree_view(new mvvm::TopItemsTreeView)
+    , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
-  connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
+  connect(m_tree_view, &::mvvm::AllItemsTreeView::SelectedItemChanged, this,
           [this](auto) { emit VariableSelected(GetSelectedVariable()); });
 
   SetupActions();
@@ -87,7 +87,8 @@ void WorkspaceEditorWidget::SetupActions()
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove currently selected variable");
-  connect(remove_button, &QToolButton::clicked, this, &WorkspaceEditorWidget::RemoveSelectedRequest);
+  connect(remove_button, &QToolButton::clicked, this,
+          &WorkspaceEditorWidget::RemoveSelectedRequest);
   m_insert_after_action = new QWidgetAction(this);
   m_insert_after_action->setDefaultWidget(remove_button);
   addAction(m_insert_after_action);
