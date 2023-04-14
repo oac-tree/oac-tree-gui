@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_tree_widget.h"
+#include "instruction_editor_widget.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -36,7 +36,7 @@
 namespace sequencergui
 {
 
-InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
+InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_insert_into_menu(CreateInsertIntoMenu())
     , m_insert_after_menu(CreateInsertAfterMenu())
@@ -56,29 +56,29 @@ InstructionTreeWidget::InstructionTreeWidget(QWidget *parent)
   SetupActions();
 }
 
-void InstructionTreeWidget::SetProcedure(ProcedureItem *procedure)
+void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   m_tree_view->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
 }
 
-void InstructionTreeWidget::SetSelectedInstructions(
+void InstructionEditorWidget::SetSelectedInstructions(
     const std::vector<InstructionItem *> &instructions)
 {
   m_tree_view->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
-std::vector<InstructionItem *> InstructionTreeWidget::GetSelectedInstructions() const
+std::vector<InstructionItem *> InstructionEditorWidget::GetSelectedInstructions() const
 {
   return ::mvvm::utils::CastItems<InstructionItem>(m_tree_view->GetSelectedItems());
 }
 
-InstructionItem *InstructionTreeWidget::GetSelectedInstruction() const
+InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
 }
 
-void InstructionTreeWidget::SetupActions()
+void InstructionEditorWidget::SetupActions()
 {
   // we are using QToolButon wrapped into QWidgetAction here because
   // 1. we want to pass around QList<QAction*>
@@ -112,13 +112,13 @@ void InstructionTreeWidget::SetupActions()
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove currently selected instruction together with its children");
   connect(remove_button, &QToolButton::clicked, this,
-          &InstructionTreeWidget::RemoveSelectedRequest);
+          &InstructionEditorWidget::RemoveSelectedRequest);
   m_remove_action = new QWidgetAction(this);
   m_remove_action->setDefaultWidget(remove_button);
   addAction(m_remove_action);
 }
 
-std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertAfterMenu()
+std::unique_ptr<QMenu> InstructionEditorWidget::CreateInsertAfterMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
@@ -138,7 +138,7 @@ std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertAfterMenu()
 //! Code mostly coincides with the code above. However, this duplication is temporary and it
 //! will diverge in the future (idea to disable some actions if an operation is not possible).
 
-std::unique_ptr<QMenu> InstructionTreeWidget::CreateInsertIntoMenu()
+std::unique_ptr<QMenu> InstructionEditorWidget::CreateInsertIntoMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);

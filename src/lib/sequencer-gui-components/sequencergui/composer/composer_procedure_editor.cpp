@@ -20,7 +20,7 @@
 #include "composer_procedure_editor.h"
 
 #include <sequencergui/composer/composer_actions.h>
-#include <sequencergui/composer/instruction_tree_widget.h>
+#include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -48,7 +48,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tool_bar(new QToolBar)
     , m_tool_bar_action(new QWidgetAction(this))
     , m_tab_widget(new QTabWidget)
-    , m_instruction_tree(new InstructionTreeWidget)
+    , m_instruction_tree(new InstructionEditorWidget)
     , m_workspace_tree(new WorkspaceEditorWidget)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
@@ -138,14 +138,14 @@ void ComposerProcedureEditor::SetupConnections()
     m_property_tree->SetItem(item);
     emit InstructionSelected(GetSelectedInstruction());
   };
-  connect(m_instruction_tree, &InstructionTreeWidget::InstructionSelected, on_selection_changed);
+  connect(m_instruction_tree, &InstructionEditorWidget::InstructionSelected, on_selection_changed);
 
   // propagate instruction related operations from InstructionTreeWidget to ComposerActions
-  connect(m_instruction_tree, &InstructionTreeWidget::InsertAfterRequest, m_composer_actions.get(),
-          &ComposerActions::OnInsertInstructionAfterRequest);
-  connect(m_instruction_tree, &InstructionTreeWidget::InsertIntoRequest, m_composer_actions.get(),
+  connect(m_instruction_tree, &InstructionEditorWidget::InsertAfterRequest,
+          m_composer_actions.get(), &ComposerActions::OnInsertInstructionAfterRequest);
+  connect(m_instruction_tree, &InstructionEditorWidget::InsertIntoRequest, m_composer_actions.get(),
           &ComposerActions::OnInsertInstructionIntoRequest);
-  connect(m_instruction_tree, &InstructionTreeWidget::RemoveSelectedRequest,
+  connect(m_instruction_tree, &InstructionEditorWidget::RemoveSelectedRequest,
           m_composer_actions.get(), &ComposerActions::OnRemoveInstructionRequest);
 
   // propagate variable related operations from WorkspaceListWidget to ComposerActions

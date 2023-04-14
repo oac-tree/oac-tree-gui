@@ -44,7 +44,7 @@ class InstructionItem;
 class DotsToolBar;
 class ProcedureItem;
 class ComposerActions;
-class InstructionTreeWidget;
+class InstructionEditorWidget;
 class WorkspaceEditorWidget;
 class ComposerContext;
 
@@ -83,7 +83,7 @@ private:
   QWidgetAction* m_tool_bar_action{nullptr};  //!< wrapper to send our tool bar outside
 
   QTabWidget* m_tab_widget{nullptr};
-  InstructionTreeWidget* m_instruction_tree{nullptr};
+  InstructionEditorWidget* m_instruction_tree{nullptr};
   WorkspaceEditorWidget* m_workspace_tree{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};

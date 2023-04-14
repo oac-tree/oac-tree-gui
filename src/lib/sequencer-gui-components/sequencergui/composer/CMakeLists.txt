@@ -11,8 +11,8 @@ target_sources(${library_name} PRIVATE
   composer_procedure_editor.h
   instruction_item_panel.cpp
   instruction_item_panel.h
-  instruction_tree_widget.cpp
-  instruction_tree_widget.h
+  instruction_editor_widget.cpp
+  instruction_editor_widget.h
   sequencer_composer_view.cpp
   sequencer_composer_view.h
   workspace_editor_widget.cpp

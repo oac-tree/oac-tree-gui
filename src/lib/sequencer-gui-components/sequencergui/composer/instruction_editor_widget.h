@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_TREE_WIDGET_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_TREE_WIDGET_H_
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
+#define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 
 #include <QList>
 #include <QMenu>
@@ -42,12 +42,12 @@ class InstructionItem;
 //! Tree of instruction items at the right of SequencerComposerView.
 //! Defines set of actions to add/remove instructions. Part of ComposerProcedureEditor.
 
-class InstructionTreeWidget : public QWidget
+class InstructionEditorWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit InstructionTreeWidget(QWidget* parent = nullptr);
+  explicit InstructionEditorWidget(QWidget* parent = nullptr);
 
   void SetProcedure(ProcedureItem* procedure);
 
@@ -80,4 +80,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_TREE_WIDGET_H_
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
