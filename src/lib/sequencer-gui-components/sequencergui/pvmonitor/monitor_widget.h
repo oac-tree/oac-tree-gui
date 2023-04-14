@@ -47,7 +47,7 @@ class VariableItem;
 class MonitorModel;
 class WorkspaceSynchronizer;
 class MonitorWidgetToolBar;
-class MonitorWidgetActions;
+class WorkspaceEditorActions;
 class MonitorWidgetContext;
 
 class MonitorWidget : public QWidget
@@ -76,7 +76,7 @@ private:
   MonitorModel* m_model{nullptr};
   std::unique_ptr<sup::sequencer::Workspace> m_workspace;
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
-  MonitorWidgetActions* m_actions{nullptr};
+  WorkspaceEditorActions* m_actions{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
   std::unique_ptr<listener_t> m_listener;
 };

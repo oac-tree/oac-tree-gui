@@ -21,8 +21,8 @@
 
 #include "anyvalue_editor_dialog.h"
 #include "monitor_model.h"
-#include "monitor_widget_actions.h"
 #include "monitor_widget_toolbar.h"
+#include "workspace_editor_actions.h"
 #include "workspace_monitor_helper.h"
 #include "workspace_synchronizer.h"
 
@@ -30,16 +30,15 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
 #include <sequencergui/widgets/widget_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/signals/model_listener.h>
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
-#include <QDebug>
 #include <QMessageBox>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -51,7 +50,7 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(model)
-    , m_actions(new MonitorWidgetActions(CreateContext(), m_model, this))
+    , m_actions(new WorkspaceEditorActions(CreateContext(), m_model, this))
     , m_tree_view(new mvvm::AllItemsTreeView)
     , m_listener(std::make_unique<listener_t>(m_model))
 {
@@ -89,10 +88,10 @@ mvvm::ViewModel *MonitorWidget::GetViewModel()
 void MonitorWidget::SetupConnections()
 {
   connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_actions,
-          &MonitorWidgetActions::OnAddVariableRequest);
+          &WorkspaceEditorActions::OnAddVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, m_actions,
-          &MonitorWidgetActions::OnRemoveVariableRequest);
+          &WorkspaceEditorActions::OnRemoveVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
           &MonitorWidget::OnStartMonitoringRequest);
@@ -101,7 +100,7 @@ void MonitorWidget::SetupConnections()
           &MonitorWidget::OnStopMonitoringRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
-          &MonitorWidgetActions::OnEditAnyvalueRequest);
+          &WorkspaceEditorActions::OnEditAnyvalueRequest);
 }
 
 void MonitorWidget::OnStartMonitoringRequest()

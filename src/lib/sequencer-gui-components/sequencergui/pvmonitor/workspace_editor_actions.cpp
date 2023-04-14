@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "monitor_widget_actions.h"
+#include "workspace_editor_actions.h"
 
 #include "monitor_model.h"
 
@@ -31,13 +31,13 @@
 namespace sequencergui
 {
 
-MonitorWidgetActions::MonitorWidgetActions(MonitorWidgetContext context, MonitorModel *model,
+WorkspaceEditorActions::WorkspaceEditorActions(MonitorWidgetContext context, MonitorModel *model,
                                            QObject *parent)
     : QObject(parent), m_context(std::move(context)), m_model(model)
 {
 }
 
-void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_name)
+void WorkspaceEditorActions::OnAddVariableRequest(const QString &variable_type_name)
 {
   auto selected_item = GetSelectedVariable();
 
@@ -55,7 +55,7 @@ void MonitorWidgetActions::OnAddVariableRequest(const QString &variable_type_nam
   }
 }
 
-void MonitorWidgetActions::OnRemoveVariableRequest()
+void WorkspaceEditorActions::OnRemoveVariableRequest()
 {
   if (auto selected = GetSelectedVariable(); selected)
   {
@@ -63,7 +63,7 @@ void MonitorWidgetActions::OnRemoveVariableRequest()
   }
 }
 
-void MonitorWidgetActions::OnEditAnyvalueRequest()
+void WorkspaceEditorActions::OnEditAnyvalueRequest()
 {
   auto selected_anyvalue = GetAnyValueItemToEdit();
   if (!selected_anyvalue)
@@ -82,20 +82,20 @@ void MonitorWidgetActions::OnEditAnyvalueRequest()
   }
 }
 
-VariableItem *MonitorWidgetActions::GetSelectedVariable()
+VariableItem *WorkspaceEditorActions::GetSelectedVariable()
 {
   return dynamic_cast<VariableItem *>(m_context.get_selected_item_callback());
 }
 
 //! Returns selected AnyValueItem.
-sup::gui::AnyValueItem *MonitorWidgetActions::GetSelectedAnyValueItem()
+sup::gui::AnyValueItem *WorkspaceEditorActions::GetSelectedAnyValueItem()
 {
   return dynamic_cast<sup::gui::AnyValueItem *>(m_context.get_selected_item_callback());
 }
 
 //! Returns AnyValueItem intended for editing.
 
-sup::gui::AnyValueItem *MonitorWidgetActions::GetAnyValueItemToEdit()
+sup::gui::AnyValueItem *WorkspaceEditorActions::GetAnyValueItemToEdit()
 {
   // If top level VariableItem is selected, it will return its underlying AnyValueItem.
   // Otherwise it will return selected AnyValueItem, if any.
@@ -106,7 +106,7 @@ sup::gui::AnyValueItem *MonitorWidgetActions::GetAnyValueItemToEdit()
 //! Set reasonable initial values for just created variable.
 //! Might be changed in the future.
 
-void MonitorWidgetActions::SetupVariable(VariableItem *item)
+void WorkspaceEditorActions::SetupVariable(VariableItem *item)
 {
   if (!item)
   {
@@ -119,14 +119,14 @@ void MonitorWidgetActions::SetupVariable(VariableItem *item)
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
 }
 
-void MonitorWidgetActions::SendMessage(const std::string &text, const std::string &informative,
+void WorkspaceEditorActions::SendMessage(const std::string &text, const std::string &informative,
                                        const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
 }
 
-std::string MonitorWidgetActions::ProposeVariableName() const
+std::string WorkspaceEditorActions::ProposeVariableName() const
 {
   return "var" + std::to_string(m_model->GetWorkspaceItem()->GetVariableCount() - 1);
 }

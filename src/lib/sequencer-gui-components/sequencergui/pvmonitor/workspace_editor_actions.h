@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
-#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
 
 #include <sequencergui/pvmonitor/monitor_widget_context.h>
 
@@ -38,12 +38,12 @@ class MonitorModel;
 //! The MonitorWidgetActions class implements actions for MonitorWidget that can be triggered from
 //! its main toolbar.
 
-class MonitorWidgetActions : public QObject
+class WorkspaceEditorActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit MonitorWidgetActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
+  explicit WorkspaceEditorActions(MonitorWidgetContext context, MonitorModel* model, QObject* parent);
 
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();

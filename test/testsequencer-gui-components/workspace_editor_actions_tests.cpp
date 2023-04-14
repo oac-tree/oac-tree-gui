@@ -17,15 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/pvmonitor/monitor_widget_actions.h"
+#include "sequencergui/pvmonitor/workspace_editor_actions.h"
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/variable_transform_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -33,10 +33,10 @@
 using namespace sequencergui;
 using ::testing::_;
 
-class MonitorWidgetActionsTest : public ::testing::Test
+class WorkspaceEditorActionsTest : public ::testing::Test
 {
 public:
-  MonitorWidgetActionsTest() { m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceEditorActionsTest() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Mock dialog that pretend to take an item for editing and return the result to the user.
   class MockDialog
@@ -72,23 +72,23 @@ public:
   }
 
   //! Creates AnyValueEditorActions for testing.
-  std::unique_ptr<MonitorWidgetActions> CreateActions(VariableItem* selection)
+  std::unique_ptr<WorkspaceEditorActions> CreateActions(VariableItem* selection)
   {
-    return std::make_unique<MonitorWidgetActions>(CreateContext(selection), &m_model, nullptr);
+    return std::make_unique<WorkspaceEditorActions>(CreateContext(selection), &m_model, nullptr);
   }
 
   MonitorModel m_model;
   testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
 };
 
-TEST_F(MonitorWidgetActionsTest, InitialState)
+TEST_F(WorkspaceEditorActionsTest, InitialState)
 {
   EXPECT_TRUE(m_model.GetWorkspaceItem()->GetVariables().empty());
 }
 
 //! Adding variables to an empty model.
 
-TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
+TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestToEmptyModel)
 {
   // pretending that nothing is selected
   auto actions = CreateActions(nullptr);
@@ -132,7 +132,7 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestToEmptyModel)
 
 //! Inserting variable between two existing variables.
 
-TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
+TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestBetween)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -155,7 +155,7 @@ TEST_F(MonitorWidgetActionsTest, OnAddVariableRequestBetween)
 
 //! Removing variable.
 
-TEST_F(MonitorWidgetActionsTest, OnRemoveVariableRequest)
+TEST_F(WorkspaceEditorActionsTest, OnRemoveVariableRequest)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -174,7 +174,7 @@ TEST_F(MonitorWidgetActionsTest, OnRemoveVariableRequest)
 
 //! Attempt to remove variable when nothing is selected.
 
-TEST_F(MonitorWidgetActionsTest, OnAttemptToRemoveVariable)
+TEST_F(WorkspaceEditorActionsTest, OnAttemptToRemoveVariable)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -194,7 +194,7 @@ TEST_F(MonitorWidgetActionsTest, OnAttemptToRemoveVariable)
 
 //! Attempt to edit variable when nothing is selected.
 
-TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothingIsSelected)
+TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenNothingIsSelected)
 {
   // pretending that var0 is selected
   auto actions = CreateActions(nullptr);
@@ -209,7 +209,7 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenNothingIsSelected)
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
 //! Initially we have VariableItem selected.
 
-TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
+TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenVariableIsSelected)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -227,7 +227,7 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
                                mock_dialog.CreateCallback()};
 
   // preparing actions
-  MonitorWidgetActions actions(context, &m_model, nullptr);
+  WorkspaceEditorActions actions(context, &m_model, nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -245,7 +245,7 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenVariableIsSelected)
 //! The only difference with previous test is that we mimick selection of AnyValueItem instead
 //! of VariableItem.
 
-TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenAnyValueIsSelected)
+TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -263,7 +263,7 @@ TEST_F(MonitorWidgetActionsTest, OnEditRequestWhenAnyValueIsSelected)
                                mock_dialog.CreateCallback()};
 
   // preparing actions
-  MonitorWidgetActions actions(context, &m_model, nullptr);
+  WorkspaceEditorActions actions(context, &m_model, nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
