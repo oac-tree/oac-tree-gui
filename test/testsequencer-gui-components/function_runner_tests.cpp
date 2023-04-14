@@ -382,9 +382,8 @@ TEST_F(FunctionRunnerTest, RunPauseStepRun)
   }
 
   EXPECT_TRUE(runner.Start());  // triggering action
-  std::this_thread::sleep_for(msec(20));
-  EXPECT_TRUE(runner.IsBusy());
-  EXPECT_TRUE(nsteps > 0);
+  auto predicate = [&nsteps, &runner]() { return (runner.IsBusy() && nsteps > 0); };
+  EXPECT_TRUE(testutils::WaitFor(predicate, msec(50)));
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
 
   // let's pause
