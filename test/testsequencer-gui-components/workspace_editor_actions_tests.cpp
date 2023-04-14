@@ -42,14 +42,14 @@ public:
   class MockDialog
   {
   public:
-    MockDialog(std::unique_ptr<sup::gui::AnyValueItem> item_to_return)
-        : m_item_to_return(std::move(item_to_return))
+    void SetItemToReturn(std::unique_ptr<sup::gui::AnyValueItem> item_to_return)
     {
+      m_item_to_return = std::move(item_to_return);
     }
 
     MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem& item));
 
-    //! Creates a callback that mimicking editing request and returning the result to the user
+    //! Creates a callback that mimicks editing request and returning the result to the user
     std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem&)>
     CreateCallback()
     {
@@ -64,24 +64,31 @@ public:
   };
 
   //! Creates context necessary for AnyValueEditActions to function.
-  WorkspaceEditorContext CreateContext(VariableItem* item)
+  WorkspaceEditorContext CreateContext(mvvm::SessionItem* selected_item,
+                                       std::unique_ptr<sup::gui::AnyValueItem> item_to_return = {})
   {
     // callback returns given item, pretending it is user's selection
-    auto get_selected_callback = [item]() { return item; };
-    return {get_selected_callback, m_warning_listener.CreateCallback()};
+    auto get_selected_callback = [selected_item]() { return selected_item; };
+
+    m_mock_dialog.SetItemToReturn(std::move(item_to_return));
+
+    return {get_selected_callback, m_warning_listener.CreateCallback(),
+            m_mock_dialog.CreateCallback()};
   }
 
   //! Creates AnyValueEditorActions for testing.
-  std::unique_ptr<WorkspaceEditorActions> CreateActions(VariableItem* selection)
+  std::unique_ptr<WorkspaceEditorActions> CreateActions(
+      mvvm::SessionItem* selection, std::unique_ptr<sup::gui::AnyValueItem> item_to_return = {})
   {
-    return std::make_unique<WorkspaceEditorActions>(CreateContext(selection), GetWorkspaceItem(),
-                                                    nullptr);
+    return std::make_unique<WorkspaceEditorActions>(
+        CreateContext(selection, std::move(item_to_return)), GetWorkspaceItem(), nullptr);
   }
 
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
   testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  MockDialog m_mock_dialog;
 };
 
 TEST_F(WorkspaceEditorActionsTest, InitialState)
@@ -223,22 +230,16 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenVariableIsSelected)
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing context
-  MockDialog mock_dialog(std::move(editing_result));
-  auto get_selected_callback = [var0]() { return var0; };
-  WorkspaceEditorContext context{get_selected_callback, m_warning_listener.CreateCallback(),
-                                 mock_dialog.CreateCallback()};
-
   // preparing actions
-  WorkspaceEditorActions actions(context, GetWorkspaceItem(), nullptr);
+  auto actions = CreateActions(var0, std::move(editing_result));
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
   // expecting call to editing widget
-  EXPECT_CALL(mock_dialog, OnEditingRequest(_)).Times(1);
+  EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions.OnEditAnyvalueRequest();
+  actions->OnEditAnyvalueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -259,22 +260,16 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing context pretending that AnyValueItem is selected
-  MockDialog mock_dialog(std::move(editing_result));
-  auto get_selected_callback = [initial_anyvalue_item]() { return initial_anyvalue_item; };
-  WorkspaceEditorContext context{get_selected_callback, m_warning_listener.CreateCallback(),
-                                 mock_dialog.CreateCallback()};
-
   // preparing actions
-  WorkspaceEditorActions actions(context, GetWorkspaceItem(), nullptr);
+  auto actions = CreateActions(initial_anyvalue_item, std::move(editing_result));
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
   // expecting call to editing widget
-  EXPECT_CALL(mock_dialog, OnEditingRequest(_)).Times(1);
+  EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions.OnEditAnyvalueRequest();
+  actions->OnEditAnyvalueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
