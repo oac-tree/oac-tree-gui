@@ -19,11 +19,11 @@
 
 #include "workspace_editor_actions.h"
 
-#include "monitor_model.h"
-
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+
+#include <mvvm/interfaces/sessionmodel_interface.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -31,9 +31,9 @@
 namespace sequencergui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, MonitorModel *model,
-                                               QObject *parent)
-    : QObject(parent), m_context(std::move(context)), m_model(model)
+WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context,
+                                               WorkspaceItem *workspace, QObject *parent)
+    : QObject(parent), m_context(std::move(context)), m_workspace(workspace)
 {
 }
 
@@ -82,14 +82,14 @@ void WorkspaceEditorActions::OnEditAnyvalueRequest()
   }
 }
 
-mvvm::ApplicationModel *WorkspaceEditorActions::GetModel() const
+mvvm::SessionModelInterface *WorkspaceEditorActions::GetModel() const
 {
-  return m_model;
+  return GetWorkspaceItem()->GetModel();
 }
 
 WorkspaceItem *WorkspaceEditorActions::GetWorkspaceItem() const
 {
-  return m_model->GetWorkspaceItem();
+  return m_workspace;
 }
 
 VariableItem *WorkspaceEditorActions::GetSelectedVariable()

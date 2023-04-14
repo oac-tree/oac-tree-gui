@@ -26,7 +26,7 @@
 
 namespace mvvm
 {
-class ApplicationModel;
+class SessionModelInterface;
 }
 
 namespace sup::gui
@@ -38,7 +38,6 @@ namespace sequencergui
 {
 
 class VariableItem;
-class MonitorModel;
 class WorkspaceItem;
 
 //! The MonitorWidgetActions class implements actions for MonitorWidget that can be triggered from
@@ -49,14 +48,14 @@ class WorkspaceEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorActions(WorkspaceEditorContext context, MonitorModel* model, QObject* parent);
+  explicit WorkspaceEditorActions(WorkspaceEditorContext context, WorkspaceItem* workspace, QObject* parent);
 
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();
   void OnEditAnyvalueRequest();
 
 private:
-  mvvm::ApplicationModel* GetModel() const;
+  mvvm::SessionModelInterface* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable();
   sup::gui::AnyValueItem* GetSelectedAnyValueItem();
@@ -68,7 +67,7 @@ private:
 
   std::string ProposeVariableName() const;
 
-  MonitorModel* m_model{nullptr};
+  WorkspaceItem* m_workspace{nullptr};
   WorkspaceEditorContext m_context;
 };
 

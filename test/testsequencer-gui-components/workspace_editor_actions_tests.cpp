@@ -74,8 +74,11 @@ public:
   //! Creates AnyValueEditorActions for testing.
   std::unique_ptr<WorkspaceEditorActions> CreateActions(VariableItem* selection)
   {
-    return std::make_unique<WorkspaceEditorActions>(CreateContext(selection), &m_model, nullptr);
+    return std::make_unique<WorkspaceEditorActions>(CreateContext(selection), GetWorkspaceItem(),
+                                                    nullptr);
   }
+
+  WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
   testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
@@ -224,10 +227,10 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenVariableIsSelected)
   MockDialog mock_dialog(std::move(editing_result));
   auto get_selected_callback = [var0]() { return var0; };
   WorkspaceEditorContext context{get_selected_callback, m_warning_listener.CreateCallback(),
-                               mock_dialog.CreateCallback()};
+                                 mock_dialog.CreateCallback()};
 
   // preparing actions
-  WorkspaceEditorActions actions(context, &m_model, nullptr);
+  WorkspaceEditorActions actions(context, GetWorkspaceItem(), nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -260,10 +263,10 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
   MockDialog mock_dialog(std::move(editing_result));
   auto get_selected_callback = [initial_anyvalue_item]() { return initial_anyvalue_item; };
   WorkspaceEditorContext context{get_selected_callback, m_warning_listener.CreateCallback(),
-                               mock_dialog.CreateCallback()};
+                                 mock_dialog.CreateCallback()};
 
   // preparing actions
-  WorkspaceEditorActions actions(context, &m_model, nullptr);
+  WorkspaceEditorActions actions(context, GetWorkspaceItem(), nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);

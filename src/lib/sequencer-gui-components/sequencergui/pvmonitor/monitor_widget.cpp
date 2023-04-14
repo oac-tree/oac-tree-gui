@@ -50,7 +50,7 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(model)
-    , m_actions(new WorkspaceEditorActions(CreateContext(), m_model, this))
+    , m_actions(new WorkspaceEditorActions(CreateContext(), m_model->GetWorkspaceItem(), this))
     , m_tree_view(new mvvm::AllItemsTreeView)
     , m_listener(std::make_unique<listener_t>(m_model))
 {
