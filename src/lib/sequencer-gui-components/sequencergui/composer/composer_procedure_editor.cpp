@@ -50,7 +50,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tab_widget(new QTabWidget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
-    , m_composer_actions(std::make_unique<InsrtuctionEditorActions>())
+    , m_composer_actions(std::make_unique<InstructionEditorActions>())
 {
   setWindowTitle("Composer");
 
@@ -132,17 +132,17 @@ void ComposerProcedureEditor::SetupConnections()
 
   // propagate instruction related operations from InstructionTreeWidget to ComposerActions
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertAfterRequest,
-          m_composer_actions.get(), &InsrtuctionEditorActions::OnInsertInstructionAfterRequest);
+          m_composer_actions.get(), &InstructionEditorActions::OnInsertInstructionAfterRequest);
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertIntoRequest, m_composer_actions.get(),
-          &InsrtuctionEditorActions::OnInsertInstructionIntoRequest);
+          &InstructionEditorActions::OnInsertInstructionIntoRequest);
   connect(m_instruction_editor_widget, &InstructionEditorWidget::RemoveSelectedRequest,
-          m_composer_actions.get(), &InsrtuctionEditorActions::OnRemoveInstructionRequest);
+          m_composer_actions.get(), &InstructionEditorActions::OnRemoveInstructionRequest);
 
   // propagate variable related operations from WorkspaceListWidget to ComposerActions
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest, m_composer_actions.get(),
-          &InsrtuctionEditorActions::OnInsertVariableAfterRequest);
+          &InstructionEditorActions::OnInsertVariableAfterRequest);
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest, m_composer_actions.get(),
-          &InsrtuctionEditorActions::OnRemoveVariableRequest);
+          &InstructionEditorActions::OnRemoveVariableRequest);
 }
 
 //! Create context to access current selections performed by the user.

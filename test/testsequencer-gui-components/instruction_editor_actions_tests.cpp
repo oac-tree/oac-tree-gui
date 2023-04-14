@@ -58,7 +58,7 @@ public:
   }
 
   SequencerModel m_model;
-  InsrtuctionEditorActions m_actions;
+  InstructionEditorActions m_actions;
   ProcedureItem* m_procedure{nullptr};
 };
 

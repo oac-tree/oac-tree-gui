@@ -42,13 +42,13 @@ class SequencerModel;
 
 //! Collection of actions
 
-class InsrtuctionEditorActions : public QObject
+class InstructionEditorActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit InsrtuctionEditorActions(SequencerModel* model = nullptr, QObject* parent = nullptr);
-  ~InsrtuctionEditorActions() override;
+  explicit InstructionEditorActions(SequencerModel* model = nullptr, QObject* parent = nullptr);
+  ~InstructionEditorActions() override;
 
   void SetModel(SequencerModel* model);
 

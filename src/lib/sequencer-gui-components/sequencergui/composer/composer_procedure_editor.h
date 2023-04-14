@@ -37,8 +37,9 @@ class SequencerModel;
 class InstructionItem;
 class DotsToolBar;
 class ProcedureItem;
-class InsrtuctionEditorActions;
+class InstructionEditorActions;
 class InstructionEditorWidget;
+class WorkspaceEditorActions;
 class WorkspaceEditorWidget;
 class InstructionEditorContext;
 
@@ -83,7 +84,7 @@ private:
   SequencerModel* m_model{nullptr};
   ProcedureItem* m_procedure{nullptr};
 
-  std::unique_ptr<InsrtuctionEditorActions> m_composer_actions;
+  std::unique_ptr<InstructionEditorActions> m_composer_actions;
 };
 
 }  // namespace sequencergui

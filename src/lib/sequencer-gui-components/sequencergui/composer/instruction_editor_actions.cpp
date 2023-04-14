@@ -58,25 +58,25 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
 namespace sequencergui
 {
 
-InsrtuctionEditorActions::InsrtuctionEditorActions(SequencerModel *model, QObject *parent)
+InstructionEditorActions::InstructionEditorActions(SequencerModel *model, QObject *parent)
     : QObject(parent), m_message_handler(CreateNullMessageHandler())
 {
   SetModel(model);
 }
 
-InsrtuctionEditorActions::~InsrtuctionEditorActions() = default;
+InstructionEditorActions::~InstructionEditorActions() = default;
 
-void InsrtuctionEditorActions::SetModel(SequencerModel *model)
+void InstructionEditorActions::SetModel(SequencerModel *model)
 {
   m_model = model;
 }
 
-void InsrtuctionEditorActions::SetContext(InstructionEditorContext context)
+void InstructionEditorActions::SetContext(InstructionEditorContext context)
 {
   m_context = std::move(context);
 }
 
-void InsrtuctionEditorActions::SetMessageHandler(
+void InstructionEditorActions::SetMessageHandler(
     std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
 {
   m_message_handler = std::move(message_handler);
@@ -84,7 +84,7 @@ void InsrtuctionEditorActions::SetMessageHandler(
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void InsrtuctionEditorActions::OnInsertInstructionAfterRequest(const QString &item_type)
+void InstructionEditorActions::OnInsertInstructionAfterRequest(const QString &item_type)
 {
   ValidatePrecoditions();
 
@@ -106,7 +106,7 @@ void InsrtuctionEditorActions::OnInsertInstructionAfterRequest(const QString &it
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void InsrtuctionEditorActions::OnInsertInstructionIntoRequest(const QString &item_type)
+void InstructionEditorActions::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   ValidatePrecoditions();
 
@@ -117,7 +117,7 @@ void InsrtuctionEditorActions::OnInsertInstructionIntoRequest(const QString &ite
 
 //! Removes currently selected instruction.
 //! The selection is retrieved via a callback.
-void InsrtuctionEditorActions::OnRemoveInstructionRequest()
+void InstructionEditorActions::OnRemoveInstructionRequest()
 {
   auto selected_instruction = m_context.selected_instruction();
 
@@ -127,7 +127,7 @@ void InsrtuctionEditorActions::OnRemoveInstructionRequest()
   }
 }
 
-void InsrtuctionEditorActions::OnInsertVariableAfterRequest(const QString &item_type)
+void InstructionEditorActions::OnInsertVariableAfterRequest(const QString &item_type)
 {
   ValidatePrecoditions();
 
@@ -138,7 +138,7 @@ void InsrtuctionEditorActions::OnInsertVariableAfterRequest(const QString &item_
   InsertItem(item_type.toStdString(), procedure->GetWorkspace(), tagindex);
 }
 
-void InsrtuctionEditorActions::OnRemoveVariableRequest()
+void InstructionEditorActions::OnRemoveVariableRequest()
 {
   if (auto selected = m_context.selected_variable(); selected)
   {
@@ -146,7 +146,7 @@ void InsrtuctionEditorActions::OnRemoveVariableRequest()
   }
 }
 
-mvvm::SessionItem *InsrtuctionEditorActions::InsertItem(const std::string &item_type,
+mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_type,
                                                         mvvm::SessionItem *parent,
                                                         const mvvm::TagIndex &index)
 {
@@ -165,7 +165,7 @@ mvvm::SessionItem *InsrtuctionEditorActions::InsertItem(const std::string &item_
   return result;
 }
 
-void InsrtuctionEditorActions::ValidatePrecoditions()
+void InstructionEditorActions::ValidatePrecoditions()
 {
   if (!m_model)
   {
