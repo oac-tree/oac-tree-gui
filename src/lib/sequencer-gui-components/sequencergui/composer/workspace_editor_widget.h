@@ -29,6 +29,7 @@ class QWidgetAction;
 namespace mvvm
 {
 class AllItemsTreeView;
+class SessionItem;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -50,10 +51,9 @@ public:
 
   void SetProcedure(ProcedureItem* procedure);
 
-  VariableItem* GetSelectedVariable() const;
+  mvvm::SessionItem* GetSelectedItem() const;
 
 signals:
-  void VariableSelected(sequencergui::VariableItem* variable);
   void InsertAfterRequest(const QString& name);
   void RemoveSelectedRequest();
   void EditAnyvalueRequest();

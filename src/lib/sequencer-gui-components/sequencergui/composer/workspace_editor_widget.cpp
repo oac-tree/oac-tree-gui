@@ -47,9 +47,6 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
-  connect(m_tree_view, &::mvvm::AllItemsTreeView::SelectedItemChanged, this,
-          [this](auto) { emit VariableSelected(GetSelectedVariable()); });
-
   SetupActions();
 }
 
@@ -60,17 +57,17 @@ void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
   m_tree_view->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
 }
 
-VariableItem *WorkspaceEditorWidget::GetSelectedVariable() const
+mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
 {
-  return m_tree_view->GetSelected<VariableItem>();
+  return m_tree_view->GetSelectedItem();
 }
 
 void WorkspaceEditorWidget::SetupActions()
 {
   // We are using QToolButon wrapped into QWidgetAction here because:
   // 1. we want to pass around QList<QAction*>
-  // 2. QAction with menu doesn't provide InstantPopup capabilities, so we create QToolButton with
-  // the menu instead and wrap it into QWidgetAction
+  // 2. QAction with menu doesn't provide InstantPopup capabilities, so instead we create
+  // QToolButton with the menu and wrap it into QWidgetAction
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("Add");

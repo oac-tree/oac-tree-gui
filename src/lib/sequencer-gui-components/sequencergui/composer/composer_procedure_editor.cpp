@@ -177,7 +177,7 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
   result.selected_workspace_callback = selected_workspace_callback;
 
   result.selected_item_callback = [this]()
-  { return m_workspace_editor_widget->GetSelectedVariable(); };
+  { return m_workspace_editor_widget->GetSelectedItem(); };
 
   auto send_message_callback = [this](const sup::gui::MessageEvent& event)
   {
