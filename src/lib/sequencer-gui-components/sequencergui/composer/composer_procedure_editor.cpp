@@ -54,7 +54,8 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tab_widget(new QTabWidget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
-    , m_instruction_editor_actions(std::make_unique<InstructionEditorActions>())
+    , m_instruction_editor_actions(
+          std::make_unique<InstructionEditorActions>(CreateInstructionEditorContext()))
     , m_workspace_editor_actions(
           std::make_unique<WorkspaceEditorActions>(CreateWorkspaceEditorContext()))
 {
@@ -72,7 +73,6 @@ ComposerProcedureEditor::ComposerProcedureEditor(
 
   // setting up ComposerActions
   m_instruction_editor_actions->SetMessageHandler(std::move(message_handler));
-  m_instruction_editor_actions->SetContext(CreateInstructionEditorContext());
 
   auto on_tabbar_changed = [this]()
   {
@@ -92,7 +92,6 @@ ComposerProcedureEditor::~ComposerProcedureEditor() = default;
 void ComposerProcedureEditor::SetModel(SequencerModel* model)
 {
   m_model = model;
-  m_instruction_editor_actions->SetModel(model);
 }
 
 void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)

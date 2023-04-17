@@ -51,12 +51,8 @@ class InstructionEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit InstructionEditorActions(SequencerModel* model = nullptr, QObject* parent = nullptr);
+  explicit InstructionEditorActions(InstructionEditorContext context, QObject* parent = nullptr);
   ~InstructionEditorActions() override;
-
-  void SetModel(SequencerModel* model);
-
-  void SetContext(InstructionEditorContext context);
 
   void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 

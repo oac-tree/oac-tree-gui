@@ -38,13 +38,13 @@ using ::testing::_;
 class InstructionEditorActionsTest : public ::testing::Test
 {
 public:
-  InstructionEditorActionsTest() : m_actions(&m_model)
+  InstructionEditorActionsTest()
   {
     m_procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }
 
-  //! Creates ComposerContext for testing purposes. It contains callbacks to mimick
-  //! user choice regarding the selected procedure, instruction, and variable.
+  //! Creates InstructionEditorContext for testing purposes. It contains callbacks to mimick
+  //! user choice regarding the selected procedure and instruction.
   InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction)
   {
     InstructionEditorContext result;
@@ -53,8 +53,13 @@ public:
     return result;
   }
 
+  std::unique_ptr<InstructionEditorActions> CreateActions(ProcedureItem* procedure,
+                                                          InstructionItem* instruction)
+  {
+    return std::make_unique<InstructionEditorActions>(CreateContext(procedure, instruction));
+  }
+
   SequencerModel m_model;
-  InstructionEditorActions m_actions;
   ProcedureItem* m_procedure{nullptr};
 };
 
@@ -63,11 +68,10 @@ public:
 TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
-  auto context = CreateContext(nullptr, nullptr);
-  m_actions.SetContext(context);
+  auto actions = CreateActions(nullptr, nullptr);
 
-  // it is not possible add instructions when no procedure is selected
-  EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
+  // it is not possible to add instruction when no procedure is selected
+  EXPECT_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
                sequencergui::RuntimeException);
 }
 
@@ -83,11 +87,10 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionAfter)
   sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
-  auto context = CreateContext(m_procedure, sequence);
-  m_actions.SetContext(context);
+  auto actions = CreateActions(m_procedure, sequence);
 
   // appending instruction to the container
-  m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -112,15 +115,14 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionAfter)
 TEST_F(InstructionEditorActionsTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating the context mimicking "no instruction selected"
-  auto context = CreateContext(m_procedure, nullptr);
-  m_actions.SetContext(context);
+  auto actions = CreateActions(m_procedure, nullptr);
 
   // appending instruction to the container
-  m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(SequenceItem::Type));
+  actions->OnInsertInstructionAfterRequest(QString::fromStdString(SequenceItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -137,23 +139,21 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionAfter)
   auto sequence = m_model.InsertItem<SequenceItem>(repeat);
 
   // creating the context mimicking `sequence` instruction selected
-  auto context = CreateContext(m_procedure, sequence);
-  m_actions.SetContext(context);
+  auto actions = CreateActions(m_procedure, sequence);
 
   // It is not possible to add second instruction to repeat instruction
-  EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
+  EXPECT_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
                sequencergui::RuntimeException);
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 
   // setting message handler
   testutils::MockMessageHandler mock_handler;
-  m_actions.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
+  actions->SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(
-      m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
 }
 
 //! Insertion instruction in the selected instruction.
@@ -168,15 +168,14 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionInto)
   sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
-  auto context = CreateContext(m_procedure, sequence);
-  m_actions.SetContext(context);
+  auto actions = CreateActions(m_procedure, sequence);
 
   // inserting instruction into selected instruction
-  m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
+  actions->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   // inserting second instruction
-  m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(MessageItem::Type));
+  actions->OnInsertInstructionIntoRequest(QString::fromStdString(MessageItem::Type));
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -202,24 +201,23 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionInto)
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
 
   // creating the context mimicking `wait` instruction selected
-  auto context = CreateContext(m_procedure, wait);
-  m_actions.SetContext(context);
+  auto actions = CreateActions(m_procedure, wait);
 
   // inserting instruction into selected instruction
-  EXPECT_THROW(m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
+  EXPECT_THROW(actions->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
                sequencergui::RuntimeException);
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 
   // setting message handler
   testutils::MockMessageHandler mock_handler;
-  m_actions.SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
+  actions->SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
 
   // after handler set, we expect no throws; handler method should be called
   EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(m_actions.OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(actions->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
 }
 
-//! Removing selected variable.
+//! Removing selected instruction.
 
 TEST_F(InstructionEditorActionsTest, RemoveInstruction)
 {
@@ -227,16 +225,16 @@ TEST_F(InstructionEditorActionsTest, RemoveInstruction)
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // creating the context mimicking no instruction selected
-  m_actions.SetContext(CreateContext(m_procedure, nullptr));
+  auto actions = CreateActions(m_procedure, nullptr);
 
   // nothing selected, remove request does nothing
-  m_actions.OnRemoveInstructionRequest();
+  actions->OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // creating the context mimicking sequencer selected
-  m_actions.SetContext(CreateContext(m_procedure, sequence));
+  actions = CreateActions(m_procedure, sequence);
 
   // remove request should remove item
-  m_actions.OnRemoveInstructionRequest();
+  actions->OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
 }

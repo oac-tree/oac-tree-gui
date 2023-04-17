@@ -56,23 +56,12 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
 namespace sequencergui
 {
 
-InstructionEditorActions::InstructionEditorActions(SequencerModel *model, QObject *parent)
-    : QObject(parent), m_message_handler(CreateThrowingMessageHandler())
+InstructionEditorActions::InstructionEditorActions(InstructionEditorContext context,
+                                                   QObject *parent)
+    : QObject(parent)
+    , m_context(std::move(context))
+    , m_message_handler(CreateThrowingMessageHandler())
 {
-  SetModel(model);
-}
-
-InstructionEditorActions::~InstructionEditorActions() = default;
-
-void InstructionEditorActions::SetModel(SequencerModel *model)
-{
-  m_model = model;
-}
-
-void InstructionEditorActions::SetContext(InstructionEditorContext context)
-{
-  m_context = std::move(context);
-
   if (!m_context.selected_procedure)
   {
     throw RuntimeException("Callback to retrieve current procedure is not defined");
@@ -83,6 +72,8 @@ void InstructionEditorActions::SetContext(InstructionEditorContext context)
     throw RuntimeException("Callback to get selected instruction is not defined");
   }
 }
+
+InstructionEditorActions::~InstructionEditorActions() = default;
 
 void InstructionEditorActions::SetMessageHandler(
     std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
