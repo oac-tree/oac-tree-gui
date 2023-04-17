@@ -149,6 +149,8 @@ void ComposerProcedureEditor::SetupConnections()
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnAddVariableRequest);
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnRemoveVariableRequest);
+  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::EditAnyvalueRequest,
+          m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnEditAnyvalueRequest);
 }
 
 //! Create context necessary for InstructionEditorActions to function.

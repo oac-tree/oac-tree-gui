@@ -56,6 +56,7 @@ signals:
   void VariableSelected(sequencergui::VariableItem* variable);
   void InsertAfterRequest(const QString& name);
   void RemoveSelectedRequest();
+  void EditAnyvalueRequest();
 
 private:
   void SetupActions();
@@ -65,6 +66,7 @@ private:
   std::unique_ptr<QMenu> m_insert_after_menu;
   QWidgetAction* m_insert_after_action{nullptr};
   QWidgetAction* m_remove_action{nullptr};
+  QWidgetAction* m_edit_anyvalue_action{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
 };
 

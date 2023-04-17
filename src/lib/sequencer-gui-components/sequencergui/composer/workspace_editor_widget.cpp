@@ -67,12 +67,13 @@ VariableItem *WorkspaceEditorWidget::GetSelectedVariable() const
 
 void WorkspaceEditorWidget::SetupActions()
 {
-  // we are using QToolButon wrapped into QWidgetAction here because
+  // We are using QToolButon wrapped into QWidgetAction here because:
   // 1. we want to pass around QList<QAction*>
-  // 2. QAction with menu doesn't provide InstantPopup capabilities
+  // 2. QAction with menu doesn't provide InstantPopup capabilities, so we create QToolButton with
+  // the menu instead and wrap it into QWidgetAction
 
   auto insert_after_button = new QToolButton;
-  insert_after_button->setText("After");
+  insert_after_button->setText("Add");
   insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline.svg"));
   insert_after_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
@@ -83,7 +84,7 @@ void WorkspaceEditorWidget::SetupActions()
   addAction(m_insert_after_action);
 
   auto remove_button = new QToolButton;
-  remove_button->setText("Into");
+  remove_button->setText("Remove");
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   remove_button->setToolTip("Remove currently selected variable");
@@ -92,6 +93,17 @@ void WorkspaceEditorWidget::SetupActions()
   m_insert_after_action = new QWidgetAction(this);
   m_insert_after_action->setDefaultWidget(remove_button);
   addAction(m_insert_after_action);
+
+  auto edit_anyvalue_button = new QToolButton;
+  edit_anyvalue_button->setText("Edit");
+  edit_anyvalue_button->setIcon(styleutils::GetIcon("file-tree-outline.svg"));
+  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  edit_anyvalue_button->setToolTip("Edit value of currently selected variable");
+  connect(edit_anyvalue_button, &QToolButton::clicked, this,
+          &WorkspaceEditorWidget::EditAnyvalueRequest);
+  m_edit_anyvalue_action = new QWidgetAction(this);
+  m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
+  addAction(m_edit_anyvalue_action);
 }
 
 //! Creates menu to insert Variables in a workspace.
