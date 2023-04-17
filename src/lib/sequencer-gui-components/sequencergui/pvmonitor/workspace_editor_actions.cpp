@@ -23,11 +23,11 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
@@ -58,6 +58,12 @@ WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, Q
 
 void WorkspaceEditorActions::OnAddVariableRequest(const QString &variable_type_name)
 {
+  if (!GetWorkspaceItem())
+  {
+    SendMessage("No variable Workspace is selected", "Please create procedure first");
+    return;
+  }
+
   auto selected_item = GetSelectedVariable();
 
   try

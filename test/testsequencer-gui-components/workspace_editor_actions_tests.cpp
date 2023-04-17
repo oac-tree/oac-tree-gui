@@ -104,6 +104,25 @@ TEST_F(WorkspaceEditorActionsTest, InitialState)
   EXPECT_THROW(WorkspaceEditorActions({}, nullptr), RuntimeException);
 }
 
+//! Attempt to add variable into non-existing workspace.
+
+TEST_F(WorkspaceEditorActionsTest, AttemptToAddVariableWhenWorkspaceIsAbsent)
+{
+  auto selected_workspace_callback = []() { return nullptr; };
+  auto selected_item_callback = []() { return nullptr; };
+  auto send_message_callback = m_warning_listener.CreateCallback();
+  auto edit_anyvalue_callback = m_mock_dialog.CreateCallback();
+
+  WorkspaceEditorContext context{selected_workspace_callback, selected_item_callback,
+                                 send_message_callback, edit_anyvalue_callback};
+  WorkspaceEditorActions actions(context);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  // adding variable
+  EXPECT_NO_THROW(actions.OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type)));
+}
+
 //! Adding variables to an empty model.
 
 TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestToEmptyModel)
