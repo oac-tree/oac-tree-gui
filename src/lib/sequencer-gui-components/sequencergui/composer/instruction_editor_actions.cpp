@@ -127,25 +127,6 @@ void InstructionEditorActions::OnRemoveInstructionRequest()
   }
 }
 
-void InstructionEditorActions::OnInsertVariableAfterRequest(const QString &item_type)
-{
-  ValidatePrecoditions();
-
-  auto procedure = m_context.selected_procedure();
-  auto item = m_context.selected_variable();
-
-  auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-  InsertItem(item_type.toStdString(), procedure->GetWorkspace(), tagindex);
-}
-
-void InstructionEditorActions::OnRemoveVariableRequest()
-{
-  if (auto selected = m_context.selected_variable(); selected)
-  {
-    m_model->RemoveItem(selected);
-  }
-}
-
 mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_type,
                                                         mvvm::SessionItem *parent,
                                                         const mvvm::TagIndex &index)
@@ -172,7 +153,7 @@ void InstructionEditorActions::ValidatePrecoditions()
     throw NullException("Model is not defined");
   }
 
-  if (!m_context.selected_variable || !m_context.selected_procedure)
+  if (!m_context.selected_procedure)
   {
     throw RuntimeException("Callbacks are not defined");
   }

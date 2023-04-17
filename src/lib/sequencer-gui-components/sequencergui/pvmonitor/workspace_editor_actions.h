@@ -40,8 +40,8 @@ namespace sequencergui
 class VariableItem;
 class WorkspaceItem;
 
-//! The MonitorWidgetActions class implements actions for MonitorWidget that can be triggered from
-//! its main toolbar.
+//! The WorkspaceEditorActions class implements actions to add/remove/edit variables in
+//! WorkspaceItem.
 
 class WorkspaceEditorActions : public QObject
 {

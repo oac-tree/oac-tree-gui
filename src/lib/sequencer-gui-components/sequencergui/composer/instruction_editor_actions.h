@@ -40,7 +40,8 @@ namespace sequencergui
 {
 class SequencerModel;
 
-//! Collection of actions
+//! The InstructionEditorActions class implements actions to add/remove instructions in
+//! InstructionContainerItem.
 
 class InstructionEditorActions : public QObject
 {
@@ -61,10 +62,6 @@ public:
   void OnInsertInstructionIntoRequest(const QString& item_type);
 
   void OnRemoveInstructionRequest();
-
-  void OnInsertVariableAfterRequest(const QString& item_type);
-
-  void OnRemoveVariableRequest();
 
 private:
   ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,

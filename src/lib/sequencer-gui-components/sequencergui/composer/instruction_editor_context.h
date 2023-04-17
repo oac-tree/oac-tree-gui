@@ -39,9 +39,6 @@ struct InstructionEditorContext
 
   //! Callback to get currently selected instruction.
   std::function<InstructionItem*()> selected_instruction;
-
-  //! Callback to get currently selected variable.
-  std::function<VariableItem*()> selected_variable;
 };
 
 }  // namespace sequencergui

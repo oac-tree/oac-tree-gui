@@ -147,14 +147,6 @@ void ComposerProcedureEditor::SetupConnections()
           m_instruction_editor_actions.get(),
           &InstructionEditorActions::OnRemoveInstructionRequest);
 
-  // propagate variable related operations from WorkspaceListWidget to ComposerActions
-  //  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
-  //          m_instruction_editor_actions.get(),
-  //          &InstructionEditorActions::OnInsertVariableAfterRequest);
-  //  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
-  //          m_instruction_editor_actions.get(),
-  //          &InstructionEditorActions::OnRemoveVariableRequest);
-
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnAddVariableRequest);
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
@@ -168,7 +160,6 @@ InstructionEditorContext ComposerProcedureEditor::CreateInstructionEditorContext
   context.selected_procedure = [this]() { return m_procedure; };
   context.selected_instruction = [this]()
   { return m_instruction_editor_widget->GetSelectedInstruction(); };
-  context.selected_variable = [this]() { return m_workspace_editor_widget->GetSelectedVariable(); };
   return context;
 }
 

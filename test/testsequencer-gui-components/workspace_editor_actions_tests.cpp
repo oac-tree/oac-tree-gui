@@ -24,9 +24,9 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/variable_transform_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -142,6 +142,29 @@ TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestToEmptyModel)
 
   // attempty to add unknown variable type
   actions->OnAddVariableRequest("non-existing-type");
+}
+
+//! Inserting variable between two existing variables.
+
+TEST_F(WorkspaceEditorActionsTest, OnAddVariableWHenNothingIsSelected)
+{
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+
+  // pretending that var0 is selected
+  auto actions = CreateActions(nullptr);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // adding variable
+  actions->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
+
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
+  auto inserted_variable0 =
+      dynamic_cast<FileVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(2));
+  ASSERT_NE(inserted_variable0, nullptr);
+  EXPECT_EQ(inserted_variable0->GetName(), std::string("var2"));
 }
 
 //! Inserting variable between two existing variables.
