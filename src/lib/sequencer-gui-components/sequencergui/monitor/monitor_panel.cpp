@@ -89,7 +89,7 @@ QList<QWidget *> MonitorPanel::GetToolBarWidgets()
   submit_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   submit_button->setPopupMode(QToolButton::InstantPopup);
   submit_button->setMenu(m_submit_procedure_menu.get());
-  submit_button->setToolTip("Submit sequencer procedure for execution");
+  submit_button->setToolTip("Submit existing sequencer procedure for execution");
   result.push_back(submit_button);
 
   auto regenerate_button = new QToolButton;
@@ -122,6 +122,7 @@ void MonitorPanel::OnAboutToShowMenu()
 {
   auto menu = m_submit_procedure_menu.get();
   menu->clear();
+  menu->addSection("Available procedures:");
 
   // build a menu containing list of procedures for later job submission
   for (auto procedure : m_models->GetSequencerModel()->GetProcedures())
@@ -131,12 +132,6 @@ void MonitorPanel::OnAboutToShowMenu()
     auto on_action = [this, procedure]() { emit SubmitProcedureRequest(procedure); };
     connect(action, &QAction::triggered, this, on_action);
   }
-
-  // menu section to import procedure from disk (not implemented for the moment)
-  menu->addSeparator();
-  auto action = menu->addAction("Import from disk");
-  action->setToolTip("Implort sequencer xml procedure from disk");
-  action->setEnabled(false);
 }
 
 std::unique_ptr<QMenu> MonitorPanel::CreateSubmitProcedureMenu()
