@@ -33,11 +33,6 @@ class TagIndex;
 class SessionModelInterface;
 }  // namespace mvvm
 
-namespace sup::gui
-{
-class MessageHandlerInterface;
-}
-
 namespace sequencergui
 {
 class SequencerModel;
@@ -54,8 +49,6 @@ public:
   explicit InstructionEditorActions(InstructionEditorContext context, QObject* parent = nullptr);
   ~InstructionEditorActions() override;
 
-  void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
-
   void OnInsertInstructionAfterRequest(const QString& item_type);
 
   void OnInsertInstructionIntoRequest(const QString& item_type);
@@ -65,13 +58,14 @@ public:
 private:
   mvvm::SessionModelInterface* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
+  void SendMessage(const std::string& text, const std::string& informative = {},
+                   const std::string& details = {});
 
   ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
                                   const ::mvvm::TagIndex& index);
 
   SequencerModel* m_model{nullptr};
   InstructionEditorContext m_context;
-  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
 };
 
 }  // namespace sequencergui

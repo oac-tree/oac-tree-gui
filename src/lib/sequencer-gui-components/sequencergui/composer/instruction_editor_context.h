@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_
 #define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_
 
+#include <sup/gui/components/message_event.h>
 #include <functional>
 
 namespace sequencergui
@@ -39,6 +40,9 @@ struct InstructionEditorContext
 
   //! Callback to get currently selected instruction.
   std::function<InstructionItem*()> selected_instruction;
+
+  //!< callback to report an error
+  std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
 };
 
 }  // namespace sequencergui

@@ -86,6 +86,7 @@ private:
   SequencerModel* m_model{nullptr};
   ProcedureItem* m_procedure{nullptr};
 
+  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
   std::unique_ptr<InstructionEditorActions> m_instruction_editor_actions;
   std::unique_ptr<WorkspaceEditorActions> m_workspace_editor_actions;
 };

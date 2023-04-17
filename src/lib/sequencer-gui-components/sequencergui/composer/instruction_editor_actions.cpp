@@ -19,7 +19,6 @@
 
 #include "instruction_editor_actions.h"
 
-#include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -58,9 +57,7 @@ namespace sequencergui
 
 InstructionEditorActions::InstructionEditorActions(InstructionEditorContext context,
                                                    QObject *parent)
-    : QObject(parent)
-    , m_context(std::move(context))
-    , m_message_handler(CreateThrowingMessageHandler())
+    : QObject(parent), m_context(std::move(context))
 {
   if (!m_context.selected_procedure)
   {
@@ -71,15 +68,14 @@ InstructionEditorActions::InstructionEditorActions(InstructionEditorContext cont
   {
     throw RuntimeException("Callback to get selected instruction is not defined");
   }
+
+  if (!m_context.send_message_callback)
+  {
+    throw RuntimeException("Callback to send messages is not set");
+  }
 }
 
 InstructionEditorActions::~InstructionEditorActions() = default;
-
-void InstructionEditorActions::SetMessageHandler(
-    std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
-{
-  m_message_handler = std::move(message_handler);
-}
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
@@ -88,7 +84,7 @@ void InstructionEditorActions::OnInsertInstructionAfterRequest(const QString &it
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
   {
-    m_message_handler->SendMessage("No procedure selected");
+    SendMessage("No procedure selected");
     return;
   }
 
@@ -131,6 +127,13 @@ InstructionContainerItem *InstructionEditorActions::GetInstructionContainer() co
   return procedure ? procedure->GetInstructionContainer() : nullptr;
 }
 
+void InstructionEditorActions::SendMessage(const std::string &text, const std::string &informative,
+                                           const std::string &details)
+{
+  auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
+  m_context.send_message_callback(message);
+}
+
 mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_type,
                                                         mvvm::SessionItem *parent,
                                                         const mvvm::TagIndex &index)
@@ -145,7 +148,7 @@ mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_
     std::ostringstream ostr;
     ostr << "Can't insert variable '" << item_type << "' into parent '" << parent->GetType()
          << "'. Maximum allowed number of children exceeded?";
-    m_message_handler->SendMessage(ostr.str());
+    SendMessage(ostr.str());
   }
   return result;
 }

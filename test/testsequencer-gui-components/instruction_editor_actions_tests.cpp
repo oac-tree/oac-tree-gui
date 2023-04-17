@@ -28,7 +28,7 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_message_handler.h>
+#include <testutils/mock_callback_listener.h>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -50,6 +50,7 @@ public:
     InstructionEditorContext result;
     result.selected_procedure = [procedure]() { return procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
+    result.send_message_callback = m_warning_listener.CreateCallback();
     return result;
   }
 
@@ -61,6 +62,7 @@ public:
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
+  testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
 };
 
 //! Attempt to insert an instruction when no procedure created upfront.
@@ -70,9 +72,10 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSe
   // creating the context pretending that no procedures/instructions are selected
   auto actions = CreateActions(nullptr, nullptr);
 
-  // it is not possible to add instruction when no procedure is selected
-  EXPECT_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
-               sequencergui::RuntimeException);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  // it is not possible to add instruction when no procedure is selected, expecting callback
+  EXPECT_NO_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
 }
 
 //! Insertion instruction after selected instruction.
@@ -88,6 +91,8 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionAfter)
 
   // creating the context mimicking `sequence` instruction selected
   auto actions = CreateActions(m_procedure, sequence);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // appending instruction to the container
   actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
@@ -117,6 +122,8 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionAfterWhenInAppendMode)
   // creating the context mimicking "no instruction selected"
   auto actions = CreateActions(m_procedure, nullptr);
 
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
   // appending instruction to the container
   actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
@@ -141,19 +148,12 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionAfter)
   // creating the context mimicking `sequence` instruction selected
   auto actions = CreateActions(m_procedure, sequence);
 
-  // It is not possible to add second instruction to repeat instruction
-  EXPECT_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
-               sequencergui::RuntimeException);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  // It is not possible to add second instruction to repeat instruction, expecting warning callback
+  EXPECT_NO_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
-
-  // setting message handler
-  testutils::MockMessageHandler mock_handler;
-  actions->SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
-
-  // after handler set, we expect no throws; handler method should be called
-  EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
-  EXPECT_NO_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
 }
 
 //! Insertion instruction in the selected instruction.
@@ -169,6 +169,8 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionInto)
 
   // creating the context mimicking `sequence` instruction selected
   auto actions = CreateActions(m_procedure, sequence);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // inserting instruction into selected instruction
   actions->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
@@ -203,18 +205,11 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionInto)
   // creating the context mimicking `wait` instruction selected
   auto actions = CreateActions(m_procedure, wait);
 
-  // inserting instruction into selected instruction
-  EXPECT_THROW(actions->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)),
-               sequencergui::RuntimeException);
-  ASSERT_EQ(wait->GetInstructions().size(), 0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
-  // setting message handler
-  testutils::MockMessageHandler mock_handler;
-  actions->SetMessageHandler(CreateMessageHandlerDecorator(&mock_handler));
-
-  // after handler set, we expect no throws; handler method should be called
-  EXPECT_CALL(mock_handler, SendMessage(_)).Times(1);
+  // attempt to insert instruction into selected instruction, expecting callback
   EXPECT_NO_THROW(actions->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
+  ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
 //! Removing selected instruction.

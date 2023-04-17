@@ -54,6 +54,7 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_tab_widget(new QTabWidget)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
+    , m_message_handler(std::move(message_handler))
     , m_instruction_editor_actions(
           std::make_unique<InstructionEditorActions>(CreateInstructionEditorContext()))
     , m_workspace_editor_actions(
@@ -70,9 +71,6 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   layout->addWidget(m_tab_widget);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-
-  // setting up ComposerActions
-  m_instruction_editor_actions->SetMessageHandler(std::move(message_handler));
 
   auto on_tabbar_changed = [this]()
   {
@@ -156,11 +154,16 @@ void ComposerProcedureEditor::SetupConnections()
 //! Create context necessary for InstructionEditorActions to function.
 InstructionEditorContext ComposerProcedureEditor::CreateInstructionEditorContext()
 {
-  InstructionEditorContext context;
-  context.selected_procedure = [this]() { return m_procedure; };
-  context.selected_instruction = [this]()
+  InstructionEditorContext result;
+  result.selected_procedure = [this]() { return m_procedure; };
+  result.selected_instruction = [this]()
   { return m_instruction_editor_widget->GetSelectedInstruction(); };
-  return context;
+
+  auto send_message_callback = [this](const sup::gui::MessageEvent& event)
+  { m_message_handler->SendMessage(event.text + event.informative + event.detailed); };
+  result.send_message_callback = send_message_callback;
+
+  return result;
 }
 
 WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
