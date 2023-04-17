@@ -19,6 +19,7 @@
 
 #include "message_handler_factory.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/widgets/dialog_message_handler.h>
 #include <sequencergui/widgets/widget_overlay_message_handler.h>
 #include <sup/gui/components/message_handler_decorator.h>
@@ -51,6 +52,11 @@ std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageBoxHandler()
 {
   return std::make_unique<DialogMessageHandler>();
+}
+
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateThrowingMessageHandler()
+{
+  return std::make_unique<sup::gui::ThrowingMessageHandler<::sequencergui::RuntimeException>>();
 }
 
 }  // namespace sequencergui

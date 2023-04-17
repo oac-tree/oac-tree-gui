@@ -65,7 +65,7 @@ SequencerMonitorActions::SequencerMonitorActions(JobManager *job_manager,
     : QObject(parent)
     , m_job_manager(job_manager)
     , m_job_selection_callback(std::move(selection_callback))
-    , m_message_handler(CreateNullMessageHandler())
+    , m_message_handler(CreateThrowingMessageHandler())
 
 {
 }

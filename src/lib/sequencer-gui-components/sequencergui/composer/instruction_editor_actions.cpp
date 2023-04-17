@@ -57,7 +57,7 @@ namespace sequencergui
 {
 
 InstructionEditorActions::InstructionEditorActions(SequencerModel *model, QObject *parent)
-    : QObject(parent), m_message_handler(CreateNullMessageHandler())
+    : QObject(parent), m_message_handler(CreateThrowingMessageHandler())
 {
   SetModel(model);
 }

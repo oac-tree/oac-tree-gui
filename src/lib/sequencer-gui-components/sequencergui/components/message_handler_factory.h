@@ -31,7 +31,7 @@ class QWidget;
 namespace sequencergui
 {
 
-//! Creates message handler that simply throws further
+//! Creates message handler that does nothing.
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateNullMessageHandler();
 
 //! Creates message handler that prints messages to standard output.
@@ -46,6 +46,10 @@ std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandlerDecorator
 
 //! Creates message handler that pop's up a message box.
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageBoxHandler();
+
+//! Creates message handler that throws runtime exception.
+std::unique_ptr<sup::gui::MessageHandlerInterface> CreateThrowingMessageHandler();
+
 
 }  // namespace sequencergui
 
