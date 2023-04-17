@@ -46,6 +46,13 @@ const std::string kSequenceInstructionType = "Sequence";
 const std::string kUserChoiceInstructionType = "UserChoice";
 const std::string kWaitInstructionType = "Wait";
 
+// sup-sequencer-plughin-epics instructions
+const std::string kChannelAccessReadInstructionType = "ChannelAccessRead";
+const std::string kChannelAccessWriteInstructionType = "ChannelAccessWrite";
+const std::string kPVAccessReadInstructionType = "PvAccessRead";
+const std::string kPVAccessWriteInstructionType = "PvAccessWrite";
+const std::string kRPCClientInstructionType = "RPCClient";
+
 // variables
 const std::string kLocalVariableType = "Local";
 const std::string kFileVariableType = "File";
