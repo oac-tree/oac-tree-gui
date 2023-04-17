@@ -35,21 +35,24 @@ namespace sequencergui
 WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, QObject *parent)
     : QObject(parent), m_context(std::move(context))
 {
-  if (!m_context.get_selected_item_callback)
+  if (!m_context.selected_workspace_callback)
+  {
+    throw RuntimeException("Absent callback to get Workspace");
+  }
+
+  if (!m_context.selected_item_callback)
   {
     throw RuntimeException("Absent callback to retrieve currently selected item");
   }
+
   if (!m_context.send_message_callback)
   {
     throw RuntimeException("Absent callback to send messages");
   }
-  if (!m_context.get_anyvalue_callback)
+
+  if (!m_context.edit_anyvalue_callback)
   {
     throw RuntimeException("Absent callback to get AnyValueItem");
-  }
-  if (!m_context.get_workspace_callback)
-  {
-    throw RuntimeException("Absent callback to get Workspace");
   }
 }
 
@@ -89,7 +92,7 @@ void WorkspaceEditorActions::OnEditAnyvalueRequest()
     return;
   }
 
-  auto edited_anyvalue = m_context.get_anyvalue_callback(*selected_anyvalue);
+  auto edited_anyvalue = m_context.edit_anyvalue_callback(*selected_anyvalue);
   if (edited_anyvalue)
   {
     auto prev_parent = selected_anyvalue->GetParent();
@@ -105,18 +108,18 @@ mvvm::SessionModelInterface *WorkspaceEditorActions::GetModel() const
 
 WorkspaceItem *WorkspaceEditorActions::GetWorkspaceItem() const
 {
-  return m_context.get_workspace_callback();
+  return m_context.selected_workspace_callback();
 }
 
 VariableItem *WorkspaceEditorActions::GetSelectedVariable()
 {
-  return dynamic_cast<VariableItem *>(m_context.get_selected_item_callback());
+  return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
 }
 
 //! Returns selected AnyValueItem.
 sup::gui::AnyValueItem *WorkspaceEditorActions::GetSelectedAnyValueItem()
 {
-  return dynamic_cast<sup::gui::AnyValueItem *>(m_context.get_selected_item_callback());
+  return dynamic_cast<sup::gui::AnyValueItem *>(m_context.selected_item_callback());
 }
 
 //! Returns AnyValueItem intended for editing.

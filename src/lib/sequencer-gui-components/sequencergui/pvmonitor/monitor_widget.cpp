@@ -30,13 +30,13 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/variable_transform_helper.h>
 #include <sequencergui/widgets/widget_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/signals/model_listener.h>
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QMessageBox>
@@ -130,7 +130,9 @@ void MonitorWidget::OnStopMonitoringRequest()
 
 WorkspaceEditorContext MonitorWidget::CreateContext()
 {
-  auto get_selected_callback = [this]() { return m_tree_view->GetSelectedItem(); };
+  auto selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
+
+  auto selected_item_callback = [this]() { return m_tree_view->GetSelectedItem(); };
 
   auto send_message_callback = [this](const sup::gui::MessageEvent &event)
   {
@@ -142,7 +144,7 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
     msg_box.exec();
   };
 
-  auto get_anyvalue_callback =
+  auto edit_anyvalue_callback =
       [this](const sup::gui::AnyValueItem &item) -> std::unique_ptr<sup::gui::AnyValueItem>
   {
     AnyValueEditorDialog dialog(this);
@@ -154,10 +156,8 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
     return {};
   };
 
-  auto get_selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
-
-  return {get_selected_callback, send_message_callback, get_anyvalue_callback,
-          get_selected_workspace_callback};
+  return {selected_workspace_callback, selected_item_callback, send_message_callback,
+          edit_anyvalue_callback};
 }
 
 }  // namespace sequencergui

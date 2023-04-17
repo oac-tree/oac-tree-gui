@@ -136,7 +136,7 @@ void ComposerProcedureEditor::SetupConnections()
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
           &ComposerProcedureEditor::InstructionSelected);
 
-  // propagate instruction related operations from InstructionTreeWidget to ComposerActions
+  // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertAfterRequest,
           m_instruction_editor_actions.get(),
           &InstructionEditorActions::OnInsertInstructionAfterRequest);
@@ -147,6 +147,7 @@ void ComposerProcedureEditor::SetupConnections()
           m_instruction_editor_actions.get(),
           &InstructionEditorActions::OnRemoveInstructionRequest);
 
+  // propagate instruction related requests from WorkspaceEditorWidget to WorkspaceEditorActions
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnAddVariableRequest);
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
@@ -167,7 +168,10 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
 {
   WorkspaceEditorContext result;
 
-  result.get_selected_item_callback = [this]()
+  auto selected_workspace_callback = [this]() { return m_procedure->GetWorkspace(); };
+  result.selected_workspace_callback = selected_workspace_callback;
+
+  result.selected_item_callback = [this]()
   { return m_workspace_editor_widget->GetSelectedVariable(); };
 
   auto send_message_callback = [this](const sup::gui::MessageEvent& event)
@@ -181,7 +185,7 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
   };
   result.send_message_callback = send_message_callback;
 
-  auto get_anyvalue_callback =
+  auto edit_anyvalue_callback =
       [this](const sup::gui::AnyValueItem& item) -> std::unique_ptr<sup::gui::AnyValueItem>
   {
     AnyValueEditorDialog dialog(this);
@@ -192,10 +196,7 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
     }
     return {};
   };
-  result.get_anyvalue_callback = get_anyvalue_callback;
-
-  auto get_workspace_callback = [this]() { return m_procedure->GetWorkspace(); };
-  result.get_workspace_callback = get_workspace_callback;
+  result.edit_anyvalue_callback = edit_anyvalue_callback;
 
   return result;
 }

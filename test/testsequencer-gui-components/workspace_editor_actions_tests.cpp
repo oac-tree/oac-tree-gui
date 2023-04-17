@@ -65,18 +65,22 @@ public:
   };
 
   //! Creates context necessary for AnyValueEditActions to function.
-  WorkspaceEditorContext CreateContext(mvvm::SessionItem* selected_item,
-                                       std::unique_ptr<sup::gui::AnyValueItem> item_to_return = {})
+  WorkspaceEditorContext CreateContext(
+      mvvm::SessionItem* selected_item,
+      std::unique_ptr<sup::gui::AnyValueItem> anyvalue_item_to_return = {})
   {
     // callback returns given item, pretending it is user's selection
-    auto get_selected_callback = [selected_item]() { return selected_item; };
+    auto selected_item_callback = [selected_item]() { return selected_item; };
 
-    m_mock_dialog.SetItemToReturn(std::move(item_to_return));
+    m_mock_dialog.SetItemToReturn(std::move(anyvalue_item_to_return));
 
-    auto get_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
+    auto selected_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
 
-    return {get_selected_callback, m_warning_listener.CreateCallback(),
-            m_mock_dialog.CreateCallback(), get_workspace_callback};
+    auto send_message_callback = m_warning_listener.CreateCallback();
+    auto edit_anyvalue_callback = m_mock_dialog.CreateCallback();
+
+    return {selected_workspace_callback, selected_item_callback, send_message_callback,
+            edit_anyvalue_callback};
   }
 
   //! Creates AnyValueEditorActions for testing.

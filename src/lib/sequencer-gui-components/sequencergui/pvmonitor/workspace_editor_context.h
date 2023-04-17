@@ -46,8 +46,11 @@ class WorkspaceItem;
 
 struct WorkspaceEditorContext
 {
+  //!< callback to retrieve current workspace to operate
+  std::function<WorkspaceItem*()> selected_workspace_callback;
+
   //!< callback to retrieve currently selected item
-  std::function<mvvm::SessionItem*()> get_selected_item_callback;
+  std::function<mvvm::SessionItem*()> selected_item_callback;
 
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
@@ -55,10 +58,7 @@ struct WorkspaceEditorContext
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back
   std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem&)>
-      get_anyvalue_callback;
-
-  //!< callback to retrieve current workspace to operate
-  std::function<WorkspaceItem*()> get_workspace_callback;
+      edit_anyvalue_callback;
 };
 
 }  // namespace sequencergui
