@@ -72,6 +72,16 @@ void InstructionEditorActions::SetModel(SequencerModel *model)
 void InstructionEditorActions::SetContext(InstructionEditorContext context)
 {
   m_context = std::move(context);
+
+  if (!m_context.selected_procedure)
+  {
+    throw RuntimeException("Callback to retrieve current procedure is not defined");
+  }
+
+  if (!m_context.selected_instruction)
+  {
+    throw RuntimeException("Callback to get selected instruction is not defined");
+  }
 }
 
 void InstructionEditorActions::SetMessageHandler(
@@ -84,10 +94,8 @@ void InstructionEditorActions::SetMessageHandler(
 //! The selection is retrieved via a callback.
 void InstructionEditorActions::OnInsertInstructionAfterRequest(const QString &item_type)
 {
-  ValidatePrecoditions();
-
-  auto procedure = m_context.selected_procedure();
-  if (!procedure)
+  auto instruction_container = GetInstructionContainer();
+  if (!instruction_container)
   {
     m_message_handler->SendMessage("No procedure selected");
     return;
@@ -95,7 +103,7 @@ void InstructionEditorActions::OnInsertInstructionAfterRequest(const QString &it
 
   auto item = m_context.selected_instruction();
 
-  auto parent = item ? item->GetParent() : procedure->GetInstructionContainer();
+  auto parent = item ? item->GetParent() : instruction_container;
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
   auto child = InsertItem(item_type.toStdString(), parent, tagindex);
@@ -106,8 +114,6 @@ void InstructionEditorActions::OnInsertInstructionAfterRequest(const QString &it
 //! The selection is retrieved via a callback.
 void InstructionEditorActions::OnInsertInstructionIntoRequest(const QString &item_type)
 {
-  ValidatePrecoditions();
-
   auto selected_instruction = m_context.selected_instruction();
   auto child = InsertItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
   UpdateChildCoordinate(selected_instruction, child);
@@ -117,12 +123,21 @@ void InstructionEditorActions::OnInsertInstructionIntoRequest(const QString &ite
 //! The selection is retrieved via a callback.
 void InstructionEditorActions::OnRemoveInstructionRequest()
 {
-  auto selected_instruction = m_context.selected_instruction();
-
-  if (selected_instruction)
+  if (auto selected_instruction = m_context.selected_instruction(); selected_instruction)
   {
-    m_model->RemoveItem(selected_instruction);
+    GetModel()->RemoveItem(selected_instruction);
   }
+}
+
+mvvm::SessionModelInterface *InstructionEditorActions::GetModel() const
+{
+  return GetInstructionContainer() ? GetInstructionContainer()->GetModel() : nullptr;
+}
+
+InstructionContainerItem *InstructionEditorActions::GetInstructionContainer() const
+{
+  auto procedure = m_context.selected_procedure();
+  return procedure ? procedure->GetInstructionContainer() : nullptr;
 }
 
 mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_type,
@@ -132,7 +147,7 @@ mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_
   mvvm::SessionItem *result{nullptr};
   try
   {
-    result = m_model->InsertItem(m_model->GetFactory()->CreateItem(item_type), parent, index);
+    result = GetModel()->InsertItem(GetModel()->GetFactory()->CreateItem(item_type), parent, index);
   }
   catch (const std::exception &ex)
   {
@@ -142,19 +157,6 @@ mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_
     m_message_handler->SendMessage(ostr.str());
   }
   return result;
-}
-
-void InstructionEditorActions::ValidatePrecoditions()
-{
-  if (!m_model)
-  {
-    throw NullException("Model is not defined");
-  }
-
-  if (!m_context.selected_procedure)
-  {
-    throw RuntimeException("Callbacks are not defined");
-  }
 }
 
 }  // namespace sequencergui

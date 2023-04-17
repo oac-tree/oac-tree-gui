@@ -27,8 +27,10 @@
 
 namespace mvvm
 {
+
 class SessionItem;
 class TagIndex;
+class SessionModelInterface;
 }  // namespace mvvm
 
 namespace sup::gui
@@ -39,6 +41,7 @@ class MessageHandlerInterface;
 namespace sequencergui
 {
 class SequencerModel;
+class InstructionContainerItem;
 
 //! The InstructionEditorActions class implements actions to add/remove instructions in
 //! InstructionContainerItem.
@@ -64,9 +67,11 @@ public:
   void OnRemoveInstructionRequest();
 
 private:
+  mvvm::SessionModelInterface* GetModel() const;
+  InstructionContainerItem* GetInstructionContainer() const;
+
   ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
                                   const ::mvvm::TagIndex& index);
-  void ValidatePrecoditions();
 
   SequencerModel* m_model{nullptr};
   InstructionEditorContext m_context;

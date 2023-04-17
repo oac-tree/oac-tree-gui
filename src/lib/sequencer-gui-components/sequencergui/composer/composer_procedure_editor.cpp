@@ -168,7 +168,8 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
 {
   WorkspaceEditorContext result;
 
-  auto selected_workspace_callback = [this]() { return m_procedure->GetWorkspace(); };
+  auto selected_workspace_callback = [this]()
+  { return m_procedure ? m_procedure->GetWorkspace() : nullptr; };
   result.selected_workspace_callback = selected_workspace_callback;
 
   result.selected_item_callback = [this]()

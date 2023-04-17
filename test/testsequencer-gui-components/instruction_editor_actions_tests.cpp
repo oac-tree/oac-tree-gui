@@ -58,7 +58,7 @@ public:
   ProcedureItem* m_procedure{nullptr};
 };
 
-//! Insertion instruction after selected instruction, when no more insertions is allowed.
+//! Attempt to insert an instruction when no procedure created upfront.
 
 TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
@@ -66,7 +66,7 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSe
   auto context = CreateContext(nullptr, nullptr);
   m_actions.SetContext(context);
 
-  // It is not possible to add second instruction to repeat instruction
+  // it is not possible add instructions when no procedure is selected
   EXPECT_THROW(m_actions.OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)),
                sequencergui::RuntimeException);
 }
