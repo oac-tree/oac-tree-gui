@@ -76,6 +76,7 @@ const std::string kRightHandAttribute = "rhs";
 const std::string kSuccessThresholdAttribute = "successThreshold";
 const std::string kTextAttribute = "text";
 const std::string kTickTimeOutAttribute = "tickTimeout";
+const std::string kTimeoutAttribute = "timeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
 const std::string kVarNameAttribute = "varName";
@@ -83,7 +84,6 @@ const std::string kVarNameAttribute = "varName";
 // attributes (instruction specific)
 const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
-const std::string kWaitTimeoutAttribute = "timeout";
 const std::string kListenVarNamesAttribute = "varNames";
 const std::string kListenForceSuccessAttribute = "forceSuccess";
 

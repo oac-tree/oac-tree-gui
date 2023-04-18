@@ -64,7 +64,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
   ::sup::sequencer::Procedure procedure;
 
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
   auto wait_ptr = wait.get();
   procedure.PushInstruction(wait.release());
 
@@ -85,12 +85,12 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithTwoWaits)
   ::sup::sequencer::Procedure procedure;
 
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
   procedure.PushInstruction(wait0.release());
 
   auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait1->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
-  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "43");
+  wait1->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "43");
   procedure.PushInstruction(wait1.release());
 
   sequencergui::ProcedureItem procedure_item;
@@ -111,7 +111,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   auto wait_ptr = wait.get();
-  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();

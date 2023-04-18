@@ -37,7 +37,7 @@ std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds
 {
   auto result = std::make_unique<procedure_t>();
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
+  wait0->AddAttribute(domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
   result->PushInstruction(wait0.release());
   result->AddAttribute(domainconstants::kTickTimeOutAttribute, "0.01");  // 10 msec
@@ -83,7 +83,7 @@ std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::millis
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
+  wait0->AddAttribute(domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
   sequence->InsertInstruction(wait0.release(), 0);
@@ -98,10 +98,10 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
+  wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout1)));
   auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait1->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute,
+  wait1->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout2)));
 
   sequence->InsertInstruction(wait0.release(), 0);
@@ -166,7 +166,7 @@ std::unique_ptr<procedure_t> CreateUserChoiceProcedure()
   userchoice->AddAttribute(domainconstants::kDescriptionAttribute, "it's your choice");
 
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "10");  // 10 sec
+  wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "10");  // 10 sec
 
   auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
   copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
@@ -201,7 +201,7 @@ std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait0->AddAttribute(domainconstants::kWaitTimeoutAttribute,
+  wait0->AddAttribute(domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
   sequence->InsertInstruction(wait0.release(), 0);
@@ -217,7 +217,7 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
 
   // Sequence with wait instruction
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait->AddAttribute(sequencergui::domainconstants::kWaitTimeoutAttribute, "42");
+  wait->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");

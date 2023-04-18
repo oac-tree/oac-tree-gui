@@ -790,9 +790,9 @@ std::string WaitItem::GetDomainType() const
 
 void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(domainconstants::kWaitTimeoutAttribute))
+  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
   {
-    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kWaitTimeoutAttribute)));
+    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
   }
   else
   {
@@ -802,7 +802,7 @@ void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void WaitItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kWaitTimeoutAttribute,
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
                             mvvm::utils::DoubleToString(GetTimeout()));
 }
 

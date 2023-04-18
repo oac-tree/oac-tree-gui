@@ -696,7 +696,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
   // wait with timeout attribute
   {
     auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-    wait->AddAttribute(domainconstants::kWaitTimeoutAttribute, "42");
+    wait->AddAttribute(domainconstants::kTimeoutAttribute, "42");
 
     wait_item.InitFromDomain(wait.get());
     EXPECT_EQ(wait_item.GetTimeout(), 42.0);
@@ -732,8 +732,8 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
   EXPECT_EQ(wait_item.GetTimeout(), 0.0);
 
   auto domain_item = wait_item.CreateDomainInstruction();
-  EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kWaitTimeoutAttribute));
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kWaitTimeoutAttribute), "0.0");
+  EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kTimeoutAttribute));
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTimeoutAttribute), "0.0");
   EXPECT_EQ(domain_item->GetType(), domainconstants::kWaitInstructionType);
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
