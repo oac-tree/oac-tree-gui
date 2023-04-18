@@ -62,6 +62,11 @@ void SetJsonTypeAttribute(const VariableItem& item, variable_t& variable);
 //! Sets JSON value attribute from given \it item to the domain variable.
 void SetJsonValueAttribute(const VariableItem& item, variable_t& variable);
 
+//! Adds an attribute to given value. If the value is empty string, do nothing.
+void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
+                          instruction_t& instruction);
+
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_

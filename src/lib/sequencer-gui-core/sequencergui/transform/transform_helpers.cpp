@@ -19,9 +19,9 @@
 
 #include "transform_helpers.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/variable_item.h>
-#include <sequencergui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
@@ -30,6 +30,7 @@
 #include <mvvm/interfaces/sessionmodel_interface.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
 namespace sequencergui
@@ -98,7 +99,7 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
       }
     };
 
-    sup::dto::AnyValue anyvalue = get_anyvalue(); // executing lambda at initialisation
+    sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
     SetAnyValue(anyvalue, variable_item);
   }
 }
@@ -158,6 +159,15 @@ void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
   else
   {
     throw LogicErrorException("Can't setup JSON type if AnyValueItem is absent");
+  }
+}
+
+void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
+                          instruction_t &instruction)
+{
+  if (!attribute_value.empty())
+  {
+    instruction.AddAttribute(attribute_name, attribute_value);
   }
 }
 

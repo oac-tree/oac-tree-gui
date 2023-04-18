@@ -26,6 +26,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
@@ -36,13 +37,13 @@ using ::testing::_;
 
 //! Tests for functions from variable_item_transform_utils.h
 
-class VariableTransformHelperTests : public ::testing::Test
+class TransformHelpersTests : public ::testing::Test
 {
 };
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(VariableTransformHelperTests, SetAnyValueFromScalar)
+TEST_F(TransformHelpersTests, SetAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -70,7 +71,7 @@ TEST_F(VariableTransformHelperTests, SetAnyValueFromScalar)
 
 //! Same as above, except that LocalVariableItem is a part of the model.
 
-TEST_F(VariableTransformHelperTests, UpdateAnyValueSignaling)
+TEST_F(TransformHelpersTests, UpdateAnyValueSignaling)
 {
   SequencerModel model;
   auto item = model.InsertItem<LocalVariableItem>();
@@ -92,7 +93,7 @@ TEST_F(VariableTransformHelperTests, UpdateAnyValueSignaling)
   SetAnyValue(anyvalue, *item);
 }
 
-TEST_F(VariableTransformHelperTests, SetAnyValueFromJsonType)
+TEST_F(TransformHelpersTests, SetAnyValueFromJsonType)
 {
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
@@ -110,7 +111,7 @@ TEST_F(VariableTransformHelperTests, SetAnyValueFromJsonType)
 
 //! Checking UpdateAnyValue function.
 
-TEST_F(VariableTransformHelperTests, UpdateAnyValueFromScalar)
+TEST_F(TransformHelpersTests, UpdateAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
@@ -130,7 +131,7 @@ TEST_F(VariableTransformHelperTests, UpdateAnyValueFromScalar)
   EXPECT_EQ(new_anyvalue, stored_anyvalue2);
 }
 
-TEST_F(VariableTransformHelperTests, AddNonEmptyAttribute)
+TEST_F(TransformHelpersTests, AddNonEmptyAttributeToVariable)
 {
   auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
@@ -141,7 +142,18 @@ TEST_F(VariableTransformHelperTests, AddNonEmptyAttribute)
   EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
 }
 
-TEST_F(VariableTransformHelperTests, SetJsonTypeAttribute)
+TEST_F(TransformHelpersTests, AddNonEmptyAttributeToInstruction)
+{
+  auto instruction = CreateDomainInstruction(domainconstants::kChannelAccessReadInstructionType);
+
+  AddNonEmptyAttribute("custom_attribute_name", "", *instruction);
+  EXPECT_FALSE(instruction->HasAttribute("custom_attribute_name"));
+
+  AddNonEmptyAttribute("custom_attribute_name", "abc", *instruction);
+  EXPECT_TRUE(instruction->HasAttribute("custom_attribute_name"));
+}
+
+TEST_F(TransformHelpersTests, SetJsonTypeAttribute)
 {
   sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -155,7 +167,7 @@ TEST_F(VariableTransformHelperTests, SetJsonTypeAttribute)
   EXPECT_EQ(variable->GetAttribute(domainconstants::kTypeAttribute), R"RAW({"type":"int32"})RAW");
 }
 
-TEST_F(VariableTransformHelperTests, SetJsonValueAttribute)
+TEST_F(TransformHelpersTests, SetJsonValueAttribute)
 {
   sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -173,7 +185,7 @@ TEST_F(VariableTransformHelperTests, SetJsonValueAttribute)
 //! Domain sequencer variable with json type and value attributes is used to set AnyValueItem on
 //! board of VariableItem.
 
-TEST_F(VariableTransformHelperTests, SetAnyValueFromDomainVariable)
+TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariable)
 {
   {  // when domain variable has type attribute
     auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
