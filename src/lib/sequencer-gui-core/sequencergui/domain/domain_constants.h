@@ -80,6 +80,8 @@ const std::string kTimeoutAttribute = "timeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
 const std::string kVarNameAttribute = "varName";
+const std::string kServiceAttribute = "service";
+const std::string kRequestAttribute = "requestVar";
 
 // attributes (instruction specific)
 const std::string kInputTargetAttribute = "output";

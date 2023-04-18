@@ -35,6 +35,9 @@ const std::string kChannel = "kChannel";
 const std::string kTimeout = "kTimeout";
 const std::string kJsonType = "kJsonType";
 const std::string kJsonValue = "kJsonValue";
+const std::string kServiceName = "kServiceName";
+const std::string kRequestVar = "kRequestVar";
+const std::string kOutput = "kOutput";
 }  // namespace
 
 namespace sequencergui
@@ -267,9 +270,7 @@ std::string ChannelAccessWriteInstructionItem::GetDomainType() const
 // PVAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-PVAccessReadInstructionItem::PVAccessReadInstructionItem() : EpicsReadInstructionItem(Type)
-{
-}
+PVAccessReadInstructionItem::PVAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> PVAccessReadInstructionItem::Clone(bool make_unique_id) const
 {
@@ -301,7 +302,15 @@ std::string PVAccessWriteInstructionItem::GetDomainType() const
 // RPCClientInstruction
 // ----------------------------------------------------------------------------
 
-RPCClientInstruction::RPCClientInstruction() : InstructionItem(Type) {}
+RPCClientInstruction::RPCClientInstruction() : InstructionItem(Type)
+{
+  AddProperty(kServiceName, std::string())->SetDisplayName("Service");
+  AddProperty(kRequestVar, std::string())->SetDisplayName("Request variable");
+  AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
+  AddProperty(kJsonType, std::string())->SetDisplayName("JSON type");
+  AddProperty(kJsonValue, std::string())->SetDisplayName("JSON value");
+  AddProperty(kOutput, std::string())->SetDisplayName("Output");
+}
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone(bool make_unique_id) const
 {
@@ -313,8 +322,108 @@ std::string RPCClientInstruction::GetDomainType() const
   return domainconstants::kRPCClientInstructionType;
 }
 
-void RPCClientInstruction::InitFromDomainImpl(const instruction_t *instruction) {}
+void RPCClientInstruction::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kServiceAttribute))
+  {
+    SetService(instruction->GetAttribute(domainconstants::kServiceAttribute));
+  }
 
-void RPCClientInstruction::SetupDomainImpl(instruction_t *instruction) const {}
+  if (instruction->HasAttribute(domainconstants::kRequestAttribute))
+  {
+    SetRequestVar(instruction->GetAttribute(domainconstants::kRequestAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
+  {
+    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kTypeAttribute))
+  {
+    SetJsonType(instruction->GetAttribute(domainconstants::kTypeAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kValueAttribute))
+  {
+    SetJsonValue(instruction->GetAttribute(domainconstants::kValueAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kOutputAttribute))
+  {
+    SetOutput(instruction->GetAttribute(domainconstants::kOutputAttribute));
+  }
+}
+
+void RPCClientInstruction::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(domainconstants::kServiceAttribute, GetService());
+  instruction->AddAttribute(domainconstants::kRequestAttribute, GetRequestVar());
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
+                            mvvm::utils::DoubleToString(GetTimeout()));
+  instruction->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
+  instruction->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
+  instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
+}
+
+std::string RPCClientInstruction::GetRequestVar() const
+{
+  return Property<std::string>(kRequestVar);
+}
+
+void RPCClientInstruction::SetRequestVar(const std::string &value)
+{
+  SetProperty(kRequestVar, value);
+}
+
+std::string RPCClientInstruction::GetService() const
+{
+  return Property<std::string>(kServiceName);
+}
+
+void RPCClientInstruction::SetService(const std::string &value)
+{
+  SetProperty(kServiceName, value);
+}
+
+double RPCClientInstruction::GetTimeout() const
+{
+  return Property<double>(kTimeout);
+}
+
+void RPCClientInstruction::SetTimeout(double value)
+{
+  SetProperty(kTimeout, value);
+}
+
+std::string RPCClientInstruction::GetJsonType() const
+{
+  return Property<std::string>(kJsonType);
+}
+
+void RPCClientInstruction::SetJsonType(const std::string &value)
+{
+  SetProperty(kJsonType, value);
+}
+
+std::string RPCClientInstruction::GetJsonValue() const
+{
+  return Property<std::string>(kJsonValue);
+}
+
+void RPCClientInstruction::SetJsonValue(const std::string &value)
+{
+  SetProperty(kJsonValue, value);
+}
+
+std::string RPCClientInstruction::GetOutput() const
+{
+  return Property<std::string>(kOutput);
+}
+
+void RPCClientInstruction::SetOutput(const std::string &value)
+{
+  SetProperty(kOutput, value);
+}
 
 }  // namespace sequencergui

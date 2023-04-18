@@ -113,10 +113,6 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represents PVAccessReadInstruction.
@@ -131,10 +127,6 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represents PVAccessWriteInstruction.
@@ -149,10 +141,6 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represents RPCClientInstruction.
@@ -167,6 +155,30 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
+
+  std::string GetRequestVar() const;
+
+  void SetRequestVar(const std::string& value);
+
+  std::string GetService() const;
+
+  void SetService(const std::string& value);
+
+  double GetTimeout() const;
+
+  void SetTimeout(double value);
+
+  std::string GetJsonType() const;
+
+  void SetJsonType(const std::string& value);
+
+  std::string GetJsonValue() const;
+
+  void SetJsonValue(const std::string& value);
+
+  std::string GetOutput() const;
+
+  void SetOutput(const std::string& value);
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
