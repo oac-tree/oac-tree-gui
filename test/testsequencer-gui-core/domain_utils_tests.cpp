@@ -55,7 +55,7 @@ TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 //! An attempt to catch if our duplication of domain constants diverges from the domain.
 //! Testing instructions in sup-sequencer-epics-plugin.
 
-TEST_F(DomainUtilsTest, SequencerEpicsPluginDomainInstructionTypeConstants)
+TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainInstructionTypeConstants)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -87,7 +87,7 @@ TEST_F(DomainUtilsTest, DomainVariableTypeConstants)
 //! An attempt to catch if our duplication of domain constants diverges from the domain.
 //! Testing variables in sup-sequencer-epics-plugin.
 
-TEST_F(DomainUtilsTest, SequencerEpicsPluginDomainVariableTypeConstants)
+TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainVariableTypeConstants)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {

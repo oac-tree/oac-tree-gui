@@ -36,13 +36,13 @@ public:
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-
   std::string GetChannel() const;
 
   void SetChannel(const std::string& value);
+
+  std::string GetOutput() const;
+
+  void SetOutput(const std::string& value);
 
   double GetTimeout() const;
 

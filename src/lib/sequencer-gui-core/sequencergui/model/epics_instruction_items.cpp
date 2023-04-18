@@ -50,8 +50,8 @@ namespace sequencergui
 EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instruction_type)
     : InstructionItem(instruction_type)
 {
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kOutput, std::string())->SetDisplayName("Output variable");
   AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
 }
 
@@ -64,14 +64,14 @@ std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone(bool make_uni
 
 void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
-  }
-
   if (instruction->HasAttribute(domainconstants::kChannelAttribute))
   {
     SetChannel(instruction->GetAttribute(domainconstants::kChannelAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kOutputAttribute))
+  {
+    SetOutput(instruction->GetAttribute(domainconstants::kOutputAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
@@ -82,20 +82,10 @@ void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instructi
 
 void EpicsReadInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kVarNameAttribute, GetVariableName());
   instruction->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
   instruction->AddAttribute(domainconstants::kTimeoutAttribute,
                             mvvm::utils::DoubleToString(GetTimeout()));
-}
-
-std::string EpicsReadInstructionItem::GetVariableName() const
-{
-  return Property<std::string>(kVariableName);
-}
-
-void EpicsReadInstructionItem::SetVariableName(const std::string &value)
-{
-  SetProperty(kVariableName, value);
 }
 
 std::string EpicsReadInstructionItem::GetChannel() const
@@ -106,6 +96,16 @@ std::string EpicsReadInstructionItem::GetChannel() const
 void EpicsReadInstructionItem::SetChannel(const std::string &value)
 {
   SetProperty(kChannel, value);
+}
+
+std::string EpicsReadInstructionItem::GetOutput() const
+{
+  return Property<std::string>(kOutput);
+}
+
+void EpicsReadInstructionItem::SetOutput(const std::string &value)
+{
+  SetProperty(kOutput, value);
 }
 
 double EpicsReadInstructionItem::GetTimeout() const
