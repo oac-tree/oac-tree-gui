@@ -120,25 +120,21 @@ bool IsRootInstruction(const instruction_t* instruction)
   return std::find(expected_values.begin(), expected_values.end(), value) != expected_values.end();
 }
 
-bool IsChannelAccessClientAvailable()
-{
-  return IsVariableTypeAvailable(domainconstants::kChannelAccessVariableType);
-}
-
-bool IsPVAccessClientAvailable()
-{
-  return IsVariableTypeAvailable(domainconstants::kPVClientVariableType);
-}
-
-bool IsPVAccessServerAvailable()
-{
-  return IsVariableTypeAvailable(domainconstants::kPVServerVariableType);
-}
-
-bool IsVariableTypeAvailable(const std::string& domain_variable_type)
+bool IsVariableTypeAvailable(const std::string& domain_type)
 {
   static const std::vector<std::string> names = GetDomainVariableNames();
-  return std::find(names.begin(), names.end(), domain_variable_type) != names.end();
+  return std::find(names.begin(), names.end(), domain_type) != names.end();
+}
+
+bool IsInstructionTypeAvailable(const std::string& domain_type)
+{
+  static const std::vector<std::string> names = GetDomainInstructionNames();
+  return std::find(names.begin(), names.end(), domain_type) != names.end();
+}
+
+bool IsSequencerPluginEpicsAvailable()
+{
+  return IsVariableTypeAvailable(domainconstants::kPVServerVariableType);  // simplified check
 }
 
 //! Loads codac plugins.

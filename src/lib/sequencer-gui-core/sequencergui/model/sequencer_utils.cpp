@@ -81,13 +81,22 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<UserChoiceItem>();
   result->RegisterItem<WaitItem>();
 
+  // sequencer-plugin-epics instructions
+  result->RegisterItem<ChannelAccessReadInstructionItem>();
+  result->RegisterItem<ChannelAccessWriteInstructionItem>();
+  result->RegisterItem<PVAccessReadInstructionItem>();
+  result->RegisterItem<PVAccessWriteInstructionItem>();
+  result->RegisterItem<RPCClientInstruction>();
+
   // variables
-  result->RegisterItem<ChannelAccessVariableItem>();
   result->RegisterItem<FileVariableItem>();
   result->RegisterItem<LocalVariableItem>();
+  result->RegisterItem<UnknownVariableItem>();
+
+  // variables sequencer-plugin-epics
+  result->RegisterItem<ChannelAccessVariableItem>();
   result->RegisterItem<PVClientVariableItem>();
   result->RegisterItem<PVServerVariableItem>();
-  result->RegisterItem<UnknownVariableItem>();
 
   // other items
   result->RegisterItem<InstructionContainerItem>();

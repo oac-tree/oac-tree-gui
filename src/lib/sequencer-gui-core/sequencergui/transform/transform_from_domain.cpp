@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
@@ -98,6 +99,18 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::UserChoiceItem>);
   result->RegisterItem(sequencergui::domainconstants::kWaitInstructionType,
                        ItemFactoryFunction<sequencergui::WaitItem>);
+
+  // instructions from sequencer-plugin-epics
+  result->RegisterItem(sequencergui::domainconstants::kChannelAccessReadInstructionType,
+                       ItemFactoryFunction<sequencergui::ChannelAccessReadInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kChannelAccessWriteInstructionType,
+                       ItemFactoryFunction<sequencergui::ChannelAccessWriteInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kPVAccessReadInstructionType,
+                       ItemFactoryFunction<sequencergui::PVAccessReadInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kPVAccessWriteInstructionType,
+                       ItemFactoryFunction<sequencergui::PVAccessWriteInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kRPCClientInstructionType,
+                       ItemFactoryFunction<sequencergui::RPCClientInstruction>);
 
   return result;
 }

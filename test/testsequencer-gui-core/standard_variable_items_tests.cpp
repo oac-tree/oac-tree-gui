@@ -87,7 +87,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 {
-  if (!IsChannelAccessClientAvailable())
+  if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
@@ -116,7 +116,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
 {
-  if (!IsChannelAccessClientAvailable())
+  if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
@@ -323,7 +323,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 {
-  if (!IsPVAccessClientAvailable())
+  if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
@@ -351,7 +351,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
 
 TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
 {
-  if (!IsPVAccessClientAvailable())
+  if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
@@ -403,7 +403,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 {
-  if (!IsPVAccessServerAvailable())
+  if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
@@ -434,7 +434,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
 
 TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
 {
-  if (!IsPVAccessServerAvailable())
+  if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }

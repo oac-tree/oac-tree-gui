@@ -53,6 +53,26 @@ TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 }
 
 //! An attempt to catch if our duplication of domain constants diverges from the domain.
+//! Testing instructions in sup-sequencer-epics-plugin.
+
+TEST_F(DomainUtilsTest, SequencerEpicsPluginDomainInstructionTypeConstants)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  std::vector<std::string> domain_types = {
+      kChannelAccessReadInstructionType, kChannelAccessWriteInstructionType,
+      kPVAccessReadInstructionType, kPVAccessWriteInstructionType, kRPCClientInstructionType};
+
+  for (const auto& domain_type : domain_types)
+  {
+    EXPECT_EQ(CreateDomainInstruction(domain_type)->GetType(), domain_type);
+  }
+}
+
+//! An attempt to catch if our duplication of domain constants diverges from the domain.
 
 TEST_F(DomainUtilsTest, DomainVariableTypeConstants)
 {
@@ -62,21 +82,24 @@ TEST_F(DomainUtilsTest, DomainVariableTypeConstants)
   {
     EXPECT_EQ(CreateDomainVariable(domain_type)->GetType(), domain_type);
   }
+}
 
-  if (IsChannelAccessClientAvailable())
+//! An attempt to catch if our duplication of domain constants diverges from the domain.
+//! Testing variables in sup-sequencer-epics-plugin.
+
+TEST_F(DomainUtilsTest, SequencerEpicsPluginDomainVariableTypeConstants)
+{
+  if (!IsSequencerPluginEpicsAvailable())
   {
-    EXPECT_EQ(CreateDomainVariable(kChannelAccessVariableType)->GetType(),
-              kChannelAccessVariableType);
+    GTEST_SKIP();
   }
 
-  if (IsPVAccessClientAvailable())
-  {
-    EXPECT_EQ(CreateDomainVariable(kPVClientVariableType)->GetType(), kPVClientVariableType);
-  }
+  std::vector<std::string> domain_types = {kChannelAccessVariableType, kPVClientVariableType,
+                                           kPVServerVariableType};
 
-  if (IsPVAccessServerAvailable())
+  for (const auto& domain_type : domain_types)
   {
-    EXPECT_EQ(CreateDomainVariable(kPVServerVariableType)->GetType(), kPVServerVariableType);
+    EXPECT_EQ(CreateDomainVariable(domain_type)->GetType(), domain_type);
   }
 }
 

@@ -51,12 +51,10 @@ using namespace sequencergui;
 class SequencerWorkspaceListenerSoftIocTests : public ::testing::Test
 {
 public:
-  static bool IsChannelAccessAvailable() { return IsChannelAccessClientAvailable(); }
-
   //! Disables all tests in the fixture if ChannelAccess is not available
   void SetUp() override
   {
-    if (!IsChannelAccessAvailable())
+    if (!IsSequencerPluginEpicsAvailable())
     {
       GTEST_SKIP();
     }
@@ -64,7 +62,7 @@ public:
 
   static void SetUpTestSuite()
   {
-    if (IsChannelAccessAvailable())
+    if (IsSequencerPluginEpicsAvailable())
     {
       m_softioc_service.Start(testutils::GetEpicsDBContentString());
     }
@@ -72,7 +70,7 @@ public:
 
   static void TearDownTestSuite()
   {
-    if (IsChannelAccessAvailable())
+    if (IsSequencerPluginEpicsAvailable())
     {
       m_softioc_service.Stop();
     }

@@ -64,15 +64,10 @@ public:
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 
-  static bool IsPVAccessAvailable()
-  {
-    return IsPVAccessServerAvailable() && IsPVAccessClientAvailable();
-  }
-
   //! Disables all tests in the fixture if PVAccess is not available
   void SetUp() override
   {
-    if (!IsPVAccessAvailable())
+    if (!IsSequencerPluginEpicsAvailable())
     {
       GTEST_SKIP();
     }

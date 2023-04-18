@@ -49,13 +49,11 @@ std::map<std::string, std::string> GetAttributes(const variable_t* variable);
 
 bool IsRootInstruction(const instruction_t* instruction);
 
-bool IsVariableTypeAvailable(const std::string& domain_variable_type);
+bool IsVariableTypeAvailable(const std::string& domain_type);
 
-bool IsChannelAccessClientAvailable();
+bool IsInstructionTypeAvailable(const std::string& domain_type);
 
-bool IsPVAccessClientAvailable();
-
-bool IsPVAccessServerAvailable();
+bool IsSequencerPluginEpicsAvailable();
 
 void LoadCodacPlugins();
 void LoadLocalPlugins();

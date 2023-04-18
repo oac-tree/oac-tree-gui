@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 
@@ -93,18 +94,23 @@ TEST_F(TransformFromDomainTest, CreateVariableItem)
       domainconstants::kLocalVariableType));
   EXPECT_TRUE(
       CanCreateVariableForType<sequencergui::FileVariableItem>(domainconstants::kFileVariableType));
-  if (IsChannelAccessClientAvailable())
+}
+
+//! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
+
+TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateVariableItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
   {
-    EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
-        domainconstants::kChannelAccessVariableType));
+    GTEST_SKIP();
   }
-  if (IsPVAccessClientAvailable())
-  {
-    EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
-        domainconstants::kPVClientVariableType));
-    EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVServerVariableItem>(
-        domainconstants::kPVServerVariableType));
-  }
+
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
+      domainconstants::kChannelAccessVariableType));
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
+      domainconstants::kPVClientVariableType));
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVServerVariableItem>(
+      domainconstants::kPVServerVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
@@ -143,6 +149,27 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       domainconstants::kUserChoiceInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::WaitItem>(domainconstants::kWaitInstructionType));
+}
+
+//! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
+
+TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessReadInstructionItem>(
+      domainconstants::kChannelAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessWriteInstructionItem>(
+      domainconstants::kChannelAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PVAccessReadInstructionItem>(
+      domainconstants::kPVAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PVAccessWriteInstructionItem>(
+      domainconstants::kPVAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RPCClientInstruction>(
+      domainconstants::kRPCClientInstructionType));
 }
 
 TEST_F(TransformFromDomainTest, CreateUnknownInstructionItem)

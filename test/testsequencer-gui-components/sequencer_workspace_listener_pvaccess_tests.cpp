@@ -46,15 +46,10 @@ using namespace sequencergui;
 class SequencerWorkspaceListenerPVAccessTests : public ::testing::Test
 {
 public:
-  static bool IsPVAccessAvailable()
-  {
-    return IsPVAccessServerAvailable() && IsPVAccessClientAvailable();
-  }
-
   //! Disables all tests in the fixture if PVAccess is not available
   void SetUp() override
   {
-    if (!IsPVAccessAvailable())
+    if (!IsSequencerPluginEpicsAvailable())
     {
       GTEST_SKIP();
     }
