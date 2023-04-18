@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/utils/string_utils.h>
 
@@ -112,8 +113,8 @@ void CopyItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void CopyItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kInputAttribute, GetInput());
-  instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
+  AddNonEmptyAttribute(domainconstants::kInputAttribute, GetInput(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kOutputAttribute, GetOutput(), *instruction);
 }
 
 std::string CopyItem::GetInput() const
@@ -193,8 +194,8 @@ void EqualsItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kLeftHandAttribute, GetLeftHandSide());
-  instruction->AddAttribute(domainconstants::kRightHandAttribute, GetRightHandSide());
+  AddNonEmptyAttribute(domainconstants::kLeftHandAttribute, GetLeftHandSide(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kRightHandAttribute, GetRightHandSide(), *instruction);
 }
 
 // ----------------------------------------------------------------------------
@@ -291,12 +292,8 @@ void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void IncludeItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  if (!GetFileName().empty())
-  {
-    instruction->AddAttribute(domainconstants::kFileAttribute, GetFileName());
-  }
-
-  instruction->AddAttribute(domainconstants::kPathAttribute, GetPath());
+  AddNonEmptyAttribute(domainconstants::kFileAttribute, GetFileName(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kPathAttribute, GetPath(), *instruction);
 }
 
 std::string IncludeItem::GetFileName() const
@@ -355,8 +352,9 @@ void InputItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void InputItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kInputTargetAttribute, GetTargetVariableName());
-  instruction->AddAttribute(domainconstants::kDescriptionAttribute, GetDescription());
+  AddNonEmptyAttribute(domainconstants::kInputTargetAttribute, GetTargetVariableName(),
+                       *instruction);
+  AddNonEmptyAttribute(domainconstants::kDescriptionAttribute, GetDescription(), *instruction);
 }
 
 std::string InputItem::GetTargetVariableName() const
@@ -467,9 +465,9 @@ void ListenItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void ListenItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kListenForceSuccessAttribute,
-                            mvvm::utils::FromBool(IsForceSuccess()));
-  instruction->AddAttribute(domainconstants::kListenVarNamesAttribute, GetVarNames());
+  AddNonEmptyAttribute(domainconstants::kListenForceSuccessAttribute,
+                       mvvm::utils::FromBool(IsForceSuccess()), *instruction);
+  AddNonEmptyAttribute(domainconstants::kListenVarNamesAttribute, GetVarNames(), *instruction);
 }
 
 // ----------------------------------------------------------------------------
@@ -503,7 +501,7 @@ void MessageItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void MessageItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kTextAttribute, GetText());
+  AddNonEmptyAttribute(domainconstants::kTextAttribute, GetText(), *instruction);
 }
 
 std::string MessageItem::GetText() const
@@ -553,8 +551,9 @@ void OutputItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void OutputItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kOutputSourceAttribute, GetSourceVariableName());
-  instruction->AddAttribute(domainconstants::kDescriptionAttribute, GetDescription());
+  AddNonEmptyAttribute(domainconstants::kOutputSourceAttribute, GetSourceVariableName(),
+                       *instruction);
+  AddNonEmptyAttribute(domainconstants::kDescriptionAttribute, GetDescription(), *instruction);
 }
 
 std::string OutputItem::GetSourceVariableName() const
@@ -765,7 +764,7 @@ void UserChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void UserChoiceItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kDescriptionAttribute, GetDescription());
+  AddNonEmptyAttribute(domainconstants::kDescriptionAttribute, GetDescription(), *instruction);
 }
 
 // ----------------------------------------------------------------------------
@@ -802,8 +801,8 @@ void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 
 void WaitItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
-                            mvvm::utils::DoubleToString(GetTimeout()));
+  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
+                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
 }
 
 void WaitItem::SetTimeout(double value)

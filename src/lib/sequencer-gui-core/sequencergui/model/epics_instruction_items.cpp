@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/utils/string_utils.h>
 
@@ -82,10 +83,10 @@ void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instructi
 
 void EpicsReadInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
-  instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
-                            mvvm::utils::DoubleToString(GetTimeout()));
+  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kOutputAttribute, GetOutput(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
+                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
 }
 
 std::string EpicsReadInstructionItem::GetChannel() const
@@ -169,12 +170,12 @@ void EpicsWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruct
 
 void EpicsWriteInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kVarNameAttribute, GetVariableName());
-  instruction->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
-                            mvvm::utils::DoubleToString(GetTimeout()));
-  instruction->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
-  instruction->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
+  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
+                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
+  AddNonEmptyAttribute(domainconstants::kTypeAttribute, GetJsonType(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kValueAttribute, GetJsonValue(), *instruction);
 }
 
 std::string EpicsWriteInstructionItem::GetVariableName() const
@@ -357,13 +358,13 @@ void RPCClientInstruction::InitFromDomainImpl(const instruction_t *instruction)
 
 void RPCClientInstruction::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kServiceAttribute, GetService());
-  instruction->AddAttribute(domainconstants::kRequestAttribute, GetRequestVar());
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
-                            mvvm::utils::DoubleToString(GetTimeout()));
-  instruction->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
-  instruction->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
-  instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
+  AddNonEmptyAttribute(domainconstants::kServiceAttribute, GetService(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kRequestAttribute, GetRequestVar(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
+                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
+  AddNonEmptyAttribute(domainconstants::kTypeAttribute, GetJsonType(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kValueAttribute, GetJsonValue(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kOutputAttribute, GetOutput(), *instruction);
 }
 
 std::string RPCClientInstruction::GetService() const

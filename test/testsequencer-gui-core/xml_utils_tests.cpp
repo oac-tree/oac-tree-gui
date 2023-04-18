@@ -111,7 +111,7 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   wait0->SetTimeout(42.0);
 
   const std::string body{R"(
-  <Wait name="" isRoot="false" timeout="42.0"/>
+  <Wait isRoot="false" timeout="42.0"/>
   <Workspace/>
 )"};
 

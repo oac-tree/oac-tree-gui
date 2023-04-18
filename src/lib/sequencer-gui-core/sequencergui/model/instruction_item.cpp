@@ -24,6 +24,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/model/taginfo.h>
@@ -77,11 +78,9 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   // Set common attributes (that exist in every instruction)
   if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
   {
-    result->AddAttribute(domainconstants::kNameAttribute,
-                         Property<std::string>(itemconstants::kName));
+    AddNonEmptyAttribute(domainconstants::kNameAttribute, GetName(), *result);
   }
-  result->AddAttribute(domainconstants::kIsRootAttribute,
-                       mvvm::utils::FromBool(Property<bool>(itemconstants::kIsRoot)));
+  result->AddAttribute(domainconstants::kIsRootAttribute, mvvm::utils::FromBool(IsRoot()));
   SetupDomainImpl(result.get());
   return result;
 }
