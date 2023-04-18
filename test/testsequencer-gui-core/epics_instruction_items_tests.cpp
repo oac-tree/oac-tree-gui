@@ -338,3 +338,85 @@ TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItemToDomain)
     EXPECT_NO_THROW(domain_item->Setup(m_procedure));
   }
 }
+
+// ----------------------------------------------------------------------------
+// RPCClientInstruction tests
+// ----------------------------------------------------------------------------
+
+TEST_F(EpicsInstructionItemsTest, RPCClientInstruction)
+{
+  RPCClientInstruction item;
+  EXPECT_TRUE(item.GetService().empty());
+  EXPECT_TRUE(item.GetRequestVar().empty());
+  EXPECT_EQ(item.GetTimeout(), 1.0);
+  EXPECT_TRUE(item.GetJsonType().empty());
+  EXPECT_TRUE(item.GetJsonValue().empty());
+  EXPECT_TRUE(item.GetOutput().empty());
+
+  item.SetService("service");
+  EXPECT_EQ(item.GetService(), std::string("service"));
+
+  item.SetRequestVar("request");
+  EXPECT_EQ(item.GetRequestVar(), std::string("request"));
+
+  item.SetTimeout(42.0);
+  EXPECT_EQ(item.GetTimeout(), 42.0);
+
+  item.SetJsonType("json_type");
+  EXPECT_EQ(item.GetJsonType(), std::string("json_type"));
+
+  item.SetJsonValue("json_value");
+  EXPECT_EQ(item.GetJsonValue(), std::string("json_value"));
+
+  item.SetOutput("output");
+  EXPECT_EQ(item.GetOutput(), std::string("output"));
+}
+
+TEST_F(EpicsInstructionItemsTest, RPCClientInstructionFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kRPCClientInstructionType);
+  input->AddAttribute(domainconstants::kServiceAttribute, "service");
+  input->AddAttribute(domainconstants::kRequestAttribute, "request");
+  input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
+  input->AddAttribute(domainconstants::kTypeAttribute, "json_type");
+  input->AddAttribute(domainconstants::kValueAttribute, "json_value");
+  input->AddAttribute(domainconstants::kOutputAttribute, "output");
+
+  RPCClientInstruction item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetService(), std::string("service"));
+  EXPECT_EQ(item.GetRequestVar(), std::string("request"));
+  EXPECT_EQ(item.GetTimeout(), 42.0);
+  EXPECT_EQ(item.GetJsonType(), std::string("json_type"));
+  EXPECT_EQ(item.GetJsonValue(), std::string("json_value"));
+  EXPECT_EQ(item.GetOutput(), std::string("output"));
+}
+
+TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
+{
+  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
+
+  RPCClientInstruction item;
+  item.SetService("service");
+  item.SetRequestVar("request");
+  item.SetTimeout(42.0);
+  item.SetIsRootFlag(true);
+  item.SetJsonType(expected_type);
+  item.SetJsonValue(expected_value);
+  item.SetOutput("output");
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kRPCClientInstructionType);
+
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kServiceAttribute), "service");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRequestAttribute), "request");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTimeoutAttribute), "42.0");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kIsRootAttribute), "true");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kOutputAttribute), "output");
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}

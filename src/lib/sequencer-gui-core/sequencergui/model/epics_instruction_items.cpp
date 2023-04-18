@@ -366,16 +366,6 @@ void RPCClientInstruction::SetupDomainImpl(instruction_t *instruction) const
   instruction->AddAttribute(domainconstants::kOutputAttribute, GetOutput());
 }
 
-std::string RPCClientInstruction::GetRequestVar() const
-{
-  return Property<std::string>(kRequestVar);
-}
-
-void RPCClientInstruction::SetRequestVar(const std::string &value)
-{
-  SetProperty(kRequestVar, value);
-}
-
 std::string RPCClientInstruction::GetService() const
 {
   return Property<std::string>(kServiceName);
@@ -384,6 +374,16 @@ std::string RPCClientInstruction::GetService() const
 void RPCClientInstruction::SetService(const std::string &value)
 {
   SetProperty(kServiceName, value);
+}
+
+std::string RPCClientInstruction::GetRequestVar() const
+{
+  return Property<std::string>(kRequestVar);
+}
+
+void RPCClientInstruction::SetRequestVar(const std::string &value)
+{
+  SetProperty(kRequestVar, value);
 }
 
 double RPCClientInstruction::GetTimeout() const

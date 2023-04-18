@@ -156,13 +156,13 @@ public:
 
   std::string GetDomainType() const override;
 
-  std::string GetRequestVar() const;
-
-  void SetRequestVar(const std::string& value);
-
   std::string GetService() const;
 
   void SetService(const std::string& value);
+
+  std::string GetRequestVar() const;
+
+  void SetRequestVar(const std::string& value);
 
   double GetTimeout() const;
 
