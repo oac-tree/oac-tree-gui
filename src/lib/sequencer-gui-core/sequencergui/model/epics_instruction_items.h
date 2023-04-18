@@ -27,31 +27,87 @@
 namespace sequencergui
 {
 
-//! Represents ChannelAccessReadInstruction.
-class ChannelAccessReadInstructionItem : public InstructionItem
+//! Base for CA/PV read instructions.
+class EpicsReadInstructionItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "ChannelAccessRead";
-
   using InstructionItem::InstructionItem;
-  ChannelAccessReadInstructionItem();
+  EpicsReadInstructionItem(const std::string& instruction_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
+  std::string GetVariableName() const;
+
+  void SetVariableName(const std::string& value);
+
+  std::string GetChannel() const;
+
+  void SetChannel(const std::string& value);
+
+  double GetTimeout() const;
+
+  void SetTimeout(double value);
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Base for CA/PV read instructions..
+class EpicsWriteInstructionItem : public InstructionItem
+{
+public:
+  using InstructionItem::InstructionItem;
+  EpicsWriteInstructionItem(const std::string& instruction_type);
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetVariableName() const;
+
+  void SetVariableName(const std::string& value);
+
+  std::string GetChannel() const;
+
+  void SetChannel(const std::string& value);
+
+  double GetTimeout() const;
+
+  void SetTimeout(double value);
+
+  std::string GetJsonType() const;
+
+  void SetJsonType(const std::string& value);
+
+  std::string GetJsonValue() const;
+
+  void SetJsonValue(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
+//! Represents ChannelAccessReadInstruction.
+class ChannelAccessReadInstructionItem : public EpicsReadInstructionItem
+{
+public:
+  static inline const std::string Type = "ChannelAccessRead";
+
+  using EpicsReadInstructionItem::EpicsReadInstructionItem;
+  ChannelAccessReadInstructionItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+};
+
 //! Represents ChannelAccessWriteInstruction.
-class ChannelAccessWriteInstructionItem : public InstructionItem
+class ChannelAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
   static inline const std::string Type = "ChannelAccessWrite";
 
-  using InstructionItem::InstructionItem;
+  using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   ChannelAccessWriteInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -64,12 +120,12 @@ private:
 };
 
 //! Represents PVAccessReadInstruction.
-class PVAccessReadInstructionItem : public InstructionItem
+class PVAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
   static inline const std::string Type = "ChannelAccessRead";
 
-  using InstructionItem::InstructionItem;
+  using EpicsReadInstructionItem::EpicsReadInstructionItem;
   PVAccessReadInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -82,12 +138,12 @@ private:
 };
 
 //! Represents PVAccessWriteInstruction.
-class PVAccessWriteInstructionItem : public InstructionItem
+class PVAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
   static inline const std::string Type = "ChannelAccessRead";
 
-  using InstructionItem::InstructionItem;
+  using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   PVAccessWriteInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;

@@ -19,6 +19,7 @@
 
 #include "epics_instruction_items.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
@@ -27,14 +28,210 @@
 
 #include <sup/sequencer/instruction.h>
 
+namespace
+{
+const std::string kVariableName = "kVariableName";
+const std::string kChannel = "kChannel";
+const std::string kTimeout = "kTimeout";
+const std::string kJsonType = "kJsonType";
+const std::string kJsonValue = "kJsonValue";
+}  // namespace
+
 namespace sequencergui
 {
+
+// ----------------------------------------------------------------------------
+// EpicsReadInstructionItem
+// ----------------------------------------------------------------------------
+
+EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instruction_type)
+    : InstructionItem(instruction_type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+  AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
+}
+
+std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone(bool make_unique_id) const
+{
+  (void)make_unique_id;
+  // This base is not intended to be used directly
+  throw NotImplementedException("Clone for EpicsReadInstructionItem is not implemented");
+}
+
+void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kChannelAttribute))
+  {
+    SetChannel(instruction->GetAttribute(domainconstants::kChannelAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
+  {
+    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+  }
+}
+
+void EpicsReadInstructionItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(domainconstants::kVarNameAttribute, GetVariableName());
+  instruction->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
+                            mvvm::utils::DoubleToString(GetTimeout()));
+}
+
+std::string EpicsReadInstructionItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void EpicsReadInstructionItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
+}
+
+std::string EpicsReadInstructionItem::GetChannel() const
+{
+  return Property<std::string>(kChannel);
+}
+
+void EpicsReadInstructionItem::SetChannel(const std::string &value)
+{
+  SetProperty(kChannel, value);
+}
+
+double EpicsReadInstructionItem::GetTimeout() const
+{
+  return Property<double>(kTimeout);
+}
+
+void EpicsReadInstructionItem::SetTimeout(double value)
+{
+  SetProperty(kTimeout, value);
+}
+
+// ----------------------------------------------------------------------------
+// EpicsWriteInstructionItem
+// ----------------------------------------------------------------------------
+
+EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruction_type)
+    : InstructionItem(instruction_type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+  AddProperty(kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
+  AddProperty(kJsonType, std::string())->SetDisplayName("JSON type");
+  AddProperty(kJsonValue, std::string())->SetDisplayName("JSON value");
+}
+
+std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_unique_id) const
+{
+  (void)make_unique_id;
+  // This base is not intended to be used directly
+  throw NotImplementedException("Clone for EpicsReadInstructionItem is not implemented");
+}
+
+void EpicsWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kChannelAttribute))
+  {
+    SetChannel(instruction->GetAttribute(domainconstants::kChannelAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
+  {
+    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kTypeAttribute))
+  {
+    SetJsonType(instruction->GetAttribute(domainconstants::kTypeAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kValueAttribute))
+  {
+    SetJsonValue(instruction->GetAttribute(domainconstants::kValueAttribute));
+  }
+}
+
+void EpicsWriteInstructionItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  instruction->AddAttribute(domainconstants::kVarNameAttribute, GetVariableName());
+  instruction->AddAttribute(domainconstants::kChannelAttribute, GetChannel());
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute,
+                            mvvm::utils::DoubleToString(GetTimeout()));
+  instruction->AddAttribute(domainconstants::kTypeAttribute, GetJsonType());
+  instruction->AddAttribute(domainconstants::kValueAttribute, GetJsonValue());
+}
+
+std::string EpicsWriteInstructionItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void EpicsWriteInstructionItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
+}
+
+std::string EpicsWriteInstructionItem::GetChannel() const
+{
+  return Property<std::string>(kChannel);
+}
+
+void EpicsWriteInstructionItem::SetChannel(const std::string &value)
+{
+  SetProperty(kChannel, value);
+}
+
+double EpicsWriteInstructionItem::GetTimeout() const
+{
+  return Property<double>(kTimeout);
+}
+
+void EpicsWriteInstructionItem::SetTimeout(double value)
+{
+  SetProperty(kTimeout, value);
+}
+
+std::string EpicsWriteInstructionItem::GetJsonType() const
+{
+  return Property<std::string>(kJsonType);
+}
+
+void EpicsWriteInstructionItem::SetJsonType(const std::string &value)
+{
+  SetProperty(kJsonType, value);
+}
+
+std::string EpicsWriteInstructionItem::GetJsonValue() const
+{
+  return Property<std::string>(kJsonValue);
+}
+
+void EpicsWriteInstructionItem::SetJsonValue(const std::string &value)
+{
+  SetProperty(kJsonValue, value);
+}
 
 // ----------------------------------------------------------------------------
 // ChannelAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-ChannelAccessReadInstructionItem::ChannelAccessReadInstructionItem() : InstructionItem(Type) {}
+ChannelAccessReadInstructionItem::ChannelAccessReadInstructionItem()
+    : EpicsReadInstructionItem(Type)
+{
+}
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone(
     bool make_unique_id) const
@@ -46,16 +243,14 @@ std::string ChannelAccessReadInstructionItem::GetDomainType() const
 {
   return domainconstants::kChannelAccessReadInstructionType;
 }
-
-void ChannelAccessReadInstructionItem::InitFromDomainImpl(const instruction_t *instruction) {}
-
-void ChannelAccessReadInstructionItem::SetupDomainImpl(instruction_t *instruction) const {}
-
 // ----------------------------------------------------------------------------
 // ChannelAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-ChannelAccessWriteInstructionItem::ChannelAccessWriteInstructionItem() : InstructionItem(Type) {}
+ChannelAccessWriteInstructionItem::ChannelAccessWriteInstructionItem()
+    : EpicsWriteInstructionItem(Type)
+{
+}
 
 std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone(
     bool make_unique_id) const
@@ -68,15 +263,13 @@ std::string ChannelAccessWriteInstructionItem::GetDomainType() const
   return domainconstants::kChannelAccessWriteInstructionType;
 }
 
-void ChannelAccessWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruction) {}
-
-void ChannelAccessWriteInstructionItem::SetupDomainImpl(instruction_t *instruction) const {}
-
 // ----------------------------------------------------------------------------
 // PVAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-PVAccessReadInstructionItem::PVAccessReadInstructionItem() : InstructionItem(Type) {}
+PVAccessReadInstructionItem::PVAccessReadInstructionItem() : EpicsReadInstructionItem(Type)
+{
+}
 
 std::unique_ptr<mvvm::SessionItem> PVAccessReadInstructionItem::Clone(bool make_unique_id) const
 {
@@ -88,15 +281,11 @@ std::string PVAccessReadInstructionItem::GetDomainType() const
   return domainconstants::kPVAccessReadInstructionType;
 }
 
-void PVAccessReadInstructionItem::InitFromDomainImpl(const instruction_t *instruction) {}
-
-void PVAccessReadInstructionItem::SetupDomainImpl(instruction_t *instruction) const {}
-
 // ----------------------------------------------------------------------------
 // PVAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-PVAccessWriteInstructionItem::PVAccessWriteInstructionItem() : InstructionItem(Type) {}
+PVAccessWriteInstructionItem::PVAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> PVAccessWriteInstructionItem::Clone(bool make_unique_id) const
 {
@@ -107,10 +296,6 @@ std::string PVAccessWriteInstructionItem::GetDomainType() const
 {
   return domainconstants::kPVAccessWriteInstructionType;
 }
-
-void PVAccessWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruction) {}
-
-void PVAccessWriteInstructionItem::SetupDomainImpl(instruction_t *instruction) const {}
 
 // ----------------------------------------------------------------------------
 // RPCClientInstruction
