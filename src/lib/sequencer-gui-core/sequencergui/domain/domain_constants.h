@@ -67,20 +67,20 @@ const std::string kFailureThresholdAttribute = "failureThreshold";
 const std::string kFileAttribute = "fileName";
 const std::string kInputAttribute = "input";
 const std::string kIsRootAttribute = "isRoot";
+const std::string kLeftHandAttribute = "lhs";
 const std::string kMaxCountAttribute = "maxCount";
 const std::string kNameAttribute = "name";
 const std::string kOutputAttribute = "output";
 const std::string kPathAttribute = "path";
+const std::string kRightHandAttribute = "rhs";
 const std::string kSuccessThresholdAttribute = "successThreshold";
 const std::string kTextAttribute = "text";
 const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTypeAttribute = "type";
 const std::string kValueAttribute = "value";
-const std::string kLeftHandAttribute = "lhs";
-const std::string kRightHandAttribute = "rhs";
+const std::string kVarNameAttribute = "varName";
 
 // attributes (instruction specific)
-const std::string kConditionVarNameAttribute = "varName";
 const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
 const std::string kWaitTimeoutAttribute = "timeout";

@@ -52,15 +52,15 @@ std::string ConditionItem::GetDomainType() const
 
 void ConditionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (instruction->HasAttribute(domainconstants::kConditionVarNameAttribute))
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kConditionVarNameAttribute));
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
   }
 }
 
 void ConditionItem::SetupDomainImpl(instruction_t *instruction) const
 {
-  instruction->AddAttribute(domainconstants::kConditionVarNameAttribute, GetVariableName());
+  instruction->AddAttribute(domainconstants::kVarNameAttribute, GetVariableName());
 }
 
 std::string ConditionItem::GetVariableName() const

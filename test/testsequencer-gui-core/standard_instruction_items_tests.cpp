@@ -57,7 +57,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItem)
 TEST_F(StandardInstructionItemsTest, ConditionItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kConditionInstructionType);
-  input->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
+  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
   input->AddAttribute(domainconstants::kIsRootAttribute, "true");
 
   ConditionItem item;
@@ -75,7 +75,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kIsRootAttribute), "true");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
@@ -746,16 +746,16 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
 {
   auto domain_item = CreateDomainInstruction(domainconstants::kConditionInstructionType);
-  domain_item->AddAttribute(domainconstants::kConditionVarNameAttribute, "abc");
+  domain_item->AddAttribute(domainconstants::kVarNameAttribute, "abc");
 
   // from domain
   UnknownInstructionItem item;
   item.InitFromDomain(domain_item.get());
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kConditionVarNameAttribute),
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kVarNameAttribute),
             std::string("abc"));
 
   // to domain
   auto new_domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kConditionVarNameAttribute), "abc");
+  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
 }
