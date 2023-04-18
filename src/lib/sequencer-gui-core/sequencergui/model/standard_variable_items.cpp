@@ -22,7 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/transform/variable_transform_helper.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <sup/sequencer/variable.h>
 

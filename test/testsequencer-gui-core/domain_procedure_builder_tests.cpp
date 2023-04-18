@@ -19,6 +19,7 @@
 
 #include "sequencergui/transform/domain_procedure_builder.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -26,9 +27,8 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/core/exceptions.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
-#include <sequencergui/transform/variable_transform_helper.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/sessionitem.h>
 

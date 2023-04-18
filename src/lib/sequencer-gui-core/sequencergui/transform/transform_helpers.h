@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_
+#ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
+#define SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
 
 //! Collection of helper functions to transform VariableItem to/from domain.
 
@@ -64,4 +64,4 @@ void SetJsonValueAttribute(const VariableItem& item, variable_t& variable);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_VARIABLE_TRANSFORM_HELPER_H_
+#endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
