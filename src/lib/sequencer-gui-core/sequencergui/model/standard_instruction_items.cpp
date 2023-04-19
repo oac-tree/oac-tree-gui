@@ -28,13 +28,31 @@
 
 #include <sup/sequencer/instruction.h>
 
+namespace
+{
+const std::string kInput = "kInput";
+const std::string kOutput = "kOutput";
+const std::string kLeftHandSide = "kLeftHandSide";
+const std::string kRightHandSide = "kRightHandSide";
+const std::string kVariableName = "kVariableName";
+const std::string kFile = "kFile";
+const std::string kPath = "kPath";
+const std::string kTarget = "kTarget";
+const std::string kForceSuccess = "kForceSuccess";
+const std::string kVarNames = "kVarNames";
+const std::string kText = "kText";
+const std::string kSuccessThreshold = "kSuccessThreshold";
+const std::string kFailureThreshold = "kFailureThreshold";
+const std::string kSource = "kSource";
+const std::string kMaxCount = "kRepeatCount";
+const std::string kTimeout = "kTimeout";
+}  // namespace
+
 namespace sequencergui
 {
 // ----------------------------------------------------------------------------
 // ConditionItem
 // ----------------------------------------------------------------------------
-
-static inline const std::string kVariableName = "kVariableName";
 
 ConditionItem::ConditionItem() : InstructionItem(Type)
 {
@@ -77,8 +95,6 @@ void ConditionItem::SetVariableName(const std::string &value)
 // ----------------------------------------------------------------------------
 // CopyItem
 // ----------------------------------------------------------------------------
-static inline const std::string kInput = "kInput";
-static inline const std::string kOutput = "kOutput";
 
 CopyItem::CopyItem() : InstructionItem(Type)
 {
@@ -140,9 +156,6 @@ void CopyItem::SetOutput(const std::string &value)
 // ----------------------------------------------------------------------------
 // EqualsItem
 // ----------------------------------------------------------------------------
-
-static inline const std::string kLeftHandSide = "kLeftHandSide";
-static inline const std::string kRightHandSide = "kRightHandSide";
 
 EqualsItem::EqualsItem() : InstructionItem(Type)
 {
@@ -257,9 +270,6 @@ void ForceSuccessItem::SetupDomainImpl(instruction_t *instruction) const
 // IncludeItem
 // ----------------------------------------------------------------------------
 
-static inline const std::string kFile = "kFile";
-static inline const std::string kPath = "kPath";
-
 IncludeItem::IncludeItem() : InstructionItem(Type)
 {
   AddProperty(kFile, std::string())->SetDisplayName("File name");
@@ -319,7 +329,6 @@ void IncludeItem::SetPath(const std::string &value)
 // ----------------------------------------------------------------------------
 // InputItem
 // ----------------------------------------------------------------------------
-static inline const std::string kTarget = "kTarget";
 
 InputItem::InputItem() : InstructionItem(Type)
 {
@@ -409,8 +418,6 @@ void InverterItem::SetupDomainImpl(instruction_t *instruction) const
 // ----------------------------------------------------------------------------
 // ListenItem
 // ----------------------------------------------------------------------------
-static inline const std::string kForceSuccess = "kForceSuccess";
-static inline const std::string kVarNames = "kVarNames";
 
 ListenItem::ListenItem() : InstructionItem(Type)
 {
@@ -474,8 +481,6 @@ void ListenItem::SetupDomainImpl(instruction_t *instruction) const
 // MessageItem
 // ----------------------------------------------------------------------------
 
-static inline const std::string kText = "kText";
-
 MessageItem::MessageItem() : InstructionItem(Type)
 {
   AddProperty(kText, std::string())->SetDisplayName("text");
@@ -517,8 +522,6 @@ void MessageItem::SetText(const std::string &value)
 // ----------------------------------------------------------------------------
 // OutputItem
 // ----------------------------------------------------------------------------
-
-static inline const std::string kSource = "kSource";
 
 OutputItem::OutputItem() : InstructionItem(Type)
 {
@@ -579,9 +582,6 @@ void OutputItem::SetDescription(const std::string &value)
 // ----------------------------------------------------------------------------
 // ParallelSequenceItem
 // ----------------------------------------------------------------------------
-
-static inline const std::string kSuccessThreshold = "kSuccessThreshold";
-static inline const std::string kFailureThreshold = "kFailureThreshold";
 
 ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
@@ -652,7 +652,6 @@ void ParallelSequenceItem::SetFailureThreshold(int value)
 // ----------------------------------------------------------------------------
 // RepeatItem
 // ----------------------------------------------------------------------------
-static inline const std::string kMaxCount = "kRepeatCount";
 
 RepeatItem::RepeatItem() : InstructionItem(Type)
 {
@@ -768,9 +767,50 @@ void UserChoiceItem::SetupDomainImpl(instruction_t *instruction) const
 }
 
 // ----------------------------------------------------------------------------
+// VariableResetItem
+// ----------------------------------------------------------------------------
+
+VariableResetItem::VariableResetItem() : InstructionItem(Type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+}
+
+std::unique_ptr<mvvm::SessionItem> VariableResetItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<VariableResetItem>(*this, make_unique_id);
+}
+
+std::string VariableResetItem::GetDomainType() const
+{
+  return domainconstants::kVariableResetType;
+}
+
+void VariableResetItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+  }
+}
+
+void VariableResetItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
+}
+
+std::string VariableResetItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void VariableResetItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
+}
+
+// ----------------------------------------------------------------------------
 // WaitItem
 // ----------------------------------------------------------------------------
-static inline const std::string kTimeout = "kTimeout";
 
 WaitItem::WaitItem() : InstructionItem(Type)
 {

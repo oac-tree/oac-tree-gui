@@ -38,13 +38,13 @@ class DomainUtilsTest : public ::testing::Test
 
 TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 {
-  std::vector<std::string> domain_types = {
+  const std::vector<std::string> domain_types = {
       kConditionInstructionType, kCopyInstructionType,         kEqualsInstructionType,
       kFallbackInstructionType,  kForceSuccessInstructionType, kIncludeInstructionType,
       kInputInstructionType,     kInverterInstructionType,     kListenInstructionType,
       kMessageInstructionType,   kOutputInstructionType,       kParallelInstructionType,
       kRepeatInstructionType,    kSequenceInstructionType,     kUserChoiceInstructionType,
-      kWaitInstructionType};
+      kVariableResetType,        kWaitInstructionType};
 
   for (const auto& domain_type : domain_types)
   {
@@ -62,13 +62,13 @@ TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainInstructionTypeConstants)
     GTEST_SKIP();
   }
 
-  std::vector<std::string> domain_types = {kChannelAccessReadInstructionType,
-                                           kChannelAccessWriteInstructionType,
-                                           kPvAccessReadInstructionType,
-                                           kPvAccessWriteInstructionType,
-                                           kRPCClientInstructionType,
-                                           kSystemCallInstructionType,
-                                           kLogInstructionType};
+  const std::vector<std::string> domain_types = {kChannelAccessReadInstructionType,
+                                                 kChannelAccessWriteInstructionType,
+                                                 kPvAccessReadInstructionType,
+                                                 kPvAccessWriteInstructionType,
+                                                 kRPCClientInstructionType,
+                                                 kSystemCallInstructionType,
+                                                 kLogInstructionType};
   for (const auto& domain_type : domain_types)
   {
     EXPECT_EQ(CreateDomainInstruction(domain_type)->GetType(), domain_type);

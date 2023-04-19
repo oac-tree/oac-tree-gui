@@ -79,6 +79,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<SequenceItem>();
   result->RegisterItem<UnknownInstructionItem>();
   result->RegisterItem<UserChoiceItem>();
+  result->RegisterItem<VariableResetItem>();
   result->RegisterItem<WaitItem>();
 
   // sequencer-plugin-epics instructions

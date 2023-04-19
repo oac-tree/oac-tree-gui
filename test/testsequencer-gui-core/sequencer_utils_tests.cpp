@@ -97,6 +97,7 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<SequenceItem>());
   EXPECT_TRUE(IsCloneImplemented<UnknownInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
+  EXPECT_TRUE(IsCloneImplemented<VariableResetItem>());
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
 
   // instructions from sup-sequencer-plugin-epics

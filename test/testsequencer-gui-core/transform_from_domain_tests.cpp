@@ -88,6 +88,7 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(RepeatItem::Type, GetItemType(domainconstants::kRepeatInstructionType));
   EXPECT_EQ(SequenceItem::Type, GetItemType(domainconstants::kSequenceInstructionType));
   EXPECT_EQ(UserChoiceItem::Type, GetItemType(domainconstants::kUserChoiceInstructionType));
+  EXPECT_EQ(VariableResetItem::Type, GetItemType(domainconstants::kVariableResetType));
   EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
 
   // instructions from sequencer-plugin-epics
@@ -174,6 +175,8 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       domainconstants::kSequenceInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::UserChoiceItem>(
       domainconstants::kUserChoiceInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::VariableResetItem>(
+      domainconstants::kVariableResetType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::WaitItem>(domainconstants::kWaitInstructionType));
 }

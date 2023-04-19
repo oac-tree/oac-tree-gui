@@ -739,6 +739,44 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
 
+// ----------------------------------------------------------------------------
+// VariableResetItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, VariableResetItem)
+{
+  VariableResetItem item;
+  EXPECT_TRUE(item.GetVariableName().empty());
+
+  item.SetVariableName("abc");
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, VariableResetItemFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kVariableResetType);
+  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
+
+  VariableResetItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, VariableResetItemToDomain)
+{
+  VariableResetItem item;
+  item.SetVariableName("abc");
+  item.SetIsRootFlag(true);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kVariableResetType);
+
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
 //! UnknownInstructionItem tests.
 //! Here we pretend that Condition insrtuction is uknown for a GUI, and check how
 //! UnknownInstructionItem behaves on the way from/to domain.
@@ -751,8 +789,7 @@ TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
   // from domain
   UnknownInstructionItem item;
   item.InitFromDomain(domain_item.get());
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kVarNameAttribute),
-            std::string("abc"));
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kVarNameAttribute), std::string("abc"));
 
   // to domain
   auto new_domain_item = item.CreateDomainInstruction();

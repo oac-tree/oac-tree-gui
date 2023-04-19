@@ -44,6 +44,7 @@ const std::string kParallelInstructionType = "ParallelSequence";
 const std::string kRepeatInstructionType = "Repeat";
 const std::string kSequenceInstructionType = "Sequence";
 const std::string kUserChoiceInstructionType = "UserChoice";
+const std::string kVariableResetType = "ResetVariable";
 const std::string kWaitInstructionType = "Wait";
 
 // sup-sequencer-plughin-epics instructions
