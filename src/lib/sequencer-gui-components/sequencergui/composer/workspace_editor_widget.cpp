@@ -80,17 +80,6 @@ void WorkspaceEditorWidget::SetupActions()
   m_insert_after_action->setDefaultWidget(insert_after_button);
   addAction(m_insert_after_action);
 
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  remove_button->setToolTip("Remove currently selected variable");
-  connect(remove_button, &QToolButton::clicked, this,
-          &WorkspaceEditorWidget::RemoveSelectedRequest);
-  m_insert_after_action = new QWidgetAction(this);
-  m_insert_after_action->setDefaultWidget(remove_button);
-  addAction(m_insert_after_action);
-
   auto edit_anyvalue_button = new QToolButton;
   edit_anyvalue_button->setText("Edit");
   edit_anyvalue_button->setIcon(styleutils::GetIcon("file-tree-outline.svg"));
@@ -101,6 +90,17 @@ void WorkspaceEditorWidget::SetupActions()
   m_edit_anyvalue_action = new QWidgetAction(this);
   m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
   addAction(m_edit_anyvalue_action);
+
+  auto remove_button = new QToolButton;
+  remove_button->setText("Remove");
+  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline.svg"));
+  remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  remove_button->setToolTip("Remove currently selected variable");
+  connect(remove_button, &QToolButton::clicked, this,
+          &WorkspaceEditorWidget::RemoveSelectedRequest);
+  m_insert_after_action = new QWidgetAction(this);
+  m_insert_after_action->setDefaultWidget(remove_button);
+  addAction(m_insert_after_action);
 }
 
 //! Creates menu to insert Variables in a workspace.
