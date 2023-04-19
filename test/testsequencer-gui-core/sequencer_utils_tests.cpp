@@ -99,6 +99,14 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
 
+  // instructions from sup-sequencer-plugin-epics
+  EXPECT_TRUE(IsCloneImplemented<ChannelAccessReadInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<ChannelAccessWriteInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<PvAccessReadInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<PvAccessWriteInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<RPCClientInstruction>());
+  EXPECT_TRUE(IsCloneImplemented<SystemCallInstructionItem>());
+
   // variables
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());

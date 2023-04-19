@@ -111,6 +111,8 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::PvAccessWriteInstructionItem>);
   result->RegisterItem(sequencergui::domainconstants::kRPCClientInstructionType,
                        ItemFactoryFunction<sequencergui::RPCClientInstruction>);
+  result->RegisterItem(sequencergui::domainconstants::kSystemCallInstructionType,
+                       ItemFactoryFunction<sequencergui::SystemCallInstructionItem>);
 
   return result;
 }

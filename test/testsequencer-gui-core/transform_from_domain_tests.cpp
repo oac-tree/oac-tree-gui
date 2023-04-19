@@ -90,12 +90,26 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(UserChoiceItem::Type, GetItemType(domainconstants::kUserChoiceInstructionType));
   EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
 
+  // instructions from sequencer-plugin-epics
+  EXPECT_EQ(ChannelAccessReadInstructionItem::Type,
+            GetItemType(domainconstants::kChannelAccessReadInstructionType));
+  EXPECT_EQ(ChannelAccessWriteInstructionItem::Type,
+            GetItemType(domainconstants::kChannelAccessWriteInstructionType));
+  EXPECT_EQ(PvAccessReadInstructionItem::Type,
+            GetItemType(domainconstants::kPvAccessReadInstructionType));
+  EXPECT_EQ(PvAccessWriteInstructionItem::Type,
+            GetItemType(domainconstants::kPvAccessWriteInstructionType));
+  EXPECT_EQ(RPCClientInstruction::Type, GetItemType(domainconstants::kRPCClientInstructionType));
+  EXPECT_EQ(SystemCallInstructionItem::Type,
+            GetItemType(domainconstants::kSystemCallInstructionType));
+
   // for variables
   EXPECT_EQ(ChannelAccessVariableItem::Type,
             GetItemType(domainconstants::kChannelAccessVariableType));
   EXPECT_EQ(FileVariableItem::Type, GetItemType(domainconstants::kFileVariableType));
   EXPECT_EQ(LocalVariableItem::Type, GetItemType(domainconstants::kLocalVariableType));
-  EXPECT_EQ(PvAccessClientVariableItem::Type, GetItemType(domainconstants::kPvAccessClientVariableType));
+  EXPECT_EQ(PvAccessClientVariableItem::Type,
+            GetItemType(domainconstants::kPvAccessClientVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
@@ -182,6 +196,8 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
       domainconstants::kPvAccessWriteInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RPCClientInstruction>(
       domainconstants::kRPCClientInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SystemCallInstructionItem>(
+      domainconstants::kSystemCallInstructionType));
 }
 
 TEST_F(TransformFromDomainTest, CreateUnknownInstructionItem)
