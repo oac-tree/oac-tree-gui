@@ -134,7 +134,7 @@ bool IsInstructionTypeAvailable(const std::string& domain_type)
 
 bool IsSequencerPluginEpicsAvailable()
 {
-  return IsVariableTypeAvailable(domainconstants::kPVServerVariableType);  // simplified check
+  return IsVariableTypeAvailable(domainconstants::kPvAccessServerVariableType);  // simplified check
 }
 
 //! Loads codac plugins.

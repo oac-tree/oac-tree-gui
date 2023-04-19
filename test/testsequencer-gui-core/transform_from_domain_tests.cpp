@@ -95,7 +95,7 @@ TEST_F(TransformFromDomainTest, GetItemType)
             GetItemType(domainconstants::kChannelAccessVariableType));
   EXPECT_EQ(FileVariableItem::Type, GetItemType(domainconstants::kFileVariableType));
   EXPECT_EQ(LocalVariableItem::Type, GetItemType(domainconstants::kLocalVariableType));
-  EXPECT_EQ(PvAccessClientVariableItem::Type, GetItemType(domainconstants::kPVClientVariableType));
+  EXPECT_EQ(PvAccessClientVariableItem::Type, GetItemType(domainconstants::kPvAccessClientVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
@@ -120,9 +120,9 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateVariableItem)
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
       domainconstants::kChannelAccessVariableType));
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessClientVariableItem>(
-      domainconstants::kPVClientVariableType));
+      domainconstants::kPvAccessClientVariableType));
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessServerVariableItem>(
-      domainconstants::kPVServerVariableType));
+      domainconstants::kPvAccessServerVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.

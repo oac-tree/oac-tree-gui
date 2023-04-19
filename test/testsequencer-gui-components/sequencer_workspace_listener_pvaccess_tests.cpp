@@ -59,7 +59,7 @@ public:
   std::unique_ptr<sup::sequencer::Variable> CreateServerVariable(const std::string& channel_name,
                                                                  const sup::dto::AnyValue& anyvalue)
   {
-    auto result = CreateDomainVariable(domainconstants::kPVServerVariableType);
+    auto result = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
     result->AddAttribute("channel", channel_name);
     result->AddAttribute("type", sup::gui::AnyTypeToJSONString(anyvalue));
     return result;

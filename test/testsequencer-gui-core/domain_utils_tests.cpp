@@ -95,8 +95,8 @@ TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainVariableTypeConstants)
     GTEST_SKIP();
   }
 
-  std::vector<std::string> domain_types = {kChannelAccessVariableType, kPVClientVariableType,
-                                           kPVServerVariableType};
+  std::vector<std::string> domain_types = {kChannelAccessVariableType, kPvAccessClientVariableType,
+                                           kPvAccessServerVariableType};
 
   for (const auto& domain_type : domain_types)
   {

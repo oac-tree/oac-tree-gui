@@ -187,7 +187,7 @@ PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableIt
 
 std::string PvAccessClientVariableItem::GetDomainType() const
 {
-  return domainconstants::kPVClientVariableType;
+  return domainconstants::kPvAccessClientVariableType;
 }
 
 void PvAccessClientVariableItem::SetupDomainImpl(variable_t *variable) const
@@ -209,7 +209,7 @@ PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableIt
 
 std::string PvAccessServerVariableItem::GetDomainType() const
 {
-  return domainconstants::kPVServerVariableType;
+  return domainconstants::kPvAccessServerVariableType;
 }
 
 void PvAccessServerVariableItem::SetupDomainImpl(variable_t *variable) const

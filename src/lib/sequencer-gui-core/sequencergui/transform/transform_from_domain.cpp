@@ -52,9 +52,9 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableI
                        ItemFactoryFunction<sequencergui::FileVariableItem>);
   result->RegisterItem(sequencergui::domainconstants::kChannelAccessVariableType,
                        ItemFactoryFunction<sequencergui::ChannelAccessVariableItem>);
-  result->RegisterItem(sequencergui::domainconstants::kPVClientVariableType,
+  result->RegisterItem(sequencergui::domainconstants::kPvAccessClientVariableType,
                        ItemFactoryFunction<sequencergui::PvAccessClientVariableItem>);
-  result->RegisterItem(sequencergui::domainconstants::kPVServerVariableType,
+  result->RegisterItem(sequencergui::domainconstants::kPvAccessServerVariableType,
                        ItemFactoryFunction<sequencergui::PvAccessServerVariableItem>);
 
   return result;

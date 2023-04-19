@@ -332,7 +332,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
 
-  auto pv_variable = CreateDomainVariable(domainconstants::kPVClientVariableType);
+  auto pv_variable = CreateDomainVariable(domainconstants::kPvAccessClientVariableType);
   pv_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
@@ -376,7 +376,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVClientVariableType);
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessClientVariableType);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
@@ -413,7 +413,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
   const std::string expected_value("42");
 
-  auto pvxs_variable = CreateDomainVariable(domainconstants::kPVServerVariableType);
+  auto pvxs_variable = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
   pvxs_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   pvxs_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
@@ -460,7 +460,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVServerVariableType);
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessServerVariableType);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), expected_channel);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_datatype);
