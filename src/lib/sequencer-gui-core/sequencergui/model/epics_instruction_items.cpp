@@ -31,14 +31,15 @@
 
 namespace
 {
-const std::string kVariableName = "kVariableName";
 const std::string kChannel = "kChannel";
-const std::string kTimeout = "kTimeout";
+const std::string kCommand = "kCommand";
 const std::string kJsonType = "kJsonType";
 const std::string kJsonValue = "kJsonValue";
-const std::string kServiceName = "kServiceName";
-const std::string kRequestVar = "kRequestVar";
 const std::string kOutput = "kOutput";
+const std::string kRequestVar = "kRequestVar";
+const std::string kServiceName = "kServiceName";
+const std::string kTimeout = "kTimeout";
+const std::string kVariableName = "kVariableName";
 }  // namespace
 
 namespace sequencergui
@@ -425,6 +426,48 @@ std::string RPCClientInstruction::GetOutput() const
 void RPCClientInstruction::SetOutput(const std::string &value)
 {
   SetProperty(kOutput, value);
+}
+
+// ----------------------------------------------------------------------------
+// SystemCallInstructionItem
+// ----------------------------------------------------------------------------
+
+SystemCallInstructionItem::SystemCallInstructionItem() : InstructionItem(Type)
+{
+  AddProperty(kCommand, std::string())->SetDisplayName("Command");
+}
+
+std::unique_ptr<mvvm::SessionItem> SystemCallInstructionItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<SystemCallInstructionItem>(*this, make_unique_id);
+}
+
+std::string SystemCallInstructionItem::GetDomainType() const
+{
+  return domainconstants::kSystemCallInstructionType;
+}
+
+void SystemCallInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kCommandAttribute))
+  {
+    SetCommand(instruction->GetAttribute(domainconstants::kCommandAttribute));
+  }
+}
+
+void SystemCallInstructionItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  AddNonEmptyAttribute(domainconstants::kCommandAttribute, GetCommand(), *instruction);
+}
+
+std::string SystemCallInstructionItem::GetCommand() const
+{
+  return Property<std::string>(kCommand);
+}
+
+void SystemCallInstructionItem::SetCommand(const std::string &value)
+{
+  SetProperty(kCommand, value);
 }
 
 }  // namespace sequencergui

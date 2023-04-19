@@ -25,12 +25,12 @@
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>

@@ -52,6 +52,8 @@ const std::string kChannelAccessWriteInstructionType = "ChannelAccessWrite";
 const std::string kPvAccessReadInstructionType = "PvAccessRead";
 const std::string kPvAccessWriteInstructionType = "PvAccessWrite";
 const std::string kRPCClientInstructionType = "RPCClient";
+const std::string kSystemCallInstructionType = "SystemCall";
+const std::string kLogInstructionType = "Log";
 
 // variables
 const std::string kLocalVariableType = "Local";
@@ -82,6 +84,7 @@ const std::string kValueAttribute = "value";
 const std::string kVarNameAttribute = "varName";
 const std::string kServiceAttribute = "service";
 const std::string kRequestAttribute = "requestVar";
+const std::string kCommandAttribute = "command";
 
 // attributes (instruction specific)
 const std::string kInputTargetAttribute = "output";

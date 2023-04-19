@@ -185,6 +185,28 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! SystemCall instruction.
+class SystemCallInstructionItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "SystemCall";
+
+  using InstructionItem::InstructionItem;
+  SystemCallInstructionItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+
+  std::string GetCommand() const;
+
+  void SetCommand(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_EPICS_INSTRUCTION_ITEMS_H_
