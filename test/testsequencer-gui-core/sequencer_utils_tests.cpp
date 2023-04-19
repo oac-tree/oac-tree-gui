@@ -106,6 +106,7 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<PvAccessWriteInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<RPCClientInstruction>());
   EXPECT_TRUE(IsCloneImplemented<SystemCallInstructionItem>());
+  EXPECT_TRUE(IsCloneImplemented<LogInstructionItem>());
 
   // variables
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());

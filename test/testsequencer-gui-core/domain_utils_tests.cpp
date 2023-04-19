@@ -62,11 +62,13 @@ TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainInstructionTypeConstants)
     GTEST_SKIP();
   }
 
-  std::vector<std::string> domain_types = {
-      kChannelAccessReadInstructionType, kChannelAccessWriteInstructionType,
-      kPvAccessReadInstructionType,      kPvAccessWriteInstructionType,
-      kRPCClientInstructionType,         kSystemCallInstructionType};
-
+  std::vector<std::string> domain_types = {kChannelAccessReadInstructionType,
+                                           kChannelAccessWriteInstructionType,
+                                           kPvAccessReadInstructionType,
+                                           kPvAccessWriteInstructionType,
+                                           kRPCClientInstructionType,
+                                           kSystemCallInstructionType,
+                                           kLogInstructionType};
   for (const auto& domain_type : domain_types)
   {
     EXPECT_EQ(CreateDomainInstruction(domain_type)->GetType(), domain_type);

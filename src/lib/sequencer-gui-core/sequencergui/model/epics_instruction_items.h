@@ -207,6 +207,36 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! LogInstructionItem instruction.
+class LogInstructionItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Log";
+
+  using InstructionItem::InstructionItem;
+  LogInstructionItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+
+  std::string GetMessage() const;
+
+  void SetMessage(const std::string& value);
+
+  std::string GetInput() const;
+
+  void SetInput(const std::string& value);
+
+  std::string GetSeverity() const;
+
+  void SetSeverity(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_EPICS_INSTRUCTION_ITEMS_H_

@@ -102,6 +102,7 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(RPCClientInstruction::Type, GetItemType(domainconstants::kRPCClientInstructionType));
   EXPECT_EQ(SystemCallInstructionItem::Type,
             GetItemType(domainconstants::kSystemCallInstructionType));
+  EXPECT_EQ(LogInstructionItem::Type, GetItemType(domainconstants::kLogInstructionType));
 
   // for variables
   EXPECT_EQ(ChannelAccessVariableItem::Type,

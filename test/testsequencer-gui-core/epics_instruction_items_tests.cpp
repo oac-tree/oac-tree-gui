@@ -458,3 +458,58 @@ TEST_F(EpicsInstructionItemsTest, SystemCallInstructionItemToDomain)
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
+
+// ----------------------------------------------------------------------------
+// LogInstructionItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(EpicsInstructionItemsTest, LogInstructionItem)
+{
+  LogInstructionItem item;
+  EXPECT_TRUE(item.GetMessage().empty());
+  EXPECT_TRUE(item.GetInput().empty());
+  EXPECT_TRUE(item.GetSeverity().empty());
+
+  item.SetMessage("message");
+  EXPECT_EQ(item.GetMessage(), std::string("message"));
+
+  item.SetInput("input");
+  EXPECT_EQ(item.GetInput(), std::string("input"));
+
+  item.SetSeverity("severity");
+  EXPECT_EQ(item.GetSeverity(), std::string("severity"));
+}
+
+TEST_F(EpicsInstructionItemsTest, LogInstructionItemFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kLogInstructionType);
+  input->AddAttribute(domainconstants::kMessageAttribute, "message");
+  input->AddAttribute(domainconstants::kInputAttribute, "input");
+  input->AddAttribute(domainconstants::kSeverityAttribute, "severity");
+
+  LogInstructionItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetMessage(), std::string("message"));
+  EXPECT_EQ(item.GetInput(), std::string("input"));
+  EXPECT_EQ(item.GetSeverity(), std::string("severity"));
+}
+
+TEST_F(EpicsInstructionItemsTest, LogInstructionItemToDomain)
+{
+  LogInstructionItem item;
+  item.SetMessage("message");
+  item.SetInput("input");
+  item.SetSeverity("severity");
+
+  item.SetIsRootFlag(true);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kLogInstructionType);
+
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kMessageAttribute), "message");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInputAttribute), "input");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kSeverityAttribute), "severity");
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}

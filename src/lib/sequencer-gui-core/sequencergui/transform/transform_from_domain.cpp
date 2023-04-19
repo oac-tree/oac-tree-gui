@@ -113,6 +113,8 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::RPCClientInstruction>);
   result->RegisterItem(sequencergui::domainconstants::kSystemCallInstructionType,
                        ItemFactoryFunction<sequencergui::SystemCallInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kLogInstructionType,
+                       ItemFactoryFunction<sequencergui::LogInstructionItem>);
 
   return result;
 }

@@ -85,6 +85,8 @@ const std::string kVarNameAttribute = "varName";
 const std::string kServiceAttribute = "service";
 const std::string kRequestAttribute = "requestVar";
 const std::string kCommandAttribute = "command";
+const std::string kSeverityAttribute = "severity";
+const std::string kMessageAttribute = "message";
 
 // attributes (instruction specific)
 const std::string kInputTargetAttribute = "output";

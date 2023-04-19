@@ -40,6 +40,9 @@ const std::string kRequestVar = "kRequestVar";
 const std::string kServiceName = "kServiceName";
 const std::string kTimeout = "kTimeout";
 const std::string kVariableName = "kVariableName";
+const std::string kMessage = "kMessage";
+const std::string kInput = "kInput";
+const std::string kSeverity = "kSeverity";
 }  // namespace
 
 namespace sequencergui
@@ -468,6 +471,82 @@ std::string SystemCallInstructionItem::GetCommand() const
 void SystemCallInstructionItem::SetCommand(const std::string &value)
 {
   SetProperty(kCommand, value);
+}
+
+// ----------------------------------------------------------------------------
+// LogInstructionItem
+// ----------------------------------------------------------------------------
+
+LogInstructionItem::LogInstructionItem() : InstructionItem(Type)
+{
+  AddProperty(kMessage, std::string())->SetDisplayName("Message");
+  AddProperty(kInput, std::string())->SetDisplayName("Input");
+  AddProperty(kSeverity, std::string())->SetDisplayName("Severity");
+}
+
+std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<LogInstructionItem>(*this, make_unique_id);
+}
+
+std::string LogInstructionItem::GetDomainType() const
+{
+  return domainconstants::kLogInstructionType;
+}
+
+void LogInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kMessageAttribute))
+  {
+    SetMessage(instruction->GetAttribute(domainconstants::kMessageAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kInputAttribute))
+  {
+    SetInput(instruction->GetAttribute(domainconstants::kInputAttribute));
+  }
+
+  if (instruction->HasAttribute(domainconstants::kSeverityAttribute))
+  {
+    SetSeverity(instruction->GetAttribute(domainconstants::kSeverityAttribute));
+  }
+}
+
+void LogInstructionItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  AddNonEmptyAttribute(domainconstants::kMessageAttribute, GetMessage(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kInputAttribute, GetInput(), *instruction);
+  AddNonEmptyAttribute(domainconstants::kSeverityAttribute, GetSeverity(), *instruction);
+}
+
+std::string LogInstructionItem::GetMessage() const
+{
+  return Property<std::string>(kMessage);
+}
+
+void LogInstructionItem::SetMessage(const std::string &value)
+{
+  SetProperty(kMessage, value);
+}
+
+std::string LogInstructionItem::GetInput() const
+{
+  return Property<std::string>(kInput);
+}
+
+void LogInstructionItem::SetInput(const std::string &value)
+{
+  SetProperty(kInput, value);
+}
+
+std::string LogInstructionItem::GetSeverity() const
+{
+  return Property<std::string>(kSeverity);
+}
+
+void LogInstructionItem::SetSeverity(const std::string &value)
+{
+  SetProperty(kSeverity, value);
 }
 
 }  // namespace sequencergui

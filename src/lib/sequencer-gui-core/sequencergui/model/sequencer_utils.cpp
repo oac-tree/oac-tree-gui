@@ -88,6 +88,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<PvAccessWriteInstructionItem>();
   result->RegisterItem<RPCClientInstruction>();
   result->RegisterItem<SystemCallInstructionItem>();
+  result->RegisterItem<LogInstructionItem>();
 
   // variables
   result->RegisterItem<FileVariableItem>();
