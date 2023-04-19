@@ -53,9 +53,9 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableI
   result->RegisterItem(sequencergui::domainconstants::kChannelAccessVariableType,
                        ItemFactoryFunction<sequencergui::ChannelAccessVariableItem>);
   result->RegisterItem(sequencergui::domainconstants::kPVClientVariableType,
-                       ItemFactoryFunction<sequencergui::PVClientVariableItem>);
+                       ItemFactoryFunction<sequencergui::PvAccessClientVariableItem>);
   result->RegisterItem(sequencergui::domainconstants::kPVServerVariableType,
-                       ItemFactoryFunction<sequencergui::PVServerVariableItem>);
+                       ItemFactoryFunction<sequencergui::PvAccessServerVariableItem>);
 
   return result;
 }
@@ -105,10 +105,10 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::ChannelAccessReadInstructionItem>);
   result->RegisterItem(sequencergui::domainconstants::kChannelAccessWriteInstructionType,
                        ItemFactoryFunction<sequencergui::ChannelAccessWriteInstructionItem>);
-  result->RegisterItem(sequencergui::domainconstants::kPVAccessReadInstructionType,
-                       ItemFactoryFunction<sequencergui::PVAccessReadInstructionItem>);
-  result->RegisterItem(sequencergui::domainconstants::kPVAccessWriteInstructionType,
-                       ItemFactoryFunction<sequencergui::PVAccessWriteInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kPvAccessReadInstructionType,
+                       ItemFactoryFunction<sequencergui::PvAccessReadInstructionItem>);
+  result->RegisterItem(sequencergui::domainconstants::kPvAccessWriteInstructionType,
+                       ItemFactoryFunction<sequencergui::PvAccessWriteInstructionItem>);
   result->RegisterItem(sequencergui::domainconstants::kRPCClientInstructionType,
                        ItemFactoryFunction<sequencergui::RPCClientInstruction>);
 

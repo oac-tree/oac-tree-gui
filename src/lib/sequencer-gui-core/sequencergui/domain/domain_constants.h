@@ -49,8 +49,8 @@ const std::string kWaitInstructionType = "Wait";
 // sup-sequencer-plughin-epics instructions
 const std::string kChannelAccessReadInstructionType = "ChannelAccessRead";
 const std::string kChannelAccessWriteInstructionType = "ChannelAccessWrite";
-const std::string kPVAccessReadInstructionType = "PvAccessRead";
-const std::string kPVAccessWriteInstructionType = "PvAccessWrite";
+const std::string kPvAccessReadInstructionType = "PvAccessRead";
+const std::string kPvAccessWriteInstructionType = "PvAccessWrite";
 const std::string kRPCClientInstructionType = "RPCClient";
 
 // variables

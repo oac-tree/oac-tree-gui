@@ -307,9 +307,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
 //! PVClientVariableItem
 //! ---------------------------------------------------------------------------
 
-TEST_F(StandardVariableItemsTest, PVClientVariableItem)
+TEST_F(StandardVariableItemsTest, PvAccessClientVariableItem)
 {
-  PVClientVariableItem item;
+  PvAccessClientVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_FALSE(item.IsAvailable());
@@ -321,7 +321,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItem)
   EXPECT_EQ(item.GetChannel(), std::string("def"));
 }
 
-TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
+TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -337,7 +337,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  PVClientVariableItem item;
+  PvAccessClientVariableItem item;
   item.InitFromDomain(pv_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
@@ -349,7 +349,7 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemFromDomain)
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
-TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
+TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -361,14 +361,14 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
 
   {  // case with empty attributes
-    PVClientVariableItem item;
+    PvAccessClientVariableItem item;
     item.SetName(expected_name);
 
     EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
   }
 
   {  // case when AnyValueItem is set
-    PVClientVariableItem item;
+    PvAccessClientVariableItem item;
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
 
@@ -387,9 +387,9 @@ TEST_F(StandardVariableItemsTest, PVClientVariableItemToDomain)
 //! PVServerVariableItem
 //! ---------------------------------------------------------------------------
 
-TEST_F(StandardVariableItemsTest, PVServerVariableItem)
+TEST_F(StandardVariableItemsTest, PvAccessServerVariableItem)
 {
-  PVServerVariableItem item;
+  PvAccessServerVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_FALSE(item.IsAvailable());
@@ -401,7 +401,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItem)
   EXPECT_EQ(item.GetChannel(), std::string("def"));
 }
 
-TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
+TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -419,7 +419,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
   pvxs_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
-  PVServerVariableItem item;
+  PvAccessServerVariableItem item;
   item.InitFromDomain(pvxs_variable.get());
 
   EXPECT_EQ(item.GetName(), expected_name);
@@ -432,7 +432,7 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemFromDomain)
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
-TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
+TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -445,14 +445,14 @@ TEST_F(StandardVariableItemsTest, PVServerVariableItemToDomain)
   const std::string expected_value("42");
 
   {  // case with empty attributes
-    PVServerVariableItem item;
+    PvAccessServerVariableItem item;
     item.SetName(expected_name);
 
     EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
   }
 
   {  // case when AnyValueItem is set
-    PVServerVariableItem item;
+    PvAccessServerVariableItem item;
     item.SetChannel(expected_channel);
     item.SetName(expected_name);
 

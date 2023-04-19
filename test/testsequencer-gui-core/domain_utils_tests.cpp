@@ -64,7 +64,7 @@ TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainInstructionTypeConstants)
 
   std::vector<std::string> domain_types = {
       kChannelAccessReadInstructionType, kChannelAccessWriteInstructionType,
-      kPVAccessReadInstructionType, kPVAccessWriteInstructionType, kRPCClientInstructionType};
+      kPvAccessReadInstructionType, kPvAccessWriteInstructionType, kRPCClientInstructionType};
 
   for (const auto& domain_type : domain_types)
   {

@@ -105,8 +105,8 @@ private:
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
-//! Represent PVClientVariable.
-class PVClientVariableItem : public ConnectableVariableItem
+//! Represent PvAccessClientVariable.
+class PvAccessClientVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "PvAccessClient";
@@ -114,7 +114,7 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   using ConnectableVariableItem::ConnectableVariableItem;
-  PVClientVariableItem();
+  PvAccessClientVariableItem();
 
   std::string GetDomainType() const override;
 
@@ -122,8 +122,8 @@ private:
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
-//! Represent PVServerVariable.
-class PVServerVariableItem : public ConnectableVariableItem
+//! Represent PvAccessServerVariable.
+class PvAccessServerVariableItem : public ConnectableVariableItem
 {
 public:
   static inline const std::string Type = "PvAccessServer";
@@ -131,7 +131,7 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   using ConnectableVariableItem::ConnectableVariableItem;
-  PVServerVariableItem();
+  PvAccessServerVariableItem();
 
   std::string GetDomainType() const override;
 

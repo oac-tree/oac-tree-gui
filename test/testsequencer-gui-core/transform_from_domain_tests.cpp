@@ -95,7 +95,7 @@ TEST_F(TransformFromDomainTest, GetItemType)
             GetItemType(domainconstants::kChannelAccessVariableType));
   EXPECT_EQ(FileVariableItem::Type, GetItemType(domainconstants::kFileVariableType));
   EXPECT_EQ(LocalVariableItem::Type, GetItemType(domainconstants::kLocalVariableType));
-  EXPECT_EQ(PVClientVariableItem::Type, GetItemType(domainconstants::kPVClientVariableType));
+  EXPECT_EQ(PvAccessClientVariableItem::Type, GetItemType(domainconstants::kPVClientVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
@@ -119,9 +119,9 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateVariableItem)
 
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
       domainconstants::kChannelAccessVariableType));
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVClientVariableItem>(
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessClientVariableItem>(
       domainconstants::kPVClientVariableType));
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PVServerVariableItem>(
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessServerVariableItem>(
       domainconstants::kPVServerVariableType));
 }
 
@@ -176,10 +176,10 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
       domainconstants::kChannelAccessReadInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessWriteInstructionItem>(
       domainconstants::kChannelAccessWriteInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PVAccessReadInstructionItem>(
-      domainconstants::kPVAccessReadInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PVAccessWriteInstructionItem>(
-      domainconstants::kPVAccessWriteInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PvAccessReadInstructionItem>(
+      domainconstants::kPvAccessReadInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PvAccessWriteInstructionItem>(
+      domainconstants::kPvAccessWriteInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RPCClientInstruction>(
       domainconstants::kRPCClientInstructionType));
 }

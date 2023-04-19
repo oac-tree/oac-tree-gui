@@ -32,8 +32,8 @@ MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
 {
   RegisterItem<ChannelAccessVariableItem>();
   RegisterItem<LocalVariableItem>();
-  RegisterItem<PVClientVariableItem>();
-  RegisterItem<PVServerVariableItem>();
+  RegisterItem<PvAccessClientVariableItem>();
+  RegisterItem<PvAccessServerVariableItem>();
   RegisterItem<UnknownVariableItem>();
   RegisterItem<FileVariableItem>();
   RegisterItem<WorkspaceItem>();

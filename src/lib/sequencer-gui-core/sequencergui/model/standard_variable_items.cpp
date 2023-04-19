@@ -175,44 +175,44 @@ void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 }
 
 // ----------------------------------------------------------------------------
-// PVClientVariableItem
+// PvAccessClientVariableItem
 // ----------------------------------------------------------------------------
 
-std::unique_ptr<mvvm::SessionItem> PVClientVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<PVClientVariableItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessClientVariableItem>(*this, make_unique_id);
 }
 
-PVClientVariableItem::PVClientVariableItem() : ConnectableVariableItem(Type) {}
+PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableItem(Type) {}
 
-std::string PVClientVariableItem::GetDomainType() const
+std::string PvAccessClientVariableItem::GetDomainType() const
 {
   return domainconstants::kPVClientVariableType;
 }
 
-void PVClientVariableItem::SetupDomainImpl(variable_t *variable) const
+void PvAccessClientVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *variable);
   SetJsonTypeAttribute(*this, *variable);
 }
 
 // ----------------------------------------------------------------------------
-// PVServerVariableItem
+// PvAccessServerVariableItem
 // ----------------------------------------------------------------------------
 
-std::unique_ptr<mvvm::SessionItem> PVServerVariableItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<PVServerVariableItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessServerVariableItem>(*this, make_unique_id);
 }
 
-PVServerVariableItem::PVServerVariableItem() : ConnectableVariableItem(Type) {}
+PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableItem(Type) {}
 
-std::string PVServerVariableItem::GetDomainType() const
+std::string PvAccessServerVariableItem::GetDomainType() const
 {
   return domainconstants::kPVServerVariableType;
 }
 
-void PVServerVariableItem::SetupDomainImpl(variable_t *variable) const
+void PvAccessServerVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *variable);
   SetJsonTypeAttribute(*this, *variable);

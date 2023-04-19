@@ -103,8 +103,8 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<PVClientVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<PVServerVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<PvAccessClientVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<PvAccessServerVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<UnknownVariableItem>());
 
   // other

@@ -116,13 +116,13 @@ public:
 };
 
 //! Represents PVAccessReadInstruction.
-class PVAccessReadInstructionItem : public EpicsReadInstructionItem
+class PvAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
   static inline const std::string Type = "PvAccessRead";
 
   using EpicsReadInstructionItem::EpicsReadInstructionItem;
-  PVAccessReadInstructionItem();
+  PvAccessReadInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
@@ -130,13 +130,13 @@ public:
 };
 
 //! Represents PVAccessWriteInstruction.
-class PVAccessWriteInstructionItem : public EpicsWriteInstructionItem
+class PvAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
   static inline const std::string Type = "PvAccessWrite";
 
   using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
-  PVAccessWriteInstructionItem();
+  PvAccessWriteInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 

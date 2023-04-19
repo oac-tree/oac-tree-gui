@@ -195,12 +195,12 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// PVAccessReadInstructionItem tests
+// PvAccessReadInstructionItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(EpicsInstructionItemsTest, PVAccessReadInstructionItem)
+TEST_F(EpicsInstructionItemsTest, PvAccessReadInstructionItem)
 {
-  PVAccessReadInstructionItem item;
+  PvAccessReadInstructionItem item;
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_TRUE(item.GetOutput().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
@@ -215,14 +215,14 @@ TEST_F(EpicsInstructionItemsTest, PVAccessReadInstructionItem)
   EXPECT_EQ(item.GetTimeout(), 42.0);
 }
 
-TEST_F(EpicsInstructionItemsTest, PVAccessReadInstructionItemFromDomain)
+TEST_F(EpicsInstructionItemsTest, PvAccessReadInstructionItemFromDomain)
 {
-  auto input = CreateDomainInstruction(domainconstants::kPVAccessReadInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kPvAccessReadInstructionType);
   input->AddAttribute(domainconstants::kChannelAttribute, "abc");
   input->AddAttribute(domainconstants::kOutputAttribute, "def");
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
 
-  PVAccessReadInstructionItem item;
+  PvAccessReadInstructionItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetChannel(), std::string("abc"));
@@ -230,16 +230,16 @@ TEST_F(EpicsInstructionItemsTest, PVAccessReadInstructionItemFromDomain)
   EXPECT_EQ(item.GetTimeout(), 42.0);
 }
 
-TEST_F(EpicsInstructionItemsTest, PVAccessReadInstructionItemToDomain)
+TEST_F(EpicsInstructionItemsTest, PvAccessReadInstructionItemToDomain)
 {
-  PVAccessReadInstructionItem item;
+  PvAccessReadInstructionItem item;
   item.SetChannel("abc");
   item.SetOutput("def");
   item.SetTimeout(42.0);
   item.SetIsRootFlag(true);
 
   auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kPVAccessReadInstructionType);
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessReadInstructionType);
 
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), "abc");
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kOutputAttribute), "def");
@@ -253,9 +253,9 @@ TEST_F(EpicsInstructionItemsTest, PVAccessReadInstructionItemToDomain)
 // PVAccessWriteInstructionItem tests
 // ----------------------------------------------------------------------------
 
-TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItem)
+TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItem)
 {
-  PVAccessWriteInstructionItem item;
+  PvAccessWriteInstructionItem item;
   EXPECT_TRUE(item.GetVariableName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
@@ -278,16 +278,16 @@ TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItem)
   EXPECT_EQ(item.GetJsonValue(), std::string("json_value"));
 }
 
-TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItemFromDomain)
+TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemFromDomain)
 {
-  auto input = CreateDomainInstruction(domainconstants::kPVAccessWriteInstructionType);
+  auto input = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
   input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
   input->AddAttribute(domainconstants::kChannelAttribute, "def");
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
   input->AddAttribute(domainconstants::kTypeAttribute, "json_type");
   input->AddAttribute(domainconstants::kValueAttribute, "json_value");
 
-  PVAccessWriteInstructionItem item;
+  PvAccessWriteInstructionItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -297,17 +297,17 @@ TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItemFromDomain)
   EXPECT_EQ(item.GetJsonValue(), std::string("json_value"));
 }
 
-TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItemToDomain)
+TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemToDomain)
 {
   {  // case with variable name
-    PVAccessWriteInstructionItem item;
+    PvAccessWriteInstructionItem item;
     item.SetVariableName("abc");
     item.SetChannel("def");
     item.SetTimeout(42.0);
     item.SetIsRootFlag(true);
 
     auto domain_item = item.CreateDomainInstruction();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVAccessWriteInstructionType);
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessWriteInstructionType);
 
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), "def");
@@ -321,14 +321,14 @@ TEST_F(EpicsInstructionItemsTest, PVAccessWriteInstructionItemToDomain)
     const std::string expected_type(R"RAW({"type":"uint32"})RAW");
     const std::string expected_value("42");
 
-    PVAccessWriteInstructionItem item;
+    PvAccessWriteInstructionItem item;
     item.SetChannel("def");
     item.SetTimeout(42.0);
     item.SetJsonType(expected_type);
     item.SetJsonValue(expected_value);
 
     auto domain_item = item.CreateDomainInstruction();
-    EXPECT_EQ(domain_item->GetType(), domainconstants::kPVAccessWriteInstructionType);
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessWriteInstructionType);
 
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kChannelAttribute), "def");
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTimeoutAttribute), "42.0");

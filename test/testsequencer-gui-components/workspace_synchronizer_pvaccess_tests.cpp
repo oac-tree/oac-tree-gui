@@ -89,7 +89,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
 
   // creating PVServerVariableItem in the model
   auto variable_item =
-      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   SetAnyValue(initial_value, *variable_item);
@@ -141,7 +141,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
 
   // creating PVServerVariableItem in the model
   auto variable_item =
-      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   SetAnyValue(initial_value, *variable_item);
@@ -185,7 +185,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
 
   // creating PVServerVariableItem in the model
   auto variable_item =
-      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
   SetAnyValue(initial_value, *variable_item);
@@ -237,14 +237,14 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
 
   // creating PVServerVariableItem in the model
   auto server_item =
-      m_model.GetWorkspaceItem()->InsertItem<PVServerVariableItem>(mvvm::TagIndex::Append());
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
   server_item->SetChannel(kChannelName);
   server_item->SetName(server_var_name);
   SetAnyValue(initial_value, *server_item);
 
   // creating PVServerClientItem in the model
   auto client_item =
-      m_model.GetWorkspaceItem()->InsertItem<PVClientVariableItem>(mvvm::TagIndex::Append());
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
   client_item->SetChannel(kChannelName);
   client_item->SetName(client_var_name);
   SetAnyValue(initial_value, *client_item);

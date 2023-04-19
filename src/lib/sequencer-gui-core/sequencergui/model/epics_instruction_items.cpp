@@ -271,32 +271,32 @@ std::string ChannelAccessWriteInstructionItem::GetDomainType() const
 // PVAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-PVAccessReadInstructionItem::PVAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
+PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> PVAccessReadInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<PVAccessReadInstructionItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessReadInstructionItem>(*this, make_unique_id);
 }
 
-std::string PVAccessReadInstructionItem::GetDomainType() const
+std::string PvAccessReadInstructionItem::GetDomainType() const
 {
-  return domainconstants::kPVAccessReadInstructionType;
+  return domainconstants::kPvAccessReadInstructionType;
 }
 
 // ----------------------------------------------------------------------------
 // PVAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-PVAccessWriteInstructionItem::PVAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
+PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
 
-std::unique_ptr<mvvm::SessionItem> PVAccessWriteInstructionItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<PVAccessWriteInstructionItem>(*this, make_unique_id);
+  return std::make_unique<PvAccessWriteInstructionItem>(*this, make_unique_id);
 }
 
-std::string PVAccessWriteInstructionItem::GetDomainType() const
+std::string PvAccessWriteInstructionItem::GetDomainType() const
 {
-  return domainconstants::kPVAccessWriteInstructionType;
+  return domainconstants::kPvAccessWriteInstructionType;
 }
 
 // ----------------------------------------------------------------------------
