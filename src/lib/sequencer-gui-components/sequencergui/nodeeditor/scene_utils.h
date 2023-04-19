@@ -77,7 +77,7 @@ InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* c
                               const std::string& aggregate_name);
 
 //! Returns a string with space inserted at word boundaries.
-//! "CamelCase" -> "Cammel Case"
+//! "CamelCase" -> "Camel Case"
 std::string InsertSpaceAtCamelCase(std::string str);
 
 }  // namespace sequencergui
