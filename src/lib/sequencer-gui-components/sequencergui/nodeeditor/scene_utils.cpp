@@ -33,6 +33,9 @@
 #include <QDebug>
 #include <QLinearGradient>
 #include <QRectF>
+#include <QRegularExpression>
+#include <cctype>
+#include <iostream>
 #include <numeric>
 
 namespace sequencergui
@@ -145,6 +148,27 @@ InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* c
   AggregateFactory factory;
   auto factory_func = factory.GetValue(aggregate_name);
   return dynamic_cast<InstructionItem*>(model->InsertItem(factory_func(), container, {}));
+}
+
+std::string InsertSpaceAtCamelCase(std::string str)
+{
+  if (str.empty())
+  {
+    return {};
+  }
+
+  auto pos = std::next(str.begin());
+  while (pos != str.end())
+  {
+    // find next lower-case char followed by upper-case char
+    if (std::islower(*(pos - 1)) && std::isupper(*pos))
+    {
+      str.insert(pos, ' ');
+    }
+    ++pos;
+  }
+
+  return str;
 }
 
 }  // namespace sequencergui

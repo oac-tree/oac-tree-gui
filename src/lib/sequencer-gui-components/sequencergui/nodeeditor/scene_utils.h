@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 class QGradient;
 class QColor;
@@ -74,6 +75,10 @@ InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContaine
 
 InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* container,
                               const std::string& aggregate_name);
+
+//! Returns a string with space inserted at word boundaries.
+//! "CamelCase" -> "Cammel Case"
+std::string InsertSpaceAtCamelCase(std::string str);
 
 }  // namespace sequencergui
 

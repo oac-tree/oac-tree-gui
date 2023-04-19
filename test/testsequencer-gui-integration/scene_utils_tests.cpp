@@ -163,3 +163,17 @@ TEST_F(SceneUtilsTest, AddAggregate)
 
   EXPECT_EQ(item->GetType(), FallbackItem::Type);
 }
+
+TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
+{
+  EXPECT_EQ(InsertSpaceAtCamelCase(""), std::string(""));
+  EXPECT_EQ(InsertSpaceAtCamelCase(" "), std::string(" "));
+  EXPECT_EQ(InsertSpaceAtCamelCase("abc"), std::string("abc"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("abc def"), std::string("abc def"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("Access"), std::string("Access"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("PVAccess"), std::string("PVAccess"));
+
+  EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccess"), std::string("Channel Access"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("PvAccess"), std::string("Pv Access"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("NoCammelCase"), std::string("No Cammel Case"));
+}
