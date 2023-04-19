@@ -175,5 +175,6 @@ TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
 
   EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccess"), std::string("Channel Access"));
   EXPECT_EQ(InsertSpaceAtCamelCase("PvAccess"), std::string("Pv Access"));
-  EXPECT_EQ(InsertSpaceAtCamelCase("NoCammelCase"), std::string("No Cammel Case"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("NoCamelCase"), std::string("No Camel Case"));
+  EXPECT_EQ(InsertSpaceAtCamelCase("ChannelAccessRead"), std::string("Channel Access Read"));
 }

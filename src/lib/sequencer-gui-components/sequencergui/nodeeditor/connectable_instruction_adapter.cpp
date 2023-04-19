@@ -50,7 +50,8 @@ QColor ConnectableInstructionAdapter::GetColor() const
 
 QString ConnectableInstructionAdapter::GetDisplayName() const
 {
-  return QString::fromStdString(m_instruction->GetDisplayName());
+  // inserting space to allow word wrapping
+  return QString::fromStdString(InsertSpaceAtCamelCase(m_instruction->GetDisplayName()));
 }
 
 //! Returns input ports of connectable view. This port is located on an instruction playing the role

@@ -33,9 +33,7 @@
 #include <QDebug>
 #include <QLinearGradient>
 #include <QRectF>
-#include <QRegularExpression>
 #include <cctype>
-#include <iostream>
 #include <numeric>
 
 namespace sequencergui
@@ -163,7 +161,7 @@ std::string InsertSpaceAtCamelCase(std::string str)
     // find next lower-case char followed by upper-case char
     if (std::islower(*(pos - 1)) && std::isupper(*pos))
     {
-      str.insert(pos, ' ');
+      pos = str.insert(pos, ' ');
     }
     ++pos;
   }

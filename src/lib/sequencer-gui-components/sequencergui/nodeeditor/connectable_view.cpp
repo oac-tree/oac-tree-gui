@@ -27,7 +27,6 @@
 
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
@@ -37,9 +36,16 @@ const int round_par = 5;
 
 //! Returns rectangle to display ConnectableView label. Takes bounding box of a view as input
 //! parameter.
-QRectF label_rectangle(const QRectF& rect)
+QRectF GetLabelRectangle(const QRectF& rect)
 {
-  return QRectF(rect.x(), rect.y(), rect.width(), rect.height() / 4);
+  // take a rectangle which is a half in height of the view's rectangle
+  QRectF result(rect.x(), rect.y(), rect.width(), rect.height() / 2);
+
+  // slightly shrink it
+  auto side_gap = mvvm::utils::UnitSize(0.25);
+  auto top_gap = mvvm::utils::UnitSize(0.75);
+  return result.marginsRemoved(
+      QMarginsF(side_gap, top_gap, side_gap, 0.0));  // left, top, right, bottom
 }
 
 int GetSmallFontSize()
@@ -100,8 +106,12 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
   painter->setPen(Qt::black);
   QFont serifFont("Monospace", GetSmallFontSize(), QFont::Normal);
+  serifFont.setWordSpacing(-mvvm::utils::UnitSize(0.5));  // decrease word spacing
   painter->setFont(serifFont);
-  painter->drawText(label_rectangle(boundingRect()), Qt::AlignCenter, GetLabel());
+
+  QTextOption text_option(Qt::AlignHCenter | Qt::AlignTop);
+  text_option.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+  painter->drawText(GetLabelRectangle(boundingRect()), GetLabel(), text_option);
 
   if (option->state & (QStyle::State_Selected | QStyle::State_HasFocus))
   {
@@ -218,7 +228,7 @@ QColor ConnectableView::GetColor() const
 
 QString ConnectableView::GetLabel() const
 {
-  return m_item ? m_item->GetDisplayName() : QString("Unnamed");
+   return m_item ? m_item->GetDisplayName() : QString("Unnamed");
 }
 
 //! Init ports to connect.
