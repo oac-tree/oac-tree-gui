@@ -106,7 +106,7 @@ void ConnectableView::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
   painter->setPen(Qt::black);
   QFont serifFont("Monospace", GetSmallFontSize(), QFont::Normal);
-  serifFont.setWordSpacing(-mvvm::utils::UnitSize(0.5));  // decrease word spacing
+  serifFont.setWordSpacing(-mvvm::utils::UnitSize(0.25));  // decrease word spacing
   painter->setFont(serifFont);
 
   QTextOption text_option(Qt::AlignHCenter | Qt::AlignTop);
