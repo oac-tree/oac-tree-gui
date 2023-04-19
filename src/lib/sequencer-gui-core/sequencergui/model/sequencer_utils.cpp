@@ -63,6 +63,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
 
   // instructions
+  result->RegisterItem<ChoiceItem>();
   result->RegisterItem<ConditionItem>();
   result->RegisterItem<CopyItem>();
   result->RegisterItem<EqualsItem>();

@@ -67,6 +67,8 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
   using mvvm::ItemFactoryFunction;
   auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::InstructionItem>>();
 
+  result->RegisterItem(sequencergui::domainconstants::kChoiceInstructionType,
+                       ItemFactoryFunction<sequencergui::ChoiceItem>);
   result->RegisterItem(sequencergui::domainconstants::kConditionInstructionType,
                        ItemFactoryFunction<sequencergui::ConditionItem>);
   result->RegisterItem(sequencergui::domainconstants::kCopyInstructionType,
@@ -97,7 +99,7 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::SequenceItem>);
   result->RegisterItem(sequencergui::domainconstants::kUserChoiceInstructionType,
                        ItemFactoryFunction<sequencergui::UserChoiceItem>);
-  result->RegisterItem(sequencergui::domainconstants::kVariableResetType,
+  result->RegisterItem(sequencergui::domainconstants::kVariableResetInstructionType,
                        ItemFactoryFunction<sequencergui::VariableResetItem>);
   result->RegisterItem(sequencergui::domainconstants::kWaitInstructionType,
                        ItemFactoryFunction<sequencergui::WaitItem>);

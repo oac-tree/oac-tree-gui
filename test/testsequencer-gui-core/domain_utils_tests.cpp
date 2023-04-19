@@ -39,12 +39,12 @@ class DomainUtilsTest : public ::testing::Test
 TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 {
   const std::vector<std::string> domain_types = {
-      kConditionInstructionType, kCopyInstructionType,         kEqualsInstructionType,
-      kFallbackInstructionType,  kForceSuccessInstructionType, kIncludeInstructionType,
-      kInputInstructionType,     kInverterInstructionType,     kListenInstructionType,
-      kMessageInstructionType,   kOutputInstructionType,       kParallelInstructionType,
-      kRepeatInstructionType,    kSequenceInstructionType,     kUserChoiceInstructionType,
-      kVariableResetType,        kWaitInstructionType};
+      kChoiceInstructionType,     kConditionInstructionType,     kCopyInstructionType,
+      kEqualsInstructionType,     kFallbackInstructionType,      kForceSuccessInstructionType,
+      kIncludeInstructionType,    kInputInstructionType,         kInverterInstructionType,
+      kListenInstructionType,     kMessageInstructionType,       kOutputInstructionType,
+      kParallelInstructionType,   kRepeatInstructionType,        kSequenceInstructionType,
+      kUserChoiceInstructionType, kVariableResetInstructionType, kWaitInstructionType};
 
   for (const auto& domain_type : domain_types)
   {

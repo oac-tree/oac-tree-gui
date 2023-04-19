@@ -41,6 +41,44 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ChoiceItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, ChoiceItem)
+{
+  ChoiceItem item;
+  EXPECT_TRUE(item.GetVariableName().empty());
+
+  item.SetVariableName("abc");
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, ChoiceItemFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kChoiceInstructionType);
+  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
+
+  ChoiceItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, ChoiceItemItemToDomain)
+{
+  ChoiceItem item;
+  item.SetVariableName("abc");
+  item.SetIsRootFlag(true);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kChoiceInstructionType);
+
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+// ----------------------------------------------------------------------------
 // ConditionItem tests
 // ----------------------------------------------------------------------------
 
@@ -754,7 +792,7 @@ TEST_F(StandardInstructionItemsTest, VariableResetItem)
 
 TEST_F(StandardInstructionItemsTest, VariableResetItemFromDomain)
 {
-  auto input = CreateDomainInstruction(domainconstants::kVariableResetType);
+  auto input = CreateDomainInstruction(domainconstants::kVariableResetInstructionType);
   input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
 
   VariableResetItem item;
@@ -770,7 +808,7 @@ TEST_F(StandardInstructionItemsTest, VariableResetItemToDomain)
   item.SetIsRootFlag(true);
 
   auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kVariableResetType);
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kVariableResetInstructionType);
 
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
 

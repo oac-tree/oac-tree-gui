@@ -50,6 +50,49 @@ const std::string kTimeout = "kTimeout";
 
 namespace sequencergui
 {
+
+// ----------------------------------------------------------------------------
+// ChoiceItem
+// ----------------------------------------------------------------------------
+
+ChoiceItem::ChoiceItem() : InstructionItem(Type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+}
+
+std::unique_ptr<mvvm::SessionItem> ChoiceItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ChoiceItem>(*this, make_unique_id);
+}
+
+std::string ChoiceItem::GetDomainType() const
+{
+  return domainconstants::kChoiceInstructionType;
+}
+
+void ChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+  }
+}
+
+void ChoiceItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
+}
+
+std::string ChoiceItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void ChoiceItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
+}
+
 // ----------------------------------------------------------------------------
 // ConditionItem
 // ----------------------------------------------------------------------------
@@ -782,7 +825,7 @@ std::unique_ptr<mvvm::SessionItem> VariableResetItem::Clone(bool make_unique_id)
 
 std::string VariableResetItem::GetDomainType() const
 {
-  return domainconstants::kVariableResetType;
+  return domainconstants::kVariableResetInstructionType;
 }
 
 void VariableResetItem::InitFromDomainImpl(const instruction_t *instruction)
