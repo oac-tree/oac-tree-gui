@@ -46,7 +46,13 @@ public:
   template <typename T>
   bool CanCreateInstructionForType(const std::string& seq_type)
   {
-    return IsCorrectType<T>(sequencergui::CreateInstructionItem(seq_type).get());
+    auto created = sequencergui::CreateInstructionItem(seq_type);
+    const bool is_correct_type = IsCorrectType<T>(created.get());
+
+    // for now model type of Item coincides with model type of domain struction
+    const bool is_type_coincides = created->GetType() == seq_type;
+
+    return is_correct_type && is_type_coincides;
   }
 
   //! Returns true if we can create VariableItem of proper type for string representing
@@ -54,7 +60,13 @@ public:
   template <typename T>
   bool CanCreateVariableForType(const std::string& seq_type)
   {
-    return IsCorrectType<T>(sequencergui::CreateVariableItem(seq_type).get());
+    auto created = sequencergui::CreateVariableItem(seq_type);
+    const bool is_correct_type = IsCorrectType<T>(created.get());
+
+    // for now model type of Item coincides with model type of domain struction
+    const bool is_type_coincides = created->GetType() == seq_type;
+
+    return is_correct_type && is_type_coincides;
   }
 };
 

@@ -119,7 +119,7 @@ public:
 class PVAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
-  static inline const std::string Type = "PVAccessRead";
+  static inline const std::string Type = "PvAccessRead";
 
   using EpicsReadInstructionItem::EpicsReadInstructionItem;
   PVAccessReadInstructionItem();
@@ -133,7 +133,7 @@ public:
 class PVAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
-  static inline const std::string Type = "PVAccessWrite";
+  static inline const std::string Type = "PvAccessWrite";
 
   using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   PVAccessWriteInstructionItem();
