@@ -324,3 +324,33 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
 }
+
+//! Full scenario: editing AnyValueItem on board of LocalVariableItem.
+//! Pretending that the user has removed initial AnyValueItem and has pushed OK button.
+//! That should lead to the dissapearance of AnyValueItem child on board of LocalVariableItem.
+
+TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueItemIsRemoved)
+{
+  // creating variable with AnyValue on board
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *var0);
+  auto initial_anyvalue_item = var0->GetAnyValueItem();
+
+  // Item mimicking editing result. Unique ptr is empty, that means that the user has deleted old
+  // AnyValue
+  std::unique_ptr<sup::gui::AnyValueItem> editing_result;
+
+  // preparing actions
+  auto actions = CreateActions(initial_anyvalue_item, std::move(editing_result));
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  // expecting call to editing widget
+  EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
+
+  // editing request
+  actions->OnEditAnyvalueRequest();
+
+  // checking that previous AnyValueItem has been removed
+  EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
+}

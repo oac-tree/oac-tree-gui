@@ -153,7 +153,7 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
     {
       return dialog.GetResult();
     }
-    return {};
+    return {}; // returning optional value without the value set as a sign of canceled dialog
   };
 
   return {selected_workspace_callback, selected_item_callback, send_message_callback,

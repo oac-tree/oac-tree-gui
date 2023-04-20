@@ -24,6 +24,7 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace mvvm
@@ -46,6 +47,8 @@ class WorkspaceItem;
 
 struct WorkspaceEditorContext
 {
+  using anyvalue_item_result_t = std::optional<std::unique_ptr<sup::gui::AnyValueItem>>;
+
   //!< callback to retrieve current workspace to operate
   std::function<WorkspaceItem*()> selected_workspace_callback;
 
@@ -57,8 +60,7 @@ struct WorkspaceEditorContext
 
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back
-  std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem&)>
-      edit_anyvalue_callback;
+  std::function<anyvalue_item_result_t(const sup::gui::AnyValueItem&)> edit_anyvalue_callback;
 };
 
 }  // namespace sequencergui

@@ -99,11 +99,19 @@ void WorkspaceEditorActions::OnEditAnyvalueRequest()
   }
 
   auto edited_anyvalue = m_context.edit_anyvalue_callback(*selected_anyvalue);
-  if (edited_anyvalue)
+
+  // existent value means that the user exited from the dialog with OK
+  if (edited_anyvalue.has_value())
   {
+    // remove previous AnyValueItem
     auto prev_parent = selected_anyvalue->GetParent();
     GetModel()->RemoveItem(selected_anyvalue);
-    GetModel()->InsertItem(std::move(edited_anyvalue), prev_parent, {});
+
+    if (edited_anyvalue.value())
+    {
+      // if unique_ptr<AnyValueItem> is not empty, move it as a new value
+      GetModel()->InsertItem(std::move(edited_anyvalue.value()), prev_parent, {});
+    }
   }
 }
 
