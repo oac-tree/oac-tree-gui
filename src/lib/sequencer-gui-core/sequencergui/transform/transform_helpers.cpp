@@ -142,7 +142,9 @@ void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
   }
   else
   {
-    throw LogicErrorException("Can't setup JSON type if AnyValueItem is absent");
+    std::string error_message = "Can't setup JSON type for variable name [" + item.GetName()
+                                + "] if AnyValueItem is absent";
+    throw LogicErrorException(error_message);
   }
 }
 
@@ -158,7 +160,9 @@ void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
   }
   else
   {
-    throw LogicErrorException("Can't setup JSON type if AnyValueItem is absent");
+    std::string error_message = "Can't setup JSON value for variable name [" + item.GetName()
+                                + "] if AnyValueItem is absent";
+    throw LogicErrorException(error_message);
   }
 }
 
