@@ -25,6 +25,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/sequencer/workspace.h>
 
@@ -76,4 +77,16 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
   auto domain_var1 = workspace.GetVariable("var1");
   EXPECT_EQ(domain_var0->GetName(), var_item0->GetName());
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
+}
+
+TEST_F(WorkspaceMonitorHelperTests, FindAncestor)
+{
+  WorkspaceItem workspace_item;
+  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
+
+  EXPECT_EQ(FindAncestor<WorkspaceItem>(nullptr), nullptr);
+  EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0), &workspace_item);
+  EXPECT_EQ(FindAncestor<LocalVariableItem>(var_item0->GetAnyValueItem()), var_item0);
+  EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
 }
