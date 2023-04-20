@@ -354,3 +354,31 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueItemIsRemoved)
   // checking that previous AnyValueItem has been removed
   EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
 }
+
+//! Full scenario: editing AnyValueItem on board of LocalVariableItem that doesn't have any
+//! AnyValueItem yet.
+
+TEST_F(WorkspaceEditorActionsTest, OnEditRequestWheNoANyValueItemIsStilExists)
+{
+  // creating variable with AnyValue on board
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
+
+  // item mimicking editing result
+  auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
+  auto editing_result_ptr = editing_result.get();
+
+  // preparing actions
+  auto actions = CreateActions(var0, std::move(editing_result));
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  // expecting call to editing widget
+  EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
+
+  // editing request
+  actions->OnEditAnyvalueRequest();
+
+  // checking that variable got new AnyValueItem
+  EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
+}
