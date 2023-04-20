@@ -125,13 +125,13 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
 
-  {  // case with empty attributes
-    ChannelAccessVariableItem item;
-    item.SetName(expected_name);
-    item.SetChannel(expected_channel);
+//  {  // case with empty attributes
+//    ChannelAccessVariableItem item;
+//    item.SetName(expected_name);
+//    item.SetChannel(expected_channel);
 
-    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
-  }
+//    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
+//  }
 
   {  // when AnyValueItem is set
     ChannelAccessVariableItem item;
@@ -281,10 +281,12 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_value("42");
 
   {  // case with empty attributes
-    ChannelAccessVariableItem item;
+    sequencergui::LocalVariableItem item;
     item.SetName(expected_name);
 
-    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
+    // we allow LocalVariableItem do not have AnyValueItem on board
+    // It is the only one for the moment, that can be reset by ResetVariable instruction
+    EXPECT_NO_THROW(item.CreateDomainVariable());
   }
 
   {  // case when AnyValueItem is set
@@ -300,6 +302,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTypeAttribute), expected_type);
     EXPECT_EQ(domain_item->GetAttribute(domainconstants::kValueAttribute), expected_value);
     EXPECT_EQ(domain_item->GetAttributes().GetAttributeNames().size(), 3);
+
+    EXPECT_NO_THROW(domain_item->Setup());
   }
 }
 

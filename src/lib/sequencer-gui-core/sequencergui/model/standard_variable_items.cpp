@@ -170,8 +170,14 @@ void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  SetJsonTypeAttribute(*this, *variable);
-  SetJsonValueAttribute(*this, *variable);
+  if (GetAnyValueItem())
+  {
+    // Here we allow LocalVariableItem do not have AnyValueItem on board. LocalVariable is the only
+    // one for the moment that can be without JSON type and value attributes (see
+    // ResetVariableInstruction).
+    SetJsonTypeAttribute(*this, *variable);
+    SetJsonValueAttribute(*this, *variable);
+  }
 }
 
 // ----------------------------------------------------------------------------

@@ -240,7 +240,7 @@ TEST_F(DomainProcedureBuilderTest, AttemptToBuildProcedureWithVariable)
   ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
 
-  auto var_item0 = workspace->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item0 = workspace->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
   // variable doesn't have AnyValueItem set
 

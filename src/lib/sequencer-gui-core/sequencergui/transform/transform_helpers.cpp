@@ -111,14 +111,26 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     // If AnyValueItem already exists, we assume that its layout coincide with AnyValue.
 
     // updating existing AnyValueItem using temporary AnyValueItem
-    auto temp_anyvalue_item = sup::gui::CreateItem(anyvalue);
-    sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item.get(), *existing_anyvalue_item);
+    try
+    {
+      auto temp_anyvalue_item = sup::gui::CreateItem(anyvalue);
+      sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item.get(), *existing_anyvalue_item);
+      return;
+    }
+    catch (const std::exception &ex)
+    {
+      // Update fails if the old AnyValueItem has a different layout than the new AnyValueItem. This
+      // can happen in two cases: 1) ResetVariableInstruction is in charge and it just reset
+      // LocalVariable with some new value. 2) Something wrong is going on and the GUI
+      // AnyValueItem's type went out-of-sync with the domain.
+
+      // We don't know how to distinguish these two cases. For the moment we choose to regenerate
+      // AnyValueItem from scratch using new domain value.
+    }
   }
-  else
-  {
-    // If AnyValueItem doesn't exist, we create new AnyValueItem using AnyValue provided.
-    SetAnyValue(anyvalue, variable_item);
-  }
+
+  // Create brand new AnyValueItem using AnyValue provided
+  SetAnyValue(anyvalue, variable_item);
 }
 
 void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
