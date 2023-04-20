@@ -60,7 +60,7 @@ struct WorkspaceEditorContext
 
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back
-  std::function<anyvalue_item_result_t(const sup::gui::AnyValueItem&)> edit_anyvalue_callback;
+  std::function<anyvalue_item_result_t(const sup::gui::AnyValueItem*)> edit_anyvalue_callback;
 };
 
 }  // namespace sequencergui

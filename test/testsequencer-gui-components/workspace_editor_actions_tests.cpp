@@ -48,13 +48,13 @@ public:
       m_item_to_return = std::move(item_to_return);
     }
 
-    MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem& item));
+    MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem* item));
 
     //! Creates a callback that mimicks editing request and returning the result to the user
-    std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem&)>
+    std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem*)>
     CreateCallback()
     {
-      return [this](const sup::gui::AnyValueItem& item) -> std::unique_ptr<sup::gui::AnyValueItem>
+      return [this](const sup::gui::AnyValueItem* item) -> std::unique_ptr<sup::gui::AnyValueItem>
       {
         OnEditingRequest(item);
         return std::move(m_item_to_return);

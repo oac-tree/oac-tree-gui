@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -90,27 +91,34 @@ void WorkspaceEditorActions::OnRemoveVariableRequest()
 
 void WorkspaceEditorActions::OnEditAnyvalueRequest()
 {
-  auto selected_anyvalue = GetAnyValueItemToEdit();
-  if (!selected_anyvalue)
+  auto selected_item = m_context.selected_item_callback();
+  if (!selected_item)
   {
-    SendMessage("Please select AnyValue you want to modify",
-                "You can also select workspace variable itself");
+    SendMessage(
+        "Please select Workspace variable (or any of it's leaves) to modify corresponding "
+        "AnyValue.");
     return;
   }
 
-  auto edited_anyvalue = m_context.edit_anyvalue_callback(*selected_anyvalue);
+  auto selected_variable =
+      GetSelectedVariable() ? GetSelectedVariable() : FindAncestor<VariableItem>(selected_item);
+  auto selected_anyvalue = selected_variable->GetAnyValueItem();
+
+  auto edited_anyvalue = m_context.edit_anyvalue_callback(selected_anyvalue);
 
   // existent value means that the user exited from the dialog with OK
   if (edited_anyvalue.has_value())
   {
     // remove previous AnyValueItem
-    auto prev_parent = selected_anyvalue->GetParent();
-    GetModel()->RemoveItem(selected_anyvalue);
+    if (selected_anyvalue)
+    {
+      GetModel()->RemoveItem(selected_anyvalue);
+    }
 
     if (edited_anyvalue.value())
     {
       // if unique_ptr<AnyValueItem> is not empty, move it as a new value
-      GetModel()->InsertItem(std::move(edited_anyvalue.value()), prev_parent, {});
+      GetModel()->InsertItem(std::move(edited_anyvalue.value()), selected_variable, {});
     }
   }
 }
@@ -128,22 +136,6 @@ WorkspaceItem *WorkspaceEditorActions::GetWorkspaceItem() const
 VariableItem *WorkspaceEditorActions::GetSelectedVariable()
 {
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
-}
-
-//! Returns selected AnyValueItem.
-sup::gui::AnyValueItem *WorkspaceEditorActions::GetSelectedAnyValueItem()
-{
-  return dynamic_cast<sup::gui::AnyValueItem *>(m_context.selected_item_callback());
-}
-
-//! Returns AnyValueItem intended for editing.
-
-sup::gui::AnyValueItem *WorkspaceEditorActions::GetAnyValueItemToEdit()
-{
-  // If top level VariableItem is selected, it will return its underlying AnyValueItem.
-  // Otherwise it will return selected AnyValueItem, if any.
-  return GetSelectedVariable() ? GetSelectedVariable()->GetAnyValueItem()
-                               : GetSelectedAnyValueItem();
 }
 
 //! Set reasonable initial values for just created variable.

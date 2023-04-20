@@ -58,8 +58,6 @@ private:
   mvvm::SessionModelInterface* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable();
-  sup::gui::AnyValueItem* GetSelectedAnyValueItem();
-  sup::gui::AnyValueItem* GetAnyValueItemToEdit();
 
   void SetupVariable(VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},

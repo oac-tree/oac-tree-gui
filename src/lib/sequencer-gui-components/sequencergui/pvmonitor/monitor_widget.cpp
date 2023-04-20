@@ -145,15 +145,15 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
   };
 
   auto edit_anyvalue_callback =
-      [this](const sup::gui::AnyValueItem &item) -> std::unique_ptr<sup::gui::AnyValueItem>
+      [this](const sup::gui::AnyValueItem *item) -> std::unique_ptr<sup::gui::AnyValueItem>
   {
     AnyValueEditorDialog dialog(this);
-    dialog.SetInitialValue(&item);
+    dialog.SetInitialValue(item);
     if (dialog.exec() == QDialog::Accepted)
     {
       return dialog.GetResult();
     }
-    return {}; // returning optional value without the value set as a sign of canceled dialog
+    return {};  // returning optional value without the value set as a sign of canceled dialog
   };
 
   return {selected_workspace_callback, selected_item_callback, send_message_callback,

@@ -191,10 +191,10 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
   result.send_message_callback = send_message_callback;
 
   auto edit_anyvalue_callback =
-      [this](const sup::gui::AnyValueItem& item) -> std::unique_ptr<sup::gui::AnyValueItem>
+      [this](const sup::gui::AnyValueItem* item) -> std::unique_ptr<sup::gui::AnyValueItem>
   {
     AnyValueEditorDialog dialog(this);
-    dialog.SetInitialValue(&item);
+    dialog.SetInitialValue(item);
     if (dialog.exec() == QDialog::Accepted)
     {
       return dialog.GetResult();
