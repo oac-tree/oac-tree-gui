@@ -100,20 +100,20 @@ void SequencerMainWindow::InitComponents()
 
   m_explorer_view = new SequencerExplorerView;
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
-                          styleutils::GetIcon("file-search-outline-light.svg"));
+                          styleutils::GetIcon("file-search-outline-light"));
 
   m_composer_view = new SequencerComposerView;
   m_tab_widget->AddWidget(m_composer_view, "Compose",
-                          styleutils::GetIcon("graph-outline-light.svg"));
+                          styleutils::GetIcon("graph-outline-light"));
 
   m_monitor_view = new SequencerMonitorView;
   m_tab_widget->AddWidget(m_monitor_view, "Run",
-                          styleutils::GetIcon("chevron-right-circle-outline-light.svg"));
+                          styleutils::GetIcon("chevron-right-circle-outline-light"));
 
   m_tab_widget->AddSpacer();
 
   m_settings_view = new SettingsView;
-  m_tab_widget->AddWidget(m_settings_view, "", styleutils::GetIcon("cog-outline-light.svg"));
+  m_tab_widget->AddWidget(m_settings_view, "", styleutils::GetIcon("cog-outline-light"));
 
   m_tab_widget->SetCurrentIndex(0);
 

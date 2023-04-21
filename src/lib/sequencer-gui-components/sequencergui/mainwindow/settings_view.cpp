@@ -84,7 +84,7 @@ void SettingsView::SetupModelWidgets()
 
     m_stacked_widget->addWidget(view);
 
-    auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"),
+    auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline"),
                                     QString::fromStdString(model->GetType()));
     m_list_widget->addItem(item);
   }
@@ -103,7 +103,7 @@ void SettingsView::SetupListSelector()
 void SettingsView::SetupGeneralSettingWidgets()
 {
   m_stacked_widget->addWidget(new QWidget);
-  auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline.svg"), "UI settings");
+  auto item = new QListWidgetItem(styleutils::GetIcon("card-bulleted-outline"), "UI settings");
   m_list_widget->addItem(item);
 }
 

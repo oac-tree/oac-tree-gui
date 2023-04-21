@@ -89,7 +89,7 @@ std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectionWidget()
 {
   auto result = std::make_unique<QToolButton>();
   result->setText("Severity");
-  result->setIcon(styleutils::GetIcon("cog-outline.svg"));
+  result->setIcon(styleutils::GetIcon("cog-outline"));
   result->setPopupMode(QToolButton::InstantPopup);
   result->setToolButtonStyle(Qt::ToolButtonIconOnly);
   result->setMenu(m_selection_menu.get());

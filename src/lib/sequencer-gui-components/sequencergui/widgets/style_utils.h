@@ -24,6 +24,7 @@
 
 class QTreeView;
 class QIcon;
+class QString;
 
 namespace sequencergui::styleutils
 {
@@ -31,7 +32,9 @@ namespace sequencergui::styleutils
 //! Sets style for the tree to better look on CODAC systems.
 void SetUnifiedPropertyStyle(QTreeView* tree);
 
-QIcon GetIcon(const std::string& icon_name);
+//! Returns an icon for a given icon name. If the name doesn't contain an extension, will assume
+//! an existence of svg in the resource folder.
+QIcon GetIcon(const QString& icon_name);
 
 }  // namespace sequencergui::styleutils
 

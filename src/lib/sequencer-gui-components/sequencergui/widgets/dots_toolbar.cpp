@@ -65,7 +65,7 @@ void DotsToolBar::AddDotsMenu()
   InsertStrech();
 
   auto button = new QToolButton;
-  button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
+  button->setIcon(styleutils::GetIcon("dots-horizontal"));
   button->setIconSize(sup::gui::utils::ToolBarIconSize());
   addWidget(button);
 }

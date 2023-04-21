@@ -47,7 +47,7 @@ void PanelToolBar::AddDotsMenu()
   InsertStrech();
 
   m_dots_button = new QToolButton;
-  m_dots_button->setIcon(styleutils::GetIcon("dots-horizontal.svg"));
+  m_dots_button->setIcon(styleutils::GetIcon("dots-horizontal"));
   m_dots_button->setIconSize(sup::gui::utils::ToolBarIconSize());
   addWidget(m_dots_button);
 }

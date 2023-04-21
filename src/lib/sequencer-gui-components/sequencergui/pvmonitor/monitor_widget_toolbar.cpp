@@ -49,7 +49,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   using styleutils::GetIcon;
 
   m_add_button->setText("Add");
-  m_add_button->setIcon(GetIcon("plus-circle-outline.svg"));
+  m_add_button->setIcon(GetIcon("plus-circle-outline"));
   m_add_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_add_button->setPopupMode(QToolButton::InstantPopup);
   m_add_button->setMenu(m_add_variable_menu.get());
@@ -60,7 +60,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   addWidget(m_add_button);
 
   m_edit_anyvalue_button->setText("Edit");
-  m_edit_anyvalue_button->setIcon(GetIcon("file-tree-outline.svg"));
+  m_edit_anyvalue_button->setIcon(GetIcon("file-tree-outline"));
   m_edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_edit_anyvalue_button->setToolTip("Edit value of currently selected variable");
   connect(m_edit_anyvalue_button, &QToolButton::clicked, this,
@@ -68,7 +68,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   addWidget(m_edit_anyvalue_button);
 
   m_remove_button->setText("Remove");
-  m_remove_button->setIcon(GetIcon("beaker-remove-outline.svg"));
+  m_remove_button->setIcon(GetIcon("beaker-remove-outline"));
   m_remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_remove_button->setToolTip("Remove currently selected variable");
   connect(m_remove_button, &QToolButton::clicked, this,
@@ -79,7 +79,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
 
   m_start_button->setText("Start");
   m_start_button->setFont(font);
-  m_start_button->setIcon(GetIcon("chevron-right-circle-outline.svg"));
+  m_start_button->setIcon(GetIcon("chevron-right-circle-outline"));
   m_start_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_start_button->setToolTip("Start monitoring workspace variables");
   connect(m_start_button, &QToolButton::clicked, this,
@@ -88,7 +88,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
 
   m_stop_button->setText("Stop");
   m_stop_button->setFont(font);
-  m_stop_button->setIcon(GetIcon("stop-circle-outline.svg"));
+  m_stop_button->setIcon(GetIcon("stop-circle-outline"));
   m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_stop_button->setToolTip("Stop monitoring");
   connect(m_stop_button, &QToolButton::clicked, this, &MonitorWidgetToolBar::StopMonitoringRequest);

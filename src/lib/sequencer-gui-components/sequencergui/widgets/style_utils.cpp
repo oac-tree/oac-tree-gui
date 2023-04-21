@@ -26,8 +26,7 @@
 
 namespace
 {
-//! Flag if to use svg versions of icons.
-const bool kSvgIcons = true;
+const QString DefaultIconExtension("svg");
 }  // namespace
 
 namespace sequencergui::styleutils
@@ -43,14 +42,13 @@ void SetUnifiedPropertyStyle(QTreeView *tree)
   }
 }
 
-QIcon GetIcon(const std::string &icon_name)
+QIcon GetIcon(const QString &icon_name)
 {
-  auto name = QString(":/icons/%1").arg(QString::fromStdString(icon_name));
-  if (!kSvgIcons)
-  {
-    name.replace(".svg", ".png");
-  }
-  return QIcon(name);
+  const QString resource_name = icon_name.contains(".")
+                                    ? QString(":/icons/%1").arg(icon_name)
+                                    : QString(":/icons/%1.%2").arg(icon_name, DefaultIconExtension);
+
+  return QIcon(resource_name);
 }
 
 }  // namespace sequencergui::styleutils
