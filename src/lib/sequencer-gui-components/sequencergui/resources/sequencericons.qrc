@@ -32,46 +32,11 @@
         <file>icons/speedometer.svg</file>
         <file>icons/stop-circle-outline.svg</file>
         <file>icons/view-dashboard-edit-outline-light.svg</file>
-        <file>icons/arrow-right-circle-outline.png</file>
-        <file>icons/arrow-right-drop-circle-outline.png</file>
-        <file>icons/arrow-top-left.png</file>
-        <file>icons/beaker-remove-outline.png</file>
-        <file>icons/camera-metering-center.png</file>
-        <file>icons/card-bulleted-outline.png</file>
-        <file>icons/chevron-down.png</file>
-        <file>icons/chevron-right-circle-outline-light.png</file>
-        <file>icons/chevron-right.png</file>
-        <file>icons/cog-outline-light.png</file>
-        <file>icons/cog-outline.png</file>
-        <file>icons/cog.png</file>
-        <file>icons/dots-horizontal.png</file>
-        <file>icons/dots-triangle.png</file>
-        <file>icons/file-plus-outline.png</file>
-        <file>icons/file-remove-outline.png</file>
-        <file>icons/file-search-outline-light.png</file>
-        <file>icons/filter-variant-plus.png</file>
-        <file>icons/focus-field.png</file>
-        <file>icons/graph-outline-light.png</file>
-        <file>icons/hand-back-right-outline.png</file>
-        <file>icons/pause-circle-outline.png</file>
-        <file>icons/play-pause.png</file>
-        <file>icons/playlist-plus.png</file>
-        <file>icons/plus-circle-multiple-outline.png</file>
-        <file>icons/plus-circle-outline.png</file>
-        <file>icons/speedometer-slow.png</file>
-        <file>icons/speedometer.png</file>
-        <file>icons/stop-circle-outline.png</file>
-        <file>icons/view-dashboard-edit-outline-light.png</file>
         <file>icons/chevron-triple-right.svg</file>
-        <file>icons/chevron-triple-right.png</file>
-        <file>icons/map-marker-outline.png</file>
         <file>icons/map-marker-outline.svg</file>
         <file>icons/bell-alert-outline.svg</file>
-        <file>icons/bell-alert-outline.png</file>
         <file>icons/refresh.svg</file>
-        <file>icons/refresh.png</file>
         <file>icons/about_logo.awk</file>
-        <file>icons/iter_logo.png</file>
         <file>icons/file-export-outline.svg</file>
     </qresource>
 </RCC>

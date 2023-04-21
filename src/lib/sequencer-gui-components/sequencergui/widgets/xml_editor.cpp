@@ -94,7 +94,7 @@ void XMLEditor::ClearText()
 void XMLEditor::SetupActions()
 {
   auto export_xml_action = new QAction("&Export XML", this);
-  export_xml_action->setIcon(styleutils::GetIcon("file-export-outline.svg"));
+  export_xml_action->setIcon(styleutils::GetIcon("file-export-outline"));
   export_xml_action->setToolTip("Export AnyValue to JSON file");
 
   auto on_export_xml = [this]()
