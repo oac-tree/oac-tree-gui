@@ -27,7 +27,7 @@
 namespace
 {
 //! Flag if to use svg versions of icons.
-const bool kSvgIcons = false;
+const bool kSvgIcons = true;
 }  // namespace
 
 namespace sequencergui::styleutils

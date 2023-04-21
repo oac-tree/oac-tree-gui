@@ -72,5 +72,6 @@
         <file>icons/refresh.png</file>
         <file>icons/about_logo.awk</file>
         <file>icons/iter_logo.png</file>
+        <file>icons/file-export-outline.svg</file>
     </qresource>
 </RCC>
