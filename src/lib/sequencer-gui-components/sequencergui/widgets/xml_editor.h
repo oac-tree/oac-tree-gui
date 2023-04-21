@@ -42,9 +42,15 @@ public:
 
   void ClearText();
 
+signals:
+  void ExportXmlRequest();
+
 private:
+  void SetupActions();
+
   QTextEdit* m_text_edit{nullptr};
   XmlSyntaxHighlighter* m_syntax_highlighter{nullptr};
+  QString m_current_workdir;
 };
 
 }  // namespace sequencergui

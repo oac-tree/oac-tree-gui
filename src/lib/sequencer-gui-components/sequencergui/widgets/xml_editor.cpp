@@ -19,15 +19,21 @@
 
 #include "xml_editor.h"
 
+#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/xml_syntax_highlighter.h>
 
+#include <mvvm/utils/file_utils.h>
+
+#include <QAction>
 #include <QFile>
+#include <QFileDialog>
 #include <QLabel>
 #include <QScrollBar>
 #include <QTextEdit>
 #include <QTextStream>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <fstream>
 
 namespace sequencergui
 {
@@ -49,6 +55,8 @@ XMLEditor::XMLEditor(QWidget *parent)
   QFont textFont("Monospace");
   m_text_edit->setFont(textFont);
   m_text_edit->setLineWrapMode(QTextEdit::NoWrap);
+
+  SetupActions();
 }
 
 void XMLEditor::SetXMLFile(const QString &file_name)
@@ -81,6 +89,31 @@ void XMLEditor::SetXMLContent(const QString &content)
 void XMLEditor::ClearText()
 {
   m_text_edit->clear();
+}
+
+void XMLEditor::SetupActions()
+{
+  auto export_xml_action = new QAction("&Export XML", this);
+  export_xml_action->setIcon(styleutils::GetIcon("file-export-outline.svg"));
+  export_xml_action->setToolTip("Export AnyValue to JSON file");
+
+  auto on_export_xml = [this]()
+  {
+    auto file_name = QFileDialog::getSaveFileName(
+        this, "Save File", m_current_workdir + "/untitled.xml", tr("Files (*.xml *.XML)"));
+
+    if (!file_name.isEmpty())
+    {
+      auto parent_path = mvvm::utils::GetParentPath(file_name.toStdString());
+      m_current_workdir = QString::fromStdString(parent_path);
+      std::ofstream file_out(file_name.toStdString());
+      file_out << m_text_edit->toPlainText().toStdString();
+      file_out.close();
+    }
+  };
+
+  connect(export_xml_action, &QAction::triggered, this, on_export_xml);
+  addAction(export_xml_action);
 }
 
 }  // namespace sequencergui

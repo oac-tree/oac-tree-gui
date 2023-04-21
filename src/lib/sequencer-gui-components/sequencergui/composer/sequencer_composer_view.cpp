@@ -30,11 +30,12 @@
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/xml_editor.h>
-#include <sup/gui/components/message_handler_interface.h>
 
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <QDebug>
 #include <QSplitter>
@@ -59,7 +60,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 
   m_central_panel->AddWidget(m_node_editor, m_node_editor->CreateToolBar());
   m_right_panel->AddWidget(m_composer_procedure_editor, m_composer_procedure_editor->actions());
-  m_right_panel->AddWidget(m_xml_editor);
+  m_right_panel->AddWidget(m_xml_editor, m_xml_editor->actions());
 
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_central_panel);
