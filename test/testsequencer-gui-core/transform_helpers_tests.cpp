@@ -22,10 +22,10 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
@@ -119,13 +119,37 @@ TEST_F(TransformHelpersTests, UpdateAnyValueFromScalar)
 
   const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
 
-  // After update it receives AnyValueItem representing anyvalue
+  // Create and set AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
   const sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   UpdateAnyValue(new_anyvalue, item);
+
+  auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(new_anyvalue, stored_anyvalue2);
+}
+
+//! Checking UpdateAnyValue function on changing type of AnyValue.
+//! Current implementation allows to change AnyValueItem, this might change in the future.
+
+TEST_F(TransformHelpersTests, UpdateAnyValueFromScalarWithTypeChange)
+{
+  // LocalVariableItem doesn't have AnyValuteItem at the beginning
+  LocalVariableItem item;
+  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+
+  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+
+  // ACreate and set AnyValueItem representing anyvalue
+  SetAnyValue(anyvalue, item);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(anyvalue, stored_anyvalue);
+
+  const sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::StringType, "abc"});
+
+  EXPECT_NO_THROW(UpdateAnyValue(new_anyvalue, item));
 
   auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(new_anyvalue, stored_anyvalue2);
