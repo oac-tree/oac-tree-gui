@@ -59,6 +59,9 @@ sequencergui::ProcedureItem* CreateUserChoiceProcedureItem(sequencergui::Sequenc
 sequencergui::ProcedureItem* CreateMessageProcedureItem(sequencergui::SequencerModel* model,
                                                         const std::string& text);
 
+//! Creates procedure demonstrating VariableReset instruction.
+sequencergui::ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* model);
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_STANDARD_PROCEDURE_ITEMS_H_

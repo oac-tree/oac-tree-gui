@@ -30,6 +30,7 @@
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/standarditems/container_item.h>
+
 #include <sup/dto/anyvalue.h>
 
 using namespace sequencergui;
@@ -137,6 +138,37 @@ ProcedureItem* CreateMessageProcedureItem(sequencergui::SequencerModel* model,
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto message = model->InsertItem<MessageItem>(procedure_item->GetInstructionContainer());
   message->SetText(text);
+  return procedure_item;
+}
+
+ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* model)
+{
+  auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+
+  auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+
+  auto copy0 = model->InsertItem<CopyItem>(sequence);
+  copy0->SetInput("a");
+  copy0->SetOutput("target");
+
+  auto reset = model->InsertItem<VariableResetItem>(sequence);
+  reset->SetVariableName("target");
+
+  auto copy1 = model->InsertItem<CopyItem>(sequence);
+  copy1->SetInput("b");
+  copy1->SetOutput("target");
+
+  auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+  var0->SetName("a");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var0);
+
+  auto var1 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+  var1->SetName("b");
+  SetAnyValue(sup::dto::AnyValue{sup::dto::StringType, "abc"}, *var1);
+
+  auto var2 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
+  var2->SetName("target");
+
   return procedure_item;
 }
 

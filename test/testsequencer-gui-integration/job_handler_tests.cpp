@@ -379,3 +379,39 @@ TEST_F(JobHandlerTest, LogEvents)
   EXPECT_EQ(event2.severity, Severity::kInfo);
   EXPECT_EQ(event2.message, expected_message);
 }
+
+TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
+{
+  auto procedure = testutils::CreateVariableResetProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
+
+  JobHandler job_handler(m_job_item);
+  job_handler.onPrepareJobRequest();
+
+  // expanded procedure has different variables
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
+  auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+  auto new_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
+
+  const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
+  const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
+
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item2), sup::dto::AnyValue());
+
+  job_handler.onStartRequest();
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
+
+  EXPECT_FALSE(job_handler.IsRunning());
+
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
+
+  // AnyValueItem on board was regenerated
+  auto regenerated_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
+  EXPECT_NE(new_anyvalue_item2, regenerated_anyvalue_item2);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*regenerated_anyvalue_item2), anyvalue1);  // value was changed
+}
