@@ -58,6 +58,8 @@ namespace sequencergui
 ChoiceItem::ChoiceItem() : InstructionItem(Type)
 {
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 std::unique_ptr<mvvm::SessionItem> ChoiceItem::Clone(bool make_unique_id) const

@@ -51,6 +51,10 @@ TEST_F(StandardInstructionItemsTest, ChoiceItem)
 
   item.SetVariableName("abc");
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+
+  auto wait0 = item.InsertItem<WaitItem>({"", -1});
+  auto wait1 = item.InsertItem<WaitItem>({"", -1});
+  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
 }
 
 TEST_F(StandardInstructionItemsTest, ChoiceItemFromDomain)
