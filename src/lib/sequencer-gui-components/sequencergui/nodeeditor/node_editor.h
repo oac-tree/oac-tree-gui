@@ -26,6 +26,7 @@
 
 class QKeyEvent;
 class QToolBar;
+class QWidgetAction;
 
 namespace sup::gui
 {
@@ -64,14 +65,17 @@ public:
 
   std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandler();
 
-  std::unique_ptr<QToolBar> CreateToolBar();
+//  std::unique_ptr<QToolBar> CreateToolBar();
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
 
 private:
   void SetupConnections();
+  void SetupToolBar();
 
+  NodeEditorToolBar* m_tool_bar{nullptr};
+  QWidgetAction* m_tool_bar_action{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;

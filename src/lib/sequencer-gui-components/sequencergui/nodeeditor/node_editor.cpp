@@ -39,12 +39,15 @@
 #include <QPointF>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 namespace sequencergui
 {
 
 NodeEditor::NodeEditor(QWidget *parent)
     : QWidget(parent)
+    , m_tool_bar(new NodeEditorToolBar)
+    , m_tool_bar_action(new QWidgetAction(this))
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
@@ -59,6 +62,7 @@ NodeEditor::NodeEditor(QWidget *parent)
   m_graphics_scene->SetMessageHandler(CreateMessageHandler());
 
   SetupConnections();
+  SetupToolBar();
 }
 
 NodeEditor::~NodeEditor() = default;
@@ -113,20 +117,19 @@ std::unique_ptr<sup::gui::MessageHandlerInterface> NodeEditor::CreateMessageHand
   return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
 }
 
-std::unique_ptr<QToolBar> NodeEditor::CreateToolBar()
-{
-  auto result = std::make_unique<NodeEditorToolBar>();
+//! Setup a toolbar so it can be used via widget's action mechanism.
 
+void NodeEditor::SetupToolBar()
+{
   // Propagate selection mode change from toolbar to GraphicsView
-  connect(result.get(), &NodeEditorToolBar::selectionMode, m_graphics_view,
+  connect(m_tool_bar, &NodeEditorToolBar::selectionMode, m_graphics_view,
           &GraphicsView::onSelectionMode);
 
   // Center view from toolBar to GraphicsView
-  connect(result.get(), &NodeEditorToolBar::centerView, m_graphics_view,
-          &GraphicsView::onCenterView);
+  connect(m_tool_bar, &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
 
   // Propagate zoom request from a toolbar to GraphicsView
-  connect(result.get(), &NodeEditorToolBar::changeScale, m_graphics_view,
+  connect(m_tool_bar, &NodeEditorToolBar::changeScale, m_graphics_view,
           &GraphicsView::onChangeScale);
 
   auto on_align = [this]()
@@ -141,13 +144,19 @@ std::unique_ptr<QToolBar> NodeEditor::CreateToolBar()
     auto item = view->GetConnectableItem()->GetInstruction();
     algorithm::AlignInstructionTreeWalker(view->pos(), item);
   };
-  connect(result.get(), &NodeEditorToolBar::alignSelectedRequest, this, on_align);
+  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
 
   // Propagate selection mode change from GraphicsView to a toolBar
-  connect(m_graphics_view, &GraphicsView::selectionModeChanged, result.get(),
+  connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_tool_bar,
           &NodeEditorToolBar::onViewSelectionMode);
 
-  return result;
+  // remove extra spacing so it can be embedded into another toolbar
+  m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
+  m_tool_bar->layout()->setSpacing(0);
+
+  // add toolbar to the list of widgert's action
+  m_tool_bar_action->setDefaultWidget(m_tool_bar);
+  addAction(m_tool_bar_action);
 }
 
 void NodeEditor::SetupConnections()
