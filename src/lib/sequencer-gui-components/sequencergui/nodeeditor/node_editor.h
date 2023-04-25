@@ -73,6 +73,7 @@ signals:
 private:
   void SetupConnections();
   void SetupToolBar();
+  void OnAlignRequest();
 
   NodeEditorToolBar* m_tool_bar{nullptr};
   QWidgetAction* m_tool_bar_action{nullptr};

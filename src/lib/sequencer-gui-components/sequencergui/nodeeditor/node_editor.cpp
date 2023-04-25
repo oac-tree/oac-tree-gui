@@ -121,35 +121,6 @@ std::unique_ptr<sup::gui::MessageHandlerInterface> NodeEditor::CreateMessageHand
 
 void NodeEditor::SetupToolBar()
 {
-  // Propagate selection mode change from toolbar to GraphicsView
-  connect(m_tool_bar, &NodeEditorToolBar::selectionMode, m_graphics_view,
-          &GraphicsView::onSelectionMode);
-
-  // Center view from toolBar to GraphicsView
-  connect(m_tool_bar, &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
-
-  // Propagate zoom request from a toolbar to GraphicsView
-  connect(m_tool_bar, &NodeEditorToolBar::changeScale, m_graphics_view,
-          &GraphicsView::onChangeScale);
-
-  auto on_align = [this]()
-  {
-    auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
-    if (selected.size() != 1)
-    {
-      return;
-    }
-
-    auto view = selected.front();
-    auto item = view->GetConnectableItem()->GetInstruction();
-    algorithm::AlignInstructionTreeWalker(view->pos(), item);
-  };
-  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, on_align);
-
-  // Propagate selection mode change from GraphicsView to a toolBar
-  connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_tool_bar,
-          &NodeEditorToolBar::onViewSelectionMode);
-
   // remove extra spacing so it can be embedded into another toolbar
   m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
   m_tool_bar->layout()->setSpacing(0);
@@ -157,6 +128,21 @@ void NodeEditor::SetupToolBar()
   // add toolbar to the list of widgert's action
   m_tool_bar_action->setDefaultWidget(m_tool_bar);
   addAction(m_tool_bar_action);
+}
+
+//! Provides node alignment on graphics view.
+
+void NodeEditor::OnAlignRequest()
+{
+  auto selected = m_graphics_scene->GetSelectedViewItems<ConnectableView>();
+  if (selected.size() != 1)
+  {
+    return;
+  }
+
+  auto view = selected.front();
+  auto item = view->GetConnectableItem()->GetInstruction();
+  algorithm::AlignInstructionTreeWalker(view->pos(), item);
 }
 
 void NodeEditor::SetupConnections()
@@ -172,6 +158,24 @@ void NodeEditor::SetupConnections()
   // Propagate selection request from GraphicsScene to GraphicsView
   connect(m_graphics_scene, &GraphicsScene::selectionModeChangeRequest, m_graphics_view,
           &GraphicsView::onSelectionMode);
+
+  // Propagate selection mode change from toolbar to GraphicsView
+  connect(m_tool_bar, &NodeEditorToolBar::selectionMode, m_graphics_view,
+          &GraphicsView::onSelectionMode);
+
+  // Center view from toolBar to GraphicsView
+  connect(m_tool_bar, &NodeEditorToolBar::centerView, m_graphics_view, &GraphicsView::onCenterView);
+
+  // Propagate zoom request from a toolbar to GraphicsView
+  connect(m_tool_bar, &NodeEditorToolBar::changeScale, m_graphics_view,
+          &GraphicsView::onChangeScale);
+
+  // alignment request from a toolbar
+  connect(m_tool_bar, &NodeEditorToolBar::alignSelectedRequest, this, &NodeEditor::OnAlignRequest);
+
+  // Propagate selection mode change from GraphicsView to a toolBar
+  connect(m_graphics_view, &GraphicsView::selectionModeChanged, m_tool_bar,
+          &NodeEditorToolBar::onViewSelectionMode);
 }
 
 }  // namespace sequencergui
