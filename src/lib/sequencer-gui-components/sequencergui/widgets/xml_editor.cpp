@@ -122,7 +122,7 @@ void XMLEditor::SetupActions()
 {
   auto export_xml_action = new QAction("&Export XML", this);
   export_xml_action->setIcon(styleutils::GetIcon("file-export-outline"));
-  export_xml_action->setToolTip("Export AnyValue to JSON file");
+  export_xml_action->setToolTip("Export procedure to XML file");
 
   auto on_export_xml = [this]()
   {
