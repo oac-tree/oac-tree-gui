@@ -46,9 +46,6 @@ public:
 
   void AddWidget(QWidget* widget);
 
-  void AddWidget(QWidget* widget, std::unique_ptr<QWidget> control_widget,
-                 bool is_always_visible = false);
-
   void AddWidget(QWidget* widget, const QList<QAction*>& control_actions,
                  bool is_always_visible = false);
 
@@ -56,7 +53,6 @@ public:
 
 private:
   void AddMenuEntry(QWidget* widget);
-  void AddGuestControlWidget(std::unique_ptr<QWidget> control_widget, bool is_always_visible);
   void AddGuestActions(const QList<QAction*>& actions, bool is_always_visible);
   void UpdateControlElementsVisibility();
 

@@ -34,12 +34,15 @@
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 namespace sequencergui
 {
 
 MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
+    , m_tool_bar(new MonitorRealTimeToolBar)
+    , m_tool_bar_action(new QWidgetAction(this))
     , m_collapsible_list_view(new mvvm::CollapsibleListView)
     , m_stacked_widget(new ItemStackWidget)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
@@ -50,7 +53,9 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_stacked_widget->AddWidget(m_realtime_instruction_tree, CreateRealTimeToolBar(),
+  SetupToolBar();
+
+  m_stacked_widget->AddWidget(m_realtime_instruction_tree, {m_tool_bar_action},
                               /*toolbar_always_visible*/ true);
   m_stacked_widget->AddWidget(m_node_editor, m_node_editor->actions());
 
@@ -60,8 +65,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
 
   layout->addWidget(m_collapsible_list_view);
 
-  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::InstructionClicked, this,
-          &MonitorRealTimeWidget::InstructionClicked);
+  SetupConnections();
 }
 
 MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
@@ -88,23 +92,35 @@ void MonitorRealTimeWidget::onAppChangeRequest(int id)
   m_stacked_widget->SetCurrentIndex(id);
 }
 
-std::unique_ptr<MonitorRealTimeToolBar> MonitorRealTimeWidget::CreateRealTimeToolBar()
+void MonitorRealTimeWidget::SetupConnections()
 {
-  auto result = std::make_unique<MonitorRealTimeToolBar>();
-
   // forward signals from a toolbar further up
-  connect(result.get(), &MonitorRealTimeToolBar::runRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this,
           &MonitorRealTimeWidget::runRequest);
-  connect(result.get(), &MonitorRealTimeToolBar::pauseRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this,
           &MonitorRealTimeWidget::pauseRequest);
-  connect(result.get(), &MonitorRealTimeToolBar::stepRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this,
           &MonitorRealTimeWidget::stepRequest);
-  connect(result.get(), &MonitorRealTimeToolBar::stopRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this,
           &MonitorRealTimeWidget::stopRequest);
-  connect(result.get(), &MonitorRealTimeToolBar::changeDelayRequest, this,
+  connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
           &MonitorRealTimeWidget::changeDelayRequest);
 
-  return result;
+  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::InstructionClicked, this,
+          &MonitorRealTimeWidget::InstructionClicked);
+}
+
+//! Setup a toolbar so it can be used via widget's action mechanism.
+
+void MonitorRealTimeWidget::SetupToolBar()
+{
+  // remove extra spacing so it can be embedded into another toolbar
+  m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
+  m_tool_bar->layout()->setSpacing(0);
+
+  // add toolbar to the list of widgert's action
+  m_tool_bar_action->setDefaultWidget(m_tool_bar);
+  addAction(m_tool_bar_action);
 }
 
 }  // namespace sequencergui

@@ -22,6 +22,8 @@
 
 #include <QWidget>
 
+class QWidgetAction;
+
 namespace mvvm
 {
 class CollapsibleListView;
@@ -65,7 +67,11 @@ signals:
   void InstructionClicked(sequencergui::InstructionItem* instruction);
 
 private:
-  std::unique_ptr<MonitorRealTimeToolBar> CreateRealTimeToolBar();
+  void SetupConnections();
+  void SetupToolBar();
+
+  MonitorRealTimeToolBar* m_tool_bar{nullptr};
+  QWidgetAction* m_tool_bar_action{nullptr};
 
   mvvm::CollapsibleListView* m_collapsible_list_view{nullptr};
   ItemStackWidget* m_stacked_widget{nullptr};
