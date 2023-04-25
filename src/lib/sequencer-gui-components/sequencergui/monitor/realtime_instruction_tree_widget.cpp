@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "monitor_realtime_tree_widget.h"
+#include "realtime_instruction_tree_widget.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -35,7 +35,7 @@
 namespace sequencergui
 {
 
-MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
+RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_tree_view))
@@ -62,9 +62,9 @@ MonitorRealTimeTreeWidget::MonitorRealTimeTreeWidget(QWidget *parent)
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 }
 
-MonitorRealTimeTreeWidget::~MonitorRealTimeTreeWidget() = default;
+RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget() = default;
 
-void MonitorRealTimeTreeWidget::SetProcedure(ProcedureItem *procedure_item)
+void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
                                                : nullptr);
@@ -72,12 +72,12 @@ void MonitorRealTimeTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   AdjustColumnWidth();
 }
 
-void MonitorRealTimeTreeWidget::SetSelectedInstruction(InstructionItem *item)
+void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
 {
   m_component_provider->SetSelectedItem(item);
 }
 
-void MonitorRealTimeTreeWidget::AdjustColumnWidth()
+void RealTimeInstructionTreeWidget::AdjustColumnWidth()
 {
   if (m_custom_header->HasFavoriteState())
   {

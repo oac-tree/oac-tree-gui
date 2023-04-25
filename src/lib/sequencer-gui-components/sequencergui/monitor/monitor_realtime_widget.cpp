@@ -24,7 +24,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sequencergui/monitor/monitor_realtime_toolbar.h>
-#include <sequencergui/monitor/monitor_realtime_tree_widget.h>
+#include <sequencergui/monitor/realtime_instruction_tree_widget.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/item_stack_widget.h>
@@ -42,7 +42,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
     : QWidget(parent)
     , m_collapsible_list_view(new mvvm::CollapsibleListView)
     , m_stacked_widget(new ItemStackWidget)
-    , m_monitor_realtime_widget(new MonitorRealTimeTreeWidget)
+    , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_node_editor(new NodeEditor)
     , m_message_panel(new MessagePanel)
 {
@@ -50,7 +50,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_stacked_widget->AddWidget(m_monitor_realtime_widget, CreateRealTimeToolBar(),
+  m_stacked_widget->AddWidget(m_realtime_instruction_tree, CreateRealTimeToolBar(),
                               /*toolbar_always_visible*/ true);
   m_stacked_widget->AddWidget(m_node_editor, m_node_editor->actions());
 
@@ -60,7 +60,7 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
 
   layout->addWidget(m_collapsible_list_view);
 
-  connect(m_monitor_realtime_widget, &MonitorRealTimeTreeWidget::InstructionClicked, this,
+  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::InstructionClicked, this,
           &MonitorRealTimeWidget::InstructionClicked);
 }
 
@@ -68,14 +68,14 @@ MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
 
 void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_monitor_realtime_widget->SetProcedure(procedure_item);
+  m_realtime_instruction_tree->SetProcedure(procedure_item);
   m_node_editor->SetProcedure(procedure_item);
 }
 
 void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)
 {
   m_node_editor->SetSelectedInstructions({item});
-  m_monitor_realtime_widget->SetSelectedInstruction(item);
+  m_realtime_instruction_tree->SetSelectedInstruction(item);
 }
 
 MessagePanel *MonitorRealTimeWidget::GetMessagePanel()

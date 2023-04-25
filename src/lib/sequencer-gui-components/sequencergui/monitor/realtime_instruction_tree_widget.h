@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MONITOR_REALTIME_TREE_WIDGET_H_
-#define SEQUENCERGUI_MONITOR_MONITOR_REALTIME_TREE_WIDGET_H_
+#ifndef SEQUENCERGUI_MONITOR_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
+#define SEQUENCERGUI_MONITOR_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -44,13 +44,13 @@ class InstructionItem;
 //! Widget with expanded instruction tree for realtime job execution.
 //! Located at the central panel of SequencerMonitorView.
 
-class MonitorRealTimeTreeWidget : public QWidget
+class RealTimeInstructionTreeWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit MonitorRealTimeTreeWidget(QWidget* parent = nullptr);
-  ~MonitorRealTimeTreeWidget() override;
+  explicit RealTimeInstructionTreeWidget(QWidget* parent = nullptr);
+  ~RealTimeInstructionTreeWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MONITOR_REALTIME_TREE_WIDGET_H_
+#endif  // SEQUENCERGUI_MONITOR_REALTTIME_INSTRUCTION_TREE_WIDGET_H_

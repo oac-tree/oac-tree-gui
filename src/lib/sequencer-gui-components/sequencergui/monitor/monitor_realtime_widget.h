@@ -35,7 +35,7 @@ class InstructionItem;
 class ProcedureItem;
 class MessagePanel;
 class NodeEditor;
-class MonitorRealTimeTreeWidget;
+class RealTimeInstructionTreeWidget;
 class ItemStackWidget;
 
 //! Central panel on SequencerMonitorView.
@@ -69,7 +69,7 @@ private:
 
   mvvm::CollapsibleListView* m_collapsible_list_view{nullptr};
   ItemStackWidget* m_stacked_widget{nullptr};
-  MonitorRealTimeTreeWidget* m_monitor_realtime_widget{nullptr};
+  RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};
   NodeEditor* m_node_editor{nullptr};
   MessagePanel* m_message_panel{nullptr};
 };
