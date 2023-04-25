@@ -27,7 +27,7 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/view_factory_interface.h>
 
-#include <mvvm/model/application_model.h>
+#include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
 
 #include <QDebug>
@@ -36,7 +36,7 @@ namespace sequencergui
 {
 struct GraphicsSceneController::GraphicsSceneControllerImpl
 {
-  mvvm::ApplicationModel* m_model{nullptr};
+  mvvm::SessionModelInterface* m_model{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   ConnectableViewMap m_instruction_to_view;
@@ -44,7 +44,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
   std::function<void(InstructionContainerItem*)> m_align_strategy;
 
-  GraphicsSceneControllerImpl(mvvm::ApplicationModel* model, GraphicsScene* graphics_scene)
+  GraphicsSceneControllerImpl(mvvm::SessionModelInterface* model, GraphicsScene* graphics_scene)
       : m_model(model), m_graphics_scene(graphics_scene)
   {
     if (!m_model || !m_graphics_scene)
@@ -171,7 +171,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   }
 };
 
-GraphicsSceneController::GraphicsSceneController(mvvm::ApplicationModel* model,
+GraphicsSceneController::GraphicsSceneController(mvvm::SessionModelInterface *model,
                                                  GraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {

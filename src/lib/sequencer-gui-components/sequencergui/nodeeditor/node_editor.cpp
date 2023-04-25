@@ -83,9 +83,8 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
 
   auto instruction_container = procedure->GetInstructionContainer();
   m_graphics_scene->SetInstructionContainer(instruction_container);
-  auto model = dynamic_cast<mvvm::ApplicationModel *>(
-      procedure->GetModel());  // FIXME find solution without cast
-  m_scene_controller = std::make_unique<GraphicsSceneController>(model, m_graphics_scene);
+  m_scene_controller =
+      std::make_unique<GraphicsSceneController>(procedure->GetModel(), m_graphics_scene);
 
   auto align_strategy = [this](auto container)
   {

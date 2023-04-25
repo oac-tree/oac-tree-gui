@@ -27,7 +27,7 @@
 
 namespace mvvm
 {
-class ApplicationModel;
+class SessionModelInterface;
 }
 
 namespace sequencergui
@@ -41,7 +41,7 @@ class InstructionContainerItem;
 class GraphicsSceneController : public mvvm::AbstractViewModelController
 {
 public:
-  GraphicsSceneController(mvvm::ApplicationModel *model, GraphicsScene *graphics_scene);
+  GraphicsSceneController(mvvm::SessionModelInterface *model, GraphicsScene *graphics_scene);
   ~GraphicsSceneController() override;
 
   void SetAlignStrategy(std::function<void(InstructionContainerItem *)> strategy);
