@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -237,6 +238,11 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 
 TEST_F(DomainProcedureBuilderTest, AttemptToBuildProcedureWithVariable)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   ProcedureItem procedure_item;
   auto workspace = procedure_item.GetWorkspace();
 

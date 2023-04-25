@@ -168,6 +168,11 @@ TEST_F(TransformHelpersTests, AddNonEmptyAttributeToVariable)
 
 TEST_F(TransformHelpersTests, AddNonEmptyAttributeToInstruction)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   auto instruction = CreateDomainInstruction(domainconstants::kChannelAccessReadInstructionType);
 
   AddNonEmptyAttribute("custom_attribute_name", "", *instruction);
