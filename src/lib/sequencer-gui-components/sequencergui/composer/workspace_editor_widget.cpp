@@ -42,6 +42,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_insert_after_menu(CreateInsertAfterMenu())
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
+  setWindowTitle("WORKSPACE");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);

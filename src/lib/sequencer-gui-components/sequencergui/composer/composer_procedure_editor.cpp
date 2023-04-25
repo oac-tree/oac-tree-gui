@@ -34,24 +34,21 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/style_utils.h>
 
+#include <mvvm/widgets/collapsible_list_view.h>
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMessageBox>
 #include <QSplitter>
-#include <QTabWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
-#include <QWidgetAction>
 
 namespace sequencergui
 {
 ComposerProcedureEditor::ComposerProcedureEditor(
     std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler, QWidget* parent)
     : QWidget(parent)
-    , m_tool_bar(new QToolBar)
-    , m_tool_bar_action(new QWidgetAction(this))
-    , m_tab_widget(new QTabWidget)
+    , m_collapsible_list(new mvvm::CollapsibleListView)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_message_handler(std::move(message_handler))
@@ -64,25 +61,16 @@ ComposerProcedureEditor::ComposerProcedureEditor(
 
   auto layout = new QVBoxLayout(this);
 
-  m_tab_widget->addTab(m_instruction_editor_widget, "Instructions");
-  m_tab_widget->addTab(m_workspace_editor_widget, "Workspace");
-  m_tab_widget->setTabPosition(QTabWidget::South);
+  m_collapsible_list->AddCollapsibleWidget(m_instruction_editor_widget,
+                                           m_instruction_editor_widget->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_workspace_editor_widget,
+                                           m_workspace_editor_widget->actions());
 
-  layout->addWidget(m_tab_widget);
+  layout->addWidget(m_collapsible_list);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  auto on_tabbar_changed = [this]()
-  {
-    // toolbar will show actions of currently shown widget
-    m_tool_bar->clear();
-    m_tool_bar->addActions(m_tab_widget->currentWidget()->actions());
-  };
-  connect(m_tab_widget, &QTabWidget::currentChanged, this, on_tabbar_changed);
-  on_tabbar_changed();
-
   SetupConnections();
-  SetupToolBar();
 }
 
 ComposerProcedureEditor::~ComposerProcedureEditor() = default;
@@ -114,18 +102,6 @@ InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
-}
-
-//! Setup tool bar for this widget. The toolbar is intended for embedding in the other widget's
-//! toolbar. It will be wrapped into QWidgetAction and added to the list of actions of given widget.
-
-void ComposerProcedureEditor::SetupToolBar()
-{
-  m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
-  m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
-  m_tool_bar->layout()->setSpacing(0);
-  m_tool_bar_action->setDefaultWidget(m_tool_bar);
-  addAction(m_tool_bar_action);
 }
 
 void ComposerProcedureEditor::SetupConnections()
@@ -176,8 +152,7 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
   { return m_procedure ? m_procedure->GetWorkspace() : nullptr; };
   result.selected_workspace_callback = selected_workspace_callback;
 
-  result.selected_item_callback = [this]()
-  { return m_workspace_editor_widget->GetSelectedItem(); };
+  result.selected_item_callback = [this]() { return m_workspace_editor_widget->GetSelectedItem(); };
 
   auto send_message_callback = [this](const sup::gui::MessageEvent& event)
   {

@@ -91,7 +91,7 @@ void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_a
     hide_actions.append(m_main_toolbar->InsertElement(action));
   }
 
-  m_toolbar_data.append({actions, is_always_visible});
+  m_toolbar_data.append({hide_actions, is_always_visible});
   UpdateControlElementsVisibility();
 }
 

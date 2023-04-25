@@ -22,9 +22,10 @@
 
 #include <QWidget>
 
-class QTabWidget;
-class QToolBar;
-class QWidgetAction;
+namespace mvvm
+{
+class CollapsibleListView;
+}
 
 namespace sup::gui
 {
@@ -71,15 +72,12 @@ signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 
 private:
-  void SetupToolBar();
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
 
-  QToolBar* m_tool_bar{nullptr};
-  QWidgetAction* m_tool_bar_action{nullptr};  //!< wrapper to send our tool bar outside
+  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
 
-  QTabWidget* m_tab_widget{nullptr};
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
 

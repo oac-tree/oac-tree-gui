@@ -46,6 +46,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
 {
+  setWindowTitle("INSTRUCTION TREE");
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
