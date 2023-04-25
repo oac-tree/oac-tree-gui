@@ -35,6 +35,7 @@ class XMLEditor : public QWidget
 
 public:
   explicit XMLEditor(QWidget* parent = nullptr);
+  ~XMLEditor();
 
   void SetXMLFile(const QString& file_name);
 
@@ -46,6 +47,8 @@ signals:
   void ExportXmlRequest();
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupActions();
 
   QTextEdit* m_text_edit{nullptr};

@@ -34,6 +34,15 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 #include <fstream>
+#include <QSettings>
+
+namespace
+{
+
+const QString kGroupName("XmlEditor/");
+const QString kCurrentWorkdirSettingName = kGroupName + "workdir";
+}  // namespace
+
 
 namespace sequencergui
 {
@@ -57,6 +66,12 @@ XMLEditor::XMLEditor(QWidget *parent)
   m_text_edit->setLineWrapMode(QTextEdit::NoWrap);
 
   SetupActions();
+  ReadSettings();
+}
+
+XMLEditor::~XMLEditor()
+{
+  WriteSettings();
 }
 
 void XMLEditor::SetXMLFile(const QString &file_name)
@@ -89,6 +104,18 @@ void XMLEditor::SetXMLContent(const QString &content)
 void XMLEditor::ClearText()
 {
   m_text_edit->clear();
+}
+
+void XMLEditor::ReadSettings()
+{
+  const QSettings settings;
+  m_current_workdir = settings.value(kCurrentWorkdirSettingName, QDir::homePath()).toString();
+}
+
+void XMLEditor::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
 }
 
 void XMLEditor::SetupActions()
