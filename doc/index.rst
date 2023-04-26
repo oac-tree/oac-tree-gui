@@ -1,4 +1,4 @@
-Welcome to sup-utils's documentation!
+Welcome to sequencer-gui's documentation!
 =====================================
 
 This is a work in progress.

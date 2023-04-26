@@ -35,18 +35,20 @@ Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-uti
 - sequencer-gui
 
 ### Run
+
 /opt/codac/bin/sequencer-gui
 
 ## Installation on custom Linux
 
 All COA packages are ordinary CMake packages and they can be compiled and installed on any Linux
-of user choice like any other CMake project. Here we show the installation of `sup-utils` package. All others have to be installed in a similar way in the order given by the list above.
+of user choice like any other CMake project. Here we show the installation of `sup-utils` package. 
+All others have to be installed in a similar way in the order given by the list above.
 We assume that the user wants to install all dependencies into `<path-to-local-install>` (e.g. /opt/local).
 
 ```bash
 git clone https://git.iter.org/scm/coa/sup-utils.git
 mkdir <build>; cd <build>
-cmake -DCMAKE_PREFIX_PATH=<path-to-local-install>  -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
+cmake -DCMAKE_PREFIX_PATH=<path-to-local-install> -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
 make -j4; ctest; make install
 ```
 
