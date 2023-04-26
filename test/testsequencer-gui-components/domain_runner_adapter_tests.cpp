@@ -321,6 +321,8 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
+  EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);
+
   // triggering action
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
