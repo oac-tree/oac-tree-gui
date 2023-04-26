@@ -203,21 +203,30 @@ TEST_F(FunctionRunnerTest, StepwiseExecutionAndNormalCompletion)
   FunctionRunner runner(worker);
 
   EXPECT_TRUE(runner.Step());
-  EXPECT_EQ(runner.GetStatus(), RunnerStatus::kRunning);
-  EXPECT_TRUE(runner.IsBusy());
-  std::this_thread::sleep_for(msec(20));
+
+  auto predicate = [&nsteps, &runner]() { return (runner.IsBusy() && nsteps == 1); };
+  EXPECT_TRUE(testutils::WaitFor(predicate, msec(50)));
+
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(runner.IsBusy());
 
   runner.Step();
-  std::this_thread::sleep_for(msec(20));
+
+  auto predicate2 = [&nsteps, &runner]()
+  { return (runner.GetStatus() == RunnerStatus::kPaused) && (nsteps == 2); };
+  EXPECT_TRUE(testutils::WaitFor(predicate2, msec(50)));
+
   EXPECT_EQ(nsteps, 2);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
   EXPECT_TRUE(runner.IsBusy());
 
   runner.Step();
-  std::this_thread::sleep_for(msec(20));
+
+  auto predicate3 = [&nsteps, &runner]()
+  { return (runner.GetStatus() == RunnerStatus::kCompleted) && (nsteps == 3); };
+  EXPECT_TRUE(testutils::WaitFor(predicate3, msec(50)));
+
   EXPECT_EQ(nsteps, 3);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
   EXPECT_FALSE(runner.IsBusy());
@@ -250,7 +259,7 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
   std::this_thread::sleep_for(msec(5));
   EXPECT_TRUE(runner.IsBusy());
 
-  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kPaused;}, msec(50));
+  testutils::WaitFor([&runner]() { return runner.GetStatus() == RunnerStatus::kPaused; }, msec(50));
 
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
@@ -259,7 +268,8 @@ TEST_F(FunctionRunnerTest, SignalingDuringStepwiseExecutionAndNormalCompletion)
   runner.Step();
   std::this_thread::sleep_for(msec(5));
 
-  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kCompleted;}, msec(50));
+  testutils::WaitFor([&runner]() { return runner.GetStatus() == RunnerStatus::kCompleted; },
+                     msec(50));
 
   EXPECT_EQ(nsteps, 2);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kCompleted);
@@ -290,7 +300,7 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   }
 
   EXPECT_TRUE(runner.Step());  // triggering action
-  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kPaused;}, msec(50));
+  testutils::WaitFor([&runner]() { return runner.GetStatus() == RunnerStatus::kPaused; }, msec(50));
   EXPECT_TRUE(runner.IsBusy());
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kPaused);
@@ -298,7 +308,8 @@ TEST_F(FunctionRunnerTest, TerminateDuringStepwiseExecution)
   // let's terminate while being in Pause mode
   runner.Stop();
 
-  testutils::WaitFor([&runner]() {return runner.GetStatus() == RunnerStatus::kStopped;}, msec(50));
+  testutils::WaitFor([&runner]() { return runner.GetStatus() == RunnerStatus::kStopped; },
+                     msec(50));
   EXPECT_EQ(nsteps, 1);
   EXPECT_EQ(runner.GetStatus(), RunnerStatus::kStopped);
   EXPECT_FALSE(runner.IsBusy());
