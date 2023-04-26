@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
-#define SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#ifndef SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
+#define SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
 
 //! Collection of utils for main() function.
 
@@ -27,24 +27,9 @@
 namespace sequencergui
 {
 
-struct Options
-{
-  //! rely on system scale via QT_ variables, if true
-  bool scale = false;
-
-  //! print system environment information
-  bool info = false;
-
-  //! appplication system font point size
-  int system_font_psize = -1;
-
-  //! main appplication GUI style
-  QString style;
-};
-
-//! Parse command line options.
-Options ParseOptions(int argc, char** argv);
+//! Sets main GUI style.
+void SetWindowStyle(const QString& user_style);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

@@ -17,34 +17,35 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
-#define SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_
+#include "main_window_helper.h"
 
-//! Collection of utils for main() function.
+#include <QApplication>
+#include <QStyleFactory>
 
-#include <QString>
+#include <iostream>
+
+namespace
+{
+const QString PreferredCodacStyle = "Adwaita";
+}
 
 namespace sequencergui
 {
 
-struct Options
+void SetWindowStyle(const QString &user_style)
 {
-  //! rely on system scale via QT_ variables, if true
-  bool scale = false;
-
-  //! print system environment information
-  bool info = false;
-
-  //! appplication system font point size
-  int system_font_psize = -1;
-
-  //! main appplication GUI style
-  QString style;
-};
-
-//! Parse command line options.
-Options ParseOptions(int argc, char** argv);
+  if (!user_style.isEmpty())
+  {
+    QApplication::setStyle(QStyleFactory::create(user_style));
+  }
+  else
+  {
+#ifdef SEQUENCERGUI_CODAC
+    // If no special request from the user, and we are on CODAC, use Adwaita style
+    // which provide tolerable gnome-like UI
+    QApplication::setStyle(QStyleFactory::create(PreferredCodacStyle));
+#endif
+  }
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_MAINWINDOW_COMMAND_LINE_OPTIONS_H_

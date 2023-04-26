@@ -45,8 +45,12 @@ Options ParseOptions(int argc, char** argv)
   parser.addOption(scale_option);
 
   QCommandLineOption font_option("font", "Main application font point size");
-  font_option.setValueName("10");
+  font_option.setValueName("pt");
   parser.addOption(font_option);
+
+  QCommandLineOption style_option("style", "Main GUI style, see --info for full list available");
+  style_option.setValueName("name");
+  parser.addOption(style_option);
 
   parser.process(app);
 
@@ -57,6 +61,11 @@ Options ParseOptions(int argc, char** argv)
   if (parser.isSet(font_option))
   {
     result.system_font_psize = parser.value(font_option).toInt();
+  }
+
+  if (parser.isSet(style_option))
+  {
+    result.style = parser.value(style_option);
   }
 
   return result;
