@@ -26,41 +26,30 @@
 #include <mvvm/widgets/app_utils.h>
 
 #include <QApplication>
-#include <QLocale>
 #include <QMetaType>
 #include <iostream>
 
 int main(int argc, char** argv)
 {
-  QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
-
-  QCoreApplication::setApplicationName("sequencer-gui");
-  QCoreApplication::setApplicationVersion("0.1");
-  QCoreApplication::setOrganizationName("coa");
+  sequencergui::InitCoreApplication("sequencer-gui");
 
   auto options = sequencergui::ParseOptions(argc, argv);
-
   mvvm::utils::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
 
-  sequencergui::SetWindowStyle(options.style);
-
-  sequencergui::RegisterCustomMetaTypes();
-
-  mvvm::utils::SetApplicationFontSize(options.system_font_psize);
+  sequencergui::SetWindowStyle(options.style, options.system_font_psize);
 
   if (options.info)
   {
     std::cout << mvvm::utils::GetDesktopInfo();
   }
 
+  sequencergui::RegisterCustomMetaTypes();
   Q_INIT_RESOURCE(sequencericons);
-
   sequencergui::LoadPlugins();
 
   sequencergui::SequencerMainWindow win;
-
   win.show();
 
   return app.exec();

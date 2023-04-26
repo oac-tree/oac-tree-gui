@@ -18,27 +18,39 @@
  *****************************************************************************/
 
 #include "pvmonitor_main_window.h"
-#include <mvvm/widgets/app_utils.h>
+
+#include <sequencergui/components/custom_meta_types.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/mainwindow/command_line_options.h>
+#include <sequencergui/mainwindow/main_window_helper.h>
+
+#include <mvvm/widgets/app_utils.h>
 
 #include <QApplication>
-#include <QLocale>
+#include <QMetaType>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
-  QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
-  QCoreApplication::setApplicationName("sup-pvmonitor");
-  QCoreApplication::setApplicationVersion("0.1");
-  QCoreApplication::setOrganizationName("coa");
+  sequencergui::InitCoreApplication("sup-pvmonitor");
 
-  mvvm::utils::SetupHighDpiScaling();
+  auto options = sequencergui::ParseOptions(argc, argv);
+  mvvm::utils::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
 
+  sequencergui::SetWindowStyle(options.style, options.system_font_psize);
+
+  if (options.info)
+  {
+    std::cout << mvvm::utils::GetDesktopInfo();
+  }
+
+  sequencergui::RegisterCustomMetaTypes();
+  Q_INIT_RESOURCE(sequencericons);
   sequencergui::LoadPlugins();
 
   sequencergui::PvMonitorMainWindow win;
-
   win.show();
 
   return app.exec();

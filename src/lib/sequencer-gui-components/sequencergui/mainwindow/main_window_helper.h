@@ -27,8 +27,11 @@
 namespace sequencergui
 {
 
+//! Inits core application.
+void InitCoreApplication(const QString& app_name);
+
 //! Sets main GUI style.
-void SetWindowStyle(const QString& user_style);
+void SetWindowStyle(const QString& app_style, int system_font_psize);
 
 }  // namespace sequencergui
 

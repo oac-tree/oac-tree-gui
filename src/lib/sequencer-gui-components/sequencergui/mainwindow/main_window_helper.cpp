@@ -19,10 +19,13 @@
 
 #include "main_window_helper.h"
 
-#include <QApplication>
-#include <QStyleFactory>
+#include <sequencergui/core/version.h>
 
-#include <iostream>
+#include <mvvm/widgets/app_utils.h>
+
+#include <QApplication>
+#include <QLocale>
+#include <QStyleFactory>
 
 namespace
 {
@@ -32,11 +35,19 @@ const QString PreferredCodacStyle = "Adwaita";
 namespace sequencergui
 {
 
-void SetWindowStyle(const QString &user_style)
+void InitCoreApplication(const QString &app_name)
 {
-  if (!user_style.isEmpty())
+  QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
+  QCoreApplication::setApplicationName(app_name);
+  QCoreApplication::setApplicationVersion(QString::fromStdString(sequencergui::ProjectVersion()));
+  QCoreApplication::setOrganizationName("coa");
+}
+
+void SetWindowStyle(const QString &app_style, int system_font_psize)
+{
+  if (!app_style.isEmpty())
   {
-    QApplication::setStyle(QStyleFactory::create(user_style));
+    QApplication::setStyle(QStyleFactory::create(app_style));
   }
   else
   {
@@ -46,6 +57,8 @@ void SetWindowStyle(const QString &user_style)
     QApplication::setStyle(QStyleFactory::create(PreferredCodacStyle));
 #endif
   }
+
+  mvvm::utils::SetApplicationFontSize(system_font_psize);
 }
 
 }  // namespace sequencergui
