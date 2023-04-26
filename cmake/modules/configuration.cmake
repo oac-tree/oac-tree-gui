@@ -31,7 +31,6 @@ if (CODAC_FOUND)
   endif()
 else()
   message(STATUS "Compiling without CODAC")
-  set(CODAC FALSE)
 endif()
 
 # -----------------------------------------------------------------------------
