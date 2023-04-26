@@ -1,93 +1,66 @@
-# Sequencer graphical user interface
+# Sequencer Graphical User Interface
 
 ![Node editor](./doc/nodeeditor.png)
 
 Prototype of Sequencer Graphical User Interface.
 
-## Installation on CODAC machines
+## Installation on CODAC machines from nightly RPMs
 
-The `sequencer-gui` application depends on `sup-dto`, `sequencer` and `sup-mvvm` libraries.
+To be written.
 
-### Install sup-dto, sequencer
+## Installation on CODAC machines (manual)
 
-The `sup-dto` and `sequencer` are not yet packaged and should be build from the source
+The `sequencer-gui` application depends on a number of Codac Operation Application libraries.
 
-```
-# install sup-dto
-git clone https://git.iter.org/scm/coa/sup-dto.git
-cd sup-dto; mvn clean install
+### Install prerequisites
 
-# install sequencer
-git clone https://git.iter.org/scm/coa/sequencer.git
-cd sequencer; mvn clean install
-```
-
-### Install sup-mvvm library
-
-```
-# install latest gtest, libxml2
+```bash
 yum install codac-core-7.1-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
-
-# install qt5 
 yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
-
-# get sup-mvvm source
-git clone https://git.iter.org/scm/coa/sup-mvvm.git
-
-# compile
-mkdir <build>; cd <build>
-cmake <path-to-repo>
-make -j4 && ctest
 ```
 
-Please note, that thanks to CMake magic (the magic is located in $HOME/.cmake directory), installation is optional.
-Without installation, libraries will be discoverable right from the build directory.
+### Install COA packages
 
-### Build sequencer-gui
+Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-utils/browse
+) and install them one-by-one using `mvn clean install`
 
-```
-# Get source code (develop branch)
-git clone -b develop https://git.iter.org/scm/coa/sequencer-gui.git
+- sup-utils
+- sup-dto
+- sup-protocol
+- sup-epics
+- sequencer
+- sequencer-plugin-epics
+- sup-mvvm
+- sup-gui-core
+- sequencer-gui
 
-# Compile
-<build>mkdir build; cd build
-cmake -DSEQUENCERGUI_CODAC=ON <path-to-repo>
-make -j4 && ctest
-
-# Run
-<build>/bin/sequencer-gui
-```
+### Run
+/opt/codac/bin/sequencer-gui
 
 ## Installation on custom Linux
 
-It is possible to develop Sequencer GUI on custom Linux distributive. Tested on `Arch` Linux.
-`sup-mvvm`, `sup-dto` and `sequencer` libraries should be compiled and installed before.
+All COA packages are ordinary CMake packages and they can be compiled and installed on any Linux
+of user choice like any other CMake project. Here we show the installation of `sup-utils` package. All others have to be installed in a similar way in the order given by the list above.
+We assume that the user wants to install all dependencies into `<path-to-local-install>` (e.g. /opt/local).
 
-
-```
-
-# We assume that the user wants to install all dependencies into <path-to-local-install>, e.g. /opt/local.
-
-# Install sup-dto
-git clone https://git.iter.org/scm/coa/sup-dto.git
-cmake -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
-make -j4; make install
-
-# Install sequencer
-git clone https://git.iter.org/scm/coa/sequencer.git
-cmake -DCMAKE_PREFIX_PATH=<path-to-local-install> -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
-make -j4; make install
-
-# Install sup-mvvm library
-git clone https://git.iter.org/scm/coa/sup-mvvm.git
-cmake -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
+```bash
+git clone https://git.iter.org/scm/coa/sup-utils.git
+mkdir <build>; cd <build>
+cmake -DCMAKE_PREFIX_PATH=<path-to-local-install>  -DCMAKE_INSTALL_PREFIX=<path-to-local-install> <path-to-repo>
 make -j4; ctest; make install
-
-# build sequencer GUI
-git clone -b develop https://git.iter.org/scm/coa/sequencer-gui.git
-cmake -DCMAKE_PREFIX_PATH=<path-to-local-install> <path-to-repo>
-make -j4; ctest;
-
-# Run
-<build>/bin/sequencer-gui
 ```
+
+It might be needed to add `<path-to-local-install>/lib` to `LD_LIBRARY_PATH`.
+
+## Alternative installation on custom Linux
+
+This method doesn't require installation, all packages will be used from their `<build>` directories
+thanks to CMake magic (the magic is located in $HOME/.cmake directory).
+
+```bash
+git clone https://git.iter.org/scm/coa/sup-utils.git
+mkdir <build>; cd <build>
+cmake -DCOA_EXPORT_BUILD_TREE=ON <path-to-repo>
+make -j4; ctest
+```
+
