@@ -18,32 +18,26 @@
  *****************************************************************************/
 
 #include <sequencergui/components/custom_meta_types.h>
+#include <sequencergui/core/version.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
-#include <sequencergui/mainwindow/main_window_helper.h>
 #include <sequencergui/mainwindow/sequencer_main_window.h>
-
-#include <mvvm/widgets/app_utils.h>
+#include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
 #include <QMetaType>
-#include <iostream>
 
 int main(int argc, char** argv)
 {
-  sequencergui::InitCoreApplication("sequencer-gui");
+  auto version = QString::fromStdString(sequencergui::ProjectVersion());
+  sup::gui::InitCoreApplication("sequencer-gui", version);
 
   auto options = sequencergui::ParseOptions(argc, argv);
-  mvvm::utils::SetupHighDpiScaling(options.scale);
+  sup::gui::SetupHighDpiScaling(options.scale);
 
   QApplication app(argc, argv);
 
-  sequencergui::SetWindowStyle(options.style, options.system_font_psize);
-
-  if (options.info)
-  {
-    std::cout << mvvm::utils::GetDesktopInfo();
-  }
+  sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
 
   sequencergui::RegisterCustomMetaTypes();
   Q_INIT_RESOURCE(sequencericons);

@@ -1,5 +1,5 @@
 if(CODAC_FOUND)
-    add_definitions(-DSEQUENCERGUI_CODAC)
+  add_definitions(-DSEQUENCERGUI_CODAC)
 endif()
 
 add_subdirectory(app)

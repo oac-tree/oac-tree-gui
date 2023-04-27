@@ -5,8 +5,6 @@ target_sources(${library_name} PRIVATE
   app_settings.h
   command_line_options.cpp
   command_line_options.h
-  main_window_helper.cpp
-  main_window_helper.h
   project_handler.cpp
   project_handler.h
   recent_project_settings.cpp
