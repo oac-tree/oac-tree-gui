@@ -197,6 +197,48 @@ void CopyItem::SetOutput(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
+// DecrementItem
+// ----------------------------------------------------------------------------
+
+DecrementItem::DecrementItem() : InstructionItem(Type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+}
+
+std::unique_ptr<mvvm::SessionItem> DecrementItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<DecrementItem>(*this, make_unique_id);
+}
+
+std::string DecrementItem::GetDomainType() const
+{
+  return domainconstants::kDecrementInstructionType;
+}
+
+void DecrementItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+  }
+}
+
+void DecrementItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
+}
+
+std::string DecrementItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void DecrementItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
+}
+
+// ----------------------------------------------------------------------------
 // FallbackItem
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : InstructionItem(Type)
@@ -309,6 +351,48 @@ std::string IncludeItem::GetPath() const
 void IncludeItem::SetPath(const std::string &value)
 {
   SetProperty(kPath, value);
+}
+
+// ----------------------------------------------------------------------------
+// IncrementItem
+// ----------------------------------------------------------------------------
+
+IncrementItem::IncrementItem() : InstructionItem(Type)
+{
+  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
+}
+
+std::unique_ptr<mvvm::SessionItem> IncrementItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<DecrementItem>(*this, make_unique_id);
+}
+
+std::string IncrementItem::GetDomainType() const
+{
+  return domainconstants::kIncrementInstructionType;
+}
+
+void IncrementItem::InitFromDomainImpl(const instruction_t *instruction)
+{
+  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
+  {
+    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+  }
+}
+
+void IncrementItem::SetupDomainImpl(instruction_t *instruction) const
+{
+  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
+}
+
+std::string IncrementItem::GetVariableName() const
+{
+  return Property<std::string>(kVariableName);
+}
+
+void IncrementItem::SetVariableName(const std::string &value)
+{
+  SetProperty(kVariableName, value);
 }
 
 // ----------------------------------------------------------------------------

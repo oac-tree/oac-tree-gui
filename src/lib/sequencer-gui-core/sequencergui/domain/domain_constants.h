@@ -32,9 +32,11 @@ namespace sequencergui::domainconstants
 const std::string kChoiceInstructionType = "Choice";
 const std::string kConditionInstructionType = "Condition";
 const std::string kCopyInstructionType = "Copy";
+const std::string kDecrementInstructionType = "Decrement";
 const std::string kFallbackInstructionType = "Fallback";
 const std::string kForceSuccessInstructionType = "ForceSuccess";
 const std::string kIncludeInstructionType = "Include";
+const std::string kIncrementInstructionType = "Increment";
 const std::string kInputInstructionType = "Input";
 const std::string kInverterInstructionType = "Inverter";
 const std::string kListenInstructionType = "Listen";

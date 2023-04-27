@@ -97,6 +97,28 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Represent Decrement instruction.
+class DecrementItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Decrement";
+
+  using InstructionItem::InstructionItem;
+  DecrementItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+
+  std::string GetVariableName() const;
+
+  void SetVariableName(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
 //! Represent Fallback instruction.
 class FallbackItem : public InstructionItem
 {
@@ -153,6 +175,28 @@ public:
   std::string GetPath() const;
 
   void SetPath(const std::string& value);
+
+private:
+  void InitFromDomainImpl(const instruction_t* instruction) override;
+  void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
+//! Represent Increment instruction.
+class IncrementItem : public InstructionItem
+{
+public:
+  static inline const std::string Type = "Increment";
+
+  using InstructionItem::InstructionItem;
+  IncrementItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+
+  std::string GetVariableName() const;
+
+  void SetVariableName(const std::string& value);
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
