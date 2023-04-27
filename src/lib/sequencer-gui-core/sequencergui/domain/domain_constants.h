@@ -32,7 +32,6 @@ namespace sequencergui::domainconstants
 const std::string kChoiceInstructionType = "Choice";
 const std::string kConditionInstructionType = "Condition";
 const std::string kCopyInstructionType = "Copy";
-const std::string kEqualsInstructionType = "Equals";
 const std::string kFallbackInstructionType = "Fallback";
 const std::string kForceSuccessInstructionType = "ForceSuccess";
 const std::string kIncludeInstructionType = "Include";
@@ -47,6 +46,13 @@ const std::string kSequenceInstructionType = "Sequence";
 const std::string kUserChoiceInstructionType = "UserChoice";
 const std::string kVariableResetInstructionType = "ResetVariable";
 const std::string kWaitInstructionType = "Wait";
+
+// equality instructions
+const std::string kEqualsInstructionType = "Equals";
+const std::string kLessThanInstructionType = "LessThan";
+const std::string LessThanOrEqualInstructionType = "LessThanOrEqual";
+const std::string kGreaterThanInstructionType = "GreaterThan";
+const std::string kGreaterThanOrEqualInstructionType = "GreaterThanOrEqual";
 
 // sup-sequencer-plughin-epics instructions
 const std::string kChannelAccessReadInstructionType = "ChannelAccessRead";

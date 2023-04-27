@@ -93,6 +93,38 @@ void ComparisonItem::SetupDomainImpl(instruction_t *instruction) const
 }
 
 // ----------------------------------------------------------------------------
+// LessThanItem
+// ----------------------------------------------------------------------------
+
+LessThanItem::LessThanItem() : ComparisonItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> LessThanItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<LessThanItem>(*this, make_unique_id);
+}
+
+std::string LessThanItem::GetDomainType() const
+{
+  return domainconstants::kLessThanInstructionType;
+}
+
+// ----------------------------------------------------------------------------
+// LessThanOrEqualItem
+// ----------------------------------------------------------------------------
+
+LessThanOrEqualItem::LessThanOrEqualItem() : ComparisonItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> LessThanOrEqualItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<LessThanOrEqualItem>(*this, make_unique_id);
+}
+
+std::string LessThanOrEqualItem::GetDomainType() const
+{
+  return domainconstants::LessThanOrEqualInstructionType;
+}
+
+// ----------------------------------------------------------------------------
 // EqualsItem
 // ----------------------------------------------------------------------------
 
@@ -106,6 +138,38 @@ std::unique_ptr<mvvm::SessionItem> EqualsItem::Clone(bool make_unique_id) const
 std::string EqualsItem::GetDomainType() const
 {
   return domainconstants::kEqualsInstructionType;
+}
+
+// ----------------------------------------------------------------------------
+// GreaterThanOrEqualItem
+// ----------------------------------------------------------------------------
+
+GreaterThanOrEqualItem::GreaterThanOrEqualItem() : ComparisonItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> GreaterThanOrEqualItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<GreaterThanOrEqualItem>(*this, make_unique_id);
+}
+
+std::string GreaterThanOrEqualItem::GetDomainType() const
+{
+  return domainconstants::kGreaterThanOrEqualInstructionType;
+}
+
+// ----------------------------------------------------------------------------
+// GreaterThanItem
+// ----------------------------------------------------------------------------
+
+GreaterThanItem::GreaterThanItem() : ComparisonItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> GreaterThanItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<GreaterThanItem>(*this, make_unique_id);
+}
+
+std::string GreaterThanItem::GetDomainType() const
+{
+  return domainconstants::kGreaterThanInstructionType;
 }
 
 }  // namespace sequencergui

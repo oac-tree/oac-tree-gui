@@ -47,6 +47,34 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
+//! Represent LessThan instruction.
+class LessThanItem : public ComparisonItem
+{
+public:
+  static inline const std::string Type = "LessThan";
+
+  using ComparisonItem::ComparisonItem;
+  LessThanItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+};
+
+//! Represent LessThanOrEqual instruction.
+class LessThanOrEqualItem : public ComparisonItem
+{
+public:
+  static inline const std::string Type = "LessThanOrEqual";
+
+  using ComparisonItem::ComparisonItem;
+  LessThanOrEqualItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+};
+
 //! Represent Equals instruction.
 class EqualsItem : public ComparisonItem
 {
@@ -60,6 +88,36 @@ public:
 
   std::string GetDomainType() const override;
 };
+
+//! Represent GreaterThanOrEqual instruction.
+class GreaterThanOrEqualItem : public ComparisonItem
+{
+public:
+  static inline const std::string Type = "GreaterThanOrEqual";
+
+  using ComparisonItem::ComparisonItem;
+  GreaterThanOrEqualItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+};
+
+
+//! Represent GreaterThan instruction.
+class GreaterThanItem : public ComparisonItem
+{
+public:
+  static inline const std::string Type = "GreaterThan";
+
+  using ComparisonItem::ComparisonItem;
+  GreaterThanItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
+};
+
 
 }  // namespace sequencergui
 
