@@ -1,3 +1,12 @@
+Changes for 1.0.0:
+
+- New workspace listener
+- AnyValueEditor embedded
+- EPICS pv-monitor application
+- Support for all instructions from sequencer-v2.0 and sequencer-plugin-epics-v2.0
+- Full refactoring of JobSystem
+- New log system with filtering capabilities
+
 Changes for 0.4.0:
 
 - Base version for demo in November 2022

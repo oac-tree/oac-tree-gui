@@ -26,7 +26,7 @@
     <artifactId>sequencer-gui</artifactId>
     <packaging>codac</packaging>
     <!-- See ChangeLog file for details -->
-    <version>0.4.99</version>
+    <version>1.0.0</version>
     <name>SUP sequencer GUI</name>
     <description>SUP sequencer GUI.</description>
     <url>http://www.iter.org/</url>
@@ -59,7 +59,8 @@
             <organization>ITER Organisation</organization>
             <email>gennady.pospelov@iter.org</email>
             <roles>
-                <role>developer</role>
+              <role>unit owner</role>
+              <role>developer</role>
             </roles>
         </developer>
         <developer>
@@ -68,7 +69,6 @@
             <organization>CSW</organization>
             <email>rg-silva@criticalsoftware.com</email>
             <roles>
-                <role>unit owner</role>
                 <role>developer</role>
             </roles>
         </developer>
