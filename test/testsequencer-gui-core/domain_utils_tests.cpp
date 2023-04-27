@@ -40,9 +40,10 @@ TEST_F(DomainUtilsTest, DomainInstructionTypeConstants)
 {
   const std::vector<std::string> domain_types = {
       kChoiceInstructionType,        kConditionInstructionType,
-      kCopyInstructionType,          kEqualsInstructionType,
-      kFallbackInstructionType,      kForceSuccessInstructionType,
-      kIncludeInstructionType,       kInputInstructionType,
+      kCopyInstructionType,          kDecrementInstructionType,
+      kEqualsInstructionType,        kFallbackInstructionType,
+      kForceSuccessInstructionType,  kIncludeInstructionType,
+      kIncrementInstructionType,     kInputInstructionType,
       kInverterInstructionType,      kListenInstructionType,
       kMessageInstructionType,       kOutputInstructionType,
       kParallelInstructionType,      kRepeatInstructionType,

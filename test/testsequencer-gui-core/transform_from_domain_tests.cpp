@@ -73,163 +73,156 @@ public:
 
 TEST_F(TransformFromDomainTest, GetItemType)
 {
+  using namespace sequencergui::domainconstants;
+
   // for instructions
-  EXPECT_EQ(ChoiceItem::Type, GetItemType(domainconstants::kChoiceInstructionType));
-  EXPECT_EQ(ConditionItem::Type, GetItemType(domainconstants::kConditionInstructionType));
-  EXPECT_EQ(CopyItem::Type, GetItemType(domainconstants::kCopyInstructionType));
-  EXPECT_EQ(FallbackItem::Type, GetItemType(domainconstants::kFallbackInstructionType));
-  EXPECT_EQ(ForceSuccessItem::Type, GetItemType(domainconstants::kForceSuccessInstructionType));
-  EXPECT_EQ(IncludeItem::Type, GetItemType(domainconstants::kIncludeInstructionType));
-  EXPECT_EQ(InputItem::Type, GetItemType(domainconstants::kInputInstructionType));
-  EXPECT_EQ(InverterItem::Type, GetItemType(domainconstants::kInverterInstructionType));
-  EXPECT_EQ(ListenItem::Type, GetItemType(domainconstants::kListenInstructionType));
-  EXPECT_EQ(MessageItem::Type, GetItemType(domainconstants::kMessageInstructionType));
-  EXPECT_EQ(OutputItem::Type, GetItemType(domainconstants::kOutputInstructionType));
-  EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(domainconstants::kParallelInstructionType));
-  EXPECT_EQ(RepeatItem::Type, GetItemType(domainconstants::kRepeatInstructionType));
-  EXPECT_EQ(SequenceItem::Type, GetItemType(domainconstants::kSequenceInstructionType));
-  EXPECT_EQ(UserChoiceItem::Type, GetItemType(domainconstants::kUserChoiceInstructionType));
-  EXPECT_EQ(VariableResetItem::Type, GetItemType(domainconstants::kVariableResetInstructionType));
-  EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
+  EXPECT_EQ(ChoiceItem::Type, GetItemType(kChoiceInstructionType));
+  EXPECT_EQ(ConditionItem::Type, GetItemType(kConditionInstructionType));
+  EXPECT_EQ(CopyItem::Type, GetItemType(kCopyInstructionType));
+  EXPECT_EQ(DecrementItem::Type, GetItemType(kDecrementInstructionType));
+  EXPECT_EQ(FallbackItem::Type, GetItemType(kFallbackInstructionType));
+  EXPECT_EQ(ForceSuccessItem::Type, GetItemType(kForceSuccessInstructionType));
+  EXPECT_EQ(IncludeItem::Type, GetItemType(kIncludeInstructionType));
+  EXPECT_EQ(IncrementItem::Type, GetItemType(kIncrementInstructionType));
+  EXPECT_EQ(InputItem::Type, GetItemType(kInputInstructionType));
+  EXPECT_EQ(InverterItem::Type, GetItemType(kInverterInstructionType));
+  EXPECT_EQ(ListenItem::Type, GetItemType(kListenInstructionType));
+  EXPECT_EQ(MessageItem::Type, GetItemType(kMessageInstructionType));
+  EXPECT_EQ(OutputItem::Type, GetItemType(kOutputInstructionType));
+  EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(kParallelInstructionType));
+  EXPECT_EQ(RepeatItem::Type, GetItemType(kRepeatInstructionType));
+  EXPECT_EQ(SequenceItem::Type, GetItemType(kSequenceInstructionType));
+  EXPECT_EQ(UserChoiceItem::Type, GetItemType(kUserChoiceInstructionType));
+  EXPECT_EQ(VariableResetItem::Type, GetItemType(kVariableResetInstructionType));
+  EXPECT_EQ(WaitItem::Type, GetItemType(kWaitInstructionType));
 
   // equality instructions
-  EXPECT_EQ(LessThanItem::Type, GetItemType(domainconstants::kLessThanInstructionType));
-  EXPECT_EQ(LessThanOrEqualItem::Type,
-            GetItemType(domainconstants::kLessThanOrEqualInstructionType));
-  EXPECT_EQ(EqualsItem::Type, GetItemType(domainconstants::kEqualsInstructionType));
-  EXPECT_EQ(GreaterThanOrEqualItem::Type,
-            GetItemType(domainconstants::kGreaterThanOrEqualInstructionType));
-  EXPECT_EQ(GreaterThanItem::Type, GetItemType(domainconstants::kGreaterThanInstructionType));
+  EXPECT_EQ(LessThanItem::Type, GetItemType(kLessThanInstructionType));
+  EXPECT_EQ(LessThanOrEqualItem::Type, GetItemType(kLessThanOrEqualInstructionType));
+  EXPECT_EQ(EqualsItem::Type, GetItemType(kEqualsInstructionType));
+  EXPECT_EQ(GreaterThanOrEqualItem::Type, GetItemType(kGreaterThanOrEqualInstructionType));
+  EXPECT_EQ(GreaterThanItem::Type, GetItemType(kGreaterThanInstructionType));
 
   // instructions from sequencer-plugin-epics
-  EXPECT_EQ(ChannelAccessReadInstructionItem::Type,
-            GetItemType(domainconstants::kChannelAccessReadInstructionType));
+  EXPECT_EQ(ChannelAccessReadInstructionItem::Type, GetItemType(kChannelAccessReadInstructionType));
   EXPECT_EQ(ChannelAccessWriteInstructionItem::Type,
-            GetItemType(domainconstants::kChannelAccessWriteInstructionType));
-  EXPECT_EQ(PvAccessReadInstructionItem::Type,
-            GetItemType(domainconstants::kPvAccessReadInstructionType));
-  EXPECT_EQ(PvAccessWriteInstructionItem::Type,
-            GetItemType(domainconstants::kPvAccessWriteInstructionType));
-  EXPECT_EQ(RPCClientInstruction::Type, GetItemType(domainconstants::kRPCClientInstructionType));
-  EXPECT_EQ(SystemCallInstructionItem::Type,
-            GetItemType(domainconstants::kSystemCallInstructionType));
-  EXPECT_EQ(LogInstructionItem::Type, GetItemType(domainconstants::kLogInstructionType));
+            GetItemType(kChannelAccessWriteInstructionType));
+  EXPECT_EQ(PvAccessReadInstructionItem::Type, GetItemType(kPvAccessReadInstructionType));
+  EXPECT_EQ(PvAccessWriteInstructionItem::Type, GetItemType(kPvAccessWriteInstructionType));
+  EXPECT_EQ(RPCClientInstruction::Type, GetItemType(kRPCClientInstructionType));
+  EXPECT_EQ(SystemCallInstructionItem::Type, GetItemType(kSystemCallInstructionType));
+  EXPECT_EQ(LogInstructionItem::Type, GetItemType(kLogInstructionType));
 
   // for variables
-  EXPECT_EQ(ChannelAccessVariableItem::Type,
-            GetItemType(domainconstants::kChannelAccessVariableType));
-  EXPECT_EQ(FileVariableItem::Type, GetItemType(domainconstants::kFileVariableType));
-  EXPECT_EQ(LocalVariableItem::Type, GetItemType(domainconstants::kLocalVariableType));
-  EXPECT_EQ(PvAccessClientVariableItem::Type,
-            GetItemType(domainconstants::kPvAccessClientVariableType));
+  EXPECT_EQ(ChannelAccessVariableItem::Type, GetItemType(kChannelAccessVariableType));
+  EXPECT_EQ(FileVariableItem::Type, GetItemType(kFileVariableType));
+  EXPECT_EQ(LocalVariableItem::Type, GetItemType(kLocalVariableType));
+  EXPECT_EQ(PvAccessClientVariableItem::Type, GetItemType(kPvAccessClientVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
 
 TEST_F(TransformFromDomainTest, CreateVariableItem)
 {
-  EXPECT_TRUE(CanCreateVariableForType<sequencergui::LocalVariableItem>(
-      domainconstants::kLocalVariableType));
-  EXPECT_TRUE(
-      CanCreateVariableForType<sequencergui::FileVariableItem>(domainconstants::kFileVariableType));
+  using namespace sequencergui::domainconstants;
+
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::LocalVariableItem>(kLocalVariableType));
+  EXPECT_TRUE(CanCreateVariableForType<sequencergui::FileVariableItem>(kFileVariableType));
 }
 
 //! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
 
 TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateVariableItem)
 {
+  using namespace sequencergui::domainconstants;
+
   if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
 
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::ChannelAccessVariableItem>(
-      domainconstants::kChannelAccessVariableType));
+      kChannelAccessVariableType));
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessClientVariableItem>(
-      domainconstants::kPvAccessClientVariableType));
+      kPvAccessClientVariableType));
   EXPECT_TRUE(CanCreateVariableForType<sequencergui::PvAccessServerVariableItem>(
-      domainconstants::kPvAccessServerVariableType));
+      kPvAccessServerVariableType));
 }
 
 //! Validate CreateInstructionItem factory function.
 
 TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChoiceItem>(
-      domainconstants::kChoiceInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ConditionItem>(
-      domainconstants::kConditionInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::CopyItem>(domainconstants::kCopyInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::FallbackItem>(
-      domainconstants::kFallbackInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ForceSuccessItem>(
-      domainconstants::kForceSuccessInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncludeItem>(
-      domainconstants::kIncludeInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::InputItem>(domainconstants::kInputInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::InverterItem>(
-      domainconstants::kInverterInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ListenItem>(
-      domainconstants::kListenInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::MessageItem>(
-      domainconstants::kMessageInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::OutputItem>(
-      domainconstants::kOutputInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ParallelSequenceItem>(
-      domainconstants::kParallelInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RepeatItem>(
-      domainconstants::kRepeatInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SequenceItem>(
-      domainconstants::kSequenceInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::UserChoiceItem>(
-      domainconstants::kUserChoiceInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::VariableResetItem>(
-      domainconstants::kVariableResetInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::WaitItem>(domainconstants::kWaitInstructionType));
+  using namespace sequencergui::domainconstants;
 
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanItem>(
-      domainconstants::kLessThanInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChoiceItem>(kChoiceInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ConditionItem>(kConditionInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::CopyItem>(kCopyInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::DecrementItem>(kDecrementInstructionType));
+
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::FallbackItem>(kFallbackInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::ForceSuccessItem>(kForceSuccessInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncludeItem>(kIncludeInstructionType));
+
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncrementItem>(kIncrementInstructionType));
+
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::InputItem>(kInputInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::InverterItem>(kInverterInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ListenItem>(kListenInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::MessageItem>(kMessageInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::OutputItem>(kOutputInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::ParallelSequenceItem>(kParallelInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RepeatItem>(kRepeatInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SequenceItem>(kSequenceInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::UserChoiceItem>(kUserChoiceInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::VariableResetItem>(kVariableResetInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::WaitItem>(kWaitInstructionType));
+
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanItem>(kLessThanInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanOrEqualItem>(
-      domainconstants::kLessThanOrEqualInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(
-      domainconstants::kEqualsInstructionType));
+      kLessThanOrEqualInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(kEqualsInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::GreaterThanOrEqualItem>(
-      domainconstants::kGreaterThanOrEqualInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::GreaterThanItem>(
-      domainconstants::kGreaterThanInstructionType));
-
+      kGreaterThanOrEqualInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::GreaterThanItem>(kGreaterThanInstructionType));
 }
 
 //! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
 
 TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
 {
+  using namespace sequencergui::domainconstants;
+
   if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
 
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessReadInstructionItem>(
-      domainconstants::kChannelAccessReadInstructionType));
+      kChannelAccessReadInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChannelAccessWriteInstructionItem>(
-      domainconstants::kChannelAccessWriteInstructionType));
+      kChannelAccessWriteInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PvAccessReadInstructionItem>(
-      domainconstants::kPvAccessReadInstructionType));
+      kPvAccessReadInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::PvAccessWriteInstructionItem>(
-      domainconstants::kPvAccessWriteInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RPCClientInstruction>(
-      domainconstants::kRPCClientInstructionType));
+      kPvAccessWriteInstructionType));
+  EXPECT_TRUE(
+      CanCreateInstructionForType<sequencergui::RPCClientInstruction>(kRPCClientInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SystemCallInstructionItem>(
-      domainconstants::kSystemCallInstructionType));
+      kSystemCallInstructionType));
 }
 
 TEST_F(TransformFromDomainTest, CreateUnknownInstructionItem)
 {
-  auto item = CreateUnknownInstructionItem(domainconstants::kWaitInstructionType);
+  using namespace sequencergui::domainconstants;
+
+  auto item = CreateUnknownInstructionItem(kWaitInstructionType);
 
   EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);
-  EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(item->GetDomainType(), kWaitInstructionType);
 }

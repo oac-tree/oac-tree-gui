@@ -84,9 +84,11 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<ChoiceItem>());
   EXPECT_TRUE(IsCloneImplemented<ConditionItem>());
   EXPECT_TRUE(IsCloneImplemented<CopyItem>());
+  EXPECT_TRUE(IsCloneImplemented<DecrementItem>());
   EXPECT_TRUE(IsCloneImplemented<FallbackItem>());
   EXPECT_TRUE(IsCloneImplemented<ForceSuccessItem>());
   EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
+  EXPECT_TRUE(IsCloneImplemented<IncrementItem>());
   EXPECT_TRUE(IsCloneImplemented<InputItem>());
   EXPECT_TRUE(IsCloneImplemented<InverterItem>());
   EXPECT_TRUE(IsCloneImplemented<ListenItem>());

@@ -66,9 +66,11 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<ChoiceItem>();
   result->RegisterItem<ConditionItem>();
   result->RegisterItem<CopyItem>();
+  result->RegisterItem<DecrementItem>();
   result->RegisterItem<FallbackItem>();
   result->RegisterItem<ForceSuccessItem>();
   result->RegisterItem<IncludeItem>();
+  result->RegisterItem<IncrementItem>();
   result->RegisterItem<InputItem>();
   result->RegisterItem<InverterItem>();
   result->RegisterItem<ListenItem>();

@@ -364,7 +364,7 @@ IncrementItem::IncrementItem() : InstructionItem(Type)
 
 std::unique_ptr<mvvm::SessionItem> IncrementItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<DecrementItem>(*this, make_unique_id);
+  return std::make_unique<IncrementItem>(*this, make_unique_id);
 }
 
 std::string IncrementItem::GetDomainType() const
