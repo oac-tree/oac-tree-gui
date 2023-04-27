@@ -41,6 +41,49 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// LessThanItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, LessThanItem)
+{
+  LessThanItem item;
+  EXPECT_EQ(item.GetLeftHandSide(), std::string());
+  item.SetLeftHandSide("abc");
+  EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
+
+  EXPECT_EQ(item.GetRightHandSide(), std::string());
+  item.SetRightHandSide("def");
+  EXPECT_EQ(item.GetRightHandSide(), std::string("def"));
+}
+
+TEST_F(StandardInstructionItemsTest, LessThanItemFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kLessThanInstructionType);
+  input->AddAttribute(domainconstants::kLeftHandAttribute, "abc");
+  input->AddAttribute(domainconstants::kRightHandAttribute, "def");
+
+  LessThanItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
+  EXPECT_EQ(item.GetRightHandSide(), std::string("def"));
+}
+
+TEST_F(StandardInstructionItemsTest, LessThanItemToDomain)
+{
+  LessThanItem item;
+  item.SetLeftHandSide("abc");
+  item.SetRightHandSide("def");
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kLessThanInstructionType);
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kLeftHandAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "def");
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+// ----------------------------------------------------------------------------
 // EqualsItem tests
 // ----------------------------------------------------------------------------
 
@@ -52,33 +95,33 @@ TEST_F(StandardInstructionItemsTest, EqualsItem)
   EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
 
   EXPECT_EQ(item.GetRightHandSide(), std::string());
-  item.SetRightHandSide("cde");
-  EXPECT_EQ(item.GetRightHandSide(), std::string("cde"));
+  item.SetRightHandSide("def");
+  EXPECT_EQ(item.GetRightHandSide(), std::string("def"));
 }
 
 TEST_F(StandardInstructionItemsTest, EqualsItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kEqualsInstructionType);
   input->AddAttribute(domainconstants::kLeftHandAttribute, "abc");
-  input->AddAttribute(domainconstants::kRightHandAttribute, "cde");
+  input->AddAttribute(domainconstants::kRightHandAttribute, "def");
 
   EqualsItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
-  EXPECT_EQ(item.GetRightHandSide(), std::string("cde"));
+  EXPECT_EQ(item.GetRightHandSide(), std::string("def"));
 }
 
 TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
 {
   EqualsItem item;
   item.SetLeftHandSide("abc");
-  item.SetRightHandSide("cde");
+  item.SetRightHandSide("def");
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kEqualsInstructionType);
   EXPECT_EQ(domain_item->GetAttribute(domainconstants::kLeftHandAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "cde");
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "def");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
