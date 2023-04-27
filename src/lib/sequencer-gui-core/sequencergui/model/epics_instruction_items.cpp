@@ -63,8 +63,7 @@ EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instructio
 std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone(bool make_unique_id) const
 {
   (void)make_unique_id;
-  // This base is not intended to be used directly
-  throw NotImplementedException("Clone for EpicsReadInstructionItem is not implemented");
+  throw NotImplementedException("EpicsReadInstructionItem::clone() should not be used");
 }
 
 void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
@@ -140,8 +139,7 @@ EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruct
 std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_unique_id) const
 {
   (void)make_unique_id;
-  // This base is not intended to be used directly
-  throw NotImplementedException("Clone for EpicsReadInstructionItem is not implemented");
+  throw NotImplementedException("EpicsWriteInstructionItem::clone() should not be used");
 }
 
 void EpicsWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruction)

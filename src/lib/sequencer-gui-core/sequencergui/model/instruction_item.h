@@ -33,6 +33,8 @@ public:
   using CompoundItem::CompoundItem;
   explicit InstructionItem(const std::string& item_type);
 
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
   virtual std::string GetDomainType() const = 0;
 
   //! Init given item from the domain instruction.

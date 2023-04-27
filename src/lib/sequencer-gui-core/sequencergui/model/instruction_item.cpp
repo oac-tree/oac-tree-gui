@@ -21,6 +21,7 @@
 
 #include "sequencergui/model/standard_instruction_items.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
@@ -48,6 +49,12 @@ InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(it
       ->SetEditable(false);
   AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
   AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
+}
+
+std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone(bool make_unique_id) const
+{
+  (void)make_unique_id;
+  throw NotImplementedException("InstructionItem::clone() should not be used");
 }
 
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
