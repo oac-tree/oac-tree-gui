@@ -32,8 +32,6 @@ namespace
 {
 const std::string kInput = "kInput";
 const std::string kOutput = "kOutput";
-const std::string kLeftHandSide = "kLeftHandSide";
-const std::string kRightHandSide = "kRightHandSide";
 const std::string kVariableName = "kVariableName";
 const std::string kFile = "kFile";
 const std::string kPath = "kPath";
@@ -196,64 +194,6 @@ std::string CopyItem::GetOutput() const
 void CopyItem::SetOutput(const std::string &value)
 {
   SetProperty(kOutput, value);
-}
-
-// ----------------------------------------------------------------------------
-// EqualsItem
-// ----------------------------------------------------------------------------
-
-EqualsItem::EqualsItem() : InstructionItem(Type)
-{
-  AddProperty(kLeftHandSide, std::string())->SetDisplayName("lhs");
-  AddProperty(kRightHandSide, std::string())->SetDisplayName("rhs");
-}
-
-std::unique_ptr<mvvm::SessionItem> EqualsItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<EqualsItem>(*this, make_unique_id);
-}
-
-std::string EqualsItem::GetDomainType() const
-{
-  return domainconstants::kEqualsInstructionType;
-}
-
-std::string EqualsItem::GetLeftHandSide() const
-{
-  return Property<std::string>(kLeftHandSide);
-}
-
-void EqualsItem::SetLeftHandSide(const std::string &value)
-{
-  SetProperty(kLeftHandSide, value);
-}
-
-std::string EqualsItem::GetRightHandSide() const
-{
-  return Property<std::string>(kRightHandSide);
-}
-
-void EqualsItem::SetRightHandSide(const std::string &value)
-{
-  SetProperty(kRightHandSide, value);
-}
-
-void EqualsItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kLeftHandAttribute))
-  {
-    SetLeftHandSide(instruction->GetAttribute(domainconstants::kLeftHandAttribute));
-  }
-  if (instruction->HasAttribute(domainconstants::kRightHandAttribute))
-  {
-    SetRightHandSide(instruction->GetAttribute(domainconstants::kRightHandAttribute));
-  }
-}
-
-void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kLeftHandAttribute, GetLeftHandSide(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kRightHandAttribute, GetRightHandSide(), *instruction);
 }
 
 // ----------------------------------------------------------------------------

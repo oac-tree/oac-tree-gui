@@ -21,11 +21,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/epics_instruction_items.h>
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/transform/gui_object_builder.h>
 
 #include <mvvm/model/function_types.h>
@@ -73,8 +69,6 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::ConditionItem>);
   result->RegisterItem(sequencergui::domainconstants::kCopyInstructionType,
                        ItemFactoryFunction<sequencergui::CopyItem>);
-  result->RegisterItem(sequencergui::domainconstants::kEqualsInstructionType,
-                       ItemFactoryFunction<sequencergui::EqualsItem>);
   result->RegisterItem(sequencergui::domainconstants::kFallbackInstructionType,
                        ItemFactoryFunction<sequencergui::FallbackItem>);
   result->RegisterItem(sequencergui::domainconstants::kForceSuccessInstructionType,
@@ -103,6 +97,10 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::VariableResetItem>);
   result->RegisterItem(sequencergui::domainconstants::kWaitInstructionType,
                        ItemFactoryFunction<sequencergui::WaitItem>);
+
+  // equality instructions
+  result->RegisterItem(sequencergui::domainconstants::kEqualsInstructionType,
+                       ItemFactoryFunction<sequencergui::EqualsItem>);
 
   // instructions from sequencer-plugin-epics
   result->RegisterItem(sequencergui::domainconstants::kChannelAccessReadInstructionType,

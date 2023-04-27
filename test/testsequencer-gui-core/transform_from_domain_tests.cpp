@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/equality_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 
 #include <gtest/gtest.h>
@@ -76,7 +77,6 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(ChoiceItem::Type, GetItemType(domainconstants::kChoiceInstructionType));
   EXPECT_EQ(ConditionItem::Type, GetItemType(domainconstants::kConditionInstructionType));
   EXPECT_EQ(CopyItem::Type, GetItemType(domainconstants::kCopyInstructionType));
-  EXPECT_EQ(EqualsItem::Type, GetItemType(domainconstants::kEqualsInstructionType));
   EXPECT_EQ(FallbackItem::Type, GetItemType(domainconstants::kFallbackInstructionType));
   EXPECT_EQ(ForceSuccessItem::Type, GetItemType(domainconstants::kForceSuccessInstructionType));
   EXPECT_EQ(IncludeItem::Type, GetItemType(domainconstants::kIncludeInstructionType));
@@ -91,6 +91,9 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(UserChoiceItem::Type, GetItemType(domainconstants::kUserChoiceInstructionType));
   EXPECT_EQ(VariableResetItem::Type, GetItemType(domainconstants::kVariableResetInstructionType));
   EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
+
+  // equality instructions
+  EXPECT_EQ(EqualsItem::Type, GetItemType(domainconstants::kEqualsInstructionType));
 
   // instructions from sequencer-plugin-epics
   EXPECT_EQ(ChannelAccessReadInstructionItem::Type,

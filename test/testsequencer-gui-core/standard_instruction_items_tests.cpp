@@ -168,49 +168,6 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// EqualsItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, EqualsItem)
-{
-  EqualsItem item;
-  EXPECT_EQ(item.GetLeftHandSide(), std::string());
-  item.SetLeftHandSide("abc");
-  EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
-
-  EXPECT_EQ(item.GetRightHandSide(), std::string());
-  item.SetRightHandSide("cde");
-  EXPECT_EQ(item.GetRightHandSide(), std::string("cde"));
-}
-
-TEST_F(StandardInstructionItemsTest, EqualsItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kEqualsInstructionType);
-  input->AddAttribute(domainconstants::kLeftHandAttribute, "abc");
-  input->AddAttribute(domainconstants::kRightHandAttribute, "cde");
-
-  EqualsItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
-  EXPECT_EQ(item.GetRightHandSide(), std::string("cde"));
-}
-
-TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
-{
-  EqualsItem item;
-  item.SetLeftHandSide("abc");
-  item.SetRightHandSide("cde");
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kEqualsInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kLeftHandAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "cde");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // FallbackItem tests
 // ----------------------------------------------------------------------------
 

@@ -22,12 +22,13 @@
 
 //! Includes for all sequencer related items.
 
+#include <sequencergui/model/epics_instruction_items.h>
+#include <sequencergui/model/equality_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 

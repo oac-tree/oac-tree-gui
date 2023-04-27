@@ -97,30 +97,6 @@ private:
   void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
-//! Represent Equals instruction.
-class EqualsItem : public InstructionItem
-{
-public:
-  static inline const std::string Type = "Equals";
-
-  using InstructionItem::InstructionItem;
-  EqualsItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-  std::string GetLeftHandSide() const;
-  void SetLeftHandSide(const std::string& value);
-
-  std::string GetRightHandSide() const;
-  void SetRightHandSide(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
-};
-
 //! Represent Fallback instruction.
 class FallbackItem : public InstructionItem
 {

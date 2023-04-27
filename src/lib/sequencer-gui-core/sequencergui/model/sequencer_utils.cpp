@@ -66,7 +66,6 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<ChoiceItem>();
   result->RegisterItem<ConditionItem>();
   result->RegisterItem<CopyItem>();
-  result->RegisterItem<EqualsItem>();
   result->RegisterItem<FallbackItem>();
   result->RegisterItem<ForceSuccessItem>();
   result->RegisterItem<IncludeItem>();
@@ -82,6 +81,9 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<UserChoiceItem>();
   result->RegisterItem<VariableResetItem>();
   result->RegisterItem<WaitItem>();
+
+  // equality instructions
+  result->RegisterItem<EqualsItem>();
 
   // sequencer-plugin-epics instructions
   result->RegisterItem<ChannelAccessReadInstructionItem>();
