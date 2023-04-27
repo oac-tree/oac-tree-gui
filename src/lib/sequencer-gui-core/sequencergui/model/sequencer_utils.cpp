@@ -83,7 +83,11 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<WaitItem>();
 
   // equality instructions
+  result->RegisterItem<LessThanItem>();
+  result->RegisterItem<LessThanOrEqualItem>();
   result->RegisterItem<EqualsItem>();
+  result->RegisterItem<GreaterThanOrEqualItem>();
+  result->RegisterItem<GreaterThanItem>();
 
   // sequencer-plugin-epics instructions
   result->RegisterItem<ChannelAccessReadInstructionItem>();

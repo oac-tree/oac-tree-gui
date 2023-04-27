@@ -84,7 +84,6 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<ChoiceItem>());
   EXPECT_TRUE(IsCloneImplemented<ConditionItem>());
   EXPECT_TRUE(IsCloneImplemented<CopyItem>());
-  EXPECT_TRUE(IsCloneImplemented<EqualsItem>());
   EXPECT_TRUE(IsCloneImplemented<FallbackItem>());
   EXPECT_TRUE(IsCloneImplemented<ForceSuccessItem>());
   EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
@@ -100,6 +99,13 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
   EXPECT_TRUE(IsCloneImplemented<VariableResetItem>());
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
+
+  // equality instructions
+  EXPECT_TRUE(IsCloneImplemented<LessThanItem>());
+  EXPECT_TRUE(IsCloneImplemented<LessThanOrEqualItem>());
+  EXPECT_TRUE(IsCloneImplemented<EqualsItem>());
+  EXPECT_TRUE(IsCloneImplemented<GreaterThanOrEqualItem>());
+  EXPECT_TRUE(IsCloneImplemented<GreaterThanItem>());
 
   // instructions from sup-sequencer-plugin-epics
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessReadInstructionItem>());

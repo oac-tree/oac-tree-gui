@@ -48,11 +48,11 @@ const std::string kVariableResetInstructionType = "ResetVariable";
 const std::string kWaitInstructionType = "Wait";
 
 // equality instructions
-const std::string kEqualsInstructionType = "Equals";
 const std::string kLessThanInstructionType = "LessThan";
-const std::string LessThanOrEqualInstructionType = "LessThanOrEqual";
-const std::string kGreaterThanInstructionType = "GreaterThan";
+const std::string kLessThanOrEqualInstructionType = "LessThanOrEqual";
+const std::string kEqualsInstructionType = "Equals";
 const std::string kGreaterThanOrEqualInstructionType = "GreaterThanOrEqual";
+const std::string kGreaterThanInstructionType = "GreaterThan";
 
 // sup-sequencer-plughin-epics instructions
 const std::string kChannelAccessReadInstructionType = "ChannelAccessRead";

@@ -121,7 +121,7 @@ std::unique_ptr<mvvm::SessionItem> LessThanOrEqualItem::Clone(bool make_unique_i
 
 std::string LessThanOrEqualItem::GetDomainType() const
 {
-  return domainconstants::LessThanOrEqualInstructionType;
+  return domainconstants::kLessThanOrEqualInstructionType;
 }
 
 // ----------------------------------------------------------------------------

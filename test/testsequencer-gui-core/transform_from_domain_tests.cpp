@@ -22,8 +22,8 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/epics_instruction_items.h>
-#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/equality_instruction_items.h>
+#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 
 #include <gtest/gtest.h>
@@ -93,7 +93,13 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(WaitItem::Type, GetItemType(domainconstants::kWaitInstructionType));
 
   // equality instructions
+  EXPECT_EQ(LessThanItem::Type, GetItemType(domainconstants::kLessThanInstructionType));
+  EXPECT_EQ(LessThanOrEqualItem::Type,
+            GetItemType(domainconstants::kLessThanOrEqualInstructionType));
   EXPECT_EQ(EqualsItem::Type, GetItemType(domainconstants::kEqualsInstructionType));
+  EXPECT_EQ(GreaterThanOrEqualItem::Type,
+            GetItemType(domainconstants::kGreaterThanOrEqualInstructionType));
+  EXPECT_EQ(GreaterThanItem::Type, GetItemType(domainconstants::kGreaterThanInstructionType));
 
   // instructions from sequencer-plugin-epics
   EXPECT_EQ(ChannelAccessReadInstructionItem::Type,
@@ -155,8 +161,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       domainconstants::kConditionInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::CopyItem>(domainconstants::kCopyInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(
-      domainconstants::kEqualsInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::FallbackItem>(
       domainconstants::kFallbackInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ForceSuccessItem>(
@@ -185,6 +189,18 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       domainconstants::kVariableResetInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::WaitItem>(domainconstants::kWaitInstructionType));
+
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanItem>(
+      domainconstants::kLessThanInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanOrEqualItem>(
+      domainconstants::kLessThanOrEqualInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(
+      domainconstants::kEqualsInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::GreaterThanOrEqualItem>(
+      domainconstants::kGreaterThanOrEqualInstructionType));
+  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::GreaterThanItem>(
+      domainconstants::kGreaterThanInstructionType));
+
 }
 
 //! Validate CreateInstructionItem factory function (sequencer-plugin-epics).
