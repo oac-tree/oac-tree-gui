@@ -137,39 +137,15 @@ bool IsSequencerPluginEpicsAvailable()
   return IsVariableTypeAvailable(domainconstants::kPvAccessServerVariableType);  // simplified check
 }
 
-//! Loads codac plugins.
-
-void LoadCodacPlugins()
-{
-  static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
-                                                   "libsequencer-misc.so"};
-
-  for (const auto& name : plugins)
-  {
-    LoadPlugin(name);
-  }
-}
-
-//! Loads local plugins.
-
-void LoadLocalPlugins()
-{
-  static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
-                                                   "libsequencer-misc.so"};
-
-  for (const auto& name : plugins)
-  {
-    LoadPlugin(name);
-  }
-}
-
 void LoadPlugins()
 {
-#ifdef SEQUENCERGUI_CODAC
-  LoadCodacPlugins();
-#else
-  LoadLocalPlugins();
-#endif
+  static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
+                                                   "libsequencer-misc.so"};
+
+  for (const auto& name : plugins)
+  {
+    LoadPlugin(name);
+  }
 }
 
 }  // namespace sequencergui

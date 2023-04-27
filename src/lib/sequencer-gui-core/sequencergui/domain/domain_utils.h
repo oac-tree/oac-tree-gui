@@ -55,9 +55,6 @@ bool IsInstructionTypeAvailable(const std::string& domain_type);
 
 bool IsSequencerPluginEpicsAvailable();
 
-void LoadCodacPlugins();
-void LoadLocalPlugins();
-
 void LoadPlugins();
 
 }  // namespace sequencergui
