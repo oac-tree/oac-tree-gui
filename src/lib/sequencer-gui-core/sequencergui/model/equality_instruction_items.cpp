@@ -19,6 +19,7 @@
 
 #include "equality_instruction_items.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
@@ -38,46 +39,42 @@ namespace sequencergui
 {
 
 // ----------------------------------------------------------------------------
-// EqualsItem
+// ComparisonItem
 // ----------------------------------------------------------------------------
 
-EqualsItem::EqualsItem() : InstructionItem(Type)
+ComparisonItem::ComparisonItem(const std::string &item_type) : InstructionItem(item_type)
 {
   AddProperty(kLeftHandSide, std::string())->SetDisplayName("lhs");
   AddProperty(kRightHandSide, std::string())->SetDisplayName("rhs");
 }
 
-std::unique_ptr<mvvm::SessionItem> EqualsItem::Clone(bool make_unique_id) const
+std::unique_ptr<mvvm::SessionItem> ComparisonItem::Clone(bool make_unique_id) const
 {
-  return std::make_unique<EqualsItem>(*this, make_unique_id);
+  (void)make_unique_id;
+  throw NotImplementedException("ComparisonItem::clone() should not be used");
 }
 
-std::string EqualsItem::GetDomainType() const
-{
-  return domainconstants::kEqualsInstructionType;
-}
-
-std::string EqualsItem::GetLeftHandSide() const
+std::string ComparisonItem::GetLeftHandSide() const
 {
   return Property<std::string>(kLeftHandSide);
 }
 
-void EqualsItem::SetLeftHandSide(const std::string &value)
+void ComparisonItem::SetLeftHandSide(const std::string &value)
 {
   SetProperty(kLeftHandSide, value);
 }
 
-std::string EqualsItem::GetRightHandSide() const
+std::string ComparisonItem::GetRightHandSide() const
 {
   return Property<std::string>(kRightHandSide);
 }
 
-void EqualsItem::SetRightHandSide(const std::string &value)
+void ComparisonItem::SetRightHandSide(const std::string &value)
 {
   SetProperty(kRightHandSide, value);
 }
 
-void EqualsItem::InitFromDomainImpl(const instruction_t *instruction)
+void ComparisonItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kLeftHandAttribute))
   {
@@ -89,10 +86,26 @@ void EqualsItem::InitFromDomainImpl(const instruction_t *instruction)
   }
 }
 
-void EqualsItem::SetupDomainImpl(instruction_t *instruction) const
+void ComparisonItem::SetupDomainImpl(instruction_t *instruction) const
 {
   AddNonEmptyAttribute(domainconstants::kLeftHandAttribute, GetLeftHandSide(), *instruction);
   AddNonEmptyAttribute(domainconstants::kRightHandAttribute, GetRightHandSide(), *instruction);
+}
+
+// ----------------------------------------------------------------------------
+// EqualsItem
+// ----------------------------------------------------------------------------
+
+EqualsItem::EqualsItem() : ComparisonItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> EqualsItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<EqualsItem>(*this, make_unique_id);
+}
+
+std::string EqualsItem::GetDomainType() const
+{
+  return domainconstants::kEqualsInstructionType;
 }
 
 }  // namespace sequencergui

@@ -27,18 +27,14 @@
 namespace sequencergui
 {
 
-//! Represent Equals instruction.
-class EqualsItem : public InstructionItem
+//! Base instruction for all equality instructions.
+class ComparisonItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Equals";
-
   using InstructionItem::InstructionItem;
-  EqualsItem();
+  ComparisonItem(const std::string& item_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 
   std::string GetLeftHandSide() const;
   void SetLeftHandSide(const std::string& value);
@@ -49,6 +45,20 @@ public:
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;
   void SetupDomainImpl(instruction_t* instruction) const override;
+};
+
+//! Represent Equals instruction.
+class EqualsItem : public ComparisonItem
+{
+public:
+  static inline const std::string Type = "Equals";
+
+  using ComparisonItem::ComparisonItem;
+  EqualsItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetDomainType() const override;
 };
 
 }  // namespace sequencergui
