@@ -168,6 +168,44 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
+// DecrementItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, DecrementItem)
+{
+  DecrementItem item;
+  EXPECT_TRUE(item.GetVariableName().empty());
+
+  item.SetVariableName("abc");
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, DecrementItemFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kDecrementInstructionType);
+  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
+
+  DecrementItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, DecrementItemToDomain)
+{
+  DecrementItem item;
+  item.SetVariableName("abc");
+  item.SetIsRootFlag(true);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kDecrementInstructionType);
+
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+// ----------------------------------------------------------------------------
 // FallbackItem tests
 // ----------------------------------------------------------------------------
 
@@ -299,6 +337,44 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->SetName("def");
   m_procedure.InsertInstruction(wait.release(), 0);
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+// ----------------------------------------------------------------------------
+// IncrementItem tests
+// ----------------------------------------------------------------------------
+
+TEST_F(StandardInstructionItemsTest, IncrementItem)
+{
+  IncrementItem item;
+  EXPECT_TRUE(item.GetVariableName().empty());
+
+  item.SetVariableName("abc");
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, IncrementItemFromDomain)
+{
+  auto input = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
+  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
+
+  IncrementItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
+}
+
+TEST_F(StandardInstructionItemsTest, IncrementItemToDomain)
+{
+  IncrementItem item;
+  item.SetVariableName("abc");
+  item.SetIsRootFlag(true);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kIncrementInstructionType);
+
+  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
