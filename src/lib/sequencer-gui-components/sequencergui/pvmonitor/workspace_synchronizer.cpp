@@ -108,7 +108,7 @@ void WorkspaceSynchronizer::Start()
 
   // Before we attach to Workspace and start listening, we still have to pick up all Workspace
   // values that could be updated already after the Setup call.
-  UpdateValuesFromDomain();
+//  UpdateValuesFromDomain();
 
   m_workspace_listener->StartListening(GetWorkspace());
 }
@@ -126,22 +126,22 @@ WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 //! Updates all values in WorkspaceItem from the domain's workspace.
 //! The method is expected to be called once during syncronization startup.
 
-void WorkspaceSynchronizer::UpdateValuesFromDomain()
-{
-  for (const auto& name : m_workspace->VariableNames())
-  {
-    // we wait for variable becoming available, before picking up initial values for the GUI
-    if (m_workspace->WaitForVariable(name, 1.0))
-    {
-      auto variable = m_workspace->GetVariable(name);
+//void WorkspaceSynchronizer::UpdateValuesFromDomain()
+//{
+//  for (const auto& name : m_workspace->VariableNames())
+//  {
+//    // we wait for variable becoming available, before picking up initial values for the GUI
+//    if (m_workspace->WaitForVariable(name, 1.0))
+//    {
+//      auto variable = m_workspace->GetVariable(name);
 
-      sup::dto::AnyValue anyvalue;
-      variable->GetValue(anyvalue);
-      WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
-      m_workspace_item_controller->ProcessEventFromDomain(event);
-    }
-  }
-}
+//      sup::dto::AnyValue anyvalue;
+//      variable->GetValue(anyvalue);
+//      WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
+//      m_workspace_item_controller->ProcessEventFromDomain(event);
+//    }
+//  }
+//}
 
 void WorkspaceSynchronizer::OnDomainVariableUpdated()
 {

@@ -110,11 +110,12 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
     PopulateDomainWorkspace(*m_model->GetWorkspaceItem(), *m_workspace);
-    m_workspace->Setup();
 
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
+
+    m_workspace->Setup();
   };
   InvokeAndCatch(on_start, "Can't setup workspace");
 }

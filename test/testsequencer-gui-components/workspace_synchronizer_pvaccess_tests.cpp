@@ -60,7 +60,6 @@ public:
   {
     // populate sequencer workspace so it match WorkspaceItem
     PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
-    m_workspace.Setup();  // current convention: has to be setup before starting listening
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 
@@ -71,6 +70,14 @@ public:
     {
       GTEST_SKIP();
     }
+  }
+
+  //! Start listening workspace. Current convention is that listening should happen before the
+  //! setup.
+  void StartSyncronizer(WorkspaceSynchronizer& synchronizer)
+  {
+    synchronizer.Start();
+    m_workspace.Setup();
   }
 
   MonitorModel m_model;
@@ -113,7 +120,9 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   EXPECT_CALL(model_listener, OnEvent(expected_event)).Times(1);
   EXPECT_CALL(domain_listener, OnEvent(_, _, _)).Times(0);
 
-  synchronizer->Start();
+  StartSyncronizer(*synchronizer);
+
+  QTest::qWait(100);  // queued signals need special waiting
 
   EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 1.0));
 
@@ -121,8 +130,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   sup::dto::AnyValue domain_value;
   m_workspace.GetValue(var_name, domain_value);
   EXPECT_EQ(domain_value, initial_value);
-
-  //  QTest::qWait(50);  // queued signals need special waiting
 
   // checking the value on GUI side
   EXPECT_TRUE(variable_item->IsAvailable());
@@ -150,7 +157,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
 
   // creating syncronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
-  synchronizer->Start();
+  StartSyncronizer(*synchronizer);
 
   // Creating domain and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
@@ -194,7 +201,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
 
   // creating syncronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
-  synchronizer->Start();
+  StartSyncronizer(*synchronizer);
 
   //  // Creating domain and setting callback expectations.
   //  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
@@ -279,7 +286,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
   }
 
-  synchronizer->Start();
+  StartSyncronizer(*synchronizer);
 
   EXPECT_TRUE(m_workspace.WaitForVariable(server_var_name, 1.0));
   EXPECT_TRUE(m_workspace.WaitForVariable(client_var_name, 1.0));
