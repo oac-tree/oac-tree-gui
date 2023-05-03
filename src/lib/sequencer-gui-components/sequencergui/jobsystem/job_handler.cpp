@@ -39,6 +39,7 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/workspace.h>
 
 #include <QDebug>
 #include <iostream>
@@ -188,11 +189,15 @@ void JobHandler::SetupDomainProcedure()
   // building domain procedure
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
 
-  // to perform all necessary internal clones
-  if (!m_domain_procedure->Setup())
-  {
-    throw InvalidOperationException("Can't setup procedure");
-  }
+  //  // to perform all necessary internal clones
+  //  if (!m_domain_procedure->Setup())
+  //  {
+  //    throw InvalidOperationException("Can't setup procedure");
+  //  }
+
+  auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
+  workspace->Setup();
+  m_domain_procedure->RootInstruction()->Setup(*m_domain_procedure);
 }
 
 //! Setup expanded procedure item
