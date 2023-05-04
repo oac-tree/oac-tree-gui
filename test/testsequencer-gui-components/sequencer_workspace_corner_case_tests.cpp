@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
@@ -27,6 +26,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
+#include <testutils/sequencer_test_utils.h>
 #include <testutils/test_utils.h>
 
 using ::testing::_;
@@ -42,31 +42,6 @@ const std::string kTestPrefix("SequencerWorkspaceCornerCaseTests:");
 class SequencerWorkspaceCornerCaseTests : public ::testing::Test
 {
 public:
-  static std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
-                                                         const sup::dto::AnyValue& initial_value)
-  {
-    auto result = CreateDomainVariable(domainconstants::kLocalVariableType);
-    result->SetName(name);
-    result->AddAttribute(domainconstants::kTypeAttribute,
-                         sup::gui::AnyTypeToJSONString(initial_value));
-    result->AddAttribute(domainconstants::kValueAttribute,
-                         sup::gui::ValuesToJSONString(initial_value));
-    return result;
-  }
-
-  //! Creates PvAccessServerVariable for given channel_name and
-  static std::unique_ptr<variable_t> CreateServerVariable(const std::string& name,
-                                                          const std::string& channel_name,
-                                                          const sup::dto::AnyValue& anyvalue)
-  {
-    auto result = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
-    result->SetName(name);
-    result->AddAttribute(domainconstants::kChannelAttribute, channel_name);
-    result->AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
-    result->AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
-    return result;
-  }
-
   sup::sequencer::Workspace m_workspace;
 };
 
@@ -79,7 +54,7 @@ TEST_F(SequencerWorkspaceCornerCaseTests, LocalVariable)
 
   // creating local variable
   sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto variable = CreateLocalVariable(var_name, initial_value);
+  auto variable = testutils::CreateLocalVariable(var_name, initial_value);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already
@@ -125,7 +100,7 @@ TEST_F(SequencerWorkspaceCornerCaseTests, PVAccessServerVariable)
 
   // creating local variable
   sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto variable = CreateLocalVariable(var_name, initial_value);
+  auto variable = testutils::CreateLocalVariable(var_name, initial_value);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already

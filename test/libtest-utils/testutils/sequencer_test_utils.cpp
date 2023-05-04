@@ -19,6 +19,13 @@
 
 #include "sequencer_test_utils.h"
 
+#include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/domain/domain_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
+
+#include <sup/dto/anyvalue.h>
+#include <sup/sequencer/workspace.h>
+
 namespace
 {
 
@@ -70,4 +77,31 @@ std::string GetEpicsDBContentString()
 {
   return db_content;
 }
+
+std::unique_ptr<variable_t> CreateLocalVariable(const std::string &name,
+                                                const sup::dto::AnyValue &initial_value)
+{
+  using namespace sequencergui::domainconstants;
+
+  auto result = sequencergui::CreateDomainVariable(kLocalVariableType);
+  result->SetName(name);
+  result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(initial_value));
+  result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(initial_value));
+  return result;
+}
+
+std::unique_ptr<variable_t> CreateServerVariable(const std::string &name,
+                                                 const std::string &channel_name,
+                                                 const sup::dto::AnyValue &anyvalue)
+{
+  using namespace sequencergui::domainconstants;
+
+  auto result = sequencergui::CreateDomainVariable(kPvAccessServerVariableType);
+  result->SetName(name);
+  result->AddAttribute(kChannelAttribute, channel_name);
+  result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+  result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+  return result;
+}
+
 }  // namespace testutils
