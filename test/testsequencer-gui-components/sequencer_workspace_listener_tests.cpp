@@ -28,6 +28,7 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QSignalSpy>
 #include <iostream>
@@ -38,20 +39,6 @@ using namespace sequencergui;
 
 class SequencerWorkspaceListenerTests : public ::testing::Test
 {
-public:
-  std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
-                                                  const sup::dto::AnyValue& initial_value)
-  {
-    auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    local_variable->SetName(name);
-    local_variable->AddAttribute("type", sup::gui::AnyTypeToJSONString(initial_value));
-    local_variable->Setup();
-    if (!local_variable->SetValue(initial_value))
-    {
-      throw std::runtime_error("Can't create variable");
-    }
-    return local_variable;
-  }
 };
 
 //! Initial state.
@@ -91,6 +78,8 @@ TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
 
 TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 {
+  const std::string var_name("abc");
+
   SequencerWorkspaceListener listener;
   QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
 
@@ -101,11 +90,11 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 
   // creating local variable
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto local_variable = CreateLocalVariable("abc", value0);
+  auto local_variable = testutils::CreateLocalVariable(var_name, value0);
   auto local_variable_ptr = local_variable.get();
 
   // adding it to the workspace, expecting no signals
-  workspace.AddVariable("abcdef", local_variable.release());
+  workspace.AddVariable(var_name, local_variable.release());
   EXPECT_EQ(spy_upate.count(), 0);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
@@ -117,7 +106,7 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 
   // changing variable via workspace
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  EXPECT_TRUE(workspace.SetValue("abcdef", value1));
+  EXPECT_TRUE(workspace.SetValue(var_name, value1));
   EXPECT_EQ(spy_upate.count(), 1);
   EXPECT_EQ(listener.GetEventCount(), 1);
 
@@ -129,13 +118,13 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 
   // getting back first value
   auto workspace_event = listener.PopEvent();
-  EXPECT_EQ(workspace_event.variable_name, std::string("abcdef"));
+  EXPECT_EQ(workspace_event.variable_name, var_name);
   EXPECT_EQ(workspace_event.value, value1);
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // getting back second value
   workspace_event = listener.PopEvent();
-  EXPECT_EQ(workspace_event.variable_name, std::string("abcdef"));
+  EXPECT_EQ(workspace_event.variable_name, var_name);
   EXPECT_EQ(workspace_event.value, value2);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
@@ -150,19 +139,24 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 
 TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
 {
+  const std::string var_name("abc");
+
   SequencerWorkspaceListener listener;
   QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
 
   // creating workspace with single variable
   sup::sequencer::Workspace workspace;
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto local_variable = CreateLocalVariable("abc", value0);
-  workspace.AddVariable("abcdef", local_variable.release());
+  auto local_variable = testutils::CreateLocalVariable(var_name, value0);
+  workspace.AddVariable(var_name, local_variable.release());
+
+  // setting workspace
+  workspace.Setup();
 
   EXPECT_NO_THROW(listener.StartListening(&workspace));
 
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  EXPECT_TRUE(workspace.SetValue("abcdef", value1));
+  EXPECT_TRUE(workspace.SetValue(var_name, value1));
 
   EXPECT_EQ(spy_upate.count(), 1);
   EXPECT_EQ(listener.GetEventCount(), 1);
@@ -171,7 +165,7 @@ TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
   listener.StopListening();
 
   sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
-  EXPECT_TRUE(workspace.SetValue("abcdef", value2));
+  EXPECT_TRUE(workspace.SetValue(var_name, value2));
 
   // no other signals
   EXPECT_EQ(spy_upate.count(), 1);
