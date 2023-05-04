@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "epics_test_utils.h"
+#include "sequencer_test_utils.h"
 
 namespace
 {

@@ -2,6 +2,7 @@ target_sources(${library_name} PRIVATE
   folder_based_test.cpp
   folder_based_test.h
   mock_callback_listener.h
+  mock_domain_workspace_listener.h
   mock_item_listener.cpp
   mock_item_listener.h
   mock_message_handler.cpp
@@ -9,13 +10,12 @@ target_sources(${library_name} PRIVATE
   mock_model_listener.cpp
   mock_model_listener.h
   mock_sequencer_observer.h
-  mock_domain_workspace_listener.h
-  epics_test_utils.cpp
-  epics_test_utils.h
-  standard_procedures.cpp
-  standard_procedures.h
+  sequencer_test_utils.cpp
+  sequencer_test_utils.h
   standard_procedure_items.cpp
   standard_procedure_items.h
+  standard_procedures.cpp
+  standard_procedures.h
   test_utils.cpp
   test_utils.h
 )

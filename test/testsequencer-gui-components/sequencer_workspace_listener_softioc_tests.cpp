@@ -33,7 +33,7 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/epics_test_utils.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
