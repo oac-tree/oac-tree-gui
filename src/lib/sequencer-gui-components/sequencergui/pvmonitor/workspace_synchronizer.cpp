@@ -42,6 +42,9 @@
 namespace
 {
 
+//! Waiting time for variable become available in sec.
+const double kWaitLittleTime(0.02);
+
 //! Validates that workspace
 void ValidateWorkspaces(const sequencergui::WorkspaceItem& workspace_item,
                         const sup::sequencer::Workspace& domain_workspace)
@@ -130,8 +133,10 @@ void WorkspaceSynchronizer::UpdateValuesFromDomain()
 {
   for (const auto& name : m_workspace->VariableNames())
   {
-    // we wait for variable becoming available, before picking up initial values for the GUI
-    if (m_workspace->WaitForVariable(name, 0.01))
+    // We wait for variable becoming available, before picking up initial values for the GUI
+    // We do not want to wait too long since the GUI will freeze here. It variable will become
+    // available later, we will be notified anyway.
+    if (m_workspace->WaitForVariable(name, kWaitLittleTime))
     {
       auto variable = m_workspace->GetVariable(name);
 
