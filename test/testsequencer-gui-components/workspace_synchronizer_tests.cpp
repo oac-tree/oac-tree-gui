@@ -49,7 +49,7 @@ public:
   WorkspaceSynchronizerTests() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Helper function to create LocalVariableItem with given name and initial AnyValue.
-  static std::unique_ptr<LocalVariableItem> CreateLocalVariable(
+  static std::unique_ptr<LocalVariableItem> CreateLocalVariableItem(
       const std::string& name, const sup::dto::AnyValue& initial_value)
   {
     auto result = std::make_unique<LocalVariableItem>();
@@ -110,8 +110,8 @@ TEST_F(WorkspaceSynchronizerTests, Start)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 = m_model.GetWorkspaceItem()->InsertItem(CreateLocalVariable("abc", value0),
-                                                               mvvm::TagIndex::Append());
+  auto variable_item0 = m_model.GetWorkspaceItem()->InsertItem(
+      CreateLocalVariableItem("abc", value0), mvvm::TagIndex::Append());
 
   auto synchronizer = CreateSynchronizer();
 

@@ -20,9 +20,7 @@
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
-#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
@@ -31,7 +29,6 @@
 #include <testutils/sequencer_test_utils.h>
 
 #include <QSignalSpy>
-#include <iostream>
 
 using namespace sequencergui;
 

@@ -40,9 +40,9 @@ std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
                                                 const sup::dto::AnyValue& initial_value);
 
 //! Creates PvAccessServerVariable with given parameters
-std::unique_ptr<variable_t> CreateServerVariable(const std::string& name,
-                                                 const std::string& channel_name,
-                                                 const sup::dto::AnyValue& anyvalue);
+std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string& name,
+                                                         const std::string& channel_name,
+                                                         const sup::dto::AnyValue& anyvalue);
 
 }  // namespace testutils
 
