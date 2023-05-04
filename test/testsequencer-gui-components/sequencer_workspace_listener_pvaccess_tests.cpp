@@ -35,6 +35,7 @@
 namespace
 {
 const std::string kTestPrefix("SUP-GUI-CORE-PVTESTS:");
+const std::string kSscalarChannelName(kTestPrefix + "scalar");
 const std::string kStructChannelName(kTestPrefix + "STRUCT");
 }  // namespace
 
@@ -62,13 +63,76 @@ public:
     auto result = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
     result->AddAttribute("channel", channel_name);
     result->AddAttribute("type", sup::gui::AnyTypeToJSONString(anyvalue));
+    result->AddAttribute("value", sup::gui::ValuesToJSONString(anyvalue));
     return result;
   }
 };
 
+//! Single scalar variable in a workspace.
+//! We start listening before the setup. Test confirms, that after the setup no callback
+//! with the initial value follows.
+
+TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerScalarVariable)
+{
+  // creating server variable
+  const std::string var_name("var");
+  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  auto variable = CreateServerVariable(kSscalarChannelName, initial_value);
+
+  // initialising workspace
+  sup::sequencer::Workspace workspace;
+  EXPECT_TRUE(workspace.AddVariable(var_name, variable.release()));
+
+  // creating listener and attaching it to the workspace
+  SequencerWorkspaceListener listener;
+  QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
+  EXPECT_NO_THROW(listener.StartListening(&workspace));
+
+  QTest::qWait(10);
+
+  // no signals from the workspace after starting listening
+  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_EQ(spy_upate.count(), 0);
+
+  EXPECT_NO_THROW(workspace.Setup());
+
+  QTest::qWait(10);
+
+  // apparently no signals from the workspace after setup
+  EXPECT_EQ(listener.GetEventCount(), 0);
+  EXPECT_EQ(spy_upate.count(), 0);
+
+  // checking current server variable
+  EXPECT_TRUE(workspace.WaitForVariable(var_name, 5.0));
+  sup::dto::AnyValue value;
+  ASSERT_TRUE(workspace.GetValue("var", value));
+  EXPECT_TRUE(workspace.GetVariable("var")->IsAvailable());
+  EXPECT_EQ(value, initial_value);
+
+  // changing the value and waiting for update
+  value = 42;
+  EXPECT_TRUE(workspace.SetValue("var", value));
+  auto worker = [&workspace]()
+  {
+    sup::dto::AnyValue tmp;
+    return workspace.GetValue("var", tmp) && tmp.As<sup::dto::uint32>() == 42;
+  };
+  EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
+
+  EXPECT_EQ(spy_upate.count(), 1);
+
+  // checking accumulated event
+  sup::dto::AnyValue expected_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  EXPECT_EQ(listener.GetEventCount(), 1);
+  auto event = listener.PopEvent();
+  EXPECT_EQ(event.variable_name, var_name);
+  EXPECT_EQ(event.value, expected_value);
+  EXPECT_TRUE(event.connected);
+}
+
 //! Single server variable (struct) in a workspace
 
-TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerVariable)
+TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerStructVariable)
 {
   // creating server variable
   const std::string var_name("var");

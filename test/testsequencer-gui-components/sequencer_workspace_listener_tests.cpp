@@ -109,8 +109,9 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
   EXPECT_EQ(spy_upate.count(), 0);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
-  // setting workspace, expecting no signals
+  // setting workspace
   workspace.Setup();
+  // absence of signals means that Workspace doesn't notify initial value
   EXPECT_EQ(spy_upate.count(), 0);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
