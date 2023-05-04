@@ -100,7 +100,7 @@ TEST_F(SequencerWorkspaceCornerCaseTests, PVAccessServerVariable)
 
   // creating local variable
   sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto variable = testutils::CreateLocalVariable(var_name, initial_value);
+  auto variable = testutils::CreatePVAccessServerVariable(var_name, channel_name, initial_value);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already
