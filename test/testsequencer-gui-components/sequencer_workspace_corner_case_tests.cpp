@@ -22,6 +22,7 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/epics-test/unit_test_helper.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -31,19 +32,39 @@
 using ::testing::_;
 using namespace sequencergui;
 
+namespace
+{
+const std::string kTestPrefix("SequencerWorkspaceCornerCaseTests:");
+}  // namespace
+
 //! Testing domain sequencer workspace for notifications accompanying Setup, and other corner cases.
 
 class SequencerWorkspaceCornerCaseTests : public ::testing::Test
 {
 public:
   static std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
-                                                  const sup::dto::AnyValue& initial_value)
+                                                         const sup::dto::AnyValue& initial_value)
   {
-    auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    local_variable->SetName(name);
-    local_variable->AddAttribute("type", sup::gui::AnyTypeToJSONString(initial_value));
-    local_variable->AddAttribute("value", sup::gui::ValuesToJSONString(initial_value));
-    return local_variable;
+    auto result = CreateDomainVariable(domainconstants::kLocalVariableType);
+    result->SetName(name);
+    result->AddAttribute(domainconstants::kTypeAttribute,
+                         sup::gui::AnyTypeToJSONString(initial_value));
+    result->AddAttribute(domainconstants::kValueAttribute,
+                         sup::gui::ValuesToJSONString(initial_value));
+    return result;
+  }
+
+  //! Creates PvAccessServerVariable for given channel_name and
+  static std::unique_ptr<variable_t> CreateServerVariable(const std::string& name,
+                                                          const std::string& channel_name,
+                                                          const sup::dto::AnyValue& anyvalue)
+  {
+    auto result = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
+    result->SetName(name);
+    result->AddAttribute(domainconstants::kChannelAttribute, channel_name);
+    result->AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+    result->AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+    return result;
   }
 
   sup::sequencer::Workspace m_workspace;
@@ -58,31 +79,88 @@ TEST_F(SequencerWorkspaceCornerCaseTests, LocalVariable)
 
   // creating local variable
   sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto local_variable = CreateLocalVariable("abc", initial_value);
-  auto local_variable_ptr = local_variable.get();
+  auto variable = CreateLocalVariable(var_name, initial_value);
+  auto variable_ptr = variable.get();
 
+  // listener is subscribed to the workspace on the contstruction already
   testutils::MockDomainWorkspaceListener listener(m_workspace);
 
   // adding variable doesn't cause notifications
   EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
-  m_workspace.AddVariable(var_name, local_variable.release());
+  m_workspace.AddVariable(var_name, variable.release());
 
-  EXPECT_EQ(local_variable_ptr, m_workspace.GetVariable(var_name));
-  EXPECT_FALSE(local_variable_ptr->IsAvailable());
+  EXPECT_EQ(variable_ptr, m_workspace.GetVariable(var_name));
+  EXPECT_FALSE(variable_ptr->IsAvailable());
 
   // workspace setup doesn't cause notifications
   EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
   EXPECT_NO_THROW(m_workspace.Setup());
 
   // variable is available and has correct value
-  EXPECT_TRUE(local_variable_ptr->IsAvailable());
+  EXPECT_TRUE(variable_ptr->IsAvailable());
   sup::dto::AnyValue current_value;
-  EXPECT_TRUE(local_variable_ptr->GetValue(current_value));
+  EXPECT_TRUE(variable_ptr->GetValue(current_value));
   EXPECT_EQ(current_value, initial_value);
 
   // expecting notificarion on new value set
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
   EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
 
-  local_variable_ptr->SetValue(new_value);
+  variable_ptr->SetValue(new_value);
+
+  sup::dto::AnyValue current_value2;
+  EXPECT_TRUE(variable_ptr->GetValue(current_value2));
+  EXPECT_EQ(current_value2, new_value);
+}
+
+TEST_F(SequencerWorkspaceCornerCaseTests, PVAccessServerVariable)
+{
+  const std::string var_name("var0");
+  const std::string channel_name("var0");
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  // creating local variable
+  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  auto variable = CreateLocalVariable(var_name, initial_value);
+  auto variable_ptr = variable.get();
+
+  // listener is subscribed to the workspace on the contstruction already
+  testutils::MockDomainWorkspaceListener listener(m_workspace);
+
+  // adding variable doesn't cause notifications
+  EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
+  m_workspace.AddVariable(var_name, variable.release());
+
+  EXPECT_EQ(variable_ptr, m_workspace.GetVariable(var_name));
+  EXPECT_FALSE(variable_ptr->IsAvailable());
+
+  // workspace setup doesn't cause notifications
+  EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
+  EXPECT_NO_THROW(m_workspace.Setup());
+
+  // giving variable time to become available
+  EXPECT_TRUE(m_workspace.WaitForVariable(var_name, 5.0));
+
+  // variable is available and has correct value
+  EXPECT_TRUE(variable_ptr->IsAvailable());
+  sup::dto::AnyValue current_value;
+  EXPECT_TRUE(variable_ptr->GetValue(current_value));
+  EXPECT_EQ(current_value, initial_value);
+
+  // expecting notification on new value set
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
+
+  EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));
+
+  auto worker = [this, &var_name]()
+  {
+    sup::dto::AnyValue tmp;
+    return m_workspace.GetValue(var_name, tmp) && tmp.As<sup::dto::uint32>() == 44;
+  };
+  EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 }
