@@ -36,15 +36,15 @@ class SequencerWorkspaceListener;
 class WorkspaceItemController;
 class WorkspaceEvent;
 
-//! Provides data syncronization between WorkspaceItem and sequencer's Workspace. All AnyValue
+//! Provides data syncronization between WorkspaceItem and sequencer Workspace. All AnyValue
 //! updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all DataChangedEvent
 //! on GUI model side will be propagated to Sequencer Workspace.
 //!
-//! @note It is required, that WorkspaceItem and domain Workspace have same mount of variables and
+//! @note It is required, that WorkspaceItem and domain Workspace have same amount of variables and
 //! their names are the  same.
 //!
-//! @note It is expected that the method Workspace::Setup() in the domain has been already called.
-//! See explanation in code of ::Start() method.
+//! @note It is expected that the method Workspace::Setup() in the domain has not been called yet.
+//! See explanations in Start() method's code.
 
 class WorkspaceSynchronizer : public QObject
 {
@@ -62,7 +62,7 @@ public:
   WorkspaceItem* GetWorkspaceItem() const;
 
 private:
-//  void UpdateValuesFromDomain();
+  void UpdateValuesFromDomain();
   void OnDomainVariableUpdated();
   void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
 

@@ -189,18 +189,11 @@ void JobHandler::SetupDomainProcedure()
   // building domain procedure
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
 
-  //  // to perform all necessary internal clones
-  //  if (!m_domain_procedure->Setup())
-  //  {
-  //    throw InvalidOperationException("Can't setup procedure");
-  //  }
-
-  auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
-  workspace->Setup();
+  // we are setting up root instruction, but deliberately not setting up the Workspace
   m_domain_procedure->RootInstruction()->Setup(*m_domain_procedure);
 }
 
-//! Setup expanded procedure item
+//! Setup expanded procedure item. It will reflect the content of domain procedure after its Setup.
 
 void JobHandler::SetupExpandedProcedureItem()
 {
@@ -219,7 +212,7 @@ void JobHandler::SetupWorkspaceSyncronizer()
   {
     auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
     m_workspace_syncronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
-    m_workspace_syncronizer->Start();
+    m_workspace_syncronizer->Start(); // will setup domain Workspace too
   }
 }
 

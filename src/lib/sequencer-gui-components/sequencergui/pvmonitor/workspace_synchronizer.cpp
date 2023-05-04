@@ -91,7 +91,7 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
 
 WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
-//! Starts synchronization between domain WOrkspace and GUI's WorkspaceItem.
+//! Starts synchronization between domain Workspace and GUI's WorkspaceItem.
 
 void WorkspaceSynchronizer::Start()
 {
@@ -103,14 +103,14 @@ void WorkspaceSynchronizer::Start()
   // Should we populate workspaces? Should we call Setup? How to set initial values in GUI variables
   // reliably, having in mind all issues with IsAvailable?
 
-  // Thus, we assume that both Workspace and WorkspaceItem have been already populated with
-  // identical set of variables, and that Workspace::Setup() has been already called.
-
-  // Before we attach to Workspace and start listening, we still have to pick up all Workspace
-  // values that could be updated already after the Setup call.
-//  UpdateValuesFromDomain();
+  // For the moment, we assume that both Workspace and WorkspaceItem have been already populated
+  // with identical set of variables, and that Workspace::Setup() has not been called yet.
 
   m_workspace_listener->StartListening(GetWorkspace());
+
+  m_workspace->Setup();
+
+  UpdateValuesFromDomain();
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
@@ -126,22 +126,22 @@ WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 //! Updates all values in WorkspaceItem from the domain's workspace.
 //! The method is expected to be called once during syncronization startup.
 
-//void WorkspaceSynchronizer::UpdateValuesFromDomain()
-//{
-//  for (const auto& name : m_workspace->VariableNames())
-//  {
-//    // we wait for variable becoming available, before picking up initial values for the GUI
-//    if (m_workspace->WaitForVariable(name, 1.0))
-//    {
-//      auto variable = m_workspace->GetVariable(name);
+void WorkspaceSynchronizer::UpdateValuesFromDomain()
+{
+  for (const auto& name : m_workspace->VariableNames())
+  {
+    // we wait for variable becoming available, before picking up initial values for the GUI
+    if (m_workspace->WaitForVariable(name, 0.01))
+    {
+      auto variable = m_workspace->GetVariable(name);
 
-//      sup::dto::AnyValue anyvalue;
-//      variable->GetValue(anyvalue);
-//      WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
-//      m_workspace_item_controller->ProcessEventFromDomain(event);
-//    }
-//  }
-//}
+      sup::dto::AnyValue anyvalue;
+      variable->GetValue(anyvalue);
+      WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
+      m_workspace_item_controller->ProcessEventFromDomain(event);
+    }
+  }
+}
 
 void WorkspaceSynchronizer::OnDomainVariableUpdated()
 {
