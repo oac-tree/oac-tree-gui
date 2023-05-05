@@ -40,7 +40,7 @@ class ProjectHandler;
 namespace sequencergui
 {
 
-//! Main menu bar actions for main window.
+//! Main menu bar actions for the main window.
 
 class MonitorMainWindowActions : public QObject
 {

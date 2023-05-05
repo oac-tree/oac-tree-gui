@@ -61,26 +61,26 @@ void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_create_new_project_action->setShortcuts(QKeySequence::New);
   m_create_new_project_action->setStatusTip("Create a new project");
   connect(m_create_new_project_action, &QAction::triggered, m_project_handler,
-          &sup::gui::ProjectHandler::OnCreateNewProject);
+          &sup::gui::ProjectHandler::CreateNewProject);
 
   m_open_existing_project_action = new QAction("&Open Project", this);
   m_open_existing_project_action->setShortcuts(QKeySequence::Open);
   m_open_existing_project_action->setStatusTip("Open an existing project");
   connect(m_open_existing_project_action, &QAction::triggered, this,
-          [this]() { m_project_handler->OnOpenExistingProject({}); });
+          [this]() { m_project_handler->OpenExistingProject({}); });
 
   m_save_current_project_action = new QAction("&Save Project", this);
   m_save_current_project_action->setShortcuts(QKeySequence::Save);
   m_save_current_project_action->setStatusTip("Save project");
   m_save_current_project_action->setShortcutContext(Qt::ApplicationShortcut);
   connect(m_save_current_project_action, &QAction::triggered, m_project_handler,
-          &sup::gui::ProjectHandler::OnSaveCurrentProject);
+          &sup::gui::ProjectHandler::SaveCurrentProject);
 
   m_save_project_as_action = new QAction("Save &As...", this);
   m_save_project_as_action->setShortcuts(QKeySequence::SaveAs);
   m_save_project_as_action->setStatusTip("Save project under different name");
   connect(m_save_project_as_action, &QAction::triggered, m_project_handler,
-          &sup::gui::ProjectHandler::OnSaveProjectAs);
+          &sup::gui::ProjectHandler::SaveProjectAs);
 
   m_exit_action = new QAction("E&xit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);
@@ -118,7 +118,7 @@ void MonitorMainWindowActions::AboutToShowFileMenu()
     auto action = m_recent_project_menu->addAction(trimmed_project_dir);
     action->setData(QVariant::fromValue(project_dir));
     auto on_project_selected = [this, project_dir]()
-    { m_project_handler->OnOpenExistingProject(project_dir); };
+    { m_project_handler->OpenExistingProject(project_dir); };
     connect(action, &QAction::triggered, on_project_selected);
   }
 
