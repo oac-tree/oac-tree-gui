@@ -104,7 +104,7 @@ private:
   std::unique_ptr<ProcedureReporter> m_procedure_reporter;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
 
-  std::unique_ptr<WorkspaceSynchronizer> m_workspace_syncronizer;
+  std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 
   JobLog* m_job_log{nullptr};
 

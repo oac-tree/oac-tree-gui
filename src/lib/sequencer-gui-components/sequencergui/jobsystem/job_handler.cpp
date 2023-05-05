@@ -177,7 +177,7 @@ void JobHandler::PrepareForRun()
     GetJobModel()->RemoveItem(expanded_procedure);
   }
 
-  m_workspace_syncronizer.reset();
+  m_workspace_synchronizer.reset();
   m_procedure_reporter.reset();
   m_domain_runner_adapter.reset();
 }
@@ -211,8 +211,8 @@ void JobHandler::SetupWorkspaceSyncronizer()
   if (workspace_item->GetVariableCount() > 0)
   {
     auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
-    m_workspace_syncronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
-    m_workspace_syncronizer->Start(); // will setup domain Workspace too
+    m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
+    m_workspace_synchronizer->Start(); // will setup domain Workspace too
   }
 }
 
