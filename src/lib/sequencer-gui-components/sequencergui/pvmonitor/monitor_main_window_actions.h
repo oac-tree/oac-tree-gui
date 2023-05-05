@@ -57,12 +57,7 @@ private:
   void SetupMenus(QMenuBar* menubar);
   void AboutToShowFileMenu();
 
-  QAction* m_create_new_project_action{nullptr};
-  QAction* m_open_existing_project_action{nullptr};
-  QAction* m_save_current_project_action{nullptr};
-  QAction* m_save_project_as_action{nullptr};
   QAction* m_exit_action{nullptr};
-
   QMenu* m_recent_project_menu{nullptr};
 
   sup::gui::ProjectHandler* m_project_handler{nullptr};

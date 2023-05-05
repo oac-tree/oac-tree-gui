@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/components/project_handler.h>
+#include <sup/gui/components/project_handler_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -57,31 +58,6 @@ MonitorMainWindowActions::~MonitorMainWindowActions() = default;
 
 void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
-  m_create_new_project_action = new QAction("&New Project", this);
-  m_create_new_project_action->setShortcuts(QKeySequence::New);
-  m_create_new_project_action->setStatusTip("Create a new project");
-  connect(m_create_new_project_action, &QAction::triggered, m_project_handler,
-          &sup::gui::ProjectHandler::CreateNewProject);
-
-  m_open_existing_project_action = new QAction("&Open Project", this);
-  m_open_existing_project_action->setShortcuts(QKeySequence::Open);
-  m_open_existing_project_action->setStatusTip("Open an existing project");
-  connect(m_open_existing_project_action, &QAction::triggered, this,
-          [this]() { m_project_handler->OpenExistingProject({}); });
-
-  m_save_current_project_action = new QAction("&Save Project", this);
-  m_save_current_project_action->setShortcuts(QKeySequence::Save);
-  m_save_current_project_action->setStatusTip("Save project");
-  m_save_current_project_action->setShortcutContext(Qt::ApplicationShortcut);
-  connect(m_save_current_project_action, &QAction::triggered, m_project_handler,
-          &sup::gui::ProjectHandler::SaveCurrentProject);
-
-  m_save_project_as_action = new QAction("Save &As...", this);
-  m_save_project_as_action->setShortcuts(QKeySequence::SaveAs);
-  m_save_project_as_action->setStatusTip("Save project under different name");
-  connect(m_save_project_as_action, &QAction::triggered, m_project_handler,
-          &sup::gui::ProjectHandler::SaveProjectAs);
-
   m_exit_action = new QAction("E&xit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);
   m_exit_action->setStatusTip("Exit the application");
@@ -94,13 +70,15 @@ void MonitorMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   auto file_menu = menubar->addMenu("&File");
   connect(file_menu, &QMenu::aboutToShow, this, &MonitorMainWindowActions::AboutToShowFileMenu);
-  file_menu->addAction(m_create_new_project_action);
-  file_menu->addAction(m_open_existing_project_action);
+
+  sup::gui::AddNewProjectAction(file_menu, *m_project_handler);
+  sup::gui::AddOpenExistingProjectAction(file_menu, *m_project_handler);
+
   m_recent_project_menu = file_menu->addMenu("Recent Projects");
 
   file_menu->addSeparator();
-  file_menu->addAction(m_save_current_project_action);
-  file_menu->addAction(m_save_project_as_action);
+  sup::gui::AddSaveCurrentProjectAction(file_menu, *m_project_handler);
+  sup::gui::AddSaveProjectAsAction(file_menu, *m_project_handler);
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
