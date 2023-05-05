@@ -32,10 +32,13 @@ class ProjectManagerInterface;
 class SessionModelInterface;
 }  // namespace mvvm
 
+namespace sup::gui {
+class RecentProjectSettings;
+}
+
 namespace sequencergui
 {
 
-class RecentProjectSettings;
 class UserInteractor;
 class ApplicationModels;
 class RecentProjectWidget;
@@ -71,7 +74,7 @@ private:
   void UpdateCurrentProjectName();
   void UpdateRecentProjectNames();
 
-  std::unique_ptr<RecentProjectSettings> m_recent_project_settings;
+  std::unique_ptr<sup::gui::RecentProjectSettings> m_recent_project_settings;
   std::unique_ptr<UserInteractor> m_user_interactor;
   std::unique_ptr<mvvm::ProjectManagerInterface> m_project_manager;
   mvvm::SessionModelInterface* m_model{nullptr};

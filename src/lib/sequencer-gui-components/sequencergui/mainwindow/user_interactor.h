@@ -29,10 +29,14 @@ namespace mvvm
 enum class SaveChangesAnswer;
 }
 
+namespace sup::gui
+{
+class RecentProjectSettings;
+}
+
 namespace sequencergui
 {
 
-class RecentProjectSettings;
 
 //! Provide save/discard/cancel and similar dialogs on user request.
 //! Intended to work in pair with ProjectManagerDecorator.
@@ -40,7 +44,7 @@ class RecentProjectSettings;
 class UserInteractor
 {
 public:
-  UserInteractor(RecentProjectSettings* settings, QWidget* parent);
+  UserInteractor(sup::gui::RecentProjectSettings* settings, QWidget* parent);
 
   std::string OnSelectDirRequest();
 
@@ -51,7 +55,7 @@ public:
 private:
   std::string SummonSelectDialog() const;
 
-  RecentProjectSettings* m_settings{nullptr};
+  sup::gui::RecentProjectSettings* m_settings{nullptr};
   QWidget* m_parent{nullptr};
 };
 

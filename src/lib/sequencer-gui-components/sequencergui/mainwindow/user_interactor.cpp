@@ -19,7 +19,7 @@
 
 #include "user_interactor.h"
 
-#include "recent_project_settings.h"
+#include <sup/gui/components/recent_project_settings.h>
 
 #include <mvvm/project/project_types.h>
 #include <mvvm/project/project_utils.h>
@@ -45,7 +45,7 @@ std::map<QMessageBox::StandardButton, mvvm::SaveChangesAnswer> answer_map()
 namespace sequencergui
 {
 
-UserInteractor::UserInteractor(RecentProjectSettings* settings, QWidget* parent)
+UserInteractor::UserInteractor(sup::gui::RecentProjectSettings* settings, QWidget* parent)
     : m_settings(settings), m_parent(parent)
 {
 }

@@ -19,8 +19,9 @@
 
 #include "project_handler.h"
 
-#include "recent_project_settings.h"
 #include "user_interactor.h"
+
+#include <sup/gui/components/recent_project_settings.h>
 
 #include <mvvm/factories/project_manager_factory.h>
 #include <mvvm/model/application_model.h>
@@ -34,7 +35,7 @@ namespace sequencergui
 
 ProjectHandler::ProjectHandler(mvvm::SessionModelInterface* model, QWidget* parent)
     : QObject(parent)
-    , m_recent_project_settings(std::make_unique<RecentProjectSettings>())
+    , m_recent_project_settings(std::make_unique<sup::gui::RecentProjectSettings>())
     , m_user_interactor(std::make_unique<UserInteractor>(m_recent_project_settings.get(), parent))
     , m_model(model)
 {

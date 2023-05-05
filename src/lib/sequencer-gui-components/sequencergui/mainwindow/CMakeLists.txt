@@ -7,8 +7,6 @@ target_sources(${library_name} PRIVATE
   command_line_options.h
   project_handler.cpp
   project_handler.h
-  recent_project_settings.cpp
-  recent_project_settings.h
   sequencer_main_window.cpp
   sequencer_main_window.h
   sequencer_main_window_actions.cpp
