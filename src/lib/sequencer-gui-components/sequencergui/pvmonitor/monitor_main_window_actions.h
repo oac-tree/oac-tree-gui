@@ -32,7 +32,7 @@ namespace mvvm
 class SessionModelInterface;
 }
 
-namespace sequencergui
+namespace sup::gui
 {
 class ProjectHandler;
 }
@@ -65,7 +65,7 @@ private:
 
   QMenu* m_recent_project_menu{nullptr};
 
-  ProjectHandler* m_project_handler{nullptr};
+  sup::gui::ProjectHandler* m_project_handler{nullptr};
 };
 
 }  // namespace sequencergui

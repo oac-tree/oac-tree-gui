@@ -32,10 +32,13 @@ namespace mvvm
 class SessionModelInterface;
 }
 
+namespace sup::gui
+{
+class ProjectHandler;
+}
+
 namespace sequencergui
 {
-
-class ProjectHandler;
 
 //! Vertical panel located on the left of XMLTreeView
 
@@ -64,7 +67,7 @@ private:
 
   QMenu* m_recent_project_menu{nullptr};
 
-  ProjectHandler* m_project_handler{nullptr};
+  sup::gui::ProjectHandler* m_project_handler{nullptr};
 };
 
 }  // namespace sequencergui

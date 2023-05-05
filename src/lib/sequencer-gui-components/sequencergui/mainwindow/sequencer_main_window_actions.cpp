@@ -20,9 +20,9 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
-#include "project_handler.h"
 
 #include <sequencergui/model/sequencer_model.h>
+#include <sup/gui/components/project_handler.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -36,7 +36,7 @@ namespace sequencergui
 
 SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterface *model,
                                                        QMainWindow *mainwindow)
-    : QObject(mainwindow), m_project_handler(new ProjectHandler(model, mainwindow))
+    : QObject(mainwindow), m_project_handler(new sup::gui::ProjectHandler(model, mainwindow))
 
 {
   CreateActions(mainwindow);
@@ -61,7 +61,7 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_create_new_project_action->setShortcuts(QKeySequence::New);
   m_create_new_project_action->setStatusTip("Create a new project");
   connect(m_create_new_project_action, &QAction::triggered, m_project_handler,
-          &ProjectHandler::OnCreateNewProject);
+          &sup::gui::ProjectHandler::OnCreateNewProject);
 
   m_open_existing_project_action = new QAction("&Open Project", this);
   m_open_existing_project_action->setShortcuts(QKeySequence::Open);
@@ -74,13 +74,13 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_save_current_project_action->setStatusTip("Save project");
   m_save_current_project_action->setShortcutContext(Qt::ApplicationShortcut);
   connect(m_save_current_project_action, &QAction::triggered, m_project_handler,
-          &ProjectHandler::OnSaveCurrentProject);
+          &sup::gui::ProjectHandler::OnSaveCurrentProject);
 
   m_save_project_as_action = new QAction("Save &As...", this);
   m_save_project_as_action->setShortcuts(QKeySequence::SaveAs);
   m_save_project_as_action->setStatusTip("Save project under different name");
   connect(m_save_project_as_action, &QAction::triggered, m_project_handler,
-          &ProjectHandler::OnSaveProjectAs);
+          &sup::gui::ProjectHandler::OnSaveProjectAs);
 
   m_exit_action = new QAction("E&xit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);
@@ -134,7 +134,7 @@ void SequencerMainWindowActions::AboutToShowFileMenu()
     m_recent_project_menu->addSeparator();
     auto action = m_recent_project_menu->addAction("Clear Menu");
     connect(action, &QAction::triggered, m_project_handler,
-            &ProjectHandler::ClearRecentProjectsList);
+            &sup::gui::ProjectHandler::ClearRecentProjectsList);
   }
 }
 
