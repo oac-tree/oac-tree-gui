@@ -54,7 +54,7 @@ MessagePanel::MessagePanel(QWidget* parent)
     , m_remove_selected_action(new QAction(this))
     , m_tree_view(new QTreeView)
     , m_view_model(new JobLogViewModel(nullptr))
-    , m_proxy_model(new QSortFilterProxyModel)
+    , m_proxy_model(new QSortFilterProxyModel(this))
     , m_test_action(new QWidgetAction(this))
     , m_selection_menu(CreateSeverityChoiceMenu())
 {
