@@ -41,12 +41,14 @@ MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *
   SetupMenus(mainwindow->menuBar());
 }
 
-//! Returns 'true' if application can be closed.
-//! Internally will perform check for unsaved data, and proceed via save/discard/cancel dialog.
+//! Closes current project. Internally performs check for unsaved data, and proceeds via
+//! save/discard/cancel dialog. Returns true if project was successfully saved, and false otherwise.
+//! The later normally means that the user has changed his mind in the course of this operation and
+//! rthe project has remained in unsaved state.
 
-bool MonitorMainWindowActions::CanCloseApplication() const
+bool MonitorMainWindowActions::CloseCurrentProject() const
 {
-  return m_project_handler->CanCloseProject();
+  return m_project_handler->CloseCurrentProject();
 }
 
 MonitorMainWindowActions::~MonitorMainWindowActions() = default;

@@ -40,7 +40,7 @@ class ProjectHandler;
 namespace sequencergui
 {
 
-//! Vertical panel located on the left of XMLTreeView
+//! Main menu bar actions for the main window.
 
 class SequencerMainWindowActions : public QObject
 {
@@ -50,7 +50,7 @@ public:
   explicit SequencerMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
-  bool CanCloseApplication() const;
+  bool CloseCurrentProject() const;
 
 private:
   void CreateActions(QMainWindow* mainwindow);
