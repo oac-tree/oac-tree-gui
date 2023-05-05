@@ -41,7 +41,7 @@
 using namespace sequencergui;
 using ::testing::_;
 
-//! Tests for WorkspaceSyncronizer class.
+//! Tests for WorkspaceSynchronizer class.
 
 class WorkspaceSynchronizerTests : public ::testing::Test
 {
@@ -58,7 +58,7 @@ public:
     return result;
   }
 
-  //! Creates syncronizer for testing.
+  //! Creates synchronizer for testing.
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
   {
     // populate sequencer workspace so it match WorkspaceItem
@@ -77,15 +77,15 @@ TEST_F(WorkspaceSynchronizerTests, InitialState)
   EXPECT_EQ(synchronizer->GetWorkspace(), &m_workspace);
 }
 
-TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
+TEST_F(WorkspaceSynchronizerTests, AttemptToSynchronizeNonMatchingWorkspaces)
 {
   {  // empty workspaces
     sup::sequencer::Workspace workspace;
 
     mvvm::ApplicationModel model;
     auto workspace_item = model.InsertItem<WorkspaceItem>();
-    WorkspaceSynchronizer syncronizer(workspace_item, &workspace);
-    EXPECT_THROW(syncronizer.Start(), sup::gui::LogicErrorException);
+    WorkspaceSynchronizer synchronizer(workspace_item, &workspace);
+    EXPECT_THROW(synchronizer.Start(), sup::gui::LogicErrorException);
   }
 
   {  // variables do not match
@@ -104,7 +104,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSyncronizeNonMatchingWorkspaces)
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
-//! Validating initial values after syncronization was started.
+//! Validating initial values after synchronization was started.
 
 TEST_F(WorkspaceSynchronizerTests, Start)
 {

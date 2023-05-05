@@ -133,7 +133,7 @@ WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 }
 
 //! Updates all values in WorkspaceItem from the domain's workspace.
-//! The method is expected to be called once during syncronization startup.
+//! The method is expected to be called once during synchronization startup.
 
 void WorkspaceSynchronizer::SetInitialValuesFromDomain()
 {

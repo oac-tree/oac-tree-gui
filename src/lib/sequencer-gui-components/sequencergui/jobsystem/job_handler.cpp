@@ -67,7 +67,7 @@ void JobHandler::onPrepareJobRequest()
 
   SetupExpandedProcedureItem();
 
-  SetupWorkspaceSyncronizer();
+  SetupWorkspaceSynchronizer();
 
   SetupProcedureReporter();
 
@@ -203,9 +203,9 @@ void JobHandler::SetupExpandedProcedureItem()
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
 }
 
-//! Setup syncronization of workspace variables.
+//! Setup synchronization of workspace variables.
 
-void JobHandler::SetupWorkspaceSyncronizer()
+void JobHandler::SetupWorkspaceSynchronizer()
 {
   auto workspace_item = m_job_item->GetExpandedProcedure()->GetWorkspace();
   if (workspace_item->GetVariableCount() > 0)

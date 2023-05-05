@@ -23,7 +23,7 @@
 
 using namespace sequencergui;
 
-//! Tests for WorkspaceSyncronizer class.
+//! Tests for WorkspaceSynchronizer class.
 
 class MonitorModelTests : public ::testing::Test
 {

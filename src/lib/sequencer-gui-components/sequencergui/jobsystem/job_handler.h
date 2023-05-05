@@ -92,7 +92,7 @@ private:
   void PrepareForRun();
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
-  void SetupWorkspaceSyncronizer();
+  void SetupWorkspaceSynchronizer();
   void SetupProcedureReporter();
   void SetupDomainRunnerAdapter();
 

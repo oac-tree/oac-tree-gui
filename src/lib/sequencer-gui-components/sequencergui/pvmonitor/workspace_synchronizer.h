@@ -36,7 +36,7 @@ class SequencerWorkspaceListener;
 class WorkspaceItemController;
 class WorkspaceEvent;
 
-//! Provides data syncronization between WorkspaceItem and sequencer Workspace. All AnyValue
+//! Provides data synchronization between WorkspaceItem and sequencer Workspace. All AnyValue
 //! updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all DataChangedEvent
 //! on GUI model side will be propagated to Sequencer Workspace.
 //!

@@ -48,14 +48,14 @@ namespace
 const std::string kTestPrefix("WorkspaceSynchronizerPVAccessTests:");
 }  // namespace
 
-//! Tests for WorkspaceSyncronizer class.
+//! Tests for WorkspaceSynchronizer class.
 
 class WorkspaceSynchronizerPVAccessTests : public ::testing::Test
 {
 public:
   WorkspaceSynchronizerPVAccessTests() { m_model.InsertItem<WorkspaceItem>(); }
 
-  //! Creates syncronizer for testing.
+  //! Creates synchronizer for testing.
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
   {
     // populate sequencer workspace so it match WorkspaceItem
@@ -95,7 +95,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
 
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  // creating syncronizer (and underlying domain  workspace)
+  // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
 
   // Creating listeners and setting callback expectations.
@@ -147,7 +147,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
 
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  // creating syncronizer (and underlying domain  workspace)
+  // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
 
@@ -191,7 +191,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
 
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  // creating syncronizer (and underlying domain  workspace)
+  // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
 
@@ -253,7 +253,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
   EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
   EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
 
-  // creating syncronizer (and underlying domain  workspace)
+  // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
 
   testutils::MockModelListener model_listener(&m_model);
