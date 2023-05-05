@@ -62,7 +62,7 @@ public:
   WorkspaceItem* GetWorkspaceItem() const;
 
 private:
-  void UpdateValuesFromDomain();
+  void SetInitialValuesFromDomain();
   void OnDomainVariableUpdated();
   void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
 

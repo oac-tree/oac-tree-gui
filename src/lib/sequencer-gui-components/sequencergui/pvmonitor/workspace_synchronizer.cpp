@@ -111,9 +111,15 @@ void WorkspaceSynchronizer::Start()
 
   m_workspace_listener->StartListening(GetWorkspace());
 
+  // At this moment we are ready to receive callbacks from the domain. However, all callbacks are
+  // connected with this thread (the GUI thread) via queued connections. This hopefully guarantees,
+  // that the setting of initial values below will be processed before any domain callback is
+  // served.
+
   m_workspace->Setup();
 
-  UpdateValuesFromDomain();
+  // Setting initial values will be performed once. All other updates will be done via callbacks.
+  SetInitialValuesFromDomain();
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
@@ -129,7 +135,7 @@ WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 //! Updates all values in WorkspaceItem from the domain's workspace.
 //! The method is expected to be called once during syncronization startup.
 
-void WorkspaceSynchronizer::UpdateValuesFromDomain()
+void WorkspaceSynchronizer::SetInitialValuesFromDomain()
 {
   for (const auto& name : m_workspace->VariableNames())
   {
