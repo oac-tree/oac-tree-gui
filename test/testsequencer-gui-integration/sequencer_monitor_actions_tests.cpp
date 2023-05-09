@@ -83,7 +83,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToUseWhenMisconfigured)
 
 TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
 
@@ -136,7 +136,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
 
 TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(20));
+  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -160,9 +160,10 @@ TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
   EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), m_job_manager.GetJobHandler(job_item));
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  QTest::qWait(100);
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
+  EXPECT_TRUE(QTest::qWaitFor(
+      [this, job_item]() { return job_item->GetStatus() == std::string("Completed"); }, 50));
 
+  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
 }
 
@@ -204,10 +205,10 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_THROW(m_actions.OnRemoveJobRequest(), sequencergui::RuntimeException);
-  QTest::qWait(20);
+  QTest::qWait(5);
 
   m_actions.OnStopJobRequest();
-  QTest::qWait(20);
+  QTest::qWait(5);
 
   EXPECT_FALSE(job_handler->IsRunning());
 }
@@ -216,7 +217,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
 
 TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -254,7 +255,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 
 TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -290,7 +291,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
 
 TEST_F(SequencerMonitorActionsTests, ExecuteSameJobTwice)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(50));
+  auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
   // submitting the procedure
   m_actions.OnSubmitJobRequest(procedure);
@@ -307,15 +308,17 @@ TEST_F(SequencerMonitorActionsTests, ExecuteSameJobTwice)
   EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), m_job_manager.GetJobHandler(job_item));
   EXPECT_TRUE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  QTest::qWait(100);
-  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
+  EXPECT_TRUE(QTest::qWaitFor(
+      [this, job_item]() { return job_item->GetStatus() == std::string("Completed"); }, 50));
 
+  EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
   EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
 
   // starting same job again
   m_actions.OnStartJobRequest();
 
-  QTest::qWait(100);
+  EXPECT_TRUE(QTest::qWaitFor(
+      [this, job_item]() { return job_item->GetStatus() == std::string("Completed"); }, 50));
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
   EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));

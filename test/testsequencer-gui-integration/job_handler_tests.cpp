@@ -31,11 +31,11 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 
@@ -129,7 +129,7 @@ TEST_F(JobHandlerTest, PrematureDeletion)
 
 TEST_F(JobHandlerTest, ProcedureWithSingleWait)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
@@ -142,13 +142,15 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWait)
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
   job_handler.onStartRequest();
-  // We are testing here queued signals, need special waiting
-  QTest::qWait(100);
+
+  auto predicate = [this, &job_handler, &spy_instruction_status]()
+  { return !job_handler.IsRunning() && spy_instruction_status.count() == 2; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
+  auto instructions = mvvm::utils::FindItems<MessageItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
@@ -159,7 +161,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWait)
 
 TEST_F(JobHandlerTest, ProcedureWithSingleWaitStatusChangedSignals)
 {
-  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
+  auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
@@ -169,7 +171,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWaitStatusChangedSignals)
   job_handler.onPrepareJobRequest();
   EXPECT_TRUE(job_handler.IsValid());
 
-  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
+  auto instructions = mvvm::utils::FindItems<MessageItem>(m_models.GetJobModel());
   auto wait = instructions.at(0);
 
   testutils::MockItemListener listener(wait);
@@ -178,11 +180,10 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWaitStatusChangedSignals)
   EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
 
   job_handler.onStartRequest();
-  // We are testing here queued signals, need special waiting
-  QTest::qWait(100);
+
+  QTest::qWait(50);
 
   EXPECT_FALSE(job_handler.IsRunning());
-
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
 }
 
@@ -216,7 +217,7 @@ TEST_F(JobHandlerTest, ProcedureWithVariableCopy)
 
   job_handler.onStartRequest();
   // We are testing here queued signals, need special waiting
-  QTest::qWait(100);
+  QTest::qWait(50);
 
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0);  // value was changed
@@ -234,7 +235,7 @@ TEST_F(JobHandlerTest, LocalIncludeScenario)
 
   job_handler.onStartRequest();
   // We are testing here queued signals, need special waiting
-  QTest::qWait(100);
+  QTest::qWait(50);
 
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
@@ -267,7 +268,7 @@ TEST_F(JobHandlerTest, UserInputScenario)
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
   job_handler.onStartRequest();
-  QTest::qWait(100);
+  QTest::qWait(50);
 
   EXPECT_EQ(spy_instruction_status.count(), 6);  // 3 instructions
 
@@ -298,7 +299,7 @@ TEST_F(JobHandlerTest, UserChoiceScenario)
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
   job_handler.onStartRequest();
-  QTest::qWait(100);
+  QTest::qWait(50);
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
 

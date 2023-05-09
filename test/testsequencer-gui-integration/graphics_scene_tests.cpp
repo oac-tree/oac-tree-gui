@@ -130,7 +130,7 @@ TEST_F(GraphicsSceneTest, onConnectionRequest)
 
   // connecting two views
   m_scene.onConnectionRequest(wait_view, sequence_view);
-  QTest::qWait(200);
+  QTest::qWait(50);
 
   // still two connectable view
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 2);
@@ -206,7 +206,7 @@ TEST_F(GraphicsSceneTest, onConnectionDeletionViaDisconnect)
 
   // deleting connection
   m_scene.disconnectConnectedViews(connections.at(0));
-  QTest::qWait(200);
+  QTest::qWait(50);
 
   // new sequence view is the same, wait view is different
   EXPECT_EQ(sequence_view, m_scene.FindViewForInstruction(sequence));
@@ -249,7 +249,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedChild)
   wait_view->setSelected(true);
 
   ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
-  QTest::qWait(200);
+  QTest::qWait(50);
 
   auto connections = sequence_view->GetParentPort()->connections();
   ASSERT_EQ(connections.size(), 0);
@@ -289,7 +289,7 @@ TEST_F(GraphicsSceneTest, onDeleteSelectedParent)
   sequence_view->setSelected(true);
 
   ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
-  QTest::qWait(200);
+  QTest::qWait(50);
 
   // WaitView vas regenerated on the move of ViewItem on top.
   auto new_wait_view = m_scene.FindViewForInstruction(wait);
