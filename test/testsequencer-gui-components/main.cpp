@@ -21,13 +21,9 @@
 
 #include <gtest/gtest.h>
 
-#include <QApplication>
-
 int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
-
-  QApplication app(argc, argv);  // need application for queued connections
 
   sequencergui::LoadPlugins();
 
