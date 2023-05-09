@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include <sequencergui/components/custom_meta_types.h>
+#include <sequencergui/domain/domain_utils.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -30,6 +31,8 @@ int main(int argc, char** argv)
   ::testing::InitGoogleMock(&argc, argv);
 
   sequencergui::RegisterCustomMetaTypes();
+
+  sequencergui::LoadPlugins();
 
   QApplication app(argc, argv);
   Q_UNUSED(app)
