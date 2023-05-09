@@ -55,7 +55,6 @@ public:
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);
-  void AboutToShowFileMenu();
 
   QAction* m_exit_action{nullptr};
   QMenu* m_recent_project_menu{nullptr};

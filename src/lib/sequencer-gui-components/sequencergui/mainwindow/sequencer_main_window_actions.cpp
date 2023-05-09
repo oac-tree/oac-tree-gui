@@ -75,7 +75,9 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   auto file_menu = menubar->addMenu("&File");
-  connect(file_menu, &QMenu::aboutToShow, this, &SequencerMainWindowActions::AboutToShowFileMenu);
+  auto about_to_show_menu = [this]()
+  { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
+  connect(file_menu, &QMenu::aboutToShow, this, about_to_show_menu);
 
   sup::gui::AddNewProjectAction(file_menu, *m_project_handler);
   sup::gui::AddOpenExistingProjectAction(file_menu, *m_project_handler);
@@ -91,31 +93,6 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 
   auto help_menu = menubar->addMenu("&Help");
   help_menu->addAction(m_about_action);
-}
-
-void SequencerMainWindowActions::AboutToShowFileMenu()
-{
-  auto recent_projects = m_project_handler->GetRecentProjectList();
-  m_recent_project_menu->clear();
-  m_recent_project_menu->setEnabled(!recent_projects.isEmpty());
-
-  for (const auto &project_dir : recent_projects)
-  {
-    auto trimmed_project_dir = mvvm::utils::WithTildeHomePath(project_dir);
-    auto action = m_recent_project_menu->addAction(trimmed_project_dir);
-    action->setData(QVariant::fromValue(project_dir));
-    auto on_project_selected = [this, project_dir]()
-    { m_project_handler->OpenExistingProject(project_dir); };
-    connect(action, &QAction::triggered, on_project_selected);
-  }
-
-  if (!recent_projects.empty())
-  {
-    m_recent_project_menu->addSeparator();
-    auto action = m_recent_project_menu->addAction("Clear Menu");
-    connect(action, &QAction::triggered, m_project_handler,
-            &sup::gui::ProjectHandler::ClearRecentProjectsList);
-  }
 }
 
 void SequencerMainWindowActions::OnAbout()
