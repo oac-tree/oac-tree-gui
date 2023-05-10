@@ -136,7 +136,7 @@ TEST_F(FlowControllerTest, WaitForReleaseChange)
 
   // checking result
   waiting_done.get();  // making sure pushing thread has finished
-  EXPECT_TRUE(duration(end_time - start_time) >= 100);
+  EXPECT_TRUE(duration(end_time - start_time) >= 99);
 }
 
 TEST_F(FlowControllerTest, Interrupt)

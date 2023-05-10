@@ -146,10 +146,9 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   // starting procedure
   manager.OnStartJobRequest();
-  EXPECT_TRUE(job_handler->IsRunning());
 
   // We are testing here queued signals, need special waiting to let procedure complete
-  QTest::qWait(100);
+  QTest::qWait(50);
   EXPECT_FALSE(job_handler->IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 

@@ -84,9 +84,7 @@ TEST_F(DomainRunnerAdapterTest, InitialState)
 
 TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
-  const std::chrono::milliseconds wait_timeout(10);
-
-  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
+  auto procedure = testutils::CreateMessageProcedure("text");
 
   auto adapter = CreateRunnerAdapter(procedure.get());
 
@@ -106,11 +104,12 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
+  EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);
+
   // triggering action
   EXPECT_TRUE(adapter->Start());
 
-  EXPECT_TRUE(
-      testutils::WaitForCompletion(*adapter, testutils::kDefaultWaitPrecision + wait_timeout * 2));
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
