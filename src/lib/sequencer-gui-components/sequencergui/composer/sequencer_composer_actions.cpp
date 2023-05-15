@@ -63,6 +63,12 @@ namespace sequencergui
 SequencerComposerActions::SequencerComposerActions(QWidget *parent) : QObject(parent)
 {
   SetupActions();
+  ReadSettings();
+}
+
+SequencerComposerActions::~SequencerComposerActions()
+{
+  WriteSettings();
 }
 
 QList<QAction *> SequencerComposerActions::GetMenuActions()

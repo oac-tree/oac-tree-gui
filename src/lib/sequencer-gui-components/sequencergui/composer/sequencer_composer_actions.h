@@ -43,6 +43,7 @@ class SequencerComposerActions : public QObject
 
 public:
   explicit SequencerComposerActions(QWidget* parent = nullptr);
+  ~SequencerComposerActions() override;
 
   QList<QAction*> GetMenuActions();
 
