@@ -146,6 +146,7 @@ void SequencerComposerView::SetupConnections()
     qDebug() << "Show on_procedure_selected" << procedure_item;
     m_node_editor->SetProcedure(procedure_item);
     m_composer_procedure_editor->SetProcedure(procedure_item);
+    m_composer_actions->SetProcedure(procedure_item);
     UpdateXML();
   };
   connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);

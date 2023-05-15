@@ -25,10 +25,17 @@
 class QAction;
 class QWidget;
 
+namespace sup::gui
+{
+class MessageEvent;
+}
+
 namespace sequencergui
 {
 
-//! Some b
+class ProcedureItem;
+
+//! Container for several procedure-related actions.
 
 class SequencerComposerActions : public QObject
 {
@@ -37,14 +44,21 @@ class SequencerComposerActions : public QObject
 public:
   explicit SequencerComposerActions(QWidget* parent = nullptr);
 
-
   QList<QAction*> GetMenuActions();
 
-  private:
+  void SetProcedure(ProcedureItem* procedure_item);
+
+private:
+  void SendWarningMessage(const sup::gui::MessageEvent& event);
+  void SendInfoMessage(const sup::gui::MessageEvent& event);
+
   void SetupActions();
+  void OnValidateProcedureRequest();
 
   QAction* m_validate_procedure_action{nullptr};
   QAction* m_export_xml_action{nullptr};
+
+  ProcedureItem* m_procedure_item{nullptr};
 };
 
 }  // namespace sequencergui
