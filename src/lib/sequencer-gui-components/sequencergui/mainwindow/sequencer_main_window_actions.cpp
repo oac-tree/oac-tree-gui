@@ -81,6 +81,8 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   auto file_menu = menubar->addMenu("&File");
+  file_menu->setToolTipsVisible(true);
+
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
   connect(file_menu, &QMenu::aboutToShow, this, about_to_show_menu);
@@ -98,6 +100,7 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addAction(m_exit_action);
 
   m_tools_menu = menubar->addMenu("&Tools");
+  m_tools_menu->setToolTipsVisible(true);
 
   auto help_menu = menubar->addMenu("&Help");
   help_menu->addAction(m_about_action);

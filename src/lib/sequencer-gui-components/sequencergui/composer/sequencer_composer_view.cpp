@@ -21,6 +21,7 @@
 
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_procedure_editor.h>
+#include <sequencergui/composer/sequencer_composer_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -30,12 +31,11 @@
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/xml_editor.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
-
-#include <sup/gui/components/message_handler_interface.h>
 
 #include <QDebug>
 #include <QSplitter>
@@ -54,6 +54,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_xml_editor(new XMLEditor)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
+    , m_composer_actions(new SequencerComposerActions(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -71,6 +72,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   layout->addWidget(m_splitter);
 
   SetupConnections();
+
+  addActions(m_composer_actions->GetMenuActions());
 }
 
 void SequencerComposerView::SetModel(SequencerModel *model)
@@ -90,6 +93,10 @@ void SequencerComposerView::showEvent(QShowEvent *event)
     m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
   }
 }
+
+//! Setup actions which will go to the menu.
+
+void SequencerComposerView::SetupMenuActions() {}
 
 void SequencerComposerView::UpdateXML()
 {

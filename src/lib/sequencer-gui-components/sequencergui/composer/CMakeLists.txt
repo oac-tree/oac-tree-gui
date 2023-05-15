@@ -15,6 +15,8 @@ target_sources(${library_name} PRIVATE
   instruction_item_panel.h
   sequencer_composer_view.cpp
   sequencer_composer_view.h
+  sequencer_composer_actions.cpp
+  sequencer_composer_actions.h
   workspace_editor_widget.cpp
   workspace_editor_widget.h
 )

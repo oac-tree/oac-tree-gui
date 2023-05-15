@@ -25,6 +25,7 @@
 
 class QSplitter;
 class QShowEvent;
+class QAction;
 
 namespace mvvm
 {
@@ -40,6 +41,7 @@ class NodeEditor;
 class ProcedureItem;
 class ItemStackWidget;
 class XMLEditor;
+class SequencerComposerActions;
 
 //! Main widget for model editing. Contains a toolbar on top, and few widgets beneath:
 //! a graphics scene representing a node editor, a toolbox with items to drag-and-drop on the
@@ -59,6 +61,7 @@ protected:
   void showEvent(QShowEvent* event) override;
 
 private:
+  void SetupMenuActions();
   void UpdateXML();
   void SetupConnections();
 
@@ -76,6 +79,8 @@ private:
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
   bool m_block_selection_to_scene{false};
+
+  SequencerComposerActions* m_composer_actions{nullptr};
 };
 
 }  // namespace sequencergui

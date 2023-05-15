@@ -64,7 +64,6 @@ private:
   ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
                                   const ::mvvm::TagIndex& index);
 
-  SequencerModel* m_model{nullptr};
   InstructionEditorContext m_context;
 };
 
