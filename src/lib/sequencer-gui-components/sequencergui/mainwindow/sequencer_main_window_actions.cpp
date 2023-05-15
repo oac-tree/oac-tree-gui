@@ -60,7 +60,7 @@ SequencerMainWindowActions::~SequencerMainWindowActions() = default;
 
 void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
-  m_exit_action = new QAction("E&xit Application", this);
+  m_exit_action = new QAction("Exit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);
   m_exit_action->setStatusTip("Exit the application");
   connect(m_exit_action, &QAction::triggered, mainwindow, &QMainWindow::close);

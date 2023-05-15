@@ -34,7 +34,6 @@ namespace sequencergui
 {
 
 class SequencerExplorerView;
-class SequencerTreeView;
 class SequencerMonitorView;
 class SequencerComposerView;
 class SettingsView;
@@ -57,6 +56,7 @@ protected:
 private:
   void InitApplication();
   void InitComponents();
+  void ReadSettings();
   void WriteSettings();
   void PopulateModel();
 

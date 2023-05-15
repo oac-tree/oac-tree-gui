@@ -25,8 +25,6 @@
 #include <sequencergui/composer/sequencer_composer_view.h>
 #include <sequencergui/explorer/sequencer_explorer_view.h>
 #include <sequencergui/model/application_models.h>
-#include <sequencergui/model/job_item.h>
-#include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_examples.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/sequencer_monitor_view.h>
@@ -36,14 +34,13 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCloseEvent>
-#include <QCoreApplication>
 #include <QSettings>
 
 namespace
 {
-const QString main_window_group = "MainWindow";
-const QString size_key = "size";
-const QString pos_key = "pos";
+const QString kGroupName = "MainWindow";
+const QString kWindowSizeSettingName = kGroupName + "/" + "size";
+const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 }  // namespace
 
 namespace sequencergui
@@ -77,17 +74,7 @@ void SequencerMainWindow::closeEvent(QCloseEvent* event)
 
 void SequencerMainWindow::InitApplication()
 {
-  QSettings settings;
-  if (settings.childGroups().contains(main_window_group))
-  {
-    settings.beginGroup(main_window_group);
-    resize(settings.value(size_key, QSize(mvvm::utils::UnitSize(80), mvvm::utils::UnitSize(60)))
-               .toSize());
-    move(settings.value(pos_key, QPoint(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(40)))
-             .toPoint());
-    settings.endGroup();
-  }
-
+  ReadSettings();
   InitComponents();
 }
 
@@ -119,13 +106,21 @@ void SequencerMainWindow::InitComponents()
   setCentralWidget(m_tab_widget);
 }
 
+void SequencerMainWindow::ReadSettings()
+{
+  QSettings settings;
+  const auto default_size = QSize(mvvm::utils::UnitSize(80), mvvm::utils::UnitSize(60));
+  resize(settings.value(kWindowSizeSettingName, default_size).toSize());
+
+  const auto default_pos = QPoint(mvvm::utils::UnitSize(20), mvvm::utils::UnitSize(40));
+  move(settings.value(kWindowPosSettingName, default_pos).toPoint());
+}
+
 void SequencerMainWindow::WriteSettings()
 {
   QSettings settings;
-  settings.beginGroup(main_window_group);
-  settings.setValue(size_key, size());
-  settings.setValue(pos_key, pos());
-  settings.endGroup();
+  settings.setValue(kWindowSizeSettingName, size());
+  settings.setValue(kWindowPosSettingName, pos());
 }
 
 void SequencerMainWindow::PopulateModel()
