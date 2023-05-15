@@ -61,6 +61,7 @@ protected:
 private:
   void UpdateXML();
   void SetupConnections();
+
   ProcedureItem* GetFirstProcedure();
 
   ComposerPanel* m_composer_panel{nullptr};

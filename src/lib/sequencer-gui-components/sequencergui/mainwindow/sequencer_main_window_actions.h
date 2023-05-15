@@ -52,6 +52,8 @@ public:
 
   bool CloseCurrentProject() const;
 
+  QMenu* GetToolsMenu();
+
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);
@@ -59,6 +61,7 @@ private:
 
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
+  QMenu* m_tools_menu{nullptr};
   QMenu* m_recent_project_menu{nullptr};
 
   sup::gui::ProjectHandler* m_project_handler{nullptr};

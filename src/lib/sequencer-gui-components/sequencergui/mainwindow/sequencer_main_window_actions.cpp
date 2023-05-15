@@ -28,6 +28,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
+#include <QDebug>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -52,6 +53,11 @@ SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterfa
 bool SequencerMainWindowActions::CloseCurrentProject() const
 {
   return m_project_handler->CloseCurrentProject();
+}
+
+QMenu *SequencerMainWindowActions::GetToolsMenu()
+{
+  return m_tools_menu;
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
@@ -90,6 +96,8 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
+
+  m_tools_menu = menubar->addMenu("&Tools");
 
   auto help_menu = menubar->addMenu("&Help");
   help_menu->addAction(m_about_action);
