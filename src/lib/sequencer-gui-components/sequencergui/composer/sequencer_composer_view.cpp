@@ -73,6 +73,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 
   SetupConnections();
 
+  // Add actions from SequencerComposerActions to the list of as actions of this widget.
+  // They will be used by MainWindow for QMenuBar
   addActions(m_composer_actions->GetMenuActions());
 }
 
@@ -152,7 +154,10 @@ void SequencerComposerView::SetupConnections()
   connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
 
   auto on_create_procedure = [this]()
-  { auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer()); };
+  {
+    auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
+    m_composer_panel->SetSelectedProcedure(procedure_item);
+  };
   connect(m_composer_panel, &ComposerPanel::CreateNewProcedureRequest, this, on_create_procedure);
 
   auto on_remove_procedure = [this](auto procedure)
