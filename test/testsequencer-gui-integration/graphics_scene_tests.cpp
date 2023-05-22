@@ -28,6 +28,7 @@
 #include <sequencergui/nodeeditor/graphics_scene_controller.h>
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
@@ -79,6 +80,20 @@ public:
   {
     C result = container;
     std::sort(result.begin(), result.end());
+    return result;
+  }
+
+  template <typename T>
+  std::vector<T*> GetSceneItems()
+  {
+    std::vector<T*> result;
+    for (auto item : m_scene.items())
+    {
+      if (auto casted = dynamic_cast<T*>(item); casted)
+      {
+        result.push_back(casted);
+      }
+    }
     return result;
   }
 
@@ -366,4 +381,37 @@ TEST_F(GraphicsSceneTest, SelectionAfterRemoval)
 
   EXPECT_EQ(Sorted(m_scene.GetSelectedInstructions()),
             Sorted(std::vector<InstructionItem*>({wait2})));
+}
+
+//! Scenario with complex 3-level instruction tree. Everything is selected and deleted all together.
+//! The model should be empty at the end. This validates that no connection is deleted twice.
+
+TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
+{
+  auto controller = CreateController();
+  auto item = AddAggregate(&m_model, GetInstructionContainer(), "if-then-else");
+
+  EXPECT_EQ(m_scene.GetConnectableViews().size(), 6);
+  for(auto view : m_scene.GetConnectableViews())
+  {
+    view->setSelected(true);
+  }
+
+  auto connections = GetSceneItems<NodeConnection>();
+  EXPECT_EQ(connections.size(), 5);
+  for(auto connection : GetSceneItems<NodeConnection>())
+  {
+    connection->setSelected(true);
+  }
+
+  auto selected_view_items = m_scene.GetSelectedViewItems<QGraphicsItem>();
+  EXPECT_EQ(selected_view_items.size(), 11);
+
+  ASSERT_NO_FATAL_FAILURE(m_scene.OnDeleteSelectedRequest());
+  QTest::qWait(50);
+
+  EXPECT_EQ(m_scene.GetSelectedViewItems<QGraphicsItem>().size(), 0);
+
+  // the model should be empty
+  EXPECT_EQ(GetInstructionContainer()->GetTotalItemCount(), 0);
 }
