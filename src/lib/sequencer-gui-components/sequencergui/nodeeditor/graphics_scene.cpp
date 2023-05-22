@@ -180,9 +180,13 @@ void GraphicsScene::OnDeleteSelectedRequest()
   }
 
   // Break explicitely selected connections.
-  for (auto connection : GetSelectedViewItems<NodeConnection>())
+  auto selected_connections = GetSelectedViewItems<NodeConnection>();
+  while (!selected_connections.empty())
   {
-    disconnectConnectedViews(connection);
+    // Deletion of connection might lead to view removal. This in turn might lead
+    // to automatic removal of another connection.
+    disconnectConnectedViews(GetSelectedViewItems<NodeConnection>().at(0));
+    selected_connections = GetSelectedViewItems<NodeConnection>();
   }
 
   for (auto view : GetSelectedViewItems<ConnectableView>())
@@ -197,6 +201,7 @@ void GraphicsScene::OnDeleteSelectedRequest()
     auto instruction = view->GetConnectableItem()->GetInstruction();
     GetModel()->RemoveItem(instruction);
   }
+
 }
 
 void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
