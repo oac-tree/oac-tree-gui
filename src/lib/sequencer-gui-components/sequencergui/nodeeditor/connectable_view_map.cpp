@@ -143,4 +143,9 @@ std::vector<ConnectableView *> ConnectableViewMap::FindRelatedViews(const Instru
   return result;
 }
 
+int ConnectableViewMap::GetSize() const
+{
+  return static_cast<int>(m_item_to_view.size());
+}
+
 }  // namespace sequencergui

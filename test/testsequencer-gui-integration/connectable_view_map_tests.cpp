@@ -35,6 +35,13 @@ class ConnectableViewMapTest : public ::testing::Test
 };
 
 //! Testing Insert method.
+TEST_F(ConnectableViewMapTest, InitialState)
+{
+  ConnectableViewMap map;
+  EXPECT_EQ(map.GetSize(), 0);
+}
+
+//! Testing Insert method.
 TEST_F(ConnectableViewMapTest, InsertThenFind)
 {
   WaitItem instruction;
@@ -47,6 +54,8 @@ TEST_F(ConnectableViewMapTest, InsertThenFind)
   // inserting to the map
   map.Insert(&instruction, view.get());
 
+  EXPECT_EQ(map.GetSize(), 1);
+
   // now we can find the view
   EXPECT_EQ(map.FindView(&instruction), view.get());
 
@@ -56,6 +65,7 @@ TEST_F(ConnectableViewMapTest, InsertThenFind)
 
   map.Clear();
   EXPECT_FALSE(map.FindView(&instruction));
+  EXPECT_EQ(map.GetSize(), 0);
 }
 
 //! Testing Remove method.

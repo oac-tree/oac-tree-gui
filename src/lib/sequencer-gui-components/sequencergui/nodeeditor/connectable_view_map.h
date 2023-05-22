@@ -53,6 +53,8 @@ public:
 
   std::vector<ConnectableView*> FindRelatedViews(const InstructionItem* item);
 
+  int GetSize() const;
+
 private:
   std::map<const InstructionItem*, ConnectableView*> m_item_to_view;
 };
