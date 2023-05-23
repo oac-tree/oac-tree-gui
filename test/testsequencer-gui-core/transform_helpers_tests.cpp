@@ -273,12 +273,17 @@ TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
   const sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
 
   mvvm::CompoundItem item;
-  AddPropertyFromDefinition(attr, item);
+  auto property = AddPropertyFromDefinition(attr, item);
+  ASSERT_NE(property, nullptr);
 
   // validating that CompoundItem got new property item
   EXPECT_TRUE(mvvm::utils::HasTag(item, attribute_name));
+
+  std::vector<std::string> expected_tags({attribute_name});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+
   auto property_item = item.GetItem({attribute_name});
-  ASSERT_NE(property_item, nullptr);
+  ASSERT_EQ(property_item, property);
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
   EXPECT_NE(dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item), nullptr);
 

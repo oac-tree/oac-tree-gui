@@ -21,6 +21,8 @@
 
 #include <sequencergui/domain/domain_utils.h>
 
+#include <mvvm/model/item_utils.h>
+
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
@@ -37,8 +39,12 @@ TEST_F(UniversalVariableItemTests, InitialState)
 {
   sequencergui::UniversalVariableItem item;
 
-//  EXPECT_TRUE(item.GetName().empty());
+  //  EXPECT_TRUE(item.GetName().empty());
   //  EXPECT_TRUE(item.GetDisplayName().empty());
+
+  // tags registered in the c-tor of UniversalVariableItem
+  std::vector<std::string> expected_tags({"kAnyValueTag"});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   EXPECT_TRUE(item.IsAvailable());
