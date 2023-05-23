@@ -39,4 +39,6 @@ target_sources(${library_name} PRIVATE
   workspace_item.h
   xml_utils.cpp
   xml_utils.h
+  universal_variable_item.cpp
+  universal_variable_item.h
 )
