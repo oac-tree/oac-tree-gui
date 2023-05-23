@@ -19,10 +19,15 @@
 
 #include "sequencergui/model/universal_variable_item.h"
 
+#include <sequencergui/domain/domain_utils.h>
+
+#include <sup/sequencer/variable.h>
+
 #include <gtest/gtest.h>
 
+using namespace sequencergui;
 
-//! Tests for functions from variable_item_transform_utils.h
+//! Tests UniversalVariableItem.
 
 class UniversalVariableItemTests : public ::testing::Test
 {
@@ -30,4 +35,22 @@ class UniversalVariableItemTests : public ::testing::Test
 
 TEST_F(UniversalVariableItemTests, InitialState)
 {
+  sequencergui::UniversalVariableItem item;
+
+  EXPECT_TRUE(item.GetName().empty());
+  //  EXPECT_TRUE(item.GetDisplayName().empty());
+  EXPECT_TRUE(item.GetDomainType().empty());
+  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+  EXPECT_TRUE(item.IsAvailable());
+}
+
+//! Initialisation from default constructed domain variable.
+TEST_F(UniversalVariableItemTests, InitFromDomain)
+{
+  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+
+  sequencergui::UniversalVariableItem item;
+  item.InitFromDomain(local_variable.get());
+
+  EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 }

@@ -38,11 +38,19 @@ public:
 
   std::string GetDomainType() const override;
 
+
+  /**
+   * @brief Static method to create VariableItem representing domain variable.
+   * @param domain_type The typename of the domain variable.
+   * @return VariableItem representing default initialised domain variable.
+   */
+  static std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
+
 private:
   void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
 
-  std::string m_domain_name;
+  std::string m_domain_type;  //!< Domain typename.
 };
 
 }  // namespace sequencergui

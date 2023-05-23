@@ -24,6 +24,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -66,7 +67,7 @@ std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 
 void VariableItem::InitFromDomain(const variable_t *variable)
 {
-  if (GetType() != UnknownVariableItem::Type)
+  if (GetType() != UnknownVariableItem::Type && GetType() != UniversalVariableItem::Type)
   {
     if (variable->GetType() != GetDomainType())
     {

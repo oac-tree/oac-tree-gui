@@ -19,6 +19,9 @@
 
 #include "universal_variable_item.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_utils.h>
+
 #include <sup/sequencer/variable.h>
 
 namespace sequencergui
@@ -36,12 +39,21 @@ std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique
 
 std::string UniversalVariableItem::GetDomainType() const
 {
-  return m_domain_name;
+  return m_domain_type;
+}
+
+std::unique_ptr<VariableItem> UniversalVariableItem::CreateVariableItem(
+    const std::string &domain_type)
+{
+  auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
+  auto result = std::make_unique<UniversalVariableItem>();
+  result->InitFromDomain(domain_variable.get());
+  return result;
 }
 
 void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  m_domain_name = variable->GetType();
+  m_domain_type = variable->GetType();
 
   SetDisplayName(variable->GetType());
 }
