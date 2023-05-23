@@ -22,10 +22,15 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
+
+#include <mvvm/model/compound_item.h>
+#include <mvvm/model/item_utils.h>
+
+#include <sup/dto/anyvalue.h>
+#include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
@@ -193,7 +198,8 @@ TEST_F(TransformHelpersTests, SetJsonTypeAttribute)
   SetJsonTypeAttribute(item, *variable);
 
   EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
-  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), R"RAW({"type":"int32"})RAW");
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute),
+            R"RAW({"type":"int32"})RAW");
 }
 
 TEST_F(TransformHelpersTests, SetJsonValueAttribute)
@@ -256,4 +262,30 @@ TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariable)
 
     EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   }
+}
+
+TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
+{
+  const std::string attribute_name("attr");
+  const sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
+
+  mvvm::CompoundItem item;
+  AddPropertyFromDefinition(attr, item);
+
+  // validating that CompoundItem got new property item
+  EXPECT_TRUE(mvvm::utils::HasTag(item, attribute_name));
+  auto property_item = item.GetItem({attribute_name});
+  ASSERT_NE(property_item, nullptr);
+  EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
+  EXPECT_NE(dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item), nullptr);
+
+  EXPECT_EQ(property_item->Data<int>(), 0);
+
+  // Checking that we can convert AnyValueScalarItem property back to AnyValue
+  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
+
+  auto anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
+  auto any_value = GetAnyValueFromScalar(*anyvalue_item);
+
+  EXPECT_EQ(expected_anyvalue, any_value);
 }

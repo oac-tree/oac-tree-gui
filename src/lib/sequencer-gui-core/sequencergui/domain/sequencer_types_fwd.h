@@ -30,6 +30,7 @@ class Variable;
 class Runner;
 class UserInterface;
 class Workspace;
+class AttributeDefinition;
 }  // namespace sup::sequencer
 
 using procedure_t = sup::sequencer::Procedure;
@@ -38,5 +39,6 @@ using variable_t = sup::sequencer::Variable;
 using runner_t = sup::sequencer::Runner;
 using userinterface_t = sup::sequencer::UserInterface;
 using workspace_t = sup::sequencer::Workspace;
+using attribute_definition_t = sup::sequencer::AttributeDefinition;
 
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

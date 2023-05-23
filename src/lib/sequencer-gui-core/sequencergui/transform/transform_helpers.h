@@ -28,6 +28,11 @@
 #include <memory>
 #include <string>
 
+namespace mvvm
+{
+class CompoundItem;
+}
+
 namespace sup::gui
 {
 class AnyValueItem;
@@ -66,6 +71,15 @@ void SetJsonValueAttribute(const VariableItem& item, variable_t& variable);
 void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
                           instruction_t& instruction);
 
+/**
+ * @brief Add property to item using sequencer attribute definition.
+ * @param attr Attribute definition to use for property construction.
+ * @param item Compound item which will get a property on board.
+ * @return Returns AnyValueItem representing new property.
+ */
+
+sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
+                                                  mvvm::CompoundItem& item);
 
 }  // namespace sequencergui
 

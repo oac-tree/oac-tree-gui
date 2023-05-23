@@ -26,10 +26,12 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
@@ -83,8 +85,8 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
 {
   if (variable.HasAttribute(domainconstants::kTypeAttribute))
   {
-    auto anytype =
-        sup::gui::AnyTypeFromJSONString(variable.GetAttributeString(domainconstants::kTypeAttribute));
+    auto anytype = sup::gui::AnyTypeFromJSONString(
+        variable.GetAttributeString(domainconstants::kTypeAttribute));
 
     auto get_anyvalue = [&anytype, &variable]()
     {
@@ -185,6 +187,22 @@ void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &
   {
     instruction.AddAttribute(attribute_name, attribute_value);
   }
+}
+
+sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
+                                                  mvvm::CompoundItem &item)
+{
+  // In the absence of other sources of the information we can only use attribute name
+  // for both, display name and tag name of the new property item.
+  auto property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
+  property->SetAnyTypeName(attr.GetType().GetTypeName());
+  property->SetDisplayName(attr.GetName());
+
+  auto default_anyvalue = sup::dto::AnyValue(attr.GetType());
+
+  sup::gui::SetDataFromScalar(default_anyvalue, *property);
+
+  return property;
 }
 
 }  // namespace sequencergui
