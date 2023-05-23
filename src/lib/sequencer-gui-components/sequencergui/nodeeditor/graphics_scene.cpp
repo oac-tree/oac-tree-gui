@@ -179,29 +179,29 @@ void GraphicsScene::OnDeleteSelectedRequest()
     return;
   }
 
-  // Break explicitely selected connections.
-  auto selected_connections = GetSelectedViewItems<NodeConnection>();
-  while (!selected_connections.empty())
+  for (auto instruction : GetSelectedInstructions())
   {
-    // Deletion of connection might lead to view removal. This in turn might lead
-    // to automatic removal of another connection.
-    disconnectConnectedViews(GetSelectedViewItems<NodeConnection>().at(0));
-    selected_connections = GetSelectedViewItems<NodeConnection>();
-  }
-
-  for (auto view : GetSelectedViewItems<ConnectableView>())
-  {
+    auto view = FindViewForInstruction(instruction);
     // If the parent is intended to the deletion and has input connections, they have to be
     // disconnected first. This will prevent child item to be deleted when the parent is gone.
     for (auto connection : view->GetOutputConnections())
     {
       disconnectConnectedViews(connection);
     }
-
-    auto instruction = view->GetConnectableItem()->GetInstruction();
     GetModel()->RemoveItem(instruction);
   }
 
+  // Break remaining explicitely selected connections.
+  auto selected_connections = GetSelectedViewItems<NodeConnection>();
+  while (!selected_connections.empty())
+  {
+    disconnectConnectedViews(GetSelectedViewItems<NodeConnection>().at(0));
+
+    // View disconnection will lead to the moving of an underlying item up under the root item.
+    // This will lead to the view removal. As a result, selected connections might change the
+    // status.
+    selected_connections = GetSelectedViewItems<NodeConnection>();
+  }
 }
 
 void GraphicsScene::disconnectConnectedViews(NodeConnection *connection)
