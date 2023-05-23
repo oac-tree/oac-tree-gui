@@ -38,6 +38,7 @@ static inline const std::string kIsAvailable = "kIsAvailable";
 ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_type)
     : VariableItem(variable_type)
 {
+  RegisterCommonProperties();
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
   RegisterAnyValueItemTag();
@@ -107,6 +108,7 @@ static inline const std::string kFileName = "kFileName";
 
 FileVariableItem::FileVariableItem() : VariableItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kFileName, std::string())->SetDisplayName("File name");
   RegisterAnyValueItemTag();
 }
@@ -150,6 +152,7 @@ void FileVariableItem::SetupDomainImpl(variable_t *variable) const
 
 LocalVariableItem::LocalVariableItem() : VariableItem(Type)
 {
+  RegisterCommonProperties();
   RegisterAnyValueItemTag();
 }
 
@@ -231,6 +234,7 @@ void PvAccessServerVariableItem::SetupDomainImpl(variable_t *variable) const
 
 UnknownVariableItem::UnknownVariableItem() : VariableItem(Type)
 {
+  RegisterCommonProperties();
   RegisterAnyValueItemTag();
 }
 

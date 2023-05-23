@@ -57,6 +57,7 @@ public:
 
 protected:
   void RegisterAnyValueItemTag();
+  void RegisterCommonProperties();
 
 private:
   virtual void InitFromDomainImpl(const variable_t* variable) = 0;

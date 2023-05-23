@@ -264,6 +264,9 @@ TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariable)
   }
 }
 
+//! Testing AddPropertyFromDefinition helper method.
+//! We create sequencer domain AttributeDefinition
+
 TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
 {
   const std::string attribute_name("attr");

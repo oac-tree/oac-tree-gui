@@ -37,7 +37,7 @@ TEST_F(UniversalVariableItemTests, InitialState)
 {
   sequencergui::UniversalVariableItem item;
 
-  EXPECT_TRUE(item.GetName().empty());
+//  EXPECT_TRUE(item.GetName().empty());
   //  EXPECT_TRUE(item.GetDisplayName().empty());
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);

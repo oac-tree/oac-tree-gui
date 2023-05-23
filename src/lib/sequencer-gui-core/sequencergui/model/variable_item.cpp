@@ -49,7 +49,6 @@ static inline const std::string kAnyValueTag = "kAnyValueTag";
 
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
 {
-  AddProperty(kName, std::string())->SetDisplayName("name");
 }
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
@@ -121,6 +120,11 @@ void VariableItem::SetIsAvailable(bool value)
 void VariableItem::RegisterAnyValueItemTag()
 {
   RegisterTag(mvvm::TagInfo(kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
+}
+
+void VariableItem::RegisterCommonProperties()
+{
+  AddProperty(kName, std::string())->SetDisplayName("name");
 }
 
 }  // namespace sequencergui
