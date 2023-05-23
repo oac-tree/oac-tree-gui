@@ -55,6 +55,7 @@ namespace sequencergui
 EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instruction_type)
     : InstructionItem(instruction_type)
 {
+  RegisterCommonProperties();
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kOutput, std::string())->SetDisplayName("Output variable");
   AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
@@ -129,6 +130,7 @@ void EpicsReadInstructionItem::SetTimeout(double value)
 EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruction_type)
     : InstructionItem(instruction_type)
 {
+  RegisterCommonProperties();
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
   AddProperty(kChannel, std::string())->SetDisplayName("channel");
   AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
@@ -273,7 +275,9 @@ std::string ChannelAccessWriteInstructionItem::GetDomainType() const
 // PVAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
+PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type)
+{
+}
 
 std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone(bool make_unique_id) const
 {
@@ -289,7 +293,9 @@ std::string PvAccessReadInstructionItem::GetDomainType() const
 // PVAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
+PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type)
+{
+}
 
 std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone(bool make_unique_id) const
 {
@@ -307,6 +313,7 @@ std::string PvAccessWriteInstructionItem::GetDomainType() const
 
 RPCClientInstruction::RPCClientInstruction() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kServiceName, std::string())->SetDisplayName("Service");
   AddProperty(kRequestVar, std::string())->SetDisplayName("Request variable");
   AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
@@ -435,6 +442,7 @@ void RPCClientInstruction::SetOutput(const std::string &value)
 
 SystemCallInstructionItem::SystemCallInstructionItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kCommand, std::string())->SetDisplayName("Command");
 }
 
@@ -477,6 +485,7 @@ void SystemCallInstructionItem::SetCommand(const std::string &value)
 
 LogInstructionItem::LogInstructionItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kMessage, std::string())->SetDisplayName("Message");
   AddProperty(kInput, std::string())->SetDisplayName("Input");
   AddProperty(kSeverity, std::string())->SetDisplayName("Severity");

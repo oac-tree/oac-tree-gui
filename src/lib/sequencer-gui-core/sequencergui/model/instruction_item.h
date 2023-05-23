@@ -69,6 +69,9 @@ public:
 
   mvvm::SessionItem* GetNameItem() const;
 
+protected:
+  void RegisterCommonProperties();
+
 private:
   virtual void InitFromDomainImpl(const instruction_t* instruction) = 0;
   virtual void SetupDomainImpl(instruction_t* instruction) const = 0;

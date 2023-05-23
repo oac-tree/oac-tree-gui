@@ -44,6 +44,7 @@ namespace sequencergui
 
 ComparisonItem::ComparisonItem(const std::string &item_type) : InstructionItem(item_type)
 {
+  RegisterCommonProperties();
   AddProperty(kLeftHandSide, std::string())->SetDisplayName("lhs");
   AddProperty(kRightHandSide, std::string())->SetDisplayName("rhs");
 }

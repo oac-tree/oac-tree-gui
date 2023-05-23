@@ -55,6 +55,7 @@ namespace sequencergui
 
 ChoiceItem::ChoiceItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
@@ -99,6 +100,7 @@ void ChoiceItem::SetVariableName(const std::string &value)
 
 ConditionItem::ConditionItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
 }
 
@@ -141,6 +143,7 @@ void ConditionItem::SetVariableName(const std::string &value)
 
 CopyItem::CopyItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kInput, std::string())->SetDisplayName("Input");
   AddProperty(kOutput, std::string())->SetDisplayName("Output");
 }
@@ -202,6 +205,7 @@ void CopyItem::SetOutput(const std::string &value)
 
 DecrementItem::DecrementItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
 }
 
@@ -243,6 +247,7 @@ void DecrementItem::SetVariableName(const std::string &value)
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
@@ -270,6 +275,7 @@ void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
 
 ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
@@ -299,6 +305,7 @@ void ForceSuccessItem::SetupDomainImpl(instruction_t *instruction) const
 
 IncludeItem::IncludeItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kFile, std::string())->SetDisplayName("File name");
   AddProperty(kPath, std::string())->SetDisplayName("Path");
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
@@ -359,6 +366,7 @@ void IncludeItem::SetPath(const std::string &value)
 
 IncrementItem::IncrementItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
 }
 
@@ -401,6 +409,7 @@ void IncrementItem::SetVariableName(const std::string &value)
 
 InputItem::InputItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kTarget, std::string())->SetDisplayName("Target");
 }
@@ -461,6 +470,7 @@ void InputItem::SetDescription(const std::string &value)
 
 InverterItem::InverterItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
 }
 
@@ -490,6 +500,7 @@ void InverterItem::SetupDomainImpl(instruction_t *instruction) const
 
 ListenItem::ListenItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kForceSuccess, false)->SetDisplayName("Force success");
   AddProperty(kVarNames, std::string())->SetDisplayName("Var names");
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
@@ -552,6 +563,7 @@ void ListenItem::SetupDomainImpl(instruction_t *instruction) const
 
 MessageItem::MessageItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kText, std::string())->SetDisplayName("text");
 }
 
@@ -594,6 +606,7 @@ void MessageItem::SetText(const std::string &value)
 
 OutputItem::OutputItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   AddProperty(kSource, std::string())->SetDisplayName("Source");
 }
@@ -654,6 +667,7 @@ void OutputItem::SetDescription(const std::string &value)
 
 ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kSuccessThreshold, -1)
       ->SetDisplayName("Success threshold")
       ->SetToolTip("Negative means that all children should succeed");
@@ -724,6 +738,7 @@ void ParallelSequenceItem::SetFailureThreshold(int value)
 
 RepeatItem::RepeatItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kMaxCount, -1)->SetDisplayName("maxCount");
   RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*default*/ true);
 }
@@ -775,6 +790,7 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) cons
 
 SequenceItem::SequenceItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }
@@ -797,6 +813,7 @@ void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
 
 UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
@@ -841,6 +858,7 @@ void UserChoiceItem::SetupDomainImpl(instruction_t *instruction) const
 
 VariableResetItem::VariableResetItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
 }
 
@@ -883,6 +901,7 @@ void VariableResetItem::SetVariableName(const std::string &value)
 
 WaitItem::WaitItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   AddProperty(kTimeout, 0.0)->SetDisplayName("Timeout");
 }
 
@@ -929,6 +948,7 @@ double WaitItem::GetTimeout() const
 // ----------------------------------------------------------------------------
 UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
 {
+  RegisterCommonProperties();
   RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
               /*as_default*/ true);
 }

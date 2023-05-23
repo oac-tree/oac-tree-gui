@@ -20,6 +20,7 @@
 #include "instruction_item.h"
 
 #include "sequencergui/model/standard_instruction_items.h"
+#include "sequencergui/model/universal_instruction_item.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -39,17 +40,7 @@ namespace sequencergui
 // InstructionItem
 // ----------------------------------------------------------------------------
 
-InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type)
-{
-  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
-  AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
-  AddProperty(itemconstants::kStatus, std::string())
-      ->SetDisplayName("Status")
-      ->SetVisible(false)
-      ->SetEditable(false);
-  AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
-  AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
-}
+InstructionItem::InstructionItem(const std::string &item_type) : CompoundItem(item_type) {}
 
 std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone(bool make_unique_id) const
 {
@@ -60,7 +51,7 @@ std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone(bool make_unique_id) c
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
 {
   // Initialise from common attributes (which exist in every Instruction).
-  if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
+  if (GetType() != UnknownInstructionItem::Type && GetType() != UniversalInstructionItem::Type)
   {
     if (instruction->GetType() != GetDomainType())
     {
@@ -73,7 +64,10 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
     }
   }
 
-  SetIsRootFlag(IsRootInstruction(instruction));
+  if (GetType() != UniversalInstructionItem::Type)
+  {
+    SetIsRootFlag(IsRootInstruction(instruction));
+  }
 
   InitFromDomainImpl(instruction);
 }
@@ -159,6 +153,18 @@ mvvm::SessionItem *InstructionItem::GetStatusItem() const
 mvvm::SessionItem *InstructionItem::GetNameItem() const
 {
   return GetItem(itemconstants::kName);
+}
+
+void InstructionItem::RegisterCommonProperties()
+{
+  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
+  AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
+  AddProperty(itemconstants::kStatus, std::string())
+      ->SetDisplayName("Status")
+      ->SetVisible(false)
+      ->SetEditable(false);
+  AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
+  AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
 }
 
 }  // namespace sequencergui

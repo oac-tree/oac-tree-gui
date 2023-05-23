@@ -31,7 +31,7 @@ public:
   class TestItem : public InstructionItem
   {
   public:
-    TestItem() : InstructionItem("test") {}
+    TestItem() : InstructionItem("test") { RegisterCommonProperties(); }
 
     std::string GetDomainType() const override { return "domain_name"; }
 
