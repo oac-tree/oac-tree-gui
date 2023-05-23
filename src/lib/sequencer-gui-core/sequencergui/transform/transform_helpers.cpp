@@ -84,14 +84,14 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
   if (variable.HasAttribute(domainconstants::kTypeAttribute))
   {
     auto anytype =
-        sup::gui::AnyTypeFromJSONString(variable.GetAttribute(domainconstants::kTypeAttribute));
+        sup::gui::AnyTypeFromJSONString(variable.GetAttributeString(domainconstants::kTypeAttribute));
 
     auto get_anyvalue = [&anytype, &variable]()
     {
       if (variable.HasAttribute(domainconstants::kValueAttribute))
       {
         return sup::gui::AnyValueFromJSONString(
-            anytype, variable.GetAttribute(domainconstants::kValueAttribute));
+            anytype, variable.GetAttributeString(domainconstants::kValueAttribute));
       }
       else
       {

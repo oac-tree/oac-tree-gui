@@ -193,7 +193,7 @@ TEST_F(TransformHelpersTests, SetJsonTypeAttribute)
   SetJsonTypeAttribute(item, *variable);
 
   EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
-  EXPECT_EQ(variable->GetAttribute(domainconstants::kTypeAttribute), R"RAW({"type":"int32"})RAW");
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), R"RAW({"type":"int32"})RAW");
 }
 
 TEST_F(TransformHelpersTests, SetJsonValueAttribute)
@@ -207,7 +207,7 @@ TEST_F(TransformHelpersTests, SetJsonValueAttribute)
   SetJsonValueAttribute(item, *variable);
 
   EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
-  EXPECT_EQ(variable->GetAttribute(domainconstants::kValueAttribute), "42");
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), "42");
 }
 
 //! Validate SetAnyValueFromDomainVariable helper method.

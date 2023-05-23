@@ -77,7 +77,7 @@ void VariableItem::InitFromDomain(const variable_t *variable)
 
     if (variable->HasAttribute(domainconstants::kNameAttribute))
     {
-      SetProperty(kName, variable->GetAttribute(domainconstants::kNameAttribute));
+      SetProperty(kName, variable->GetAttributeString(domainconstants::kNameAttribute));
     }
   }
 

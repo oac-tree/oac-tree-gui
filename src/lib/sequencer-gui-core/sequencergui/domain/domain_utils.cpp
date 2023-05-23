@@ -97,7 +97,7 @@ std::map<std::string, std::string> GetAttributes(const instruction_t* instructio
 std::map<std::string, std::string> GetAttributes(const variable_t* variable)
 {
   std::map<std::string, std::string> result;
-  for (const auto& it : variable->GetAttributes())
+  for (const auto& it : variable->GetStringAttributes())
   {
     result.insert(it);
   }

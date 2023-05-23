@@ -74,7 +74,7 @@ void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(domainconstants::kChannelAttribute))
   {
-    SetChannel(variable->GetAttribute(domainconstants::kChannelAttribute));
+    SetChannel(variable->GetAttributeString(domainconstants::kChannelAttribute));
   }
 }
 
@@ -135,7 +135,7 @@ void FileVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
   if (variable->HasAttribute(domainconstants::kFileAttribute))
   {
-    SetProperty(kFileName, variable->GetAttribute(domainconstants::kFileAttribute));
+    SetProperty(kFileName, variable->GetAttributeString(domainconstants::kFileAttribute));
   }
 }
 
