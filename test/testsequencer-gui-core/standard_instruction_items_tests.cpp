@@ -77,7 +77,7 @@ TEST_F(StandardInstructionItemsTest, ChoiceItemItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kChoiceInstructionType);
 
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -117,8 +117,8 @@ TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kIsRootAttribute), "true");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -161,8 +161,8 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kCopyInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInputAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kOutputAttribute), "cde");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kInputAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputAttribute), "cde");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -200,7 +200,7 @@ TEST_F(StandardInstructionItemsTest, DecrementItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kDecrementInstructionType);
 
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -330,7 +330,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kPathAttribute), "def");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileAttribute));
 
   // Setup of Input instruction requires existance of instruction to include
@@ -374,7 +374,7 @@ TEST_F(StandardInstructionItemsTest, IncrementItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncrementInstructionType);
 
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -412,8 +412,8 @@ TEST_F(StandardInstructionItemsTest, InputItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kInputInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDescriptionAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kInputTargetAttribute), "var");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDescriptionAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kInputTargetAttribute), "var");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -488,8 +488,8 @@ TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kListenInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kListenVarNamesAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kListenForceSuccessAttribute), "true");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kListenVarNamesAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kListenForceSuccessAttribute), "true");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -529,8 +529,8 @@ TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kMessageInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTextAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kIsRootAttribute), "true");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTextAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -568,8 +568,8 @@ TEST_F(StandardInstructionItemsTest, OutputItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kOutputInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDescriptionAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kOutputSourceAttribute), "var");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDescriptionAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputSourceAttribute), "var");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -617,8 +617,8 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kSuccessThresholdAttribute), "42");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFailureThresholdAttribute), "43");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSuccessThresholdAttribute), "42");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -636,7 +636,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomainWhenNoSuccessThresh
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
   EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kSuccessThresholdAttribute));
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kFailureThresholdAttribute), "43");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -678,7 +678,7 @@ TEST_F(StandardInstructionItemsTest, RepeatItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kRepeatInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kMaxCountAttribute), "42");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kMaxCountAttribute), "42");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -750,7 +750,7 @@ TEST_F(StandardInstructionItemsTest, UserChoiceItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kUserChoiceInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kDescriptionAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDescriptionAttribute), "abc");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -808,7 +808,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
 
   auto domain_item = wait_item.CreateDomainInstruction();
   EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kTimeoutAttribute));
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kTimeoutAttribute), "0.0");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "0.0");
   EXPECT_EQ(domain_item->GetType(), domainconstants::kWaitInstructionType);
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
@@ -847,7 +847,7 @@ TEST_F(StandardInstructionItemsTest, VariableResetItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kVariableResetInstructionType);
 
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -869,5 +869,5 @@ TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
   // to domain
   auto new_domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(new_domain_item->GetAttribute(domainconstants::kVarNameAttribute), "abc");
+  EXPECT_EQ(new_domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
 }

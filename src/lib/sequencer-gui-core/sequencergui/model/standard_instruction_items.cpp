@@ -75,7 +75,7 @@ void ChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
   }
 }
 
@@ -118,7 +118,7 @@ void ConditionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
   }
 }
 
@@ -164,13 +164,13 @@ void CopyItem::InitFromDomainImpl(const instruction_t *instruction)
   {
     throw std::runtime_error("Error in CopyItem: no `input` attribute provided");
   }
-  SetInput(instruction->GetAttribute(domainconstants::kInputAttribute));
+  SetInput(instruction->GetAttributeString(domainconstants::kInputAttribute));
 
   if (!instruction->HasAttribute(domainconstants::kOutputAttribute))
   {
     throw std::runtime_error("Error in CopyItem: no `output` attribute provided");
   }
-  SetOutput(instruction->GetAttribute(domainconstants::kOutputAttribute));
+  SetOutput(instruction->GetAttributeString(domainconstants::kOutputAttribute));
 }
 
 void CopyItem::SetupDomainImpl(instruction_t *instruction) const
@@ -223,7 +223,7 @@ void DecrementItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
   }
 }
 
@@ -325,12 +325,12 @@ void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kFileAttribute))
   {
-    SetFileName(instruction->GetAttribute(domainconstants::kFileAttribute));
+    SetFileName(instruction->GetAttributeString(domainconstants::kFileAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kPathAttribute))
   {
-    SetPath(instruction->GetAttribute(domainconstants::kPathAttribute));
+    SetPath(instruction->GetAttributeString(domainconstants::kPathAttribute));
   }
 }
 
@@ -384,7 +384,7 @@ void IncrementItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
   }
 }
 
@@ -428,12 +428,12 @@ void InputItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
   {
-    SetDescription(instruction->GetAttribute(domainconstants::kDescriptionAttribute));
+    SetDescription(instruction->GetAttributeString(domainconstants::kDescriptionAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kInputTargetAttribute))
   {
-    SetTargetVariableName(instruction->GetAttribute(domainconstants::kInputTargetAttribute));
+    SetTargetVariableName(instruction->GetAttributeString(domainconstants::kInputTargetAttribute));
   }
 }
 
@@ -541,12 +541,12 @@ void ListenItem::InitFromDomainImpl(const instruction_t *instruction)
   if (instruction->HasAttribute(domainconstants::kListenForceSuccessAttribute))
   {
     SetForceSuccess(::mvvm::utils::StringToBool(
-        instruction->GetAttribute(domainconstants::kListenForceSuccessAttribute)));
+        instruction->GetAttributeString(domainconstants::kListenForceSuccessAttribute)));
   }
 
   if (instruction->HasAttribute(domainconstants::kListenVarNamesAttribute))
   {
-    SetVarNames(instruction->GetAttribute(domainconstants::kListenVarNamesAttribute));
+    SetVarNames(instruction->GetAttributeString(domainconstants::kListenVarNamesAttribute));
   }
 }
 
@@ -581,7 +581,7 @@ void MessageItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kTextAttribute))
   {
-    SetText(instruction->GetAttribute(domainconstants::kTextAttribute));
+    SetText(instruction->GetAttributeString(domainconstants::kTextAttribute));
   }
 }
 
@@ -625,12 +625,12 @@ void OutputItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
   {
-    SetDescription(instruction->GetAttribute(domainconstants::kDescriptionAttribute));
+    SetDescription(instruction->GetAttributeString(domainconstants::kDescriptionAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kOutputSourceAttribute))
   {
-    SetSourceVariableName(instruction->GetAttribute(domainconstants::kOutputSourceAttribute));
+    SetSourceVariableName(instruction->GetAttributeString(domainconstants::kOutputSourceAttribute));
   }
 }
 
@@ -691,13 +691,13 @@ void ParallelSequenceItem::InitFromDomainImpl(const instruction_t *instruction)
   if (instruction->HasAttribute(domainconstants::kSuccessThresholdAttribute))
   {
     SetSuccessThreshold(
-        std::stoi(instruction->GetAttribute(domainconstants::kSuccessThresholdAttribute)));
+        std::stoi(instruction->GetAttributeString(domainconstants::kSuccessThresholdAttribute)));
   }
 
   if (instruction->HasAttribute(domainconstants::kFailureThresholdAttribute))
   {
     SetFailureThreshold(
-        std::stoi(instruction->GetAttribute(domainconstants::kFailureThresholdAttribute)));
+        std::stoi(instruction->GetAttributeString(domainconstants::kFailureThresholdAttribute)));
   }
 }
 
@@ -757,7 +757,7 @@ void RepeatItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kMaxCountAttribute))
   {
-    SetRepeatCount(std::stoi(instruction->GetAttribute(domainconstants::kMaxCountAttribute)));
+    SetRepeatCount(std::stoi(instruction->GetAttributeString(domainconstants::kMaxCountAttribute)));
   }
   else
   {
@@ -843,7 +843,7 @@ void UserChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
   {
-    SetDescription(instruction->GetAttribute(domainconstants::kDescriptionAttribute));
+    SetDescription(instruction->GetAttributeString(domainconstants::kDescriptionAttribute));
   }
 }
 
@@ -876,7 +876,7 @@ void VariableResetItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
   }
 }
 
@@ -919,7 +919,7 @@ void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
   {
-    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
   }
   else
   {

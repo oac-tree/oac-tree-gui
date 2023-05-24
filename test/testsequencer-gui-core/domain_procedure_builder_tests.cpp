@@ -111,8 +111,8 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   EXPECT_EQ(instructions.at(0)->GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(1)->GetType(), domainconstants::kWaitInstructionType);
 
-  EXPECT_EQ(instructions.at(0)->GetAttribute(domainconstants::kTimeoutAttribute), "0.1");
-  EXPECT_EQ(instructions.at(1)->GetAttribute(domainconstants::kTimeoutAttribute), "0.2");
+  EXPECT_EQ(instructions.at(0)->GetAttributeString(domainconstants::kTimeoutAttribute), "0.1");
+  EXPECT_EQ(instructions.at(1)->GetAttributeString(domainconstants::kTimeoutAttribute), "0.2");
 }
 
 //! Building domain procedure from ProcedureItem containing Sequence and wait in it.

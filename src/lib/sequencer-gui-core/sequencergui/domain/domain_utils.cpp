@@ -22,7 +22,6 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 
-#include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
 #include <sup/sequencer/sequence_parser.h>
@@ -85,7 +84,7 @@ std::vector<std::string> GetDomainVariableNames()
 std::map<std::string, std::string> GetAttributes(const instruction_t* instruction)
 {
   std::map<std::string, std::string> result;
-  for (const auto& it : instruction->GetAttributes())
+  for (const auto& it : instruction->GetStringAttributes())
   {
     result.insert(it);
   }
@@ -114,7 +113,7 @@ bool IsRootInstruction(const instruction_t* instruction)
     return false;
   }
 
-  auto value = instruction->GetAttribute(domainconstants::kIsRootAttribute);
+  auto value = instruction->GetAttributeString(domainconstants::kIsRootAttribute);
   std::transform(value.begin(), value.end(), value.begin(), ::tolower);
 
   return std::find(expected_values.begin(), expected_values.end(), value) != expected_values.end();

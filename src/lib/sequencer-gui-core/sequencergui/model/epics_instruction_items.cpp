@@ -71,17 +71,17 @@ void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instructi
 {
   if (instruction->HasAttribute(domainconstants::kChannelAttribute))
   {
-    SetChannel(instruction->GetAttribute(domainconstants::kChannelAttribute));
+    SetChannel(instruction->GetAttributeString(domainconstants::kChannelAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kOutputAttribute))
   {
-    SetOutput(instruction->GetAttribute(domainconstants::kOutputAttribute));
+    SetOutput(instruction->GetAttributeString(domainconstants::kOutputAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
   {
-    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
   }
 }
 
@@ -148,27 +148,27 @@ void EpicsWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruct
 {
   if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
   {
-    SetVariableName(instruction->GetAttribute(domainconstants::kVarNameAttribute));
+    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kChannelAttribute))
   {
-    SetChannel(instruction->GetAttribute(domainconstants::kChannelAttribute));
+    SetChannel(instruction->GetAttributeString(domainconstants::kChannelAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
   {
-    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
   }
 
   if (instruction->HasAttribute(domainconstants::kTypeAttribute))
   {
-    SetJsonType(instruction->GetAttribute(domainconstants::kTypeAttribute));
+    SetJsonType(instruction->GetAttributeString(domainconstants::kTypeAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kValueAttribute))
   {
-    SetJsonValue(instruction->GetAttribute(domainconstants::kValueAttribute));
+    SetJsonValue(instruction->GetAttributeString(domainconstants::kValueAttribute));
   }
 }
 
@@ -336,32 +336,32 @@ void RPCClientInstruction::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kServiceAttribute))
   {
-    SetService(instruction->GetAttribute(domainconstants::kServiceAttribute));
+    SetService(instruction->GetAttributeString(domainconstants::kServiceAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kRequestAttribute))
   {
-    SetRequestVar(instruction->GetAttribute(domainconstants::kRequestAttribute));
+    SetRequestVar(instruction->GetAttributeString(domainconstants::kRequestAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
   {
-    SetTimeout(std::stod(instruction->GetAttribute(domainconstants::kTimeoutAttribute)));
+    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
   }
 
   if (instruction->HasAttribute(domainconstants::kTypeAttribute))
   {
-    SetJsonType(instruction->GetAttribute(domainconstants::kTypeAttribute));
+    SetJsonType(instruction->GetAttributeString(domainconstants::kTypeAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kValueAttribute))
   {
-    SetJsonValue(instruction->GetAttribute(domainconstants::kValueAttribute));
+    SetJsonValue(instruction->GetAttributeString(domainconstants::kValueAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kOutputAttribute))
   {
-    SetOutput(instruction->GetAttribute(domainconstants::kOutputAttribute));
+    SetOutput(instruction->GetAttributeString(domainconstants::kOutputAttribute));
   }
 }
 
@@ -460,7 +460,7 @@ void SystemCallInstructionItem::InitFromDomainImpl(const instruction_t *instruct
 {
   if (instruction->HasAttribute(domainconstants::kCommandAttribute))
   {
-    SetCommand(instruction->GetAttribute(domainconstants::kCommandAttribute));
+    SetCommand(instruction->GetAttributeString(domainconstants::kCommandAttribute));
   }
 }
 
@@ -505,17 +505,17 @@ void LogInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kMessageAttribute))
   {
-    SetMessage(instruction->GetAttribute(domainconstants::kMessageAttribute));
+    SetMessage(instruction->GetAttributeString(domainconstants::kMessageAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kInputAttribute))
   {
-    SetInput(instruction->GetAttribute(domainconstants::kInputAttribute));
+    SetInput(instruction->GetAttributeString(domainconstants::kInputAttribute));
   }
 
   if (instruction->HasAttribute(domainconstants::kSeverityAttribute))
   {
-    SetSeverity(instruction->GetAttribute(domainconstants::kSeverityAttribute));
+    SetSeverity(instruction->GetAttributeString(domainconstants::kSeverityAttribute));
   }
 }
 

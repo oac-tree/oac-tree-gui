@@ -77,8 +77,8 @@ TEST_F(StandardInstructionItemsTest, LessThanItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kLessThanInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kLeftHandAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "def");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kLeftHandAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kRightHandAttribute), "def");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -120,8 +120,8 @@ TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kEqualsInstructionType);
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kLeftHandAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttribute(domainconstants::kRightHandAttribute), "def");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kLeftHandAttribute), "abc");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kRightHandAttribute), "def");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }

@@ -60,7 +60,7 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
 
     if (instruction->HasAttribute(domainconstants::kNameAttribute))
     {
-      SetProperty(itemconstants::kName, instruction->GetAttribute(domainconstants::kNameAttribute));
+      SetProperty(itemconstants::kName, instruction->GetAttributeString(domainconstants::kNameAttribute));
     }
   }
 

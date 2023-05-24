@@ -28,7 +28,6 @@
 
 #include <mvvm/model/property_item.h>
 
-#include <sup/sequencer/attribute_map.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
 

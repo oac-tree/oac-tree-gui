@@ -79,11 +79,11 @@ void ComparisonItem::InitFromDomainImpl(const instruction_t *instruction)
 {
   if (instruction->HasAttribute(domainconstants::kLeftHandAttribute))
   {
-    SetLeftHandSide(instruction->GetAttribute(domainconstants::kLeftHandAttribute));
+    SetLeftHandSide(instruction->GetAttributeString(domainconstants::kLeftHandAttribute));
   }
   if (instruction->HasAttribute(domainconstants::kRightHandAttribute))
   {
-    SetRightHandSide(instruction->GetAttribute(domainconstants::kRightHandAttribute));
+    SetRightHandSide(instruction->GetAttributeString(domainconstants::kRightHandAttribute));
   }
 }
 
