@@ -20,6 +20,8 @@
 #include "sequencergui/model/sequencer_utils.h"
 
 #include <sequencergui/model/sequencer_item_includes.h>
+#include <sequencergui/model/universal_instruction_item.h>
+#include <sequencergui/model/universal_variable_item.h>
 
 #include <mvvm/factories/item_catalogue_factory.h>
 #include <mvvm/interfaces/item_manager_interface.h>
@@ -101,6 +103,7 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<UserChoiceItem>());
   EXPECT_TRUE(IsCloneImplemented<VariableResetItem>());
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
+  EXPECT_TRUE(IsCloneImplemented<UniversalInstructionItem>());
 
   // equality instructions
   EXPECT_TRUE(IsCloneImplemented<LessThanItem>());
@@ -125,6 +128,7 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<PvAccessClientVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<PvAccessServerVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<UnknownVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<UniversalVariableItem>());
 
   // other
   EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
