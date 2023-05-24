@@ -39,12 +39,9 @@ TEST_F(UniversalVariableItemTests, InitialState)
 {
   sequencergui::UniversalVariableItem item;
 
-  //  EXPECT_TRUE(item.GetName().empty());
-  //  EXPECT_TRUE(item.GetDisplayName().empty());
+  EXPECT_EQ(item.GetDisplayName(), UniversalVariableItem::Type);
 
-  // tags registered in the c-tor of UniversalVariableItem
-  std::vector<std::string> expected_tags({"kAnyValueTag"});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_TRUE(item.GetDomainType().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   EXPECT_TRUE(item.IsAvailable());
@@ -59,4 +56,12 @@ TEST_F(UniversalVariableItemTests, InitFromDomain)
   item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
+
+  // registered tags should coincide with instruction attribute and AnyValueTag
+  std::vector<std::string> expected_tags({domainconstants::kNameAttribute,
+                                          domainconstants::kTypeAttribute,
+                                          domainconstants::kValueAttribute, "kAnyValueTag"});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+
+  // property items should give an access
 }

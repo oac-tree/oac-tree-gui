@@ -50,6 +50,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   m_domain_type = instruction->GetType();
 
   SetDisplayName(instruction->GetType());
+
 }
 
 void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const {}

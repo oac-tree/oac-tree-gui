@@ -26,8 +26,10 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/item_utils.h>
+
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
 
 namespace
@@ -47,9 +49,7 @@ namespace sequencergui
 static inline const std::string kName = "kName";
 static inline const std::string kAnyValueTag = "kAnyValueTag";
 
-VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type)
-{
-}
+VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type) {}
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
@@ -98,7 +98,8 @@ void VariableItem::SetName(const std::string &value)
 
 sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
 {
-  return GetItem<sup::gui::AnyValueItem>(kAnyValueTag);
+  return mvvm::utils::HasTag(*this, kAnyValueTag) ? GetItem<sup::gui::AnyValueItem>(kAnyValueTag)
+                                                  : nullptr;
 }
 
 bool VariableItem::IsAvailable() const

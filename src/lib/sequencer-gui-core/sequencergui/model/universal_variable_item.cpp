@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <sup/sequencer/variable.h>
 
@@ -29,7 +30,6 @@ namespace sequencergui
 
 UniversalVariableItem::UniversalVariableItem() : VariableItem(Type)
 {
-  RegisterAnyValueItemTag();
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique_id) const
@@ -56,6 +56,13 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
   m_domain_type = variable->GetType();
 
   SetDisplayName(variable->GetType());
+
+  for (const auto &definition : variable->GetAttributeDefinitions())
+  {
+    AddPropertyFromDefinition(definition, *this);
+  }
+
+  RegisterAnyValueItemTag();
 }
 
 void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const {}
