@@ -50,10 +50,10 @@ TEST_F(UniversalVariableItemTests, InitialState)
 //! Initialisation from default constructed domain variable.
 TEST_F(UniversalVariableItemTests, InitFromDomain)
 {
-  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
   sequencergui::UniversalVariableItem item;
-  item.InitFromDomain(local_variable.get());
+  item.InitFromDomain(domain_variable.get());
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 

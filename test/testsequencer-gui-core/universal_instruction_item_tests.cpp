@@ -48,10 +48,10 @@ TEST_F(UniversalInstructionItemTests, InitialState)
 //! Initialisation from default constructed domain variable.
 TEST_F(UniversalInstructionItemTests, InitFromDomain)
 {
-  auto local_variable = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  auto domain_instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
   sequencergui::UniversalInstructionItem item;
-  item.InitFromDomain(local_variable.get());
+  item.InitFromDomain(domain_instruction.get());
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
@@ -61,7 +61,7 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
        domainconstants::kTimeoutAttribute, itemconstants::kChildInstructions});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
-  // property items should give an access
+  // property items should provide an access to underlying values
   auto properties = mvvm::utils::SinglePropertyItems(item);
   ASSERT_EQ(properties.size(), 3);
   EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
