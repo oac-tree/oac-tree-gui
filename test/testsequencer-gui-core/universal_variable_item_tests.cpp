@@ -64,4 +64,14 @@ TEST_F(UniversalVariableItemTests, InitFromDomain)
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access
+  auto properties = mvvm::utils::SinglePropertyItems(item);
+  ASSERT_EQ(properties.size(), 3);
+  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
+  EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
+
+  EXPECT_EQ(properties.at(1)->GetDisplayName(), domainconstants::kTypeAttribute);
+  EXPECT_TRUE(item.Property<std::string>(domainconstants::kTypeAttribute).empty());
+
+  EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kValueAttribute);
+  EXPECT_TRUE(item.Property<std::string>(domainconstants::kValueAttribute).empty());
 }

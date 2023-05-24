@@ -20,6 +20,7 @@
 #include "sequencergui/model/universal_instruction_item.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -39,12 +40,8 @@ TEST_F(UniversalInstructionItemTests, InitialState)
 {
   sequencergui::UniversalInstructionItem item;
 
-  //  EXPECT_TRUE(item.GetName().empty());
-  //  EXPECT_TRUE(item.GetDisplayName().empty());
-
-  // tags registered in the c-tor of UniversalVariableItem
-  std::vector<std::string> expected_tags({"kChildInstructions"});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+  EXPECT_EQ(item.GetDisplayName(), UniversalInstructionItem::Type);
+  EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_TRUE(item.GetDomainType().empty());
 }
 
@@ -57,4 +54,22 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
   item.InitFromDomain(local_variable.get());
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
+
+  // registered tags should coincide with instruction attribute and AnyValueTag
+  std::vector<std::string> expected_tags(
+      {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
+       domainconstants::kTimeoutAttribute, itemconstants::kChildInstructions});
+  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+
+  // property items should give an access
+  auto properties = mvvm::utils::SinglePropertyItems(item);
+  ASSERT_EQ(properties.size(), 3);
+  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
+  EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
+
+  EXPECT_EQ(properties.at(1)->GetDisplayName(), domainconstants::kIsRootAttribute);
+  EXPECT_EQ(item.Property<bool>(domainconstants::kIsRootAttribute), false);
+
+  EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kTimeoutAttribute);
+  EXPECT_EQ(item.Property<double>(domainconstants::kTimeoutAttribute), 0);
 }

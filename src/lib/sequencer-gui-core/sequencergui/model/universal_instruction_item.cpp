@@ -20,17 +20,14 @@
 #include "universal_instruction_item.h"
 
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <sup/sequencer/instruction.h>
 
 namespace sequencergui
 {
 
-UniversalInstructionItem::UniversalInstructionItem() : InstructionItem(Type)
-{
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-}
+UniversalInstructionItem::UniversalInstructionItem() : InstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone(bool make_unique_id) const
 {
@@ -51,6 +48,13 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
 
   SetDisplayName(instruction->GetType());
 
+  for (const auto &definition : instruction->GetAttributeDefinitions())
+  {
+    AddPropertyFromDefinition(definition, *this);
+  }
+
+  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
+              /*as_default*/ true);
 }
 
 void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const {}
