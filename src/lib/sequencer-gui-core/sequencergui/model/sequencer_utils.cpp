@@ -83,6 +83,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<UserChoiceItem>();
   result->RegisterItem<VariableResetItem>();
   result->RegisterItem<WaitItem>();
+  result->RegisterItem<UniversalInstructionItem>();
 
   // equality instructions
   result->RegisterItem<LessThanItem>();
@@ -103,7 +104,7 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   // variables
   result->RegisterItem<FileVariableItem>();
   result->RegisterItem<LocalVariableItem>();
-  result->RegisterItem<UnknownVariableItem>();
+  result->RegisterItem<UniversalVariableItem>();
 
   // variables sequencer-plugin-epics
   result->RegisterItem<ChannelAccessVariableItem>();

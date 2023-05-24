@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/model/universal_variable_item.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/model_utils.h>
@@ -34,7 +35,7 @@ MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
   RegisterItem<LocalVariableItem>();
   RegisterItem<PvAccessClientVariableItem>();
   RegisterItem<PvAccessServerVariableItem>();
-  RegisterItem<UnknownVariableItem>();
+  RegisterItem<UniversalVariableItem>();
   RegisterItem<FileVariableItem>();
   RegisterItem<WorkspaceItem>();
   RegisterItem<sup::gui::AnyValueEmptyItem>();

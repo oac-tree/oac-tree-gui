@@ -23,11 +23,11 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
 
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
 
@@ -124,13 +124,13 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
 
-//  {  // case with empty attributes
-//    ChannelAccessVariableItem item;
-//    item.SetName(expected_name);
-//    item.SetChannel(expected_channel);
+  //  {  // case with empty attributes
+  //    ChannelAccessVariableItem item;
+  //    item.SetName(expected_name);
+  //    item.SetChannel(expected_channel);
 
-//    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
-//  }
+  //    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
+  //  }
 
   {  // when AnyValueItem is set
     ChannelAccessVariableItem item;
@@ -143,7 +143,8 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessVariableType);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute),
+              expected_channel);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
 
     EXPECT_NO_THROW(domain_item->Setup());
@@ -381,7 +382,8 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessClientVariableType);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute),
+              expected_channel);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
   }
 }
@@ -465,42 +467,11 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessServerVariableType);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
-    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), expected_channel);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute),
+              expected_channel);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
 
     EXPECT_NO_THROW(domain_item->Setup());
   }
-}
-
-//! UnknownVariableItem tests.
-//! Here we pretend that LocalVariableItem is unknown for a GUI, and check how UnknownVariableItem
-//! behaves in the way from/to domain.
-
-TEST_F(StandardVariableItemsTest, UnknownVariableItemFromLocalVariable)
-{
-  const std::string expected_name("abc");
-  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
-  const std::string expected_value("42");
-
-  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  domain_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
-  domain_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
-  domain_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
-
-  // from domain
-  UnknownVariableItem item;
-  item.InitFromDomain(domain_variable.get());
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kNameAttribute), expected_name);
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kValueAttribute), expected_value);
-
-  // to domain
-  auto new_domain_item = item.CreateDomainVariable();
-  EXPECT_EQ(new_domain_item->GetType(), domainconstants::kLocalVariableType);
-  EXPECT_EQ(new_domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
-  EXPECT_EQ(new_domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(new_domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
-
-  EXPECT_NO_THROW(new_domain_item->Setup());
 }

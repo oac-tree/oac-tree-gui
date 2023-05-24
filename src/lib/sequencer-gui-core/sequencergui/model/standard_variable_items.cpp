@@ -228,46 +228,4 @@ void PvAccessServerVariableItem::SetupDomainImpl(variable_t *variable) const
   SetJsonValueAttribute(*this, *variable);
 }
 
-// ----------------------------------------------------------------------------
-// UnknownVariableItem
-// ----------------------------------------------------------------------------
-
-UnknownVariableItem::UnknownVariableItem() : VariableItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterAnyValueItemTag();
-}
-
-std::unique_ptr<mvvm::SessionItem> UnknownVariableItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<UnknownVariableItem>(*this, make_unique_id);
-}
-
-std::string UnknownVariableItem::GetDomainType() const
-{
-  return m_domain_name;
-}
-
-void UnknownVariableItem::InitFromDomainImpl(const variable_t *variable)
-{
-  m_domain_name = variable->GetType();
-
-  SetDisplayName(variable->GetType() + " (unknown)");
-
-  // creating string properties for every domain attribute found
-  for (const auto &[name, value] : GetAttributes(variable))
-  {
-    m_domain_attributes.push_back(name);
-    AddProperty(name, value);
-  }
-}
-
-void UnknownVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  for (const auto &name : m_domain_attributes)
-  {
-    variable->AddAttribute(name, Property<std::string>(name));
-  }
-}
-
 }  // namespace sequencergui

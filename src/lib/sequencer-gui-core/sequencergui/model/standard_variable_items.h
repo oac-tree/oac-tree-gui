@@ -139,27 +139,6 @@ private:
   void SetupDomainImpl(variable_t* variable) const override;
 };
 
-//! Represent unknown Variable.
-class UnknownVariableItem : public VariableItem
-{
-public:
-  static inline const std::string Type = "UnknownVariable";
-
-  using VariableItem::VariableItem;
-  UnknownVariableItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const variable_t* variable) override;
-  void SetupDomainImpl(variable_t* variable) const override;
-
-  std::string m_domain_name;
-  std::vector<std::string> m_domain_attributes;
-};
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_STANDARD_VARIABLE_ITEMS_H_
