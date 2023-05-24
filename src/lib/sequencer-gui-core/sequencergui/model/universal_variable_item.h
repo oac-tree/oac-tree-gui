@@ -36,17 +36,22 @@ public:
   static inline const std::string Type = "UniversalVariable";
 
   using VariableItem::VariableItem;
+
+  /**
+   * @brief The default c-tor for UniversalVariableItem.
+   * @details Shouldn't be used directly. Use CreateVariableItem factory method instead.
+   * Consider replacing with the parameterised constructor.
+   */
   UniversalVariableItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
 
-
   /**
-   * @brief Static method to create VariableItem representing domain variable.
+   * @brief Static factory method to create VariableItem representing domain variable.
    * @param domain_type The typename of the domain variable.
-   * @return VariableItem representing default initialised domain variable.
+   * @return VariableItem representing default constructed domain variable.
    */
   static std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
 

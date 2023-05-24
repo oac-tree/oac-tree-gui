@@ -23,14 +23,16 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_helpers.h>
 
+#include <mvvm/model/item_utils.h>
+
 #include <sup/sequencer/variable.h>
+
+#include <iostream>
 
 namespace sequencergui
 {
 
-UniversalVariableItem::UniversalVariableItem() : VariableItem(Type)
-{
-}
+UniversalVariableItem::UniversalVariableItem() : VariableItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique_id) const
 {
@@ -53,6 +55,11 @@ std::unique_ptr<VariableItem> UniversalVariableItem::CreateVariableItem(
 
 void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
+  if (!m_domain_type.empty())
+  {
+    throw LogicErrorException("It is not possible to initialise variable twice");
+  }
+
   m_domain_type = variable->GetType();
 
   SetDisplayName(variable->GetType());
@@ -65,6 +72,14 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
   RegisterAnyValueItemTag();
 }
 
-void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const {}
+void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  for (const auto property : mvvm::utils::SinglePropertyItems(*this))
+  {
+    auto [tag, index] = property->GetTagIndex();
+    // property tag is expected to be the same, as attribute name of the variable
+    SetDomainAttribute(tag, *this, *variable);
+  }
+}
 
 }  // namespace sequencergui

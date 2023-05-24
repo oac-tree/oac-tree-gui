@@ -19,17 +19,19 @@
 
 #include "sequencergui/transform/transform_helpers.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
+#include <sequencergui/model/universal_variable_item.h>
 
 #include <mvvm/model/compound_item.h>
 #include <mvvm/model/item_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
@@ -296,4 +298,24 @@ TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
   auto any_value = GetAnyValueFromScalar(*anyvalue_item);
 
   EXPECT_EQ(expected_anyvalue, any_value);
+}
+
+TEST_F(TransformHelpersTests, SetDomainAttribute)
+{
+  {  // attempt to set when no tag exists
+    UniversalVariableItem item;
+    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    EXPECT_THROW(SetDomainAttribute(domainconstants::kNameAttribute, item, *domain_variable),
+                 LogicErrorException);
+  }
+
+  {  // attempt to set when property is of wrong type
+    UniversalVariableItem item;
+    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    item.AddProperty("name", "abc");  // Should be AnyValueScalarItem
+    EXPECT_THROW(SetDomainAttribute(domainconstants::kNameAttribute, item, *domain_variable),
+                 LogicErrorException);
+  }
+
+  // see more tests in universal_variable_item_tests.cpp
 }

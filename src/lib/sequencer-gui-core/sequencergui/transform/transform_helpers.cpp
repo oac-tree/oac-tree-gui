@@ -22,16 +22,18 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/variable_item.h>
+
+#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/item_utils.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
-
-#include <mvvm/interfaces/sessionmodel_interface.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_handler.h>
+#include <sup/sequencer/attribute_utils.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
@@ -203,6 +205,32 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   sup::gui::SetDataFromScalar(default_anyvalue, *property);
 
   return property;
+}
+
+void SetDomainAttribute(const std::string &attribute_name, const VariableItem &item,
+                        variable_t &variable)
+{
+  if (!mvvm::utils::HasTag(item, attribute_name))
+  {
+    throw LogicErrorException("Can't create an attribute string from item property");
+  }
+
+  if (auto property = dynamic_cast<sup::gui::AnyValueScalarItem *>(item.GetItem(attribute_name));
+      property)
+  {
+    auto anyvalue = sup::gui::GetAnyValueFromScalar(*property);
+    auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
+    if (!success)
+    {
+      throw LogicErrorException("Can't create an attribute string from item property");
+    }
+    variable.AddAttribute(attribute_name, attribute_string);
+  }
+  else
+  {
+    throw LogicErrorException("VariableItem doesn't have a property with [" + attribute_name
+                              + "] tag");
+  }
 }
 
 }  // namespace sequencergui

@@ -23,6 +23,7 @@
 //! Collection of helper functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
@@ -73,13 +74,27 @@ void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& 
 
 /**
  * @brief Add property to item using sequencer attribute definition.
+ *
  * @param attr Attribute definition to use for property construction.
  * @param item Compound item which will get a property on board.
- * @return Returns AnyValueItem representing new property.
+ *
+ * @return Returns item representing a new property.
  */
-
 sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
                                                   mvvm::CompoundItem& item);
+
+/**
+ * @brief Set an attribute for domain variable from VariableItem property.
+ *
+ * @param attribute_name The name of the domain attribute to set.
+ * @param item The GUI variable item.
+ * @param variable The domain sequencer variable.
+ *
+ * @details It is expected that VariableItem has a property with tag coinciding with the domain
+ * attribute name, and this property can be converted to scalar-like AnyValue.
+ */
+void SetDomainAttribute(const std::string& attribute_name, const VariableItem& item,
+                        variable_t& variable);
 
 }  // namespace sequencergui
 

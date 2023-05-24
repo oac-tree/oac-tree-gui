@@ -55,7 +55,10 @@ std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
   auto result = ::sequencergui::CreateDomainVariable(GetDomainType());
 
-  result->AddAttribute(domainconstants::kNameAttribute, Property<std::string>(kName));
+  if (GetType() != UniversalVariableItem::Type)
+  {
+    result->AddAttribute(domainconstants::kNameAttribute, Property<std::string>(kName));
+  }
 
   SetupDomainImpl(result.get());
   return result;

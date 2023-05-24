@@ -19,10 +19,12 @@
 
 #include "sequencergui/model/universal_variable_item.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 
 #include <mvvm/model/item_utils.h>
 
+#include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
@@ -37,7 +39,7 @@ class UniversalVariableItemTests : public ::testing::Test
 
 TEST_F(UniversalVariableItemTests, InitialState)
 {
-  sequencergui::UniversalVariableItem item;
+  UniversalVariableItem item;
 
   EXPECT_EQ(item.GetDisplayName(), UniversalVariableItem::Type);
 
@@ -48,19 +50,20 @@ TEST_F(UniversalVariableItemTests, InitialState)
 }
 
 //! Initialisation from default constructed domain variable.
+
 TEST_F(UniversalVariableItemTests, InitFromDomain)
 {
   auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
-  sequencergui::UniversalVariableItem item;
+  UniversalVariableItem item;
   item.InitFromDomain(domain_variable.get());
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 
   // registered tags should coincide with instruction attribute and AnyValueTag
-  std::vector<std::string> expected_tags({domainconstants::kNameAttribute,
-                                          domainconstants::kTypeAttribute,
-                                          domainconstants::kValueAttribute, "kAnyValueTag"});
+  const std::vector<std::string> expected_tags({domainconstants::kNameAttribute,
+                                                domainconstants::kTypeAttribute,
+                                                domainconstants::kValueAttribute, "kAnyValueTag"});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access
@@ -74,4 +77,25 @@ TEST_F(UniversalVariableItemTests, InitFromDomain)
 
   EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kValueAttribute);
   EXPECT_TRUE(item.Property<std::string>(domainconstants::kValueAttribute).empty());
+
+  // attempt to initialise variable twice
+  EXPECT_THROW(item.InitFromDomain(domain_variable.get()), LogicErrorException);
+}
+
+//! Attempt to create domain variable using uninitialized item.
+
+TEST_F(UniversalVariableItemTests, AttemptToCreateDomainVariable)
+{
+  UniversalVariableItem item;
+  EXPECT_THROW(item.CreateDomainVariable(), sup::sequencer::InvalidOperationException);
+}
+
+TEST_F(UniversalVariableItemTests, CreateDomainVariable)
+{
+  auto item = UniversalVariableItem::CreateVariableItem(domainconstants::kLocalVariableType);
+  item->SetProperty(domainconstants::kNameAttribute, "abc");
+
+  auto domain_variable = item->CreateDomainVariable();
+  EXPECT_EQ(domain_variable->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
 }
