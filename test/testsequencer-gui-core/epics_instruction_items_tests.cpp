@@ -398,9 +398,9 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
+  // either RequestVar or type and value. Testing Type And Value case
   RPCClientInstruction item;
   item.SetService("service");
-  item.SetRequestVar("request");
   item.SetTimeout(42.0);
   item.SetIsRootFlag(true);
   item.SetJsonType(expected_type);
@@ -411,7 +411,6 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kRPCClientInstructionType);
 
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kServiceAttribute), "service");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kRequestAttribute), "request");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
