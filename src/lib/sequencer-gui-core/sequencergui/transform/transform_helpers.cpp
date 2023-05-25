@@ -207,30 +207,16 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   return property;
 }
 
-void SetDomainAttribute(const std::string &attribute_name, const VariableItem &item,
+void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::string &attribute_name,
                         variable_t &variable)
 {
-  if (!mvvm::utils::HasTag(item, attribute_name))
+  auto anyvalue = sup::gui::GetAnyValueFromScalar(item);
+  auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
+  if (!success)
   {
     throw LogicErrorException("Can't create an attribute string from item property");
   }
-
-  if (auto property = dynamic_cast<sup::gui::AnyValueScalarItem *>(item.GetItem(attribute_name));
-      property)
-  {
-    auto anyvalue = sup::gui::GetAnyValueFromScalar(*property);
-    auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
-    if (!success)
-    {
-      throw LogicErrorException("Can't create an attribute string from item property");
-    }
-    variable.AddAttribute(attribute_name, attribute_string);
-  }
-  else
-  {
-    throw LogicErrorException("VariableItem doesn't have a property with [" + attribute_name
-                              + "] tag");
-  }
+  variable.AddAttribute(attribute_name, attribute_string);
 }
 
 }  // namespace sequencergui

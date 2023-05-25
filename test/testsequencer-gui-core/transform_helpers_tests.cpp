@@ -267,7 +267,6 @@ TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariable)
 }
 
 //! Testing AddPropertyFromDefinition helper method.
-//! We create sequencer domain AttributeDefinition
 
 TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
 {
@@ -300,22 +299,17 @@ TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
   EXPECT_EQ(expected_anyvalue, any_value);
 }
 
+//! Testing SetDomainAttribute method.
+
 TEST_F(TransformHelpersTests, SetDomainAttribute)
 {
-  {  // attempt to set when no tag exists
-    UniversalVariableItem item;
-    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    EXPECT_THROW(SetDomainAttribute(domainconstants::kNameAttribute, item, *domain_variable),
-                 LogicErrorException);
-  }
+  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
-  {  // attempt to set when property is of wrong type
-    UniversalVariableItem item;
-    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    item.AddProperty("name", "abc");  // Should be AnyValueScalarItem
-    EXPECT_THROW(SetDomainAttribute(domainconstants::kNameAttribute, item, *domain_variable),
-                 LogicErrorException);
-  }
+  sup::gui::AnyValueScalarItem item;
+  item.SetAnyTypeName(sup::dto::kStringTypeName);
+  item.SetData("abc");
 
-  // see more tests in universal_variable_item_tests.cpp
+  SetDomainAttribute(item, domainconstants::kNameAttribute, *domain_variable);
+  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
+            std::string("abc"));
 }

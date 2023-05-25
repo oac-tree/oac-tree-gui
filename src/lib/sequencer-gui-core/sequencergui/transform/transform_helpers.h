@@ -37,6 +37,7 @@ class CompoundItem;
 namespace sup::gui
 {
 class AnyValueItem;
+class AnyValueScalarItem;
 }
 
 namespace sequencergui
@@ -84,17 +85,16 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
                                                   mvvm::CompoundItem& item);
 
 /**
- * @brief Set an attribute for domain variable from VariableItem property.
+ * @brief Set an attribute for domain variable from AnyValueScalarItem property.
  *
+ * @param item The AnyValueScalarItem representing domain attribute.
  * @param attribute_name The name of the domain attribute to set.
- * @param item The GUI variable item.
  * @param variable The domain sequencer variable.
- *
- * @details It is expected that VariableItem has a property with tag coinciding with the domain
- * attribute name, and this property can be converted to scalar-like AnyValue.
  */
-void SetDomainAttribute(const std::string& attribute_name, const VariableItem& item,
+
+void SetDomainAttribute(const sup::gui::AnyValueScalarItem& item, const std::string& attribute_name,
                         variable_t& variable);
+
 
 }  // namespace sequencergui
 
