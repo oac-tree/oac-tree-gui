@@ -24,21 +24,22 @@
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/utils/container_utils.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
-
-#include <iostream>
 
 namespace sequencergui
 {
 
-UniversalVariableItem::UniversalVariableItem(const std::string &domain_type) : VariableItem(Type)
+UniversalVariableItem::UniversalVariableItem(const std::string &domain_type)
+    : VariableItem(domain_type.empty() ? Type : domain_type)
 {
   if (!domain_type.empty())
   {
     // temporary domain variable is used to create default properties
     auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
-    InitFromDomain(domain_variable.get());
+    SetupFromDomain(domain_variable.get());
   }
 }
 
@@ -52,11 +53,53 @@ std::string UniversalVariableItem::GetDomainType() const
   return m_domain_type;
 }
 
+std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttributeItems() const
+{
+  std::vector<UniversalVariableItem::Attribute> result;
+
+  // for the moment any registered property has it's correspondance as domain attribute
+  auto properties = mvvm::utils::SinglePropertyItems(*this);
+
+  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueScalarItem>(properties))
+  {
+    auto [tag, index] = property->GetTagIndex();
+    // tag of property item should coincide to domain's attribute name
+    result.push_back({tag, property});
+  }
+
+  return result;
+}
+
 void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
+{
+  if (m_domain_type.empty())
+  {
+    SetupFromDomain(variable);
+  }
+
+  for (const auto& [attribute_name, item] : GetAttributeItems())
+  {
+    SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
+  }
+
+  SetAnyValueFromDomainVariable(*variable, *this);
+}
+
+void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
+{
+  for (const auto& [attribute_name, item] : GetAttributeItems())
+  {
+    SetDomainAttribute(*item, attribute_name, *variable);
+  }
+}
+
+//! Provides first setup of all atributes from the domain variable.
+
+void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
 {
   if (!m_domain_type.empty())
   {
-    throw LogicErrorException("It is not possible to initialise variable twice");
+    throw LogicErrorException("It is not possible to setup variable twice");
   }
 
   m_domain_type = variable->GetType();
@@ -69,16 +112,6 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
   }
 
   RegisterAnyValueItemTag();
-}
-
-void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  for (const auto property : mvvm::utils::SinglePropertyItems(*this))
-  {
-    auto [tag, index] = property->GetTagIndex();
-    // property tag is expected to be the same, as attribute name of the variable
-    SetDomainAttribute(tag, *this, *variable);
-  }
 }
 
 }  // namespace sequencergui

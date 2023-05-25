@@ -23,6 +23,11 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/variable_item.h>
 
+namespace sup::gui
+{
+class AnyValueScalarItem;
+}
+
 namespace sequencergui
 {
 
@@ -51,8 +56,21 @@ public:
   std::string GetDomainType() const override;
 
 private:
+  struct Attribute
+  {
+    std::string domain_name;             //! domain attribute name
+    sup::gui::AnyValueScalarItem* item;  //! item representing domain attribute
+  };
+
+  /**
+   * @brief Get items representing domain attributes
+   */
+  std::vector<Attribute> GetAttributeItems() const;
+
   void InitFromDomainImpl(const variable_t* variable) override;
   void SetupDomainImpl(variable_t* variable) const override;
+
+  void SetupFromDomain(const variable_t* variable);
 
   std::string m_domain_type;  //!< Domain typename.
 };

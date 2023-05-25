@@ -78,8 +78,12 @@ TEST_F(UniversalVariableItemTests, InitFromDomain)
   EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kValueAttribute);
   EXPECT_TRUE(item.Property<std::string>(domainconstants::kValueAttribute).empty());
 
-  // attempt to initialise variable twice
-  EXPECT_THROW(item.InitFromDomain(domain_variable.get()), LogicErrorException);
+  // setting up domain variable and repeat initialisation
+  domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+  domain_variable->Setup();
+  EXPECT_NO_THROW(item.InitFromDomain(domain_variable.get()));
+
+  EXPECT_EQ(item.Property<std::string>(domainconstants::kNameAttribute), std::string("abc"));
 }
 
 //! Attempt to create domain variable using uninitialized item.
