@@ -22,18 +22,18 @@
 
 //! Collection of classes to represent Sequencer variables.
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/model/variable_item.h>
-#include <sequencergui/domain/domain_constants.h>
 
 namespace sequencergui
 {
 
 //! Represent EPICS variable.
-class ConnectableVariableItem : public VariableItem
+class ConnectableVariableItem : public UniversalVariableItem
 {
 public:
-  using VariableItem::VariableItem;
+  using UniversalVariableItem::UniversalVariableItem;
   explicit ConnectableVariableItem(const std::string& variable_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -45,7 +45,6 @@ public:
   bool IsAvailable() const override;
 
   void SetIsAvailable(bool value) override;
-  void InitFromDomainImpl(const variable_t* variable) override;
 };
 
 //! Represent ChannelAccessVariable.
@@ -58,11 +57,6 @@ public:
   ChannelAccessVariableItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-private:
-  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent FileVariable.
@@ -103,11 +97,6 @@ public:
 
   using ConnectableVariableItem::ConnectableVariableItem;
   PvAccessClientVariableItem();
-
-  std::string GetDomainType() const override;
-
-private:
-  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent PvAccessServerVariable.
@@ -120,11 +109,6 @@ public:
 
   using ConnectableVariableItem::ConnectableVariableItem;
   PvAccessServerVariableItem();
-
-  std::string GetDomainType() const override;
-
-private:
-  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 }  // namespace sequencergui

@@ -21,8 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <sup/sequencer/variable.h>
 
@@ -34,12 +34,9 @@ namespace sequencergui
 // ----------------------------------------------------------------------------
 
 ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_type)
-    : VariableItem(variable_type)
+    : UniversalVariableItem(variable_type)
 {
-  RegisterCommonProperties();
-  AddProperty(itemconstants::kChannel, std::string())->SetDisplayName("channel");
   AddProperty(itemconstants::kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
-  RegisterAnyValueItemTag();
 }
 
 std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone(bool make_unique_id) const
@@ -69,14 +66,6 @@ void ConnectableVariableItem::SetIsAvailable(bool value)
   SetProperty(itemconstants::kIsAvailable, value);
 }
 
-void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)
-{
-  if (variable->HasAttribute(domainconstants::kChannelAttribute))
-  {
-    SetChannel(variable->GetAttributeString(domainconstants::kChannelAttribute));
-  }
-}
-
 // ----------------------------------------------------------------------------
 // ChannelAccessVariableItem
 // ----------------------------------------------------------------------------
@@ -86,17 +75,6 @@ ChannelAccessVariableItem::ChannelAccessVariableItem() : ConnectableVariableItem
 std::unique_ptr<mvvm::SessionItem> ChannelAccessVariableItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<ChannelAccessVariableItem>(*this, make_unique_id);
-}
-
-std::string ChannelAccessVariableItem::GetDomainType() const
-{
-  return domainconstants::kChannelAccessVariableType;
-}
-
-void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *variable);
-  SetJsonTypeAttribute(*this, *variable);
 }
 
 // ----------------------------------------------------------------------------
@@ -141,17 +119,6 @@ std::unique_ptr<mvvm::SessionItem> PvAccessClientVariableItem::Clone(bool make_u
 
 PvAccessClientVariableItem::PvAccessClientVariableItem() : ConnectableVariableItem(Type) {}
 
-std::string PvAccessClientVariableItem::GetDomainType() const
-{
-  return domainconstants::kPvAccessClientVariableType;
-}
-
-void PvAccessClientVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *variable);
-  SetJsonTypeAttribute(*this, *variable);
-}
-
 // ----------------------------------------------------------------------------
 // PvAccessServerVariableItem
 // ----------------------------------------------------------------------------
@@ -162,17 +129,5 @@ std::unique_ptr<mvvm::SessionItem> PvAccessServerVariableItem::Clone(bool make_u
 }
 
 PvAccessServerVariableItem::PvAccessServerVariableItem() : ConnectableVariableItem(Type) {}
-
-std::string PvAccessServerVariableItem::GetDomainType() const
-{
-  return domainconstants::kPvAccessServerVariableType;
-}
-
-void PvAccessServerVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *variable);
-  SetJsonTypeAttribute(*this, *variable);
-  SetJsonValueAttribute(*this, *variable);
-}
 
 }  // namespace sequencergui

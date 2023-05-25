@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
 
@@ -71,17 +72,18 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 3);
-  auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
-  ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), std::string("name"));
 
-  auto channel = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
+  auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  ASSERT_NE(name, nullptr);
+  EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
+
+  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(channel, nullptr);
-  EXPECT_EQ(channel->GetDisplayName(), std::string("channel"));
+  EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 
   auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(2));
   ASSERT_NE(available, nullptr);
-  EXPECT_EQ(available->GetDisplayName(), std::string("connected"));
+  EXPECT_EQ(available->GetDisplayName(), itemconstants::kIsAvailable);
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
@@ -99,6 +101,8 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   ca_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
+
+  ca_variable->Setup();
 
   ChannelAccessVariableItem item;
   item.InitFromDomain(ca_variable.get());
@@ -179,15 +183,15 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
   ASSERT_EQ(children.size(), 3);
   auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), std::string(domainconstants::kNameAttribute));
+  EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
 
   auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(file_name, nullptr);
-  EXPECT_EQ(file_name->GetDisplayName(), std::string(domainconstants::kFileAttribute));
+  EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileAttribute);
 
   auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(2));
   ASSERT_NE(json_attr, nullptr);
-  EXPECT_EQ(json_attr->GetDisplayName(), std::string(domainconstants::kPrettyJsonAttribute));
+  EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
 
 TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
@@ -255,7 +259,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   ASSERT_EQ(children.size(), 1);
   auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), std::string(domainconstants::kNameAttribute));
+  EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
@@ -285,15 +289,6 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
-
-  {  // case with empty attributes
-    sequencergui::LocalVariableItem item;
-    item.SetName(expected_name);
-
-    // we allow LocalVariableItem do not have AnyValueItem on board
-    // It is the only one for the moment, that can be reset by ResetVariable instruction
-    EXPECT_NO_THROW(item.CreateDomainVariable());
-  }
 
   {  // case when AnyValueItem is set
     sequencergui::LocalVariableItem item;
@@ -347,6 +342,8 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
+  pv_variable->Setup();
+
   PvAccessClientVariableItem item;
   item.InitFromDomain(pv_variable.get());
 
@@ -369,13 +366,6 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
-
-  {  // case with empty attributes
-    PvAccessClientVariableItem item;
-    item.SetName(expected_name);
-
-    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
-  }
 
   {  // case when AnyValueItem is set
     PvAccessClientVariableItem item;
@@ -430,6 +420,8 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
   pvxs_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
+  pvxs_variable->Setup();
+
   PvAccessServerVariableItem item;
   item.InitFromDomain(pvxs_variable.get());
 
@@ -454,13 +446,6 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
-
-  {  // case with empty attributes
-    PvAccessServerVariableItem item;
-    item.SetName(expected_name);
-
-    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
-  }
 
   {  // case when AnyValueItem is set
     PvAccessServerVariableItem item;

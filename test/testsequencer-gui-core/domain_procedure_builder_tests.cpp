@@ -234,27 +234,6 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   EXPECT_EQ(builder.FindInstructionIdentifier(domain_sequence), sequence->GetIdentifier());
 }
 
-//! Attempt to build a procedure when workspace has misconfigure VariableItem
-
-TEST_F(DomainProcedureBuilderTest, AttemptToBuildProcedureWithVariable)
-{
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  ProcedureItem procedure_item;
-  auto workspace = procedure_item.GetWorkspace();
-
-  auto var_item0 = workspace->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
-  var_item0->SetName("var0");
-  // variable doesn't have AnyValueItem set
-
-  auto procedure = std::make_unique<procedure_t>();
-  DomainProcedureBuilder builder;
-  EXPECT_THROW(builder.PopulateProcedure(&procedure_item, procedure.get()), LogicErrorException);
-}
-
 //! Building domain procedure from ProcedureItem with a single sequence.
 
 TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)

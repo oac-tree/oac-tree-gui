@@ -37,7 +37,7 @@ const std::string kChildInstructions = "kChildInstructions";
 const std::string kIsRoot = "kIsRoot";
 const std::string kAnyValueTag = "kAnyValueTag";
 const std::string kChannel = "channel";
-const std::string kIsAvailable = "kIsAvailable";
+const std::string kIsAvailable = "connected";
 
 }  // namespace sequencergui::itemconstants
 

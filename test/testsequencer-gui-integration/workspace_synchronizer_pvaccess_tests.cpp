@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
@@ -105,7 +106,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   // After domain workspace was set-up, the only callback will be DataChangedEvent for IsAvailable
   // status, caused by Start method.
 
-  auto is_available_property = variable_item->GetItem("kIsAvailable");
+  auto is_available_property = variable_item->GetItem(itemconstants::kIsAvailable);
   auto expected_event =
       mvvm::event_variant_t(mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData});
 
@@ -261,11 +262,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
   {
     ::testing::InSequence seq;
     auto expected_event1 =
-        mvvm::DataChangedEvent{client_item->GetItem("kIsAvailable"), mvvm::DataRole::kData};
+        mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnEvent(mvvm::event_variant_t(expected_event1))).Times(1);
 
     auto expected_event2 =
-        mvvm::DataChangedEvent{server_item->GetItem("kIsAvailable"), mvvm::DataRole::kData};
+        mvvm::DataChangedEvent{server_item->GetItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnEvent(mvvm::event_variant_t(expected_event2))).Times(1);
   }
 
