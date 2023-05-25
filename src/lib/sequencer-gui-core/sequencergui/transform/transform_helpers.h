@@ -38,7 +38,7 @@ namespace sup::gui
 {
 class AnyValueItem;
 class AnyValueScalarItem;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -85,6 +85,15 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
                                                   mvvm::CompoundItem& item);
 
 /**
+ * @brief Set property item from the domain attribute.
+ * @param variable Domain variable to set from.
+ * @param attribute_name The attribute name of the domain variable
+ * @param item An item representing attribute.
+ */
+void SetPropertyFromDomainAttribute(const variable_t& variable, const std::string& attribute_name,
+                                    sup::gui::AnyValueScalarItem& item);
+
+/**
  * @brief Set an attribute for domain variable from AnyValueScalarItem property.
  *
  * @param item The AnyValueScalarItem representing domain attribute.
@@ -94,7 +103,6 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
 
 void SetDomainAttribute(const sup::gui::AnyValueScalarItem& item, const std::string& attribute_name,
                         variable_t& variable);
-
 
 }  // namespace sequencergui
 

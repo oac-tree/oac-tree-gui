@@ -207,6 +207,13 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   return property;
 }
 
+void SetPropertyFromDomainAttribute(const variable_t &variable, const std::string &attribute_name,
+                                    sup::gui::AnyValueScalarItem &item)
+{
+  auto anyvalue = variable.GetAttributeValue<sup::dto::AnyValue>(attribute_name);
+  sup::gui::SetDataFromScalar(anyvalue, item);
+}
+
 void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::string &attribute_name,
                         variable_t &variable)
 {

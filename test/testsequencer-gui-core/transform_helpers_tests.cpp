@@ -313,3 +313,18 @@ TEST_F(TransformHelpersTests, SetDomainAttribute)
   EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
             std::string("abc"));
 }
+
+//! Testing SetPropertyFromDomainAttribute method.
+
+TEST_F(TransformHelpersTests, SetPropertyFromDomainAttribute)
+{
+  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+  domain_variable->Setup();
+
+  sup::gui::AnyValueScalarItem item;
+  item.SetAnyTypeName(sup::dto::kStringTypeName);
+
+  SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
+  EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+}
