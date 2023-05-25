@@ -23,6 +23,7 @@
 //! Collection of classes to represent Sequencer variables.
 
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/universal_variable_item.h>
 
 namespace sequencergui
 {
@@ -66,25 +67,19 @@ private:
 };
 
 //! Represent FileVariable.
-class FileVariableItem : public VariableItem
+class FileVariableItem : public sequencergui::UniversalVariableItem
 {
-public:
+  public:
   static inline const std::string Type = "File";
 
-  using VariableItem::VariableItem;
+  using sequencergui::UniversalVariableItem::UniversalVariableItem;
   FileVariableItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   std::string GetFileName() const;
 
   void SetFileName(const std::string& name);
-
-private:
-  void InitFromDomainImpl(const variable_t* variable) override;
-  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent LocalVariable.

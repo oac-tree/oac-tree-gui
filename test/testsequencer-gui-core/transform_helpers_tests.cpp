@@ -318,13 +318,30 @@ TEST_F(TransformHelpersTests, SetDomainAttribute)
 
 TEST_F(TransformHelpersTests, SetPropertyFromDomainAttribute)
 {
-  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-  domain_variable->Setup();
+  {  // case when variable was setup
+    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+    domain_variable->Setup();
 
-  sup::gui::AnyValueScalarItem item;
-  item.SetAnyTypeName(sup::dto::kStringTypeName);
+    sup::gui::AnyValueScalarItem item;
+    item.SetAnyTypeName(sup::dto::kStringTypeName);
 
-  SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
-  EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+    SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
+    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+  }
+
+  {  // case when variable wasn't setup
+    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+
+    sup::gui::AnyValueScalarItem item;
+    item.SetAnyTypeName(sup::dto::kStringTypeName);
+
+    EXPECT_NO_THROW(
+        SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
+
+    // still default value since domain Variable wasn't setup and can't report attribute in the form
+    // of AnyValue
+    EXPECT_EQ(item.Data<std::string>(), std::string(""));
+  }
 }

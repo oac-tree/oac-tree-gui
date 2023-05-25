@@ -201,7 +201,6 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   property->SetDisplayName(attr.GetName());
 
   auto default_anyvalue = sup::dto::AnyValue(attr.GetType());
-
   sup::gui::SetDataFromScalar(default_anyvalue, *property);
 
   return property;
@@ -210,8 +209,15 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
 void SetPropertyFromDomainAttribute(const variable_t &variable, const std::string &attribute_name,
                                     sup::gui::AnyValueScalarItem &item)
 {
-  auto anyvalue = variable.GetAttributeValue<sup::dto::AnyValue>(attribute_name);
-  sup::gui::SetDataFromScalar(anyvalue, item);
+  try
+  {
+    auto anyvalue = variable.GetAttributeValue<sup::dto::AnyValue>(attribute_name);
+    sup::gui::SetDataFromScalar(anyvalue, item);
+  }
+  catch (const std::exception)
+  {
+    // It means that variable wasn't set up.
+  }
 }
 
 void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::string &attribute_name,

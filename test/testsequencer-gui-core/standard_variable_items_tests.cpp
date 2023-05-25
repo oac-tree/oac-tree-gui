@@ -176,14 +176,18 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
   FileVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 2);
-  auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
+  ASSERT_EQ(children.size(), 3);
+  auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), std::string("name"));
+  EXPECT_EQ(name->GetDisplayName(), std::string(domainconstants::kNameAttribute));
 
-  auto file_name = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
+  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(file_name, nullptr);
-  EXPECT_EQ(file_name->GetDisplayName(), std::string("File name"));
+  EXPECT_EQ(file_name->GetDisplayName(), std::string(domainconstants::kFileAttribute));
+
+  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(2));
+  ASSERT_NE(json_attr, nullptr);
+  EXPECT_EQ(json_attr->GetDisplayName(), std::string(domainconstants::kPrettyJsonAttribute));
 }
 
 TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
@@ -194,6 +198,8 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   auto local_variable = CreateDomainVariable(domainconstants::kFileVariableType);
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(domainconstants::kFileAttribute, expected_file_name);
+
+  local_variable->Setup(); // to propagate string attributes to AnyValues
 
   sequencergui::FileVariableItem item;
   item.InitFromDomain(local_variable.get());

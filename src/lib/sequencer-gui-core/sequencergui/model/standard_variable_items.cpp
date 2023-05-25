@@ -104,13 +104,9 @@ void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 // ----------------------------------------------------------------------------
 // FileVariableItem
 // ----------------------------------------------------------------------------
-static inline const std::string kFileName = "kFileName";
-
-FileVariableItem::FileVariableItem() : VariableItem(Type)
+FileVariableItem::FileVariableItem()
+    : sequencergui::UniversalVariableItem(sequencergui::domainconstants::kFileVariableType)
 {
-  RegisterCommonProperties();
-  AddProperty(kFileName, std::string())->SetDisplayName("File name");
-  RegisterAnyValueItemTag();
 }
 
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone(bool make_unique_id) const
@@ -118,32 +114,14 @@ std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone(bool make_unique_id) 
   return std::make_unique<FileVariableItem>(*this, make_unique_id);
 }
 
-std::string FileVariableItem::GetDomainType() const
-{
-  return domainconstants::kFileVariableType;
-}
-
 std::string FileVariableItem::GetFileName() const
 {
-  return Property<std::string>(kFileName);
+  return Property<std::string>(sequencergui::domainconstants::kFileAttribute);
 }
 
 void FileVariableItem::SetFileName(const std::string &name)
 {
-  SetProperty(kFileName, name);
-}
-
-void FileVariableItem::InitFromDomainImpl(const variable_t *variable)
-{
-  if (variable->HasAttribute(domainconstants::kFileAttribute))
-  {
-    SetProperty(kFileName, variable->GetAttributeString(domainconstants::kFileAttribute));
-  }
-}
-
-void FileVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  AddNonEmptyAttribute(domainconstants::kFileAttribute, GetFileName(), *variable);
+  SetProperty(sequencergui::domainconstants::kFileAttribute, name);
 }
 
 // ----------------------------------------------------------------------------

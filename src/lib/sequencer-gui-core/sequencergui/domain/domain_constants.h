@@ -97,6 +97,7 @@ const std::string kRequestAttribute = "requestVar";
 const std::string kCommandAttribute = "command";
 const std::string kSeverityAttribute = "severity";
 const std::string kMessageAttribute = "message";
+const std::string kPrettyJsonAttribute = "pretty";
 
 // attributes (instruction specific)
 const std::string kInputTargetAttribute = "output";

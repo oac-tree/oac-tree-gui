@@ -46,7 +46,7 @@ namespace sequencergui
 // VariableItem
 // ----------------------------------------------------------------------------
 
-static inline const std::string kName = "kName";
+static inline const std::string kName = "name";
 static inline const std::string kAnyValueTag = "kAnyValueTag";
 
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type) {}
