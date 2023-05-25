@@ -273,6 +273,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   local_variable->AddAttribute("type", expected_type);
   local_variable->AddAttribute("value", expected_value);
 
+  local_variable->Setup();
+
   sequencergui::LocalVariableItem item;
   item.InitFromDomain(local_variable.get());
 

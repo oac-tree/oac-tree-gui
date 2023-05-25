@@ -81,7 +81,7 @@ void VariableItem::InitFromDomain(const variable_t *variable)
     }
   }
 
-  SetAnyValueFromDomainVariable(*variable, *this);
+//  SetAnyValueFromDomainVariable(*variable, *this);
 
   InitFromDomainImpl(variable);
 }
@@ -122,11 +122,6 @@ void VariableItem::SetIsAvailable(bool value)
 void VariableItem::RegisterAnyValueItemTag()
 {
   RegisterTag(mvvm::TagInfo(itemconstants::kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
-}
-
-void VariableItem::RegisterCommonProperties()
-{
-  AddProperty(itemconstants::kName, std::string())->SetDisplayName("name");
 }
 
 }  // namespace sequencergui
