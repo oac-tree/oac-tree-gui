@@ -38,22 +38,17 @@ public:
   using VariableItem::VariableItem;
 
   /**
-   * @brief The default c-tor for UniversalVariableItem.
-   * @details Shouldn't be used directly. Use CreateVariableItem factory method instead.
-   * Consider replacing with the parameterised constructor.
+   * @brief The parameterized c-tor for UniversalVariableItem.
+   *
+   * @param domain_type The typename of the domain variable.
+   *
+   * @details If domain type is empty, the resulting object can be used after InitFromDomain call.
    */
-  UniversalVariableItem();
+  explicit UniversalVariableItem(const std::string& domain_type = {});
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
-
-  /**
-   * @brief Static factory method to create VariableItem representing domain variable.
-   * @param domain_type The typename of the domain variable.
-   * @return VariableItem representing default constructed domain variable.
-   */
-  static std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
 
 private:
   void InitFromDomainImpl(const variable_t* variable) override;

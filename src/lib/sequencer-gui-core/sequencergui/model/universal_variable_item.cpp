@@ -32,7 +32,15 @@
 namespace sequencergui
 {
 
-UniversalVariableItem::UniversalVariableItem() : VariableItem(Type) {}
+UniversalVariableItem::UniversalVariableItem(const std::string &domain_type) : VariableItem(Type)
+{
+  if (!domain_type.empty())
+  {
+    // temporary domain variable is used to create default properties
+    auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
+    InitFromDomain(domain_variable.get());
+  }
+}
 
 std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique_id) const
 {
@@ -42,15 +50,6 @@ std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique
 std::string UniversalVariableItem::GetDomainType() const
 {
   return m_domain_type;
-}
-
-std::unique_ptr<VariableItem> UniversalVariableItem::CreateVariableItem(
-    const std::string &domain_type)
-{
-  auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
-  auto result = std::make_unique<UniversalVariableItem>();
-  result->InitFromDomain(domain_variable.get());
-  return result;
 }
 
 void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)

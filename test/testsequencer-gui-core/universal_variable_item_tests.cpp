@@ -90,12 +90,14 @@ TEST_F(UniversalVariableItemTests, AttemptToCreateDomainVariable)
   EXPECT_THROW(item.CreateDomainVariable(), sup::sequencer::InvalidOperationException);
 }
 
-TEST_F(UniversalVariableItemTests, CreateDomainVariable)
+TEST_F(UniversalVariableItemTests, CreateUsingDomainName)
 {
-  auto item = UniversalVariableItem::CreateVariableItem(domainconstants::kLocalVariableType);
-  item->SetProperty(domainconstants::kNameAttribute, "abc");
+  UniversalVariableItem item(domainconstants::kLocalVariableType);
+  item.SetProperty(domainconstants::kNameAttribute, "abc");
 
-  auto domain_variable = item->CreateDomainVariable();
+  auto domain_variable = item.CreateDomainVariable();
   EXPECT_EQ(domain_variable->GetType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
+
+  // more tests in standard_variable_item_tests.cpp
 }
