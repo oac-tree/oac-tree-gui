@@ -22,8 +22,9 @@
 
 //! Collection of classes to represent Sequencer variables.
 
-#include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/universal_variable_item.h>
+#include <sequencergui/model/variable_item.h>
+#include <sequencergui/domain/domain_constants.h>
 
 namespace sequencergui
 {
@@ -69,8 +70,8 @@ private:
 //! Represent FileVariable.
 class FileVariableItem : public sequencergui::UniversalVariableItem
 {
-  public:
-  static inline const std::string Type = "File";
+public:
+  static inline const std::string Type = sequencergui::domainconstants::kFileVariableType;
 
   using sequencergui::UniversalVariableItem::UniversalVariableItem;
   FileVariableItem();
@@ -83,21 +84,15 @@ class FileVariableItem : public sequencergui::UniversalVariableItem
 };
 
 //! Represent LocalVariable.
-class LocalVariableItem : public VariableItem
+class LocalVariableItem : public sequencergui::UniversalVariableItem
 {
 public:
-  static inline const std::string Type = "Local";
+  static inline const std::string Type = sequencergui::domainconstants::kLocalVariableType;
 
-  using VariableItem::VariableItem;
+  using sequencergui::UniversalVariableItem::UniversalVariableItem;
   LocalVariableItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const variable_t* variable) override;
-  void SetupDomainImpl(variable_t* variable) const override;
 };
 
 //! Represent PvAccessClientVariable.

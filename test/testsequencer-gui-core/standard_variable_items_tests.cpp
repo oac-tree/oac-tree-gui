@@ -199,7 +199,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(domainconstants::kFileAttribute, expected_file_name);
 
-  local_variable->Setup(); // to propagate string attributes to AnyValues
+  local_variable->Setup();  // to propagate string attributes to AnyValues
 
   sequencergui::FileVariableItem item;
   item.InitFromDomain(local_variable.get());
@@ -253,9 +253,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 1);
-  auto name = dynamic_cast<mvvm::PropertyItem*>(children.at(0));
+  auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), std::string("name"));
+  EXPECT_EQ(name->GetDisplayName(), std::string(domainconstants::kNameAttribute));
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)

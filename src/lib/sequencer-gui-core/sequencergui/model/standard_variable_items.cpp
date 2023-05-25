@@ -20,7 +20,6 @@
 #include "standard_variable_items.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_helpers.h>
 
@@ -104,10 +103,7 @@ void ChannelAccessVariableItem::SetupDomainImpl(variable_t *variable) const
 // ----------------------------------------------------------------------------
 // FileVariableItem
 // ----------------------------------------------------------------------------
-FileVariableItem::FileVariableItem()
-    : sequencergui::UniversalVariableItem(sequencergui::domainconstants::kFileVariableType)
-{
-}
+FileVariableItem::FileVariableItem() : sequencergui::UniversalVariableItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone(bool make_unique_id) const
 {
@@ -128,37 +124,11 @@ void FileVariableItem::SetFileName(const std::string &name)
 // LocalVariableItem
 // ----------------------------------------------------------------------------
 
-LocalVariableItem::LocalVariableItem() : VariableItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterAnyValueItemTag();
-}
+LocalVariableItem::LocalVariableItem() : sequencergui::UniversalVariableItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> LocalVariableItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<LocalVariableItem>(*this, make_unique_id);
-}
-
-std::string LocalVariableItem::GetDomainType() const
-{
-  return domainconstants::kLocalVariableType;
-}
-
-void LocalVariableItem::InitFromDomainImpl(const variable_t *variable)
-{
-  // nothing to od besides what is done in a base class
-}
-
-void LocalVariableItem::SetupDomainImpl(variable_t *variable) const
-{
-  if (GetAnyValueItem())
-  {
-    // Here we allow LocalVariableItem do not have AnyValueItem on board. LocalVariable is the only
-    // one for the moment that can be without JSON type and value attributes (see
-    // ResetVariableInstruction).
-    SetJsonTypeAttribute(*this, *variable);
-    SetJsonValueAttribute(*this, *variable);
-  }
 }
 
 // ----------------------------------------------------------------------------

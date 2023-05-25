@@ -60,23 +60,16 @@ TEST_F(UniversalVariableItemTests, InitFromDomain)
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 
-  // registered tags should coincide with instruction attribute and AnyValueTag
-  const std::vector<std::string> expected_tags({domainconstants::kNameAttribute,
-                                                domainconstants::kTypeAttribute,
-                                                domainconstants::kValueAttribute, "kAnyValueTag"});
+  // registered tags should coincide with name attribute and AnyValueTag
+  // (json type and value are filtered out)
+  const std::vector<std::string> expected_tags({domainconstants::kNameAttribute, "kAnyValueTag"});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access
   auto properties = mvvm::utils::SinglePropertyItems(item);
-  ASSERT_EQ(properties.size(), 3);
+  ASSERT_EQ(properties.size(), 1);
   EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
   EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
-
-  EXPECT_EQ(properties.at(1)->GetDisplayName(), domainconstants::kTypeAttribute);
-  EXPECT_TRUE(item.Property<std::string>(domainconstants::kTypeAttribute).empty());
-
-  EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kValueAttribute);
-  EXPECT_TRUE(item.Property<std::string>(domainconstants::kValueAttribute).empty());
 
   // setting up domain variable and repeat initialisation
   domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");

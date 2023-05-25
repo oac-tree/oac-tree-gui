@@ -28,13 +28,14 @@ namespace sequencergui::itemconstants
 {
 
 //! Constants to register property items.
-const std::string kName = "kName";
+const std::string kName = "name";
 const std::string kStatus = "kStatus";
 const std::string kDescription = "kDescription";
 const std::string kXpos = "kXpos";
 const std::string kYpos = "kYpos";
 const std::string kChildInstructions = "kChildInstructions";
 const std::string kIsRoot = "kIsRoot";
+const std::string kAnyValueTag = "kAnyValueTag";
 
 }  // namespace sequencergui::itemconstants
 

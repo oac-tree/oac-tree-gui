@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/transform/transform_helpers.h>
@@ -46,9 +47,6 @@ namespace sequencergui
 // VariableItem
 // ----------------------------------------------------------------------------
 
-static inline const std::string kName = "name";
-static inline const std::string kAnyValueTag = "kAnyValueTag";
-
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type) {}
 
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
@@ -57,7 +55,8 @@ std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 
   if (GetType() != UniversalVariableItem::Type)
   {
-    result->AddAttribute(domainconstants::kNameAttribute, Property<std::string>(kName));
+    result->AddAttribute(domainconstants::kNameAttribute,
+                         Property<std::string>(itemconstants::kName));
   }
 
   SetupDomainImpl(result.get());
@@ -77,7 +76,8 @@ void VariableItem::InitFromDomain(const variable_t *variable)
 
     if (variable->HasAttribute(domainconstants::kNameAttribute))
     {
-      SetProperty(kName, variable->GetAttributeString(domainconstants::kNameAttribute));
+      SetProperty(itemconstants::kName,
+                  variable->GetAttributeString(domainconstants::kNameAttribute));
     }
   }
 
@@ -88,18 +88,19 @@ void VariableItem::InitFromDomain(const variable_t *variable)
 
 std::string VariableItem::GetName() const
 {
-  return Property<std::string>(kName);
+  return Property<std::string>(itemconstants::kName);
 }
 
 void VariableItem::SetName(const std::string &value)
 {
-  SetProperty(kName, value);
+  SetProperty(itemconstants::kName, value);
 }
 
 sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const
 {
-  return mvvm::utils::HasTag(*this, kAnyValueTag) ? GetItem<sup::gui::AnyValueItem>(kAnyValueTag)
-                                                  : nullptr;
+  return mvvm::utils::HasTag(*this, itemconstants::kAnyValueTag)
+             ? GetItem<sup::gui::AnyValueItem>(itemconstants::kAnyValueTag)
+             : nullptr;
 }
 
 bool VariableItem::IsAvailable() const
@@ -120,12 +121,12 @@ void VariableItem::SetIsAvailable(bool value)
 
 void VariableItem::RegisterAnyValueItemTag()
 {
-  RegisterTag(mvvm::TagInfo(kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
+  RegisterTag(mvvm::TagInfo(itemconstants::kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
 }
 
 void VariableItem::RegisterCommonProperties()
 {
-  AddProperty(kName, std::string())->SetDisplayName("name");
+  AddProperty(itemconstants::kName, std::string())->SetDisplayName("name");
 }
 
 }  // namespace sequencergui

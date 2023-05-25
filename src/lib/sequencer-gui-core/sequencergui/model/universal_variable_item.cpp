@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
@@ -28,6 +29,17 @@
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
+
+namespace
+{
+// These attributes shouldn't be used from the domain to build properties.
+std::vector<std::string> kSkipDomainAttributeList({sequencergui::domainconstants::kTypeAttribute,
+                                                   sequencergui::domainconstants::kValueAttribute});
+
+// these are properties that shouldn't go to domain
+std::vector<std::string> kSkipItemTagList({sequencergui::itemconstants::kAnyValueTag});
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -63,8 +75,12 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueScalarItem>(properties))
   {
     auto [tag, index] = property->GetTagIndex();
-    // tag of property item should coincide to domain's attribute name
-    result.push_back({tag, property});
+
+    if (!mvvm::utils::Contains(kSkipItemTagList, tag))
+    {
+      // tag of property item should coincide to domain's attribute name
+      result.push_back({tag, property});
+    }
   }
 
   return result;
@@ -77,7 +93,7 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetupFromDomain(variable);
   }
 
-  for (const auto& [attribute_name, item] : GetAttributeItems())
+  for (const auto &[attribute_name, item] : GetAttributeItems())
   {
     SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
   }
@@ -87,9 +103,17 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
 
 void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
-  for (const auto& [attribute_name, item] : GetAttributeItems())
+  for (const auto &[attribute_name, item] : GetAttributeItems())
   {
     SetDomainAttribute(*item, attribute_name, *variable);
+  }
+
+  if (GetAnyValueItem())
+  {
+    // Here we allow LocalVariableItem do not have AnyValueItem on board.
+    // FIXME make sure variable needs such attributes
+    SetJsonTypeAttribute(*this, *variable);
+    SetJsonValueAttribute(*this, *variable);
   }
 }
 
@@ -108,7 +132,10 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
 
   for (const auto &definition : variable->GetAttributeDefinitions())
   {
-    AddPropertyFromDefinition(definition, *this);
+    if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
+    {
+      AddPropertyFromDefinition(definition, *this);
+    }
   }
 
   RegisterAnyValueItemTag();

@@ -20,6 +20,7 @@
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/core/exceptions.h>
@@ -793,7 +794,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
     wait_item.InitFromDomain(wait.get());
 
     EXPECT_EQ(wait_item.GetDisplayName(), "Wait");
-    EXPECT_EQ(wait_item.Property<std::string>("kName"), "First");
+    EXPECT_EQ(wait_item.Property<std::string>(itemconstants::kName), "First");
     EXPECT_EQ(wait_item.GetTimeout(), 0.0);
   }
 }
