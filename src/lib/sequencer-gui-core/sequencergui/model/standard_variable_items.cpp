@@ -22,13 +22,12 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/model/item_constants.h>
 
 #include <sup/sequencer/variable.h>
 
 namespace sequencergui
 {
-static inline const std::string kChannel = "kChannel";
-static inline const std::string kIsAvailable = "kIsAvailable";
 
 // ----------------------------------------------------------------------------
 // ConnectableVariableItem
@@ -38,8 +37,8 @@ ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_typ
     : VariableItem(variable_type)
 {
   RegisterCommonProperties();
-  AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
+  AddProperty(itemconstants::kChannel, std::string())->SetDisplayName("channel");
+  AddProperty(itemconstants::kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
   RegisterAnyValueItemTag();
 }
 
@@ -52,22 +51,22 @@ std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone(bool make_uniq
 
 std::string ConnectableVariableItem::GetChannel() const
 {
-  return Property<std::string>(kChannel);
+  return Property<std::string>(itemconstants::kChannel);
 }
 
 void ConnectableVariableItem::SetChannel(const std::string &value)
 {
-  SetProperty(kChannel, value);
+  SetProperty(itemconstants::kChannel, value);
 }
 
 bool ConnectableVariableItem::IsAvailable() const
 {
-  return Property<bool>(kIsAvailable);
+  return Property<bool>(itemconstants::kIsAvailable);
 }
 
 void ConnectableVariableItem::SetIsAvailable(bool value)
 {
-  SetProperty(kIsAvailable, value);
+  SetProperty(itemconstants::kIsAvailable, value);
 }
 
 void ConnectableVariableItem::InitFromDomainImpl(const variable_t *variable)

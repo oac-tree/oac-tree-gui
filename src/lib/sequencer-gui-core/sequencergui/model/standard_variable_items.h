@@ -45,8 +45,6 @@ public:
   bool IsAvailable() const override;
 
   void SetIsAvailable(bool value) override;
-
-private:
   void InitFromDomainImpl(const variable_t* variable) override;
 };
 
@@ -54,7 +52,7 @@ private:
 class ChannelAccessVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = "ChannelAccessClient";
+  static inline const std::string Type = sequencergui::domainconstants::kChannelAccessVariableType;
 
   using ConnectableVariableItem::ConnectableVariableItem;
   ChannelAccessVariableItem();
@@ -99,7 +97,7 @@ public:
 class PvAccessClientVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = "PvAccessClient";
+  static inline const std::string Type = sequencergui::domainconstants::kPvAccessClientVariableType;
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
@@ -116,7 +114,7 @@ private:
 class PvAccessServerVariableItem : public ConnectableVariableItem
 {
 public:
-  static inline const std::string Type = "PvAccessServer";
+  static inline const std::string Type = sequencergui::domainconstants::kPvAccessServerVariableType;
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
