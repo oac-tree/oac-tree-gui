@@ -38,19 +38,28 @@ class UniversalInstructionItemTests : public ::testing::Test
 
 TEST_F(UniversalInstructionItemTests, InitialState)
 {
-  sequencergui::UniversalInstructionItem item;
+  UniversalInstructionItem item;
 
   EXPECT_EQ(item.GetDisplayName(), UniversalInstructionItem::Type);
   EXPECT_TRUE(mvvm::utils::RegisteredTags(item).empty());
   EXPECT_TRUE(item.GetDomainType().empty());
 }
 
+//! Attempt to create domain variable using uninitialized item.
+
+TEST_F(UniversalInstructionItemTests, AttemptToCreateDomainVariable)
+{
+  UniversalInstructionItem item;
+  EXPECT_THROW(item.CreateDomainInstruction(), sup::sequencer::InvalidOperationException);
+}
+
 //! Initialisation from default constructed domain variable.
+
 TEST_F(UniversalInstructionItemTests, InitFromDomain)
 {
   auto domain_instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  sequencergui::UniversalInstructionItem item;
+  UniversalInstructionItem item;
   item.InitFromDomain(domain_instruction.get());
 
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
@@ -72,4 +81,16 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
 
   EXPECT_EQ(properties.at(2)->GetDisplayName(), domainconstants::kTimeoutAttribute);
   EXPECT_EQ(item.Property<double>(domainconstants::kTimeoutAttribute), 0);
+}
+
+TEST_F(UniversalInstructionItemTests, CreateUsingDomainName)
+{
+  UniversalInstructionItem item(domainconstants::kWaitInstructionType);
+  item.SetProperty(domainconstants::kNameAttribute, "abc");
+
+  auto domain_variable = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_variable->GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
+
+  // more tests in standard_instruction_item_tests.cpp
 }

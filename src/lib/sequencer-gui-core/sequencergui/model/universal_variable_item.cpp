@@ -23,21 +23,22 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
 
 namespace
 {
 // These attributes shouldn't be used from the domain to build properties.
-std::vector<std::string> kSkipDomainAttributeList({sequencergui::domainconstants::kTypeAttribute,
-                                                   sequencergui::domainconstants::kValueAttribute});
+const std::vector<std::string> kSkipDomainAttributeList(
+    {sequencergui::domainconstants::kTypeAttribute,
+     sequencergui::domainconstants::kValueAttribute});
 
 // these are properties that shouldn't go to domain
-std::vector<std::string> kSkipItemTagList({sequencergui::itemconstants::kAnyValueTag});
+const std::vector<std::string> kSkipItemTagList({sequencergui::itemconstants::kAnyValueTag});
 
 }  // namespace
 
