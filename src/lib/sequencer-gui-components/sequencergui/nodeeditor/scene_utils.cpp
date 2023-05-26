@@ -105,11 +105,6 @@ std::vector<QPointF> GetPositions(const QPointF& reference, int n_points, double
 
 QColor GetBaseColor(const InstructionItem* instruction)
 {
-  if (instruction->GetType() == UnknownInstructionItem::Type)
-  {
-    return {"chartreuse"};
-  }
-
   if (IsDecoratorInstruction(instruction))
   {
     return {"lightseagreen"};
@@ -135,8 +130,7 @@ InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContaine
   catch (const mvvm::KeyNotFoundException& ex)
   {
     // The UI knows nothing about instruction of given type.
-    return dynamic_cast<InstructionItem*>(
-        model->InsertItem(CreateUnknownInstructionItem(domain_type), container, {}));
+    return nullptr;
   }
 }
 

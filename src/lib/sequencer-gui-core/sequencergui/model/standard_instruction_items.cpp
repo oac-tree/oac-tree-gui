@@ -943,49 +943,4 @@ double WaitItem::GetTimeout() const
   return Property<double>(kTimeout);
 }
 
-// ----------------------------------------------------------------------------
-// UnknownInstructionItem
-// ----------------------------------------------------------------------------
-UnknownInstructionItem::UnknownInstructionItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-}
-
-std::unique_ptr<mvvm::SessionItem> UnknownInstructionItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<UnknownInstructionItem>(*this, make_unique_id);
-}
-
-std::string UnknownInstructionItem::GetDomainType() const
-{
-  return m_domain_name;
-}
-
-//! Initialise instruction from domain item.
-//! This is temporarily implementation which is used for all instructions, yet unknown for the  GUI.
-
-void UnknownInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  m_domain_name = instruction->GetType();
-
-  SetDisplayName(instruction->GetType());
-
-  // creating string properties for every domain attribute found
-  for (auto &[name, value] : GetAttributes(instruction))
-  {
-    m_domain_attributes.push_back(name);
-    AddProperty(name, value);
-  }
-}
-
-void UnknownInstructionItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  for (const auto &name : m_domain_attributes)
-  {
-    instruction->AddAttribute(name, Property<std::string>(name));
-  }
-}
-
 }  // namespace sequencergui

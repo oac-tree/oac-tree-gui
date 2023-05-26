@@ -26,6 +26,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 
@@ -41,8 +42,8 @@ namespace testutils
 sequencergui::ProcedureItem* CreateInvalidProcedureItem(sequencergui::SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  // InstructionItem that doesn't have counterpart in SequencerDomain
-  auto item = model->InsertItem<UnknownInstructionItem>(procedure_item->GetInstructionContainer());
+  // Uninitialised instruction doesn't have counterpart in SequencerDomain
+  model->InsertItem<UniversalInstructionItem>(procedure_item->GetInstructionContainer());
   return procedure_item;
 }
 

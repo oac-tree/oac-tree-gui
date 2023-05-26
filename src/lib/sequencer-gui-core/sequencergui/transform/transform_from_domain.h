@@ -47,10 +47,6 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 //! one top-level root instruction.
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
-//! Creates UnknownInstructionItem from the domain type. The instruction will be initialised with
-//! the default attribute map from the domain. See explanations in the implementation.
-std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type);
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_

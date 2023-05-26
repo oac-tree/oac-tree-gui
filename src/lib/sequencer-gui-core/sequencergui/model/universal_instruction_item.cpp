@@ -64,7 +64,6 @@ std::string UniversalInstructionItem::GetDomainType() const
 }
 
 //! Initialise instruction from domain item.
-//! This is temporarily implementation which is used for all instructions, yet unknown for the  GUI.
 
 void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
 {

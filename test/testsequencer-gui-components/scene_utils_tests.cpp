@@ -132,26 +132,6 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 
-//! Checking adding unknown domain_type instruction to the model.
-
-TEST_F(SceneUtilsTest, AddUnknownInstruction)
-{
-  // Registering domain instruction that will play the role of the instruction unknown to the model
-  RegisterUnknownDomainInstruction();
-
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-
-  // adding unknown domain instruction
-  auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
-                                   UnknownDomainInstruction::Type);
-
-  // It should result to UnknownInstructionItem with proper DomainType on board
-  EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);
-  EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
-  EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
-}
-
 //! Checking adding instruction aggregate.
 
 TEST_F(SceneUtilsTest, AddAggregate)

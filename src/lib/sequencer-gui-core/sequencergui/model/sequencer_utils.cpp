@@ -79,7 +79,6 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<ParallelSequenceItem>();
   result->RegisterItem<RepeatItem>();
   result->RegisterItem<SequenceItem>();
-  result->RegisterItem<UnknownInstructionItem>();
   result->RegisterItem<UserChoiceItem>();
   result->RegisterItem<VariableResetItem>();
   result->RegisterItem<WaitItem>();

@@ -51,7 +51,7 @@ std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone(bool make_unique_id) c
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
 {
   // Initialise from common attributes (which exist in every Instruction).
-  if (GetType() != UnknownInstructionItem::Type && GetType() != UniversalInstructionItem::Type)
+  if (GetType() != UniversalInstructionItem::Type)
   {
     if (instruction->GetType() != GetDomainType())
     {
@@ -60,7 +60,8 @@ void InstructionItem::InitFromDomain(const instruction_t *instruction)
 
     if (instruction->HasAttribute(domainconstants::kNameAttribute))
     {
-      SetProperty(itemconstants::kName, instruction->GetAttributeString(domainconstants::kNameAttribute));
+      SetProperty(itemconstants::kName,
+                  instruction->GetAttributeString(domainconstants::kNameAttribute));
     }
   }
 
@@ -77,10 +78,7 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
   auto result = ::sequencergui::CreateDomainInstruction(GetDomainType());
 
   // Set common attributes (that exist in every instruction)
-  if (GetType() != UnknownInstructionItem::Type)  // UnknownInstructionItem has own implementation
-  {
-    AddNonEmptyAttribute(domainconstants::kNameAttribute, GetName(), *result);
-  }
+  AddNonEmptyAttribute(domainconstants::kNameAttribute, GetName(), *result);
   result->AddAttribute(domainconstants::kIsRootAttribute, mvvm::utils::FromBool(IsRoot()));
   SetupDomainImpl(result.get());
   return result;

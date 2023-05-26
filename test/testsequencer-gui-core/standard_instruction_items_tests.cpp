@@ -852,23 +852,3 @@ TEST_F(StandardInstructionItemsTest, VariableResetItemToDomain)
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
-
-//! UnknownInstructionItem tests.
-//! Here we pretend that Condition insrtuction is uknown for a GUI, and check how
-//! UnknownInstructionItem behaves on the way from/to domain.
-
-TEST_F(StandardInstructionItemsTest, UnknownInstructionFromConditionItem)
-{
-  auto domain_item = CreateDomainInstruction(domainconstants::kConditionInstructionType);
-  domain_item->AddAttribute(domainconstants::kVarNameAttribute, "abc");
-
-  // from domain
-  UnknownInstructionItem item;
-  item.InitFromDomain(domain_item.get());
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kVarNameAttribute), std::string("abc"));
-
-  // to domain
-  auto new_domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(new_domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(new_domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
-}

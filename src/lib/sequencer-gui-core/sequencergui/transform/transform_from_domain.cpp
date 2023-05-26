@@ -145,7 +145,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 
   if (!catalogue->Contains(domain_type))
   {
-    return std::make_unique<UnknownInstructionItem>();
+    return std::make_unique<UniversalInstructionItem>();
   }
 
   return catalogue->Create(domain_type);
@@ -155,17 +155,6 @@ std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure,
 {
   GUIObjectBuilder builder;
   return builder.CreateProcedureItem(procedure, root_only);
-}
-
-std::unique_ptr<InstructionItem> CreateUnknownInstructionItem(const std::string& domain_type)
-{
-  // This handles a special case when instruction's domain_type is unknown to the GUI.
-  // We create UnkownInstructionItem and initialise it's attributes from the temporary domain
-  // instruction.
-  auto domain_instruction = ::sequencergui::CreateDomainInstruction(domain_type);
-  auto result = std::make_unique<UnknownInstructionItem>();
-  result->InitFromDomain(domain_instruction.get());
-  return result;
 }
 
 }  // namespace sequencergui

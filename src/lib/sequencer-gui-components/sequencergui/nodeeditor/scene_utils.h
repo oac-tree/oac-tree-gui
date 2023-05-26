@@ -68,8 +68,7 @@ double GetAlignmentGridWidth();
 QColor GetBaseColor(const InstructionItem* instruction);
 
 //! Adds InstructionItem to the `model` for a  given `domain_type`, and returns the result to the
-//! user. If the model doesn't have given InstructionItem registered, create UnknownInstructionItem
-//! instead.
+//! user. If the model doesn't have given InstructionItem registered do nothing.
 InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContainerItem* container,
                                       const std::string& domain_type);
 

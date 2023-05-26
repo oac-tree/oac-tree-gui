@@ -216,13 +216,3 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SystemCallInstructionItem>(
       kSystemCallInstructionType));
 }
-
-TEST_F(TransformFromDomainTest, CreateUnknownInstructionItem)
-{
-  using namespace sequencergui::domainconstants;
-
-  auto item = CreateUnknownInstructionItem(kWaitInstructionType);
-
-  EXPECT_EQ(item->GetType(), UnknownInstructionItem::Type);
-  EXPECT_EQ(item->GetDomainType(), kWaitInstructionType);
-}
