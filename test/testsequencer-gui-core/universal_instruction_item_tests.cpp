@@ -67,7 +67,7 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
   // registered tags should coincide with instruction attribute and AnyValueTag
   std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
-       domainconstants::kTimeoutAttribute, itemconstants::kChildInstructions});
+       domainconstants::kTimeoutAttribute});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should provide an access to underlying values

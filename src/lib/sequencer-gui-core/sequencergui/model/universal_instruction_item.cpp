@@ -51,6 +51,12 @@ UniversalInstructionItem::UniversalInstructionItem(const std::string &domain_typ
     auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
     SetupFromDomain(domain_variable.get());
   }
+  //  AddProperty(itemconstants::kStatus, std::string())
+  //      ->SetDisplayName("Status")
+  //      ->SetVisible(false)
+  //      ->SetEditable(false);
+  //  AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
+  //  AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone(bool make_unique_id) const
@@ -107,18 +113,18 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   return result;
 }
 
-void UniversalInstructionItem::SetupFromDomain(const instruction_t *variable)
+void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
 {
   if (!m_domain_type.empty())
   {
     throw LogicErrorException("It is not possible to setup instruction twice");
   }
 
-  m_domain_type = variable->GetType();
+  m_domain_type = instruction->GetType();
 
-  SetDisplayName(variable->GetType());
+  SetDisplayName(instruction->GetType());
 
-  for (const auto &definition : variable->GetAttributeDefinitions())
+  for (const auto &definition : instruction->GetAttributeDefinitions())
   {
     if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
     {
@@ -126,9 +132,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *variable)
     }
   }
 
-  // FIXME make it dependent on instruction base (decorator,  vs compound)
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
+  RegisterChildrenTag(*instruction, *this);
 }
 
 }  // namespace sequencergui

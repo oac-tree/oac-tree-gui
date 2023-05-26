@@ -73,7 +73,7 @@ private:
    */
   std::vector<Attribute> GetAttributeItems() const;
 
-  void SetupFromDomain(const instruction_t* variable);
+  void SetupFromDomain(const instruction_t* instruction);
 
   std::string m_domain_type;  //!< Domain typename.
 };
