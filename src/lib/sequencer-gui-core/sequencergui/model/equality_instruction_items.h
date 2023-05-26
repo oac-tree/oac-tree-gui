@@ -22,7 +22,9 @@
 
 //! Collection of classes to represent Sequencer instructions.
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/universal_instruction_item.h>
 
 namespace sequencergui
 {
@@ -51,7 +53,7 @@ private:
 class LessThanItem : public ComparisonItem
 {
 public:
-  static inline const std::string Type = "LessThan";
+  static inline const std::string Type = sequencergui::domainconstants::kLessThanInstructionType;
 
   using ComparisonItem::ComparisonItem;
   LessThanItem();
@@ -65,7 +67,8 @@ public:
 class LessThanOrEqualItem : public ComparisonItem
 {
 public:
-  static inline const std::string Type = "LessThanOrEqual";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kLessThanOrEqualInstructionType;
 
   using ComparisonItem::ComparisonItem;
   LessThanOrEqualItem();
@@ -79,7 +82,7 @@ public:
 class EqualsItem : public ComparisonItem
 {
 public:
-  static inline const std::string Type = "Equals";
+  static inline const std::string Type = sequencergui::domainconstants::kEqualsInstructionType;
 
   using ComparisonItem::ComparisonItem;
   EqualsItem();
@@ -93,7 +96,8 @@ public:
 class GreaterThanOrEqualItem : public ComparisonItem
 {
 public:
-  static inline const std::string Type = "GreaterThanOrEqual";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kGreaterThanOrEqualInstructionType;
 
   using ComparisonItem::ComparisonItem;
   GreaterThanOrEqualItem();
@@ -103,12 +107,11 @@ public:
   std::string GetDomainType() const override;
 };
 
-
 //! Represent GreaterThan instruction.
 class GreaterThanItem : public ComparisonItem
 {
 public:
-  static inline const std::string Type = "GreaterThan";
+  static inline const std::string Type = sequencergui::domainconstants::kGreaterThanInstructionType;
 
   using ComparisonItem::ComparisonItem;
   GreaterThanItem();
@@ -117,7 +120,6 @@ public:
 
   std::string GetDomainType() const override;
 };
-
 
 }  // namespace sequencergui
 

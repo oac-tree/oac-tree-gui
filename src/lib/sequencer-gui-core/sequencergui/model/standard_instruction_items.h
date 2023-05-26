@@ -22,7 +22,9 @@
 
 //! Collection of classes to represent Sequencer instructions.
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/universal_instruction_item.h>
 
 namespace sequencergui
 {
@@ -31,7 +33,7 @@ namespace sequencergui
 class ChoiceItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Choice";
+  static inline const std::string Type = sequencergui::domainconstants::kChoiceInstructionType;
 
   using InstructionItem::InstructionItem;
   ChoiceItem();
@@ -53,7 +55,7 @@ private:
 class ConditionItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Condition";
+  static inline const std::string Type = sequencergui::domainconstants::kConditionInstructionType;
 
   using InstructionItem::InstructionItem;
   ConditionItem();
@@ -75,7 +77,7 @@ private:
 class CopyItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Copy";
+  static inline const std::string Type = sequencergui::domainconstants::kCopyInstructionType;
 
   using InstructionItem::InstructionItem;
   CopyItem();
@@ -101,7 +103,7 @@ private:
 class DecrementItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Decrement";
+  static inline const std::string Type = sequencergui::domainconstants::kDecrementInstructionType;
 
   using InstructionItem::InstructionItem;
   DecrementItem();
@@ -123,7 +125,7 @@ private:
 class FallbackItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Fallback";
+  static inline const std::string Type = sequencergui::domainconstants::kFallbackInstructionType;
 
   using InstructionItem::InstructionItem;
   FallbackItem();
@@ -141,7 +143,8 @@ private:
 class ForceSuccessItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "ForceSuccess";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kForceSuccessInstructionType;
 
   using InstructionItem::InstructionItem;
   ForceSuccessItem();
@@ -159,7 +162,7 @@ private:
 class IncludeItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Include";
+  static inline const std::string Type = sequencergui::domainconstants::kIncludeInstructionType;
 
   using InstructionItem::InstructionItem;
   IncludeItem();
@@ -185,7 +188,7 @@ private:
 class IncrementItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Increment";
+  static inline const std::string Type = sequencergui::domainconstants::kIncrementInstructionType;
 
   using InstructionItem::InstructionItem;
   IncrementItem();
@@ -207,7 +210,7 @@ private:
 class InputItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Input";
+  static inline const std::string Type = sequencergui::domainconstants::kInputInstructionType;
 
   using InstructionItem::InstructionItem;
   InputItem();
@@ -233,7 +236,7 @@ private:
 class InverterItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Inverter";
+  static inline const std::string Type = sequencergui::domainconstants::kInverterInstructionType;
 
   using InstructionItem::InstructionItem;
   InverterItem();
@@ -251,7 +254,7 @@ private:
 class ListenItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Listen";
+  static inline const std::string Type = sequencergui::domainconstants::kListenInstructionType;
 
   using InstructionItem::InstructionItem;
   ListenItem();
@@ -275,7 +278,7 @@ private:
 class MessageItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Message";
+  static inline const std::string Type = sequencergui::domainconstants::kMessageInstructionType;
 
   using InstructionItem::InstructionItem;
   MessageItem();
@@ -297,7 +300,7 @@ private:
 class OutputItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Output";
+  static inline const std::string Type = sequencergui::domainconstants::kOutputInstructionType;
 
   using InstructionItem::InstructionItem;
   OutputItem();
@@ -323,7 +326,7 @@ private:
 class ParallelSequenceItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "ParallelSequence";
+  static inline const std::string Type = sequencergui::domainconstants::kParallelInstructionType;
 
   using InstructionItem::InstructionItem;
   ParallelSequenceItem();
@@ -349,7 +352,7 @@ private:
 class RepeatItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Repeat";
+  static inline const std::string Type = sequencergui::domainconstants::kRepeatInstructionType;
 
   using InstructionItem::InstructionItem;
   RepeatItem();
@@ -371,7 +374,7 @@ private:
 class SequenceItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Sequence";
+  static inline const std::string Type = sequencergui::domainconstants::kSequenceInstructionType;
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
@@ -389,7 +392,7 @@ private:
 class UserChoiceItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "UserChoice";
+  static inline const std::string Type = sequencergui::domainconstants::kUserChoiceInstructionType;
 
   using InstructionItem::InstructionItem;
   UserChoiceItem();
@@ -411,7 +414,8 @@ private:
 class VariableResetItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "ResetVariable";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kVariableResetInstructionType;
 
   using InstructionItem::InstructionItem;
   VariableResetItem();
@@ -433,7 +437,7 @@ private:
 class WaitItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Wait";
+  static inline const std::string Type = sequencergui::domainconstants::kWaitInstructionType;
 
   using InstructionItem::InstructionItem;
   WaitItem();

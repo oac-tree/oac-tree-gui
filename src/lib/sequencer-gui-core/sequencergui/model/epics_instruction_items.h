@@ -22,7 +22,9 @@
 
 //! Collection of classes to represent Sequencer instructions from sup-sequencer-plugin-epics.
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/universal_instruction_item.h>
 
 namespace sequencergui
 {
@@ -91,7 +93,8 @@ private:
 class ChannelAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
-  static inline const std::string Type = "ChannelAccessRead";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kChannelAccessReadInstructionType;
 
   using EpicsReadInstructionItem::EpicsReadInstructionItem;
   ChannelAccessReadInstructionItem();
@@ -105,7 +108,8 @@ public:
 class ChannelAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
-  static inline const std::string Type = "ChannelAccessWrite";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kChannelAccessWriteInstructionType;
 
   using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   ChannelAccessWriteInstructionItem();
@@ -119,7 +123,8 @@ public:
 class PvAccessReadInstructionItem : public EpicsReadInstructionItem
 {
 public:
-  static inline const std::string Type = "PvAccessRead";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kPvAccessReadInstructionType;
 
   using EpicsReadInstructionItem::EpicsReadInstructionItem;
   PvAccessReadInstructionItem();
@@ -133,7 +138,8 @@ public:
 class PvAccessWriteInstructionItem : public EpicsWriteInstructionItem
 {
 public:
-  static inline const std::string Type = "PvAccessWrite";
+  static inline const std::string Type =
+      sequencergui::domainconstants::kPvAccessWriteInstructionType;
 
   using EpicsWriteInstructionItem::EpicsWriteInstructionItem;
   PvAccessWriteInstructionItem();
@@ -147,7 +153,7 @@ public:
 class RPCClientInstruction : public InstructionItem
 {
 public:
-  static inline const std::string Type = "RPCClient";
+  static inline const std::string Type = sequencergui::domainconstants::kRPCClientInstructionType;
 
   using InstructionItem::InstructionItem;
   RPCClientInstruction();
@@ -189,7 +195,7 @@ private:
 class SystemCallInstructionItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "SystemCall";
+  static inline const std::string Type = sequencergui::domainconstants::kSystemCallInstructionType;
 
   using InstructionItem::InstructionItem;
   SystemCallInstructionItem();
@@ -211,7 +217,7 @@ private:
 class LogInstructionItem : public InstructionItem
 {
 public:
-  static inline const std::string Type = "Log";
+  static inline const std::string Type = sequencergui::domainconstants::kLogInstructionType;
 
   using InstructionItem::InstructionItem;
   LogInstructionItem();
