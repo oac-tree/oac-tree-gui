@@ -344,9 +344,7 @@ TEST_F(TransformHelpersTests, SetPropertyFromDomainAttribute)
     EXPECT_NO_THROW(
         SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
 
-    // still default value since domain Variable wasn't setup and can't report attribute in the form
-    // of AnyValue
-    EXPECT_EQ(item.Data<std::string>(), std::string(""));
+    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 }
 
