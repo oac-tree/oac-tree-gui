@@ -153,16 +153,21 @@ mvvm::SessionItem *InstructionItem::GetNameItem() const
   return GetItem(itemconstants::kName);
 }
 
-void InstructionItem::RegisterCommonProperties()
+void InstructionItem::RegisterTechProperties()
 {
-  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
-  AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
   AddProperty(itemconstants::kStatus, std::string())
       ->SetDisplayName("Status")
       ->SetVisible(false)
       ->SetEditable(false);
   AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
   AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
+}
+
+void InstructionItem::RegisterCommonProperties()
+{
+  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
+  AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
+  RegisterTechProperties();
 }
 
 }  // namespace sequencergui

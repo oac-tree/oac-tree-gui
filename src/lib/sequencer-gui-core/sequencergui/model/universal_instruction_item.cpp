@@ -51,12 +51,6 @@ UniversalInstructionItem::UniversalInstructionItem(const std::string &domain_typ
     auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
     SetupFromDomain(domain_variable.get());
   }
-  //  AddProperty(itemconstants::kStatus, std::string())
-  //      ->SetDisplayName("Status")
-  //      ->SetVisible(false)
-  //      ->SetEditable(false);
-  //  AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
-  //  AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone(bool make_unique_id) const
@@ -133,6 +127,8 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
   }
 
   RegisterChildrenTag(*instruction, *this);
+
+  RegisterTechProperties();
 }
 
 }  // namespace sequencergui
