@@ -21,17 +21,21 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/universal_variable_item.h>
-
-#include <mvvm/model/compound_item.h>
-#include <mvvm/model/item_utils.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
+
+#include <mvvm/model/compound_item.h>
+#include <mvvm/model/item_utils.h>
+#include <mvvm/model/sessionitem_container.h>
+#include <mvvm/model/tagged_items.h>
+#include <mvvm/model/taginfo.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
@@ -343,5 +347,37 @@ TEST_F(TransformHelpersTests, SetPropertyFromDomainAttribute)
     // still default value since domain Variable wasn't setup and can't report attribute in the form
     // of AnyValue
     EXPECT_EQ(item.Data<std::string>(), std::string(""));
+  }
+}
+
+TEST_F(TransformHelpersTests, RegisterChildrenTag)
+{
+  {  // case when variable has no children
+    auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    mvvm::CompoundItem item;
+    RegisterChildrenTag(*instruction, item);
+    EXPECT_FALSE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+  }
+
+  {  // case when variable has no children
+    auto instruction = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+    mvvm::CompoundItem item;
+    RegisterChildrenTag(*instruction, item);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+
+    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
+    EXPECT_EQ(taginfo.GetMax(), -1);
+    EXPECT_EQ(taginfo.GetMin(), 0);
+  }
+
+  {  // case when variable has no children
+    auto instruction = CreateDomainInstruction(domainconstants::kInverterInstructionType);
+    mvvm::CompoundItem item;
+    RegisterChildrenTag(*instruction, item);
+    EXPECT_TRUE(mvvm::utils::HasTag(item, itemconstants::kChildInstructions));
+
+    auto taginfo = item.GetTaggedItems()->ContainerAt(0).GetTagInfo();
+    EXPECT_EQ(taginfo.GetMax(), 1);
+    EXPECT_EQ(taginfo.GetMin(), 0);
   }
 }

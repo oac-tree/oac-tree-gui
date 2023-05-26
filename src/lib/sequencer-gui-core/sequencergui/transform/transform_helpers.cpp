@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -246,5 +247,19 @@ template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem 
 template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem &item,
                                                 const std::string &attribute_name,
                                                 instruction_t &domain);
+
+void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &item)
+{
+  if (instruction.GetCategory() == sup::sequencer::Instruction::kCompound)
+  {
+    item.RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
+                     /*as_default*/ true);
+  }
+  else if (instruction.GetCategory() == sup::sequencer::Instruction::kDecorator)
+  {
+    item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
+                     /*as_default*/ true);
+  }
+}
 
 }  // namespace sequencergui

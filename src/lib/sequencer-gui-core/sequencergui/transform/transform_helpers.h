@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
 #define SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
 
-//! Collection of helper functions to transform VariableItem to/from domain.
+//! Collection of helper functions to transform VariableItem and InstructionItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
@@ -125,6 +125,14 @@ extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScal
 extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem& item,
                                                        const std::string& attribute_name,
                                                        instruction_t& domain);
+
+/**
+ * @brief Register tag in instruction item to be able to add other instructions as children.
+ *
+ * @param instruction The domain instruction is used to deduce category (compound, decorator).
+ * @param item An item where tag will be registered.
+ */
+void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item);
 
 }  // namespace sequencergui
 
