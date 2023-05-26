@@ -22,16 +22,16 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/variable_item.h>
-
-#include <mvvm/interfaces/sessionmodel_interface.h>
-#include <mvvm/model/item_utils.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
+
+#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/item_utils.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/attribute_utils.h>
 #include <sup/sequencer/instruction.h>
@@ -206,22 +206,31 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   return property;
 }
 
-void SetPropertyFromDomainAttribute(const variable_t &variable, const std::string &attribute_name,
+template <typename T>
+void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
                                     sup::gui::AnyValueScalarItem &item)
 {
   try
   {
-    auto anyvalue = variable.GetAttributeValue<sup::dto::AnyValue>(attribute_name);
+    auto anyvalue = domain.template GetAttributeValue<sup::dto::AnyValue>(attribute_name);
     sup::gui::SetDataFromScalar(anyvalue, item);
   }
   catch (const std::exception)
   {
-    // It means that variable wasn't set up.
+    // It means that object wasn't set.
   }
 }
 
+template void SetPropertyFromDomainAttribute<variable_t>(const variable_t &domain,
+                                                         const std::string &attribute_name,
+                                                         sup::gui::AnyValueScalarItem &item);
+template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t &domain,
+                                                            const std::string &attribute_name,
+                                                            sup::gui::AnyValueScalarItem &item);
+
+template <typename T>
 void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::string &attribute_name,
-                        variable_t &variable)
+                        T &domain)
 {
   auto anyvalue = sup::gui::GetAnyValueFromScalar(item);
   auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
@@ -229,7 +238,13 @@ void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::str
   {
     throw LogicErrorException("Can't create an attribute string from item property");
   }
-  variable.AddAttribute(attribute_name, attribute_string);
+  domain.AddAttribute(attribute_name, attribute_string);
 }
+
+template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem &item,
+                                             const std::string &attribute_name, variable_t &domain);
+template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem &item,
+                                                const std::string &attribute_name,
+                                                instruction_t &domain);
 
 }  // namespace sequencergui

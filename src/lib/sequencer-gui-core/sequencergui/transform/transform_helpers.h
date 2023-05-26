@@ -23,7 +23,6 @@
 //! Collection of helper functions to transform VariableItem to/from domain.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <memory>
@@ -86,23 +85,46 @@ sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& 
 
 /**
  * @brief Set property item from the domain attribute.
- * @param variable Domain variable to set from.
- * @param attribute_name The attribute name of the domain variable
- * @param item An item representing attribute.
+ *
+ * @tparam Domain instruction or variable.
+ *
+ * @param variable Domain object to set from.
+ * @param attribute_name The attribute name of the domain object.
+ * @param item An item representing an attribute.
+ *
  */
-void SetPropertyFromDomainAttribute(const variable_t& variable, const std::string& attribute_name,
+
+template <typename T>
+void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
                                     sup::gui::AnyValueScalarItem& item);
+
+extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
+                                                                const std::string& attribute_name,
+                                                                sup::gui::AnyValueScalarItem& item);
+extern template void SetPropertyFromDomainAttribute<instruction_t>(
+    const instruction_t& domain, const std::string& attribute_name,
+    sup::gui::AnyValueScalarItem& item);
 
 /**
  * @brief Set an attribute for domain variable from AnyValueScalarItem property.
+ *
+ * @tparam Domain instruction or variable.
  *
  * @param item The AnyValueScalarItem representing domain attribute.
  * @param attribute_name The name of the domain attribute to set.
  * @param variable The domain sequencer variable.
  */
 
+template <typename T>
 void SetDomainAttribute(const sup::gui::AnyValueScalarItem& item, const std::string& attribute_name,
-                        variable_t& variable);
+                        T& domain);
+
+extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem& item,
+                                                    const std::string& attribute_name,
+                                                    variable_t& domain);
+extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem& item,
+                                                       const std::string& attribute_name,
+                                                       instruction_t& domain);
 
 }  // namespace sequencergui
 
