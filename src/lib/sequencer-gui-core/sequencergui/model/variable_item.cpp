@@ -19,14 +19,9 @@
 
 #include "variable_item.h"
 
-#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/universal_variable_item.h>
-#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -52,37 +47,12 @@ VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_typ
 std::unique_ptr<variable_t> VariableItem::CreateDomainVariable() const
 {
   auto result = ::sequencergui::CreateDomainVariable(GetDomainType());
-
-  if (GetType() != UniversalVariableItem::Type)
-  {
-    result->AddAttribute(domainconstants::kNameAttribute,
-                         Property<std::string>(itemconstants::kName));
-  }
-
   SetupDomainImpl(result.get());
   return result;
 }
 
 void VariableItem::InitFromDomain(const variable_t *variable)
 {
-  if (GetType() != UniversalVariableItem::Type)
-  {
-    if (variable->GetType() != GetDomainType())
-    {
-      throw std::runtime_error("Error in VariableItem: domain instruction type '"
-                               + variable->GetType() + "' doesn't match expected '"
-                               + GetDomainType() + "' type.");
-    }
-
-    if (variable->HasAttribute(domainconstants::kNameAttribute))
-    {
-      SetProperty(itemconstants::kName,
-                  variable->GetAttributeString(domainconstants::kNameAttribute));
-    }
-  }
-
-//  SetAnyValueFromDomainVariable(*variable, *this);
-
   InitFromDomainImpl(variable);
 }
 
