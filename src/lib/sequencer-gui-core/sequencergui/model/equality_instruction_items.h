@@ -20,20 +20,19 @@
 #ifndef SEQUENCERGUI_MODEL_EQUALITY_INSTRUCTION_ITEMS_H_
 #define SEQUENCERGUI_MODEL_EQUALITY_INSTRUCTION_ITEMS_H_
 
-//! Collection of classes to represent Sequencer instructions.
+//! Collection of classes to represent Sequencer equality instructions.
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/universal_instruction_item.h>
 
 namespace sequencergui
 {
 
 //! Base instruction for all equality instructions.
-class ComparisonItem : public InstructionItem
+class ComparisonItem : public UniversalInstructionItem
 {
 public:
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   ComparisonItem(const std::string& item_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -43,10 +42,6 @@ public:
 
   std::string GetRightHandSide() const;
   void SetRightHandSide(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent LessThan instruction.
@@ -59,8 +54,6 @@ public:
   LessThanItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represent LessThanOrEqual instruction.
@@ -74,8 +67,6 @@ public:
   LessThanOrEqualItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represent Equals instruction.
@@ -88,8 +79,6 @@ public:
   EqualsItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represent GreaterThanOrEqual instruction.
@@ -103,8 +92,6 @@ public:
   GreaterThanOrEqualItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represent GreaterThan instruction.
@@ -117,8 +104,6 @@ public:
   GreaterThanItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 }  // namespace sequencergui

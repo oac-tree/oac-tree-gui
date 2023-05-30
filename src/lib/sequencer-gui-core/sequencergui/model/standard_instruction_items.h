@@ -23,7 +23,6 @@
 //! Collection of classes to represent Sequencer instructions.
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/universal_instruction_item.h>
 
 namespace sequencergui
