@@ -30,25 +30,19 @@ namespace sequencergui
 {
 
 //! Represent Choice instruction.
-class ChoiceItem : public InstructionItem
+class ChoiceItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kChoiceInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   ChoiceItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   std::string GetVariableName() const;
 
   void SetVariableName(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Condition instruction.

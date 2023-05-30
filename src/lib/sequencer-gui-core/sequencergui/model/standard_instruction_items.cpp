@@ -53,45 +53,21 @@ namespace sequencergui
 // ChoiceItem
 // ----------------------------------------------------------------------------
 
-ChoiceItem::ChoiceItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-}
+ChoiceItem::ChoiceItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> ChoiceItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<ChoiceItem>(*this, make_unique_id);
 }
 
-std::string ChoiceItem::GetDomainType() const
-{
-  return domainconstants::kChoiceInstructionType;
-}
-
-void ChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
-  }
-}
-
-void ChoiceItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
-}
-
 std::string ChoiceItem::GetVariableName() const
 {
-  return Property<std::string>(kVariableName);
+  return Property<std::string>(domainconstants::kVarNameAttribute);
 }
 
 void ChoiceItem::SetVariableName(const std::string &value)
 {
-  SetProperty(kVariableName, value);
+  SetProperty(domainconstants::kVarNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
