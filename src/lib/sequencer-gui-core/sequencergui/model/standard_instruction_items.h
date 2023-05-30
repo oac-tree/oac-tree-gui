@@ -84,12 +84,12 @@ public:
 };
 
 //! Represent Decrement instruction.
-class DecrementItem : public InstructionItem
+class DecrementItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kDecrementInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   DecrementItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -99,28 +99,18 @@ public:
   std::string GetVariableName() const;
 
   void SetVariableName(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Fallback instruction.
-class FallbackItem : public InstructionItem
+class FallbackItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kFallbackInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   FallbackItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent ForceSuccess instruction.

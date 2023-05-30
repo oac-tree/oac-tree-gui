@@ -93,9 +93,7 @@ void ConditionItem::SetVariableName(const std::string &value)
 // CopyItem
 // ----------------------------------------------------------------------------
 
-CopyItem::CopyItem() : UniversalInstructionItem(Type)
-{
-}
+CopyItem::CopyItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> CopyItem::Clone(bool make_unique_id) const
 {
@@ -131,11 +129,7 @@ void CopyItem::SetOutput(const std::string &value)
 // DecrementItem
 // ----------------------------------------------------------------------------
 
-DecrementItem::DecrementItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
-}
+DecrementItem::DecrementItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> DecrementItem::Clone(bool make_unique_id) const
 {
@@ -147,54 +141,24 @@ std::string DecrementItem::GetDomainType() const
   return domainconstants::kDecrementInstructionType;
 }
 
-void DecrementItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
-  }
-}
-
-void DecrementItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
-}
-
 std::string DecrementItem::GetVariableName() const
 {
-  return Property<std::string>(kVariableName);
+  return Property<std::string>(domainconstants::kVarNameAttribute);
 }
 
 void DecrementItem::SetVariableName(const std::string &value)
 {
-  SetProperty(kVariableName, value);
+  SetProperty(domainconstants::kVarNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // FallbackItem
 // ----------------------------------------------------------------------------
-FallbackItem::FallbackItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-}
+FallbackItem::FallbackItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> FallbackItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<FallbackItem>(*this, make_unique_id);
-}
-
-std::string FallbackItem::GetDomainType() const
-{
-  return domainconstants::kFallbackInstructionType;
-}
-
-void FallbackItem::InitFromDomainImpl(const instruction_t *instruction) {}
-
-void FallbackItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  (void)instruction;
 }
 
 // ----------------------------------------------------------------------------
