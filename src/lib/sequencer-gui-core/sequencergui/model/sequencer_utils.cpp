@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_includes.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_manager.h>
@@ -115,6 +116,11 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<JobItem>();
   result->RegisterItem<ProcedureItem>();
   result->RegisterItem<WorkspaceItem>();
+
+  result->RegisterItem<sup::gui::AnyValueEmptyItem>();
+  result->RegisterItem<sup::gui::AnyValueScalarItem>();
+  result->RegisterItem<sup::gui::AnyValueStructItem>();
+  result->RegisterItem<sup::gui::AnyValueArrayItem>();
 
   return result;
 }
