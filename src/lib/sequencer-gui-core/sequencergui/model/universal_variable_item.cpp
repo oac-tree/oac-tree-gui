@@ -33,12 +33,11 @@
 namespace
 {
 // These attributes shouldn't be used from the domain to build properties.
-const std::vector<std::string> kSkipDomainAttributeList(
-    {sequencergui::domainconstants::kTypeAttribute,
-     sequencergui::domainconstants::kValueAttribute});
+const std::vector<std::string> kSkipDomainAttributeList = {
+    sequencergui::domainconstants::kTypeAttribute, sequencergui::domainconstants::kValueAttribute};
 
 // these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList({sequencergui::itemconstants::kAnyValueTag});
+const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::kAnyValueTag};
 
 }  // namespace
 

@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
 
@@ -48,12 +49,12 @@ std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone(bool make_uniq
 
 std::string ConnectableVariableItem::GetChannel() const
 {
-  return Property<std::string>(itemconstants::kChannel);
+  return Property<std::string>(domainconstants::kChannelAttribute);
 }
 
 void ConnectableVariableItem::SetChannel(const std::string &value)
 {
-  SetProperty(itemconstants::kChannel, value);
+  SetProperty(domainconstants::kChannelAttribute, value);
 }
 
 bool ConnectableVariableItem::IsAvailable() const
