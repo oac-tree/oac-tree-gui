@@ -30,8 +30,6 @@
 
 namespace
 {
-const std::string kInput = "kInput";
-const std::string kOutput = "kOutput";
 const std::string kVariableName = "varName";
 const std::string kFile = "kFile";
 const std::string kPath = "kPath";
@@ -95,11 +93,8 @@ void ConditionItem::SetVariableName(const std::string &value)
 // CopyItem
 // ----------------------------------------------------------------------------
 
-CopyItem::CopyItem() : InstructionItem(Type)
+CopyItem::CopyItem() : UniversalInstructionItem(Type)
 {
-  RegisterCommonProperties();
-  AddProperty(kInput, std::string())->SetDisplayName("Input");
-  AddProperty(kOutput, std::string())->SetDisplayName("Output");
 }
 
 std::unique_ptr<mvvm::SessionItem> CopyItem::Clone(bool make_unique_id) const
@@ -112,45 +107,24 @@ std::string CopyItem::GetDomainType() const
   return domainconstants::kCopyInstructionType;
 }
 
-void CopyItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (!instruction->HasAttribute(domainconstants::kInputAttribute))
-  {
-    throw std::runtime_error("Error in CopyItem: no `input` attribute provided");
-  }
-  SetInput(instruction->GetAttributeString(domainconstants::kInputAttribute));
-
-  if (!instruction->HasAttribute(domainconstants::kOutputAttribute))
-  {
-    throw std::runtime_error("Error in CopyItem: no `output` attribute provided");
-  }
-  SetOutput(instruction->GetAttributeString(domainconstants::kOutputAttribute));
-}
-
-void CopyItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kInputAttribute, GetInput(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kOutputAttribute, GetOutput(), *instruction);
-}
-
 std::string CopyItem::GetInput() const
 {
-  return Property<std::string>(kInput);
+  return Property<std::string>(domainconstants::kInputAttribute);
 }
 
 void CopyItem::SetInput(const std::string &value)
 {
-  SetProperty(kInput, value);
+  SetProperty(domainconstants::kInputAttribute, value);
 }
 
 std::string CopyItem::GetOutput() const
 {
-  return Property<std::string>(kOutput);
+  return Property<std::string>(domainconstants::kOutputAttribute);
 }
 
 void CopyItem::SetOutput(const std::string &value)
 {
-  SetProperty(kOutput, value);
+  SetProperty(domainconstants::kOutputAttribute, value);
 }
 
 // ----------------------------------------------------------------------------

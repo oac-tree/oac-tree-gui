@@ -62,12 +62,12 @@ public:
 };
 
 //! Represent Copy instruction.
-class CopyItem : public InstructionItem
+class CopyItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kCopyInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   CopyItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -81,10 +81,6 @@ public:
   std::string GetOutput() const;
 
   void SetOutput(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Decrement instruction.
