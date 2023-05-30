@@ -190,6 +190,12 @@ void JobHandler::SetupDomainProcedure()
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
 
   // we are setting up root instruction, but deliberately not setting up the Workspace
+
+  if (!m_domain_procedure->RootInstruction() && m_domain_procedure->GetInstructionCount() > 1)
+  {
+    throw RuntimeException("None of existing top-level instructions is marked as root instruction");
+  }
+
   m_domain_procedure->RootInstruction()->Setup(*m_domain_procedure);
 }
 
@@ -212,7 +218,7 @@ void JobHandler::SetupWorkspaceSynchronizer()
   {
     auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
     m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
-    m_workspace_synchronizer->Start(); // will setup domain Workspace too
+    m_workspace_synchronizer->Start();  // will setup domain Workspace too
   }
 }
 
