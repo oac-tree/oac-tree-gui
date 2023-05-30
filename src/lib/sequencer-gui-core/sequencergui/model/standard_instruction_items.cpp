@@ -32,8 +32,6 @@
 namespace
 {
 const std::string kVariableName = "varName";
-const std::string kText = "kText";
-const std::string kMaxCount = "kRepeatCount";
 const std::string kTimeout = "timeout";
 }  // namespace
 
@@ -315,9 +313,7 @@ void MessageItem::SetText(const std::string &value)
 // OutputItem
 // ----------------------------------------------------------------------------
 
-OutputItem::OutputItem() : UniversalInstructionItem(Type)
-{
-}
+OutputItem::OutputItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> OutputItem::Clone(bool make_unique_id) const
 {
@@ -384,11 +380,9 @@ void ParallelSequenceItem::SetFailureThreshold(int value)
 // RepeatItem
 // ----------------------------------------------------------------------------
 
-RepeatItem::RepeatItem() : InstructionItem(Type)
+RepeatItem::RepeatItem() : UniversalInstructionItem(Type)
 {
-  RegisterCommonProperties();
-  AddProperty(kMaxCount, -1)->SetDisplayName("maxCount");
-  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*default*/ true);
+  SetRepeatCount(-1);
 }
 
 std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone(bool make_unique_id) const
@@ -396,63 +390,24 @@ std::unique_ptr<mvvm::SessionItem> RepeatItem::Clone(bool make_unique_id) const
   return std::make_unique<RepeatItem>(*this, make_unique_id);
 }
 
-std::string RepeatItem::GetDomainType() const
-{
-  return domainconstants::kRepeatInstructionType;
-}
-
-void RepeatItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kMaxCountAttribute))
-  {
-    SetRepeatCount(std::stoi(instruction->GetAttributeString(domainconstants::kMaxCountAttribute)));
-  }
-  else
-  {
-    SetRepeatCount(-1);
-  }
-}
-
-void RepeatItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  instruction->AddAttribute(domainconstants::kMaxCountAttribute, std::to_string(GetRepeatCount()));
-}
-
 int RepeatItem::GetRepeatCount() const
 {
-  return Property<int>(kMaxCount);
+  return Property<int>(domainconstants::kMaxCountAttribute);
 }
 
 void RepeatItem::SetRepeatCount(int value)
 {
-  SetProperty(kMaxCount, value);
+  SetProperty(domainconstants::kMaxCountAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // SequenceItem
 // ----------------------------------------------------------------------------
+SequenceItem::SequenceItem() : UniversalInstructionItem(Type) {}
+
 std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<SequenceItem>(*this, make_unique_id);
-}
-
-SequenceItem::SequenceItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-}
-
-std::string SequenceItem::GetDomainType() const
-{
-  return domainconstants::kSequenceInstructionType;
-}
-
-void SequenceItem::InitFromDomainImpl(const instruction_t *instruction) {}
-
-void SequenceItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  (void)instruction;
 }
 
 // ----------------------------------------------------------------------------

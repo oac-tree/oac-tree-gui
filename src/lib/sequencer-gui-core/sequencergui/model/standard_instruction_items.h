@@ -269,43 +269,31 @@ public:
 };
 
 //! Represent Repeat instruction.
-class RepeatItem : public InstructionItem
+class RepeatItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kRepeatInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   RepeatItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   int GetRepeatCount() const;
 
   void SetRepeatCount(int value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Sequencer instruction.
-class SequenceItem : public InstructionItem
+class SequenceItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kSequenceInstructionType;
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   SequenceItem();
-
-  std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent UserChoice instruction.
