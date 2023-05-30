@@ -19,6 +19,11 @@
 
 #include "sequencergui/model/instruction_item.h"
 
+#include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/item_constants.h>
+
+#include <mvvm/model/item_utils.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -45,8 +50,12 @@ TEST_F(InstructionItemsTest, TestItem)
 {
   // Correctly initialised item
   TestItem item;
+
   EXPECT_EQ(item.GetType(), "test");
-  EXPECT_EQ(item.GetName(), std::string());
+
+  // these attributes are coming from the sequencer domain
+  EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kNameAttribute));
+  EXPECT_FALSE(mvvm::utils::HasTag(item, domainconstants::kIsRootAttribute));
 
   EXPECT_EQ(item.GetX(), 0);
   EXPECT_EQ(item.GetY(), 0);
@@ -56,13 +65,6 @@ TEST_F(InstructionItemsTest, TestItem)
   EXPECT_EQ(item.GetX(), 1.1);
   EXPECT_EQ(item.GetY(), 1.2);
 
-  item.SetName("MyName");
-  EXPECT_EQ(item.GetName(), std::string("MyName"));
-
   EXPECT_EQ(item.GetStatus(), "");
   EXPECT_TRUE(item.GetInstructions().empty());
-
-  EXPECT_FALSE(item.IsRoot());
-  item.SetIsRootFlag(true);
-  EXPECT_TRUE(item.IsRoot());
 }

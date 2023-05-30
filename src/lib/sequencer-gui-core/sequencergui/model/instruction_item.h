@@ -70,7 +70,6 @@ public:
   mvvm::SessionItem* GetNameItem() const;
 
 protected:
-  void RegisterTechProperties(); // FIXME rename after cleanup
   void RegisterCommonProperties();
 
 private:

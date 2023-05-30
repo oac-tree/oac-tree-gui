@@ -19,18 +19,12 @@
 
 #include "instruction_item.h"
 
-#include "sequencergui/model/standard_instruction_items.h"
-#include "sequencergui/model/universal_instruction_item.h"
-
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/transform/transform_helpers.h>
 
-#include <mvvm/model/tagged_items.h>
-#include <mvvm/model/taginfo.h>
-#include <mvvm/utils/string_utils.h>
+#include <mvvm/model/item_utils.h>
 
 #include <sup/sequencer/instruction.h>
 
@@ -50,36 +44,12 @@ std::unique_ptr<mvvm::SessionItem> InstructionItem::Clone(bool make_unique_id) c
 
 void InstructionItem::InitFromDomain(const instruction_t *instruction)
 {
-  // Initialise from common attributes (which exist in every Instruction).
-  if (GetType() != UniversalInstructionItem::Type)
-  {
-    if (instruction->GetType() != GetDomainType())
-    {
-      throw std::runtime_error("Error in InstructionItem: domain instruction doesn't match.");
-    }
-
-    if (instruction->HasAttribute(domainconstants::kNameAttribute))
-    {
-      SetProperty(itemconstants::kName,
-                  instruction->GetAttributeString(domainconstants::kNameAttribute));
-    }
-  }
-
-  if (GetType() != UniversalInstructionItem::Type)
-  {
-    SetIsRootFlag(IsRootInstruction(instruction));
-  }
-
   InitFromDomainImpl(instruction);
 }
 
 std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 {
   auto result = ::sequencergui::CreateDomainInstruction(GetDomainType());
-
-  // Set common attributes (that exist in every instruction)
-  AddNonEmptyAttribute(domainconstants::kNameAttribute, GetName(), *result);
-  result->AddAttribute(domainconstants::kIsRootAttribute, mvvm::utils::FromBool(IsRoot()));
   SetupDomainImpl(result.get());
   return result;
 }
@@ -88,19 +58,22 @@ std::unique_ptr<instruction_t> InstructionItem::CreateDomainInstruction() const
 
 std::vector<InstructionItem *> InstructionItem::GetInstructions() const
 {
-  return GetTaggedItems()->HasTag(itemconstants::kChildInstructions)
-             ? GetItems<InstructionItem>(itemconstants::kChildInstructions)
-             : std::vector<InstructionItem *>();
+  if (mvvm::utils::HasTag(*this, itemconstants::kChildInstructions))
+  {
+    return GetItems<InstructionItem>(itemconstants::kChildInstructions);
+  }
+
+  return {};
 }
 
 bool InstructionItem::IsRoot() const
 {
-  return Property<bool>(itemconstants::kIsRoot);
+  return Property<bool>(domainconstants::kIsRootAttribute);
 }
 
 void InstructionItem::SetIsRootFlag(bool value)
 {
-  SetProperty(itemconstants::kIsRoot, value);
+  SetProperty(domainconstants::kIsRootAttribute, value);
 }
 
 std::string InstructionItem::GetName() const
@@ -153,7 +126,7 @@ mvvm::SessionItem *InstructionItem::GetNameItem() const
   return GetItem(itemconstants::kName);
 }
 
-void InstructionItem::RegisterTechProperties()
+void InstructionItem::RegisterCommonProperties()
 {
   AddProperty(itemconstants::kStatus, std::string())
       ->SetDisplayName("Status")
@@ -161,13 +134,6 @@ void InstructionItem::RegisterTechProperties()
       ->SetEditable(false);
   AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
   AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
-}
-
-void InstructionItem::RegisterCommonProperties()
-{
-  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
-  AddProperty(itemconstants::kIsRoot, false)->SetDisplayName("IsRoot");
-  RegisterTechProperties();
 }
 
 }  // namespace sequencergui

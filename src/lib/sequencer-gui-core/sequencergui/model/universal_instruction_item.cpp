@@ -128,7 +128,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
 
   RegisterChildrenTag(*instruction, *this);
 
-  RegisterTechProperties();
+  RegisterCommonProperties();
 }
 
 }  // namespace sequencergui
