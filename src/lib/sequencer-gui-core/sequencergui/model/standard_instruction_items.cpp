@@ -32,9 +32,6 @@
 namespace
 {
 const std::string kVariableName = "varName";
-const std::string kTarget = "kTarget";
-const std::string kForceSuccess = "kForceSuccess";
-const std::string kVarNames = "kVarNames";
 const std::string kText = "kText";
 const std::string kSuccessThreshold = "kSuccessThreshold";
 const std::string kFailureThreshold = "kFailureThreshold";
@@ -227,9 +224,7 @@ void IncrementItem::SetVariableName(const std::string &value)
 // InputItem
 // ----------------------------------------------------------------------------
 
-InputItem::InputItem() : UniversalInstructionItem(Type)
-{
-}
+InputItem::InputItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> InputItem::Clone(bool make_unique_id) const
 {
@@ -260,93 +255,42 @@ void InputItem::SetDescription(const std::string &value)
 // InverterItem
 // ----------------------------------------------------------------------------
 
-InverterItem::InverterItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
-}
+InverterItem::InverterItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> InverterItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<InverterItem>(*this, make_unique_id);
 }
 
-std::string InverterItem::GetDomainType() const
-{
-  return domainconstants::kInverterInstructionType;
-}
-
-void InverterItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  (void)instruction;
-}
-
-void InverterItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  (void)instruction;
-}
-
 // ----------------------------------------------------------------------------
 // ListenItem
 // ----------------------------------------------------------------------------
 
-ListenItem::ListenItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kForceSuccess, false)->SetDisplayName("Force success");
-  AddProperty(kVarNames, std::string())->SetDisplayName("Var names");
-  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
-}
+ListenItem::ListenItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> ListenItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<ListenItem>(*this, make_unique_id);
 }
 
-std::string ListenItem::GetDomainType() const
-{
-  return domainconstants::kListenInstructionType;
-}
-
 bool ListenItem::IsForceSuccess() const
 {
-  return Property<bool>(kForceSuccess);
+  return Property<bool>(domainconstants::kListenForceSuccessAttribute);
 }
 
 void ListenItem::SetForceSuccess(bool value)
 {
-  SetProperty(kForceSuccess, value);
+  SetProperty(domainconstants::kListenForceSuccessAttribute, value);
 }
 
 std::string ListenItem::GetVarNames() const
 {
-  return Property<std::string>(kVarNames);
+  return Property<std::string>(domainconstants::kListenVarNamesAttribute);
 }
 
 void ListenItem::SetVarNames(const std::string &value)
 {
-  SetProperty(kVarNames, value);
-}
-
-void ListenItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kListenForceSuccessAttribute))
-  {
-    SetForceSuccess(::mvvm::utils::StringToBool(
-        instruction->GetAttributeString(domainconstants::kListenForceSuccessAttribute)));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kListenVarNamesAttribute))
-  {
-    SetVarNames(instruction->GetAttributeString(domainconstants::kListenVarNamesAttribute));
-  }
-}
-
-void ListenItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kListenForceSuccessAttribute,
-                       mvvm::utils::FromBool(IsForceSuccess()), *instruction);
-  AddNonEmptyAttribute(domainconstants::kListenVarNamesAttribute, GetVarNames(), *instruction);
+  SetProperty(domainconstants::kListenVarNamesAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
