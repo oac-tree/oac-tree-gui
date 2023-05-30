@@ -213,39 +213,31 @@ public:
 };
 
 //! Represent Message instruction.
-class MessageItem : public InstructionItem
+class MessageItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kMessageInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   MessageItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   std::string GetText() const;
 
   void SetText(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Output instruction.
-class OutputItem : public InstructionItem
+class OutputItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kOutputInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   OutputItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 
   std::string GetSourceVariableName() const;
 
@@ -254,10 +246,6 @@ public:
   std::string GetDescription() const;
 
   void SetDescription(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent ParallelSequence instruction.

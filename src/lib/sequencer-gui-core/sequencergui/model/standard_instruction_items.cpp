@@ -35,7 +35,6 @@ const std::string kVariableName = "varName";
 const std::string kText = "kText";
 const std::string kSuccessThreshold = "kSuccessThreshold";
 const std::string kFailureThreshold = "kFailureThreshold";
-const std::string kSource = "kSource";
 const std::string kMaxCount = "kRepeatCount";
 const std::string kTimeout = "timeout";
 }  // namespace
@@ -297,54 +296,29 @@ void ListenItem::SetVarNames(const std::string &value)
 // MessageItem
 // ----------------------------------------------------------------------------
 
-MessageItem::MessageItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kText, std::string())->SetDisplayName("text");
-}
+MessageItem::MessageItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> MessageItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<MessageItem>(*this, make_unique_id);
 }
 
-std::string MessageItem::GetDomainType() const
-{
-  return domainconstants::kMessageInstructionType;
-}
-
-void MessageItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kTextAttribute))
-  {
-    SetText(instruction->GetAttributeString(domainconstants::kTextAttribute));
-  }
-}
-
-void MessageItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kTextAttribute, GetText(), *instruction);
-}
-
 std::string MessageItem::GetText() const
 {
-  return Property<std::string>(kText);
+  return Property<std::string>(domainconstants::kTextAttribute);
 }
 
 void MessageItem::SetText(const std::string &value)
 {
-  SetProperty(kText, value);
+  SetProperty(domainconstants::kTextAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // OutputItem
 // ----------------------------------------------------------------------------
 
-OutputItem::OutputItem() : InstructionItem(Type)
+OutputItem::OutputItem() : UniversalInstructionItem(Type)
 {
-  RegisterCommonProperties();
-  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
-  AddProperty(kSource, std::string())->SetDisplayName("Source");
 }
 
 std::unique_ptr<mvvm::SessionItem> OutputItem::Clone(bool make_unique_id) const
@@ -352,49 +326,24 @@ std::unique_ptr<mvvm::SessionItem> OutputItem::Clone(bool make_unique_id) const
   return std::make_unique<OutputItem>(*this, make_unique_id);
 }
 
-std::string OutputItem::GetDomainType() const
-{
-  return domainconstants::kOutputInstructionType;
-}
-
-void OutputItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
-  {
-    SetDescription(instruction->GetAttributeString(domainconstants::kDescriptionAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kOutputSourceAttribute))
-  {
-    SetSourceVariableName(instruction->GetAttributeString(domainconstants::kOutputSourceAttribute));
-  }
-}
-
-void OutputItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kOutputSourceAttribute, GetSourceVariableName(),
-                       *instruction);
-  AddNonEmptyAttribute(domainconstants::kDescriptionAttribute, GetDescription(), *instruction);
-}
-
 std::string OutputItem::GetSourceVariableName() const
 {
-  return Property<std::string>(kSource);
+  return Property<std::string>(domainconstants::kOutputSourceAttribute);
 }
 
 void OutputItem::SetSourceVariableName(const std::string &value)
 {
-  SetProperty(kSource, value);
+  SetProperty(domainconstants::kOutputSourceAttribute, value);
 }
 
 std::string OutputItem::GetDescription() const
 {
-  return Property<std::string>(itemconstants::kDescription);
+  return Property<std::string>(domainconstants::kDescriptionAttribute);
 }
 
 void OutputItem::SetDescription(const std::string &value)
 {
-  SetProperty(itemconstants::kDescription, value);
+  SetProperty(domainconstants::kDescriptionAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
