@@ -206,54 +206,29 @@ void IncludeItem::SetPath(const std::string &value)
 // IncrementItem
 // ----------------------------------------------------------------------------
 
-IncrementItem::IncrementItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
-}
+IncrementItem::IncrementItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> IncrementItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<IncrementItem>(*this, make_unique_id);
 }
 
-std::string IncrementItem::GetDomainType() const
-{
-  return domainconstants::kIncrementInstructionType;
-}
-
-void IncrementItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
-  }
-}
-
-void IncrementItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
-}
-
 std::string IncrementItem::GetVariableName() const
 {
-  return Property<std::string>(kVariableName);
+  return Property<std::string>(domainconstants::kVarNameAttribute);
 }
 
 void IncrementItem::SetVariableName(const std::string &value)
 {
-  SetProperty(kVariableName, value);
+  SetProperty(domainconstants::kVarNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // InputItem
 // ----------------------------------------------------------------------------
 
-InputItem::InputItem() : InstructionItem(Type)
+InputItem::InputItem() : UniversalInstructionItem(Type)
 {
-  RegisterCommonProperties();
-  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
-  AddProperty(kTarget, std::string())->SetDisplayName("Target");
 }
 
 std::unique_ptr<mvvm::SessionItem> InputItem::Clone(bool make_unique_id) const
@@ -261,49 +236,24 @@ std::unique_ptr<mvvm::SessionItem> InputItem::Clone(bool make_unique_id) const
   return std::make_unique<InputItem>(*this, make_unique_id);
 }
 
-std::string InputItem::GetDomainType() const
-{
-  return domainconstants::kInputInstructionType;
-}
-
-void InputItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
-  {
-    SetDescription(instruction->GetAttributeString(domainconstants::kDescriptionAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kInputTargetAttribute))
-  {
-    SetTargetVariableName(instruction->GetAttributeString(domainconstants::kInputTargetAttribute));
-  }
-}
-
-void InputItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kInputTargetAttribute, GetTargetVariableName(),
-                       *instruction);
-  AddNonEmptyAttribute(domainconstants::kDescriptionAttribute, GetDescription(), *instruction);
-}
-
 std::string InputItem::GetTargetVariableName() const
 {
-  return Property<std::string>(kTarget);
+  return Property<std::string>(domainconstants::kInputTargetAttribute);
 }
 
 void InputItem::SetTargetVariableName(const std::string &value)
 {
-  SetProperty(kTarget, value);
+  SetProperty(domainconstants::kInputTargetAttribute, value);
 }
 
 std::string InputItem::GetDescription() const
 {
-  return Property<std::string>(itemconstants::kDescription);
+  return Property<std::string>(domainconstants::kDescriptionAttribute);
 }
 
 void InputItem::SetDescription(const std::string &value)
 {
-  SetProperty(itemconstants::kDescription, value);
+  SetProperty(domainconstants::kDescriptionAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
