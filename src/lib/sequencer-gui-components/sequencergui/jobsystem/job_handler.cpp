@@ -190,13 +190,19 @@ void JobHandler::SetupDomainProcedure()
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
 
   // we are setting up root instruction, but deliberately not setting up the Workspace
-
-  if (!m_domain_procedure->RootInstruction() && m_domain_procedure->GetInstructionCount() > 1)
+  if (m_domain_procedure->RootInstruction())
   {
-    throw RuntimeException("None of existing top-level instructions is marked as root instruction");
+    m_domain_procedure->RootInstruction()->Setup(*m_domain_procedure);
   }
-
-  m_domain_procedure->RootInstruction()->Setup(*m_domain_procedure);
+  else
+  {
+    if (m_domain_procedure->GetInstructionCount() > 1)
+    {
+      throw RuntimeException(
+          "None of existing top-level instructions is marked as root instruction");
+    }
+    // we actually allow it to pass the setup, if procedure has only Workspace
+  }
 }
 
 //! Setup expanded procedure item. It will reflect the content of domain procedure after its Setup.
