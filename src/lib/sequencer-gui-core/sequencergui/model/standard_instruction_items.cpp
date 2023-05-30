@@ -25,15 +25,8 @@
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
-#include <mvvm/utils/string_utils.h>
 
 #include <sup/sequencer/instruction.h>
-
-namespace
-{
-const std::string kVariableName = "varName";
-const std::string kTimeout = "timeout";
-}  // namespace
 
 namespace sequencergui
 {
@@ -414,88 +407,42 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) cons
 // UserChoiceItem
 // ----------------------------------------------------------------------------
 
-UserChoiceItem::UserChoiceItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
-}
+UserChoiceItem::UserChoiceItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> UserChoiceItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<UserChoiceItem>(*this, make_unique_id);
 }
 
-std::string UserChoiceItem::GetDomainType() const
-{
-  return domainconstants::kUserChoiceInstructionType;
-}
-
 std::string UserChoiceItem::GetDescription() const
 {
-  return Property<std::string>(itemconstants::kDescription);
+  return Property<std::string>(domainconstants::kDescriptionAttribute);
 }
 
 void UserChoiceItem::SetDescription(const std::string &value)
 {
-  SetProperty(itemconstants::kDescription, value);
-}
-
-void UserChoiceItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kDescriptionAttribute))
-  {
-    SetDescription(instruction->GetAttributeString(domainconstants::kDescriptionAttribute));
-  }
-}
-
-void UserChoiceItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kDescriptionAttribute, GetDescription(), *instruction);
+  SetProperty(domainconstants::kDescriptionAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // VariableResetItem
 // ----------------------------------------------------------------------------
 
-VariableResetItem::VariableResetItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
-}
+VariableResetItem::VariableResetItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> VariableResetItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<VariableResetItem>(*this, make_unique_id);
 }
 
-std::string VariableResetItem::GetDomainType() const
-{
-  return domainconstants::kVariableResetInstructionType;
-}
-
-void VariableResetItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
-  }
-}
-
-void VariableResetItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
-}
-
 std::string VariableResetItem::GetVariableName() const
 {
-  return Property<std::string>(kVariableName);
+  return Property<std::string>(domainconstants::kVarNameAttribute);
 }
 
 void VariableResetItem::SetVariableName(const std::string &value)
 {
-  SetProperty(kVariableName, value);
+  SetProperty(domainconstants::kVarNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -511,12 +458,12 @@ std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
 
 void WaitItem::SetTimeout(double value)
 {
-  SetProperty(kTimeout, value);
+  SetProperty(domainconstants::kTimeoutAttribute, value);
 }
 
 double WaitItem::GetTimeout() const
 {
-  return Property<double>(kTimeout);
+  return Property<double>(domainconstants::kTimeoutAttribute);
 }
 
 }  // namespace sequencergui

@@ -297,48 +297,36 @@ public:
 };
 
 //! Represent UserChoice instruction.
-class UserChoiceItem : public InstructionItem
+class UserChoiceItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kUserChoiceInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   UserChoiceItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   std::string GetDescription() const;
 
   void SetDescription(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent ResetVariable instruction.
-class VariableResetItem : public InstructionItem
+class VariableResetItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type =
       sequencergui::domainconstants::kVariableResetInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   VariableResetItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   std::string GetVariableName() const;
 
   void SetVariableName(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Wait instruction.
