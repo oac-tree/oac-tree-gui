@@ -187,7 +187,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
 
   auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(file_name, nullptr);
-  EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileAttribute);
+  EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
   auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(2));
   ASSERT_NE(json_attr, nullptr);
@@ -201,7 +201,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
 
   auto local_variable = CreateDomainVariable(domainconstants::kFileVariableType);
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
-  local_variable->AddAttribute(domainconstants::kFileAttribute, expected_file_name);
+  local_variable->AddAttribute(domainconstants::kFileNameAttribute, expected_file_name);
 
   local_variable->Setup();  // to propagate string attributes to AnyValues
 
@@ -224,7 +224,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   auto domain_item = item.CreateDomainVariable();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kFileVariableType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileAttribute), expected_file_name);
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileNameAttribute), expected_file_name);
 
   EXPECT_NO_THROW(domain_item->Setup());
 }

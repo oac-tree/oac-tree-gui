@@ -89,12 +89,12 @@ std::unique_ptr<mvvm::SessionItem> FileVariableItem::Clone(bool make_unique_id) 
 
 std::string FileVariableItem::GetFileName() const
 {
-  return Property<std::string>(sequencergui::domainconstants::kFileAttribute);
+  return Property<std::string>(sequencergui::domainconstants::kFileNameAttribute);
 }
 
 void FileVariableItem::SetFileName(const std::string &name)
 {
-  SetProperty(sequencergui::domainconstants::kFileAttribute, name);
+  SetProperty(sequencergui::domainconstants::kFileNameAttribute, name);
 }
 
 // ----------------------------------------------------------------------------

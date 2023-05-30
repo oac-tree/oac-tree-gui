@@ -114,36 +114,28 @@ public:
 };
 
 //! Represent ForceSuccess instruction.
-class ForceSuccessItem : public InstructionItem
+class ForceSuccessItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type =
       sequencergui::domainconstants::kForceSuccessInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   ForceSuccessItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent IncludeItem instruction.
-class IncludeItem : public InstructionItem
+class IncludeItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kIncludeInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   IncludeItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 
   std::string GetFileName() const;
 
@@ -152,10 +144,6 @@ public:
   std::string GetPath() const;
 
   void SetPath(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Increment instruction.

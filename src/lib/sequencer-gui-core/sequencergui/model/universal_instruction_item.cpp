@@ -47,7 +47,7 @@ UniversalInstructionItem::UniversalInstructionItem(const std::string &domain_typ
 {
   if (!domain_type.empty())
   {
-    // temporary domain variable is used to create default properties
+    // temporary domain instruction is used to create default properties
     auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
     SetupFromDomain(domain_variable.get());
   }

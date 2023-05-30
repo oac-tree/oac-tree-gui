@@ -24,6 +24,7 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/utils/string_utils.h>
 
 #include <sup/sequencer/instruction.h>
@@ -31,8 +32,6 @@
 namespace
 {
 const std::string kVariableName = "varName";
-const std::string kFile = "kFile";
-const std::string kPath = "kPath";
 const std::string kTarget = "kTarget";
 const std::string kForceSuccess = "kForceSuccess";
 const std::string kVarNames = "kVarNames";
@@ -165,91 +164,42 @@ std::unique_ptr<mvvm::SessionItem> FallbackItem::Clone(bool make_unique_id) cons
 // ForceSuccess
 // ----------------------------------------------------------------------------
 
-ForceSuccessItem::ForceSuccessItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
-}
+ForceSuccessItem::ForceSuccessItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> ForceSuccessItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<ForceSuccessItem>(*this, make_unique_id);
 }
 
-std::string ForceSuccessItem::GetDomainType() const
-{
-  return domainconstants::kForceSuccessInstructionType;
-}
-
-void ForceSuccessItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  (void)instruction;
-}
-
-void ForceSuccessItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  (void)instruction;
-}
-
 // ----------------------------------------------------------------------------
 // IncludeItem
 // ----------------------------------------------------------------------------
 
-IncludeItem::IncludeItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kFile, std::string())->SetDisplayName("File name");
-  AddProperty(kPath, std::string())->SetDisplayName("Path");
-  RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}), /*as_default*/ true);
-}
+IncludeItem::IncludeItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<IncludeItem>(*this, make_unique_id);
 }
 
-std::string IncludeItem::GetDomainType() const
-{
-  return domainconstants::kIncludeInstructionType;
-}
-
-void IncludeItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kFileAttribute))
-  {
-    SetFileName(instruction->GetAttributeString(domainconstants::kFileAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kPathAttribute))
-  {
-    SetPath(instruction->GetAttributeString(domainconstants::kPathAttribute));
-  }
-}
-
-void IncludeItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kFileAttribute, GetFileName(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kPathAttribute, GetPath(), *instruction);
-}
-
 std::string IncludeItem::GetFileName() const
 {
-  return Property<std::string>(kFile);
+  return Property<std::string>(domainconstants::kFileAttribute);
 }
 
 void IncludeItem::SetFileName(const std::string &value)
 {
-  SetProperty(kFile, value);
+  SetProperty(domainconstants::kFileAttribute, value);
 }
 
 std::string IncludeItem::GetPath() const
 {
-  return Property<std::string>(kPath);
+  return Property<std::string>(domainconstants::kPathAttribute);
 }
 
 void IncludeItem::SetPath(const std::string &value)
 {
-  SetProperty(kPath, value);
+  SetProperty(domainconstants::kPathAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
