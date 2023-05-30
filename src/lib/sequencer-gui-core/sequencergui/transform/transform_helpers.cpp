@@ -239,7 +239,10 @@ void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::str
   {
     throw LogicErrorException("Can't create an attribute string from item property");
   }
-  domain.AddAttribute(attribute_name, attribute_string);
+  if (!attribute_string.empty())
+  {
+    domain.AddAttribute(attribute_name, attribute_string);
+  }
 }
 
 template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem &item,
