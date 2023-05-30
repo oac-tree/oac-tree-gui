@@ -20,30 +20,6 @@
 #include "epics_instruction_items.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/item_constants.h>
-#include <sequencergui/transform/transform_helpers.h>
-
-#include <mvvm/utils/string_utils.h>
-
-#include <sup/sequencer/instruction.h>
-
-namespace
-{
-const std::string kChannel = "kChannel";
-const std::string kCommand = "kCommand";
-const std::string kJsonType = "kJsonType";
-const std::string kJsonValue = "kJsonValue";
-const std::string kOutput = "kOutput";
-const std::string kRequestVar = "kRequestVar";
-const std::string kServiceName = "kServiceName";
-const std::string kTimeout = "kTimeout";
-const std::string kVariableName = "kVariableName";
-const std::string kMessage = "kMessage";
-const std::string kInput = "kInput";
-const std::string kSeverity = "kSeverity";
-}  // namespace
 
 namespace sequencergui
 {
@@ -53,12 +29,9 @@ namespace sequencergui
 // ----------------------------------------------------------------------------
 
 EpicsReadInstructionItem::EpicsReadInstructionItem(const std::string &instruction_type)
-    : InstructionItem(instruction_type)
+    : UniversalInstructionItem(instruction_type)
 {
-  RegisterCommonProperties();
-  AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kOutput, std::string())->SetDisplayName("Output variable");
-  AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
+  SetTimeout(1.0);
 }
 
 std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone(bool make_unique_id) const
@@ -67,60 +40,34 @@ std::unique_ptr<mvvm::SessionItem> EpicsReadInstructionItem::Clone(bool make_uni
   throw NotImplementedException("EpicsReadInstructionItem::clone() should not be used");
 }
 
-void EpicsReadInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kChannelAttribute))
-  {
-    SetChannel(instruction->GetAttributeString(domainconstants::kChannelAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kOutputAttribute))
-  {
-    SetOutput(instruction->GetAttributeString(domainconstants::kOutputAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
-  {
-    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
-  }
-}
-
-void EpicsReadInstructionItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kOutputAttribute, GetOutput(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
-                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
-}
-
 std::string EpicsReadInstructionItem::GetChannel() const
 {
-  return Property<std::string>(kChannel);
+  return Property<std::string>(domainconstants::kChannelAttribute);
 }
 
 void EpicsReadInstructionItem::SetChannel(const std::string &value)
 {
-  SetProperty(kChannel, value);
+  SetProperty(domainconstants::kChannelAttribute, value);
 }
 
 std::string EpicsReadInstructionItem::GetOutput() const
 {
-  return Property<std::string>(kOutput);
+  return Property<std::string>(domainconstants::kOutputAttribute);
 }
 
 void EpicsReadInstructionItem::SetOutput(const std::string &value)
 {
-  SetProperty(kOutput, value);
+  SetProperty(domainconstants::kOutputAttribute, value);
 }
 
 double EpicsReadInstructionItem::GetTimeout() const
 {
-  return Property<double>(kTimeout);
+  return Property<double>(domainconstants::kTimeoutAttribute);
 }
 
 void EpicsReadInstructionItem::SetTimeout(double value)
 {
-  SetProperty(kTimeout, value);
+  SetProperty(domainconstants::kTimeoutAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -128,14 +75,9 @@ void EpicsReadInstructionItem::SetTimeout(double value)
 // ----------------------------------------------------------------------------
 
 EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruction_type)
-    : InstructionItem(instruction_type)
+    : UniversalInstructionItem(instruction_type)
 {
-  RegisterCommonProperties();
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
-  AddProperty(kChannel, std::string())->SetDisplayName("channel");
-  AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
-  AddProperty(kJsonType, std::string())->SetDisplayName("JSON type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("JSON value");
+  SetTimeout(1.0);
 }
 
 std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_unique_id) const
@@ -144,92 +86,54 @@ std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_un
   throw NotImplementedException("EpicsWriteInstructionItem::clone() should not be used");
 }
 
-void EpicsWriteInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kChannelAttribute))
-  {
-    SetChannel(instruction->GetAttributeString(domainconstants::kChannelAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
-  {
-    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(instruction->GetAttributeString(domainconstants::kTypeAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kValueAttribute))
-  {
-    SetJsonValue(instruction->GetAttributeString(domainconstants::kValueAttribute));
-  }
-}
-
-void EpicsWriteInstructionItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kVarNameAttribute, GetVariableName(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kChannelAttribute, GetChannel(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
-                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
-  AddNonEmptyAttribute(domainconstants::kTypeAttribute, GetJsonType(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kValueAttribute, GetJsonValue(), *instruction);
-}
-
 std::string EpicsWriteInstructionItem::GetVariableName() const
 {
-  return Property<std::string>(kVariableName);
+  return Property<std::string>(domainconstants::kVarNameAttribute);
 }
 
 void EpicsWriteInstructionItem::SetVariableName(const std::string &value)
 {
-  SetProperty(kVariableName, value);
+  SetProperty(domainconstants::kVarNameAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetChannel() const
 {
-  return Property<std::string>(kChannel);
+  return Property<std::string>(domainconstants::kChannelAttribute);
 }
 
 void EpicsWriteInstructionItem::SetChannel(const std::string &value)
 {
-  SetProperty(kChannel, value);
+  SetProperty(domainconstants::kChannelAttribute, value);
 }
 
 double EpicsWriteInstructionItem::GetTimeout() const
 {
-  return Property<double>(kTimeout);
+  return Property<double>(domainconstants::kTimeoutAttribute);
 }
 
 void EpicsWriteInstructionItem::SetTimeout(double value)
 {
-  SetProperty(kTimeout, value);
+  SetProperty(domainconstants::kTimeoutAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetJsonType() const
 {
-  return Property<std::string>(kJsonType);
+  return Property<std::string>(domainconstants::kTypeAttribute);
 }
 
 void EpicsWriteInstructionItem::SetJsonType(const std::string &value)
 {
-  SetProperty(kJsonType, value);
+  SetProperty(domainconstants::kTypeAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetJsonValue() const
 {
-  return Property<std::string>(kJsonValue);
+  return Property<std::string>(domainconstants::kValueAttribute);
 }
 
 void EpicsWriteInstructionItem::SetJsonValue(const std::string &value)
 {
-  SetProperty(kJsonValue, value);
+  SetProperty(domainconstants::kValueAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -247,10 +151,6 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessReadInstructionItem::Clone(
   return std::make_unique<ChannelAccessReadInstructionItem>(*this, make_unique_id);
 }
 
-std::string ChannelAccessReadInstructionItem::GetDomainType() const
-{
-  return domainconstants::kChannelAccessReadInstructionType;
-}
 // ----------------------------------------------------------------------------
 // ChannelAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
@@ -266,294 +166,161 @@ std::unique_ptr<mvvm::SessionItem> ChannelAccessWriteInstructionItem::Clone(
   return std::make_unique<ChannelAccessWriteInstructionItem>(*this, make_unique_id);
 }
 
-std::string ChannelAccessWriteInstructionItem::GetDomainType() const
-{
-  return domainconstants::kChannelAccessWriteInstructionType;
-}
-
 // ----------------------------------------------------------------------------
 // PVAccessReadInstructionItem
 // ----------------------------------------------------------------------------
 
-PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type)
-{
-}
+PvAccessReadInstructionItem::PvAccessReadInstructionItem() : EpicsReadInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> PvAccessReadInstructionItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<PvAccessReadInstructionItem>(*this, make_unique_id);
 }
 
-std::string PvAccessReadInstructionItem::GetDomainType() const
-{
-  return domainconstants::kPvAccessReadInstructionType;
-}
-
 // ----------------------------------------------------------------------------
 // PVAccessWriteInstructionItem
 // ----------------------------------------------------------------------------
 
-PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type)
-{
-}
+PvAccessWriteInstructionItem::PvAccessWriteInstructionItem() : EpicsWriteInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<PvAccessWriteInstructionItem>(*this, make_unique_id);
 }
 
-std::string PvAccessWriteInstructionItem::GetDomainType() const
-{
-  return domainconstants::kPvAccessWriteInstructionType;
-}
-
 // ----------------------------------------------------------------------------
 // RPCClientInstruction
 // ----------------------------------------------------------------------------
 
-RPCClientInstruction::RPCClientInstruction() : InstructionItem(Type)
+RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(Type)
 {
-  RegisterCommonProperties();
-  AddProperty(kServiceName, std::string())->SetDisplayName("Service");
-  AddProperty(kRequestVar, std::string())->SetDisplayName("Request variable");
-  AddProperty(kTimeout, 1.0)->SetDisplayName("timeout");
-  AddProperty(kJsonType, std::string())->SetDisplayName("JSON type");
-  AddProperty(kJsonValue, std::string())->SetDisplayName("JSON value");
-  AddProperty(kOutput, std::string())->SetDisplayName("Output");
+  SetTimeout(1.0);
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone(bool make_unique_id) const
 {
   return std::make_unique<RPCClientInstruction>(*this, make_unique_id);
 }
-
-std::string RPCClientInstruction::GetDomainType() const
-{
-  return domainconstants::kRPCClientInstructionType;
-}
-
-void RPCClientInstruction::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kServiceAttribute))
-  {
-    SetService(instruction->GetAttributeString(domainconstants::kServiceAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kRequestAttribute))
-  {
-    SetRequestVar(instruction->GetAttributeString(domainconstants::kRequestAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
-  {
-    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kTypeAttribute))
-  {
-    SetJsonType(instruction->GetAttributeString(domainconstants::kTypeAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kValueAttribute))
-  {
-    SetJsonValue(instruction->GetAttributeString(domainconstants::kValueAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kOutputAttribute))
-  {
-    SetOutput(instruction->GetAttributeString(domainconstants::kOutputAttribute));
-  }
-}
-
-void RPCClientInstruction::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kServiceAttribute, GetService(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kRequestAttribute, GetRequestVar(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
-                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
-  AddNonEmptyAttribute(domainconstants::kTypeAttribute, GetJsonType(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kValueAttribute, GetJsonValue(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kOutputAttribute, GetOutput(), *instruction);
-}
-
 std::string RPCClientInstruction::GetService() const
 {
-  return Property<std::string>(kServiceName);
+  return Property<std::string>(domainconstants::kServiceAttribute);
 }
 
 void RPCClientInstruction::SetService(const std::string &value)
 {
-  SetProperty(kServiceName, value);
+  SetProperty(domainconstants::kServiceAttribute, value);
 }
 
 std::string RPCClientInstruction::GetRequestVar() const
 {
-  return Property<std::string>(kRequestVar);
+  return Property<std::string>(domainconstants::kRequestAttribute);
 }
 
 void RPCClientInstruction::SetRequestVar(const std::string &value)
 {
-  SetProperty(kRequestVar, value);
+  SetProperty(domainconstants::kRequestAttribute, value);
 }
 
 double RPCClientInstruction::GetTimeout() const
 {
-  return Property<double>(kTimeout);
+  return Property<double>(domainconstants::kTimeoutAttribute);
 }
 
 void RPCClientInstruction::SetTimeout(double value)
 {
-  SetProperty(kTimeout, value);
+  SetProperty(domainconstants::kTimeoutAttribute, value);
 }
 
 std::string RPCClientInstruction::GetJsonType() const
 {
-  return Property<std::string>(kJsonType);
+  return Property<std::string>(domainconstants::kTypeAttribute);
 }
 
 void RPCClientInstruction::SetJsonType(const std::string &value)
 {
-  SetProperty(kJsonType, value);
+  SetProperty(domainconstants::kTypeAttribute, value);
 }
 
 std::string RPCClientInstruction::GetJsonValue() const
 {
-  return Property<std::string>(kJsonValue);
+  return Property<std::string>(domainconstants::kValueAttribute);
 }
 
 void RPCClientInstruction::SetJsonValue(const std::string &value)
 {
-  SetProperty(kJsonValue, value);
+  SetProperty(domainconstants::kValueAttribute, value);
 }
 
 std::string RPCClientInstruction::GetOutput() const
 {
-  return Property<std::string>(kOutput);
+  return Property<std::string>(domainconstants::kOutputAttribute);
 }
 
 void RPCClientInstruction::SetOutput(const std::string &value)
 {
-  SetProperty(kOutput, value);
+  SetProperty(domainconstants::kOutputAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // SystemCallInstructionItem
 // ----------------------------------------------------------------------------
 
-SystemCallInstructionItem::SystemCallInstructionItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kCommand, std::string())->SetDisplayName("Command");
-}
+SystemCallInstructionItem::SystemCallInstructionItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> SystemCallInstructionItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<SystemCallInstructionItem>(*this, make_unique_id);
 }
 
-std::string SystemCallInstructionItem::GetDomainType() const
-{
-  return domainconstants::kSystemCallInstructionType;
-}
-
-void SystemCallInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kCommandAttribute))
-  {
-    SetCommand(instruction->GetAttributeString(domainconstants::kCommandAttribute));
-  }
-}
-
-void SystemCallInstructionItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kCommandAttribute, GetCommand(), *instruction);
-}
-
 std::string SystemCallInstructionItem::GetCommand() const
 {
-  return Property<std::string>(kCommand);
+  return Property<std::string>(domainconstants::kCommandAttribute);
 }
 
 void SystemCallInstructionItem::SetCommand(const std::string &value)
 {
-  SetProperty(kCommand, value);
+  SetProperty(domainconstants::kCommandAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
 // LogInstructionItem
 // ----------------------------------------------------------------------------
 
-LogInstructionItem::LogInstructionItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kMessage, std::string())->SetDisplayName("Message");
-  AddProperty(kInput, std::string())->SetDisplayName("Input");
-  AddProperty(kSeverity, std::string())->SetDisplayName("Severity");
-}
+LogInstructionItem::LogInstructionItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> LogInstructionItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<LogInstructionItem>(*this, make_unique_id);
 }
 
-std::string LogInstructionItem::GetDomainType() const
-{
-  return domainconstants::kLogInstructionType;
-}
-
-void LogInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kMessageAttribute))
-  {
-    SetMessage(instruction->GetAttributeString(domainconstants::kMessageAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kInputAttribute))
-  {
-    SetInput(instruction->GetAttributeString(domainconstants::kInputAttribute));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kSeverityAttribute))
-  {
-    SetSeverity(instruction->GetAttributeString(domainconstants::kSeverityAttribute));
-  }
-}
-
-void LogInstructionItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kMessageAttribute, GetMessage(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kInputAttribute, GetInput(), *instruction);
-  AddNonEmptyAttribute(domainconstants::kSeverityAttribute, GetSeverity(), *instruction);
-}
-
 std::string LogInstructionItem::GetMessage() const
 {
-  return Property<std::string>(kMessage);
+  return Property<std::string>(domainconstants::kMessageAttribute);
 }
 
 void LogInstructionItem::SetMessage(const std::string &value)
 {
-  SetProperty(kMessage, value);
+  SetProperty(domainconstants::kMessageAttribute, value);
 }
 
 std::string LogInstructionItem::GetInput() const
 {
-  return Property<std::string>(kInput);
+  return Property<std::string>(domainconstants::kInputAttribute);
 }
 
 void LogInstructionItem::SetInput(const std::string &value)
 {
-  SetProperty(kInput, value);
+  SetProperty(domainconstants::kInputAttribute, value);
 }
 
 std::string LogInstructionItem::GetSeverity() const
 {
-  return Property<std::string>(kSeverity);
+  return Property<std::string>(domainconstants::kSeverityAttribute);
 }
 
 void LogInstructionItem::SetSeverity(const std::string &value)
 {
-  SetProperty(kSeverity, value);
+  SetProperty(domainconstants::kSeverityAttribute, value);
 }
 
 }  // namespace sequencergui

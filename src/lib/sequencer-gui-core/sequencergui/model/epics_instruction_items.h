@@ -23,17 +23,16 @@
 //! Collection of classes to represent Sequencer instructions from sup-sequencer-plugin-epics.
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/universal_instruction_item.h>
 
 namespace sequencergui
 {
 
 //! Base for CA/PV read instructions.
-class EpicsReadInstructionItem : public InstructionItem
+class EpicsReadInstructionItem : public UniversalInstructionItem
 {
 public:
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   EpicsReadInstructionItem(const std::string& instruction_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -49,17 +48,13 @@ public:
   double GetTimeout() const;
 
   void SetTimeout(double value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Base for CA/PV read instructions..
-class EpicsWriteInstructionItem : public InstructionItem
+class EpicsWriteInstructionItem : public UniversalInstructionItem
 {
 public:
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   EpicsWriteInstructionItem(const std::string& instruction_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -83,10 +78,6 @@ public:
   std::string GetJsonValue() const;
 
   void SetJsonValue(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represents ChannelAccessReadInstruction.
@@ -100,8 +91,6 @@ public:
   ChannelAccessReadInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represents ChannelAccessWriteInstruction.
@@ -115,8 +104,6 @@ public:
   ChannelAccessWriteInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represents PVAccessReadInstruction.
@@ -130,8 +117,6 @@ public:
   PvAccessReadInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represents PVAccessWriteInstruction.
@@ -145,22 +130,18 @@ public:
   PvAccessWriteInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 };
 
 //! Represents RPCClientInstruction.
-class RPCClientInstruction : public InstructionItem
+class RPCClientInstruction : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kRPCClientInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   RPCClientInstruction();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 
   std::string GetService() const;
 
@@ -185,46 +166,34 @@ public:
   std::string GetOutput() const;
 
   void SetOutput(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! SystemCall instruction.
-class SystemCallInstructionItem : public InstructionItem
+class SystemCallInstructionItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kSystemCallInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   SystemCallInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   std::string GetCommand() const;
 
   void SetCommand(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! LogInstructionItem instruction.
-class LogInstructionItem : public InstructionItem
+class LogInstructionItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kLogInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   LogInstructionItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 
   std::string GetMessage() const;
 
@@ -237,10 +206,6 @@ public:
   std::string GetSeverity() const;
 
   void SetSeverity(const std::string& value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 }  // namespace sequencergui
