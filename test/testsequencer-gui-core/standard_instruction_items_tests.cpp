@@ -583,7 +583,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
 {
   // Correctly initialised item
   ParallelSequenceItem item;
-  EXPECT_EQ(item.GetSuccessThreshold(), -1);
+  EXPECT_EQ(item.GetSuccessThreshold(), 0);
   EXPECT_EQ(item.GetFailureThreshold(), 1);
 
   item.SetSuccessThreshold(42);
@@ -631,12 +631,13 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
 TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomainWhenNoSuccessThresholdDefined)
 {
   ParallelSequenceItem item;
-  item.SetSuccessThreshold(-1);
+  item.SetSuccessThreshold(0);
   item.SetFailureThreshold(43);
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kParallelInstructionType);
-  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kSuccessThresholdAttribute));
+  EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kSuccessThresholdAttribute));
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSuccessThresholdAttribute), "0");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));

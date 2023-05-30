@@ -249,17 +249,15 @@ public:
 };
 
 //! Represent ParallelSequence instruction.
-class ParallelSequenceItem : public InstructionItem
+class ParallelSequenceItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kParallelInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   ParallelSequenceItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
 
   int GetSuccessThreshold() const;
 
@@ -268,10 +266,6 @@ public:
   int GetFailureThreshold() const;
 
   void SetFailureThreshold(int value);
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 //! Represent Repeat instruction.

@@ -33,8 +33,6 @@ namespace
 {
 const std::string kVariableName = "varName";
 const std::string kText = "kText";
-const std::string kSuccessThreshold = "kSuccessThreshold";
-const std::string kFailureThreshold = "kFailureThreshold";
 const std::string kMaxCount = "kRepeatCount";
 const std::string kTimeout = "timeout";
 }  // namespace
@@ -350,15 +348,11 @@ void OutputItem::SetDescription(const std::string &value)
 // ParallelSequenceItem
 // ----------------------------------------------------------------------------
 
-ParallelSequenceItem::ParallelSequenceItem() : InstructionItem(Type)
+ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(Type)
 {
-  RegisterCommonProperties();
-  AddProperty(kSuccessThreshold, -1)
-      ->SetDisplayName("Success threshold")
-      ->SetToolTip("Negative means that all children should succeed");
-  AddProperty(kFailureThreshold, 1)->SetDisplayName("Failure threshold");
-  RegisterTag(mvvm::TagInfo::CreateUniversalTag(itemconstants::kChildInstructions),
-              /*as_default*/ true);
+  // FIXME How to define default values? Or, how to pretend that attribute wasn't set?
+  SetSuccessThreshold(0);
+  SetFailureThreshold(1);
 }
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_id) const
@@ -366,55 +360,24 @@ std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_
   return std::make_unique<ParallelSequenceItem>(*this, make_unique_id);
 }
 
-std::string ParallelSequenceItem::GetDomainType() const
-{
-  return domainconstants::kParallelInstructionType;
-}
-
-void ParallelSequenceItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kSuccessThresholdAttribute))
-  {
-    SetSuccessThreshold(
-        std::stoi(instruction->GetAttributeString(domainconstants::kSuccessThresholdAttribute)));
-  }
-
-  if (instruction->HasAttribute(domainconstants::kFailureThresholdAttribute))
-  {
-    SetFailureThreshold(
-        std::stoi(instruction->GetAttributeString(domainconstants::kFailureThresholdAttribute)));
-  }
-}
-
-void ParallelSequenceItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  if (GetSuccessThreshold() >= 0)
-  {
-    instruction->AddAttribute(domainconstants::kSuccessThresholdAttribute,
-                              std::to_string(GetSuccessThreshold()));
-  }
-  instruction->AddAttribute(domainconstants::kFailureThresholdAttribute,
-                            std::to_string(GetFailureThreshold()));
-}
-
 int ParallelSequenceItem::GetSuccessThreshold() const
 {
-  return Property<int>(kSuccessThreshold);
+  return Property<int>(domainconstants::kSuccessThresholdAttribute);
 }
 
 void ParallelSequenceItem::SetSuccessThreshold(int value)
 {
-  SetProperty(kSuccessThreshold, value);
+  SetProperty(domainconstants::kSuccessThresholdAttribute, value);
 }
 
 int ParallelSequenceItem::GetFailureThreshold() const
 {
-  return Property<int>(kFailureThreshold);
+  return Property<int>(domainconstants::kFailureThresholdAttribute);
 }
 
 void ParallelSequenceItem::SetFailureThreshold(int value)
 {
-  SetProperty(kFailureThreshold, value);
+  SetProperty(domainconstants::kFailureThresholdAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
