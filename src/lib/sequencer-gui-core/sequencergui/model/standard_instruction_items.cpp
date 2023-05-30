@@ -43,7 +43,7 @@ const std::string kSuccessThreshold = "kSuccessThreshold";
 const std::string kFailureThreshold = "kFailureThreshold";
 const std::string kSource = "kSource";
 const std::string kMaxCount = "kRepeatCount";
-const std::string kTimeout = "kTimeout";
+const std::string kTimeout = "timeout";
 }  // namespace
 
 namespace sequencergui
@@ -899,38 +899,11 @@ void VariableResetItem::SetVariableName(const std::string &value)
 // WaitItem
 // ----------------------------------------------------------------------------
 
-WaitItem::WaitItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kTimeout, 0.0)->SetDisplayName("Timeout");
-}
+WaitItem::WaitItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<WaitItem>(*this, make_unique_id);
-}
-
-std::string WaitItem::GetDomainType() const
-{
-  return domainconstants::kWaitInstructionType;
-}
-
-void WaitItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kTimeoutAttribute))
-  {
-    SetTimeout(std::stod(instruction->GetAttributeString(domainconstants::kTimeoutAttribute)));
-  }
-  else
-  {
-    SetTimeout(0.0);
-  }
-}
-
-void WaitItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  AddNonEmptyAttribute(domainconstants::kTimeoutAttribute,
-                       mvvm::utils::DoubleToString(GetTimeout()), *instruction);
 }
 
 void WaitItem::SetTimeout(double value)

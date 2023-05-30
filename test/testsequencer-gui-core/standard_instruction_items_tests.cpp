@@ -764,13 +764,9 @@ TEST_F(StandardInstructionItemsTest, UserChoiceItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 {
-  // Correctly initialised item
-  WaitItem wait_item;
-  EXPECT_EQ(wait_item.GetTimeout(), 0.0);
-  EXPECT_EQ(wait_item.GetDisplayName(), "Wait");
-
   // wait with timeout attribute
   {
+    WaitItem wait_item;
     auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     wait->AddAttribute(domainconstants::kTimeoutAttribute, "42");
 
@@ -780,6 +776,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemFromDomain)
 
   // Wait instruction without timeout without attribute
   {
+    WaitItem wait_item;
     auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
     EXPECT_NO_THROW(wait_item.InitFromDomain(wait.get()));
     EXPECT_EQ(wait_item.GetTimeout(), 0.0);

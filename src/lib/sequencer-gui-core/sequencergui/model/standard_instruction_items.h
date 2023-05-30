@@ -434,25 +434,19 @@ private:
 };
 
 //! Represent Wait instruction.
-class WaitItem : public InstructionItem
+class WaitItem : public UniversalInstructionItem
 {
 public:
   static inline const std::string Type = sequencergui::domainconstants::kWaitInstructionType;
 
-  using InstructionItem::InstructionItem;
+  using UniversalInstructionItem::UniversalInstructionItem;
   WaitItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  std::string GetDomainType() const override;
-
   void SetTimeout(double value);
 
   double GetTimeout() const;
-
-private:
-  void InitFromDomainImpl(const instruction_t* instruction) override;
-  void SetupDomainImpl(instruction_t* instruction) const override;
 };
 
 }  // namespace sequencergui
