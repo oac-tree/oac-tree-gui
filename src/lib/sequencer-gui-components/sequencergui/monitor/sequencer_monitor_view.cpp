@@ -151,7 +151,6 @@ void SequencerMonitorView::SetupConnections()
 //! Setup widgets to show currently selected job.
 void SequencerMonitorView::OnJobSelected(JobItem *item)
 {
-  qDebug() << "SequencerMonitorView::OnJobSelected JobItem" << item;
   m_job_manager->SetCurrentJob(item);
   m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_property_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);

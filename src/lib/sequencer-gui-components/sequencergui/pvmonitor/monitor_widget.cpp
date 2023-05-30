@@ -26,6 +26,7 @@
 #include "workspace_monitor_helper.h"
 #include "workspace_synchronizer.h"
 
+#include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
@@ -39,7 +40,6 @@
 
 #include <sup/sequencer/workspace.h>
 
-#include <QMessageBox>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -133,15 +133,7 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
 
   auto selected_item_callback = [this]() { return m_tree_view->GetSelectedItem(); };
 
-  auto send_message_callback = [this](const sup::gui::MessageEvent &event)
-  {
-    QMessageBox msg_box;
-    msg_box.setText(QString::fromStdString(event.text));
-    msg_box.setInformativeText(QString::fromStdString(event.informative));
-    msg_box.setDetailedText(QString::fromStdString(event.detailed));
-    msg_box.setIcon(msg_box.Warning);
-    msg_box.exec();
-  };
+  auto send_message_callback = [](const auto &event) { return SendWarningMessage(event); };
 
   auto edit_anyvalue_callback =
       [this](const sup::gui::AnyValueItem *item) -> std::unique_ptr<sup::gui::AnyValueItem>

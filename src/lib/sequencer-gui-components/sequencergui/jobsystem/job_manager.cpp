@@ -34,7 +34,6 @@
 
 #include <QInputDialog>
 #include <QMainWindow>
-#include <QMessageBox>
 
 namespace sequencergui
 {

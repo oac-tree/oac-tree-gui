@@ -19,6 +19,7 @@
 
 #include "composer_procedure_editor.h"
 
+#include <sequencergui/components/message_helper.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
@@ -38,7 +39,6 @@
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QMessageBox>
 #include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -154,15 +154,7 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
 
   result.selected_item_callback = [this]() { return m_workspace_editor_widget->GetSelectedItem(); };
 
-  auto send_message_callback = [this](const sup::gui::MessageEvent& event)
-  {
-    QMessageBox msg_box;
-    msg_box.setText(QString::fromStdString(event.text));
-    msg_box.setInformativeText(QString::fromStdString(event.informative));
-    msg_box.setDetailedText(QString::fromStdString(event.detailed));
-    msg_box.setIcon(msg_box.Warning);
-    msg_box.exec();
-  };
+  auto send_message_callback = [](const auto& event) { return SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
 
   auto edit_anyvalue_callback =

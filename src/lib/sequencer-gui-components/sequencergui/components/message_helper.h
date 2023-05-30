@@ -23,6 +23,7 @@
 //! Collection of helper functions to send messages.
 
 #include <sup/gui/components/message_event.h>
+
 #include <QMessageBox>
 
 namespace sequencergui
@@ -31,7 +32,7 @@ namespace sequencergui
 /**
  * @brief Send the message via the message box.
  */
-void SendMessage(const sup::gui::MessageEvent &event, QMessageBox::Icon icon_type);
+void SendMessage(const sup::gui::MessageEvent& event, QMessageBox::Icon icon_type);
 
 /**
  * @brief Send warning message via the message box.
@@ -42,7 +43,6 @@ void SendWarningMessage(const sup::gui::MessageEvent& event);
  * @brief Send info message via the message box.
  */
 void SendInfoMessage(const sup::gui::MessageEvent& event);
-
 
 }  // namespace sequencergui
 
