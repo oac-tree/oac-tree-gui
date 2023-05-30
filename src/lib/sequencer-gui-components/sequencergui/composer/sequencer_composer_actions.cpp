@@ -19,6 +19,7 @@
 
 #include "sequencer_composer_actions.h"
 
+#include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
@@ -43,17 +44,6 @@ namespace
 const QString kGroupName("SequencerComposerActions");
 const QString kCurrentWorkdirSettingName = kGroupName + "/" + "workdir";
 }  // namespace
-
-void SendMessage(const sup::gui::MessageEvent &event, QMessageBox::Icon icon_type)
-{
-  QMessageBox msg_box;
-  msg_box.setWindowTitle(QString::fromStdString(event.title));
-  msg_box.setText(QString::fromStdString(event.text));
-  msg_box.setInformativeText(QString::fromStdString(event.informative));
-  msg_box.setDetailedText(QString::fromStdString(event.detailed));
-  msg_box.setIcon(icon_type);
-  msg_box.exec();
-}
 
 }  // namespace
 
@@ -93,16 +83,6 @@ void SequencerComposerActions::WriteSettings()
   settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
 }
 
-void SequencerComposerActions::SendInfoMessage(const sup::gui::MessageEvent &event)
-{
-  SendMessage(event, QMessageBox::Information);
-}
-
-void SequencerComposerActions::SendWarningMessage(const sup::gui::MessageEvent &event)
-{
-  SendMessage(event, QMessageBox::Warning);
-}
-
 void SequencerComposerActions::SetupActions()
 {
   m_validate_procedure_action = new QAction("Validate procedure", this);
@@ -124,19 +104,28 @@ void SequencerComposerActions::OnValidateProcedureRequest()
     return;
   }
 
+  std::unique_ptr<procedure_t> domain_procedure;
   try
   {
     DomainProcedureBuilder builder;
-    auto domain_procedure = builder.CreateProcedure(m_procedure_item);
+    domain_procedure = std::move(builder.CreateProcedure(m_procedure_item));
     domain_procedure->Setup();
-    SendInfoMessage({"Validate Procedure", "Sequencer procedure is valid",
-                     "Domain procedure setup has been completed successfully"});
   }
   catch (std::exception &ex)
   {
     SendWarningMessage({"Validate Procedure", "Validation of procedure failed", ex.what()});
     return;
   }
+
+  if (domain_procedure->RootInstruction() == nullptr && domain_procedure->GetInstructionCount() > 1)
+  {
+    SendWarningMessage({"Validate Procedure", "Validation of procedure failed",
+                        "None of existing top-level instructions is marked as root instruction"});
+    return;
+  }
+
+  SendInfoMessage({"Validate Procedure", "Sequencer procedure is valid",
+                   "Domain procedure setup has been completed successfully"});
 }
 
 //! Generates XML content from currently selected procedure and save it to file.

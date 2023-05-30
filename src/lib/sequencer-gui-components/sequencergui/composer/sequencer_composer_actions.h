@@ -53,9 +53,6 @@ private:
   void ReadSettings();
   void WriteSettings();
 
-  void SendWarningMessage(const sup::gui::MessageEvent& event);
-  void SendInfoMessage(const sup::gui::MessageEvent& event);
-
   void SetupActions();
   void OnValidateProcedureRequest();
   void OnExportToXmlRequest();

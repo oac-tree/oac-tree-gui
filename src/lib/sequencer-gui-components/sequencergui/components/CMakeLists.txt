@@ -7,5 +7,7 @@ target_sources(${library_name} PRIVATE
   message_handler_factory.h
   procedure_list_widget.cpp
   procedure_list_widget.h
+  message_helper.cpp
+  message_helper.h
 )
 
