@@ -32,7 +32,7 @@ namespace
 {
 const std::string kInput = "kInput";
 const std::string kOutput = "kOutput";
-const std::string kVariableName = "kVariableName";
+const std::string kVariableName = "varName";
 const std::string kFile = "kFile";
 const std::string kPath = "kPath";
 const std::string kTarget = "kTarget";
@@ -74,43 +74,21 @@ void ChoiceItem::SetVariableName(const std::string &value)
 // ConditionItem
 // ----------------------------------------------------------------------------
 
-ConditionItem::ConditionItem() : InstructionItem(Type)
-{
-  RegisterCommonProperties();
-  AddProperty(kVariableName, std::string())->SetDisplayName("Variable name");
-}
+ConditionItem::ConditionItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> ConditionItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<ConditionItem>(*this, make_unique_id);
 }
 
-std::string ConditionItem::GetDomainType() const
-{
-  return domainconstants::kConditionInstructionType;
-}
-
-void ConditionItem::InitFromDomainImpl(const instruction_t *instruction)
-{
-  if (instruction->HasAttribute(domainconstants::kVarNameAttribute))
-  {
-    SetVariableName(instruction->GetAttributeString(domainconstants::kVarNameAttribute));
-  }
-}
-
-void ConditionItem::SetupDomainImpl(instruction_t *instruction) const
-{
-  instruction->AddAttribute(domainconstants::kVarNameAttribute, GetVariableName());
-}
-
 std::string ConditionItem::GetVariableName() const
 {
-  return Property<std::string>(kVariableName);
+  return Property<std::string>(domainconstants::kVarNameAttribute);
 }
 
 void ConditionItem::SetVariableName(const std::string &value)
 {
-  SetProperty(kVariableName, value);
+  SetProperty(domainconstants::kVarNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
