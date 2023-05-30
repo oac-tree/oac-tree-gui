@@ -31,20 +31,14 @@
 
 #include <QAction>
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QSettings>
 #include <QWidget>
 #include <fstream>
 
 namespace
 {
-
-namespace
-{
 const QString kGroupName("SequencerComposerActions");
 const QString kCurrentWorkdirSettingName = kGroupName + "/" + "workdir";
-}  // namespace
-
 }  // namespace
 
 namespace sequencergui
