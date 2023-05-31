@@ -26,7 +26,6 @@ class QTextEdit;
 
 namespace sequencergui
 {
-class XmlSyntaxHighlighter;
 
 //! Simple XML viewer with syntax highlight.
 class XMLEditor : public QWidget
@@ -52,7 +51,6 @@ private:
   void SetupActions();
 
   QTextEdit* m_text_edit{nullptr};
-  XmlSyntaxHighlighter* m_syntax_highlighter{nullptr};
   QString m_current_workdir;
 };
 

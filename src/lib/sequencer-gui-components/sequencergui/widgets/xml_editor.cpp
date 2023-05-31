@@ -20,7 +20,6 @@
 #include "xml_editor.h"
 
 #include <sequencergui/widgets/style_utils.h>
-#include <sequencergui/widgets/xml_syntax_highlighter.h>
 
 #include <mvvm/utils/file_utils.h>
 
@@ -49,9 +48,6 @@ namespace sequencergui
 XMLEditor::XMLEditor(QWidget *parent)
     : QWidget(parent)
     , m_text_edit(new QTextEdit)
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    , m_syntax_highlighter(new XmlSyntaxHighlighter(m_text_edit->document()))
-#endif
 {
   setWindowTitle("XML");
 
