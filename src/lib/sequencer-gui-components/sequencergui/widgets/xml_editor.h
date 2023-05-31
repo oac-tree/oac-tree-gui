@@ -22,7 +22,10 @@
 
 #include <QWidget>
 
-class QTextEdit;
+namespace sup::gui
+{
+class CodeEditor;
+}
 
 namespace sequencergui
 {
@@ -50,7 +53,7 @@ private:
   void WriteSettings();
   void SetupActions();
 
-  QTextEdit* m_text_edit{nullptr};
+  sup::gui::CodeEditor* m_text_edit{nullptr};
   QString m_current_workdir;
 };
 

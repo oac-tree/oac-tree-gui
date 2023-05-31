@@ -20,6 +20,7 @@
 #include "xml_editor.h"
 
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/codeeditor/code_editor.h>
 
 #include <mvvm/utils/file_utils.h>
 
@@ -28,12 +29,12 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QScrollBar>
+#include <QSettings>
 #include <QTextEdit>
 #include <QTextStream>
 #include <QToolBar>
 #include <QVBoxLayout>
 #include <fstream>
-#include <QSettings>
 
 namespace
 {
@@ -42,12 +43,9 @@ const QString kGroupName("XmlEditor/");
 const QString kCurrentWorkdirSettingName = kGroupName + "workdir";
 }  // namespace
 
-
 namespace sequencergui
 {
-XMLEditor::XMLEditor(QWidget *parent)
-    : QWidget(parent)
-    , m_text_edit(new QTextEdit)
+XMLEditor::XMLEditor(QWidget *parent) : QWidget(parent), m_text_edit(new sup::gui::CodeEditor)
 {
   setWindowTitle("XML");
 
@@ -56,10 +54,6 @@ XMLEditor::XMLEditor(QWidget *parent)
   layout->setSpacing(0);
 
   layout->addWidget(m_text_edit);
-
-  QFont textFont("Monospace");
-  m_text_edit->setFont(textFont);
-  m_text_edit->setLineWrapMode(QTextEdit::NoWrap);
 
   SetupActions();
   ReadSettings();
@@ -93,7 +87,7 @@ void XMLEditor::SetXMLContent(const QString &content)
   const int old_scrollbar_value = m_text_edit->verticalScrollBar()->value();
   m_text_edit->clear();
 
-  m_text_edit->setText(content);
+  m_text_edit->SetText(content, "XML");
   m_text_edit->verticalScrollBar()->setValue(old_scrollbar_value);
 }
 
