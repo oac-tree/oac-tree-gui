@@ -51,7 +51,7 @@ public:
    * @details If domain type is empty, the resulting object can be used after InitFromDomain call.
    */
 
-  UniversalInstructionItem(const std::string& domain_type = {});
+  explicit UniversalInstructionItem(const std::string& domain_type = {});
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 

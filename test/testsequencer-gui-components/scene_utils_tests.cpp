@@ -37,6 +37,8 @@
 #include <QPointF>
 #include <QRectF>
 
+#include <iostream>
+
 using namespace sequencergui;
 
 namespace
@@ -118,6 +120,7 @@ TEST_F(SceneUtilsTest, GetPositions)
 }
 
 //! Checking adding known domain_type instruction to SequencerModel.
+//! This validates drag-and-drop behavior.
 
 TEST_F(SceneUtilsTest, AddKnownInstruction)
 {
@@ -129,6 +132,25 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
 
   EXPECT_EQ(item->GetType(), WaitItem::Type);
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+}
+
+//! Checking adding unknown domain_type instruction to SequencerModel.
+//! This validates drag-and-drop behavior.
+
+TEST_F(SceneUtilsTest, AddUnknownInstruction)
+{
+  RegisterUnknownDomainInstruction();
+
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
+                                   UnknownDomainInstruction::Type);
+
+//  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item->GetType(), UnknownDomainInstruction::Type);
+  EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 

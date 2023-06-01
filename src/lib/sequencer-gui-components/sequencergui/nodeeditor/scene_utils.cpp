@@ -121,17 +121,8 @@ QColor GetBaseColor(const InstructionItem* instruction)
 InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContainerItem* container,
                                       const std::string& domain_type)
 {
-  try
-  {
-    auto item_type = GetItemType(domain_type);
-    return dynamic_cast<InstructionItem*>(
-        model->InsertItem(model->GetFactory()->CreateItem(item_type), container, {}));
-  }
-  catch (const mvvm::KeyNotFoundException& ex)
-  {
-    // The UI knows nothing about instruction of given type.
-    return nullptr;
-  }
+  return dynamic_cast<InstructionItem*>(
+      model->InsertItem(CreateInstructionItem(domain_type), container, {}));
 }
 
 InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* container,
