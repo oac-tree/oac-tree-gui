@@ -107,7 +107,7 @@ void SequencerComposerView::UpdateXML()
   {
     try
     {
-      m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(selected)));
+      m_xml_editor->SetContent(QString::fromStdString(ExportToXMLString(selected)));
     }
     catch (const std::exception &ex)
     {

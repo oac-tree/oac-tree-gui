@@ -99,7 +99,7 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
   {
     if (auto procedure_item = m_explorer_panel->GetSelectedProcedure(); procedure_item)
     {
-      m_xml_view->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
+      m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     }
   };
   m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(on_data_change);
@@ -109,7 +109,7 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
 void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 {
   // show content in XML editor
-  m_xml_view->SetXMLFile(file_name);
+  m_xml_view->SetFile(file_name);
 
   // Generates temporary Procedure from XML and show object tree.
   auto procedure_item = LoadProcedureFromXmlFile(file_name);
@@ -134,7 +134,7 @@ void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
 {
   if (procedure_item)
   {
-    m_xml_view->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
+    m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     m_trees_widget->SetProcedure(procedure_item);
   }
   else

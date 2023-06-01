@@ -20,14 +20,14 @@
 #include "code_view.h"
 
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/codeeditor/code_editor.h>
 
 #include <mvvm/utils/file_utils.h>
+
+#include <sup/gui/codeeditor/code_editor.h>
 
 #include <QAction>
 #include <QFile>
 #include <QFileDialog>
-#include <QLabel>
 #include <QScrollBar>
 #include <QSettings>
 #include <QTextEdit>
@@ -39,8 +39,8 @@
 namespace
 {
 
-const QString kGroupName("XmlEditor/");
-const QString kCurrentWorkdirSettingName = kGroupName + "workdir";
+const QString kGroupName("CodeView");
+const QString kWorkdirSettingName = kGroupName + "/" + "workdir";
 }  // namespace
 
 namespace sequencergui
@@ -64,7 +64,7 @@ CodeView::~CodeView()
   WriteSettings();
 }
 
-void CodeView::SetXMLFile(const QString &file_name)
+void CodeView::SetFile(const QString &file_name)
 {
   QFile file(file_name);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -79,10 +79,10 @@ void CodeView::SetXMLFile(const QString &file_name)
     text.append(in.readLine() + "\n");
   }
 
-  SetXMLContent(text);
+  SetContent(text);
 }
 
-void CodeView::SetXMLContent(const QString &content)
+void CodeView::SetContent(const QString &content)
 {
   const int old_scrollbar_value = m_text_edit->verticalScrollBar()->value();
   m_text_edit->clear();
@@ -99,22 +99,22 @@ void CodeView::ClearText()
 void CodeView::ReadSettings()
 {
   const QSettings settings;
-  m_current_workdir = settings.value(kCurrentWorkdirSettingName, QDir::homePath()).toString();
+  m_current_workdir = settings.value(kWorkdirSettingName, QDir::homePath()).toString();
 }
 
 void CodeView::WriteSettings()
 {
   QSettings settings;
-  settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
+  settings.setValue(kWorkdirSettingName, m_current_workdir);
 }
 
 void CodeView::SetupActions()
 {
-  auto export_xml_action = new QAction("&Export XML", this);
-  export_xml_action->setIcon(styleutils::GetIcon("file-export-outline"));
-  export_xml_action->setToolTip("Export procedure to XML file");
+  auto export_to_file_action = new QAction("&Export XML", this);
+  export_to_file_action->setIcon(styleutils::GetIcon("file-export-outline"));
+  export_to_file_action->setToolTip("Export procedure to XML file");
 
-  auto on_export_xml = [this]()
+  auto on_export_to_file = [this]()
   {
     auto file_name = QFileDialog::getSaveFileName(
         this, "Save File", m_current_workdir + "/untitled.xml", tr("Files (*.xml *.XML)"));
@@ -129,8 +129,8 @@ void CodeView::SetupActions()
     }
   };
 
-  connect(export_xml_action, &QAction::triggered, this, on_export_xml);
-  addAction(export_xml_action);
+  connect(export_to_file_action, &QAction::triggered, this, on_export_to_file);
+  addAction(export_to_file_action);
 }
 
 }  // namespace sequencergui

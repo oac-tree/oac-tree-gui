@@ -46,9 +46,9 @@ public:
   explicit CodeView(QWidget* parent = nullptr);
   ~CodeView() override;
 
-  void SetXMLFile(const QString& file_name);
+  void SetFile(const QString& file_name);
 
-  void SetXMLContent(const QString& content);
+  void SetContent(const QString& content);
 
   void ClearText();
 
