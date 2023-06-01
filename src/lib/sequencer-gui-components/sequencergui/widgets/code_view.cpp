@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "xml_editor.h"
+#include "code_view.h"
 
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/codeeditor/code_editor.h>

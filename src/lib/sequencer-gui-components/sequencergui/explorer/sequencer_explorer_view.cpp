@@ -25,9 +25,9 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/xml_utils.h>
+#include <sequencergui/widgets/code_view.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/widget_utils.h>
-#include <sequencergui/widgets/xml_editor.h>
 
 #include <mvvm/signals/model_event_handler.h>
 #include <mvvm/standarditems/standard_item_includes.h>
@@ -65,7 +65,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     : QWidget(parent)
     , m_explorer_panel(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
-    , m_xml_editor(new CodeView)
+    , m_xml_view(new CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
 {
@@ -77,7 +77,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
   m_splitter->addWidget(m_explorer_panel);
   m_splitter->addWidget(m_trees_widget);
 
-  m_right_panel->AddWidget(m_xml_editor);
+  m_right_panel->AddWidget(m_xml_view);
   m_splitter->addWidget(m_right_panel);
 
   layout->addWidget(m_splitter);
@@ -99,7 +99,7 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
   {
     if (auto procedure_item = m_explorer_panel->GetSelectedProcedure(); procedure_item)
     {
-      m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
+      m_xml_view->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     }
   };
   m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(on_data_change);
@@ -109,7 +109,7 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
 void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 {
   // show content in XML editor
-  m_xml_editor->SetXMLFile(file_name);
+  m_xml_view->SetXMLFile(file_name);
 
   // Generates temporary Procedure from XML and show object tree.
   auto procedure_item = LoadProcedureFromXmlFile(file_name);
@@ -134,12 +134,12 @@ void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
 {
   if (procedure_item)
   {
-    m_xml_editor->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
+    m_xml_view->SetXMLContent(QString::fromStdString(ExportToXMLString(procedure_item)));
     m_trees_widget->SetProcedure(procedure_item);
   }
   else
   {
-    m_xml_editor->ClearText();
+    m_xml_view->ClearText();
     m_trees_widget->SetProcedure(nullptr);
   }
 }

@@ -1,6 +1,8 @@
 # Collection of general purpose widgets that doesn't contain any Sequencer UI related specifics.
 
 target_sources(${library_name} PRIVATE
+  code_view.cpp
+  code_view.h
   dialog_message_handler.cpp
   dialog_message_handler.h
   dots_toolbar.cpp
@@ -12,9 +14,9 @@ target_sources(${library_name} PRIVATE
   item_stack_widget.cpp
   item_stack_widget.h
   overlay_message.cpp
+  overlay_message.h
   overlay_message_frame.cpp
   overlay_message_frame.h
-  overlay_message.h
   overlay_widget_position_strategy.cpp
   overlay_widget_position_strategy.h
   panel_toolbar.cpp
@@ -29,6 +31,4 @@ target_sources(${library_name} PRIVATE
   widget_overlay_message_publisher.h
   widget_utils.cpp
   widget_utils.h
-  xml_editor.cpp
-  xml_editor.h
 )
