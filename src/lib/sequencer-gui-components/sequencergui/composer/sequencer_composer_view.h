@@ -32,6 +32,10 @@ namespace mvvm
 class ModelHasChangedController;
 }
 
+namespace sup::gui {
+class CodeView;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
@@ -40,7 +44,6 @@ class ComposerPanel;
 class NodeEditor;
 class ProcedureItem;
 class ItemStackWidget;
-class CodeView;
 class SequencerComposerActions;
 
 //! Main widget for model editing. Contains a toolbar on top, and few widgets beneath:
@@ -71,7 +74,7 @@ private:
   NodeEditor* m_node_editor{nullptr};
   ItemStackWidget* m_central_panel{nullptr};
   ComposerProcedureEditor* m_composer_procedure_editor{nullptr};
-  CodeView* m_xml_editor{nullptr};
+  sup::gui::CodeView* m_xml_view{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
 
   std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;

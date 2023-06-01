@@ -28,7 +28,6 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/nodeeditor/node_editor.h>
-#include <sequencergui/widgets/code_view.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 
@@ -36,6 +35,7 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <sup/gui/codeeditor/code_view.h>
 #include <sup/gui/components/message_handler_interface.h>
 
 #include <QDebug>
@@ -52,7 +52,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_central_panel(new ItemStackWidget)
     , m_composer_procedure_editor(
           new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
-    , m_xml_editor(new CodeView)
+    , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
     , m_composer_actions(new SequencerComposerActions(this))
@@ -62,7 +62,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 
   m_central_panel->AddWidget(m_node_editor, m_node_editor->actions());
   m_right_panel->AddWidget(m_composer_procedure_editor, m_composer_procedure_editor->actions());
-  m_right_panel->AddWidget(m_xml_editor, m_xml_editor->actions());
+  m_right_panel->AddWidget(m_xml_view, m_xml_view->actions());
 
   m_splitter->addWidget(m_composer_panel);
   m_splitter->addWidget(m_central_panel);
@@ -107,13 +107,13 @@ void SequencerComposerView::UpdateXML()
   {
     try
     {
-      m_xml_editor->SetContent(QString::fromStdString(ExportToXMLString(selected)));
+      m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(selected)));
     }
     catch (const std::exception &ex)
     {
       // Procedure is in inconsistent state. For example, variable items all have the same names
       // which makes domain's Workspace unhappy.
-      m_xml_editor->ClearText();
+      m_xml_view->ClearText();
     }
   }
 }

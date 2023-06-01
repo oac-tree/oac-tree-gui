@@ -24,10 +24,14 @@
 
 class QSplitter;
 
+namespace sup::gui
+{
+class CodeView;
+}
+
 namespace sequencergui
 {
 class SequencerModel;
-class CodeView;
 class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
@@ -56,7 +60,7 @@ private:
 
   ExplorerPanel* m_explorer_panel{nullptr};
   ProcedureTreesWidget* m_trees_widget{nullptr};
-  CodeView* m_xml_view{nullptr};
+  sup::gui::CodeView* m_xml_view{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
   QSplitter* m_splitter{nullptr};
 

@@ -25,13 +25,14 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/xml_utils.h>
-#include <sequencergui/widgets/code_view.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/widget_utils.h>
 
 #include <mvvm/signals/model_event_handler.h>
 #include <mvvm/standarditems/standard_item_includes.h>
 #include <mvvm/utils/file_utils.h>
+
+#include <sup/gui/codeeditor/code_view.h>
 
 #include <QApplication>
 #include <QDebug>
@@ -65,7 +66,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     : QWidget(parent)
     , m_explorer_panel(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
-    , m_xml_view(new CodeView)
+    , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
 {
