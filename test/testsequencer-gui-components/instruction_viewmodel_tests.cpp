@@ -97,9 +97,9 @@ TEST_F(InstructionViewModelTest, SequenceWithChild)
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait1_displayname_index), wait1);
 
   EXPECT_EQ(viewmodel.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait0"));
+            std::string("Wait"));
   EXPECT_EQ(viewmodel.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Wait1"));
+            std::string("Wait"));
 }
 
 TEST_F(InstructionViewModelTest, NotificationOnStatusChange)
