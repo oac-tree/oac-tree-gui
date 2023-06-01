@@ -27,7 +27,7 @@ class QSplitter;
 namespace sequencergui
 {
 class SequencerModel;
-class XMLEditor;
+class CodeView;
 class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
@@ -56,7 +56,7 @@ private:
 
   ExplorerPanel* m_explorer_panel{nullptr};
   ProcedureTreesWidget* m_trees_widget{nullptr};
-  XMLEditor* m_xml_editor{nullptr};
+  CodeView* m_xml_editor{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
   QSplitter* m_splitter{nullptr};
 

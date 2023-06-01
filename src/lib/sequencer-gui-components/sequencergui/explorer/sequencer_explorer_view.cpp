@@ -65,7 +65,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     : QWidget(parent)
     , m_explorer_panel(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
-    , m_xml_editor(new XMLEditor)
+    , m_xml_editor(new CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
 {

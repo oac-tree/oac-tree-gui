@@ -40,7 +40,7 @@ class ComposerPanel;
 class NodeEditor;
 class ProcedureItem;
 class ItemStackWidget;
-class XMLEditor;
+class CodeView;
 class SequencerComposerActions;
 
 //! Main widget for model editing. Contains a toolbar on top, and few widgets beneath:
@@ -71,7 +71,7 @@ private:
   NodeEditor* m_node_editor{nullptr};
   ItemStackWidget* m_central_panel{nullptr};
   ComposerProcedureEditor* m_composer_procedure_editor{nullptr};
-  XMLEditor* m_xml_editor{nullptr};
+  CodeView* m_xml_editor{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
 
   std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;

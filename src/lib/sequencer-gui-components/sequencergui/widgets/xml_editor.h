@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_XML_EDITOR_H_
-#define SEQUENCERGUI_WIDGETS_XML_EDITOR_H_
+#ifndef SEQUENCERGUI_WIDGETS_CODE_VIEW_H_
+#define SEQUENCERGUI_WIDGETS_CODE_VIEW_H_
 
 #include <QWidget>
 
@@ -30,23 +30,27 @@ class CodeEditor;
 namespace sequencergui
 {
 
-//! Simple XML viewer with syntax highlight.
-class XMLEditor : public QWidget
+/**
+ * @brief Simple viewer of XML/JSON content.
+ *
+ * @details It is intended for dynamic updates of text content while preserving the position
+ * of the scroll area. It allows to monitor the XML/JSON representation of the model in the
+ * course of model update.
+ */
+
+class CodeView : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit XMLEditor(QWidget* parent = nullptr);
-  ~XMLEditor();
+  explicit CodeView(QWidget* parent = nullptr);
+  ~CodeView() override;
 
   void SetXMLFile(const QString& file_name);
 
   void SetXMLContent(const QString& content);
 
   void ClearText();
-
-signals:
-  void ExportXmlRequest();
 
 private:
   void ReadSettings();
@@ -59,4 +63,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_XML_EDITOR_H_
+#endif  // SEQUENCERGUI_WIDGETS_CODE_VIEW_H_

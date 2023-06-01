@@ -45,7 +45,7 @@ const QString kCurrentWorkdirSettingName = kGroupName + "workdir";
 
 namespace sequencergui
 {
-XMLEditor::XMLEditor(QWidget *parent) : QWidget(parent), m_text_edit(new sup::gui::CodeEditor)
+CodeView::CodeView(QWidget *parent) : QWidget(parent), m_text_edit(new sup::gui::CodeEditor)
 {
   setWindowTitle("XML");
 
@@ -59,12 +59,12 @@ XMLEditor::XMLEditor(QWidget *parent) : QWidget(parent), m_text_edit(new sup::gu
   ReadSettings();
 }
 
-XMLEditor::~XMLEditor()
+CodeView::~CodeView()
 {
   WriteSettings();
 }
 
-void XMLEditor::SetXMLFile(const QString &file_name)
+void CodeView::SetXMLFile(const QString &file_name)
 {
   QFile file(file_name);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -82,7 +82,7 @@ void XMLEditor::SetXMLFile(const QString &file_name)
   SetXMLContent(text);
 }
 
-void XMLEditor::SetXMLContent(const QString &content)
+void CodeView::SetXMLContent(const QString &content)
 {
   const int old_scrollbar_value = m_text_edit->verticalScrollBar()->value();
   m_text_edit->clear();
@@ -91,24 +91,24 @@ void XMLEditor::SetXMLContent(const QString &content)
   m_text_edit->verticalScrollBar()->setValue(old_scrollbar_value);
 }
 
-void XMLEditor::ClearText()
+void CodeView::ClearText()
 {
   m_text_edit->clear();
 }
 
-void XMLEditor::ReadSettings()
+void CodeView::ReadSettings()
 {
   const QSettings settings;
   m_current_workdir = settings.value(kCurrentWorkdirSettingName, QDir::homePath()).toString();
 }
 
-void XMLEditor::WriteSettings()
+void CodeView::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
 }
 
-void XMLEditor::SetupActions()
+void CodeView::SetupActions()
 {
   auto export_xml_action = new QAction("&Export XML", this);
   export_xml_action->setIcon(styleutils::GetIcon("file-export-outline"));

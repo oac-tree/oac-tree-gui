@@ -51,7 +51,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_central_panel(new ItemStackWidget)
     , m_composer_procedure_editor(
           new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
-    , m_xml_editor(new XMLEditor)
+    , m_xml_editor(new CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
     , m_composer_actions(new SequencerComposerActions(this))
