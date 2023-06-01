@@ -47,7 +47,7 @@ namespace sequencergui
 UniversalVariableItem::UniversalVariableItem(const std::string &domain_type)
     : VariableItem(domain_type.empty() ? Type : domain_type)
 {
-  if (!domain_type.empty())
+  if (IsVariableTypeAvailable(domain_type))
   {
     // temporary domain variable is used to create default properties
     auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
