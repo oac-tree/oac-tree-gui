@@ -87,9 +87,39 @@ TEST_F(UniversalVariableItemTests, AttemptToCreateDomainVariable)
   EXPECT_THROW(item.CreateDomainVariable(), sup::sequencer::InvalidOperationException);
 }
 
+//! Creating variable using existing domain name.
+//! Please note, that the resulting object will report same name for GetType() and GetDomainType().
+
 TEST_F(UniversalVariableItemTests, CreateUsingDomainName)
 {
   UniversalVariableItem item(domainconstants::kLocalVariableType);
+  item.SetProperty(domainconstants::kNameAttribute, "abc");
+
+  // different wrt test below
+  EXPECT_EQ(item.GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
+
+  auto domain_variable = item.CreateDomainVariable();
+  EXPECT_EQ(domain_variable->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
+
+  // more tests in standard_variable_item_tests.cpp
+}
+
+//! Creating variable using default constructor followed by SetDomainName.
+//! Please note, that the resulting object will report different names for GetType() and
+//! GetDomainType().
+
+TEST_F(UniversalVariableItemTests, SetDomainName)
+{
+  UniversalVariableItem item;
+
+  item.SetDomainType(domainconstants::kLocalVariableType);
+
+  // different wrt test below
+  EXPECT_EQ(item.GetType(), UniversalVariableItem::Type);
+  EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
+
   item.SetProperty(domainconstants::kNameAttribute, "abc");
 
   auto domain_variable = item.CreateDomainVariable();

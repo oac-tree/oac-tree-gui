@@ -23,11 +23,11 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
 
 namespace
@@ -44,14 +44,12 @@ const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::
 namespace sequencergui
 {
 
-UniversalVariableItem::UniversalVariableItem(const std::string &domain_type)
-    : VariableItem(domain_type.empty() ? Type : domain_type)
+UniversalVariableItem::UniversalVariableItem(const std::string &item_type)
+    : VariableItem(item_type.empty() ? Type : item_type)
 {
-  if (IsVariableTypeAvailable(domain_type))
+  if (IsVariableTypeAvailable(item_type))
   {
-    // temporary domain variable is used to create default properties
-    auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
-    SetupFromDomain(domain_variable.get());
+    SetDomainType(item_type);
   }
 }
 
@@ -63,6 +61,13 @@ std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique
 std::string UniversalVariableItem::GetDomainType() const
 {
   return m_domain_type;
+}
+
+void UniversalVariableItem::SetDomainType(const std::string &domain_type)
+{
+  // temporary domain variable is used to create default properties
+  auto domain_variable = ::sequencergui::CreateDomainVariable(domain_type);
+  SetupFromDomain(domain_variable.get());
 }
 
 std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttributeItems() const

@@ -45,15 +45,26 @@ public:
   /**
    * @brief The parameterized c-tor for UniversalVariableItem.
    *
-   * @param domain_type The typename of the domain variable.
+   * @param item_type The item type.
    *
-   * @details If domain type is empty, the resulting object can be used after InitFromDomain call.
+   * If item_type coincides with the existing domain name, the resulting object will be initialised
+   * with corresponding domain attributes.
+   *
+   * If item_type is empty, the resulting object can be used either after SetDomainType
+   * call or after InitFromDomain call.
    */
-  explicit UniversalVariableItem(const std::string& domain_type = {});
+  explicit UniversalVariableItem(const std::string& item_type = {});
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
   std::string GetDomainType() const override;
+
+  /**
+   * @brief Set the domain type and performs attribute initialization.
+   *
+   * @details This function can be called only once.
+   */
+  void SetDomainType(const std::string& domain_type);
 
 private:
   struct Attribute
