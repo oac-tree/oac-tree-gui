@@ -263,8 +263,10 @@ TEST_F(StandardInstructionItemsTest, FallbackItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, ForceSuccessItem)
 {
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::ForceSuccessItem>());
+
   // Correctly initialised item
-  ForceSuccessItem item;
+  testutils::ForceSuccessItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to ForceSuccess
@@ -279,7 +281,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItemFromDomain)
   input->AddAttribute(domainconstants::kNameAttribute, "abc");
 
   // Correctly initialised item
-  ForceSuccessItem item;
+  testutils::ForceSuccessItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -290,7 +292,7 @@ TEST_F(StandardInstructionItemsTest, ForceSuccessItemFromDomain)
 TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
 {
   // Correctly initialised item
-  ForceSuccessItem item;
+  testutils::ForceSuccessItem item;
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kForceSuccessInstructionType);

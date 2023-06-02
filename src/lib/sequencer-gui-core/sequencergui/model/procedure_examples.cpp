@@ -182,7 +182,7 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   auto wait1 = model->InsertItem<WaitItem>(fallback1);
 
   auto sequence1 = model->InsertItem<SequenceItem>(fallback0);
-  auto force0 = model->InsertItem<ForceSuccessItem>(sequence1);
+  auto force0 = InsertInstruction(domainconstants::kForceSuccessInstructionType, sequence1);
   auto copy2 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
   auto copy3 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 

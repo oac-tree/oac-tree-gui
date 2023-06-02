@@ -83,7 +83,6 @@ TEST_F(SequencerUtilsTest, Clone)
   using testutils::IsCloneImplemented;
 
   // instructions
-  EXPECT_TRUE(IsCloneImplemented<ForceSuccessItem>());
   EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
   EXPECT_TRUE(IsCloneImplemented<IncrementItem>());
   EXPECT_TRUE(IsCloneImplemented<InputItem>());

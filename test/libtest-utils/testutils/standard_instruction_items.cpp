@@ -139,4 +139,15 @@ std::unique_ptr<mvvm::SessionItem> FallbackItem::Clone(bool make_unique_id) cons
   return std::make_unique<FallbackItem>(*this, make_unique_id);
 }
 
+// ----------------------------------------------------------------------------
+// ForceSuccess
+// ----------------------------------------------------------------------------
+
+ForceSuccessItem::ForceSuccessItem() : UniversalInstructionItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> ForceSuccessItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ForceSuccessItem>(*this, make_unique_id);
+}
+
 }  // namespace testutils

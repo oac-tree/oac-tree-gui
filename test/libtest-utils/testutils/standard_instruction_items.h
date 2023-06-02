@@ -112,6 +112,19 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 };
 
+//! Represent ForceSuccess instruction.
+class ForceSuccessItem : public sequencergui::UniversalInstructionItem
+{
+public:
+  static inline const std::string Type =
+      sequencergui::domainconstants::kForceSuccessInstructionType;
+
+  using UniversalInstructionItem::UniversalInstructionItem;
+  ForceSuccessItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+};
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_
