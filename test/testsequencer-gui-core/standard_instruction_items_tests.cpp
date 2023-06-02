@@ -92,8 +92,10 @@ TEST_F(StandardInstructionItemsTest, ChoiceItemItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, ConditionItem)
 {
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::ConditionItem>());
+
   // Correctly initialised item
-  ConditionItem item;
+  testutils::ConditionItem item;
   EXPECT_EQ(item.GetVariableName(), std::string());
 
   item.SetVariableName("abc");
@@ -106,7 +108,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItemFromDomain)
   input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
   input->AddAttribute(domainconstants::kIsRootAttribute, "true");
 
-  ConditionItem item;
+  testutils::ConditionItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -115,7 +117,7 @@ TEST_F(StandardInstructionItemsTest, ConditionItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
 {
-  ConditionItem item;
+  testutils::ConditionItem item;
   item.SetVariableName("abc");
   item.SetIsRootFlag(true);
 
