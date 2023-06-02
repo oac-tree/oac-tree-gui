@@ -181,7 +181,9 @@ TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, DecrementItem)
 {
-  DecrementItem item;
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::DecrementItem>());
+
+  testutils::DecrementItem item;
   EXPECT_TRUE(item.GetVariableName().empty());
 
   item.SetVariableName("abc");
@@ -193,7 +195,7 @@ TEST_F(StandardInstructionItemsTest, DecrementItemFromDomain)
   auto input = CreateDomainInstruction(domainconstants::kDecrementInstructionType);
   input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
 
-  DecrementItem item;
+  testutils::DecrementItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -201,7 +203,7 @@ TEST_F(StandardInstructionItemsTest, DecrementItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, DecrementItemToDomain)
 {
-  DecrementItem item;
+  testutils::DecrementItem item;
   item.SetVariableName("abc");
   item.SetIsRootFlag(true);
 

@@ -28,24 +28,6 @@
 namespace sequencergui
 {
 
-//! Represent Decrement instruction.
-class DecrementItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kDecrementInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  DecrementItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-};
-
 //! Represent Fallback instruction.
 class FallbackItem : public UniversalInstructionItem
 {
