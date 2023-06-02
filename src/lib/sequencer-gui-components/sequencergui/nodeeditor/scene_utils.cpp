@@ -147,7 +147,7 @@ InstructionItem* AddAggregate(const std::string& aggregate_name,
                               InstructionContainerItem* container)
 {
   static AggregateFactory factory;
-  return AddInstruction(factory.GetValue(aggregate_name)(), container);
+  return AddInstruction(factory.Create(aggregate_name), container);
 }
 
 std::string InsertSpaceAtCamelCase(std::string str)

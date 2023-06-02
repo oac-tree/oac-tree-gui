@@ -36,6 +36,8 @@ class AggregateFactory
 {
 public:
   AggregateFactory();
+
+  std::unique_ptr<InstructionItem> Create(const std::string& type_name);
 };
 
 }  // namespace sequencergui
