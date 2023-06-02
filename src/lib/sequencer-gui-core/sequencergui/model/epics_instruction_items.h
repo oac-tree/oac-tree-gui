@@ -33,7 +33,7 @@ class EpicsReadInstructionItem : public UniversalInstructionItem
 {
 public:
   using UniversalInstructionItem::UniversalInstructionItem;
-  EpicsReadInstructionItem(const std::string& instruction_type);
+  explicit EpicsReadInstructionItem(const std::string& instruction_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
@@ -55,7 +55,7 @@ class EpicsWriteInstructionItem : public UniversalInstructionItem
 {
 public:
   using UniversalInstructionItem::UniversalInstructionItem;
-  EpicsWriteInstructionItem(const std::string& instruction_type);
+  explicit EpicsWriteInstructionItem(const std::string& instruction_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
