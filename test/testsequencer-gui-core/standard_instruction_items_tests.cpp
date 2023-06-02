@@ -29,6 +29,7 @@
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>
+#include <testutils/standard_instruction_items.h>
 #include <testutils/test_utils.h>
 
 using namespace sequencergui;
@@ -47,7 +48,9 @@ public:
 
 TEST_F(StandardInstructionItemsTest, ChoiceItem)
 {
-  ChoiceItem item;
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::ChoiceItem>());
+
+  testutils::ChoiceItem item;
   EXPECT_TRUE(item.GetVariableName().empty());
 
   item.SetVariableName("abc");
@@ -63,7 +66,7 @@ TEST_F(StandardInstructionItemsTest, ChoiceItemFromDomain)
   auto input = CreateDomainInstruction(domainconstants::kChoiceInstructionType);
   input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
 
-  ChoiceItem item;
+  testutils::ChoiceItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -71,7 +74,7 @@ TEST_F(StandardInstructionItemsTest, ChoiceItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, ChoiceItemItemToDomain)
 {
-  ChoiceItem item;
+  testutils::ChoiceItem item;
   item.SetVariableName("abc");
   item.SetIsRootFlag(true);
 

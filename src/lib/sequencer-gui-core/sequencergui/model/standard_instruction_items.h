@@ -28,21 +28,6 @@
 namespace sequencergui
 {
 
-//! Represent Choice instruction.
-class ChoiceItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kChoiceInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  ChoiceItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-};
 
 //! Represent Condition instruction.
 class ConditionItem : public UniversalInstructionItem

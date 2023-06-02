@@ -25,26 +25,6 @@
 namespace sequencergui
 {
 
-// ----------------------------------------------------------------------------
-// ChoiceItem
-// ----------------------------------------------------------------------------
-
-ChoiceItem::ChoiceItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> ChoiceItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<ChoiceItem>(*this, make_unique_id);
-}
-
-std::string ChoiceItem::GetVariableName() const
-{
-  return Property<std::string>(domainconstants::kVarNameAttribute);
-}
-
-void ChoiceItem::SetVariableName(const std::string &value)
-{
-  SetProperty(domainconstants::kVarNameAttribute, value);
-}
 
 // ----------------------------------------------------------------------------
 // ConditionItem

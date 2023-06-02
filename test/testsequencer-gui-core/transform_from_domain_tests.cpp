@@ -49,13 +49,13 @@ public:
   //! Returns true if we can create InstructionItem of proper type for string representing
   //! "Type" of sup::sequencer::Instruction.
   template <typename T>
-  bool CanCreateInstructionForType(const std::string& seq_type)
+  bool CanCreateInstructionForType(const std::string& domain_type)
   {
-    auto created = sequencergui::CreateInstructionItem(seq_type);
+    auto created = sequencergui::CreateInstructionItem(domain_type);
     const bool is_correct_type = IsCorrectType<T>(created.get());
 
     // for now model type of Item coincides with model type of domain struction
-    const bool is_type_coincides = created->GetType() == seq_type;
+    const bool is_type_coincides = created->GetType() == domain_type;
 
     return is_correct_type && is_type_coincides;
   }
@@ -116,7 +116,6 @@ TEST_F(TransformFromDomainTest, GetItemType)
   using namespace sequencergui::domainconstants;
 
   // for instructions
-  EXPECT_EQ(ChoiceItem::Type, GetItemType(kChoiceInstructionType));
   EXPECT_EQ(ConditionItem::Type, GetItemType(kConditionInstructionType));
   EXPECT_EQ(CopyItem::Type, GetItemType(kCopyInstructionType));
   EXPECT_EQ(DecrementItem::Type, GetItemType(kDecrementInstructionType));
@@ -188,7 +187,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
   using namespace sequencergui::domainconstants;
 
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ChoiceItem>(kChoiceInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ConditionItem>(kConditionInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::CopyItem>(kCopyInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::DecrementItem>(kDecrementInstructionType));

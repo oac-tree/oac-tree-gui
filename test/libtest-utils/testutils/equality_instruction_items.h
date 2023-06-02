@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_EQUALITY_INSTRUCTION_ITEMS_H_
-#define SEQUENCERGUI_MODEL_EQUALITY_INSTRUCTION_ITEMS_H_
+#ifndef LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_
+#define LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_
 
 //! Collection of classes to represent Sequencer equality instructions.
 
@@ -106,6 +106,6 @@ public:
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 };
 
-}  // namespace sequencergui
+}  // namespace testutils
 
-#endif  // SEQUENCERGUI_MODEL_EQUALITY_INSTRUCTION_ITEMS_H_
+#endif  // LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_

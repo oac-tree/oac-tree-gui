@@ -16,6 +16,8 @@ target_sources(${library_name} PRIVATE
   standard_procedure_items.h
   standard_procedures.cpp
   standard_procedures.h
+  standard_instruction_items.cpp
+  standard_instruction_items.h
   test_utils.cpp
   test_utils.h
   equality_instruction_items.cpp
