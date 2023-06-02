@@ -73,6 +73,11 @@ void SetDescription(const std::string& value, InstructionItem* item);
  */
 void SetOutputTarget(const std::string& value, InstructionItem* item);
 
+/**
+ * @brief Set text attribute property to instruction item.
+ */
+void SetText(const std::string& value, InstructionItem* item);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_

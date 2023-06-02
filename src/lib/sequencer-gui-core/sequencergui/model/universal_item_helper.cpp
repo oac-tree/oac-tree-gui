@@ -69,4 +69,9 @@ void SetOutputTarget(const std::string &value, InstructionItem *item)
   item->SetProperty(domainconstants::kOutputAttribute, value);
 }
 
+void SetText(const std::string &value, InstructionItem *item)
+{
+  item->SetProperty(domainconstants::kTextAttribute, value);
+}
+
 }  // namespace sequencergui
