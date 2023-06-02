@@ -401,8 +401,10 @@ TEST_F(StandardInstructionItemsTest, IncrementItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, InputItem)
 {
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::InputItem>());
+
   // Correctly initialised item
-  sequencergui::InputItem item;
+  testutils::InputItem item;
   EXPECT_TRUE(item.GetDescription().empty());
   EXPECT_TRUE(item.GetTargetVariableName().empty());
 }
@@ -411,9 +413,9 @@ TEST_F(StandardInstructionItemsTest, InputItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kInputInstructionType);
   input->AddAttribute(domainconstants::kDescriptionAttribute, "abc");
-  input->AddAttribute(domainconstants::kInputTargetAttribute, "var");
+  input->AddAttribute(domainconstants::kOutputAttribute, "var");
 
-  InputItem item;
+  testutils::InputItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetDescription(), "abc");
@@ -422,14 +424,14 @@ TEST_F(StandardInstructionItemsTest, InputItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, InputItemToDomain)
 {
-  InputItem item;
+  testutils::InputItem item;
   item.SetDescription("abc");
   item.SetTargetVariableName("var");
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kInputInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDescriptionAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kInputTargetAttribute), "var");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputAttribute), "var");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }

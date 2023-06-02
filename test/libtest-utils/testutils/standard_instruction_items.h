@@ -141,6 +141,26 @@ public:
   void SetVariableName(const std::string& value);
 };
 
+//! Represent Input instruction.
+class InputItem : public sequencergui::UniversalInstructionItem
+{
+public:
+  static inline const std::string Type = sequencergui::domainconstants::kInputInstructionType;
+
+  using UniversalInstructionItem::UniversalInstructionItem;
+  InputItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  std::string GetTargetVariableName() const;
+
+  void SetTargetVariableName(const std::string& value);
+
+  std::string GetDescription() const;
+
+  void SetDescription(const std::string& value);
+};
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_

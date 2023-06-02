@@ -145,7 +145,7 @@ std::unique_ptr<procedure_t> CreateInputProcedure()
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto input = CreateDomainInstruction(domainconstants::kInputInstructionType);
-  input->AddAttribute(domainconstants::kInputTargetAttribute, "var0");
+  input->AddAttribute(domainconstants::kOutputAttribute, "var0");
   input->AddAttribute(domainconstants::kDescriptionAttribute, "description");
   sequence->InsertInstruction(input.release(), 0);
   result->PushInstruction(sequence.release());

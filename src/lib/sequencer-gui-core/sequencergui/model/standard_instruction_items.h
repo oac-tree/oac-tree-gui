@@ -48,26 +48,6 @@ public:
   void SetPath(const std::string& value);
 };
 
-//! Represent Input instruction.
-class InputItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kInputInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  InputItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetTargetVariableName() const;
-
-  void SetTargetVariableName(const std::string& value);
-
-  std::string GetDescription() const;
-
-  void SetDescription(const std::string& value);
-};
-
 //! Represent Inverter instruction.
 class InverterItem : public UniversalInstructionItem
 {

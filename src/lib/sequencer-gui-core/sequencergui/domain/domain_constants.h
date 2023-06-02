@@ -101,7 +101,6 @@ const std::string kMessageAttribute = "message";
 const std::string kPrettyJsonAttribute = "pretty";
 
 // attributes (instruction specific)
-const std::string kInputTargetAttribute = "output";
 const std::string kOutputSourceAttribute = "from";
 const std::string kListenVarNamesAttribute = "varNames";
 const std::string kListenForceSuccessAttribute = "forceSuccess";

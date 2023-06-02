@@ -59,9 +59,19 @@ UniversalInstructionItem* InsertInstruction(const std::string& domain_type,
 void SetInput(const std::string& value, InstructionItem* item);
 
 /**
- * @brief Set input property to instruction item.
+ * @brief Set output property to instruction item.
  */
 void SetOutput(const std::string& value, InstructionItem* item);
+
+/**
+ * @brief Set description property to instruction item.
+ */
+void SetDescription(const std::string& value, InstructionItem* item);
+
+/**
+ * @brief Set input target attribute property to instruction item.
+ */
+void SetOutputTarget(const std::string& value, InstructionItem* item);
 
 }  // namespace sequencergui
 
