@@ -148,8 +148,7 @@ TEST_F(SceneUtilsTest, AddUnknownInstruction)
   auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
                                    UnknownDomainInstruction::Type);
 
-//  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
-  EXPECT_EQ(item->GetType(), UnknownDomainInstruction::Type);
+  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }

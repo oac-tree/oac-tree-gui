@@ -42,20 +42,25 @@ const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::
 namespace sequencergui
 {
 
-UniversalInstructionItem::UniversalInstructionItem(const std::string &domain_type)
-    : InstructionItem(domain_type.empty() ? Type : domain_type)
+UniversalInstructionItem::UniversalInstructionItem(const std::string &item_type)
+    : InstructionItem(item_type)
 {
-  if (IsInstructionTypeAvailable(domain_type))
+  if (IsInstructionTypeAvailable(item_type))
   {
-    // temporary domain instruction is used to create default properties
-    auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
-    SetupFromDomain(domain_variable.get());
+    SetDomainType(item_type);
   }
 }
 
 std::unique_ptr<mvvm::SessionItem> UniversalInstructionItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<UniversalInstructionItem>(*this, make_unique_id);
+}
+
+void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
+{
+  // temporary domain instruction is used to create default properties
+  auto domain_variable = ::sequencergui::CreateDomainInstruction(domain_type);
+  SetupFromDomain(domain_variable.get());
 }
 
 std::string UniversalInstructionItem::GetDomainType() const

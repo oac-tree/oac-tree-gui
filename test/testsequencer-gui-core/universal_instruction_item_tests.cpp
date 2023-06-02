@@ -87,9 +87,39 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
   EXPECT_EQ(item.Property<double>(domainconstants::kTimeoutAttribute), 0);
 }
 
+//! Creating instruction using existing domain name.
+//! Please note, that the resulting object will report same name for GetType() and GetDomainType().
+
 TEST_F(UniversalInstructionItemTests, CreateUsingDomainName)
 {
   UniversalInstructionItem item(domainconstants::kWaitInstructionType);
+  item.SetProperty(domainconstants::kNameAttribute, "abc");
+
+  // different wrt test below
+  EXPECT_EQ(item.GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
+
+  auto domain_variable = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_variable->GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
+
+  // more tests in standard_instruction_item_tests.cpp
+}
+
+//! Creating instruction using default constructor followed by SetDomainName.
+//! Please note, that the resulting object will report different names for GetType() and
+//! GetDomainType().
+
+TEST_F(UniversalInstructionItemTests, SetDomainName)
+{
+  UniversalInstructionItem item;
+
+  item.SetDomainType(domainconstants::kWaitInstructionType);
+
+  // different wrt test above
+  EXPECT_EQ(item.GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
+
   item.SetProperty(domainconstants::kNameAttribute, "abc");
 
   auto domain_variable = item.CreateDomainInstruction();
