@@ -257,7 +257,7 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
 {
   UnknownDomainVariable::RegisterUnknownDomainVariable();
 
-  auto item = CreateInstructionItem(UnknownDomainVariable::Type);
+  auto item = CreateVariableItem(UnknownDomainVariable::Type);
   auto universal_item = dynamic_cast<UniversalVariableItem*>(item.get());
   EXPECT_NE(universal_item, nullptr);
 
