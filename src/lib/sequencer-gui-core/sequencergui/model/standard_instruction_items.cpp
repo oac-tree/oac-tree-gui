@@ -26,16 +26,6 @@ namespace sequencergui
 {
 
 // ----------------------------------------------------------------------------
-// FallbackItem
-// ----------------------------------------------------------------------------
-FallbackItem::FallbackItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> FallbackItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<FallbackItem>(*this, make_unique_id);
-}
-
-// ----------------------------------------------------------------------------
 // ForceSuccess
 // ----------------------------------------------------------------------------
 

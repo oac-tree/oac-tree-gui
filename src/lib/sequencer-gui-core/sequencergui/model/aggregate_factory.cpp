@@ -28,7 +28,6 @@ namespace sequencergui
 AggregateFactory::AggregateFactory()
 {
   Register("if-then-else", Examples::CreateIfThenElseAggregate);
-  Register("if-then-else-v2", Examples::CreateIfThenElseAggregateV2);
 }
 
 std::unique_ptr<InstructionItem> AggregateFactory::Create(const std::string &type_name)

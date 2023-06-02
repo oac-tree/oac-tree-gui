@@ -27,21 +27,6 @@ namespace sequencergui::Examples
 
 std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
 {
-  auto result = std::make_unique<FallbackItem>();
-
-  auto sequence0 = result->InsertItem<SequenceItem>(::mvvm::TagIndex::Append());
-  sequence0->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("A");
-  auto force_success_item = sequence0->InsertItem<ForceSuccessItem>(::mvvm::TagIndex::Append());
-  force_success_item->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("B");
-
-  result->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("C");
-
-  return result;
-}
-
-
-std::unique_ptr<InstructionItem> CreateIfThenElseAggregateV2()
-{
   auto result = std::make_unique<UniversalInstructionItem>();
   result->SetDomainType(domainconstants::kFallbackInstructionType);
 

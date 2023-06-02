@@ -158,9 +158,12 @@ TEST_F(SceneUtilsTest, AddAggregate)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  auto item = AddAggregate("if-then-else", procedure->GetInstructionContainer());
+  auto item = dynamic_cast<UniversalInstructionItem*>(
+      AddAggregate("if-then-else", procedure->GetInstructionContainer()));
+  ASSERT_NE(item, nullptr);
 
-  EXPECT_EQ(item->GetType(), FallbackItem::Type);
+  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
 
 TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)

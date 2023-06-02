@@ -116,7 +116,6 @@ TEST_F(TransformFromDomainTest, GetItemType)
   using namespace sequencergui::domainconstants;
 
   // for instructions
-  EXPECT_EQ(FallbackItem::Type, GetItemType(kFallbackInstructionType));
   EXPECT_EQ(ForceSuccessItem::Type, GetItemType(kForceSuccessInstructionType));
   EXPECT_EQ(IncludeItem::Type, GetItemType(kIncludeInstructionType));
   EXPECT_EQ(IncrementItem::Type, GetItemType(kIncrementInstructionType));
@@ -184,7 +183,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
 {
   using namespace sequencergui::domainconstants;
 
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::FallbackItem>(kFallbackInstructionType));
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::ForceSuccessItem>(kForceSuccessInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncludeItem>(kIncludeInstructionType));

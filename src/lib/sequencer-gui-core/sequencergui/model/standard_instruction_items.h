@@ -28,18 +28,6 @@
 namespace sequencergui
 {
 
-//! Represent Fallback instruction.
-class FallbackItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kFallbackInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  FallbackItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-};
-
 //! Represent ForceSuccess instruction.
 class ForceSuccessItem : public UniversalInstructionItem
 {

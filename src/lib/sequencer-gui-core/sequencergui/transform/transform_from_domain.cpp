@@ -64,7 +64,6 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
   using mvvm::ItemFactoryFunction;
   auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::InstructionItem>>();
 
-  result->RegisterItem(kFallbackInstructionType, ItemFactoryFunction<sequencergui::FallbackItem>);
   result->RegisterItem(kForceSuccessInstructionType,
                        ItemFactoryFunction<sequencergui::ForceSuccessItem>);
   result->RegisterItem(kIncludeInstructionType, ItemFactoryFunction<sequencergui::IncludeItem>);

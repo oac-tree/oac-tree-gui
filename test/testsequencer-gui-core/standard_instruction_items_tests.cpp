@@ -221,8 +221,10 @@ TEST_F(StandardInstructionItemsTest, DecrementItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, FallbackItem)
 {
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::FallbackItem>());
+
   // Correctly initialised item
-  FallbackItem item;
+  testutils::FallbackItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   auto sequence = item.InsertItem<SequenceItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait, sequence}));
@@ -236,7 +238,7 @@ TEST_F(StandardInstructionItemsTest, FallbackItemFromDomain)
   input->AddAttribute(domainconstants::kNameAttribute, "abc");
 
   // Correctly initialised item
-  FallbackItem item;
+  testutils::FallbackItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetName(), std::string("abc"));
@@ -247,7 +249,7 @@ TEST_F(StandardInstructionItemsTest, FallbackItemFromDomain)
 TEST_F(StandardInstructionItemsTest, FallbackItemToDomain)
 {
   // Correctly initialised item
-  FallbackItem item;
+  testutils::FallbackItem item;
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kFallbackInstructionType);

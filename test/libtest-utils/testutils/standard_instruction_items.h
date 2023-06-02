@@ -100,6 +100,18 @@ public:
   void SetVariableName(const std::string& value);
 };
 
+//! Represent Fallback instruction.
+class FallbackItem : public sequencergui::UniversalInstructionItem
+{
+public:
+  static inline const std::string Type = sequencergui::domainconstants::kFallbackInstructionType;
+
+  using UniversalInstructionItem::UniversalInstructionItem;
+  FallbackItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+};
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_
