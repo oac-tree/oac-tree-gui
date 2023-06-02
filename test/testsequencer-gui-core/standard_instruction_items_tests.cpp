@@ -135,8 +135,10 @@ TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, CopyItem)
 {
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::CopyItem>());
+
   // Correctly initialised item
-  sequencergui::CopyItem item;
+  testutils::CopyItem item;
   EXPECT_EQ(item.GetInput(), std::string());
   item.SetInput("abc");
   EXPECT_EQ(item.GetInput(), std::string("abc"));
@@ -152,7 +154,7 @@ TEST_F(StandardInstructionItemsTest, CopyItemFromDomain)
   input->AddAttribute(domainconstants::kInputAttribute, "abc");
   input->AddAttribute(domainconstants::kOutputAttribute, "cde");
 
-  CopyItem item;
+  testutils::CopyItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetInput(), std::string("abc"));
@@ -161,7 +163,7 @@ TEST_F(StandardInstructionItemsTest, CopyItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
 {
-  CopyItem item;
+  testutils::CopyItem item;
   item.SetInput("abc");
   item.SetOutput("cde");
 

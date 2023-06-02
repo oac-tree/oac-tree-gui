@@ -67,4 +67,40 @@ void ConditionItem::SetVariableName(const std::string &value)
   SetProperty(sequencergui::domainconstants::kVarNameAttribute, value);
 }
 
+// ----------------------------------------------------------------------------
+// CopyItem
+// ----------------------------------------------------------------------------
+
+CopyItem::CopyItem() : UniversalInstructionItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> CopyItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<CopyItem>(*this, make_unique_id);
+}
+
+std::string CopyItem::GetDomainType() const
+{
+  return sequencergui::domainconstants::kCopyInstructionType;
+}
+
+std::string CopyItem::GetInput() const
+{
+  return Property<std::string>(sequencergui::domainconstants::kInputAttribute);
+}
+
+void CopyItem::SetInput(const std::string &value)
+{
+  SetProperty(sequencergui::domainconstants::kInputAttribute, value);
+}
+
+std::string CopyItem::GetOutput() const
+{
+  return Property<std::string>(sequencergui::domainconstants::kOutputAttribute);
+}
+
+void CopyItem::SetOutput(const std::string &value)
+{
+  SetProperty(sequencergui::domainconstants::kOutputAttribute, value);
+}
+
 }  // namespace testutils

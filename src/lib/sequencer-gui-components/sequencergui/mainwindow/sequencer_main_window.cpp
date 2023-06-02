@@ -128,7 +128,7 @@ void SequencerMainWindow::WriteSettings()
 
 void SequencerMainWindow::PopulateModel()
 {
-  //  Examples::AddCopyProcedure(m_models->GetSequencerModel());
+//  Examples::AddCopyProcedure(m_models->GetSequencerModel());
   //  Examples::AddLocalIncludeProcedure(m_models->GetSequencerModel());
   //    Examples::AddUserChoiceProcedure(m_models->GetSequencerModel());
   //  Examples::AddInputProcedure(m_models->GetSequencerModel());

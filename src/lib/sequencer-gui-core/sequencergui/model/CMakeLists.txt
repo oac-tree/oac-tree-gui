@@ -31,14 +31,16 @@ target_sources(${library_name} PRIVATE
   standard_instruction_items.h
   standard_variable_items.cpp
   standard_variable_items.h
+  universal_instruction_item.cpp
+  universal_instruction_item.h
+  universal_item_helper.cpp
+  universal_item_helper.h
+  universal_variable_item.cpp
+  universal_variable_item.h
   variable_item.cpp
   variable_item.h
   workspace_item.cpp
   workspace_item.h
   xml_utils.cpp
   xml_utils.h
-  universal_instruction_item.cpp
-  universal_instruction_item.h
-  universal_variable_item.cpp
-  universal_variable_item.h
 )

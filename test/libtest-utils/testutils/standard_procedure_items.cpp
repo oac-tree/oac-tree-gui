@@ -34,6 +34,8 @@
 
 #include <sup/dto/anyvalue.h>
 
+#include <testutils/standard_instruction_items.h>
+
 using namespace sequencergui;
 
 namespace testutils
@@ -59,7 +61,7 @@ ProcedureItem* CreateSingleWaitProcedureItem(SequencerModel* model,
 ProcedureItem* CreateCopyProcedureItem(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto copy = model->InsertItem<CopyItem>(procedure_item->GetInstructionContainer());
+  auto copy = model->InsertItem<testutils::CopyItem>(procedure_item->GetInstructionContainer());
   copy->SetInput("var0");
   copy->SetOutput("var1");
 

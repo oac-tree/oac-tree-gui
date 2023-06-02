@@ -19,15 +19,15 @@
 
 #include "sequencer_utils.h"
 
-#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_includes.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_manager.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/utils/container_utils.h>
+
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <vector>
 
@@ -64,7 +64,6 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
 
   // instructions
-  result->RegisterItem<CopyItem>();
   result->RegisterItem<DecrementItem>();
   result->RegisterItem<FallbackItem>();
   result->RegisterItem<ForceSuccessItem>();

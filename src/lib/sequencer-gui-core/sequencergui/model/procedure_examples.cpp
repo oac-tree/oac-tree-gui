@@ -19,8 +19,11 @@
 
 #include "procedure_examples.h"
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -38,29 +41,31 @@ ProcedureItem* AddCopyProcedure(SequencerModel* model)
   repeat->SetIsRootFlag(true);
   auto sequence = model->InsertItem<SequenceItem>(repeat);
 
-  auto copy0 = model->InsertItem<CopyItem>(sequence);
-  copy0->SetInput("var_const42");
-  copy0->SetOutput("var0");
+  auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
+  SetInput("var_const42", copy0);
+  SetOutput("var0", copy0);
 
   model->InsertItem<WaitItem>(sequence);
 
   auto message = model->InsertItem<MessageItem>(sequence);
   message->SetText("Hello World");
 
-  auto copy1 = model->InsertItem<CopyItem>(sequence);
-  copy1->SetInput("var_const0");
-  copy1->SetOutput("var1");
+  auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
+  SetInput("var_const0", copy1);
+  SetOutput("var1", copy1);
 
   model->InsertItem<WaitItem>(sequence);
 
-  auto copy2 = model->InsertItem<CopyItem>(sequence);
-  copy2->SetInput("var_const42");
-  copy2->SetOutput("var1");
+  auto copy2 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
+  SetInput("var_const42", copy2);
+  SetOutput("var1", copy2);
+
   model->InsertItem<WaitItem>(sequence);
 
-  auto copy3 = model->InsertItem<CopyItem>(sequence);
-  copy3->SetInput("var_const0");
-  copy3->SetOutput("var0");
+  auto copy3 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
+  SetInput("var_const0", copy3);
+  SetOutput("var0", copy3);
+
   model->InsertItem<WaitItem>(sequence);
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
@@ -164,8 +169,10 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
 
   auto sequence0 = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
-  auto copy0 = model->InsertItem<CopyItem>(sequence0);
-  auto copy1 = model->InsertItem<CopyItem>(sequence0);
+  auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+
+  auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+
   auto fallback0 = model->InsertItem<FallbackItem>(sequence0);
 
   auto listen0 = model->InsertItem<SequenceItem>(fallback0)->SetDisplayName("Listen");
@@ -176,8 +183,8 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
 
   auto sequence1 = model->InsertItem<SequenceItem>(fallback0);
   auto force0 = model->InsertItem<ForceSuccessItem>(sequence1);
-  auto copy2 = model->InsertItem<CopyItem>(sequence1);
-  auto copy3 = model->InsertItem<CopyItem>(sequence1);
+  auto copy2 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
+  auto copy3 = InsertInstruction(domainconstants::kCopyInstructionType, sequence0);
 
   auto sequence2 = model->InsertItem<SequenceItem>(force0);
   auto wait2 = model->InsertItem<WaitItem>(sequence2);

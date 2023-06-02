@@ -25,43 +25,6 @@
 namespace sequencergui
 {
 
-
-// ----------------------------------------------------------------------------
-// CopyItem
-// ----------------------------------------------------------------------------
-
-CopyItem::CopyItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> CopyItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<CopyItem>(*this, make_unique_id);
-}
-
-std::string CopyItem::GetDomainType() const
-{
-  return domainconstants::kCopyInstructionType;
-}
-
-std::string CopyItem::GetInput() const
-{
-  return Property<std::string>(domainconstants::kInputAttribute);
-}
-
-void CopyItem::SetInput(const std::string &value)
-{
-  SetProperty(domainconstants::kInputAttribute, value);
-}
-
-std::string CopyItem::GetOutput() const
-{
-  return Property<std::string>(domainconstants::kOutputAttribute);
-}
-
-void CopyItem::SetOutput(const std::string &value)
-{
-  SetProperty(domainconstants::kOutputAttribute, value);
-}
-
 // ----------------------------------------------------------------------------
 // DecrementItem
 // ----------------------------------------------------------------------------
