@@ -33,10 +33,11 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
 #include <sequencergui/widgets/item_list_widget.h>
-#include <sup/gui/components/message_handler_interface.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
@@ -292,19 +293,14 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    // FIXME refactor the mess
     if (IsAggregateName(domain_type))
     {
-      // FIXME remove cast
-      auto item =
-          AddAggregate(dynamic_cast<SequencerModel *>(GetModel()), m_root_item, domain_type);
+      auto item = AddAggregate(domain_type, m_root_item);
       algorithm::AlignInstructionTreeWalker(drop_pos, item);
     }
     else
     {
-      // FIXME remove cast
-      auto item = AddSingleInstruction(dynamic_cast<SequencerModel *>(GetModel()), m_root_item,
-                                       domain_type);
+      auto item = AddSingleInstruction(domain_type, m_root_item);
       item->SetX(drop_pos.x());
       item->SetY(drop_pos.y());
     }

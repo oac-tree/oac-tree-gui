@@ -36,7 +36,6 @@
 #include <QDebug>
 #include <QPointF>
 #include <QRectF>
-
 #include <iostream>
 
 using namespace sequencergui;
@@ -87,7 +86,6 @@ public:
       sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
     }
   };
-
 };
 
 TEST_F(SceneUtilsTest, VectorOfPointsEquality)
@@ -127,8 +125,8 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
-                                   domainconstants::kWaitInstructionType);
+  auto item = AddSingleInstruction(domainconstants::kWaitInstructionType,
+                                   procedure->GetInstructionContainer());
 
   EXPECT_EQ(item->GetType(), WaitItem::Type);
   EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
@@ -145,8 +143,8 @@ TEST_F(SceneUtilsTest, AddUnknownInstruction)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  auto item = AddSingleInstruction(&model, procedure->GetInstructionContainer(),
-                                   UnknownDomainInstruction::Type);
+  auto item =
+      AddSingleInstruction(UnknownDomainInstruction::Type, procedure->GetInstructionContainer());
 
   EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
@@ -160,7 +158,7 @@ TEST_F(SceneUtilsTest, AddAggregate)
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
 
-  auto item = AddAggregate(&model, procedure->GetInstructionContainer(), "if-then-else");
+  auto item = AddAggregate("if-then-else", procedure->GetInstructionContainer());
 
   EXPECT_EQ(item->GetType(), FallbackItem::Type);
 }

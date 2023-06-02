@@ -23,8 +23,8 @@
 //! Collection of utility functions for graphics scene.
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 class QGradient;
 class QColor;
@@ -67,13 +67,12 @@ double GetAlignmentGridWidth();
 //! Returns base color of given instruction
 QColor GetBaseColor(const InstructionItem* instruction);
 
-//! Adds InstructionItem to the `model` for a  given `domain_type`, and returns the result to the
-//! user. If the model doesn't have given InstructionItem registered do nothing.
-InstructionItem* AddSingleInstruction(SequencerModel* model, InstructionContainerItem* container,
-                                      const std::string& domain_type);
+//! Adds InstructionItem to container for a  given `domain_type`, and returns the result to the
+//! user.
+InstructionItem* AddSingleInstruction(const std::string& domain_type,
+                                      InstructionContainerItem* container);
 
-InstructionItem* AddAggregate(SequencerModel* model, InstructionContainerItem* container,
-                              const std::string& aggregate_name);
+InstructionItem* AddAggregate(const std::string& aggregate_name, InstructionContainerItem* container);
 
 //! Returns a string with space inserted at word boundaries.
 //! "CamelCase" -> "Camel Case"

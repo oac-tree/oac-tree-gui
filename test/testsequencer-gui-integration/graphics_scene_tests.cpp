@@ -389,17 +389,17 @@ TEST_F(GraphicsSceneTest, SelectionAfterRemoval)
 TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
 {
   auto controller = CreateController();
-  auto item = AddAggregate(&m_model, GetInstructionContainer(), "if-then-else");
+  auto item = AddAggregate("if-then-else", GetInstructionContainer());
 
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 6);
-  for(auto view : m_scene.GetConnectableViews())
+  for (auto view : m_scene.GetConnectableViews())
   {
     view->setSelected(true);
   }
 
   auto connections = GetSceneItems<NodeConnection>();
   EXPECT_EQ(connections.size(), 5);
-  for(auto connection : GetSceneItems<NodeConnection>())
+  for (auto connection : GetSceneItems<NodeConnection>())
   {
     connection->setSelected(true);
   }
