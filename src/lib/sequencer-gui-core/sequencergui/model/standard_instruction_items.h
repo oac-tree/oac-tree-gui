@@ -48,24 +48,6 @@ public:
   void SetPath(const std::string& value);
 };
 
-//! Represent Listen instruction.
-class ListenItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kListenInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  ListenItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  bool IsForceSuccess() const;
-  void SetForceSuccess(bool value);
-
-  std::string GetVarNames() const;
-  void SetVarNames(const std::string& value);
-};
-
 //! Represent Message instruction.
 class MessageItem : public UniversalInstructionItem
 {

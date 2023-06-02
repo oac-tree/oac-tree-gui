@@ -57,37 +57,6 @@ void IncludeItem::SetPath(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
-// ListenItem
-// ----------------------------------------------------------------------------
-
-ListenItem::ListenItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> ListenItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<ListenItem>(*this, make_unique_id);
-}
-
-bool ListenItem::IsForceSuccess() const
-{
-  return Property<bool>(domainconstants::kListenForceSuccessAttribute);
-}
-
-void ListenItem::SetForceSuccess(bool value)
-{
-  SetProperty(domainconstants::kListenForceSuccessAttribute, value);
-}
-
-std::string ListenItem::GetVarNames() const
-{
-  return Property<std::string>(domainconstants::kListenVarNamesAttribute);
-}
-
-void ListenItem::SetVarNames(const std::string &value)
-{
-  SetProperty(domainconstants::kListenVarNamesAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // MessageItem
 // ----------------------------------------------------------------------------
 

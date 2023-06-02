@@ -213,4 +213,35 @@ std::unique_ptr<mvvm::SessionItem> InverterItem::Clone(bool make_unique_id) cons
   return std::make_unique<InverterItem>(*this, make_unique_id);
 }
 
+// ----------------------------------------------------------------------------
+// ListenItem
+// ----------------------------------------------------------------------------
+
+ListenItem::ListenItem() : UniversalInstructionItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> ListenItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<ListenItem>(*this, make_unique_id);
+}
+
+bool ListenItem::IsForceSuccess() const
+{
+  return Property<bool>(sequencergui::domainconstants::kListenForceSuccessAttribute);
+}
+
+void ListenItem::SetForceSuccess(bool value)
+{
+  SetProperty(sequencergui::domainconstants::kListenForceSuccessAttribute, value);
+}
+
+std::string ListenItem::GetVarNames() const
+{
+  return Property<std::string>(sequencergui::domainconstants::kListenVarNamesAttribute);
+}
+
+void ListenItem::SetVarNames(const std::string &value)
+{
+  SetProperty(sequencergui::domainconstants::kListenVarNamesAttribute, value);
+}
+
 }  // namespace testutils

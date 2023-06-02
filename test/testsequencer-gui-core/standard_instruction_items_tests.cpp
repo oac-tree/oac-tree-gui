@@ -471,7 +471,7 @@ TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, ListenItem)
 {
-  ListenItem item;
+  testutils::ListenItem item;
 
   EXPECT_FALSE(item.IsForceSuccess());
   item.SetForceSuccess(true);
@@ -493,7 +493,7 @@ TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
   input->AddAttribute(domainconstants::kListenVarNamesAttribute, "abc");
   input->AddAttribute(domainconstants::kListenForceSuccessAttribute, "true");
 
-  ListenItem item;
+  testutils::ListenItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVarNames(), "abc");
@@ -502,7 +502,7 @@ TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
 {
-  ListenItem item;
+  testutils::ListenItem item;
   item.SetForceSuccess(true);
   item.SetVarNames("abc");
 

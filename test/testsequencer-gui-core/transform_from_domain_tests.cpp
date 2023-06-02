@@ -117,7 +117,6 @@ TEST_F(TransformFromDomainTest, GetItemType)
 
   // for instructions
   EXPECT_EQ(IncludeItem::Type, GetItemType(kIncludeInstructionType));
-  EXPECT_EQ(ListenItem::Type, GetItemType(kListenInstructionType));
   EXPECT_EQ(MessageItem::Type, GetItemType(kMessageInstructionType));
   EXPECT_EQ(OutputItem::Type, GetItemType(kOutputInstructionType));
   EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(kParallelInstructionType));
@@ -181,7 +180,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
 
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::IncludeItem>(kIncludeInstructionType));
 
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::ListenItem>(kListenInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::MessageItem>(kMessageInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::OutputItem>(kOutputInstructionType));
   EXPECT_TRUE(
