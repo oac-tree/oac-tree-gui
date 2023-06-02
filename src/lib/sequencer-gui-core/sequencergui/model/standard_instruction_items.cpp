@@ -57,27 +57,6 @@ void IncludeItem::SetPath(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
-// IncrementItem
-// ----------------------------------------------------------------------------
-
-IncrementItem::IncrementItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> IncrementItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<IncrementItem>(*this, make_unique_id);
-}
-
-std::string IncrementItem::GetVariableName() const
-{
-  return Property<std::string>(domainconstants::kVarNameAttribute);
-}
-
-void IncrementItem::SetVariableName(const std::string &value)
-{
-  SetProperty(domainconstants::kVarNameAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // InputItem
 // ----------------------------------------------------------------------------
 

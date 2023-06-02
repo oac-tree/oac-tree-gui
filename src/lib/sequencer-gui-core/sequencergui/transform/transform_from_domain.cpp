@@ -67,7 +67,6 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
   result->RegisterItem(kIncludeInstructionType, ItemFactoryFunction<sequencergui::IncludeItem>);
   result->RegisterItem(kInputInstructionType, ItemFactoryFunction<sequencergui::InputItem>);
   result->RegisterItem(kInverterInstructionType, ItemFactoryFunction<sequencergui::InverterItem>);
-  result->RegisterItem(kIncrementInstructionType, ItemFactoryFunction<sequencergui::IncrementItem>);
   result->RegisterItem(kListenInstructionType, ItemFactoryFunction<sequencergui::ListenItem>);
   result->RegisterItem(kMessageInstructionType, ItemFactoryFunction<sequencergui::MessageItem>);
   result->RegisterItem(kOutputInstructionType, ItemFactoryFunction<sequencergui::OutputItem>);

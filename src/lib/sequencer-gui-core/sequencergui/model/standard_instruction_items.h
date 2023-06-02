@@ -48,22 +48,6 @@ public:
   void SetPath(const std::string& value);
 };
 
-//! Represent Increment instruction.
-class IncrementItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kIncrementInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  IncrementItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-};
-
 //! Represent Input instruction.
 class InputItem : public UniversalInstructionItem
 {

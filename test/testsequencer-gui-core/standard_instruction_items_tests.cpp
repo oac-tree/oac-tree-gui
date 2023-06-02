@@ -361,7 +361,9 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, IncrementItem)
 {
-  IncrementItem item;
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::IncrementItem>());
+
+  testutils::IncrementItem item;
   EXPECT_TRUE(item.GetVariableName().empty());
 
   item.SetVariableName("abc");
@@ -373,7 +375,7 @@ TEST_F(StandardInstructionItemsTest, IncrementItemFromDomain)
   auto input = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
   input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
 
-  IncrementItem item;
+  testutils::IncrementItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -381,7 +383,7 @@ TEST_F(StandardInstructionItemsTest, IncrementItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, IncrementItemToDomain)
 {
-  IncrementItem item;
+  testutils::IncrementItem item;
   item.SetVariableName("abc");
   item.SetIsRootFlag(true);
 
