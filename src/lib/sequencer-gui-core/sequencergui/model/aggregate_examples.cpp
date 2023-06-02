@@ -20,6 +20,7 @@
 #include "aggregate_examples.h"
 
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/domain/domain_constants.h>
 
 namespace sequencergui::Examples
 {
@@ -37,5 +38,25 @@ std::unique_ptr<InstructionItem> CreateIfThenElseAggregate()
 
   return result;
 }
+
+
+std::unique_ptr<InstructionItem> CreateIfThenElseAggregateV2()
+{
+  auto result = std::make_unique<UniversalInstructionItem>();
+  result->SetDomainType(domainconstants::kFallbackInstructionType);
+
+  auto sequence0 = result->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
+  sequence0->SetDomainType(domainconstants::kSequenceInstructionType);
+  sequence0->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("A");
+
+  auto force_success_item = sequence0->InsertItem<UniversalInstructionItem>(::mvvm::TagIndex::Append());
+  force_success_item->SetDomainType(domainconstants::kForceSuccessInstructionType);
+  force_success_item->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("B");
+
+  result->InsertItem<IncludeItem>(::mvvm::TagIndex::Append())->SetDisplayName("C");
+
+  return result;
+}
+
 
 }  // namespace sequencergui::Examples

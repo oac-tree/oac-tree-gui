@@ -33,6 +33,7 @@ namespace Examples
 
 //! Creates an aggregate representing  if-then-else statement
 std::unique_ptr<InstructionItem> CreateIfThenElseAggregate();
+std::unique_ptr<InstructionItem> CreateIfThenElseAggregateV2();
 
 }  // namespace Examples
 }  // namespace sequencergui
