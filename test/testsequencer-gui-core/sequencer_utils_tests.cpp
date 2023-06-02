@@ -104,13 +104,6 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
   EXPECT_TRUE(IsCloneImplemented<UniversalInstructionItem>());
 
-  // equality instructions
-  EXPECT_TRUE(IsCloneImplemented<LessThanItem>());
-  EXPECT_TRUE(IsCloneImplemented<LessThanOrEqualItem>());
-  EXPECT_TRUE(IsCloneImplemented<EqualsItem>());
-  EXPECT_TRUE(IsCloneImplemented<GreaterThanOrEqualItem>());
-  EXPECT_TRUE(IsCloneImplemented<GreaterThanItem>());
-
   // instructions from sup-sequencer-plugin-epics
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessReadInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessWriteInstructionItem>());

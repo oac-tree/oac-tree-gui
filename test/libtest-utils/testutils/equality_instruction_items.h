@@ -25,15 +25,15 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/universal_instruction_item.h>
 
-namespace sequencergui
+namespace testutils
 {
 
 //! Base instruction for all equality instructions.
-class ComparisonItem : public UniversalInstructionItem
+class ComparisonItem : public sequencergui::UniversalInstructionItem
 {
 public:
   using UniversalInstructionItem::UniversalInstructionItem;
-  ComparisonItem(const std::string& item_type);
+  explicit ComparisonItem(const std::string& item_type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 

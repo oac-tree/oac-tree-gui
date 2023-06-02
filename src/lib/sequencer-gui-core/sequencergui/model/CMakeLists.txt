@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   application_models.h
   epics_instruction_items.cpp
   epics_instruction_items.h
-  equality_instruction_items.cpp
-  equality_instruction_items.h
   instruction_container_item.cpp
   instruction_container_item.h
   instruction_item.cpp

@@ -22,7 +22,6 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/epics_instruction_items.h>
-#include <sequencergui/model/equality_instruction_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 
@@ -137,13 +136,6 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(VariableResetItem::Type, GetItemType(kVariableResetInstructionType));
   EXPECT_EQ(WaitItem::Type, GetItemType(kWaitInstructionType));
 
-  // equality instructions
-  EXPECT_EQ(LessThanItem::Type, GetItemType(kLessThanInstructionType));
-  EXPECT_EQ(LessThanOrEqualItem::Type, GetItemType(kLessThanOrEqualInstructionType));
-  EXPECT_EQ(EqualsItem::Type, GetItemType(kEqualsInstructionType));
-  EXPECT_EQ(GreaterThanOrEqualItem::Type, GetItemType(kGreaterThanOrEqualInstructionType));
-  EXPECT_EQ(GreaterThanItem::Type, GetItemType(kGreaterThanInstructionType));
-
   // instructions from sequencer-plugin-epics
   EXPECT_EQ(ChannelAccessReadInstructionItem::Type, GetItemType(kChannelAccessReadInstructionType));
   EXPECT_EQ(ChannelAccessWriteInstructionItem::Type,
@@ -222,15 +214,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
   EXPECT_TRUE(
       CanCreateInstructionForType<sequencergui::VariableResetItem>(kVariableResetInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::WaitItem>(kWaitInstructionType));
-
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanItem>(kLessThanInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::LessThanOrEqualItem>(
-      kLessThanOrEqualInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::EqualsItem>(kEqualsInstructionType));
-  EXPECT_TRUE(CanCreateInstructionForType<sequencergui::GreaterThanOrEqualItem>(
-      kGreaterThanOrEqualInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::GreaterThanItem>(kGreaterThanInstructionType));
 }
 
 //! Validate CreateInstructionItem factory function (sequencer-plugin-epics).

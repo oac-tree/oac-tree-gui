@@ -88,16 +88,6 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::VariableResetItem>);
   result->RegisterItem(kWaitInstructionType, ItemFactoryFunction<sequencergui::WaitItem>);
 
-  // equality instructions
-  result->RegisterItem(kLessThanInstructionType, ItemFactoryFunction<sequencergui::LessThanItem>);
-  result->RegisterItem(kLessThanOrEqualInstructionType,
-                       ItemFactoryFunction<sequencergui::LessThanOrEqualItem>);
-  result->RegisterItem(kEqualsInstructionType, ItemFactoryFunction<sequencergui::EqualsItem>);
-  result->RegisterItem(kGreaterThanOrEqualInstructionType,
-                       ItemFactoryFunction<sequencergui::GreaterThanOrEqualItem>);
-  result->RegisterItem(kGreaterThanInstructionType,
-                       ItemFactoryFunction<sequencergui::GreaterThanItem>);
-
   // instructions from sequencer-plugin-epics
   result->RegisterItem(kChannelAccessReadInstructionType,
                        ItemFactoryFunction<sequencergui::ChannelAccessReadInstructionItem>);

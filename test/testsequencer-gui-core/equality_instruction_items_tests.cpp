@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/equality_instruction_items.h"
+#include "testutils/equality_instruction_items.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
@@ -40,13 +40,24 @@ public:
   ::sup::sequencer::Procedure m_procedure;
 };
 
+TEST_F(StandardInstructionItemsTest, Clone)
+{
+  using testutils::IsCloneImplemented;
+
+  EXPECT_TRUE(IsCloneImplemented<testutils::LessThanItem>());
+  EXPECT_TRUE(IsCloneImplemented<testutils::LessThanOrEqualItem>());
+  EXPECT_TRUE(IsCloneImplemented<testutils::EqualsItem>());
+  EXPECT_TRUE(IsCloneImplemented<testutils::GreaterThanOrEqualItem>());
+  EXPECT_TRUE(IsCloneImplemented<testutils::GreaterThanItem>());
+}
+
 // ----------------------------------------------------------------------------
 // LessThanItem tests
 // ----------------------------------------------------------------------------
 
 TEST_F(StandardInstructionItemsTest, LessThanItem)
 {
-  LessThanItem item;
+  testutils::LessThanItem item;
   EXPECT_EQ(item.GetLeftHandSide(), std::string());
   item.SetLeftHandSide("abc");
   EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
@@ -62,7 +73,7 @@ TEST_F(StandardInstructionItemsTest, LessThanItemFromDomain)
   input->AddAttribute(domainconstants::kLeftHandAttribute, "abc");
   input->AddAttribute(domainconstants::kRightHandAttribute, "def");
 
-  LessThanItem item;
+  testutils::LessThanItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
@@ -71,7 +82,7 @@ TEST_F(StandardInstructionItemsTest, LessThanItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, LessThanItemToDomain)
 {
-  LessThanItem item;
+  testutils::LessThanItem item;
   item.SetLeftHandSide("abc");
   item.SetRightHandSide("def");
 
@@ -89,7 +100,7 @@ TEST_F(StandardInstructionItemsTest, LessThanItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, EqualsItem)
 {
-  EqualsItem item;
+  testutils::EqualsItem item;
   EXPECT_EQ(item.GetLeftHandSide(), std::string());
   item.SetLeftHandSide("abc");
   EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
@@ -105,7 +116,7 @@ TEST_F(StandardInstructionItemsTest, EqualsItemFromDomain)
   input->AddAttribute(domainconstants::kLeftHandAttribute, "abc");
   input->AddAttribute(domainconstants::kRightHandAttribute, "def");
 
-  EqualsItem item;
+  testutils::EqualsItem item;
   item.InitFromDomain(input.get());
 
   EXPECT_EQ(item.GetLeftHandSide(), std::string("abc"));
@@ -114,7 +125,7 @@ TEST_F(StandardInstructionItemsTest, EqualsItemFromDomain)
 
 TEST_F(StandardInstructionItemsTest, EqualsItemToDomain)
 {
-  EqualsItem item;
+  testutils::EqualsItem item;
   item.SetLeftHandSide("abc");
   item.SetRightHandSide("def");
 

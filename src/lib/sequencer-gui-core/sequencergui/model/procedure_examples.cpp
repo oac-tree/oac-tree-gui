@@ -171,8 +171,8 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   auto listen0 = model->InsertItem<SequenceItem>(fallback0)->SetDisplayName("Listen");
   auto inverter0 = model->InsertItem<InverterItem>(listen0);
   auto fallback1 = model->InsertItem<FallbackItem>(inverter0);
-  auto equals0 = model->InsertItem<EqualsItem>(fallback1);
-  auto equals1 = model->InsertItem<EqualsItem>(fallback1);
+  auto wait0 = model->InsertItem<WaitItem>(fallback1);
+  auto wait1 = model->InsertItem<WaitItem>(fallback1);
 
   auto sequence1 = model->InsertItem<SequenceItem>(fallback0);
   auto force0 = model->InsertItem<ForceSuccessItem>(sequence1);
@@ -180,8 +180,8 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
   auto copy3 = model->InsertItem<CopyItem>(sequence1);
 
   auto sequence2 = model->InsertItem<SequenceItem>(force0);
-  auto equals2 = model->InsertItem<EqualsItem>(sequence2);
-  auto equals3 = model->InsertItem<EqualsItem>(sequence2);
+  auto wait2 = model->InsertItem<WaitItem>(sequence2);
+  auto wait3 = model->InsertItem<WaitItem>(sequence2);
 
   return procedure_item;
 }

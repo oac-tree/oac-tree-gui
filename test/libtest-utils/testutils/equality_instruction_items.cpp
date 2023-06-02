@@ -21,7 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 
-namespace sequencergui
+namespace testutils
 {
 
 // ----------------------------------------------------------------------------
@@ -35,27 +35,27 @@ ComparisonItem::ComparisonItem(const std::string &item_type) : UniversalInstruct
 std::unique_ptr<mvvm::SessionItem> ComparisonItem::Clone(bool make_unique_id) const
 {
   (void)make_unique_id;
-  throw NotImplementedException("ComparisonItem::clone() should not be used");
+  throw sequencergui::NotImplementedException("ComparisonItem::clone() should not be used");
 }
 
 std::string ComparisonItem::GetLeftHandSide() const
 {
-  return Property<std::string>(domainconstants::kLeftHandAttribute);
+  return Property<std::string>(sequencergui::domainconstants::kLeftHandAttribute);
 }
 
 void ComparisonItem::SetLeftHandSide(const std::string &value)
 {
-  SetProperty(domainconstants::kLeftHandAttribute, value);
+  SetProperty(sequencergui::domainconstants::kLeftHandAttribute, value);
 }
 
 std::string ComparisonItem::GetRightHandSide() const
 {
-  return Property<std::string>(domainconstants::kRightHandAttribute);
+  return Property<std::string>(sequencergui::domainconstants::kRightHandAttribute);
 }
 
 void ComparisonItem::SetRightHandSide(const std::string &value)
 {
-  SetProperty(domainconstants::kRightHandAttribute, value);
+  SetProperty(sequencergui::domainconstants::kRightHandAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
