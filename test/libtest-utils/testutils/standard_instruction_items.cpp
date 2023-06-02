@@ -202,4 +202,15 @@ void InputItem::SetDescription(const std::string &value)
   SetProperty(sequencergui::domainconstants::kDescriptionAttribute, value);
 }
 
+// ----------------------------------------------------------------------------
+// InverterItem
+// ----------------------------------------------------------------------------
+
+InverterItem::InverterItem() : UniversalInstructionItem(Type) {}
+
+std::unique_ptr<mvvm::SessionItem> InverterItem::Clone(bool make_unique_id) const
+{
+  return std::make_unique<InverterItem>(*this, make_unique_id);
+}
+
 }  // namespace testutils

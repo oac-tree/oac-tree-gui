@@ -442,8 +442,10 @@ TEST_F(StandardInstructionItemsTest, InputItemToDomain)
 
 TEST_F(StandardInstructionItemsTest, InverterItem)
 {
+  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::InverterItem>());
+
   // Correctly initialised item
-  sequencergui::InverterItem item;
+  testutils::InverterItem item;
   auto wait = item.InsertItem<WaitItem>({"", -1});
   EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
   // it's not possible to add second item to inverter
@@ -455,7 +457,7 @@ TEST_F(StandardInstructionItemsTest, InverterItem)
 TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
 {
   // Correctly initialised item
-  sequencergui::InverterItem item;
+  testutils::InverterItem item;
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kInverterInstructionType);

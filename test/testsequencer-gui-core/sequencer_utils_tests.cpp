@@ -84,7 +84,6 @@ TEST_F(SequencerUtilsTest, Clone)
 
   // instructions
   EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
-  EXPECT_TRUE(IsCloneImplemented<InverterItem>());
   EXPECT_TRUE(IsCloneImplemented<ListenItem>());
   EXPECT_TRUE(IsCloneImplemented<MessageItem>());
   EXPECT_TRUE(IsCloneImplemented<OutputItem>());

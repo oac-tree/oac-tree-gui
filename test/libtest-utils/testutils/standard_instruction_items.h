@@ -161,6 +161,18 @@ public:
   void SetDescription(const std::string& value);
 };
 
+//! Represent Inverter instruction.
+class InverterItem : public sequencergui::UniversalInstructionItem
+{
+public:
+  static inline const std::string Type = sequencergui::domainconstants::kInverterInstructionType;
+
+  using UniversalInstructionItem::UniversalInstructionItem;
+  InverterItem();
+
+  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+};
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_

@@ -176,8 +176,11 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model)
 
   auto fallback0 = InsertInstruction(domainconstants::kFallbackInstructionType, sequence0);
 
-  auto listen0 = model->InsertItem<SequenceItem>(fallback0)->SetDisplayName("Listen");
-  auto inverter0 = model->InsertItem<InverterItem>(listen0);
+  auto listen0 = model->InsertItem<SequenceItem>(fallback0);
+  listen0->SetDisplayName("Listen");
+
+  auto inverter0 = InsertInstruction(domainconstants::kInverterInstructionType, listen0);
+
   auto fallback1 = InsertInstruction(domainconstants::kFallbackInstructionType, inverter0);
   auto wait0 = model->InsertItem<WaitItem>(fallback1);
   auto wait1 = model->InsertItem<WaitItem>(fallback1);

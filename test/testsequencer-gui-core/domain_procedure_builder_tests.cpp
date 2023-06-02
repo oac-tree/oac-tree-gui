@@ -39,6 +39,7 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/standard_instruction_items.h>
 
 using namespace sequencergui;
 
@@ -174,7 +175,7 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto inverter = container->InsertItem<InverterItem>(mvvm::TagIndex::Append());
+  auto inverter = container->InsertItem<testutils::InverterItem>(mvvm::TagIndex::Append());
   auto sequence = inverter->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(inverter->GetItem<SequenceItem>({"", 0}), sequence);
   auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
