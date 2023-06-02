@@ -26,6 +26,11 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/instruction_registry.h>
+#include <sup/sequencer/variable.h>
+#include <sup/sequencer/variable_registry.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -69,6 +74,42 @@ public:
 
     return is_correct_type && is_type_coincides;
   }
+
+  //! Test instruction playing the role of domain instruction unknown to the GUI.
+  class UnknownDomainInstruction : public ::sup::sequencer::Instruction
+  {
+  public:
+    UnknownDomainInstruction() : Instruction(Type) {}
+
+    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface&,
+                                                        ::sup::sequencer::Workspace&) override
+    {
+      return {};
+    }
+    static inline const std::string Type = "UnknownDomainInstruction";
+
+    static void RegisterUnknownDomainInstruction()
+    {
+      sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
+    }
+  };
+
+  //! Test instruction playing the role of domain instruction unknown to the GUI.
+  class UnknownDomainVariable : public ::sup::sequencer::Variable
+  {
+  public:
+    UnknownDomainVariable() : Variable(Type) {}
+
+    bool GetValueImpl(sup::dto::AnyValue& value) const override {return true;}
+    bool SetValueImpl(const sup::dto::AnyValue& value) override{return true;}
+
+    static inline const std::string Type = "UnknownDomainVariable";
+
+    static void RegisterUnknownDomainVariable()
+    {
+      sup::sequencer::RegisterGlobalVariable<UnknownDomainVariable>();
+    }
+  };
 };
 
 TEST_F(TransformFromDomainTest, GetItemType)
@@ -215,4 +256,28 @@ TEST_F(TransformFromDomainTest, SequencerPluginEpicsCreateInstructionItem)
       CanCreateInstructionForType<sequencergui::RPCClientInstruction>(kRPCClientInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SystemCallInstructionItem>(
       kSystemCallInstructionType));
+}
+
+TEST_F(TransformFromDomainTest, CreateUniversalInstruction)
+{
+  UnknownDomainInstruction::RegisterUnknownDomainInstruction();
+
+  auto item = CreateInstructionItem(UnknownDomainInstruction::Type);
+  auto universal_item = dynamic_cast<UniversalInstructionItem*>(item.get());
+  EXPECT_NE(universal_item, nullptr);
+
+  EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainInstruction::Type);
+  EXPECT_EQ(universal_item->GetType(), UniversalInstructionItem::Type);
+}
+
+TEST_F(TransformFromDomainTest, CreateUniversalVariable)
+{
+  UnknownDomainVariable::RegisterUnknownDomainVariable();
+
+  auto item = CreateInstructionItem(UnknownDomainVariable::Type);
+  auto universal_item = dynamic_cast<UniversalVariableItem*>(item.get());
+  EXPECT_NE(universal_item, nullptr);
+
+  EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainVariable::Type);
+  EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::Type);
 }

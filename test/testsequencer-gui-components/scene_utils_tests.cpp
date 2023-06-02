@@ -75,20 +75,20 @@ public:
   public:
     UnknownDomainInstruction() : Instruction(Type) {}
 
-    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface& ui,
-                                                        ::sup::sequencer::Workspace& ws) override
+    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface&,
+                                                        ::sup::sequencer::Workspace&) override
     {
       return {};
     }
-    static const std::string Type;
+    static inline const std::string Type = "UnknownDomainInstruction";
+
+    static void RegisterUnknownDomainInstruction()
+    {
+      sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
+    }
   };
 
-  void RegisterUnknownDomainInstruction()
-  {
-    sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
-  }
 };
-const std::string SceneUtilsTest::UnknownDomainInstruction::Type = "UnknownDomainInstruction";
 
 TEST_F(SceneUtilsTest, VectorOfPointsEquality)
 {
@@ -140,7 +140,7 @@ TEST_F(SceneUtilsTest, AddKnownInstruction)
 
 TEST_F(SceneUtilsTest, AddUnknownInstruction)
 {
-  RegisterUnknownDomainInstruction();
+  UnknownDomainInstruction::RegisterUnknownDomainInstruction();
 
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());

@@ -133,7 +133,9 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 
   if (!catalogue->Contains(domain_type))
   {
-    return std::make_unique<UniversalVariableItem>();
+    auto result = std::make_unique<UniversalVariableItem>();
+    result->SetDomainType(domain_type);
+    return result;
   }
 
   return catalogue->Create(domain_type);
