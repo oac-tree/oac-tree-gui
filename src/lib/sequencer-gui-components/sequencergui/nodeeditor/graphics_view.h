@@ -49,10 +49,6 @@ public:
 
   ESelectionModes GetSelectionModes();
 
-  QSize sizeHint() const override;
-
-  QSize minimumSizeHint() const override;
-
   void onSelectionMode(int);
   void onChangeScale(double new_scale);
 

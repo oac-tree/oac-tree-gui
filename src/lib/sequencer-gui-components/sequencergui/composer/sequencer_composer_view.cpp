@@ -30,8 +30,17 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QSettings>
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QTreeView>
+
+namespace
+{
+const QString kGroupName("SequencerComposerView");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -63,9 +72,14 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   // Add actions from SequencerComposerActions to the list of as actions of this widget.
   // They will be used by MainWindow for QMenuBar
   addActions(m_composer_actions->GetMenuActions());
+
+  ReadSettings();
 }
 
-SequencerComposerView::~SequencerComposerView() = default;
+SequencerComposerView::~SequencerComposerView()
+{
+  WriteSettings();
+}
 
 void SequencerComposerView::SetModel(SequencerModel *model)
 {
@@ -82,6 +96,22 @@ void SequencerComposerView::showEvent(QShowEvent *event)
   {
     m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
   }
+}
+
+void SequencerComposerView::ReadSettings()
+{
+  const QSettings settings;
+
+  if (settings.contains(kSplitterSettingName))
+  {
+    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
+  }
+}
+
+void SequencerComposerView::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kSplitterSettingName, m_splitter->saveState());
 }
 
 void SequencerComposerView::SetupConnections()

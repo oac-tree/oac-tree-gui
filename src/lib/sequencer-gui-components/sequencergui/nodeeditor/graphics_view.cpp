@@ -52,16 +52,6 @@ GraphicsView::ESelectionModes GraphicsView::GetSelectionModes()
   return it == mode_map.end() ? kUnknownSelection : it->second;
 }
 
-QSize GraphicsView::sizeHint() const
-{
-  return {mvvm::utils::UnitSize(80), mvvm::utils::UnitSize(60)};
-}
-
-QSize GraphicsView::minimumSizeHint() const
-{
-  return {mvvm::utils::UnitSize(40), mvvm::utils::UnitSize(30)};
-}
-
 void GraphicsView::onSelectionMode(int mode)
 {
   switch (mode)
