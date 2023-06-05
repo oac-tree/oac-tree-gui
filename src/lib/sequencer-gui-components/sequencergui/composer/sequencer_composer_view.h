@@ -34,9 +34,11 @@ class ComposerPanel;
 class ProcedureItem;
 class SequencerComposerActions;
 
-//! Main widget for model editing. Contains a toolbar on top, and few widgets beneath:
-//! a graphics scene representing a node editor, a toolbox with items to drag-and-drop on the
-//! scene, property editor, and sample tree view. Belongs to MainWindow.
+//! Main widget for model editing. Contains up to 3 vertical panels:
+//! - a narrow panel on the left with procedure selector and instruction toolbox
+//! - instruction tree view in the center
+//! - workspace tree on the right
+//! Belongs to MainWindow.
 
 class SequencerComposerView : public QWidget
 {

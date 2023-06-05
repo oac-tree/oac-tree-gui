@@ -42,6 +42,14 @@ class ComposerWidgetPanel : public QWidget
   Q_OBJECT
 
 public:
+  enum WidgetType
+  {
+    kInstructionTree,
+    kWorkspace,
+    kNodeEditor,
+    kXmlPanel
+  };
+
   explicit ComposerWidgetPanel(QWidget* parent = nullptr);
   ~ComposerWidgetPanel() override;
 
@@ -53,6 +61,8 @@ public:
 
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
+
+  void SetCurrentWidget(WidgetType widget_type);
 
 private:
   void SetupConnections();

@@ -80,7 +80,7 @@ void WorkspaceEditorWidget::SetupActions()
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("Add");
   insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
   insert_after_button->setToolTip("Insert variable after current selection");
@@ -91,7 +91,7 @@ void WorkspaceEditorWidget::SetupActions()
   auto edit_anyvalue_button = new QToolButton;
   edit_anyvalue_button->setText("Edit");
   edit_anyvalue_button->setIcon(styleutils::GetIcon("file-tree-outline"));
-  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   edit_anyvalue_button->setToolTip("Edit value of currently selected variable");
   connect(edit_anyvalue_button, &QToolButton::clicked, this,
           &WorkspaceEditorWidget::EditAnyvalueRequest);
@@ -102,7 +102,7 @@ void WorkspaceEditorWidget::SetupActions()
   auto remove_button = new QToolButton;
   remove_button->setText("Remove");
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_button->setToolTip("Remove currently selected variable");
   connect(remove_button, &QToolButton::clicked, this,
           &WorkspaceEditorWidget::RemoveSelectedRequest);

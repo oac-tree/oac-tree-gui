@@ -89,6 +89,11 @@ InstructionItem* ComposerWidgetPanel::GetSelectedInstruction() const
   return selected.empty() ? nullptr : selected.front();
 }
 
+void ComposerWidgetPanel::SetCurrentWidget(WidgetType widget_type)
+{
+  m_stack_widget->SetCurrentIndex(static_cast<int>(widget_type));
+}
+
 void ComposerWidgetPanel::SetupConnections()
 {
   auto on_scene_instruction_selected = [this](auto)

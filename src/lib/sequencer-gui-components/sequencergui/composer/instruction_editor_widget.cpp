@@ -107,20 +107,20 @@ void InstructionEditorWidget::SetupActions()
   // 2. QAction with menu doesn't provide InstantPopup capabilities
 
   auto insert_after_button = new QToolButton;
-  insert_after_button->setText("After");
+  insert_after_button->setText("Add");
   insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip("Insert instruction after current selection");
+  insert_after_button->setToolTip("Add instruction after current selection");
   m_insert_after_action = new QWidgetAction(this);
   m_insert_after_action->setDefaultWidget(insert_after_button);
   addAction(m_insert_after_action);
 
   auto insert_into_button = new QToolButton;
-  insert_into_button->setText("Into");
+  insert_into_button->setText("Insert");
   insert_into_button->setIcon(styleutils::GetIcon("plus-circle-multiple-outline"));
-  insert_into_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   insert_into_button->setPopupMode(QToolButton::InstantPopup);
   insert_into_button->setMenu(m_insert_into_menu.get());
   insert_into_button->setToolTip("Insert instruction into currently selected instruction");
@@ -129,9 +129,9 @@ void InstructionEditorWidget::SetupActions()
   addAction(m_insert_into_action);
 
   auto remove_button = new QToolButton;
-  remove_button->setText("Into");
+  remove_button->setText("Remove");
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_button->setToolTip("Remove currently selected instruction together with its children");
   connect(remove_button, &QToolButton::clicked, this,
           &InstructionEditorWidget::RemoveSelectedRequest);
