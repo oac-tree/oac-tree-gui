@@ -35,8 +35,6 @@ class MessageHandlerInterface;
 namespace sequencergui
 {
 
-class InstructionEditorActions;
-class InstructionEditorContext;
 class InstructionEditorWidget;
 class InstructionItem;
 class ProcedureItem;
@@ -73,7 +71,6 @@ signals:
 
 private:
   void SetupConnections();
-  InstructionEditorContext CreateInstructionEditorContext();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
 
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};
@@ -85,7 +82,6 @@ private:
   ProcedureItem* m_procedure{nullptr};
 
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
-  std::unique_ptr<InstructionEditorActions> m_instruction_editor_actions;
   std::unique_ptr<WorkspaceEditorActions> m_workspace_editor_actions;
 };
 

@@ -19,6 +19,10 @@
 
 #include "instruction_editor_widget.h"
 
+#include "instruction_editor_context.h"
+
+#include <sequencergui/components/message_helper.h>
+#include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -45,6 +49,8 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_tree_view(new mvvm::TopItemsTreeView)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
+    , m_instruction_editor_actions(
+          std::make_unique<InstructionEditorActions>(CreateInstructionEditorContext()))
 {
   setWindowTitle("INSTRUCTION TREE");
   auto layout = new QVBoxLayout(this);
@@ -74,6 +80,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
 void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
+  m_procedure = procedure;
   m_tree_view->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
 }
 
@@ -132,6 +139,26 @@ void InstructionEditorWidget::SetupActions()
   m_remove_action = new QWidgetAction(this);
   m_remove_action->setDefaultWidget(remove_button);
   addAction(m_remove_action);
+
+  // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
+  connect(this, &InstructionEditorWidget::InsertAfterRequest, m_instruction_editor_actions.get(),
+          &InstructionEditorActions::OnInsertInstructionAfterRequest);
+  connect(this, &InstructionEditorWidget::InsertIntoRequest, m_instruction_editor_actions.get(),
+          &InstructionEditorActions::OnInsertInstructionIntoRequest);
+  connect(this, &InstructionEditorWidget::RemoveSelectedRequest, m_instruction_editor_actions.get(),
+          &InstructionEditorActions::OnRemoveInstructionRequest);
+}
+
+InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()
+{
+  InstructionEditorContext result;
+  result.selected_procedure = [this]() { return m_procedure; };
+  result.selected_instruction = [this]() { return GetSelectedInstruction(); };
+
+  auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
+  result.send_message_callback = send_message_callback;
+
+  return result;
 }
 
 std::unique_ptr<QMenu> InstructionEditorWidget::CreateInsertAfterMenu()

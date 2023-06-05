@@ -52,8 +52,6 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_message_handler(std::move(message_handler))
-    , m_instruction_editor_actions(
-          std::make_unique<InstructionEditorActions>(CreateInstructionEditorContext()))
     , m_workspace_editor_actions(
           std::make_unique<WorkspaceEditorActions>(CreateWorkspaceEditorContext()))
 {
@@ -109,17 +107,6 @@ void ComposerProcedureEditor::SetupConnections()
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
           &ComposerProcedureEditor::InstructionSelected);
 
-  // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
-  connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertAfterRequest,
-          m_instruction_editor_actions.get(),
-          &InstructionEditorActions::OnInsertInstructionAfterRequest);
-  connect(m_instruction_editor_widget, &InstructionEditorWidget::InsertIntoRequest,
-          m_instruction_editor_actions.get(),
-          &InstructionEditorActions::OnInsertInstructionIntoRequest);
-  connect(m_instruction_editor_widget, &InstructionEditorWidget::RemoveSelectedRequest,
-          m_instruction_editor_actions.get(),
-          &InstructionEditorActions::OnRemoveInstructionRequest);
-
   // propagate instruction related requests from WorkspaceEditorWidget to WorkspaceEditorActions
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnAddVariableRequest);
@@ -127,21 +114,6 @@ void ComposerProcedureEditor::SetupConnections()
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnRemoveVariableRequest);
   connect(m_workspace_editor_widget, &WorkspaceEditorWidget::EditAnyvalueRequest,
           m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnEditAnyvalueRequest);
-}
-
-//! Create context necessary for InstructionEditorActions to function.
-InstructionEditorContext ComposerProcedureEditor::CreateInstructionEditorContext()
-{
-  InstructionEditorContext result;
-  result.selected_procedure = [this]() { return m_procedure; };
-  result.selected_instruction = [this]()
-  { return m_instruction_editor_widget->GetSelectedInstruction(); };
-
-  auto send_message_callback = [this](const sup::gui::MessageEvent& event)
-  { m_message_handler->SendMessage(event.text + event.informative + event.detailed); };
-  result.send_message_callback = send_message_callback;
-
-  return result;
 }
 
 WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
@@ -154,7 +126,7 @@ WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
 
   result.selected_item_callback = [this]() { return m_workspace_editor_widget->GetSelectedItem(); };
 
-  auto send_message_callback = [](const auto& event) { return SendWarningMessage(event); };
+  auto send_message_callback = [](const auto& event) { SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
 
   auto edit_anyvalue_callback =
