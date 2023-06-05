@@ -39,7 +39,7 @@ class CodeView;
 namespace sequencergui
 {
 class SequencerModel;
-class ComposerProcedureEditor;
+class ComposerWidgetPanel;
 class ComposerPanel;
 class NodeEditor;
 class ProcedureItem;
@@ -73,7 +73,7 @@ private:
   ComposerPanel* m_composer_panel{nullptr};
   NodeEditor* m_node_editor{nullptr};
   ItemStackWidget* m_central_panel{nullptr};
-  ComposerProcedureEditor* m_composer_procedure_editor{nullptr};
+  ComposerWidgetPanel* m_composer_procedure_editor{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
 

@@ -20,7 +20,7 @@
 #include "sequencer_composer_view.h"
 
 #include <sequencergui/composer/composer_panel.h>
-#include <sequencergui/composer/composer_procedure_editor.h>
+#include <sequencergui/composer/composer_widget_panel.h>
 #include <sequencergui/composer/sequencer_composer_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -51,7 +51,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_node_editor(new NodeEditor)
     , m_central_panel(new ItemStackWidget)
     , m_composer_procedure_editor(
-          new ComposerProcedureEditor(m_node_editor->CreateMessageHandler()))
+          new ComposerWidgetPanel(m_node_editor->CreateMessageHandler()))
     , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
@@ -141,7 +141,7 @@ void SequencerComposerView::SetupConnections()
           m_composer_procedure_editor->GetSelectedInstructions());
     }
   };
-  connect(m_composer_procedure_editor, &ComposerProcedureEditor::InstructionSelected, this,
+  connect(m_composer_procedure_editor, &ComposerWidgetPanel::InstructionSelected, this,
           on_tree_instruction_selected);
 
   auto on_procedure_selected = [this](auto procedure_item)

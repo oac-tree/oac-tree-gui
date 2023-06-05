@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_procedure_editor.h"
+#include "composer_widget_panel.h"
 
 #include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
@@ -30,7 +30,7 @@
 
 namespace sequencergui
 {
-ComposerProcedureEditor::ComposerProcedureEditor(
+ComposerWidgetPanel::ComposerWidgetPanel(
     std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler, QWidget* parent)
     : QWidget(parent)
     , m_collapsible_list(new mvvm::CollapsibleListView)
@@ -54,41 +54,41 @@ ComposerProcedureEditor::ComposerProcedureEditor(
   SetupConnections();
 }
 
-ComposerProcedureEditor::~ComposerProcedureEditor() = default;
+ComposerWidgetPanel::~ComposerWidgetPanel() = default;
 
-void ComposerProcedureEditor::SetModel(SequencerModel* model)
+void ComposerWidgetPanel::SetModel(SequencerModel* model)
 {
   m_model = model;
 }
 
-void ComposerProcedureEditor::SetProcedure(ProcedureItem* procedure)
+void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
 {
   m_procedure = procedure;
   m_instruction_editor_widget->SetProcedure(m_procedure);
   m_workspace_editor_widget->SetProcedure(m_procedure);
 }
 
-void ComposerProcedureEditor::SetSelectedInstructions(
+void ComposerWidgetPanel::SetSelectedInstructions(
     const std::vector<InstructionItem*>& instructions)
 {
   m_instruction_editor_widget->SetSelectedInstructions(instructions);
 }
 
-std::vector<InstructionItem*> ComposerProcedureEditor::GetSelectedInstructions() const
+std::vector<InstructionItem*> ComposerWidgetPanel::GetSelectedInstructions() const
 {
   return m_instruction_editor_widget->GetSelectedInstructions();
 }
 
-InstructionItem* ComposerProcedureEditor::GetSelectedInstruction() const
+InstructionItem* ComposerWidgetPanel::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
 }
 
-void ComposerProcedureEditor::SetupConnections()
+void ComposerWidgetPanel::SetupConnections()
 {
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
-          &ComposerProcedureEditor::InstructionSelected);
+          &ComposerWidgetPanel::InstructionSelected);
 }
 
 }  // namespace sequencergui

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_PROCEDURE_EDITOR_H_
-#define SEQUENCERGUI_COMPOSER_COMPOSER_PROCEDURE_EDITOR_H_
+#ifndef SEQUENCERGUI_COMPOSER_COMPOSER_WIDGET_PANEL_H_
+#define SEQUENCERGUI_COMPOSER_COMPOSER_WIDGET_PANEL_H_
 
 #include <QWidget>
 
@@ -41,19 +41,17 @@ class ProcedureItem;
 class SequencerModel;
 class WorkspaceEditorWidget;
 
-//! The panel with two trees occupying right part of SequencerComposerView.
-//! Containts TopItemsTreeView for the whole procedure, and PropertyTreeView for currently selected
-//! instruction.
+//! The panel with stack of widgets for procedure editing: instruction tree editor, workspace
+//! editor, node editor and code view.
 
-class ComposerProcedureEditor : public QWidget
+class ComposerWidgetPanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ComposerProcedureEditor(
-      std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler,
-      QWidget* parent = nullptr);
-  ~ComposerProcedureEditor() override;
+  explicit ComposerWidgetPanel(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler,
+                               QWidget* parent = nullptr);
+  ~ComposerWidgetPanel() override;
 
   void SetModel(SequencerModel* model);
 
@@ -83,4 +81,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_PROCEDURE_EDITOR_H_
+#endif  // SEQUENCERGUI_COMPOSER_COMPOSER_WIDGET_PANEL_H_
