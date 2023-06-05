@@ -31,6 +31,7 @@ class ProcedureItem;
 class SequencerModel;
 class WorkspaceEditorWidget;
 class ItemStackWidget;
+class NodeEditor;
 
 //! The panel with stack of widgets for procedure editing: instruction tree editor, workspace
 //! editor, node editor and code view.
@@ -52,18 +53,17 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
-signals:
-  void InstructionSelected(sequencergui::InstructionItem* instruction);
-
 private:
   void SetupConnections();
 
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
+  NodeEditor* m_node_editor{nullptr};
   ItemStackWidget* m_stack_widget{nullptr};
 
   ProcedureItem* m_procedure{nullptr};
   SequencerModel* m_model{nullptr};
+  bool m_block_selection_to_scene{false};
 };
 
 }  // namespace sequencergui

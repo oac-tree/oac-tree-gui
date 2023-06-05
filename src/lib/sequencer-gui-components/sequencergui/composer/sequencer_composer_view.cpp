@@ -119,23 +119,6 @@ SequencerComposerView::~SequencerComposerView()
 
 void SequencerComposerView::SetupConnections()
 {
-  auto on_scene_instruction_selected = [this](auto)
-  {
-    m_block_selection_to_scene = true;
-    m_composer_widget_panel->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
-    m_block_selection_to_scene = false;
-  };
-  connect(m_node_editor, &NodeEditor::InstructionSelected, this, on_scene_instruction_selected);
-
-  auto on_tree_instruction_selected = [this](auto)
-  {
-    if (!m_block_selection_to_scene)
-    {
-      m_node_editor->SetSelectedInstructions(m_composer_widget_panel->GetSelectedInstructions());
-    }
-  };
-  connect(m_composer_widget_panel, &ComposerWidgetPanel::InstructionSelected, this,
-          on_tree_instruction_selected);
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
