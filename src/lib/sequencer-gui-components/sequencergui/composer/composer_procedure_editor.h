@@ -39,8 +39,6 @@ class InstructionEditorWidget;
 class InstructionItem;
 class ProcedureItem;
 class SequencerModel;
-class WorkspaceEditorActions;
-class WorkspaceEditorContext;
 class WorkspaceEditorWidget;
 
 //! The panel with two trees occupying right part of SequencerComposerView.
@@ -71,7 +69,6 @@ signals:
 
 private:
   void SetupConnections();
-  WorkspaceEditorContext CreateWorkspaceEditorContext();
 
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};
 
@@ -82,7 +79,6 @@ private:
   ProcedureItem* m_procedure{nullptr};
 
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
-  std::unique_ptr<WorkspaceEditorActions> m_workspace_editor_actions;
 };
 
 }  // namespace sequencergui

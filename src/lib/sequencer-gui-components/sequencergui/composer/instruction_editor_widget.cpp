@@ -29,7 +29,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/widgets/style_utils.h>
 
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/top_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>

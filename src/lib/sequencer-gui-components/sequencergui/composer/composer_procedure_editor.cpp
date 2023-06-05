@@ -19,28 +19,13 @@
 
 #include "composer_procedure_editor.h"
 
-#include <sequencergui/components/message_helper.h>
-#include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
-#include <sequencergui/pvmonitor/workspace_editor_actions.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/components/message_handler_interface.h>
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
-#include <mvvm/widgets/property_tree_view.h>
-#include <mvvm/widgets/widget_utils.h>
 
-#include <QSplitter>
-#include <QToolBar>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -52,8 +37,6 @@ ComposerProcedureEditor::ComposerProcedureEditor(
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_message_handler(std::move(message_handler))
-    , m_workspace_editor_actions(
-          std::make_unique<WorkspaceEditorActions>(CreateWorkspaceEditorContext()))
 {
   setWindowTitle("Composer");
 
@@ -106,43 +89,6 @@ void ComposerProcedureEditor::SetupConnections()
 {
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,
           &ComposerProcedureEditor::InstructionSelected);
-
-  // propagate instruction related requests from WorkspaceEditorWidget to WorkspaceEditorActions
-  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::InsertAfterRequest,
-          m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnAddVariableRequest);
-  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::RemoveSelectedRequest,
-          m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnRemoveVariableRequest);
-  connect(m_workspace_editor_widget, &WorkspaceEditorWidget::EditAnyvalueRequest,
-          m_workspace_editor_actions.get(), &WorkspaceEditorActions::OnEditAnyvalueRequest);
-}
-
-WorkspaceEditorContext ComposerProcedureEditor::CreateWorkspaceEditorContext()
-{
-  WorkspaceEditorContext result;
-
-  auto selected_workspace_callback = [this]()
-  { return m_procedure ? m_procedure->GetWorkspace() : nullptr; };
-  result.selected_workspace_callback = selected_workspace_callback;
-
-  result.selected_item_callback = [this]() { return m_workspace_editor_widget->GetSelectedItem(); };
-
-  auto send_message_callback = [](const auto& event) { SendWarningMessage(event); };
-  result.send_message_callback = send_message_callback;
-
-  auto edit_anyvalue_callback =
-      [this](const sup::gui::AnyValueItem* item) -> std::unique_ptr<sup::gui::AnyValueItem>
-  {
-    AnyValueEditorDialog dialog(this);
-    dialog.SetInitialValue(item);
-    if (dialog.exec() == QDialog::Accepted)
-    {
-      return dialog.GetResult();
-    }
-    return {};
-  };
-  result.edit_anyvalue_callback = edit_anyvalue_callback;
-
-  return result;
 }
 
 }  // namespace sequencergui
