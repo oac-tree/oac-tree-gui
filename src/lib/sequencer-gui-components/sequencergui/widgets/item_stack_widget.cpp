@@ -67,6 +67,12 @@ void ItemStackWidget::SetCurrentIndex(int index)
   UpdateControlElementsVisibility();
 }
 
+void ItemStackWidget::SetCurrentWidget(QWidget *widget)
+{
+  m_stacked_widget->setCurrentWidget(widget);
+  UpdateControlElementsVisibility();
+}
+
 //! Add entry to corner menu to switch to this widget.
 
 void ItemStackWidget::AddMenuEntry(QWidget *widget)
@@ -80,11 +86,6 @@ void ItemStackWidget::AddMenuEntry(QWidget *widget)
 void ItemStackWidget::AddGuestActions(const QList<QAction *> &actions, bool is_always_visible)
 {
   QList<QAction *> hide_actions;  // handles to hide actions
-
-  if (m_stacked_widget->count() > 1)
-  {
-    hide_actions.append(m_main_toolbar->AppendSeparator());
-  }
 
   for (auto action : actions)
   {

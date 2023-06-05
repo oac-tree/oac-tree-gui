@@ -51,6 +51,8 @@ public:
 
   void SetCurrentIndex(int index);
 
+  void SetCurrentWidget(QWidget* widget);
+
 private:
   void AddMenuEntry(QWidget* widget);
   void AddGuestActions(const QList<QAction*>& actions, bool is_always_visible);
