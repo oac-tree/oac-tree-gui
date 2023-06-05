@@ -22,16 +22,6 @@
 
 #include <QWidget>
 
-namespace mvvm
-{
-class CollapsibleListView;
-}
-
-namespace sup::gui
-{
-class MessageHandlerInterface;
-}
-
 namespace sequencergui
 {
 
@@ -40,6 +30,7 @@ class InstructionItem;
 class ProcedureItem;
 class SequencerModel;
 class WorkspaceEditorWidget;
+class ItemStackWidget;
 
 //! The panel with stack of widgets for procedure editing: instruction tree editor, workspace
 //! editor, node editor and code view.
@@ -49,8 +40,7 @@ class ComposerWidgetPanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit ComposerWidgetPanel(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler,
-                               QWidget* parent = nullptr);
+  explicit ComposerWidgetPanel(QWidget* parent = nullptr);
   ~ComposerWidgetPanel() override;
 
   void SetModel(SequencerModel* model);
@@ -68,15 +58,12 @@ signals:
 private:
   void SetupConnections();
 
-  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
-
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
+  ItemStackWidget* m_stack_widget{nullptr};
 
-  SequencerModel* m_model{nullptr};
   ProcedureItem* m_procedure{nullptr};
-
-  std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
+  SequencerModel* m_model{nullptr};
 };
 
 }  // namespace sequencergui

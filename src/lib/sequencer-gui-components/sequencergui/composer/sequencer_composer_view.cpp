@@ -29,18 +29,13 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/widgets/item_stack_widget.h>
-#include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/codeeditor/code_view.h>
 
 #include <mvvm/project/model_has_changed_controller.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <sup/gui/codeeditor/code_view.h>
-#include <sup/gui/components/message_handler_interface.h>
-
-#include <QDebug>
 #include <QSplitter>
-#include <QToolBar>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -50,8 +45,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
     , m_composer_panel(new ComposerPanel)
     , m_node_editor(new NodeEditor)
     , m_central_panel(new ItemStackWidget)
-    , m_composer_procedure_editor(
-          new ComposerWidgetPanel(m_node_editor->CreateMessageHandler()))
+    , m_composer_widget_panel(new ComposerWidgetPanel)
     , m_xml_view(new sup::gui::CodeView)
     , m_right_panel(new ItemStackWidget)
     , m_splitter(new QSplitter)
@@ -61,7 +55,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   layout->setContentsMargins(4, 1, 4, 4);
 
   m_central_panel->AddWidget(m_node_editor, m_node_editor->actions());
-  m_right_panel->AddWidget(m_composer_procedure_editor, m_composer_procedure_editor->actions());
+  m_right_panel->AddWidget(m_composer_widget_panel, m_composer_widget_panel->actions());
   m_right_panel->AddWidget(m_xml_view, m_xml_view->actions());
 
   m_splitter->addWidget(m_composer_panel);
@@ -83,7 +77,7 @@ void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_composer_panel->SetModel(model);
-  m_composer_procedure_editor->SetModel(model);
+  m_composer_widget_panel->SetModel(model);
   m_model_changed_controller =
       std::make_unique<mvvm::ModelHasChangedController>(m_model, [this]() { UpdateXML(); });
 }
@@ -128,7 +122,7 @@ void SequencerComposerView::SetupConnections()
   auto on_scene_instruction_selected = [this](auto)
   {
     m_block_selection_to_scene = true;
-    m_composer_procedure_editor->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
+    m_composer_widget_panel->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
     m_block_selection_to_scene = false;
   };
   connect(m_node_editor, &NodeEditor::InstructionSelected, this, on_scene_instruction_selected);
@@ -137,18 +131,16 @@ void SequencerComposerView::SetupConnections()
   {
     if (!m_block_selection_to_scene)
     {
-      m_node_editor->SetSelectedInstructions(
-          m_composer_procedure_editor->GetSelectedInstructions());
+      m_node_editor->SetSelectedInstructions(m_composer_widget_panel->GetSelectedInstructions());
     }
   };
-  connect(m_composer_procedure_editor, &ComposerWidgetPanel::InstructionSelected, this,
+  connect(m_composer_widget_panel, &ComposerWidgetPanel::InstructionSelected, this,
           on_tree_instruction_selected);
 
   auto on_procedure_selected = [this](auto procedure_item)
   {
-    qDebug() << "Show on_procedure_selected" << procedure_item;
     m_node_editor->SetProcedure(procedure_item);
-    m_composer_procedure_editor->SetProcedure(procedure_item);
+    m_composer_widget_panel->SetProcedure(procedure_item);
     m_composer_actions->SetProcedure(procedure_item);
     UpdateXML();
   };

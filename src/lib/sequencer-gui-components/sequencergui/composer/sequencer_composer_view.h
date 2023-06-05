@@ -25,7 +25,6 @@
 
 class QSplitter;
 class QShowEvent;
-class QAction;
 
 namespace mvvm
 {
@@ -73,7 +72,7 @@ private:
   ComposerPanel* m_composer_panel{nullptr};
   NodeEditor* m_node_editor{nullptr};
   ItemStackWidget* m_central_panel{nullptr};
-  ComposerWidgetPanel* m_composer_procedure_editor{nullptr};
+  ComposerWidgetPanel* m_composer_widget_panel{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};
   ItemStackWidget* m_right_panel{nullptr};
 

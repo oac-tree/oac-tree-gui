@@ -22,32 +22,26 @@
 #include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sup/gui/components/message_handler_interface.h>
-
-#include <mvvm/widgets/collapsible_list_view.h>
+#include <sequencergui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
-ComposerWidgetPanel::ComposerWidgetPanel(
-    std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler, QWidget* parent)
+ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
     : QWidget(parent)
-    , m_collapsible_list(new mvvm::CollapsibleListView)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
-    , m_message_handler(std::move(message_handler))
+    , m_stack_widget(new ItemStackWidget)
 {
   setWindowTitle("Composer");
 
   auto layout = new QVBoxLayout(this);
 
-  m_collapsible_list->AddCollapsibleWidget(m_instruction_editor_widget,
-                                           m_instruction_editor_widget->actions());
-  m_collapsible_list->AddCollapsibleWidget(m_workspace_editor_widget,
-                                           m_workspace_editor_widget->actions());
+  m_stack_widget->AddWidget(m_instruction_editor_widget, m_instruction_editor_widget->actions());
+  m_stack_widget->AddWidget(m_workspace_editor_widget, m_workspace_editor_widget->actions());
 
-  layout->addWidget(m_collapsible_list);
+  layout->addWidget(m_stack_widget);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
@@ -68,8 +62,7 @@ void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
   m_workspace_editor_widget->SetProcedure(m_procedure);
 }
 
-void ComposerWidgetPanel::SetSelectedInstructions(
-    const std::vector<InstructionItem*>& instructions)
+void ComposerWidgetPanel::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
 {
   m_instruction_editor_widget->SetSelectedInstructions(instructions);
 }
