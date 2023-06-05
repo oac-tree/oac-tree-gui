@@ -32,6 +32,7 @@ class SequencerModel;
 class WorkspaceEditorWidget;
 class ItemStackWidget;
 class NodeEditor;
+class XmlPanel;
 
 //! The panel with stack of widgets for procedure editing: instruction tree editor, workspace
 //! editor, node editor and code view.
@@ -59,6 +60,7 @@ private:
   InstructionEditorWidget* m_instruction_editor_widget{nullptr};
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
   NodeEditor* m_node_editor{nullptr};
+  XmlPanel* m_xml_panel{nullptr};
   ItemStackWidget* m_stack_widget{nullptr};
 
   ProcedureItem* m_procedure{nullptr};

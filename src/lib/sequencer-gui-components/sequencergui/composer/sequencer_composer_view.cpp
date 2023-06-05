@@ -73,6 +73,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   addActions(m_composer_actions->GetMenuActions());
 }
 
+SequencerComposerView::~SequencerComposerView() = default;
+
 void SequencerComposerView::SetModel(SequencerModel *model)
 {
   m_model = model;
@@ -110,11 +112,6 @@ void SequencerComposerView::UpdateXML()
       m_xml_view->ClearText();
     }
   }
-}
-
-SequencerComposerView::~SequencerComposerView()
-{
-  //  m_model_changed_controller.reset(); // to avoid signaling when
 }
 
 void SequencerComposerView::SetupConnections()

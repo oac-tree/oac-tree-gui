@@ -19,5 +19,7 @@ target_sources(${library_name} PRIVATE
   sequencer_composer_view.h
   workspace_editor_widget.cpp
   workspace_editor_widget.h
+  xml_panel.cpp
+  xml_panel.h
 )
 

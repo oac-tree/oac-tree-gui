@@ -19,9 +19,12 @@
 
 #include "composer_widget_panel.h"
 
+#include "xml_panel.h"
+
 #include <sequencergui/composer/instruction_editor_widget.h>
 #include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 
@@ -34,6 +37,7 @@ ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_node_editor(new NodeEditor)
+    , m_xml_panel(new XmlPanel)
     , m_stack_widget(new ItemStackWidget)
 {
   setWindowTitle("Composer");
@@ -43,6 +47,7 @@ ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
   m_stack_widget->AddWidget(m_instruction_editor_widget, m_instruction_editor_widget->actions());
   m_stack_widget->AddWidget(m_workspace_editor_widget, m_workspace_editor_widget->actions());
   m_stack_widget->AddWidget(m_node_editor, m_node_editor->actions());
+  m_stack_widget->AddWidget(m_xml_panel, m_xml_panel->actions());
 
   layout->addWidget(m_stack_widget);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -56,6 +61,7 @@ ComposerWidgetPanel::~ComposerWidgetPanel() = default;
 void ComposerWidgetPanel::SetModel(SequencerModel* model)
 {
   m_model = model;
+  m_xml_panel->SetModel(model);
 }
 
 void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
@@ -64,6 +70,7 @@ void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
   m_instruction_editor_widget->SetProcedure(m_procedure);
   m_workspace_editor_widget->SetProcedure(m_procedure);
   m_node_editor->SetProcedure(m_procedure);
+  m_xml_panel->SetProcedure(m_procedure);
 }
 
 void ComposerWidgetPanel::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)

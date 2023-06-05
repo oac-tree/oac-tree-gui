@@ -1,0 +1,66 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2023 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#ifndef SEQUENCERGUI_COMPOSER_XML_PANEL_H_
+#define SEQUENCERGUI_COMPOSER_XML_PANEL_H_
+
+#include <QWidget>
+
+namespace mvvm
+{
+class SessionModelInterface;
+class ModelHasChangedController;
+}  // namespace mvvm
+
+namespace sup::gui
+{
+class CodeView;
+}
+
+namespace sequencergui
+{
+
+class ProcedureItem;
+
+//! A simple read only text view to show XML content of the procedure.
+
+class XmlPanel : public QWidget
+{
+  Q_OBJECT
+
+public:
+  explicit XmlPanel(mvvm::SessionModelInterface* model = nullptr, QWidget* parent = nullptr);
+  ~XmlPanel() override;
+
+  void SetModel(mvvm::SessionModelInterface* model);
+
+  void SetProcedure(ProcedureItem* procedure);
+
+private:
+  void UpdateXml();
+
+  sup::gui::CodeView* m_xml_view{nullptr};
+  mvvm::SessionModelInterface* m_model{nullptr};
+  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
+  ProcedureItem* m_procedure{nullptr};
+};
+
+}  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_COMPOSER_XML_PANEL_H_
