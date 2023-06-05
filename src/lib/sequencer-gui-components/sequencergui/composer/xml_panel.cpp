@@ -18,6 +18,8 @@ namespace sequencergui
 XmlPanel::XmlPanel(mvvm::SessionModelInterface *model, QWidget *parent)
     : QWidget(parent), m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
 {
+  setWindowTitle("XML View");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);

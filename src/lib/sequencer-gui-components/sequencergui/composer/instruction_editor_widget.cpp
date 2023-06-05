@@ -51,7 +51,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_instruction_editor_actions(
           std::make_unique<InstructionEditorActions>(CreateInstructionEditorContext()))
 {
-  setWindowTitle("INSTRUCTION TREE");
+  setWindowTitle("Instruction Tree");
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);

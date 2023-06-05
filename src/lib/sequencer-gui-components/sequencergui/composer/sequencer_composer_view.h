@@ -26,23 +26,12 @@
 class QSplitter;
 class QShowEvent;
 
-namespace mvvm
-{
-class ModelHasChangedController;
-}
-
-namespace sup::gui {
-class CodeView;
-}
-
 namespace sequencergui
 {
 class SequencerModel;
 class ComposerWidgetPanel;
 class ComposerPanel;
-class NodeEditor;
 class ProcedureItem;
-class ItemStackWidget;
 class SequencerComposerActions;
 
 //! Main widget for model editing. Contains a toolbar on top, and few widgets beneath:
@@ -63,24 +52,16 @@ protected:
   void showEvent(QShowEvent* event) override;
 
 private:
-  void SetupMenuActions();
-  void UpdateXML();
   void SetupConnections();
 
   ProcedureItem* GetFirstProcedure();
 
   ComposerPanel* m_composer_panel{nullptr};
-  NodeEditor* m_node_editor{nullptr};
-  ItemStackWidget* m_central_panel{nullptr};
-  ComposerWidgetPanel* m_composer_widget_panel{nullptr};
-  sup::gui::CodeView* m_xml_view{nullptr};
-  ItemStackWidget* m_right_panel{nullptr};
-
-  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
+  ComposerWidgetPanel* m_central_panel{nullptr};
+  ComposerWidgetPanel* m_right_panel{nullptr};
 
   QSplitter* m_splitter{nullptr};
   SequencerModel* m_model{nullptr};
-  bool m_block_selection_to_scene{false};
 
   SequencerComposerActions* m_composer_actions{nullptr};
 };

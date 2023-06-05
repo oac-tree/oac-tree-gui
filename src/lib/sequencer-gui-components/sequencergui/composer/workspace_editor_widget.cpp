@@ -47,7 +47,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_workspace_editor_actions(
           std::make_unique<WorkspaceEditorActions>(CreateWorkspaceEditorContext()))
 {
-  setWindowTitle("WORKSPACE");
+  setWindowTitle("Workspace");
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
