@@ -22,7 +22,7 @@
 #include "instruction_editor_context.h"
 
 #include <sequencergui/components/message_helper.h>
-#include <sequencergui/composer/instruction_editor_actions.h>
+#include <sequencergui/composer/instruction_editor_controller.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -49,7 +49,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
     , m_instruction_editor_actions(
-          std::make_unique<InstructionEditorActions>(CreateInstructionEditorContext()))
+          std::make_unique<InstructionEditorController>(CreateInstructionEditorContext()))
 {
   setWindowTitle("Instruction Tree");
   auto layout = new QVBoxLayout(this);
@@ -141,11 +141,11 @@ void InstructionEditorWidget::SetupActions()
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
   connect(this, &InstructionEditorWidget::InsertAfterRequest, m_instruction_editor_actions.get(),
-          &InstructionEditorActions::OnInsertInstructionAfterRequest);
+          &InstructionEditorController::OnInsertInstructionAfterRequest);
   connect(this, &InstructionEditorWidget::InsertIntoRequest, m_instruction_editor_actions.get(),
-          &InstructionEditorActions::OnInsertInstructionIntoRequest);
+          &InstructionEditorController::OnInsertInstructionIntoRequest);
   connect(this, &InstructionEditorWidget::RemoveSelectedRequest, m_instruction_editor_actions.get(),
-          &InstructionEditorActions::OnRemoveInstructionRequest);
+          &InstructionEditorController::OnRemoveInstructionRequest);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()

@@ -41,10 +41,10 @@ namespace sequencergui
 class ProcedureItem;
 class InstructionItem;
 class InstructionEditorContext;
-class InstructionEditorActions;
+class InstructionEditorController;
 
-//! Tree of instruction items at the right of SequencerComposerView.
-//! Defines set of actions to add/remove instructions. Part of ComposerProcedureEditor.
+//! Tree of instruction items at the center of SequencerComposerView.
+//! Defines set of actions to add/remove instructions.
 
 class InstructionEditorWidget : public QWidget
 {
@@ -85,7 +85,7 @@ private:
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
-  std::unique_ptr<InstructionEditorActions> m_instruction_editor_actions;
+  std::unique_ptr<InstructionEditorController> m_instruction_editor_actions;
 };
 
 }  // namespace sequencergui

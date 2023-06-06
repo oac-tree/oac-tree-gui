@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/instruction_editor_actions.h"
+#include "sequencergui/composer/instruction_editor_controller.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -37,10 +37,10 @@ using ::testing::_;
 
 //! Tests for SequencerObserver class.
 
-class InstructionEditorActionsTest : public ::testing::Test
+class InstructionEditorControllerTest : public ::testing::Test
 {
 public:
-  InstructionEditorActionsTest()
+  InstructionEditorControllerTest()
   {
     m_procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }
@@ -56,10 +56,10 @@ public:
     return result;
   }
 
-  std::unique_ptr<InstructionEditorActions> CreateActions(ProcedureItem* procedure,
-                                                          InstructionItem* instruction)
+  std::unique_ptr<InstructionEditorController> CreateActions(ProcedureItem* procedure,
+                                                             InstructionItem* instruction)
   {
-    return std::make_unique<InstructionEditorActions>(CreateContext(procedure, instruction));
+    return std::make_unique<InstructionEditorController>(CreateContext(procedure, instruction));
   }
 
   SequencerModel m_model;
@@ -69,7 +69,7 @@ public:
 
 //! Attempt to insert an instruction when no procedure created upfront.
 
-TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSelected)
+TEST_F(InstructionEditorControllerTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
   auto actions = CreateActions(nullptr, nullptr);
@@ -82,7 +82,7 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSe
 
 //! Adding wait instruction.
 
-TEST_F(InstructionEditorActionsTest, AddWait)
+TEST_F(InstructionEditorControllerTest, AddWait)
 {
   auto actions = CreateActions(m_procedure, nullptr);
 
@@ -98,7 +98,7 @@ TEST_F(InstructionEditorActionsTest, AddWait)
 
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
 
-TEST_F(InstructionEditorActionsTest, AddChoice)
+TEST_F(InstructionEditorControllerTest, AddChoice)
 {
   auto actions = CreateActions(m_procedure, nullptr);
 
@@ -115,7 +115,7 @@ TEST_F(InstructionEditorActionsTest, AddChoice)
 
 //! Insertion instruction after selected instruction.
 
-TEST_F(InstructionEditorActionsTest, InsertInstructionAfter)
+TEST_F(InstructionEditorControllerTest, InsertInstructionAfter)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -152,7 +152,7 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionAfter)
 //! Mimicking the case when no instruction is actually selected.
 //! Items should be added one after another.
 
-TEST_F(InstructionEditorActionsTest, InsertInstructionAfterWhenInAppendMode)
+TEST_F(InstructionEditorControllerTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating the context mimicking "no instruction selected"
   auto actions = CreateActions(m_procedure, nullptr);
@@ -174,7 +174,7 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionAfterWhenInAppendMode)
 
 //! Insertion instruction after selected instruction, when no more insertions is allowed.
 
-TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionAfter)
+TEST_F(InstructionEditorControllerTest, AttemptToInsertInstructionAfter)
 {
   // inserting instruction in the container
   auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
@@ -193,7 +193,7 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionAfter)
 
 //! Insertion instruction in the selected instruction.
 
-TEST_F(InstructionEditorActionsTest, InsertInstructionInto)
+TEST_F(InstructionEditorControllerTest, InsertInstructionInto)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
@@ -232,7 +232,7 @@ TEST_F(InstructionEditorActionsTest, InsertInstructionInto)
 
 //! Attempt to insert instruction into the one, that can't have children.
 
-TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionInto)
+TEST_F(InstructionEditorControllerTest, AttemptToInsertInstructionInto)
 {
   // inserting instruction in the container
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
@@ -249,7 +249,7 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionInto)
 
 //! Removing selected instruction.
 
-TEST_F(InstructionEditorActionsTest, RemoveInstruction)
+TEST_F(InstructionEditorControllerTest, RemoveInstruction)
 {
   // inserting instruction in the container
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
