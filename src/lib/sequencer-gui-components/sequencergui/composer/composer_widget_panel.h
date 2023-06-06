@@ -64,6 +64,9 @@ public:
 
   void SetCurrentWidget(WidgetType widget_type);
 
+signals:
+  void InstructionSelected(sequencergui::InstructionItem* selected);
+
 private:
   void SetupConnections();
 
@@ -75,7 +78,7 @@ private:
 
   ProcedureItem* m_procedure{nullptr};
   SequencerModel* m_model{nullptr};
-  bool m_block_selection_to_scene{false};
+  bool m_block_selection_notification{false}; //!< do not notify ouside if selection changed
 };
 
 }  // namespace sequencergui

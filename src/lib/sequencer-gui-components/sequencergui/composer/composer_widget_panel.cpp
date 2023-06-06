@@ -75,12 +75,27 @@ void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
 
 void ComposerWidgetPanel::SetSelectedInstructions(const std::vector<InstructionItem*>& instructions)
 {
+  m_block_selection_notification = true;
+
   m_instruction_editor_widget->SetSelectedInstructions(instructions);
+  m_node_editor->SetSelectedInstructions(instructions);
+
+  m_block_selection_notification = false;
 }
 
 std::vector<InstructionItem*> ComposerWidgetPanel::GetSelectedInstructions() const
 {
-  return m_instruction_editor_widget->GetSelectedInstructions();
+  if (m_stack_widget->GetCurrentWidget() == m_instruction_editor_widget)
+  {
+    return m_instruction_editor_widget->GetSelectedInstructions();
+  }
+
+  if (m_stack_widget->GetCurrentWidget() == m_node_editor)
+  {
+    return m_node_editor->GetSelectedInstructions();
+  }
+
+  return {};
 }
 
 InstructionItem* ComposerWidgetPanel::GetSelectedInstruction() const
@@ -96,19 +111,28 @@ void ComposerWidgetPanel::SetCurrentWidget(WidgetType widget_type)
 
 void ComposerWidgetPanel::SetupConnections()
 {
-  auto on_scene_instruction_selected = [this](auto)
+  auto on_scene_instruction_selected = [this](auto instruction)
   {
-    m_block_selection_to_scene = true;
-    SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
-    m_block_selection_to_scene = false;
+    if (!m_block_selection_notification)
+    {
+      m_block_selection_notification = true;
+      m_instruction_editor_widget->SetSelectedInstructions(
+          m_node_editor->GetSelectedInstructions());
+      emit InstructionSelected(instruction);
+      m_block_selection_notification = false;
+    }
   };
   connect(m_node_editor, &NodeEditor::InstructionSelected, this, on_scene_instruction_selected);
 
-  auto on_tree_instruction_selected = [this](auto)
+  auto on_tree_instruction_selected = [this](auto instruction)
   {
-    if (!m_block_selection_to_scene)
+    if (!m_block_selection_notification)
     {
-      m_node_editor->SetSelectedInstructions(GetSelectedInstructions());
+      m_block_selection_notification = true;
+      m_node_editor->SetSelectedInstructions(
+          m_instruction_editor_widget->GetSelectedInstructions());
+      emit InstructionSelected(instruction);
+      m_block_selection_notification = false;
     }
   };
   connect(m_instruction_editor_widget, &InstructionEditorWidget::InstructionSelected, this,

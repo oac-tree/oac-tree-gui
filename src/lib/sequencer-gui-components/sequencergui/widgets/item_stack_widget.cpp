@@ -61,10 +61,20 @@ void ItemStackWidget::AddWidget(QWidget *widget, const QList<QAction *> &actions
   AddGuestActions(actions, is_always_visible);
 }
 
+int ItemStackWidget::GetCurrentIndex() const
+{
+  return m_stacked_widget->currentIndex();
+}
+
 void ItemStackWidget::SetCurrentIndex(int index)
 {
   m_stacked_widget->setCurrentIndex(index);
   UpdateControlElementsVisibility();
+}
+
+QWidget *ItemStackWidget::GetCurrentWidget() const
+{
+  return m_stacked_widget->currentWidget();
 }
 
 void ItemStackWidget::SetCurrentWidget(QWidget *widget)

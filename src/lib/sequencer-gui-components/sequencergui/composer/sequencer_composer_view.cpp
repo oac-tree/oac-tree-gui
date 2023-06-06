@@ -32,8 +32,8 @@
 
 #include <QSettings>
 #include <QSplitter>
-#include <QVBoxLayout>
 #include <QTreeView>
+#include <QVBoxLayout>
 
 namespace
 {
@@ -139,6 +139,34 @@ void SequencerComposerView::SetupConnections()
     }
   };
   connect(m_composer_panel, &ComposerPanel::RemoveProcedureRequest, this, on_remove_procedure);
+
+  auto on_central_selection = [this](auto instruction)
+  {
+    //    if (!m_block_selection_to_scene)
+    //    {
+    //      qDebug() << "AAAA";
+    //      m_block_selection_to_scene = true;
+    //      m_instruction_editor_widget->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
+    //      emit InstructionSelected(instruction);
+    //      m_block_selection_to_scene = false;
+    //    }
+    m_right_panel->SetSelectedInstructions(m_central_panel->GetSelectedInstructions());
+  };
+  connect(m_central_panel, &ComposerWidgetPanel::InstructionSelected, this, on_central_selection);
+
+  auto on_right_selection = [this](auto instruction)
+  {
+    //    if (!m_block_selection_to_scene)
+    //    {
+    //      qDebug() << "AAAA";
+    //      m_block_selection_to_scene = true;
+    //      m_instruction_editor_widget->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
+    //      emit InstructionSelected(instruction);
+    //      m_block_selection_to_scene = false;
+    //    }
+    m_central_panel->SetSelectedInstructions(m_right_panel->GetSelectedInstructions());
+  };
+  connect(m_right_panel, &ComposerWidgetPanel::InstructionSelected, this, on_right_selection);
 }
 
 //! Returns first procedure from the procedure container, if exist.

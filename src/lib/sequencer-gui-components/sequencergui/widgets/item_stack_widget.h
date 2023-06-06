@@ -49,7 +49,11 @@ public:
   void AddWidget(QWidget* widget, const QList<QAction*>& control_actions,
                  bool is_always_visible = false);
 
+  int GetCurrentIndex() const;
+
   void SetCurrentIndex(int index);
+
+  QWidget* GetCurrentWidget() const;
 
   void SetCurrentWidget(QWidget* widget);
 
