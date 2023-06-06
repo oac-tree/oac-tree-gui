@@ -22,8 +22,8 @@
 #include "instruction_editor_context.h"
 
 #include <sequencergui/components/message_helper.h>
+#include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/composer/instruction_editor_controller.h>
-#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -31,24 +31,28 @@
 
 #include <mvvm/widgets/property_tree_view.h>
 #include <mvvm/widgets/top_items_tree_view.h>
-#include <mvvm/widgets/widget_utils.h>
 
+#include <QSettings>
 #include <QSplitter>
-#include <QToolButton>
 #include <QVBoxLayout>
-#include <QWidgetAction>
+
+namespace
+{
+const QString kGroupName("InstructionEditorWidget");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+
+}  // namespace
 
 namespace sequencergui
 {
 
 InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     : QWidget(parent)
-    , m_insert_into_menu(CreateInsertIntoMenu())
-    , m_insert_after_menu(CreateInsertAfterMenu())
     , m_tree_view(new mvvm::TopItemsTreeView)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
-    , m_instruction_editor_actions(
+    , m_editor_actions(new InstructionEditorActions(this))
+    , m_editor_controller(
           std::make_unique<InstructionEditorController>(CreateInstructionEditorContext()))
 {
   setWindowTitle("Instruction Tree");
@@ -63,18 +67,18 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
   layout->addWidget(m_splitter);
 
-  auto on_selected_instruction_changed = [this](auto)
-  {
-    auto selected = GetSelectedInstruction();
-    m_property_tree->SetItem(selected);
-    emit InstructionSelected(selected);
-  };
-  connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
-          on_selected_instruction_changed);
-
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view->GetTreeView());
 
-  SetupActions();
+  SetupConnections();
+
+  addActions(m_editor_actions->GetActions());
+
+  ReadSettings();
+}
+
+InstructionEditorWidget::~InstructionEditorWidget()
+{
+  WriteSettings();
 }
 
 void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
@@ -100,52 +104,40 @@ InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
   return selected.empty() ? nullptr : selected.front();
 }
 
-void InstructionEditorWidget::SetupActions()
+void InstructionEditorWidget::ReadSettings()
 {
-  // we are using QToolButon wrapped into QWidgetAction here because
-  // 1. we want to pass around QList<QAction*>
-  // 2. QAction with menu doesn't provide InstantPopup capabilities
+  const QSettings settings;
 
-  auto insert_after_button = new QToolButton;
-  insert_after_button->setText("Add");
-  insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  insert_after_button->setPopupMode(QToolButton::InstantPopup);
-  insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip("Add instruction after current selection");
-  m_insert_after_action = new QWidgetAction(this);
-  m_insert_after_action->setDefaultWidget(insert_after_button);
-  addAction(m_insert_after_action);
+  if (settings.contains(kSplitterSettingName))
+  {
+    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
+  }
+}
 
-  auto insert_into_button = new QToolButton;
-  insert_into_button->setText("Insert");
-  insert_into_button->setIcon(styleutils::GetIcon("plus-circle-multiple-outline"));
-  insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  insert_into_button->setPopupMode(QToolButton::InstantPopup);
-  insert_into_button->setMenu(m_insert_into_menu.get());
-  insert_into_button->setToolTip("Insert instruction into currently selected instruction");
-  m_insert_into_action = new QWidgetAction(this);
-  m_insert_into_action->setDefaultWidget(insert_into_button);
-  addAction(m_insert_into_action);
+void InstructionEditorWidget::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kSplitterSettingName, m_splitter->saveState());
+}
 
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_button->setToolTip("Remove currently selected instruction together with its children");
-  connect(remove_button, &QToolButton::clicked, this,
-          &InstructionEditorWidget::RemoveSelectedRequest);
-  m_remove_action = new QWidgetAction(this);
-  m_remove_action->setDefaultWidget(remove_button);
-  addAction(m_remove_action);
+void InstructionEditorWidget::SetupConnections()
+{
+  auto on_selected_instruction_changed = [this](auto)
+  {
+    auto selected = GetSelectedInstruction();
+    m_property_tree->SetItem(selected);
+    emit InstructionSelected(selected);
+  };
+  connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
+          on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
-  connect(this, &InstructionEditorWidget::InsertAfterRequest, m_instruction_editor_actions.get(),
-          &InstructionEditorController::OnInsertInstructionAfterRequest);
-  connect(this, &InstructionEditorWidget::InsertIntoRequest, m_instruction_editor_actions.get(),
+  connect(m_editor_actions, &InstructionEditorActions::InsertAfterRequest,
+          m_editor_controller.get(), &InstructionEditorController::OnInsertInstructionAfterRequest);
+  connect(m_editor_actions, &InstructionEditorActions::InsertIntoRequest, m_editor_controller.get(),
           &InstructionEditorController::OnInsertInstructionIntoRequest);
-  connect(this, &InstructionEditorWidget::RemoveSelectedRequest, m_instruction_editor_actions.get(),
-          &InstructionEditorController::OnRemoveInstructionRequest);
+  connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest,
+          m_editor_controller.get(), &InstructionEditorController::OnRemoveInstructionRequest);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()
@@ -156,42 +148,6 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
 
   auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
-
-  return result;
-}
-
-std::unique_ptr<QMenu> InstructionEditorWidget::CreateInsertAfterMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
-  for (const auto &name : names)
-  {
-    auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit InsertAfterRequest(name); };
-    connect(action, &QAction::triggered, this, on_action);
-  }
-
-  return result;
-}
-
-//! Creates menu to insert an instruction into currently selected instruction.
-//! Code mostly coincides with the code above. However, this duplication is temporary and it
-//! will diverge in the future (idea to disable some actions if an operation is not possible).
-
-std::unique_ptr<QMenu> InstructionEditorWidget::CreateInsertIntoMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
-  for (const auto &name : names)
-  {
-    auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit InsertIntoRequest(name); };
-    connect(action, &QAction::triggered, this, on_action);
-  }
 
   return result;
 }

@@ -7,6 +7,8 @@ target_sources(${library_name} PRIVATE
   composer_panel.h
   composer_widget_panel.cpp
   composer_widget_panel.h
+  instruction_editor_actions.cpp
+  instruction_editor_actions.h
   instruction_editor_controller.cpp
   instruction_editor_controller.h
   instruction_editor_widget.cpp

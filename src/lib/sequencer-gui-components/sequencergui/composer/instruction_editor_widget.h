@@ -20,13 +20,9 @@
 #ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 #define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_WIDGET_H_
 
-#include <QList>
-#include <QMenu>
 #include <QWidget>
 #include <memory>
 
-class QAction;
-class QWidgetAction;
 class QSplitter;
 
 namespace mvvm
@@ -42,9 +38,10 @@ class ProcedureItem;
 class InstructionItem;
 class InstructionEditorContext;
 class InstructionEditorController;
+class InstructionEditorActions;
 
-//! Tree of instruction items at the center of SequencerComposerView.
-//! Defines set of actions to add/remove instructions.
+//! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
+//! center (and right side if necessary) os SequencerComposerView.
 
 class InstructionEditorWidget : public QWidget
 {
@@ -52,6 +49,7 @@ class InstructionEditorWidget : public QWidget
 
 public:
   explicit InstructionEditorWidget(QWidget* parent = nullptr);
+  ~InstructionEditorWidget() override;
 
   void SetProcedure(ProcedureItem* procedure);
 
@@ -63,29 +61,21 @@ public:
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
-  void InsertIntoRequest(const QString& name);
-  void InsertAfterRequest(const QString& name);
-  void RemoveSelectedRequest();
 
 private:
-  void SetupActions();
+  void ReadSettings();
+  void WriteSettings();
+
+  void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
-
-  std::unique_ptr<QMenu> CreateInsertAfterMenu();
-  std::unique_ptr<QMenu> CreateInsertIntoMenu();
-
-  std::unique_ptr<QMenu> m_insert_into_menu;
-  std::unique_ptr<QMenu> m_insert_after_menu;
-
-  QWidgetAction* m_insert_after_action{nullptr};
-  QWidgetAction* m_insert_into_action{nullptr};
-  QWidgetAction* m_remove_action{nullptr};
 
   mvvm::TopItemsTreeView* m_tree_view{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
-  std::unique_ptr<InstructionEditorController> m_instruction_editor_actions;
+
+  InstructionEditorActions* m_editor_actions{nullptr};
+  std::unique_ptr<InstructionEditorController> m_editor_controller;
 };
 
 }  // namespace sequencergui
