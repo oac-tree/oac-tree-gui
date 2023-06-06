@@ -20,10 +20,12 @@
 #include "sequencergui/composer/instruction_editor_actions.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/universal_instruction_item.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -76,6 +78,39 @@ TEST_F(InstructionEditorActionsTest, AttemptToInsertInstructionWhenNoProcedureSe
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
   EXPECT_NO_THROW(actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+}
+
+//! Adding wait instruction.
+
+TEST_F(InstructionEditorActionsTest, AddWait)
+{
+  auto actions = CreateActions(m_procedure, nullptr);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // appending instruction to the container
+  actions->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+}
+
+//! Adding choice instruction. Checking that universal instruction is correctly handled.
+
+TEST_F(InstructionEditorActionsTest, AddChoice)
+{
+  auto actions = CreateActions(m_procedure, nullptr);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // appending instruction to the container
+  actions->OnInsertInstructionAfterRequest(
+      QString::fromStdString(domainconstants::kChoiceInstructionType));
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), UniversalInstructionItem::Type);
 }
 
 //! Insertion instruction after selected instruction.

@@ -25,6 +25,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/core/exceptions.h>
 
@@ -141,7 +142,7 @@ mvvm::SessionItem *InstructionEditorActions::InsertItem(const std::string &item_
   mvvm::SessionItem *result{nullptr};
   try
   {
-    result = GetModel()->InsertItem(GetModel()->GetFactory()->CreateItem(item_type), parent, index);
+    result = GetModel()->InsertItem(CreateInstructionItem(item_type), parent, index);
   }
   catch (const std::exception &ex)
   {
