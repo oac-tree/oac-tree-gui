@@ -67,9 +67,4 @@ InstructionViewModel::InstructionViewModel(mvvm::SessionModelInterface *model, Q
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionRowStrategy>(model, this));
 }
 
-int InstructionViewModel::columnCount(const QModelIndex &parent) const
-{
-  return 3;
-}
-
 }  // namespace sequencergui

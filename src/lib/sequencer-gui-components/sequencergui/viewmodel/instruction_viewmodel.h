@@ -39,8 +39,6 @@ class MVVM_VIEWMODEL_EXPORT InstructionViewModel : public mvvm::ViewModel
 public:
   explicit InstructionViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
 
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-
 };
 
 }  // namespace sequencergui
