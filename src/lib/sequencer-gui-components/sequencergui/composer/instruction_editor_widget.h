@@ -24,11 +24,12 @@
 #include <memory>
 
 class QSplitter;
+class QTreeView;
 
 namespace mvvm
 {
-class TopItemsTreeView;
 class PropertyTreeView;
+class ItemViewComponentProvider;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -69,8 +70,10 @@ private:
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
 
-  mvvm::TopItemsTreeView* m_tree_view{nullptr};
+  QTreeView* m_tree_view{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   mvvm::PropertyTreeView* m_property_tree{nullptr};
+
   QSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
 

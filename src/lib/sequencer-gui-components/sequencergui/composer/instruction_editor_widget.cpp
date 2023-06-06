@@ -27,13 +27,15 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
 
+#include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
-#include <mvvm/widgets/top_items_tree_view.h>
 
 #include <QSettings>
 #include <QSplitter>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace
@@ -48,7 +50,8 @@ namespace sequencergui
 
 InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tree_view(new mvvm::TopItemsTreeView)
+    , m_tree_view(new QTreeView)
+    , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_tree_view))
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))
@@ -67,7 +70,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
   layout->addWidget(m_splitter);
 
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view->GetTreeView());
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 
   SetupConnections();
 
@@ -84,18 +87,18 @@ InstructionEditorWidget::~InstructionEditorWidget()
 void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   m_procedure = procedure;
-  m_tree_view->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
+  m_component_provider->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
 }
 
 void InstructionEditorWidget::SetSelectedInstructions(
     const std::vector<InstructionItem *> &instructions)
 {
-  m_tree_view->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
+  m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
 std::vector<InstructionItem *> InstructionEditorWidget::GetSelectedInstructions() const
 {
-  return ::mvvm::utils::CastItems<InstructionItem>(m_tree_view->GetSelectedItems());
+  return ::mvvm::utils::CastItems<InstructionItem>(m_component_provider->GetSelectedItems());
 }
 
 InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
@@ -128,7 +131,7 @@ void InstructionEditorWidget::SetupConnections()
     m_property_tree->SetItem(selected);
     emit InstructionSelected(selected);
   };
-  connect(m_tree_view, &::mvvm::TopItemsTreeView::SelectedItemChanged, this,
+  connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
