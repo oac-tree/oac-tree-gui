@@ -32,6 +32,11 @@ class PropertyTreeView;
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class CustomHeaderView;
+}
+
 namespace sequencergui
 {
 
@@ -66,11 +71,13 @@ signals:
 private:
   void ReadSettings();
   void WriteSettings();
+  void AdjustColumnWidth();
 
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
 
   QTreeView* m_tree_view{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   mvvm::PropertyTreeView* m_property_tree{nullptr};
 

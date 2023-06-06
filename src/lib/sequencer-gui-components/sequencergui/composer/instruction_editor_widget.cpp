@@ -29,6 +29,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
@@ -42,6 +43,7 @@ namespace
 {
 const QString kGroupName("InstructionEditorWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 
 }  // namespace
 
@@ -51,6 +53,7 @@ namespace sequencergui
 InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
+    , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_tree_view))
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
@@ -71,6 +74,8 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   layout->addWidget(m_splitter);
 
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setHeader(m_custom_header);
 
   SetupConnections();
 
@@ -88,6 +93,8 @@ void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   m_procedure = procedure;
   m_component_provider->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
+  m_tree_view->setColumnHidden(2, true);
+  AdjustColumnWidth();
 }
 
 void InstructionEditorWidget::SetSelectedInstructions(
@@ -115,12 +122,32 @@ void InstructionEditorWidget::ReadSettings()
   {
     m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
   }
+  if (settings.contains(kHeaderStateSettingName))
+  {
+    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
+  }
 }
 
 void InstructionEditorWidget::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  if (m_custom_header->HasFavoriteState())
+  {
+    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
+  }
+}
+
+void InstructionEditorWidget::AdjustColumnWidth()
+{
+  if (m_custom_header->HasFavoriteState())
+  {
+    m_custom_header->RestoreFavoriteState();
+  }
+  else
+  {
+    m_tree_view->resizeColumnToContents(0);
+  }
 }
 
 void InstructionEditorWidget::SetupConnections()
