@@ -39,6 +39,8 @@ namespace
 {
 const QString kGroupName("SequencerComposerView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kCentralPanel = kGroupName + "/" + "central";
+const QString kRightPanel = kGroupName + "/" + "right";
 
 }  // namespace
 
@@ -106,12 +108,20 @@ void SequencerComposerView::ReadSettings()
   {
     m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
   }
+
+  auto central_index = settings.value(kCentralPanel, ComposerWidgetPanel::kInstructionTree).toInt();
+  m_central_panel->SetCurrentWidget(static_cast<ComposerWidgetPanel::WidgetType>(central_index));
+
+  auto right_index = settings.value(kRightPanel, ComposerWidgetPanel::kWorkspace).toInt();
+  m_right_panel->SetCurrentWidget(static_cast<ComposerWidgetPanel::WidgetType>(right_index));
 }
 
 void SequencerComposerView::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  settings.setValue(kCentralPanel, m_central_panel->GetCurrentWidget());
+  settings.setValue(kRightPanel, m_right_panel->GetCurrentWidget());
 }
 
 void SequencerComposerView::SetupConnections()
@@ -140,32 +150,14 @@ void SequencerComposerView::SetupConnections()
   };
   connect(m_composer_panel, &ComposerPanel::RemoveProcedureRequest, this, on_remove_procedure);
 
+  // propagate selection from central panel to the right panel
   auto on_central_selection = [this](auto instruction)
-  {
-    //    if (!m_block_selection_to_scene)
-    //    {
-    //      qDebug() << "AAAA";
-    //      m_block_selection_to_scene = true;
-    //      m_instruction_editor_widget->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
-    //      emit InstructionSelected(instruction);
-    //      m_block_selection_to_scene = false;
-    //    }
-    m_right_panel->SetSelectedInstructions(m_central_panel->GetSelectedInstructions());
-  };
+  { m_right_panel->SetSelectedInstructions(m_central_panel->GetSelectedInstructions()); };
   connect(m_central_panel, &ComposerWidgetPanel::InstructionSelected, this, on_central_selection);
 
+  // propagate selection from right panel to the central panel
   auto on_right_selection = [this](auto instruction)
-  {
-    //    if (!m_block_selection_to_scene)
-    //    {
-    //      qDebug() << "AAAA";
-    //      m_block_selection_to_scene = true;
-    //      m_instruction_editor_widget->SetSelectedInstructions(m_node_editor->GetSelectedInstructions());
-    //      emit InstructionSelected(instruction);
-    //      m_block_selection_to_scene = false;
-    //    }
-    m_central_panel->SetSelectedInstructions(m_right_panel->GetSelectedInstructions());
-  };
+  { m_central_panel->SetSelectedInstructions(m_right_panel->GetSelectedInstructions()); };
   connect(m_right_panel, &ComposerWidgetPanel::InstructionSelected, this, on_right_selection);
 }
 

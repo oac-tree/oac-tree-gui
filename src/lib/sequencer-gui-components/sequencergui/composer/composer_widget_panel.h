@@ -62,6 +62,7 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
+  WidgetType GetCurrentWidget() const;
   void SetCurrentWidget(WidgetType widget_type);
 
 signals:
@@ -78,7 +79,7 @@ private:
 
   ProcedureItem* m_procedure{nullptr};
   SequencerModel* m_model{nullptr};
-  bool m_block_selection_notification{false}; //!< do not notify ouside if selection changed
+  bool m_block_selection_notification{false};  //!< do not notify ouside if selection changed
 };
 
 }  // namespace sequencergui
