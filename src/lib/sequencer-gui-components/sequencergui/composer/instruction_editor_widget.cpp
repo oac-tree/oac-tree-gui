@@ -22,17 +22,18 @@
 #include "instruction_editor_context.h"
 
 #include <sequencergui/components/message_helper.h>
+#include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
-#include <sequencergui/composer/instruction_editor_controller.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
+
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -58,8 +59,8 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))
-    , m_editor_controller(
-          std::make_unique<InstructionEditorController>(CreateInstructionEditorContext()))
+    , m_action_handler(
+          std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
 {
   setWindowTitle("Instruction Tree");
   auto layout = new QVBoxLayout(this);
@@ -163,12 +164,12 @@ void InstructionEditorWidget::SetupConnections()
           on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
-  connect(m_editor_actions, &InstructionEditorActions::InsertAfterRequest,
-          m_editor_controller.get(), &InstructionEditorController::OnInsertInstructionAfterRequest);
-  connect(m_editor_actions, &InstructionEditorActions::InsertIntoRequest, m_editor_controller.get(),
-          &InstructionEditorController::OnInsertInstructionIntoRequest);
+  connect(m_editor_actions, &InstructionEditorActions::InsertAfterRequest, m_action_handler.get(),
+          &InstructionEditorActionHandler::OnInsertInstructionAfterRequest);
+  connect(m_editor_actions, &InstructionEditorActions::InsertIntoRequest, m_action_handler.get(),
+          &InstructionEditorActionHandler::OnInsertInstructionIntoRequest);
   connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest,
-          m_editor_controller.get(), &InstructionEditorController::OnRemoveInstructionRequest);
+          m_action_handler.get(), &InstructionEditorActionHandler::OnRemoveInstructionRequest);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()

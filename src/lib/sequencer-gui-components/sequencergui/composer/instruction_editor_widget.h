@@ -43,7 +43,7 @@ namespace sequencergui
 class ProcedureItem;
 class InstructionItem;
 class InstructionEditorContext;
-class InstructionEditorController;
+class InstructionEditorActionHandler;
 class InstructionEditorActions;
 
 //! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
@@ -85,7 +85,7 @@ private:
   ProcedureItem* m_procedure{nullptr};
 
   InstructionEditorActions* m_editor_actions{nullptr};
-  std::unique_ptr<InstructionEditorController> m_editor_controller;
+  std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
 };
 
 }  // namespace sequencergui

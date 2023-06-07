@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_editor_controller.h"
+#include "instruction_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -56,7 +56,7 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
 namespace sequencergui
 {
 
-InstructionEditorController::InstructionEditorController(InstructionEditorContext context,
+InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context,
                                                    QObject *parent)
     : QObject(parent), m_context(std::move(context))
 {
@@ -76,11 +76,11 @@ InstructionEditorController::InstructionEditorController(InstructionEditorContex
   }
 }
 
-InstructionEditorController::~InstructionEditorController() = default;
+InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void InstructionEditorController::OnInsertInstructionAfterRequest(const QString &item_type)
+void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QString &item_type)
 {
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
@@ -100,7 +100,7 @@ void InstructionEditorController::OnInsertInstructionAfterRequest(const QString 
 
 //! Inserts new instruction of given type after the current selection.
 //! The selection is retrieved via a callback.
-void InstructionEditorController::OnInsertInstructionIntoRequest(const QString &item_type)
+void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   auto selected_instruction = m_context.selected_instruction();
   auto child = InsertItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
@@ -109,7 +109,7 @@ void InstructionEditorController::OnInsertInstructionIntoRequest(const QString &
 
 //! Removes currently selected instruction.
 //! The selection is retrieved via a callback.
-void InstructionEditorController::OnRemoveInstructionRequest()
+void InstructionEditorActionHandler::OnRemoveInstructionRequest()
 {
   if (auto selected_instruction = m_context.selected_instruction(); selected_instruction)
   {
@@ -117,25 +117,25 @@ void InstructionEditorController::OnRemoveInstructionRequest()
   }
 }
 
-mvvm::SessionModelInterface *InstructionEditorController::GetModel() const
+mvvm::SessionModelInterface *InstructionEditorActionHandler::GetModel() const
 {
   return GetInstructionContainer() ? GetInstructionContainer()->GetModel() : nullptr;
 }
 
-InstructionContainerItem *InstructionEditorController::GetInstructionContainer() const
+InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContainer() const
 {
   auto procedure = m_context.selected_procedure();
   return procedure ? procedure->GetInstructionContainer() : nullptr;
 }
 
-void InstructionEditorController::SendMessage(const std::string &text, const std::string &informative,
+void InstructionEditorActionHandler::SendMessage(const std::string &text, const std::string &informative,
                                            const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
 }
 
-mvvm::SessionItem *InstructionEditorController::InsertItem(const std::string &item_type,
+mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(const std::string &item_type,
                                                         mvvm::SessionItem *parent,
                                                         const mvvm::TagIndex &index)
 {

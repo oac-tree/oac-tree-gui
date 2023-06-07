@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTROLLER_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTROLLER_H_
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
+#define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
 
 #include <sequencergui/composer/instruction_editor_context.h>
 
@@ -38,16 +38,16 @@ namespace sequencergui
 class SequencerModel;
 class InstructionContainerItem;
 
-//! The InstructionEditorHandler class implements logic to add/remove instructions in
+//! The InstructionEditorActionHandler class implements logic to add/remove instructions in
 //! InstructionContainerItem.
 
-class InstructionEditorController : public QObject
+class InstructionEditorActionHandler : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit InstructionEditorController(InstructionEditorContext context, QObject* parent = nullptr);
-  ~InstructionEditorController() override;
+  explicit InstructionEditorActionHandler(InstructionEditorContext context, QObject* parent = nullptr);
+  ~InstructionEditorActionHandler() override;
 
   void OnInsertInstructionAfterRequest(const QString& item_type);
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTROLLER_H_
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTION_HANDLER_H_
