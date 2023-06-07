@@ -127,27 +127,6 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) cons
 }
 
 // ----------------------------------------------------------------------------
-// UserChoiceItem
-// ----------------------------------------------------------------------------
-
-UserChoiceItem::UserChoiceItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> UserChoiceItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<UserChoiceItem>(*this, make_unique_id);
-}
-
-std::string UserChoiceItem::GetDescription() const
-{
-  return Property<std::string>(domainconstants::kDescriptionAttribute);
-}
-
-void UserChoiceItem::SetDescription(const std::string &value)
-{
-  SetProperty(domainconstants::kDescriptionAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // VariableResetItem
 // ----------------------------------------------------------------------------
 

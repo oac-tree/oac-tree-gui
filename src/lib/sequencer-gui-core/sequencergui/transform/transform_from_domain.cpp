@@ -69,8 +69,6 @@ std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstru
                        ItemFactoryFunction<sequencergui::ParallelSequenceItem>);
   result->RegisterItem(kRepeatInstructionType, ItemFactoryFunction<sequencergui::RepeatItem>);
   result->RegisterItem(kSequenceInstructionType, ItemFactoryFunction<sequencergui::SequenceItem>);
-  result->RegisterItem(kUserChoiceInstructionType,
-                       ItemFactoryFunction<sequencergui::UserChoiceItem>);
   result->RegisterItem(kVariableResetInstructionType,
                        ItemFactoryFunction<sequencergui::VariableResetItem>);
   result->RegisterItem(kWaitInstructionType, ItemFactoryFunction<sequencergui::WaitItem>);

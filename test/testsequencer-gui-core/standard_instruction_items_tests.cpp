@@ -656,47 +656,6 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// UserChoiceItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, UserChoiceItem)
-{
-  // Correctly initialised item
-  UserChoiceItem item;
-  EXPECT_TRUE(item.GetDescription().empty());
-
-  auto wait0 = item.InsertItem<WaitItem>({"", -1});
-  auto wait1 = item.InsertItem<WaitItem>({"", -1});
-  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
-
-  item.SetDescription("abc");
-  EXPECT_EQ(item.GetDescription(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, UserChoiceItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kUserChoiceInstructionType);
-  input->AddAttribute(domainconstants::kDescriptionAttribute, "abc");
-
-  UserChoiceItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetDescription(), "abc");
-}
-
-TEST_F(StandardInstructionItemsTest, UserChoiceItemToDomain)
-{
-  UserChoiceItem item;
-  item.SetDescription("abc");
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kUserChoiceInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDescriptionAttribute), "abc");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // WaitItem tests
 // ----------------------------------------------------------------------------
 

@@ -117,7 +117,8 @@ ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
   // 0) Wait instruction
   // 1) Copy instruction
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
+  auto userchoice = InsertInstruction(domainconstants::kUserChoiceInstructionType,
+                                      procedure_item->GetInstructionContainer());
   auto wait0 = model->InsertItem<WaitItem>(userchoice);
   wait0->SetTimeout(10.0);
 

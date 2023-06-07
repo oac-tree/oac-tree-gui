@@ -96,22 +96,6 @@ public:
   SequenceItem();
 };
 
-//! Represent UserChoice instruction.
-class UserChoiceItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kUserChoiceInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  UserChoiceItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDescription() const;
-
-  void SetDescription(const std::string& value);
-};
-
 //! Represent ResetVariable instruction.
 class VariableResetItem : public UniversalInstructionItem
 {

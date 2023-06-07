@@ -128,7 +128,8 @@ ProcedureItem* AddInputProcedure(SequencerModel* model)
 ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto userchoice = model->InsertItem<UserChoiceItem>(procedure_item->GetInstructionContainer());
+  auto userchoice = InsertInstruction(domainconstants::kUserChoiceInstructionType,
+                                      procedure_item->GetInstructionContainer());
   model->InsertItem<WaitItem>(userchoice);
   model->InsertItem<WaitItem>(userchoice);
 
