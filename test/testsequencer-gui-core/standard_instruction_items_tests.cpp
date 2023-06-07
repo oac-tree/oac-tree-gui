@@ -98,55 +98,6 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// ListenItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, ListenItem)
-{
-  testutils::ListenItem item;
-
-  EXPECT_FALSE(item.IsForceSuccess());
-  item.SetForceSuccess(true);
-  EXPECT_TRUE(item.IsForceSuccess());
-
-  EXPECT_TRUE(item.GetVarNames().empty());
-  item.SetVarNames("abc");
-  EXPECT_EQ(item.GetVarNames(), "abc");
-
-  auto wait = item.InsertItem<WaitItem>({"", -1});
-  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
-  // it's not possible to add second item to ForceSuccess
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
-}
-
-TEST_F(StandardInstructionItemsTest, ListenItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kListenInstructionType);
-  input->AddAttribute(domainconstants::kListenVarNamesAttribute, "abc");
-  input->AddAttribute(domainconstants::kListenForceSuccessAttribute, "true");
-
-  testutils::ListenItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetVarNames(), "abc");
-  EXPECT_TRUE(item.IsForceSuccess());
-}
-
-TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
-{
-  testutils::ListenItem item;
-  item.SetForceSuccess(true);
-  item.SetVarNames("abc");
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kListenInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kListenVarNamesAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kListenForceSuccessAttribute), "true");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // ParallelSequenceItem tests
 // ----------------------------------------------------------------------------
 

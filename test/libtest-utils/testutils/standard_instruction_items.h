@@ -28,24 +28,6 @@
 namespace testutils
 {
 
-//! Represent Listen instruction.
-class ListenItem : public sequencergui::UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kListenInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  ListenItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  bool IsForceSuccess() const;
-  void SetForceSuccess(bool value);
-
-  std::string GetVarNames() const;
-  void SetVarNames(const std::string& value);
-};
-
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_EQUALITY_INSTRUCTION_ITEMS_H_
