@@ -28,22 +28,6 @@
 namespace testutils
 {
 
-//! Represent Condition instruction.
-class ConditionItem : public sequencergui::UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kConditionInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  ConditionItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-};
-
 //! Represent Copy instruction.
 class CopyItem : public sequencergui::UniversalInstructionItem
 {

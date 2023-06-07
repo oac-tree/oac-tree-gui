@@ -43,49 +43,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ConditionItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, ConditionItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::ConditionItem>());
-
-  // Correctly initialised item
-  testutils::ConditionItem item;
-  EXPECT_EQ(item.GetVariableName(), std::string());
-
-  item.SetVariableName("abc");
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, ConditionItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kConditionInstructionType);
-  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
-  input->AddAttribute(domainconstants::kIsRootAttribute, "true");
-
-  testutils::ConditionItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-  EXPECT_TRUE(item.IsRoot());
-}
-
-TEST_F(StandardInstructionItemsTest, ConditionItemToDomain)
-{
-  testutils::ConditionItem item;
-  item.SetVariableName("abc");
-  item.SetIsRootFlag(true);
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kConditionInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // CopyItem tests
 // ----------------------------------------------------------------------------
 

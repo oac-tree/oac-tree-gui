@@ -26,27 +26,6 @@ namespace testutils
 {
 
 // ----------------------------------------------------------------------------
-// ConditionItem
-// ----------------------------------------------------------------------------
-
-ConditionItem::ConditionItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> ConditionItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<ConditionItem>(*this, make_unique_id);
-}
-
-std::string ConditionItem::GetVariableName() const
-{
-  return Property<std::string>(sequencergui::domainconstants::kVarNameAttribute);
-}
-
-void ConditionItem::SetVariableName(const std::string &value)
-{
-  SetProperty(sequencergui::domainconstants::kVarNameAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // CopyItem
 // ----------------------------------------------------------------------------
 
