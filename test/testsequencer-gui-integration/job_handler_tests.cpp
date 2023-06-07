@@ -41,7 +41,6 @@
 
 #include <gtest/gtest.h>
 #include <testutils/mock_item_listener.h>
-#include <testutils/standard_instruction_items.h>
 #include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>

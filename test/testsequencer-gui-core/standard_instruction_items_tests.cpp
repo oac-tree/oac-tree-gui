@@ -29,7 +29,6 @@
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>
-#include <testutils/standard_instruction_items.h>
 #include <testutils/test_utils.h>
 
 using namespace sequencergui;

@@ -35,8 +35,6 @@
 
 #include <sup/dto/anyvalue.h>
 
-#include <testutils/standard_instruction_items.h>
-
 using namespace sequencergui;
 
 namespace testutils

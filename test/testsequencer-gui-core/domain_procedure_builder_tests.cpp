@@ -40,7 +40,6 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/standard_instruction_items.h>
 
 using namespace sequencergui;
 
