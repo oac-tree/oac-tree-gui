@@ -98,35 +98,6 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// InverterItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, InverterItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::InverterItem>());
-
-  // Correctly initialised item
-  testutils::InverterItem item;
-  auto wait = item.InsertItem<WaitItem>({"", -1});
-  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
-  // it's not possible to add second item to inverter
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
-}
-
-//! Validate SequenceItem convertion to the domain object.
-
-TEST_F(StandardInstructionItemsTest, InverterItemToDomain)
-{
-  // Correctly initialised item
-  testutils::InverterItem item;
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kInverterInstructionType);
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // ListenItem tests
 // ----------------------------------------------------------------------------
 

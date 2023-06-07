@@ -30,6 +30,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/model/universal_item_helper.h>
 
 #include <mvvm/model/sessionitem.h>
 
@@ -175,7 +176,8 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
   ProcedureItem procedure_item;
   auto container = procedure_item.GetInstructionContainer();
 
-  auto inverter = container->InsertItem<testutils::InverterItem>(mvvm::TagIndex::Append());
+  auto inverter = InsertInstruction(domainconstants::kInverterInstructionType, container);
+
   auto sequence = inverter->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
   EXPECT_EQ(inverter->GetItem<SequenceItem>({"", 0}), sequence);
   auto wait = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
