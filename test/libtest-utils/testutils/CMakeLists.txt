@@ -18,6 +18,4 @@ target_sources(${library_name} PRIVATE
   standard_procedures.h
   test_utils.cpp
   test_utils.h
-  equality_instruction_items.cpp
-  equality_instruction_items.h
 )
