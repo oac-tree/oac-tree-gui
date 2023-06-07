@@ -26,37 +26,6 @@ namespace testutils
 {
 
 // ----------------------------------------------------------------------------
-// InputItem
-// ----------------------------------------------------------------------------
-
-InputItem::InputItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> InputItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<InputItem>(*this, make_unique_id);
-}
-
-std::string InputItem::GetTargetVariableName() const
-{
-  return Property<std::string>(sequencergui::domainconstants::kOutputAttribute);
-}
-
-void InputItem::SetTargetVariableName(const std::string &value)
-{
-  SetProperty(sequencergui::domainconstants::kOutputAttribute, value);
-}
-
-std::string InputItem::GetDescription() const
-{
-  return Property<std::string>(sequencergui::domainconstants::kDescriptionAttribute);
-}
-
-void InputItem::SetDescription(const std::string &value)
-{
-  SetProperty(sequencergui::domainconstants::kDescriptionAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // InverterItem
 // ----------------------------------------------------------------------------
 

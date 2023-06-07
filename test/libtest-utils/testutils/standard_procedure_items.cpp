@@ -100,9 +100,11 @@ ProcedureItem* CreateInputProcedureItem(SequencerModel* model)
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
   auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
   sequence->SetName("MySequence");
-  auto input0 = model->InsertItem<InputItem>(sequence);
-  input0->SetTargetVariableName("var1");
-  input0->SetDescription("Your ID");
+
+  auto input0 = InsertInstruction(domainconstants::kInputInstructionType, sequence);
+
+  SetOutputTarget("var1", input0);
+  SetDescription("Your ID", input0);
 
   model->InsertItem<WaitItem>(sequence);
 
