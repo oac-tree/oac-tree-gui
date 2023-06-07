@@ -98,46 +98,6 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// IncrementItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, IncrementItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::IncrementItem>());
-
-  testutils::IncrementItem item;
-  EXPECT_TRUE(item.GetVariableName().empty());
-
-  item.SetVariableName("abc");
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, IncrementItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
-  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
-
-  testutils::IncrementItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, IncrementItemToDomain)
-{
-  testutils::IncrementItem item;
-  item.SetVariableName("abc");
-  item.SetIsRootFlag(true);
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kIncrementInstructionType);
-
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // InputItem tests
 // ----------------------------------------------------------------------------
 

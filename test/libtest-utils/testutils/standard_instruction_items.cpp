@@ -26,27 +26,6 @@ namespace testutils
 {
 
 // ----------------------------------------------------------------------------
-// IncrementItem
-// ----------------------------------------------------------------------------
-
-IncrementItem::IncrementItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> IncrementItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<IncrementItem>(*this, make_unique_id);
-}
-
-std::string IncrementItem::GetVariableName() const
-{
-  return Property<std::string>(sequencergui::domainconstants::kVarNameAttribute);
-}
-
-void IncrementItem::SetVariableName(const std::string &value)
-{
-  SetProperty(sequencergui::domainconstants::kVarNameAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // InputItem
 // ----------------------------------------------------------------------------
 

@@ -28,22 +28,6 @@
 namespace testutils
 {
 
-//! Represent Increment instruction.
-class IncrementItem : public sequencergui::UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kIncrementInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  IncrementItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-};
-
 //! Represent Input instruction.
 class InputItem : public sequencergui::UniversalInstructionItem
 {
