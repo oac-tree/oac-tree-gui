@@ -43,52 +43,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// CopyItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, CopyItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::CopyItem>());
-
-  // Correctly initialised item
-  testutils::CopyItem item;
-  EXPECT_EQ(item.GetInput(), std::string());
-  item.SetInput("abc");
-  EXPECT_EQ(item.GetInput(), std::string("abc"));
-
-  EXPECT_EQ(item.GetOutput(), std::string());
-  item.SetOutput("cde");
-  EXPECT_EQ(item.GetOutput(), std::string("cde"));
-}
-
-TEST_F(StandardInstructionItemsTest, CopyItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kCopyInstructionType);
-  input->AddAttribute(domainconstants::kInputAttribute, "abc");
-  input->AddAttribute(domainconstants::kOutputAttribute, "cde");
-
-  testutils::CopyItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetInput(), std::string("abc"));
-  EXPECT_EQ(item.GetOutput(), std::string("cde"));
-}
-
-TEST_F(StandardInstructionItemsTest, CopyItemToDomain)
-{
-  testutils::CopyItem item;
-  item.SetInput("abc");
-  item.SetOutput("cde");
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kCopyInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kInputAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputAttribute), "cde");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // DecrementItem tests
 // ----------------------------------------------------------------------------
 

@@ -28,28 +28,6 @@
 namespace testutils
 {
 
-//! Represent Copy instruction.
-class CopyItem : public sequencergui::UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kCopyInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  CopyItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetDomainType() const override;
-
-  std::string GetInput() const;
-
-  void SetInput(const std::string& value);
-
-  std::string GetOutput() const;
-
-  void SetOutput(const std::string& value);
-};
-
 //! Represent Decrement instruction.
 class DecrementItem : public sequencergui::UniversalInstructionItem
 {

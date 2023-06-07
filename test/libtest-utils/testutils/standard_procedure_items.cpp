@@ -62,9 +62,11 @@ ProcedureItem* CreateSingleWaitProcedureItem(SequencerModel* model,
 ProcedureItem* CreateCopyProcedureItem(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto copy = model->InsertItem<testutils::CopyItem>(procedure_item->GetInstructionContainer());
-  copy->SetInput("var0");
-  copy->SetOutput("var1");
+
+  auto copy = InsertInstruction(domainconstants::kCopyInstructionType,
+                                procedure_item->GetInstructionContainer());
+  SetInput("var0", copy);
+  SetOutput("var1", copy);
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("var0");
@@ -122,9 +124,9 @@ ProcedureItem* CreateUserChoiceProcedureItem(SequencerModel* model)
   auto wait0 = model->InsertItem<WaitItem>(userchoice);
   wait0->SetTimeout(10.0);
 
-  auto copy = model->InsertItem<CopyItem>(userchoice);
-  copy->SetInput("var0");
-  copy->SetOutput("var1");
+  auto copy = InsertInstruction(domainconstants::kCopyInstructionType, userchoice);
+  SetInput("var0", copy);
+  SetOutput("var1", copy);
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("var0");
@@ -153,16 +155,16 @@ ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* mo
 
   auto sequence = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
 
-  auto copy0 = model->InsertItem<CopyItem>(sequence);
-  copy0->SetInput("a");
-  copy0->SetOutput("target");
+  auto copy0 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
+  SetInput("a", copy0);
+  SetOutput("target", copy0);
 
   auto reset = InsertInstruction(domainconstants::kVariableResetInstructionType, sequence);
   SetVariableName("target", reset);
 
-  auto copy1 = model->InsertItem<CopyItem>(sequence);
-  copy1->SetInput("b");
-  copy1->SetOutput("target");
+  auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
+  SetInput("b", copy1);
+  SetOutput("target", copy1);
 
   auto var0 = model->InsertItem<LocalVariableItem>(procedure_item->GetWorkspace());
   var0->SetName("a");
