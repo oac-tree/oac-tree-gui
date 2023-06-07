@@ -27,6 +27,7 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/universal_instruction_item.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 
@@ -139,8 +140,9 @@ ProcedureItem* CreateMessageProcedureItem(sequencergui::SequencerModel* model,
                                           const std::string& text)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto message = model->InsertItem<MessageItem>(procedure_item->GetInstructionContainer());
-  message->SetText(text);
+  auto message = InsertInstruction(domainconstants::kMessageInstructionType,
+                                   procedure_item->GetInstructionContainer());
+  SetText(text, message);
   return procedure_item;
 }
 

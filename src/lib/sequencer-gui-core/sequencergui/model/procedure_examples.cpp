@@ -47,8 +47,8 @@ ProcedureItem* AddCopyProcedure(SequencerModel* model)
 
   model->InsertItem<WaitItem>(sequence);
 
-  auto message = model->InsertItem<MessageItem>(sequence);
-  message->SetText("Hello World");
+  auto message = InsertInstruction(domainconstants::kMessageInstructionType, sequence);
+  SetText("Hello World", message);
 
   auto copy1 = InsertInstruction(domainconstants::kCopyInstructionType, sequence);
   SetInput("var_const0", copy1);

@@ -212,13 +212,17 @@ TEST_F(InstructionEditorControllerTest, InsertInstructionInto)
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   // inserting second instruction
-  actions->OnInsertInstructionIntoRequest(QString::fromStdString(MessageItem::Type));
+  actions->OnInsertInstructionIntoRequest(
+      QString::fromStdString(domainconstants::kMessageInstructionType));
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
   // Wait instruction should be after Sequence instruction
   auto instructions = sequence->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
-  EXPECT_EQ(instructions.at(1)->GetType(), MessageItem::Type);
+  EXPECT_EQ(instructions.at(1)->GetType(), UniversalInstructionItem::Type);
+  auto universal = dynamic_cast<UniversalInstructionItem*>(instructions.at(1));
+  ASSERT_NE(universal, nullptr);
+  EXPECT_EQ(universal->GetDomainType(), domainconstants::kMessageInstructionType);
 
   // Check coordinates of Wait instruction. It should be placed nearby to original
   // instruction

@@ -27,6 +27,7 @@
 namespace mvvm
 {
 class SessionModelInterface;
+class SessionItem;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -51,7 +52,7 @@ UniversalInstructionItem* InsertInstruction(const std::string& domain_type,
  * @return Inserted item
  */
 UniversalInstructionItem* InsertInstruction(const std::string& domain_type,
-                                            InstructionItem* parent);
+                                            mvvm::SessionItem* parent);
 
 /**
  * @brief Set input property to instruction item.

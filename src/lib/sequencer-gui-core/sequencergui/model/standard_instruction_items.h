@@ -48,22 +48,6 @@ public:
   void SetPath(const std::string& value);
 };
 
-//! Represent Message instruction.
-class MessageItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kMessageInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  MessageItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetText() const;
-
-  void SetText(const std::string& value);
-};
-
 //! Represent Output instruction.
 class OutputItem : public UniversalInstructionItem
 {

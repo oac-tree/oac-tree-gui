@@ -31,16 +31,17 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_item_listener.h>
+#include <testutils/standard_instruction_items.h>
 #include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
@@ -58,6 +59,22 @@ class JobHandlerTest : public ::testing::Test
 {
 public:
   JobHandlerTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
+
+  //! Finds UniversalInstructionItem representing given domain type. Search is performed in
+  //! JobModel, where JobHandler builds expanded procedure).
+  std::vector<UniversalInstructionItem*> FindExpandedInstructions(const std::string& domain_type)
+  {
+    std::vector<UniversalInstructionItem*> result;
+    auto candidates = mvvm::utils::FindItems<UniversalInstructionItem>(m_models.GetJobModel());
+    for (auto universal_instruction : candidates)
+    {
+      if (universal_instruction->GetDomainType() == domain_type)
+      {
+        result.push_back(universal_instruction);
+      }
+    }
+    return result;
+  }
 
   ApplicationModels m_models;
   JobItem* m_job_item{nullptr};
@@ -127,7 +144,7 @@ TEST_F(JobHandlerTest, PrematureDeletion)
 
 //! Normal execution of the procedure with single wait instruction.
 
-TEST_F(JobHandlerTest, ProcedureWithSingleWait)
+TEST_F(JobHandlerTest, ProcedureWithSingleMessage)
 {
   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
@@ -150,7 +167,8 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWait)
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = mvvm::utils::FindItems<MessageItem>(m_models.GetJobModel());
+  auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
+  ASSERT_EQ(instructions.size(), 1);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
@@ -159,7 +177,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWait)
 //! Normal execution of procedure with single wait.
 //! Validating signaling going from expanded procedure (instruction status change).
 
-TEST_F(JobHandlerTest, ProcedureWithSingleWaitStatusChangedSignals)
+TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
 {
   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
   m_job_item->SetProcedure(procedure);
@@ -171,12 +189,12 @@ TEST_F(JobHandlerTest, ProcedureWithSingleWaitStatusChangedSignals)
   job_handler.onPrepareJobRequest();
   EXPECT_TRUE(job_handler.IsValid());
 
-  auto instructions = mvvm::utils::FindItems<MessageItem>(m_models.GetJobModel());
-  auto wait = instructions.at(0);
+  auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
+  auto message_item = instructions.at(0);
 
-  testutils::MockItemListener listener(wait);
+  testutils::MockItemListener listener(message_item);
 
-  mvvm::PropertyChangedEvent expected_event{wait, itemconstants::kStatus};
+  mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
   EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
 
   job_handler.onStartRequest();
@@ -364,7 +382,7 @@ TEST_F(JobHandlerTest, LogEvents)
 
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
-  auto instructions = mvvm::utils::FindItems<MessageItem>(m_models.GetJobModel());
+  auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);

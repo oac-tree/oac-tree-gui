@@ -57,27 +57,6 @@ void IncludeItem::SetPath(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
-// MessageItem
-// ----------------------------------------------------------------------------
-
-MessageItem::MessageItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> MessageItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<MessageItem>(*this, make_unique_id);
-}
-
-std::string MessageItem::GetText() const
-{
-  return Property<std::string>(domainconstants::kTextAttribute);
-}
-
-void MessageItem::SetText(const std::string &value)
-{
-  SetProperty(domainconstants::kTextAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // OutputItem
 // ----------------------------------------------------------------------------
 

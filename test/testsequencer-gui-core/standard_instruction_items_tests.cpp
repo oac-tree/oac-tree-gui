@@ -515,47 +515,6 @@ TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// MessageItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, MessageItem)
-{
-  // Correctly initialised item
-  MessageItem item;
-  EXPECT_EQ(item.GetText(), std::string());
-
-  item.SetText("abc");
-  EXPECT_EQ(item.GetText(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, MessageItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kMessageInstructionType);
-  input->AddAttribute(domainconstants::kTextAttribute, "abc");
-  input->AddAttribute(domainconstants::kIsRootAttribute, "true");
-
-  MessageItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetText(), std::string("abc"));
-  EXPECT_TRUE(item.IsRoot());
-}
-
-TEST_F(StandardInstructionItemsTest, MessageItemToDomain)
-{
-  MessageItem item;
-  item.SetText("abc");
-  item.SetIsRootFlag(true);
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kMessageInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTextAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // OutputItem tests
 // ----------------------------------------------------------------------------
 

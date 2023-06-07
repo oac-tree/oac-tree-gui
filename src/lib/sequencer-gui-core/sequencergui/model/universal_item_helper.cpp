@@ -36,7 +36,8 @@ UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
   return result;
 }
 
-UniversalInstructionItem *InsertInstruction(const std::string &domain_type, InstructionItem *parent)
+UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
+                                            mvvm::SessionItem *parent)
 {
   auto model = parent->GetModel();
   if (!model)
