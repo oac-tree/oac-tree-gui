@@ -43,46 +43,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// DecrementItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, DecrementItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::DecrementItem>());
-
-  testutils::DecrementItem item;
-  EXPECT_TRUE(item.GetVariableName().empty());
-
-  item.SetVariableName("abc");
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, DecrementItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kDecrementInstructionType);
-  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
-
-  testutils::DecrementItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, DecrementItemToDomain)
-{
-  testutils::DecrementItem item;
-  item.SetVariableName("abc");
-  item.SetIsRootFlag(true);
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kDecrementInstructionType);
-
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // FallbackItem tests
 // ----------------------------------------------------------------------------
 

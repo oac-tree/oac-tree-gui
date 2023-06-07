@@ -26,32 +26,6 @@ namespace testutils
 {
 
 // ----------------------------------------------------------------------------
-// DecrementItem
-// ----------------------------------------------------------------------------
-
-DecrementItem::DecrementItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> DecrementItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<DecrementItem>(*this, make_unique_id);
-}
-
-std::string DecrementItem::GetDomainType() const
-{
-  return sequencergui::domainconstants::kDecrementInstructionType;
-}
-
-std::string DecrementItem::GetVariableName() const
-{
-  return Property<std::string>(sequencergui::domainconstants::kVarNameAttribute);
-}
-
-void DecrementItem::SetVariableName(const std::string &value)
-{
-  SetProperty(sequencergui::domainconstants::kVarNameAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // FallbackItem
 // ----------------------------------------------------------------------------
 FallbackItem::FallbackItem() : UniversalInstructionItem(Type) {}
