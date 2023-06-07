@@ -96,23 +96,6 @@ public:
   SequenceItem();
 };
 
-//! Represent ResetVariable instruction.
-class VariableResetItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type =
-      sequencergui::domainconstants::kVariableResetInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  VariableResetItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetVariableName() const;
-
-  void SetVariableName(const std::string& value);
-};
-
 //! Represent Wait instruction.
 class WaitItem : public UniversalInstructionItem
 {

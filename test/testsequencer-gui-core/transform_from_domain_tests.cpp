@@ -120,7 +120,6 @@ TEST_F(TransformFromDomainTest, GetItemType)
   EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(kParallelInstructionType));
   EXPECT_EQ(RepeatItem::Type, GetItemType(kRepeatInstructionType));
   EXPECT_EQ(SequenceItem::Type, GetItemType(kSequenceInstructionType));
-  EXPECT_EQ(VariableResetItem::Type, GetItemType(kVariableResetInstructionType));
   EXPECT_EQ(WaitItem::Type, GetItemType(kWaitInstructionType));
 
   // instructions from sequencer-plugin-epics
@@ -181,8 +180,6 @@ TEST_F(TransformFromDomainTest, CreateInstructionItem)
       CanCreateInstructionForType<sequencergui::ParallelSequenceItem>(kParallelInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::RepeatItem>(kRepeatInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::SequenceItem>(kSequenceInstructionType));
-  EXPECT_TRUE(
-      CanCreateInstructionForType<sequencergui::VariableResetItem>(kVariableResetInstructionType));
   EXPECT_TRUE(CanCreateInstructionForType<sequencergui::WaitItem>(kWaitInstructionType));
 }
 

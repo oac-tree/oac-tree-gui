@@ -157,8 +157,8 @@ ProcedureItem* CreateVariableResetProcedureItem(sequencergui::SequencerModel* mo
   copy0->SetInput("a");
   copy0->SetOutput("target");
 
-  auto reset = model->InsertItem<VariableResetItem>(sequence);
-  reset->SetVariableName("target");
+  auto reset = InsertInstruction(domainconstants::kVariableResetInstructionType, sequence);
+  SetVariableName("target", reset);
 
   auto copy1 = model->InsertItem<CopyItem>(sequence);
   copy1->SetInput("b");

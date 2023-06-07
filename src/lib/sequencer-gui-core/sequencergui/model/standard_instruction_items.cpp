@@ -127,27 +127,6 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) cons
 }
 
 // ----------------------------------------------------------------------------
-// VariableResetItem
-// ----------------------------------------------------------------------------
-
-VariableResetItem::VariableResetItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> VariableResetItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<VariableResetItem>(*this, make_unique_id);
-}
-
-std::string VariableResetItem::GetVariableName() const
-{
-  return Property<std::string>(domainconstants::kVarNameAttribute);
-}
-
-void VariableResetItem::SetVariableName(const std::string &value)
-{
-  SetProperty(domainconstants::kVarNameAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // WaitItem
 // ----------------------------------------------------------------------------
 

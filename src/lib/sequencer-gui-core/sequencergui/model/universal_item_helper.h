@@ -79,6 +79,11 @@ void SetOutputTarget(const std::string& value, InstructionItem* item);
  */
 void SetText(const std::string& value, InstructionItem* item);
 
+/**
+ * @brief Set variable name property to instruction item.
+ */
+void SetVariableName(const std::string& value, InstructionItem* item);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_

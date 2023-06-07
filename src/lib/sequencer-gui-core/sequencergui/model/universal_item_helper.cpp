@@ -75,4 +75,9 @@ void SetText(const std::string &value, InstructionItem *item)
   item->SetProperty(domainconstants::kTextAttribute, value);
 }
 
+void SetVariableName(const std::string &value, InstructionItem *item)
+{
+  item->SetProperty(domainconstants::kVarNameAttribute, value);
+}
+
 }  // namespace sequencergui
