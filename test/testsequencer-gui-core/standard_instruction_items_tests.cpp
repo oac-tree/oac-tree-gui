@@ -515,45 +515,6 @@ TEST_F(StandardInstructionItemsTest, ListenItemToDomain)
 }
 
 // ----------------------------------------------------------------------------
-// OutputItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, OutputItem)
-{
-  // Correctly initialised item
-  sequencergui::OutputItem item;
-  EXPECT_TRUE(item.GetDescription().empty());
-  EXPECT_TRUE(item.GetSourceVariableName().empty());
-}
-
-TEST_F(StandardInstructionItemsTest, OutputItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kOutputInstructionType);
-  input->AddAttribute(domainconstants::kDescriptionAttribute, "abc");
-  input->AddAttribute(domainconstants::kOutputSourceAttribute, "var");
-
-  OutputItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetDescription(), "abc");
-  EXPECT_EQ(item.GetSourceVariableName(), "var");
-}
-
-TEST_F(StandardInstructionItemsTest, OutputItemToDomain)
-{
-  OutputItem item;
-  item.SetDescription("abc");
-  item.SetSourceVariableName("var");
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kOutputInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDescriptionAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputSourceAttribute), "var");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // ParallelSequenceItem tests
 // ----------------------------------------------------------------------------
 

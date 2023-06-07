@@ -48,26 +48,6 @@ public:
   void SetPath(const std::string& value);
 };
 
-//! Represent Output instruction.
-class OutputItem : public UniversalInstructionItem
-{
-public:
-  static inline const std::string Type = sequencergui::domainconstants::kOutputInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  OutputItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  std::string GetSourceVariableName() const;
-
-  void SetSourceVariableName(const std::string& value);
-
-  std::string GetDescription() const;
-
-  void SetDescription(const std::string& value);
-};
-
 //! Represent ParallelSequence instruction.
 class ParallelSequenceItem : public UniversalInstructionItem
 {

@@ -57,37 +57,6 @@ void IncludeItem::SetPath(const std::string &value)
 }
 
 // ----------------------------------------------------------------------------
-// OutputItem
-// ----------------------------------------------------------------------------
-
-OutputItem::OutputItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> OutputItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<OutputItem>(*this, make_unique_id);
-}
-
-std::string OutputItem::GetSourceVariableName() const
-{
-  return Property<std::string>(domainconstants::kOutputSourceAttribute);
-}
-
-void OutputItem::SetSourceVariableName(const std::string &value)
-{
-  SetProperty(domainconstants::kOutputSourceAttribute, value);
-}
-
-std::string OutputItem::GetDescription() const
-{
-  return Property<std::string>(domainconstants::kDescriptionAttribute);
-}
-
-void OutputItem::SetDescription(const std::string &value)
-{
-  SetProperty(domainconstants::kDescriptionAttribute, value);
-}
-
-// ----------------------------------------------------------------------------
 // ParallelSequenceItem
 // ----------------------------------------------------------------------------
 
