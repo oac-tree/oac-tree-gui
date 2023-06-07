@@ -39,13 +39,17 @@ UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
 UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
                                             mvvm::SessionItem *parent)
 {
-  auto model = parent->GetModel();
-  if (!model)
+  UniversalInstructionItem *result{nullptr};
+
+  if (auto model = parent->GetModel(); model)
   {
-    throw RuntimeException("Item doesn't belong to the model");
+    result = model->InsertItem<UniversalInstructionItem>(parent);
+  }
+  else
+  {
+    result = parent->InsertItem<UniversalInstructionItem>({});
   }
 
-  auto result = model->InsertItem<UniversalInstructionItem>(parent);
   result->SetDomainType(domain_type);
   return result;
 }
