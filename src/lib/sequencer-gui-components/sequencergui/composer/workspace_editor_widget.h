@@ -27,13 +27,14 @@ class QTreeView;
 
 namespace mvvm
 {
+class ItemViewComponentProvider;
 class SessionItem;
 }  // namespace mvvm
 
-namespace mvvm
+namespace sup::gui
 {
-class ItemViewComponentProvider;
-}  // namespace mvvm
+class CustomHeaderView;
+}
 
 namespace sequencergui
 {
@@ -60,10 +61,15 @@ public:
   mvvm::SessionItem* GetSelectedItem() const;
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+  void AdjustColumnWidth();
+
   void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
 
   QTreeView* m_tree_view{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureItem* m_procedure{nullptr};
 

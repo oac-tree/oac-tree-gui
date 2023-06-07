@@ -26,14 +26,24 @@
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
+#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
+#include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
+
+namespace
+{
+const QString kGroupName("WorkspaceEditorWidget");
+const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -41,6 +51,7 @@ namespace sequencergui
 WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
+    , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view))
     , m_editor_actions(new WorkspaceEditorActions(this))
     , m_action_handler(
@@ -53,21 +64,62 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setHeader(m_custom_header);
+
   SetupConnections();
   addActions(m_editor_actions->GetActions());
+
+  ReadSettings();
 }
 
-WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
+WorkspaceEditorWidget::~WorkspaceEditorWidget()
+{
+  WriteSettings();
+}
 
 void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   m_procedure = procedure;
   m_component_provider->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
+  m_tree_view->header()->setStretchLastSection(true);
+  AdjustColumnWidth();
 }
 
 mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
 {
   return m_component_provider->GetSelectedItem();
+}
+
+void WorkspaceEditorWidget::ReadSettings()
+{
+  QSettings settings;
+  if (settings.contains(kHeaderStateSettingName))
+  {
+    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
+  }
+}
+
+void WorkspaceEditorWidget::WriteSettings()
+{
+  QSettings settings;
+  if (m_custom_header->HasFavoriteState())
+  {
+    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
+  }
+}
+
+void WorkspaceEditorWidget::AdjustColumnWidth()
+{
+  if (m_custom_header->HasFavoriteState())
+  {
+    m_custom_header->RestoreFavoriteState();
+  }
+  else
+  {
+    m_tree_view->resizeColumnToContents(0);
+  }
 }
 
 void WorkspaceEditorWidget::SetupConnections()
