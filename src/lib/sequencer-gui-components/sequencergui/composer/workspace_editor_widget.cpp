@@ -24,13 +24,14 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
-#include <sequencergui/pvmonitor/workspace_editor_actions.h>
+#include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <QMenu>
 #include <QToolButton>
@@ -45,7 +46,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_insert_after_menu(CreateInsertAfterMenu())
     , m_tree_view(new mvvm::AllItemsTreeView)
     , m_workspace_editor_actions(
-          std::make_unique<WorkspaceEditorActions>(CreateWorkspaceEditorContext()))
+          std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
 {
   setWindowTitle("Workspace");
 
@@ -112,11 +113,11 @@ void WorkspaceEditorWidget::SetupActions()
 
   // propagate instruction related requests from WorkspaceEditorWidget to WorkspaceEditorActions
   connect(this, &WorkspaceEditorWidget::InsertAfterRequest, m_workspace_editor_actions.get(),
-          &WorkspaceEditorActions::OnAddVariableRequest);
+          &WorkspaceEditorActionHandler::OnAddVariableRequest);
   connect(this, &WorkspaceEditorWidget::RemoveSelectedRequest, m_workspace_editor_actions.get(),
-          &WorkspaceEditorActions::OnRemoveVariableRequest);
+          &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
   connect(this, &WorkspaceEditorWidget::EditAnyvalueRequest, m_workspace_editor_actions.get(),
-          &WorkspaceEditorActions::OnEditAnyvalueRequest);
+          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 }
 
 WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()

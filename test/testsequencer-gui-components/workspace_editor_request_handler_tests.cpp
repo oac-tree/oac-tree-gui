@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/pvmonitor/workspace_editor_actions.h"
+#include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -34,10 +34,10 @@
 using namespace sequencergui;
 using ::testing::_;
 
-class WorkspaceEditorActionsTest : public ::testing::Test
+class WorkspaceEditorActionHandlerTest : public ::testing::Test
 {
 public:
-  WorkspaceEditorActionsTest() { m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceEditorActionHandlerTest() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Mock dialog that pretend to take an item for editing and return the result to the user.
   class MockDialog
@@ -84,10 +84,10 @@ public:
   }
 
   //! Creates AnyValueEditorActions for testing.
-  std::unique_ptr<WorkspaceEditorActions> CreateActions(
+  std::unique_ptr<WorkspaceEditorActionHandler> CreateActions(
       mvvm::SessionItem* selection, std::unique_ptr<sup::gui::AnyValueItem> item_to_return = {})
   {
-    return std::make_unique<WorkspaceEditorActions>(
+    return std::make_unique<WorkspaceEditorActionHandler>(
         CreateContext(selection, std::move(item_to_return)), nullptr);
   }
 
@@ -98,15 +98,15 @@ public:
   MockDialog m_mock_dialog;
 };
 
-TEST_F(WorkspaceEditorActionsTest, InitialState)
+TEST_F(WorkspaceEditorActionHandlerTest, InitialState)
 {
   EXPECT_TRUE(m_model.GetWorkspaceItem()->GetVariables().empty());
-  EXPECT_THROW(WorkspaceEditorActions({}, nullptr), RuntimeException);
+  EXPECT_THROW(WorkspaceEditorActionHandler({}, nullptr), RuntimeException);
 }
 
 //! Attempt to add variable into non-existing workspace.
 
-TEST_F(WorkspaceEditorActionsTest, AttemptToAddVariableWhenWorkspaceIsAbsent)
+TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbsent)
 {
   auto selected_workspace_callback = []() { return nullptr; };
   auto selected_item_callback = []() { return nullptr; };
@@ -115,7 +115,7 @@ TEST_F(WorkspaceEditorActionsTest, AttemptToAddVariableWhenWorkspaceIsAbsent)
 
   WorkspaceEditorContext context{selected_workspace_callback, selected_item_callback,
                                  send_message_callback, edit_anyvalue_callback};
-  WorkspaceEditorActions actions(context);
+  WorkspaceEditorActionHandler actions(context);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
@@ -125,7 +125,7 @@ TEST_F(WorkspaceEditorActionsTest, AttemptToAddVariableWhenWorkspaceIsAbsent)
 
 //! Adding variables to an empty model.
 
-TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestToEmptyModel)
+TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 {
   // pretending that nothing is selected
   auto actions = CreateActions(nullptr);
@@ -169,7 +169,7 @@ TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestToEmptyModel)
 
 //! Inserting variable between two existing variables.
 
-TEST_F(WorkspaceEditorActionsTest, OnAddVariableWHenNothingIsSelected)
+TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWHenNothingIsSelected)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -192,7 +192,7 @@ TEST_F(WorkspaceEditorActionsTest, OnAddVariableWHenNothingIsSelected)
 
 //! Inserting variable between two existing variables.
 
-TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestBetween)
+TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -215,7 +215,7 @@ TEST_F(WorkspaceEditorActionsTest, OnAddVariableRequestBetween)
 
 //! Removing variable.
 
-TEST_F(WorkspaceEditorActionsTest, OnRemoveVariableRequest)
+TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -234,7 +234,7 @@ TEST_F(WorkspaceEditorActionsTest, OnRemoveVariableRequest)
 
 //! Attempt to remove variable when nothing is selected.
 
-TEST_F(WorkspaceEditorActionsTest, OnAttemptToRemoveVariable)
+TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
 {
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -254,7 +254,7 @@ TEST_F(WorkspaceEditorActionsTest, OnAttemptToRemoveVariable)
 
 //! Attempt to edit variable when nothing is selected.
 
-TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenNothingIsSelected)
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
   // pretending that var0 is selected
   auto actions = CreateActions(nullptr);
@@ -269,7 +269,7 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenNothingIsSelected)
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
 //! Initially we have VariableItem selected.
 
-TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenVariableIsSelected)
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -299,7 +299,7 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenVariableIsSelected)
 //! The only difference with previous test is that we mimick selection of AnyValueItem instead
 //! of VariableItem.
 
-TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -329,7 +329,7 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueIsSelected)
 //! Pretending that the user has removed initial AnyValueItem and has pushed OK button.
 //! That should lead to the dissapearance of AnyValueItem child on board of LocalVariableItem.
 
-TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueItemIsRemoved)
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -358,7 +358,7 @@ TEST_F(WorkspaceEditorActionsTest, OnEditRequestWhenAnyValueItemIsRemoved)
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem that doesn't have any
 //! AnyValueItem yet.
 
-TEST_F(WorkspaceEditorActionsTest, OnEditRequestWheNoANyValueItemIsStilExists)
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoANyValueItemIsStilExists)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());

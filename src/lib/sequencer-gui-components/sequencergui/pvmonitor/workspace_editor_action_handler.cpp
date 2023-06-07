@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "workspace_editor_actions.h"
+#include "workspace_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -33,7 +33,7 @@
 namespace sequencergui
 {
 
-WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, QObject *parent)
+WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject *parent)
     : QObject(parent), m_context(std::move(context))
 {
   if (!m_context.selected_workspace_callback)
@@ -57,7 +57,7 @@ WorkspaceEditorActions::WorkspaceEditorActions(WorkspaceEditorContext context, Q
   }
 }
 
-void WorkspaceEditorActions::OnAddVariableRequest(const QString &variable_type_name)
+void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_type_name)
 {
   if (!GetWorkspaceItem())
   {
@@ -81,7 +81,7 @@ void WorkspaceEditorActions::OnAddVariableRequest(const QString &variable_type_n
   }
 }
 
-void WorkspaceEditorActions::OnRemoveVariableRequest()
+void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
 {
   if (auto selected = GetSelectedVariable(); selected)
   {
@@ -89,7 +89,7 @@ void WorkspaceEditorActions::OnRemoveVariableRequest()
   }
 }
 
-void WorkspaceEditorActions::OnEditAnyvalueRequest()
+void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
 {
   auto selected_item = m_context.selected_item_callback();
   if (!selected_item)
@@ -123,17 +123,17 @@ void WorkspaceEditorActions::OnEditAnyvalueRequest()
   }
 }
 
-mvvm::SessionModelInterface *WorkspaceEditorActions::GetModel() const
+mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const
 {
   return GetWorkspaceItem()->GetModel();
 }
 
-WorkspaceItem *WorkspaceEditorActions::GetWorkspaceItem() const
+WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
 {
   return m_context.selected_workspace_callback();
 }
 
-VariableItem *WorkspaceEditorActions::GetSelectedVariable()
+VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable()
 {
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
 }
@@ -141,7 +141,7 @@ VariableItem *WorkspaceEditorActions::GetSelectedVariable()
 //! Set reasonable initial values for just created variable.
 //! Might be changed in the future.
 
-void WorkspaceEditorActions::SetupVariable(VariableItem *item)
+void WorkspaceEditorActionHandler::SetupVariable(VariableItem *item)
 {
   if (!item)
   {
@@ -154,14 +154,14 @@ void WorkspaceEditorActions::SetupVariable(VariableItem *item)
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
 }
 
-void WorkspaceEditorActions::SendMessage(const std::string &text, const std::string &informative,
+void WorkspaceEditorActionHandler::SendMessage(const std::string &text, const std::string &informative,
                                          const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
 }
 
-std::string WorkspaceEditorActions::ProposeVariableName() const
+std::string WorkspaceEditorActionHandler::ProposeVariableName() const
 {
   return "var" + std::to_string(GetWorkspaceItem()->GetVariableCount() - 1);
 }

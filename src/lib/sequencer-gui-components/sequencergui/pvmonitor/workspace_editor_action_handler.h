@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
-#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
+#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
+#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
 
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 
@@ -40,15 +40,15 @@ namespace sequencergui
 class VariableItem;
 class WorkspaceItem;
 
-//! The WorkspaceEditorActions class implements actions to add/remove/edit variables in
+//! The WorkspaceEditorActionHandler class implements logic to add/remove/edit variables in
 //! WorkspaceItem.
 
-class WorkspaceEditorActions : public QObject
+class WorkspaceEditorActionHandler : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorActions(WorkspaceEditorContext context, QObject* parent = nullptr);
+  explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject* parent = nullptr);
 
   void OnAddVariableRequest(const QString& variable_type_name);
   void OnRemoveVariableRequest();
@@ -71,4 +71,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
+#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_

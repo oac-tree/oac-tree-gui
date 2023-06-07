@@ -38,7 +38,7 @@ namespace sequencergui
 class ProcedureItem;
 class VariableItem;
 class WorkspaceEditorContext;
-class WorkspaceEditorActions;
+class WorkspaceEditorActionHandler;
 
 //! List of workspace variables at the right of SequencerComposerView.
 //! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
@@ -72,7 +72,7 @@ private:
   QWidgetAction* m_edit_anyvalue_action{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
   ProcedureItem* m_procedure{nullptr};
-  std::unique_ptr<WorkspaceEditorActions> m_workspace_editor_actions;
+  std::unique_ptr<WorkspaceEditorActionHandler> m_workspace_editor_actions;
 };
 
 }  // namespace sequencergui

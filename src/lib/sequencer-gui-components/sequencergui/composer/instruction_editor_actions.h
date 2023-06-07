@@ -32,7 +32,7 @@ namespace sequencergui
 {
 
 //! Collection of Qt actions related to the construction of InstructionItem tree.
-//! They are used to trigger InstructioNEditorController, which makes a real job.
+//! They are used to trigger InstructionEditorController, which does a real job.
 
 class InstructionEditorActions : public QObject
 {
