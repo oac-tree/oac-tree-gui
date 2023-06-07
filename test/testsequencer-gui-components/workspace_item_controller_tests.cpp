@@ -24,6 +24,7 @@
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -215,6 +216,11 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
 
 TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item =

@@ -49,6 +49,11 @@ class StandardVariableItemsTest : public ::testing::Test
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   ChannelAccessVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
@@ -68,6 +73,11 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   ChannelAccessVariableItem item;
   auto children = item.GetAllItems();
 
@@ -127,14 +137,6 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
   const std::string expected_name("expected_name");
   const std::string expected_channel("expected_channel");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
-
-  //  {  // case with empty attributes
-  //    ChannelAccessVariableItem item;
-  //    item.SetName(expected_name);
-  //    item.SetChannel(expected_channel);
-
-  //    EXPECT_THROW(item.CreateDomainVariable(), LogicErrorException);
-  //  }
 
   {  // when AnyValueItem is set
     ChannelAccessVariableItem item;
@@ -316,6 +318,11 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
 
 TEST_F(StandardVariableItemsTest, PvAccessClientVariableItem)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   PvAccessClientVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
@@ -392,6 +399,11 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
 
 TEST_F(StandardVariableItemsTest, PvAccessServerVariableItem)
 {
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   PvAccessServerVariableItem item;
   EXPECT_TRUE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());

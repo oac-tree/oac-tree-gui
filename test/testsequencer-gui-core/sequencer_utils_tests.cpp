@@ -19,6 +19,7 @@
 
 #include "sequencergui/model/sequencer_utils.h"
 
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_variable_item.h>
@@ -90,6 +91,26 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<WaitItem>());
   EXPECT_TRUE(IsCloneImplemented<UniversalInstructionItem>());
 
+  // variables
+  EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
+  EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
+
+  // other
+  EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
+  EXPECT_TRUE(IsCloneImplemented<JobItem>());
+  EXPECT_TRUE(IsCloneImplemented<ProcedureItem>());
+  EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
+}
+
+TEST_F(SequencerUtilsTest, ClonePlugin)
+{
+  using testutils::IsCloneImplemented;
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
   // instructions from sup-sequencer-plugin-epics
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessReadInstructionItem>());
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessWriteInstructionItem>());
@@ -101,15 +122,6 @@ TEST_F(SequencerUtilsTest, Clone)
 
   // variables
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<FileVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<LocalVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<PvAccessClientVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<PvAccessServerVariableItem>());
-  EXPECT_TRUE(IsCloneImplemented<UniversalVariableItem>());
-
-  // other
-  EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
-  EXPECT_TRUE(IsCloneImplemented<JobItem>());
-  EXPECT_TRUE(IsCloneImplemented<ProcedureItem>());
-  EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
 }
