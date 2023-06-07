@@ -23,10 +23,16 @@
 #include <QWidget>
 #include <memory>
 
+class QTreeView;
+
 namespace mvvm
 {
-class AllItemsTreeView;
 class SessionItem;
+}  // namespace mvvm
+
+namespace mvvm
+{
+class ItemViewComponentProvider;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -57,7 +63,8 @@ private:
   void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
 
-  mvvm::AllItemsTreeView* m_tree_view{nullptr};
+  QTreeView* m_tree_view{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureItem* m_procedure{nullptr};
 
   WorkspaceEditorActions* m_editor_actions{nullptr};

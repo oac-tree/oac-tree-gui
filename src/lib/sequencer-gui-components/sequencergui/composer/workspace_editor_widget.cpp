@@ -27,10 +27,12 @@
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 
-#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/viewmodel/all_items_viewmodel.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -38,7 +40,8 @@ namespace sequencergui
 
 WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tree_view(new mvvm::AllItemsTreeView)
+    , m_tree_view(new QTreeView)
+    , m_component_provider(mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view))
     , m_editor_actions(new WorkspaceEditorActions(this))
     , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
@@ -59,12 +62,12 @@ WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
 void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
   m_procedure = procedure;
-  m_tree_view->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
+  m_component_provider->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
 }
 
 mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
 {
-  return m_tree_view->GetSelectedItem();
+  return m_component_provider->GetSelectedItem();
 }
 
 void WorkspaceEditorWidget::SetupConnections()
