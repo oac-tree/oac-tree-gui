@@ -70,11 +70,6 @@ void SetOutput(const std::string& value, InstructionItem* item);
 void SetDescription(const std::string& value, InstructionItem* item);
 
 /**
- * @brief Set input target attribute property to instruction item.
- */
-void SetOutputTarget(const std::string& value, InstructionItem* item);
-
-/**
  * @brief Set text attribute property to instruction item.
  */
 void SetText(const std::string& value, InstructionItem* item);
