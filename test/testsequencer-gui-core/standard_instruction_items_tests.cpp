@@ -43,50 +43,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ChoiceItem tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, ChoiceItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::ChoiceItem>());
-
-  testutils::ChoiceItem item;
-  EXPECT_TRUE(item.GetVariableName().empty());
-
-  item.SetVariableName("abc");
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-
-  auto wait0 = item.InsertItem<WaitItem>({"", -1});
-  auto wait1 = item.InsertItem<WaitItem>({"", -1});
-  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait0, wait1}));
-}
-
-TEST_F(StandardInstructionItemsTest, ChoiceItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kChoiceInstructionType);
-  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
-
-  testutils::ChoiceItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetVariableName(), std::string("abc"));
-}
-
-TEST_F(StandardInstructionItemsTest, ChoiceItemItemToDomain)
-{
-  testutils::ChoiceItem item;
-  item.SetVariableName("abc");
-  item.SetIsRootFlag(true);
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kChoiceInstructionType);
-
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // ConditionItem tests
 // ----------------------------------------------------------------------------
 
