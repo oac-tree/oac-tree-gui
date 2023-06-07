@@ -23,9 +23,6 @@
 #include <QWidget>
 #include <memory>
 
-class QMenu;
-class QWidgetAction;
-
 namespace mvvm
 {
 class AllItemsTreeView;
@@ -39,6 +36,7 @@ class ProcedureItem;
 class VariableItem;
 class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
+class WorkspaceEditorActions;
 
 //! List of workspace variables at the right of SequencerComposerView.
 //! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
@@ -55,24 +53,15 @@ public:
 
   mvvm::SessionItem* GetSelectedItem() const;
 
-signals:
-  void InsertAfterRequest(const QString& name);
-  void RemoveSelectedRequest();
-  void EditAnyvalueRequest();
-
 private:
-  void SetupActions();
+  void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
 
-  std::unique_ptr<QMenu> CreateInsertAfterMenu();
-
-  std::unique_ptr<QMenu> m_insert_after_menu;
-  QWidgetAction* m_insert_after_action{nullptr};
-  QWidgetAction* m_remove_action{nullptr};
-  QWidgetAction* m_edit_anyvalue_action{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
   ProcedureItem* m_procedure{nullptr};
-  std::unique_ptr<WorkspaceEditorActionHandler> m_workspace_editor_actions;
+
+  WorkspaceEditorActions* m_editor_actions{nullptr};
+  std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
 };
 
 }  // namespace sequencergui

@@ -27,6 +27,7 @@
 
 class QAction;
 class QWidgetAction;
+class QMenu;
 
 namespace sequencergui
 {
@@ -40,6 +41,7 @@ class InstructionEditorActions : public QObject
 
 public:
   explicit InstructionEditorActions(QObject* parent = nullptr);
+  ~InstructionEditorActions() override;
 
   QList<QAction*> GetActions() const;
 

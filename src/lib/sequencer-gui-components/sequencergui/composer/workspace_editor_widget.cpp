@@ -20,32 +20,27 @@
 #include "workspace_editor_widget.h"
 
 #include <sequencergui/components/message_helper.h>
-#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
+#include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
-#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/all_items_tree_view.h>
-#include <mvvm/widgets/widget_utils.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <QMenu>
-#include <QToolButton>
 #include <QVBoxLayout>
-#include <QWidgetAction>
 
 namespace sequencergui
 {
 
 WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
-    , m_insert_after_menu(CreateInsertAfterMenu())
     , m_tree_view(new mvvm::AllItemsTreeView)
-    , m_workspace_editor_actions(
+    , m_editor_actions(new WorkspaceEditorActions(this))
+    , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
 {
   setWindowTitle("Workspace");
@@ -55,7 +50,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
-  SetupActions();
+  SetupConnections();
+  addActions(m_editor_actions->GetActions());
 }
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
@@ -71,52 +67,14 @@ mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
   return m_tree_view->GetSelectedItem();
 }
 
-void WorkspaceEditorWidget::SetupActions()
+void WorkspaceEditorWidget::SetupConnections()
 {
-  // We are using QToolButon wrapped into QWidgetAction here because:
-  // 1. we want to pass around QList<QAction*>
-  // 2. QAction with menu doesn't provide InstantPopup capabilities, so instead we create
-  // QToolButton with the menu and wrap it into QWidgetAction
-
-  auto insert_after_button = new QToolButton;
-  insert_after_button->setText("Add");
-  insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  insert_after_button->setPopupMode(QToolButton::InstantPopup);
-  insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip("Insert variable after current selection");
-  m_insert_after_action = new QWidgetAction(this);
-  m_insert_after_action->setDefaultWidget(insert_after_button);
-  addAction(m_insert_after_action);
-
-  auto edit_anyvalue_button = new QToolButton;
-  edit_anyvalue_button->setText("Edit");
-  edit_anyvalue_button->setIcon(styleutils::GetIcon("file-tree-outline"));
-  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  edit_anyvalue_button->setToolTip("Edit value of currently selected variable");
-  connect(edit_anyvalue_button, &QToolButton::clicked, this,
-          &WorkspaceEditorWidget::EditAnyvalueRequest);
-  m_edit_anyvalue_action = new QWidgetAction(this);
-  m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
-  addAction(m_edit_anyvalue_action);
-
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_button->setToolTip("Remove currently selected variable");
-  connect(remove_button, &QToolButton::clicked, this,
-          &WorkspaceEditorWidget::RemoveSelectedRequest);
-  m_insert_after_action = new QWidgetAction(this);
-  m_insert_after_action->setDefaultWidget(remove_button);
-  addAction(m_insert_after_action);
-
   // propagate instruction related requests from WorkspaceEditorWidget to WorkspaceEditorActions
-  connect(this, &WorkspaceEditorWidget::InsertAfterRequest, m_workspace_editor_actions.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::InsertAfterRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
-  connect(this, &WorkspaceEditorWidget::RemoveSelectedRequest, m_workspace_editor_actions.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::RemoveSelectedRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
-  connect(this, &WorkspaceEditorWidget::EditAnyvalueRequest, m_workspace_editor_actions.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 }
 
@@ -145,23 +103,6 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
     return {};
   };
   result.edit_anyvalue_callback = edit_anyvalue_callback;
-
-  return result;
-}
-
-//! Creates menu to insert Variables in a workspace.
-std::unique_ptr<QMenu> WorkspaceEditorWidget::CreateInsertAfterMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainVariableNames());
-  for (const auto &name : names)
-  {
-    auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit InsertAfterRequest(name); };
-    connect(action, &QAction::triggered, this, on_action);
-  }
 
   return result;
 }

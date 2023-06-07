@@ -38,6 +38,8 @@ InstructionEditorActions::InstructionEditorActions(QObject *parent)
   SetupActions();
 }
 
+InstructionEditorActions::~InstructionEditorActions() = default;
+
 QList<QAction *> InstructionEditorActions::GetActions() const
 {
   return {m_insert_after_action, m_insert_into_action, m_remove_action};

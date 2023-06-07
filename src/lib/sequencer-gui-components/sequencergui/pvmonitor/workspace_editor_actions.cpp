@@ -78,8 +78,8 @@ void WorkspaceEditorActions::SetupActions()
   remove_button->setToolTip("Remove currently selected variable");
   connect(remove_button, &QToolButton::clicked, this,
           &WorkspaceEditorActions::RemoveSelectedRequest);
-  m_insert_after_action = new QWidgetAction(this);
-  m_insert_after_action->setDefaultWidget(remove_button);
+  m_remove_action = new QWidgetAction(this);
+  m_remove_action->setDefaultWidget(remove_button);
 }
 
 //! Creates menu to insert Variables in a workspace.
