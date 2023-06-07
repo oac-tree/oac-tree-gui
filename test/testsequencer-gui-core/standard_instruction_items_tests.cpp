@@ -43,49 +43,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ForceSuccess tests
-// ----------------------------------------------------------------------------
-
-TEST_F(StandardInstructionItemsTest, ForceSuccessItem)
-{
-  EXPECT_TRUE(testutils::IsCloneImplemented<testutils::ForceSuccessItem>());
-
-  // Correctly initialised item
-  testutils::ForceSuccessItem item;
-  auto wait = item.InsertItem<WaitItem>({"", -1});
-  EXPECT_EQ(item.GetInstructions(), std::vector<InstructionItem*>({wait}));
-  // it's not possible to add second item to ForceSuccess
-  EXPECT_THROW(item.InsertItem<WaitItem>({"", -1}), mvvm::InvalidOperationException);
-}
-
-//! Validate SequenceItem convertion to the domain object.
-
-TEST_F(StandardInstructionItemsTest, ForceSuccessItemFromDomain)
-{
-  auto input = CreateDomainInstruction(domainconstants::kForceSuccessInstructionType);
-  input->AddAttribute(domainconstants::kNameAttribute, "abc");
-
-  // Correctly initialised item
-  testutils::ForceSuccessItem item;
-  item.InitFromDomain(input.get());
-
-  EXPECT_EQ(item.GetName(), std::string("abc"));
-}
-
-//! Validate SequenceItem convertion to the domain object.
-
-TEST_F(StandardInstructionItemsTest, ForceSuccessItemToDomain)
-{
-  // Correctly initialised item
-  testutils::ForceSuccessItem item;
-
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), sequencergui::domainconstants::kForceSuccessInstructionType);
-
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
-}
-
-// ----------------------------------------------------------------------------
 // IncludeItem tests
 // ----------------------------------------------------------------------------
 

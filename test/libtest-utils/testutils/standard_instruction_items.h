@@ -28,19 +28,6 @@
 namespace testutils
 {
 
-//! Represent ForceSuccess instruction.
-class ForceSuccessItem : public sequencergui::UniversalInstructionItem
-{
-public:
-  static inline const std::string Type =
-      sequencergui::domainconstants::kForceSuccessInstructionType;
-
-  using UniversalInstructionItem::UniversalInstructionItem;
-  ForceSuccessItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-};
-
 //! Represent Increment instruction.
 class IncrementItem : public sequencergui::UniversalInstructionItem
 {

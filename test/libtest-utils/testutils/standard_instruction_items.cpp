@@ -26,17 +26,6 @@ namespace testutils
 {
 
 // ----------------------------------------------------------------------------
-// ForceSuccess
-// ----------------------------------------------------------------------------
-
-ForceSuccessItem::ForceSuccessItem() : UniversalInstructionItem(Type) {}
-
-std::unique_ptr<mvvm::SessionItem> ForceSuccessItem::Clone(bool make_unique_id) const
-{
-  return std::make_unique<ForceSuccessItem>(*this, make_unique_id);
-}
-
-// ----------------------------------------------------------------------------
 // IncrementItem
 // ----------------------------------------------------------------------------
 
