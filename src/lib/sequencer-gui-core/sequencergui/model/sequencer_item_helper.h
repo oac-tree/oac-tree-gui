@@ -62,6 +62,12 @@ mvvm::SessionItem* GetNameItem(const mvvm::SessionItem& parent);
  */
 mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent);
 
+/**
+ * @brief Returns an item representing is_available property, or nullptr if the given parent doesn't
+ * have such property registered.
+ */
+mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_

@@ -126,4 +126,9 @@ mvvm::SessionItem *GetStatusItem(const mvvm::SessionItem &parent)
   return GetPropertyItem(parent, itemconstants::kStatus);
 }
 
+mvvm::SessionItem *GetIsAvailableItem(const mvvm::SessionItem &parent)
+{
+  return GetPropertyItem(parent, itemconstants::kIsAvailable);
+}
+
 }  // namespace sequencergui
