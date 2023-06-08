@@ -61,7 +61,6 @@ public:
   ~MonitorWidget() override;
 
 private:
-  void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event);
   mvvm::ViewModel* GetViewModel();
 
   void PopulateModel();
@@ -78,7 +77,6 @@ private:
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
   WorkspaceEditorActionHandler* m_actions{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
-  std::unique_ptr<listener_t> m_listener;
 };
 
 }  // namespace sequencergui

@@ -31,13 +31,12 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/widgets/widget_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/signals/model_listener.h>
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QTreeView>
@@ -52,7 +51,6 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     , m_model(model)
     , m_actions(new WorkspaceEditorActionHandler(CreateContext(), this))
     , m_tree_view(new mvvm::AllItemsTreeView)
-    , m_listener(std::make_unique<listener_t>(m_model))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -60,23 +58,9 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
 
   m_tree_view->SetItem(m_model->GetWorkspaceItem());
   SetupConnections();  // should be after tree view got its model
-
-  m_listener->Connect<mvvm::ItemInsertedEvent>(this, &MonitorWidget::OnItemInsertedEvent);
 }
 
 MonitorWidget::~MonitorWidget() = default;
-
-//! Provide automatic selection in tree view for just inserted variable
-
-void MonitorWidget::OnItemInsertedEvent(const mvvm::ItemInsertedEvent &event)
-{
-  m_tree_view->SetSelectedItem(event.m_item);
-  auto index_of_inserted = GetViewModel()->GetIndexOfSessionItem(event.m_item);
-  if (!index_of_inserted.empty())
-  {
-    m_tree_view->GetTreeView()->setExpanded(index_of_inserted.front(), true);
-  }
-}
 
 //! Returns underlying view model to which QTreeView is pointing.
 
@@ -101,6 +85,20 @@ void MonitorWidget::SetupConnections()
 
   connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
+
+  // make inserted item selected, and tree branch expanded
+  auto on_select_variable_request = [this](auto item)
+  {
+    m_tree_view->SetSelectedItem(item);
+
+    auto index_of_inserted = GetViewModel()->GetIndexOfSessionItem(item);
+    if (!index_of_inserted.empty())
+    {
+      m_tree_view->GetTreeView()->setExpanded(index_of_inserted.front(), true);
+    }
+  };
+  connect(m_actions, &WorkspaceEditorActionHandler::SelectItemRequest, this,
+          on_select_variable_request);
 }
 
 void MonitorWidget::OnStartMonitoringRequest()
