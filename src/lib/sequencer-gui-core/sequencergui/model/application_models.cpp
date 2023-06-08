@@ -21,7 +21,7 @@
 
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/interfaces/item_manager_interface.h>
 #include <mvvm/model/item_pool.h>

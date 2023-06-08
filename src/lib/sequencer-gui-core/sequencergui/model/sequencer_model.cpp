@@ -20,7 +20,7 @@
 #include "sequencer_model.h"
 
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/interfaces/item_manager_interface.h>
 #include <mvvm/model/application_model.h>

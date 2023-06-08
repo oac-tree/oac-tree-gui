@@ -21,7 +21,7 @@
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/model/application_model.h>
 

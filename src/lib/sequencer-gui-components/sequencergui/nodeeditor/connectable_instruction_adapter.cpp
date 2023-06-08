@@ -19,7 +19,7 @@
 
 #include "connectable_instruction_adapter.h"
 
-#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 

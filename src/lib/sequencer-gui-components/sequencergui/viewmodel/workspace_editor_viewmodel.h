@@ -17,20 +17,34 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "job_model.h"
+#ifndef SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
 
-#include <sequencergui/model/sequencer_item_helper.h>
+#include <mvvm/viewmodel/viewmodel.h>
 
-#include <mvvm/interfaces/item_manager_interface.h>
+namespace mvvm
+{
+class SessionModelInterface;
+}
 
 namespace sequencergui
 {
 
-JobModel::JobModel() : JobModel(CreateSequencerItemManager()) {}
+/**
+ * @brief The WorkspaceEditorViewModel class forms editable two-columns tree with Workspace items.
+ *
+ * @details The WorkspaceItem is represented by type and editable name, with other properties in a
+ * branch below. Part of main Composer view.
+ */
 
-JobModel::JobModel(std::unique_ptr<mvvm::ItemManagerInterface> manager)
-    : mvvm::ApplicationModel("JobModel", std::move(manager))
+class MVVM_VIEWMODEL_EXPORT WorkspaceEditorViewModel : public mvvm::ViewModel
 {
-}
+  Q_OBJECT
+
+public:
+  explicit WorkspaceEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+};
 
 }  // namespace sequencergui
+
+#endif  // SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_

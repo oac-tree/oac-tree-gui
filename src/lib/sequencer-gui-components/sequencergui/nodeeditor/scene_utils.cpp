@@ -24,7 +24,7 @@
 #include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/sequencer_utils.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/transform/transform_from_domain.h>
 

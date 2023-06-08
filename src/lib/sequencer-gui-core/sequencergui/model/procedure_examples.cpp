@@ -20,9 +20,9 @@
 #include "procedure_examples.h"
 
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/model/sequencer_utils.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 

@@ -22,11 +22,11 @@ target_sources(${library_name} PRIVATE
   procedure_examples.h
   procedure_item.cpp
   procedure_item.h
+  sequencer_item_helper.cpp
+  sequencer_item_helper.h
   sequencer_item_includes.h
   sequencer_model.cpp
   sequencer_model.h
-  sequencer_utils.cpp
-  sequencer_utils.h
   standard_instruction_items.cpp
   standard_instruction_items.h
   standard_variable_items.cpp

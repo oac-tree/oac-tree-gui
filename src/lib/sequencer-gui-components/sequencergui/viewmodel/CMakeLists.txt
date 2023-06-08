@@ -9,4 +9,6 @@ target_sources(${library_name} PRIVATE
   job_log_viewmodel.h
   procedure_viewmodel.cpp
   procedure_viewmodel.h
+  workspace_editor_viewmodel.cpp
+  workspace_editor_viewmodel.h
   )

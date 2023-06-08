@@ -17,11 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_viewmodel.h"
+#include "workspace_editor_viewmodel.h"
 
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/sequencer_item_helper.h>
-#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
@@ -32,12 +31,16 @@
 namespace sequencergui
 {
 
-class InstructionRowStrategy : public mvvm::RowStrategyInterface
+/**
+ * @brief The VariableRowStrategy class
+ */
+
+class VariableRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Type", "Name", "Status"};
+    static QStringList result = {"Type", "Name"};
     return result;
   }
 
@@ -52,20 +55,21 @@ public:
 
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
-    if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
-    {
-      result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
-      result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
-    }
+    //    if (auto instruction = dynamic_cast<VariableItem *>(item); instruction)
+    //    {
+    //      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetNameItem()));
+    //      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetStatusItem()));
+    //    }
     return result;
   }
 };
 
-InstructionViewModel::InstructionViewModel(mvvm::SessionModelInterface *model, QObject *parent)
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::SessionModelInterface *model,
+                                                   QObject *parent)
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionRowStrategy>(model, this));
+      mvvm::factory::CreateController<mvvm::TopItemsStrategy, VariableRowStrategy>(model, this));
 }
 
 }  // namespace sequencergui
