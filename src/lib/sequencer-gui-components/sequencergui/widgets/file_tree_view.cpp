@@ -31,13 +31,8 @@
 
 namespace
 {
-const QString kGroupKey = "filetreeview";
-const QString kCurrentWorkdirKey = "currentworkdir";
-
-QString GetWorkdirSettingName()
-{
-  return kGroupKey + "/" + kCurrentWorkdirKey;
-}
+const QString kGroupKey = "FileTreeView";
+const QString kCurrentWorkdirKey = kGroupKey + "/" + "currentworkdir";
 
 //! Returns true if given file is a procedure file.
 bool IsProcedureFile(const QFileInfo &info)
@@ -141,14 +136,14 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
 void FileTreeView::ReadSettings()
 {
   const QSettings settings;
-  m_current_workdir = settings.value(GetWorkdirSettingName(), QDir::currentPath()).toString();
+  m_current_workdir = settings.value(kCurrentWorkdirKey, QDir::homePath()).toString();
 }
 
 //! Write widget settings to file.
 void FileTreeView::WriteSettings()
 {
   QSettings settings;
-  settings.setValue(GetWorkdirSettingName(), m_current_workdir);
+  settings.setValue(kCurrentWorkdirKey, m_current_workdir);
 }
 
 }  // namespace sequencergui
