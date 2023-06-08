@@ -27,21 +27,25 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/widget_utils.h>
+#include <sup/gui/codeeditor/code_view.h>
 
 #include <mvvm/signals/model_event_handler.h>
 #include <mvvm/standarditems/standard_item_includes.h>
 #include <mvvm/utils/file_utils.h>
 
-#include <sup/gui/codeeditor/code_view.h>
-
 #include <QApplication>
 #include <QDebug>
+#include <QSettings>
 #include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
 
 namespace
 {
+
+const QString kGroupName = "SequencerExplorerView";
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+
 std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromXmlFile(const QString &file_name)
 {
   std::unique_ptr<sequencergui::ProcedureItem> result;
@@ -84,9 +88,14 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
   layout->addWidget(m_splitter);
 
   SetupConnections();
+
+  ReadSettings();
 }
 
-SequencerExplorerView::~SequencerExplorerView() = default;
+SequencerExplorerView::~SequencerExplorerView()
+{
+  WriteSettings();
+}
 
 //! Sets the model.
 void SequencerExplorerView::SetModel(SequencerModel *model)
@@ -143,6 +152,22 @@ void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
     m_xml_view->ClearText();
     m_trees_widget->SetProcedure(nullptr);
   }
+}
+
+void SequencerExplorerView::ReadSettings()
+{
+  const QSettings settings;
+
+  if (settings.contains(kSplitterSettingName))
+  {
+    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
+  }
+}
+
+void SequencerExplorerView::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kSplitterSettingName, m_splitter->saveState());
 }
 
 void SequencerExplorerView::SetupConnections()

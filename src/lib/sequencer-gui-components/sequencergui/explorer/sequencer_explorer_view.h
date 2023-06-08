@@ -56,6 +56,8 @@ public:
   void ShowSelectedProcedure(ProcedureItem* procedure_item);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupConnections();
 
   ExplorerPanel* m_explorer_panel{nullptr};
