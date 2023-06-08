@@ -116,16 +116,6 @@ void InstructionItem::SetY(double value)
   SetProperty(itemconstants::kYpos, value);
 }
 
-mvvm::SessionItem *InstructionItem::GetStatusItem() const
-{
-  return GetItem(itemconstants::kStatus);
-}
-
-mvvm::SessionItem *InstructionItem::GetNameItem() const
-{
-  return GetItem(itemconstants::kName);
-}
-
 void InstructionItem::RegisterCommonProperties()
 {
   AddProperty(itemconstants::kStatus, std::string())

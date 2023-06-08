@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/sequencer_utils.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -61,13 +62,13 @@ TEST_F(InstructionViewModelTest, SingleInstruction)
   auto sequence_customname_index = viewmodel.index(0, 1);
   auto sequence_status_index = viewmodel.index(0, 2);
 
-  auto views = viewmodel.FindViews(sequence->GetStatusItem());
+  auto views = viewmodel.FindViews(GetStatusItem(*sequence));
   EXPECT_EQ(views.size(), 1);
   EXPECT_EQ(viewmodel.indexFromItem(views[0]), sequence_status_index);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_displayname_index), sequence);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_customname_index), sequence->GetNameItem());
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_status_index), sequence->GetStatusItem());
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_customname_index), GetNameItem(*sequence));
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_status_index), GetStatusItem(*sequence));
 
   EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Sequence"));

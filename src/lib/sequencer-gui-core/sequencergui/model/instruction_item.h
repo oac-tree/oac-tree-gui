@@ -65,10 +65,6 @@ public:
 
   void SetY(double value);
 
-  mvvm::SessionItem* GetStatusItem() const;
-
-  mvvm::SessionItem* GetNameItem() const;
-
 protected:
   void RegisterCommonProperties();
 

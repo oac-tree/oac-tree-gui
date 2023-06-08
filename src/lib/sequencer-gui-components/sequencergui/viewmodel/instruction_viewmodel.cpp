@@ -20,6 +20,7 @@
 #include "instruction_viewmodel.h"
 
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/sequencer_utils.h>
 #include <sequencergui/model/standard_instruction_items.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
@@ -53,8 +54,8 @@ public:
 
     if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetNameItem()));
-      result.emplace_back(mvvm::CreateDataViewItem(instruction->GetStatusItem()));
+      result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
+      result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
     }
     return result;
   }
