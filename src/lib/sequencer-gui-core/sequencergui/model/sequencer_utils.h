@@ -50,6 +50,18 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
 std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
     std::shared_ptr<mvvm::ItemPool> pool = {});
 
+/**
+ * @brief Returns an item representing a name property, or nullptr if the given parent doesn't have
+ * such property registered.
+ */
+mvvm::SessionItem* GetNameItem(const mvvm::SessionItem& parent);
+
+/**
+ * @brief Returns an item representing a status property, or nullptr if the given parent doesn't
+ * have such property registered.
+ */
+mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_

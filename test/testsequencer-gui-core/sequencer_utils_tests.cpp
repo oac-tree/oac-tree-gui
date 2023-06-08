@@ -17,6 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/model/item_constants.h"
 #include "sequencergui/model/sequencer_utils.h"
 
 #include <sequencergui/domain/domain_utils.h>
@@ -29,12 +30,23 @@
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
+
 using namespace sequencergui;
 
-//! Tests for SequencerObserver class.
+//! Tests for utility functions from sequencer_utils.h
 
 class SequencerUtilsTest : public ::testing::Test
 {
+public:
+  class TestItem : public mvvm::CompoundItem
+  {
+  public:
+    TestItem() : CompoundItem("TestItem")
+    {
+      AddProperty(itemconstants::kName, "");
+      AddProperty(itemconstants::kStatus, "");
+    }
+  };
 };
 
 TEST_F(SequencerUtilsTest, IsCompoundInstruction)
@@ -124,4 +136,17 @@ TEST_F(SequencerUtilsTest, ClonePlugin)
   EXPECT_TRUE(IsCloneImplemented<ChannelAccessVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<PvAccessClientVariableItem>());
   EXPECT_TRUE(IsCloneImplemented<PvAccessServerVariableItem>());
+}
+
+TEST_F(SequencerUtilsTest, GetPropertyItem)
+{
+  // item doesn't have property items
+  mvvm::SessionItem item;
+  EXPECT_EQ(GetNameItem(item), nullptr);
+  EXPECT_EQ(GetStatusItem(item), nullptr);
+
+  // test item has property items
+  TestItem test_item;
+  EXPECT_NE(GetNameItem(test_item), nullptr);
+  EXPECT_NE(GetStatusItem(test_item), nullptr);
 }

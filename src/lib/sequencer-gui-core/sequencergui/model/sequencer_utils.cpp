@@ -21,13 +21,13 @@
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_includes.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_manager.h>
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/utils/container_utils.h>
-
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <vector>
 
@@ -43,6 +43,12 @@ std::vector<std::string> GetDomainDecoratorNames()
                                   sequencergui::domainconstants::kInverterInstructionType};
   return result;
 }
+
+mvvm::SessionItem *GetPropertyItem(const mvvm::SessionItem &parent, const std::string &tag)
+{
+  return mvvm::utils::HasTag(parent, tag) ? parent.GetItem(tag) : nullptr;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -108,6 +114,16 @@ std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
     std::shared_ptr<mvvm::ItemPool> pool)
 {
   return mvvm::CreateDefaultItemManager(CreateSequencerItemCatalogue(), std::move(pool));
+}
+
+mvvm::SessionItem *GetNameItem(const mvvm::SessionItem &parent)
+{
+  return GetPropertyItem(parent, itemconstants::kName);
+}
+
+mvvm::SessionItem *GetStatusItem(const mvvm::SessionItem &parent)
+{
+  return GetPropertyItem(parent, itemconstants::kStatus);
 }
 
 }  // namespace sequencergui
