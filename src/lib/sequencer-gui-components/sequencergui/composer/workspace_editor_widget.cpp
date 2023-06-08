@@ -26,13 +26,13 @@
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
+#include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
-
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QTreeView>
@@ -52,7 +52,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
-    , m_component_provider(mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view))
+    , m_component_provider(mvvm::CreateProvider<WorkspaceEditorViewModel>(m_tree_view))
     , m_editor_actions(new WorkspaceEditorActions(this))
     , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))

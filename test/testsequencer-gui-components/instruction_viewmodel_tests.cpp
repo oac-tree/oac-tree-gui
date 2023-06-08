@@ -31,7 +31,7 @@
 
 using namespace sequencergui;
 
-//! Tests for items from instructionitems.h
+//! Tests for InstructionViewModel class.
 
 class InstructionViewModelTest : public ::testing::Test
 {
@@ -46,6 +46,9 @@ public:
     }
   };
 };
+
+//! Single instruction in a model.
+//! ViewModel should see single row and 3 columns.
 
 TEST_F(InstructionViewModelTest, SingleInstruction)
 {

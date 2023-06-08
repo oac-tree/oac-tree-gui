@@ -1,0 +1,170 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2023 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "sequencergui/viewmodel/workspace_editor_viewmodel.h"
+
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/application_model.h>
+
+#include <sup/dto/anyvalue.h>
+
+#include <gtest/gtest.h>
+
+#include <QSignalSpy>
+
+using namespace sequencergui;
+
+//! Tests for items from instructionitems.h
+
+class WorkspaceEditorViewModelTest : public ::testing::Test
+{
+public:
+};
+
+//! Single local variable in a workspace.
+//! ViewModel should see single row and 2 columns for VariableItem, and its properties beneath.
+
+TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
+{
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+
+  WorkspaceEditorViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+  EXPECT_EQ(viewmodel.rowCount(), 0);
+  EXPECT_EQ(viewmodel.columnCount(), 2);
+
+  // adding single variable and populating with values
+  auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
+  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  SetAnyValue(anyvalue, *variable_item);
+  variable_item->SetName("abc");
+
+  // checking viewmodel layout
+
+  // one parent item with type, and editable name
+  EXPECT_EQ(viewmodel.rowCount(), 1);
+  EXPECT_EQ(viewmodel.columnCount(), 2);
+
+  auto variable_displayname_index = viewmodel.index(0, 0);
+  auto variable_customname_index = viewmodel.index(0, 1);
+
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index),
+            GetNameItem(*variable_item));
+
+  // reading data from cell
+  EXPECT_EQ(viewmodel.data(variable_displayname_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("Local"));
+  EXPECT_EQ(viewmodel.data(variable_customname_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("abc"));
+
+  // writing data to cells
+  EXPECT_FALSE(viewmodel.setData(variable_displayname_index, "cant_change", Qt::EditRole));
+  EXPECT_TRUE(viewmodel.setData(variable_customname_index, "new_name", Qt::EditRole));
+  EXPECT_EQ(variable_item->GetName(), std::string("new_name"));
+
+  // Access to properties beneath. There are only AnyValueItem, name property was filtered out.
+  EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 1);
+  EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 2);
+
+  auto anyvalue_name_index = viewmodel.index(0, 0, variable_displayname_index);
+  auto anyvalue_value_index = viewmodel.index(0, 1, variable_displayname_index);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_name_index),
+            variable_item->GetAnyValueItem());
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_value_index),
+            variable_item->GetAnyValueItem());
+}
+
+//! Single local variable in a workspace.
+//! ViewModel should see single row and 2 columns for VariableItem, and its properties beneath.
+
+TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  mvvm::ApplicationModel model;
+
+  auto workspace_item = model.InsertItem<WorkspaceItem>();
+
+  WorkspaceEditorViewModel viewmodel(&model);
+  viewmodel.SetRootSessionItem(workspace_item);
+  EXPECT_EQ(viewmodel.rowCount(), 0);
+  EXPECT_EQ(viewmodel.columnCount(), 2);
+
+  // adding single variable and populating with values
+  auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
+  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  SetAnyValue(anyvalue, *variable_item);
+  variable_item->SetName("abc");
+
+  // checking viewmodel layout
+
+  // one parent item with type, and editable name
+  EXPECT_EQ(viewmodel.rowCount(), 1);
+  EXPECT_EQ(viewmodel.columnCount(), 2);
+
+  auto variable_displayname_index = viewmodel.index(0, 0);
+  auto variable_customname_index = viewmodel.index(0, 1);
+
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index),
+            GetNameItem(*variable_item));
+
+  // reading data from cell
+  EXPECT_EQ(viewmodel.data(variable_displayname_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("ChannelAccessClient"));
+  EXPECT_EQ(viewmodel.data(variable_customname_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("abc"));
+
+  // writing data to cells
+  EXPECT_FALSE(viewmodel.setData(variable_displayname_index, "cant_change", Qt::EditRole));
+  EXPECT_TRUE(viewmodel.setData(variable_customname_index, "new_name", Qt::EditRole));
+  EXPECT_EQ(variable_item->GetName(), std::string("new_name"));
+
+  // Access to properties beneath. There are only AnyValueItem and channel, name and is_available
+  // properties were filtered out.
+  EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 2);
+  EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 2);
+
+  auto channel_name_index = viewmodel.index(0, 0, variable_displayname_index);
+  auto channel_value_index = viewmodel.index(0, 1, variable_displayname_index);
+  auto anyvalue_name_index = viewmodel.index(1, 0, variable_displayname_index);
+  auto anyvalue_value_index = viewmodel.index(1, 1, variable_displayname_index);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_name_index),
+            variable_item->GetAnyValueItem());
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_value_index),
+            variable_item->GetAnyValueItem());
+
+  EXPECT_EQ(viewmodel.data(channel_name_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("channel"));
+  EXPECT_EQ(viewmodel.data(anyvalue_name_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("value"));
+}
