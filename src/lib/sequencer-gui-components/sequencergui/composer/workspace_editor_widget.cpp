@@ -131,6 +131,20 @@ void WorkspaceEditorWidget::SetupConnections()
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
   connect(m_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
+
+  // make inserted item selected, and tree branch expanded
+  auto on_select_variable_request = [this](auto item)
+  {
+    m_component_provider->SetSelectedItem(item);
+
+    auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
+    if (!index_of_inserted.empty())
+    {
+      m_tree_view->setExpanded(index_of_inserted.front(), true);
+    }
+  };
+  connect(m_action_handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest, this,
+          on_select_variable_request);
 }
 
 WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()

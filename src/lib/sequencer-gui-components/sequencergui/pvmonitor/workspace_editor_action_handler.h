@@ -54,6 +54,9 @@ public:
   void OnRemoveVariableRequest();
   void OnEditAnyvalueRequest();
 
+signals:
+  void SelectItemRequest(mvvm::SessionItem* item);
+
 private:
   mvvm::SessionModelInterface* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;

@@ -74,6 +74,7 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
         GetModel()->GetFactory()->CreateItem(variable_type_name.toStdString()), GetWorkspaceItem(),
         tagindex);
     SetupVariable(dynamic_cast<VariableItem *>(inserted));
+    emit SelectItemRequest(inserted);
   }
   catch (const std::exception &ex)
   {
