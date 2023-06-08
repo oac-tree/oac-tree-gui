@@ -57,6 +57,9 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+
   PanelToolBar* m_tool_bar{nullptr};
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   FileTreeView* m_file_tree_view{nullptr};

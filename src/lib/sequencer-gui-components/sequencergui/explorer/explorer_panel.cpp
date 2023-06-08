@@ -27,9 +27,16 @@
 #include <mvvm/widgets/collapsible_list_view.h>
 
 #include <QLabel>
+#include <QSettings>
 #include <QSplitter>
 #include <QToolButton>
 #include <QVBoxLayout>
+
+namespace
+{
+const QString kGroupName = "ExplorerPanel";
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+}  // namespace
 
 namespace sequencergui
 {
@@ -64,6 +71,13 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
           &ExplorerPanel::CreateNewProcedureRequest);
   connect(m_procedure_list_view, &ProcedureListWidget::RemoveProcedureRequest, this,
           &ExplorerPanel::RemoveProcedureRequest);
+
+  ReadSettings();
+}
+
+ExplorerPanel::~ExplorerPanel()
+{
+  WriteSettings();
 }
 
 void ExplorerPanel::SetModel(SequencerModel *model)
@@ -76,6 +90,21 @@ ProcedureItem *ExplorerPanel::GetSelectedProcedure()
   return m_procedure_list_view->GetSelectedProcedure();
 }
 
-ExplorerPanel::~ExplorerPanel() = default;
+void ExplorerPanel::ReadSettings()
+{
+  const QSettings settings;
+
+  if (settings.contains(kSplitterSettingName))
+  {
+    m_collapsible_list->GetSplitter()->restoreState(
+        settings.value(kSplitterSettingName).toByteArray());
+  }
+}
+
+void ExplorerPanel::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kSplitterSettingName, m_collapsible_list->GetSplitter()->saveState());
+}
 
 }  // namespace sequencergui
