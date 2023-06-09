@@ -27,11 +27,12 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/widget_utils.h>
-#include <sup/gui/codeeditor/code_view.h>
 
 #include <mvvm/signals/model_event_handler.h>
 #include <mvvm/standarditems/standard_item_includes.h>
 #include <mvvm/utils/file_utils.h>
+
+#include <sup/gui/codeeditor/code_view.h>
 
 #include <QApplication>
 #include <QDebug>
@@ -76,8 +77,6 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
-  //  layout->setSpacing(0);
-  //  layout->setMargin(0);
 
   m_splitter->addWidget(m_explorer_panel);
   m_splitter->addWidget(m_trees_widget);
@@ -102,17 +101,6 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
 {
   m_model = model;
   m_explorer_panel->SetModel(model);
-
-  // Provide regeneration of XML text corresponding to the currently opened procedure, on every
-  // change in the model.
-  auto on_data_change = [this](auto)
-  {
-    if (auto procedure_item = m_explorer_panel->GetSelectedProcedure(); procedure_item)
-    {
-      m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(procedure_item)));
-    }
-  };
-  m_model->GetEventHandler()->Connect<mvvm::DataChangedEvent>(on_data_change);
 }
 
 //! Show content of XML file.
@@ -133,23 +121,6 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
   }
   else
   {
-    m_trees_widget->SetProcedure(nullptr);
-  }
-}
-
-//! Show selected procedure in widgets.
-//! - Generates XML representing a procedure and show it in editor.
-//! - Show object tree in widgets.
-void SequencerExplorerView::ShowSelectedProcedure(ProcedureItem *procedure_item)
-{
-  if (procedure_item)
-  {
-    m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(procedure_item)));
-    m_trees_widget->SetProcedure(procedure_item);
-  }
-  else
-  {
-    m_xml_view->ClearText();
     m_trees_widget->SetProcedure(nullptr);
   }
 }
@@ -186,10 +157,6 @@ void SequencerExplorerView::SetupConnections()
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
           import_procedure_from_file);
 
-  connect(m_explorer_panel, &ExplorerPanel::ProcedureSelected, this,
-          &SequencerExplorerView::ShowSelectedProcedure);
-
-  // FIXME duplication with SequencerComposerView
   auto on_remove_procedure = [this](auto procedure)
   {
     if (procedure)

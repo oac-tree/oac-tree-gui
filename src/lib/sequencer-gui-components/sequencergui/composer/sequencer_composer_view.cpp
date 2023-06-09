@@ -151,12 +151,12 @@ void SequencerComposerView::SetupConnections()
   connect(m_composer_panel, &ComposerPanel::RemoveProcedureRequest, this, on_remove_procedure);
 
   // propagate selection from central panel to the right panel
-  auto on_central_selection = [this](auto instruction)
+  auto on_central_selection = [this](auto)
   { m_right_panel->SetSelectedInstructions(m_central_panel->GetSelectedInstructions()); };
   connect(m_central_panel, &ComposerWidgetPanel::InstructionSelected, this, on_central_selection);
 
   // propagate selection from right panel to the central panel
-  auto on_right_selection = [this](auto instruction)
+  auto on_right_selection = [this](auto)
   { m_central_panel->SetSelectedInstructions(m_right_panel->GetSelectedInstructions()); };
   connect(m_right_panel, &ComposerWidgetPanel::InstructionSelected, this, on_right_selection);
 }

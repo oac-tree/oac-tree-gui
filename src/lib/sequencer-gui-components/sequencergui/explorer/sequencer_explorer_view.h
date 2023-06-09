@@ -37,9 +37,8 @@ class ProcedureTreesWidget;
 class ProcedureItem;
 class ItemStackWidget;
 
-//! Main widget for XML browsing.
-//! Contains file browser on the left, top items trees and property tree in the center, and XML
-//! viewer on the right. Belongs to MainWindow.
+//! Main widget to browse procedures on disk. Contains file browser on the left, top items trees
+//! and property tree in the center, and XML viewer on the right. Belongs to MainWindow.
 
 class SequencerExplorerView : public QWidget
 {
@@ -52,8 +51,6 @@ public:
   void SetModel(SequencerModel* model);
 
   void ShowXMLFile(const QString& file_name);
-
-  void ShowSelectedProcedure(ProcedureItem* procedure_item);
 
 private:
   void ReadSettings();
