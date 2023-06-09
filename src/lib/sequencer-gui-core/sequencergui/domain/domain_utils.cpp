@@ -157,9 +157,10 @@ std::pair<bool, std::string> LoadPlugins()
   {
     std::ostringstream ostr;
     ostr << "Warning! Some of sequencer plugins failed to load: "
-         << mvvm::utils::ToCommaSeparatedString(failed_plugins) << ".";
+         << mvvm::utils::ToCommaSeparatedString(failed_plugins) << ". ";
+    ostr << "There will be less instructions and variables available.";
     std::cout << ostr.str() << "\n";
-    return {true, ostr.str()};
+    return {false, ostr.str()};
   }
 
   return {true, ""};
