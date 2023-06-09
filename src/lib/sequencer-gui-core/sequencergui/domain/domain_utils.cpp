@@ -22,6 +22,8 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 
+#include <mvvm/utils/string_utils.h>
+
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
 #include <sup/sequencer/sequence_parser.h>
@@ -30,6 +32,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 namespace
@@ -46,7 +49,6 @@ bool LoadPlugin(const std::string& name)
   {
     is_success = false;
   }
-  std::cout << "Loading " + name + " plugin, result:" << is_success << std::endl;
   return is_success;
 }
 }  // namespace
@@ -136,15 +138,31 @@ bool IsSequencerPluginEpicsAvailable()
   return IsVariableTypeAvailable(domainconstants::kPvAccessServerVariableType);  // simplified check
 }
 
-void LoadPlugins()
+std::pair<bool, std::string> LoadPlugins()
 {
+  std::vector<std::string> failed_plugins;
+
   static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
                                                    "libsequencer-misc.so"};
 
   for (const auto& name : plugins)
   {
-    LoadPlugin(name);
+    if (!LoadPlugin(name))
+    {
+      failed_plugins.push_back(name);
+    }
   }
+
+  if (!failed_plugins.empty())
+  {
+    std::ostringstream ostr;
+    ostr << "Warning! Some of sequencer plugins failed to load: "
+         << mvvm::utils::ToCommaSeparatedString(failed_plugins) << ".";
+    std::cout << ostr.str() << "\n";
+    return {true, ostr.str()};
+  }
+
+  return {true, ""};
 }
 
 }  // namespace sequencergui

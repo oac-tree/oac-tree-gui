@@ -55,7 +55,11 @@ bool IsInstructionTypeAvailable(const std::string& domain_type);
 
 bool IsSequencerPluginEpicsAvailable();
 
-void LoadPlugins();
+/**
+ * @brief Loads all sequencer plugins and reports result of the load to the user.
+ * @return Success flag and the error message.
+ */
+std::pair<bool, std::string> LoadPlugins();
 
 }  // namespace sequencergui
 
