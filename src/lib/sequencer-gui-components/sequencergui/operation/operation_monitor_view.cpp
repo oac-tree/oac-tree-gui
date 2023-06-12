@@ -21,6 +21,11 @@
 
 #include "operation_job_panel.h"
 
+#include <sequencergui/monitor/monitor_property_widget.h>
+#include <sequencergui/monitor/monitor_realtime_widget.h>
+
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QMainWindow>
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -29,15 +34,23 @@ namespace sequencergui
 {
 
 OperationMonitorView::OperationMonitorView(QMainWindow *parent)
-    : QWidget(parent), m_splitter(new QSplitter), m_job_panel(new OperationJobPanel)
+    : QWidget(parent)
+    , m_splitter(new QSplitter)
+    , m_job_panel(new OperationJobPanel)
+    , m_realtime_widget(new MonitorRealTimeWidget)
+    , m_property_widget(new MonitorPropertyWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
   m_splitter->addWidget(m_job_panel);
-  m_splitter->setOrientation(Qt::Vertical);
-  m_splitter->setSizes(QList<int>() << 200 << 400 << 400);
+  m_splitter->addWidget(m_realtime_widget);
+  m_splitter->addWidget(m_property_widget);
+  m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
+                                    << mvvm::utils::UnitSize(30));
+
+  parent->addToolBar(m_job_panel->GetToolBar());
 
   layout->addWidget(m_splitter);
 }

@@ -17,38 +17,27 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_TOOLBAR_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_TOOLBAR_H_
 
-#include <QWidget>
-
-class QMainWindow;
-class QSplitter;
+#include <QToolBar>
 
 namespace sequencergui
 {
 
-class OperationJobPanel;
-class MonitorRealTimeWidget;
-class MonitorPropertyWidget;
-
-//! Main view of operation application.
-
-class OperationMonitorView : public QWidget
+class OperationJobPanelToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
-  OperationMonitorView(QMainWindow* parent = nullptr);
-  ~OperationMonitorView() override;
+  explicit OperationJobPanelToolBar(QWidget* parent = nullptr);
 
-private:
-  QSplitter* m_splitter{nullptr};
-  OperationJobPanel* m_job_panel{nullptr};
-  MonitorRealTimeWidget* m_realtime_widget{nullptr};
-  MonitorPropertyWidget* m_property_widget{nullptr};
+signals:
+  void ImportJobRequest();
+  void RegenerateJobRequest();
+  void RemoveJobRequest();
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_TOOLBAR_H_

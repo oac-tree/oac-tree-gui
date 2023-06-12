@@ -3,6 +3,8 @@
 target_sources(${library_name} PRIVATE
   operation_job_panel.cpp
   operation_job_panel.h
+  operation_job_panel_toolbar.cpp
+  operation_job_panel_toolbar.h
   operation_main_window.cpp
   operation_main_window.h
   operation_main_window_actions.cpp

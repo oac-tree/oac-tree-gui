@@ -21,9 +21,8 @@
 #define SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_H_
 
 #include <QWidget>
-#include <memory>
 
-class QMenu;
+class QToolBar;
 
 namespace mvvm
 {
@@ -32,12 +31,12 @@ class CollapsibleListView;
 
 namespace sequencergui
 {
-class PanelToolBar;
 class JobListWidget;
 class JobItem;
 class ProcedureItem;
 class JobPropertyWidget;
 class ApplicationModels;
+class OperationJobPanelToolBar;
 
 //! Vertical panel with list of running jobs and job properties at the left side of
 //! SequencerMonitorView.
@@ -56,25 +55,20 @@ public:
 
   void SetSelectedJob(JobItem* job_item);
 
-  QList<QWidget*> GetToolBarWidgets();
+  QToolBar* GetToolBar() const;
 
 signals:
   void JobSelected(sequencergui::JobItem* item);
   void RemoveJobRequest();
   void RegenerateJobRequest();
-  void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
 
 private:
   void OnJobSelectedIntern(JobItem* item);
-  void OnAboutToShowMenu();
-  std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
 
-  PanelToolBar* m_tool_bar{nullptr};
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
   JobPropertyWidget* m_job_property_widget{nullptr};
-
-  std::unique_ptr<QMenu> m_submit_procedure_menu;
+  OperationJobPanelToolBar* m_tool_bar{nullptr};
 
   ApplicationModels* m_models{nullptr};
 };

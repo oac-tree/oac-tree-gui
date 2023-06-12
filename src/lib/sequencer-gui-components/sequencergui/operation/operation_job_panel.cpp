@@ -19,22 +19,17 @@
 
 #include "operation_job_panel.h"
 
+#include "operation_job_panel_toolbar.h"
+
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/job_list_widget.h>
 #include <sequencergui/monitor/job_property_widget.h>
-#include <sequencergui/widgets/panel_toolbar.h>
-#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
-#include <mvvm/widgets/collapsible_toolbar.h>
 
-#include <QDebug>
-#include <QMenu>
-#include <QToolBar>
-#include <QToolButton>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -42,23 +37,21 @@ namespace sequencergui
 
 OperationJobPanel::OperationJobPanel(QWidget *parent)
     : QWidget(parent)
-      , m_tool_bar(new PanelToolBar)
-      , m_collapsible_list(new mvvm::CollapsibleListView)
-      , m_job_list_widget(new JobListWidget)
-      , m_job_property_widget(new JobPropertyWidget)
-      , m_submit_procedure_menu(CreateSubmitProcedureMenu())
+    , m_collapsible_list(new mvvm::CollapsibleListView)
+    , m_job_list_widget(new JobListWidget)
+    , m_job_property_widget(new JobPropertyWidget)
+    , m_tool_bar(new OperationJobPanelToolBar(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_tool_bar);
   layout->addWidget(m_collapsible_list);
 
-  auto toolbar = m_collapsible_list->AddCollapsibleWidget(m_job_list_widget, {});
-  toolbar->AddWidgets(GetToolBarWidgets());
+  m_collapsible_list->AddWidget(m_job_list_widget);
   m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
 
-  connect(m_job_list_widget, &JobListWidget::JobSelected, this, &OperationJobPanel::OnJobSelectedIntern);
+  connect(m_job_list_widget, &JobListWidget::JobSelected, this,
+          &OperationJobPanel::OnJobSelectedIntern);
 }
 
 OperationJobPanel::~OperationJobPanel() = default;
@@ -79,67 +72,15 @@ void OperationJobPanel::SetSelectedJob(JobItem *job_item)
   m_job_list_widget->SetSelectedJob(job_item);
 }
 
-QList<QWidget *> OperationJobPanel::GetToolBarWidgets()
+QToolBar *OperationJobPanel::GetToolBar() const
 {
-  QList<QWidget *> result;
-
-  auto submit_button = new QToolButton;
-  submit_button->setText("Submit");
-  submit_button->setIcon(styleutils::GetIcon("file-plus-outline"));
-  submit_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  submit_button->setPopupMode(QToolButton::InstantPopup);
-  submit_button->setMenu(m_submit_procedure_menu.get());
-  submit_button->setToolTip("Submit existing sequencer procedure for execution");
-  result.push_back(submit_button);
-
-  auto regenerate_button = new QToolButton;
-  regenerate_button->setText("Remove");
-  regenerate_button->setIcon(styleutils::GetIcon("refresh"));
-  regenerate_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  regenerate_button->setToolTip("Regenerate selected job from the original procedure");
-  connect(regenerate_button, &QToolButton::clicked, this, &OperationJobPanel::RegenerateJobRequest);
-  result.push_back(regenerate_button);
-
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  remove_button->setToolTip("Remove selected job from the list");
-  connect(remove_button, &QToolButton::clicked, this, &OperationJobPanel::RemoveJobRequest);
-  result.push_back(remove_button);
-
-  return result;
+  return m_tool_bar;
 }
 
 void OperationJobPanel::OnJobSelectedIntern(JobItem *item)
 {
   m_job_property_widget->SetJob(item);
   emit JobSelected(item);
-}
-
-//! Populates `submit_button` pop-up menu on show event.
-void OperationJobPanel::OnAboutToShowMenu()
-{
-  auto menu = m_submit_procedure_menu.get();
-  menu->clear();
-  menu->addSection("Available procedures:");
-
-  // build a menu containing list of procedures for later job submission
-  for (auto procedure : m_models->GetSequencerModel()->GetProcedures())
-  {
-    auto action = menu->addAction(QString::fromStdString(procedure->GetDisplayName()));
-    action->setToolTip("Submit given procedure for execution");
-    auto on_action = [this, procedure]() { emit SubmitProcedureRequest(procedure); };
-    connect(action, &QAction::triggered, this, on_action);
-  }
-}
-
-std::unique_ptr<QMenu> OperationJobPanel::CreateSubmitProcedureMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-  connect(result.get(), &QMenu::aboutToShow, this, &OperationJobPanel::OnAboutToShowMenu);
-  return result;
 }
 
 }  // namespace sequencergui
