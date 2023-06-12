@@ -17,47 +17,15 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_H_
+#include "operation_monitor_view.h"
 
 #include <QMainWindow>
-#include <memory>
-
-class QCloseEvent;
-
-namespace mvvm
-{
-class ApplicationModel;
-}
 
 namespace sequencergui
 {
 
-class OperationMonitorView;
+OperationMonitorView::OperationMonitorView(QMainWindow *parent) : QWidget(parent) {}
 
-//! The main window of sequencer-operation applcation
-
-class OperationMainWindow : public QMainWindow
-{
-  Q_OBJECT
-
-public:
-  OperationMainWindow();
-  ~OperationMainWindow() override;
-
-protected:
-  void closeEvent(QCloseEvent* event) override;
-
-private:
-  void PopulateModel();
-  void InitApplication();
-  void ReadSettings();
-  void WriteSettings();
-
-  std::unique_ptr<mvvm::ApplicationModel> m_model;
-  OperationMonitorView* m_monitor_view{nullptr};
-};
+OperationMonitorView::~OperationMonitorView() = default;
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_H_

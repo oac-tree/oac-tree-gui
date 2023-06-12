@@ -19,6 +19,8 @@
 
 #include "operation_main_window.h"
 
+#include "operation_monitor_view.h"
+
 #include <mvvm/model/application_model.h>
 
 #include <QMenuBar>
@@ -53,7 +55,10 @@ void OperationMainWindow::PopulateModel() {}
 void OperationMainWindow::InitApplication()
 {
   ReadSettings();
-  setCentralWidget(new QWidget);
+
+  m_monitor_view = new OperationMonitorView(this);
+
+  setCentralWidget(m_monitor_view);
 }
 
 void OperationMainWindow::ReadSettings()
