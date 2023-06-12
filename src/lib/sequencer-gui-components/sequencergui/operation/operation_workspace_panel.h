@@ -17,38 +17,38 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_PANEL_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_PANEL_H_
 
 #include <QWidget>
 
-class QMainWindow;
-class QSplitter;
+namespace mvvm
+{
+class AllItemsTreeView;
+}  // namespace mvvm
 
 namespace sequencergui
 {
+class SequencerModel;
+class ProcedureItem;
+class InstructionItem;
 
-class OperationJobPanel;
-class OperationRealTimePanel;
-class OperationWorkspacePanel;
+//! Right panel on SequencerMonitorView.
 
-//! Main view of operation application.
-
-class OperationMonitorView : public QWidget
+class OperationWorkspacePanel : public QWidget
 {
   Q_OBJECT
 
 public:
-  OperationMonitorView(QMainWindow* parent = nullptr);
-  ~OperationMonitorView() override;
+  explicit OperationWorkspacePanel(QWidget* parent = nullptr);
+  ~OperationWorkspacePanel() override;
+
+  void SetProcedure(ProcedureItem* procedure_item);
 
 private:
-  QSplitter* m_splitter{nullptr};
-  OperationJobPanel* m_job_panel{nullptr};
-  OperationRealTimePanel* m_realtime_panel{nullptr};
-  OperationWorkspacePanel* m_workspace_panel{nullptr};
+  mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_PANEL_H_

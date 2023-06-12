@@ -17,38 +17,36 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
+#include "operation_workspace_panel.h"
 
-#include <QWidget>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/workspace_item.h>
 
-class QMainWindow;
-class QSplitter;
+#include <mvvm/widgets/all_items_tree_view.h>
+
+#include <QTreeView>
+#include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-class OperationJobPanel;
-class OperationRealTimePanel;
-class OperationWorkspacePanel;
+OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
+    : QWidget(parent), m_workspace_tree(new mvvm::AllItemsTreeView)
 
-//! Main view of operation application.
-
-class OperationMonitorView : public QWidget
 {
-  Q_OBJECT
+  auto layout = new QVBoxLayout(this);
+  layout->addWidget(m_workspace_tree);
 
-public:
-  OperationMonitorView(QMainWindow* parent = nullptr);
-  ~OperationMonitorView() override;
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+}
 
-private:
-  QSplitter* m_splitter{nullptr};
-  OperationJobPanel* m_job_panel{nullptr};
-  OperationRealTimePanel* m_realtime_panel{nullptr};
-  OperationWorkspacePanel* m_workspace_panel{nullptr};
-};
+OperationWorkspacePanel::~OperationWorkspacePanel() = default;
+
+void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure_item)
+{
+  m_workspace_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
