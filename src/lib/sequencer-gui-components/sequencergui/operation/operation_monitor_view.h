@@ -29,7 +29,7 @@ namespace sequencergui
 {
 
 class OperationJobPanel;
-class MonitorRealTimeWidget;
+class OperationRealTimePanel;
 class MonitorPropertyWidget;
 
 //! Main view of operation application.
@@ -45,7 +45,7 @@ public:
 private:
   QSplitter* m_splitter{nullptr};
   OperationJobPanel* m_job_panel{nullptr};
-  MonitorRealTimeWidget* m_realtime_widget{nullptr};
+  OperationRealTimePanel* m_realtime_widget{nullptr};
   MonitorPropertyWidget* m_property_widget{nullptr};
 };
 

@@ -56,28 +56,28 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
 
   m_run_button->setText("Run");
   m_run_button->setIcon(styleutils::GetIcon("arrow-right-drop-circle-outline"));
-  m_run_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_run_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_run_button->setToolTip("Run procedure");
   connect(m_run_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::runRequest);
   addWidget(m_run_button);
 
   m_pause_button->setText("Pause");
   m_pause_button->setIcon(styleutils::GetIcon("pause-circle-outline"));
-  m_pause_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_pause_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_pause_button->setToolTip("Pause sequence at the next occasion");
   connect(m_pause_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::pauseRequest);
   addWidget(m_pause_button);
 
   m_step_button->setText("Step");
   m_step_button->setIcon(styleutils::GetIcon("play-pause"));
-  m_step_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_step_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_step_button->setToolTip("Execute single instruction");
   connect(m_step_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stepRequest);
   addWidget(m_step_button);
 
   m_stop_button->setText("Stop");
   m_stop_button->setIcon(styleutils::GetIcon("stop-circle-outline"));
-  m_stop_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_stop_button->setToolTip("Stop procedure");
   connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_stop_button);

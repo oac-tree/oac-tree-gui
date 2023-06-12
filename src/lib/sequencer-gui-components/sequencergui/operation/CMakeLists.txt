@@ -11,4 +11,6 @@ target_sources(${library_name} PRIVATE
   operation_main_window_actions.h
   operation_monitor_view.cpp
   operation_monitor_view.h
+  operation_realtime_panel.cpp
+  operation_realtime_panel.h
 )

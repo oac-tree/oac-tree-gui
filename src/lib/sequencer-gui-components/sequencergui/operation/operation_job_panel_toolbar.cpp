@@ -32,10 +32,10 @@ OperationJobPanelToolBar::OperationJobPanelToolBar(QWidget *parent) : QToolBar(p
   setIconSize(sup::gui::utils::ToolBarIconSize());
 
   auto import_button = new QToolButton;
-  import_button->setText("New job");
+  import_button->setText("New");
   import_button->setIcon(styleutils::GetIcon("file-plus-outline"));
   import_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  import_button->setToolTip("Submit existing sequencer XML procedure for execution");
+  import_button->setToolTip("Open sequencer XML procedure from disk");
   connect(import_button, &QToolButton::clicked, this, &OperationJobPanelToolBar::ImportJobRequest);
   addWidget(import_button);
 

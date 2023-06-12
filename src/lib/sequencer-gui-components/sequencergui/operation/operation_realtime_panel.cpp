@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "monitor_realtime_widget.h"
+#include "operation_realtime_panel.h"
 
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -25,39 +25,30 @@
 #include <sequencergui/monitor/message_panel.h>
 #include <sequencergui/monitor/monitor_realtime_toolbar.h>
 #include <sequencergui/monitor/realtime_instruction_tree_widget.h>
-#include <sequencergui/nodeeditor/node_editor.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
 
 #include <QSplitter>
+#include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
 namespace sequencergui
 {
 
-MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
+OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
-    , m_tool_bar_action(new QWidgetAction(this))
     , m_collapsible_list_view(new mvvm::CollapsibleListView)
-    , m_stacked_widget(new ItemStackWidget)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
-    , m_node_editor(new NodeEditor)
     , m_message_panel(new MessagePanel)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  SetupToolBar();
-
-  m_stacked_widget->AddWidget(m_realtime_instruction_tree, {m_tool_bar_action},
-                              /*toolbar_always_visible*/ true);
-  m_stacked_widget->AddWidget(m_node_editor, m_node_editor->actions());
-
-  m_collapsible_list_view->AddWidget(m_stacked_widget);
+  m_collapsible_list_view->AddWidget(m_realtime_instruction_tree);
 
   m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
@@ -66,59 +57,44 @@ MonitorRealTimeWidget::MonitorRealTimeWidget(QWidget *parent)
   SetupConnections();
 }
 
-MonitorRealTimeWidget::~MonitorRealTimeWidget() = default;
+OperationRealTimePanel::~OperationRealTimePanel() = default;
 
-void MonitorRealTimeWidget::SetProcedure(ProcedureItem *procedure_item)
+void OperationRealTimePanel::SetProcedure(ProcedureItem *procedure_item)
 {
   m_realtime_instruction_tree->SetProcedure(procedure_item);
-  m_node_editor->SetProcedure(procedure_item);
 }
 
-void MonitorRealTimeWidget::SetSelectedInstruction(InstructionItem *item)
+void OperationRealTimePanel::SetSelectedInstruction(InstructionItem *item)
 {
-  m_node_editor->SetSelectedInstructions({item});
   m_realtime_instruction_tree->SetSelectedInstruction(item);
 }
 
-MessagePanel *MonitorRealTimeWidget::GetMessagePanel()
+MessagePanel *OperationRealTimePanel::GetMessagePanel()
 {
   return m_message_panel;
 }
 
-void MonitorRealTimeWidget::onAppChangeRequest(int id)
+QToolBar *OperationRealTimePanel::GetToolBar() const
 {
-  m_stacked_widget->SetCurrentIndex(id);
+  return m_tool_bar;
 }
 
-void MonitorRealTimeWidget::SetupConnections()
+void OperationRealTimePanel::SetupConnections()
 {
   // forward signals from a toolbar further up
   connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this,
-          &MonitorRealTimeWidget::runRequest);
+          &OperationRealTimePanel::runRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this,
-          &MonitorRealTimeWidget::pauseRequest);
+          &OperationRealTimePanel::pauseRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this,
-          &MonitorRealTimeWidget::stepRequest);
+          &OperationRealTimePanel::stepRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this,
-          &MonitorRealTimeWidget::stopRequest);
+          &OperationRealTimePanel::stopRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
-          &MonitorRealTimeWidget::changeDelayRequest);
+          &OperationRealTimePanel::changeDelayRequest);
 
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::InstructionClicked, this,
-          &MonitorRealTimeWidget::InstructionClicked);
-}
-
-//! Setup a toolbar so it can be used via widget's action mechanism.
-
-void MonitorRealTimeWidget::SetupToolBar()
-{
-  // remove extra spacing so it can be embedded into another toolbar
-  m_tool_bar->layout()->setContentsMargins(0, 0, 0, 0);
-  m_tool_bar->layout()->setSpacing(0);
-
-  // add toolbar to the list of widgert's action
-  m_tool_bar_action->setDefaultWidget(m_tool_bar);
-  addAction(m_tool_bar_action);
+          &OperationRealTimePanel::InstructionClicked);
 }
 
 }  // namespace sequencergui

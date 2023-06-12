@@ -20,6 +20,7 @@
 #include "operation_monitor_view.h"
 
 #include "operation_job_panel.h"
+#include "operation_realtime_panel.h"
 
 #include <sequencergui/monitor/monitor_property_widget.h>
 #include <sequencergui/monitor/monitor_realtime_widget.h>
@@ -37,7 +38,7 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
     : QWidget(parent)
     , m_splitter(new QSplitter)
     , m_job_panel(new OperationJobPanel)
-    , m_realtime_widget(new MonitorRealTimeWidget)
+    , m_realtime_widget(new OperationRealTimePanel)
     , m_property_widget(new MonitorPropertyWidget)
 {
   auto layout = new QVBoxLayout(this);
@@ -51,6 +52,7 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
                                     << mvvm::utils::UnitSize(30));
 
   parent->addToolBar(m_job_panel->GetToolBar());
+  parent->addToolBar(m_realtime_widget->GetToolBar());
 
   layout->addWidget(m_splitter);
 }
