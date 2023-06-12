@@ -23,9 +23,12 @@
 #include <QWidget>
 
 class QMainWindow;
+class QSplitter;
 
 namespace sequencergui
 {
+
+class OperationJobPanel;
 
 //! Main view of operation application.
 
@@ -36,6 +39,10 @@ class OperationMonitorView : public QWidget
 public:
   OperationMonitorView(QMainWindow* parent = nullptr);
   ~OperationMonitorView() override;
+
+private:
+  QSplitter* m_splitter{nullptr};
+  OperationJobPanel* m_job_panel{nullptr};
 };
 
 }  // namespace sequencergui

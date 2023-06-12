@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/interfaces/children_strategy_interface.h>
@@ -54,7 +55,7 @@ public:
 
     if (auto procedure = dynamic_cast<JobItem *>(item); procedure)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(procedure->GetItem(itemconstants::kStatus)));
+      result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*procedure)));
     }
     return result;
   }

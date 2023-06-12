@@ -19,12 +19,28 @@
 
 #include "operation_monitor_view.h"
 
+#include "operation_job_panel.h"
+
 #include <QMainWindow>
+#include <QSplitter>
+#include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-OperationMonitorView::OperationMonitorView(QMainWindow *parent) : QWidget(parent) {}
+OperationMonitorView::OperationMonitorView(QMainWindow *parent)
+    : QWidget(parent), m_splitter(new QSplitter), m_job_panel(new OperationJobPanel)
+{
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+
+  m_splitter->addWidget(m_job_panel);
+  m_splitter->setOrientation(Qt::Vertical);
+  m_splitter->setSizes(QList<int>() << 200 << 400 << 400);
+
+  layout->addWidget(m_splitter);
+}
 
 OperationMonitorView::~OperationMonitorView() = default;
 
