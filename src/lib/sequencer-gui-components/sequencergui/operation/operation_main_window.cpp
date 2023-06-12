@@ -19,9 +19,11 @@
 
 #include "operation_main_window.h"
 
+#include "operation_main_window_actions.h"
 #include "operation_monitor_view.h"
 
-#include <mvvm/model/application_model.h>
+#include <sequencergui/model/application_models.h>
+#include <sequencergui/model/sequencer_model.h>
 
 #include <QMenuBar>
 #include <QSettings>
@@ -36,7 +38,8 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 namespace sequencergui
 {
-OperationMainWindow::OperationMainWindow() : m_model(std::make_unique<mvvm::ApplicationModel>())
+
+OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
   PopulateModel();
   InitApplication();
@@ -55,6 +58,8 @@ void OperationMainWindow::PopulateModel() {}
 void OperationMainWindow::InitApplication()
 {
   ReadSettings();
+
+  m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
 
   m_monitor_view = new OperationMonitorView(this);
 

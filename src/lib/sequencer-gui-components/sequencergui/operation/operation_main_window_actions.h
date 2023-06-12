@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
-#define SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_ACTIONS_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_ACTIONS_H_
 
 #include <QObject>
 
@@ -40,19 +40,19 @@ class ProjectHandler;
 namespace sequencergui
 {
 
+class ApplicationModels;
+
 //! Main menu bar actions for the main window.
 
-class SequencerMainWindowActions : public QObject
+class OperationMainWindowActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
-  ~SequencerMainWindowActions() override;
+  explicit OperationMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
+  ~OperationMainWindowActions() override;
 
   bool CloseCurrentProject() const;
-
-  QMenu* GetToolsMenu();
 
 private:
   void CreateActions(QMainWindow* mainwindow);
@@ -61,12 +61,12 @@ private:
 
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
-  QMenu* m_tools_menu{nullptr};
   QMenu* m_recent_project_menu{nullptr};
 
   sup::gui::ProjectHandler* m_project_handler{nullptr};
 };
 
+
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_ACTIONS_H_

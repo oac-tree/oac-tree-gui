@@ -17,10 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencer_main_window_actions.h"
+#include "operation_main_window_actions.h"
 
-#include "about_application_dialog.h"
-
+#include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/components/project_handler.h>
 #include <sup/gui/components/project_handler_utils.h>
@@ -36,7 +35,7 @@
 namespace sequencergui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterface *model,
+OperationMainWindowActions::OperationMainWindowActions(mvvm::SessionModelInterface *model,
                                                        QMainWindow *mainwindow)
     : QObject(mainwindow), m_project_handler(new sup::gui::ProjectHandler(model, mainwindow))
 
@@ -45,26 +44,21 @@ SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterfa
   SetupMenus(mainwindow->menuBar());
 }
 
-SequencerMainWindowActions::~SequencerMainWindowActions() = default;
+OperationMainWindowActions::~OperationMainWindowActions() = default;
 
 //! Closes current project. Internally performs check for unsaved data, and proceeds via
 //! save/discard/cancel dialog. Returns true if project was successfully saved, and false otherwise.
 //! The later normally means that the user has changed his mind in the course of this operation and
 //! the project has remained in unsaved state.
 
-bool SequencerMainWindowActions::CloseCurrentProject() const
+bool OperationMainWindowActions::CloseCurrentProject() const
 {
   return m_project_handler->CloseCurrentProject();
 }
 
-QMenu *SequencerMainWindowActions::GetToolsMenu()
-{
-  return m_tools_menu;
-}
-
 //! Create main actions.
 
-void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
+void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
   m_exit_action = new QAction("Exit Application", this);
   m_exit_action->setShortcuts(QKeySequence::Quit);
@@ -73,12 +67,12 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
   m_about_action = new QAction("About application", this);
   m_about_action->setStatusTip("About application");
-  connect(m_about_action, &QAction::triggered, this, &SequencerMainWindowActions::OnAbout);
+  connect(m_about_action, &QAction::triggered, this, &OperationMainWindowActions::OnAbout);
 }
 
 //! Equips menu with actions.
 
-void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
+void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   auto file_menu = menubar->addMenu("&File");
   file_menu->setToolTipsVisible(true);
@@ -99,14 +93,11 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  m_tools_menu = menubar->addMenu("&Tools");
-  m_tools_menu->setToolTipsVisible(true);
-
   auto help_menu = menubar->addMenu("&Help");
   help_menu->addAction(m_about_action);
 }
 
-void SequencerMainWindowActions::OnAbout()
+void OperationMainWindowActions::OnAbout()
 {
   AboutApplicationDialog dialog(mvvm::utils::FindMainWindow());
   dialog.exec();

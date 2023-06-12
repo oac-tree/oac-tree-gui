@@ -25,15 +25,12 @@
 
 class QCloseEvent;
 
-namespace mvvm
-{
-class ApplicationModel;
-}
-
 namespace sequencergui
 {
 
 class OperationMonitorView;
+class OperationMainWindowActions;
+class ApplicationModels;
 
 //! The main window of sequencer-operation applcation
 
@@ -54,7 +51,10 @@ private:
   void ReadSettings();
   void WriteSettings();
 
-  std::unique_ptr<mvvm::ApplicationModel> m_model;
+  std::unique_ptr<ApplicationModels> m_models;
+
+  OperationMainWindowActions* m_action_manager{nullptr};
+
   OperationMonitorView* m_monitor_view{nullptr};
 };
 
