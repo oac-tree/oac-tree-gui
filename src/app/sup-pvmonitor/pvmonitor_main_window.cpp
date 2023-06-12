@@ -24,25 +24,14 @@
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/monitor_widget.h>
 
-#include <QCoreApplication>
-#include <QFileDialog>
 #include <QMenuBar>
 #include <QSettings>
 
 namespace
 {
-const QString kMainWindowGroupName("MainWindow");
-
-QString GetWindowSizeSettingName()
-{
-  return kMainWindowGroupName + "/" + "size";
-}
-
-QString GetWindowPosSettingName()
-{
-  return kMainWindowGroupName + "/" + "position";
-}
-
+const QString kGroupName = "MainWindow";
+const QString kWindowSizeSettingName = kGroupName + "/" + "size";
+const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 }  // namespace
 
 namespace sequencergui
@@ -79,15 +68,15 @@ void PvMonitorMainWindow::InitApplication()
 void PvMonitorMainWindow::ReadSettings()
 {
   const QSettings settings;
-  resize(settings.value(GetWindowSizeSettingName(), QSize(800, 600)).toSize());
-  move(settings.value(GetWindowPosSettingName(), QPoint(200, 200)).toPoint());
+  resize(settings.value(kWindowSizeSettingName, QSize(800, 600)).toSize());
+  move(settings.value(kWindowPosSettingName, QPoint(200, 200)).toPoint());
 }
 
 void PvMonitorMainWindow::WriteSettings()
 {
   QSettings settings;
-  settings.setValue(GetWindowSizeSettingName(), size());
-  settings.setValue(GetWindowPosSettingName(), pos());
+  settings.setValue(kWindowSizeSettingName, size());
+  settings.setValue(kWindowPosSettingName, pos());
 }
 
-}  // namespace suppvmonitor
+}  // namespace sequencergui
