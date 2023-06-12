@@ -9,4 +9,5 @@ add_subdirectory(resources)
 add_subdirectory(viewmodel)
 add_subdirectory(widgets)
 add_subdirectory(pvmonitor)
+add_subdirectory(operation)
 
