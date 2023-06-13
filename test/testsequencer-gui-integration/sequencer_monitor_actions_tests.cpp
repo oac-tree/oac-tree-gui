@@ -84,6 +84,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToUseWhenMisconfigured)
 TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
+  procedure->SetDisplayName("procedure_display_name");
 
   QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
 
@@ -98,6 +99,9 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);
   auto job_item = GetJobItems().at(0);
+
+  EXPECT_EQ(job_item->GetDisplayName(), "procedure_display_name");
+
   EXPECT_EQ(m_job_manager.GetJobHandler(job_item)->GetExpandedProcedure(),
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);

@@ -94,6 +94,7 @@ void SequencerMonitorActions::OnSubmitJobRequest(ProcedureItem *procedure_item)
 
   auto job = m_job_model->InsertItem<JobItem>();
   job->SetProcedure(procedure_item);
+  job->SetDisplayName(procedure_item->GetDisplayName());
 
   InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                  m_message_handler.get());

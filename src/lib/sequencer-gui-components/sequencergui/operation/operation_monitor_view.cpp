@@ -175,7 +175,8 @@ void OperationMonitorView::OnImportJobRequest()
   auto model = m_models->GetSequencerModel();
 
   ProcedureActionHandler handler;
-  if (auto procedure = handler.LoadProcedureFromFileRequest(); procedure)
+  auto procedure = handler.LoadProcedureFromFileRequest();
+  if (procedure)
   {
     auto procedure_ptr = procedure.get();
     model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
