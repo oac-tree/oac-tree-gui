@@ -20,6 +20,7 @@
 #include "procedure_action_handler.h"
 
 #include <sequencergui/components/message_helper.h>
+#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
@@ -91,8 +92,7 @@ void ProcedureActionHandler::OnExportToXmlRequest()
 
   if (!file_name.isEmpty())
   {
-    auto parent_path = mvvm::utils::GetParentPath(file_name.toStdString());
-    m_current_workdir = QString::fromStdString(parent_path);
+    UpdateCurrentWorkdir(file_name);
     std::ofstream file_out(file_name.toStdString());
     file_out << xml_content;
     file_out.close();
@@ -131,6 +131,39 @@ void ProcedureActionHandler::OnValidateProcedureRequest()
                    "Domain procedure setup has been completed successfully"});
 }
 
+std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(
+    const QString &file_name)
+{
+  std::unique_ptr<sequencergui::ProcedureItem> result;
+
+  try
+  {
+    // FIXME resolve code duplication with SequencerExplorerView
+    auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
+    result = sequencergui::ImportFromFile(file_name.toStdString());
+    result->SetDisplayName(procedure_name);
+  }
+  catch (const std::exception &ex)
+  {
+    SendWarningMessage({"Import from file", "Procedure import has failed", ex.what()});
+  }
+
+  return result;
+}
+
+std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileRequest()
+{
+  auto file_name = QFileDialog::getOpenFileName(nullptr, "Save File", m_current_workdir,
+                                                tr("Files (*.xml *.XML)"));
+  if (!file_name.isEmpty())
+  {
+    UpdateCurrentWorkdir(file_name);
+    return LoadProcedureFromFile(file_name);
+  }
+
+  return {};
+}
+
 void ProcedureActionHandler::ReadSettings()
 {
   const QSettings settings;
@@ -141,6 +174,12 @@ void ProcedureActionHandler::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
+}
+
+void ProcedureActionHandler::UpdateCurrentWorkdir(const QString &file_name)
+{
+  auto parent_path = mvvm::utils::GetParentPath(file_name.toStdString());
+  m_current_workdir = QString::fromStdString(parent_path);
 }
 
 }  // namespace sequencergui

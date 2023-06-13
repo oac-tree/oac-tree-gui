@@ -22,6 +22,7 @@
 #include "operation_job_panel.h"
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
+#include "procedure_action_handler.h"
 
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -29,15 +30,19 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/monitor_property_widget.h>
 #include <sequencergui/monitor/monitor_realtime_widget.h>
 #include <sequencergui/monitor/sequencer_monitor_actions.h>
 
+#include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMainWindow>
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QDebug>
 
 namespace sequencergui
 {
@@ -139,8 +144,17 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 
 void OperationMonitorView::OnImportJobRequest()
 {
+  qDebug() << "XXXXX";
+  auto model = m_models->GetSequencerModel();
 
-
+  ProcedureActionHandler handler;
+  if (auto procedure = handler.LoadProcedureFromFileRequest(); procedure)
+  {
+    auto procedure_ptr = procedure.get();
+    model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
+                      mvvm::TagIndex::Append());
+    m_actions->OnSubmitJobRequest(procedure_ptr);
+  }
 }
 
 }  // namespace sequencergui

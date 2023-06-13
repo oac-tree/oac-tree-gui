@@ -49,6 +49,8 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
 
   m_collapsible_list->AddWidget(m_job_list_widget);
   m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
+
+  SetupConnections();
 }
 
 OperationJobPanel::~OperationJobPanel() = default;
