@@ -60,6 +60,8 @@ signals:
   void InstructionClicked(sequencergui::InstructionItem* instruction);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void AdjustColumnWidth();
 
   QTreeView* m_tree_view{nullptr};

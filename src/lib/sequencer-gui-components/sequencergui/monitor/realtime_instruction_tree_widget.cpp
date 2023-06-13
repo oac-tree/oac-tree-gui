@@ -24,13 +24,20 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 
-#include <sup/gui/widgets/custom_header_view.h>
-
+#include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
+
+namespace
+{
+const QString kGroupName("RealTimeInstructionTreeWidget");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+}  // namespace
 
 namespace sequencergui
 {
@@ -49,20 +56,25 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   layout->addWidget(m_tree_view);
 
   m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->header()->setStretchLastSection(true);
 
   auto on_click = [this](auto index)
   {
-    // FIXME refactor this hell
-    auto item = const_cast<mvvm::SessionItem *>(
-        m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
-    emit InstructionClicked(dynamic_cast<InstructionItem *>(item));
+    auto item = m_component_provider->GetSelected<InstructionItem>();
+    emit InstructionClicked(item);
   };
   connect(m_tree_view, &QTreeView::clicked, this, on_click);
 
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+
+  ReadSettings();
 }
 
-RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget() = default;
+RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget()
+{
+  WriteSettings();
+}
 
 void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
@@ -75,6 +87,24 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
 {
   m_component_provider->SetSelectedItem(item);
+}
+
+void RealTimeInstructionTreeWidget::ReadSettings()
+{
+  const QSettings settings;
+  if (settings.contains(kHeaderStateSettingName))
+  {
+    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
+  }
+}
+
+void RealTimeInstructionTreeWidget::WriteSettings()
+{
+  QSettings settings;
+  if (m_custom_header->HasFavoriteState())
+  {
+    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
+  }
 }
 
 void RealTimeInstructionTreeWidget::AdjustColumnWidth()

@@ -45,7 +45,6 @@ namespace
 const QString kGroupName("InstructionEditorWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
-
 }  // namespace
 
 namespace sequencergui
