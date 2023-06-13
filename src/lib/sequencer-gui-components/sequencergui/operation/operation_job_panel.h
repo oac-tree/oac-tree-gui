@@ -38,8 +38,8 @@ class JobPropertyWidget;
 class ApplicationModels;
 class OperationJobPanelToolBar;
 
-//! Vertical panel with list of running jobs and job properties at the left side of
-//! SequencerMonitorView.
+//! Vertical panel with list of running jobs and job properties on the left side of
+//! OperationMonitorView.
 
 class OperationJobPanel : public QWidget
 {
@@ -59,10 +59,12 @@ public:
 
 signals:
   void JobSelected(sequencergui::JobItem* item);
-  void RemoveJobRequest();
+  void ImportJobRequest();
   void RegenerateJobRequest();
+  void RemoveJobRequest();
 
 private:
+  void SetupConnections();
   void OnJobSelectedIntern(JobItem* item);
 
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};

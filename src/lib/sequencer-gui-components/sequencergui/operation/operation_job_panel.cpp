@@ -49,9 +49,6 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
 
   m_collapsible_list->AddWidget(m_job_list_widget);
   m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
-
-  connect(m_job_list_widget, &JobListWidget::JobSelected, this,
-          &OperationJobPanel::OnJobSelectedIntern);
 }
 
 OperationJobPanel::~OperationJobPanel() = default;
@@ -75,6 +72,19 @@ void OperationJobPanel::SetSelectedJob(JobItem *job_item)
 QToolBar *OperationJobPanel::GetToolBar() const
 {
   return m_tool_bar;
+}
+
+void OperationJobPanel::SetupConnections()
+{
+  connect(m_job_list_widget, &JobListWidget::JobSelected, this,
+          &OperationJobPanel::OnJobSelectedIntern);
+
+  connect(m_tool_bar, &OperationJobPanelToolBar::ImportJobRequest, this,
+          &OperationJobPanel::ImportJobRequest);
+  connect(m_tool_bar, &OperationJobPanelToolBar::RegenerateJobRequest, this,
+          &OperationJobPanel::RegenerateJobRequest);
+  connect(m_tool_bar, &OperationJobPanelToolBar::RemoveJobRequest, this,
+          &OperationJobPanel::RemoveJobRequest);
 }
 
 void OperationJobPanel::OnJobSelectedIntern(JobItem *item)

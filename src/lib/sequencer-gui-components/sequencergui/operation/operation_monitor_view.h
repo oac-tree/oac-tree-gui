@@ -31,8 +31,13 @@ namespace sequencergui
 class OperationJobPanel;
 class OperationRealTimePanel;
 class OperationWorkspacePanel;
+class JobItem;
+class ApplicationModels;
+class JobManager;
+class SequencerMonitorActions;
 
 //! Main view of operation application.
+//! FIXME Almost a full duplicate of SequencerMonitorView. Merge after prototyping.
 
 class OperationMonitorView : public QWidget
 {
@@ -42,11 +47,21 @@ public:
   OperationMonitorView(QMainWindow* parent = nullptr);
   ~OperationMonitorView() override;
 
+  void SetApplicationModels(ApplicationModels* models);
+
 private:
+  void SetupConnections();
+  void OnJobSelected(sequencergui::JobItem* item);
+
   QSplitter* m_splitter{nullptr};
   OperationJobPanel* m_job_panel{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
   OperationWorkspacePanel* m_workspace_panel{nullptr};
+
+  ApplicationModels* m_models{nullptr};
+
+  JobManager* m_job_manager{nullptr};
+  SequencerMonitorActions* m_actions{nullptr};
 };
 
 }  // namespace sequencergui
