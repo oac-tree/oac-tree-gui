@@ -38,7 +38,7 @@ class JobRowStrategy : public mvvm::RowStrategyInterface
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Type", "Status"};
+    static QStringList result = {"Name", "Status"};
     return result;
   }
 
@@ -51,12 +51,9 @@ public:
       return result;
     }
 
-    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+    result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(item));
+    result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*item)));
 
-    if (auto procedure = dynamic_cast<JobItem *>(item); procedure)
-    {
-      result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*procedure)));
-    }
     return result;
   }
 };

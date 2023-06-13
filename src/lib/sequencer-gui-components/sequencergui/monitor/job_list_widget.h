@@ -31,6 +31,11 @@ class ViewModel;
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class CustomHeaderView;
+}
+
 namespace sequencergui
 {
 class JobModel;
@@ -61,8 +66,13 @@ signals:
   void JobSelected(sequencergui::JobItem* job_item);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+  void AdjustColumnWidth();
+
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
 
   JobModel* m_model{nullptr};
 };

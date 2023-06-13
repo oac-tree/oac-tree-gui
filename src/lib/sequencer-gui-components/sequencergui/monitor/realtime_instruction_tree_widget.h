@@ -23,6 +23,8 @@
 #include <QWidget>
 #include <memory>
 
+class QTreeView;
+
 namespace mvvm
 {
 class ItemViewComponentProvider;
@@ -32,8 +34,6 @@ namespace sup::gui
 {
 class CustomHeaderView;
 }
-
-class QTreeView;
 
 namespace sequencergui
 {
