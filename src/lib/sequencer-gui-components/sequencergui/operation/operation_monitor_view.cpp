@@ -42,7 +42,6 @@
 #include <QMainWindow>
 #include <QSplitter>
 #include <QVBoxLayout>
-#include <QDebug>
 
 namespace sequencergui
 {
@@ -144,7 +143,6 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 
 void OperationMonitorView::OnImportJobRequest()
 {
-  qDebug() << "XXXXX";
   auto model = m_models->GetSequencerModel();
 
   ProcedureActionHandler handler;
