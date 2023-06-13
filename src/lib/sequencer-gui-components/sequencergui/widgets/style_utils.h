@@ -36,6 +36,12 @@ void SetUnifiedPropertyStyle(QTreeView* tree);
 //! an existence of svg in the resource folder.
 QIcon GetIcon(const QString& icon_name);
 
+//! Size of tolbar icons.
+QSize ToolBarIconSize();
+
+//! Size of tolbar icons.
+QSize NarrowToolBarIconSize();
+
 }  // namespace sequencergui::styleutils
 
 #endif  // SEQUENCERGUI_WIDGETS_STYLE_UTILS_H_

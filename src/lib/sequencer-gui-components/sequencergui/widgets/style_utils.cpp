@@ -19,6 +19,8 @@
 
 #include "style_utils.h"
 
+#include <sup/gui/widgets/style_utils.h>
+
 #include <mvvm/widgets/style_utils.h>
 
 #include <QApplication>
@@ -49,6 +51,16 @@ QIcon GetIcon(const QString &icon_name)
                                     : QString(":/icons/%1.%2").arg(icon_name, DefaultIconExtension);
 
   return QIcon(resource_name);
+}
+
+QSize ToolBarIconSize()
+{
+  return sup::gui::utils::ToolBarIconSize();
+}
+
+QSize NarrowToolBarIconSize()
+{
+  return sup::gui::utils::NarrowToolBarIconSize();
 }
 
 }  // namespace sequencergui::styleutils
