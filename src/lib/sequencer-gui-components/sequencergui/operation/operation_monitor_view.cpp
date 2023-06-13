@@ -40,8 +40,15 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMainWindow>
+#include <QSettings>
 #include <QSplitter>
 #include <QVBoxLayout>
+
+namespace
+{
+const QString kGroupName("InstructionEditorWidget");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+}  // namespace
 
 namespace sequencergui
 {
@@ -75,6 +82,13 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
 
   m_actions->SetMessageHandler(CreateMessageBoxHandler());
   m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
+
+  ReadSettings();
+}
+
+OperationMonitorView::~OperationMonitorView()
+{
+  WriteSettings();
 }
 
 void OperationMonitorView::SetApplicationModels(ApplicationModels *models)
@@ -84,7 +98,21 @@ void OperationMonitorView::SetApplicationModels(ApplicationModels *models)
   m_actions->SetJobModel(models->GetJobModel());
 }
 
-OperationMonitorView::~OperationMonitorView() = default;
+void OperationMonitorView::ReadSettings()
+{
+  const QSettings settings;
+
+  if (settings.contains(kSplitterSettingName))
+  {
+    m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
+  }
+}
+
+void OperationMonitorView::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kSplitterSettingName, m_splitter->saveState());
+}
 
 void OperationMonitorView::SetupConnections()
 {

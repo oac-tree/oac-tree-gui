@@ -50,6 +50,8 @@ public:
   void SetApplicationModels(ApplicationModels* models);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
   void OnImportJobRequest();
