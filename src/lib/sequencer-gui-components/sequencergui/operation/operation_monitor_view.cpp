@@ -113,9 +113,9 @@ void OperationMonitorView::SetupConnections()
   // job selection request from OperationJobPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);
 
-  // job submission request
-  //  connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
-  //          &SequencerMonitorActions::OnSubmitJobRequest);
+  // import request
+  connect(m_job_panel, &OperationJobPanel::ImportJobRequest, this,
+          &OperationMonitorView::OnImportJobRequest);
 
   // job removal request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
@@ -135,6 +135,12 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
   m_job_manager->SetCurrentJob(item);
   m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+}
+
+void OperationMonitorView::OnImportJobRequest()
+{
+
+
 }
 
 }  // namespace sequencergui

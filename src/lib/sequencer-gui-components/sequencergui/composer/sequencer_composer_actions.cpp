@@ -123,8 +123,6 @@ void SequencerComposerActions::OnValidateProcedureRequest()
 }
 
 //! Generates XML content from currently selected procedure and save it to file.
-//! FIXME there is a code duplication with XMLEditor::SetupActions in the part
-//! related to the file saving.
 
 void SequencerComposerActions::OnExportToXmlRequest()
 {

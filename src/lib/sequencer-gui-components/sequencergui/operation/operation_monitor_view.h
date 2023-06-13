@@ -52,6 +52,7 @@ public:
 private:
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
+  void OnImportJobRequest();
 
   QSplitter* m_splitter{nullptr};
   OperationJobPanel* m_job_panel{nullptr};
