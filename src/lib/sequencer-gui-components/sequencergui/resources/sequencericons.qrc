@@ -38,5 +38,6 @@
         <file>icons/refresh.svg</file>
         <file>icons/about_logo.awk</file>
         <file>icons/file-export-outline.svg</file>
+        <file>icons/menu-open.svg</file>
     </qresource>
 </RCC>

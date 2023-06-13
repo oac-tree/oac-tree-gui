@@ -22,6 +22,8 @@
 
 #include <QWidget>
 
+class QToolBar;
+
 namespace mvvm
 {
 class AllItemsTreeView;
@@ -45,8 +47,11 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
+  QToolBar* GetToolBar() const;
+
 private:
   mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
+  QToolBar* m_tool_bar{nullptr};
 };
 
 }  // namespace sequencergui

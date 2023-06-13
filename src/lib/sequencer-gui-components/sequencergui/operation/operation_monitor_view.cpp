@@ -75,6 +75,7 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
 
   parent->addToolBar(m_job_panel->GetToolBar());
   parent->addToolBar(m_realtime_panel->GetToolBar());
+  parent->addToolBar(m_workspace_panel->GetToolBar());
 
   layout->addWidget(m_splitter);
 
