@@ -24,10 +24,10 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
-#include <sup/gui/components/message_event.h>
 
 #include <mvvm/utils/file_utils.h>
 
+#include <sup/gui/components/message_event.h>
 #include <sup/sequencer/procedure.h>
 
 #include <QFileDialog>
@@ -54,18 +54,11 @@ ProcedureActionHandler::~ProcedureActionHandler()
   WriteSettings();
 }
 
-void ProcedureActionHandler::SetProcedure(ProcedureItem *procedure_item)
-{
-  m_procedure_item = procedure_item;
-}
-
-void ProcedureActionHandler::OnImportFromXmlRequest() {}
-
 //! Generates XML content from currently selected procedure and save it to file.
 
-void ProcedureActionHandler::OnExportToXmlRequest()
+void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
 {
-  if (!m_procedure_item)
+  if (!procedure_item)
   {
     SendWarningMessage({"Validate Procedure", "No procedure selected"});
     return;
@@ -74,7 +67,7 @@ void ProcedureActionHandler::OnExportToXmlRequest()
   std::string xml_content;
   try
   {
-    xml_content = ExportToXMLString(m_procedure_item);
+    xml_content = ExportToXMLString(procedure_item);
   }
   catch (const std::exception &ex)
   {
@@ -99,9 +92,9 @@ void ProcedureActionHandler::OnExportToXmlRequest()
   }
 }
 
-void ProcedureActionHandler::OnValidateProcedureRequest()
+void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure_item)
 {
-  if (!m_procedure_item)
+  if (!procedure_item)
   {
     SendWarningMessage({"Validate Procedure", "No procedure selected"});
     return;
@@ -110,8 +103,8 @@ void ProcedureActionHandler::OnValidateProcedureRequest()
   std::unique_ptr<procedure_t> domain_procedure;
   try
   {
-    DomainProcedureBuilder builder;
-    domain_procedure = std::move(builder.CreateProcedure(m_procedure_item));
+    const DomainProcedureBuilder builder;
+    domain_procedure = std::move(builder.CreateProcedure(procedure_item));
     domain_procedure->Setup();
   }
   catch (std::exception &ex)
@@ -138,7 +131,6 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(
 
   try
   {
-    // FIXME resolve code duplication with SequencerExplorerView
     auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
     result = sequencergui::ImportFromFile(file_name.toStdString());
     result->SetDisplayName(procedure_name);
@@ -151,7 +143,7 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(
   return result;
 }
 
-std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileRequest()
+std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile()
 {
   auto file_name = QFileDialog::getOpenFileName(nullptr, "Save File", m_current_workdir,
                                                 tr("Files (*.xml *.XML)"));

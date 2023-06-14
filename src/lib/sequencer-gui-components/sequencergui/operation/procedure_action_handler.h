@@ -33,6 +33,13 @@ class ProcedureItem;
 //! Implements following actions related to ProcedureItem: import from XML, export to XML,
 //! validation for domain.
 
+/**
+ * @brief The ProcedureActionHandler class implements following actions: import from XML, export to
+ * XML, validation of ProcedureItem.
+ *
+ * @details All errors are reported to the user via modal dialogs.
+ */
+
 class ProcedureActionHandler : public QObject
 {
   Q_OBJECT
@@ -41,25 +48,32 @@ public:
   explicit ProcedureActionHandler(QWidget* parent = nullptr);
   ~ProcedureActionHandler() override;
 
-  void SetProcedure(ProcedureItem* procedure_item);
+  void OnExportToXmlRequest(ProcedureItem* procedure_item);
 
-  void OnImportFromXmlRequest();
+  static void OnValidateProcedureRequest(ProcedureItem* procedure_item);
 
-  void OnExportToXmlRequest();
-
-  void OnValidateProcedureRequest();
-
+  /**
+   * @brief Loads procedure from Sequencer XML file.
+   *
+   * @param file_name The name of XML file.
+   *
+   * @return Valid procedure in the case of success, empty ptr otherwise.
+   */
   static std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFile(
       const QString& file_name);
 
-  std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFileRequest();
+  /**
+   * @brief Loads procedure from Sequencer XML file using open file dialog.
+   *
+   * @return Valid procedure in the case of success, empty ptr otherwise.
+   */
+  std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFile();
 
 private:
   void ReadSettings();
   void WriteSettings();
   void UpdateCurrentWorkdir(const QString& file_name);
 
-  ProcedureItem* m_procedure_item{nullptr};
   QString m_current_workdir;
 };
 

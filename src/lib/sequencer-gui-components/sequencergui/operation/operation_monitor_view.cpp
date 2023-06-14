@@ -175,7 +175,7 @@ void OperationMonitorView::OnImportJobRequest()
   auto model = m_models->GetSequencerModel();
 
   ProcedureActionHandler handler;
-  auto procedure = handler.LoadProcedureFromFileRequest();
+  auto procedure = handler.LoadProcedureFromFile();
   if (procedure)
   {
     auto procedure_ptr = procedure.get();

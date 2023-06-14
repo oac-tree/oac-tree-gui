@@ -25,11 +25,6 @@
 class QAction;
 class QWidget;
 
-namespace sup::gui
-{
-class MessageEvent;
-}
-
 namespace sequencergui
 {
 
@@ -50,18 +45,12 @@ public:
   void SetProcedure(ProcedureItem* procedure_item);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
-
   void SetupActions();
-  void OnValidateProcedureRequest();
-  void OnExportToXmlRequest();
 
   QAction* m_validate_procedure_action{nullptr};
   QAction* m_export_xml_action{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
-  QString m_current_workdir;
 };
 
 }  // namespace sequencergui
