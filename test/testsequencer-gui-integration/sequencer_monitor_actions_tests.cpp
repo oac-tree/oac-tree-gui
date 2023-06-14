@@ -29,6 +29,7 @@
 #include <sequencergui/model/sequencer_model.h>
 
 #include <mvvm/model/model_utils.h>
+#include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
@@ -181,13 +182,34 @@ TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
   EXPECT_EQ(GetJobItems().size(), 1);
 
   // if no selection provided, the command does nothing
-  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest());
+  EXPECT_FALSE(m_actions.OnRemoveJobRequest());
 
   auto job_item = GetJobItems().at(0);
   m_selected_item = GetJobItems().at(0);
 
-  EXPECT_NO_THROW(m_actions.OnRemoveJobRequest());
+  EXPECT_TRUE(m_actions.OnRemoveJobRequest());
   EXPECT_TRUE(GetJobItems().empty());
+}
+
+//! Removing submitted job together with original procedure.
+
+TEST_F(SequencerMonitorActionsTests, OnRemoveJobAndCleanupRequest)
+{
+  auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
+  EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
+
+  m_actions.OnSubmitJobRequest(procedure);
+  EXPECT_EQ(GetJobItems().size(), 1);
+
+  // if no selection provided, the command does nothing
+  EXPECT_NO_THROW(m_actions.OnRemoveJobAndCleanupRequest());
+
+  auto job_item = GetJobItems().at(0);
+  m_selected_item = GetJobItems().at(0);
+
+  EXPECT_NO_THROW(m_actions.OnRemoveJobAndCleanupRequest());
+  EXPECT_TRUE(GetJobItems().empty());
+  EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 0);
 }
 
 //! Attempt to remove long running job.

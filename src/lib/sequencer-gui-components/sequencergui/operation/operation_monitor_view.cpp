@@ -152,7 +152,7 @@ void OperationMonitorView::SetupConnections()
 
   // job removal request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
-          &SequencerMonitorActions::OnRemoveJobRequest);
+          &SequencerMonitorActions::OnRemoveJobAndCleanupRequest);
 
   // job regenerate request
   connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,

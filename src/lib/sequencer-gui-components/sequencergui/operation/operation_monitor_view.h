@@ -44,7 +44,7 @@ class OperationMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  OperationMonitorView(QMainWindow* parent = nullptr);
+  explicit OperationMonitorView(QMainWindow* parent = nullptr);
   ~OperationMonitorView() override;
 
   void SetApplicationModels(ApplicationModels* models);

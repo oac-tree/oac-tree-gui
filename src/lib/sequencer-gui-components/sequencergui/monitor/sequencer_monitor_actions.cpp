@@ -140,7 +140,7 @@ void SequencerMonitorActions::OnMakeStepRequest()
   m_job_manager->OnMakeStepRequest();
 }
 
-void SequencerMonitorActions::OnRemoveJobRequest()
+bool SequencerMonitorActions::OnRemoveJobRequest()
 {
   CheckConditions();
 
@@ -148,7 +148,7 @@ void SequencerMonitorActions::OnRemoveJobRequest()
 
   if (!job)
   {
-    return;
+    return false;
   }
 
   auto is_success = InvokeAndCatch([this, job]() { m_job_manager->OnRemoveJobRequest(job); },
@@ -157,6 +157,26 @@ void SequencerMonitorActions::OnRemoveJobRequest()
   if (is_success)
   {
     m_job_model->RemoveItem(job);
+  }
+
+  return is_success;
+}
+
+//! Removes job and cleanup original ProcedureItem.
+
+void SequencerMonitorActions::OnRemoveJobAndCleanupRequest()
+{
+  auto job = m_job_selection_callback();
+  if (!job)
+  {
+    return;
+  }
+
+  auto procedure = job->GetProcedure();
+
+  if (OnRemoveJobRequest())
+  {
+    procedure->GetModel()->RemoveItem(procedure);
   }
 }
 

@@ -67,7 +67,9 @@ public:
 
   void OnMakeStepRequest();
 
-  void OnRemoveJobRequest();
+  bool OnRemoveJobRequest();
+
+  void OnRemoveJobAndCleanupRequest();
 
   void OnRegenerateJobRequest();
 
