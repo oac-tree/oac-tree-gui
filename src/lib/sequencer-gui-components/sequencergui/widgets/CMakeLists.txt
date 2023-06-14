@@ -27,6 +27,4 @@ target_sources(${library_name} PRIVATE
   widget_overlay_message_handler.h
   widget_overlay_message_publisher.cpp
   widget_overlay_message_publisher.h
-  widget_utils.cpp
-  widget_utils.h
 )

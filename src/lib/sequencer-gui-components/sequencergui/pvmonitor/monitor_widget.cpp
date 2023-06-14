@@ -30,13 +30,12 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sequencergui/widgets/widget_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QTreeView>
@@ -103,7 +102,7 @@ void MonitorWidget::SetupConnections()
 
 void MonitorWidget::OnStartMonitoringRequest()
 {
-  auto on_start = [this]()
+  try
   {
     m_workspace = std::make_unique<sup::sequencer::Workspace>();
 
@@ -112,8 +111,11 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
-  };
-  InvokeAndCatch(on_start, "Can't setup workspace");
+  }
+  catch (std::exception &ex)
+  {
+    SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
+  }
 }
 
 void MonitorWidget::OnStopMonitoringRequest()
