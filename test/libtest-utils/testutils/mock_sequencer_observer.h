@@ -46,8 +46,6 @@ public:
   MOCK_METHOD(int, GetUserChoiceImpl,
               (const std::vector<std::string>& choices, const std::string& description),
               (override));
-  MOCK_METHOD(void, StartSingleStepImpl, (), (override));
-  MOCK_METHOD(void, EndSingleStepImpl, (), (override));
 
   MOCK_METHOD(void, MessageImpl, (const std::string& message), (override));
   MOCK_METHOD(void, LogImpl, (int level, const std::string& str), (override));

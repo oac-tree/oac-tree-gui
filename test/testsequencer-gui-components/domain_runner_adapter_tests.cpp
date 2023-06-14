@@ -97,13 +97,7 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
-  {  // observer signaling
-    ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-  }
-
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
   EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);
 
   // triggering action
@@ -136,9 +130,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -181,9 +173,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleWait)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(4);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -227,12 +217,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaits)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -271,12 +257,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -312,12 +294,8 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);
@@ -359,13 +337,11 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
   {  // observer signaling
     ::testing::InSequence seq;
     // first run (sequence, message
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
     EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);                  // message
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -398,9 +374,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -440,9 +414,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
   {  // observer signaling
     ::testing::InSequence seq;
     // first step
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -484,12 +456,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
     ::testing::InSequence seq;
 
     // first execution
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
-    EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(1);
     EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(1);
   }
 
   // triggering action
@@ -521,9 +489,7 @@ TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
     EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
   }
 
-  EXPECT_CALL(m_observer, StartSingleStepImpl()).Times(AtLeast(1));
   EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
-  EXPECT_CALL(m_observer, EndSingleStepImpl()).Times(AtLeast(1));
 
   // triggering action
   EXPECT_TRUE(adapter->Start());

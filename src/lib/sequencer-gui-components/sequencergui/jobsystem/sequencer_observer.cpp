@@ -84,13 +84,6 @@ int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &choices
   return m_procedure_runner->OnUserChoice({choices, description}).index;
 }
 
-void SequencerObserver::StartSingleStepImpl()
-{
-  m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kDebug, "StartSingleStep()"));
-}
-
-void SequencerObserver::EndSingleStepImpl() {}
-
 void SequencerObserver::MessageImpl(const std::string &message)
 {
   m_procedure_runner->OnLogEvent(CreateLogEvent(Severity::kInfo, message));

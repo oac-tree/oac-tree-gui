@@ -386,16 +386,11 @@ TEST_F(JobHandlerTest, LogEvents)
 
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
 
-  ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 2);
+  ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
 
-  auto event1 = job_handler.GetJobLog()->At(0);
-  EXPECT_EQ(event1.severity, Severity::kDebug);
-  // FIXME message will probably change, how to make test robust?
-  EXPECT_EQ(event1.message, std::string("StartSingleStep()"));
-
-  auto event2 = job_handler.GetJobLog()->At(1);
-  EXPECT_EQ(event2.severity, Severity::kInfo);
-  EXPECT_EQ(event2.message, expected_message);
+  auto event = job_handler.GetJobLog()->At(0);
+  EXPECT_EQ(event.severity, Severity::kInfo);
+  EXPECT_EQ(event.message, expected_message);
 }
 
 TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)

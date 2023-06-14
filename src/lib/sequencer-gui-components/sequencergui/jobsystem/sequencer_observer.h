@@ -47,8 +47,6 @@ public:
 
   int GetUserChoiceImpl(const std::vector<std::string>& choices,
                         const std::string& description) override;
-  void StartSingleStepImpl() override;
-  void EndSingleStepImpl() override;
 
   void MessageImpl(const std::string& message) override;
 
