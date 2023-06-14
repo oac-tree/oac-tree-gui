@@ -49,14 +49,15 @@ public:
 
   void OnValidateProcedureRequest();
 
-  std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFile(const QString &file_name);
+  static std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFile(
+      const QString& file_name);
 
   std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFileRequest();
 
 private:
   void ReadSettings();
   void WriteSettings();
-  void UpdateCurrentWorkdir(const QString &file_name);
+  void UpdateCurrentWorkdir(const QString& file_name);
 
   ProcedureItem* m_procedure_item{nullptr};
   QString m_current_workdir;
