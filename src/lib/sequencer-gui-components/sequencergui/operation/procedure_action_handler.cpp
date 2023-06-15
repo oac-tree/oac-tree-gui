@@ -124,10 +124,27 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
                    "Domain procedure setup has been completed successfully"});
 }
 
-std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(
+std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(QString file_name)
+{
+  if (file_name.isEmpty())
+  {
+    file_name = QFileDialog::getOpenFileName(nullptr, "Open file", m_current_workdir,
+                                             tr("Files (*.xml *.XML)"));
+  }
+
+  if (!file_name.isEmpty())
+  {
+    UpdateCurrentWorkdir(file_name);
+    return LoadProcedureFromFileIntern(file_name);
+  }
+
+  return {};
+}
+
+std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileIntern(
     const QString &file_name)
 {
-  std::unique_ptr<sequencergui::ProcedureItem> result;
+  std::unique_ptr<ProcedureItem> result;
 
   try
   {
@@ -141,19 +158,6 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile(
   }
 
   return result;
-}
-
-std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFile()
-{
-  auto file_name = QFileDialog::getOpenFileName(nullptr, "Save File", m_current_workdir,
-                                                tr("Files (*.xml *.XML)"));
-  if (!file_name.isEmpty())
-  {
-    UpdateCurrentWorkdir(file_name);
-    return LoadProcedureFromFile(file_name);
-  }
-
-  return {};
 }
 
 void ProcedureActionHandler::ReadSettings()

@@ -25,10 +25,9 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/procedure_action_handler.h>
 #include <sequencergui/widgets/item_stack_widget.h>
+#include <sup/gui/codeeditor/code_view.h>
 
 #include <mvvm/standarditems/container_item.h>
-
-#include <sup/gui/codeeditor/code_view.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -88,7 +87,9 @@ void SequencerExplorerView::ShowXMLFile(const QString &file_name)
   m_xml_view->SetFile(file_name);
 
   // Generates temporary Procedure from XML and show object tree.
-  auto procedure_item = ProcedureActionHandler::LoadProcedureFromFile(file_name);
+  ProcedureActionHandler handler;
+  auto procedure_item = handler.LoadProcedureFromFile(file_name);
+
   if (procedure_item)
   {
     m_temp_model = std::make_unique<SequencerModel>();
@@ -126,8 +127,9 @@ void SequencerExplorerView::SetupConnections()
 
   auto import_procedure_from_file = [this](auto file_name)
   {
-    if (auto procedure_item = ProcedureActionHandler::LoadProcedureFromFile(file_name);
-        procedure_item)
+    ProcedureActionHandler handler;
+
+    if (auto procedure_item = handler.LoadProcedureFromFile(file_name); procedure_item)
     {
       m_model->InsertItem(std::move(procedure_item), m_model->GetProcedureContainer(),
                           mvvm::TagIndex::Append());

@@ -53,23 +53,17 @@ public:
   static void OnValidateProcedureRequest(ProcedureItem* procedure_item);
 
   /**
-   * @brief Loads procedure from Sequencer XML file.
+   * @brief Loads procedure from Sequencer XML file
    *
-   * @param file_name The name of XML file.
-   *
-   * @return Valid procedure in the case of success, empty ptr otherwise.
-   */
-  static std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFile(
-      const QString& file_name);
-
-  /**
-   * @brief Loads procedure from Sequencer XML file using open file dialog.
+   * @param file_name The name of the file. If it is empty, will pop-up file selection dialog.
    *
    * @return Valid procedure in the case of success, empty ptr otherwise.
    */
-  std::unique_ptr<sequencergui::ProcedureItem> LoadProcedureFromFile();
+  std::unique_ptr<ProcedureItem> LoadProcedureFromFile(QString file_name);
 
 private:
+  std::unique_ptr<ProcedureItem> LoadProcedureFromFileIntern(const QString& file_name);
+
   void ReadSettings();
   void WriteSettings();
   void UpdateCurrentWorkdir(const QString& file_name);
