@@ -49,12 +49,13 @@ public:
 
   void SetApplicationModels(ApplicationModels* models);
 
+  void OnImportJobRequest(const QString& file_name = {});
+
 private:
   void ReadSettings();
   void WriteSettings();
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
-  void OnImportJobRequest();
 
   QSplitter* m_splitter{nullptr};
   OperationJobPanel* m_job_panel{nullptr};

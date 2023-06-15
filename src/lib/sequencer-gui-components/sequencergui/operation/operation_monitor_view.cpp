@@ -148,7 +148,7 @@ void OperationMonitorView::SetupConnections()
 
   // import request
   connect(m_job_panel, &OperationJobPanel::ImportJobRequest, this,
-          &OperationMonitorView::OnImportJobRequest);
+          [this]() { OnImportJobRequest(); });
 
   // job removal request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
@@ -170,12 +170,13 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
-void OperationMonitorView::OnImportJobRequest()
+void OperationMonitorView::OnImportJobRequest(const QString &file_name)
 {
   auto model = m_models->GetSequencerModel();
 
   ProcedureActionHandler handler;
-  auto procedure = handler.LoadProcedureFromFile();
+  auto procedure = handler.LoadProcedureFromFile(file_name);
+
   if (procedure)
   {
     auto procedure_ptr = procedure.get();

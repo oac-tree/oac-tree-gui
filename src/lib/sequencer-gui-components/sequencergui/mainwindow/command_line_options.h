@@ -40,6 +40,9 @@ struct Options
 
   //! main appplication GUI style
   QString style;
+
+  //! the name of sequencer procedure to open
+  QString file_name;
 };
 
 //! Parse command line options.

@@ -42,6 +42,8 @@ public:
   OperationMainWindow();
   ~OperationMainWindow() override;
 
+  void ImportProcedure(const QString& file_name);
+
 protected:
   void closeEvent(QCloseEvent* event) override;
 

@@ -50,6 +50,7 @@ int main(int argc, char** argv)
   }
 
   sequencergui::OperationMainWindow win;
+  win.ImportProcedure(options.file_name);
   win.show();
 
   return app.exec();

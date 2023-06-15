@@ -35,7 +35,7 @@ Options ParseOptions(int argc, char** argv)
   parser.addHelpOption();
   parser.addVersionOption();
 
-  QCommandLineOption info_option("info", "Show system environment information");
+  QCommandLineOption info_option("info", "Show system environment information.");
   parser.addOption(info_option);
 
   QCommandLineOption scale_option(
@@ -48,9 +48,12 @@ Options ParseOptions(int argc, char** argv)
   font_option.setValueName("pt");
   parser.addOption(font_option);
 
-  QCommandLineOption style_option("style", "Main GUI style, see --info for full list available");
+  QCommandLineOption style_option("style", "Main GUI style, see --info for full list available.");
   style_option.setValueName("name");
   parser.addOption(style_option);
+
+  QCommandLineOption file_option({"f", "file"}, "Load sequencer procedure.", "filename");
+  parser.addOption(file_option);
 
   parser.process(app);
 
@@ -66,6 +69,11 @@ Options ParseOptions(int argc, char** argv)
   if (parser.isSet(style_option))
   {
     result.style = parser.value(style_option);
+  }
+
+  if (parser.isSet(file_option))
+  {
+    result.file_name = parser.value(file_option);
   }
 
   return result;
