@@ -22,7 +22,6 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/sequencer_main_window.h>
-
 #include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
@@ -51,6 +50,8 @@ int main(int argc, char** argv)
   }
 
   sequencergui::SequencerMainWindow win;
+  win.ImportProcedure(options.file_name);
+
   win.show();
 
   return app.exec();

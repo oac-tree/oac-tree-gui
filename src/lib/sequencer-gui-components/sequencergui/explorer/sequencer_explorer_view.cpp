@@ -80,6 +80,17 @@ void SequencerExplorerView::SetModel(SequencerModel *model)
   m_explorer_panel->SetModel(model);
 }
 
+void SequencerExplorerView::ImportProcedure(const QString &file_name)
+{
+  ProcedureActionHandler handler;
+
+  if (auto procedure_item = handler.LoadProcedureFromFile(file_name); procedure_item)
+  {
+    m_model->InsertItem(std::move(procedure_item), m_model->GetProcedureContainer(),
+                        mvvm::TagIndex::Append());
+  }
+}
+
 //! Show content of XML file.
 void SequencerExplorerView::ShowXMLFile(const QString &file_name)
 {
@@ -125,18 +136,8 @@ void SequencerExplorerView::SetupConnections()
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileClicked, this,
           &SequencerExplorerView::ShowXMLFile);
 
-  auto import_procedure_from_file = [this](auto file_name)
-  {
-    ProcedureActionHandler handler;
-
-    if (auto procedure_item = handler.LoadProcedureFromFile(file_name); procedure_item)
-    {
-      m_model->InsertItem(std::move(procedure_item), m_model->GetProcedureContainer(),
-                          mvvm::TagIndex::Append());
-    }
-  };
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
-          import_procedure_from_file);
+          &SequencerExplorerView::ImportProcedure);
 
   auto on_remove_procedure = [this](auto procedure)
   {

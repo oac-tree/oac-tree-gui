@@ -44,7 +44,7 @@ Options ParseOptions(int argc, char** argv)
       "absent, will rely on internal scale mechanism (preferred).");
   parser.addOption(scale_option);
 
-  QCommandLineOption font_option("font", "Main application font point size");
+  QCommandLineOption font_option("font", "Main application font point size.");
   font_option.setValueName("pt");
   parser.addOption(font_option);
 

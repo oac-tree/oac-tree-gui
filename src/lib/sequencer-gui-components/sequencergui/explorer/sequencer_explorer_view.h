@@ -50,6 +50,8 @@ public:
 
   void SetModel(SequencerModel* model);
 
+  void ImportProcedure(const QString& file_name);
+
   void ShowXMLFile(const QString& file_name);
 
 private:

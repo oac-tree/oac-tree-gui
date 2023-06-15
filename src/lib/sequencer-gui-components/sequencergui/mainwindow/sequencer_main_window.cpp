@@ -58,6 +58,14 @@ SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<Applicati
   m_settings_view->SetApplicationModels(m_models.get());
 }
 
+void SequencerMainWindow::ImportProcedure(const QString& file_name)
+{
+  if (!file_name.isEmpty())
+  {
+    m_explorer_view->ImportProcedure(file_name);
+  }
+}
+
 SequencerMainWindow::~SequencerMainWindow() = default;
 
 void SequencerMainWindow::closeEvent(QCloseEvent* event)
