@@ -258,11 +258,16 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
 
+  job_item->SetStatus("abc"); // set arbitrary status
+
   QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
 
   // regenerating a job
   m_selected_item = job_item;
   m_actions.OnRegenerateJobRequest();
+
+  // on regeneration status should be reset
+  EXPECT_TRUE(job_item->GetStatus().empty());
 
   EXPECT_EQ(spy_selected_request.count(), 1);
   auto arguments = spy_selected_request.takeFirst();

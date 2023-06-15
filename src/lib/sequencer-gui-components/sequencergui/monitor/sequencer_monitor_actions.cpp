@@ -201,6 +201,7 @@ void SequencerMonitorActions::OnRegenerateJobRequest()
 
     if (is_success)
     {
+      job->SetStatus({});
       emit MakeJobSelectedRequest(job);
     }
   }

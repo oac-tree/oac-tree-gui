@@ -61,6 +61,11 @@ public:
   void OnStopJobRequest();
   void OnMakeStepRequest();
 
+  /**
+   * @brief Removes a job corresponding to a given JobItem from the manager.
+   *
+   * @details Internally removes JobHandler, do not affect JobItem.
+   */
   void OnRemoveJobRequest(JobItem* job);
 
   void SetMessagePanel(MessagePanel* panel);
