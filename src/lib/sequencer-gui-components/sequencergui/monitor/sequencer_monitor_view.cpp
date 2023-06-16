@@ -51,13 +51,13 @@ namespace sequencergui
 
 SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     : QWidget(parent)
-    , m_monitor_panel(new OperationJobPanel)
-    , m_realtime_widget(new OperationRealTimePanel)
+    , m_job_panel(new OperationJobPanel)
+    , m_realtime_panel(new OperationRealTimePanel)
     , m_workspace_panel(new OperationWorkspacePanel)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
     , m_actions(new SequencerMonitorActions(
-          m_job_manager, [this] { return m_monitor_panel->GetSelectedJob(); }, this))
+          m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -73,10 +73,10 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
   SetupConnections();
 
   m_actions->SetMessageHandler(CreateMessageBoxHandler());
-  m_job_manager->SetMessagePanel(m_realtime_widget->GetMessagePanel());
+  m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
 
   // FIXME temporary solution to not to show button "Import Procedure"
-  m_monitor_panel->GetToolBar()->actions().at(0)->setVisible(false);
+  m_job_panel->GetToolBar()->actions().at(0)->setVisible(false);
 }
 
 SequencerMonitorView::~SequencerMonitorView() = default;
@@ -84,18 +84,18 @@ SequencerMonitorView::~SequencerMonitorView() = default;
 void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
-  m_monitor_panel->SetApplicationModels(models);
+  m_job_panel->SetApplicationModels(models);
   m_actions->SetJobModel(models->GetJobModel());
 }
 
 void SequencerMonitorView::showEvent(QShowEvent *event)
 {
   Q_UNUSED(event);
-  if (!m_monitor_panel->GetSelectedJob())
+  if (!m_job_panel->GetSelectedJob())
   {
     if (auto job = ::mvvm::utils::GetTopItem<JobItem>(m_models->GetJobModel()); job)
     {
-      m_monitor_panel->SetSelectedJob(job);
+      m_job_panel->SetSelectedJob(job);
     }
   }
 }
@@ -105,47 +105,47 @@ void SequencerMonitorView::SetupConnections()
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
   // start request
-  connect(m_realtime_widget, &OperationRealTimePanel::runRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::runRequest, m_actions,
           &SequencerMonitorActions::OnStartJobRequest);
 
   // pause request
-  connect(m_realtime_widget, &OperationRealTimePanel::pauseRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, m_actions,
           &SequencerMonitorActions::OnPauseJobRequest);
 
   // stop request
-  connect(m_realtime_widget, &OperationRealTimePanel::stopRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, m_actions,
           &SequencerMonitorActions::OnStopJobRequest);
 
   // step request
-  connect(m_realtime_widget, &OperationRealTimePanel::stepRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_actions,
           &SequencerMonitorActions::OnMakeStepRequest);
 
   // change delay request from MonitorRealTimeWidget to JobManager
-  connect(m_realtime_widget, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
+  connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
           &JobManager::OnChangeDelayRequest);
 
   // instruction selection request from JobManager to MonitorRealTimeWidget
-  connect(m_job_manager, &JobManager::InstructionStatusChanged, m_realtime_widget,
+  connect(m_job_manager, &JobManager::InstructionStatusChanged, m_realtime_panel,
           &OperationRealTimePanel::SetSelectedInstruction);
 
   // job selection request from MonitorPanel
-  connect(m_monitor_panel, &OperationJobPanel::JobSelected, this,
+  connect(m_job_panel, &OperationJobPanel::JobSelected, this,
           &SequencerMonitorView::OnJobSelected);
 
   // job submission request
-  connect(m_monitor_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
           &SequencerMonitorActions::OnSubmitJobRequest);
 
   // job removal request
-  connect(m_monitor_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
           &SequencerMonitorActions::OnRemoveJobRequest);
 
   // job regenerate request
-  connect(m_monitor_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
           &SequencerMonitorActions::OnRegenerateJobRequest);
 
   // job selection request from SequencerMonitorActions
-  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_monitor_panel,
+  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 }
 
@@ -153,21 +153,21 @@ void SequencerMonitorView::SetupConnections()
 void SequencerMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
-  m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 QWidget *SequencerMonitorView::CreateLeftPanel()
 {
   // tuning tool bar to place it into tool bar of ItemStackWidget
-  auto toolbar = m_monitor_panel->GetToolBar();
+  auto toolbar = m_job_panel->GetToolBar();
   toolbar->layout()->setContentsMargins(0, 0, 0, 0);
   toolbar->layout()->setSpacing(0);
   auto widget_action = new QWidgetAction(this);
   widget_action->setDefaultWidget(toolbar);
 
   auto result = new ItemStackWidget;
-  result->AddWidget(m_monitor_panel, {widget_action});
+  result->AddWidget(m_job_panel, {widget_action});
   return result;
 }
 
@@ -176,14 +176,14 @@ QWidget *SequencerMonitorView::CreateLeftPanel()
 QWidget *SequencerMonitorView::CreateCentralPanel()
 {
   // tuning tool bar to place it into tool bar of ItemStackWidget
-  auto toolbar = m_realtime_widget->GetToolBar();
+  auto toolbar = m_realtime_panel->GetToolBar();
   toolbar->layout()->setContentsMargins(0, 0, 0, 0);
   toolbar->layout()->setSpacing(0);
   auto widget_action = new QWidgetAction(this);
   widget_action->setDefaultWidget(toolbar);
 
   auto result = new ItemStackWidget;
-  result->AddWidget(m_realtime_widget, {widget_action});
+  result->AddWidget(m_realtime_panel, {widget_action});
   return result;
 }
 
