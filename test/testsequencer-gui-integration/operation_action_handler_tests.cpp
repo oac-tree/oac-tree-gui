@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/sequencer_monitor_actions.h"
+#include "sequencergui/monitor/operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
@@ -43,10 +43,10 @@ using msec = std::chrono::milliseconds;
 
 Q_DECLARE_METATYPE(sequencergui::JobItem*)
 
-class SequencerMonitorActionsTests : public ::testing::Test
+class OperationActionHandlerTests : public ::testing::Test
 {
 public:
-  SequencerMonitorActionsTests() : m_actions(&m_job_manager, [this] { return m_selected_item; })
+  OperationActionHandlerTests() : m_actions(&m_job_manager, [this] { return m_selected_item; })
   {
     m_actions.SetJobModel(GetJobModel());
   }
@@ -58,36 +58,36 @@ public:
 
   ApplicationModels m_models;
   JobManager m_job_manager;
-  SequencerMonitorActions m_actions;
+  OperationActionHandler m_actions;
   JobItem* m_selected_item{nullptr};
 };
 
-TEST_F(SequencerMonitorActionsTests, AttemptToUseWhenMisconfigured)
+TEST_F(OperationActionHandlerTests, AttemptToUseWhenMisconfigured)
 {
   {
-    SequencerMonitorActions actions(nullptr, {});
+    OperationActionHandler actions(nullptr, {});
     EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
   }
 
   {
-    SequencerMonitorActions actions(&m_job_manager, {});
+    OperationActionHandler actions(&m_job_manager, {});
     EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
   }
 
   {
-    SequencerMonitorActions actions(&m_job_manager, [this] { return m_selected_item; });
+    OperationActionHandler actions(&m_job_manager, [this] { return m_selected_item; });
     EXPECT_THROW(actions.OnStartJobRequest(), RuntimeException);
   }
 }
 
 //! Submission of the procedure.
 
-TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
+TEST_F(OperationActionHandlerTests, OnSubmitJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
   procedure->SetDisplayName("procedure_display_name");
 
-  QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
+  QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
 
   EXPECT_NO_FATAL_FAILURE(m_actions.OnSubmitJobRequest(nullptr));
 
@@ -125,7 +125,7 @@ TEST_F(SequencerMonitorActionsTests, OnSubmitJobRequest)
 
 //! Attempt to submit wronly configured procedure.
 
-TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
+TEST_F(OperationActionHandlerTests, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
@@ -139,7 +139,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToSubmitMalformedProcedure)
 
 //! Submit the job, when start and wait till the end.
 
-TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
+TEST_F(OperationActionHandlerTests, OnStartJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -174,7 +174,7 @@ TEST_F(SequencerMonitorActionsTests, OnStartJobRequest)
 
 //! Removing submitted job.
 
-TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
+TEST_F(OperationActionHandlerTests, OnRemoveJobRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
@@ -193,7 +193,7 @@ TEST_F(SequencerMonitorActionsTests, OnRemoveJobRequest)
 
 //! Removing submitted job together with original procedure.
 
-TEST_F(SequencerMonitorActionsTests, OnRemoveJobAndCleanupRequest)
+TEST_F(OperationActionHandlerTests, OnRemoveJobAndCleanupRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
@@ -214,7 +214,7 @@ TEST_F(SequencerMonitorActionsTests, OnRemoveJobAndCleanupRequest)
 
 //! Attempt to remove long running job.
 
-TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
+TEST_F(OperationActionHandlerTests, AttemptToRemoveLongRunningJob)
 {
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
@@ -241,7 +241,7 @@ TEST_F(SequencerMonitorActionsTests, AttemptToRemoveLongRunningJob)
 
 //! Regenerate submitted job.
 
-TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
+TEST_F(OperationActionHandlerTests, OnRegenerateJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -260,7 +260,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 
   job_item->SetStatus("abc"); // set arbitrary status
 
-  QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
+  QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
 
   // regenerating a job
   m_selected_item = job_item;
@@ -284,7 +284,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequest)
 
 //! Regenerate submitted job.
 
-TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
+TEST_F(OperationActionHandlerTests, OnRegenerateJobRequestWhenProcedureDeleted)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -300,7 +300,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
   // deleting procedure
   GetSequencerModel()->RemoveItem(procedure);
 
-  QSignalSpy spy_selected_request(&m_actions, &SequencerMonitorActions::MakeJobSelectedRequest);
+  QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
 
   // regenerating a job
   m_selected_item = job_item;
@@ -320,7 +320,7 @@ TEST_F(SequencerMonitorActionsTests, OnRegenerateJobRequestWhenProcedureDeleted)
 
 //! Consequent execution of same job.
 
-TEST_F(SequencerMonitorActionsTests, ExecuteSameJobTwice)
+TEST_F(OperationActionHandlerTests, ExecuteSameJobTwice)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 

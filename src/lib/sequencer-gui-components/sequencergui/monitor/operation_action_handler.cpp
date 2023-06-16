@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencer_monitor_actions.h"
+#include "operation_action_handler.h"
 
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/core/exceptions.h>
@@ -59,7 +59,7 @@ bool InvokeAndCatch(T method, const std::string &message,
 namespace sequencergui
 {
 
-SequencerMonitorActions::SequencerMonitorActions(JobManager *job_manager,
+OperationActionHandler::OperationActionHandler(JobManager *job_manager,
                                                  selection_callback_t selection_callback,
                                                  QObject *parent)
     : QObject(parent)
@@ -70,20 +70,20 @@ SequencerMonitorActions::SequencerMonitorActions(JobManager *job_manager,
 {
 }
 
-SequencerMonitorActions::~SequencerMonitorActions() = default;
+OperationActionHandler::~OperationActionHandler() = default;
 
-void SequencerMonitorActions::SetMessageHandler(
+void OperationActionHandler::SetMessageHandler(
     std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler)
 {
   m_message_handler = std::move(message_handler);
 }
 
-void SequencerMonitorActions::SetJobModel(JobModel *job_model)
+void OperationActionHandler::SetJobModel(JobModel *job_model)
 {
   m_job_model = job_model;
 }
 
-void SequencerMonitorActions::OnSubmitJobRequest(ProcedureItem *procedure_item)
+void OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
 {
   if (!procedure_item)
   {
@@ -102,7 +102,7 @@ void SequencerMonitorActions::OnSubmitJobRequest(ProcedureItem *procedure_item)
   emit MakeJobSelectedRequest(job);
 }
 
-void SequencerMonitorActions::OnStartJobRequest()
+void OperationActionHandler::OnStartJobRequest()
 {
   CheckConditions();
 
@@ -113,7 +113,7 @@ void SequencerMonitorActions::OnStartJobRequest()
   m_job_manager->OnStartJobRequest();
 }
 
-void SequencerMonitorActions::OnPauseJobRequest()
+void OperationActionHandler::OnPauseJobRequest()
 {
   CheckConditions();
 
@@ -121,7 +121,7 @@ void SequencerMonitorActions::OnPauseJobRequest()
   m_job_manager->OnPauseJobRequest();
 }
 
-void SequencerMonitorActions::OnStopJobRequest()
+void OperationActionHandler::OnStopJobRequest()
 {
   CheckConditions();
 
@@ -129,7 +129,7 @@ void SequencerMonitorActions::OnStopJobRequest()
   m_job_manager->OnStopJobRequest();
 }
 
-void SequencerMonitorActions::OnMakeStepRequest()
+void OperationActionHandler::OnMakeStepRequest()
 {
   CheckConditions();
 
@@ -140,7 +140,7 @@ void SequencerMonitorActions::OnMakeStepRequest()
   m_job_manager->OnMakeStepRequest();
 }
 
-bool SequencerMonitorActions::OnRemoveJobRequest()
+bool OperationActionHandler::OnRemoveJobRequest()
 {
   CheckConditions();
 
@@ -164,7 +164,7 @@ bool SequencerMonitorActions::OnRemoveJobRequest()
 
 //! Removes job and cleanup original ProcedureItem.
 
-void SequencerMonitorActions::OnRemoveJobAndCleanupRequest()
+void OperationActionHandler::OnRemoveJobAndCleanupRequest()
 {
   auto job = m_job_selection_callback();
   if (!job)
@@ -180,7 +180,7 @@ void SequencerMonitorActions::OnRemoveJobAndCleanupRequest()
   }
 }
 
-void SequencerMonitorActions::OnRegenerateJobRequest()
+void OperationActionHandler::OnRegenerateJobRequest()
 {
   CheckConditions();
 
@@ -207,7 +207,7 @@ void SequencerMonitorActions::OnRegenerateJobRequest()
   }
 }
 
-void SequencerMonitorActions::CheckConditions()
+void OperationActionHandler::CheckConditions()
 {
   if (!m_job_manager)
   {
@@ -227,7 +227,7 @@ void SequencerMonitorActions::CheckConditions()
 
 //! Resubmit job if last time it was terminated, or was completed succesfully.
 
-void SequencerMonitorActions::ResubmitIfNecessary()
+void OperationActionHandler::ResubmitIfNecessary()
 {
   if (auto job_handler = m_job_manager->GetCurrentJobHandler(); job_handler)
   {

@@ -35,7 +35,7 @@ class OperationWorkspacePanel;
 class OperationRealTimePanel;
 class OperationJobPanel;
 class ProcedureItem;
-class SequencerMonitorActions;
+class OperationActionHandler;
 
 //! The SequencerMonitorView is the main window component to run sequences and monitor execution.
 //! Contains the panel with jobs on the left, main sequence tree in the middle, and
@@ -70,7 +70,7 @@ private:
   ApplicationModels* m_models{nullptr};
 
   JobManager* m_job_manager{nullptr};
-  SequencerMonitorActions* m_actions{nullptr};
+  OperationActionHandler* m_actions{nullptr};
 };
 
 }  // namespace sequencergui

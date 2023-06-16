@@ -32,7 +32,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/sequencer_monitor_actions.h>
+#include <sequencergui/monitor/operation_action_handler.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -40,8 +40,8 @@
 #include <QMainWindow>
 #include <QSettings>
 #include <QSplitter>
-#include <QVBoxLayout>
 #include <QToolBar>
+#include <QVBoxLayout>
 
 namespace
 {
@@ -59,7 +59,7 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
     , m_realtime_panel(new OperationRealTimePanel)
     , m_workspace_panel(new OperationWorkspacePanel)
     , m_job_manager(new JobManager(this))
-    , m_actions(new SequencerMonitorActions(
+    , m_actions(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
 {
   auto layout = new QVBoxLayout(this);
@@ -123,19 +123,19 @@ void OperationMonitorView::SetupConnections()
 
   // start request
   connect(m_realtime_panel, &OperationRealTimePanel::runRequest, m_actions,
-          &SequencerMonitorActions::OnStartJobRequest);
+          &OperationActionHandler::OnStartJobRequest);
 
   // pause request
   connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, m_actions,
-          &SequencerMonitorActions::OnPauseJobRequest);
+          &OperationActionHandler::OnPauseJobRequest);
 
   // stop request
   connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, m_actions,
-          &SequencerMonitorActions::OnStopJobRequest);
+          &OperationActionHandler::OnStopJobRequest);
 
   // step request
   connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_actions,
-          &SequencerMonitorActions::OnMakeStepRequest);
+          &OperationActionHandler::OnMakeStepRequest);
 
   // change delay request from MonitorRealTimeWidget to JobManager
   connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
@@ -154,14 +154,14 @@ void OperationMonitorView::SetupConnections()
 
   // job removal request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
-          &SequencerMonitorActions::OnRemoveJobAndCleanupRequest);
+          &OperationActionHandler::OnRemoveJobAndCleanupRequest);
 
   // job regenerate request
   connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
-          &SequencerMonitorActions::OnRegenerateJobRequest);
+          &OperationActionHandler::OnRegenerateJobRequest);
 
   // job selection request from SequencerMonitorActions
-  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_job_panel,
+  connect(m_actions, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 }
 

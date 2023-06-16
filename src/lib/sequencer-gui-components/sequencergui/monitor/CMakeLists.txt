@@ -12,10 +12,10 @@ target_sources(${library_name} PRIVATE
   message_panel.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
+  operation_action_handler.cpp
+  operation_action_handler.h
   realtime_instruction_tree_widget.cpp
   realtime_instruction_tree_widget.h
-  sequencer_monitor_actions.cpp
-  sequencer_monitor_actions.h
   sequencer_monitor_view.cpp
   sequencer_monitor_view.h
   )

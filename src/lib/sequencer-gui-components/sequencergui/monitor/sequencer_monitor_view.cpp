@@ -27,7 +27,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/sequencer_monitor_actions.h>
+#include <sequencergui/monitor/operation_action_handler.h>
 #include <sequencergui/operation/operation_job_panel.h>
 #include <sequencergui/operation/operation_realtime_panel.h>
 #include <sequencergui/operation/operation_workspace_panel.h>
@@ -56,7 +56,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     , m_workspace_panel(new OperationWorkspacePanel)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
-    , m_actions(new SequencerMonitorActions(
+    , m_actions(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
 {
   auto layout = new QVBoxLayout(this);
@@ -106,19 +106,19 @@ void SequencerMonitorView::SetupConnections()
 
   // start request
   connect(m_realtime_panel, &OperationRealTimePanel::runRequest, m_actions,
-          &SequencerMonitorActions::OnStartJobRequest);
+          &OperationActionHandler::OnStartJobRequest);
 
   // pause request
   connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, m_actions,
-          &SequencerMonitorActions::OnPauseJobRequest);
+          &OperationActionHandler::OnPauseJobRequest);
 
   // stop request
   connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, m_actions,
-          &SequencerMonitorActions::OnStopJobRequest);
+          &OperationActionHandler::OnStopJobRequest);
 
   // step request
   connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_actions,
-          &SequencerMonitorActions::OnMakeStepRequest);
+          &OperationActionHandler::OnMakeStepRequest);
 
   // change delay request from MonitorRealTimeWidget to JobManager
   connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
@@ -129,23 +129,22 @@ void SequencerMonitorView::SetupConnections()
           &OperationRealTimePanel::SetSelectedInstruction);
 
   // job selection request from MonitorPanel
-  connect(m_job_panel, &OperationJobPanel::JobSelected, this,
-          &SequencerMonitorView::OnJobSelected);
+  connect(m_job_panel, &OperationJobPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
 
   // job submission request
   connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
-          &SequencerMonitorActions::OnSubmitJobRequest);
+          &OperationActionHandler::OnSubmitJobRequest);
 
   // job removal request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
-          &SequencerMonitorActions::OnRemoveJobRequest);
+          &OperationActionHandler::OnRemoveJobRequest);
 
   // job regenerate request
   connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
-          &SequencerMonitorActions::OnRegenerateJobRequest);
+          &OperationActionHandler::OnRegenerateJobRequest);
 
   // job selection request from SequencerMonitorActions
-  connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_job_panel,
+  connect(m_actions, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 }
 

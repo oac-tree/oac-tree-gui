@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_SEQUENCER_MONITOR_ACTIONS_H_
-#define SEQUENCERGUI_MONITOR_SEQUENCER_MONITOR_ACTIONS_H_
+#ifndef SEQUENCERGUI_MONITOR_OPERATION_ACTION_HANDLER_H_
+#define SEQUENCERGUI_MONITOR_OPERATION_ACTION_HANDLER_H_
 
 #include <QObject>
 #include <functional>
@@ -40,7 +40,7 @@ class ProcedureItem;
 //! High level actions for SequencerMonitorView. Provides coordination between JobModel and
 //! JobManager. Provides reporting on exception throw.
 
-class SequencerMonitorActions : public QObject
+class OperationActionHandler : public QObject
 {
   Q_OBJECT
 
@@ -48,10 +48,10 @@ public:
   //!< A callback to get currently selected JobItem.
   using selection_callback_t = std::function<JobItem*()>;
 
-  explicit SequencerMonitorActions(JobManager* job_manager, selection_callback_t selection_callback,
+  explicit OperationActionHandler(JobManager* job_manager, selection_callback_t selection_callback,
                                    QObject* parent = nullptr);
 
-  ~SequencerMonitorActions() override;
+  ~OperationActionHandler() override;
 
   void SetMessageHandler(std::unique_ptr<sup::gui::MessageHandlerInterface> message_handler);
 
@@ -89,4 +89,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_SEQUENCER_MONITOR_ACTIONS_H_
+#endif  // SEQUENCERGUI_MONITOR_OPERATION_ACTION_HANDLER_H_

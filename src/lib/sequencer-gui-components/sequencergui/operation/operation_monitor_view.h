@@ -34,7 +34,7 @@ class OperationWorkspacePanel;
 class JobItem;
 class ApplicationModels;
 class JobManager;
-class SequencerMonitorActions;
+class OperationActionHandler;
 
 //! Main view of operation application.
 //! FIXME Almost a full duplicate of SequencerMonitorView. Merge after prototyping.
@@ -65,7 +65,7 @@ private:
   ApplicationModels* m_models{nullptr};
 
   JobManager* m_job_manager{nullptr};
-  SequencerMonitorActions* m_actions{nullptr};
+  OperationActionHandler* m_actions{nullptr};
 };
 
 }  // namespace sequencergui
