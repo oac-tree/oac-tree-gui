@@ -28,8 +28,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/monitor_panel.h>
-#include <sequencergui/monitor/monitor_realtime_widget.h>
 #include <sequencergui/monitor/sequencer_monitor_actions.h>
+#include <sequencergui/operation/operation_realtime_panel.h>
 #include <sequencergui/operation/operation_workspace_panel.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
@@ -42,7 +42,9 @@
 
 #include <QDebug>
 #include <QSplitter>
+#include <QToolBar>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 namespace sequencergui
 {
@@ -50,7 +52,7 @@ namespace sequencergui
 SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     : QWidget(parent)
     , m_monitor_panel(new MonitorPanel)
-    , m_realtime_widget(new MonitorRealTimeWidget)
+    , m_realtime_widget(new OperationRealTimePanel)
     , m_workspace_panel(new OperationWorkspacePanel)
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
@@ -63,7 +65,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
   //  layout->setMargin(0);
 
   m_splitter->addWidget(m_monitor_panel);
-  m_splitter->addWidget(m_realtime_widget);
+  m_splitter->addWidget(CreateCentralPanel());
   m_splitter->addWidget(CreateRightPanel());
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
                                     << mvvm::utils::UnitSize(30));
@@ -102,28 +104,28 @@ void SequencerMonitorView::SetupConnections()
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
   // start request
-  connect(m_realtime_widget, &MonitorRealTimeWidget::runRequest, m_actions,
+  connect(m_realtime_widget, &OperationRealTimePanel::runRequest, m_actions,
           &SequencerMonitorActions::OnStartJobRequest);
 
   // pause request
-  connect(m_realtime_widget, &MonitorRealTimeWidget::pauseRequest, m_actions,
+  connect(m_realtime_widget, &OperationRealTimePanel::pauseRequest, m_actions,
           &SequencerMonitorActions::OnPauseJobRequest);
 
   // stop request
-  connect(m_realtime_widget, &MonitorRealTimeWidget::stopRequest, m_actions,
+  connect(m_realtime_widget, &OperationRealTimePanel::stopRequest, m_actions,
           &SequencerMonitorActions::OnStopJobRequest);
 
   // step request
-  connect(m_realtime_widget, &MonitorRealTimeWidget::stepRequest, m_actions,
+  connect(m_realtime_widget, &OperationRealTimePanel::stepRequest, m_actions,
           &SequencerMonitorActions::OnMakeStepRequest);
 
   // change delay request from MonitorRealTimeWidget to JobManager
-  connect(m_realtime_widget, &MonitorRealTimeWidget::changeDelayRequest, m_job_manager,
+  connect(m_realtime_widget, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
           &JobManager::OnChangeDelayRequest);
 
   // instruction selection request from JobManager to MonitorRealTimeWidget
   connect(m_job_manager, &JobManager::InstructionStatusChanged, m_realtime_widget,
-          &MonitorRealTimeWidget::SetSelectedInstruction);
+          &OperationRealTimePanel::SetSelectedInstruction);
 
   // job selection request from MonitorPanel
   connect(m_monitor_panel, &MonitorPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
@@ -151,6 +153,22 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
   m_job_manager->SetCurrentJob(item);
   m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+}
+
+//! Create central panel with single OperationRealTimePanel.
+
+QWidget *SequencerMonitorView::CreateCentralPanel()
+{
+  // tuning tool bar to place it into tool bar of ItemStackWidget
+  auto toolbar = m_realtime_widget->GetToolBar();
+  toolbar->layout()->setContentsMargins(0, 0, 0, 0);
+  toolbar->layout()->setSpacing(0);
+  auto widget_action = new QWidgetAction(this);
+  widget_action->setDefaultWidget(toolbar);
+
+  auto result = new ItemStackWidget;
+  result->AddWidget(m_realtime_widget, {widget_action});
+  return result;
 }
 
 QWidget *SequencerMonitorView::CreateRightPanel()

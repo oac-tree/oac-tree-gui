@@ -14,8 +14,6 @@ target_sources(${library_name} PRIVATE
   monitor_panel.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
-  monitor_realtime_widget.cpp
-  monitor_realtime_widget.h
   realtime_instruction_tree_widget.cpp
   realtime_instruction_tree_widget.h
   sequencer_monitor_actions.cpp

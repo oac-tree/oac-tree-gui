@@ -32,7 +32,6 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/monitor_realtime_widget.h>
 #include <sequencergui/monitor/sequencer_monitor_actions.h>
 
 #include <mvvm/standarditems/container_item.h>
