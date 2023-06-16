@@ -85,7 +85,7 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
 
   ReadSettings();
 
-  // temporary hack to not to show button "Submit Procedure"
+  // FIXME temporary solution to not to show button "Submit Procedure"
   m_job_panel->GetToolBar()->actions().at(1)->setVisible(false);
 }
 

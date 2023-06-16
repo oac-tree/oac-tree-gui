@@ -34,6 +34,7 @@ class JobManager;
 class MonitorPanel;
 class OperationWorkspacePanel;
 class OperationRealTimePanel;
+class OperationJobPanel;
 class ProcedureItem;
 class SequencerMonitorActions;
 
@@ -58,10 +59,11 @@ private:
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
 
+  QWidget* CreateLeftPanel();
   QWidget* CreateCentralPanel();
   QWidget* CreateRightPanel();
 
-  MonitorPanel* m_monitor_panel{nullptr};
+  OperationJobPanel* m_monitor_panel{nullptr};
   OperationRealTimePanel* m_realtime_widget{nullptr};
   OperationWorkspacePanel* m_workspace_panel{nullptr};
 

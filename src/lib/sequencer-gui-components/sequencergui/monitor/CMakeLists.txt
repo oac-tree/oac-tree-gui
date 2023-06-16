@@ -10,8 +10,6 @@ target_sources(${library_name} PRIVATE
   job_property_widget.h
   message_panel.cpp
   message_panel.h
-  monitor_panel.cpp
-  monitor_panel.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
   realtime_instruction_tree_widget.cpp

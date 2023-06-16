@@ -27,8 +27,8 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/monitor_panel.h>
 #include <sequencergui/monitor/sequencer_monitor_actions.h>
+#include <sequencergui/operation/operation_job_panel.h>
 #include <sequencergui/operation/operation_realtime_panel.h>
 #include <sequencergui/operation/operation_workspace_panel.h>
 #include <sequencergui/widgets/item_stack_widget.h>
@@ -51,7 +51,7 @@ namespace sequencergui
 
 SequencerMonitorView::SequencerMonitorView(QWidget *parent)
     : QWidget(parent)
-    , m_monitor_panel(new MonitorPanel)
+    , m_monitor_panel(new OperationJobPanel)
     , m_realtime_widget(new OperationRealTimePanel)
     , m_workspace_panel(new OperationWorkspacePanel)
     , m_splitter(new QSplitter)
@@ -61,10 +61,8 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
-  //  layout->setSpacing(0);
-  //  layout->setMargin(0);
 
-  m_splitter->addWidget(m_monitor_panel);
+  m_splitter->addWidget(CreateLeftPanel());
   m_splitter->addWidget(CreateCentralPanel());
   m_splitter->addWidget(CreateRightPanel());
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
@@ -76,6 +74,9 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
 
   m_actions->SetMessageHandler(CreateMessageBoxHandler());
   m_job_manager->SetMessagePanel(m_realtime_widget->GetMessagePanel());
+
+  // FIXME temporary solution to not to show button "Import Procedure"
+  m_monitor_panel->GetToolBar()->actions().at(0)->setVisible(false);
 }
 
 SequencerMonitorView::~SequencerMonitorView() = default;
@@ -128,23 +129,24 @@ void SequencerMonitorView::SetupConnections()
           &OperationRealTimePanel::SetSelectedInstruction);
 
   // job selection request from MonitorPanel
-  connect(m_monitor_panel, &MonitorPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
+  connect(m_monitor_panel, &OperationJobPanel::JobSelected, this,
+          &SequencerMonitorView::OnJobSelected);
 
   // job submission request
-  connect(m_monitor_panel, &MonitorPanel::SubmitProcedureRequest, m_actions,
+  connect(m_monitor_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
           &SequencerMonitorActions::OnSubmitJobRequest);
 
   // job removal request
-  connect(m_monitor_panel, &MonitorPanel::RemoveJobRequest, m_actions,
+  connect(m_monitor_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
           &SequencerMonitorActions::OnRemoveJobRequest);
 
   // job regenerate request
-  connect(m_monitor_panel, &MonitorPanel::RegenerateJobRequest, m_actions,
+  connect(m_monitor_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
           &SequencerMonitorActions::OnRegenerateJobRequest);
 
   // job selection request from SequencerMonitorActions
   connect(m_actions, &SequencerMonitorActions::MakeJobSelectedRequest, m_monitor_panel,
-          &MonitorPanel::SetSelectedJob);
+          &OperationJobPanel::SetSelectedJob);
 }
 
 //! Setup widgets to show currently selected job.
@@ -153,6 +155,20 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
   m_job_manager->SetCurrentJob(item);
   m_realtime_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+}
+
+QWidget *SequencerMonitorView::CreateLeftPanel()
+{
+  // tuning tool bar to place it into tool bar of ItemStackWidget
+  auto toolbar = m_monitor_panel->GetToolBar();
+  toolbar->layout()->setContentsMargins(0, 0, 0, 0);
+  toolbar->layout()->setSpacing(0);
+  auto widget_action = new QWidgetAction(this);
+  widget_action->setDefaultWidget(toolbar);
+
+  auto result = new ItemStackWidget;
+  result->AddWidget(m_monitor_panel, {widget_action});
+  return result;
 }
 
 //! Create central panel with single OperationRealTimePanel.
