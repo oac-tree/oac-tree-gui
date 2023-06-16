@@ -59,6 +59,7 @@ public:
 
 signals:
   void JobSelected(sequencergui::JobItem* item);
+  void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
