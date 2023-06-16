@@ -51,6 +51,9 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
   //  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
 
   SetupConnections();
+
+  m_tool_bar->SetAvailableProcedures([this]()
+                                     { return m_models->GetSequencerModel()->GetProcedures(); });
 }
 
 OperationJobPanel::~OperationJobPanel() = default;

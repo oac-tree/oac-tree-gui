@@ -55,7 +55,6 @@ OperationJobPanelToolBar::OperationJobPanelToolBar(QWidget *parent)
   m_submit_button->setMenu(m_submit_procedure_menu.get());
   m_submit_button->setToolTip("Submit existing sequencer procedure for execution");
   addWidget(m_submit_button);
-  m_submit_button->setVisible(false);
 
   m_regenerate_button->setText("Reload");
   m_regenerate_button->setIcon(styleutils::GetIcon("refresh"));
@@ -76,11 +75,7 @@ OperationJobPanelToolBar::OperationJobPanelToolBar(QWidget *parent)
 
 void OperationJobPanelToolBar::SetAvailableProcedures(callback_t available_procedures)
 {
-  // FIXME temporary hack to use same toolbar in two different environments: in SequencerMonitorView
-  // and OperationMonitorView
   m_available_procedures = available_procedures;
-  m_submit_procedure_menu->setVisible(true);
-  m_import_button->setVisible(false);
 }
 
 std::unique_ptr<QMenu> OperationJobPanelToolBar::CreateSubmitProcedureMenu()

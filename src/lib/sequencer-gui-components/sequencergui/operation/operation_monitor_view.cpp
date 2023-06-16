@@ -41,6 +41,7 @@
 #include <QSettings>
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QToolBar>
 
 namespace
 {
@@ -83,6 +84,9 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
   m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
 
   ReadSettings();
+
+  // temporary hack to not to show button "Submit Procedure"
+  m_job_panel->GetToolBar()->actions().at(1)->setVisible(false);
 }
 
 OperationMonitorView::~OperationMonitorView()
