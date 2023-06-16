@@ -1,16 +1,19 @@
 
 #include "xml_panel.h"
 
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/xml_utils.h>
-#include <sup/gui/codeeditor/code_view.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/model_utils.h>
 #include <mvvm/project/model_has_changed_controller.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/codeeditor/code_view.h>
 
+#include <QDebug>
 #include <QVBoxLayout>
+#include <iostream>
 
 namespace sequencergui
 {
@@ -48,9 +51,10 @@ void XmlPanel::SetModel(mvvm::SessionModelInterface *model)
     return;
   }
 
-  auto on_model_changed = [this]() { UpdateXml(); };
-  m_model_changed_controller =
-      std::make_unique<mvvm::ModelHasChangedController>(m_model, on_model_changed);
+  m_listener = std::make_unique<listener_t>(m_model);
+  m_listener->Connect<mvvm::ItemRemovedEvent>(this, &XmlPanel::OnModelEvent);
+  m_listener->Connect<mvvm::ItemInsertedEvent>(this, &XmlPanel::OnModelEvent);
+  m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
 }
 
 void XmlPanel::SetProcedure(ProcedureItem *procedure)
@@ -59,10 +63,36 @@ void XmlPanel::SetProcedure(ProcedureItem *procedure)
   UpdateXml();
 }
 
+void XmlPanel::OnModelEvent(const mvvm::ItemRemovedEvent &event)
+{
+  UpdateXml();
+}
+
+void XmlPanel::OnModelEvent(const mvvm::ItemInsertedEvent &event)
+{
+  UpdateXml();
+}
+
+void XmlPanel::OnModelEvent(const mvvm::DataChangedEvent &event)
+{
+  auto [item, role] = event;
+
+  auto [tag, index] = item->GetTagIndex();
+
+  qDebug() << "OnModelEvent";
+
+  //   instruction node coordinates are not relevant for the XML of the procedure
+  if (tag != itemconstants::kXpos && tag != itemconstants::kYpos)
+  {
+    UpdateXml();
+  }
+}
+
 XmlPanel::~XmlPanel() = default;
 
 void XmlPanel::UpdateXml()
 {
+  qDebug() << "UpdateXml";
   if (m_procedure)
   {
     try
