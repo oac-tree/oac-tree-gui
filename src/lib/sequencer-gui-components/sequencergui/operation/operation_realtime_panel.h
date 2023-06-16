@@ -23,6 +23,7 @@
 #include <QWidget>
 
 class QToolBar;
+class QWidgetAction;
 
 namespace mvvm
 {
@@ -68,6 +69,7 @@ private:
   void SetupConnections();
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
+  QWidgetAction* m_tool_bar_action{nullptr};
 
   mvvm::CollapsibleListView* m_collapsible_list_view{nullptr};
   RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};

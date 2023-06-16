@@ -12,8 +12,6 @@ target_sources(${library_name} PRIVATE
   message_panel.h
   monitor_panel.cpp
   monitor_panel.h
-  monitor_property_widget.cpp
-  monitor_property_widget.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
   monitor_realtime_widget.cpp

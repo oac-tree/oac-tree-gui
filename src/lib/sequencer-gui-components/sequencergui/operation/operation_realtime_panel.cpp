@@ -40,6 +40,7 @@ namespace sequencergui
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
+    , m_tool_bar_action(new QWidgetAction(this))
     , m_collapsible_list_view(new mvvm::CollapsibleListView)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)

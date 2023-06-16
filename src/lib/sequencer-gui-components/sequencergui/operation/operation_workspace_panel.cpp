@@ -38,6 +38,8 @@ namespace sequencergui
 OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
     : QWidget(parent), m_workspace_tree(new mvvm::AllItemsTreeView), m_tool_bar(new QToolBar)
 {
+  setWindowTitle("Workspace");
+
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_workspace_tree);
 
@@ -56,8 +58,6 @@ OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
   connect(toggle_panel_button, &QToolButton::clicked, this, on_toggle);
 
   m_tool_bar->addWidget(toggle_panel_button);
-
-  setVisible(false);
 }
 
 OperationWorkspacePanel::~OperationWorkspacePanel() = default;
