@@ -22,6 +22,8 @@
 
 #include <QWidget>
 
+class QSplitter;
+
 namespace mvvm
 {
 class TopItemsTreeView;
@@ -44,13 +46,18 @@ class ProcedureTreesWidget : public QWidget
 
 public:
   explicit ProcedureTreesWidget(QWidget* parent = nullptr);
+  ~ProcedureTreesWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+
   PanelToolBar* m_tool_bar{nullptr};
   mvvm::TopItemsTreeView* m_procedure_tree{nullptr};
   mvvm::PropertyTreeView* m_property_tree{nullptr};
+  QSplitter* m_splitter{nullptr};
 };
 
 }  // namespace sequencergui
