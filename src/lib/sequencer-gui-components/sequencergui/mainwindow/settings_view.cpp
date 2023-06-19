@@ -66,7 +66,7 @@ void SettingsView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   SetupListSelector();
-  SetupModelWidgets();
+//  SetupModelWidgets();
   SetupGeneralSettingWidgets();
 }
 
