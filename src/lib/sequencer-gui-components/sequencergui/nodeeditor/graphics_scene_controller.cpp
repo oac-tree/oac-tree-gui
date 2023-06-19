@@ -42,7 +42,6 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
-  std::function<void(InstructionContainerItem*)> m_align_strategy;
 
   GraphicsSceneControllerImpl(mvvm::SessionModelInterface* model, GraphicsScene* graphics_scene)
       : m_model(model), m_graphics_scene(graphics_scene)
@@ -135,11 +134,6 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
         Iterate(instruction, next_parent_view);
       }
     }
-
-    if (m_align_strategy)
-    {
-      m_align_strategy(root_item);
-    }
   }
 
   // Returns true if given item is either our root item, or is one of its descendant
@@ -176,12 +170,6 @@ GraphicsSceneController::GraphicsSceneController(mvvm::SessionModelInterface *mo
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {
   Subscribe(model);
-}
-
-void GraphicsSceneController::SetAlignStrategy(
-    std::function<void(InstructionContainerItem*)> strategy)
-{
-  p_impl->m_align_strategy = strategy;
 }
 
 GraphicsSceneController::~GraphicsSceneController() = default;

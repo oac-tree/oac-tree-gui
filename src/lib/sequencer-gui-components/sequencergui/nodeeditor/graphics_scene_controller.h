@@ -44,8 +44,6 @@ public:
   GraphicsSceneController(mvvm::SessionModelInterface *model, GraphicsScene *graphics_scene);
   ~GraphicsSceneController() override;
 
-  void SetAlignStrategy(std::function<void(InstructionContainerItem *)> strategy);
-
   void OnModelEvent(const mvvm::ItemInsertedEvent &event) override;
 
   void OnModelEvent(const mvvm::AboutToRemoveItemEvent &event) override;
