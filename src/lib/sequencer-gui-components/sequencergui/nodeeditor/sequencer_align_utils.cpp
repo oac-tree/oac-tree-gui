@@ -47,11 +47,6 @@ sequencergui::algorithm::AlignNode *PopulateNode(const sequencergui::Instruction
 namespace sequencergui::algorithm
 {
 
-std::unique_ptr<AlignNode> CreateAlignTree(const InstructionContainerItem *container)
-{
-  return CreateAlignTree(container->GetInstructions());
-}
-
 std::unique_ptr<AlignNode> CreateAlignTree(std::vector<InstructionItem *> instructions)
 {
   auto result = std::make_unique<AlignNode>();
@@ -194,7 +189,7 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instr
 
 void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container)
 {
-  auto align_tree = CreateAlignTree(container);
+  auto align_tree = CreateAlignTree(container->GetInstructions());
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
   UpdatePositions(align_tree.get(), container);

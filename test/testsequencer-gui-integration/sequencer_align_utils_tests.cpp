@@ -45,7 +45,7 @@ class SequencerAlignUtilsTest : public ::testing::Test
 TEST_F(SequencerAlignUtilsTest, CreateAlignTreeFromContainerEmptyContainer)
 {
   InstructionContainerItem container;
-  auto node = algorithm::CreateAlignTree(&container);
+  auto node = algorithm::CreateAlignTree(container.GetInstructions());
 
   EXPECT_EQ(node->GetSize(), 0);
 }
@@ -63,7 +63,7 @@ TEST_F(SequencerAlignUtilsTest, CreateAlignTreeFromContainerSequenceWithChildren
   auto wait2 = model.InsertItem<WaitItem>(sequence);
 
   // creating corresponding AlignTree
-  auto node = algorithm::CreateAlignTree(procedure->GetInstructionContainer());
+  auto node = algorithm::CreateAlignTree(procedure->GetInstructionContainer()->GetInstructions());
 
   // root node
   EXPECT_EQ(node->GetSize(), 1);
@@ -129,7 +129,8 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsInTheContainer)
   auto wait2 = model.InsertItem<WaitItem>(sequence);
 
   // creating corresponding AlignTree
-  auto node = algorithm::CreateAlignTree(procedure->GetInstructionContainer());
+  auto instructions = procedure->GetInstructionContainer()->GetInstructions();
+  auto node = algorithm::CreateAlignTree(instructions);
 
   // manually setting  coordinates to nodes
   auto sequence_node = node->GetChildren().at(0);
