@@ -81,7 +81,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerScalarV
 
   // initialising workspace
   sup::sequencer::Workspace workspace;
-  EXPECT_TRUE(workspace.AddVariable(var_name, variable.release()));
+  EXPECT_TRUE(workspace.AddVariable(var_name, std::move(variable)));
 
   // creating listener and attaching it to the workspace
   SequencerWorkspaceListener listener;
@@ -141,7 +141,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerStructV
 
   // initialising workspace
   sup::sequencer::Workspace workspace;
-  EXPECT_TRUE(workspace.AddVariable(var_name, variable.release()));
+  EXPECT_TRUE(workspace.AddVariable(var_name, std::move(variable)));
   EXPECT_NO_THROW(workspace.Setup());
 
   // checking current server variable

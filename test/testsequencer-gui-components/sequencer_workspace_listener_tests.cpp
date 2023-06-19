@@ -91,7 +91,7 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
   auto local_variable_ptr = local_variable.get();
 
   // adding it to the workspace, expecting no signals
-  workspace.AddVariable(var_name, local_variable.release());
+  workspace.AddVariable(var_name, std::move(local_variable));
   EXPECT_EQ(spy_upate.count(), 0);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
@@ -145,7 +145,7 @@ TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
   sup::sequencer::Workspace workspace;
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   auto local_variable = testutils::CreateLocalVariable(var_name, value0);
-  workspace.AddVariable(var_name, local_variable.release());
+  workspace.AddVariable(var_name, std::move(local_variable));
 
   // setting workspace
   workspace.Setup();

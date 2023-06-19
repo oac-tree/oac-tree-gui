@@ -56,7 +56,7 @@ TEST_F(DomainWorkspaceBuilderTest, EmptyWorkspace)
 TEST_F(DomainWorkspaceBuilderTest, AttemptToPopulateNonEmptyWorkspace)
 {
   sup::sequencer::Workspace workspace;
-  workspace.AddVariable("abc", CreateDomainVariable(domainconstants::kLocalVariableType).release());
+  workspace.AddVariable("abc", CreateDomainVariable(domainconstants::kLocalVariableType));
 
   WorkspaceItem workspace_item;
 

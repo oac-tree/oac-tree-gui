@@ -39,7 +39,7 @@ std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
-  result->PushInstruction(wait0.release());
+  result->PushInstruction(std::move(wait0));
   result->AddAttribute(domainconstants::kTickTimeOutAttribute, "0.01");  // 10 msec
   return result;
 }
@@ -51,19 +51,19 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
   auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
   copy->AddAttribute(domainconstants::kInputAttribute, "var0");
   copy->AddAttribute(domainconstants::kOutputAttribute, "var1");
-  result->PushInstruction(copy.release());
+  result->PushInstruction(std::move(copy));
 
   auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var0->AddAttribute(domainconstants::kNameAttribute, "var0");
   var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var0->AddAttribute(domainconstants::kValueAttribute, "42");
-  result->AddVariable("var0", var0.release());
+  result->AddVariable("var0", std::move(var0));
 
   auto var1 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var1->AddAttribute(domainconstants::kNameAttribute, "var1");
   var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var1->AddAttribute(domainconstants::kValueAttribute, "0");
-  result->AddVariable("var1", var1.release());
+  result->AddVariable("var1", std::move(var1));
 
   return result;
 }
@@ -73,7 +73,7 @@ std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string &text)
   auto result = std::make_unique<procedure_t>();
   auto message = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message->AddAttribute(sequencergui::domainconstants::kTextAttribute, text);
-  result->PushInstruction(message.release());
+  result->PushInstruction(std::move(message));
 
   return result;
 }
@@ -86,9 +86,9 @@ std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::millis
   wait0->AddAttribute(domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
-  sequence->InsertInstruction(wait0.release(), 0);
+  sequence->InsertInstruction(std::move(wait0), 0);
 
-  result->PushInstruction(sequence.release());
+  result->PushInstruction(std::move(sequence));
   return result;
 }
 
@@ -104,10 +104,10 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(std::chrono::mi
   wait1->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout2)));
 
-  sequence->InsertInstruction(wait0.release(), 0);
-  sequence->InsertInstruction(wait1.release(), 1);
+  sequence->InsertInstruction(std::move(wait0), 0);
+  sequence->InsertInstruction(std::move(wait1), 1);
 
-  result->PushInstruction(sequence.release());
+  result->PushInstruction(std::move(sequence));
   return result;
 }
 
@@ -118,9 +118,9 @@ std::unique_ptr<procedure_t> CreateSequenceWithSingleMessageProcedure()
   auto message0 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message0->AddAttribute(sequencergui::domainconstants::kTextAttribute, "abc");
 
-  sequence->InsertInstruction(message0.release(), 0);
+  sequence->InsertInstruction(std::move(message0), 0);
 
-  result->PushInstruction(sequence.release());
+  result->PushInstruction(std::move(sequence));
   return result;
 }
 
@@ -133,10 +133,10 @@ std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure()
   auto message1 = CreateDomainInstruction(domainconstants::kMessageInstructionType);
   message1->AddAttribute(sequencergui::domainconstants::kTextAttribute, "efg");
 
-  sequence->InsertInstruction(message0.release(), 0);
-  sequence->InsertInstruction(message1.release(), 1);
+  sequence->InsertInstruction(std::move(message0), 0);
+  sequence->InsertInstruction(std::move(message1), 1);
 
-  result->PushInstruction(sequence.release());
+  result->PushInstruction(std::move(sequence));
   return result;
 }
 
@@ -147,14 +147,14 @@ std::unique_ptr<procedure_t> CreateInputProcedure()
   auto input = CreateDomainInstruction(domainconstants::kInputInstructionType);
   input->AddAttribute(domainconstants::kOutputAttribute, "var0");
   input->AddAttribute(domainconstants::kDescriptionAttribute, "description");
-  sequence->InsertInstruction(input.release(), 0);
-  result->PushInstruction(sequence.release());
+  sequence->InsertInstruction(std::move(input), 0);
+  result->PushInstruction(std::move(sequence));
 
   auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var0->AddAttribute(domainconstants::kNameAttribute, "var0");
   var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var0->AddAttribute(domainconstants::kValueAttribute, "0");
-  result->AddVariable("var0", var0.release());
+  result->AddVariable("var0", std::move(var0));
 
   return result;
 }
@@ -172,22 +172,22 @@ std::unique_ptr<procedure_t> CreateUserChoiceProcedure()
   copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
   copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
 
-  userchoice->InsertInstruction(wait0.release(), 0);
-  userchoice->InsertInstruction(copy.release(), 1);
+  userchoice->InsertInstruction(std::move(wait0), 0);
+  userchoice->InsertInstruction(std::move(copy), 1);
 
   auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var0->AddAttribute(domainconstants::kNameAttribute, "var0");
   var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var0->AddAttribute(domainconstants::kValueAttribute, "42");
-  result->AddVariable("var0", var0.release());
+  result->AddVariable("var0", std::move(var0));
 
   auto var1 = CreateDomainVariable(domainconstants::kLocalVariableType);
   var1->AddAttribute(domainconstants::kNameAttribute, "var1");
   var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
   var1->AddAttribute(domainconstants::kValueAttribute, "0");
-  result->AddVariable("var1", var1.release());
+  result->AddVariable("var1", std::move(var1));
 
-  result->PushInstruction(userchoice.release());
+  result->PushInstruction(std::move(userchoice));
   return result;
 }
 
@@ -204,10 +204,10 @@ std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
   wait0->AddAttribute(domainconstants::kTimeoutAttribute,
                       std::to_string(GetTimeoutInSec(timeout)));  // expects in sec
 
-  sequence->InsertInstruction(wait0.release(), 0);
-  repeat->InsertInstruction(sequence.release(), 0);
+  sequence->InsertInstruction(std::move(wait0), 0);
+  repeat->InsertInstruction(std::move(sequence), 0);
 
-  result->PushInstruction(repeat.release());
+  result->PushInstruction(std::move(repeat));
   return result;
 }
 
@@ -221,7 +221,7 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   sequence->AddAttribute(sequencergui::domainconstants::kNameAttribute, "MySequence");
-  sequence->InsertInstruction(wait.release(), 0);
+  sequence->InsertInstruction(std::move(wait), 0);
 
   // Repeat with include instruction
   auto include = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
@@ -231,11 +231,11 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
   auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
   repeat->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
   repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute, "10");
-  repeat->InsertInstruction(include.release(), 0);
+  repeat->InsertInstruction(std::move(include), 0);
 
   // procedure with two instructions
-  result->PushInstruction(sequence.release());
-  result->PushInstruction(repeat.release());
+  result->PushInstruction(std::move(sequence));
+  result->PushInstruction(std::move(repeat));
 
   return result;
 }

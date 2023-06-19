@@ -62,7 +62,7 @@ TEST_F(SequencerWorkspaceCornerCaseTests, LocalVariable)
 
   // adding variable doesn't cause notifications
   EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
-  m_workspace.AddVariable(var_name, variable.release());
+  m_workspace.AddVariable(var_name, std::move(variable));
 
   EXPECT_EQ(variable_ptr, m_workspace.GetVariable(var_name));
   EXPECT_FALSE(variable_ptr->IsAvailable());
@@ -108,7 +108,7 @@ TEST_F(SequencerWorkspaceCornerCaseTests, PVAccessServerVariable)
 
   // adding variable doesn't cause notifications
   EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
-  m_workspace.AddVariable(var_name, variable.release());
+  m_workspace.AddVariable(var_name, std::move(variable));
 
   EXPECT_EQ(variable_ptr, m_workspace.GetVariable(var_name));
   EXPECT_FALSE(variable_ptr->IsAvailable());

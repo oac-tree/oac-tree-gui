@@ -66,7 +66,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
   auto wait_ptr = wait.get();
-  procedure.PushInstruction(wait.release());
+  procedure.PushInstruction(std::move(wait));
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
@@ -86,12 +86,12 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithTwoWaits)
 
   auto wait0 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "42");
-  procedure.PushInstruction(wait0.release());
+  procedure.PushInstruction(std::move(wait0));
 
   auto wait1 = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait1->AddAttribute(sequencergui::domainconstants::kIsRootAttribute, "true");
   wait1->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "43");
-  procedure.PushInstruction(wait1.release());
+  procedure.PushInstruction(std::move(wait1));
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
@@ -115,9 +115,9 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto sequence_ptr = sequence.get();
-  sequence->InsertInstruction(wait.release(), 0);
+  sequence->InsertInstruction(std::move(wait), 0);
 
-  procedure.PushInstruction(sequence.release());
+  procedure.PushInstruction(std::move(sequence));
   procedure.Setup();
 
   sequencergui::ProcedureItem procedure_item;
@@ -147,7 +147,7 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
   auto local_variable_ptr = local_variable.get();
 
-  procedure.AddVariable("abc", local_variable.release());
+  procedure.AddVariable("abc", std::move(local_variable));
   procedure.Setup();
 
   sequencergui::ProcedureItem procedure_item;

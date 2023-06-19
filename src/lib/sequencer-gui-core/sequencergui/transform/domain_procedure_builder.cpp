@@ -42,7 +42,7 @@ instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instructi
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
   auto ptr = domain_instruction.get();
-  if (!parent->InsertInstruction(domain_instruction.release(), parent->ChildrenCount()))
+  if (!parent->InsertInstruction(std::move(domain_instruction), parent->ChildrenCount()))
   {
     throw std::runtime_error("Error while trying to insert instruction");
   }
@@ -56,7 +56,7 @@ instruction_t* ProcessInstruction(const sequencergui::InstructionItem* instructi
 {
   auto domain_instruction = instruction->CreateDomainInstruction();
   auto ptr = domain_instruction.get();
-  procedure->PushInstruction(domain_instruction.release());
+  procedure->PushInstruction(std::move(domain_instruction));
   return ptr;
 }
 

@@ -91,7 +91,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   // Setup of Input instruction requires existance of instruction to include
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   wait->SetName("def");
-  m_procedure.InsertInstruction(wait.release(), 0);
+  m_procedure.InsertInstruction(std::move(wait), 0);
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }

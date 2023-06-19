@@ -52,7 +52,7 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonE
 {
   const WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
-  workspace.AddVariable("abc", CreateDomainVariable(domainconstants::kLocalVariableType).release());
+  workspace.AddVariable("abc", CreateDomainVariable(domainconstants::kLocalVariableType));
 
   EXPECT_THROW(PopulateDomainWorkspace(workspace_item, workspace), LogicErrorException);
 }

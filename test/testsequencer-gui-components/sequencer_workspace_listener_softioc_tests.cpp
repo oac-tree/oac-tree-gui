@@ -94,7 +94,7 @@ TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVar
   // adding it to the workspace and validating values
   sup::sequencer::Workspace workspace;
 
-  EXPECT_TRUE(workspace.AddVariable("var", variable.release()));
+  EXPECT_TRUE(workspace.AddVariable("var", std::move(variable)));
   EXPECT_NO_THROW(workspace.Setup());
   EXPECT_TRUE(workspace.WaitForVariable("var", 5.0));
   sup::dto::AnyValue value;
