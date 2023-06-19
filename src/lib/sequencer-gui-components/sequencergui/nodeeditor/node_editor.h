@@ -46,6 +46,7 @@ class GraphicsSceneController;
 class InstructionItem;
 class NodeEditorToolBar;
 class ProcedureItem;
+class VisibilityAgentBase;
 
 //! NodeEditor widget (central part of SequencerComposerView).
 
@@ -74,6 +75,7 @@ private:
   void SetupConnections();
   void SetupToolBar();
   void OnAlignRequest();
+  void SetupController();
 
   NodeEditorToolBar* m_tool_bar{nullptr};
   QWidgetAction* m_tool_bar_action{nullptr};
@@ -81,6 +83,7 @@ private:
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;
+  VisibilityAgentBase* m_visibility_agent{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
 };

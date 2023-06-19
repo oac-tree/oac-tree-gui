@@ -22,6 +22,7 @@
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 
 #include <sequencergui/components/message_handler_factory.h>
+#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -64,6 +65,13 @@ NodeEditor::NodeEditor(QWidget *parent)
 
   SetupConnections();
   SetupToolBar();
+
+  auto on_subscribe = [this]() { SetupController(); };
+
+  auto on_unsubscribe = [this]() { m_scene_controller.reset(); };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 NodeEditor::~NodeEditor() = default;
@@ -84,17 +92,8 @@ void NodeEditor::SetProcedure(ProcedureItem *procedure)
 
   auto instruction_container = procedure->GetInstructionContainer();
   m_graphics_scene->SetInstructionContainer(instruction_container);
-  m_scene_controller =
-      std::make_unique<GraphicsSceneController>(procedure->GetModel(), m_graphics_scene);
 
-  m_scene_controller->Init(instruction_container);
-
-  if (algorithm::RequiresInitialAlignment(instruction_container->GetInstructions()))
-  {
-    const QPointF reference_point = m_graphics_scene->sceneRect().center();
-    algorithm::AlignInstructionTreeWalker(reference_point,
-                                          instruction_container->GetInstructions());
-  }
+  SetupController();
 
   m_graphics_view->onCenterView();
 }
@@ -143,6 +142,29 @@ void NodeEditor::OnAlignRequest()
   auto view = selected.front();
   auto item = view->GetConnectableItem()->GetInstruction();
   algorithm::AlignInstructionTreeWalker(view->pos(), item);
+}
+
+void NodeEditor::SetupController()
+{
+  if (!m_procedure_item || !isVisible())
+  {
+    return;
+  }
+
+  auto container = m_procedure_item->GetInstructionContainer();
+
+  m_scene_controller.reset();
+
+  if (algorithm::RequiresInitialAlignment(container->GetInstructions()))
+  {
+    const QPointF reference_point = m_graphics_scene->sceneRect().center();
+    algorithm::AlignInstructionTreeWalker(reference_point, container->GetInstructions());
+  }
+
+  m_scene_controller =
+      std::make_unique<GraphicsSceneController>(m_procedure_item->GetModel(), m_graphics_scene);
+
+  m_scene_controller->Init(m_procedure_item->GetInstructionContainer());
 }
 
 void NodeEditor::SetupConnections()

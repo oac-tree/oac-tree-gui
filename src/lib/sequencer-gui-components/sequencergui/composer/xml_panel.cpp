@@ -30,12 +30,12 @@ XmlPanel::XmlPanel(QWidget *parent)
 
   auto on_subscribe = [this]()
   {
-    m_listener = std::make_unique<listener_t>(m_model);
-    m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
-    m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
-    m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
+//    m_listener = std::make_unique<listener_t>(m_model);
+//    m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
+//    m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
+//    m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
 
-    UpdateXml();
+//    UpdateXml();
   };
 
   auto on_unsubscribe = [this]() { m_listener.reset(); };

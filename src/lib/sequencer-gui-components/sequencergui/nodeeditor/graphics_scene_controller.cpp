@@ -30,8 +30,6 @@
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
 
-#include <QDebug>
-
 namespace sequencergui
 {
 struct GraphicsSceneController::GraphicsSceneControllerImpl
