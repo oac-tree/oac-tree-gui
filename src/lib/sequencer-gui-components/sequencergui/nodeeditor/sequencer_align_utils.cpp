@@ -27,7 +27,6 @@
 
 #include <mvvm/model/sessionmodel.h>
 
-#include <QDebug>
 #include <QPointF>
 #include <stack>
 #include <stdexcept>
@@ -175,7 +174,6 @@ void UpdatePositions(const AlignNode *node, InstructionItem *item)
 
 void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instruction)
 {
-  qDebug() << "Hello world";
   auto align_tree = CreateAlignTree(instruction);
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
@@ -189,6 +187,18 @@ void AlignInstructionTreeWalker(const QPointF &reference,
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
   UpdatePositions(align_tree.get(), instructions);
+}
+
+bool RequiresInitialAlignment(const InstructionItem &instruction)
+{
+  // very simple check but seems to be enough
+  return instruction.GetX() == 0.0 && instruction.GetY() == 0.0;
+}
+
+bool RequiresInitialAlignment(const std::vector<InstructionItem *> &instructions)
+{
+  return std::all_of(instructions.begin(), instructions.end(),
+                      [](auto it) { return RequiresInitialAlignment(*it); });
 }
 
 }  // namespace sequencergui::algorithm

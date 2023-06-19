@@ -222,3 +222,15 @@ TEST_F(SequencerAlignUtilsTest, AlignTreeWithTwoInstructions)
   EXPECT_FLOAT_EQ(instruction1->GetX(), 1.0 + step_width / 2.0);
   EXPECT_FLOAT_EQ(instruction1->GetY(), 2.0 + step_height);
 }
+
+TEST_F(SequencerAlignUtilsTest, RequiresInitialAlignment)
+{
+  SequenceItem item;
+  EXPECT_TRUE(algorithm::RequiresInitialAlignment(item));
+  EXPECT_TRUE(algorithm::RequiresInitialAlignment({&item}));
+  EXPECT_TRUE(algorithm::RequiresInitialAlignment({&item, &item}));
+
+  item.SetX(42.0);
+  EXPECT_FALSE(algorithm::RequiresInitialAlignment(item));
+  EXPECT_FALSE(algorithm::RequiresInitialAlignment({&item, &item}));
+}

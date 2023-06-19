@@ -56,6 +56,12 @@ void AlignInstructionTreeWalker(const QPointF& reference, InstructionItem* instr
 void AlignInstructionTreeWalker(const QPointF& reference,
                                 std::vector<InstructionItem*> instructions);
 
+//! Returns true if given instruction and its children require alignment on the graphics scene.
+bool RequiresInitialAlignment(const InstructionItem& instruction);
+
+//! Returns true if given instructionrequire alignment on the graphics scene.
+bool RequiresInitialAlignment(const std::vector<InstructionItem*>& instructions);
+
 }  // namespace sequencergui::algorithm
 
 #endif  // SEQUENCERGUI_NODEEDITOR_SEQUENCER_ALIGN_UTILS_H_
