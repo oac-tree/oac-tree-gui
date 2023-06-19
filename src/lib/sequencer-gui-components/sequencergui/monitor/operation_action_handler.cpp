@@ -106,9 +106,9 @@ void OperationActionHandler::OnStartJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->SetCurrentJob(m_job_selection_callback());
-
   ResubmitIfNecessary();
+
+  m_job_manager->SetCurrentJob(m_job_selection_callback());
 
   m_job_manager->OnStartJobRequest();
 }
