@@ -1,24 +1,23 @@
 
 #include "xml_panel.h"
 
+#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/xml_utils.h>
-
-#include <mvvm/model/application_model.h>
-#include <mvvm/model/model_utils.h>
-#include <mvvm/project/model_has_changed_controller.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/gui/codeeditor/code_view.h>
 
-#include <QDebug>
+#include <mvvm/model/application_model.h>
+#include <mvvm/signals/model_listener.h>
+
+#include <sup/dto/anyvalue.h>
+
 #include <QVBoxLayout>
 #include <iostream>
 
 namespace sequencergui
 {
 
-XmlPanel::XmlPanel(mvvm::SessionModelInterface *model, QWidget *parent)
+XmlPanel::XmlPanel(QWidget *parent)
     : QWidget(parent), m_xml_view(new sup::gui::CodeView(sup::gui::CodeView::kXML))
 {
   setWindowTitle("XML View");
@@ -29,32 +28,25 @@ XmlPanel::XmlPanel(mvvm::SessionModelInterface *model, QWidget *parent)
 
   layout->addWidget(m_xml_view);
 
-  SetModel(model);
+  auto on_subscribe = [this]()
+  {
+    m_listener = std::make_unique<listener_t>(m_model);
+    m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
+    m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
+    m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
+
+    UpdateXml();
+  };
+
+  auto on_unsubscribe = [this]() { m_listener.reset(); };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 void XmlPanel::SetModel(mvvm::SessionModelInterface *model)
 {
-  if (model == m_model)
-  {
-    return;
-  }
-
-  if (m_model)
-  {
-    m_model_changed_controller.reset();
-  }
-
   m_model = model;
-
-  if (!m_model)
-  {
-    return;
-  }
-
-  m_listener = std::make_unique<listener_t>(m_model);
-  m_listener->Connect<mvvm::ItemRemovedEvent>(this, &XmlPanel::OnModelEvent);
-  m_listener->Connect<mvvm::ItemInsertedEvent>(this, &XmlPanel::OnModelEvent);
-  m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
 }
 
 void XmlPanel::SetProcedure(ProcedureItem *procedure)
@@ -63,23 +55,11 @@ void XmlPanel::SetProcedure(ProcedureItem *procedure)
   UpdateXml();
 }
 
-void XmlPanel::OnModelEvent(const mvvm::ItemRemovedEvent &event)
-{
-  UpdateXml();
-}
-
-void XmlPanel::OnModelEvent(const mvvm::ItemInsertedEvent &event)
-{
-  UpdateXml();
-}
-
 void XmlPanel::OnModelEvent(const mvvm::DataChangedEvent &event)
 {
   auto [item, role] = event;
 
   auto [tag, index] = item->GetTagIndex();
-
-  qDebug() << "OnModelEvent";
 
   //   instruction node coordinates are not relevant for the XML of the procedure
   if (tag != itemconstants::kXpos && tag != itemconstants::kYpos)
@@ -92,8 +72,7 @@ XmlPanel::~XmlPanel() = default;
 
 void XmlPanel::UpdateXml()
 {
-  qDebug() << "UpdateXml";
-  if (m_procedure)
+  if (m_procedure && isVisible())
   {
     try
     {
@@ -105,6 +84,10 @@ void XmlPanel::UpdateXml()
       // which makes domain's Workspace unhappy.
       m_xml_view->ClearText();
     }
+  }
+  else
+  {
+    m_xml_view->ClearText();
   }
 }
 

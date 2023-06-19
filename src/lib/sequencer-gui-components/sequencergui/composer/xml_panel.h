@@ -20,13 +20,13 @@
 #ifndef SEQUENCERGUI_COMPOSER_XML_PANEL_H_
 #define SEQUENCERGUI_COMPOSER_XML_PANEL_H_
 
-#include <QWidget>
 #include <mvvm/signals/event_types.h>
+
+#include <QWidget>
 
 namespace mvvm
 {
 class SessionModelInterface;
-class ModelHasChangedController;
 template <typename T>
 class ModelListener;
 }  // namespace mvvm
@@ -40,6 +40,7 @@ namespace sequencergui
 {
 
 class ProcedureItem;
+class VisibilityAgentBase;
 
 //! A simple read only text view to show XML content of the procedure.
 
@@ -50,7 +51,7 @@ class XmlPanel : public QWidget
 public:
   using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
 
-  explicit XmlPanel(mvvm::SessionModelInterface* model = nullptr, QWidget* parent = nullptr);
+  explicit XmlPanel(QWidget* parent = nullptr);
   ~XmlPanel() override;
 
   void SetModel(mvvm::SessionModelInterface* model);
@@ -58,17 +59,15 @@ public:
   void SetProcedure(ProcedureItem* procedure);
 
 private:
-  void OnModelEvent(const mvvm::ItemRemovedEvent& event);
-  void OnModelEvent(const mvvm::ItemInsertedEvent& event);
   void OnModelEvent(const mvvm::DataChangedEvent& event);
 
   void UpdateXml();
 
   sup::gui::CodeView* m_xml_view{nullptr};
   mvvm::SessionModelInterface* m_model{nullptr};
-  std::unique_ptr<mvvm::ModelHasChangedController> m_model_changed_controller;
   std::unique_ptr<listener_t> m_listener;
   ProcedureItem* m_procedure{nullptr};
+  VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui

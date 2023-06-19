@@ -26,6 +26,13 @@
 namespace sequencergui
 {
 
+/**
+ * @brief The VisibilityAgentBase class calls two different callbacks depending on whether the
+ * parent widget is visible or not.
+ *
+ * @details It is used to unsubscribe from model notifications when widget is hidden.
+ */
+
 class VisibilityAgentBase : public QObject
 {
   Q_OBJECT
@@ -34,6 +41,9 @@ public:
   using callback_t = std::function<void()>;
 
   VisibilityAgentBase(QObject* parent, callback_t subscribe, callback_t unsubscribe);
+
+protected:
+  bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
   callback_t m_subscribe_callback;

@@ -19,6 +19,8 @@
 
 #include "visibility_agent_base.h"
 
+#include <QEvent>
+
 namespace sequencergui
 {
 
@@ -26,6 +28,21 @@ VisibilityAgentBase::VisibilityAgentBase(QObject *parent, callback_t subscribe,
                                          callback_t unsubscribe)
     : QObject(parent), m_subscribe_callback(subscribe), m_unsubscribe_callback(unsubscribe)
 {
+  parent->installEventFilter(this);
+}
+
+bool VisibilityAgentBase::eventFilter(QObject *obj, QEvent *event)
+{
+  if (event->type() == QEvent::Show)
+  {
+    m_subscribe_callback();
+  }
+  else if (event->type() == QEvent::Hide)
+  {
+    m_unsubscribe_callback();
+  }
+
+  return false;  // let the parent handle it normally
 }
 
 }  // namespace sequencergui
