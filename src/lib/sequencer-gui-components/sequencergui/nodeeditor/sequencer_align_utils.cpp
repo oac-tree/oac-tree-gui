@@ -126,11 +126,6 @@ void TranslatePositions(const QPointF &reference, AlignNode &root_node)
   }
 }
 
-void UpdatePositions(const AlignNode *node, InstructionContainerItem *container)
-{
-  UpdatePositions(node, container->GetInstructions());
-}
-
 void UpdatePositions(const AlignNode *node, std::vector<InstructionItem *> instructions)
 {
   for (auto child : instructions)
@@ -185,14 +180,6 @@ void AlignInstructionTreeWalker(const QPointF &reference, InstructionItem *instr
   AlignNodes(*align_tree);
   TranslatePositions(reference, *align_tree);
   UpdatePositions(align_tree.get(), instruction);
-}
-
-void AlignInstructionTreeWalker(const QPointF &reference, InstructionContainerItem *container)
-{
-  auto align_tree = CreateAlignTree(container->GetInstructions());
-  AlignNodes(*align_tree);
-  TranslatePositions(reference, *align_tree);
-  UpdatePositions(align_tree.get(), container);
 }
 
 void AlignInstructionTreeWalker(const QPointF &reference,

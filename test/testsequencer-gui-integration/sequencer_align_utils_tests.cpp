@@ -143,7 +143,7 @@ TEST_F(SequencerAlignUtilsTest, UpdatePositionsInTheContainer)
   wait2_node->SetPos(7.0, 8.0);
 
   // updating positions of the instruction tree from the AlignmentTree
-  algorithm::UpdatePositions(node.get(), procedure->GetInstructionContainer());
+  algorithm::UpdatePositions(node.get(), procedure->GetInstructionContainer()->GetInstructions());
 
   // validationg coordinates of instructions
   EXPECT_EQ(sequence->GetX(), 1.0);
