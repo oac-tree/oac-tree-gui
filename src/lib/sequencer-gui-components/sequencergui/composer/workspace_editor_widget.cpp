@@ -20,6 +20,7 @@
 #include "workspace_editor_widget.h"
 
 #include <sequencergui/components/message_helper.h>
+#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
@@ -38,6 +39,8 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
+
+#include <iostream>
 namespace
 {
 const QString kGroupName("WorkspaceEditorWidget");
@@ -72,6 +75,18 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   addActions(m_editor_actions->GetActions());
 
   ReadSettings();
+
+  auto on_subscribe = [this]() {
+    SetProcedureIntern(m_procedure);
+  };
+
+  auto on_unsubscribe = [this]()
+  {
+    SetProcedureIntern(nullptr);
+  };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget()
@@ -81,10 +96,17 @@ WorkspaceEditorWidget::~WorkspaceEditorWidget()
 
 void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
+  if (procedure == m_procedure)
+  {
+    return;
+  }
+
   m_procedure = procedure;
-  m_component_provider->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
-  m_tree_view->header()->setStretchLastSection(true);
-  AdjustColumnWidth();
+
+  if (m_procedure && isVisible())
+  {
+    SetProcedureIntern(m_procedure);
+  }
 }
 
 mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
@@ -119,6 +141,22 @@ void WorkspaceEditorWidget::AdjustColumnWidth()
   else
   {
     m_tree_view->resizeColumnToContents(0);
+  }
+}
+
+void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
+{
+  if (procedure)
+  {
+    std::cout << "AAA setting procedure" << std::endl;
+    m_component_provider->SetItem(procedure->GetWorkspace());
+    m_tree_view->header()->setStretchLastSection(true);
+    AdjustColumnWidth();
+  }
+  else
+  {
+    std::cout << "AAA setting null procedure" << std::endl;
+    m_component_provider->SetItem(nullptr);
   }
 }
 

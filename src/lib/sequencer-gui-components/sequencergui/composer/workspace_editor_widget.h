@@ -44,6 +44,7 @@ class VariableItem;
 class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorActions;
+class VisibilityAgentBase;
 
 //! List of workspace variables at the right of SequencerComposerView.
 //! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
@@ -64,6 +65,7 @@ private:
   void ReadSettings();
   void WriteSettings();
   void AdjustColumnWidth();
+  void SetProcedureIntern(ProcedureItem* procedure);
 
   void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
@@ -75,6 +77,8 @@ private:
 
   WorkspaceEditorActions* m_editor_actions{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
+
+  VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui
