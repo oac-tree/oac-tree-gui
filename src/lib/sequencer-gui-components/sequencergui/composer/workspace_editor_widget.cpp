@@ -39,8 +39,6 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-
-#include <iostream>
 namespace
 {
 const QString kGroupName("WorkspaceEditorWidget");
@@ -148,14 +146,12 @@ void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
 {
   if (procedure)
   {
-    std::cout << "AAA setting procedure" << std::endl;
     m_component_provider->SetItem(procedure->GetWorkspace());
     m_tree_view->header()->setStretchLastSection(true);
     AdjustColumnWidth();
   }
   else
   {
-    std::cout << "AAA setting null procedure" << std::endl;
     m_component_provider->SetItem(nullptr);
   }
 }

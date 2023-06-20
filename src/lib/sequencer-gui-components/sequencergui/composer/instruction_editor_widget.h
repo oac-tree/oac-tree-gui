@@ -45,6 +45,7 @@ class InstructionItem;
 class InstructionEditorContext;
 class InstructionEditorActionHandler;
 class InstructionEditorActions;
+class VisibilityAgentBase;
 
 //! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
 //! center (and right side if necessary) os SequencerComposerView.
@@ -72,6 +73,7 @@ private:
   void ReadSettings();
   void WriteSettings();
   void AdjustColumnWidth();
+  void SetProcedureIntern(ProcedureItem* procedure);
 
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
@@ -86,6 +88,8 @@ private:
 
   InstructionEditorActions* m_editor_actions{nullptr};
   std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
+
+  VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui

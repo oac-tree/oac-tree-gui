@@ -22,6 +22,7 @@
 #include "instruction_editor_context.h"
 
 #include <sequencergui/components/message_helper.h>
+#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -29,16 +30,16 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
-
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QSplitter>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <iostream>
 
 namespace
 {
@@ -82,6 +83,13 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   addActions(m_editor_actions->GetActions());
 
   ReadSettings();
+
+  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
+
+  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 InstructionEditorWidget::~InstructionEditorWidget()
@@ -91,11 +99,17 @@ InstructionEditorWidget::~InstructionEditorWidget()
 
 void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
 {
+  if (procedure == m_procedure)
+  {
+    return;
+  }
+
   m_procedure = procedure;
-  m_component_provider->SetItem(procedure ? procedure->GetInstructionContainer() : nullptr);
-  m_tree_view->setColumnHidden(2, true);
-  m_tree_view->header()->setStretchLastSection(true);
-  AdjustColumnWidth();
+
+  if (m_procedure && isVisible())
+  {
+    SetProcedureIntern(m_procedure);
+  }
 }
 
 void InstructionEditorWidget::SetSelectedInstructions(
@@ -148,6 +162,21 @@ void InstructionEditorWidget::AdjustColumnWidth()
   else
   {
     m_tree_view->resizeColumnToContents(0);
+  }
+}
+
+void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
+{
+  if (procedure)
+  {
+    m_component_provider->SetItem(procedure->GetInstructionContainer());
+    m_tree_view->setColumnHidden(2, true);
+    m_tree_view->header()->setStretchLastSection(true);
+    AdjustColumnWidth();
+  }
+  else
+  {
+    m_component_provider->SetItem(nullptr);
   }
 }
 
