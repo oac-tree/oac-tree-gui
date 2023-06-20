@@ -105,6 +105,11 @@ std::vector<InstructionItem *> NodeEditor::GetSelectedInstructions() const
 
 void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &instructions) const
 {
+  if (isHidden())
+  {
+    return;
+  }
+
   m_graphics_scene->SetSelectedInstructions(instructions);
 }
 

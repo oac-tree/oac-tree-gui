@@ -115,6 +115,10 @@ void InstructionEditorWidget::SetProcedure(ProcedureItem *procedure)
 void InstructionEditorWidget::SetSelectedInstructions(
     const std::vector<InstructionItem *> &instructions)
 {
+  if (isHidden())
+  {
+    return;
+  }
   m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(instructions));
 }
 
