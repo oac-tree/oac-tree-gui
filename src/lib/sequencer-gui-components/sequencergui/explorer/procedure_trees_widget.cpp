@@ -23,9 +23,11 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/panel_toolbar.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
+#include <mvvm/viewmodel/top_items_viewmodel.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
-#include <mvvm/widgets/top_items_tree_view.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -37,6 +39,7 @@ namespace
 
 const QString kGroupName("ProcedureTreesWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kProcedureHeaderStateSettingName = kGroupName + "/" + "header_state";
 
 }  // namespace
 
@@ -45,7 +48,9 @@ namespace sequencergui
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new PanelToolBar)
-    , m_procedure_tree(new mvvm::TopItemsTreeView)
+    , m_procedure_tree(new QTreeView)
+    , m_procedure_tree_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_procedure_tree))
+    , m_procedure_custom_header(new sup::gui::CustomHeaderView(this))
     , m_property_tree(new mvvm::PropertyTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -60,10 +65,14 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  connect(m_procedure_tree, &mvvm::TopItemsTreeView::SelectedItemChanged, m_property_tree,
-          &mvvm::PropertyTreeView::SetItem);
+  m_procedure_tree->setHeader(m_procedure_custom_header);
+  m_procedure_tree->setAlternatingRowColors(true);
+  m_procedure_tree->header()->setStretchLastSection(true);
 
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_procedure_tree->GetTreeView());
+  connect(m_procedure_tree_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged,
+          m_property_tree, &mvvm::PropertyTreeView::SetItem);
+
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_procedure_tree);
 
   ReadSettings();
 }
@@ -75,7 +84,9 @@ ProcedureTreesWidget::~ProcedureTreesWidget()
 
 void ProcedureTreesWidget::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_procedure_tree->SetItem(procedure_item);
+  m_procedure_tree_provider->SetItem(procedure_item);
+  m_procedure_tree->expandAll();
+  AdjustColumnWidth();
 }
 
 void ProcedureTreesWidget::ReadSettings()
@@ -90,12 +101,34 @@ void ProcedureTreesWidget::ReadSettings()
   {
     m_splitter->setSizes(QList<int>() << 400 << 200);
   }
+  if (settings.contains(kProcedureHeaderStateSettingName))
+  {
+    m_procedure_custom_header->SetAsFavoriteState(
+        settings.value(kProcedureHeaderStateSettingName).toByteArray());
+  }
 }
 
 void ProcedureTreesWidget::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  if (m_procedure_custom_header->HasFavoriteState())
+  {
+    settings.setValue(kProcedureHeaderStateSettingName,
+                      m_procedure_custom_header->GetFavoriteState());
+  }
+}
+
+void ProcedureTreesWidget::AdjustColumnWidth()
+{
+  if (m_procedure_custom_header->HasFavoriteState())
+  {
+    m_procedure_custom_header->RestoreFavoriteState();
+  }
+  else
+  {
+    m_procedure_tree->resizeColumnToContents(0);
+  }
 }
 
 }  // namespace sequencergui

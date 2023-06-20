@@ -23,12 +23,18 @@
 #include <QWidget>
 
 class QSplitter;
+class QTreeView;
 
 namespace mvvm
 {
-class TopItemsTreeView;
 class PropertyTreeView;
+class ItemViewComponentProvider;
 }  // namespace mvvm
+
+namespace sup::gui
+{
+class CustomHeaderView;
+}
 
 namespace sequencergui
 {
@@ -53,9 +59,14 @@ public:
 private:
   void ReadSettings();
   void WriteSettings();
+  void AdjustColumnWidth();
 
   PanelToolBar* m_tool_bar{nullptr};
-  mvvm::TopItemsTreeView* m_procedure_tree{nullptr};
+
+  QTreeView* m_procedure_tree{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_procedure_tree_provider;
+  sup::gui::CustomHeaderView* m_procedure_custom_header{nullptr};
+
   mvvm::PropertyTreeView* m_property_tree{nullptr};
   QSplitter* m_splitter{nullptr};
 };
