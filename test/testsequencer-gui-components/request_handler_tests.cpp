@@ -33,9 +33,9 @@ class RequestHandlerTest : public ::testing::Test
 
 TEST_F(RequestHandlerTest, SetUserInput)
 {
-  const std::vector<std::string> choices({"a", "b", "c"});
-  const std::string description("description");
-  const UserChoiceArgs args{choices, description};
+  const std::vector<std::pair<std::string, int>> choices({{"a", 0}, {"b", 1}, {"c", 2}});
+  const sup::dto::AnyValue metadata;
+  const UserChoiceArgs args{choices, metadata};
 
   RequestHandler<UserChoiceResult> handler;
 

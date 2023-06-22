@@ -186,12 +186,12 @@ UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 {
   QStringList with_index_added;
   int index{0};
-  for (const auto &str : args.choices)
+  for (const auto &option : args.options)
   {
-    with_index_added.push_back(QString("%1 %2").arg(index++).arg(QString::fromStdString(str)));
+    with_index_added.push_back(QString("%1 %2").arg(index++).arg(QString::fromStdString(option.first)));
   }
   auto selection = QInputDialog::getItem(
-      nullptr, "Input request", QString::fromStdString(args.description), with_index_added);
+      nullptr, "Input request", QString::fromStdString("aaa"), with_index_added);
   return {with_index_added.indexOf(selection), true};
 }
 

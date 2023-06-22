@@ -20,24 +20,24 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_USER_REQUEST_TYPES_H_
 #define SEQUENCERGUI_JOBSYSTEM_USER_REQUEST_TYPES_H_
 
-#include <vector>
-#include <string>
-
 #include <sup/dto/anyvalue.h>
+
+#include <string>
+#include <vector>
 
 namespace sequencergui
 {
 
 struct UserChoiceArgs
 {
-  std::vector<std::string> choices;
-  std::string description;
+  std::vector<std::pair<std::string, int>> options;
+  sup::dto::AnyValue metadata;
 };
 
 struct UserChoiceResult
 {
-  int index{0};      //!<
-  bool processed{false}; //!<
+  int index{0};
+  bool processed{false};
 };
 
 struct UserInputArgs

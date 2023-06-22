@@ -20,11 +20,13 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_SEQUENCER_OBSERVER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_SEQUENCER_OBSERVER_H_
 
-#include <gmock/gmock.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
+#include <sup/dto/anyvalue.h>
 #include <sup/gui/core/dto_types_fwd.h>
 #include <sup/sequencer/user_interface.h>
+
+#include <gmock/gmock.h>
 
 namespace testutils
 {
@@ -34,6 +36,8 @@ namespace testutils
 class MockSequencerObserver : public userinterface_t
 {
 public:
+  using vector_string_pair_t = std::vector<std::pair<std::string, int>>;
+
   MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction), (override));
   MOCK_METHOD(void, VariableUpdatedImpl,
               (const std::string& name, const anyvalue_t& value, bool available), (override));
@@ -44,8 +48,7 @@ public:
               (override));
 
   MOCK_METHOD(int, GetUserChoiceImpl,
-              (const std::vector<std::string>& choices, const std::string& description),
-              (override));
+              (const vector_string_pair_t& options, const anyvalue_t& metadata), (override));
 
   MOCK_METHOD(void, MessageImpl, (const std::string& message), (override));
   MOCK_METHOD(void, LogImpl, (int level, const std::string& str), (override));

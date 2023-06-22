@@ -38,9 +38,10 @@ class UserChoiceProviderTest : public ::testing::Test
 
 TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
 {
-  const std::vector<std::string> choices({"a", "b", "c"});
-  const std::string description("description");
-  const UserChoiceArgs args{choices, description};
+  const std::vector<std::pair<std::string, int>> choices({{"a", 0}, {"b", 1}, {"c", 2}});
+  const sup::dto::AnyValue metadata;
+  const UserChoiceArgs args{choices, metadata};
+
   UserChoiceResult expected_result{42, true};
 
   // User choice callback.
@@ -75,9 +76,9 @@ TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
 
 TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
 {
-  const std::vector<std::string> choices({"a", "b", "c"});
-  const std::string description("description");
-  const UserChoiceArgs args{choices, description};
+  const std::vector<std::pair<std::string, int>> choices({{"a", 0}, {"b", 1}, {"c", 2}});
+  const sup::dto::AnyValue metadata;
+  const UserChoiceArgs args{choices, metadata};
 
   // User choice callback. Will prvide `0` for the first call, and `1` for the second.
   int user_selection{0};
