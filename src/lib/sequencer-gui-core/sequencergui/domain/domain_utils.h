@@ -26,6 +26,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
 
 #include <map>
 #include <memory>
@@ -54,6 +55,8 @@ bool IsVariableTypeAvailable(const std::string& domain_type);
 bool IsInstructionTypeAvailable(const std::string& domain_type);
 
 bool IsSequencerPluginEpicsAvailable();
+
+std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
 
 /**
  * @brief Loads all sequencer plugins and reports result of the load to the user.

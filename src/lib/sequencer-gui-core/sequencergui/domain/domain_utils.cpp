@@ -29,6 +29,7 @@
 #include <sup/sequencer/sequence_parser.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_registry.h>
+#include <sup/sequencer/user_interface.h>
 
 #include <algorithm>
 #include <iostream>
@@ -164,6 +165,11 @@ std::pair<bool, std::string> LoadPlugins()
   }
 
   return {true, ""};
+}
+
+std::string GetMainTextFromMetadata(const anyvalue_t &metadata)
+{
+  return sup::sequencer::GetMainTextFromMetadata(metadata);
 }
 
 }  // namespace sequencergui

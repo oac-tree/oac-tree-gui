@@ -20,6 +20,7 @@
 #include "job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/instruction_item.h>
@@ -184,15 +185,16 @@ UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
 
 UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 {
-  QStringList with_index_added;
+  QStringList selection_list;
   int index{0};
   for (const auto &option : args.options)
   {
-    with_index_added.push_back(QString("%1 %2").arg(index++).arg(QString::fromStdString(option.first)));
+    selection_list.push_back(QString("%1").arg(QString::fromStdString(option.first)));
   }
   auto selection = QInputDialog::getItem(
-      nullptr, "Input request", QString::fromStdString("aaa"), with_index_added);
-  return {with_index_added.indexOf(selection), true};
+      nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
+      selection_list);
+  return {selection_list.indexOf(selection), true};
 }
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
