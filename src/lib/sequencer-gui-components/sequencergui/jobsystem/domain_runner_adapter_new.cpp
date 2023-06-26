@@ -20,7 +20,6 @@
 #include "domain_runner_adapter_new.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/function_runner.h>
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
@@ -32,28 +31,18 @@
 namespace sequencergui
 {
 
-DomainRunnerAdapterNew::DomainRunnerAdapterNew(procedure_t *procedure, userinterface_t *interface,
-                                         std::function<void(RunnerStatus)> status_changed_callback)
-    : m_procedure(procedure), m_userinterface(interface)
+DomainRunnerAdapterNew::DomainRunnerAdapterNew(
+    procedure_t *procedure, userinterface_t *interface,
+    std::function<void(RunnerStatus)> status_changed_callback)
+    : m_procedure(procedure)
+    , m_userinterface(interface)
+    , m_status_changed_callback(status_changed_callback)
 {
   m_domain_runner = std::make_unique<runner_t>(*m_userinterface);
   m_domain_runner->SetProcedure(m_procedure);
-  auto worker = [this] { return ExecuteSingle(); };
-  m_function_runner = std::make_unique<FunctionRunner>(worker, std::move(status_changed_callback));
 }
 
 DomainRunnerAdapterNew::~DomainRunnerAdapterNew() = default;
-
-
-RunnerStatus DomainRunnerAdapterNew::GetStatus() const
-{
-  return m_function_runner->GetStatus();
-}
-
-void DomainRunnerAdapterNew::SetStatus(RunnerStatus status)
-{
-  m_function_runner->SetStatus(status);
-}
 
 void DomainRunnerAdapterNew::SetTickTimeout(int msec)
 {
@@ -62,56 +51,32 @@ void DomainRunnerAdapterNew::SetTickTimeout(int msec)
 
 bool DomainRunnerAdapterNew::IsBusy() const
 {
-  return m_function_runner->IsBusy();
+  return false;
 }
 
 void DomainRunnerAdapterNew::StartRequest()
 {
-  if (GetStatus() != RunnerStatus::kIdle)
-  {
-    throw RuntimeException("Domain runner is not intended to start the job twice");
-  }
-
-  m_function_runner->StartRequest();
 }
 
 void DomainRunnerAdapterNew::PauseModeOnRequest()
 {
-  m_function_runner->PauseModeOnRequest();
 }
 
 void DomainRunnerAdapterNew::PauseModeOffRequest()
 {
-  m_function_runner->PauseModeOffRequest();
 }
 
 void DomainRunnerAdapterNew::StepRequest()
 {
-  m_function_runner->StepRequest();
 }
 
 void DomainRunnerAdapterNew::StopRequest()
 {
-  m_domain_runner->Halt();
-  m_function_runner->StopRequest();
 }
 
 void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
 {
-  m_function_runner->OnStatusChange(status);
+  m_status_changed_callback(status);
 }
-
-bool DomainRunnerAdapterNew::ExecuteSingle()
-{
-  m_domain_runner->ExecuteSingle();
-  auto is_running = !m_domain_runner->IsFinished();
-  if (is_running && m_tick_timeout_ms.load() > 0)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_ms.load()));
-  }
-
-  return is_running;
-}
-
 
 }  // namespace sequencergui

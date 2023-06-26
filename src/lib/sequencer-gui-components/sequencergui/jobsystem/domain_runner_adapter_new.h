@@ -27,6 +27,7 @@
 #include <atomic>
 #include <chrono>
 #include <functional>
+#include <future>
 #include <memory>
 
 namespace sequencergui
@@ -49,10 +50,6 @@ public:
 
   ~DomainRunnerAdapterNew() override;
 
-  RunnerStatus GetStatus() const override;
-
-  void SetStatus(RunnerStatus status) override;
-
   void SetTickTimeout(int msec);
 
   bool IsBusy() const;
@@ -70,13 +67,8 @@ public:
   void OnStatusChange(RunnerStatus status) override;
 
 private:
-  bool ExecuteSingle();
-
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
-
-  //! Our own runner introduced to start/stop/pause jobs.
-  std::unique_ptr<FunctionRunner> m_function_runner;
 
   //! Procedure to execute in a thread. Must be after the Setup call.
   procedure_t* m_procedure{nullptr};
@@ -86,6 +78,10 @@ private:
 
   //! Delay in event loop.
   std::atomic<int> m_tick_timeout_ms{0};
+
+  std::function<void(RunnerStatus)> m_status_changed_callback;
+
+  std::future<void> m_child_result;
 };
 
 }  // namespace sequencergui
