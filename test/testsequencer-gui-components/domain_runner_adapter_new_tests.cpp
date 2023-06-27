@@ -60,8 +60,8 @@ public:
     {
       throw std::runtime_error("Can't setup procedure");
     }
-    auto result =
-        std::make_unique<DomainRunnerAdapterNew>(procedure, &m_observer, m_listener.CreateCallback());
+    auto result = std::make_unique<DomainRunnerAdapterNew>(procedure, &m_observer,
+                                                           m_listener.CreateCallback());
 
     return result;
   }
@@ -107,60 +107,66 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
   EXPECT_TRUE(adapter->Start());
   std::cout << "AAA 0.2" << std::endl;
 
-  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
+  auto is_completed = [&adapter](){return !adapter->IsBusy();};
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
+
   std::cout << "AAA 0.3" << std::endl;
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
-////! Terminates procedure which runs too long.
+//! Terminates procedure which runs too long.
 
-//TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
-//{
-//  const std::chrono::milliseconds wait_timeout(10000);
+TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
+{
+  const std::chrono::milliseconds wait_timeout(10000);
 
-//  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
+  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
 
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status change
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
-//  }
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-//  }
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+  }
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Start());  // trigger action
+  // triggering action
+  EXPECT_TRUE(adapter->Start());  // trigger action
 
-//  EXPECT_TRUE(adapter->IsBusy());
-//  std::this_thread::sleep_for(msec(20));
+  auto has_started = [&adapter](){return adapter->IsBusy();};
+  EXPECT_TRUE(testutils::WaitFor(has_started, msec(50)));
+
+  EXPECT_TRUE(adapter->IsBusy());
 
 //  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
 
-//  adapter->Stop();
-//  std::this_thread::sleep_for(msec(10));
+  adapter->Stop();
 
-//  EXPECT_FALSE(adapter->IsBusy());
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
-//  // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
-//}
+  auto is_completed = [&adapter](){return !adapter->IsBusy();};
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
+
+  EXPECT_FALSE(adapter->IsBusy());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+}
 
 ////! Sequence with single wait in normal start mode.
 
-//TEST_F(DomainRunnerAdapterNewTest, SequenceWithSingleWait)
+// TEST_F(DomainRunnerAdapterNewTest, SequenceWithSingleWait)
 //{
-//  const int tick_timeout_msec(1000);
-//  std::chrono::milliseconds timeout_msec(10);
+//   const int tick_timeout_msec(1000);
+//   std::chrono::milliseconds timeout_msec(10);
 
 //  auto procedure = testutils::CreateSequenceWithWaitProcedure(timeout_msec);
 //  auto adapter = CreateRunnerAdapter(procedure.get());
@@ -202,9 +208,9 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 ////! Sequence with single wait in normal start mode.
 ////! Additional tick timeout slows down the execution.
 
-//TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaits)
+// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaits)
 //{
-//  const int tick_timeout_msec(100);
+//   const int tick_timeout_msec(100);
 
 //  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
 //  auto adapter = CreateRunnerAdapter(procedure.get());
@@ -244,10 +250,10 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 
 ////! Sequence with two waits in step mode.
 
-//TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
+// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
 //{
-//  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+//   auto adapter = CreateRunnerAdapter(procedure.get());
 
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -281,10 +287,10 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 
 ////! Stepwise procedure execution.
 
-//TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
+// TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
 //{
-//  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+//   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+//   auto adapter = CreateRunnerAdapter(procedure.get());
 
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -325,10 +331,10 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 ////! Running procedure (sequence with message) and let is finish.
 ////! Then run same procedure again.
 
-//TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
+// TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
 //{
-//  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+//   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+//   auto adapter = CreateRunnerAdapter(procedure.get());
 
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -361,10 +367,10 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 
 ////! Sequence with two waits in step mode. After first step it is interrupted.
 
-//TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
+// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
 //{
-//  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+//   auto adapter = CreateRunnerAdapter(procedure.get());
 
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -396,14 +402,16 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
 //}
 
-////! Sequence with two waits in step mode. After first step it is interrupted, and then started from
-////! the beginning. This time exception should be thrown, since same adapter can't be run twice with
+////! Sequence with two waits in step mode. After first step it is interrupted, and then started
+///from
+////! the beginning. This time exception should be thrown, since same adapter can't be run twice
+///with
 ////! the same procedure.
 
-//TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
+// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
 //{
-//  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+//   auto adapter = CreateRunnerAdapter(procedure.get());
 
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -443,10 +451,10 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 ////! completion. Then start again in step mode. This time exception should be thrown,
 ////! since same adapter can't be run twice with the same procedure.
 
-//TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
+// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 //{
-//  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+//   auto adapter = CreateRunnerAdapter(procedure.get());
 
 //  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 //  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -477,10 +485,10 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 
 ////! Long running procedure gets stopped, then started again.
 
-//TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
+// TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
 //{
-//  std::chrono::milliseconds timeout_msec(100);
-//  auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
+//   std::chrono::milliseconds timeout_msec(100);
+//   auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
 
 //  auto adapter = CreateRunnerAdapter(procedure.get());
 

@@ -86,7 +86,16 @@ void DomainRunnerAdapterNew::StartRequest()
       std::cout << "AAA 1.1" << std::endl;
       m_domain_runner->ExecuteProcedure();
       std::cout << "AAA 1.2" << std::endl;
-      SetStatus(RunnerStatus::kCompleted);
+
+      if (GetStatus() == RunnerStatus::kRunning)
+      {
+        SetStatus(RunnerStatus::kCompleted);
+      }
+      else if (GetStatus() == RunnerStatus::kStopping)
+      {
+        SetStatus(RunnerStatus::kStopped);
+      }
+
       std::cout << "AAA 1.3" << std::endl;
     }
     catch (const std::exception &ex)
@@ -136,7 +145,11 @@ void DomainRunnerAdapterNew::StepRequest()
   m_future_result = std::async(std::launch::async, worker);
 }
 
-void DomainRunnerAdapterNew::StopRequest() {}
+void DomainRunnerAdapterNew::StopRequest()
+{
+  SetStatus(RunnerStatus::kStopping);
+  m_domain_runner->Halt();
+}
 
 void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
 {
