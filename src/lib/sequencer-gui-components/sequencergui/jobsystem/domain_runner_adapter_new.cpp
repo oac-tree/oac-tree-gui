@@ -81,11 +81,7 @@ void DomainRunnerAdapterNew::StartRequest()
 {
   if (m_future_result.valid())
   {
-    std::cout
-        << "DomainRunnerAdapterNew::StartRequest() -> Already running job, waiting for previous "
-           "operation to complete"
-        << std::endl;
-    m_future_result.wait();
+    throw RuntimeException("Domain runner is not intended to start the job twice");
   }
 
   // deliberately before thread start

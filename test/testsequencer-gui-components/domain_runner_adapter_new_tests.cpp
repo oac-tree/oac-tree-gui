@@ -289,85 +289,85 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
-////! Stepwise procedure execution.
+//! Stepwise procedure execution.
 
-// TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
-//{
-//   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-//   auto adapter = CreateRunnerAdapter(procedure.get());
+ TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
+{
+   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+   auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//  }
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+  }
 
-//  EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);
+  EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Step());
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
+  // triggering action
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
 
-//  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kPaused; },
-//                     msec(50));
+  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kPaused; },
+                     msec(50));
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
-//  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+  EXPECT_TRUE(adapter->Step());
 
-//  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kCompleted; },
-//                     msec(50));
+  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kCompleted; },
+                     msec(50));
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
-//}
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+}
 
-////! Running procedure (sequence with message) and let is finish.
-////! Then run same procedure again.
+//! Running procedure (sequence with message) and let is finish.
+//! Then run same procedure again.
 
-// TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
-//{
-//   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
-//   auto adapter = CreateRunnerAdapter(procedure.get());
+ TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
+{
+   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+   auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    // first run (sequence, message
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
-//    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);                  // message
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
-//  }
+  {  // observer signaling
+    ::testing::InSequence seq;
+    // first run (sequence, message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);                  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
+  }
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Start());
-//  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  // triggering action
+  EXPECT_TRUE(adapter->Start());
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
-//  // Adapter is not intended to be run twice with the same procedure.
-//  EXPECT_THROW(adapter->Start(), RuntimeException);
-//}
+  // Adapter is not intended to be run twice with the same procedure.
+  EXPECT_THROW(adapter->Start(), RuntimeException);
+}
 
 ////! Sequence with two waits in step mode. After first step it is interrupted.
 
