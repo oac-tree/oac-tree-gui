@@ -20,6 +20,7 @@
 #include "domain_runner_adapter_new.h"
 
 #include "abstract_job_helper.h"
+#include "job_utils.h"
 
 #include <sequencergui/core/exceptions.h>
 
@@ -44,7 +45,7 @@ DomainRunnerAdapterNew::DomainRunnerAdapterNew(
   m_domain_runner = std::make_unique<runner_t>(*m_userinterface);
   m_domain_runner->SetProcedure(m_procedure);
 
-  auto tick_callback = [this](const procedure_t&)
+  auto tick_callback = [this](const procedure_t &)
   {
     auto is_running = !m_domain_runner->IsFinished();
     if (is_running && m_tick_timeout_ms.load() > 0)
@@ -131,9 +132,9 @@ void DomainRunnerAdapterNew::PauseModeOffRequest()
 
 void DomainRunnerAdapterNew::StepRequest()
 {
-  if (m_future_result.valid())
+  if (m_future_result.valid() && GetStatus() != RunnerStatus::kPaused)
   {
-    std::runtime_error("DomainRunnerAdapterNew::StartRequest() -> Already running job");
+    throw RuntimeException("DomainRunnerAdapterNew::StartRequest() -> Already running job");
   }
 
   // deliberately before thread start
@@ -143,7 +144,9 @@ void DomainRunnerAdapterNew::StepRequest()
   {
     try
     {
+      std::cout << "StepRequest 1.1 " << RunnerStatusToString(GetStatus()) << std::endl;
       m_domain_runner->ExecuteSingle();
+      std::cout << "StepRequest 1.2 " << RunnerStatusToString(GetStatus()) << std::endl;
 
       if (GetStatus() == RunnerStatus::kRunning)
       {
@@ -156,24 +159,35 @@ void DomainRunnerAdapterNew::StepRequest()
           SetStatus(RunnerStatus::kPaused);
         }
       }
-
+      else if (GetStatus() == RunnerStatus::kStopping)
+      {
+        SetStatus(RunnerStatus::kStopped);
+      }
     }
     catch (const std::exception &ex)
     {
       SetStatus(RunnerStatus::kFailed);
     }
+
+    std::cout << "Worker Done!!" << std::endl;
   };
   m_future_result = std::async(std::launch::async, worker);
 }
 
 void DomainRunnerAdapterNew::StopRequest()
 {
+  auto prev_status = GetStatus();
   SetStatus(RunnerStatus::kStopping);
   m_domain_runner->Halt();
+  if (prev_status == RunnerStatus::kPaused)
+  {
+    SetStatus(RunnerStatus::kStopped);
+  }
 }
 
 void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
 {
+  std::cout << "OnStatusChange " << RunnerStatusToString(status) << std::endl;
   m_status_changed_callback(status);
 }
 
@@ -182,19 +196,23 @@ bool DomainRunnerAdapterNew::Step()
   bool is_valid_request{false};
   if (CanReleaseJob(GetStatus()))
   {
+    std::cout << "DomainRunnerAdapterNew::Step 1.1 " << RunnerStatusToString(GetStatus())
+              << std::endl;
     StepRequest();
     is_valid_request = true;
   }
   else if (CanStartJob(GetStatus()))
   {
+    std::cout << "DomainRunnerAdapterNew::Step 1.2 " << RunnerStatusToString(GetStatus())
+              << std::endl;
     StepRequest();
     //    PauseModeOnRequest();
     //    StepRequest();
     //    StartRequest();
     is_valid_request = true;
   }
+  std::cout << "DomainRunnerAdapterNew::Step 1.3" << std::endl;
   return is_valid_request;
-
 }
 
 }  // namespace sequencergui

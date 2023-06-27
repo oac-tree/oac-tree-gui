@@ -291,10 +291,10 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
 
 //! Stepwise procedure execution.
 
- TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
+TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
 {
-   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-   auto adapter = CreateRunnerAdapter(procedure.get());
+  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -335,10 +335,10 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
 //! Running procedure (sequence with message) and let is finish.
 //! Then run same procedure again.
 
- TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
+TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
 {
-   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
-   auto adapter = CreateRunnerAdapter(procedure.get());
+  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -369,163 +369,165 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
   EXPECT_THROW(adapter->Start(), RuntimeException);
 }
 
-////! Sequence with two waits in step mode. After first step it is interrupted.
+//! Sequence with two waits in step mode. After first step it is interrupted.
 
-// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
-//{
-//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//   auto adapter = CreateRunnerAdapter(procedure.get());
+TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
+{
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//  }
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+  }
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Step());
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
-//  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+  // triggering action
+  std::cout << "------------ Before Step()" << std::endl;
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
+  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
 
-//  // stopping job
-//  EXPECT_TRUE(adapter->Stop());
-//  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
+  // stopping job
+  std::cout << "------------ Before Stop()" << std::endl;
+  EXPECT_TRUE(adapter->Stop());
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
-//}
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
+}
 
-////! Sequence with two waits in step mode. After first step it is interrupted, and then started
-/// from
-////! the beginning. This time exception should be thrown, since same adapter can't be run twice
-/// with
-////! the same procedure.
+//! Sequence with two waits in step mode. After first step it is interrupted, and then started from
+//! the beginning. This time exception should be thrown, since same adapter can't be run twice with
+//! the same procedure.
 
-// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
-//{
-//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//   auto adapter = CreateRunnerAdapter(procedure.get());
+TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
+{
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    // first step
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//  }
+  {  // observer signaling
+    ::testing::InSequence seq;
+    // first step
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+  }
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Step());
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
-//  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
+  // triggering action
+  EXPECT_TRUE(adapter->Step());
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
+  std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
 
-//  // stopping job
-//  EXPECT_TRUE(adapter->Stop());
-//  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
+  // stopping job
+  EXPECT_TRUE(adapter->Stop());
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
 
-//  // restarting job
-//  EXPECT_THROW(adapter->Start(), RuntimeException);
-//}
+  // restarting job
+  EXPECT_THROW(adapter->Start(), RuntimeException);
+}
 
-////! Sequence with two waits in step mode. We start procedure normally and let is run till
-////! completion. Then start again in step mode. This time exception should be thrown,
-////! since same adapter can't be run twice with the same procedure.
+//! Sequence with two waits in step mode. We start procedure normally and let is run till
+//! completion. Then start again in step mode. This time exception should be thrown,
+//! since same adapter can't be run twice with the same procedure.
 
-// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
-//{
-//   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//   auto adapter = CreateRunnerAdapter(procedure.get());
+TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
+{
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
+  {  // observer signaling
+    ::testing::InSequence seq;
 
-//    // first execution
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//  }
+    // first execution
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+  }
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Start());
-//  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  // triggering action
+  EXPECT_TRUE(adapter->Start());
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
-//  // triggering action
-//  EXPECT_THROW(adapter->Step(), RuntimeException);
-//}
+  // triggering action
+  std::cout << " ------------------------ " << std::endl;
+  EXPECT_THROW(adapter->Step(), RuntimeException);
+}
 
-////! Long running procedure gets stopped, then started again.
+//! Long running procedure gets stopped, then started again.
 
-// TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
-//{
-//   std::chrono::milliseconds timeout_msec(100);
-//   auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
+ TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
+{
+   std::chrono::milliseconds timeout_msec(100);
+   auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
 
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status change
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
-//  }
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopping));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kStopped));
+  }
 
-//  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Start());
+  // triggering action
+  EXPECT_TRUE(adapter->Start());
 
-//  EXPECT_TRUE(adapter->IsBusy());
-//  std::this_thread::sleep_for(msec(20));
+  EXPECT_TRUE(adapter->IsBusy());
+  std::this_thread::sleep_for(msec(20));
 
-//  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
+  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
 
-//  adapter->Stop();
-//  std::this_thread::sleep_for(msec(10));
+  adapter->Stop();
 
-//  EXPECT_FALSE(adapter->IsBusy());
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
-//  // it is FAILURE here (and not NOT_FINISHED) necause we have interrupted Wait with the Halt
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+  auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
 
-//  // second round
-//  // For the moment we do not allow to job to be restarted after abnormal termination
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
+  // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 
-//  EXPECT_THROW(adapter->Start(), RuntimeException);
-//}
+  // second round
+  // For the moment we do not allow to job to be restarted after abnormal termination
+
+  EXPECT_THROW(adapter->Start(), RuntimeException);
+}
