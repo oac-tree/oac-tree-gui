@@ -240,4 +240,28 @@ std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions)
+{
+  auto result = std::make_unique<procedure_t>();
+
+  auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
+  increment->AddAttribute(sequencergui::domainconstants::kVarNameAttribute, "counter");
+
+  // repeat instruction with increment inside
+  auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute,
+                       std::to_string(n_repetitions));
+  repeat->InsertInstruction(std::move(increment), 0);
+
+  result->PushInstruction(std::move(repeat));
+
+  auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
+  var0->AddAttribute(domainconstants::kNameAttribute, "counter");
+  var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+  var0->AddAttribute(domainconstants::kValueAttribute, "0");
+  result->AddVariable("counter", std::move(var0));
+
+  return result;
+}
+
 }  // namespace testutils

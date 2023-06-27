@@ -80,10 +80,15 @@ bool DomainRunnerAdapterNew::IsInPauseMode() const
 
 void DomainRunnerAdapterNew::StartRequest()
 {
-  if (m_future_result.valid())
+  if (m_future_result.valid() && GetStatus() != RunnerStatus::kPaused)
   {
-    throw RuntimeException("Domain runner is not intended to start the job twice");
+    throw RuntimeException("DomainRunnerAdapterNew::StartRequest() -> Already running job");
   }
+
+//  if (m_future_result.valid())
+//  {
+//    throw RuntimeException("Domain runner is not intended to start the job twice");
+//  }
 
   // deliberately before thread start
   SetStatus(RunnerStatus::kRunning);

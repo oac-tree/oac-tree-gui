@@ -20,9 +20,13 @@
 #include "sequencergui/jobsystem/domain_runner_adapter_new.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
+#include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -148,8 +152,6 @@ TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
 
   EXPECT_TRUE(adapter->IsBusy());
 
-  //  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
-
   adapter->Stop();
 
   auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
@@ -252,7 +254,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoMessages)
               >= msec(tick_timeout_msec));
 }
 
-//! Sequence with two waits in step mode.
+//! Sequence with two waits in step mode. Making steps until complete.
 
 TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
 {
@@ -490,10 +492,10 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep
 
 //! Long running procedure gets stopped, then started again.
 
- TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
+TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
 {
-   std::chrono::milliseconds timeout_msec(100);
-   auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
+  std::chrono::milliseconds timeout_msec(100);
+  auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
 
@@ -530,4 +532,62 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep
   // For the moment we do not allow to job to be restarted after abnormal termination
 
   EXPECT_THROW(adapter->Start(), RuntimeException);
+}
+
+//! Repeat procedure with increment instruction inside. We start in step mode, and after the first
+//! step continue till the end without interruptions.
+
+TEST_F(DomainRunnerAdapterNewTest, StepAndRunTillTheEnd)
+{
+  auto procedure = testutils::CreateCounterProcedure(3);
+  auto variable = procedure->GetWorkspace()->GetVariable("counter");
+  procedure->Setup();
+
+  sup::dto::AnyValue counter_value;
+  variable->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 0u);
+
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+  }
+
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(1);
+
+  // making step
+  EXPECT_TRUE(adapter->Step());
+
+  auto is_incremented = [variable]()
+  {
+    sup::dto::AnyValue counter_value;
+    variable->GetValue(counter_value);
+    return counter_value == 1u;
+  };
+
+  EXPECT_TRUE(testutils::WaitFor(is_incremented, msec(50)));
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
+
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(2));
+  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(2);
+
+  // continuing till the end
+  EXPECT_TRUE(adapter->Start());
+
+  auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
+
+  variable->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 3u);
 }

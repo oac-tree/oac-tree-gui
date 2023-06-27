@@ -71,6 +71,9 @@ std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
 //! </Repeat>
 std::unique_ptr<procedure_t> CreateLocalIncludeProcedure();
 
+//! Creates domain procedure with increment instruction repeated several times
+std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions);
+
 
 }  // namespace testutils
 
