@@ -41,6 +41,16 @@ DomainRunnerAdapterNew::DomainRunnerAdapterNew(
 {
   m_domain_runner = std::make_unique<runner_t>(*m_userinterface);
   m_domain_runner->SetProcedure(m_procedure);
+
+  auto tick_callback = [this](const procedure_t&)
+  {
+    auto is_running = !m_domain_runner->IsFinished();
+    if (is_running && m_tick_timeout_ms.load() > 0)
+    {
+      std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_ms.load()));
+    }
+  };
+  m_domain_runner->SetTickCallback(tick_callback);
 }
 
 DomainRunnerAdapterNew::~DomainRunnerAdapterNew() = default;

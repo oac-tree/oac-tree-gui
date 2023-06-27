@@ -107,7 +107,7 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
   EXPECT_TRUE(adapter->Start());
   std::cout << "AAA 0.2" << std::endl;
 
-  auto is_completed = [&adapter](){return !adapter->IsBusy();};
+  auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
   EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
 
   std::cout << "AAA 0.3" << std::endl;
@@ -143,16 +143,16 @@ TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
   // triggering action
   EXPECT_TRUE(adapter->Start());  // trigger action
 
-  auto has_started = [&adapter](){return adapter->IsBusy();};
+  auto has_started = [&adapter]() { return adapter->IsBusy(); };
   EXPECT_TRUE(testutils::WaitFor(has_started, msec(50)));
 
   EXPECT_TRUE(adapter->IsBusy());
 
-//  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
+  //  EXPECT_FALSE(testutils::WaitForCompletion(*adapter, msec(10)));
 
   adapter->Stop();
 
-  auto is_completed = [&adapter](){return !adapter->IsBusy();};
+  auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
   EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
 
   EXPECT_FALSE(adapter->IsBusy());
@@ -161,92 +161,96 @@ TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
 
-////! Sequence with single wait in normal start mode.
+//! Sequence with single message in normal start mode.
+//! Validation that tick timeout is ignored for single instructions.
 
-// TEST_F(DomainRunnerAdapterNewTest, SequenceWithSingleWait)
-//{
-//   const int tick_timeout_msec(1000);
-//   std::chrono::milliseconds timeout_msec(10);
+TEST_F(DomainRunnerAdapterNewTest, SequenceWithSingleMessage)
+{
+  const int tick_timeout_msec(1000);
 
-//  auto procedure = testutils::CreateSequenceWithWaitProcedure(timeout_msec);
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  adapter->SetTickTimeout(tick_timeout_msec);
+  adapter->SetTickTimeout(tick_timeout_msec);
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(4);
-//  }
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(4);
+  }
 
-//  // triggering action
-//  time_t start_time = clock_used::now();
-//  EXPECT_TRUE(adapter->Start());
+  EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);  // message
 
-//  EXPECT_TRUE(testutils::WaitForCompletion(
-//      *adapter, testutils::kDefaultWaitPrecision + 2 * msec(timeout_msec)));
+  // triggering action
+  time_t start_time = clock_used::now();
+  EXPECT_TRUE(adapter->Start());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
 
-//  time_t end_time = clock_used::now();
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
-//  // Here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
-//  // since we have only one child that gets executed during single step.
-//  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
-//              < msec(testutils::kDefaultWaitPrecision * 2));
-//}
+  time_t end_time = clock_used::now();
 
-////! Sequence with single wait in normal start mode.
-////! Additional tick timeout slows down the execution.
+  // Here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
+  // since we have only one child that gets executed during single step.
+  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
+              < msec(tick_timeout_msec));
+}
 
-// TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaits)
-//{
-//   const int tick_timeout_msec(100);
+//! Sequence with two messages in normal start mode.
+//! Additional tick timeout slows down the execution.
 
-//  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoMessages)
+{
+  const int tick_timeout_msec(50);
 
-//  adapter->SetTickTimeout(tick_timeout_msec);
+  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  adapter->SetTickTimeout(tick_timeout_msec);
 
-//  {  // signaling related to the runner status changer
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
-//  }
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // observer signaling
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-//  }
+  {  // signaling related to the runner status changer
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
 
-//  // triggering action
-//  time_t start_time = clock_used::now();
-//  EXPECT_TRUE(adapter->Start());
+  {  // observer signaling
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+  }
 
-//  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
+  EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);  // message
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  // triggering action
+  time_t start_time = clock_used::now();
+  EXPECT_TRUE(adapter->Start());
 
-//  time_t end_time = clock_used::now();
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(200)));
 
-//  // here we test that adapter.SetTickTimeout(100) was invoked once
-//  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
-//              > msec(tick_timeout_msec));
-//}
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+  time_t end_time = clock_used::now();
+
+  // here we test that adapter.SetTickTimeout(100) was invoked once
+  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
+              >= msec(tick_timeout_msec));
+}
 
 ////! Sequence with two waits in step mode.
 
@@ -403,9 +407,9 @@ TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
 //}
 
 ////! Sequence with two waits in step mode. After first step it is interrupted, and then started
-///from
+/// from
 ////! the beginning. This time exception should be thrown, since same adapter can't be run twice
-///with
+/// with
 ////! the same procedure.
 
 // TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
