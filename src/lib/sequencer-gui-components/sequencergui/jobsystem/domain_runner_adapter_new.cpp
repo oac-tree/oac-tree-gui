@@ -26,6 +26,7 @@
 
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 #include <thread>
 
 namespace sequencergui
@@ -51,28 +52,91 @@ void DomainRunnerAdapterNew::SetTickTimeout(int msec)
 
 bool DomainRunnerAdapterNew::IsBusy() const
 {
-  return false;
+  if (!m_future_result.valid())
+  {
+    return false;
+  }
+
+  return m_future_result.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
+}
+
+bool DomainRunnerAdapterNew::IsInPauseMode() const
+{
+  return m_pause_mode_request;
 }
 
 void DomainRunnerAdapterNew::StartRequest()
 {
+  if (m_future_result.valid())
+  {
+    std::cout
+        << "DomainRunnerAdapterNew::StartRequest() -> Already running job, waiting for previous "
+           "operation to complete"
+        << std::endl;
+    m_future_result.wait();
+  }
+
+  // deliberately before thread start
+  SetStatus(RunnerStatus::kRunning);
+
+  auto worker = [this]()
+  {
+    try
+    {
+      std::cout << "AAA 1.1" << std::endl;
+      m_domain_runner->ExecuteProcedure();
+      std::cout << "AAA 1.2" << std::endl;
+      SetStatus(RunnerStatus::kCompleted);
+      std::cout << "AAA 1.3" << std::endl;
+    }
+    catch (const std::exception &ex)
+    {
+      SetStatus(RunnerStatus::kFailed);
+    }
+  };
+  std::cout << "AAA 2.1" << std::endl;
+  m_future_result = std::async(std::launch::async, worker);
+  std::cout << "AAA 2.2" << std::endl;
 }
 
 void DomainRunnerAdapterNew::PauseModeOnRequest()
 {
+  m_pause_mode_request = true;
+  m_domain_runner->Pause();
+  SetStatus(RunnerStatus::kPaused);
 }
 
 void DomainRunnerAdapterNew::PauseModeOffRequest()
 {
+  m_pause_mode_request = false;
+  StartRequest();
 }
 
 void DomainRunnerAdapterNew::StepRequest()
 {
+  if (m_future_result.valid())
+  {
+    std::runtime_error("DomainRunnerAdapterNew::StartRequest() -> Already running job");
+  }
+
+  // deliberately before thread start
+  SetStatus(RunnerStatus::kRunning);
+
+  auto worker = [this]()
+  {
+    try
+    {
+      m_domain_runner->ExecuteSingle();
+    }
+    catch (const std::exception &ex)
+    {
+      SetStatus(RunnerStatus::kFailed);
+    }
+  };
+  m_future_result = std::async(std::launch::async, worker);
 }
 
-void DomainRunnerAdapterNew::StopRequest()
-{
-}
+void DomainRunnerAdapterNew::StopRequest() {}
 
 void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
 {

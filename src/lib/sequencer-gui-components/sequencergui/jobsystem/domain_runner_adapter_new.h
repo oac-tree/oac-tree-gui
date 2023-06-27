@@ -54,6 +54,8 @@ public:
 
   bool IsBusy() const;
 
+  bool IsInPauseMode() const;
+
   void StartRequest() override;
 
   void PauseModeOnRequest() override;
@@ -81,7 +83,9 @@ private:
 
   std::function<void(RunnerStatus)> m_status_changed_callback;
 
-  std::future<void> m_child_result;
+  std::future<void> m_future_result;
+
+  bool m_pause_mode_request{false};
 };
 
 }  // namespace sequencergui

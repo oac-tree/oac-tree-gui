@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domain_runner_adapter.h"
+#include "sequencergui/jobsystem/domain_runner_adapter_new.h"
 
 #include <sequencergui/core/exceptions.h>
 
@@ -54,14 +54,14 @@ public:
     return result;
   }
 
-  std::unique_ptr<DomainRunnerAdapter> CreateRunnerAdapter(procedure_t* procedure)
+  std::unique_ptr<DomainRunnerAdapterNew> CreateRunnerAdapter(procedure_t* procedure)
   {
     if (!procedure->Setup())
     {
       throw std::runtime_error("Can't setup procedure");
     }
     auto result =
-        std::make_unique<DomainRunnerAdapter>(procedure, &m_observer, m_listener.CreateCallback());
+        std::make_unique<DomainRunnerAdapterNew>(procedure, &m_observer, m_listener.CreateCallback());
 
     return result;
   }
@@ -77,36 +77,41 @@ TEST_F(DomainRunnerAdapterNewTest, InitialState)
 
   auto adapter = CreateRunnerAdapter(procedure.get());
   EXPECT_FALSE(adapter->IsBusy());
+  EXPECT_FALSE(adapter->IsInPauseMode());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 }
 
-////! Single wait procedure started in normal way. Waiting upon completion.
+//! Single instruction procedure started in normal way. Waiting upon completion.
 
-//TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
-//{
-//  auto procedure = testutils::CreateMessageProcedure("text");
+TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
+{
+  auto procedure = testutils::CreateMessageProcedure("text");
 
-//  auto adapter = CreateRunnerAdapter(procedure.get());
+  auto adapter = CreateRunnerAdapter(procedure.get());
 
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
-//  {  // signaling related to the runner status change
-//    ::testing::InSequence seq;
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
-//    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
-//  }
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
 
-//  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-//  EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+  EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);
 
-//  // triggering action
-//  EXPECT_TRUE(adapter->Start());
+  // triggering action
+  std::cout << "AAA 0.1" << std::endl;
 
-//  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
-//  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
-//  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
-//}
+  EXPECT_TRUE(adapter->Start());
+  std::cout << "AAA 0.2" << std::endl;
+
+  EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(50)));
+  std::cout << "AAA 0.3" << std::endl;
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+}
 
 ////! Terminates procedure which runs too long.
 
