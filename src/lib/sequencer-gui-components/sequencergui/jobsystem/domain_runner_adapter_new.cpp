@@ -19,6 +19,8 @@
 
 #include "domain_runner_adapter_new.h"
 
+#include "abstract_job_helper.h"
+
 #include <sequencergui/core/exceptions.h>
 
 #include <sup/sequencer/procedure.h>
@@ -146,6 +148,19 @@ void DomainRunnerAdapterNew::StepRequest()
     try
     {
       m_domain_runner->ExecuteSingle();
+
+      if (GetStatus() == RunnerStatus::kRunning)
+      {
+        if (m_domain_runner->IsFinished())
+        {
+          SetStatus(RunnerStatus::kCompleted);
+        }
+        else
+        {
+          SetStatus(RunnerStatus::kPaused);
+        }
+      }
+
     }
     catch (const std::exception &ex)
     {
@@ -164,6 +179,26 @@ void DomainRunnerAdapterNew::StopRequest()
 void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
 {
   m_status_changed_callback(status);
+}
+
+bool DomainRunnerAdapterNew::Step()
+{
+  bool is_valid_request{false};
+  if (CanReleaseJob(GetStatus()))
+  {
+    StepRequest();
+    is_valid_request = true;
+  }
+  else if (CanStartJob(GetStatus()))
+  {
+    StepRequest();
+    //    PauseModeOnRequest();
+    //    StepRequest();
+    //    StartRequest();
+    is_valid_request = true;
+  }
+  return is_valid_request;
+
 }
 
 }  // namespace sequencergui

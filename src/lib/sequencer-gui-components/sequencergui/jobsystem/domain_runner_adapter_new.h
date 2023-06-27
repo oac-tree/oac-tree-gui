@@ -68,6 +68,8 @@ public:
 
   void OnStatusChange(RunnerStatus status) override;
 
+  bool Step() override;
+
 private:
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;

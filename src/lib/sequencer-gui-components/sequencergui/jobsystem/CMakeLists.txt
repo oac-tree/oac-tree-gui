@@ -3,6 +3,8 @@
 target_sources(${library_name} PRIVATE
   abstract_job.cpp
   abstract_job.h
+  abstract_job_helper.cpp
+  abstract_job_helper.h
   domain_runner_adapter.cpp
   domain_runner_adapter.h
   domain_runner_adapter_new.cpp
