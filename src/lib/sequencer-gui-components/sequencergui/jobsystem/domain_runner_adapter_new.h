@@ -54,8 +54,6 @@ public:
 
   bool IsBusy() const;
 
-  bool IsInPauseMode() const;
-
   void StartRequest() override;
 
   void PauseModeOnRequest() override;
@@ -73,6 +71,11 @@ public:
 private:
   void RunProcedure(bool in_step_mode);
 
+  /**
+   * @brief Update status of the runner adapter when domain runner has finished his job.
+   */
+  void UpdateStatusOnRunnerCompletion();
+
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
 
@@ -88,8 +91,6 @@ private:
   std::function<void(RunnerStatus)> m_status_changed_callback;
 
   std::future<void> m_future_result;
-
-  bool m_pause_mode_request{false};
 };
 
 }  // namespace sequencergui

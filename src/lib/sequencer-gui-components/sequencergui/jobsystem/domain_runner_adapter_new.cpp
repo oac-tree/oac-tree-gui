@@ -70,11 +70,6 @@ bool DomainRunnerAdapterNew::IsBusy() const
   return m_future_result.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
 }
 
-bool DomainRunnerAdapterNew::IsInPauseMode() const
-{
-  return m_pause_mode_request;
-}
-
 void DomainRunnerAdapterNew::StartRequest()
 {
   RunProcedure(/*in_step_mode*/ false);
@@ -82,14 +77,12 @@ void DomainRunnerAdapterNew::StartRequest()
 
 void DomainRunnerAdapterNew::PauseModeOnRequest()
 {
-  m_pause_mode_request = true;
   m_domain_runner->Pause();
   SetStatus(RunnerStatus::kPaused);
 }
 
 void DomainRunnerAdapterNew::PauseModeOffRequest()
 {
-  m_pause_mode_request = false;
   StartRequest();
 }
 
@@ -100,13 +93,9 @@ void DomainRunnerAdapterNew::StepRequest()
 
 void DomainRunnerAdapterNew::StopRequest()
 {
-  auto prev_status = GetStatus();
   SetStatus(RunnerStatus::kStopping);
   m_domain_runner->Halt();
-  if (prev_status == RunnerStatus::kPaused)
-  {
-    SetStatus(RunnerStatus::kStopped);
-  }
+  SetStatus(RunnerStatus::kStopped);
 }
 
 void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
@@ -137,7 +126,6 @@ void DomainRunnerAdapterNew::RunProcedure(bool in_step_mode)
     throw RuntimeException("DomainRunnerAdapterNew::StartRequest() -> Already running job");
   }
 
-  // deliberately before thread start
   SetStatus(RunnerStatus::kRunning);
 
   auto worker = [this, in_step_mode]()
@@ -153,21 +141,7 @@ void DomainRunnerAdapterNew::RunProcedure(bool in_step_mode)
         m_domain_runner->ExecuteProcedure();
       }
 
-      if (GetStatus() == RunnerStatus::kRunning)
-      {
-        if (m_domain_runner->IsFinished())
-        {
-          SetStatus(RunnerStatus::kCompleted);
-        }
-        else
-        {
-          SetStatus(RunnerStatus::kPaused);
-        }
-      }
-      else if (GetStatus() == RunnerStatus::kStopping)
-      {
-        SetStatus(RunnerStatus::kStopped);
-      }
+      UpdateStatusOnRunnerCompletion();
     }
     catch (const std::exception &ex)
     {
@@ -175,6 +149,27 @@ void DomainRunnerAdapterNew::RunProcedure(bool in_step_mode)
     }
   };
   m_future_result = std::async(std::launch::async, worker);
+}
+
+void DomainRunnerAdapterNew::UpdateStatusOnRunnerCompletion()
+{
+  // can't find more elegant way
+
+  if (GetStatus() == RunnerStatus::kRunning)
+  {
+    if (m_domain_runner->IsFinished())
+    {
+      SetStatus(RunnerStatus::kCompleted);
+    }
+    else
+    {
+      SetStatus(RunnerStatus::kPaused);
+    }
+  }
+  else if (GetStatus() == RunnerStatus::kStopping)
+  {
+    SetStatus(RunnerStatus::kStopped);
+  }
 }
 
 }  // namespace sequencergui

@@ -81,7 +81,6 @@ TEST_F(DomainRunnerAdapterNewTest, InitialState)
 
   auto adapter = CreateRunnerAdapter(procedure.get());
   EXPECT_FALSE(adapter->IsBusy());
-  EXPECT_FALSE(adapter->IsInPauseMode());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
 }
 
