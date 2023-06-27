@@ -19,35 +19,7 @@
 
 #include "abstract_job.h"
 
-namespace
-{
-bool CanStartJob(::sequencergui::RunnerStatus current_status)
-{
-  return current_status == ::sequencergui::RunnerStatus::kIdle
-         || current_status == ::sequencergui::RunnerStatus::kFailed
-         || current_status == ::sequencergui::RunnerStatus::kStopped
-         || current_status == ::sequencergui::RunnerStatus::kCompleted;
-}
-
-bool CanPauseJob(::sequencergui::RunnerStatus current_status)
-{
-  return current_status == ::sequencergui::RunnerStatus::kRunning;
-}
-
-bool CanReleaseJob(::sequencergui::RunnerStatus current_status)
-{
-  return current_status == ::sequencergui::RunnerStatus::kPaused;
-}
-
-bool CanStopJob(::sequencergui::RunnerStatus current_status)
-{
-  return current_status != ::sequencergui::RunnerStatus::kStopping
-         && current_status != ::sequencergui::RunnerStatus::kIdle
-         && current_status != ::sequencergui::RunnerStatus::kCompleted
-         && current_status != ::sequencergui::RunnerStatus::kStopped;
-}
-
-}  // namespace
+#include "abstract_job_helper.h"
 
 namespace sequencergui
 {
