@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
+#include <sequencergui/jobsystem/domain_runner_adapter_new.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/procedure_reporter.h>
 #include <sequencergui/jobsystem/sequencer_observer.h>
@@ -250,7 +251,7 @@ void JobHandler::SetupDomainRunnerAdapter()
 {
   auto status_changed = [this](auto) { emit m_procedure_reporter->RunnerStatusChanged(); };
 
-  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(
+  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapterNew>(
       m_domain_procedure.get(), m_procedure_reporter->GetObserver(), status_changed);
 }
 

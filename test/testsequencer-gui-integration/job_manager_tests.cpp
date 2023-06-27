@@ -34,8 +34,8 @@
 
 #include <mvvm/model/model_utils.h>
 
-#include <sup/sequencer/exceptions.h>
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
@@ -148,7 +148,9 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
   manager.OnStartJobRequest();
 
   // We are testing here queued signals, need special waiting to let procedure complete
-  QTest::qWait(50);
+  EXPECT_TRUE(QTest::qWaitFor(
+      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
+
   EXPECT_FALSE(job_handler->IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
 
@@ -218,7 +220,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   QTest::qWait(20);
 
   manager.OnStopJobRequest();
-  QTest::qWait(20);
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
 
   EXPECT_FALSE(job_handler->IsRunning());
 }

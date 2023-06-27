@@ -234,7 +234,8 @@ TEST_F(OperationActionHandlerTests, AttemptToRemoveLongRunningJob)
   QTest::qWait(5);
 
   m_actions.OnStopJobRequest();
-  QTest::qWait(5);
+
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
 
   EXPECT_FALSE(job_handler->IsRunning());
 }
