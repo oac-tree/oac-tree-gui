@@ -344,14 +344,15 @@ TEST_F(JobHandlerTest, StopLongRunningJob)
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
   job_handler.onStartRequest();
-  // We are testing here queued signals, need special waiting
-  QTest::qWait(40);
+
+  EXPECT_TRUE(QTest::qWaitFor([&spy_instruction_status](){return spy_instruction_status.count() == 1;}, 100));
 
   EXPECT_TRUE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 1);
 
   job_handler.onStopRequest();
-  QTest::qWait(20);
+
+  EXPECT_TRUE(QTest::qWaitFor([&spy_instruction_status](){return spy_instruction_status.count() == 2;}, 100));
 
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);

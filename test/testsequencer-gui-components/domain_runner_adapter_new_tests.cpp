@@ -106,15 +106,11 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
   EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);
 
   // triggering action
-  std::cout << "AAA 0.1" << std::endl;
-
   EXPECT_TRUE(adapter->Start());
-  std::cout << "AAA 0.2" << std::endl;
 
   auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
   EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
 
-  std::cout << "AAA 0.3" << std::endl;
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kCompleted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
@@ -291,7 +287,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
-//! Stepwise procedure execution.
+//! Sequencer with two messages in step mode. Making steps until complete.
 
 TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
 {
@@ -395,14 +391,12 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
   }
 
   // triggering action
-  std::cout << "------------ Before Step()" << std::endl;
   EXPECT_TRUE(adapter->Step());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kRunning);
   std::this_thread::sleep_for(msec(testutils::kDefaultWaitPrecision * 3));
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kPaused);
 
   // stopping job
-  std::cout << "------------ Before Stop()" << std::endl;
   EXPECT_TRUE(adapter->Stop());
   EXPECT_TRUE(testutils::WaitForCompletion(*adapter, msec(1000)));
 
@@ -486,7 +480,6 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   // triggering action
-  std::cout << " ------------------------ " << std::endl;
   EXPECT_THROW(adapter->Step(), RuntimeException);
 }
 

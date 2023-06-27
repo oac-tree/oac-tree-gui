@@ -264,4 +264,42 @@ std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions)
   return result;
 }
 
+std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, int max_counter)
+{
+  auto result = std::make_unique<procedure_t>();
+
+  auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+
+  auto less_than = CreateDomainInstruction(domainconstants::kLessThanInstructionType);
+  less_than->AddAttribute(sequencergui::domainconstants::kLeftHandAttribute, "counter");
+  less_than->AddAttribute(sequencergui::domainconstants::kRightHandAttribute, "max_counter");
+  sequence->InsertInstruction(std::move(less_than), 0);
+
+  auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
+  increment->AddAttribute(sequencergui::domainconstants::kVarNameAttribute, "counter");
+  sequence->InsertInstruction(std::move(increment), 0);
+
+  // repeat instruction with increment inside
+  auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
+  repeat->AddAttribute(sequencergui::domainconstants::kMaxCountAttribute,
+                       std::to_string(n_repetitions));
+  repeat->InsertInstruction(std::move(sequence), 0);
+
+  result->PushInstruction(std::move(repeat));
+
+  auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
+  var0->AddAttribute(domainconstants::kNameAttribute, "counter");
+  var0->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+  var0->AddAttribute(domainconstants::kValueAttribute, "0");
+  result->AddVariable("counter", std::move(var0));
+
+  auto var1 = CreateDomainVariable(domainconstants::kLocalVariableType);
+  var1->AddAttribute(domainconstants::kNameAttribute, "max_counter");
+  var1->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"uint32"})RAW");
+  var1->AddAttribute(domainconstants::kValueAttribute, std::to_string(max_counter));
+  result->AddVariable("max_counter", std::move(var1));
+
+  return result;
+}
+
 }  // namespace testutils

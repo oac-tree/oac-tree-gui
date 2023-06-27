@@ -71,6 +71,8 @@ public:
   bool Step() override;
 
 private:
+  void RunProcedure(bool in_step_mode);
+
   //! Domain runner for procedure.
   std::unique_ptr<runner_t> m_domain_runner;
 
