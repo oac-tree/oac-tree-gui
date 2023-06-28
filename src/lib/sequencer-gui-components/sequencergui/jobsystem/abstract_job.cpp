@@ -69,15 +69,9 @@ bool AbstractJob::Pause()
 bool AbstractJob::Step()
 {
   bool is_valid_request{false};
-  if (CanReleaseJob(GetStatus()))
+  if (CanReleaseJob(GetStatus()) || CanStartJob(GetStatus()))
   {
     StepRequest();
-    is_valid_request = true;
-  }
-  else if (CanStartJob(GetStatus()))
-  {
-    PauseModeOnRequest();
-    StartRequest();
     is_valid_request = true;
   }
   return is_valid_request;

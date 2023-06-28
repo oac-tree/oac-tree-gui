@@ -103,22 +103,6 @@ void DomainRunnerAdapter::OnStatusChange(RunnerStatus status)
   m_status_changed_callback(status);
 }
 
-bool DomainRunnerAdapter::Step()
-{
-  bool is_valid_request{false};
-  if (CanReleaseJob(GetStatus()))
-  {
-    StepRequest();
-    is_valid_request = true;
-  }
-  else if (CanStartJob(GetStatus()))
-  {
-    StepRequest();
-    is_valid_request = true;
-  }
-  return is_valid_request;
-}
-
 void DomainRunnerAdapter::RunProcedure(bool in_step_mode)
 {
   if (m_future_result.valid() && GetStatus() != RunnerStatus::kPaused)

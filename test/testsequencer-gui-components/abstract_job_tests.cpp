@@ -73,15 +73,15 @@ TEST_F(AbstractJobTest, FromIdle)
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
   }
 
-  {  // IdleState + StepAction -> PauseModeOnRequest, StartRequest
+  {  // IdleState + StepAction -> StepRequest
     TestJob job;
     {
-      EXPECT_CALL(job, PauseModeOnRequest()).Times(1);
-      EXPECT_CALL(job, StartRequest()).Times(1);
+      EXPECT_CALL(job, StepRequest()).Times(1);
     }
 
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
-    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Step());
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
@@ -242,16 +242,16 @@ TEST_F(AbstractJobTest, FromStopped)
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
   }
 
-  {  // kStopped + StepAction -> PauseModeOnRequest, StartRequest
+  {  // kStopped + StepAction -> StepRequest
     TestJob job;
     job.SetStatus(RunnerStatus::kStopped);
     {
-      EXPECT_CALL(job, PauseModeOnRequest()).Times(1);
-      EXPECT_CALL(job, StartRequest()).Times(1);
+      EXPECT_CALL(job, StepRequest()).Times(1);
     }
 
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
-    EXPECT_CALL(job, StepRequest()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Step());
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
@@ -299,16 +299,16 @@ TEST_F(AbstractJobTest, FromCompleted)
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
   }
 
-  {  // kCompleted + StepAction -> PauseModeOnRequest, StartRequest
+  {  // kCompleted + StepAction -> StepRequest
     TestJob job;
     job.SetStatus(RunnerStatus::kCompleted);
     {
-      EXPECT_CALL(job, PauseModeOnRequest()).Times(1);
-      EXPECT_CALL(job, StartRequest()).Times(1);
+      EXPECT_CALL(job, StepRequest()).Times(1);
     }
 
+    EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
+    EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
-    EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Step());
     EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);

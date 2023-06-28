@@ -66,8 +66,6 @@ public:
 
   void OnStatusChange(RunnerStatus status) override;
 
-  bool Step() override;
-
 private:
   void RunProcedure(bool in_step_mode);
 
