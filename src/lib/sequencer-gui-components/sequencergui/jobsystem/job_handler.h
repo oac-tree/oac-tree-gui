@@ -37,7 +37,7 @@ class InstructionItem;
 class GUIObjectBuilder;
 class LogEvent;
 class WorkspaceSynchronizer;
-class DomainRunnerAdapterNew;
+class DomainRunnerAdapter;
 class JobModel;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
@@ -102,7 +102,7 @@ private:
   std::unique_ptr<procedure_t> m_domain_procedure;
 
   std::unique_ptr<ProcedureReporter> m_procedure_reporter;
-  std::unique_ptr<DomainRunnerAdapterNew> m_domain_runner_adapter;
+  std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
 
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 

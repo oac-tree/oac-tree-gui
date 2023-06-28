@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_NEW_H_
-#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_NEW_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
+#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/abstract_job.h>
@@ -42,13 +42,13 @@ class FunctionRunner;
 //! This adapter is intended to work with the domain Procedure after the Setup call. It will throw
 //! on attempt to use it again if the procedure has been already successfully completed.
 
-class DomainRunnerAdapterNew : public AbstractJob
+class DomainRunnerAdapter : public AbstractJob
 {
 public:
-  DomainRunnerAdapterNew(procedure_t* procedure, userinterface_t* interface,
+  DomainRunnerAdapter(procedure_t* procedure, userinterface_t* interface,
                       std::function<void(RunnerStatus)> status_changed_callback);
 
-  ~DomainRunnerAdapterNew() override;
+  ~DomainRunnerAdapter() override;
 
   void SetTickTimeout(int msec);
 
@@ -95,4 +95,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_NEW_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/domain_runner_adapter_new.h"
+#include "sequencergui/jobsystem/domain_runner_adapter.h"
 
 #include <sequencergui/core/exceptions.h>
 
@@ -42,7 +42,7 @@ using namespace sequencergui;
 using ::testing::_;
 using ::testing::AtLeast;
 
-class DomainRunnerAdapterNewTest : public ::testing::Test
+class DomainRunnerAdapterTest : public ::testing::Test
 {
 public:
   using clock_used = std::chrono::high_resolution_clock;
@@ -58,14 +58,14 @@ public:
     return result;
   }
 
-  std::unique_ptr<DomainRunnerAdapterNew> CreateRunnerAdapter(procedure_t* procedure)
+  std::unique_ptr<DomainRunnerAdapter> CreateRunnerAdapter(procedure_t* procedure)
   {
     if (!procedure->Setup())
     {
       throw std::runtime_error("Can't setup procedure");
     }
-    auto result = std::make_unique<DomainRunnerAdapterNew>(procedure, &m_observer,
-                                                           m_listener.CreateCallback());
+    auto result =
+        std::make_unique<DomainRunnerAdapter>(procedure, &m_observer, m_listener.CreateCallback());
 
     return result;
   }
@@ -74,7 +74,7 @@ public:
   testutils::MockCallbackListener<sequencergui::RunnerStatus> m_listener;
 };
 
-TEST_F(DomainRunnerAdapterNewTest, InitialState)
+TEST_F(DomainRunnerAdapterTest, InitialState)
 {
   const std::chrono::milliseconds timeout(10);
   auto procedure = testutils::CreateSingleWaitProcedure(timeout);
@@ -86,7 +86,7 @@ TEST_F(DomainRunnerAdapterNewTest, InitialState)
 
 //! Single instruction procedure started in normal way. Waiting upon completion.
 
-TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
+TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
 
@@ -116,7 +116,7 @@ TEST_F(DomainRunnerAdapterNewTest, ShortProcedureThatExecutesNormally)
 
 //! Terminates procedure which runs too long.
 
-TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
+TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 {
   const std::chrono::milliseconds wait_timeout(10000);
 
@@ -161,7 +161,7 @@ TEST_F(DomainRunnerAdapterNewTest, StartAndTerminate)
 //! Sequence with single message in normal start mode.
 //! Validation that tick timeout is ignored for single instructions.
 
-TEST_F(DomainRunnerAdapterNewTest, SequenceWithSingleMessage)
+TEST_F(DomainRunnerAdapterTest, SequenceWithSingleMessage)
 {
   const int tick_timeout_msec(1000);
 
@@ -207,7 +207,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithSingleMessage)
 //! Sequence with two messages in normal start mode.
 //! Additional tick timeout slows down the execution.
 
-TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoMessages)
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoMessages)
 {
   const int tick_timeout_msec(50);
 
@@ -251,7 +251,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoMessages)
 
 //! Sequence with two waits in step mode. Making steps until complete.
 
-TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 {
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -288,7 +288,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepMode)
 
 //! Sequencer with two messages in step mode. Making steps until complete.
 
-TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
+TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
 {
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -332,7 +332,7 @@ TEST_F(DomainRunnerAdapterNewTest, StepwiseExecution)
 //! Running procedure (sequence with message) and let is finish.
 //! Then run same procedure again.
 
-TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
+TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
 {
   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -368,7 +368,7 @@ TEST_F(DomainRunnerAdapterNewTest, ConsequitiveProcedureExecution)
 
 //! Sequence with two waits in step mode. After first step it is interrupted.
 
-TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
 {
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -407,7 +407,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterrupted)
 //! the beginning. This time exception should be thrown, since same adapter can't be run twice with
 //! the same procedure.
 
-TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
 {
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -450,7 +450,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsInStepModeInterruptedAndR
 //! completion. Then start again in step mode. This time exception should be thrown,
 //! since same adapter can't be run twice with the same procedure.
 
-TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
+TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 {
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(msec(10), msec(10));
   auto adapter = CreateRunnerAdapter(procedure.get());
@@ -484,7 +484,7 @@ TEST_F(DomainRunnerAdapterNewTest, SequenceWithTwoWaitsRunTillCompletionThenStep
 
 //! Long running procedure gets stopped, then started again.
 
-TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
+TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
 {
   std::chrono::milliseconds timeout_msec(100);
   auto procedure = testutils::CreateRepeatSequenceProcedure(-1, timeout_msec);
@@ -529,7 +529,7 @@ TEST_F(DomainRunnerAdapterNewTest, AttemptToStartAfterAbnormalStop)
 //! Repeat procedure with increment instruction inside. We start in step mode, and after the first
 //! step continue till the end without interruptions.
 
-TEST_F(DomainRunnerAdapterNewTest, StepAndRunTillTheEnd)
+TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
 {
   auto procedure = testutils::CreateCounterProcedure(3);
   auto variable = procedure->GetWorkspace()->GetVariable("counter");
@@ -588,7 +588,7 @@ TEST_F(DomainRunnerAdapterNewTest, StepAndRunTillTheEnd)
 //! a step and finally continue till the end.
 //! Test is unstabled and disabled.
 
-TEST_F(DomainRunnerAdapterNewTest, DISABLED_RunPauseStepRun)
+TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
 {
   auto procedure = testutils::CreateCounterProcedure(1000);
   auto variable = procedure->GetWorkspace()->GetVariable("counter");

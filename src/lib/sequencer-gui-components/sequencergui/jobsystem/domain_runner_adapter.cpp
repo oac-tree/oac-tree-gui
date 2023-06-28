@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "domain_runner_adapter_new.h"
+#include "domain_runner_adapter.h"
 
 #include "abstract_job_helper.h"
 
@@ -32,7 +32,7 @@
 namespace sequencergui
 {
 
-DomainRunnerAdapterNew::DomainRunnerAdapterNew(
+DomainRunnerAdapter::DomainRunnerAdapter(
     procedure_t *procedure, userinterface_t *interface,
     std::function<void(RunnerStatus)> status_changed_callback)
     : m_procedure(procedure)
@@ -53,14 +53,14 @@ DomainRunnerAdapterNew::DomainRunnerAdapterNew(
   m_domain_runner->SetTickCallback(tick_callback);
 }
 
-DomainRunnerAdapterNew::~DomainRunnerAdapterNew() = default;
+DomainRunnerAdapter::~DomainRunnerAdapter() = default;
 
-void DomainRunnerAdapterNew::SetTickTimeout(int msec)
+void DomainRunnerAdapter::SetTickTimeout(int msec)
 {
   m_tick_timeout_ms.store(msec);
 }
 
-bool DomainRunnerAdapterNew::IsBusy() const
+bool DomainRunnerAdapter::IsBusy() const
 {
   if (!m_future_result.valid())
   {
@@ -70,40 +70,40 @@ bool DomainRunnerAdapterNew::IsBusy() const
   return m_future_result.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
 }
 
-void DomainRunnerAdapterNew::StartRequest()
+void DomainRunnerAdapter::StartRequest()
 {
   RunProcedure(/*in_step_mode*/ false);
 }
 
-void DomainRunnerAdapterNew::PauseModeOnRequest()
+void DomainRunnerAdapter::PauseModeOnRequest()
 {
   m_domain_runner->Pause();
   SetStatus(RunnerStatus::kPaused);
 }
 
-void DomainRunnerAdapterNew::PauseModeOffRequest()
+void DomainRunnerAdapter::PauseModeOffRequest()
 {
   StartRequest();
 }
 
-void DomainRunnerAdapterNew::StepRequest()
+void DomainRunnerAdapter::StepRequest()
 {
   RunProcedure(/*in_step_mode*/ true);
 }
 
-void DomainRunnerAdapterNew::StopRequest()
+void DomainRunnerAdapter::StopRequest()
 {
   SetStatus(RunnerStatus::kStopping);
   m_domain_runner->Halt();
   SetStatus(RunnerStatus::kStopped);
 }
 
-void DomainRunnerAdapterNew::OnStatusChange(RunnerStatus status)
+void DomainRunnerAdapter::OnStatusChange(RunnerStatus status)
 {
   m_status_changed_callback(status);
 }
 
-bool DomainRunnerAdapterNew::Step()
+bool DomainRunnerAdapter::Step()
 {
   bool is_valid_request{false};
   if (CanReleaseJob(GetStatus()))
@@ -119,7 +119,7 @@ bool DomainRunnerAdapterNew::Step()
   return is_valid_request;
 }
 
-void DomainRunnerAdapterNew::RunProcedure(bool in_step_mode)
+void DomainRunnerAdapter::RunProcedure(bool in_step_mode)
 {
   if (m_future_result.valid() && GetStatus() != RunnerStatus::kPaused)
   {
@@ -151,7 +151,7 @@ void DomainRunnerAdapterNew::RunProcedure(bool in_step_mode)
   m_future_result = std::async(std::launch::async, worker);
 }
 
-void DomainRunnerAdapterNew::UpdateStatusOnRunnerCompletion()
+void DomainRunnerAdapter::UpdateStatusOnRunnerCompletion()
 {
   // can't find more elegant way
 
