@@ -19,10 +19,11 @@
 
 #include "job_manager.h"
 
+#include "job_handler.h"
+#include "job_utils.h"
+#include "user_input_dialogs.h"
+
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/jobsystem/job_handler.h>
-#include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
@@ -33,10 +34,7 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <QInputDialog>
 #include <QMainWindow>
-#include <QMessageBox>
-#include <QPushButton>
 
 namespace sequencergui
 {
@@ -187,44 +185,7 @@ UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
 
 UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 {
-  QStringList selection_list;
-  for (const auto &option : args.options)
-  {
-    selection_list.push_back(QString("%1").arg(QString::fromStdString(option)));
-  }
-
-  if (IsSelectTextDialog(args.metadata))
-  {
-    auto selection = QInputDialog::getItem(
-        nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
-        selection_list);
-
-    return {selection_list.indexOf(selection), true};
-  }
-  else if (IsMessageBoxDialog(args.metadata))
-  {
-    QMessageBox msg_box;
-    msg_box.setWindowTitle(QString::fromStdString(GetTitleTextFromMetadata(args.metadata)));
-    msg_box.setText(QString::fromStdString(GetMainTextFromMetadata(args.metadata)));
-    msg_box.setIcon(QMessageBox::Information);
-
-    QPushButton *option1_button = msg_box.addButton(tr("OK"), QMessageBox::AcceptRole);
-    QPushButton *option2_button = msg_box.addButton(tr("Cancel"), QMessageBox::RejectRole);
-
-    msg_box.exec();
-
-    int index{0};
-    if (msg_box.clickedButton() == option1_button)
-    {
-      index = 0;
-    }
-    else if (msg_box.clickedButton() == option2_button)
-    {
-      index = 1;
-    }
-    return {index, true};
-  }
-  return {0, false};
+  return GetUserChoiceDialogResult(args);
 }
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
