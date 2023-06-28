@@ -173,12 +173,21 @@ std::string GetMainTextFromMetadata(const anyvalue_t& metadata)
   return sup::sequencer::GetMainTextFromMetadata(metadata);
 }
 
+std::string GetTitleTextFromMetadata(const anyvalue_t& metadata)
+{
+  if (metadata.HasField(sup::sequencer::Constants::USER_CHOICES_TEXT_NAME)
+      && (metadata[sup::sequencer::Constants::USER_CHOICES_TEXT_NAME].GetType()
+          == sup::dto::StringType))
+  {
+    return metadata[sup::sequencer::Constants::USER_CHOICES_TEXT_NAME].As<std::string>();
+  }
+  return {};
+}
+
 bool IsSelectTextDialog(const anyvalue_t& metadata)
 {
-  std::cout << "AAA 1.0" << std::endl;
   if (metadata.HasField(sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME))
   {
-    std::cout << "AAA 1.1" << std::endl;
     return metadata[sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME].As<sup::dto::uint32>()
            == sup::sequencer::dialog_type::kSelection;
   }

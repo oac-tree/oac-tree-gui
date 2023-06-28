@@ -35,6 +35,8 @@
 
 #include <QInputDialog>
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QPushButton>
 
 namespace sequencergui
 {
@@ -186,15 +188,43 @@ UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
 UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 {
   QStringList selection_list;
-  int index{0};
   for (const auto &option : args.options)
   {
     selection_list.push_back(QString("%1").arg(QString::fromStdString(option)));
   }
-  auto selection = QInputDialog::getItem(
-      nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
-      selection_list);
-  return {selection_list.indexOf(selection), true};
+
+  if (IsSelectTextDialog(args.metadata))
+  {
+    auto selection = QInputDialog::getItem(
+        nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
+        selection_list);
+
+    return {selection_list.indexOf(selection), true};
+  }
+  else if (IsMessageBoxDialog(args.metadata))
+  {
+    QMessageBox msg_box;
+    msg_box.setWindowTitle(QString::fromStdString(GetTitleTextFromMetadata(args.metadata)));
+    msg_box.setText(QString::fromStdString(GetMainTextFromMetadata(args.metadata)));
+    msg_box.setIcon(QMessageBox::Information);
+
+    QPushButton *option1_button = msg_box.addButton(tr("OK"), QMessageBox::AcceptRole);
+    QPushButton *option2_button = msg_box.addButton(tr("Cancel"), QMessageBox::RejectRole);
+
+    msg_box.exec();
+
+    int index{0};
+    if (msg_box.clickedButton() == option1_button)
+    {
+      index = 0;
+    }
+    else if (msg_box.clickedButton() == option2_button)
+    {
+      index = 1;
+    }
+    return {index, true};
+  }
+  return {0, false};
 }
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)

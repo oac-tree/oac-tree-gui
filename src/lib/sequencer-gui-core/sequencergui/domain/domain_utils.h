@@ -58,7 +58,7 @@ bool IsSequencerPluginEpicsAvailable();
 
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
 
-std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
+std::string GetTitleTextFromMetadata(const anyvalue_t& metadata);
 
 bool IsSelectTextDialog(const anyvalue_t& metadata);
 
