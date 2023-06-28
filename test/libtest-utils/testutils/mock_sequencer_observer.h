@@ -36,7 +36,7 @@ namespace testutils
 class MockSequencerObserver : public userinterface_t
 {
 public:
-  using vector_string_pair_t = std::vector<std::pair<std::string, int>>;
+  using vector_string_t = std::vector<std::string>;
 
   MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction), (override));
   MOCK_METHOD(void, VariableUpdatedImpl,
@@ -47,8 +47,8 @@ public:
   MOCK_METHOD(bool, GetUserValueImpl, (anyvalue_t & value, const std::string& description),
               (override));
 
-  MOCK_METHOD(int, GetUserChoiceImpl,
-              (const vector_string_pair_t& options, const anyvalue_t& metadata), (override));
+  MOCK_METHOD(int, GetUserChoiceImpl, (const vector_string_t& options, const anyvalue_t& metadata),
+              (override));
 
   MOCK_METHOD(void, MessageImpl, (const std::string& message), (override));
   MOCK_METHOD(void, LogImpl, (int level, const std::string& str), (override));

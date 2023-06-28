@@ -38,7 +38,7 @@ class UserChoiceProviderTest : public ::testing::Test
 
 TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
 {
-  const std::vector<std::pair<std::string, int>> choices({{"a", 0}, {"b", 1}, {"c", 2}});
+  const std::vector<std::string> choices({"a", "b", "c"});
   const sup::dto::AnyValue metadata;
   const UserChoiceArgs args{choices, metadata};
 
@@ -76,7 +76,7 @@ TEST_F(UserChoiceProviderTest, SingleThreadAsksForUserChoice)
 
 TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
 {
-  const std::vector<std::pair<std::string, int>> choices({{"a", 0}, {"b", 1}, {"c", 2}});
+  const std::vector<std::string> choices({"a", "b", "c"});
   const sup::dto::AnyValue metadata;
   const UserChoiceArgs args{choices, metadata};
 

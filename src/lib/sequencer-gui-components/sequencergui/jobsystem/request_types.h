@@ -30,7 +30,7 @@ namespace sequencergui
 
 struct UserChoiceArgs
 {
-  std::vector<std::pair<std::string, int>> options;
+  std::vector<std::string> options;
   sup::dto::AnyValue metadata;
 };
 

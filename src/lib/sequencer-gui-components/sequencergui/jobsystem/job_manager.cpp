@@ -189,7 +189,7 @@ UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
   int index{0};
   for (const auto &option : args.options)
   {
-    selection_list.push_back(QString("%1").arg(QString::fromStdString(option.first)));
+    selection_list.push_back(QString("%1").arg(QString::fromStdString(option)));
   }
   auto selection = QInputDialog::getItem(
       nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),

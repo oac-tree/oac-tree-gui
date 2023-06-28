@@ -123,7 +123,7 @@ void GUIObjectBuilder::PopulateInstructionContainerItem(const procedure_t *proce
   }
   else
   {
-    for (auto instruction : procedure->GetInstructions())
+    for (auto instruction : procedure->GetTopInstructions())
     {
       auto next_parent_item = ProcessInstruction(instruction, container);
       if (next_parent_item)

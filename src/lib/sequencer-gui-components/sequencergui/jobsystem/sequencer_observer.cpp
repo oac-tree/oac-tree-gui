@@ -78,7 +78,7 @@ bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::s
   return result.processed;
 }
 
-int SequencerObserver::GetUserChoiceImpl(const std::vector<std::pair<std::string, int> > &options,
+int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string > &options,
                                          const sup::dto::AnyValue &metadata)
 {
   return m_procedure_runner->OnUserChoice({options, metadata}).index;

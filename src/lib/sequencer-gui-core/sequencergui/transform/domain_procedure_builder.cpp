@@ -84,7 +84,7 @@ void DomainProcedureBuilder::Iterate(const sequencergui::InstructionItem* instru
 void DomainProcedureBuilder::PopulateDomainInstructions(const InstructionContainerItem* container,
                                                         procedure_t* procedure)
 {
-  if (!procedure->GetInstructions().empty())
+  if (!procedure->GetTopInstructions().empty())
   {
     throw std::runtime_error("Error in DomainObjectBuilder non-empty domain.");
   }

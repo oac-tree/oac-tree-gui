@@ -64,7 +64,7 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 
   // Empty instructions and variables
   EXPECT_EQ(procedure->RootInstruction(), nullptr);
-  auto instructions = procedure->GetInstructions();
+  auto instructions = procedure->GetTopInstructions();
   EXPECT_EQ(instructions.size(), 0);
   EXPECT_EQ(procedure->GetInstructionCount(), 0);
   EXPECT_TRUE(procedure->VariableNames().empty());
@@ -85,7 +85,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
-  ASSERT_EQ(procedure->GetInstructions().at(0)->GetType(),
+  ASSERT_EQ(procedure->GetTopInstructions().at(0)->GetType(),
             domainconstants::kSequenceInstructionType);
   EXPECT_TRUE(procedure->VariableNames().empty());
 }
@@ -108,7 +108,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   // Empty instruction list
   EXPECT_EQ(procedure->RootInstruction(), nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 2);
-  auto instructions = procedure->GetInstructions();
+  auto instructions = procedure->GetTopInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(instructions.at(1)->GetType(), domainconstants::kWaitInstructionType);
 
@@ -132,7 +132,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
-  auto domain_sequence = procedure->GetInstructions().at(0);
+  auto domain_sequence = procedure->GetTopInstructions().at(0);
   EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
   ASSERT_EQ(domain_sequence->ChildrenCount(), 1);
   EXPECT_EQ(domain_sequence->ChildInstructions().at(0)->GetType(),
@@ -157,7 +157,7 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
 
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
-  auto domain_sequence = procedure->GetInstructions().at(0);
+  auto domain_sequence = procedure->GetTopInstructions().at(0);
 
   EXPECT_EQ(domain_sequence->GetType(), domainconstants::kSequenceInstructionType);
   ASSERT_EQ(domain_sequence->ChildrenCount(), 1);
@@ -190,7 +190,7 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
-  auto domain_inverter = procedure->GetInstructions().at(0);
+  auto domain_inverter = procedure->GetTopInstructions().at(0);
 
   EXPECT_EQ(domain_inverter->GetType(), domainconstants::kInverterInstructionType);
   ASSERT_EQ(domain_inverter->ChildrenCount(), 1);
@@ -225,7 +225,7 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
-  auto domain_repeat = procedure->GetInstructions().at(0);
+  auto domain_repeat = procedure->GetTopInstructions().at(0);
 
   EXPECT_EQ(domain_repeat->GetType(), domainconstants::kRepeatInstructionType);
   ASSERT_EQ(domain_repeat->ChildrenCount(), 1);
@@ -279,7 +279,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
-  auto domain_sequence = procedure->GetInstructions().at(0);
+  auto domain_sequence = procedure->GetTopInstructions().at(0);
   EXPECT_EQ(domain_sequence->GetType(), domainconstants::kParallelInstructionType);
   ASSERT_EQ(domain_sequence->ChildrenCount(), 2);
   EXPECT_EQ(domain_sequence->ChildInstructions().at(0)->GetType(),

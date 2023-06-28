@@ -173,13 +173,13 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeProcedure)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
 
-  ASSERT_EQ(procedure->GetInstructions().size(), 2);
-  auto sequence_ptr = procedure->GetInstructions().at(0);
+  ASSERT_EQ(procedure->GetTopInstructions().size(), 2);
+  auto sequence_ptr = procedure->GetTopInstructions().at(0);
 
   ASSERT_EQ(sequence_ptr->ChildInstructions().size(), 1);
   auto wait_ptr = sequence_ptr->ChildInstructions().at(0);
 
-  auto repeat_ptr = procedure->GetInstructions().at(1);
+  auto repeat_ptr = procedure->GetTopInstructions().at(1);
   auto include_ptr = repeat_ptr->ChildInstructions().at(0);
 
   EXPECT_EQ(procedure->RootInstruction(), repeat_ptr);
@@ -220,13 +220,13 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeAfterSetup)
 {
   auto procedure = testutils::CreateLocalIncludeProcedure();
 
-  ASSERT_EQ(procedure->GetInstructions().size(), 2);
-  auto sequence_ptr = procedure->GetInstructions().at(0);
+  ASSERT_EQ(procedure->GetTopInstructions().size(), 2);
+  auto sequence_ptr = procedure->GetTopInstructions().at(0);
 
   ASSERT_EQ(sequence_ptr->ChildInstructions().size(), 1);
   auto wait_ptr = sequence_ptr->ChildInstructions().at(0);
 
-  auto repeat_ptr = procedure->GetInstructions().at(1);
+  auto repeat_ptr = procedure->GetTopInstructions().at(1);
   auto include_ptr = repeat_ptr->ChildInstructions().at(0);
 
   procedure->Setup();
