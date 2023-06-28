@@ -47,7 +47,7 @@ public:
 
   bool Pause() final;
 
-  bool Step() override;
+  bool Step() final;
 
   virtual RunnerStatus GetStatus() const;
 
