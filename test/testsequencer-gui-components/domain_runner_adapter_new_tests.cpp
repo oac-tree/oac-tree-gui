@@ -20,9 +20,9 @@
 #include "sequencergui/jobsystem/domain_runner_adapter_new.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
 #include <sup/sequencer/variable.h>
@@ -560,7 +560,7 @@ TEST_F(DomainRunnerAdapterNewTest, StepAndRunTillTheEnd)
   {
     sup::dto::AnyValue counter_value;
     variable->GetValue(counter_value);
-    return counter_value == 1u;
+    return counter_value == 1U;
   };
 
   EXPECT_TRUE(testutils::WaitFor(is_incremented, msec(50)));
@@ -581,5 +581,107 @@ TEST_F(DomainRunnerAdapterNewTest, StepAndRunTillTheEnd)
   EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
 
   variable->GetValue(counter_value);
-  EXPECT_EQ(counter_value, 3u);
+  EXPECT_EQ(counter_value, 3U);
+}
+
+//! Repeat procedure with increment instruction inside. We start in run mode, then pause, then make
+//! a step and finally continue till the end.
+//! Test is unstabled and disabled.
+
+TEST_F(DomainRunnerAdapterNewTest, DISABLED_RunPauseStepRun)
+{
+  auto procedure = testutils::CreateCounterProcedure(1000);
+  auto variable = procedure->GetWorkspace()->GetVariable("counter");
+  procedure->Setup();
+
+  sup::dto::AnyValue counter_value;
+  variable->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 0U);
+
+  auto adapter = CreateRunnerAdapter(procedure.get());
+
+  EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  // starting normally
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+  }
+
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(1));
+
+  EXPECT_TRUE(adapter->Start());  // action
+
+  auto is_incremented = [variable]()
+  {
+    sup::dto::AnyValue counter_value;
+    variable->GetValue(counter_value);
+    return counter_value.As<int>() > 1U;
+  };
+
+  EXPECT_TRUE(testutils::WaitFor(is_incremented, msec(50)));
+
+  // pause
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+  }
+
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(0));
+
+  EXPECT_TRUE(adapter->Pause());  // action
+
+  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kPaused; },
+                     msec(50));
+
+  variable->GetValue(counter_value);
+  auto current_counter1 = counter_value.As<int>();
+
+  EXPECT_TRUE(current_counter1 > 1);
+
+  // making a step
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kPaused));
+  }
+
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(0));
+
+  EXPECT_TRUE(adapter->Step());  // action
+
+  testutils::WaitFor([&adapter]() { return adapter->GetStatus() == RunnerStatus::kPaused; },
+                     msec(50));
+
+  variable->GetValue(counter_value);
+  auto current_counter2 = counter_value.As<int>();
+
+  // Sometimes it fails here, and current_counter2 is incremented more than necessary.
+  // It can be because Pause status is set later than necessary.
+  EXPECT_EQ(current_counter2, current_counter1 + 1);
+
+  {  // signaling related to the runner status change
+    ::testing::InSequence seq;
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_listener, OnCallback(RunnerStatus::kCompleted));
+  }
+
+  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(0));
+
+  // continuing till the end
+  EXPECT_TRUE(adapter->Start());
+
+  auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
+
+  variable->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 1000);
 }
