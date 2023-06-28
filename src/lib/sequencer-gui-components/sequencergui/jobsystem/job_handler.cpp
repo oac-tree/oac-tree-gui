@@ -20,7 +20,6 @@
 #include "job_handler.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/jobsystem/domain_runner_adapter_new.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/procedure_reporter.h>

@@ -37,7 +37,6 @@ class InstructionItem;
 class GUIObjectBuilder;
 class LogEvent;
 class WorkspaceSynchronizer;
-class DomainRunnerAdapter;
 class DomainRunnerAdapterNew;
 class JobModel;
 
