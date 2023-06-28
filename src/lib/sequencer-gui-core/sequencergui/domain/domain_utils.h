@@ -58,6 +58,12 @@ bool IsSequencerPluginEpicsAvailable();
 
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
 
+std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
+
+bool IsSelectTextDialog(const anyvalue_t& metadata);
+
+bool IsMessageBoxDialog(const anyvalue_t& metadata);
+
 /**
  * @brief Loads all sequencer plugins and reports result of the load to the user.
  * @return Success flag and the error message.

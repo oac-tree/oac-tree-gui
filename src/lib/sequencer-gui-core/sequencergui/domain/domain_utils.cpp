@@ -24,12 +24,13 @@
 
 #include <mvvm/utils/string_utils.h>
 
+#include <sup/sequencer/constants.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
 #include <sup/sequencer/sequence_parser.h>
+#include <sup/sequencer/user_interface.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_registry.h>
-#include <sup/sequencer/user_interface.h>
 
 #include <algorithm>
 #include <iostream>
@@ -167,9 +168,33 @@ std::pair<bool, std::string> LoadPlugins()
   return {true, ""};
 }
 
-std::string GetMainTextFromMetadata(const anyvalue_t &metadata)
+std::string GetMainTextFromMetadata(const anyvalue_t& metadata)
 {
   return sup::sequencer::GetMainTextFromMetadata(metadata);
+}
+
+bool IsSelectTextDialog(const anyvalue_t& metadata)
+{
+  std::cout << "AAA 1.0" << std::endl;
+  if (metadata.HasField(sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME))
+  {
+    std::cout << "AAA 1.1" << std::endl;
+    return metadata[sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME].As<sup::dto::uint32>()
+           == sup::sequencer::dialog_type::kSelection;
+  }
+
+  return false;
+}
+
+bool IsMessageBoxDialog(const anyvalue_t& metadata)
+{
+  if (metadata.HasField(sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME))
+  {
+    return metadata[sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME].As<sup::dto::uint32>()
+           == sup::sequencer::dialog_type::kConfirmation;
+  }
+
+  return false;
 }
 
 }  // namespace sequencergui

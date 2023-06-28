@@ -19,7 +19,9 @@
 
 #include "sequencergui/domain/domain_utils.h"
 
+#include <sup/sequencer/constants.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/user_interface.h>
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
@@ -125,4 +127,32 @@ TEST_F(DomainUtilsTest, IsRootInstruction)
 
   item->SetAttribute(kIsRootAttribute, "false");
   EXPECT_FALSE(IsRootInstruction(item.get()));
+}
+
+TEST_F(DomainUtilsTest, DialogMetagadata)
+{
+  sup::dto::AnyValue anyvalue;
+  EXPECT_FALSE(IsSelectTextDialog(anyvalue));
+  EXPECT_FALSE(IsMessageBoxDialog(anyvalue));
+
+  {  // pretending it is metadata representing test selection
+    auto metadata = sup::sequencer::CreateUserChoiceMetadata();
+    metadata.AddMember(sup::sequencer::Constants::USER_CHOICES_TEXT_NAME, "description");
+    metadata.AddMember(sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME,
+                       {sup::dto::UnsignedInteger32Type, sup::sequencer::dialog_type::kSelection});
+
+    EXPECT_TRUE(IsSelectTextDialog(metadata));
+    EXPECT_FALSE(IsMessageBoxDialog(metadata));
+  }
+
+  {  // pretending it is metadata representing ok/cancel choice
+    auto metadata = sup::sequencer::CreateUserChoiceMetadata();
+    metadata.AddMember(sup::sequencer::Constants::USER_CHOICES_TEXT_NAME, "description");
+    metadata.AddMember(
+        sup::sequencer::Constants::USER_CHOICES_DIALOG_TYPE_NAME,
+        {sup::dto::UnsignedInteger32Type, sup::sequencer::dialog_type::kConfirmation});
+
+    EXPECT_FALSE(IsSelectTextDialog(metadata));
+    EXPECT_TRUE(IsMessageBoxDialog(metadata));
+  }
 }
