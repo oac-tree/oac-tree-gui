@@ -19,11 +19,28 @@
 
 #include "user_input_dialogs.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+
+#include <sup/sequencer/constants.h>
 
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QPushButton>
+
+namespace
+{
+QStringList GetSelectionList(const sequencergui::UserChoiceArgs &args)
+{
+  QStringList result;
+  for (const auto &option : args.options)
+  {
+    result.push_back(QString("%1").arg(QString::fromStdString(option)));
+  }
+  return result;
+}
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -34,7 +51,8 @@ UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args)
   {
     return GetTextSelectionDialogResult(args);
   }
-  else if (IsMessageBoxDialog(args.metadata))
+
+  if (IsMessageBoxDialog(args.metadata))
   {
     return GetConfirmationDialogResult(args);
   }
@@ -44,11 +62,7 @@ UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args)
 
 UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
 {
-  QStringList selection_list;
-  for (const auto &option : args.options)
-  {
-    selection_list.push_back(QString("%1").arg(QString::fromStdString(option)));
-  }
+  auto selection_list = GetSelectionList(args);
 
   auto selection = QInputDialog::getItem(
       nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
@@ -59,13 +73,19 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
 
 UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
 {
+  auto selection_list = GetSelectionList(args);
+  if (selection_list.size() != 2)
+  {
+    throw RuntimeException("Can't make confirmation dialog out of given choice");
+  }
+
   QMessageBox msg_box;
   msg_box.setWindowTitle(QString::fromStdString(GetTitleTextFromMetadata(args.metadata)));
   msg_box.setText(QString::fromStdString(GetMainTextFromMetadata(args.metadata)));
   msg_box.setIcon(QMessageBox::Information);
 
-  auto option0_button = msg_box.addButton("OK", QMessageBox::AcceptRole);
-  auto option1_button = msg_box.addButton("Cancel", QMessageBox::RejectRole);
+  auto option0_button = msg_box.addButton(selection_list.at(0), QMessageBox::AcceptRole);
+  auto option1_button = msg_box.addButton(selection_list.at(1), QMessageBox::RejectRole);
 
   msg_box.exec();
 
