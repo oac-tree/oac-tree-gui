@@ -53,7 +53,7 @@ public:
   void LogImpl(int severity, const std::string& message) override;
 
 private:
-  ProcedureReporter* m_procedure_runner{nullptr};
+  ProcedureReporter* m_procedure_reporter{nullptr};
 };
 
 }  // namespace sequencergui

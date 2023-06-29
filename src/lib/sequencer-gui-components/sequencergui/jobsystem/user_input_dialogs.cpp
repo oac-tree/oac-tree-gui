@@ -64,11 +64,17 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
 {
   auto selection_list = GetSelectionList(args);
 
+  const int selected_item_index{0};  // will be selected on combo box expand
+  const bool is_editable{false};
+  bool was_accepted{true};
+
   auto selection = QInputDialog::getItem(
       nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
-      selection_list);
+      selection_list, selected_item_index, is_editable, &was_accepted);
 
-  return {selection_list.indexOf(selection), true};
+  // dialog's feature: it returns selected_item_index if cancel button was pressed
+
+  return {selection_list.indexOf(selection), was_accepted};
 }
 
 UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
