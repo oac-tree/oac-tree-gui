@@ -37,7 +37,7 @@ class InstructionRowStrategy : public mvvm::RowStrategyInterface
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Type", "Name", "Status"};
+    static QStringList result = {"Type", "Name", "Status", "BP"};
     return result;
   }
 
@@ -56,6 +56,7 @@ public:
     {
       result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
+      result.emplace_back(mvvm::CreateDataViewItem(GetBreakpointItem(*instruction)));
     }
     return result;
   }

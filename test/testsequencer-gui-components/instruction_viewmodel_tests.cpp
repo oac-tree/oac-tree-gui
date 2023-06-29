@@ -59,11 +59,12 @@ TEST_F(InstructionViewModelTest, SingleInstruction)
 
   InstructionViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.columnCount(), 4);
 
   auto sequence_displayname_index = viewmodel.index(0, 0);
   auto sequence_customname_index = viewmodel.index(0, 1);
   auto sequence_status_index = viewmodel.index(0, 2);
+  auto sequence_breakpoint_index = viewmodel.index(0, 3);
 
   auto views = viewmodel.FindViews(GetStatusItem(*sequence));
   EXPECT_EQ(views.size(), 1);
@@ -72,6 +73,7 @@ TEST_F(InstructionViewModelTest, SingleInstruction)
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_displayname_index), sequence);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_customname_index), GetNameItem(*sequence));
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_status_index), GetStatusItem(*sequence));
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_breakpoint_index), GetBreakpointItem(*sequence));
 
   EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Sequence"));
@@ -79,6 +81,8 @@ TEST_F(InstructionViewModelTest, SingleInstruction)
             std::string(""));
   EXPECT_EQ(viewmodel.data(sequence_status_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
+
+  // FIXME add breakpoint
 }
 
 TEST_F(InstructionViewModelTest, SequenceWithChild)
@@ -92,7 +96,7 @@ TEST_F(InstructionViewModelTest, SequenceWithChild)
   InstructionViewModel viewmodel(&model);
   auto sequence_ndex = viewmodel.index(0, 0);
   EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
-  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 3);
+  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 4);
 
   auto wait0_displayname_index = viewmodel.index(0, 0, sequence_ndex);
   auto wait1_displayname_index = viewmodel.index(1, 0, sequence_ndex);
@@ -114,7 +118,7 @@ TEST_F(InstructionViewModelTest, NotificationOnStatusChange)
 
   InstructionViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 3);
+  EXPECT_EQ(viewmodel.columnCount(), 4);
 
   auto sequence_status_index = viewmodel.index(0, 2);
 

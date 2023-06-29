@@ -24,9 +24,11 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QTreeView>
@@ -57,7 +59,6 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
 
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
-  m_tree_view->header()->setStretchLastSection(true);
 
   auto on_click = [this](auto index)
   {
@@ -81,6 +82,9 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
                                                : nullptr);
   m_tree_view->expandAll();
+  m_custom_header->setSectionResizeMode(2, QHeaderView::Stretch);
+  m_custom_header->setSectionResizeMode(3, QHeaderView::Fixed);
+  m_tree_view->setColumnWidth(3, mvvm::utils::UnitSize(1));
   AdjustColumnWidth();
 }
 

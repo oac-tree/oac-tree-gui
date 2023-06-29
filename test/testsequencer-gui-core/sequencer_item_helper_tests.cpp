@@ -151,5 +151,5 @@ TEST_F(SequencerItemHelperTest, GetPropertyItem)
   TestItem test_item;
   EXPECT_NE(GetNameItem(test_item), nullptr);
   EXPECT_NE(GetStatusItem(test_item), nullptr);
-  EXPECT_NE(GetBreakpointItem(item), nullptr);
+  EXPECT_NE(GetBreakpointItem(test_item), nullptr);
 }

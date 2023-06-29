@@ -175,6 +175,7 @@ void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
   {
     m_component_provider->SetItem(procedure->GetInstructionContainer());
     m_tree_view->setColumnHidden(2, true);
+    m_tree_view->setColumnHidden(3, true);
     m_tree_view->header()->setStretchLastSection(true);
     AdjustColumnWidth();
   }
