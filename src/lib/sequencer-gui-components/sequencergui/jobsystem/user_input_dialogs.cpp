@@ -74,7 +74,7 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
 
   // dialog's feature: it returns selected_item_index if cancel button was pressed
 
-  return {selection_list.indexOf(selection), was_accepted};
+  return {was_accepted ? selection_list.indexOf(selection) : -1, was_accepted};
 }
 
 UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
