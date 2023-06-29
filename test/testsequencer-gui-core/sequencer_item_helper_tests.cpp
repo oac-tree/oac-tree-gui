@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/item_constants.h"
+#include "sequencergui/model/sequencer_item_helper.h"
 
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_variable_item.h>
@@ -35,7 +35,7 @@ using namespace sequencergui;
 
 //! Tests for utility functions from sequencer_utils.h
 
-class SequencerUtilsTest : public ::testing::Test
+class SequencerItemHelperTest : public ::testing::Test
 {
 public:
   class TestItem : public mvvm::CompoundItem
@@ -45,11 +45,12 @@ public:
     {
       AddProperty(itemconstants::kName, "");
       AddProperty(itemconstants::kStatus, "");
+      AddProperty(itemconstants::kBreakpoint, "");
     }
   };
 };
 
-TEST_F(SequencerUtilsTest, IsCompoundInstruction)
+TEST_F(SequencerItemHelperTest, IsCompoundInstruction)
 {
   SequenceItem sequence;
   EXPECT_TRUE(IsCompoundInstruction(&sequence));
@@ -61,7 +62,7 @@ TEST_F(SequencerUtilsTest, IsCompoundInstruction)
   EXPECT_FALSE(IsCompoundInstruction(&wait));
 }
 
-TEST_F(SequencerUtilsTest, IsDecoratorInstruction)
+TEST_F(SequencerItemHelperTest, IsDecoratorInstruction)
 {
   SequenceItem sequence;
   EXPECT_FALSE(IsDecoratorInstruction(&sequence));
@@ -73,7 +74,7 @@ TEST_F(SequencerUtilsTest, IsDecoratorInstruction)
   EXPECT_FALSE(IsDecoratorInstruction(&wait));
 }
 
-TEST_F(SequencerUtilsTest, CreateSequencerItemCatalogues)
+TEST_F(SequencerItemHelperTest, CreateSequencerItemCatalogues)
 {
   // checking one sequencer related item in the catalogue
   auto catalogue = CreateSequencerItemCatalogue();
@@ -82,7 +83,7 @@ TEST_F(SequencerUtilsTest, CreateSequencerItemCatalogues)
   EXPECT_EQ(item->GetType(), SequenceItem::Type);
 }
 
-TEST_F(SequencerUtilsTest, CreateSequencerItemManager)
+TEST_F(SequencerItemHelperTest, CreateSequencerItemManager)
 {
   // checking one sequencer related item in the catalogue
   auto manager = CreateSequencerItemManager();
@@ -91,7 +92,7 @@ TEST_F(SequencerUtilsTest, CreateSequencerItemManager)
   EXPECT_EQ(item->GetType(), SequenceItem::Type);
 }
 
-TEST_F(SequencerUtilsTest, Clone)
+TEST_F(SequencerItemHelperTest, Clone)
 {
   using testutils::IsCloneImplemented;
 
@@ -114,7 +115,7 @@ TEST_F(SequencerUtilsTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
 }
 
-TEST_F(SequencerUtilsTest, ClonePlugin)
+TEST_F(SequencerItemHelperTest, ClonePlugin)
 {
   using testutils::IsCloneImplemented;
 
@@ -138,15 +139,17 @@ TEST_F(SequencerUtilsTest, ClonePlugin)
   EXPECT_TRUE(IsCloneImplemented<PvAccessServerVariableItem>());
 }
 
-TEST_F(SequencerUtilsTest, GetPropertyItem)
+TEST_F(SequencerItemHelperTest, GetPropertyItem)
 {
   // item doesn't have property items
   mvvm::SessionItem item;
   EXPECT_EQ(GetNameItem(item), nullptr);
   EXPECT_EQ(GetStatusItem(item), nullptr);
+  EXPECT_EQ(GetBreakpointItem(item), nullptr);
 
   // test item has property items
   TestItem test_item;
   EXPECT_NE(GetNameItem(test_item), nullptr);
   EXPECT_NE(GetStatusItem(test_item), nullptr);
+  EXPECT_NE(GetBreakpointItem(item), nullptr);
 }

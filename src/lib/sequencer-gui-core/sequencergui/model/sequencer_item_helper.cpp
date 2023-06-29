@@ -126,6 +126,11 @@ mvvm::SessionItem *GetStatusItem(const mvvm::SessionItem &parent)
   return GetPropertyItem(parent, itemconstants::kStatus);
 }
 
+mvvm::SessionItem *GetBreakpointItem(const mvvm::SessionItem &parent)
+{
+  return GetPropertyItem(parent, itemconstants::kBreakpoint);
+}
+
 mvvm::SessionItem *GetIsAvailableItem(const mvvm::SessionItem &parent)
 {
   return GetPropertyItem(parent, itemconstants::kIsAvailable);

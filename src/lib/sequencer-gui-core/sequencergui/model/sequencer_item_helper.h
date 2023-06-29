@@ -63,6 +63,12 @@ mvvm::SessionItem* GetNameItem(const mvvm::SessionItem& parent);
 mvvm::SessionItem* GetStatusItem(const mvvm::SessionItem& parent);
 
 /**
+ * @brief Returns an item representing a breakpoint property, or nullptr if the given parent doesn't
+ * have such property registered.
+ */
+mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent);
+
+/**
  * @brief Returns an item representing is_available property, or nullptr if the given parent doesn't
  * have such property registered.
  */
