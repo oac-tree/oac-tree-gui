@@ -235,6 +235,10 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+
+  // validating that no SessionItem related properties were propagated to the domain
+  std::vector<std::pair<std::string, std::string>> expected = {{"isRoot", "false"}};
+  EXPECT_EQ(domain_item->GetStringAttributes(), expected);
 }
 
 // ----------------------------------------------------------------------------

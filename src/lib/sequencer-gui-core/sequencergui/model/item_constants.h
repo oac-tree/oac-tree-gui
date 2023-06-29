@@ -36,6 +36,7 @@ const std::string kYpos = "kYpos";
 const std::string kChildInstructions = "kChildInstructions";
 const std::string kAnyValueTag = "kAnyValueTag";
 const std::string kIsAvailable = "connected";
+const std::string kBreakpoint = "breakpoint";
 
 }  // namespace sequencergui::itemconstants
 

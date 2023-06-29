@@ -23,19 +23,23 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/instruction.h>
+
+#include <iostream>
 
 namespace
 {
 // These attributes shouldn't be used from the domain to build properties.
-const std::vector<std::string> kSkipDomainAttributeList = {}; // so far empty
+const std::vector<std::string> kSkipDomainAttributeList = {};
 
-// these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::kChildInstructions};
+// These are properties that shouldn't go to domain. The list is empty for the moment because
+// all GUI-only properties are hidden, and filtered out in
+// UniversalInstructionItem::GetAttributeItems()
+const std::vector<std::string> kSkipItemTagList = {};
 
 }  // namespace
 
@@ -95,7 +99,11 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
 {
   std::vector<UniversalInstructionItem::Attribute> result;
 
-  // for the moment any registered property has it's correspondance as domain attribute
+  // We need to collect all property items, which has correspondance  on the domain side and should
+  // be used for the domain update. These items, currently, satisfy simple criteria:
+  // - They are visible property items
+  // - They are derived from AnyValueScalarItem
+
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
   for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueScalarItem>(properties))

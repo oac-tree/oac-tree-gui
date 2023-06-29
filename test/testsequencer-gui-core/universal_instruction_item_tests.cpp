@@ -71,7 +71,7 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
   std::vector<std::string> expected_tags(
       {domainconstants::kNameAttribute, domainconstants::kIsRootAttribute,
        domainconstants::kTimeoutAttribute, itemconstants::kStatus, itemconstants::kXpos,
-       itemconstants::kYpos});
+       itemconstants::kYpos, itemconstants::kBreakpoint});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should provide an access to underlying values
