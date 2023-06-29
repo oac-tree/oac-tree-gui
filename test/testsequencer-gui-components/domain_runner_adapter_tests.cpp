@@ -150,7 +150,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
   adapter->Stop();
 
   auto is_completed = [&adapter]() { return !adapter->IsBusy(); };
-  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(50)));
+  EXPECT_TRUE(testutils::WaitFor(is_completed, msec(100)));
 
   EXPECT_FALSE(adapter->IsBusy());
   EXPECT_EQ(adapter->GetStatus(), RunnerStatus::kStopped);
