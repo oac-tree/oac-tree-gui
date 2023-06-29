@@ -32,9 +32,8 @@
 namespace sequencergui
 {
 
-DomainRunnerAdapter::DomainRunnerAdapter(
-    procedure_t *procedure, userinterface_t *interface,
-    std::function<void(RunnerStatus)> status_changed_callback)
+DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t *interface,
+                                         std::function<void(RunnerStatus)> status_changed_callback)
     : m_procedure(procedure)
     , m_userinterface(interface)
     , m_status_changed_callback(status_changed_callback)
@@ -101,6 +100,28 @@ void DomainRunnerAdapter::StopRequest()
 void DomainRunnerAdapter::OnStatusChange(RunnerStatus status)
 {
   m_status_changed_callback(status);
+}
+
+bool DomainRunnerAdapter::SetBreakpoint(const instruction_t *instruction)
+{
+  if (IsBusy())
+  {
+    return false;
+  }
+
+  m_domain_runner->SetBreakpoint(instruction);
+  return true;
+}
+
+bool DomainRunnerAdapter::RemoveBreakpoint(const instruction_t *instruction)
+{
+  if (IsBusy())
+  {
+    return false;
+  }
+
+  m_domain_runner->RemoveBreakpoint(instruction);
+  return true;
 }
 
 void DomainRunnerAdapter::RunProcedure(bool in_step_mode)

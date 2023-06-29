@@ -66,6 +66,10 @@ public:
 
   void OnStatusChange(RunnerStatus status) override;
 
+  bool SetBreakpoint(const instruction_t* instruction);
+
+  bool RemoveBreakpoint(const instruction_t* instruction);
+
 private:
   void RunProcedure(bool in_step_mode);
 
