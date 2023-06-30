@@ -1,6 +1,10 @@
 # Widgets for sequencer-operation standalone application
 
 target_sources(${library_name} PRIVATE
+  breakpoint_controller.cpp
+  breakpoint_controller.h
+  breakpoint_helper.cpp
+  breakpoint_helper.h
   operation_job_panel.cpp
   operation_job_panel.h
   operation_job_panel_toolbar.cpp
