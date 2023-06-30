@@ -151,4 +151,16 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSet);
     EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
   }
+
+  {  // creating uncomplete hierarchy
+    SequencerModel model;
+
+    auto container = model.InsertItem<InstructionContainerItem>();
+    auto sequence0 = model.InsertItem<SequenceItem>(container);
+    auto wait0 = model.InsertItem<WaitItem>(sequence0);
+
+    // our structure doesn't coincide with the original structyre from where breakpoints have been
+    // taken
+    EXPECT_THROW(SetBreakpointsFromInfo(info, *container), RuntimeException);
+  }
 }

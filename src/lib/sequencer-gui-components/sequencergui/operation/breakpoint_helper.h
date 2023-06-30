@@ -58,13 +58,22 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
 
 /**
  * @brief Set breakpoint information to instruction item and underlying children.
+ *
+ * @details Method is used to populate the instruction hierarchy with breakpoint information taken from
+ * another hierarchy. It is expected that the layout (parent/child relation) coincides for both
+ * hierarchies.
  */
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item);
 
 /**
  * @brief Set breakpoint information to all instructions in the container.
+ *
+ * @details Method is used to populate the instruction hierarchy with breakpoint information taken from
+ * another hierarchy. It is expected that the layout (parent/child relation) coincides for both
+ * hierarchies.
  */
-void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionContainerItem& container);
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
+                            InstructionContainerItem& container);
 
 }  // namespace sequencergui
 
