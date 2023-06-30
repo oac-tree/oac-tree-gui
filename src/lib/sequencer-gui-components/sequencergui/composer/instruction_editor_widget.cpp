@@ -30,16 +30,25 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
+
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QSplitter>
 #include <QTreeView>
 #include <QVBoxLayout>
 #include <iostream>
+
+bool FixColumnAppearance(QTreeView *tree)
+{
+  tree->setColumnHidden(2, true);  // status
+  tree->setColumnHidden(3, true);  // breakpoint
+  tree->header()->setStretchLastSection(true);
+  return true;
+}
 
 namespace
 {
@@ -157,7 +166,7 @@ void InstructionEditorWidget::WriteSettings()
   }
 }
 
-void InstructionEditorWidget::AdjustColumnWidth()
+void InstructionEditorWidget::AdjustTreeAppearance()
 {
   if (m_custom_header->HasFavoriteState())
   {
@@ -167,6 +176,7 @@ void InstructionEditorWidget::AdjustColumnWidth()
   {
     m_tree_view->resizeColumnToContents(0);
   }
+  static const bool adjust_columns_once = FixColumnAppearance(m_tree_view);
 }
 
 void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
@@ -174,10 +184,7 @@ void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
   if (procedure)
   {
     m_component_provider->SetItem(procedure->GetInstructionContainer());
-    m_tree_view->setColumnHidden(2, true);
-    m_tree_view->setColumnHidden(3, true);
-    m_tree_view->header()->setStretchLastSection(true);
-    AdjustColumnWidth();
+    AdjustTreeAppearance();
   }
   else
   {

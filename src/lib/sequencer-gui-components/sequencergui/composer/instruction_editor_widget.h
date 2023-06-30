@@ -72,7 +72,7 @@ signals:
 private:
   void ReadSettings();
   void WriteSettings();
-  void AdjustColumnWidth();
+  void AdjustTreeAppearance();
   void SetProcedureIntern(ProcedureItem* procedure);
 
   void SetupConnections();

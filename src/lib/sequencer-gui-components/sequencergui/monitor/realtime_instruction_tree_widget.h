@@ -62,7 +62,7 @@ signals:
 private:
   void ReadSettings();
   void WriteSettings();
-  void AdjustColumnWidth();
+  void AdjustTreeAppearance();
 
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;

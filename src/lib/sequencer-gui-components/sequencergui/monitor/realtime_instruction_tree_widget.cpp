@@ -39,6 +39,15 @@ namespace
 const QString kGroupName("RealTimeInstructionTreeWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+
+bool FixColumnAppearance(QTreeView *tree)
+{
+  tree->header()->setSectionResizeMode(2, QHeaderView::Stretch);
+  tree->header()->setSectionResizeMode(3, QHeaderView::Fixed);
+  tree->setColumnWidth(3, mvvm::utils::UnitSize(1));
+  return true;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -81,11 +90,10 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
                                                : nullptr);
-  m_tree_view->expandAll();
-  m_custom_header->setSectionResizeMode(2, QHeaderView::Stretch);
-  m_custom_header->setSectionResizeMode(3, QHeaderView::Fixed);
-  m_tree_view->setColumnWidth(3, mvvm::utils::UnitSize(1));
-  AdjustColumnWidth();
+  if (procedure_item)
+  {
+    AdjustTreeAppearance();
+  }
 }
 
 void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
@@ -111,7 +119,7 @@ void RealTimeInstructionTreeWidget::WriteSettings()
   }
 }
 
-void RealTimeInstructionTreeWidget::AdjustColumnWidth()
+void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
 {
   if (m_custom_header->HasFavoriteState())
   {
@@ -121,6 +129,8 @@ void RealTimeInstructionTreeWidget::AdjustColumnWidth()
   {
     m_tree_view->resizeColumnToContents(0);
   }
+  m_tree_view->expandAll();
+  static const bool adjust_columns_once = FixColumnAppearance(m_tree_view);
 }
 
 }  // namespace sequencergui
