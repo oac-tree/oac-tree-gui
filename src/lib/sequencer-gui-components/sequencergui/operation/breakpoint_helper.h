@@ -22,9 +22,39 @@
 
 //! Collection of helper methods to handler breakpoints during instruction execution.
 
+#include <sequencergui/operation/breakpoint_types.h>
+
 namespace sequencergui
 {
 
+class InstructionItem;
+class InstructionContainerItem;
+
+/**
+ * @brief Returns status of the breakpoint for given instruction.
+ */
+BreakpointStatus GetBreakpointStatus(const InstructionItem& item);
+
+/**
+ * @brief Sets status of the breakpoint for given instruction.
+ */
+void SetBreakpointStatus(const InstructionItem& item, BreakpointStatus status);
+
+/**
+ * @brief Visits instruction tree and collect information about breakpoints.
+ *
+ * An instruction should belong to a model. Only report instructions with breakpoints either set, or
+ * disabled.
+ */
+std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem& item);
+
+/**
+ * @brief Visits all instructions and collect information about breakpoints.
+ *
+ * Container should belong to a model. Only report instructions with breakpoints either set, or
+ * disabled.
+ */
+std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem& container);
 
 }  // namespace sequencergui
 

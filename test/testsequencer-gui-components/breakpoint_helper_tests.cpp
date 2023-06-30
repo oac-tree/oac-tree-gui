@@ -19,14 +19,89 @@
 
 #include "sequencergui/operation/breakpoint_helper.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+
+#include <mvvm/model/model_utils.h>
+
 #include <gtest/gtest.h>
 
+using namespace sequencergui;
 
 class BreakpointHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(BreakpointHelperTest, InitialState)
+TEST_F(BreakpointHelperTest, GetBreakpointStatus)
 {
+  SequenceItem item;
+  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kNotSet);
+
+  SetBreakpointStatus(item, BreakpointStatus::kSet);
+  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kSet);
+
+  SetBreakpointStatus(item, BreakpointStatus::kDisabled);
+  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kDisabled);
 }
 
+TEST_F(BreakpointHelperTest, CollectBreakpointInfo)
+{
+  // item should be part of the model
+  SequenceItem item;
+  EXPECT_THROW(CollectBreakpointInfo(item), LogicErrorException);
+
+  SequencerModel model;
+
+  // sequence without breakpoints
+  auto sequence = model.InsertItem<SequenceItem>();
+  EXPECT_TRUE(CollectBreakpointInfo(*sequence).empty());
+
+  // breakpoint set to sequence
+  SetBreakpointStatus(*sequence, BreakpointStatus::kSet);
+  auto info = CollectBreakpointInfo(*sequence);
+  ASSERT_EQ(info.size(), 1);
+  EXPECT_EQ(info.at(0).status, BreakpointStatus::kSet);
+  EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(0).path), sequence);
+
+  // adding a child with breakpoint
+  auto wait0 = model.InsertItem<WaitItem>(sequence);
+  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  SetBreakpointStatus(*wait1, BreakpointStatus::kDisabled);
+  info = CollectBreakpointInfo(*sequence);
+  ASSERT_EQ(info.size(), 2);
+  EXPECT_EQ(info.at(0).status, BreakpointStatus::kSet);
+  EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(0).path), sequence);
+  EXPECT_EQ(info.at(1).status, BreakpointStatus::kDisabled);
+  EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(1).path), wait1);
+}
+
+TEST_F(BreakpointHelperTest, CollectBreakpointInfoFromContainer)
+{
+  SequencerModel model;
+
+  auto container = model.InsertItem<InstructionContainerItem>();
+
+  // sequence without breakpoints
+  auto sequence0 = model.InsertItem<SequenceItem>(container);
+  auto sequence1 = model.InsertItem<SequenceItem>(container);
+  auto wait0 = model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = model.InsertItem<WaitItem>(sequence1);
+
+  SetBreakpointStatus(*sequence0, BreakpointStatus::kSet);
+  SetBreakpointStatus(*wait0, BreakpointStatus::kSet);
+  SetBreakpointStatus(*wait1, BreakpointStatus::kDisabled);
+
+  auto info = CollectBreakpointInfo(*container);
+
+  ASSERT_EQ(info.size(), 3);
+  EXPECT_EQ(info.at(0).status, BreakpointStatus::kSet);
+  EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(0).path), sequence0);
+  EXPECT_EQ(info.at(1).status, BreakpointStatus::kSet);
+  EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(1).path), wait0);
+  EXPECT_EQ(info.at(2).status, BreakpointStatus::kDisabled);
+  EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(2).path), wait1);
+}

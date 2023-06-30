@@ -19,7 +19,74 @@
 
 #include "breakpoint_helper.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/sequencer_item_helper.h>
+
+#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/model_utils.h>
+
+#include <stack>
+
 namespace sequencergui
 {
 
+BreakpointStatus GetBreakpointStatus(const InstructionItem &item)
+{
+  return static_cast<BreakpointStatus>(GetBreakpointItem(item)->Data<int>());
 }
+
+void SetBreakpointStatus(const InstructionItem &item, BreakpointStatus status)
+{
+  auto breakpoint_property = GetBreakpointItem(item);
+  breakpoint_property->SetData(static_cast<int>(status));
+}
+
+std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem &item)
+{
+  const auto *model = item.GetModel();
+  if (!model)
+  {
+    throw LogicErrorException("Item should belong to a model");
+  }
+
+  std::vector<BreakpointInfo> result;
+
+  std::stack<const InstructionItem *> stack;
+  stack.push(&item);
+
+  while (!stack.empty())
+  {
+    const auto *item = stack.top();
+    stack.pop();
+
+    if (auto status = GetBreakpointStatus(*item); status != BreakpointStatus::kNotSet)
+    {
+      result.push_back({status, mvvm::utils::PathFromItem(item)});
+    }
+
+    auto children = item->GetInstructions();
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      stack.push(*it);
+    }
+  }
+
+  return result;
+}
+
+std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem &container)
+{
+  std::vector<BreakpointInfo> result;
+
+  for(auto instruction : container.GetInstructions())
+  {
+    auto info = CollectBreakpointInfo(*instruction);
+    std::copy(info.begin(), info.end(), std::back_inserter(result));
+  }
+
+  return result;
+}
+
+}  // namespace sequencergui
