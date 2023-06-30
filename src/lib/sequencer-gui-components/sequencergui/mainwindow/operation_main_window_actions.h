@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_ACTIONS_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_ACTIONS_H_
+#ifndef SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
+#define SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
 
 #include <QObject>
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_ACTIONS_H_
+#endif  // SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_

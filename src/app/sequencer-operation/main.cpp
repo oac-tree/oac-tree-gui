@@ -21,7 +21,8 @@
 #include <sequencergui/core/version.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
-#include <sequencergui/operation/operation_main_window.h>
+#include <sequencergui/mainwindow/operation_main_window.h>
+
 #include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>

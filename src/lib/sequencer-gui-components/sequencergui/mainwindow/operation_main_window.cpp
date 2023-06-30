@@ -20,10 +20,10 @@
 #include "operation_main_window.h"
 
 #include "operation_main_window_actions.h"
-#include "operation_monitor_view.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/operation/operation_monitor_view.h>
 
 #include <QMenuBar>
 #include <QSettings>

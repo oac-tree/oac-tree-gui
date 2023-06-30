@@ -5,6 +5,10 @@ target_sources(${library_name} PRIVATE
   app_settings.h
   command_line_options.cpp
   command_line_options.h
+  operation_main_window.cpp
+  operation_main_window.h
+  operation_main_window_actions.cpp
+  operation_main_window_actions.h
   sequencer_main_window.cpp
   sequencer_main_window.h
   sequencer_main_window_actions.cpp

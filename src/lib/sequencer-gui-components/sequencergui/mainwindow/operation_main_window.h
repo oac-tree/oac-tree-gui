@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_H_
+#ifndef SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_
+#define SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_
 
 #include <QMainWindow>
 #include <memory>
