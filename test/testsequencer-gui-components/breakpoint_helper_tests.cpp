@@ -105,3 +105,50 @@ TEST_F(BreakpointHelperTest, CollectBreakpointInfoFromContainer)
   EXPECT_EQ(info.at(2).status, BreakpointStatus::kDisabled);
   EXPECT_EQ(mvvm::utils::ItemFromPath(model, info.at(2).path), wait1);
 }
+
+TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
+{
+  std::vector<BreakpointInfo> info;
+
+  {
+    SequencerModel model;
+
+    auto container = model.InsertItem<InstructionContainerItem>();
+
+    // sequence without breakpoints
+    auto sequence0 = model.InsertItem<SequenceItem>(container);
+    auto sequence1 = model.InsertItem<SequenceItem>(container);
+    auto wait0 = model.InsertItem<WaitItem>(sequence0);
+    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+
+    SetBreakpointStatus(*sequence0, BreakpointStatus::kSet);
+    SetBreakpointStatus(*wait0, BreakpointStatus::kSet);
+    SetBreakpointStatus(*wait1, BreakpointStatus::kDisabled);
+
+    info = CollectBreakpointInfo(*container);
+  }
+
+  {  // creating second hierarchy
+    SequencerModel model;
+
+    auto container = model.InsertItem<InstructionContainerItem>();
+    auto sequence0 = model.InsertItem<SequenceItem>(container);
+    auto sequence1 = model.InsertItem<SequenceItem>(container);
+    auto wait0 = model.InsertItem<WaitItem>(sequence0);
+    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+
+    EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*sequence1), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kNotSet);
+
+    // setting breakpoints
+    SetBreakpointsFromInfo(info, *container);
+
+    // validating breakpoints
+    EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSet);
+    EXPECT_EQ(GetBreakpointStatus(*sequence1), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
+  }
+}

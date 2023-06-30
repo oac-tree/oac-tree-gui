@@ -56,6 +56,16 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem& item);
  */
 std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem& container);
 
+/**
+ * @brief Set breakpoint information to instruction item and underlying children.
+ */
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item);
+
+/**
+ * @brief Set breakpoint information to all instructions in the container.
+ */
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionContainerItem& container);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_HELPER_H_

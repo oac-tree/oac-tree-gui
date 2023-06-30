@@ -80,13 +80,45 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
 {
   std::vector<BreakpointInfo> result;
 
-  for(auto instruction : container.GetInstructions())
+  for (auto instruction : container.GetInstructions())
   {
     auto info = CollectBreakpointInfo(*instruction);
     std::copy(info.begin(), info.end(), std::back_inserter(result));
   }
 
   return result;
+}
+
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo> &info, InstructionItem &item)
+{
+  const auto *model = item.GetModel();
+  if (!model)
+  {
+    throw LogicErrorException("Item should belong to a model");
+  }
+
+  for (const auto &[status, path] : info)
+  {
+    if (auto instruction =
+            dynamic_cast<const InstructionItem *>(mvvm::utils::ItemFromPath(*model, path));
+        instruction)
+    {
+      SetBreakpointStatus(*instruction, status);
+    }
+    else
+    {
+      throw RuntimeException("Can't find instruction");
+    }
+  }
+}
+
+void SetBreakpointsFromInfo(const std::vector<BreakpointInfo> &info,
+                            InstructionContainerItem &container)
+{
+  for (auto instruction : container.GetInstructions())
+  {
+    SetBreakpointsFromInfo(info, *instruction);
+  }
 }
 
 }  // namespace sequencergui
