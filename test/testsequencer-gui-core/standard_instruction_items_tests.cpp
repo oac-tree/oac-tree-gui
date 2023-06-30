@@ -27,6 +27,7 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
@@ -142,7 +143,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomain)
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSuccessThresholdAttribute), "42");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
 
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
 }
 
 //! This checks that no kSuccessThresholdAttribute attribute created on domain side,
@@ -161,7 +162,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceToDomainWhenNoSuccessThresh
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSuccessThresholdAttribute), "0");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFailureThresholdAttribute), "43");
 
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
 }
 
 // ----------------------------------------------------------------------------
@@ -203,7 +204,7 @@ TEST_F(StandardInstructionItemsTest, RepeatItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kRepeatInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kMaxCountAttribute), "42");
 
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
 }
 
 // ----------------------------------------------------------------------------
@@ -234,7 +235,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
 
   // validating that no SessionItem related properties were propagated to the domain
   std::vector<std::pair<std::string, std::string>> expected = {{"isRoot", "false"}};
