@@ -29,8 +29,8 @@
 namespace sequencergui
 {
 
+class ProcedureItem;
 class InstructionItem;
-class InstructionContainerItem;
 
 /**
  * @brief The BreakpointController class stores information about breakpoints, and controls its
@@ -48,21 +48,33 @@ public:
 
   /**
    * @brief Save breakpoint information in internal cash.
-   * @param container The instruction container.
+   * @param procedure_item The procedure to explore for available breakpoints.
    *
    * @details The method is used to collect an information about all breakpoints over the
    * intrsuction tree, for later reuse.
    */
-  void SaveBreakpoints(const InstructionContainerItem& container);
+  void SaveBreakpoints(const ProcedureItem& procedure_item);
 
   /**
    * @brief Restore breakpoint information from internal cash.
-   * @param container The instruction container.
+   * @param procedure_item The procedure to restore breakpoints.
    *
    * @details The method is used to set breakpoints back to instructions in the container. It is
    * expected, that instructions do not have breakpoints already.
    */
-  void RestoreBreakpoints(InstructionContainerItem &container);
+  void RestoreBreakpoints(ProcedureItem& procedure_item);
+
+  /**
+   * @brief Sets breakpoints to the runner using breakpoint information from instruction tree.
+   * @param procedure_item Expanded ProcedureItem
+   *
+   * @return Returns true if breakpoints have been successfully set (i.e. runner is paused, or not
+   * running).
+   *
+   * @details It is expected that the runner doesn't have any breakpoints set, that it contains
+   * a domain procedure, corresponding to given item.
+   */
+  bool PropagateBreakpointsToDomain(const ProcedureItem& procedure_item, runner_t& runner);
 
 private:
   //! callback to retrieve domain instruction corresponding to given InstructionItem

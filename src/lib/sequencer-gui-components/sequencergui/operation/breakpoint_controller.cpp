@@ -23,6 +23,7 @@
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
 
 namespace sequencergui
 {
@@ -32,14 +33,19 @@ BreakpointController::BreakpointController(get_instruction_t callback, QObject *
 {
 }
 
-void BreakpointController::SaveBreakpoints(const InstructionContainerItem &container)
+void BreakpointController::SaveBreakpoints(const ProcedureItem &procedure_item)
 {
-  m_breakpoints = std::move(CollectBreakpointInfo(container));
+  m_breakpoints = std::move(CollectBreakpointInfo(*procedure_item.GetInstructionContainer()));
 }
 
-void BreakpointController::RestoreBreakpoints(InstructionContainerItem &container)
+void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
 {
-  SetBreakpointsFromInfo(m_breakpoints, container);
+  SetBreakpointsFromInfo(m_breakpoints, *procedure_item.GetInstructionContainer());
+}
+
+bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &procedure_item,
+                                                        runner_t &runner)
+{
 }
 
 }  // namespace sequencergui
