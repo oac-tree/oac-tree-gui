@@ -19,12 +19,27 @@
 
 #include "breakpoint_controller.h"
 
+#include "breakpoint_helper.h"
+
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+
 namespace sequencergui
 {
 
-BreakpointController::BreakpointController(QObject *parent) : QObject(parent)
+BreakpointController::BreakpointController(get_instruction_t callback, QObject *parent)
+    : QObject(parent), m_get_domain_instruction(std::move(callback))
 {
-
 }
 
+void BreakpointController::SaveBreakpoints(const InstructionContainerItem &container)
+{
+  m_breakpoints = std::move(CollectBreakpointInfo(container));
 }
+
+void BreakpointController::RestoreBreakpoints(InstructionContainerItem &container)
+{
+  SetBreakpointsFromInfo(m_breakpoints, container);
+}
+
+}  // namespace sequencergui

@@ -20,10 +20,17 @@
 #ifndef SEQUENCERGUI_OPERATION_BREAKPOINT_CONTROLLER_H_
 #define SEQUENCERGUI_OPERATION_BREAKPOINT_CONTROLLER_H_
 
+#include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/operation/breakpoint_types.h>
+
 #include <QObject>
+#include <functional>
 
 namespace sequencergui
 {
+
+class InstructionItem;
+class InstructionContainerItem;
 
 /**
  * @brief The BreakpointController class stores information about breakpoints, and controls its
@@ -35,7 +42,34 @@ class BreakpointController : public QObject
   Q_OBJECT
 
 public:
-  explicit BreakpointController(QObject* parent = nullptr);
+  using get_instruction_t = std::function<instruction_t*(const InstructionItem&)>;
+
+  explicit BreakpointController(get_instruction_t callback, QObject* parent = nullptr);
+
+  /**
+   * @brief Save breakpoint information in internal cash.
+   * @param container The instruction container.
+   *
+   * @details The method is used to collect an information about all breakpoints over the
+   * intrsuction tree, for later reuse.
+   */
+  void SaveBreakpoints(const InstructionContainerItem& container);
+
+  /**
+   * @brief Restore breakpoint information from internal cash.
+   * @param container The instruction container.
+   *
+   * @details The method is used to set breakpoints back to instructions in the container. It is
+   * expected, that instructions do not have breakpoints already.
+   */
+  void RestoreBreakpoints(InstructionContainerItem &container);
+
+private:
+  //! callback to retrieve domain instruction corresponding to given InstructionItem
+  get_instruction_t m_get_domain_instruction;
+
+  //! information
+  std::vector<BreakpointInfo> m_breakpoints;
 };
 
 }  // namespace sequencergui

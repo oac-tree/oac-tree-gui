@@ -29,5 +29,5 @@ class BreakpointControllerTest : public ::testing::Test
 
 TEST_F(BreakpointControllerTest, InitialState)
 {
-  BreakpointController controller;
+  BreakpointController controller({});
 }
