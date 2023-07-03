@@ -41,6 +41,13 @@ BreakpointStatus GetBreakpointStatus(const InstructionItem& item);
 void SetBreakpointStatus(const InstructionItem& item, BreakpointStatus status);
 
 /**
+ * @brief Toggles status of the breakpoint for given instruction.
+ *
+ * @details kNotSet -> kSet -> kDisabled -> kNotSet
+ */
+void ToggleBreakpointStatus(const InstructionItem& item);
+
+/**
  * @brief Visits instruction tree and collect information about breakpoints.
  *
  * An instruction should belong to a model. Only report instructions with breakpoints either set, or

@@ -27,6 +27,7 @@
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/model_utils.h>
 
+#include <map>
 #include <stack>
 
 namespace sequencergui
@@ -41,6 +42,16 @@ void SetBreakpointStatus(const InstructionItem &item, BreakpointStatus status)
 {
   auto breakpoint_property = GetBreakpointItem(item);
   breakpoint_property->SetData(static_cast<int>(status));
+}
+
+void ToggleBreakpointStatus(const InstructionItem &item)
+{
+  static const std::map<BreakpointStatus, BreakpointStatus> m_transitions = {
+      {BreakpointStatus::kNotSet, BreakpointStatus::kSet},
+      {BreakpointStatus::kSet, BreakpointStatus::kDisabled},
+      {BreakpointStatus::kDisabled, BreakpointStatus::kNotSet}};
+  auto new_status = m_transitions.at(GetBreakpointStatus(item));
+  SetBreakpointStatus(item, new_status);
 }
 
 std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem &item)

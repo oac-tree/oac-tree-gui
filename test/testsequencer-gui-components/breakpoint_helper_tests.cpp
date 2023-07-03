@@ -48,6 +48,20 @@ TEST_F(BreakpointHelperTest, GetBreakpointStatus)
   EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kDisabled);
 }
 
+TEST_F(BreakpointHelperTest, ToggleBreakpointStatus)
+{
+  SequenceItem item;
+
+  ToggleBreakpointStatus(item);
+  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kSet);
+
+  ToggleBreakpointStatus(item);
+  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kDisabled);
+
+  ToggleBreakpointStatus(item);
+  EXPECT_EQ(GetBreakpointStatus(item), BreakpointStatus::kNotSet);
+}
+
 TEST_F(BreakpointHelperTest, CollectBreakpointInfo)
 {
   // item should be part of the model
@@ -159,7 +173,7 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     auto sequence0 = model.InsertItem<SequenceItem>(container);
     auto wait0 = model.InsertItem<WaitItem>(sequence0);
 
-    // our structure doesn't coincide with the original structyre from where breakpoints have been
+    // our structure doesn't coincide with the original structure from where breakpoints have been
     // taken
     EXPECT_THROW(SetBreakpointsFromInfo(info, *container), RuntimeException);
   }
