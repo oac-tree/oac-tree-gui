@@ -265,3 +265,24 @@ TEST_F(GUIObjectBuilderTest, LocalIncludeAfterSetup)
   EXPECT_EQ(builder.FindInstructionItem(cloned_domain_sequence), sequence_item);
   EXPECT_EQ(builder.FindInstructionItem(cloned_domain_wait), wait_item);
 }
+
+TEST_F(GUIObjectBuilderTest, FindInstruction)
+{
+  GUIObjectBuilder builder;
+
+  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+
+  auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root only*/ false);
+
+  auto sequence = procedure->GetTopInstructions().at(0);
+  auto sequence_item = procedure_item->GetInstructionContainer()->GetInstructions().at(0);
+
+  auto message = sequence->ChildInstructions().at(0);
+  auto message_item = sequence_item->GetInstructions().at(0);
+
+  EXPECT_EQ(builder.FindInstruction(sequence_item), sequence);
+  EXPECT_EQ(builder.FindInstruction(message_item), message);
+
+  WaitItem wait_item;
+  EXPECT_EQ(builder.FindInstruction(wait_item), nullptr);
+}

@@ -64,6 +64,8 @@ public:
   VariableItem* FindVariableItem(const variable_t* variable) const;
   VariableItem* FindVariableItem(const std::string& variable_name) const;
 
+  instruction_t* FindInstruction(const InstructionItem* instruction_item) const;
+
 private:
   mvvm::SessionItem* ProcessInstruction(const instruction_t* instruction,
                                         mvvm::SessionItem* parent);
