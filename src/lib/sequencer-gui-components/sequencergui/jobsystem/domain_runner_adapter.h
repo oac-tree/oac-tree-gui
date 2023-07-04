@@ -70,6 +70,8 @@ public:
 
   bool RemoveBreakpoint(const instruction_t* instruction);
 
+  runner_t* GetDomainRunner();
+
 private:
   void RunProcedure(bool in_step_mode);
 

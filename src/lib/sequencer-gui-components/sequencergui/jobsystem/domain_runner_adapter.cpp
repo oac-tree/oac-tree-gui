@@ -124,6 +124,11 @@ bool DomainRunnerAdapter::RemoveBreakpoint(const instruction_t *instruction)
   return true;
 }
 
+runner_t *DomainRunnerAdapter::GetDomainRunner()
+{
+  return m_domain_runner.get();
+}
+
 void DomainRunnerAdapter::RunProcedure(bool in_step_mode)
 {
   if (m_future_result.valid() && GetStatus() != RunnerStatus::kPaused)

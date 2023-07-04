@@ -261,6 +261,10 @@ void JobHandler::SetupDomainRunnerAdapter()
 
   m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(
       m_domain_procedure.get(), m_procedure_reporter->GetObserver(), status_changed);
+
+  // setup breakpoint
+  m_breakpoint_controller->PropagateBreakpointsToDomain(
+      *GetExpandedProcedure(), *m_domain_runner_adapter->GetDomainRunner());
 }
 
 }  // namespace sequencergui
