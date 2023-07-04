@@ -284,5 +284,5 @@ TEST_F(GUIObjectBuilderTest, FindInstruction)
   EXPECT_EQ(builder.FindInstruction(message_item), message);
 
   WaitItem wait_item;
-  EXPECT_EQ(builder.FindInstruction(wait_item), nullptr);
+  EXPECT_EQ(builder.FindInstruction(&wait_item), nullptr);
 }

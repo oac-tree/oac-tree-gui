@@ -71,7 +71,7 @@ bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, r
   auto breakpoint_status = GetBreakpointStatus(item);
   if (breakpoint_status == BreakpointStatus::kSet)
   {
-    runner.EnableBreakpoint(domain_instruction);
+    runner.SetBreakpoint(domain_instruction);
   }
   else
   {

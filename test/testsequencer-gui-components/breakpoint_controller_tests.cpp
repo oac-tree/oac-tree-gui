@@ -27,18 +27,32 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/operation/breakpoint_helper.h>
+#include <sequencergui/transform/gui_object_builder.h>
 
 #include <mvvm/standarditems/container_item.h>
 
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
+#include <sup/sequencer/user_interface.h>
 
 #include <gtest/gtest.h>
+#include <testutils/standard_procedures.h>
 
 using namespace sequencergui;
 
 class BreakpointControllerTest : public ::testing::Test
 {
+public:
+  class EmptyUserInterface : public sup::sequencer::UserInterface
+  {
+  private:
+    void UpdateInstructionStatusImpl(const sup::sequencer::Instruction* instruction) override {}
+
+  public:
+    EmptyUserInterface() = default;
+    ~EmptyUserInterface() = default;
+  };
 };
 
 //! Testing FindDomainInstruction method.
@@ -108,4 +122,49 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
     EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSet);
     EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
   }
+}
+
+//! Validating method UpdateDomainBreakpoint.
+
+TEST_F(BreakpointControllerTest, UpdateDomainBreakpoint)
+{
+  EmptyUserInterface empty_ui;
+  sup::sequencer::Runner runner(empty_ui);
+
+  // building domain and GUI procedures
+  GUIObjectBuilder builder;
+  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+  EXPECT_NO_THROW(procedure->Setup());
+  auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root_only*/ false);
+
+  // accessing instructions in GUI and domain
+  auto sequence = procedure->GetTopInstructions().at(0);
+  auto sequence_item = procedure_item->GetInstructionContainer()->GetInstructions().at(0);
+  auto message = sequence->ChildInstructions().at(0);
+  auto message_item = sequence_item->GetInstructions().at(0);
+
+  // preparing controller
+  auto find_instruction = [&builder](const auto& instruction_item)
+  { return builder.FindInstruction(&instruction_item); };
+  BreakpointController controller(find_instruction);
+
+  // setting breakpoints in GUI
+  SetBreakpointStatus(*message_item, BreakpointStatus::kSet);
+
+  EXPECT_NO_THROW(runner.SetProcedure(procedure.get()));
+
+  EXPECT_TRUE(controller.UpdateDomainBreakpoint(*message_item, runner));
+
+  auto breakpoints = runner.GetBreakpoints();
+  ASSERT_EQ(breakpoints.size(), 1);
+  EXPECT_EQ(breakpoints.at(0).GetInstruction(), message);
+
+  // execution
+  EXPECT_NO_THROW(runner.ExecuteProcedure());
+  EXPECT_FALSE(runner.IsRunning());
+  EXPECT_FALSE(runner.IsFinished());
+
+  auto next_instructions = procedure->GetNextInstructions();
+  ASSERT_EQ(next_instructions.size(), 1);
+  EXPECT_EQ(next_instructions.at(0), message);
 }

@@ -180,7 +180,7 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
 
     auto container = model.InsertItem<InstructionContainerItem>();
     auto sequence0 = model.InsertItem<SequenceItem>(container);
-    auto wait0 = model.InsertItem<WaitItem>(sequence0);
+    model.InsertItem<WaitItem>(sequence0);
 
     // our structure doesn't coincide with the original structure from where breakpoints have been
     // taken
