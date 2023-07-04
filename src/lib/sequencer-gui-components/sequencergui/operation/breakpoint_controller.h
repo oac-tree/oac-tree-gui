@@ -42,7 +42,7 @@ class BreakpointController : public QObject
   Q_OBJECT
 
 public:
-  using get_instruction_t = std::function<instruction_t*(const InstructionItem&)>;
+  using get_instruction_t = std::function<const instruction_t*(const InstructionItem&)>;
 
   explicit BreakpointController(get_instruction_t callback, QObject* parent = nullptr);
 
@@ -97,7 +97,7 @@ public:
   /**
    * @brief Find domain instruction corresponding to a given item.
    */
-  instruction_t* FindDomainInstruction(const InstructionItem& item);
+  const instruction_t *FindDomainInstruction(const InstructionItem& item);
 
 private:
   //! callback to retrieve domain instruction corresponding to given InstructionItem

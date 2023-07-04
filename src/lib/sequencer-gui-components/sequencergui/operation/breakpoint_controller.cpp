@@ -97,7 +97,7 @@ bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, r
   return true;
 }
 
-instruction_t *BreakpointController::FindDomainInstruction(const InstructionItem &item)
+const instruction_t *BreakpointController::FindDomainInstruction(const InstructionItem &item)
 {
   if (!m_get_domain_instruction)
   {

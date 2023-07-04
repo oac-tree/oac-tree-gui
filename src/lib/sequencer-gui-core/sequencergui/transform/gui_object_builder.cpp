@@ -99,11 +99,12 @@ VariableItem *GUIObjectBuilder::FindVariableItem(const std::string &variable_nam
   return it == m_variablename_to_item.end() ? nullptr : it->second;
 }
 
-instruction_t *GUIObjectBuilder::FindInstruction(const InstructionItem *instruction_item) const
+const instruction_t *GUIObjectBuilder::FindInstruction(
+    const InstructionItem *instruction_item) const
 {
   auto predicate = [instruction_item](auto it) { return it.second == instruction_item; };
   auto it = std::find_if(m_to_instruction_item.begin(), m_to_instruction_item.end(), predicate);
-  return it == m_to_instruction_item.end() ? nullptr : const_cast<instruction_t*>(it->first);
+  return it == m_to_instruction_item.end() ? nullptr : it->first;
 }
 
 //! Populates empty InstructionContainerItem with the content from sequencer Procedure.
