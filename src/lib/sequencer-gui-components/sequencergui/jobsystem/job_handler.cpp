@@ -19,11 +19,12 @@
 
 #include "job_handler.h"
 
+#include "job_utils.h"
+#include "procedure_reporter.h"
+#include "sequencer_observer.h"
+
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_runner_adapter.h>
-#include <sequencergui/jobsystem/job_utils.h>
-#include <sequencergui/jobsystem/procedure_reporter.h>
-#include <sequencergui/jobsystem/sequencer_observer.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
@@ -31,6 +32,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/job_log.h>
+#include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
@@ -52,6 +54,9 @@ JobHandler::JobHandler(JobItem *job_item)
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
+  auto find_instruction = [this](const InstructionItem &item)
+  { return m_guiobject_builder->FindInstruction(&item); };
+  m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
 }
 
 void JobHandler::onPrepareJobRequest()
@@ -172,8 +177,9 @@ void JobHandler::PrepareForRun()
 {
   m_domain_procedure.reset();
 
-  if (auto expanded_procedure = m_job_item->GetExpandedProcedure(); expanded_procedure)
+  if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
+    m_breakpoint_controller->SaveBreakpoints(*expanded_procedure);
     GetJobModel()->RemoveItem(expanded_procedure);
   }
 
@@ -210,9 +216,12 @@ void JobHandler::SetupDomainProcedure()
 void JobHandler::SetupExpandedProcedureItem()
 {
   auto expanded_procedure = std::make_unique<ProcedureItem>();
+  auto expanded_procedure_ptr = expanded_procedure.get();
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),
                                              /*root_only*/ true);
+
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
+  m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
 }
 
 //! Setup synchronization of workspace variables.

@@ -39,6 +39,7 @@ class LogEvent;
 class WorkspaceSynchronizer;
 class DomainRunnerAdapter;
 class JobModel;
+class BreakpointController;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
 class JobHandler : public QObject
@@ -105,6 +106,8 @@ private:
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
 
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
+
+  std::unique_ptr<BreakpointController> m_breakpoint_controller;
 
   JobLog* m_job_log{nullptr};
 

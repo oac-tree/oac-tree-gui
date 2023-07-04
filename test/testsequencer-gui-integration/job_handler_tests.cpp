@@ -23,6 +23,7 @@
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/request_types.h>
 #include <sequencergui/model/application_models.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -31,11 +32,12 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/monitor/job_log.h>
+#include <sequencergui/operation/breakpoint_helper.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 
@@ -111,6 +113,41 @@ TEST_F(JobHandlerTest, PrepareJobRequest)
   EXPECT_NE(job_handler.GetExpandedProcedure(),
             expanded_procedure);  // old procedure was regenerated
   EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
+}
+
+//! Calling PrepareJobRequest, checking that breakpoints were preserved.
+
+TEST_F(JobHandlerTest, PrepareJobRequestBreakpoints)
+{
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
+  m_job_item->SetProcedure(procedure);
+
+  JobHandler job_handler(m_job_item);
+  EXPECT_FALSE(job_handler.IsValid());
+  EXPECT_EQ(job_handler.GetExpandedProcedure(), nullptr);
+
+  job_handler.onPrepareJobRequest();
+
+  auto expanded_procedure = job_handler.GetExpandedProcedure();
+  EXPECT_NE(expanded_procedure, nullptr);
+  EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
+  EXPECT_TRUE(job_handler.IsValid());
+
+  // setting breakpoint
+  auto wait_item = expanded_procedure->GetInstructionContainer()->GetInstructions().at(0);
+  SetBreakpointStatus(*wait_item, BreakpointStatus::kSet);
+
+  // calling expanded second time
+  job_handler.onPrepareJobRequest();
+
+  EXPECT_NE(expanded_procedure, nullptr);
+  EXPECT_NE(job_handler.GetExpandedProcedure(),
+            expanded_procedure);  // old procedure was regenerated
+  EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
+
+  auto new_wait_item = expanded_procedure->GetInstructionContainer()->GetInstructions().at(0);
+  EXPECT_NE(wait_item, new_wait_item);
+  EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kSet);
 }
 
 //! Attempt to use JobHandler with invalid procedure.
@@ -345,14 +382,16 @@ TEST_F(JobHandlerTest, StopLongRunningJob)
 
   job_handler.onStartRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([&spy_instruction_status](){return spy_instruction_status.count() == 1;}, 100));
+  EXPECT_TRUE(QTest::qWaitFor(
+      [&spy_instruction_status]() { return spy_instruction_status.count() == 1; }, 100));
 
   EXPECT_TRUE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 1);
 
   job_handler.onStopRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor([&spy_instruction_status](){return spy_instruction_status.count() == 2;}, 100));
+  EXPECT_TRUE(QTest::qWaitFor(
+      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
 
   EXPECT_FALSE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 2);
