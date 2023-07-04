@@ -207,7 +207,10 @@ TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
   EXPECT_FALSE(runner.IsRunning());
   EXPECT_FALSE(runner.IsFinished());
 
-  ASSERT_EQ(procedure->GetNextInstructions().size(), 2);
-  EXPECT_EQ(procedure->GetNextInstructions().at(0), sequence);
-  EXPECT_EQ(procedure->GetNextInstructions().at(1), message1);
+  ASSERT_EQ(sup::sequencer::GetNextInstructions(*procedure).size(), 2);
+  EXPECT_EQ(sup::sequencer::GetNextInstructions(*procedure).at(0), sequence);
+  EXPECT_EQ(sup::sequencer::GetNextInstructions(*procedure).at(1), message1);
+
+  ASSERT_EQ(sup::sequencer::GetNextLeaves(*procedure).size(), 1);
+  EXPECT_EQ(sup::sequencer::GetNextLeaves(*procedure).at(0), message1);
 }
