@@ -163,8 +163,51 @@ TEST_F(BreakpointControllerTest, UpdateDomainBreakpoint)
   EXPECT_NO_THROW(runner.ExecuteProcedure());
   EXPECT_FALSE(runner.IsRunning());
   EXPECT_FALSE(runner.IsFinished());
+}
 
-  auto next_instructions = procedure->GetNextInstructions();
-  ASSERT_EQ(next_instructions.size(), 1);
-  EXPECT_EQ(next_instructions.at(0), message);
+//! Validating method UpdateDomainBreakpoint.
+
+TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
+{
+  EmptyUserInterface empty_ui;
+  sup::sequencer::Runner runner(empty_ui);
+
+  // building domain and GUI procedures
+  GUIObjectBuilder builder;
+  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  EXPECT_NO_THROW(procedure->Setup());
+  auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root_only*/ false);
+
+  // accessing instructions in GUI and domain
+  auto sequence = procedure->GetTopInstructions().at(0);
+  auto sequence_item = procedure_item->GetInstructionContainer()->GetInstructions().at(0);
+  auto message0 = sequence->ChildInstructions().at(0);
+  auto message1 = sequence->ChildInstructions().at(1);
+  auto message_item0 = sequence_item->GetInstructions().at(0);
+  auto message_item1 = sequence_item->GetInstructions().at(1);
+
+  // preparing controller
+  auto find_instruction = [&builder](const auto& instruction_item)
+  { return builder.FindInstruction(&instruction_item); };
+  BreakpointController controller(find_instruction);
+
+  // setting breakpoints in GUI
+  SetBreakpointStatus(*message_item1, BreakpointStatus::kSet);
+
+  EXPECT_NO_THROW(runner.SetProcedure(procedure.get()));
+
+  EXPECT_TRUE(controller.PropagateBreakpointsToDomain(*procedure_item, runner));
+
+  auto breakpoints = runner.GetBreakpoints();
+  ASSERT_EQ(breakpoints.size(), 1);
+  EXPECT_EQ(breakpoints.at(0).GetInstruction(), message1);
+
+  // execution
+  EXPECT_NO_THROW(runner.ExecuteProcedure());
+  EXPECT_FALSE(runner.IsRunning());
+  EXPECT_FALSE(runner.IsFinished());
+
+  ASSERT_EQ(procedure->GetNextInstructions().size(), 2);
+  EXPECT_EQ(procedure->GetNextInstructions().at(0), sequence);
+  EXPECT_EQ(procedure->GetNextInstructions().at(1), message1);
 }

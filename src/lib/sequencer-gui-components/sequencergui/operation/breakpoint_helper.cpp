@@ -28,7 +28,6 @@
 #include <mvvm/model/model_utils.h>
 
 #include <map>
-#include <stack>
 
 namespace sequencergui
 {
@@ -46,11 +45,11 @@ void SetBreakpointStatus(const InstructionItem &item, BreakpointStatus status)
 
 void ToggleBreakpointStatus(const InstructionItem &item)
 {
-  static const std::map<BreakpointStatus, BreakpointStatus> m_transitions = {
+  static const std::map<BreakpointStatus, BreakpointStatus> transitions = {
       {BreakpointStatus::kNotSet, BreakpointStatus::kSet},
       {BreakpointStatus::kSet, BreakpointStatus::kDisabled},
       {BreakpointStatus::kDisabled, BreakpointStatus::kNotSet}};
-  auto new_status = m_transitions.at(GetBreakpointStatus(item));
+  auto new_status = transitions.at(GetBreakpointStatus(item));
   SetBreakpointStatus(item, new_status);
 }
 
@@ -64,25 +63,14 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem &item)
 
   std::vector<BreakpointInfo> result;
 
-  std::stack<const InstructionItem *> stack;
-  stack.push(&item);
-
-  while (!stack.empty())
+  auto save_breakpoint = [&result](const InstructionItem *item)
   {
-    const auto *item = stack.top();
-    stack.pop();
-
     if (auto status = GetBreakpointStatus(*item); status != BreakpointStatus::kNotSet)
     {
       result.push_back({status, mvvm::utils::PathFromItem(item)});
     }
-
-    auto children = item->GetInstructions();
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
-    {
-      stack.push(*it);
-    }
-  }
+  };
+  IterateInstruction<const InstructionItem*>(&item, save_breakpoint);
 
   return result;
 }

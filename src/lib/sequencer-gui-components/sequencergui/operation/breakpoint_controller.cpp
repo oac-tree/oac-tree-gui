@@ -50,7 +50,21 @@ void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
 
 bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &item, runner_t &runner)
 {
-  return false;
+  if (runner.IsRunning())
+  {
+    qDebug() << "Can't propagate instruction breakpoint to the domain. Runner is still running.";
+    return false;
+  }
+
+  auto func = [this, &runner](const InstructionItem *item)
+  { UpdateDomainBreakpoint(*item, runner); };
+
+  for (auto instruction : item.GetInstructionContainer()->GetInstructions())
+  {
+    IterateInstruction<const InstructionItem *>(instruction, func);
+  }
+
+  return true;
 }
 
 bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, runner_t &runner)
@@ -75,7 +89,7 @@ bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, r
   }
   else
   {
-    // We do not used "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
+    // We do not use "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
     // disabled, will remove breakpoint from the domain
     runner.RemoveBreakpoint(domain_instruction);
   }

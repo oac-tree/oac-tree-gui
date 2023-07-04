@@ -24,6 +24,9 @@
 
 #include <sequencergui/operation/breakpoint_types.h>
 
+#include <functional>
+#include <stack>
+
 namespace sequencergui
 {
 
@@ -66,8 +69,8 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionContainerItem
 /**
  * @brief Set breakpoint information to instruction item and underlying children.
  *
- * @details Method is used to populate the instruction hierarchy with breakpoint information taken from
- * another hierarchy. It is expected that the layout (parent/child relation) coincides for both
+ * @details Method is used to populate the instruction hierarchy with breakpoint information taken
+ * from another hierarchy. It is expected that the layout (parent/child relation) coincides for both
  * hierarchies.
  */
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, InstructionItem& item);
@@ -75,12 +78,38 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, Instruction
 /**
  * @brief Set breakpoint information to all instructions in the container.
  *
- * @details Method is used to populate the instruction hierarchy with breakpoint information taken from
- * another hierarchy. It is expected that the layout (parent/child relation) coincides for both
+ * @details Method is used to populate the instruction hierarchy with breakpoint information taken
+ * from another hierarchy. It is expected that the layout (parent/child relation) coincides for both
  * hierarchies.
  */
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
                             InstructionContainerItem& container);
+
+
+/**
+ * @brief Iterates in non-recursive manner over instruction tree and calls user callback.
+ */
+
+template <typename T>
+void IterateInstruction(T item, std::function<void(T)> func)
+{
+  std::stack<T> stack;
+  stack.push(item);
+
+  while (!stack.empty())
+  {
+    auto item = stack.top();
+    stack.pop();
+
+    func(item);
+
+    auto children = item->GetInstructions();
+    for (auto it = children.rbegin(); it != children.rend(); ++it)
+    {
+      stack.push(*it);
+    }
+  }
+}
 
 }  // namespace sequencergui
 
