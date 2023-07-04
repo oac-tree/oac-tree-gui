@@ -133,7 +133,7 @@ TEST_F(JobHandlerTest, PrepareJobRequestBreakpoints)
   EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
   EXPECT_TRUE(job_handler.IsValid());
 
-  // setting breakpoint
+  // setting breakpoint, pretending that the user has edited expanded procedure
   auto wait_item = expanded_procedure->GetInstructionContainer()->GetInstructions().at(0);
   SetBreakpointStatus(*wait_item, BreakpointStatus::kSet);
 
@@ -145,7 +145,9 @@ TEST_F(JobHandlerTest, PrepareJobRequestBreakpoints)
             expanded_procedure);  // old procedure was regenerated
   EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
 
-  auto new_wait_item = expanded_procedure->GetInstructionContainer()->GetInstructions().at(0);
+  // validating that breakpoints have breen preserved
+  auto new_wait_item =
+      job_handler.GetExpandedProcedure()->GetInstructionContainer()->GetInstructions().at(0);
   EXPECT_NE(wait_item, new_wait_item);
   EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kSet);
 }
