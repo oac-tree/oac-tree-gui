@@ -48,10 +48,12 @@ public:
 
   /**
    * @brief Save breakpoint information in internal cash.
-   * @param procedure_item The procedure to explore for available breakpoints.
    *
-   * @details The method is used to collect an information about all breakpoints over the
-   * intrsuction tree, for later reuse.
+   * @param procedure_item The procedure to explore available breakpoints.
+   *
+   * @details The method is used to collect information about all breakpoints over the
+   * instruction tree. Later, breakpoints can be set to another instruction tree with the same
+   * layout.
    */
   void SaveBreakpoints(const ProcedureItem& procedure_item);
 
@@ -59,22 +61,43 @@ public:
    * @brief Restore breakpoint information from internal cash.
    * @param procedure_item The procedure to restore breakpoints.
    *
-   * @details The method is used to set breakpoints back to instructions in the container. It is
-   * expected, that instructions do not have breakpoints already.
+   * @details The method is used to set breakpoints back to instructions in the container.
+   * Instructions should not have breakpoints already set. It is expected that instruction
+   * tree has the same layout as the original, used to collect breakpoint information.
    */
   void RestoreBreakpoints(ProcedureItem& procedure_item);
 
   /**
    * @brief Sets breakpoints to the runner using breakpoint information from instruction tree.
+   *
    * @param procedure_item Expanded ProcedureItem
    *
-   * @return Returns true if breakpoints have been successfully set (i.e. runner is paused, or not
-   * running).
+   * @return Returns true if breakpoints have been successfully set (i.e., the runner is paused or
+   * not running).
    *
    * @details It is expected that the runner doesn't have any breakpoints set, that it contains
-   * a domain procedure, corresponding to given item.
+   * a domain procedure corresponding to a given item.
    */
-  bool PropagateBreakpointsToDomain(const ProcedureItem& procedure_item, runner_t& runner);
+  bool PropagateBreakpointsToDomain(const ProcedureItem& item, runner_t& runner);
+
+  /**
+   * @brief Updates domain breakpoint to the InstructionItem breakpoint.
+   *
+   * @param item Instruction item
+   * @param runner Runner to use to set breakpoints
+   *
+   * @return Returns true if breakpoints have been successfully set (i.e., the runner is paused or
+   * not running).
+   *
+   * @details We do not use disabled status in the domain. InstructionItem's breakpoint marked as
+   * disabled will remove breakpoint from the domain.
+   */
+  bool UpdateDomainBreakpoint(const InstructionItem& item, runner_t& runner);
+
+  /**
+   * @brief Find domain instruction corresponding to a given item.
+   */
+  instruction_t* FindDomainInstruction(const InstructionItem& item);
 
 private:
   //! callback to retrieve domain instruction corresponding to given InstructionItem

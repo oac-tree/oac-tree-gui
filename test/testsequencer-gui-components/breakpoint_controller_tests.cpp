@@ -19,6 +19,20 @@
 
 #include "sequencergui/operation/breakpoint_controller.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/operation/breakpoint_helper.h>
+
+#include <mvvm/standarditems/container_item.h>
+
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/runner.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -27,7 +41,71 @@ class BreakpointControllerTest : public ::testing::Test
 {
 };
 
-TEST_F(BreakpointControllerTest, InitialState)
+//! Testing FindDomainInstruction method.
+
+TEST_F(BreakpointControllerTest, FindDomainInstruction)
+{
+  WaitItem wait_item;
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+
+  {  // no callback set
+    BreakpointController controller({});
+    EXPECT_THROW(controller.FindDomainInstruction(wait_item), RuntimeException);
+  }
+
+  {  // normal instruction find
+    auto find_instruction = [&wait](const auto& item) { return wait.get(); };
+    BreakpointController controller(find_instruction);
+    EXPECT_EQ(controller.FindDomainInstruction(wait_item), wait.get());
+  }
+}
+
+//! Testing methods to save and restore breakpoint information in the instruction tree of
+//! ProcedureItem.
+
+TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
 {
   BreakpointController controller({});
+
+  {  // saving breakpoint information
+    SequencerModel model;
+    auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+    auto container = procedure->GetInstructionContainer();
+    auto sequence0 = model.InsertItem<SequenceItem>(container);
+    auto sequence1 = model.InsertItem<SequenceItem>(container);
+    auto wait0 = model.InsertItem<WaitItem>(sequence0);
+    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+
+    SetBreakpointStatus(*sequence0, BreakpointStatus::kSet);
+    SetBreakpointStatus(*wait0, BreakpointStatus::kSet);
+    SetBreakpointStatus(*wait1, BreakpointStatus::kDisabled);
+
+    controller.SaveBreakpoints(*procedure);
+  }
+
+  {  // restoring information in parallel hierarchy
+    SequencerModel model;
+    auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+    auto container = procedure->GetInstructionContainer();
+    auto sequence0 = model.InsertItem<SequenceItem>(container);
+    auto sequence1 = model.InsertItem<SequenceItem>(container);
+    auto wait0 = model.InsertItem<WaitItem>(sequence0);
+    auto wait1 = model.InsertItem<WaitItem>(sequence1);
+
+    EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*sequence1), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kNotSet);
+
+    // setting breakpoints
+    controller.RestoreBreakpoints(*procedure);
+
+    // validating breakpoints
+    EXPECT_EQ(GetBreakpointStatus(*sequence0), BreakpointStatus::kSet);
+    EXPECT_EQ(GetBreakpointStatus(*sequence1), BreakpointStatus::kNotSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait0), BreakpointStatus::kSet);
+    EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
+  }
 }

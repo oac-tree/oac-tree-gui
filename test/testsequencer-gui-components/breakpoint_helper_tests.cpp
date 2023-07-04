@@ -166,6 +166,15 @@ TEST_F(BreakpointHelperTest, SetBreakpointFromInfo)
     EXPECT_EQ(GetBreakpointStatus(*wait1), BreakpointStatus::kDisabled);
   }
 
+  {  // it is not possible to set info if it is not part of the model
+    InstructionContainerItem container;
+
+    // sequence without breakpoints
+    auto sequence0 = container.InsertItem<SequenceItem>({});
+
+    EXPECT_THROW(SetBreakpointsFromInfo(info, container), LogicErrorException);
+  }
+
   {  // creating uncomplete hierarchy
     SequencerModel model;
 
