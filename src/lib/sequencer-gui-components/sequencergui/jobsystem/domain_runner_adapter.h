@@ -64,13 +64,14 @@ public:
 
   void StopRequest() override;
 
-  void OnStatusChange(RunnerStatus status) override;
-
   bool SetBreakpoint(const instruction_t* instruction);
 
   bool RemoveBreakpoint(const instruction_t* instruction);
 
   runner_t* GetDomainRunner();
+
+protected:
+  void OnStatusChange(RunnerStatus status) override;
 
 private:
   void RunProcedure(bool in_step_mode);
