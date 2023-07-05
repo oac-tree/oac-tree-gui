@@ -30,9 +30,15 @@
 
 namespace sequencergui
 {
+
 ProcedureReporter::ProcedureReporter(QObject *parent)
-    : QObject(parent), m_observer(std::make_unique<SequencerObserver>(this))
+    : QObject(parent)
+    , m_observer(std::make_unique<SequencerObserver>(this))
+    , m_signal_queue(new SignalQueue(this))
 {
+  //
+  connect(m_signal_queue, &SignalQueue::RunnerStatusChanged, this,
+          &ProcedureReporter::RunnerStatusChanged, Qt::QueuedConnection);
 }
 
 ProcedureReporter::~ProcedureReporter() = default;
@@ -73,7 +79,8 @@ SequencerObserver *ProcedureReporter::GetObserver()
 
 void ProcedureReporter::OnDomainRunnerStatusChanged(RunnerStatus status)
 {
-  emit RunnerStatusChanged(status);
+  // sending via Qt::QueuedConnection since
+  emit m_signal_queue->RunnerStatusChanged(status);
 }
 
 void ProcedureReporter::OnDomainProcedureTick(const procedure_t &procedure)

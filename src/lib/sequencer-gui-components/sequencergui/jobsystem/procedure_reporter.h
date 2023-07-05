@@ -34,6 +34,23 @@ class LogEvent;
 class UserChoiceProvider;
 class UserInputProvider;
 struct UserChoiceResult;
+class SignalQueue;
+
+/**
+ * @brief The SignalQueue helper class is intended to re-send ProcedureReporter signals in queued
+ * manner.
+ */
+
+class SignalQueue : public QObject
+{
+  Q_OBJECT
+
+public:
+  explicit SignalQueue(QObject *parent) : QObject(parent) {}
+
+signals:
+  void RunnerStatusChanged(sequencergui::RunnerStatus status);
+};
 
 //! Reports events happening in the running sequencer procedure to the GUI, handles input requests.
 
@@ -82,7 +99,8 @@ signals:
    *
    * @param status The status of the domain runner adapter.
    *
-   * @details Must be connected with the GUI thread via queued connection.
+   * @details The signal will be emited in already queued manner thanks to SignalQueue. It is safe
+   * to connect to it from the GUI thread using direct connection.
    */
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
 
@@ -90,6 +108,7 @@ private:
   std::unique_ptr<SequencerObserver> m_observer;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
+  SignalQueue* m_signal_queue{nullptr};
 };
 
 }  // namespace sequencergui

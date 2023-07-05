@@ -246,7 +246,7 @@ void JobHandler::SetupProcedureReporter()
   auto on_status_changed = [this](auto status)
   { m_job_item->SetStatus(RunnerStatusToString(status)); };
   connect(m_procedure_reporter.get(), &ProcedureReporter::RunnerStatusChanged, this,
-          on_status_changed, Qt::QueuedConnection);
+          on_status_changed);
 }
 
 //! Setup adapter to run procedures.
