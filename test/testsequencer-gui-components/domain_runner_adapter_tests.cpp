@@ -50,22 +50,14 @@ public:
   using duration_unit = std::chrono::milliseconds;
   using msec = std::chrono::milliseconds;
 
-  std::unique_ptr<runner_t> CreateRunner(procedure_t* procedure)
-  {
-    auto result = std::make_unique<runner_t>(m_observer);
-    procedure->Setup();
-    result->SetProcedure(procedure);
-    return result;
-  }
-
   std::unique_ptr<DomainRunnerAdapter> CreateRunnerAdapter(procedure_t* procedure)
   {
     if (!procedure->Setup())
     {
       throw std::runtime_error("Can't setup procedure");
     }
-    auto result =
-        std::make_unique<DomainRunnerAdapter>(procedure, &m_observer, m_listener.CreateCallback());
+    DomainRunnerContext context{procedure, &m_observer, m_listener.CreateCallback()};
+    auto result = std::make_unique<DomainRunnerAdapter>(context);
 
     return result;
   }

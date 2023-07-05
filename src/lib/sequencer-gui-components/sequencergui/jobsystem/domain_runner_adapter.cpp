@@ -32,14 +32,10 @@
 namespace sequencergui
 {
 
-DomainRunnerAdapter::DomainRunnerAdapter(procedure_t *procedure, userinterface_t *interface,
-                                         std::function<void(RunnerStatus)> status_changed_callback)
-    : m_procedure(procedure)
-    , m_userinterface(interface)
-    , m_status_changed_callback(status_changed_callback)
+DomainRunnerAdapter::DomainRunnerAdapter(const DomainRunnerContext &context) : m_context(context)
 {
-  m_domain_runner = std::make_unique<runner_t>(*m_userinterface);
-  m_domain_runner->SetProcedure(m_procedure);
+  m_domain_runner = std::make_unique<runner_t>(*m_context.user_interface);
+  m_domain_runner->SetProcedure(m_context.procedure);
 
   auto tick_callback = [this](const procedure_t &)
   {
@@ -126,7 +122,7 @@ runner_t *DomainRunnerAdapter::GetDomainRunner()
 
 void DomainRunnerAdapter::OnStatusChange(RunnerStatus status)
 {
-  m_status_changed_callback(status);
+  m_context.runner_status_changed_cb(status);
 }
 
 void DomainRunnerAdapter::RunProcedure(bool in_step_mode)

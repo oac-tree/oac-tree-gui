@@ -259,8 +259,9 @@ void JobHandler::SetupDomainRunnerAdapter()
 {
   auto status_changed = [this](auto) { emit m_procedure_reporter->RunnerStatusChanged(); };
 
-  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(
-      m_domain_procedure.get(), m_procedure_reporter->GetObserver(), status_changed);
+  DomainRunnerContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
+                              status_changed};
+  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(context);
 
   // setup breakpoint
   m_breakpoint_controller->PropagateBreakpointsToDomain(
