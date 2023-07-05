@@ -162,12 +162,6 @@ void JobHandler::onLogEvent(const sequencergui::LogEvent &event)
   m_job_log->Append(event);
 }
 
-void JobHandler::onRunnerStatusChanged()
-{
-  auto status = m_domain_runner_adapter->GetStatus();
-  m_job_item->SetStatus(RunnerStatusToString(status));
-}
-
 JobModel *JobHandler::GetJobModel()
 {
   return dynamic_cast<JobModel *>(m_job_item->GetModel());
@@ -249,15 +243,18 @@ void JobHandler::SetupProcedureReporter()
   connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
           &JobHandler::onLogEvent, Qt::QueuedConnection);
 
+  auto on_status_changed = [this](auto status)
+  { m_job_item->SetStatus(RunnerStatusToString(status)); };
   connect(m_procedure_reporter.get(), &ProcedureReporter::RunnerStatusChanged, this,
-          &JobHandler::onRunnerStatusChanged, Qt::QueuedConnection);
+          on_status_changed, Qt::QueuedConnection);
 }
 
 //! Setup adapter to run procedures.
 
 void JobHandler::SetupDomainRunnerAdapter()
 {
-  auto status_changed = [this](auto) { emit m_procedure_reporter->RunnerStatusChanged(); };
+  auto status_changed = [this](auto status)
+  { emit m_procedure_reporter->RunnerStatusChanged(status); };
 
   DomainRunnerContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
                               status_changed};

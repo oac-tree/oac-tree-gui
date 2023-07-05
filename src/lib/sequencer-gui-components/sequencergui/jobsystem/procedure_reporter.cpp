@@ -19,10 +19,11 @@
 
 #include "procedure_reporter.h"
 
-#include <sequencergui/jobsystem/log_event.h>
-#include <sequencergui/jobsystem/sequencer_observer.h>
-#include <sequencergui/jobsystem/user_choice_provider.h>
-#include <sequencergui/jobsystem/user_input_provider.h>
+#include "log_event.h"
+#include "sequencer_observer.h"
+#include "user_choice_provider.h"
+#include "user_input_provider.h"
+#include "job_utils.h"
 
 namespace sequencergui
 {
@@ -65,6 +66,11 @@ UserChoiceResult ProcedureReporter::OnUserChoice(const UserChoiceArgs &args)
 SequencerObserver *ProcedureReporter::GetObserver()
 {
   return m_observer.get();
+}
+
+void ProcedureReporter::OnDomainRunnerStatusChanged(RunnerStatus status)
+{
+  emit RunnerStatusChanged(status);
 }
 
 }  // namespace sequencergui

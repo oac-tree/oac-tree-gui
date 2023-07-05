@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_PROCEDURE_REPORTER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <QObject>
@@ -56,10 +57,27 @@ public:
 
   SequencerObserver* GetObserver();
 
+  /**
+   * @brief Processes the change of status of the domain runner.
+   *
+   * @param status The status of the domain runner adapter.
+   *
+   * @details Should be called from sequencer thread.
+   */
+  void OnDomainRunnerStatusChanged(RunnerStatus status);
+
 signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
   void LogEventReceived(const sequencergui::LogEvent& event);
-  void RunnerStatusChanged();
+
+  /**
+   * @brief The signal will be emited when domain runner adapter has chainged its status.
+   *
+   * @param status The status of the domain runner adapter.
+   *
+   * @details Must be connected with the GUI thread via queued connection.
+   */
+  void RunnerStatusChanged(sequencergui::RunnerStatus status);
 
 private:
   std::unique_ptr<SequencerObserver> m_observer;

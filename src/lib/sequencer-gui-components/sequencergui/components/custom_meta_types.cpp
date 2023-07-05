@@ -22,6 +22,7 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
+#include <sequencergui/jobsystem/job_types.h>
 
 #include <sup/sequencer/instruction.h>
 
@@ -36,6 +37,7 @@ void RegisterCustomMetaTypes()
   qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
   qRegisterMetaType<sequencergui::JobItem*>("sequencergui::JobItem*");
   qRegisterMetaType<LogEvent>("sequencergui::LogEvent");
+  qRegisterMetaType<sequencergui::RunnerStatus>("sequencergui::RunnerStatus");
 }
 
 }  // namespace sequencergui
