@@ -62,9 +62,16 @@ public:
    *
    * @param status The status of the domain runner adapter.
    *
-   * @details Should be called from sequencer thread.
+   * @details Should be called from the sequencer thread.
    */
   void OnDomainRunnerStatusChanged(RunnerStatus status);
+
+  /**
+   * @brief Process the tick of the domain runner and reports
+   *
+   * @details Should be called from the sequencer thread.
+   */
+  void OnDomainProcedureTick(const procedure_t& procedure);
 
 signals:
   void InstructionStatusChanged(const instruction_t* instruction, const QString& status);

@@ -254,10 +254,13 @@ void JobHandler::SetupProcedureReporter()
 void JobHandler::SetupDomainRunnerAdapter()
 {
   auto status_changed = [this](auto status)
-  { emit m_procedure_reporter->RunnerStatusChanged(status); };
+  { m_procedure_reporter->OnDomainRunnerStatusChanged(status); };
+
+  auto on_tick = [this](const auto &procedure)
+  { m_procedure_reporter->OnDomainProcedureTick(procedure); };
 
   DomainRunnerContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
-                              status_changed};
+                              status_changed, on_tick};
   m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(context);
 
   // setup breakpoint

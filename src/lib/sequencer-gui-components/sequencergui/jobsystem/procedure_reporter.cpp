@@ -23,7 +23,10 @@
 #include "sequencer_observer.h"
 #include "user_choice_provider.h"
 #include "user_input_provider.h"
-#include "job_utils.h"
+
+#include <sup/sequencer/procedure.h>
+
+#include <iostream>
 
 namespace sequencergui
 {
@@ -41,7 +44,7 @@ void ProcedureReporter::SetUserContext(const UserContext &user_context)
 }
 
 void ProcedureReporter::OnInstructionStatusChange(const instruction_t *instruction,
-                                                const std::string &value)
+                                                  const std::string &value)
 {
   emit InstructionStatusChanged(instruction, QString::fromStdString(value));
 }
@@ -71,6 +74,11 @@ SequencerObserver *ProcedureReporter::GetObserver()
 void ProcedureReporter::OnDomainRunnerStatusChanged(RunnerStatus status)
 {
   emit RunnerStatusChanged(status);
+}
+
+void ProcedureReporter::OnDomainProcedureTick(const procedure_t &procedure)
+{
+  std::cout << "tick " << ::sup::sequencer::GetNextLeaves(procedure).size() << std::endl;
 }
 
 }  // namespace sequencergui

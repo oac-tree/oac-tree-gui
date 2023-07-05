@@ -27,6 +27,7 @@
 #include <sup/sequencer/runner.h>
 
 #include <chrono>
+#include <iostream>
 #include <thread>
 
 namespace sequencergui
@@ -37,12 +38,20 @@ DomainRunnerAdapter::DomainRunnerAdapter(const DomainRunnerContext &context) : m
   m_domain_runner = std::make_unique<runner_t>(*m_context.user_interface);
   m_domain_runner->SetProcedure(m_context.procedure);
 
-  auto tick_callback = [this](const procedure_t &)
+  auto tick_callback = [this](const procedure_t &procedure)
   {
     auto is_running = !m_domain_runner->IsFinished();
     if (is_running && m_tick_timeout_ms.load() > 0)
     {
+      std::cout << "AAAA 1.1" << std::endl;
       std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_ms.load()));
+      std::cout << "AAAA 1.2" << std::endl;
+    }
+    if (m_context.m_tick_cb)
+    {
+      std::cout << "AAAA 2.1" << std::endl;
+      m_context.m_tick_cb(procedure);
+      std::cout << "AAAA 2.2" << std::endl;
     }
   };
   m_domain_runner->SetTickCallback(tick_callback);
@@ -83,6 +92,7 @@ void DomainRunnerAdapter::PauseModeOffRequest()
 
 void DomainRunnerAdapter::StepRequest()
 {
+  std::cout << "StepRequest" << std::endl;
   RunProcedure(/*in_step_mode*/ true);
 }
 
@@ -141,6 +151,10 @@ void DomainRunnerAdapter::RunProcedure(bool in_step_mode)
       if (in_step_mode)
       {
         m_domain_runner->ExecuteSingle();
+        if (m_context.m_tick_cb)
+        {
+          m_context.m_tick_cb(*m_context.procedure);
+        }
       }
       else
       {

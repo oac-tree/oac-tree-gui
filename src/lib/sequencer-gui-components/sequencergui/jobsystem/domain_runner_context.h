@@ -42,6 +42,9 @@ struct DomainRunnerContext
 
   //! callback to report when runner has changed status
   std::function<void(RunnerStatus)> runner_status_changed_cb;
+
+  //! callback to report ticks
+  std::function<void(const procedure_t&)> m_tick_cb;
 };
 
 }  // namespace sequencergui
