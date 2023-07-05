@@ -56,7 +56,8 @@ public:
     {
       throw std::runtime_error("Can't setup procedure");
     }
-    DomainRunnerContext context{procedure, &m_observer, m_runner_listener.CreateCallback()};
+    DomainRunnerContext context{procedure, &m_observer, m_runner_listener.CreateCallback(),
+                                m_tick_listener.CreateCallback()};
     auto result = std::make_unique<DomainRunnerAdapter>(context);
 
     return result;
@@ -64,7 +65,7 @@ public:
 
   testutils::MockSequencerObserver m_observer;
   testutils::MockCallbackListener<sequencergui::RunnerStatus> m_runner_listener;
-  testutils::MockCallbackListener<procedure_t> m_procedure_listener;
+  testutils::MockCallbackListener<procedure_t> m_tick_listener;
 };
 
 TEST_F(DomainRunnerAdapterTest, InitialState)
@@ -91,6 +92,7 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
   {  // signaling related to the runner status change
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -125,6 +127,9 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopping));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopped));
+    // tick is here (after runner status was) set because we do not accurate with stopping/stopped
+    // signals
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
   }
 
   {  // observer signaling
@@ -170,6 +175,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleMessage)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -216,6 +222,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoMessages)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(2);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -256,8 +263,10 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -293,8 +302,10 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -337,6 +348,7 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -373,6 +385,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopping));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopped));
@@ -412,6 +425,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopping));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopped));
@@ -455,6 +469,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
   {  // signaling related to the runner status changer
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(2);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
@@ -493,6 +508,9 @@ TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopping));
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kStopped));
+    // tick is here (after runner status was) set because we do not accurate with stopping/stopped
+    // signals
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
   }
 
   EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
@@ -541,6 +559,7 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
   {  // signaling related to the runner status change
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
   }
 
@@ -562,6 +581,7 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
   {  // signaling related to the runner status change
     ::testing::InSequence seq;
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
+    EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(2);
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 

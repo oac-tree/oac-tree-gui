@@ -26,6 +26,7 @@
 
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 namespace sequencergui
 {
