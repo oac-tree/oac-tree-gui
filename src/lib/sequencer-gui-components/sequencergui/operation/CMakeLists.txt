@@ -17,4 +17,6 @@ target_sources(${library_name} PRIVATE
   operation_workspace_panel.h
   procedure_action_handler.cpp
   procedure_action_handler.h
+  realtime_tree_view.cpp
+  realtime_tree_view.h
 )
