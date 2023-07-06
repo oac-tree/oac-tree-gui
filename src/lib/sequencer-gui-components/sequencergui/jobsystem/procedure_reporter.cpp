@@ -79,11 +79,11 @@ SequencerObserver *ProcedureReporter::GetObserver()
   return m_observer.get();
 }
 
-void ProcedureReporter::OnDomainInstructionStatusChange(const instruction_t *instruction)
+void ProcedureReporter::OnDomainInstructionStatusChange(const instruction_t *instruction,
+                                                        const std::string &value)
 {
   // re-sending via Qt::QueuedConnection
-  auto status = ::sup::sequencer::StatusToString(instruction->GetStatus());
-  emit m_signal_queue->DomainInstructionStatusChanged(instruction, QString::fromStdString(status));
+  emit m_signal_queue->DomainInstructionStatusChanged(instruction, QString::fromStdString(value));
 }
 
 void ProcedureReporter::OnDomainRunnerStatusChanged(RunnerStatus status)

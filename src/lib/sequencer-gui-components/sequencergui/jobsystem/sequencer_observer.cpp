@@ -29,6 +29,14 @@
 
 #include <sstream>
 
+namespace
+{
+std::string GetStatus(const instruction_t *instruction)
+{
+  return ::sup::sequencer::StatusToString(instruction->GetStatus());
+}
+}  // namespace
+
 namespace sequencergui
 {
 SequencerObserver::SequencerObserver(ProcedureReporter *procedure_runner)
@@ -40,7 +48,7 @@ SequencerObserver::~SequencerObserver() = default;
 
 void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instruction *instruction)
 {
-  m_procedure_reporter->OnDomainInstructionStatusChange(instruction);
+  m_procedure_reporter->OnDomainInstructionStatusChange(instruction, GetStatus(instruction));
 }
 
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,

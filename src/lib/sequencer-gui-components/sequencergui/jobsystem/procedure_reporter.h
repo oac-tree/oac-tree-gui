@@ -91,7 +91,7 @@ public:
    *
    * @details Should be called from the sequencer thread.
    */
-  void OnDomainInstructionStatusChange(const instruction_t* instruction);
+  void OnDomainInstructionStatusChange(const instruction_t* instruction, const std::string &value);
 
   /**
    * @brief Processes the change of status of the domain runner.
@@ -112,6 +112,13 @@ public:
 signals:
   void LogEventReceived(const sequencergui::LogEvent& event);
 
+  /**
+   * @brief The signal reports InstructionItem which status has changed.
+   *
+   * @details Signal is triggered via sequencer observer. The signal will be emitted in
+   * already queued manner thanks to SignalQueue. It is safe to connect to it from the GUI thread
+   * using a direct connection.
+   */
   void InstructionStatusChanged(sequencergui::InstructionItem*);
 
   /**
@@ -134,6 +141,9 @@ signals:
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
 
 private:
+  /**
+   * @brief Processes domain status change.
+   */
   void ProcessDomainInstructionStatusChange(const instruction_t* instruction, const QString& value);
 
   std::unique_ptr<SequencerObserver> m_observer;

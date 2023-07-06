@@ -19,9 +19,11 @@
 
 #include "sequencergui/jobsystem/procedure_reporter.h"
 
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/transform/gui_object_builder.h>
 
 #include <sup/sequencer/instruction.h>
@@ -38,6 +40,7 @@
 
 Q_DECLARE_METATYPE(sequencergui::RunnerStatus)
 Q_DECLARE_METATYPE(std::vector<sequencergui::InstructionItem*>)
+Q_DECLARE_METATYPE(sequencergui::InstructionItem*)
 
 using namespace sequencergui;
 
@@ -117,4 +120,32 @@ TEST_F(ProcedureReporterTests, OnDomainProcedureTick)
   EXPECT_EQ(arguments.size(), 1);
   auto leaves = arguments.at(0).value<std::vector<InstructionItem*>>();
   EXPECT_EQ(leaves, std::vector<InstructionItem*>({message_item1}));
+}
+
+//! Validating that call to DomainInstructionStatusChange triggers queued connection.
+
+TEST_F(ProcedureReporterTests, OnDomainInstructionStatusChange)
+{
+  WaitItem wait_item;
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  std::map<const instruction_t*, InstructionItem*> instruction_map{{wait.get(), &wait_item}};
+
+  // initialising reporter
+  auto find_instruction_item = [&instruction_map](const auto& instruction)
+  { return instruction_map.at(&instruction); };
+  ProcedureReporter reporter(find_instruction_item);
+
+  reporter.OnDomainInstructionStatusChange(wait.get(), "Success");
+
+  QSignalSpy spy_instruction_status(&reporter, &ProcedureReporter::InstructionStatusChanged);
+
+  auto predicate = [&spy_instruction_status]() { return spy_instruction_status.count() == 1; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
+
+  EXPECT_EQ(wait_item.GetStatus(), "Success");
+
+  QList<QVariant> arguments = spy_instruction_status.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto reported_item = arguments.at(0).value<sequencergui::InstructionItem*>();
+  EXPECT_EQ(reported_item, &wait_item);
 }
