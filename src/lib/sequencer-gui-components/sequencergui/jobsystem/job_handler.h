@@ -84,7 +84,6 @@ signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
 
 private:
-  void onInstructionStatusChange(const instruction_t* instruction, const QString& status);
   void onLogEvent(const sequencergui::LogEvent& event);
 
   JobModel* GetJobModel();

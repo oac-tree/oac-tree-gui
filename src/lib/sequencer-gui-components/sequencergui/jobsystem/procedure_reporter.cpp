@@ -26,6 +26,7 @@
 
 #include <sequencergui/model/instruction_item.h>
 
+#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 
 #include <QDebug>
@@ -40,6 +41,8 @@ ProcedureReporter::ProcedureReporter(get_instruction_item_cb_t callback, QObject
     , m_signal_queue(new SignalQueue(this))
     , m_get_instruction_item(callback)
 {
+  connect(m_signal_queue, &SignalQueue::DomainInstructionStatusChanged, this,
+          &ProcedureReporter::ProcessDomainInstructionStatusChange, Qt::QueuedConnection);
   connect(m_signal_queue, &SignalQueue::NextLeavesChanged, this,
           &ProcedureReporter::NextLeavesChanged, Qt::QueuedConnection);
   connect(m_signal_queue, &SignalQueue::RunnerStatusChanged, this,
@@ -52,12 +55,6 @@ void ProcedureReporter::SetUserContext(const UserContext &user_context)
 {
   m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
   m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
-}
-
-void ProcedureReporter::OnInstructionStatusChange(const instruction_t *instruction,
-                                                  const std::string &value)
-{
-  emit InstructionStatusChanged(instruction, QString::fromStdString(value));
 }
 
 //! Propagate log message from observer up in the form of signals.
@@ -82,9 +79,16 @@ SequencerObserver *ProcedureReporter::GetObserver()
   return m_observer.get();
 }
 
+void ProcedureReporter::OnDomainInstructionStatusChange(const instruction_t *instruction)
+{
+  // re-sending via Qt::QueuedConnection
+  auto status = ::sup::sequencer::StatusToString(instruction->GetStatus());
+  emit m_signal_queue->DomainInstructionStatusChanged(instruction, QString::fromStdString(status));
+}
+
 void ProcedureReporter::OnDomainRunnerStatusChanged(RunnerStatus status)
 {
-  // sending via Qt::QueuedConnection since
+  // re-sending via Qt::QueuedConnection
   emit m_signal_queue->RunnerStatusChanged(status);
 }
 
@@ -106,6 +110,20 @@ void ProcedureReporter::OnDomainProcedureTick(const procedure_t &procedure)
   }
 
   emit m_signal_queue->NextLeavesChanged(items);
+}
+
+void ProcedureReporter::ProcessDomainInstructionStatusChange(const instruction_t *instruction,
+                                                             const QString &value)
+{
+  if (auto *item = m_get_instruction_item(*instruction); item)
+  {
+    item->SetStatus(value.toStdString());
+    emit InstructionStatusChanged(item);
+  }
+  else
+  {
+    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+  }
 }
 
 }  // namespace sequencergui

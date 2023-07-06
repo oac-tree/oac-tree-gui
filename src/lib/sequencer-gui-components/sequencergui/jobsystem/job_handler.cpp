@@ -63,7 +63,7 @@ JobHandler::JobHandler(JobItem *job_item)
   m_procedure_reporter = std::make_unique<ProcedureReporter>(find_instruction_ietm);
 
   connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
-          &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
+          &JobHandler::InstructionStatusChanged);
 
   connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
           &JobHandler::onLogEvent, Qt::QueuedConnection);
@@ -154,20 +154,6 @@ RunnerStatus JobHandler::GetRunnerStatus() const
 JobLog *JobHandler::GetJobLog() const
 {
   return m_job_log;
-}
-
-void JobHandler::onInstructionStatusChange(const instruction_t *instruction, const QString &status)
-{
-  auto instruction_item = m_guiobject_builder->FindInstructionItem(instruction);
-  if (instruction_item)
-  {
-    instruction_item->SetStatus(status.toStdString());
-    emit InstructionStatusChanged(instruction_item);
-  }
-  else
-  {
-    std::cout << "Error in JobManager: can't find InstructionItem" << std::endl;
-  }
 }
 
 void JobHandler::onLogEvent(const sequencergui::LogEvent &event)

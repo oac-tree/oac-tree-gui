@@ -51,11 +51,17 @@ public:
   explicit SignalQueue(QObject* parent) : QObject(parent) {}
 
 signals:
+  void DomainInstructionStatusChanged(const instruction_t* instruction, const QString&);
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
 };
 
-//! Reports events happening in the running sequencer procedure to the GUI, handles input requests.
+/**
+ * @brief The ProcedureReporter class reports event happening in sequencer domain to the GUI and
+ * handles the sequencer user input requests.
+ *
+ * @details It transforms direct calls from the sequencer to queued signals to the GUI thread.
+ */
 
 class ProcedureReporter : public QObject
 {
@@ -69,8 +75,6 @@ public:
 
   void SetUserContext(const UserContext& user_context);
 
-  void OnInstructionStatusChange(const instruction_t* instruction, const std::string& value);
-
   void OnLogEvent(const LogEvent& event);
 
   UserInputResult OnUserInput(const UserInputArgs& args);
@@ -78,6 +82,16 @@ public:
   UserChoiceResult OnUserChoice(const UserChoiceArgs& args);
 
   SequencerObserver* GetObserver();
+
+  /**
+   * @brief Processes the change of status of the domain instruction.
+   *
+   * @param instruction The domain instruction.
+   * @param status The status of the domain runner adapter.
+   *
+   * @details Should be called from the sequencer thread.
+   */
+  void OnDomainInstructionStatusChange(const instruction_t* instruction);
 
   /**
    * @brief Processes the change of status of the domain runner.
@@ -96,8 +110,9 @@ public:
   void OnDomainProcedureTick(const procedure_t& procedure);
 
 signals:
-  void InstructionStatusChanged(const instruction_t* instruction, const QString& status);
   void LogEventReceived(const sequencergui::LogEvent& event);
+
+  void InstructionStatusChanged(sequencergui::InstructionItem*);
 
   /**
    * @brief The signal reports InstructionItem next leaves.
@@ -119,6 +134,8 @@ signals:
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
 
 private:
+  void ProcessDomainInstructionStatusChange(const instruction_t* instruction, const QString& value);
+
   std::unique_ptr<SequencerObserver> m_observer;
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;

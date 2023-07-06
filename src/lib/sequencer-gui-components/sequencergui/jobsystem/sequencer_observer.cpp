@@ -23,19 +23,11 @@
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_reporter.h>
 #include <sequencergui/jobsystem/request_types.h>
-
 #include <sup/gui/model/anyvalue_utils.h>
+
 #include <sup/sequencer/instruction.h>
 
 #include <sstream>
-
-namespace
-{
-std::string GetStatus(const instruction_t *instruction)
-{
-  return ::sup::sequencer::StatusToString(instruction->GetStatus());
-}
-}  // namespace
 
 namespace sequencergui
 {
@@ -48,7 +40,7 @@ SequencerObserver::~SequencerObserver() = default;
 
 void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instruction *instruction)
 {
-  m_procedure_reporter->OnInstructionStatusChange(instruction, GetStatus(instruction));
+  m_procedure_reporter->OnDomainInstructionStatusChange(instruction);
 }
 
 void SequencerObserver::VariableUpdatedImpl(const std::string &name,
