@@ -57,6 +57,19 @@ JobHandler::JobHandler(JobItem *job_item)
   auto find_instruction = [this](const InstructionItem &item)
   { return m_guiobject_builder->FindInstruction(&item); };
   m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
+
+  m_procedure_reporter = std::make_unique<ProcedureReporter>(find_instruction);
+
+  connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
+          &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
+
+  connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
+          &JobHandler::onLogEvent, Qt::QueuedConnection);
+
+  auto on_status_changed = [this](auto status)
+  { m_job_item->SetStatus(RunnerStatusToString(status)); };
+  connect(m_procedure_reporter.get(), &ProcedureReporter::RunnerStatusChanged, this,
+          on_status_changed);
 }
 
 void JobHandler::onPrepareJobRequest()
@@ -73,8 +86,6 @@ void JobHandler::onPrepareJobRequest()
   SetupExpandedProcedureItem();
 
   SetupWorkspaceSynchronizer();
-
-  SetupProcedureReporter();
 
   SetupDomainRunnerAdapter();
 }
@@ -178,7 +189,6 @@ void JobHandler::PrepareForRun()
   }
 
   m_workspace_synchronizer.reset();
-  m_procedure_reporter.reset();
   m_domain_runner_adapter.reset();
 }
 
@@ -229,24 +239,6 @@ void JobHandler::SetupWorkspaceSynchronizer()
     m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
     m_workspace_synchronizer->Start();  // will setup domain Workspace too
   }
-}
-
-//! Setup procedure reporter.
-
-void JobHandler::SetupProcedureReporter()
-{
-  m_procedure_reporter = std::make_unique<ProcedureReporter>();
-
-  connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
-          &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
-
-  connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
-          &JobHandler::onLogEvent, Qt::QueuedConnection);
-
-  auto on_status_changed = [this](auto status)
-  { m_job_item->SetStatus(RunnerStatusToString(status)); };
-  connect(m_procedure_reporter.get(), &ProcedureReporter::RunnerStatusChanged, this,
-          on_status_changed);
 }
 
 //! Setup adapter to run procedures.

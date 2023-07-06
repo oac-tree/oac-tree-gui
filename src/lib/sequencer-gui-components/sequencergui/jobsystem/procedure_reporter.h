@@ -29,12 +29,14 @@
 
 namespace sequencergui
 {
-class SequencerObserver;
+
+class InstructionItem;
 class LogEvent;
+class SequencerObserver;
+class SignalQueue;
 class UserChoiceProvider;
 class UserInputProvider;
 struct UserChoiceResult;
-class SignalQueue;
 
 /**
  * @brief The SignalQueue helper class is intended to re-send ProcedureReporter signals in queued
@@ -46,7 +48,7 @@ class SignalQueue : public QObject
   Q_OBJECT
 
 public:
-  explicit SignalQueue(QObject *parent) : QObject(parent) {}
+  explicit SignalQueue(QObject* parent) : QObject(parent) {}
 
 signals:
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
@@ -59,7 +61,9 @@ class ProcedureReporter : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureReporter(QObject* parent = nullptr);
+  using get_instruction_t = std::function<const instruction_t*(const InstructionItem&)>;
+
+  explicit ProcedureReporter(get_instruction_t callback, QObject* parent = nullptr);
   ~ProcedureReporter() override;
 
   void SetUserContext(const UserContext& user_context);
@@ -109,6 +113,9 @@ private:
   std::unique_ptr<UserChoiceProvider> m_choice_provider;
   std::unique_ptr<UserInputProvider> m_input_provider;
   SignalQueue* m_signal_queue{nullptr};
+
+  //! callback to retrieve domain instruction corresponding to given InstructionItem
+  get_instruction_t m_get_domain_instruction;
 };
 
 }  // namespace sequencergui

@@ -31,10 +31,11 @@
 namespace sequencergui
 {
 
-ProcedureReporter::ProcedureReporter(QObject *parent)
+ProcedureReporter::ProcedureReporter(get_instruction_t callback, QObject *parent)
     : QObject(parent)
     , m_observer(std::make_unique<SequencerObserver>(this))
     , m_signal_queue(new SignalQueue(this))
+    , m_get_domain_instruction(callback)
 {
   //
   connect(m_signal_queue, &SignalQueue::RunnerStatusChanged, this,

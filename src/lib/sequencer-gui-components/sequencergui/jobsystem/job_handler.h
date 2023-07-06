@@ -93,7 +93,6 @@ private:
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
   void SetupWorkspaceSynchronizer();
-  void SetupProcedureReporter();
   void SetupDomainRunnerAdapter();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
