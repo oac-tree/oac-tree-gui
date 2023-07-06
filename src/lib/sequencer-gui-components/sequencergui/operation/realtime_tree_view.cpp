@@ -19,10 +19,105 @@
 
 #include "realtime_tree_view.h"
 
+#include <QDebug>
+#include <QEvent>
+#include <QFontMetrics>
+#include <QHeaderView>
+#include <QPainter>
+#include <QScrollBar>
+
 namespace sequencergui
 {
 
-RealTimeTreeView::RealTimeTreeView(QWidget *parent) : QTreeView(parent) {}
+RealTimeTreeView::RealTimeTreeView(QWidget *parent) : QTreeView(parent)
+{
+  m_left_margin = fontMetrics().height();
+
+  connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
+          &RealTimeTreeView::updateLeftMargin);
+  connect(this, &RealTimeTreeView::expanded, this, &RealTimeTreeView::updateLeftMargin);
+  connect(this, &RealTimeTreeView::collapsed, this, &RealTimeTreeView::updateLeftMargin);
+}
+
+void RealTimeTreeView::setModel(QAbstractItemModel *new_model)
+{
+  if (model() == new_model)
+  {
+    return;
+  }
+
+  if (model())
+  {
+    disconnect(model(), &QAbstractItemModel::dataChanged, this,
+               &RealTimeTreeView::updateLeftMargin);
+  }
+
+  QTreeView::setModel(new_model);
+
+  if (model())
+  {
+    connect(model(), &QAbstractItemModel::dataChanged, this, &RealTimeTreeView::updateLeftMargin);
+  }
+}
+
+void RealTimeTreeView::updateGeometries()
+{
+  QTreeView::updateGeometries();
+  auto margins = viewportMargins();
+  if (margins.left() < m_left_margin)
+  {
+    margins.setLeft(margins.left() + m_left_margin);
+    setViewportMargins(margins);
+  }
+}
+
+void RealTimeTreeView::paintEvent(QPaintEvent *event)
+{
+  QTreeView::paintEvent(event);
+
+  auto pos = QPoint();
+  auto index = indexAt(pos);
+  QPainter qp(viewport());
+  auto border = frameWidth();
+  auto bottom = height() - border * 2;
+  qp.setClipRect(QRect(border, border, m_left_margin, bottom));
+  double top = 0.5;
+  if (header()->isVisible())
+  {
+    top += header()->height();
+  }
+  qp.translate(0.5, top);
+  qp.setBrush(Qt::red);
+  qp.setPen(Qt::red);
+  qp.setRenderHints(QPainter::Antialiasing);
+  int deltaY = m_left_margin / 2 - border;
+  auto circle = QRect(border + 1, 0, m_left_margin - 2, m_left_margin - 2);
+  int row = 0;
+
+  while (index.isValid())
+  {
+    qDebug() << "1.1";
+    auto rect = visualRect(index);
+    if (true)  // breakpoint role
+    {
+      qDebug() << "1.2";
+      circle.moveTop(rect.center().y() - deltaY);
+      qp.drawEllipse(circle);
+    }
+    row += 1;
+    pos.setY(rect.bottom() + 2);
+    if (pos.y() > bottom)
+    {
+      break;
+    }
+    index = indexAt(pos);
+  }
+}
+
+void RealTimeTreeView::updateLeftMargin()
+{
+  QWidget::update(QRect(0, 0, m_left_margin + frameWidth(), height()));
+}
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 

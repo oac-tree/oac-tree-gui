@@ -35,12 +35,23 @@ class RealTimeTreeView : public QTreeView
 public:
   explicit RealTimeTreeView(QWidget *parent = nullptr);
 
+  void setModel(QAbstractItemModel *new_model) override;
+
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-  QStyleOptionViewItem viewOptions() const;
+  QStyleOptionViewItem viewOptions() const override;
 #else
-  void initViewItemOption(QStyleOptionViewItem *option) const;
+  void initViewItemOption(QStyleOptionViewItem *option) const override;
 #endif
+
+protected:
+  void updateGeometries() override;
+  void paintEvent(QPaintEvent *event) override;
+
+private:
+  void updateLeftMargin();
+
+  int m_left_margin{14};
 };
 
 }  // namespace sequencergui
