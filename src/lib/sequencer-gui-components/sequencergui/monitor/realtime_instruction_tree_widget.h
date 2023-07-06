@@ -23,8 +23,6 @@
 #include <QWidget>
 #include <memory>
 
-class QTreeView;
-
 namespace mvvm
 {
 class ItemViewComponentProvider;
@@ -40,6 +38,7 @@ namespace sequencergui
 
 class ProcedureItem;
 class InstructionItem;
+class RealTimeTreeView;
 
 //! Widget with expanded instruction tree for realtime job execution.
 //! Located at the central panel of SequencerMonitorView.
@@ -66,7 +65,7 @@ private:
   void WriteSettings();
   void AdjustTreeAppearance();
 
-  QTreeView* m_tree_view{nullptr};
+  RealTimeTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
 };

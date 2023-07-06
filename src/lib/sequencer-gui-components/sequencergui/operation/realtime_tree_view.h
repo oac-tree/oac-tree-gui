@@ -34,6 +34,13 @@ class RealTimeTreeView : public QTreeView
   Q_OBJECT
 public:
   explicit RealTimeTreeView(QWidget *parent = nullptr);
+
+protected:
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  QStyleOptionViewItem viewOptions() const;
+#else
+  void initViewItemOption(QStyleOptionViewItem *option) const;
+#endif
 };
 
 }  // namespace sequencergui

@@ -24,4 +24,22 @@ namespace sequencergui
 
 RealTimeTreeView::RealTimeTreeView(QWidget *parent) : QTreeView(parent) {}
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+
+QStyleOptionViewItem RealTimeTreeView::viewOptions() const
+{
+  auto options = QTreeView::viewOptions();
+  options.decorationAlignment = Qt::AlignHCenter | Qt::AlignCenter;
+  options.decorationPosition = QStyleOptionViewItem::Top;
+  return options;
+}
+
+#else
+void RealTimeTreeView::initViewItemOption(QStyleOptionViewItem *option) const
+{
+  options->decorationAlignment = Qt::AlignHCenter | Qt::AlignCenter;
+  options->decorationPosition = QStyleOptionViewItem::Top;
+}
+#endif
+
 }  // namespace sequencergui
