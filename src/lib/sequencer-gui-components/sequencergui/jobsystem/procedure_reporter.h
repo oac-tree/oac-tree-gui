@@ -51,6 +51,7 @@ public:
   explicit SignalQueue(QObject* parent) : QObject(parent) {}
 
 signals:
+  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
 };
 
@@ -61,9 +62,9 @@ class ProcedureReporter : public QObject
   Q_OBJECT
 
 public:
-  using get_instruction_t = std::function<const instruction_t*(const InstructionItem&)>;
+  using get_instruction_item_cb_t = std::function<InstructionItem*(const instruction_t&)>;
 
-  explicit ProcedureReporter(get_instruction_t callback, QObject* parent = nullptr);
+  explicit ProcedureReporter(get_instruction_item_cb_t callback, QObject* parent = nullptr);
   ~ProcedureReporter() override;
 
   void SetUserContext(const UserContext& user_context);
@@ -88,7 +89,7 @@ public:
   void OnDomainRunnerStatusChanged(RunnerStatus status);
 
   /**
-   * @brief Process the tick of the domain runner and reports
+   * @brief Process the tick of the domain runner and reports next instruction leaves.
    *
    * @details Should be called from the sequencer thread.
    */
@@ -99,12 +100,21 @@ signals:
   void LogEventReceived(const sequencergui::LogEvent& event);
 
   /**
+   * @brief The signal reports InstructionItem next leaves.
+   *
+   * @details Signal is triggered via the runner's tick callback. The signal will be emitted in
+   * already queued manner thanks to SignalQueue. It is safe to connect to it from the GUI thread
+   * using a direct connection.
+   */
+  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
+
+  /**
    * @brief The signal will be emited when domain runner adapter has chainged its status.
    *
    * @param status The status of the domain runner adapter.
    *
-   * @details The signal will be emited in already queued manner thanks to SignalQueue. It is safe
-   * to connect to it from the GUI thread using direct connection.
+   * @details The signal will be emitted in already queued manner thanks to SignalQueue. It is safe
+   * to connect to it from the GUI thread using a direct connection.
    */
   void RunnerStatusChanged(sequencergui::RunnerStatus status);
 
@@ -114,8 +124,8 @@ private:
   std::unique_ptr<UserInputProvider> m_input_provider;
   SignalQueue* m_signal_queue{nullptr};
 
-  //! callback to retrieve domain instruction corresponding to given InstructionItem
-  get_instruction_t m_get_domain_instruction;
+  //! callback to retrieve instruction item corresponding to given domain instruction
+  get_instruction_item_cb_t m_get_instruction_item;
 };
 
 }  // namespace sequencergui

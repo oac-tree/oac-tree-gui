@@ -20,9 +20,9 @@
 #include "custom_meta_types.h"
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
-#include <sequencergui/jobsystem/job_types.h>
 
 #include <sup/sequencer/instruction.h>
 
@@ -31,6 +31,8 @@ namespace sequencergui
 void RegisterCustomMetaTypes()
 {
   qRegisterMetaType<sequencergui::InstructionItem*>("sequencergui::InstructionItem*");
+  qRegisterMetaType<std::vector<sequencergui::InstructionItem*>>(
+      "std::vector<sequencergui::InstructionItem*>");
   qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");
   qRegisterMetaType<instruction_t*>("instruction_t*");
   qRegisterMetaType<instruction_t*>("instruction_t*");

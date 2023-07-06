@@ -58,7 +58,9 @@ JobHandler::JobHandler(JobItem *job_item)
   { return m_guiobject_builder->FindInstruction(&item); };
   m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
 
-  m_procedure_reporter = std::make_unique<ProcedureReporter>(find_instruction);
+  auto find_instruction_ietm = [this](const instruction_t &instruction)
+  { return m_guiobject_builder->FindInstructionItem(&instruction); };
+  m_procedure_reporter = std::make_unique<ProcedureReporter>(find_instruction_ietm);
 
   connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
           &JobHandler::onInstructionStatusChange, Qt::QueuedConnection);
