@@ -20,6 +20,7 @@
 #include "breakpoint_presentation_item.h"
 
 #include <mvvm/model/sessionitem.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QPainter>
 #include <QPixmap>
@@ -27,15 +28,17 @@
 namespace
 {
 
-QPixmap CreateBreakpointSetPixmap()
+QPixmap CreateBreakpointPixmap(QColor fill_color)
 {
-  QPixmap pixmap(20, 20);
-  pixmap.fill(Qt::red);
-
+  const auto x_size = mvvm::utils::UnitSize();
+  QPixmap pixmap(x_size * 1.0, x_size * 1.0);
+  pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
-  painter.setPen(Qt::black);
+  painter.setRenderHint(QPainter::Antialiasing);
+  painter.setPen(QColor("#df5050"));
+  painter.setBrush(QBrush(fill_color));
 
-  painter.drawRect(10, 10, 20, 20);
+  painter.drawEllipse(QRectF(0.1, 0.1, x_size * 0.8, x_size * 0.8));
   return pixmap;
 }
 
@@ -51,9 +54,12 @@ BreakpointPresentationItem::BreakpointPresentationItem(mvvm::SessionItem *item)
 
 QVariant BreakpointPresentationItem::Data(int qt_role) const
 {
+  static const QPixmap pixmap_set = CreateBreakpointPixmap("#df5050");
+  static const QPixmap pixmap_disabled = CreateBreakpointPixmap("#ecd0d1");
+
   if (qt_role == Qt::DecorationRole)
   {
-    return CreateBreakpointSetPixmap();
+    return pixmap_disabled;
   }
 
   return QVariant();
