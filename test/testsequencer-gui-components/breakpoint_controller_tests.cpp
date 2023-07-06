@@ -37,22 +37,13 @@
 #include <sup/sequencer/user_interface.h>
 
 #include <gtest/gtest.h>
+#include <testutils/mock_sequencer_observer.h>
 #include <testutils/standard_procedures.h>
 
 using namespace sequencergui;
 
 class BreakpointControllerTest : public ::testing::Test
 {
-public:
-  class EmptyUserInterface : public sup::sequencer::UserInterface
-  {
-  private:
-    void UpdateInstructionStatusImpl(const sup::sequencer::Instruction* instruction) override {}
-
-  public:
-    EmptyUserInterface() = default;
-    ~EmptyUserInterface() = default;
-  };
 };
 
 //! Testing FindDomainInstruction method.
@@ -128,7 +119,7 @@ TEST_F(BreakpointControllerTest, SaveAndRestoreBreakpoints)
 
 TEST_F(BreakpointControllerTest, UpdateDomainBreakpoint)
 {
-  EmptyUserInterface empty_ui;
+  testutils::EmptyUserInterface empty_ui;
   sup::sequencer::Runner runner(empty_ui);
 
   // building domain and GUI procedures
@@ -169,7 +160,7 @@ TEST_F(BreakpointControllerTest, UpdateDomainBreakpoint)
 
 TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
 {
-  EmptyUserInterface empty_ui;
+  testutils::EmptyUserInterface empty_ui;
   sup::sequencer::Runner runner(empty_ui);
 
   // building domain and GUI procedures

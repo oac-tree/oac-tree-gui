@@ -54,6 +54,16 @@ public:
   MOCK_METHOD(void, LogImpl, (int level, const std::string& str), (override));
 };
 
+class EmptyUserInterface : public sup::sequencer::UserInterface
+{
+private:
+  void UpdateInstructionStatusImpl(const sup::sequencer::Instruction* instruction) override {}
+
+public:
+  EmptyUserInterface() = default;
+  ~EmptyUserInterface() = default;
+};
+
 }  // namespace testutils
 
 #endif  // LIBTEST_UTILS_TESTUTILS_MOCK_SEQUENCER_OBSERVER_H_
