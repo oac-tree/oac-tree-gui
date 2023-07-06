@@ -190,7 +190,13 @@ UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
 {
-  emit NextLeavesChanged(leaves);
+  auto sending_job_handler = qobject_cast<JobHandler *>(sender());
+
+  // we do not want to send selection request for invisible job
+  if (sending_job_handler == GetCurrentJobHandler())
+  {
+    emit NextLeavesChanged(leaves);
+  }
 }
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
