@@ -124,9 +124,9 @@ void SequencerMonitorView::SetupConnections()
   connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
           &JobManager::OnChangeDelayRequest);
 
-  // instruction selection request from JobManager to MonitorRealTimeWidget
-  connect(m_job_manager, &JobManager::InstructionStatusChanged, m_realtime_panel,
-          &OperationRealTimePanel::SetSelectedInstruction);
+  // instruction next leave request from JobManager to MonitorRealTimeWidget
+  connect(m_job_manager, &JobManager::NextLeavesChanged, m_realtime_panel,
+          &OperationRealTimePanel::SetSelectedInstructions);
 
   // job selection request from MonitorPanel
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);

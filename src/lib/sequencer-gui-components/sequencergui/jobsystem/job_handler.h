@@ -82,6 +82,7 @@ public:
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
+  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
 private:
   void onLogEvent(const sequencergui::LogEvent& event);

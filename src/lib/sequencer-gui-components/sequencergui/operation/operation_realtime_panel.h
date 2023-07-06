@@ -52,6 +52,8 @@ public:
 
   void SetSelectedInstruction(InstructionItem* item);
 
+  void SetSelectedInstructions(std::vector<InstructionItem*> items);
+
   MessagePanel* GetMessagePanel();
 
   QToolBar* GetToolBar() const;

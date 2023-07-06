@@ -65,6 +65,9 @@ JobHandler::JobHandler(JobItem *job_item)
   connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
           &JobHandler::InstructionStatusChanged);
 
+  connect(m_procedure_reporter.get(), &ProcedureReporter::NextLeavesChanged, this,
+          &JobHandler::NextLeavesChanged);
+
   connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
           &JobHandler::onLogEvent, Qt::QueuedConnection);
 

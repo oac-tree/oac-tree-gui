@@ -77,8 +77,11 @@ public:
 
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
+  void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
 private:
+  void OnNextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
+
   std::unique_ptr<JobHandler> CreateJobHandler(JobItem* item);
 
   JobItem* m_current_job{nullptr};

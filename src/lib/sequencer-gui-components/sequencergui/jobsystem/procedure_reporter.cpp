@@ -94,8 +94,6 @@ void ProcedureReporter::OnDomainRunnerStatusChanged(RunnerStatus status)
 
 void ProcedureReporter::OnDomainProcedureTick(const procedure_t &procedure)
 {
-  std::cout << "tick " << ::sup::sequencer::GetNextLeaves(procedure).size() << std::endl;
-
   std::vector<InstructionItem *> items;
   for (const auto *instruction : sup::sequencer::GetNextLeaves(procedure))
   {

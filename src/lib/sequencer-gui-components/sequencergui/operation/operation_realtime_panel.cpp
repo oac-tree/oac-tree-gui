@@ -67,6 +67,11 @@ void OperationRealTimePanel::SetSelectedInstruction(InstructionItem *item)
   m_realtime_instruction_tree->SetSelectedInstruction(item);
 }
 
+void OperationRealTimePanel::SetSelectedInstructions(std::vector<InstructionItem *> items)
+{
+  m_realtime_instruction_tree->SetSelectedInstructions(items);
+}
+
 MessagePanel *OperationRealTimePanel::GetMessagePanel()
 {
   return m_message_panel;

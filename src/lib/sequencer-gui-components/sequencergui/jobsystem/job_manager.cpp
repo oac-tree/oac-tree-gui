@@ -27,12 +27,12 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/monitor/message_panel.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <QMainWindow>
 
@@ -188,6 +188,11 @@ UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
   return GetUserChoiceDialogResult(args);
 }
 
+void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
+{
+  emit NextLeavesChanged(leaves);
+}
+
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
   auto on_user_input = [this](const auto &args) { return OnUserInputRequest(args); };
@@ -197,6 +202,8 @@ std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
   auto job_handler = std::make_unique<JobHandler>(item);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
+  connect(job_handler.get(), &JobHandler::NextLeavesChanged, this,
+          &JobManager::OnNextLeavesChanged);
 
   job_handler->onPrepareJobRequest();
   // FIXME two calls below must be after onPrepareJobRequest

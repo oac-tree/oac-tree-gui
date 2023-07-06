@@ -56,6 +56,8 @@ public:
 
   void SetSelectedInstruction(InstructionItem* item);
 
+  void SetSelectedInstructions(std::vector<InstructionItem*> items);
+
 signals:
   void InstructionClicked(sequencergui::InstructionItem* instruction);
 

@@ -24,11 +24,10 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
-
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QTreeView>
@@ -99,6 +98,11 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
 {
   m_component_provider->SetSelectedItem(item);
+}
+
+void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
+{
+  m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(items));
 }
 
 void RealTimeInstructionTreeWidget::ReadSettings()
