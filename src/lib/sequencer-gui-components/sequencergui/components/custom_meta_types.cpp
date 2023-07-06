@@ -35,7 +35,6 @@ void RegisterCustomMetaTypes()
       "std::vector<sequencergui::InstructionItem*>");
   qRegisterMetaType<const sequencergui::InstructionItem*>("const sequencergui::InstructionItem*");
   qRegisterMetaType<instruction_t*>("instruction_t*");
-  qRegisterMetaType<instruction_t*>("instruction_t*");
   qRegisterMetaType<const instruction_t*>("const instruction_t*");
   qRegisterMetaType<mvvm::SessionItem*>("mvvm::SessionItem*");
   qRegisterMetaType<sequencergui::JobItem*>("sequencergui::JobItem*");
