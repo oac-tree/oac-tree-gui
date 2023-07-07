@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_REALTIME_TREE_VIEW_H_
+#ifndef SEQUENCERGUI_OPERATION_EXPERIMENTAL_BREAKPOINT_TREE_VIEW_H_
 #define SEQUENCERGUI_OPERATION_REALTIME_TREE_VIEW_H_
 
 #include <QTreeView>
@@ -29,11 +29,11 @@ namespace sequencergui
  * @brief The RealTimeTreeView class is a QTreeView which is styled to show breakpoints.
  */
 
-class RealTimeTreeView : public QTreeView
+class ExperimentalBreakpointTreeView : public QTreeView
 {
   Q_OBJECT
 public:
-  explicit RealTimeTreeView(QWidget *parent = nullptr);
+  explicit ExperimentalBreakpointTreeView(QWidget *parent = nullptr);
 
   void setModel(QAbstractItemModel *new_model) override;
 

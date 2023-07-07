@@ -29,17 +29,17 @@
 namespace sequencergui
 {
 
-RealTimeTreeView::RealTimeTreeView(QWidget *parent) : QTreeView(parent)
+ExperimentalBreakpointTreeView::ExperimentalBreakpointTreeView(QWidget *parent) : QTreeView(parent)
 {
   m_left_margin = fontMetrics().height();
 
   connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
-          &RealTimeTreeView::updateLeftMargin);
-  connect(this, &RealTimeTreeView::expanded, this, &RealTimeTreeView::updateLeftMargin);
-  connect(this, &RealTimeTreeView::collapsed, this, &RealTimeTreeView::updateLeftMargin);
+          &ExperimentalBreakpointTreeView::updateLeftMargin);
+  connect(this, &ExperimentalBreakpointTreeView::expanded, this, &ExperimentalBreakpointTreeView::updateLeftMargin);
+  connect(this, &ExperimentalBreakpointTreeView::collapsed, this, &ExperimentalBreakpointTreeView::updateLeftMargin);
 }
 
-void RealTimeTreeView::setModel(QAbstractItemModel *new_model)
+void ExperimentalBreakpointTreeView::setModel(QAbstractItemModel *new_model)
 {
   if (model() == new_model)
   {
@@ -49,18 +49,18 @@ void RealTimeTreeView::setModel(QAbstractItemModel *new_model)
   if (model())
   {
     disconnect(model(), &QAbstractItemModel::dataChanged, this,
-               &RealTimeTreeView::updateLeftMargin);
+               &ExperimentalBreakpointTreeView::updateLeftMargin);
   }
 
   QTreeView::setModel(new_model);
 
   if (model())
   {
-    connect(model(), &QAbstractItemModel::dataChanged, this, &RealTimeTreeView::updateLeftMargin);
+    connect(model(), &QAbstractItemModel::dataChanged, this, &ExperimentalBreakpointTreeView::updateLeftMargin);
   }
 }
 
-void RealTimeTreeView::updateGeometries()
+void ExperimentalBreakpointTreeView::updateGeometries()
 {
   QTreeView::updateGeometries();
   auto margins = viewportMargins();
@@ -71,7 +71,7 @@ void RealTimeTreeView::updateGeometries()
   }
 }
 
-void RealTimeTreeView::paintEvent(QPaintEvent *event)
+void ExperimentalBreakpointTreeView::paintEvent(QPaintEvent *event)
 {
   QTreeView::paintEvent(event);
 
@@ -114,14 +114,14 @@ void RealTimeTreeView::paintEvent(QPaintEvent *event)
   }
 }
 
-void RealTimeTreeView::updateLeftMargin()
+void ExperimentalBreakpointTreeView::updateLeftMargin()
 {
   QWidget::update(QRect(0, 0, m_left_margin + frameWidth(), height()));
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 
-QStyleOptionViewItem RealTimeTreeView::viewOptions() const
+QStyleOptionViewItem ExperimentalBreakpointTreeView::viewOptions() const
 {
   auto options = QTreeView::viewOptions();
   options.decorationAlignment = Qt::AlignHCenter | Qt::AlignCenter;
