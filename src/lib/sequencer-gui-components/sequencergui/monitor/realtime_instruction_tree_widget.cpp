@@ -22,12 +22,14 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/operation/breakpoint_model_delegate.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
+
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QTreeView>
@@ -57,6 +59,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_tree_view))
     , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_delegate(std::make_unique<BreakpointModelDelegate>())
 {
   setWindowTitle("InstructionTree");
 
@@ -89,7 +92,9 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
                                                : nullptr);
-  if (procedure_item)
+  m_tree_view->setItemDelegate(m_delegate.get());
+
+      if (procedure_item)
   {
     AdjustTreeAppearance();
   }

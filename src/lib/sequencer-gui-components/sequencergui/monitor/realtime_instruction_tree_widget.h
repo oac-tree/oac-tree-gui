@@ -40,6 +40,7 @@ namespace sequencergui
 
 class ProcedureItem;
 class InstructionItem;
+class BreakpointModelDelegate;
 
 //! Widget with expanded instruction tree for realtime job execution.
 //! Located at the central panel of SequencerMonitorView.
@@ -69,6 +70,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  std::unique_ptr<BreakpointModelDelegate> m_delegate;
 };
 
 }  // namespace sequencergui
