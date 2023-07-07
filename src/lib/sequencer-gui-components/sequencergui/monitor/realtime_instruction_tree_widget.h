@@ -66,6 +66,7 @@ private:
   void ReadSettings();
   void WriteSettings();
   void AdjustTreeAppearance();
+  void OnTreeDoubleClick(const QModelIndex& index);
 
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;

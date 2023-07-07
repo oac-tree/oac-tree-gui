@@ -124,7 +124,10 @@ void InstructionItem::RegisterCommonProperties()
       ->SetEditable(false);
   AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X")->SetVisible(false);
   AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y")->SetVisible(false);
-  AddProperty(itemconstants::kBreakpoint, 0)->SetDisplayName("breakpoint")->SetVisible(false);
+  AddProperty(itemconstants::kBreakpoint, 0)
+      ->SetDisplayName("breakpoint")
+      ->SetEditable(false)
+      ->SetVisible(false);
 }
 
 }  // namespace sequencergui

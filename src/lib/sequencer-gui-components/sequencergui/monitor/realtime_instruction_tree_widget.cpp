@@ -22,6 +22,7 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/operation/breakpoint_helper.h>
 #include <sequencergui/operation/breakpoint_model_delegate.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
@@ -31,6 +32,7 @@
 
 #include <sup/gui/widgets/custom_header_view.h>
 
+#include <QDebug>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -78,6 +80,10 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   };
   connect(m_tree_view, &QTreeView::clicked, this, on_click);
 
+  connect(m_tree_view, &QTreeView::doubleClicked, this,
+          &RealTimeInstructionTreeWidget::OnTreeDoubleClick);
+  //          [this](auto index) { OnTreeDoubleClick(index); });
+
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 
   ReadSettings();
@@ -94,7 +100,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
                                                : nullptr);
   m_tree_view->setItemDelegate(m_delegate.get());
 
-      if (procedure_item)
+  if (procedure_item)
   {
     AdjustTreeAppearance();
   }
@@ -140,6 +146,21 @@ void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
   }
   m_tree_view->expandAll();
   static const bool adjust_columns_once = FixColumnAppearance(m_tree_view);
+}
+
+void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
+{
+  if (index.column() == 3)
+  {
+    auto instruction = m_component_provider->GetSelected<InstructionItem>();
+    auto status1 = GetBreakpointStatus(*instruction);
+    qDebug() << "1.1 " << index << " " << static_cast<int>(status1);
+    ToggleBreakpointStatus(*instruction);
+    auto status2 = GetBreakpointStatus(*instruction);
+    qDebug() << "1.2 " << index << " " << static_cast<int>(status2);
+
+    //    if (status == BreakpointStatus::)
+  }
 }
 
 }  // namespace sequencergui

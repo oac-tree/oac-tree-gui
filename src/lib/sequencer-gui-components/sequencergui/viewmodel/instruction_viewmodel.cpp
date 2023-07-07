@@ -66,7 +66,7 @@ public:
     {
       result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
-      result.emplace_back(CreateBreakpointViewItem(GetBreakpointItem(*instruction)));
+      result.emplace_back(CreateDataViewItem(GetBreakpointItem(*instruction)));
     }
     return result;
   }

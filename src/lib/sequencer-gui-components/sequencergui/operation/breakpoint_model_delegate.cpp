@@ -62,6 +62,7 @@ void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     }
 
     BreakpointStatus status = static_cast<BreakpointStatus>(index.data().toInt());
+    qDebug() << "aaa" << index.data().toInt();
     if (status == BreakpointStatus::kSet)
     {
       PaintBreakpoint(painter, option.rect, kColorSet);
