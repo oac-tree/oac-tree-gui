@@ -23,18 +23,18 @@
 
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QPainter>
 
 namespace
 {
-const QColor kColorSet("#df5050");
-const QColor kColorDisabled("#ecd0d1");
+const QColor kBreakpointPenColor("#df5050");
+const QColor kBreakpointSetColor("#df5050");
+const QColor kBreakpointDisabledColor("#ecd0d1");
 
 void PaintBreakpoint(QPainter *painter, const QRect &rect, const QColor &base_color)
 {
   painter->setRenderHint(QPainter::Antialiasing);
-  painter->setPen(kColorSet);
+  painter->setPen(kBreakpointPenColor);
   painter->setBrush(QBrush(base_color));
 
   const auto x_size = mvvm::utils::UnitSize() * 0.8;
@@ -58,18 +58,18 @@ void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewIte
   {
     if (option.state & QStyle::State_Selected)
     {
+      // to highlight background when the whole row is selected
       painter->fillRect(option.rect, option.palette.highlight());
     }
 
     BreakpointStatus status = static_cast<BreakpointStatus>(index.data().toInt());
-    qDebug() << "aaa" << index.data().toInt();
     if (status == BreakpointStatus::kSet)
     {
-      PaintBreakpoint(painter, option.rect, kColorSet);
+      PaintBreakpoint(painter, option.rect, kBreakpointSetColor);
     }
     else if (status == BreakpointStatus::kDisabled)
     {
-      PaintBreakpoint(painter, option.rect, kColorDisabled);
+      PaintBreakpoint(painter, option.rect, kBreakpointDisabledColor);
     }
   }
   else

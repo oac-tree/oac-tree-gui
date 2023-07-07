@@ -1,8 +1,6 @@
 # Collection of view models.
 
 target_sources(${library_name} PRIVATE
-  breakpoint_presentation_item.cpp
-  breakpoint_presentation_item.h
   instruction_viewmodel.cpp
   instruction_viewmodel.h
   job_list_viewmodel.cpp

@@ -25,16 +25,19 @@
 namespace sequencergui
 {
 
+/**
+ * @brief The BreakpointModelDelegate class is a delagate for InstructionViewModel with the task to
+ * paint breakpoints in a 3rd row.
+ */
 class BreakpointModelDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
 
 public:
-  explicit BreakpointModelDelegate(QObject* parent = nullptr);
+  explicit BreakpointModelDelegate(QObject *parent = nullptr);
 
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
              const QModelIndex &index) const override;
-
 };
 
 }  // namespace sequencergui

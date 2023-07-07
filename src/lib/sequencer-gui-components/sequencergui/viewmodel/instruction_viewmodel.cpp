@@ -19,25 +19,14 @@
 
 #include "instruction_viewmodel.h"
 
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/viewmodel/breakpoint_presentation_item.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/interfaces/row_strategy_interface.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
-
-namespace
-{
-std::unique_ptr<mvvm::ViewItem> CreateBreakpointViewItem(mvvm::SessionItem *item)
-{
-  auto presentation = std::make_unique<sequencergui::BreakpointPresentationItem>(item);
-  return std::make_unique<mvvm::ViewItem>(std::move(presentation));
-}
-}  // namespace
 
 namespace sequencergui
 {
@@ -66,7 +55,7 @@ public:
     {
       result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
-      result.emplace_back(CreateDataViewItem(GetBreakpointItem(*instruction)));
+      result.emplace_back(mvvm::CreateDataViewItem(GetBreakpointItem(*instruction)));
     }
     return result;
   }
