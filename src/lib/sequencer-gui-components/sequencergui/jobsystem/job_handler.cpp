@@ -33,6 +33,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/monitor/job_log.h>
 #include <sequencergui/operation/breakpoint_controller.h>
+#include <sequencergui/operation/breakpoint_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
@@ -43,7 +44,6 @@
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
 
-#include <QDebug>
 #include <iostream>
 
 namespace sequencergui
@@ -157,6 +157,17 @@ RunnerStatus JobHandler::GetRunnerStatus() const
 JobLog *JobHandler::GetJobLog() const
 {
   return m_job_log;
+}
+
+void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
+{
+  if (IsRunning())
+  {
+    return;
+  }
+  ToggleBreakpointStatus(*instruction);
+  m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
+                                                  *m_domain_runner_adapter->GetDomainRunner());
 }
 
 void JobHandler::onLogEvent(const sequencergui::LogEvent &event)

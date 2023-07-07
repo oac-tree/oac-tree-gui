@@ -80,6 +80,8 @@ public:
 
   JobLog* GetJobLog() const;
 
+  void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
+
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);

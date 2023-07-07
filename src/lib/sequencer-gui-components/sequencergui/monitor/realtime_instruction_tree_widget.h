@@ -61,6 +61,7 @@ public:
 
 signals:
   void InstructionClicked(sequencergui::InstructionItem* instruction);
+  void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 private:
   void ReadSettings();

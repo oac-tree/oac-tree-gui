@@ -22,6 +22,7 @@
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -146,6 +147,17 @@ void SequencerMonitorView::SetupConnections()
   // job selection request from SequencerMonitorActions
   connect(m_actions, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
+
+  auto on_toggle_breakpoint_request = [this](auto *instruction)
+  {
+    if (auto handler = m_job_manager->GetCurrentJobHandler(); handler)
+    {
+      handler->OnToggleBreakpointRequest(instruction);
+    }
+  };
+  connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, this,
+          on_toggle_breakpoint_request);
+
 }
 
 //! Setup widgets to show currently selected job.

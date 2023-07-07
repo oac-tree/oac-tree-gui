@@ -22,7 +22,6 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/operation/breakpoint_helper.h>
 #include <sequencergui/operation/breakpoint_model_delegate.h>
 #include <sequencergui/viewmodel/instruction_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
@@ -32,7 +31,6 @@
 
 #include <sup/gui/widgets/custom_header_view.h>
 
-#include <QDebug>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -73,7 +71,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
 
-  auto on_click = [this](auto index)
+  auto on_click = [this](auto)
   {
     auto item = m_component_provider->GetSelected<InstructionItem>();
     emit InstructionClicked(item);
@@ -82,7 +80,6 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
 
   connect(m_tree_view, &QTreeView::doubleClicked, this,
           &RealTimeInstructionTreeWidget::OnTreeDoubleClick);
-  //          [this](auto index) { OnTreeDoubleClick(index); });
 
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 
@@ -153,13 +150,7 @@ void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
   if (index.column() == 3)
   {
     auto instruction = m_component_provider->GetSelected<InstructionItem>();
-    auto status1 = GetBreakpointStatus(*instruction);
-    qDebug() << "1.1 " << index << " " << static_cast<int>(status1);
-    ToggleBreakpointStatus(*instruction);
-    auto status2 = GetBreakpointStatus(*instruction);
-    qDebug() << "1.2 " << index << " " << static_cast<int>(status2);
-
-    //    if (status == BreakpointStatus::)
+    emit ToggleBreakpointRequest(instruction);
   }
 }
 
