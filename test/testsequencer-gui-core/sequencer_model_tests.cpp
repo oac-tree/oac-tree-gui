@@ -22,6 +22,8 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/universal_variable_item.h>
+#include <sequencergui/model/workspace_item.h>
 
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
@@ -85,4 +87,65 @@ TEST_F(SequencerModelTest, XmlDocumentSaveLoad)
   EXPECT_NE(model.GetProcedureContainer(), original_procedure_container);
   ASSERT_EQ(model.GetProcedures().size(), 1);
   EXPECT_EQ(model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().size(), 1);
+}
+
+//! Checking that domain name of universal instruction item outsurvive serialization (real-life
+//! bug).
+
+TEST_F(SequencerModelTest, UniversalInstructionSerialization)
+{
+  const auto file_path = GetFilePath("UniversalInstructionSaveLoad.xml");
+
+  SequencerModel model;
+  auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+  auto wait_item =
+      model.InsertItem<UniversalInstructionItem>(procedure_item->GetInstructionContainer());
+  wait_item->SetDomainType(domainconstants::kWaitInstructionType);
+
+  mvvm::XmlDocument document({&model});
+
+  auto original_procedure_container = model.GetProcedureContainer();
+
+  // saving model in file
+  document.Save(file_path);
+
+  // loading model from file
+  document.Load(file_path);
+
+  EXPECT_NE(model.GetProcedureContainer(), original_procedure_container);
+  ASSERT_EQ(model.GetProcedures().size(), 1);
+  EXPECT_EQ(model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().size(), 1);
+  auto new_wait_item =
+      model.GetProcedures().at(0)->GetInstructionContainer()->GetInstructions().at(0);
+
+  EXPECT_EQ(new_wait_item->GetDomainType(), domainconstants::kWaitInstructionType);
+}
+
+//! Checking that domain name of universal variable item outsurvive serialization (real-life bug).
+
+TEST_F(SequencerModelTest, UniversalVariableSerialization)
+{
+  const auto file_path = GetFilePath("UniversalInstructionSaveLoad.xml");
+
+  SequencerModel model;
+  auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+  auto variable_item = model.InsertItem<UniversalVariableItem>(procedure_item->GetWorkspace());
+  variable_item->SetDomainType(domainconstants::kLocalVariableType);
+
+  mvvm::XmlDocument document({&model});
+
+  auto original_procedure_container = model.GetProcedureContainer();
+
+  // saving model in file
+  document.Save(file_path);
+
+  // loading model from file
+  document.Load(file_path);
+
+  EXPECT_NE(model.GetProcedureContainer(), original_procedure_container);
+  ASSERT_EQ(model.GetProcedures().size(), 1);
+  EXPECT_EQ(model.GetProcedures().at(0)->GetWorkspace()->GetVariables().size(), 1);
+  auto new_variable_item = model.GetProcedures().at(0)->GetWorkspace()->GetVariables().at(0);
+
+  EXPECT_EQ(new_variable_item->GetDomainType(), domainconstants::kLocalVariableType);
 }

@@ -99,9 +99,9 @@ TEST_F(UniversalInstructionItemTests, CreateUsingDomainName)
   EXPECT_EQ(item.GetType(), domainconstants::kWaitInstructionType);
   EXPECT_EQ(item.GetDomainType(), domainconstants::kWaitInstructionType);
 
-  auto domain_variable = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_variable->GetType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
+  auto domain_instruction = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kNameAttribute), "abc");
 
   // more tests in standard_instruction_item_tests.cpp
 }
@@ -122,9 +122,10 @@ TEST_F(UniversalInstructionItemTests, SetDomainName)
 
   item.SetProperty(domainconstants::kNameAttribute, "abc");
 
-  auto domain_variable = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_variable->GetType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute), "abc");
+  auto domain_instruction = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_instruction->GetType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kNameAttribute), "abc");
 
   // more tests in standard_instruction_item_tests.cpp
 }
+
