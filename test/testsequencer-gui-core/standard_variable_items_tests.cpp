@@ -24,11 +24,11 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
 
@@ -123,7 +123,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
@@ -143,7 +143,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
 
-    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
@@ -226,7 +226,8 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   auto domain_item = item.CreateDomainVariable();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kFileVariableType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileNameAttribute), expected_file_name);
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileNameAttribute),
+            expected_file_name);
 
   EXPECT_NO_THROW(domain_item->Setup());
 }
@@ -284,7 +285,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
@@ -298,7 +299,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     sequencergui::LocalVariableItem item;
     item.SetName(expected_name);
 
-    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
@@ -361,7 +362,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
@@ -381,7 +382,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
     item.SetName(expected_name);
     item.SetChannel(expected_channel);
 
-    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
@@ -445,7 +446,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 
@@ -466,7 +467,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     item.SetChannel(expected_channel);
     item.SetName(expected_name);
 
-    sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
