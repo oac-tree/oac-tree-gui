@@ -46,6 +46,10 @@ public:
 
   void SetDescription(const std::string& value);
 
+  std::string GetFileName() const;
+
+  void SetFileName(const std::string& value);
+
   InstructionContainerItem* GetInstructionContainer() const;
   WorkspaceItem* GetWorkspace() const;
 };

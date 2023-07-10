@@ -28,11 +28,13 @@ namespace sequencergui
 
 static inline const std::string kInstructions = "kInstructions";
 static inline const std::string kWorkspace = "kWorkspace";
+static inline const std::string kFileName = "kFileName";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
 {
   AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
   AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
+  AddProperty(kFileName, std::string())->SetDisplayName("File name");
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
 }
@@ -60,6 +62,16 @@ std::string ProcedureItem::GetDescription() const
 void ProcedureItem::SetDescription(const std::string &value)
 {
   SetProperty(itemconstants::kDescription, value);
+}
+
+std::string ProcedureItem::GetFileName() const
+{
+  return Property<std::string>(kFileName);
+}
+
+void ProcedureItem::SetFileName(const std::string &value)
+{
+  SetProperty(kFileName, value);
 }
 
 InstructionContainerItem *ProcedureItem::GetInstructionContainer() const
