@@ -54,12 +54,14 @@ class DomainProcedureBuilderTest : public ::testing::Test
 TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
 {
   ProcedureItem procedure_item;
+  procedure_item.SetFileName("aaa.xml");
 
   DomainProcedureBuilder builder;
   auto procedure = builder.CreateProcedure(&procedure_item);
 
+  EXPECT_EQ(procedure->GetFilename(), "aaa.xml");
+
   // Test constructed
-  EXPECT_TRUE(procedure->GetFilename().empty());
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
   // Empty instructions and variables

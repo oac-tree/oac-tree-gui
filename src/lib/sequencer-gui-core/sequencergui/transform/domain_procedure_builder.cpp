@@ -140,7 +140,7 @@ std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
     const ProcedureItem* procedure_item)
 {
   DomainProcedureBuilder builder;
-  auto result = std::make_unique<procedure_t>();
+  auto result = std::make_unique<procedure_t>(procedure_item->GetFileName());
   builder.PopulateProcedure(procedure_item, result.get());
   return result;
 }
