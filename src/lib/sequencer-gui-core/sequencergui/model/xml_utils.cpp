@@ -41,7 +41,10 @@ std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
     throw std::runtime_error("Error: uninitialised procedure");
   }
 
-  return CreateProcedureItem(procedure.get(), /*root_only*/ false);
+  auto result = CreateProcedureItem(procedure.get(), /*root_only*/ false);
+  result->SetFileName(file_name);
+
+  return result;
 }
 
 std::string ExportToXMLString(const ProcedureItem *procedure_item)

@@ -71,6 +71,8 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
+  EXPECT_EQ(procedure_item->GetFileName(), file_name);
+
   auto container = procedure_item->GetInstructionContainer();
   auto wait_item = container->GetItem<sequencergui::WaitItem>("");
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
@@ -96,7 +98,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 7});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::UnsignedInteger32Type, 7);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }
 

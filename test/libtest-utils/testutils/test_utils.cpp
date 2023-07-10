@@ -65,6 +65,7 @@ void CreateTextFile(const std::string &file_name, const std::string &content)
 {
   std::ofstream file_out(file_name);
   file_out.write(content.c_str(), content.size());
+  file_out.close();
 }
 
 bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout)

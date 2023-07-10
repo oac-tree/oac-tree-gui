@@ -17,26 +17,31 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/message_panel.h>
-#include <sequencergui/jobsystem/job_handler.h>
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/workspace_item.h>
-#include <mvvm/model/model_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
+#include <sequencergui/model/xml_utils.h>
+#include <sequencergui/monitor/message_panel.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
+#include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>
+#include <mvvm/standarditems/container_item.h>
+
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_based_test.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_utils.h>
+
 #include <QTest>
 
 using namespace sequencergui;
@@ -132,5 +137,50 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   auto initial_anyvalue_item1 = inside.at(1)->GetAnyValueItem();
   EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item0), anyvalue0);
   EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item1), anyvalue1);
-
 }
+
+//! Validating that external includes are correctly found.
+
+//TEST_F(IntegrationScenarioTest, ExternalInclude)
+//{
+//  const std::string main_procedure{R"(<?xml version="1.0" encoding="UTF-8"?>
+//<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+//           name="Procedure for testing local IncludeNode"
+//           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+//           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+//    <Sequence isRoot="True">
+//        <Include name="External Wait" path="Just Wait" file="external.xml" />
+//    </Sequence>
+//</Procedure>
+//)"};
+
+//  const std::string external_procedure{R"(<?xml version="1.0" encoding="UTF-8"?>
+//<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+//           name="Procedure for testing local IncludeNode"
+//           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+//           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+//  <Wait name = "Just Wait" timeout="0" />
+//</Procedure>
+//)"};
+
+//  const auto main_file_name = GetFilePath("main.xml");
+//  testutils::CreateTextFile(main_file_name, main_procedure);
+
+//  const auto external_file_name = GetFilePath("external.xml");
+//  testutils::CreateTextFile(external_file_name, external_procedure);
+
+//  auto procedure_item = sequencergui::ImportFromFile(main_file_name);
+//  auto procedure_item_ptr = procedure_item.get();
+
+//  auto model = GetSequencerModel();
+//  model->InsertItem(std::move(procedure_item), model->GetProcedureContainer(),
+//                    mvvm::TagIndex::Append());
+
+//  MessagePanel panel;
+//  m_job_item->SetProcedure(procedure_item_ptr);
+
+//  JobManager manager;
+//  manager.SetMessagePanel(&panel);
+
+//  EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
+//}
