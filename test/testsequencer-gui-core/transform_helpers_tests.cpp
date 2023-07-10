@@ -60,7 +60,7 @@ TEST_F(TransformHelpersTests, SetAnyValueFromScalar)
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
-  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
   // After update it receives AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
@@ -89,7 +89,7 @@ TEST_F(TransformHelpersTests, UpdateAnyValueSignaling)
 
   testutils::MockModelListener listener(&model);
 
-  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
   const mvvm::TagIndex tag_index{"kAnyValueTag", 0};
 
@@ -114,7 +114,7 @@ TEST_F(TransformHelpersTests, SetAnyValueFromJsonType)
   auto anyvalue_item = item.GetAnyValueItem();
   ASSERT_TRUE(anyvalue_item != nullptr);
 
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
 
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(expected_anyvalue, stored_anyvalue);
@@ -128,14 +128,14 @@ TEST_F(TransformHelpersTests, UpdateAnyValueFromScalar)
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
-  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
   // Create and set AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
-  const sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue new_anyvalue(sup::dto::SignedInteger32Type, 42);
   UpdateAnyValue(new_anyvalue, item);
 
   auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
@@ -151,14 +151,14 @@ TEST_F(TransformHelpersTests, UpdateAnyValueFromScalarWithTypeChange)
   LocalVariableItem item;
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
-  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
   // ACreate and set AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(anyvalue, stored_anyvalue);
 
-  const sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::StringType, "abc"});
+  const sup::dto::AnyValue new_anyvalue(sup::dto::StringType, "abc");
 
   EXPECT_NO_THROW(UpdateAnyValue(new_anyvalue, item));
 
@@ -195,7 +195,7 @@ TEST_F(TransformHelpersTests, AddNonEmptyAttributeToInstruction)
 
 TEST_F(TransformHelpersTests, SetJsonTypeAttribute)
 {
-  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
   LocalVariableItem item;
   SetAnyValue(anyvalue, item);
@@ -210,7 +210,7 @@ TEST_F(TransformHelpersTests, SetJsonTypeAttribute)
 
 TEST_F(TransformHelpersTests, SetJsonValueAttribute)
 {
-  sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
   LocalVariableItem item;
   SetAnyValue(anyvalue, item);

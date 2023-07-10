@@ -60,7 +60,7 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
 
   // adding single variable and populating with values
   auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
-  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");
 
@@ -121,7 +121,7 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
 
   // adding single variable and populating with values
   auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
-  const sup::dto::AnyValue anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(anyvalue, *variable_item);
   variable_item->SetName("abc");
 

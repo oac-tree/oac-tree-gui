@@ -159,7 +159,7 @@ TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable
   auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
   ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr), variable_item);
