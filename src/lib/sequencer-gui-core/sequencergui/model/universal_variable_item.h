@@ -82,8 +82,6 @@ private:
   void SetupDomainImpl(variable_t* variable) const override;
 
   void SetupFromDomain(const variable_t* variable);
-
-  std::string m_domain_type;  //!< Domain typename.
 };
 
 }  // namespace sequencergui

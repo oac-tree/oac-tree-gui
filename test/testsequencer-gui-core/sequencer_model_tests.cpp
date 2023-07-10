@@ -125,7 +125,7 @@ TEST_F(SequencerModelTest, UniversalInstructionSerialization)
 
 TEST_F(SequencerModelTest, UniversalVariableSerialization)
 {
-  const auto file_path = GetFilePath("UniversalInstructionSaveLoad.xml");
+  const auto file_path = GetFilePath("UniversalVariableSaveLoad.xml");
 
   SequencerModel model;
   auto procedure_item = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());

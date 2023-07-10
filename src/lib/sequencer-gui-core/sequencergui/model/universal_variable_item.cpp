@@ -23,15 +23,17 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/variable.h>
 
 namespace
 {
+const int kDomainTypeNameRole = 10;  // role to store type name
+
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
     sequencergui::domainconstants::kTypeAttribute, sequencergui::domainconstants::kValueAttribute};
@@ -60,7 +62,7 @@ std::unique_ptr<mvvm::SessionItem> UniversalVariableItem::Clone(bool make_unique
 
 std::string UniversalVariableItem::GetDomainType() const
 {
-  return m_domain_type;
+  return HasData(kDomainTypeNameRole) ? Data<std::string>(kDomainTypeNameRole) : std::string();
 }
 
 void UniversalVariableItem::SetDomainType(const std::string &domain_type)
@@ -93,7 +95,7 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
 
 void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
 {
-  if (m_domain_type.empty())
+  if (GetDomainType().empty())
   {
     SetupFromDomain(variable);
   }
@@ -126,12 +128,12 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
 
 void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
 {
-  if (!m_domain_type.empty())
+  if (!GetDomainType().empty())
   {
     throw LogicErrorException("It is not possible to setup variable twice");
   }
 
-  m_domain_type = variable->GetType();
+  SetData(variable->GetType(), kDomainTypeNameRole);
 
   SetDisplayName(variable->GetType());
 

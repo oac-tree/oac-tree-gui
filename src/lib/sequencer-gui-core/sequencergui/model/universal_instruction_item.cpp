@@ -23,16 +23,18 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/instruction.h>
 
 #include <iostream>
 
 namespace
 {
+const int kDomainTypeNameRole = 10;  // role to store type name
+
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {};
 
@@ -69,14 +71,14 @@ void UniversalInstructionItem::SetDomainType(const std::string &domain_type)
 
 std::string UniversalInstructionItem::GetDomainType() const
 {
-  return m_domain_type;
+  return HasData(kDomainTypeNameRole) ? Data<std::string>(kDomainTypeNameRole) : std::string();
 }
 
 //! Initialise instruction from domain item.
 
 void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instruction)
 {
-  if (m_domain_type.empty())
+  if (GetDomainType().empty())
   {
     SetupFromDomain(instruction);
   }
@@ -122,12 +124,12 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
 
 void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
 {
-  if (!m_domain_type.empty())
+  if (!GetDomainType().empty())
   {
     throw LogicErrorException("It is not possible to setup instruction twice");
   }
 
-  m_domain_type = instruction->GetType();
+  SetData(instruction->GetType(), kDomainTypeNameRole);
 
   SetDisplayName(instruction->GetType());
 
