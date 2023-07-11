@@ -23,6 +23,9 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/scalar_conversion_utils.h>
+
 #include <mvvm/core/exceptions.h>
 
 #include <sup/sequencer/exceptions.h>
@@ -296,4 +299,23 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kWaitInstructionType);
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+//! Validate WaitItem conversion to the domain object, when timeout is defined as varying parameter.
+
+TEST_F(StandardInstructionItemsTest, WaitItemToDomainVaryingTimeout)
+{
+  // Correctly initialised item
+  const WaitItem item;
+
+  auto property_item =
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
+  ASSERT_TRUE(property_item);
+
+  SetDataFromScalar(sup::dto::AnyValue("$par1"), *property_item);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kTimeoutAttribute));
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kWaitInstructionType);
 }

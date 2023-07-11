@@ -411,3 +411,18 @@ TEST_F(TransformHelpersTests, SetPropertyFromDomainAttributeVaryingCase)
 
   EXPECT_THROW(item.GetTimeout(), std::bad_variant_access);
 }
+
+//! Testing SetDomainAttribute method for attribute containing $par varying parameter.
+
+TEST_F(TransformHelpersTests, SetDomainAttributeVaryingCase)
+{
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+
+  sup::gui::AnyValueScalarItem item;
+  item.SetAnyTypeName(sup::dto::kStringTypeName);
+  item.SetData("$par1");
+
+  SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
+  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute),
+            std::string("$par1"));
+}
