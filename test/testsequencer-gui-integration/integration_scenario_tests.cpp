@@ -25,6 +25,7 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/xml_utils.h>
@@ -112,6 +113,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   // starting procedure
   manager.OnStartJobRequest();
+  QTest::qWait(20);
 
   // We are testing here queued signals, need special waiting to let procedure complete
   EXPECT_TRUE(QTest::qWaitFor(
@@ -157,7 +159,8 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
   testutils::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external.xml");
-  testutils::CreateTextFile(external_file_name, testutils::CreateProcedureString(external_procedure));
+  testutils::CreateTextFile(external_file_name,
+                            testutils::CreateProcedureString(external_procedure));
 
   auto procedure_item = sequencergui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
@@ -173,4 +176,45 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
   manager.SetMessagePanel(&panel);
 
   EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
+}
+
+//! Validating that external includes are correctly found, and that varying parameter is propagated.
+
+TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
+{
+  const std::string main_procedure{R"(
+    <Sequence isRoot="True">
+        <Include name="External Wait" path="Just Wait" file="external2.xml" par1="42"/>
+    </Sequence>
+)"};
+
+  const std::string external_procedure{R"(
+  <Wait name = "Just Wait" timeout="$par1" />
+)"};
+
+  const auto main_file_name = GetFilePath("main2.xml");
+  testutils::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
+
+  const auto external_file_name = GetFilePath("external2.xml");
+  testutils::CreateTextFile(external_file_name,
+                            testutils::CreateProcedureString(external_procedure));
+
+  auto procedure_item = sequencergui::ImportFromFile(main_file_name);
+  auto procedure_item_ptr = procedure_item.get();
+
+  auto model = GetSequencerModel();
+  model->InsertItem(std::move(procedure_item), model->GetProcedureContainer(),
+                    mvvm::TagIndex::Append());
+
+  MessagePanel panel;
+  m_job_item->SetProcedure(procedure_item_ptr);
+
+  JobManager manager;
+  manager.SetMessagePanel(&panel);
+
+  EXPECT_NO_THROW(manager.SubmitJob(m_job_item));
+
+  auto wait_items = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
+  ASSERT_EQ(wait_items.size(), 1);
+  EXPECT_EQ(wait_items.at(0)->GetTimeout(), 42);
 }
