@@ -38,6 +38,8 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
+#include <iostream>
+
 namespace sequencergui
 {
 
@@ -199,11 +201,7 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   // for both, display name and tag name of the new property item.
   auto property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
   property->SetAnyTypeName(attr.GetType().GetTypeName());
-  property->SetDisplayName(attr.GetName());
-
-  auto default_anyvalue = sup::dto::AnyValue(attr.GetType());
-  sup::gui::SetDataFromScalar(default_anyvalue, *property);
-
+  property->SetDisplayName(attr.GetName());  // will set default value too
   return property;
 }
 
