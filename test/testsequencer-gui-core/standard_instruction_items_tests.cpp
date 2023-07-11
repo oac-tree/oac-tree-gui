@@ -22,7 +22,6 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
-
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
@@ -232,17 +231,28 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
 
 TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 {
-  // Correctly initialised item
-  const SequenceItem item;
+  {  // when IsRoot = true
+    SequenceItem item;
+    item.SetIsRootFlag(true);
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
+    EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
+    // validating that no SessionItem related properties were propagated to the domain
+    std::vector<std::pair<std::string, std::string>> expected = {{"isRoot", "true"}};
+    EXPECT_EQ(domain_item->GetStringAttributes(), expected);
+  }
 
-  EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
+  {  // when IsRoot = false
+    SequenceItem item;
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
-  // validating that no SessionItem related properties were propagated to the domain
-  std::vector<std::pair<std::string, std::string>> expected = {{"isRoot", "false"}};
-  EXPECT_EQ(domain_item->GetStringAttributes(), expected);
+    EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
+    // validating that no SessionItem related properties were propagated to the domain
+    std::vector<std::pair<std::string, std::string>> expected = {};
+    EXPECT_EQ(domain_item->GetStringAttributes(), expected);
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -318,4 +328,25 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomainVaryingTimeout)
   EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kTimeoutAttribute));
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
   EXPECT_EQ(domain_item->GetType(), domainconstants::kWaitInstructionType);
+}
+
+//! Validate WaitItem IsRoot attribute convertion to the domain object.
+//! We do not want IsRoot appears in the list of domain attribute, if it is false.
+
+TEST_F(StandardInstructionItemsTest, WaitItemToDomainIsRootAttribute)
+{
+  {  // set as IsRoot
+    WaitItem wait_item;
+    wait_item.SetIsRootFlag(true);
+    auto domain_item = wait_item.CreateDomainInstruction();
+    EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kIsRootAttribute));
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
+  }
+
+  {  // set as IsRoot
+    WaitItem wait_item;
+    wait_item.SetIsRootFlag(false);
+    auto domain_item = wait_item.CreateDomainInstruction();
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kIsRootAttribute));
+  }
 }

@@ -44,6 +44,20 @@ bool IsVaryingAttribute(const std::string &attribute_value)
 {
   return attribute_value.find_first_of('$') == 0;
 }
+
+/**
+ * @brief Returns true if given attribute name and value should appear as domain attributes.
+ */
+bool IsSuitableForDomainAttribute(const std::string &attribute_string,
+                                  const std::string &attribute_value)
+{
+  const bool not_empty = !attribute_value.empty();
+  const bool not_isroot_false =
+      !(attribute_string == sequencergui::domainconstants::kIsRootAttribute
+        && attribute_value == "false");
+  return not_empty && not_isroot_false;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -228,7 +242,6 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
       // will change property type to string
       sup::dto::AnyValue str(attribute_string);
       sup::gui::SetDataFromScalar(str, item);
-
     }
   }
 }
@@ -250,7 +263,7 @@ void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::str
   {
     throw LogicErrorException("Can't create an attribute string from item property");
   }
-  if (!attribute_string.empty())
+  if (IsSuitableForDomainAttribute(attribute_name, attribute_string))
   {
     domain.AddAttribute(attribute_name, attribute_string);
   }
