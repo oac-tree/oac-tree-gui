@@ -114,6 +114,8 @@ bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
 
 double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
+//! Creates Sequencer XML procedure by wrapping the body into necessary Procedure directive.
+std::string CreateProcedureString(const std::string& body, bool schema = true);
 
 }  // namespace testutils
 

@@ -37,24 +37,6 @@ class XmlUtilsTest : public testutils::FolderBasedTest
 {
 public:
   XmlUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}
-
-  static std::string CreateProcedureString(const std::string& body, bool schema = true)
-  {
-    static const std::string header_with_schema{
-        R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
-           name="Trivial procedure for testing purposes"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
-           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">)RAW"};
-
-    static const std::string header{R"RAW(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure>)RAW"};
-
-    static const std::string footer{R"RAW(</Procedure>
-)RAW"};
-
-    return (schema ? header_with_schema : header) + body + footer;
-  }
 };
 
 //! Importing xml Procedure containing a single instruction.
@@ -67,7 +49,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
-  testutils::CreateTextFile(file_name, CreateProcedureString(body));
+  testutils::CreateTextFile(file_name, testutils::CreateProcedureString(body));
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
@@ -90,7 +72,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
-  testutils::CreateTextFile(file_name, CreateProcedureString(body));
+  testutils::CreateTextFile(file_name, testutils::CreateProcedureString(body));
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
@@ -117,7 +99,7 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   <Workspace/>
 )"};
 
-  auto expected_string = CreateProcedureString(
+  auto expected_string = testutils::CreateProcedureString(
       body, /*schema*/ false);  // current ExportToXMLString doesn't know how export with schema
   EXPECT_EQ(sequencergui::ExportToXMLString(procedure_item), expected_string);
 }

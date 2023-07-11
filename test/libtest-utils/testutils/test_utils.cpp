@@ -90,4 +90,22 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout)
   return static_cast<double>(value) / 1000;
 }
 
+std::string CreateProcedureString(const std::string &body, bool schema)
+{
+  static const std::string header_with_schema{
+                                              R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">)RAW"};
+
+  static const std::string header{R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>)RAW"};
+
+  static const std::string footer{R"RAW(</Procedure>
+)RAW"};
+
+  return (schema ? header_with_schema : header) + body + footer;
+}
+
 }  // namespace testutils
