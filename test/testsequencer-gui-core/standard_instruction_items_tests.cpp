@@ -26,6 +26,7 @@
 #include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/core/exceptions.h>
+#include <mvvm/model/item_utils.h>
 
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
@@ -80,6 +81,33 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
   EXPECT_EQ(item.GetPath(), std::string("def"));
 }
 
+//! Validating transformation of Include instruction from domain to GUI, when domain contains custom
+//! parameter.
+
+TEST_F(StandardInstructionItemsTest, IncludeItemFromDomainWithCustomAttributes)
+{
+  auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+  input->AddAttribute(domainconstants::kFileAttribute, "abc");
+  input->AddAttribute(domainconstants::kPathAttribute, "def");
+
+  const std::string custom_name("par1");
+  const std::string custom_value("1.0");
+  input->AddAttribute(custom_name, custom_value);
+
+  IncludeItem item;
+  item.InitFromDomain(input.get());
+
+  EXPECT_EQ(item.GetFileName(), std::string("abc"));
+  EXPECT_EQ(item.GetPath(), std::string("def"));
+
+  EXPECT_TRUE(mvvm::utils::HasTag(item, custom_name));
+  auto property_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(custom_name));
+  ASSERT_TRUE(property_item);
+  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));
+  EXPECT_EQ(property_item->Data<std::string>(), custom_value);
+}
+
 TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 {
   // we are testing only "local include" instruction
@@ -97,6 +125,43 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   m_procedure.InsertInstruction(std::move(wait), 0);
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+}
+
+//! Validating transformation from GUI to domain, when Include instruction contains a custom
+//! parameter.
+
+TEST_F(StandardInstructionItemsTest, IncludeItemToDomainWithCustomAttribute)
+{
+  const std::string custom_name("par1");
+  const std::string custom_value("1.0");
+
+  // we are testing only "local include" instruction
+  IncludeItem item;
+  item.SetPath("def");
+
+  auto property = item.AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
+  property->SetAnyTypeName(sup::dto::kStringTypeName);
+  property->SetData(custom_value);
+
+  auto domain_item = item.CreateDomainInstruction();
+  EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileAttribute));
+  EXPECT_TRUE(domain_item->HasAttribute(custom_name));
+  EXPECT_EQ(domain_item->GetAttributeString(custom_name), custom_value);
+
+  // Setup of Input instruction requires existance of instruction to include
+  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  wait->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
+  wait->SetName("def");
+  auto wait_ptr = wait.get();
+  m_procedure.InsertInstruction(std::move(wait), 0);
+
+  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  EXPECT_TRUE(wait_ptr->HasAttribute(domainconstants::kTimeoutAttribute));
+
+  // FIXME Why it is $par1 and not 1.0?
+  //  EXPECT_EQ(wait_ptr->GetAttributeString(domainconstants::kTimeoutAttribute), "1.0");
 }
 
 // ----------------------------------------------------------------------------

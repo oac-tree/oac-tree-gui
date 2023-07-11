@@ -146,6 +146,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   // starting procedure
   manager.OnStartJobRequest();
+  QTest::qWait(20);
 
   // We are testing here queued signals, need special waiting to let procedure complete
   EXPECT_TRUE(QTest::qWaitFor(

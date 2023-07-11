@@ -26,6 +26,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/utils/container_utils.h>
 
 #include <sup/sequencer/instruction.h>
 
@@ -83,9 +84,23 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
     SetupFromDomain(instruction);
   }
 
+  std::vector<std::string> processed_attribute_names;
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
     SetPropertyFromDomainAttribute(*instruction, attribute_name, *item);
+    processed_attribute_names.push_back(attribute_name);
+  }
+
+  // creating property items representing custom attributes not present in attribute definitions
+  for (const auto &[name, value] : instruction->GetStringAttributes())
+  {
+    if (!mvvm::utils::Contains(processed_attribute_names, name))
+    {
+      auto property = AddProperty<sup::gui::AnyValueScalarItem>(name);
+      property->SetAnyTypeName(sup::dto::kStringTypeName);
+      property->SetDisplayName(name);
+      property->SetData(value);
+    }
   }
 }
 
