@@ -40,11 +40,11 @@ class DomainWorkspaceBuilder;
 class DomainProcedureBuilder
 {
 public:
-  static std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem* procedure_item);
+  static std::unique_ptr<procedure_t> CreateProcedure(const ProcedureItem& procedure_item);
 
   ~DomainProcedureBuilder();
 
-  void PopulateProcedure(const ProcedureItem* procedure_item, procedure_t* procedure);
+  void PopulateProcedure(const ProcedureItem& procedure_item, procedure_t& procedure);
 
   std::string FindInstructionIdentifier(const instruction_t* instruction) const;
 

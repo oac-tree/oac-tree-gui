@@ -119,5 +119,5 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
 
   auto expected_string = CreateProcedureString(
       body, /*schema*/ false);  // current ExportToXMLString doesn't know how export with schema
-  EXPECT_EQ(sequencergui::ExportToXMLString(&procedure_item), expected_string);
+  EXPECT_EQ(sequencergui::ExportToXMLString(procedure_item), expected_string);
 }

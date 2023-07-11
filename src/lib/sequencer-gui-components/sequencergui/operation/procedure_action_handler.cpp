@@ -67,7 +67,7 @@ void ProcedureActionHandler::OnExportToXmlRequest(ProcedureItem *procedure_item)
   std::string xml_content;
   try
   {
-    xml_content = ExportToXMLString(procedure_item);
+    xml_content = ExportToXMLString(*procedure_item);
   }
   catch (const std::exception &ex)
   {
@@ -104,7 +104,7 @@ void ProcedureActionHandler::OnValidateProcedureRequest(ProcedureItem *procedure
   try
   {
     const DomainProcedureBuilder builder;
-    domain_procedure = std::move(builder.CreateProcedure(procedure_item));
+    domain_procedure = std::move(builder.CreateProcedure(*procedure_item));
     domain_procedure->Setup();
   }
   catch (std::exception &ex)

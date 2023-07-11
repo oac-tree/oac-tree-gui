@@ -198,8 +198,13 @@ void JobHandler::PrepareForRun()
 
 void JobHandler::SetupDomainProcedure()
 {
+  if (!m_job_item->GetProcedure())
+  {
+    throw RuntimeException("Procedure doesn't exist");
+  }
+
   // building domain procedure
-  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(m_job_item->GetProcedure());
+  m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
 
   // we are setting up root instruction, but deliberately not setting up the Workspace
   if (m_domain_procedure->RootInstruction())

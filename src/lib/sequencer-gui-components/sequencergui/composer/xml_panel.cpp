@@ -76,7 +76,7 @@ void XmlPanel::UpdateXml()
   {
     try
     {
-      m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(m_procedure)));
+      m_xml_view->SetContent(QString::fromStdString(ExportToXMLString(*m_procedure)));
     }
     catch (const std::exception &ex)
     {

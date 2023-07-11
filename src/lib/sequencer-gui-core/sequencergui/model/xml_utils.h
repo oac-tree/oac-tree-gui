@@ -33,7 +33,7 @@ class ProcedureItem;
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string& file_name);
 
 //! Exports procedure to XML string.
-std::string ExportToXMLString(const ProcedureItem* procedure_item);
+std::string ExportToXMLString(const ProcedureItem& procedure_item);
 
 }  // namespace sequencergui
 

@@ -111,16 +111,11 @@ void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* worksp
                                                const_cast<workspace_t*>(procedure->GetWorkspace()));
 }
 
-void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem* procedure_item,
-                                               procedure_t* procedure)
+void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_item,
+                                               procedure_t &procedure)
 {
-  if (!procedure_item)
-  {
-    throw RuntimeException("Procedure is not initialised");
-  }
-
-  PopulateDomainInstructions(procedure_item->GetInstructionContainer(), procedure);
-  PopulateDomainWorkspace(procedure_item->GetWorkspace(), procedure);
+  PopulateDomainInstructions(procedure_item.GetInstructionContainer(), &procedure);
+  PopulateDomainWorkspace(procedure_item.GetWorkspace(), &procedure);
 }
 
 std::string DomainProcedureBuilder::FindInstructionIdentifier(
@@ -137,11 +132,11 @@ std::string DomainProcedureBuilder::FindVariableItemIdentifier(const variable_t*
 }
 
 std::unique_ptr<procedure_t> DomainProcedureBuilder::CreateProcedure(
-    const ProcedureItem* procedure_item)
+    const ProcedureItem& procedure_item)
 {
   DomainProcedureBuilder builder;
-  auto result = std::make_unique<procedure_t>(procedure_item->GetFileName());
-  builder.PopulateProcedure(procedure_item, result.get());
+  auto result = std::make_unique<procedure_t>(procedure_item.GetFileName());
+  builder.PopulateProcedure(procedure_item, *result);
   return result;
 }
 

@@ -57,7 +57,7 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
   procedure_item.SetFileName("aaa.xml");
 
   DomainProcedureBuilder builder;
-  auto procedure = builder.CreateProcedure(&procedure_item);
+  auto procedure = builder.CreateProcedure(procedure_item);
 
   EXPECT_EQ(procedure->GetFilename(), "aaa.xml");
 
@@ -82,7 +82,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithSingleInstruction)
   auto sequence_item = container->InsertItem<SequenceItem>({"", -1});
 
   DomainProcedureBuilder builder;
-  auto procedure = builder.CreateProcedure(&procedure_item);
+  auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
@@ -105,7 +105,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithTwoInstructions)
   wait1->SetTimeout(0.2);
 
   DomainProcedureBuilder builder;
-  auto procedure = builder.CreateProcedure(&procedure_item);
+  auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
   EXPECT_EQ(procedure->RootInstruction(), nullptr);
@@ -129,7 +129,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParentAndChild)
   auto wait = sequence->InsertItem<WaitItem>({"", -1});
 
   DomainProcedureBuilder builder;
-  auto procedure = builder.CreateProcedure(&procedure_item);
+  auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
@@ -155,7 +155,7 @@ TEST_F(DomainProcedureBuilderTest, BuildProcedureWithParentAndChild)
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.PopulateProcedure(&procedure_item, procedure.get());
+  builder.PopulateProcedure(procedure_item, *procedure);
 
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
   ASSERT_EQ(procedure->GetInstructionCount(), 1);
@@ -185,7 +185,7 @@ TEST_F(DomainProcedureBuilderTest, InverterWithSequence)
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.PopulateProcedure(&procedure_item, procedure.get());
+  builder.PopulateProcedure(procedure_item, *procedure);
 
   ASSERT_TRUE(procedure != nullptr);
 
@@ -220,7 +220,7 @@ TEST_F(DomainProcedureBuilderTest, RepeatWithSingleInstruction)
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.PopulateProcedure(&procedure_item, procedure.get());
+  builder.PopulateProcedure(procedure_item, *procedure);
 
   ASSERT_TRUE(procedure != nullptr);
 
@@ -254,7 +254,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 
   auto procedure = std::make_unique<procedure_t>();
   DomainProcedureBuilder builder;
-  builder.PopulateProcedure(&procedure_item, procedure.get());
+  builder.PopulateProcedure(procedure_item, *procedure);
 
   EXPECT_EQ(procedure->VariableNames(), std::vector<std::string>({"var0", "var1"}));
 
@@ -276,7 +276,7 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithParallelSequence)
   auto wait1 = sequence->InsertItem<WaitItem>(mvvm::TagIndex::Append());
 
   DomainProcedureBuilder builder;
-  auto procedure = builder.CreateProcedure(&procedure_item);
+  auto procedure = builder.CreateProcedure(procedure_item);
 
   // Empty instruction list
   EXPECT_TRUE(procedure->RootInstruction() != nullptr);
