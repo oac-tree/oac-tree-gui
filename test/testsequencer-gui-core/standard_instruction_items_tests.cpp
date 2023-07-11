@@ -25,9 +25,9 @@
 
 #include <mvvm/core/exceptions.h>
 
+#include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
-#include <sup/sequencer/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>

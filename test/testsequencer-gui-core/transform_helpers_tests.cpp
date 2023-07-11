@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/universal_variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -35,6 +36,7 @@
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/model/taginfo.h>
 
+#include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
@@ -232,8 +234,7 @@ TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariable)
     auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
     variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
 
-    const sup::dto::AnyValue expected_anyvalue(
-        sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
 
     LocalVariableItem item;
     SetAnyValueFromDomainVariable(*variable, item);
@@ -378,4 +379,35 @@ TEST_F(TransformHelpersTests, RegisterChildrenTag)
     EXPECT_EQ(taginfo.GetMax(), 1);
     EXPECT_EQ(taginfo.GetMin(), 0);
   }
+}
+
+//! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
+//! contains $par attribute.
+
+TEST_F(TransformHelpersTests, SetPropertyFromDomainAttributeVaryingCase)
+{
+  // domain Wait instruction constructed by the factory doesn't have attributes
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  EXPECT_TRUE(instruction->GetStringAttributes().empty());
+
+  // initial timeout property is AnyValueScalarItem representing a `double`
+  WaitItem item;
+  EXPECT_EQ(item.GetTimeout(), 0.0);
+  EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
+  auto property_item =
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
+  ASSERT_TRUE(property_item);
+  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kFloat64TypeName);
+  EXPECT_TRUE(std::holds_alternative<double>(property_item->Data()));
+
+  // Seting property from the domain containing `$` sign
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
+  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
+  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, *property_item);
+
+  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));
+  EXPECT_EQ(property_item->Data<std::string>(), "$par1");
+
+  EXPECT_THROW(item.GetTimeout(), std::bad_variant_access);
 }

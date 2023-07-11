@@ -38,7 +38,13 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
-#include <iostream>
+namespace
+{
+bool IsVaryingAttribute(const std::string &attribute_value)
+{
+  return attribute_value.find_first_of('$') == 0;
+}
+}  // namespace
 
 namespace sequencergui
 {
@@ -216,7 +222,14 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   }
   catch (const std::exception)
   {
-    // It means that object wasn't set.
+    auto attribute_string = domain.GetAttributeString(attribute_name);
+    if (IsVaryingAttribute(attribute_string))
+    {
+      // will change property type to string
+      sup::dto::AnyValue str(attribute_string);
+      sup::gui::SetDataFromScalar(str, item);
+
+    }
   }
 }
 
