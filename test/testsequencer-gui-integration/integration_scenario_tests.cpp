@@ -143,31 +143,21 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
 TEST_F(IntegrationScenarioTest, ExternalInclude)
 {
-  const std::string main_procedure{R"(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
-           name="Procedure for testing local IncludeNode"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
-           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+  const std::string main_procedure{R"(
     <Sequence isRoot="True">
         <Include name="External Wait" path="Just Wait" file="external.xml" />
     </Sequence>
-</Procedure>
 )"};
 
-  const std::string external_procedure{R"(<?xml version="1.0" encoding="UTF-8"?>
-<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
-           name="Procedure for testing local IncludeNode"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
-           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+  const std::string external_procedure{R"(
   <Wait name = "Just Wait" timeout="0" />
-</Procedure>
 )"};
 
   const auto main_file_name = GetFilePath("main.xml");
-  testutils::CreateTextFile(main_file_name, main_procedure);
+  testutils::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external.xml");
-  testutils::CreateTextFile(external_file_name, external_procedure);
+  testutils::CreateTextFile(external_file_name, testutils::CreateProcedureString(external_procedure));
 
   auto procedure_item = sequencergui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
