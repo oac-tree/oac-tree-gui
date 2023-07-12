@@ -76,6 +76,23 @@ void ValidateWorkspaces(const sequencergui::WorkspaceItem& workspace_item,
 namespace sequencergui
 {
 
+WorkspaceSynchronizer::WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace,
+                                             QObject* parent)
+    : QObject(parent)
+    , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
+    , m_workspace(domain_workspace)
+{
+  if (domain_workspace->IsSuccessfullySetup())
+  {
+    throw RuntimeException("Domain workspace has already been set up.");
+  }
+
+  connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
+          &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
+
+  m_workspace_listener->StartListening(GetWorkspace());
+}
+
 WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
                                              sup::sequencer::Workspace* domain_workspace,
                                              QObject* parent)
@@ -93,13 +110,22 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
           &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
 
-  SetWorkspaceItem(workspace_item);
+  m_workspace_item_controller = std::make_unique<WorkspaceItemController>(workspace_item);
+  m_workspace_item = workspace_item;
+
+  ValidateWorkspaces(*m_workspace_item, *m_workspace);
+
+  m_workspace_item_controller->SetCallback([this](const auto& event)
+                                           { OnWorkspaceEventFromGUI(event); });
 }
 
 void WorkspaceSynchronizer::SetWorkspaceItem(WorkspaceItem* workspace_item)
 {
   m_workspace_item_controller = std::make_unique<WorkspaceItemController>(workspace_item);
   m_workspace_item = workspace_item;
+
+  ValidateWorkspaces(*m_workspace_item, *m_workspace);
+
   m_workspace_item_controller->SetCallback([this](const auto& event)
                                            { OnWorkspaceEventFromGUI(event); });
 }
@@ -169,7 +195,11 @@ void WorkspaceSynchronizer::SetInitialValuesFromDomain()
 void WorkspaceSynchronizer::OnDomainVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
-  m_workspace_item_controller->ProcessEventFromDomain(event);
+
+  if (m_workspace_item_controller)
+  {
+    m_workspace_item_controller->ProcessEventFromDomain(event);
+  }
 }
 
 void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)

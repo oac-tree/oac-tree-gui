@@ -51,6 +51,9 @@ class WorkspaceSynchronizer : public QObject
   Q_OBJECT
 
 public:
+  WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace,
+                        QObject* parent = nullptr);
+
   WorkspaceSynchronizer(WorkspaceItem* workspace_item, sup::sequencer::Workspace* domain_workspace,
                         QObject* parent = nullptr);
   ~WorkspaceSynchronizer() override;
@@ -64,8 +67,9 @@ public:
 
   WorkspaceItem* GetWorkspaceItem() const;
 
-private:
   void SetInitialValuesFromDomain();
+
+private:
   void OnDomainVariableUpdated();
   void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
 
