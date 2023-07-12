@@ -63,7 +63,6 @@ public:
   {
     // populate sequencer workspace so it match WorkspaceItem
     PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
-    m_workspace.Setup();  // current convention: has to be setup before starting listening
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 

@@ -28,13 +28,13 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/core/exceptions.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/sessionmodel.h>
 
+#include <sup/gui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <algorithm>
@@ -85,9 +85,21 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
     , m_workspace(domain_workspace)
     , m_workspace_item(workspace_item)
 {
+  if (domain_workspace->IsSuccessfullySetup())
+  {
+    throw RuntimeException("Domain workspace has already been set up.");
+  }
+
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
           &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
 
+  SetWorkspaceItem(workspace_item);
+}
+
+void WorkspaceSynchronizer::SetWorkspaceItem(WorkspaceItem* workspace_item)
+{
+  m_workspace_item_controller = std::make_unique<WorkspaceItemController>(workspace_item);
+  m_workspace_item = workspace_item;
   m_workspace_item_controller->SetCallback([this](const auto& event)
                                            { OnWorkspaceEventFromGUI(event); });
 }

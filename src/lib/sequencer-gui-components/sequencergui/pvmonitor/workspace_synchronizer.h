@@ -55,6 +55,9 @@ public:
                         QObject* parent = nullptr);
   ~WorkspaceSynchronizer() override;
 
+
+  void SetWorkspaceItem(WorkspaceItem* workspace_item);
+
   void Start();
 
   sup::sequencer::Workspace* GetWorkspace() const;
