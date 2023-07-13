@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_MODEL_VARIABLE_ITEM_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sup/gui/core/dto_types_fwd.h>
 
 #include <mvvm/model/compound_item.h>
 
@@ -41,7 +42,7 @@ public:
   virtual std::string GetDomainType() const = 0;
 
   //! Init given item from the domain variable.
-  void InitFromDomain(const variable_t* variable);
+  void InitFromDomain(const variable_t* variable, const anytype_registry_t* registry = nullptr);
 
   //! Creates domain variable corresponding to given item.
   std::unique_ptr<variable_t> CreateDomainVariable() const;
@@ -59,7 +60,8 @@ protected:
   void RegisterAnyValueItemTag();
 
 private:
-  virtual void InitFromDomainImpl(const variable_t* variable) = 0;
+  virtual void InitFromDomainImpl(const variable_t* variable,
+                                  const anytype_registry_t* registry) = 0;
   virtual void SetupDomainImpl(variable_t* variable) const = 0;
 };
 

@@ -297,19 +297,20 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithPreamble)
 
   ::sup::sequencer::Procedure procedure;
 
+  const std::string json_type =
+      R"RAW({"type":"ranges_uint32","multiplicity":3,"element":{"type":"uint32"}})RAW";
+
   procedure.GetPreamble().AddPluginPath("abc");
   procedure.GetPreamble().AddPluginPath("def");
-  procedure.GetPreamble().AddTypeRegistration(
-      TypeRegistrationInfo(TypeRegistrationInfo::kJSONFile, "a1"));
-  procedure.GetPreamble().AddTypeRegistration(
-      TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, "a2"));
+  procedure.GetPreamble().AddTypeRegistration(TypeRegistrationInfo(
+      TypeRegistrationInfo::kJSONString, json_type));
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;
   builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
 
   std::vector<std::string> expected_paths{"abc", "def"};
-  std::vector<std::pair<int, std::string> > expected_info = {{0, "a1"}, {1, "a2"}};
+  std::vector<std::pair<int, std::string> > expected_info = {{1, json_type}};
 
   EXPECT_EQ(procedure_item.GetPreambleItem()->GetPluginPaths(), expected_paths);
   EXPECT_EQ(procedure_item.GetPreambleItem()->GetTypeRegistrations(), expected_info);

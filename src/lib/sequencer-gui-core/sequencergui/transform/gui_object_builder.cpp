@@ -27,11 +27,33 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
+#include <sup/dto/anytype_registry.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
 
 #include <stdexcept>
+
+namespace
+{
+
+//! Creates Registry containing type defined in a preamble.
+//! We can't used registry on board of procedure itself, because it hasn't been setup  yet.
+std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &procedure)
+{
+  auto result = std::make_unique<sup::dto::AnyTypeRegistry>();
+
+  for (const auto &type_registration : procedure.GetPreamble().GetTypeRegistrations())
+  {
+    auto anytype =
+        ParseTypeRegistrationInfo(type_registration, procedure.GetFilename(), result.get());
+    result->RegisterType(anytype);
+  }
+
+  return result;
+}
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -59,15 +81,18 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
   auto instruction_container = procedure_item->GetInstructionContainer();
   PopulateInstructionContainerItem(procedure, instruction_container, root_only);
 
-  auto workspace_item = procedure_item->GetWorkspace();
-  PopulateWorkspaceItem(procedure, workspace_item);
-
   PopulateProcedurePreambleItem(procedure->GetPreamble(), *procedure_item->GetPreambleItem());
+
+  auto registry = CreateRegistry(*procedure);
+
+  auto workspace_item = procedure_item->GetWorkspace();
+  PopulateWorkspaceItem(procedure, workspace_item, registry.get());
 }
 
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
 
-void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, WorkspaceItem *workspace)
+void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, WorkspaceItem *workspace,
+                                             const anytype_registry_t *registry)
 {
   if (workspace->GetTotalItemCount() > 0)
   {
@@ -78,7 +103,7 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
   {
     auto item = sequencergui::CreateVariableItem(variable->GetType());
     Save(variable, item.get());
-    item->InitFromDomain(variable);
+    item->InitFromDomain(variable, registry);
     workspace->InsertItem(std::move(item), {"", -1});
   }
 }

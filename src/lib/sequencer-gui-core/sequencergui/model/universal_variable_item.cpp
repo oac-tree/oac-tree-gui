@@ -93,7 +93,8 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   return result;
 }
 
-void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
+void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable,
+                                               const anytype_registry_t *registry)
 {
   if (GetDomainType().empty())
   {
@@ -105,7 +106,7 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable)
     SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
   }
 
-  SetAnyValueFromDomainVariable(*variable, *this);
+  SetAnyValueFromDomainVariable(*variable, *this, registry);
 }
 
 void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const

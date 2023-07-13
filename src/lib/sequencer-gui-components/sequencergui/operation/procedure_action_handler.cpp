@@ -146,16 +146,16 @@ std::unique_ptr<ProcedureItem> ProcedureActionHandler::LoadProcedureFromFileInte
 {
   std::unique_ptr<ProcedureItem> result;
 
-  try
-  {
+//  try
+//  {
     auto procedure_name = mvvm::utils::GetPathStem(file_name.toStdString());
     result = sequencergui::ImportFromFile(file_name.toStdString());
     result->SetDisplayName(procedure_name);
-  }
-  catch (const std::exception &ex)
-  {
-    SendWarningMessage({"Import from file", "Procedure import has failed", ex.what()});
-  }
+//  }
+//  catch (const std::exception &ex)
+//  {
+//    SendWarningMessage({"Import from file", "Procedure import has failed", ex.what()});
+//  }
 
   return result;
 }

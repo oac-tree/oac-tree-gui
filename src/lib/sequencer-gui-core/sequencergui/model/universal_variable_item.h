@@ -78,7 +78,7 @@ private:
    */
   std::vector<Attribute> GetAttributeItems() const;
 
-  void InitFromDomainImpl(const variable_t* variable) override;
+  void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t *registry) override;
   void SetupDomainImpl(variable_t* variable) const override;
 
   void SetupFromDomain(const variable_t* variable);
