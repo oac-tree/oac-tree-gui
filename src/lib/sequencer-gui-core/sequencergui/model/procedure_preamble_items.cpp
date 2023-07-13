@@ -34,9 +34,12 @@ static const std::string kTypeRegistrationString = "kTypeRegistrationString";
 
 TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(Type)
 {
-  AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON srting"}))
+  AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON string"}))
       ->SetDisplayName("Mode");
-  AddProperty(kTypeRegistrationString, std::string())->SetDisplayName("AnyType string");
+  AddProperty(kTypeRegistrationString, std::string())
+      ->SetDisplayName("String")
+      ->SetToolTip(
+          "JSON string or a filename for a file containing the JSON representation of the type");
 }
 
 std::unique_ptr<mvvm::SessionItem> TypeRegistrationItem::Clone(bool make_unique_id) const
