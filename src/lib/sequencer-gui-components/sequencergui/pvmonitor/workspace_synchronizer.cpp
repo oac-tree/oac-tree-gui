@@ -28,7 +28,6 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
@@ -51,17 +50,17 @@ void ValidateWorkspaces(const sequencergui::WorkspaceItem* workspace_item,
 {
   if (!workspace_item)
   {
-    throw sup::gui::LogicErrorException("Uninitialized workspace item");
+    throw sequencergui::LogicErrorException("Uninitialized workspace item");
   }
 
   if (!domain_workspace)
   {
-    throw sup::gui::LogicErrorException("Uninitialized domain workspace");
+    throw sequencergui::LogicErrorException("Uninitialized domain workspace");
   }
 
   if (domain_workspace->VariableNames().empty())
   {
-    throw sup::gui::LogicErrorException("Workspace doesn't not contain variables");
+    throw sequencergui::LogicErrorException("Workspace doesn't not contain variables");
   }
 
   std::vector<std::string> variable_item_names;
@@ -77,7 +76,8 @@ void ValidateWorkspaces(const sequencergui::WorkspaceItem* workspace_item,
 
   if (domain_names != variable_item_names)
   {
-    throw sup::gui::LogicErrorException("Workspace and WorkspaceItem have different variable set");
+    throw sequencergui::LogicErrorException(
+        "Workspace and WorkspaceItem have different variable set");
   }
 }
 

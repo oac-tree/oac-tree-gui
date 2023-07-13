@@ -25,7 +25,6 @@
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
@@ -98,7 +97,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSynchronizeNonMatchingWorkspaces)
     mvvm::ApplicationModel model;
     auto workspace_item = model.InsertItem<WorkspaceItem>();
     WorkspaceSynchronizer synchronizer(workspace_item, &workspace);
-    EXPECT_THROW(synchronizer.Start(), sup::gui::LogicErrorException);
+    EXPECT_THROW(synchronizer.Start(), LogicErrorException);
   }
 
   {  // variables do not match
@@ -112,7 +111,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSynchronizeNonMatchingWorkspaces)
     // changing the name to make mismatch in workspaces
     variable_item->SetName("abc");
 
-    EXPECT_THROW(synchronizer->Start(), sup::gui::LogicErrorException);
+    EXPECT_THROW(synchronizer->Start(), LogicErrorException);
   }
 }
 
@@ -123,8 +122,8 @@ TEST_F(WorkspaceSynchronizerTests, Start)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  m_model.GetWorkspaceItem()->InsertItem(
-      CreateLocalVariableItem("abc", value0), mvvm::TagIndex::Append());
+  m_model.GetWorkspaceItem()->InsertItem(CreateLocalVariableItem("abc", value0),
+                                         mvvm::TagIndex::Append());
 
   auto synchronizer = CreateSynchronizer();
 
