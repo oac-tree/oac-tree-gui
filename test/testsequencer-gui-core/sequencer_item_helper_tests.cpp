@@ -112,7 +112,7 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<InstructionContainerItem>());
   EXPECT_TRUE(IsCloneImplemented<JobItem>());
   EXPECT_TRUE(IsCloneImplemented<ProcedureItem>());
-  EXPECT_TRUE(IsCloneImplemented<TypeRegistrationInfoItem>());
+  EXPECT_TRUE(IsCloneImplemented<TypeRegistrationItem>());
   EXPECT_TRUE(IsCloneImplemented<ProcedurePreambleItem>());
   EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
 }

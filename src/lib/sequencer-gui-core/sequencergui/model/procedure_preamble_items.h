@@ -22,20 +22,31 @@
 
 #include <mvvm/model/compound_item.h>
 
+namespace mvvm
+{
+class ContainerItem;
+}
+
 namespace sequencergui
 {
 
 //! Represents TypeRegistrationInfo.
 
-class TypeRegistrationInfoItem : public mvvm::CompoundItem
+class TypeRegistrationItem : public mvvm::CompoundItem
 {
 public:
-  static inline const std::string Type = "TypeRegistrationInfo";
+  static inline const std::string Type = "TypeRegistrationItem";
 
   using CompoundItem::CompoundItem;
-  TypeRegistrationInfoItem();
+  TypeRegistrationItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  int GetRegistrationMode() const;
+  void SetRegistrationMode(int value);
+
+  std::string GetRegistrationString() const;
+  void SetRegistrationString(const std::string& value);
 };
 
 //! Represents ProcedurePreamble.
@@ -49,6 +60,16 @@ public:
   ProcedurePreambleItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  mvvm::ContainerItem* GetTypeRegistrationContainer() const;
+
+  mvvm::ContainerItem* GetPluginContainer() const;
+
+  void AddTypeRegistration(int mode, const std::string& str);
+  std::vector<std::pair<int, std::string>> GetTypeRegistrations() const;
+
+  std::vector<std::string> GetPluginPaths() const;
+  void AddPluginPath(const std::string& value);
 };
 
 }  // namespace sequencergui
