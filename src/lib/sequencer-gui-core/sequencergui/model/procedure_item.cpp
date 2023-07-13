@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/workspace_item.h>
 
 namespace sequencergui
@@ -28,6 +29,7 @@ namespace sequencergui
 
 static inline const std::string kInstructions = "kInstructions";
 static inline const std::string kWorkspace = "kWorkspace";
+static inline const std::string kPreamble = "kPreamble";
 static inline const std::string kFileName = "kFileName";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
@@ -37,6 +39,7 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   AddProperty(kFileName, std::string())->SetDisplayName("File name");
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
+  AddBranch<WorkspaceItem>(kPreamble)->SetDisplayName("Preamble");
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone(bool make_unique_id) const
@@ -83,4 +86,10 @@ WorkspaceItem *ProcedureItem::GetWorkspace() const
 {
   return GetItem<WorkspaceItem>(kWorkspace);
 }
+
+ProcedurePreambleItem *ProcedureItem::GetPreambleItem() const
+{
+  return GetItem<ProcedurePreambleItem>(kPreamble);
+}
+
 }  // namespace sequencergui

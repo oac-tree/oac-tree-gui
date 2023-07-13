@@ -31,6 +31,7 @@ class Runner;
 class UserInterface;
 class Workspace;
 class AttributeDefinition;
+class ProcedurePreamble;
 }  // namespace sup::sequencer
 
 using procedure_t = sup::sequencer::Procedure;
@@ -40,5 +41,6 @@ using runner_t = sup::sequencer::Runner;
 using userinterface_t = sup::sequencer::UserInterface;
 using workspace_t = sup::sequencer::Workspace;
 using attribute_definition_t = sup::sequencer::AttributeDefinition;
+using preamble_t = sup::sequencer::ProcedurePreamble;
 
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

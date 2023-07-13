@@ -33,6 +33,7 @@ class InstructionItem;
 class InstructionContainerItem;
 class VariableItem;
 class ProcedureItem;
+class ProcedurePreambleItem;
 
 //! Translates domain's type name to the model type of corresponding GUI item.
 std::string GetItemType(const std::string& domain_type);
@@ -46,6 +47,11 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 //! Creates ProcedureItem from given domain procedure. If flag `root_only` is true, will use process
 //! one top-level root instruction.
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
+
+/**
+ * @brief Populates empty PreambleItem with the domain information.
+ */
+void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item);
 
 }  // namespace sequencergui
 

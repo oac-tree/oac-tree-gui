@@ -19,6 +19,7 @@
 
 #include "transform_from_domain.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/sequencer_item_includes.h>
@@ -29,6 +30,7 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/workspace.h>
 
 #include <stdexcept>
@@ -132,6 +134,24 @@ std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure,
 {
   GUIObjectBuilder builder;
   return builder.CreateProcedureItem(procedure, root_only);
+}
+
+void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item)
+{
+    if (!item.GetPluginPaths().empty() || !item.GetTypeRegistrations().empty())
+  {
+    throw LogicErrorException("ProcedurePreambleItem must be empty");
+  }
+
+  for (const auto& str : preamble.GetPluginPaths())
+  {
+    item.AddPluginPath(str);
+  }
+
+  for (const auto& info : preamble.GetTypeRegistrations())
+  {
+    item.AddTypeRegistration(static_cast<int>(info.GetRegistrationMode()), info.GetString());
+  }
 }
 
 }  // namespace sequencergui

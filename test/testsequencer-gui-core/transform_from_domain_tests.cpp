@@ -19,14 +19,17 @@
 
 #include "sequencergui/transform/transform_from_domain.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/epics_instruction_items.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
+#include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_registry.h>
 
@@ -99,8 +102,8 @@ public:
   public:
     UnknownDomainVariable() : Variable(Type) {}
 
-    bool GetValueImpl(sup::dto::AnyValue& value) const override {return true;}
-    bool SetValueImpl(const sup::dto::AnyValue& value) override{return true;}
+    bool GetValueImpl(sup::dto::AnyValue& value) const override { return true; }
+    bool SetValueImpl(const sup::dto::AnyValue& value) override { return true; }
 
     static inline const std::string Type = "UnknownDomainVariable";
 
@@ -230,4 +233,46 @@ TEST_F(TransformFromDomainTest, CreateUniversalVariable)
 
   EXPECT_EQ(universal_item->GetDomainType(), UnknownDomainVariable::Type);
   EXPECT_EQ(universal_item->GetType(), UniversalVariableItem::Type);
+}
+
+TEST_F(TransformFromDomainTest, PopulateProcedurePreambleItem)
+{
+  {  // empty
+    sup::sequencer::ProcedurePreamble preamble;
+    ProcedurePreambleItem item;
+    PopulateProcedurePreambleItem(preamble, item);
+
+    EXPECT_TRUE(preamble.GetPluginPaths().empty());
+    EXPECT_TRUE(preamble.GetTypeRegistrations().empty());
+  }
+
+  {  // preamble
+    using sup::sequencer::TypeRegistrationInfo;
+
+    sup::sequencer::ProcedurePreamble preamble;
+    preamble.AddPluginPath("abc");
+    preamble.AddPluginPath("def");
+    preamble.AddTypeRegistration(TypeRegistrationInfo(TypeRegistrationInfo::kJSONFile, "a1"));
+    preamble.AddTypeRegistration(TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, "a2"));
+
+    ProcedurePreambleItem item;
+    PopulateProcedurePreambleItem(preamble, item);
+
+    std::vector<std::string> expected_paths{"abc", "def"};
+    std::vector<std::pair<int, std::string> > expected_info = {{0, "a1"}, {1, "a2"}};
+
+    EXPECT_EQ(item.GetPluginPaths(), expected_paths);
+    EXPECT_EQ(item.GetTypeRegistrations(), expected_info);
+  }
+
+  {  // attempt to add in non-empty preamble
+    using sup::sequencer::TypeRegistrationInfo;
+
+    sup::sequencer::ProcedurePreamble preamble;
+    preamble.AddPluginPath("abc");
+
+    ProcedurePreambleItem item;
+    item.AddPluginPath("aaa");
+    EXPECT_THROW(PopulateProcedurePreambleItem(preamble, item), LogicErrorException);
+  }
 }

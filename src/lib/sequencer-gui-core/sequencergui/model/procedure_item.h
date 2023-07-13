@@ -26,6 +26,7 @@ namespace sequencergui
 {
 class WorkspaceItem;
 class InstructionContainerItem;
+class ProcedurePreambleItem;
 
 //! Represents Procedure.
 class ProcedureItem : public mvvm::CompoundItem
@@ -52,7 +53,10 @@ public:
 
   InstructionContainerItem* GetInstructionContainer() const;
   WorkspaceItem* GetWorkspace() const;
+
+  ProcedurePreambleItem* GetPreambleItem() const;
 };
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDURE_ITEM_H_
