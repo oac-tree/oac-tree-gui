@@ -180,6 +180,41 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
+//! Changing domain variable and checking that WorkspaceItem was properly updated.
+//! The test repeats the test above, except that synchronizer is constructed differently.
+
+TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdatedHandlerCase)
+{
+  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto variable_item0 =
+      m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  variable_item0->SetName("abc");
+  SetAnyValue(value0, *variable_item0);
+
+  auto synchronizer = CreateSynchronizerJobHandlerCase();  // the difference with previous test
+  synchronizer->Start();
+
+  // AnyValueItem on board should represent proper AnyValue
+  ASSERT_TRUE(variable_item0->GetAnyValueItem() != nullptr);
+  auto stored_anyvalue0 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value0, stored_anyvalue0);
+
+  auto prev_anyvalue_item = variable_item0->GetAnyValueItem();
+
+  // changing the value via domain workspace
+  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  EXPECT_TRUE(synchronizer->GetWorkspace()->SetValue("abc", value1));
+
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
+
+  EXPECT_EQ(variable_item0->GetAnyValueItem(), prev_anyvalue_item);
+  auto stored_anyvalue1 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(value1, stored_anyvalue1);
+}
+
+//! Creating WorkspaceItem with one LocalVariableItem.
 //! Changing GUI variable and checking that domain was properly updated.
 
 TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
@@ -199,6 +234,47 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
   testutils::MockModelListener model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizer();
+  synchronizer->Start();
+
+  // changing the value via the model
+  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+
+  // callback expectations
+  EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
+  // method SetAnyValue below will remove previous AnyValue and insert new item, 4 calls
+  // correspond to AboutToRemoveEvent, ItemRemovedEvent, AboutToInsertEvent, ItemInsertedEvent
+  EXPECT_CALL(model_listener, OnEvent(_)).Times(4);
+
+  // no need to wait, domain is notified via direct connections
+  SetAnyValue(new_value, *variable_item);
+
+  auto domain_variable0 = synchronizer->GetWorkspace()->GetVariable(var_name);
+  sup::dto::AnyValue domain_value;
+  EXPECT_TRUE(domain_variable0->GetValue(domain_value));
+  EXPECT_EQ(domain_value, new_value);
+}
+
+//! Creating WorkspaceItem with one LocalVariableItem.
+//! Changing GUI variable and checking that domain was properly updated.
+//! The test repeats the test above, except that synchronizer is constructed differently.
+
+TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdateHandlerCase)
+{
+  const std::string var_name("abc");
+
+  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto variable_item =
+      m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  variable_item->SetName(var_name);
+  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+
+  SetAnyValue(value0, *variable_item);
+
+  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  testutils::MockModelListener model_listener(&m_model);
+
+  auto synchronizer = CreateSynchronizerJobHandlerCase();
   synchronizer->Start();
 
   // changing the value via the model
