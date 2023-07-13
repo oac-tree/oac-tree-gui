@@ -36,28 +36,46 @@ class SequencerWorkspaceListener;
 class WorkspaceItemController;
 class WorkspaceEvent;
 
-//! Provides data synchronization between WorkspaceItem and sequencer Workspace. All AnyValue
-//! updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all DataChangedEvent
-//! on GUI model side will be propagated to Sequencer Workspace.
-//!
-//! @note It is required, that WorkspaceItem and domain Workspace have same amount of variables and
-//! their names are the  same.
-//!
-//! @note It is expected that the method Workspace::Setup() in the domain has not been called yet.
-//! See explanations in Start() method's code.
+/**
+ * @brief The WorkspaceSynchronizer class provides data synchronization between WorkspaceItem and
+ * sequencer Workspace.
+ *
+ * @details All AnyValue updates in domain Workspace will be propagated to WorkspaceItem. Similarly,
+ * all DataChangedEvent on GUI model side will be propagated to Sequencer Workspace. The number of
+ * variables in both workspaces, as well as their names, should coincide. There are two ways to use
+ the controller.
+ * @code
+    // When the domain and the GUI workspaces are known upfront:
+    WorkspaceSynchronizer synchronizer(workspace, workspace_item);
+    syncronizer->Start();
+
+    // When the GUI workspace was generated after the domain worspace.
+    WorkspaceSynchronizer synchronizer(workspace);
+    workspace->Setup();
+    synchronizer->SetWorkspaceItem(workspace_item);
+    synchronizer->Start();
+ * @endcode
+ */
 
 class WorkspaceSynchronizer : public QObject
 {
   Q_OBJECT
 
 public:
-  WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace,
-                        QObject* parent = nullptr);
+  /**
+   * @brief Main c-tor when domain workspace is known upfront.
+   *
+   * @details This c-tor requires that the WorkspaceItem should be set after.
+   */
+  WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace, QObject* parent = nullptr);
 
+  /**
+   * @brief Main c-tor when domain workspace and GUI workspace are known upfront.
+   */
   WorkspaceSynchronizer(WorkspaceItem* workspace_item, sup::sequencer::Workspace* domain_workspace,
                         QObject* parent = nullptr);
-  ~WorkspaceSynchronizer() override;
 
+  ~WorkspaceSynchronizer() override;
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
@@ -67,15 +85,13 @@ public:
 
   WorkspaceItem* GetWorkspaceItem() const;
 
-  void SetInitialValuesFromDomain();
-
 private:
+  void SetInitialValuesFromDomain();
   void OnDomainVariableUpdated();
   void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
 
   std::unique_ptr<SequencerWorkspaceListener> m_workspace_listener;
   std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
-
   sup::sequencer::Workspace* m_workspace{nullptr};
   WorkspaceItem* m_workspace_item{nullptr};
 };

@@ -94,7 +94,6 @@ private:
   void PrepareForRun();
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
-  void SetupWorkspaceSynchronizer();
   void SetupDomainRunnerAdapter();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;

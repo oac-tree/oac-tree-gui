@@ -90,8 +90,6 @@ void JobHandler::onPrepareJobRequest()
 
   SetupExpandedProcedureItem();
 
-  SetupWorkspaceSynchronizer();
-
   SetupDomainRunnerAdapter();
 }
 
@@ -208,30 +206,11 @@ void JobHandler::SetupDomainProcedure()
 
   if (!m_domain_procedure->GetWorkspace()->GetVariables().empty())
   {
-    m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(m_domain_procedure->GetWorkspace());
-//    auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
-//    m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
-//    m_workspace_synchronizer->Start();  // will setup domain Workspace too
+    m_workspace_synchronizer =
+        std::make_unique<WorkspaceSynchronizer>(m_domain_procedure->GetWorkspace());
   }
 
   m_domain_procedure->Setup();
-
-
-
-//  // we are setting up root instruction, but deliberately not setting up the Workspace
-//  if (m_domain_procedure->RootInstruction())
-//  {
-//    m_domain_procedure->RootInstruction()->Setup(*m_domain_procedure);
-//  }
-//  else
-//  {
-//    if (m_domain_procedure->GetInstructionCount() > 1)
-//    {
-//      throw RuntimeException(
-//          "None of existing top-level instructions is marked as root instruction");
-//    }
-//    // we actually allow it to pass the setup, if procedure has only Workspace
-//  }
 }
 
 //! Setup expanded procedure item. It will reflect the content of domain procedure after its Setup.
@@ -248,21 +227,8 @@ void JobHandler::SetupExpandedProcedureItem()
   if (m_workspace_synchronizer)
   {
     m_workspace_synchronizer->SetWorkspaceItem(expanded_procedure_ptr->GetWorkspace());
-    m_workspace_synchronizer->SetInitialValuesFromDomain();
+    m_workspace_synchronizer->Start();
   }
-}
-
-//! Setup synchronization of workspace variables.
-
-void JobHandler::SetupWorkspaceSynchronizer()
-{
-//  auto workspace_item = m_job_item->GetExpandedProcedure()->GetWorkspace();
-//  if (workspace_item->GetVariableCount() > 0)
-//  {
-//    auto workspace = const_cast<sup::sequencer::Workspace *>(m_domain_procedure->GetWorkspace());
-//    m_workspace_synchronizer = std::make_unique<WorkspaceSynchronizer>(workspace_item, workspace);
-//    m_workspace_synchronizer->Start();  // will setup domain Workspace too
-//  }
 }
 
 //! Setup adapter to run procedures.

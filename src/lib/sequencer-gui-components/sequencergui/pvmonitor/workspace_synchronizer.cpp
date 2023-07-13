@@ -28,13 +28,13 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/sessionmodel.h>
 
-#include <sup/gui/core/exceptions.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/workspace.h>
 
 #include <algorithm>
@@ -90,41 +90,22 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(sup::sequencer::Workspace* domain_w
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
           &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
 
+  // Starting to receive callbacks from the domain.
   m_workspace_listener->StartListening(GetWorkspace());
 }
 
 WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,
                                              sup::sequencer::Workspace* domain_workspace,
                                              QObject* parent)
-    : QObject(parent)
-    , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
-    , m_workspace_item_controller(std::make_unique<WorkspaceItemController>(workspace_item))
-    , m_workspace(domain_workspace)
-    , m_workspace_item(workspace_item)
+    : WorkspaceSynchronizer(domain_workspace, parent)
 {
-  if (domain_workspace->IsSuccessfullySetup())
-  {
-    throw RuntimeException("Domain workspace has already been set up.");
-  }
-
-  connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
-          &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
-
-  m_workspace_item_controller = std::make_unique<WorkspaceItemController>(workspace_item);
-  m_workspace_item = workspace_item;
-
-  ValidateWorkspaces(*m_workspace_item, *m_workspace);
-
-  m_workspace_item_controller->SetCallback([this](const auto& event)
-                                           { OnWorkspaceEventFromGUI(event); });
+  SetWorkspaceItem(workspace_item);
 }
 
 void WorkspaceSynchronizer::SetWorkspaceItem(WorkspaceItem* workspace_item)
 {
   m_workspace_item_controller = std::make_unique<WorkspaceItemController>(workspace_item);
   m_workspace_item = workspace_item;
-
-  ValidateWorkspaces(*m_workspace_item, *m_workspace);
 
   m_workspace_item_controller->SetCallback([this](const auto& event)
                                            { OnWorkspaceEventFromGUI(event); });
@@ -138,23 +119,10 @@ void WorkspaceSynchronizer::Start()
 {
   ValidateWorkspaces(*m_workspace_item, *m_workspace);
 
-  // In sequencer GUI two scenarios are possible: 1) Workspace is generated from WorkspaceItem.
-  // 2) WorkspaceItem is generated from Workspace. It is not clear, at which moment the method
-  // Workspace::Setup() will be called. That complicates the logic when synchronization starts:
-  // Should we populate workspaces? Should we call Setup? How to set initial values in GUI variables
-  // reliably, having in mind all issues with IsAvailable?
-
-  // For the moment, we assume that both Workspace and WorkspaceItem have been already populated
-  // with identical set of variables, and that Workspace::Setup() has not been called yet.
-
-  m_workspace_listener->StartListening(GetWorkspace());
-
-  // At this moment we are ready to receive callbacks from the domain. However, all callbacks are
-  // connected with this thread (the GUI thread) via queued connections. This hopefully guarantees,
-  // that the setting of initial values below will be processed before any domain callback is
-  // served.
-
-  m_workspace->Setup();
+  if (!m_workspace->IsSuccessfullySetup())
+  {
+    m_workspace->Setup();
+  }
 
   // Setting initial values will be performed once. All other updates will be done via callbacks.
   SetInitialValuesFromDomain();
@@ -196,6 +164,11 @@ void WorkspaceSynchronizer::OnDomainVariableUpdated()
 {
   auto event = m_workspace_listener->PopEvent();
 
+  // Handling the case when the domain was set and has started to receive callbacks while
+  // WorkspaceItem wasn't set yet. Since this method is connected to the GUI thread via queued
+  // connection, no data race is expected. It is safe just to check if the controller was already
+  // created.
+
   if (m_workspace_item_controller)
   {
     m_workspace_item_controller->ProcessEventFromDomain(event);
@@ -204,7 +177,10 @@ void WorkspaceSynchronizer::OnDomainVariableUpdated()
 
 void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
 {
-  GetWorkspace()->SetValue(event.variable_name, event.value);
+  if (GetWorkspace())
+  {
+    GetWorkspace()->SetValue(event.variable_name, event.value);
+  }
 }
 
 }  // namespace sequencergui
