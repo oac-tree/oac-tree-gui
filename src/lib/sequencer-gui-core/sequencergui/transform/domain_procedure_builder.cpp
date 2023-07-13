@@ -26,6 +26,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/sessionmodel.h>
 
@@ -110,13 +111,12 @@ void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* worksp
   m_workspace_builder->PopulateDomainWorkspace(workspace,
                                                const_cast<workspace_t*>(procedure->GetWorkspace()));
 }
-
 void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_item,
-                                               procedure_t &procedure)
+                                               procedure_t& procedure)
 {
   PopulateDomainInstructions(procedure_item.GetInstructionContainer(), &procedure);
   PopulateDomainWorkspace(procedure_item.GetWorkspace(), &procedure);
-//  PopulateProcedurePreambleItem(*procedure_item.GetPreambleItem(), procedure.GetPreamble());
+  PopulateProcedurePreamble(*procedure_item.GetPreambleItem(), procedure.GetPreamble());
 }
 
 std::string DomainProcedureBuilder::FindInstructionIdentifier(

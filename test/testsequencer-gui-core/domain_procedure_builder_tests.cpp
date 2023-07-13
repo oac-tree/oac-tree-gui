@@ -27,6 +27,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
@@ -70,6 +71,25 @@ TEST_F(DomainProcedureBuilderTest, EmptyProcedure)
   EXPECT_EQ(instructions.size(), 0);
   EXPECT_EQ(procedure->GetInstructionCount(), 0);
   EXPECT_TRUE(procedure->VariableNames().empty());
+}
+
+//! Building domain procedure from ProcedureItem containing a preamble.
+
+TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
+{
+  ProcedureItem procedure_item;
+  procedure_item.GetPreambleItem()->AddPluginPath("plugin_path");
+  procedure_item.GetPreambleItem()->AddTypeRegistration(1, "json_type");
+
+  DomainProcedureBuilder builder;
+  auto procedure = builder.CreateProcedure(procedure_item);
+
+  std::vector<std::string> expected_paths{"plugin_path"};
+  EXPECT_EQ(procedure->GetPreamble().GetPluginPaths(), expected_paths);
+  ASSERT_EQ(procedure->GetPreamble().GetTypeRegistrations().size(), 1);
+  EXPECT_EQ(procedure->GetPreamble().GetTypeRegistrations().at(0).GetRegistrationMode(), 1);
+  EXPECT_EQ(procedure->GetPreamble().GetTypeRegistrations().at(0).GetString(), "json_type");
+
 }
 
 //! Building domain procedure from ProcedureItem with a single sequence.

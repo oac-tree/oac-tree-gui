@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -36,6 +37,7 @@
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/attribute_utils.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
 
 namespace
@@ -220,7 +222,7 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   // In the absence of other sources of the information we can only use attribute name
   // for both, display name and tag name of the new property item.
   auto property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
-  property->SetAnyTypeName(attr.GetType().GetTypeName());   // will set default value too
+  property->SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property->SetDisplayName(attr.GetName());
   return property;
 }
@@ -286,6 +288,27 @@ void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &i
   {
     item.RegisterTag(mvvm::TagInfo(itemconstants::kChildInstructions, 0, 1, {}),
                      /*as_default*/ true);
+  }
+}
+
+void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &preamble)
+{
+  using sup::sequencer::TypeRegistrationInfo;
+
+  if (!preamble.GetPluginPaths().empty() || !preamble.GetTypeRegistrations().empty())
+  {
+    throw LogicErrorException("ProcedurePreamble must be empty");
+  }
+
+  for (const auto &str : item.GetPluginPaths())
+  {
+    preamble.AddPluginPath(str);
+  }
+
+  for (const auto &[mode, str] : item.GetTypeRegistrations())
+  {
+    preamble.AddTypeRegistration(
+        TypeRegistrationInfo(static_cast<TypeRegistrationInfo::RegistrationMode>(mode), str));
   }
 }
 

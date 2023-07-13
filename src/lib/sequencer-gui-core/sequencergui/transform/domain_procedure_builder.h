@@ -33,6 +33,7 @@ class InstructionItem;
 class InstructionContainerItem;
 class WorkspaceItem;
 class DomainWorkspaceBuilder;
+class ProcedurePreambleItem;
 
 //! Creates domain Procedure from ProcedureItem.
 //! Saves correspondence of SessionItem identifiers to newly created domain objects.

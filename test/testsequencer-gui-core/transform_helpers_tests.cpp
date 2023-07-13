@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -40,6 +41,7 @@
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
@@ -425,4 +427,45 @@ TEST_F(TransformHelpersTests, SetDomainAttributeVaryingCase)
   SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute),
             std::string("$par1"));
+}
+
+TEST_F(TransformHelpersTests, PopulateProcedurePreambleFromItem)
+{
+  {  // empty
+    sup::sequencer::ProcedurePreamble preamble;
+    ProcedurePreambleItem item;
+    PopulateProcedurePreamble(item, preamble);
+
+    EXPECT_TRUE(preamble.GetPluginPaths().empty());
+    EXPECT_TRUE(preamble.GetTypeRegistrations().empty());
+  }
+
+  {  // preamble
+    using sup::sequencer::TypeRegistrationInfo;
+
+    ProcedurePreambleItem item;
+    item.AddPluginPath("abc");
+    item.AddPluginPath("def");
+    item.AddTypeRegistration(1, "aaa");
+
+    sup::sequencer::ProcedurePreamble preamble;
+    PopulateProcedurePreamble(item, preamble);
+
+    std::vector<std::string> expected_paths{"abc", "def"};
+    EXPECT_EQ(preamble.GetPluginPaths(), expected_paths);
+    ASSERT_EQ(preamble.GetTypeRegistrations().size(), 1);
+    EXPECT_EQ(preamble.GetTypeRegistrations().at(0).GetRegistrationMode(), 1);
+    EXPECT_EQ(preamble.GetTypeRegistrations().at(0).GetString(), "aaa");
+  }
+
+  {  // attempt to add in non-empty preamble
+    using sup::sequencer::TypeRegistrationInfo;
+
+    ProcedurePreambleItem item;
+
+    sup::sequencer::ProcedurePreamble preamble;
+    preamble.AddPluginPath("abc");
+
+    EXPECT_THROW(PopulateProcedurePreamble(item, preamble), LogicErrorException);
+  }
 }

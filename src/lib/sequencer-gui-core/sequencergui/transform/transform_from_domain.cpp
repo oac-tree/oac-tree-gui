@@ -138,7 +138,7 @@ std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure,
 
 void PopulateProcedurePreambleItem(const preamble_t& preamble, ProcedurePreambleItem& item)
 {
-    if (!item.GetPluginPaths().empty() || !item.GetTypeRegistrations().empty())
+  if (!item.GetPluginPaths().empty() || !item.GetTypeRegistrations().empty())
   {
     throw LogicErrorException("ProcedurePreambleItem must be empty");
   }

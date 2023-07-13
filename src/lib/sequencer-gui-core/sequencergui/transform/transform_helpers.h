@@ -43,6 +43,7 @@ namespace sequencergui
 {
 
 class VariableItem;
+class ProcedurePreambleItem;
 
 //! Sets AnyValueItem on board of \it variable_item using given \it anyvalue.
 //! If AnyValueItem already exist, it will be replaced.
@@ -133,6 +134,11 @@ extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueS
  * @param item An item where tag will be registered.
  */
 void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& item);
+
+/**
+ * @brief Populates domain preamble from ProcedurePreambleItem.
+ */
+void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& preamble);
 
 }  // namespace sequencergui
 
