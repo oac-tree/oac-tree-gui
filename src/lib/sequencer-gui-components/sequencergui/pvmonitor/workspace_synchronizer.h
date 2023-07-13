@@ -79,6 +79,11 @@ public:
 
   void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
+  /**
+   * @brief Returns true if syncronizer has been already started.
+   */
+  bool HasStarted() const;
+
   void Start();
 
   sup::sequencer::Workspace* GetWorkspace() const;
@@ -94,6 +99,7 @@ private:
   std::unique_ptr<WorkspaceItemController> m_workspace_item_controller;
   sup::sequencer::Workspace* m_workspace{nullptr};
   WorkspaceItem* m_workspace_item{nullptr};
+  bool m_started{false};
 };
 
 }  // namespace sequencergui

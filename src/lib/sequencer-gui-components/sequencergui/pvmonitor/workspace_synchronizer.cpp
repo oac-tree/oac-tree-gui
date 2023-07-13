@@ -46,20 +46,30 @@ namespace
 const double kWaitLittleTime(0.02);
 
 //! Validates that workspace
-void ValidateWorkspaces(const sequencergui::WorkspaceItem& workspace_item,
-                        const sup::sequencer::Workspace& domain_workspace)
+void ValidateWorkspaces(const sequencergui::WorkspaceItem* workspace_item,
+                        const sup::sequencer::Workspace* domain_workspace)
 {
-  if (domain_workspace.VariableNames().empty())
+  if (!workspace_item)
+  {
+    throw sup::gui::LogicErrorException("Uninitialized workspace item");
+  }
+
+  if (!domain_workspace)
+  {
+    throw sup::gui::LogicErrorException("Uninitialized domain workspace");
+  }
+
+  if (domain_workspace->VariableNames().empty())
   {
     throw sup::gui::LogicErrorException("Workspace doesn't not contain variables");
   }
 
   std::vector<std::string> variable_item_names;
-  for (const auto variable_item : workspace_item.GetVariables())
+  for (const auto variable_item : workspace_item->GetVariables())
   {
     variable_item_names.push_back(variable_item->GetName());
   }
-  auto domain_names = domain_workspace.VariableNames();
+  auto domain_names = domain_workspace->VariableNames();
 
   // sequencer stores everything in a map, sorting is necessary for comparison
   std::sort(domain_names.begin(), domain_names.end());
@@ -111,13 +121,23 @@ void WorkspaceSynchronizer::SetWorkspaceItem(WorkspaceItem* workspace_item)
                                            { OnWorkspaceEventFromGUI(event); });
 }
 
+bool WorkspaceSynchronizer::HasStarted() const
+{
+  return m_started;
+}
+
 WorkspaceSynchronizer::~WorkspaceSynchronizer() = default;
 
 //! Starts synchronization between domain Workspace and GUI's WorkspaceItem.
 
 void WorkspaceSynchronizer::Start()
 {
-  ValidateWorkspaces(*m_workspace_item, *m_workspace);
+  if (m_started)
+  {
+    throw LogicErrorException("Synchronizer has been already started");
+  }
+
+  ValidateWorkspaces(m_workspace_item, m_workspace);
 
   if (!m_workspace->IsSuccessfullySetup())
   {
@@ -126,6 +146,8 @@ void WorkspaceSynchronizer::Start()
 
   // Setting initial values will be performed once. All other updates will be done via callbacks.
   SetInitialValuesFromDomain();
+
+  m_started = true;
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
@@ -166,10 +188,10 @@ void WorkspaceSynchronizer::OnDomainVariableUpdated()
 
   // Handling the case when the domain was set and has started to receive callbacks while
   // WorkspaceItem wasn't set yet. Since this method is connected to the GUI thread via queued
-  // connection, no data race is expected. It is safe just to check if the controller was already
-  // created.
+  // connection, no data race is expected. It is safe just to check if synchronizer has been already
+  // started.
 
-  if (m_workspace_item_controller)
+  if (m_started)
   {
     m_workspace_item_controller->ProcessEventFromDomain(event);
   }
@@ -177,7 +199,7 @@ void WorkspaceSynchronizer::OnDomainVariableUpdated()
 
 void WorkspaceSynchronizer::OnWorkspaceEventFromGUI(const WorkspaceEvent& event)
 {
-  if (GetWorkspace())
+  if (m_started)
   {
     GetWorkspace()->SetValue(event.variable_name, event.value);
   }

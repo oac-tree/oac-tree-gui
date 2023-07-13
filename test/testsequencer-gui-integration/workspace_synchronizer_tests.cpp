@@ -19,6 +19,7 @@
 
 #include "sequencergui/pvmonitor/workspace_synchronizer.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
@@ -66,26 +67,39 @@ public:
     return std::make_unique<WorkspaceSynchronizer>(m_model.GetWorkspaceItem(), &m_workspace);
   }
 
+  //! Creates synchronizer for testing. This mimics the way syncronizer is set in a JobHandler
+  std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizerJobHandlerCase()
+  {
+    // populate sequencer workspace so it match WorkspaceItem
+    PopulateDomainWorkspace(*m_model.GetWorkspaceItem(), m_workspace);
+    auto result = std::make_unique<WorkspaceSynchronizer>(&m_workspace);
+    m_workspace.Setup();
+    result->SetWorkspaceItem(m_model.GetWorkspaceItem());
+    return result;
+  }
+
   MonitorModel m_model;
   sup::sequencer::Workspace m_workspace;
 };
 
 TEST_F(WorkspaceSynchronizerTests, InitialState)
 {
-//  auto synchronizer = CreateSynchronizer();
-//  EXPECT_EQ(synchronizer->GetWorkspace(), &m_workspace);
+  auto synchronizer = CreateSynchronizer();
+  EXPECT_EQ(synchronizer->GetWorkspace(), &m_workspace);
+  EXPECT_EQ(synchronizer->GetWorkspaceItem(), m_model.GetWorkspaceItem());
+  EXPECT_FALSE(synchronizer->HasStarted());
 }
 
 TEST_F(WorkspaceSynchronizerTests, AttemptToSynchronizeNonMatchingWorkspaces)
 {
-//  {  // empty workspaces
-//    sup::sequencer::Workspace workspace;
+  {  // empty workspaces
+    sup::sequencer::Workspace workspace;
 
-//    mvvm::ApplicationModel model;
-//    auto workspace_item = model.InsertItem<WorkspaceItem>();
-//    WorkspaceSynchronizer synchronizer(workspace_item, &workspace);
-//    EXPECT_THROW(synchronizer.Start(), sup::gui::LogicErrorException);
-//  }
+    mvvm::ApplicationModel model;
+    auto workspace_item = model.InsertItem<WorkspaceItem>();
+    WorkspaceSynchronizer synchronizer(workspace_item, &workspace);
+    EXPECT_THROW(synchronizer.Start(), sup::gui::LogicErrorException);
+  }
 
   {  // variables do not match
     const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
@@ -109,12 +123,13 @@ TEST_F(WorkspaceSynchronizerTests, Start)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  auto variable_item0 = m_model.GetWorkspaceItem()->InsertItem(
+  m_model.GetWorkspaceItem()->InsertItem(
       CreateLocalVariableItem("abc", value0), mvvm::TagIndex::Append());
 
   auto synchronizer = CreateSynchronizer();
 
   synchronizer->Start();
+  EXPECT_TRUE(synchronizer->HasStarted());
 
   ASSERT_TRUE(synchronizer->GetWorkspace() != nullptr);
   EXPECT_EQ(synchronizer->GetWorkspace()->GetVariables().size(), 1);
@@ -126,6 +141,9 @@ TEST_F(WorkspaceSynchronizerTests, Start)
   sup::dto::AnyValue domain_value;
   EXPECT_TRUE(domain_variable0->GetValue(domain_value));
   EXPECT_EQ(domain_value, value0);
+
+  // attempt to start twice
+  EXPECT_THROW(synchronizer->Start(), sequencergui::LogicErrorException);
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
