@@ -29,6 +29,15 @@ class ProcedureItemTests : public ::testing::Test
 {
 };
 
+TEST_F(ProcedureItemTests, InitialState)
+{
+  ProcedureItem item;
+
+  EXPECT_TRUE(item.GetInstructionContainer());
+  EXPECT_TRUE(item.GetWorkspace());
+  EXPECT_TRUE(item.GetPreambleItem());
+}
+
 TEST_F(ProcedureItemTests, GetterAndSetter)
 {
   ProcedureItem item;

@@ -39,7 +39,7 @@ ProcedureItem::ProcedureItem() : CompoundItem(Type)
   AddProperty(kFileName, std::string())->SetDisplayName("File name");
   AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
   AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
-  AddBranch<WorkspaceItem>(kPreamble)->SetDisplayName("Preamble");
+  AddBranch<ProcedurePreambleItem>(kPreamble)->SetDisplayName("Preamble");
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone(bool make_unique_id) const

@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
@@ -30,6 +31,7 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
@@ -45,7 +47,7 @@ class GUIObjectBuilderTest : public ::testing::Test
 
 //! Populate InstructionContainerItem from empty Procedure.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromEmptyProcedure)
+TEST_F(GUIObjectBuilderTest, PopulateItemFromEmptyProcedure)
 {
   ::sup::sequencer::Procedure procedure;
   sequencergui::ProcedureItem procedure_item;
@@ -59,7 +61,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromEmptyProcedure)
 
 //! Populate InstructionContainerItem from Procedure with a single Wait instruction.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
+TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithWait)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -80,7 +82,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithWait)
 //! Populate InstructionContainerItem from Procedure with two Wait instruction.
 //! One is marked as root instruction, root_only=true is used
 
-TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithTwoWaits)
+TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithTwoWaits)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -105,7 +107,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithTwoWaits)
 
 //! Populate InstructionContainerItem from Procedure with a Sequence containing Wait instruction.
 
-TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
+TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithSequence)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -135,7 +137,7 @@ TEST_F(GUIObjectBuilderTest, PopulateItemContainerFromProcedureWithSequence)
 
 //! Populate WorkspaceItem from empty procedure.
 
-TEST_F(GUIObjectBuilderTest, PopulateWorkspaceItemFromProcedureWithLocalVariable)
+TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithLocalVariable)
 {
   ::sup::sequencer::Procedure procedure;
 
@@ -285,4 +287,30 @@ TEST_F(GUIObjectBuilderTest, FindInstruction)
 
   WaitItem wait_item;
   EXPECT_EQ(builder.FindInstruction(&wait_item), nullptr);
+}
+
+//! Populate ProcedureItem from the domain procedure containing preamble.
+
+TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithPreamble)
+{
+  using sup::sequencer::TypeRegistrationInfo;
+
+  ::sup::sequencer::Procedure procedure;
+
+  procedure.GetPreamble().AddPluginPath("abc");
+  procedure.GetPreamble().AddPluginPath("def");
+  procedure.GetPreamble().AddTypeRegistration(
+      TypeRegistrationInfo(TypeRegistrationInfo::kJSONFile, "a1"));
+  procedure.GetPreamble().AddTypeRegistration(
+      TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, "a2"));
+
+  sequencergui::ProcedureItem procedure_item;
+  GUIObjectBuilder builder;
+  builder.PopulateProcedureItem(&procedure, &procedure_item, /*root_only*/ false);
+
+  std::vector<std::string> expected_paths{"abc", "def"};
+  std::vector<std::pair<int, std::string> > expected_info = {{0, "a1"}, {1, "a2"}};
+
+  EXPECT_EQ(procedure_item.GetPreambleItem()->GetPluginPaths(), expected_paths);
+  EXPECT_EQ(procedure_item.GetPreambleItem()->GetTypeRegistrations(), expected_info);
 }

@@ -116,6 +116,7 @@ void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_it
 {
   PopulateDomainInstructions(procedure_item.GetInstructionContainer(), &procedure);
   PopulateDomainWorkspace(procedure_item.GetWorkspace(), &procedure);
+//  PopulateProcedurePreambleItem(*procedure_item.GetPreambleItem(), procedure.GetPreamble());
 }
 
 std::string DomainProcedureBuilder::FindInstructionIdentifier(

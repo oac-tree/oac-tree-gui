@@ -61,6 +61,8 @@ void GUIObjectBuilder::PopulateProcedureItem(const procedure_t *procedure,
 
   auto workspace_item = procedure_item->GetWorkspace();
   PopulateWorkspaceItem(procedure, workspace_item);
+
+  PopulateProcedurePreambleItem(procedure->GetPreamble(), *procedure_item->GetPreambleItem());
 }
 
 //! Populates empty WorkspaceItem with the content from sequencer Procedure.
