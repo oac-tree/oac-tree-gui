@@ -52,10 +52,7 @@ public:
 
   std::unique_ptr<DomainRunnerAdapter> CreateRunnerAdapter(procedure_t* procedure)
   {
-    if (!procedure->Setup())
-    {
-      throw std::runtime_error("Can't setup procedure");
-    }
+    procedure->Setup();
     DomainRunnerContext context{procedure, &m_observer, m_runner_listener.CreateCallback(),
                                 m_tick_listener.CreateCallback()};
     auto result = std::make_unique<DomainRunnerAdapter>(context);
