@@ -108,12 +108,13 @@ void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variabl
   SetAnyValue(anyvalue, variable_item);
 }
 
-void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item)
+void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
+                                   const anytype_registry_t *registry)
 {
   if (variable.HasAttribute(domainconstants::kTypeAttribute))
   {
     auto anytype = sup::gui::AnyTypeFromJSONString(
-        variable.GetAttributeString(domainconstants::kTypeAttribute));
+        variable.GetAttributeString(domainconstants::kTypeAttribute), registry);
 
     auto get_anyvalue = [&anytype, &variable]()
     {

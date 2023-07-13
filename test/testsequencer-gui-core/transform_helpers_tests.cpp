@@ -29,6 +29,7 @@
 #include <sequencergui/model/universal_variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/compound_item.h>
@@ -38,6 +39,7 @@
 #include <mvvm/model/taginfo.h>
 
 #include <sup/dto/anytype.h>
+#include <sup/dto/anytype_registry.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_handler.h>
 #include <sup/sequencer/instruction.h>
@@ -271,6 +273,30 @@ TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariable)
 
     EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   }
+}
+
+//! Validate SetAnyValueFromDomainVariable helper method. Json type is preregistered.
+
+TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariableWithRegistry)
+{
+  sup::dto::AnyTypeRegistry registry;
+  std::string one_scalar_name = "OneScalar";
+  sup::dto::AnyType one_scalar{{{"value", sup::dto::SignedInteger32Type}}, one_scalar_name};
+  registry.RegisterType(one_scalar);
+
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  variable->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"OneScalar"})RAW");
+  variable->AddAttribute(domainconstants::kValueAttribute, R"RAW({"value":42})RAW");
+
+  LocalVariableItem item;
+  SetAnyValueFromDomainVariable(*variable, item, &registry);
+
+  sup::dto::AnyValue expected_anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}},
+                                          one_scalar_name};
+
+  ASSERT_NE(item.GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(expected_anyvalue, stored_anyvalue);
 }
 
 //! Testing AddPropertyFromDefinition helper method.
