@@ -29,6 +29,7 @@
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
+#include <mvvm/signals/model_listener.h>
 
 namespace sequencergui
 {
@@ -40,9 +41,12 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
+  std::unique_ptr<mvvm::ModelListener<mvvm::SessionModelInterface>> m_listener;
 
   GraphicsSceneControllerImpl(mvvm::SessionModelInterface* model, GraphicsScene* graphics_scene)
-      : m_model(model), m_graphics_scene(graphics_scene)
+      : m_model(model)
+      , m_graphics_scene(graphics_scene)
+      , m_listener(std::make_unique<mvvm::ModelListener<mvvm::SessionModelInterface>>(model))
   {
     if (!m_model || !m_graphics_scene)
     {
@@ -163,11 +167,16 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   }
 };
 
-GraphicsSceneController::GraphicsSceneController(mvvm::SessionModelInterface *model,
+GraphicsSceneController::GraphicsSceneController(mvvm::SessionModelInterface* model,
                                                  GraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {
-  Subscribe(model);
+  p_impl->m_listener->Connect<mvvm::DataChangedEvent>(this, &GraphicsSceneController::OnModelEvent);
+
+  p_impl->m_listener->Connect<mvvm::ItemInsertedEvent>(this,
+                                                       &GraphicsSceneController::OnModelEvent);
+  p_impl->m_listener->Connect<mvvm::AboutToRemoveItemEvent>(this,
+                                                            &GraphicsSceneController::OnModelEvent);
 }
 
 GraphicsSceneController::~GraphicsSceneController() = default;

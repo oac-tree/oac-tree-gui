@@ -20,8 +20,7 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
 
-#include <mvvm/viewmodel/abstract_viewmodel_controller.h>
-
+#include <mvvm/signals/event_types.h>
 #include <functional>
 #include <memory>
 
@@ -38,17 +37,17 @@ class InstructionContainerItem;
 
 //! Listens for changes in SequencerModel and updates GraphicsScene.
 
-class GraphicsSceneController : public mvvm::AbstractViewModelController
+class GraphicsSceneController
 {
 public:
   GraphicsSceneController(mvvm::SessionModelInterface *model, GraphicsScene *graphics_scene);
-  ~GraphicsSceneController() override;
+  ~GraphicsSceneController();
 
-  void OnModelEvent(const mvvm::ItemInsertedEvent &event) override;
+  void OnModelEvent(const mvvm::ItemInsertedEvent &event);
 
-  void OnModelEvent(const mvvm::AboutToRemoveItemEvent &event) override;
+  void OnModelEvent(const mvvm::AboutToRemoveItemEvent &event);
 
-  void OnModelEvent(const mvvm::DataChangedEvent &event) override;
+  void OnModelEvent(const mvvm::DataChangedEvent &event);
 
   void Init(InstructionContainerItem *root_item);
 
