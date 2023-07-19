@@ -32,7 +32,6 @@
 
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
-#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
@@ -47,7 +46,7 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(model)
-    , m_actions(new WorkspaceEditorActionHandler(CreateContext(), this))
+    , m_workspace_editor_action_handler(new WorkspaceEditorActionHandler(CreateContext(), this))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
   auto layout = new QVBoxLayout(this);
@@ -69,13 +68,14 @@ mvvm::ViewModel *MonitorWidget::GetViewModel()
 
 void MonitorWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_actions,
+  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_workspace_editor_action_handler,
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
 
-  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
+  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_workspace_editor_action_handler,
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 
-  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, m_actions,
+  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest,
+          m_workspace_editor_action_handler,
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
@@ -95,7 +95,7 @@ void MonitorWidget::SetupConnections()
       m_tree_view->GetTreeView()->setExpanded(index_of_inserted.front(), true);
     }
   };
-  connect(m_actions, &WorkspaceEditorActionHandler::SelectItemRequest, this,
+  connect(m_workspace_editor_action_handler, &WorkspaceEditorActionHandler::SelectItemRequest, this,
           on_select_variable_request);
 }
 
@@ -103,7 +103,7 @@ void MonitorWidget::OnStartMonitoringRequest()
 {
   try
   {
-    m_workspace = std::make_unique<sup::sequencer::Workspace>();
+    m_workspace = std::make_unique<workspace_t>();
 
     PopulateDomainWorkspace(*m_model->GetWorkspaceItem(), *m_workspace);
 
