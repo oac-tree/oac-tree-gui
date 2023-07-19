@@ -157,12 +157,12 @@ void WorkspaceSynchronizer::Shutdown()
 {
   UpdateVariableEditableProperty(false, *GetWorkspaceItem());
 
+  m_workspace->Reset();
+
   for (auto item : GetWorkspaceItem()->GetVariables())
   {
     item->SetIsAvailable(false);
   }
-
-  m_workspace->Reset();
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
