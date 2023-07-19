@@ -155,9 +155,9 @@ void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
 void WorkspaceEditorWidget::SetupConnections()
 {
   // propagate instruction related requests from WorkspaceEditorWidget to WorkspaceEditorActions
-  connect(m_editor_actions, &WorkspaceEditorActions::InsertAfterRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::AddVariableRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
-  connect(m_editor_actions, &WorkspaceEditorActions::RemoveSelectedRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
   connect(m_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);

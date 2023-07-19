@@ -44,19 +44,19 @@ public:
   QList<QAction*> GetActions() const;
 
 signals:
-  void InsertAfterRequest(const QString& name);
-  void RemoveSelectedRequest();
+  void AddVariableRequest(const QString& name);
   void EditAnyvalueRequest();
+  void RemoveVariableRequest();
 
 private:
   void SetupActions();
 
   std::unique_ptr<QMenu> CreateInsertAfterMenu();
 
-  std::unique_ptr<QMenu> m_insert_after_menu;
-  QWidgetAction* m_insert_after_action{nullptr};
-  QWidgetAction* m_remove_action{nullptr};
+  std::unique_ptr<QMenu> m_add_variable_menu;
+  QWidgetAction* m_add_variable_action{nullptr};
   QWidgetAction* m_edit_anyvalue_action{nullptr};
+  QWidgetAction* m_remove_variable_action{nullptr};
 };
 
 }  // namespace sequencergui

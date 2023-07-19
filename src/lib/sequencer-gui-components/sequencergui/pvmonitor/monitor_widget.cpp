@@ -72,6 +72,9 @@ void MonitorWidget::SetupConnections()
   connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_actions,
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
 
+  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
+          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
+
   connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest, m_actions,
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
 
@@ -80,9 +83,6 @@ void MonitorWidget::SetupConnections()
 
   connect(m_tool_bar, &MonitorWidgetToolBar::StopMonitoringRequest, this,
           &MonitorWidget::OnStopMonitoringRequest);
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_actions,
-          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 
   // make inserted item selected, and tree branch expanded
   auto on_select_variable_request = [this](auto item)

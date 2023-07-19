@@ -32,14 +32,14 @@ namespace sequencergui
 {
 
 WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
-    : QObject(parent), m_insert_after_menu(CreateInsertAfterMenu())
+    : QObject(parent), m_add_variable_menu(CreateInsertAfterMenu())
 {
   SetupActions();
 }
 
 QList<QAction *> WorkspaceEditorActions::GetActions() const
 {
-  return {m_insert_after_action, m_edit_anyvalue_action, m_remove_action};
+  return {m_add_variable_action, m_edit_anyvalue_action, m_remove_variable_action};
 }
 
 WorkspaceEditorActions::~WorkspaceEditorActions() = default;
@@ -51,15 +51,18 @@ void WorkspaceEditorActions::SetupActions()
   // 2. QAction with menu doesn't provide InstantPopup capabilities, so instead we create
   // QToolButton with the menu and wrap it into QWidgetAction
 
-  auto insert_after_button = new QToolButton;
-  insert_after_button->setText("Add");
-  insert_after_button->setIcon(styleutils::GetIcon("plus-circle-outline"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  insert_after_button->setPopupMode(QToolButton::InstantPopup);
-  insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip("Insert variable after current selection");
-  m_insert_after_action = new QWidgetAction(this);
-  m_insert_after_action->setDefaultWidget(insert_after_button);
+  auto add_variable_button = new QToolButton;
+  add_variable_button->setText("Add");
+  add_variable_button->setIcon(styleutils::GetIcon("plus-circle-outline"));
+  add_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  add_variable_button->setPopupMode(QToolButton::InstantPopup);
+  add_variable_button->setMenu(m_add_variable_menu.get());
+  add_variable_button->setToolTip(
+      "Add sequencer variable to the workspace\n\n"
+      "- If existing variable is selected, new variable\n"
+      "  will be inserted after");
+  m_add_variable_action = new QWidgetAction(this);
+  m_add_variable_action->setDefaultWidget(add_variable_button);
 
   auto edit_anyvalue_button = new QToolButton;
   edit_anyvalue_button->setText("Edit");
@@ -71,15 +74,15 @@ void WorkspaceEditorActions::SetupActions()
   m_edit_anyvalue_action = new QWidgetAction(this);
   m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
 
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_button->setToolTip("Remove currently selected variable");
-  connect(remove_button, &QToolButton::clicked, this,
-          &WorkspaceEditorActions::RemoveSelectedRequest);
-  m_remove_action = new QWidgetAction(this);
-  m_remove_action->setDefaultWidget(remove_button);
+  auto remove_variable_button = new QToolButton;
+  remove_variable_button->setText("Remove");
+  remove_variable_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
+  remove_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  remove_variable_button->setToolTip("Remove currently selected variable");
+  connect(remove_variable_button, &QToolButton::clicked, this,
+          &WorkspaceEditorActions::RemoveVariableRequest);
+  m_remove_variable_action = new QWidgetAction(this);
+  m_remove_variable_action->setDefaultWidget(remove_variable_button);
 }
 
 //! Creates menu to insert Variables in a workspace.
@@ -92,7 +95,7 @@ std::unique_ptr<QMenu> WorkspaceEditorActions::CreateInsertAfterMenu()
   for (const auto &name : names)
   {
     auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit InsertAfterRequest(name); };
+    auto on_action = [this, name]() { emit AddVariableRequest(name); };
     connect(action, &QAction::triggered, this, on_action);
   }
 

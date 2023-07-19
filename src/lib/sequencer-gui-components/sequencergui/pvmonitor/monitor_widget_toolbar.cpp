@@ -39,11 +39,11 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
 
   using styleutils::GetIcon;
 
-  connect(m_workspace_editor_actions, &WorkspaceEditorActions::InsertAfterRequest, this,
+  connect(m_workspace_editor_actions, &WorkspaceEditorActions::AddVariableRequest, this,
           &MonitorWidgetToolBar::AddVariableRequest);
   connect(m_workspace_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, this,
           &MonitorWidgetToolBar::EditAnyvalueRequest);
-  connect(m_workspace_editor_actions, &WorkspaceEditorActions::RemoveSelectedRequest, this,
+  connect(m_workspace_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, this,
           &MonitorWidgetToolBar::RemoveVariableRequest);
 
   addActions(m_workspace_editor_actions->GetActions());
