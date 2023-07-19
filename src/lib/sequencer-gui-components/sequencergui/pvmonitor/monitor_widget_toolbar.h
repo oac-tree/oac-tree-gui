@@ -27,6 +27,8 @@ class QToolButton;
 namespace sequencergui
 {
 
+class WorkspaceEditorActions;
+
 class MonitorWidgetToolBar : public QToolBar
 {
   Q_OBJECT
@@ -46,10 +48,8 @@ private:
   std::unique_ptr<QMenu> CreateAddVariableMenu();
   void InsertStrech();
 
-  std::unique_ptr<QMenu> m_add_variable_menu;
-  QToolButton* m_add_button{nullptr};
-  QToolButton* m_remove_button{nullptr};
-  QToolButton* m_edit_anyvalue_button{nullptr};
+  WorkspaceEditorActions* m_workspace_editor_actions{nullptr};
+
   QToolButton* m_start_button{nullptr};
   QToolButton* m_stop_button{nullptr};
 };
