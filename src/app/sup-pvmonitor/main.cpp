@@ -23,11 +23,12 @@
 #include <sequencergui/core/version.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
+
 #include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
+#include <QMessageBox>
 #include <QMetaType>
-#include <iostream>
 
 int main(int argc, char** argv)
 {
@@ -43,7 +44,12 @@ int main(int argc, char** argv)
 
   sequencergui::RegisterCustomMetaTypes();
   Q_INIT_RESOURCE(sequencericons);
-  sequencergui::LoadPlugins();
+
+  auto [success, message] = sequencergui::LoadPlugins();
+  if (!success)
+  {
+    QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
+  }
 
   sequencergui::PvMonitorMainWindow win;
   win.show();

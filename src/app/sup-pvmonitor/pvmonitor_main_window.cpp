@@ -36,6 +36,7 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 
 namespace sequencergui
 {
+
 PvMonitorMainWindow::PvMonitorMainWindow() : m_model(std::make_unique<MonitorModel>())
 {
   PopulateModel();
