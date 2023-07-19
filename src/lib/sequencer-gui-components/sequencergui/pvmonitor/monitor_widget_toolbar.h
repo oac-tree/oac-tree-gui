@@ -22,7 +22,7 @@
 
 #include <QToolBar>
 
-class QToolButton;
+class QWidgetAction;
 
 namespace sequencergui
 {
@@ -37,6 +37,13 @@ public:
   explicit MonitorWidgetToolBar(QWidget* parent = nullptr);
   ~MonitorWidgetToolBar() override;
 
+  /**
+   * @brief Update enable/disable state of all toolbar actions according to the flag.
+   *
+   * @param is_running Workspace is running, when true.
+   */
+  void UpdateActionsState(bool is_running);
+
 signals:
   void AddVariableRequest(const QString& variable_type_name);
   void EditAnyvalueRequest();
@@ -50,8 +57,8 @@ private:
 
   WorkspaceEditorActions* m_workspace_editor_actions{nullptr};
 
-  QToolButton* m_start_button{nullptr};
-  QToolButton* m_stop_button{nullptr};
+  QAction* m_start_action{nullptr};
+  QAction* m_stop_action{nullptr};
 };
 
 }  // namespace sequencergui

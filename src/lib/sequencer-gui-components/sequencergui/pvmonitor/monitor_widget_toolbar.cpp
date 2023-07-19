@@ -24,7 +24,8 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/widgets/style_utils.h>
 
-#include <QToolButton>
+#include <QAction>
+#include <QActionGroup>
 
 namespace sequencergui
 {
@@ -32,10 +33,11 @@ namespace sequencergui
 MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
     : QToolBar(parent)
     , m_workspace_editor_actions(new WorkspaceEditorActions(this))
-    , m_start_button(new QToolButton)
-    , m_stop_button(new QToolButton)
+    , m_start_action(new QAction)
+    , m_stop_action(new QAction)
 {
   setIconSize(sequencergui::styleutils::ToolBarIconSize());
+  setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
   using styleutils::GetIcon;
 
@@ -50,20 +52,21 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
 
   addSeparator();
 
-  m_start_button->setText("Start");
-  m_start_button->setIcon(GetIcon("chevron-right-circle-outline"));
-  m_start_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_start_button->setToolTip("Start monitoring workspace variables");
-  connect(m_start_button, &QToolButton::clicked, this,
-          &MonitorWidgetToolBar::StartMonitoringRequest);
-  addWidget(m_start_button);
+  m_start_action->setText("Start");
+  m_start_action->setIcon(GetIcon("chevron-right-circle-outline"));
+  m_start_action->setToolTip("Start monitoring workspace variables");
 
-  m_stop_button->setText("Stop");
-  m_stop_button->setIcon(GetIcon("stop-circle-outline"));
-  m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  m_stop_button->setToolTip("Stop monitoring");
-  connect(m_stop_button, &QToolButton::clicked, this, &MonitorWidgetToolBar::StopMonitoringRequest);
-  addWidget(m_stop_button);
+  connect(m_start_action, &QAction::triggered, this,  &MonitorWidgetToolBar::StartMonitoringRequest);
+  addAction(m_start_action);
+
+  m_stop_action->setText("Stop");
+  m_stop_action->setIcon(GetIcon("stop-circle-outline"));
+  m_stop_action->setToolTip("Stop monitoring");
+  m_stop_action->setEnabled(false);
+  connect(m_stop_action, &QAction::triggered, this, &MonitorWidgetToolBar::StopMonitoringRequest);
+  addAction(m_stop_action);
+
+  UpdateActionsState(false);
 }
 
 MonitorWidgetToolBar::~MonitorWidgetToolBar() = default;
@@ -73,6 +76,25 @@ void MonitorWidgetToolBar::InsertStrech()
   auto empty = new QWidget(this);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   addWidget(empty);
+}
+
+void MonitorWidgetToolBar::UpdateActionsState(bool is_running)
+{
+  // when in running state, stop action should be enabled, others disabled, and vice versa
+  auto enabled_when_is_running = QList<QAction *>() << m_stop_action;
+
+  auto disabled_when_is_running = QList<QAction *>()
+                                  << m_workspace_editor_actions->GetActions() << m_start_action;
+
+  for (auto action : enabled_when_is_running)
+  {
+    action->setEnabled(is_running);
+  }
+
+  for (auto action : disabled_when_is_running)
+  {
+    action->setEnabled(!is_running);
+  }
 }
 
 }  // namespace sequencergui

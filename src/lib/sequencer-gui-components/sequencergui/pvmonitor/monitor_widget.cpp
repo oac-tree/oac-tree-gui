@@ -110,10 +110,12 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
+    m_tool_bar->UpdateActionsState(true);
   }
   catch (std::exception &ex)
   {
     SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
+    m_tool_bar->UpdateActionsState(false);
   }
 }
 
@@ -124,6 +126,7 @@ void MonitorWidget::OnStopMonitoringRequest()
   {
     item->SetIsAvailable(false);
   }
+  m_tool_bar->UpdateActionsState(false);
 }
 
 WorkspaceEditorContext MonitorWidget::CreateContext()
