@@ -84,7 +84,15 @@ public:
    */
   bool HasStarted() const;
 
+  /**
+   * @brief Start domain/GUI workspace syncronization.
+   */
   void Start();
+
+  /**
+   * @brief Stop workspace syncronization.
+   */
+  void Shutdown();
 
   sup::sequencer::Workspace* GetWorkspace() const;
 

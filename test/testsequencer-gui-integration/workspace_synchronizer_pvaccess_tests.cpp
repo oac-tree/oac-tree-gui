@@ -20,8 +20,8 @@
 #include "sequencergui/pvmonitor/workspace_synchronizer.h"
 
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
@@ -103,14 +103,24 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   testutils::MockModelListener model_listener(&m_model);
 
-  // After domain workspace was set-up, the only callback will be DataChangedEvent for IsAvailable
-  // status, caused by Start method.
+  // After domain workspace was set-up, there will be DataChangedEvent for IsAvailable
+  // status, and two more events for editable attributes change, caused by Start method.
 
   auto is_available_property = variable_item->GetItem(itemconstants::kIsAvailable);
-  auto expected_event =
+  auto expected_event1 =
       mvvm::event_variant_t(mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData});
+  EXPECT_CALL(model_listener, OnEvent(expected_event1)).Times(1);
 
-  EXPECT_CALL(model_listener, OnEvent(expected_event)).Times(1);
+  auto channel_property = variable_item->GetItem(domainconstants::kChannelAttribute);
+  auto expected_event2 =
+      mvvm::event_variant_t(mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance});
+  EXPECT_CALL(model_listener, OnEvent(expected_event2)).Times(1);
+
+  auto name_property = variable_item->GetItem(domainconstants::kNameAttribute);
+  auto expected_event3 =
+      mvvm::event_variant_t(mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance});
+  EXPECT_CALL(model_listener, OnEvent(expected_event3)).Times(1);
+
   EXPECT_CALL(domain_listener, OnEvent(_, _, _)).Times(0);
 
   synchronizer->Start();
@@ -259,15 +269,38 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
 
   testutils::MockModelListener model_listener(&m_model);
 
+  // expected events from client variable
   {
-    ::testing::InSequence seq;
-    auto expected_event1 =
-        mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
+    auto expected_event1 = mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable),
+                                                  mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnEvent(mvvm::event_variant_t(expected_event1))).Times(1);
 
-    auto expected_event2 =
-        mvvm::DataChangedEvent{server_item->GetItem(itemconstants::kIsAvailable), mvvm::DataRole::kData};
+    auto channel_property = client_item->GetItem(domainconstants::kChannelAttribute);
+    auto expected_event1a = mvvm::event_variant_t(
+        mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance});
+    EXPECT_CALL(model_listener, OnEvent(expected_event1a)).Times(1);
+
+    auto name_property = client_item->GetItem(domainconstants::kNameAttribute);
+    auto expected_event1b =
+        mvvm::event_variant_t(mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance});
+    EXPECT_CALL(model_listener, OnEvent(expected_event1b)).Times(1);
+  }
+
+  // expected events from server variable
+  {
+    auto expected_event2 = mvvm::DataChangedEvent{server_item->GetItem(itemconstants::kIsAvailable),
+                                                  mvvm::DataRole::kData};
     EXPECT_CALL(model_listener, OnEvent(mvvm::event_variant_t(expected_event2))).Times(1);
+
+    auto channel_property = server_item->GetItem(domainconstants::kChannelAttribute);
+    auto expected_event2a = mvvm::event_variant_t(
+        mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance});
+    EXPECT_CALL(model_listener, OnEvent(expected_event2a)).Times(1);
+
+    auto name_property = server_item->GetItem(domainconstants::kNameAttribute);
+    auto expected_event2b =
+        mvvm::event_variant_t(mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance});
+    EXPECT_CALL(model_listener, OnEvent(expected_event2b)).Times(1);
   }
 
   // Creating domain listener and setting callback expectations.

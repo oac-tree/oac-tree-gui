@@ -111,25 +111,18 @@ void MonitorWidget::OnStartMonitoringRequest()
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
     m_tool_bar->UpdateActionsState(true);
-    UpdateVariableEditableProperty(true, *m_model->GetWorkspaceItem());
   }
   catch (std::exception &ex)
   {
     SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
-    m_tool_bar->UpdateActionsState(false);
     UpdateVariableEditableProperty(false, *m_model->GetWorkspaceItem());
   }
 }
 
 void MonitorWidget::OnStopMonitoringRequest()
 {
-  m_workspace->Reset();
-  for (auto item : m_model->GetWorkspaceItem()->GetVariables())
-  {
-    item->SetIsAvailable(false);
-  }
+  m_workspace_synchronizer->Shutdown();
   m_tool_bar->UpdateActionsState(false);
-  UpdateVariableEditableProperty(false, *m_model->GetWorkspaceItem());
 }
 
 WorkspaceEditorContext MonitorWidget::CreateContext()

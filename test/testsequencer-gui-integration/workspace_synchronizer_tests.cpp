@@ -25,11 +25,11 @@
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
+
+#include <sup/dto/anyvalue.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
-
-#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -330,4 +330,38 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
   QTest::qWait(100);
 
   EXPECT_EQ(variable_item->GetAnyValueItem()->Data<int>(), 43);
+}
+
+//! Creating WorkspaceItem with one LocalVariableItem. Validating initial values and editable
+//! properties after start and after shutdown.
+
+TEST_F(WorkspaceSynchronizerTests, StartAndShutdown)
+{
+  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  auto var_item = m_model.GetWorkspaceItem()->InsertItem(CreateLocalVariableItem("abc", value0),
+                                                         mvvm::TagIndex::Append());
+
+  auto synchronizer = CreateSynchronizer();
+
+  EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
+
+  synchronizer->Start();
+  EXPECT_TRUE(synchronizer->HasStarted());
+
+  EXPECT_FALSE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
+
+  ASSERT_TRUE(synchronizer->GetWorkspace() != nullptr);
+  EXPECT_EQ(synchronizer->GetWorkspace()->GetVariables().size(), 1);
+  ASSERT_TRUE(synchronizer->GetWorkspace()->HasVariable("abc"));
+
+  auto domain_variable0 = synchronizer->GetWorkspace()->GetVariable("abc");
+  EXPECT_EQ(domain_variable0->GetName(), "abc");
+
+  sup::dto::AnyValue domain_value;
+  EXPECT_TRUE(domain_variable0->GetValue(domain_value));
+  EXPECT_EQ(domain_value, value0);
+
+  synchronizer->Shutdown();
+  EXPECT_TRUE(var_item->GetItem(domainconstants::kNameAttribute)->IsEditable());
 }

@@ -22,6 +22,7 @@
 #include "sequencer_workspace_listener.h"
 #include "workspace_event.h"
 #include "workspace_item_controller.h"
+#include "workspace_monitor_helper.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/variable_item.h>
@@ -147,7 +148,21 @@ void WorkspaceSynchronizer::Start()
   // Setting initial values will be performed once. All other updates will be done via callbacks.
   SetInitialValuesFromDomain();
 
+  UpdateVariableEditableProperty(true, *GetWorkspaceItem());
+
   m_started = true;
+}
+
+void WorkspaceSynchronizer::Shutdown()
+{
+  UpdateVariableEditableProperty(false, *GetWorkspaceItem());
+
+  for (auto item : GetWorkspaceItem()->GetVariables())
+  {
+    item->SetIsAvailable(false);
+  }
+
+  m_workspace->Reset();
 }
 
 sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
