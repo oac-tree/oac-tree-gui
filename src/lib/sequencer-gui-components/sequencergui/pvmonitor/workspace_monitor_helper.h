@@ -39,8 +39,14 @@ class VariableItem;
 namespace sequencergui
 {
 
-//! Populate empty domain workspace with the content in WorkspaceItem.
-//! If domain workspace is non-empty, will throw.
+/**
+ * @brief Populate empty domain workspace with the content in WorkspaceItem.
+ *
+ * @param item The GUI workspace item
+ * @param workspace Sequencer domain workspace
+ *
+ * @note Domain workspace should be empty, will throw otherwise.
+ */
 void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace);
 
 /**
@@ -70,6 +76,19 @@ T* FindAncestor(const mvvm::SessionItem* item)
 
   return nullptr;
 }
+
+/**
+ * @brief Update all variables in the workspace so their properties enabled/disabled match provided
+ * run status.
+ *
+ * @param is_running Flag denoting if workspace synchronizer was started and GUI and domain
+ * workspace are both up and running.
+ * @param item Workspace item to update variables.
+ *
+ * @details Currently it simply forbids editing the variable's name and channel (if exist), when in
+ * running state.
+ */
+void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item);
 
 }  // namespace sequencergui
 

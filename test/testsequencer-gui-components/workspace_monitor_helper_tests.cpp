@@ -25,8 +25,8 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -89,4 +89,32 @@ TEST_F(WorkspaceMonitorHelperTests, FindAncestor)
   EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0), &workspace_item);
   EXPECT_EQ(FindAncestor<LocalVariableItem>(var_item0->GetAnyValueItem()), var_item0);
   EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
+}
+
+TEST_F(WorkspaceMonitorHelperTests, UpdateVariableEditableProperty)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  WorkspaceItem workspace_item;
+  sup::sequencer::Workspace workspace;
+
+  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  auto var_item1 = workspace_item.InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
+
+  EXPECT_TRUE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
+  EXPECT_TRUE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
+  EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
+
+  UpdateVariableEditableProperty(/*is_running*/ true, workspace_item);
+  EXPECT_FALSE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
+  EXPECT_FALSE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
+  EXPECT_FALSE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
+
+  UpdateVariableEditableProperty(/*is_running*/ false, workspace_item);
+  EXPECT_TRUE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
+  EXPECT_TRUE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
+  EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
 }
