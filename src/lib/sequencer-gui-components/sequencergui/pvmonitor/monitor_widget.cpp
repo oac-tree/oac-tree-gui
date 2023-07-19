@@ -19,7 +19,6 @@
 
 #include "monitor_widget.h"
 
-#include "anyvalue_editor_dialog.h"
 #include "monitor_model.h"
 #include "monitor_widget_toolbar.h"
 #include "workspace_editor_action_handler.h"
@@ -135,20 +134,8 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
 
   auto send_message_callback = [](const auto &event) { return SendWarningMessage(event); };
 
-  auto edit_anyvalue_callback =
-      [this](const sup::gui::AnyValueItem *item) -> std::unique_ptr<sup::gui::AnyValueItem>
-  {
-    AnyValueEditorDialog dialog(this);
-    dialog.SetInitialValue(item);
-    if (dialog.exec() == QDialog::Accepted)
-    {
-      return dialog.GetResult();
-    }
-    return {};  // returning optional value without the value set as a sign of canceled dialog
-  };
-
   return {selected_workspace_callback, selected_item_callback, send_message_callback,
-          edit_anyvalue_callback};
+          CreateAnyValueDialogCallback()};
 }
 
 }  // namespace sequencergui

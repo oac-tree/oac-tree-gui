@@ -24,16 +24,17 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
 
-WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject *parent)
+WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContext context,
+                                                           QObject *parent)
     : QObject(parent), m_context(std::move(context))
 {
   if (!m_context.selected_workspace_callback)
@@ -108,7 +109,7 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
   auto edited_anyvalue = m_context.edit_anyvalue_callback(selected_anyvalue);
 
   // existent value means that the user exited from the dialog with OK
-  if (edited_anyvalue.has_value())
+  if (edited_anyvalue.is_accepted)
   {
     // remove previous AnyValueItem
     if (selected_anyvalue)
@@ -116,10 +117,10 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    if (edited_anyvalue.value())
+    if (edited_anyvalue.result)
     {
       // if unique_ptr<AnyValueItem> is not empty, move it as a new value
-      GetModel()->InsertItem(std::move(edited_anyvalue.value()), selected_variable, {});
+      GetModel()->InsertItem(std::move(edited_anyvalue.result), selected_variable, {});
     }
   }
 }
@@ -155,8 +156,9 @@ void WorkspaceEditorActionHandler::SetupVariable(VariableItem *item)
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
 }
 
-void WorkspaceEditorActionHandler::SendMessage(const std::string &text, const std::string &informative,
-                                         const std::string &details)
+void WorkspaceEditorActionHandler::SendMessage(const std::string &text,
+                                               const std::string &informative,
+                                               const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);

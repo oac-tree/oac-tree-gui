@@ -24,9 +24,9 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -43,36 +43,34 @@ public:
   class MockDialog
   {
   public:
-    void SetItemToReturn(std::unique_ptr<sup::gui::AnyValueItem> item_to_return)
+    void SetItemToReturn(AnyValueDialogResult dialog_result)
     {
-      m_item_to_return = std::move(item_to_return);
+      m_dialog_result = std::move(dialog_result);
     }
 
     MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem* item));
 
     //! Creates a callback that mimicks editing request and returning the result to the user
-    std::function<std::unique_ptr<sup::gui::AnyValueItem>(const sup::gui::AnyValueItem*)>
-    CreateCallback()
+    std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateCallback()
     {
-      return [this](const sup::gui::AnyValueItem* item) -> std::unique_ptr<sup::gui::AnyValueItem>
+      return [this](const sup::gui::AnyValueItem* item) -> AnyValueDialogResult
       {
         OnEditingRequest(item);
-        return std::move(m_item_to_return);
+        return std::move(m_dialog_result);
       };
     }
 
-    std::unique_ptr<sup::gui::AnyValueItem> m_item_to_return;
+    AnyValueDialogResult m_dialog_result;
   };
 
   //! Creates context necessary for AnyValueEditActions to function.
-  WorkspaceEditorContext CreateContext(
-      mvvm::SessionItem* selected_item,
-      std::unique_ptr<sup::gui::AnyValueItem> anyvalue_item_to_return = {})
+  WorkspaceEditorContext CreateContext(mvvm::SessionItem* selected_item,
+                                       AnyValueDialogResult dialog_result = {})
   {
     // callback returns given item, pretending it is user's selection
     auto selected_item_callback = [selected_item]() { return selected_item; };
 
-    m_mock_dialog.SetItemToReturn(std::move(anyvalue_item_to_return));
+    m_mock_dialog.SetItemToReturn(std::move(dialog_result));
 
     auto selected_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
 
@@ -85,10 +83,10 @@ public:
 
   //! Creates AnyValueEditorActions for testing.
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActions(
-      mvvm::SessionItem* selection, std::unique_ptr<sup::gui::AnyValueItem> item_to_return = {})
+      mvvm::SessionItem* selection, AnyValueDialogResult dialog_result = {})
   {
     return std::make_unique<WorkspaceEditorActionHandler>(
-        CreateContext(selection, std::move(item_to_return)), nullptr);
+        CreateContext(selection, std::move(dialog_result)), nullptr);
   }
 
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
@@ -281,7 +279,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   auto editing_result_ptr = editing_result.get();
 
   // preparing actions
-  auto actions = CreateActions(var0, std::move(editing_result));
+  auto actions = CreateActions(var0, {true, std::move(editing_result)});
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -311,7 +309,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
   auto editing_result_ptr = editing_result.get();
 
   // preparing actions
-  auto actions = CreateActions(initial_anyvalue_item, std::move(editing_result));
+  auto actions = CreateActions(initial_anyvalue_item, {true, std::move(editing_result)});
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -341,7 +339,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   std::unique_ptr<sup::gui::AnyValueItem> editing_result;
 
   // preparing actions
-  auto actions = CreateActions(initial_anyvalue_item, std::move(editing_result));
+  auto actions = CreateActions(initial_anyvalue_item, {true, std::move(editing_result)});
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -358,7 +356,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem that doesn't have any
 //! AnyValueItem yet.
 
-TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoANyValueItemIsStilExists)
+TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExists)
 {
   // creating variable with AnyValue on board
   auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
@@ -369,7 +367,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoANyValueItemIsStilExi
   auto editing_result_ptr = editing_result.get();
 
   // preparing actions
-  auto actions = CreateActions(var0, std::move(editing_result));
+  auto actions = CreateActions(var0, {true, std::move(editing_result)});
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);

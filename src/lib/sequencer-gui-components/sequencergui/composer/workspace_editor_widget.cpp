@@ -29,11 +29,12 @@
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
+
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QTreeView>
@@ -74,14 +75,9 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
 
   ReadSettings();
 
-  auto on_subscribe = [this]() {
-    SetProcedureIntern(m_procedure);
-  };
+  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
 
-  auto on_unsubscribe = [this]()
-  {
-    SetProcedureIntern(nullptr);
-  };
+  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
 
   // will be deleted as a child of QObject
   m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
@@ -194,18 +190,7 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
   auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
 
-  auto edit_anyvalue_callback =
-      [this](const sup::gui::AnyValueItem *item) -> std::unique_ptr<sup::gui::AnyValueItem>
-  {
-    AnyValueEditorDialog dialog(this);
-    dialog.SetInitialValue(item);
-    if (dialog.exec() == QDialog::Accepted)
-    {
-      return dialog.GetResult();
-    }
-    return {};
-  };
-  result.edit_anyvalue_callback = edit_anyvalue_callback;
+  result.edit_anyvalue_callback = CreateAnyValueDialogCallback();
 
   return result;
 }
