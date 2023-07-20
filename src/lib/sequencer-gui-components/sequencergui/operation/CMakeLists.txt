@@ -17,4 +17,6 @@ target_sources(${library_name} PRIVATE
   operation_workspace_panel.h
   procedure_action_handler.cpp
   procedure_action_handler.h
+  sequencer_monitor_view.cpp
+  sequencer_monitor_view.h
 )

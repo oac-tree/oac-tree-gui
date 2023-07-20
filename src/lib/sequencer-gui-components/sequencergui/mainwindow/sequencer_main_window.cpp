@@ -27,7 +27,7 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/procedure_examples.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/sequencer_monitor_view.h>
+#include <sequencergui/operation/sequencer_monitor_view.h>
 #include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>

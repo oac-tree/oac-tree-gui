@@ -16,6 +16,4 @@ target_sources(${library_name} PRIVATE
   operation_action_handler.h
   realtime_instruction_tree_widget.cpp
   realtime_instruction_tree_widget.h
-  sequencer_monitor_view.cpp
-  sequencer_monitor_view.h
   )
