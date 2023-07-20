@@ -41,7 +41,6 @@
 #include <mvvm/widgets/top_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -75,9 +74,6 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
 
   m_actions->SetMessageHandler(CreateMessageBoxHandler());
   m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
-
-  // FIXME temporary solution to not to show button "Import Procedure"
-  m_job_panel->GetToolBar()->actions().at(0)->setVisible(false);
 }
 
 SequencerMonitorView::~SequencerMonitorView() = default;
@@ -170,15 +166,8 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
 
 QWidget *SequencerMonitorView::CreateLeftPanel()
 {
-  // tuning tool bar to place it into tool bar of ItemStackWidget
-  auto toolbar = m_job_panel->GetToolBar();
-  toolbar->layout()->setContentsMargins(0, 0, 0, 0);
-  toolbar->layout()->setSpacing(0);
-  auto widget_action = new QWidgetAction(this);
-  widget_action->setDefaultWidget(toolbar);
-
   auto result = new ItemStackWidget;
-  result->AddWidget(m_job_panel, {widget_action});
+  result->AddWidget(m_job_panel, m_job_panel->GetSequencerMonitorViewActions());
   return result;
 }
 

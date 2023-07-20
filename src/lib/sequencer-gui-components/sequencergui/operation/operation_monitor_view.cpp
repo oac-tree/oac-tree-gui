@@ -73,7 +73,10 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
                                     << mvvm::utils::UnitSize(30));
 
-  parent->addToolBar(m_job_panel->GetToolBar());
+  auto job_toolbar = new QToolBar(this);
+  job_toolbar->addActions(m_job_panel->GetOperationMonitorViewActions());
+
+  parent->addToolBar(job_toolbar);
   parent->addToolBar(m_realtime_panel->GetToolBar());
   parent->addToolBar(m_workspace_panel->GetToolBar());
 
@@ -85,9 +88,6 @@ OperationMonitorView::OperationMonitorView(QMainWindow *parent)
   m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
 
   ReadSettings();
-
-  // FIXME temporary solution to not to show button "Submit Procedure"
-  m_job_panel->GetToolBar()->actions().at(1)->setVisible(false);
 }
 
 OperationMonitorView::~OperationMonitorView()
