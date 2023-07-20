@@ -11,8 +11,6 @@ target_sources(${library_name} PRIVATE
   operation_job_panel.h
   operation_job_panel_actions.cpp
   operation_job_panel_actions.h
-  operation_monitor_view.cpp
-  operation_monitor_view.h
   operation_realtime_panel.cpp
   operation_realtime_panel.h
   operation_workspace_panel.cpp
