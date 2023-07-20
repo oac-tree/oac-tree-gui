@@ -20,9 +20,9 @@
 #include "sequencer_monitor_view.h"
 
 #include <sequencergui/components/message_handler_factory.h>
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
-#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -32,6 +32,7 @@
 #include <sequencergui/operation/operation_job_panel.h>
 #include <sequencergui/operation/operation_realtime_panel.h>
 #include <sequencergui/operation/operation_workspace_panel.h>
+#include <sequencergui/operation/procedure_action_handler.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 
@@ -85,6 +86,22 @@ void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
   m_actions->SetJobModel(models->GetJobModel());
 }
 
+void SequencerMonitorView::OnImportJobRequest(const QString &file_name)
+{
+  auto model = m_models->GetSequencerModel();
+
+  ProcedureActionHandler handler;
+  auto procedure = handler.LoadProcedureFromFile(file_name);
+
+  if (procedure)
+  {
+    auto procedure_ptr = procedure.get();
+    model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
+                      mvvm::TagIndex::Append());
+    m_actions->OnSubmitJobRequest(procedure_ptr);
+  }
+}
+
 void SequencerMonitorView::showEvent(QShowEvent *event)
 {
   Q_UNUSED(event);
@@ -132,9 +149,17 @@ void SequencerMonitorView::SetupConnections()
   connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
           &OperationActionHandler::OnSubmitJobRequest);
 
+  // import request
+  connect(m_job_panel, &OperationJobPanel::ImportJobRequest, this,
+          [this]() { OnImportJobRequest(); });
+
   // job removal request
   connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
           &OperationActionHandler::OnRemoveJobRequest);
+
+  // job removal request with cleanup after
+  connect(m_job_panel, &OperationJobPanel::RemoveAndCleanupJobRequest, m_actions,
+          &OperationActionHandler::OnRemoveJobAndCleanupRequest);
 
   // job regenerate request
   connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
@@ -153,7 +178,6 @@ void SequencerMonitorView::SetupConnections()
   };
   connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, this,
           on_toggle_breakpoint_request);
-
 }
 
 //! Setup widgets to show currently selected job.

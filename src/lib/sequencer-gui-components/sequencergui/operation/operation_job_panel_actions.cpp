@@ -43,8 +43,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
   import_button->setIcon(styleutils::GetIcon("file-plus-outline"));
   import_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   import_button->setToolTip("Open sequencer XML procedure from disk");
-  connect(import_button, &QToolButton::clicked, this,
-          &OperationJobPanelActions::ImportJobRequest);
+  connect(import_button, &QToolButton::clicked, this, &OperationJobPanelActions::ImportJobRequest);
   m_import_action->setDefaultWidget(import_button);
 
   auto submit_button = new QToolButton;
@@ -70,9 +69,17 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
   remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
   remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_button->setToolTip("Remove selected procedure from the list");
-  connect(remove_button, &QToolButton::clicked, this,
-          &OperationJobPanelActions::RemoveJobRequest);
+  connect(remove_button, &QToolButton::clicked, this, &OperationJobPanelActions::RemoveJobRequest);
   m_remove_action->setDefaultWidget(remove_button);
+
+  auto remove_and_cleanup_button = new QToolButton;
+  remove_and_cleanup_button->setText("Remove");
+  remove_and_cleanup_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
+  remove_and_cleanup_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  remove_and_cleanup_button->setToolTip("Remove selected procedure from the list");
+  connect(remove_and_cleanup_button, &QToolButton::clicked, this,
+          &OperationJobPanelActions::RemoveAndCleanupJobRequest);
+  m_remove_and_cleanup_action->setDefaultWidget(remove_and_cleanup_button);
 }
 
 void OperationJobPanelActions::SetAvailableProcedures(callback_t available_procedures)
@@ -87,15 +94,14 @@ QList<QAction *> OperationJobPanelActions::GetSequencerMonitorViewActions()
 
 QList<QAction *> OperationJobPanelActions::GetOperationMonitorViewActions()
 {
-  return QList<QAction *>({m_import_action, m_regenerate_action, m_remove_action});
+  return QList<QAction *>({m_import_action, m_regenerate_action, m_remove_and_cleanup_action});
 }
 
 std::unique_ptr<QMenu> OperationJobPanelActions::CreateSubmitProcedureMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
-  connect(result.get(), &QMenu::aboutToShow, this,
-          &OperationJobPanelActions::OnAboutToShowMenu);
+  connect(result.get(), &QMenu::aboutToShow, this, &OperationJobPanelActions::OnAboutToShowMenu);
   return result;
 }
 

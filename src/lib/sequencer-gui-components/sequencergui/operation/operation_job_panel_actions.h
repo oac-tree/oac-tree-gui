@@ -57,6 +57,7 @@ signals:
   void ImportJobRequest();
   void RegenerateJobRequest();
   void RemoveJobRequest();
+  void RemoveAndCleanupJobRequest();
 
 private:
   std::unique_ptr<QMenu> CreateSubmitProcedureMenu();
@@ -68,6 +69,7 @@ private:
   QWidgetAction* m_submit_action{nullptr};
   QWidgetAction* m_regenerate_action{nullptr};
   QWidgetAction* m_remove_action{nullptr};
+  QWidgetAction* m_remove_and_cleanup_action{nullptr};
 
   callback_t m_available_procedures;
 };

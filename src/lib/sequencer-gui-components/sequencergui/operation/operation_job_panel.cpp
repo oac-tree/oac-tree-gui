@@ -97,6 +97,8 @@ void OperationJobPanel::SetupConnections()
           &OperationJobPanel::RegenerateJobRequest);
   connect(m_job_actions, &OperationJobPanelActions::RemoveJobRequest, this,
           &OperationJobPanel::RemoveJobRequest);
+  connect(m_job_actions, &OperationJobPanelActions::RemoveAndCleanupJobRequest, this,
+          &OperationJobPanel::RemoveAndCleanupJobRequest);
 }
 
 void OperationJobPanel::OnJobSelectedIntern(JobItem *item)
