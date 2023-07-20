@@ -83,9 +83,17 @@ void SetupNewVariable(VariableItem *item)
   }
 
   item->SetName(ProposeVariableName(*item));
-  // By default we always set scalar anyvalue to any VariableItem added to the WorkspaceItem.
-  // If user wants something else, he has to start AnyValueEditor.
-  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
+
+  // Normally, we set scalar AnyValue to any VariableItem added to the WorkspaceItem. If user wants
+  // something else, he has to start AnyValueEditor.
+
+  // PvAccessClient is currently an exception, it shouldn't have any AnyValueItem set. It will get
+  // it through the network from the server on workspace start.
+
+  if (item->GetType() != domainconstants::kPvAccessClientVariableType)
+  {
+    SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
+  }
 }
 
 }  // namespace sequencergui

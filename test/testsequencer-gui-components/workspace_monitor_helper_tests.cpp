@@ -141,4 +141,16 @@ TEST_F(WorkspaceMonitorHelperTests, SetupNewVariable)
 
   ASSERT_TRUE(var_item1->GetAnyValueItem());
   EXPECT_EQ(sup::gui::CreateAnyValue(*var_item1->GetAnyValueItem()), expected_value);
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  auto var_item2 = workspace_item.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
+  SetupNewVariable(var_item2);
+
+  // PvAccessClient variable is different, it shouldn't have any AnyValue from the start
+  EXPECT_EQ(var_item2->GetName(), "var2");
+  ASSERT_FALSE(var_item2->GetAnyValueItem());
 }
