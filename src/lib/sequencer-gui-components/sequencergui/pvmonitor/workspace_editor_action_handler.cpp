@@ -27,6 +27,14 @@
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 
+namespace
+{
+
+// For the moment we allow editing. There are some implications between scalar/struct on the way
+// from PvAccess server to client and back.
+const bool kIsPvClientAnyValueEditingAllowed = true;
+}  // namespace
+
 namespace sequencergui
 {
 
@@ -101,6 +109,16 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
 
   auto selected_variable =
       GetSelectedVariable() ? GetSelectedVariable() : FindAncestor<VariableItem>(selected_item);
+
+  if (!kIsPvClientAnyValueEditingAllowed
+      && selected_variable->GetDomainType() == domainconstants::kPvAccessClientVariableType)
+  {
+    SendMessage(
+        "It is not possible to edit AnyValue for PvAccessClientVariable, it will get it from the"
+        " server on startup");
+    return;
+  }
+
   auto selected_anyvalue = selected_variable->GetAnyValueItem();
 
   auto edited_anyvalue = m_context.edit_anyvalue_callback(selected_anyvalue);

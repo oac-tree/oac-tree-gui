@@ -321,10 +321,10 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
 
 TEST_F(WorkspaceSynchronizerPVAccessTests, ClientWithoutAnyValueAndServerVariableConnection)
 {
-  const std::string kChannelName(kTestPrefix + "SCALAR5");
+  const std::string kChannelName(kTestPrefix + "STRUCT5");
   const std::string server_var_name("server");
   const std::string client_var_name("client");
-  sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 0);
+  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto server_item =
@@ -338,11 +338,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientWithoutAnyValueAndServerVariabl
       m_model.GetWorkspaceItem()->InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
   client_item->SetChannel(kChannelName);
   client_item->SetName(client_var_name);
-  SetAnyValue(initial_value, *client_item);
+  // we do not set AnyValue to client
 
   EXPECT_FALSE(server_item->IsAvailable());
   EXPECT_FALSE(client_item->IsAvailable());
-  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
+  EXPECT_FALSE(client_item->GetAnyValueItem());
   EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
 
   // creating synchronizer (and underlying domain  workspace)
@@ -363,6 +363,9 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientWithoutAnyValueAndServerVariabl
     auto name_property = client_item->GetItem(domainconstants::kNameAttribute);
     auto expected_event1b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event1b)).Times(1);
+
+    EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
+    EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
   }
 
   // expected events from server variable
