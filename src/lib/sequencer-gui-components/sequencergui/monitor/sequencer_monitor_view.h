@@ -46,7 +46,13 @@ class SequencerMonitorView : public QWidget
   Q_OBJECT
 
 public:
-  explicit SequencerMonitorView(QWidget* parent = nullptr);
+  enum Mode
+  {
+    kOperartionMode,  //!< widget will be a part of sequencer-operation application
+    kIdeMode          //!< widget will be a part of sequencer-gui
+  };
+
+  explicit SequencerMonitorView(Mode mode, QWidget* parent = nullptr);
   ~SequencerMonitorView() override;
 
   void SetApplicationModels(ApplicationModels* models);
@@ -60,7 +66,7 @@ private:
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
 
-  QWidget* CreateLeftPanel();
+  QWidget* CreateLeftPanel(Mode mode);
   QWidget* CreateCentralPanel();
   QWidget* CreateRightPanel();
 

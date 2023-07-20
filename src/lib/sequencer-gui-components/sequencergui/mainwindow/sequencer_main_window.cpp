@@ -101,7 +101,7 @@ void SequencerMainWindow::InitComponents()
   m_composer_view = new SequencerComposerView;
   m_tab_widget->AddWidget(m_composer_view, "Compose", styleutils::GetIcon("graph-outline-light"));
 
-  m_monitor_view = new SequencerMonitorView;
+  m_monitor_view = new SequencerMonitorView(SequencerMonitorView::kIdeMode);
   m_tab_widget->AddWidget(m_monitor_view, "Run",
                           styleutils::GetIcon("chevron-right-circle-outline-light"));
 

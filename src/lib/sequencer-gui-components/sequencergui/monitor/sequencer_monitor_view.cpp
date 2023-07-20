@@ -50,7 +50,7 @@
 namespace sequencergui
 {
 
-SequencerMonitorView::SequencerMonitorView(QWidget *parent)
+SequencerMonitorView::SequencerMonitorView(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
@@ -63,7 +63,7 @@ SequencerMonitorView::SequencerMonitorView(QWidget *parent)
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
 
-  m_splitter->addWidget(CreateLeftPanel());
+  m_splitter->addWidget(CreateLeftPanel(mode));
   m_splitter->addWidget(CreateCentralPanel());
   m_splitter->addWidget(CreateRightPanel());
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
@@ -188,10 +188,12 @@ void SequencerMonitorView::OnJobSelected(JobItem *item)
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
-QWidget *SequencerMonitorView::CreateLeftPanel()
+QWidget *SequencerMonitorView::CreateLeftPanel(Mode mode)
 {
   auto result = new ItemStackWidget;
-  result->AddWidget(m_job_panel, m_job_panel->GetSequencerMonitorViewActions());
+  auto actions = mode == kIdeMode ? m_job_panel->GetSequencerMonitorViewActions()
+                                  : m_job_panel->GetOperationMonitorViewActions();
+  result->AddWidget(m_job_panel, actions);
   return result;
 }
 
