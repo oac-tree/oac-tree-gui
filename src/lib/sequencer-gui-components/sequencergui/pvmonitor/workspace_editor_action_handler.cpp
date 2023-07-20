@@ -23,12 +23,9 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
-#include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
-
-#include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
@@ -74,7 +71,7 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
     auto inserted = GetModel()->InsertItem(
         GetModel()->GetFactory()->CreateItem(variable_type_name.toStdString()), GetWorkspaceItem(),
         tagindex);
-    SetupVariable(dynamic_cast<VariableItem *>(inserted));
+    SetupNewVariable(dynamic_cast<VariableItem *>(inserted));
     emit SelectItemRequest(inserted);
   }
   catch (const std::exception &ex)
@@ -140,33 +137,12 @@ VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable()
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
 }
 
-//! Set reasonable initial values for just created variable.
-//! Might be changed in the future.
-
-void WorkspaceEditorActionHandler::SetupVariable(VariableItem *item)
-{
-  if (!item)
-  {
-    return;
-  }
-
-  item->SetName(ProposeVariableName());
-  // By default we always set scalar anyvalue to any VariableItem added to the WorkspaceItem.
-  // If user wants something else, he has to start AnyValueEditor.
-  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
-}
-
 void WorkspaceEditorActionHandler::SendMessage(const std::string &text,
                                                const std::string &informative,
                                                const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
-}
-
-std::string WorkspaceEditorActionHandler::ProposeVariableName() const
-{
-  return "var" + std::to_string(GetWorkspaceItem()->GetVariableCount() - 1);
 }
 
 }  // namespace sequencergui

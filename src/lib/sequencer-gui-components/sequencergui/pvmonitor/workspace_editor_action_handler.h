@@ -29,11 +29,6 @@ namespace mvvm
 class SessionModelInterface;
 }
 
-namespace sup::gui
-{
-class AnyValueItem;
-}
-
 namespace sequencergui
 {
 
@@ -62,11 +57,8 @@ private:
   WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable();
 
-  void SetupVariable(VariableItem* item);
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
-
-  std::string ProposeVariableName() const;
 
   WorkspaceItem* m_workspace{nullptr};
   WorkspaceEditorContext m_context;
