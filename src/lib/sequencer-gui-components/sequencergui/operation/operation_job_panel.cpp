@@ -20,7 +20,6 @@
 #include "operation_job_panel.h"
 
 #include "operation_job_panel_actions.h"
-#include "operation_job_panel_toolbar.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
@@ -41,7 +40,6 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
     , m_collapsible_list(new mvvm::CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
     , m_job_property_widget(new JobPropertyWidget)
-    , m_tool_bar(new OperationJobPanelToolBar(this))
     , m_job_actions(new OperationJobPanelActions(this))
 {
   auto layout = new QVBoxLayout(this);
@@ -54,8 +52,6 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
 
   SetupConnections();
 
-  m_tool_bar->SetAvailableProcedures([this]()
-                                     { return m_models->GetSequencerModel()->GetProcedures(); });
   m_job_actions->SetAvailableProcedures([this]()
                                         { return m_models->GetSequencerModel()->GetProcedures(); });
 }
@@ -78,11 +74,6 @@ void OperationJobPanel::SetSelectedJob(JobItem *job_item)
   m_job_list_widget->SetSelectedJob(job_item);
 }
 
-QToolBar *OperationJobPanel::GetToolBar() const
-{
-  return m_tool_bar;
-}
-
 QList<QAction *> OperationJobPanel::GetSequencerMonitorViewActions()
 {
   return m_job_actions->GetSequencerMonitorViewActions();
@@ -97,15 +88,6 @@ void OperationJobPanel::SetupConnections()
 {
   connect(m_job_list_widget, &JobListWidget::JobSelected, this,
           &OperationJobPanel::OnJobSelectedIntern);
-
-  connect(m_tool_bar, &OperationJobPanelToolBar::SubmitProcedureRequest, this,
-          &OperationJobPanel::SubmitProcedureRequest);
-  connect(m_tool_bar, &OperationJobPanelToolBar::ImportJobRequest, this,
-          &OperationJobPanel::ImportJobRequest);
-  connect(m_tool_bar, &OperationJobPanelToolBar::RegenerateJobRequest, this,
-          &OperationJobPanel::RegenerateJobRequest);
-  connect(m_tool_bar, &OperationJobPanelToolBar::RemoveJobRequest, this,
-          &OperationJobPanel::RemoveJobRequest);
 
   connect(m_job_actions, &OperationJobPanelActions::SubmitProcedureRequest, this,
           &OperationJobPanel::SubmitProcedureRequest);

@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   breakpoint_model_delegate.h
   operation_job_panel.cpp
   operation_job_panel.h
-  operation_job_panel_toolbar.cpp
-  operation_job_panel_toolbar.h
   operation_job_panel_actions.cpp
   operation_job_panel_actions.h
   operation_monitor_view.cpp

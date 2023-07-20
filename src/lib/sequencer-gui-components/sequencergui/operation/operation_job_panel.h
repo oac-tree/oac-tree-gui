@@ -36,7 +36,6 @@ class JobItem;
 class ProcedureItem;
 class JobPropertyWidget;
 class ApplicationModels;
-class OperationJobPanelToolBar;
 class OperationJobPanelActions;
 
 //! Vertical panel with list of running jobs and job properties on the left side of
@@ -56,8 +55,6 @@ public:
 
   void SetSelectedJob(JobItem* job_item);
 
-  QToolBar* GetToolBar() const;
-
   QList<QAction*> GetSequencerMonitorViewActions();
 
   QList<QAction*> GetOperationMonitorViewActions();
@@ -76,7 +73,6 @@ private:
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
   JobPropertyWidget* m_job_property_widget{nullptr};
-  OperationJobPanelToolBar* m_tool_bar{nullptr};
   OperationJobPanelActions* m_job_actions{nullptr};
 
   ApplicationModels* m_models{nullptr};
