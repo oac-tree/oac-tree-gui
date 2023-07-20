@@ -37,14 +37,14 @@ class ProcedureItem;
  * @brief The OperationJobPanelToolActions class contains set of actions for OperationJobPanel.
  */
 
-class OperationJobPanelToolActions : public QObject
+class OperationJobPanelActions : public QObject
 {
   Q_OBJECT
 
 public:
   using callback_t = std::function<std::vector<ProcedureItem*>()>;
 
-  explicit OperationJobPanelToolActions(QObject* parent = nullptr);
+  explicit OperationJobPanelActions(QObject* parent = nullptr);
 
   void SetAvailableProcedures(callback_t available_procedures);
 

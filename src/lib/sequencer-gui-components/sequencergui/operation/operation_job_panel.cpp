@@ -19,6 +19,7 @@
 
 #include "operation_job_panel.h"
 
+#include "operation_job_panel_actions.h"
 #include "operation_job_panel_toolbar.h"
 
 #include <sequencergui/model/application_models.h>
@@ -41,6 +42,7 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
     , m_job_list_widget(new JobListWidget)
     , m_job_property_widget(new JobPropertyWidget)
     , m_tool_bar(new OperationJobPanelToolBar(this))
+    , m_job_actions(new OperationJobPanelActions(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -54,6 +56,8 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
 
   m_tool_bar->SetAvailableProcedures([this]()
                                      { return m_models->GetSequencerModel()->GetProcedures(); });
+  m_job_actions->SetAvailableProcedures([this]()
+                                        { return m_models->GetSequencerModel()->GetProcedures(); });
 }
 
 OperationJobPanel::~OperationJobPanel() = default;
@@ -77,6 +81,16 @@ void OperationJobPanel::SetSelectedJob(JobItem *job_item)
 QToolBar *OperationJobPanel::GetToolBar() const
 {
   return m_tool_bar;
+}
+
+QList<QAction *> OperationJobPanel::GetSequencerMonitorViewActions()
+{
+  return m_job_actions->GetSequencerMonitorViewActions();
+}
+
+QList<QAction *> OperationJobPanel::GetOperationMonitorViewActions()
+{
+  return m_job_actions->GetOperationMonitorViewActions();
 }
 
 void OperationJobPanel::SetupConnections()

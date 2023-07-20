@@ -30,7 +30,7 @@
 namespace sequencergui
 {
 
-OperationJobPanelToolActions::OperationJobPanelToolActions(QObject *parent)
+OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
     : QObject(parent)
     , m_import_action(new QWidgetAction(this))
     , m_submit_action(new QWidgetAction(this))
@@ -44,7 +44,7 @@ OperationJobPanelToolActions::OperationJobPanelToolActions(QObject *parent)
   import_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   import_button->setToolTip("Open sequencer XML procedure from disk");
   connect(import_button, &QToolButton::clicked, this,
-          &OperationJobPanelToolActions::ImportJobRequest);
+          &OperationJobPanelActions::ImportJobRequest);
   m_import_action->setDefaultWidget(import_button);
 
   auto submit_button = new QToolButton;
@@ -62,7 +62,7 @@ OperationJobPanelToolActions::OperationJobPanelToolActions(QObject *parent)
   regenerate_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   regenerate_button->setToolTip("Reload selected procedure");
   connect(regenerate_button, &QToolButton::clicked, this,
-          &OperationJobPanelToolActions::RegenerateJobRequest);
+          &OperationJobPanelActions::RegenerateJobRequest);
   m_regenerate_action->setDefaultWidget(regenerate_button);
 
   auto remove_button = new QToolButton;
@@ -71,35 +71,35 @@ OperationJobPanelToolActions::OperationJobPanelToolActions(QObject *parent)
   remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_button->setToolTip("Remove selected procedure from the list");
   connect(remove_button, &QToolButton::clicked, this,
-          &OperationJobPanelToolActions::RemoveJobRequest);
+          &OperationJobPanelActions::RemoveJobRequest);
   m_remove_action->setDefaultWidget(remove_button);
 }
 
-void OperationJobPanelToolActions::SetAvailableProcedures(callback_t available_procedures)
+void OperationJobPanelActions::SetAvailableProcedures(callback_t available_procedures)
 {
   m_available_procedures = available_procedures;
 }
 
-QList<QAction *> OperationJobPanelToolActions::GetSequencerMonitorViewActions()
+QList<QAction *> OperationJobPanelActions::GetSequencerMonitorViewActions()
 {
   return QList<QAction *>({m_submit_action, m_regenerate_action, m_remove_action});
 }
 
-QList<QAction *> OperationJobPanelToolActions::GetOperationMonitorViewActions()
+QList<QAction *> OperationJobPanelActions::GetOperationMonitorViewActions()
 {
   return QList<QAction *>({m_import_action, m_regenerate_action, m_remove_action});
 }
 
-std::unique_ptr<QMenu> OperationJobPanelToolActions::CreateSubmitProcedureMenu()
+std::unique_ptr<QMenu> OperationJobPanelActions::CreateSubmitProcedureMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
   connect(result.get(), &QMenu::aboutToShow, this,
-          &OperationJobPanelToolActions::OnAboutToShowMenu);
+          &OperationJobPanelActions::OnAboutToShowMenu);
   return result;
 }
 
-void OperationJobPanelToolActions::OnAboutToShowMenu()
+void OperationJobPanelActions::OnAboutToShowMenu()
 {
   if (!m_available_procedures)
   {
