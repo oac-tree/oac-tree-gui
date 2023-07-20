@@ -29,7 +29,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/xml_utils.h>
-#include <sequencergui/monitor/message_panel.h>
+#include <sequencergui/operation/message_panel.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/model_utils.h>

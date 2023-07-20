@@ -25,7 +25,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/monitor/message_panel.h>
+#include <sequencergui/operation/message_panel.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>

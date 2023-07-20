@@ -1,4 +1,4 @@
-# Widgets for sequencer-operation standalone application
+# Widgets for real time operation views
 
 target_sources(${library_name} PRIVATE
   breakpoint_controller.cpp
@@ -7,6 +7,16 @@ target_sources(${library_name} PRIVATE
   breakpoint_helper.h
   breakpoint_model_delegate.cpp
   breakpoint_model_delegate.h
+  job_list_widget.cpp
+  job_list_widget.h
+  job_property_widget.cpp
+  job_property_widget.h
+  message_panel.cpp
+  message_panel.h
+  monitor_realtime_toolbar.cpp
+  monitor_realtime_toolbar.h
+  operation_action_handler.cpp
+  operation_action_handler.h
   operation_job_panel.cpp
   operation_job_panel.h
   operation_job_panel_actions.cpp
@@ -17,6 +27,8 @@ target_sources(${library_name} PRIVATE
   operation_workspace_panel.h
   procedure_action_handler.cpp
   procedure_action_handler.h
+  realtime_instruction_tree_widget.cpp
+  realtime_instruction_tree_widget.h
   sequencer_monitor_view.cpp
   sequencer_monitor_view.h
 )

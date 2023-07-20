@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_MESSAGE_PANEL_H_
-#define SEQUENCERGUI_MONITOR_MESSAGE_PANEL_H_
+#ifndef SEQUENCERGUI_OPERATION_MESSAGE_PANEL_H_
+#define SEQUENCERGUI_OPERATION_MESSAGE_PANEL_H_
 
 #include <sequencergui/jobsystem/log_event.h>
 
@@ -64,4 +64,4 @@ private:
 };
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_MESSAGE_PANEL_H_
+#endif  // SEQUENCERGUI_OPERATION_MESSAGE_PANEL_H_

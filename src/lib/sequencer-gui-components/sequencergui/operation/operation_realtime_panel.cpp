@@ -19,12 +19,13 @@
 
 #include "operation_realtime_panel.h"
 
+#include "message_panel.h"
+#include "monitor_realtime_toolbar.h"
+#include "realtime_instruction_tree_widget.h"
+
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/message_panel.h>
-#include <sequencergui/monitor/monitor_realtime_toolbar.h>
-#include <sequencergui/monitor/realtime_instruction_tree_widget.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
@@ -98,8 +99,8 @@ void OperationRealTimePanel::SetupConnections()
 
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::InstructionClicked, this,
           &OperationRealTimePanel::InstructionClicked);
-  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest, this,
-          &OperationRealTimePanel::ToggleBreakpointRequest);
+  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
+          this, &OperationRealTimePanel::ToggleBreakpointRequest);
 }
 
 }  // namespace sequencergui

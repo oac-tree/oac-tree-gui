@@ -20,8 +20,8 @@
 #include "job_log_viewmodel.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/job_log.h>
 #include <sequencergui/jobsystem/job_log_severity.h>
-#include <sequencergui/monitor/job_log.h>
 
 namespace
 {

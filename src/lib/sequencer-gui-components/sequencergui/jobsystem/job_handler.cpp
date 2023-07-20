@@ -19,19 +19,19 @@
 
 #include "job_handler.h"
 
+#include "domain_runner_adapter.h"
+#include "job_log.h"
 #include "job_utils.h"
 #include "procedure_reporter.h"
 #include "sequencer_observer.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/domain_runner_adapter.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/monitor/job_log.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>

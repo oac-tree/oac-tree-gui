@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
-#define SEQUENCERGUI_MONITOR_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
+#ifndef SEQUENCERGUI_OPERATION_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
+#define SEQUENCERGUI_OPERATION_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
 
 #include <QWidget>
 #include <memory>
@@ -77,4 +77,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_REALTTIME_INSTRUCTION_TREE_WIDGET_H_
+#endif  // SEQUENCERGUI_OPERATION_REALTTIME_INSTRUCTION_TREE_WIDGET_H_

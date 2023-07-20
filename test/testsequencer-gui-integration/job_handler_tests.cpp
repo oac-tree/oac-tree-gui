@@ -20,6 +20,7 @@
 #include "sequencergui/jobsystem/job_handler.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/job_log.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/jobsystem/request_types.h>
 #include <sequencergui/model/application_models.h>
@@ -31,7 +32,6 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/monitor/job_log.h>
 #include <sequencergui/operation/breakpoint_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 

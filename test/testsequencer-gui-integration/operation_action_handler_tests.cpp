@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/monitor/operation_action_handler.h"
+#include "sequencergui/operation/operation_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
@@ -260,7 +260,7 @@ TEST_F(OperationActionHandlerTests, OnRegenerateJobRequest)
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
 
-  job_item->SetStatus("abc"); // set arbitrary status
+  job_item->SetStatus("abc");  // set arbitrary status
 
   QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
 

@@ -19,14 +19,14 @@
 
 #include "operation_job_panel.h"
 
+#include "job_list_widget.h"
+#include "job_property_widget.h"
 #include "operation_job_panel_actions.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/job_list_widget.h>
-#include <sequencergui/monitor/job_property_widget.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
 

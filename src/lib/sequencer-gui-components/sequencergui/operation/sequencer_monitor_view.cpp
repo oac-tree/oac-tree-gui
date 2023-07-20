@@ -19,6 +19,7 @@
 
 #include "sequencer_monitor_view.h"
 
+#include "operation_action_handler.h"
 #include "operation_job_panel.h"
 #include "operation_realtime_panel.h"
 #include "operation_workspace_panel.h"
@@ -33,7 +34,6 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/monitor/operation_action_handler.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 
