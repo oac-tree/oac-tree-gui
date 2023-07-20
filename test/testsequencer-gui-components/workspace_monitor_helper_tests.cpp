@@ -25,8 +25,9 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
-
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -117,4 +118,27 @@ TEST_F(WorkspaceMonitorHelperTests, UpdateVariableEditableProperty)
   EXPECT_TRUE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
   EXPECT_TRUE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
   EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
+}
+
+//! Validating helper method SetupNewVariable.
+
+TEST_F(WorkspaceMonitorHelperTests, SetupNewVariable)
+{
+  WorkspaceItem workspace_item;
+  auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  SetupNewVariable(var_item0);
+
+  auto var_item1 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  SetupNewVariable(var_item1);
+
+  EXPECT_EQ(var_item0->GetName(), "var0");
+  EXPECT_EQ(var_item1->GetName(), "var1");
+
+  sup::dto::AnyValue expected_value(sup::dto::SignedInteger32Type, 0);
+
+  ASSERT_TRUE(var_item0->GetAnyValueItem());
+  EXPECT_EQ(sup::gui::CreateAnyValue(*var_item0->GetAnyValueItem()), expected_value);
+
+  ASSERT_TRUE(var_item1->GetAnyValueItem());
+  EXPECT_EQ(sup::gui::CreateAnyValue(*var_item1->GetAnyValueItem()), expected_value);
 }

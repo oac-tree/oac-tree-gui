@@ -61,7 +61,7 @@ void ValidateWorkspaces(const sequencergui::WorkspaceItem* workspace_item,
 
   if (domain_workspace->VariableNames().empty())
   {
-    throw sequencergui::LogicErrorException("Workspace doesn't not contain variables");
+    throw sequencergui::LogicErrorException("Workspace doesn't contain variables");
   }
 
   std::vector<std::string> variable_item_names;

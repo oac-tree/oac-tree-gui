@@ -78,17 +78,25 @@ T* FindAncestor(const mvvm::SessionItem* item)
 }
 
 /**
- * @brief Update all variables in the workspace so their properties enabled/disabled match provided
- * run status.
+ * @brief Mark variable properties as enabled or disabled depending on if workspace is idle or
+ * running.
  *
- * @param is_running Flag denoting if workspace synchronizer was started and GUI and domain
- * workspace are both up and running.
+ * @param is_running Flag denoting if workspace is running.
  * @param item Workspace item to update variables.
  *
- * @details Currently it simply forbids editing the variable's name and channel (if exist), when in
- * running state.
+ * @details When workspace is running (i.e. both domain and GUI workspaces are up and listen each
+ * other), certain properties (i.e. name, channel) should be marked as readonly.
  */
-void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item);
+void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item);
+
+/**
+ * @brief Provide initial setup of just created variable.
+ *
+ * @param item Variable item to setup.
+ *
+ * @details Provide reasonable default name, and initial AnyValueItem if necessary.
+ */
+void SetupNewVariable(VariableItem* item);
 
 }  // namespace sequencergui
 

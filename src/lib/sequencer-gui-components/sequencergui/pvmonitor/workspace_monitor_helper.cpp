@@ -24,6 +24,7 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -37,6 +38,16 @@ std::vector<std::string> GetVariableReadonlyAttributesWhenRunning()
   return {sequencergui::domainconstants::kChannelAttribute,
           sequencergui::domainconstants::kNameAttribute};
 }
+
+std::string ProposeVariableName(const sequencergui::VariableItem &item)
+{
+  if (auto workspace = dynamic_cast<sequencergui::WorkspaceItem *>(item.GetParent()); workspace)
+  {
+    return "var" + std::to_string(workspace->GetVariableCount() - 1);
+  }
+  return {};
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -48,7 +59,7 @@ void PopulateDomainWorkspace(const WorkspaceItem &item, workspace_t &workspace)
   builder.PopulateDomainWorkspace(&item, &workspace);
 }
 
-void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
+void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
 {
   static const auto attributes = GetVariableReadonlyAttributesWhenRunning();
 
@@ -62,6 +73,19 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item)
       }
     }
   }
+}
+
+void SetupNewVariable(VariableItem *item)
+{
+  if (!item)
+  {
+    return;
+  }
+
+  item->SetName(ProposeVariableName(*item));
+  // By default we always set scalar anyvalue to any VariableItem added to the WorkspaceItem.
+  // If user wants something else, he has to start AnyValueEditor.
+  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
 }
 
 }  // namespace sequencergui

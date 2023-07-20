@@ -81,7 +81,7 @@ public:
             edit_anyvalue_callback};
   }
 
-  //! Creates AnyValueEditorActions for testing.
+  //! Creates action handler for testing.
   std::unique_ptr<WorkspaceEditorActionHandler> CreateActionHandler(
       mvvm::SessionItem* selection, AnyValueDialogResult dialog_result = {})
   {
@@ -411,7 +411,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   // preparing actions
   auto actions = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
 
-  // expecting no waning callbacks
+  // expecting no warning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
