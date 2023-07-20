@@ -36,6 +36,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
     , m_submit_action(new QWidgetAction(this))
     , m_regenerate_action(new QWidgetAction(this))
     , m_remove_action(new QWidgetAction(this))
+    , m_remove_and_cleanup_action(new QWidgetAction(this))
     , m_submit_procedure_menu(CreateSubmitProcedureMenu())
 {
   auto import_button = new QToolButton;

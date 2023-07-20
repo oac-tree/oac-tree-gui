@@ -23,7 +23,7 @@
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/operation/operation_monitor_view.h>
+#include <sequencergui/monitor/sequencer_monitor_view.h>
 
 #include <QMenuBar>
 #include <QSettings>
@@ -69,7 +69,7 @@ void OperationMainWindow::InitApplication()
 
   m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
 
-  m_monitor_view = new OperationMonitorView(this);
+  m_monitor_view = new SequencerMonitorView(this);
   m_monitor_view->SetApplicationModels(m_models.get());
 
   setCentralWidget(m_monitor_view);
