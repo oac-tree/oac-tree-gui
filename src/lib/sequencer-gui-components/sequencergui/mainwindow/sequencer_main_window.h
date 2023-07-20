@@ -34,7 +34,7 @@ namespace sequencergui
 {
 
 class SequencerExplorerView;
-class SequencerMonitorView;
+class OperationMonitorView;
 class SequencerComposerView;
 class SettingsView;
 class SequencerMainWindowActions;
@@ -69,7 +69,7 @@ private:
 
   SequencerExplorerView* m_explorer_view{nullptr};
   SequencerComposerView* m_composer_view{nullptr};
-  SequencerMonitorView* m_monitor_view{nullptr};
+  OperationMonitorView* m_monitor_view{nullptr};
   SettingsView* m_settings_view{nullptr};
 };
 

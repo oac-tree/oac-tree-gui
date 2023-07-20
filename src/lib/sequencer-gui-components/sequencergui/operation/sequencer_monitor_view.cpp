@@ -19,6 +19,11 @@
 
 #include "sequencer_monitor_view.h"
 
+#include "operation_job_panel.h"
+#include "operation_realtime_panel.h"
+#include "operation_workspace_panel.h"
+#include "procedure_action_handler.h"
+
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -29,10 +34,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/monitor/operation_action_handler.h>
-#include <sequencergui/operation/operation_job_panel.h>
-#include <sequencergui/operation/operation_realtime_panel.h>
-#include <sequencergui/operation/operation_workspace_panel.h>
-#include <sequencergui/operation/procedure_action_handler.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 
@@ -50,7 +51,7 @@
 namespace sequencergui
 {
 
-SequencerMonitorView::SequencerMonitorView(Mode mode, QWidget *parent)
+OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
@@ -77,16 +78,16 @@ SequencerMonitorView::SequencerMonitorView(Mode mode, QWidget *parent)
   m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
 }
 
-SequencerMonitorView::~SequencerMonitorView() = default;
+OperationMonitorView::~OperationMonitorView() = default;
 
-void SequencerMonitorView::SetApplicationModels(ApplicationModels *models)
+void OperationMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   m_job_panel->SetApplicationModels(models);
   m_actions->SetJobModel(models->GetJobModel());
 }
 
-void SequencerMonitorView::OnImportJobRequest(const QString &file_name)
+void OperationMonitorView::OnImportJobRequest(const QString &file_name)
 {
   auto model = m_models->GetSequencerModel();
 
@@ -102,7 +103,7 @@ void SequencerMonitorView::OnImportJobRequest(const QString &file_name)
   }
 }
 
-void SequencerMonitorView::showEvent(QShowEvent *event)
+void OperationMonitorView::showEvent(QShowEvent *event)
 {
   Q_UNUSED(event);
   if (!m_job_panel->GetSelectedJob())
@@ -114,7 +115,7 @@ void SequencerMonitorView::showEvent(QShowEvent *event)
   }
 }
 
-void SequencerMonitorView::SetupConnections()
+void OperationMonitorView::SetupConnections()
 {
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
@@ -143,7 +144,7 @@ void SequencerMonitorView::SetupConnections()
           &OperationRealTimePanel::SetSelectedInstructions);
 
   // job selection request from MonitorPanel
-  connect(m_job_panel, &OperationJobPanel::JobSelected, this, &SequencerMonitorView::OnJobSelected);
+  connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);
 
   // job submission request
   connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
@@ -181,14 +182,14 @@ void SequencerMonitorView::SetupConnections()
 }
 
 //! Setup widgets to show currently selected job.
-void SequencerMonitorView::OnJobSelected(JobItem *item)
+void OperationMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
   m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
-QWidget *SequencerMonitorView::CreateLeftPanel(Mode mode)
+QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
 {
   auto result = new ItemStackWidget;
   auto actions = mode == kIdeMode ? m_job_panel->GetSequencerMonitorViewActions()
@@ -199,7 +200,7 @@ QWidget *SequencerMonitorView::CreateLeftPanel(Mode mode)
 
 //! Create central panel with single OperationRealTimePanel.
 
-QWidget *SequencerMonitorView::CreateCentralPanel()
+QWidget *OperationMonitorView::CreateCentralPanel()
 {
   // tuning tool bar to place it into tool bar of ItemStackWidget
   auto toolbar = m_realtime_panel->GetToolBar();
@@ -213,7 +214,7 @@ QWidget *SequencerMonitorView::CreateCentralPanel()
   return result;
 }
 
-QWidget *SequencerMonitorView::CreateRightPanel()
+QWidget *OperationMonitorView::CreateRightPanel()
 {
   auto result = new ItemStackWidget;
   result->AddWidget(m_workspace_panel);

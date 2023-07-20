@@ -28,7 +28,7 @@ class QCloseEvent;
 namespace sequencergui
 {
 
-class SequencerMonitorView;
+class OperationMonitorView;
 class OperationMainWindowActions;
 class ApplicationModels;
 
@@ -57,7 +57,7 @@ private:
 
   OperationMainWindowActions* m_action_manager{nullptr};
 
-  SequencerMonitorView* m_monitor_view{nullptr};
+  OperationMonitorView* m_monitor_view{nullptr};
 };
 
 }  // namespace sequencergui

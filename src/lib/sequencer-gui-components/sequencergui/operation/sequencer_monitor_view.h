@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MONITOR_SEQUENCER_MONITOR_VIEW_H_
-#define SEQUENCERGUI_MONITOR_SEQUENCER_MONITOR_VIEW_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_
 
 #include <QWidget>
 
@@ -41,19 +41,19 @@ class OperationActionHandler;
 //! Contains the panel with jobs on the left, main sequence tree in the middle, and
 //! the panel to monitor variables on the right.
 
-class SequencerMonitorView : public QWidget
+class OperationMonitorView : public QWidget
 {
   Q_OBJECT
 
 public:
   enum Mode
   {
-    kOperartionMode,  //!< widget will be a part of sequencer-operation application
-    kIdeMode          //!< widget will be a part of sequencer-gui
+    kOperationMode,  //!< widget will be a part of sequencer-operation application
+    kIdeMode         //!< widget will be a part of sequencer-gui
   };
 
-  explicit SequencerMonitorView(Mode mode, QWidget* parent = nullptr);
-  ~SequencerMonitorView() override;
+  explicit OperationMonitorView(Mode mode, QWidget* parent = nullptr);
+  ~OperationMonitorView() override;
 
   void SetApplicationModels(ApplicationModels* models);
 
@@ -83,4 +83,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MONITOR_SEQUENCER_MONITOR_VIEW_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_MONITOR_VIEW_H_

@@ -69,7 +69,7 @@ void OperationMainWindow::InitApplication()
 
   m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
 
-  m_monitor_view = new SequencerMonitorView(SequencerMonitorView::kOperartionMode, this);
+  m_monitor_view = new OperationMonitorView(OperationMonitorView::kOperationMode, this);
   m_monitor_view->SetApplicationModels(m_models.get());
 
   setCentralWidget(m_monitor_view);
