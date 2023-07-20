@@ -17,29 +17,40 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_TOOLBAR_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_TOOLBAR_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_ACTIONS_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_ACTIONS_H_
 
-#include <QToolBar>
+#include <QObject>
 #include <functional>
+#include <memory>
 
-class QToolButton;
+class QMenu;
+class QWidgetAction;
+class QAction;
 
 namespace sequencergui
 {
 
 class ProcedureItem;
 
-class OperationJobPanelToolBar : public QToolBar
+/**
+ * @brief The OperationJobPanelToolActions class contains set of actions for OperationJobPanel.
+ */
+
+class OperationJobPanelToolActions : public QObject
 {
   Q_OBJECT
 
 public:
   using callback_t = std::function<std::vector<ProcedureItem*>()>;
 
-  explicit OperationJobPanelToolBar(QWidget* parent = nullptr);
+  explicit OperationJobPanelToolActions(QObject* parent = nullptr);
 
   void SetAvailableProcedures(callback_t available_procedures);
+
+  QList<QAction*> GetSequencerMonitorViewActions();
+
+  QList<QAction*> GetOperationMonitorViewActions();
 
 signals:
   void SubmitProcedureRequest(sequencergui::ProcedureItem* item);
@@ -53,14 +64,14 @@ private:
 
   std::unique_ptr<QMenu> m_submit_procedure_menu;
 
-  QToolButton* m_import_button{nullptr};
-  QToolButton* m_submit_button{nullptr};
-  QToolButton* m_regenerate_button{nullptr};
-  QToolButton* m_remove_button{nullptr};
+  QWidgetAction* m_import_action{nullptr};
+  QWidgetAction* m_submit_action{nullptr};
+  QWidgetAction* m_regenerate_action{nullptr};
+  QWidgetAction* m_remove_action{nullptr};
 
   callback_t m_available_procedures;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_TOOLBAR_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_JOB_PANEL_ACTIONS_H_
