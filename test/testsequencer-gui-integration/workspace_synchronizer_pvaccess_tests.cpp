@@ -107,7 +107,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   // status, and two more events for editable attributes change, caused by Start method.
 
   auto is_available_property = variable_item->GetItem(itemconstants::kIsAvailable);
-  auto expected_event1 =mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData};
+  auto expected_event1 = mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
   auto channel_property = variable_item->GetItem(domainconstants::kChannelAttribute);
@@ -115,7 +115,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
   EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
 
   auto name_property = variable_item->GetItem(domainconstants::kNameAttribute);
-  auto expected_event3 =mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
+  auto expected_event3 = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event3)).Times(1);
 
   synchronizer->Start();
@@ -237,6 +237,94 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
   const std::string server_var_name("server");
   const std::string client_var_name("client");
   sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+
+  // creating PVServerVariableItem in the model
+  auto server_item =
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
+  server_item->SetChannel(kChannelName);
+  server_item->SetName(server_var_name);
+  SetAnyValue(initial_value, *server_item);
+
+  // creating PVServerClientItem in the model
+  auto client_item =
+      m_model.GetWorkspaceItem()->InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
+  client_item->SetChannel(kChannelName);
+  client_item->SetName(client_var_name);
+  SetAnyValue(initial_value, *client_item);
+
+  EXPECT_FALSE(server_item->IsAvailable());
+  EXPECT_FALSE(client_item->IsAvailable());
+  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
+
+  // creating synchronizer (and underlying domain  workspace)
+  auto synchronizer = CreateSynchronizer();
+
+  testutils::MockModelListenerV2 model_listener(&m_model);
+
+  // expected events from client variable
+  {
+    auto expected_event1 = mvvm::DataChangedEvent{client_item->GetItem(itemconstants::kIsAvailable),
+                                                  mvvm::DataRole::kData};
+    EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
+
+    auto channel_property = client_item->GetItem(domainconstants::kChannelAttribute);
+    auto expected_event1a = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
+    EXPECT_CALL(model_listener, OnDataChanged(expected_event1a)).Times(1);
+
+    auto name_property = client_item->GetItem(domainconstants::kNameAttribute);
+    auto expected_event1b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
+    EXPECT_CALL(model_listener, OnDataChanged(expected_event1b)).Times(1);
+  }
+
+  // expected events from server variable
+  {
+    auto expected_event2 = mvvm::DataChangedEvent{server_item->GetItem(itemconstants::kIsAvailable),
+                                                  mvvm::DataRole::kData};
+    EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
+
+    auto channel_property = server_item->GetItem(domainconstants::kChannelAttribute);
+    auto expected_event2a = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
+    EXPECT_CALL(model_listener, OnDataChanged(expected_event2a)).Times(1);
+
+    auto name_property = server_item->GetItem(domainconstants::kNameAttribute);
+    auto expected_event2b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
+    EXPECT_CALL(model_listener, OnDataChanged(expected_event2b)).Times(1);
+  }
+
+  // Creating domain listener and setting callback expectations.
+  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  {
+    ::testing::InSequence seq;
+    sup::dto::AnyValue empty_value;
+    EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
+    EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
+  }
+
+  synchronizer->Start();
+
+  EXPECT_TRUE(m_workspace.WaitForVariable(server_var_name, 1.0));
+  EXPECT_TRUE(m_workspace.WaitForVariable(client_var_name, 1.0));
+
+  // queued connection toward the GUI requires special waiting with qWaitFor
+  EXPECT_TRUE(QTest::qWaitFor([server_item]() { return server_item->IsAvailable(); }, 3000));
+  EXPECT_TRUE(QTest::qWaitFor([client_item]() { return client_item->IsAvailable(); }, 3000));
+
+  ASSERT_TRUE(client_item->GetAnyValueItem());  // client got new AnyValueItem
+  EXPECT_EQ(sup::gui::CreateAnyValue(*client_item->GetAnyValueItem()), initial_value);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*server_item->GetAnyValueItem()), initial_value);
+}
+
+//! One server and one client variable in a workspace. The difference with the previous test is that
+//! client doesn't have AnyValueItem defined. It is expected that it will pick up right value from
+//! the server on the first connection.
+
+TEST_F(WorkspaceSynchronizerPVAccessTests, ClientWithoutAnyValueAndServerVariableConnection)
+{
+  const std::string kChannelName(kTestPrefix + "SCALAR5");
+  const std::string server_var_name("server");
+  const std::string client_var_name("client");
+  sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 0);
 
   // creating PVServerVariableItem in the model
   auto server_item =
