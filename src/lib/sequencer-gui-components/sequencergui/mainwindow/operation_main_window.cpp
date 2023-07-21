@@ -23,7 +23,7 @@
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/operation/sequencer_monitor_view.h>
+#include <sequencergui/operation/operation_monitor_view.h>
 
 #include <QMenuBar>
 #include <QSettings>

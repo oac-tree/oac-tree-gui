@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencer_monitor_view.h"
+#include "operation_monitor_view.h"
 
 #include "operation_action_handler.h"
 #include "operation_job_panel.h"
