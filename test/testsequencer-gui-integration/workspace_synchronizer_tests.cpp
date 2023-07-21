@@ -231,9 +231,15 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
   SetAnyValue(value0, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-  testutils::MockModelListener model_listener(&m_model);
+  testutils::MockModelListenerV2 model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizer();
+
+  // synchronizer will mark the name property as read only
+  auto expected_event = mvvm::DataChangedEvent{
+      variable_item->GetItem(domainconstants::kNameAttribute), mvvm::DataRole::kAppearance};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
+
   synchronizer->Start();
 
   // changing the value via the model
@@ -241,9 +247,11 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 
   // callback expectations
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
-  // method SetAnyValue below will remove previous AnyValue and insert new item, 4 calls
-  // correspond to AboutToRemoveEvent, ItemRemovedEvent, AboutToInsertEvent, ItemInsertedEvent
-  EXPECT_CALL(model_listener, OnEvent(_)).Times(4);
+  // method SetAnyValue below will remove previous AnyValue and insert new item
+  EXPECT_CALL(model_listener, OnAboutToRemoveItem(_)).Times(1);
+  EXPECT_CALL(model_listener, OnItemRemoved(_)).Times(1);
+  EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
+  EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
 
   // no need to wait, domain is notified via direct connections
   SetAnyValue(new_value, *variable_item);
@@ -272,9 +280,15 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdateHandlerCase)
   SetAnyValue(value0, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-  testutils::MockModelListener model_listener(&m_model);
+  testutils::MockModelListenerV2 model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizerJobHandlerCase();
+
+  // synchronizer will mark the name property as read only
+  auto expected_event = mvvm::DataChangedEvent{
+      variable_item->GetItem(domainconstants::kNameAttribute), mvvm::DataRole::kAppearance};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
+
   synchronizer->Start();
 
   // changing the value via the model
@@ -282,9 +296,11 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdateHandlerCase)
 
   // callback expectations
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
-  // method SetAnyValue below will remove previous AnyValue and insert new item, 4 calls
-  // correspond to AboutToRemoveEvent, ItemRemovedEvent, AboutToInsertEvent, ItemInsertedEvent
-  EXPECT_CALL(model_listener, OnEvent(_)).Times(4);
+  // method SetAnyValue below will remove previous AnyValue and insert new item
+  EXPECT_CALL(model_listener, OnAboutToRemoveItem(_)).Times(1);
+  EXPECT_CALL(model_listener, OnItemRemoved(_)).Times(1);
+  EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
+  EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
 
   // no need to wait, domain is notified via direct connections
   SetAnyValue(new_value, *variable_item);
@@ -302,7 +318,7 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
 {
   const std::string var_name("abc");
 
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -312,15 +328,15 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
 
-  testutils::MockModelListener model_listener(&m_model);
+  testutils::MockModelListenerV2 model_listener(&m_model);
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
 
-  auto expected_event = mvvm::event_variant_t(
-      mvvm::DataChangedEvent{variable_item->GetAnyValueItem(), mvvm::DataRole::kData});
+  auto expected_event =
+      mvvm::DataChangedEvent{variable_item->GetAnyValueItem(), mvvm::DataRole::kData};
 
   const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
 
-  EXPECT_CALL(model_listener, OnEvent(expected_event)).Times(1);
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
 
   // changing the value via domain workspace
