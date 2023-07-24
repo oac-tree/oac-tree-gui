@@ -50,17 +50,17 @@ public:
   void SetLog(JobLog* job_log);
 
 private:
-  std::unique_ptr<QWidget> CreateSeveritySelectionWidget();
-  std::unique_ptr<SteadyMenu> CreateSeverityChoiceMenu();
+  std::unique_ptr<QWidget> CreateSeveritySelectorWidget();
+  std::unique_ptr<SteadyMenu> CreateSeveritySelectorMenu();
   void UpdateSeverityFilter();
 
   QAction* m_remove_selected_action{nullptr};
   QTreeView* m_tree_view{nullptr};
   JobLogViewModel* m_view_model{nullptr};
   QSortFilterProxyModel* m_proxy_model{nullptr};
-  QWidgetAction* m_test_action{nullptr};
+  QWidgetAction* m_severity_selector_action{nullptr};
   std::map<Severity, bool> m_show_severity_flag;
-  std::unique_ptr<SteadyMenu> m_selection_menu;
+  std::unique_ptr<SteadyMenu> m_severity_selector_menu;
 };
 }  // namespace sequencergui
 

@@ -54,8 +54,8 @@ MessagePanel::MessagePanel(QWidget* parent)
     , m_tree_view(new QTreeView)
     , m_view_model(new JobLogViewModel(nullptr))
     , m_proxy_model(new QSortFilterProxyModel(this))
-    , m_test_action(new QWidgetAction(this))
-    , m_selection_menu(CreateSeverityChoiceMenu())
+    , m_severity_selector_action(new QWidgetAction(this))
+    , m_severity_selector_menu(CreateSeveritySelectorMenu())
 {
   setWindowTitle("LOG");
 
@@ -64,8 +64,8 @@ MessagePanel::MessagePanel(QWidget* parent)
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
 
-  m_test_action->setDefaultWidget(CreateSeveritySelectionWidget().release());
-  addAction(m_test_action);
+  m_severity_selector_action->setDefaultWidget(CreateSeveritySelectorWidget().release());
+  addAction(m_severity_selector_action);
 
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setRootIsDecorated(false);
@@ -84,19 +84,19 @@ void MessagePanel::SetLog(JobLog* job_log)
   m_view_model->SetLog(job_log);
 }
 
-std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectionWidget()
+std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()
 {
   auto result = std::make_unique<QToolButton>();
   result->setText("Severity");
   result->setIcon(styleutils::GetIcon("cog-outline"));
   result->setPopupMode(QToolButton::InstantPopup);
   result->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  result->setMenu(m_selection_menu.get());
+  result->setMenu(m_severity_selector_menu.get());
 
   return result;
 }
 
-std::unique_ptr<SteadyMenu> MessagePanel::CreateSeverityChoiceMenu()
+std::unique_ptr<SteadyMenu> MessagePanel::CreateSeveritySelectorMenu()
 {
   auto result = std::make_unique<SteadyMenu>();
 
@@ -129,7 +129,7 @@ void MessagePanel::UpdateSeverityFilter()
     }
   }
 
-  QRegularExpression regexp(QString::fromStdString(GetRegExpPattern(names)));
+  const QRegularExpression regexp(QString::fromStdString(GetRegExpPattern(names)));
   m_proxy_model->setFilterRegularExpression(regexp);
 }
 
