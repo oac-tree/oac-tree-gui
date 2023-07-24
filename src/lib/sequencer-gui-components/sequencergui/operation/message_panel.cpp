@@ -22,13 +22,12 @@
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
+#include <sequencergui/widgets/steady_menu.h>
 #include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
 
 #include <QAction>
-#include <QDebug>
-#include <QMenu>
 #include <QRegularExpression>
 #include <QSortFilterProxyModel>
 #include <QToolButton>
@@ -97,9 +96,9 @@ std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectionWidget()
   return result;
 }
 
-std::unique_ptr<QMenu> MessagePanel::CreateSeverityChoiceMenu()
+std::unique_ptr<SteadyMenu> MessagePanel::CreateSeverityChoiceMenu()
 {
-  auto result = std::make_unique<QMenu>();
+  auto result = std::make_unique<SteadyMenu>();
 
   for (auto severity : kSeveritiesToSelect)
   {

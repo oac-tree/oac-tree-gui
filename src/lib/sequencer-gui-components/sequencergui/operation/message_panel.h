@@ -31,13 +31,13 @@ class QTreeView;
 class QSortFilterProxyModel;
 class QToolButton;
 class QWidgetAction;
-class QMenu;
 
 namespace sequencergui
 {
 
 class JobLog;
 class JobLogViewModel;
+class SteadyMenu;
 
 class MessagePanel : public QWidget
 {
@@ -51,7 +51,7 @@ public:
 
 private:
   std::unique_ptr<QWidget> CreateSeveritySelectionWidget();
-  std::unique_ptr<QMenu> CreateSeverityChoiceMenu();
+  std::unique_ptr<SteadyMenu> CreateSeverityChoiceMenu();
   void UpdateSeverityFilter();
 
   QAction* m_remove_selected_action{nullptr};
@@ -60,7 +60,7 @@ private:
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_test_action{nullptr};
   std::map<Severity, bool> m_show_severity_flag;
-  std::unique_ptr<QMenu> m_selection_menu;
+  std::unique_ptr<SteadyMenu> m_selection_menu;
 };
 }  // namespace sequencergui
 

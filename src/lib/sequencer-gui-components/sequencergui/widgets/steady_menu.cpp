@@ -32,7 +32,7 @@ void SteadyMenu::mouseReleaseEvent(QMouseEvent *event)
 
   if (action && action->isEnabled())
   {
-    // we do not call parent QMenu::mouseReleaseEvent to avoid menu close
+    // do not call parent QMenu::mouseReleaseEvent to avoid menu close
     action->trigger();
   }
   else
