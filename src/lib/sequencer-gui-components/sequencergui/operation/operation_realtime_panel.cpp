@@ -30,8 +30,15 @@
 
 #include <mvvm/widgets/collapsible_list_view.h>
 
+#include <QSettings>
 #include <QSplitter>
 #include <QVBoxLayout>
+
+namespace
+{
+const QString kGroupName("OperationRealTimePanel");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+}  // namespace
 
 namespace sequencergui
 {
@@ -39,7 +46,7 @@ namespace sequencergui
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
-    , m_collapsible_list_view(new mvvm::CollapsibleListView)
+    , m_collapsible_list(new mvvm::CollapsibleListView)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)
 {
@@ -47,16 +54,20 @@ OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
-  m_collapsible_list_view->AddWidget(m_realtime_instruction_tree);
+  m_collapsible_list->AddWidget(m_realtime_instruction_tree);
 
-  m_collapsible_list_view->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_message_panel, m_message_panel->actions());
 
-  layout->addWidget(m_collapsible_list_view);
+  layout->addWidget(m_collapsible_list);
 
   SetupConnections();
+  ReadSettings();
 }
 
-OperationRealTimePanel::~OperationRealTimePanel() = default;
+OperationRealTimePanel::~OperationRealTimePanel()
+{
+  WriteSettings();
+}
 
 void OperationRealTimePanel::SetProcedure(ProcedureItem *procedure_item)
 {
@@ -81,6 +92,23 @@ MessagePanel *OperationRealTimePanel::GetMessagePanel()
 QToolBar *OperationRealTimePanel::GetToolBar() const
 {
   return m_tool_bar;
+}
+
+void OperationRealTimePanel::ReadSettings()
+{
+  const QSettings settings;
+
+  if (settings.contains(kSplitterSettingName))
+  {
+    m_collapsible_list->GetSplitter()->restoreState(
+        settings.value(kSplitterSettingName).toByteArray());
+  }
+}
+
+void OperationRealTimePanel::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kSplitterSettingName, m_collapsible_list->GetSplitter()->saveState());
 }
 
 void OperationRealTimePanel::SetupConnections()

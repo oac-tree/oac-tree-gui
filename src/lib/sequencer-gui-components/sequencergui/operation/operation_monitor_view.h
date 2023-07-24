@@ -63,6 +63,8 @@ protected:
   void showEvent(QShowEvent* event) override;
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupConnections();
   void OnJobSelected(sequencergui::JobItem* item);
 

@@ -68,11 +68,13 @@ signals:
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   void SetupConnections();
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
 
-  mvvm::CollapsibleListView* m_collapsible_list_view{nullptr};
+  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};
   MessagePanel* m_message_panel{nullptr};
 };
