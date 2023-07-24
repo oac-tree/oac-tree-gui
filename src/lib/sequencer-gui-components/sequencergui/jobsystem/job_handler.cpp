@@ -97,7 +97,8 @@ JobHandler::~JobHandler() = default;
 
 void JobHandler::onStartRequest()
 {
-  if (m_domain_runner_adapter->Start())
+  const bool was_paused = m_domain_runner_adapter->GetStatus() == RunnerStatus::kPaused;
+  if (m_domain_runner_adapter->Start() && !was_paused)
   {
     m_job_log->ClearLog();
   }
