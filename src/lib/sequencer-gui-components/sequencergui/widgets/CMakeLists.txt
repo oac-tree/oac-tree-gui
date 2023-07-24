@@ -1,4 +1,5 @@
-# Collection of general purpose widgets that doesn't contain any Sequencer UI related specifics.
+# Collection of general purpose widgets and objects that don't contain any Sequencer UI related
+# specifics.
 
 target_sources(${library_name} PRIVATE
   dialog_message_handler.cpp
@@ -19,6 +20,8 @@ target_sources(${library_name} PRIVATE
   overlay_widget_position_strategy.h
   panel_toolbar.cpp
   panel_toolbar.h
+  steady_menu.cpp
+  steady_menu.h
   style_utils.cpp
   style_utils.h
   warning_sign_widget.cpp
