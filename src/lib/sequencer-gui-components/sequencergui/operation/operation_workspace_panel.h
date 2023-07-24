@@ -23,11 +23,17 @@
 #include <QWidget>
 
 class QToolBar;
+class QTreeView;
 
 namespace mvvm
 {
-class AllItemsTreeView;
+class ItemViewComponentProvider;
 }  // namespace mvvm
+
+namespace sup::gui
+{
+class CustomHeaderView;
+}
 
 namespace sequencergui
 {
@@ -50,7 +56,13 @@ public:
   QToolBar* GetToolBar() const;
 
 private:
-  mvvm::AllItemsTreeView* m_workspace_tree{nullptr};
+  void ReadSettings();
+  void WriteSettings();
+  void AdjustTreeAppearance();
+
+  QTreeView* m_tree_view{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
+  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   QToolBar* m_tool_bar{nullptr};
 };
 

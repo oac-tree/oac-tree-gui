@@ -23,28 +23,47 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
-#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/viewmodel/all_items_viewmodel.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QSettings>
 #include <QToolBar>
 #include <QToolButton>
 #include <QTreeView>
 #include <QVBoxLayout>
 
+namespace
+{
+const QString kGroupName("OperationWorkspacePanel");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+}  // namespace
+
 namespace sequencergui
 {
 
 OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
-    : QWidget(parent), m_workspace_tree(new mvvm::AllItemsTreeView), m_tool_bar(new QToolBar)
+    : QWidget(parent)
+    , m_tree_view(new QTreeView)
+    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_component_provider(mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view))
+    , m_tool_bar(new QToolBar)
 {
   setWindowTitle("Workspace");
 
   auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_workspace_tree);
+  layout->addWidget(m_tree_view);
 
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
+
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->header()->setStretchLastSection(true);
 
   m_tool_bar->setIconSize(styleutils::ToolBarIconSize());
 
@@ -58,18 +77,55 @@ OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
   connect(toggle_panel_button, &QToolButton::clicked, this, on_toggle);
 
   m_tool_bar->addWidget(toggle_panel_button);
+
+  ReadSettings();
 }
 
-OperationWorkspacePanel::~OperationWorkspacePanel() = default;
+OperationWorkspacePanel::~OperationWorkspacePanel()
+{
+  WriteSettings();
+}
 
 void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure_item)
 {
-  m_workspace_tree->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
+  m_component_provider->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
+  if (procedure_item)
+  {
+    AdjustTreeAppearance();
+  }
 }
 
 QToolBar *OperationWorkspacePanel::GetToolBar() const
 {
   return m_tool_bar;
+}
+
+void OperationWorkspacePanel::ReadSettings()
+{
+  const QSettings settings;
+
+  if (settings.contains(kHeaderStateSettingName))
+  {
+    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
+  }
+}
+
+void OperationWorkspacePanel::WriteSettings()
+{
+  QSettings settings;
+  if (m_custom_header->HasFavoriteState())
+  {
+    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
+  }
+}
+
+void OperationWorkspacePanel::AdjustTreeAppearance()
+{
+  if (m_custom_header->HasFavoriteState())
+  {
+    m_custom_header->RestoreFavoriteState();
+  }
+  m_tree_view->expandAll();
 }
 
 }  // namespace sequencergui
