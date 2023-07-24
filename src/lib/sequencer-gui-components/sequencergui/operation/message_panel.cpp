@@ -29,6 +29,7 @@
 
 #include <QAction>
 #include <QRegularExpression>
+#include <QScrollBar>
 #include <QSortFilterProxyModel>
 #include <QToolButton>
 #include <QTreeView>
@@ -50,7 +51,6 @@ namespace sequencergui
 
 MessagePanel::MessagePanel(QWidget* parent)
     : QWidget(parent)
-    , m_remove_selected_action(new QAction(this))
     , m_tree_view(new QTreeView)
     , m_view_model(new JobLogViewModel(nullptr))
     , m_proxy_model(new QSortFilterProxyModel(this))
@@ -74,7 +74,8 @@ MessagePanel::MessagePanel(QWidget* parent)
 
   m_proxy_model->setSourceModel(m_view_model);
   m_proxy_model->setFilterKeyColumn(2);
-  //  QRegularExpression regexp("\b(?:WARNING|DEBUG)\b");
+
+  SetupAutoscroll();
 }
 
 MessagePanel::~MessagePanel() = default;
@@ -115,6 +116,26 @@ std::unique_ptr<SteadyMenu> MessagePanel::CreateSeveritySelectorMenu()
   }
 
   return result;
+}
+
+void MessagePanel::SetupAutoscroll()
+{
+  auto on_row_about_to_be_inserted = [this](auto)
+  {
+    auto bar = m_tree_view->verticalScrollBar();
+    m_tree_at_the_bottom = bar ? (bar->value() == bar->maximum()) : false;
+  };
+  connect(m_tree_view->model(), &QAbstractItemModel::rowsAboutToBeInserted, this,
+          on_row_about_to_be_inserted);
+
+  auto on_row_inserted = [this](auto)
+  {
+    if (m_tree_at_the_bottom)
+    {
+      m_tree_view->scrollToBottom();
+    }
+  };
+  connect(m_tree_view->model(), &QAbstractItemModel::rowsInserted, this, on_row_inserted);
 }
 
 void MessagePanel::UpdateSeverityFilter()

@@ -39,6 +39,13 @@ class JobLog;
 class JobLogViewModel;
 class SteadyMenu;
 
+/**
+ * @brief The MessagePanel class shows JobLog information in a log table.
+ *
+ * @details The table is implemented as a tree view  with columns: date, time, severity, source
+ * and the message. It has a selector to filter out certain severity levels.
+ */
+
 class MessagePanel : public QWidget
 {
   Q_OBJECT
@@ -52,15 +59,28 @@ public:
 private:
   std::unique_ptr<QWidget> CreateSeveritySelectorWidget();
   std::unique_ptr<SteadyMenu> CreateSeveritySelectorMenu();
+
+  /**
+   * @brief Setup tree view autoscroll in such a way, that if the scrollbar was at the bottom, it
+   * will stay at the bottom after adding new records. If the tree view was scrolled somewhere else,
+   * it will stay where it was.
+   */
+  void SetupAutoscroll();
+
+  /**
+   * @brief Update regexp severity filter on board of proxy model.
+   */
   void UpdateSeverityFilter();
 
-  QAction* m_remove_selected_action{nullptr};
   QTreeView* m_tree_view{nullptr};
   JobLogViewModel* m_view_model{nullptr};
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_severity_selector_action{nullptr};
   std::map<Severity, bool> m_show_severity_flag;
   std::unique_ptr<SteadyMenu> m_severity_selector_menu;
+
+  //! controls if the tree was scrolled to the bottom to make auto scroll
+  bool m_tree_at_the_bottom{false};
 };
 }  // namespace sequencergui
 
