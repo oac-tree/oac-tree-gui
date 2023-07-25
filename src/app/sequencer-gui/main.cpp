@@ -21,6 +21,7 @@
 #include <sequencergui/core/version.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
+#include <sequencergui/mainwindow/main_window_helper.h>
 #include <sequencergui/mainwindow/sequencer_main_window.h>
 #include <sequencergui/mainwindow/splash_screen.h>
 #include <sup/gui/widgets/application_helper.h>
@@ -55,11 +56,14 @@ int main(int argc, char** argv)
   if (!options.file_name.isEmpty())
   {
     splash.reset(new sequencergui::SplashScreen);
-    splash->Start(/*show_during*/ 10000);
+    splash->Start(/*show_during*/ 2000);
   }
 
   sequencergui::SequencerMainWindow win;
-  win.ImportProcedure(options.file_name);
+  for (auto file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
+  {
+    win.ImportProcedure(QString::fromStdString(file_name));
+  }
 
   win.show();
 

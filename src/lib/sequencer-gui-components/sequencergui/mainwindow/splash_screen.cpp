@@ -79,7 +79,7 @@ void SplashScreen::Start(int show_during)
 
 void SplashScreen::SetProgress(int value)
 {
-  m_percentage_done = value > 100 ? 100 : value;
+  m_percentage_done = std::clamp(value, 0, 100);
   update();
 }
 
