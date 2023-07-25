@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/sequencer_main_window.h>
+#include <sequencergui/mainwindow/splash_screen.h>
 #include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
@@ -49,10 +50,23 @@ int main(int argc, char** argv)
     QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
   }
 
+  std::unique_ptr<sequencergui::SplashScreen> splash;
+
+  if (!options.file_name.isEmpty())
+  {
+    splash.reset(new sequencergui::SplashScreen);
+    splash->Start(/*show_during*/ 10000);
+  }
+
   sequencergui::SequencerMainWindow win;
   win.ImportProcedure(options.file_name);
 
   win.show();
+
+  if (splash)
+  {
+    splash->finish(&win);
+  }
 
   return app.exec();
 }

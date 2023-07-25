@@ -30,9 +30,6 @@ namespace sequencergui
 
 class ProcedureItem;
 
-//! Implements following actions related to ProcedureItem: import from XML, export to XML,
-//! validation for domain.
-
 /**
  * @brief The ProcedureActionHandler class implements following actions: import from XML, export to
  * XML, validation of ProcedureItem.
