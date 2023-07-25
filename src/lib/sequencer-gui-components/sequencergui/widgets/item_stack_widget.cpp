@@ -22,6 +22,7 @@
 #include <sequencergui/widgets/panel_toolbar.h>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QMenu>
 #include <QStackedWidget>
 #include <QToolBar>
@@ -35,6 +36,7 @@ ItemStackWidget::ItemStackWidget(QWidget *parent)
     , m_stacked_widget(new QStackedWidget)
     , m_widget_selection_menu(std::make_unique<QMenu>())
     , m_main_toolbar(new PanelToolBar)
+    , m_action_group(new QActionGroup(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -89,6 +91,12 @@ void ItemStackWidget::AddMenuEntry(QWidget *widget)
 {
   int index = m_stacked_widget->count() - 1;
   auto action = m_widget_selection_menu->addAction(widget->windowTitle());
+  action->setActionGroup(m_action_group);
+  action->setCheckable(true);
+  if (index == 0)
+  {
+    action->setChecked(true);
+  }
   auto on_action = [this, index]() { SetCurrentIndex(index); };
   connect(action, &QAction::triggered, this, on_action);
 }

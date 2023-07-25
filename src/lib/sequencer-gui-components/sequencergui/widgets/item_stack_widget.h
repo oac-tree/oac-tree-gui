@@ -26,6 +26,7 @@
 
 class QStackedWidget;
 class QAction;
+class QActionGroup;
 class QToolBar;
 class QMenu;
 
@@ -72,6 +73,7 @@ private:
   QList<GuestToolBarData> m_toolbar_data;
   std::unique_ptr<QMenu> m_widget_selection_menu;
   PanelToolBar* m_main_toolbar{nullptr};
+  QActionGroup* m_action_group{nullptr};
 };
 
 }  // namespace sequencergui
