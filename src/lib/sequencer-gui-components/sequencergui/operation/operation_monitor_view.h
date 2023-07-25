@@ -57,7 +57,7 @@ public:
 
   void SetApplicationModels(ApplicationModels* models);
 
-  void OnImportJobRequest(const QString& file_name = {});
+  bool OnImportJobRequest(const QString& file_name = {});
 
 protected:
   void showEvent(QShowEvent* event) override;

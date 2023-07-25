@@ -98,7 +98,7 @@ void OperationMonitorView::SetApplicationModels(ApplicationModels *models)
   m_actions->SetJobModel(models->GetJobModel());
 }
 
-void OperationMonitorView::OnImportJobRequest(const QString &file_name)
+bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
 {
   auto model = m_models->GetSequencerModel();
 
@@ -110,8 +110,10 @@ void OperationMonitorView::OnImportJobRequest(const QString &file_name)
     auto procedure_ptr = procedure.get();
     model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
                       mvvm::TagIndex::Append());
-    m_actions->OnSubmitJobRequest(procedure_ptr);
+    return m_actions->OnSubmitJobRequest(procedure_ptr);
   }
+
+  return false;
 }
 
 void OperationMonitorView::showEvent(QShowEvent *event)

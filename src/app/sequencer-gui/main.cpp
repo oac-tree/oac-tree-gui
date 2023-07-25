@@ -27,6 +27,7 @@
 #include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
+#include <QDebug>
 #include <QMessageBox>
 #include <QMetaType>
 
@@ -62,7 +63,10 @@ int main(int argc, char** argv)
   sequencergui::SequencerMainWindow win;
   for (auto file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
   {
-    win.ImportProcedure(QString::fromStdString(file_name));
+    if (!win.ImportProcedure(QString::fromStdString(file_name)))
+    {
+      qInfo() << "Failed to load procedure from file" << QString::fromStdString(file_name);
+    }
   }
 
   win.show();

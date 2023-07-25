@@ -58,12 +58,9 @@ SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<Applicati
   m_settings_view->SetApplicationModels(m_models.get());
 }
 
-void SequencerMainWindow::ImportProcedure(const QString& file_name)
+bool SequencerMainWindow::ImportProcedure(const QString& file_name)
 {
-  if (!file_name.isEmpty())
-  {
-    m_monitor_view->OnImportJobRequest(file_name);
-  }
+  return file_name.isEmpty() ? false : m_monitor_view->OnImportJobRequest(file_name);
 }
 
 SequencerMainWindow::~SequencerMainWindow() = default;

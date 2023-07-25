@@ -57,7 +57,7 @@ public:
 
   void SetJobModel(JobModel* job_model);
 
-  void OnSubmitJobRequest(ProcedureItem* procedure_item);
+  bool OnSubmitJobRequest(ProcedureItem* procedure_item);
 
   void OnStartJobRequest();
 

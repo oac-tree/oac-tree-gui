@@ -45,12 +45,9 @@ OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<Applicati
   InitApplication();
 }
 
-void OperationMainWindow::ImportProcedure(const QString& file_name)
+bool OperationMainWindow::ImportProcedure(const QString& file_name)
 {
-  if (!file_name.isEmpty())
-  {
-    m_monitor_view->OnImportJobRequest(file_name);
-  }
+  return file_name.isEmpty() ? false : m_monitor_view->OnImportJobRequest(file_name);
 }
 
 OperationMainWindow::~OperationMainWindow() = default;

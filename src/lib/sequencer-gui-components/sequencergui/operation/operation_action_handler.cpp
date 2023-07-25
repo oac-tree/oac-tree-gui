@@ -60,8 +60,8 @@ namespace sequencergui
 {
 
 OperationActionHandler::OperationActionHandler(JobManager *job_manager,
-                                                 selection_callback_t selection_callback,
-                                                 QObject *parent)
+                                               selection_callback_t selection_callback,
+                                               QObject *parent)
     : QObject(parent)
     , m_job_manager(job_manager)
     , m_job_selection_callback(std::move(selection_callback))
@@ -83,11 +83,11 @@ void OperationActionHandler::SetJobModel(JobModel *job_model)
   m_job_model = job_model;
 }
 
-void OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
+bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
 {
   if (!procedure_item)
   {
-    return;
+    return false;
   }
 
   CheckConditions();
@@ -96,10 +96,12 @@ void OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
   job->SetProcedure(procedure_item);
   job->SetDisplayName(procedure_item->GetDisplayName());
 
-  InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
-                 m_message_handler.get());
+  auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
+                               m_message_handler.get());
 
   emit MakeJobSelectedRequest(job);
+
+  return result;
 }
 
 void OperationActionHandler::OnStartJobRequest()

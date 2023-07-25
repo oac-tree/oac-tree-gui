@@ -52,7 +52,10 @@ Options ParseOptions(int argc, char** argv)
   style_option.setValueName("name");
   parser.addOption(style_option);
 
-  QCommandLineOption file_option({"f", "file"}, "Load sequencer procedure.", "filename");
+  QCommandLineOption file_option(
+      {"f", "file"},
+      "Load sequencer procedure from a given file name; load multiple procedures if it is a folder",
+      "filename");
   parser.addOption(file_option);
 
   parser.process(app);

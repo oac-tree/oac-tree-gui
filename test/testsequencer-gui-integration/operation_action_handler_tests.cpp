@@ -89,13 +89,13 @@ TEST_F(OperationActionHandlerTests, OnSubmitJobRequest)
 
   QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
 
-  EXPECT_NO_FATAL_FAILURE(m_actions.OnSubmitJobRequest(nullptr));
+  EXPECT_FALSE(m_actions.OnSubmitJobRequest(nullptr));
 
   // At the beginning there is not JobItems in a modelo
   EXPECT_TRUE(GetJobItems().empty());
 
   // submitting the procedure
-  m_actions.OnSubmitJobRequest(procedure);
+  EXPECT_TRUE(m_actions.OnSubmitJobRequest(procedure));
 
   // successfull job submission leads to the creation of JobItem with expanded procedure
   ASSERT_EQ(GetJobItems().size(), 1);

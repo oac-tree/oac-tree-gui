@@ -50,7 +50,7 @@ public:
   SequencerMainWindow();
   ~SequencerMainWindow() override;
 
-  void ImportProcedure(const QString& file_name);
+  bool ImportProcedure(const QString& file_name);
 
 protected:
   void closeEvent(QCloseEvent* event) override;
