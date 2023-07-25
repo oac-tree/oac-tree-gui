@@ -20,13 +20,14 @@
 #include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -421,4 +422,34 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
+}
+
+//! Adding SystemClock variable to the model. It is UniversalVariableItem (no GUI variable
+//! counterpart exists, like FileVariable). We check that OnAdVariableRequest correctly create such
+//! variables (real-life bug).
+
+TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  // pretending that nothing is selected
+  auto actions = CreateActionHandler(nullptr);
+
+  // expecting no waning callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // adding variable
+  actions->OnAddVariableRequest(QString::fromStdString(domainconstants::kSystemClockVariableType));
+
+  // validating default values of just inserted variable
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+  auto inserted_variable0 =
+      dynamic_cast<UniversalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(0));
+  ASSERT_NE(inserted_variable0, nullptr);
+  EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
+  EXPECT_EQ(inserted_variable0->GetDomainType(), domainconstants::kSystemClockVariableType);
+  EXPECT_EQ(inserted_variable0->GetType(), UniversalVariableItem::Type);
 }

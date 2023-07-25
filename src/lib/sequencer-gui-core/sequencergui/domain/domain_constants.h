@@ -72,6 +72,7 @@ const std::string kFileVariableType = "File";
 const std::string kChannelAccessVariableType = "ChannelAccessClient";
 const std::string kPvAccessClientVariableType = "PvAccessClient";
 const std::string kPvAccessServerVariableType = "PvAccessServer";
+const std::string kSystemClockVariableType = "SystemClock";
 
 // attributes
 const std::string kChannelAttribute = "channel";

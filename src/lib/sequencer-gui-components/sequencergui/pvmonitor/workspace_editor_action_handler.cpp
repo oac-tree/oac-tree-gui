@@ -23,6 +23,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
+#include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -76,9 +77,8 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
   try
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    auto inserted = GetModel()->InsertItem(
-        GetModel()->GetFactory()->CreateItem(variable_type_name.toStdString()), GetWorkspaceItem(),
-        tagindex);
+    auto inserted = GetModel()->InsertItem(CreateVariableItem(variable_type_name.toStdString()),
+                                           GetWorkspaceItem(), tagindex);
     SetupNewVariable(dynamic_cast<VariableItem *>(inserted));
     emit SelectItemRequest(inserted);
   }
