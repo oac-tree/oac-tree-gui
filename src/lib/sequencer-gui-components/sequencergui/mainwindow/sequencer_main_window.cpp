@@ -62,7 +62,7 @@ void SequencerMainWindow::ImportProcedure(const QString& file_name)
 {
   if (!file_name.isEmpty())
   {
-    m_explorer_view->ImportProcedure(file_name);
+    m_monitor_view->OnImportJobRequest(file_name);
   }
 }
 
