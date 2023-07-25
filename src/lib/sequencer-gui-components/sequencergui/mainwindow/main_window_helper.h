@@ -65,16 +65,21 @@ int RunApplication(int argc, char** argv)
 
   std::unique_ptr<sequencergui::SplashScreen> splash;
 
+  // splash screen will be shown only if there are procedures to load
   if (!options.file_name.isEmpty())
   {
     splash.reset(new sequencergui::SplashScreen);
-    splash->Start(/*show_during*/ 2000);
+    splash->Start(/*show_during*/ 1000);
   }
 
   T win;
   for (auto file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
   {
-    if (!win.ImportProcedure(QString::fromStdString(file_name)))
+    if (win.ImportProcedure(QString::fromStdString(file_name)))
+    {
+      qInfo() << "Import OK:" << QString::fromStdString(file_name);
+    }
+    else
     {
       qInfo() << "Failed to load procedure from file" << QString::fromStdString(file_name);
     }
@@ -85,6 +90,7 @@ int RunApplication(int argc, char** argv)
   if (splash)
   {
     splash->finish(&win);
+    splash.reset();
   }
 
   return app.exec();

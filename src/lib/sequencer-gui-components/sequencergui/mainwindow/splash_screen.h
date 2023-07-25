@@ -37,13 +37,8 @@ public:
 
   void Start(int show_during);
 
-  void SetProgress(int value);
-
 protected:
-  void drawContents(QPainter* painter);
-
-private:
-  int m_percentage_done;
+  void drawContents(QPainter* painter) override;
 };
 
 }  // namespace sequencergui

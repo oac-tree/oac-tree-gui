@@ -24,7 +24,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCoreApplication>
-#include <QElapsedTimer>
 #include <QStyle>
 #include <QTime>
 
@@ -32,13 +31,12 @@ namespace
 {
 
 /**
- * @brief Returns string containing "loading ..." with number of dots changing according to the
- * processed parameter.
+ * @brief Returns string containing "loading ..." with the number of dots added.
  */
-QString GetLoadingText(int processed)
+QString GetLoadingText(int dots_count)
 {
-  QString result("loading . ");
-  for (int i = 0; i < processed / 20; ++i)
+  QString result("loading ");
+  for (int i = 0; i < dots_count; ++i)
   {
     result.append(". ");
   }
@@ -57,8 +55,7 @@ QString GetVersionText()
 namespace sequencergui
 {
 
-SplashScreen::SplashScreen()
-    : QSplashScreen(QPixmap(":/icons/splash-bg1.png")), m_percentage_done(0)
+SplashScreen::SplashScreen() : QSplashScreen(QPixmap(":/icons/splash-bg1.png"))
 
 {
   QSplashScreen::setCursor(Qt::BusyCursor);
@@ -67,20 +64,16 @@ SplashScreen::SplashScreen()
 void SplashScreen::Start(int show_during)
 {
   show();
-  QTime die_time = QTime::currentTime().addMSecs(show_during);
-  QElapsedTimer timer;
-  timer.start();
-  while (QTime::currentTime() < die_time)
+
+  // The only purpose of this method is to show splash screen for given amount of time.
+  // It is blocking, and the main window will not even begin to initialize before the end of the
+  // method.
+
+  auto end_time = QTime::currentTime().addMSecs(show_during);
+  while (QTime::currentTime() < end_time)
   {
-    SetProgress(timer.elapsed() / (show_during / 100));
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
   }
-}
-
-void SplashScreen::SetProgress(int value)
-{
-  m_percentage_done = std::clamp(value, 0, 100);
-  update();
 }
 
 void SplashScreen::drawContents(QPainter* painter)
@@ -89,7 +82,7 @@ void SplashScreen::drawContents(QPainter* painter)
 
   auto img_rect = frameGeometry();
   const auto char_height = mvvm::utils::WidthOfLetterM();
-  const auto bottom_gap = char_height * 3.0;
+  const auto bottom_gap = char_height * 3.5;
   const auto text_rect_height = char_height * 3.0;
 
   QRect text_rect(img_rect.width() * 0.035, img_rect.height() - bottom_gap, img_rect.width() * 0.5,
@@ -98,8 +91,7 @@ void SplashScreen::drawContents(QPainter* painter)
 
   QRect loading_rect(img_rect.width() * 0.8, img_rect.height() - bottom_gap, img_rect.width(),
                      text_rect_height);
-  style()->drawItemText(painter, loading_rect, 0, this->palette(), true,
-                        GetLoadingText(m_percentage_done));
+  style()->drawItemText(painter, loading_rect, 0, this->palette(), true, GetLoadingText(5));
 }
 
 }  // namespace sequencergui
