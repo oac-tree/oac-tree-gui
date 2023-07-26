@@ -40,5 +40,7 @@
         <file>icons/file-export-outline.svg</file>
         <file>icons/menu-open.svg</file>
         <file>icons/splash-bg1.png</file>
+        <file>icons/arrow-up-thin-circle-outline.svg</file>
+        <file>icons/arrow-down-thin-circle-outline.svg</file>
     </qresource>
 </RCC>
