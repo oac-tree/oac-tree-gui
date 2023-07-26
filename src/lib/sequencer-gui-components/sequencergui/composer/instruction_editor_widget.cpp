@@ -42,14 +42,6 @@
 #include <QVBoxLayout>
 #include <iostream>
 
-bool FixColumnAppearance(QTreeView *tree)
-{
-  tree->setColumnHidden(2, true);  // status
-  tree->setColumnHidden(3, true);  // breakpoint
-  tree->header()->setStretchLastSection(true);
-  return true;
-}
-
 namespace
 {
 const QString kGroupName("InstructionEditorWidget");
@@ -86,6 +78,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
+  m_custom_header->setStretchLastSection(true);
 
   SetupConnections();
 
@@ -176,7 +169,6 @@ void InstructionEditorWidget::AdjustTreeAppearance()
   {
     m_tree_view->resizeColumnToContents(0);
   }
-  static const bool adjust_columns_once = FixColumnAppearance(m_tree_view);
 }
 
 void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)

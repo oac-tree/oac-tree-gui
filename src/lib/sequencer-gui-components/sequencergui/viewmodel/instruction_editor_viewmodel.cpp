@@ -31,12 +31,12 @@
 namespace sequencergui
 {
 
-class InstructionRowStrategy : public mvvm::RowStrategyInterface
+class InstructionEditorRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Type", "Name", "Status", "BP"};
+    static QStringList result = {"Type", "Name"};
     return result;
   }
 
@@ -54,18 +54,18 @@ public:
     if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
     {
       result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
-      result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
-      result.emplace_back(mvvm::CreateDataViewItem(GetBreakpointItem(*instruction)));
     }
     return result;
   }
 };
 
-InstructionEditorViewModel::InstructionEditorViewModel(mvvm::SessionModelInterface *model, QObject *parent)
+InstructionEditorViewModel::InstructionEditorViewModel(mvvm::SessionModelInterface *model,
+                                                       QObject *parent)
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionRowStrategy>(model, this));
+      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionEditorRowStrategy>(model,
+                                                                                            this));
 }
 
 }  // namespace sequencergui

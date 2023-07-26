@@ -121,8 +121,6 @@ TEST_F(InstructionOperationViewModelTest, NotificationOnStatusChange)
   EXPECT_EQ(viewmodel.rowCount(), 1);
   EXPECT_EQ(viewmodel.columnCount(), 4);
 
-  auto sequence_status_index = viewmodel.index(0, 2);
-
   QSignalSpy spy_data_changed(&viewmodel, &InstructionOperationViewModel::dataChanged);
 
   sequence->SetStatus("abc");

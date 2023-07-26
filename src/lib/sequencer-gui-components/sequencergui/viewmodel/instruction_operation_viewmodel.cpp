@@ -31,7 +31,7 @@
 namespace sequencergui
 {
 
-class InstructionRowStrategy : public mvvm::RowStrategyInterface
+class InstructionOperationRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override
@@ -66,7 +66,7 @@ InstructionOperationViewModel::InstructionOperationViewModel(mvvm::SessionModelI
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionRowStrategy>(model, this));
+      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionOperationRowStrategy>(model, this));
 }
 
 }  // namespace sequencergui
