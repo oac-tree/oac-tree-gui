@@ -82,7 +82,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   m_custom_header->setStretchLastSection(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          &InstructionEditorWidget::OnContextMenu);
+          CreateOnCustomMenuCallback(*m_tree_view));
 
   SetupConnections();
 
@@ -196,11 +196,7 @@ void InstructionEditorWidget::OnContextMenu(const QPoint &point)
     return;
   }
 
-  QMenu menu;
-
-  SetupCollapseExpandMenu(point, menu, *tree_view);
-
-  menu.exec(tree_view->mapToGlobal(point));
+  SummonCollapseExpandMenu(point, *tree_view);
 }
 
 void InstructionEditorWidget::SetupConnections()
