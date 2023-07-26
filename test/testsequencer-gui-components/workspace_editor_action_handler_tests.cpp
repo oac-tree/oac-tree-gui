@@ -25,15 +25,19 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
 
+#include <QSignalSpy>
+
 using namespace sequencergui;
 using ::testing::_;
+
+Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 class WorkspaceEditorActionHandlerTest : public ::testing::Test
 {
@@ -129,6 +133,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   // pretending that nothing is selected
   auto actions = CreateActionHandler(nullptr);
 
+  QSignalSpy spy_selection_request(actions.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
+
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -141,6 +147,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
       dynamic_cast<LocalVariableItem*>(m_model.GetWorkspaceItem()->GetVariables().at(0));
   ASSERT_NE(inserted_variable0, nullptr);
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
+
+  // just inserted variable was selected
+  EXPECT_EQ(spy_selection_request.count(), 1);
+  auto arguments = spy_selection_request.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, inserted_variable0);
 
   // it has scalar AnyValueItem on board by default
   auto anyvalue_item =
@@ -164,6 +177,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 
   // attempty to add unknown variable type
   actions->OnAddVariableRequest("non-existing-type");
+
 }
 
 //! Inserting variable between two existing variables.
