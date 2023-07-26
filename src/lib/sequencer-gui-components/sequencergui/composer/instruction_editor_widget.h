@@ -74,6 +74,7 @@ private:
   void WriteSettings();
   void AdjustTreeAppearance();
   void SetProcedureIntern(ProcedureItem* procedure);
+  void OnContextMenu(const QPoint& point);
 
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();

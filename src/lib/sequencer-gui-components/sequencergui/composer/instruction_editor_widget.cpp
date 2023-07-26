@@ -79,6 +79,9 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
   m_custom_header->setStretchLastSection(true);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          &InstructionEditorWidget::OnContextMenu);
 
   SetupConnections();
 
@@ -182,6 +185,24 @@ void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
   {
     m_component_provider->SetItem(nullptr);
   }
+}
+
+void InstructionEditorWidget::OnContextMenu(const QPoint &point)
+{
+  auto tree_view = qobject_cast<QTreeView *>(sender());
+  if (!tree_view)
+  {
+    return;
+  }
+
+  QMenu menu;
+
+  auto expand_all_action = menu.addAction("Expand all");
+  connect(expand_all_action, &QAction::triggered, [tree_view]() { tree_view->expandAll(); });
+  auto collapse_all_action = menu.addAction("Collapse all");
+  connect(collapse_all_action, &QAction::triggered, [tree_view]() { tree_view->collapseAll(); });
+
+  menu.exec(tree_view->mapToGlobal(point));
 }
 
 void InstructionEditorWidget::SetupConnections()
