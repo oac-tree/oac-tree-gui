@@ -28,7 +28,7 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/viewmodel/instruction_viewmodel.h>
+#include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
@@ -64,7 +64,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
-    , m_component_provider(mvvm::CreateProvider<InstructionViewModel>(m_tree_view))
+    , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
     , m_property_tree(new mvvm::PropertyTreeView)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))

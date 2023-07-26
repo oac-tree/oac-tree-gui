@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_INSTRUCTION_VIEWMODEL_H_
-#define SEQUENCERGUI_VIEWMODEL_INSTRUCTION_VIEWMODEL_H_
+#ifndef SEQUENCERGUI_VIEWMODEL_INSTRUCTION_EDITOR_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_INSTRUCTION_EDITOR_VIEWMODEL_H_
 
 #include <mvvm/viewmodel/viewmodel.h>
 
@@ -32,12 +32,12 @@ namespace sequencergui
 
 //! View model to show instruction tree with three columns: display_name, name and status.
 
-class MVVM_VIEWMODEL_EXPORT InstructionViewModel : public mvvm::ViewModel
+class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 
 public:
-  explicit InstructionViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+  explicit InstructionEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
 };
 
 }  // namespace sequencergui

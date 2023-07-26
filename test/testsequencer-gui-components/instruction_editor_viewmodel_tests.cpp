@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/instruction_viewmodel.h"
+#include "sequencergui/viewmodel/instruction_editor_viewmodel.h"
 
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -31,9 +31,9 @@
 
 using namespace sequencergui;
 
-//! Tests for InstructionViewModel class.
+//! Tests for InstructionEditorViewModel class.
 
-class InstructionViewModelTest : public ::testing::Test
+class InstructionEditorViewModelTest : public ::testing::Test
 {
 public:
   class TestModel : public mvvm::ApplicationModel
@@ -50,14 +50,14 @@ public:
 //! Single instruction in a model.
 //! ViewModel should see single row and 3 columns.
 
-TEST_F(InstructionViewModelTest, SingleInstruction)
+TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
   TestModel model;
 
   auto sequence = model.InsertItem<SequenceItem>();
   sequence->SetStatus("abc");
 
-  InstructionViewModel viewmodel(&model);
+  InstructionEditorViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(), 1);
   EXPECT_EQ(viewmodel.columnCount(), 4);
 
@@ -73,7 +73,8 @@ TEST_F(InstructionViewModelTest, SingleInstruction)
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_displayname_index), sequence);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_customname_index), GetNameItem(*sequence));
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_status_index), GetStatusItem(*sequence));
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_breakpoint_index), GetBreakpointItem(*sequence));
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_breakpoint_index),
+            GetBreakpointItem(*sequence));
 
   EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Sequence"));
@@ -85,7 +86,7 @@ TEST_F(InstructionViewModelTest, SingleInstruction)
   // FIXME add breakpoint
 }
 
-TEST_F(InstructionViewModelTest, SequenceWithChild)
+TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 {
   TestModel model;
 
@@ -93,7 +94,7 @@ TEST_F(InstructionViewModelTest, SequenceWithChild)
   auto wait0 = model.InsertItem<WaitItem>(sequence);
   auto wait1 = model.InsertItem<WaitItem>(sequence);
 
-  InstructionViewModel viewmodel(&model);
+  InstructionEditorViewModel viewmodel(&model);
   auto sequence_ndex = viewmodel.index(0, 0);
   EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
   EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 4);
@@ -110,19 +111,19 @@ TEST_F(InstructionViewModelTest, SequenceWithChild)
             std::string("Wait"));
 }
 
-TEST_F(InstructionViewModelTest, NotificationOnStatusChange)
+TEST_F(InstructionEditorViewModelTest, NotificationOnStatusChange)
 {
   TestModel model;
 
   auto sequence = model.InsertItem<SequenceItem>();
 
-  InstructionViewModel viewmodel(&model);
+  InstructionEditorViewModel viewmodel(&model);
   EXPECT_EQ(viewmodel.rowCount(), 1);
   EXPECT_EQ(viewmodel.columnCount(), 4);
 
   auto sequence_status_index = viewmodel.index(0, 2);
 
-  QSignalSpy spy_data_changed(&viewmodel, &InstructionViewModel::dataChanged);
+  QSignalSpy spy_data_changed(&viewmodel, &InstructionEditorViewModel::dataChanged);
 
   sequence->SetStatus("abc");
   EXPECT_EQ(spy_data_changed.count(), 1);

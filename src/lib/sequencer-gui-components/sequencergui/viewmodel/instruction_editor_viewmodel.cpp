@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_viewmodel.h"
+#include "instruction_editor_viewmodel.h"
 
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
@@ -61,7 +61,7 @@ public:
   }
 };
 
-InstructionViewModel::InstructionViewModel(mvvm::SessionModelInterface *model, QObject *parent)
+InstructionEditorViewModel::InstructionEditorViewModel(mvvm::SessionModelInterface *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(
