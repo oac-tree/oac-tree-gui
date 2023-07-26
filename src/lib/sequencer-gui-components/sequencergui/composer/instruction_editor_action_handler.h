@@ -55,6 +55,9 @@ public:
 
   void OnRemoveInstructionRequest();
 
+signals:
+  void SelectItemRequest(mvvm::SessionItem* item);
+
 private:
   mvvm::SessionModelInterface* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;

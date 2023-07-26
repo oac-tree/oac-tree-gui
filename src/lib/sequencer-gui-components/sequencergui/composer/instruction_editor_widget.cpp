@@ -206,6 +206,19 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::OnInsertInstructionIntoRequest);
   connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest,
           m_action_handler.get(), &InstructionEditorActionHandler::OnRemoveInstructionRequest);
+
+  // propagate selection request from action handler component provider
+  auto on_make_instruction_selected_request = [this](auto item)
+  {
+    m_component_provider->SetSelectedItem(item);
+    auto index_of_inserted = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
+    if (!index_of_inserted.empty())
+    {
+      m_tree_view->setExpanded(index_of_inserted.front(), true);
+    }
+  };
+  connect(m_action_handler.get(), &InstructionEditorActionHandler::SelectItemRequest, this,
+          on_make_instruction_selected_request);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()

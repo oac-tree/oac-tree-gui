@@ -32,8 +32,12 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
 
+#include <QSignalSpy>
+
 using namespace sequencergui;
 using ::testing::_;
+
+Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
 //! Tests for SequencerObserver class.
 
@@ -56,8 +60,8 @@ public:
     return result;
   }
 
-  std::unique_ptr<InstructionEditorActionHandler> CreateActions(ProcedureItem* procedure,
-                                                                InstructionItem* instruction)
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
+                                                                      InstructionItem* instruction)
   {
     return std::make_unique<InstructionEditorActionHandler>(CreateContext(procedure, instruction));
   }
@@ -72,7 +76,7 @@ public:
 TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProcedureSelected)
 {
   // creating the context pretending that no procedures/instructions are selected
-  auto actions = CreateActions(nullptr, nullptr);
+  auto actions = CreateActionHandler(nullptr, nullptr);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
@@ -84,7 +88,10 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
 
 TEST_F(InstructionEditorActionHandlerTest, AddWait)
 {
-  auto actions = CreateActions(m_procedure, nullptr);
+  auto actions = CreateActionHandler(m_procedure, nullptr);
+
+  QSignalSpy spy_selection_request(actions.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -94,13 +101,19 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+
+  EXPECT_EQ(spy_selection_request.count(), 1);
+  auto arguments = spy_selection_request.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, instructions.at(0));
 }
 
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
 
 TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {
-  auto actions = CreateActions(m_procedure, nullptr);
+  auto actions = CreateActionHandler(m_procedure, nullptr);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -125,7 +138,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
-  auto actions = CreateActions(m_procedure, sequence);
+  auto actions = CreateActionHandler(m_procedure, sequence);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -155,7 +168,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
 TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMode)
 {
   // creating the context mimicking "no instruction selected"
-  auto actions = CreateActions(m_procedure, nullptr);
+  auto actions = CreateActionHandler(m_procedure, nullptr);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -181,7 +194,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   auto sequence = m_model.InsertItem<SequenceItem>(repeat);
 
   // creating the context mimicking `sequence` instruction selected
-  auto actions = CreateActions(m_procedure, sequence);
+  auto actions = CreateActionHandler(m_procedure, sequence);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
@@ -203,7 +216,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   sequence->SetY(sequence_y);
 
   // creating the context mimicking `sequence` instruction selected
-  auto actions = CreateActions(m_procedure, sequence);
+  auto actions = CreateActionHandler(m_procedure, sequence);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -242,7 +255,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   auto wait = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
 
   // creating the context mimicking `wait` instruction selected
-  auto actions = CreateActions(m_procedure, wait);
+  auto actions = CreateActionHandler(m_procedure, wait);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
@@ -259,14 +272,14 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // creating the context mimicking no instruction selected
-  auto actions = CreateActions(m_procedure, nullptr);
+  auto actions = CreateActionHandler(m_procedure, nullptr);
 
   // nothing selected, remove request does nothing
   actions->OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // creating the context mimicking sequencer selected
-  actions = CreateActions(m_procedure, sequence);
+  actions = CreateActionHandler(m_procedure, sequence);
 
   // remove request should remove item
   actions->OnRemoveInstructionRequest();

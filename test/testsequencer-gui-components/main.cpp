@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/components/custom_meta_types.h>
 
 #include <gtest/gtest.h>
 
@@ -26,6 +27,7 @@ int main(int argc, char** argv)
   ::testing::InitGoogleTest(&argc, argv);
 
   sequencergui::LoadPlugins();
+  sequencergui::RegisterCustomMetaTypes();
 
   // run all google tests
   return RUN_ALL_TESTS();

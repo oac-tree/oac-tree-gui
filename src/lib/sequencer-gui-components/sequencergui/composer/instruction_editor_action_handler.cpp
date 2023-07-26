@@ -57,7 +57,7 @@ namespace sequencergui
 {
 
 InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditorContext context,
-                                                   QObject *parent)
+                                                               QObject *parent)
     : QObject(parent), m_context(std::move(context))
 {
   if (!m_context.selected_procedure)
@@ -128,21 +128,23 @@ InstructionContainerItem *InstructionEditorActionHandler::GetInstructionContaine
   return procedure ? procedure->GetInstructionContainer() : nullptr;
 }
 
-void InstructionEditorActionHandler::SendMessage(const std::string &text, const std::string &informative,
-                                           const std::string &details)
+void InstructionEditorActionHandler::SendMessage(const std::string &text,
+                                                 const std::string &informative,
+                                                 const std::string &details)
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(const std::string &item_type,
-                                                        mvvm::SessionItem *parent,
-                                                        const mvvm::TagIndex &index)
+                                                              mvvm::SessionItem *parent,
+                                                              const mvvm::TagIndex &index)
 {
   mvvm::SessionItem *result{nullptr};
   try
   {
     result = GetModel()->InsertItem(CreateInstructionItem(item_type), parent, index);
+    emit SelectItemRequest(result);
   }
   catch (const std::exception &ex)
   {
