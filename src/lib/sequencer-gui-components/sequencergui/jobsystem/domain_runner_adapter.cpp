@@ -96,27 +96,6 @@ void DomainRunnerAdapter::StopRequest()
   SetStatus(RunnerStatus::kStopped);
 }
 
-bool DomainRunnerAdapter::SetBreakpoint(const instruction_t *instruction)
-{
-  if (IsBusy())
-  {
-    return false;
-  }
-
-  m_domain_runner->SetBreakpoint(instruction);
-  return true;
-}
-
-bool DomainRunnerAdapter::RemoveBreakpoint(const instruction_t *instruction)
-{
-  if (IsBusy())
-  {
-    return false;
-  }
-
-  m_domain_runner->RemoveBreakpoint(instruction);
-  return true;
-}
 
 runner_t *DomainRunnerAdapter::GetDomainRunner()
 {

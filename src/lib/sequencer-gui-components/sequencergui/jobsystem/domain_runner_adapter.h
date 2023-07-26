@@ -62,10 +62,6 @@ public:
 
   void StopRequest() override;
 
-  bool SetBreakpoint(const instruction_t* instruction);
-
-  bool RemoveBreakpoint(const instruction_t* instruction);
-
   runner_t* GetDomainRunner();
 
 protected:
