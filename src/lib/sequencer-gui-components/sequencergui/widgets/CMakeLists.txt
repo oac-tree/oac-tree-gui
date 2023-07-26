@@ -24,6 +24,8 @@ target_sources(${library_name} PRIVATE
   steady_menu.h
   style_utils.cpp
   style_utils.h
+  tree_helper.cpp
+  tree_helper.h
   warning_sign_widget.cpp
   warning_sign_widget.h
   widget_overlay_message_handler.cpp

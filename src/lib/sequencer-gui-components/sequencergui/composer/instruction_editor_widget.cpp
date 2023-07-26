@@ -30,6 +30,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sequencergui/widgets/tree_helper.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
@@ -197,10 +198,7 @@ void InstructionEditorWidget::OnContextMenu(const QPoint &point)
 
   QMenu menu;
 
-  auto expand_all_action = menu.addAction("Expand all");
-  connect(expand_all_action, &QAction::triggered, [tree_view]() { tree_view->expandAll(); });
-  auto collapse_all_action = menu.addAction("Collapse all");
-  connect(collapse_all_action, &QAction::triggered, [tree_view]() { tree_view->collapseAll(); });
+  SetupCollapseExpandMenu(point, menu, *tree_view);
 
   menu.exec(tree_view->mapToGlobal(point));
 }
