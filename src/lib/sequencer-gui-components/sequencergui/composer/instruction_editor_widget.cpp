@@ -188,17 +188,6 @@ void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
   }
 }
 
-void InstructionEditorWidget::OnContextMenu(const QPoint &point)
-{
-  auto tree_view = qobject_cast<QTreeView *>(sender());
-  if (!tree_view)
-  {
-    return;
-  }
-
-  SummonCollapseExpandMenu(point, *tree_view);
-}
-
 void InstructionEditorWidget::SetupConnections()
 {
   auto on_selected_instruction_changed = [this](auto)
