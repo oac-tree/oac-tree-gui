@@ -22,13 +22,18 @@
 
 #include <QWidget>
 
+class QTreeView;
+
 namespace mvvm
 {
 class SessionItem;
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
-class QTreeView;
+namespace sup::gui
+{
+class CustomHeaderView;
+}
 
 namespace sequencergui
 {
@@ -52,7 +57,12 @@ public:
   void SetItem(mvvm::SessionItem* item);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+  void AdjustTreeAppearance();
+
   QTreeView* m_tree_view{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 
