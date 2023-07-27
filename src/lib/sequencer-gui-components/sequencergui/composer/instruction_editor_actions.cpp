@@ -82,7 +82,7 @@ void InstructionEditorActions::SetupActions()
   m_remove_action->setDefaultWidget(remove_button);
 
   auto move_up_button = new QToolButton;
-  move_up_button->setText("Up");
+  move_up_button->setText("Move Up");
   move_up_button->setIcon(styleutils::GetIcon("arrow-up-thin-circle-outline"));
   move_up_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   move_up_button->setToolTip(
@@ -92,7 +92,7 @@ void InstructionEditorActions::SetupActions()
   m_move_up_action->setDefaultWidget(move_up_button);
 
   auto move_down_button = new QToolButton;
-  move_down_button->setText("Down");
+  move_down_button->setText("Move Down");
   move_down_button->setIcon(styleutils::GetIcon("arrow-down-thin-circle-outline"));
   move_down_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   move_down_button->setToolTip(

@@ -19,6 +19,8 @@
 
 #include "instruction_editor_viewmodel.h"
 
+#include "drag_and_drop_helper.h"
+
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
 
@@ -29,6 +31,7 @@
 #include <mvvm/viewmodelbase/viewitem.h>
 
 #include <QDebug>
+#include <QMimeData>
 
 namespace sequencergui
 {
@@ -85,7 +88,8 @@ QMimeData *InstructionEditorViewModel::mimeData(const QModelIndexList &index_lis
 {
   qDebug() << "mimeData" << index_list;
 
-  return nullptr;
+  // ownership will be taken by QDrag operation
+  return CreateInstructionMoveMimeData(index_list).release();
 }
 
 Qt::DropActions InstructionEditorViewModel::supportedDragActions() const
