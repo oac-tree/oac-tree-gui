@@ -42,14 +42,14 @@ InstructionEditorActions::~InstructionEditorActions() = default;
 
 QList<QAction *> InstructionEditorActions::GetActions() const
 {
-  return {m_insert_after_action, m_insert_into_action, m_remove_action};
+  return {m_insert_after_action, m_insert_into_action, m_remove_action, m_move_up_action,
+          m_move_down_action};
 }
 
 void InstructionEditorActions::SetupActions()
 {
-  // we are using QToolButon wrapped into QWidgetAction here because
-  // 1. we want to pass around QList<QAction*>
-  // 2. QAction with menu doesn't provide InstantPopup capabilities
+  // QAction with menu doesn't provide instant popup capabilities.
+  // But we can use QToolButton and wrap it into QWidgetAction
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("Add");
@@ -80,6 +80,27 @@ void InstructionEditorActions::SetupActions()
           &InstructionEditorActions::RemoveSelectedRequest);
   m_remove_action = new QWidgetAction(this);
   m_remove_action->setDefaultWidget(remove_button);
+
+  auto move_up_button = new QToolButton;
+  move_up_button->setText("Up");
+  move_up_button->setIcon(styleutils::GetIcon("arrow-up-thin-circle-outline"));
+  move_up_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  move_up_button->setToolTip(
+      "Move currently selected instruction up, works within the same parent");
+  connect(move_up_button, &QToolButton::clicked, this, &InstructionEditorActions::MoveUpRequest);
+  m_move_up_action = new QWidgetAction(this);
+  m_move_up_action->setDefaultWidget(move_up_button);
+
+  auto move_down_button = new QToolButton;
+  move_down_button->setText("Down");
+  move_down_button->setIcon(styleutils::GetIcon("arrow-down-thin-circle-outline"));
+  move_down_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  move_down_button->setToolTip(
+      "Move currently selected instruction down, works within the same parent");
+  connect(move_down_button, &QToolButton::clicked, this,
+          &InstructionEditorActions::MoveDownRequest);
+  m_move_down_action = new QWidgetAction(this);
+  m_move_down_action->setDefaultWidget(move_down_button);
 }
 
 std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()

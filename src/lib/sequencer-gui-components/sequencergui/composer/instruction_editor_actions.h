@@ -49,6 +49,8 @@ signals:
   void InsertIntoRequest(const QString& name);
   void InsertAfterRequest(const QString& name);
   void RemoveSelectedRequest();
+  void MoveUpRequest();
+  void MoveDownRequest();
 
 private:
   void SetupActions();
@@ -62,6 +64,8 @@ private:
   QWidgetAction* m_insert_after_action{nullptr};
   QWidgetAction* m_insert_into_action{nullptr};
   QWidgetAction* m_remove_action{nullptr};
+  QWidgetAction* m_move_up_action{nullptr};
+  QWidgetAction* m_move_down_action{nullptr};
 };
 
 }  // namespace sequencergui

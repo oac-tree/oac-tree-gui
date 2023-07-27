@@ -46,10 +46,8 @@ WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
 void WorkspaceEditorActions::SetupActions()
 {
-  // We are using QToolButon wrapped into QWidgetAction here because:
-  // 1. we want to pass around QList<QAction*>
-  // 2. QAction with menu doesn't provide InstantPopup capabilities, so instead we create
-  // QToolButton with the menu and wrap it into QWidgetAction
+  // QAction with menu doesn't provide instant popup capabilities.
+  // But we can use QToolButton and wrap it into QWidgetAction
 
   auto add_variable_button = new QToolButton;
   add_variable_button->setText("Add");
