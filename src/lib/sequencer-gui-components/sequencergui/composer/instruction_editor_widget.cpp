@@ -65,6 +65,8 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
           std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
 {
   setWindowTitle("Instruction Tree");
+  setAcceptDrops(true);
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
@@ -73,22 +75,15 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   m_splitter->addWidget(m_tree_view);
   m_splitter->addWidget(m_property_tree);
   m_splitter->setSizes(QList<int>() << 300 << 200);
-
   layout->addWidget(m_splitter);
 
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
-  m_tree_view->setAlternatingRowColors(true);
-  m_tree_view->setHeader(m_custom_header);
-  m_custom_header->setStretchLastSection(true);
-  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
-  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          CreateOnCustomMenuCallback(*m_tree_view));
+  ReadSettings();
+
+  SetupTree();
 
   SetupConnections();
 
   addActions(m_editor_actions->GetActions());
-
-  ReadSettings();
 
   auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
 
@@ -161,6 +156,24 @@ void InstructionEditorWidget::WriteSettings()
   {
     settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
   }
+}
+
+void InstructionEditorWidget::SetupTree()
+{
+  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setHeader(m_custom_header);
+  m_custom_header->setStretchLastSection(true);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          CreateOnCustomMenuCallback(*m_tree_view));
+
+  AdjustTreeAppearance();
+
+  m_tree_view->setDragEnabled(true);
+  m_tree_view->viewport()->setAcceptDrops(true);
+  m_tree_view->setDropIndicatorShown(true);
 }
 
 void InstructionEditorWidget::AdjustTreeAppearance()

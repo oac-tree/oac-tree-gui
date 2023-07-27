@@ -28,6 +28,8 @@
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
+#include <QDebug>
+
 namespace sequencergui
 {
 
@@ -66,6 +68,47 @@ InstructionEditorViewModel::InstructionEditorViewModel(mvvm::SessionModelInterfa
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionEditorRowStrategy>(model,
                                                                                             this));
+}
+
+Qt::ItemFlags InstructionEditorViewModel::flags(const QModelIndex &index) const
+{
+  auto default_flags = ViewModel::flags(index);
+  if (index.isValid())
+  {
+    return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | default_flags;
+  }
+
+  return Qt::ItemIsDropEnabled | default_flags;
+}
+
+QMimeData *InstructionEditorViewModel::mimeData(const QModelIndexList &index_list) const
+{
+  qDebug() << "mimeData" << index_list;
+
+  return nullptr;
+}
+
+Qt::DropActions InstructionEditorViewModel::supportedDragActions() const
+{
+  return Qt::MoveAction;
+}
+
+Qt::DropActions InstructionEditorViewModel::supportedDropActions() const
+{
+  return Qt::MoveAction;
+}
+
+bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::DropAction, int row, int column, const QModelIndex &parent) const
+{
+  qDebug() << "canDropMimeData" << data << row << column << parent;
+  return false;
+}
+
+bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+  qDebug() << "dropMimeData" << data << action << row << column << parent;
+  return false;
+
 }
 
 }  // namespace sequencergui

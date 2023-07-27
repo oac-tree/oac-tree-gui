@@ -102,7 +102,7 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
             std::string("Wait"));
 }
 
-TEST_F(InstructionEditorViewModelTest, NotificationOnStatusChange)
+TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
 {
   TestModel model;
 

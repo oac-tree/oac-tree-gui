@@ -38,6 +38,21 @@ class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
 
 public:
   explicit InstructionEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+
+  Qt::ItemFlags flags(const QModelIndex& index) const override;
+
+  QMimeData* mimeData(const QModelIndexList& index_list) const override;
+
+  Qt::DropActions supportedDragActions() const override;
+
+  Qt::DropActions supportedDropActions() const override;
+
+  bool canDropMimeData(const QMimeData* data, Qt::DropAction, int, int,
+                       const QModelIndex&) const override;
+
+  bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
+                    const QModelIndex& parent) override;
+
 };
 
 }  // namespace sequencergui
