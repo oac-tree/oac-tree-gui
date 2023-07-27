@@ -28,7 +28,6 @@ class QTreeView;
 
 namespace mvvm
 {
-class PropertyTreeView;
 class ItemViewComponentProvider;
 }  // namespace mvvm
 
@@ -46,6 +45,7 @@ class InstructionEditorContext;
 class InstructionEditorActionHandler;
 class InstructionEditorActions;
 class VisibilityAgentBase;
+class UniversalPropertyEditor;
 
 //! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
 //! center (and right side if necessary) os SequencerComposerView.
@@ -81,7 +81,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  mvvm::PropertyTreeView* m_property_tree{nullptr};
+  UniversalPropertyEditor* m_property_tree{nullptr};
 
   QSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
