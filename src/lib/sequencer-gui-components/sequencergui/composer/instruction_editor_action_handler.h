@@ -63,6 +63,8 @@ signals:
   void SelectItemRequest(mvvm::SessionItem* item);
 
 private:
+  InstructionItem* GetSelectedInstruction();
+
   mvvm::SessionModelInterface* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
   void SendMessage(const std::string& text, const std::string& informative = {},

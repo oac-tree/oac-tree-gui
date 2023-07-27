@@ -90,7 +90,7 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
     return;
   }
 
-  auto item = m_context.selected_instruction();
+  auto item = GetSelectedInstruction();
 
   auto parent = item ? item->GetParent() : instruction_container;
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
@@ -103,7 +103,7 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
 //! The selection is retrieved via a callback.
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
-  auto selected_instruction = m_context.selected_instruction();
+  auto selected_instruction = GetSelectedInstruction();
   auto child = InsertItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
   UpdateChildCoordinate(selected_instruction, child);
 }
@@ -112,7 +112,7 @@ void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QStrin
 //! The selection is retrieved via a callback.
 void InstructionEditorActionHandler::OnRemoveInstructionRequest()
 {
-  if (auto selected_instruction = m_context.selected_instruction(); selected_instruction)
+  if (auto selected_instruction = GetSelectedInstruction(); selected_instruction)
   {
     GetModel()->RemoveItem(selected_instruction);
   }
@@ -120,7 +120,7 @@ void InstructionEditorActionHandler::OnRemoveInstructionRequest()
 
 void InstructionEditorActionHandler::OnMoveUpRequest()
 {
-  if (auto instruction = m_context.selected_instruction(); instruction)
+  if (auto instruction = GetSelectedInstruction(); instruction)
   {
     mvvm::utils::MoveUp(instruction);
     emit SelectItemRequest(instruction);
@@ -129,11 +129,16 @@ void InstructionEditorActionHandler::OnMoveUpRequest()
 
 void InstructionEditorActionHandler::OnMoveDownRequest()
 {
-  if (auto instruction = m_context.selected_instruction(); instruction)
+  if (auto instruction = GetSelectedInstruction(); instruction)
   {
     mvvm::utils::MoveDown(instruction);
     emit SelectItemRequest(instruction);
   }
+}
+
+InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction()
+{
+  return m_context.selected_instruction();
 }
 
 mvvm::SessionModelInterface *InstructionEditorActionHandler::GetModel() const
