@@ -169,6 +169,8 @@ void InstructionEditorWidget::SetupTree()
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           CreateOnCustomMenuCallback(*m_tree_view));
 
+  m_tree_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
   AdjustTreeAppearance();
 
   m_tree_view->setDragEnabled(true);

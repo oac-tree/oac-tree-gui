@@ -28,6 +28,7 @@
 #include <mvvm/interfaces/row_strategy_interface.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
+#include <mvvm/viewmodel/viewmodel_utils.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
 #include <QDebug>
@@ -102,17 +103,59 @@ Qt::DropActions InstructionEditorViewModel::supportedDropActions() const
   return Qt::MoveAction;
 }
 
-bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::DropAction, int row, int column, const QModelIndex &parent) const
+/*
+Here we explain parameters reported by canDropMimeData method. Suppose we have the following tree
+hierarchy:
+
+Message
+Sequence
+  Wait
+Message
+
+Schema below shows drop areas and reported parameters. Horizontal dashed lines appears as drop
+indicators on attempt to drop between cells.
+
+[0]  --------------    row_col=( 0,  0)     QModelIndex(-1, -1)
+[1]  Message           row_col=(-1, -1)     QModelIndex(0, 0)
+[2]  --------------    row_col=( 1,  0)     QModelIndex(-1, -1)
+[3]  Sequence          row_col=(-1, -1)     QModelIndex(1, 0)
+[4]  --------------    row_col=( 2,  0)     QModelIndex(-1, -1)    <-- problematic
+[5]     -----------    row_col=( 0,  0)     QModelIndex(1, 0)
+[6]     Wait           row_col=(-1, -1)     QModelIndex(0, 0)
+[7]     -----------    row_col=( 1,  0)     QModelIndex(1, 0)
+[8]  --------------    row_col=( 2,  0)     QModelIndex(-1, -1)
+[9]  Message           row_col=(-1, -1)     QModelIndex(2, 0)
+[10] --------------    row_col=( 3,  0)     QModelIndex(-1, -1)
+
+Area #4 appears to be the same as area #8. Thus, from the model perspective it is not possible to
+distinguish
+
+
+*/
+
+bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
+                                                 int row, int column,
+                                                 const QModelIndex &parent) const
 {
-  qDebug() << "canDropMimeData" << data << row << column << parent;
-  return false;
+  qDebug() << "canDropMimeData" << data << action << row << column << parent;
+  if (parent.isValid())
+  {
+    auto items = mvvm::utils::ItemsFromIndex({parent});
+    qDebug() << "     " << items.size() << QString::fromStdString(items.at(0)->GetDisplayName());
+  }
+  return true;
 }
 
-bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
+                                              int column, const QModelIndex &parent)
 {
   qDebug() << "dropMimeData" << data << action << row << column << parent;
+  if (parent.isValid())
+  {
+    auto items = mvvm::utils::ItemsFromIndex({parent});
+    qDebug() << "     " << items.size() << QString::fromStdString(items.at(0)->GetDisplayName());
+  }
   return false;
-
 }
 
 }  // namespace sequencergui
