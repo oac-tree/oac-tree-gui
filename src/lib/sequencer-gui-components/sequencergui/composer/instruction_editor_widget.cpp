@@ -206,6 +206,10 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::OnInsertInstructionIntoRequest);
   connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest,
           m_action_handler.get(), &InstructionEditorActionHandler::OnRemoveInstructionRequest);
+  connect(m_editor_actions, &InstructionEditorActions::MoveUpRequest,
+          m_action_handler.get(), &InstructionEditorActionHandler::OnMoveUpRequest);
+  connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest,
+          m_action_handler.get(), &InstructionEditorActionHandler::OnMoveDownRequest);
 
   // propagate selection request from action handler component provider
   auto on_make_instruction_selected_request = [this](auto item)

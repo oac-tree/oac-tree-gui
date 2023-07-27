@@ -55,6 +55,10 @@ public:
 
   void OnRemoveInstructionRequest();
 
+  void OnMoveUpRequest();
+
+  void OnMoveDownRequest();
+
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);
 

@@ -285,3 +285,65 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   actions->OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
 }
+
+//! Move selected instruction up.
+
+TEST_F(InstructionEditorActionHandlerTest, MoveUp)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  // creating the context mimicking wait2 is selected
+  auto actions = CreateActionHandler(m_procedure, wait2);
+
+  QSignalSpy spy_selection_request(actions.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
+
+  // moving selected item up
+  actions->OnMoveUpRequest();
+
+  // checking that the order of instructions has changed
+  const std::vector<InstructionItem*> expected({wait0, wait2, wait1});
+  EXPECT_EQ(sequence->GetInstructions(), expected);
+
+  // checking the request to select just moved item
+  EXPECT_EQ(spy_selection_request.count(), 1);
+  auto arguments = spy_selection_request.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, wait2);
+}
+
+//! Move selected instruction up.
+
+TEST_F(InstructionEditorActionHandlerTest, MoveDown)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  // creating the context mimicking wait0 is selected
+  auto actions = CreateActionHandler(m_procedure, wait0);
+
+  QSignalSpy spy_selection_request(actions.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
+
+  // moving selected item up
+  actions->OnMoveDownRequest();
+
+  // checking that the order of instructions has changed
+  const std::vector<InstructionItem*> expected({wait1, wait0, wait2});
+  EXPECT_EQ(sequence->GetInstructions(), expected);
+
+  // checking the request to select just moved item
+  EXPECT_EQ(spy_selection_request.count(), 1);
+  auto arguments = spy_selection_request.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
+  EXPECT_EQ(selected_item, wait0);
+}

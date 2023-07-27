@@ -28,6 +28,7 @@
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/core/exceptions.h>
+#include <mvvm/model/model_utils.h>
 
 #include <QDebug>
 #include <QPointF>
@@ -114,6 +115,24 @@ void InstructionEditorActionHandler::OnRemoveInstructionRequest()
   if (auto selected_instruction = m_context.selected_instruction(); selected_instruction)
   {
     GetModel()->RemoveItem(selected_instruction);
+  }
+}
+
+void InstructionEditorActionHandler::OnMoveUpRequest()
+{
+  if (auto instruction = m_context.selected_instruction(); instruction)
+  {
+    mvvm::utils::MoveUp(instruction);
+    emit SelectItemRequest(instruction);
+  }
+}
+
+void InstructionEditorActionHandler::OnMoveDownRequest()
+{
+  if (auto instruction = m_context.selected_instruction(); instruction)
+  {
+    mvvm::utils::MoveDown(instruction);
+    emit SelectItemRequest(instruction);
   }
 }
 
