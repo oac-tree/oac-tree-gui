@@ -88,7 +88,7 @@ void ItemListWidget::startDrag(Qt::DropActions)
   auto mime_data = CreateNewInstructionMimeData(item->data(Qt::UserRole).toString());
 
   auto drag = new QDrag(this);
-  drag->setMimeData(mime_data.release()); // ownership is taken
+  drag->setMimeData(mime_data.release());  // ownership is taken
   drag->setPixmap(pixmap);
   drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
 

@@ -98,12 +98,12 @@ QMimeData *InstructionEditorViewModel::mimeData(const QModelIndexList &index_lis
 
 Qt::DropActions InstructionEditorViewModel::supportedDragActions() const
 {
-  return Qt::MoveAction;
+  return Qt::MoveAction | Qt::CopyAction;
 }
 
 Qt::DropActions InstructionEditorViewModel::supportedDropActions() const
 {
-  return Qt::MoveAction;
+  return Qt::MoveAction | Qt::CopyAction;
 }
 
 /*
@@ -140,32 +140,43 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
                                                  int row, int column,
                                                  const QModelIndex &parent) const
 {
-  if (!data || !data->hasFormat(kInstructionMoveMimeType))
+  qDebug() << "canDropMimeData" << data << action << row << column << parent;
+
+  if (!data)
   {
     return false;
   }
-
-  qDebug() << "canDropMimeData" << data << action << row << column << parent;
 
   auto parent_item = GetSessionItemFromIndex(parent);
   std::cout << "     parent_item: " << parent_item->GetDisplayName() << "\n";
 
   //  if (row != -1)
-  //  {
-  for (const auto &id : GetIdentifiersToMove(data))
-  {
-    auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-    std::cout << "     child_item: " << item->GetDisplayName() << "\n";
-    if (!mvvm::utils::CanMoveItem(item, parent_item, {"", row}).first)
-    {
-      std::cout << "     false \n";
-      return false;
-    }
-  }
-  //  }
-  std::cout << "     true \n";
 
-  return true;
+  //  {
+
+  if (data->hasFormat(kInstructionMoveMimeType))
+  {
+    for (const auto &id : GetIdentifiersToMove(data))
+    {
+      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+      std::cout << "     child_item: " << item->GetDisplayName() << "\n";
+      if (!mvvm::utils::CanMoveItem(item, parent_item, {"", row}).first)
+      {
+        std::cout << "     false \n";
+        return false;
+      }
+    }
+    //  }
+    std::cout << "     true \n";
+    return true;
+  }
+
+  if (data->hasFormat(kNewInstructionMimeType))
+  {
+    return true;
+  }
+
+  return false;
 }
 
 bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
@@ -179,14 +190,20 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
   qDebug() << "dropMimeData" << data << action << row << column << parent;
 
   auto parent_item = GetSessionItemFromIndex(parent);
-  for (const auto &id : GetIdentifiersToMove(data))
-  {
-    auto item = GetRootSessionItem()->GetModel()->FindItem(id);
 
-    GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, {"", row});
+  if (data->hasFormat(kInstructionMoveMimeType))
+  {
+    for (const auto &id : GetIdentifiersToMove(data))
+    {
+      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+
+      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, {"", row});
+    }
+
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 }  // namespace sequencergui
