@@ -44,8 +44,7 @@ public:
   InstructionEditorViewModel m_view_model;
 };
 
-//! Single instruction in a model.
-//! ViewModel should see single row and 3 columns.
+//! Single instruction in a model. ViewModel should see single row and 3 columns.
 
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
@@ -72,6 +71,8 @@ TEST_F(InstructionEditorViewModelTest, SingleInstruction)
             std::string(""));
 }
 
+//! Sequence with a child in a model.
+
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -94,6 +95,8 @@ TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
             std::string("Wait"));
 }
 
+//! Check that view model send notification on name change.
+
 TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
@@ -106,6 +109,8 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
   sequence->SetName("abc");
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
+
+//! Validating method CanDropMimeData.
 
 TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
 {
@@ -143,4 +148,38 @@ TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
 
   // attempt to drop into Wai0
   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
+}
+
+//! Validating method dropMimeData.
+
+TEST_F(InstructionEditorViewModelTest, DropMimeData)
+{
+  // Include
+  // Sequence
+  //    Wait0
+  //    Wait1
+  // Wait2
+
+  auto incl = m_model.InsertItem<IncludeItem>();
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>();
+
+  auto incl_index_col0 = m_view_model.index(0, 0);  // name
+  auto incl_index_col1 = m_view_model.index(0, 1);  // custom name
+  auto sequence_index = m_view_model.index(1, 0);
+  auto wait0_index = m_view_model.index(0, 0, sequence_index);
+  auto wait1_index = m_view_model.index(1, 0, sequence_index);
+
+  // going to drag Include instruction
+  auto mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
+
+  // drop between Wait0 and Wait1
+  EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, sequence_index));
+
+  // validating new layout
+  EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({sequence, wait2}));
+  EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait0, incl, wait1}));
 }

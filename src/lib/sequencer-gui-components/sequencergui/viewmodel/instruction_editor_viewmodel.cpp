@@ -171,13 +171,22 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
 bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
                                               int column, const QModelIndex &parent)
 {
-  qDebug() << "dropMimeData" << data << action << row << column << parent;
-  if (parent.isValid())
+  if (!canDropMimeData(data, action, row, column, parent))
   {
-    auto items = mvvm::utils::ItemsFromIndex({parent});
-    qDebug() << "     " << items.size() << QString::fromStdString(items.at(0)->GetDisplayName());
+    return false;
   }
-  return false;
+
+  qDebug() << "dropMimeData" << data << action << row << column << parent;
+
+  auto parent_item = GetSessionItemFromIndex(parent);
+  for (const auto &id : GetIdentifiersToMove(data))
+  {
+    auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+
+    GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, {"", row});
+  }
+
+  return true;
 }
 
 }  // namespace sequencergui
