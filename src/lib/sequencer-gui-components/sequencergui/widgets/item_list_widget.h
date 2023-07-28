@@ -35,8 +35,6 @@ class ItemListWidget : public QListWidget
 public:
   explicit ItemListWidget(QWidget* parent = nullptr);
 
-  static QString piecesMimeType();
-
   QSize sizeHint() const override;
 
   void AddEntries(const QStringList& entries);

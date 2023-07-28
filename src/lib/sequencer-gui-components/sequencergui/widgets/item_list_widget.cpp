@@ -20,6 +20,7 @@
 #include "item_list_widget.h"
 
 #include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -62,11 +63,6 @@ ItemListWidget::ItemListWidget(QWidget* parent) : QListWidget(parent)
   setUniformItemSizes(true);
 }
 
-QString ItemListWidget::piecesMimeType()
-{
-  return QStringLiteral("image/x-connectable-view");
-}
-
 QSize ItemListWidget::sizeHint() const
 {
   return {kColumnWidth, 600};
@@ -89,11 +85,10 @@ void ItemListWidget::startDrag(Qt::DropActions)
   auto pixmap = item->data(kPixmapRole).value<QPixmap>();
   QStringList data_togo = QStringList() << item->data(Qt::UserRole).toString();
 
-  auto mime_data = new QMimeData;
-  mime_data->setData(piecesMimeType(), mvvm::utils::GetByteArray(data_togo));
+  auto mime_data = CreateNewInstructionMimeData(item->data(Qt::UserRole).toString());
 
   auto drag = new QDrag(this);
-  drag->setMimeData(mime_data);
+  drag->setMimeData(mime_data.release()); // ownership is taken
   drag->setPixmap(pixmap);
   drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
 

@@ -19,8 +19,6 @@
 
 #include "graphics_scene.h"
 
-#include "sequencergui/nodeeditor/graphics_scene_controller.h"
-
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -32,14 +30,13 @@
 #include <sequencergui/nodeeditor/node_controller.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
-#include <sequencergui/widgets/item_list_widget.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <sup/gui/components/message_handler_interface.h>
 
-#include <QDebug>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMessageBox>
 #include <QMimeData>
@@ -63,15 +60,7 @@ sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *vie
 //! Returns name encoded in the drop event.
 std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
 {
-  auto event_data = event->mimeData();
-  if (event_data->hasFormat(sequencergui::ItemListWidget::piecesMimeType()))
-  {
-    auto binary_data = event_data->data(sequencergui::ItemListWidget::piecesMimeType());
-    auto list = mvvm::utils::GetStringList(binary_data);
-    return list.empty() ? std::string() : list.front().toStdString();
-  }
-
-  return {};
+  return sequencergui::GetNewInstructionType(event->mimeData());
 }
 
 //! Returns domain type from the drop event. If domain_type can't be deduced from the event data,
@@ -266,7 +255,7 @@ void GraphicsScene::onConnectionRequest(ConnectableView *child_view, Connectable
 
 void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-  if (event->mimeData()->hasFormat(ItemListWidget::piecesMimeType()))
+  if (event->mimeData()->hasFormat(kNewInstructionMimeType))
   {
     event->accept();
   }
