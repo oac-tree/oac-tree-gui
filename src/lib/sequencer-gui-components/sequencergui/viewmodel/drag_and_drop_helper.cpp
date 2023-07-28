@@ -31,6 +31,7 @@ namespace sequencergui
 std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& indexes)
 {
   // For the moment we do not support drag and move operation when more than one row is selected.
+  // Also we expect that QTreeView is in QAbstractItemView::ExtendedSelection mode.
 
   // Drag operation in a tree view looking at InstructionEditorViewModel will generate indexes
   // corresponding to two items (display name and custom name). We expect that the first one (the
@@ -43,10 +44,12 @@ std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& 
 
   auto result = std::make_unique<QMimeData>();
 
-  auto instruction_item = mvvm::utils::ItemsFromIndex(indexes).at(0);
-  QStringList identifiers({QString::fromStdString(instruction_item->GetIdentifier())});
+  auto about_to_move_item = mvvm::utils::ItemsFromIndex(indexes).at(0);
 
+  // saving identifier in mime data
+  QStringList identifiers({QString::fromStdString(about_to_move_item->GetIdentifier())});
   result->setData(kInstructionMoveMimeType, mvvm::utils::GetByteArray(identifiers));
+
   return result;
 }
 

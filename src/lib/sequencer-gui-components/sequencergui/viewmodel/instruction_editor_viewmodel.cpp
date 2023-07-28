@@ -26,6 +26,8 @@
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/interfaces/row_strategy_interface.h>
+#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/validate_utils.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
@@ -33,6 +35,7 @@
 
 #include <QDebug>
 #include <QMimeData>
+#include <iostream>
 
 namespace sequencergui
 {
@@ -127,22 +130,41 @@ indicators on attempt to drop between cells.
 [9]  Message           row_col=(-1, -1)     QModelIndex(2, 0)
 [10] --------------    row_col=( 3,  0)     QModelIndex(-1, -1)
 
-Area #4 appears to be the same as area #8. Thus, from the model perspective it is not possible to
-distinguish
-
-
+Areas #4 and #8 are located at different places, however, they have the same reported parameters.
+Thus, from a model perspective and without access to QTreeView mouse information, areas are
+indistinguishable. Currently, an attempt to drop at area #4 will lead to an actual drop at #8. It
+can be fixed only by custom QTreeView with modified mouseMoveEvent.
 */
 
 bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
                                                  int row, int column,
                                                  const QModelIndex &parent) const
 {
-  qDebug() << "canDropMimeData" << data << action << row << column << parent;
-  if (parent.isValid())
+  if (!data || !data->hasFormat(kInstructionMoveMimeType))
   {
-    auto items = mvvm::utils::ItemsFromIndex({parent});
-    qDebug() << "     " << items.size() << QString::fromStdString(items.at(0)->GetDisplayName());
+    return false;
   }
+
+  qDebug() << "canDropMimeData" << data << action << row << column << parent;
+
+  auto parent_item = GetSessionItemFromIndex(parent);
+  std::cout << "     parent_item: " << parent_item->GetDisplayName() << "\n";
+
+  //  if (row != -1)
+  //  {
+  for (const auto &id : GetIdentifiersToMove(data))
+  {
+    auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+    std::cout << "     child_item: " << item->GetDisplayName() << "\n";
+    if (!mvvm::utils::CanMoveItem(item, parent_item, {"", row}).first)
+    {
+      std::cout << "     false \n";
+      return false;
+    }
+  }
+  //  }
+  std::cout << "     true \n";
+
   return true;
 }
 

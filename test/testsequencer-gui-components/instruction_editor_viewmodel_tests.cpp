@@ -22,11 +22,13 @@
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/model/application_model.h>
 
 #include <gtest/gtest.h>
 
+#include <QMimeData>
 #include <QSignalSpy>
 
 using namespace sequencergui;
@@ -36,15 +38,10 @@ using namespace sequencergui;
 class InstructionEditorViewModelTest : public ::testing::Test
 {
 public:
-  class TestModel : public mvvm::ApplicationModel
-  {
-  public:
-    TestModel() : mvvm::ApplicationModel("TestModel")
-    {
-      RegisterItem<SequenceItem>();
-      RegisterItem<WaitItem>();
-    }
-  };
+  InstructionEditorViewModelTest() : m_view_model(&m_model) {}
+
+  mvvm::ApplicationModel m_model;
+  InstructionEditorViewModel m_view_model;
 };
 
 //! Single instruction in a model.
@@ -52,68 +49,98 @@ public:
 
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
-  TestModel model;
-
-  auto sequence = model.InsertItem<SequenceItem>();
+  auto sequence = m_model.InsertItem<SequenceItem>();
   sequence->SetStatus("abc");
 
-  InstructionEditorViewModel viewmodel(&model);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  EXPECT_EQ(m_view_model.rowCount(), 1);
+  EXPECT_EQ(m_view_model.columnCount(), 2);
 
-  auto sequence_displayname_index = viewmodel.index(0, 0);
-  auto sequence_customname_index = viewmodel.index(0, 1);
+  auto sequence_displayname_index = m_view_model.index(0, 0);
+  auto sequence_customname_index = m_view_model.index(0, 1);
 
-  auto views = viewmodel.FindViews(GetNameItem(*sequence));
+  auto views = m_view_model.FindViews(GetNameItem(*sequence));
   EXPECT_EQ(views.size(), 1);
-  EXPECT_EQ(viewmodel.indexFromItem(views[0]), sequence_customname_index);
+  EXPECT_EQ(m_view_model.indexFromItem(views[0]), sequence_customname_index);
 
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_displayname_index), sequence);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(sequence_customname_index), GetNameItem(*sequence));
+  EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_displayname_index), sequence);
+  EXPECT_EQ(m_view_model.GetSessionItemFromIndex(sequence_customname_index),
+            GetNameItem(*sequence));
 
-  EXPECT_EQ(viewmodel.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
+  EXPECT_EQ(m_view_model.data(sequence_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Sequence"));
-  EXPECT_EQ(viewmodel.data(sequence_customname_index, Qt::DisplayRole).toString().toStdString(),
+  EXPECT_EQ(m_view_model.data(sequence_customname_index, Qt::DisplayRole).toString().toStdString(),
             std::string(""));
 }
 
 TEST_F(InstructionEditorViewModelTest, SequenceWithChild)
 {
-  TestModel model;
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
 
-  auto sequence = model.InsertItem<SequenceItem>();
-  auto wait0 = model.InsertItem<WaitItem>(sequence);
-  auto wait1 = model.InsertItem<WaitItem>(sequence);
+  auto sequence_index = m_view_model.index(0, 0);
+  EXPECT_EQ(m_view_model.rowCount(sequence_index), 2);
+  EXPECT_EQ(m_view_model.columnCount(sequence_index), 2);
 
-  InstructionEditorViewModel viewmodel(&model);
-  auto sequence_ndex = viewmodel.index(0, 0);
-  EXPECT_EQ(viewmodel.rowCount(sequence_ndex), 2);
-  EXPECT_EQ(viewmodel.columnCount(sequence_ndex), 2);
+  auto wait0_displayname_index = m_view_model.index(0, 0, sequence_index);
+  auto wait1_displayname_index = m_view_model.index(1, 0, sequence_index);
 
-  auto wait0_displayname_index = viewmodel.index(0, 0, sequence_ndex);
-  auto wait1_displayname_index = viewmodel.index(1, 0, sequence_ndex);
+  EXPECT_EQ(m_view_model.GetSessionItemFromIndex(wait0_displayname_index), wait0);
+  EXPECT_EQ(m_view_model.GetSessionItemFromIndex(wait1_displayname_index), wait1);
 
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait0_displayname_index), wait0);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(wait1_displayname_index), wait1);
-
-  EXPECT_EQ(viewmodel.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
+  EXPECT_EQ(m_view_model.data(wait0_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Wait"));
-  EXPECT_EQ(viewmodel.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
+  EXPECT_EQ(m_view_model.data(wait1_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("Wait"));
 }
 
 TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
 {
-  TestModel model;
+  auto sequence = m_model.InsertItem<SequenceItem>();
 
-  auto sequence = model.InsertItem<SequenceItem>();
+  EXPECT_EQ(m_view_model.rowCount(), 1);
+  EXPECT_EQ(m_view_model.columnCount(), 2);
 
-  InstructionEditorViewModel viewmodel(&model);
-  EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
-
-  QSignalSpy spy_data_changed(&viewmodel, &InstructionEditorViewModel::dataChanged);
+  QSignalSpy spy_data_changed(&m_view_model, &InstructionEditorViewModel::dataChanged);
 
   sequence->SetName("abc");
   EXPECT_EQ(spy_data_changed.count(), 1);
+}
+
+TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
+{
+  // Include
+  // Sequence
+  //    Wait0
+  //    Wait1
+  // Wait2
+
+  auto incl = m_model.InsertItem<IncludeItem>();
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>();
+
+  auto incl_index_col0 = m_view_model.index(0, 0);  // name
+  auto incl_index_col1 = m_view_model.index(0, 1);  // custom name
+  auto sequence_index = m_view_model.index(1, 0);
+  auto wait0_index = m_view_model.index(0, 0, sequence_index);
+  auto wait1_index = m_view_model.index(1, 0, sequence_index);
+
+  // we can't perform drop if only one cell is selected
+  auto mime_data = CreateInstructionMoveMimeData({incl_index_col0});
+  EXPECT_FALSE(
+      m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+
+  // going to move Include instruction
+  mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
+
+  // drop after Wait2
+  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+
+  // drop before Wait0
+  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
+
+  // attempt to drop into Wai0
+  EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
 }
