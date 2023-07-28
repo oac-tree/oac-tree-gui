@@ -72,3 +72,21 @@ TEST_F(DragAndDropHelperTestTest, CreateInstructionMoveMimeData)
     EXPECT_TRUE(GetIdentifiersToMove(mime_data.get()).empty());
   }
 }
+
+TEST_F(DragAndDropHelperTestTest, GetNewInstructionType)
+{
+  const QMimeData mime_data;
+  EXPECT_TRUE(GetNewInstructionType(&mime_data).empty());
+  // more tests below
+}
+
+TEST_F(DragAndDropHelperTestTest, CreateNewInstructionMimeData)
+{
+  EXPECT_EQ(GetNewInstructionType(nullptr), std::string(""));
+
+  auto mime_data = CreateNewInstructionMimeData("abc");
+  EXPECT_EQ(GetNewInstructionType(mime_data.get()), std::string("abc"));
+
+  mime_data = CreateNewInstructionMimeData("");
+  EXPECT_EQ(GetNewInstructionType(mime_data.get()), std::string(""));
+}

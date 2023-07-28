@@ -64,4 +64,28 @@ std::vector<std::string> GetIdentifiersToMove(const QMimeData* mime_data)
   return mvvm::utils::GetStdStringVector(identifiers);
 }
 
+std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name)
+{
+  if (name.isEmpty())
+  {
+    return {};
+  }
+
+  auto result = std::make_unique<QMimeData>();
+  result->setData(kNewInstructionMimeType, mvvm::utils::GetByteArray({name}));
+  return result;
+}
+
+std::string GetNewInstructionType(const QMimeData* mime_data)
+{
+  if (!mime_data || !mime_data->hasFormat(kNewInstructionMimeType))
+  {
+    return {};
+  }
+
+  auto binary_data = mime_data->data(kNewInstructionMimeType);
+  auto list = mvvm::utils::GetStringList(binary_data);
+  return list.empty() ? std::string() : list.front().toStdString();
+}
+
 }  // namespace sequencergui

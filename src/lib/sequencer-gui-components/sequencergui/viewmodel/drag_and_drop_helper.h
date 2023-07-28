@@ -32,7 +32,11 @@ class QMimeData;
 namespace sequencergui
 {
 
+//! Mime type for drag-and-drop event leading to the instruction move.
 const QString kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
+
+//! Mime type for drag-and-drop event leading to the creation of new instruction.
+const QString kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
 
 /**
  * @brief Creates mime data carrying information for instruction move.
@@ -46,6 +50,18 @@ std::unique_ptr<QMimeData> CreateInstructionMoveMimeData(const QModelIndexList& 
  * operation.
  */
 std::vector<std::string> GetIdentifiersToMove(const QMimeData* mime_data);
+
+/**
+ * @brief Creates mime data carrying information for new instruction creation.
+ *
+ * @param name The model type name of the instruction.
+ */
+std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name);
+
+/**
+ * @brief Returns type of the instruction to create encoded in given mime data.
+ */
+std::string GetNewInstructionType(const QMimeData* mime_data);
 
 }  // namespace sequencergui
 
