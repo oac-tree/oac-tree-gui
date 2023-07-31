@@ -19,6 +19,7 @@
 
 #include "drag_and_drop_helper.h"
 
+#include <mvvm/model/sessionitem.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
@@ -86,6 +87,36 @@ std::string GetNewInstructionType(const QMimeData* mime_data)
   auto binary_data = mime_data->data(kNewInstructionMimeType);
   auto list = mvvm::utils::GetStringList(binary_data);
   return list.empty() ? std::string() : list.front().toStdString();
+}
+
+mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
+                                       const mvvm::SessionItem& parent, int drop_indicator_row)
+{
+  if (drop_indicator_row < 0)
+  {
+    // mouse is hovered on top of another item
+    return {"", 0};
+  }
+
+  // mouse is hovered between two other items
+
+  // ----  drop_indicator_row = 0
+  // item0
+  // ----- drop_indicator_row = 1
+  // item1
+
+  if (item.GetParent() == &parent)
+  {
+    // if item is moved inside the same parent we have to shift by one, to insert in proper place
+    auto current_tag_index = item.GetTagIndex();
+    if (current_tag_index.index < drop_indicator_row)
+    {
+      // if item is moved toward larger indices
+      return {"", drop_indicator_row - 1};
+    }
+  }
+
+  return {"", drop_indicator_row};
 }
 
 }  // namespace sequencergui

@@ -96,12 +96,12 @@ QMimeData *InstructionEditorViewModel::mimeData(const QModelIndexList &index_lis
 
 Qt::DropActions InstructionEditorViewModel::supportedDragActions() const
 {
-  return Qt::MoveAction;
+  return Qt::MoveAction | Qt::CopyAction;
 }
 
 Qt::DropActions InstructionEditorViewModel::supportedDropActions() const
 {
-  return Qt::MoveAction;
+  return Qt::MoveAction | Qt::CopyAction;
 }
 
 /*
@@ -138,23 +138,40 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
                                                  int row, int column,
                                                  const QModelIndex &parent) const
 {
-  if (!data || !data->hasFormat(kInstructionMoveMimeType))
+  if (!data)
   {
     return false;
   }
 
   auto parent_item = GetSessionItemFromIndex(parent);
+  qDebug() << " canDropMimeData" << QString::fromStdString(parent_item->GetDisplayName()) << action
+           << row << column << parent;
 
-  for (const auto &id : GetIdentifiersToMove(data))
+  if (data->hasFormat(kInstructionMoveMimeType))
   {
-    auto item = GetRootSessionItem()->GetModel()->FindItem(id);
-    if (!mvvm::utils::CanMoveItem(item, parent_item, {"", row}).first)
+    qDebug() << "    kInstructionMoveMimeType";
+    for (const auto &id : GetIdentifiersToMove(data))
     {
-      return false;
+      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+      auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
+      qDebug() << "    item to move" << QString::fromStdString(item->GetDisplayName()) << "pos "
+               << pos.index;
+      if (!mvvm::utils::CanMoveItem(item, parent_item, pos).first)
+      {
+        qDebug() << "    false";
+        return false;
+      }
     }
+    return true;
   }
 
-  return true;
+  if (data->hasFormat(kNewInstructionMimeType))
+  {
+    qDebug() << "    kInstructionMoveMimeType";
+    return true;
+  }
+
+  return false;
 }
 
 bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row,
@@ -167,11 +184,26 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
 
   auto parent_item = GetSessionItemFromIndex(parent);
 
-  for (const auto &id : GetIdentifiersToMove(data))
-  {
-    auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+  qDebug() << " dropMimeData" << QString::fromStdString(parent_item->GetDisplayName()) << action
+           << row << column << parent;
 
-    GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, {"", row});
+  if (data->hasFormat(kInstructionMoveMimeType))
+  {
+    for (const auto &id : GetIdentifiersToMove(data))
+    {
+      auto item = GetRootSessionItem()->GetModel()->FindItem(id);
+      auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
+
+      qDebug() << "    item to move" << QString::fromStdString(item->GetDisplayName()) << "pos "
+               << pos.index;
+      GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, pos);
+      std::cout << "    moved" << std::endl;
+    }
+  }
+
+  if (data->hasFormat(kNewInstructionMimeType))
+  {
+    std::cout << "    copy not implemented" << std::endl;
   }
 
   return true;

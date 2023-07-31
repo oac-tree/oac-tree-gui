@@ -27,6 +27,12 @@
 #include <string>
 #include <vector>
 
+namespace mvvm
+{
+class TagIndex;
+class SessionItem;
+}
+
 class QMimeData;
 
 namespace sequencergui
@@ -62,6 +68,18 @@ std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name);
  * @brief Returns type of the instruction to create encoded in given mime data.
  */
 std::string GetNewInstructionType(const QMimeData* mime_data);
+
+/**
+ * @brief Calculate tag index to move item to a parent.
+ *
+ * @param item Item which will be moved.
+ * @param parent Its new parent.
+ * @param drop_indicator_row Position of drop indicator as reported by QTreeView
+ *
+ * @return
+ */
+mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
+                                       const mvvm::SessionItem& parent, int drop_indicator_row);
 
 }  // namespace sequencergui
 

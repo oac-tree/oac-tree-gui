@@ -141,7 +141,7 @@ TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
   mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
 
   // drop after Wait2
-  EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
 
   // drop before Wait0
   EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
@@ -151,8 +151,9 @@ TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
 }
 
 //! Validating method dropMimeData.
+//! Item is moved from one parent to another and inserted between its children
 
-TEST_F(InstructionEditorViewModelTest, DropMimeData)
+TEST_F(InstructionEditorViewModelTest, DropMimeDataBetweenFromDifferentParent)
 {
   // Include
   // Sequence
@@ -182,4 +183,62 @@ TEST_F(InstructionEditorViewModelTest, DropMimeData)
   EXPECT_EQ(m_model.GetRootItem()->GetAllItems(),
             std::vector<mvvm::SessionItem*>({sequence, wait2}));
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait0, incl, wait1}));
+}
+
+//! Validating method dropMimeData.
+//! Item is moved within athe same parent from first position to the last.
+
+TEST_F(InstructionEditorViewModelTest, DropMimeDataFirstToLast)
+{
+  // Sequence
+  //    Wait0
+  //    Wait1
+  //    Wait2
+
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto sequence_index = m_view_model.index(0, 0);
+  auto wait0_index_name = m_view_model.index(0, 0, sequence_index);
+  auto wait0_index_custom_name = m_view_model.index(0, 0, sequence_index);
+
+  // going to drag Include instruction
+  auto mime_data = CreateInstructionMoveMimeData({wait0_index_name, wait0_index_custom_name});
+
+  // drop after Wait2
+  EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, sequence_index));
+
+  // validating new layout
+  EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait1, wait2, wait0}));
+}
+
+//! Validating method dropMimeData.
+//! Item is moved within athe same parent from first position to the last.
+
+TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
+{
+  // Sequence
+  //    Wait0
+  //    Wait1
+  //    Wait2
+
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto sequence_index = m_view_model.index(0, 0);
+  auto wait2_index_name = m_view_model.index(2, 0, sequence_index);
+  auto wait2_index_custom_name = m_view_model.index(2, 0, sequence_index);
+
+  // going to drag Include instruction
+  auto mime_data = CreateInstructionMoveMimeData({wait2_index_name, wait2_index_custom_name});
+
+  // drop before Wait0
+  EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
+
+  // validating new layout
+  EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait2, wait0, wait1}));
 }

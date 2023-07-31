@@ -90,3 +90,35 @@ TEST_F(DragAndDropHelperTestTest, CreateNewInstructionMimeData)
   mime_data = CreateNewInstructionMimeData("");
   EXPECT_EQ(GetNewInstructionType(mime_data.get()), std::string(""));
 }
+
+//! Validating helper method GetInternalMoveTagIndex.
+
+TEST_F(DragAndDropHelperTestTest, GetInternalMoveTagIndex)
+{
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence0);
+  auto wait2 = m_model.InsertItem<WaitItem>(sequence0);
+  auto sequence1 = m_model.InsertItem<SequenceItem>();
+  auto wait3 = m_model.InsertItem<WaitItem>(sequence1);
+
+  // item is hovered on top of another item
+  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence0, -1) == mvvm::TagIndex("", 0));
+
+  // moving wait0, hover indicator shows space between wait0 and wait1
+  // TagIndex should be shifted
+  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence0, 1) == mvvm::TagIndex("", 0));
+
+  // moving wait0, hover indicator shows space between wait1 and wait2
+  // TagIndex should be shifted
+  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence0, 2) == mvvm::TagIndex("", 1));
+
+  // moving wait2, hover indicator shows space between wait0 and wait1
+  // TagIndex the same as hover indicator
+  EXPECT_TRUE(GetInternalMoveTagIndex(*wait1, *sequence0, 1) == mvvm::TagIndex("", 1));
+
+  // moving wait0 to another parent
+  // TagIndex the same as hover indicator
+  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence1, 0) == mvvm::TagIndex("", 0));
+  EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence1, 1) == mvvm::TagIndex("", 1));
+}
