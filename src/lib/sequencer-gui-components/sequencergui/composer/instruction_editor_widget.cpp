@@ -30,6 +30,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
+#include <sequencergui/widgets/custom_tree_view_style.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -63,6 +64,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_editor_actions(new InstructionEditorActions(this))
     , m_action_handler(
           std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
+    , m_tree_view_style(new CustomTreeViewStyle(style()))
 {
   setWindowTitle("Instruction Tree");
   setAcceptDrops(true);
@@ -176,6 +178,8 @@ void InstructionEditorWidget::SetupTree()
   m_tree_view->setDragEnabled(true);
   m_tree_view->viewport()->setAcceptDrops(true);
   m_tree_view->setDropIndicatorShown(true);
+
+  m_tree_view->setStyle(m_tree_view_style);
 }
 
 void InstructionEditorWidget::AdjustTreeAppearance()

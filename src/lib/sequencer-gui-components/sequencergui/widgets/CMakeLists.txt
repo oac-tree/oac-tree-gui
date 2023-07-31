@@ -2,6 +2,8 @@
 # specifics.
 
 target_sources(${library_name} PRIVATE
+  custom_tree_view_style.cpp
+  custom_tree_view_style.h
   dialog_message_handler.cpp
   dialog_message_handler.h
   dots_toolbar.cpp

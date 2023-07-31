@@ -46,6 +46,7 @@ class InstructionEditorActionHandler;
 class InstructionEditorActions;
 class VisibilityAgentBase;
 class UniversalPropertyEditor;
+class CustomTreeViewStyle;
 
 //! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
 //! center (and right side if necessary) os SequencerComposerView.
@@ -91,6 +92,7 @@ private:
   std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
 
   VisibilityAgentBase* m_visibility_agent{nullptr};
+  CustomTreeViewStyle* m_tree_view_style{nullptr};
 };
 
 }  // namespace sequencergui
