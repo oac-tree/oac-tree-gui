@@ -141,12 +141,12 @@ TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
   mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
 
   // drop after Wait2
-  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+  EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
 
   // drop before Wait0
   EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
 
-  // attempt to drop into Wai0
+  // attempt to drop into Wait0
   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
 }
 
