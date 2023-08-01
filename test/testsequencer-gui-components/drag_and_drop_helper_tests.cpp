@@ -163,3 +163,14 @@ TEST_F(DragAndDropHelperTestTest, DropAggregate)
   EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
   EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
+
+TEST_F(DragAndDropHelperTestTest, CanInsertType)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait = m_model.InsertItem<WaitItem>(sequence);
+
+  EXPECT_TRUE(
+      CanInsertType(domainconstants::kWaitInstructionType, sequence, mvvm::TagIndex::Append()));
+  EXPECT_FALSE(
+      CanInsertType(domainconstants::kWaitInstructionType, wait, mvvm::TagIndex::Append()));
+}

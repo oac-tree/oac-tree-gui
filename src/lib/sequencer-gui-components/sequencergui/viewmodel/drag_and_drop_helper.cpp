@@ -25,7 +25,10 @@
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/model/sessionitem.h>
+#include <mvvm/model/sessionitem_container.h>
 #include <mvvm/model/sessionmodel.h>
+#include <mvvm/model/item_utils.h>
+#include <mvvm/model/tagged_items.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
 #include <mvvm/widgets/widget_utils.h>
 
@@ -153,6 +156,23 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
   }
 
   return result;
+}
+
+bool CanInsertType(const std::string& instruction_type, const mvvm::SessionItem* parent,
+                   const mvvm::TagIndex& tag_index)
+{
+  // FIXME temporary solution, should be moved to our validate_utils
+
+  if (instruction_type.empty() || parent->GetTaggedItems()->GetDefaultTag().empty())
+  {
+    return false;
+  }
+
+  if (auto container = parent->GetTaggedItems()->GetContainer(tag_index.tag); container)
+  {
+    return !container->IsMaximumReached();
+  }
+  return false;
 }
 
 }  // namespace sequencergui

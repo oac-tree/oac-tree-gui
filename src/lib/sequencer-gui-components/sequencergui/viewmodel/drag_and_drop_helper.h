@@ -105,6 +105,13 @@ mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
  */
 InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
                                  const mvvm::TagIndex& tag_index);
+
+/**
+ * @brief Returns true if given type can be inserted into the parent.
+ */
+bool CanInsertType(const std::string& instruction_type, const mvvm::SessionItem* parent,
+                   const mvvm::TagIndex& tag_index);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_
