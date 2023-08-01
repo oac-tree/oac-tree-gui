@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
@@ -33,6 +34,13 @@ InstructionItem *InsertInstruction(const std::string &domain_type, mvvm::Session
                                    const mvvm::TagIndex &tag_index)
 {
   return InsertInstruction(sequencergui::CreateInstructionItem(domain_type), parent, tag_index);
+}
+
+InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionItem *parent,
+                                 const mvvm::TagIndex &tag_index)
+{
+  static ::sequencergui::AggregateFactory factory;
+  return InsertInstruction(factory.Create(domain_type), parent, tag_index);
 }
 
 InstructionItem *InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
@@ -50,6 +58,12 @@ InstructionItem *InsertInstruction(std::unique_ptr<sequencergui::InstructionItem
   }
 
   return child_ptr;
+}
+
+bool IsAggregateName(const std::string& name)
+{
+  static ::sequencergui::AggregateFactory factory;
+  return factory.Contains(name);
 }
 
 void SetInput(const std::string &value, InstructionItem *item)

@@ -94,11 +94,6 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
 mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
 
 /**
- * @brief Returns true if given name correspond to the name of registered aggregate.
- */
-bool IsAggregateName(const std::string &name);
-
-/**
  * @brief Process drop instruction request by creating and inserting corresponding item to given
  * parent.
  *

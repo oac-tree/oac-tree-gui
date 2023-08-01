@@ -31,11 +31,10 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>
-
-#include <sup/gui/components/message_handler_interface.h>
 
 #include <QGraphicsSceneDragDropEvent>
 #include <QMessageBox>
@@ -68,12 +67,6 @@ std::string GetEncodedName(QGraphicsSceneDragDropEvent *event)
 std::string GetRequestedDomainType(QGraphicsSceneDragDropEvent *event)
 {
   return GetEncodedName(event);
-}
-
-bool IsAggregateName(const std::string &name)
-{
-  ::sequencergui::AggregateFactory factory;
-  return factory.Contains(name);
 }
 
 }  // namespace
@@ -268,7 +261,7 @@ void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
   // for later coordinate calculation, where to drop
-  static QRectF ref_view_rectangle = ConnectableViewRectangle();
+  static const QRectF ref_view_rectangle = ConnectableViewRectangle();
 
   if (!HasContext())
   {
@@ -277,22 +270,13 @@ void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     return;
   }
 
-  QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
-                   event->scenePos().y() - ref_view_rectangle.height() / 2);
+  const QPointF drop_pos(event->scenePos().x() - ref_view_rectangle.width() / 2,
+                         event->scenePos().y() - ref_view_rectangle.height() / 2);
 
   if (auto domain_type = GetRequestedDomainType(event); !domain_type.empty())
   {
-    if (IsAggregateName(domain_type))
-    {
-      auto item = AddAggregate(domain_type, m_root_item);
-      algorithm::AlignInstructionTreeWalker(drop_pos, item);
-    }
-    else
-    {
-      auto item = AddSingleInstruction(domain_type, m_root_item);
-      item->SetX(drop_pos.x());
-      item->SetY(drop_pos.y());
-    }
+    auto instruction = DropInstruction(domain_type, m_root_item, mvvm::TagIndex::Append());
+    algorithm::AlignInstructionTreeWalker(drop_pos, instruction);
   }
 }
 

@@ -136,15 +136,6 @@ TEST_F(DragAndDropHelperTestTest, GetDropTagIndex)
   EXPECT_TRUE(GetDropTagIndex(42) == mvvm::TagIndex("", 42));
 }
 
-//! Validating helper method GetDropTagIndex.
-
-TEST_F(DragAndDropHelperTestTest, IsAggregateName)
-{
-  EXPECT_FALSE(IsAggregateName(""));
-  EXPECT_FALSE(IsAggregateName("Wait"));
-  EXPECT_TRUE(IsAggregateName("if-then-else"));
-}
-
 TEST_F(DragAndDropHelperTestTest, DropInstruction)
 {
   SequencerModel model;

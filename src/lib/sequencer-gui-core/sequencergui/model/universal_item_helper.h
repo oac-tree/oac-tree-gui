@@ -50,6 +50,18 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**
+ * @brief Convenience function to insert instruction aggregate.
+ *
+ * @param domain_type The name of ergistered aggregate type.
+ * @param parent The parent to get a new child
+ * @param parent Child position
+ *
+ * @return Inserted item.
+ */
+InstructionItem* InsertAggregate(const std::string& domain_type, mvvm::SessionItem* parent,
+                                   const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
+
+/**
  * @brief Convenience function to insert instruction in another instruction.
  *
  * @param item Child to insert.
@@ -61,6 +73,11 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
 InstructionItem* InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
                                    mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
+
+/**
+ * @brief Returns true if given name correspond to the name of registered aggregate.
+ */
+bool IsAggregateName(const std::string &name);
 
 /**
  * @brief Set input property to instruction item.

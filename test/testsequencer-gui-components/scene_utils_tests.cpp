@@ -117,55 +117,6 @@ TEST_F(SceneUtilsTest, GetPositions)
   EXPECT_EQ(positions[2], QPointF(11.0, 2.0));
 }
 
-//! Checking adding known domain_type instruction to SequencerModel.
-//! This validates drag-and-drop behavior.
-
-TEST_F(SceneUtilsTest, AddKnownInstruction)
-{
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-
-  auto item = AddSingleInstruction(domainconstants::kWaitInstructionType,
-                                   procedure->GetInstructionContainer());
-
-  EXPECT_EQ(item->GetType(), WaitItem::Type);
-  EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
-  EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
-}
-
-//! Checking adding unknown domain_type instruction to SequencerModel.
-//! This validates drag-and-drop behavior.
-
-TEST_F(SceneUtilsTest, AddUnknownInstruction)
-{
-  UnknownDomainInstruction::RegisterUnknownDomainInstruction();
-
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-
-  auto item =
-      AddSingleInstruction(UnknownDomainInstruction::Type, procedure->GetInstructionContainer());
-
-  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
-  EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
-  EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
-}
-
-//! Checking adding instruction aggregate.
-
-TEST_F(SceneUtilsTest, AddAggregate)
-{
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-
-  auto item = dynamic_cast<UniversalInstructionItem*>(
-      AddAggregate("if-then-else", procedure->GetInstructionContainer()));
-  ASSERT_NE(item, nullptr);
-
-  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
-  EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
-}
-
 TEST_F(SceneUtilsTest, InsertSpaceAtCamelCase)
 {
   EXPECT_EQ(InsertSpaceAtCamelCase(""), std::string(""));

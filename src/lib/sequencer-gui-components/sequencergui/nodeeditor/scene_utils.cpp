@@ -21,11 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/aggregate_factory.h>
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/sequencer_item_helper.h>
-#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/core/exceptions.h>
@@ -36,24 +33,6 @@
 #include <QRectF>
 #include <cctype>
 #include <numeric>
-
-namespace
-{
-
-sequencergui::InstructionItem* AddInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
-                                              sequencergui::InstructionContainerItem* container)
-{
-  auto model = container->GetModel();
-  if (!model)
-  {
-    throw sequencergui::RuntimeException("Item is not the part of the model");
-  }
-  auto instruction_item = item.get();
-  model->InsertItem(std::move(item), container, {});
-  return instruction_item;
-}
-
-}  // namespace
 
 namespace sequencergui
 {
@@ -135,19 +114,6 @@ QColor GetBaseColor(const InstructionItem* instruction)
   }
 
   return {Qt::lightGray};
-}
-
-InstructionItem* AddSingleInstruction(const std::string& domain_type,
-                                      InstructionContainerItem* container)
-{
-  return AddInstruction(CreateInstructionItem(domain_type), container);
-}
-
-InstructionItem* AddAggregate(const std::string& aggregate_name,
-                              InstructionContainerItem* container)
-{
-  static AggregateFactory factory;
-  return AddInstruction(factory.Create(aggregate_name), container);
 }
 
 std::string InsertSpaceAtCamelCase(std::string str)

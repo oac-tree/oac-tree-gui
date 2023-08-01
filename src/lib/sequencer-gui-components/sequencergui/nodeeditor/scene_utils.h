@@ -67,13 +67,6 @@ double GetAlignmentGridWidth();
 //! Returns base color of given instruction
 QColor GetBaseColor(const InstructionItem* instruction);
 
-//! Adds InstructionItem to container for a  given `domain_type`, and returns the result to the
-//! user.
-InstructionItem* AddSingleInstruction(const std::string& domain_type,
-                                      InstructionContainerItem* container);
-
-InstructionItem* AddAggregate(const std::string& aggregate_name, InstructionContainerItem* container);
-
 //! Returns a string with space inserted at word boundaries.
 //! "CamelCase" -> "Camel Case"
 std::string InsertSpaceAtCamelCase(std::string str);

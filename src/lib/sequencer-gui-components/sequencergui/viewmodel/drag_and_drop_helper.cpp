@@ -20,7 +20,6 @@
 #include "drag_and_drop_helper.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
@@ -136,23 +135,16 @@ mvvm::TagIndex GetDropTagIndex(int drop_indicator_row)
   return {"", drop_indicator_row};
 }
 
-bool IsAggregateName(const std::string& name)
-{
-  static ::sequencergui::AggregateFactory factory;
-  return factory.Contains(name);
-}
-
 InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
                                  const mvvm::TagIndex& tag_index)
 {
-  static ::sequencergui::AggregateFactory factory;
   InstructionItem* result{nullptr};
 
   if (!instruction_type.empty())
   {
-    if (factory.Contains(instruction_type))
+    if (IsAggregateName(instruction_type))
     {
-      result = sequencergui::InsertInstruction(factory.Create(instruction_type), parent, tag_index);
+      result = InsertAggregate(instruction_type, parent, tag_index);
     }
     else
     {

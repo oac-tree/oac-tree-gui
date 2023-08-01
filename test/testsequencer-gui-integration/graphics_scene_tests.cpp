@@ -23,6 +23,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/graphics_scene_controller.h>
@@ -389,7 +390,7 @@ TEST_F(GraphicsSceneTest, SelectionAfterRemoval)
 TEST_F(GraphicsSceneTest, ComplexAggregateRemoval)
 {
   auto controller = CreateController();
-  auto item = AddAggregate("if-then-else", GetInstructionContainer());
+  auto item = InsertAggregate("if-then-else", GetInstructionContainer());
 
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 6);
   for (auto view : m_scene.GetConnectableViews())
