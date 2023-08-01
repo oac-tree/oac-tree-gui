@@ -168,6 +168,10 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
   if (data->hasFormat(kNewInstructionMimeType))
   {
     qDebug() << "    kInstructionMoveMimeType";
+    auto drop_type = GetNewInstructionType(data);
+    if (!drop_type.empty())
+    {
+    }
     return true;
   }
 
@@ -204,6 +208,14 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
   if (data->hasFormat(kNewInstructionMimeType))
   {
     std::cout << "    copy not implemented" << std::endl;
+
+
+    if (auto drop_type = GetNewInstructionType(data); !drop_type.empty())
+    {
+      auto pos = GetDropTagIndex(row);
+
+    }
+
   }
 
   return true;

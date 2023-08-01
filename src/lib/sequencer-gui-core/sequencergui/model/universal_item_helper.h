@@ -38,15 +38,28 @@ namespace sequencergui
 class InstructionItem;
 
 /**
- * @brief Convenience function to insert universal instruction in another instruction.
+ * @brief Convenience function to insert instruction in another instruction.
  *
  * @param domain_type The domain instruction type.
- * @param parent The parent to insert
+ * @param parent The parent to get a new child
  * @param parent Child position
  *
  * @return Inserted item.
  */
 InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
+                                   const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
+
+/**
+ * @brief Convenience function to insert instruction in another instruction.
+ *
+ * @param item Child to insert.
+ * @param parent The parent to get a new child
+ * @param parent Child position
+ *
+ * @return Inserted item.
+ */
+InstructionItem* InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
+                                   mvvm::SessionItem* parent,
                                    const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**

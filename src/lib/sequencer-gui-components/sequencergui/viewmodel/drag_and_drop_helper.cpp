@@ -21,9 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/aggregate_factory.h>
-#include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/model/sessionitem.h>
@@ -32,41 +31,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMimeData>
-#include <iostream>
-
-namespace
-{
-
-sequencergui::InstructionItem* AddInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
-                                              mvvm::SessionItem* parent,
-                                              const mvvm::TagIndex& tag_index)
-{
-  auto model = parent->GetModel();
-  if (!model)
-  {
-    throw sequencergui::RuntimeException("Item is not the part of the model");
-  }
-  auto instruction_item = item.get();
-  model->InsertItem(std::move(item), parent, tag_index);
-  return instruction_item;
-}
-
-sequencergui::InstructionItem* AddSingleInstructionV2(const std::string& domain_type,
-                                                      mvvm::SessionItem* parent,
-                                                      const mvvm::TagIndex& tag_index)
-{
-  return AddInstruction(sequencergui::CreateInstructionItem(domain_type), parent, tag_index);
-}
-
-sequencergui::InstructionItem* AddAggregateV2(const std::string& aggregate_name,
-                                              mvvm::SessionItem* parent,
-                                              const mvvm::TagIndex& tag_index)
-{
-  static sequencergui::AggregateFactory factory;
-  return AddInstruction(factory.Create(aggregate_name), parent, tag_index);
-}
-
-}  // namespace
 
 namespace sequencergui
 {
@@ -174,24 +138,25 @@ mvvm::TagIndex GetDropTagIndex(int drop_indicator_row)
 
 bool IsAggregateName(const std::string& name)
 {
-  ::sequencergui::AggregateFactory factory;
+  static ::sequencergui::AggregateFactory factory;
   return factory.Contains(name);
 }
 
 InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
                                  const mvvm::TagIndex& tag_index)
 {
+  static ::sequencergui::AggregateFactory factory;
   InstructionItem* result{nullptr};
 
   if (!instruction_type.empty())
   {
-    if (IsAggregateName(instruction_type))
+    if (factory.Contains(instruction_type))
     {
-      result = AddAggregateV2(instruction_type, parent, tag_index);
+      result = sequencergui::InsertInstruction(factory.Create(instruction_type), parent, tag_index);
     }
     else
     {
-      result = AddSingleInstructionV2(instruction_type, parent, tag_index);
+      result = InsertInstruction(instruction_type, parent, tag_index);
     }
   }
 

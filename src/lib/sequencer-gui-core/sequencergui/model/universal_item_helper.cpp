@@ -32,16 +32,21 @@ namespace sequencergui
 InstructionItem *InsertInstruction(const std::string &domain_type, mvvm::SessionItem *parent,
                                    const mvvm::TagIndex &tag_index)
 {
-  auto child = sequencergui::CreateInstructionItem(domain_type);
-  auto child_ptr = child.get();
+  return InsertInstruction(sequencergui::CreateInstructionItem(domain_type), parent, tag_index);
+}
+
+InstructionItem *InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
+                                   mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
+{
+  auto child_ptr = item.get();
 
   if (auto model = parent->GetModel(); model)
   {
-    model->InsertItem(std::move(child), parent, tag_index);
+    model->InsertItem(std::move(item), parent, tag_index);
   }
   else
   {
-    parent->InsertItem(std::move(child), tag_index);
+    parent->InsertItem(std::move(item), tag_index);
   }
 
   return child_ptr;
