@@ -22,6 +22,8 @@
 
 //! Helper functions to simplify construction of UniversalInstructionItem and UniversalVariableItem.
 
+#include <mvvm/model/tagindex.h>
+
 #include <memory>
 
 namespace mvvm
@@ -34,16 +36,18 @@ namespace sequencergui
 {
 
 class InstructionItem;
-class UniversalInstructionItem;
 
 /**
  * @brief Convenience function to insert universal instruction in another instruction.
+ *
  * @param domain_type The domain instruction type.
- * @param model The model to insert
- * @return Inserted item
+ * @param parent The parent to insert
+ * @param parent Child position
+ *
+ * @return Inserted item.
  */
-UniversalInstructionItem* InsertInstruction(const std::string& domain_type,
-                                            mvvm::SessionItem* parent);
+InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::SessionItem* parent,
+                                   const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**
  * @brief Set input property to instruction item.

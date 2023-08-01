@@ -21,29 +21,30 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/universal_instruction_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 
 namespace sequencergui
 {
 
-UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
-                                            mvvm::SessionItem *parent)
+InstructionItem *InsertInstruction(const std::string &domain_type, mvvm::SessionItem *parent,
+                                   const mvvm::TagIndex &tag_index)
 {
-  UniversalInstructionItem *result{nullptr};
+  auto child = sequencergui::CreateInstructionItem(domain_type);
+  auto child_ptr = child.get();
 
   if (auto model = parent->GetModel(); model)
   {
-    result = model->InsertItem<UniversalInstructionItem>(parent);
+    model->InsertItem(std::move(child), parent, tag_index);
   }
   else
   {
-    result = parent->InsertItem<UniversalInstructionItem>({});
+    parent->InsertItem(std::move(child), tag_index);
   }
 
-  result->SetDomainType(domain_type);
-  return result;
+  return child_ptr;
 }
 
 void SetInput(const std::string &value, InstructionItem *item)
