@@ -37,15 +37,6 @@ class InstructionItem;
 class UniversalInstructionItem;
 
 /**
- * @brief Convenience function to insert universal instruction in a model.
- * @param domain_type The domain instruction type.
- * @param model The model to insert
- * @return Inserted item
- */
-UniversalInstructionItem* InsertInstruction(const std::string& domain_type,
-                                            mvvm::SessionModelInterface* model);
-
-/**
  * @brief Convenience function to insert universal instruction in another instruction.
  * @param domain_type The domain instruction type.
  * @param model The model to insert

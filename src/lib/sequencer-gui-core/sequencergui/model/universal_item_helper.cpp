@@ -29,14 +29,6 @@ namespace sequencergui
 {
 
 UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
-                                            mvvm::SessionModelInterface *model)
-{
-  auto result = model->InsertItem<UniversalInstructionItem>();
-  result->SetDomainType(domain_type);
-  return result;
-}
-
-UniversalInstructionItem *InsertInstruction(const std::string &domain_type,
                                             mvvm::SessionItem *parent)
 {
   UniversalInstructionItem *result{nullptr};
