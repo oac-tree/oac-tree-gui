@@ -38,6 +38,8 @@ class QMimeData;
 namespace sequencergui
 {
 
+class InstructionItem;
+
 //! Mime type for drag-and-drop event leading to the instruction move.
 const QString kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
 
@@ -82,7 +84,8 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
                                        const mvvm::SessionItem& parent, int drop_indicator_row);
 
 /**
- * @brief Calculate TagIndex
+ * @brief Calculate TagIndex corresponding to the drop indicator position.
+ *
  * @param parent The parent which will get a new child.
  * @param drop_indicator_row Position of drop indicator as reported by QTreeView
  *
@@ -90,6 +93,23 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
  */
 mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
 
+/**
+ * @brief Returns true if given name correspond to the name of registered aggregate.
+ */
+bool IsAggregateName(const std::string &name);
+
+/**
+ * @brief Process drop instruction request by creating and inserting corresponding item to given
+ * parent.
+ *
+ * @param instruction_name Instruction type, or name of complex instruction aggregate.
+ * @param parent Parent to insert an instruction.
+ * @param tag_index Where to insert.
+ *
+ * @return Pointer to just inserted object.
+ */
+InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
+                                 const mvvm::TagIndex& tag_index);
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_

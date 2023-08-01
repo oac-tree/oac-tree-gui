@@ -19,10 +19,14 @@
 
 #include "sequencergui/viewmodel/instruction_editor_viewmodel.h"
 
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
 
@@ -130,4 +134,41 @@ TEST_F(DragAndDropHelperTestTest, GetDropTagIndex)
   // item is hovered on top of another item
   EXPECT_TRUE(GetDropTagIndex(-1) == mvvm::TagIndex("", 0));
   EXPECT_TRUE(GetDropTagIndex(42) == mvvm::TagIndex("", 42));
+}
+
+//! Validating helper method GetDropTagIndex.
+
+TEST_F(DragAndDropHelperTestTest, IsAggregateName)
+{
+  EXPECT_FALSE(IsAggregateName(""));
+  EXPECT_FALSE(IsAggregateName("Wait"));
+  EXPECT_TRUE(IsAggregateName("if-then-else"));
+}
+
+TEST_F(DragAndDropHelperTestTest, DropInstruction)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto item = DropInstruction(domainconstants::kWaitInstructionType,
+                              procedure->GetInstructionContainer(), mvvm::TagIndex::Append());
+
+  EXPECT_EQ(item->GetType(), WaitItem::Type);
+  EXPECT_EQ(item->GetDomainType(), domainconstants::kWaitInstructionType);
+  EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+}
+
+//! Checking adding instruction aggregate.
+
+TEST_F(DragAndDropHelperTestTest, DropAggregate)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+
+  auto item = dynamic_cast<UniversalInstructionItem*>(DropInstruction(
+      "if-then-else", procedure->GetInstructionContainer(), mvvm::TagIndex::Append()));
+  ASSERT_NE(item, nullptr);
+
+  EXPECT_EQ(item->GetType(), UniversalInstructionItem::Type);
+  EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
