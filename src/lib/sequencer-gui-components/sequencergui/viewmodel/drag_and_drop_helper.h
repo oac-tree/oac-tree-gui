@@ -31,7 +31,7 @@ namespace mvvm
 {
 class TagIndex;
 class SessionItem;
-}
+}  // namespace mvvm
 
 class QMimeData;
 
@@ -70,16 +70,25 @@ std::unique_ptr<QMimeData> CreateNewInstructionMimeData(const QString& name);
 std::string GetNewInstructionType(const QMimeData* mime_data);
 
 /**
- * @brief Calculate tag index to move item to a parent.
+ * @brief Calculate TagIndex to move item to a parent.
  *
  * @param item Item which will be moved.
  * @param parent Its new parent.
  * @param drop_indicator_row Position of drop indicator as reported by QTreeView
  *
- * @return
+ * @return TagIndex to use for move operation
  */
 mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
                                        const mvvm::SessionItem& parent, int drop_indicator_row);
+
+/**
+ * @brief Calculate TagIndex
+ * @param parent The parent which will get a new child.
+ * @param drop_indicator_row Position of drop indicator as reported by QTreeView
+ *
+ * @return TagIndex to use for move operation
+ */
+mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
 
 }  // namespace sequencergui
 

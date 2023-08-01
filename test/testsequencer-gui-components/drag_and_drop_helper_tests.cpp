@@ -122,3 +122,12 @@ TEST_F(DragAndDropHelperTestTest, GetInternalMoveTagIndex)
   EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence1, 0) == mvvm::TagIndex("", 0));
   EXPECT_TRUE(GetInternalMoveTagIndex(*wait0, *sequence1, 1) == mvvm::TagIndex("", 1));
 }
+
+//! Validating helper method GetDropTagIndex.
+
+TEST_F(DragAndDropHelperTestTest, GetDropTagIndex)
+{
+  // item is hovered on top of another item
+  EXPECT_TRUE(GetDropTagIndex(-1) == mvvm::TagIndex("", 0));
+  EXPECT_TRUE(GetDropTagIndex(42) == mvvm::TagIndex("", 42));
+}

@@ -119,4 +119,15 @@ mvvm::TagIndex GetInternalMoveTagIndex(const mvvm::SessionItem& item,
   return {"", drop_indicator_row};
 }
 
+mvvm::TagIndex GetDropTagIndex(int drop_indicator_row)
+{
+  if (drop_indicator_row < 0)
+  {
+    // mouse is hovered on top of another item
+    return {"", 0};
+  }
+
+  return {"", drop_indicator_row};
+}
+
 }  // namespace sequencergui
