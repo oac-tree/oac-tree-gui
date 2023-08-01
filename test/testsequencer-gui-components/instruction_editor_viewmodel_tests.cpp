@@ -110,9 +110,9 @@ TEST_F(InstructionEditorViewModelTest, NotificationOnDataChange)
   EXPECT_EQ(spy_data_changed.count(), 1);
 }
 
-//! Validating method CanDropMimeData.
+//! Validating method CanDropMimeData for move operation.
 
-TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
+TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
 {
   // Include
   // Sequence
@@ -148,6 +148,38 @@ TEST_F(InstructionEditorViewModelTest, CanDropMimeData)
 
   // attempt to drop into Wait0
   EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, wait0_index));
+}
+
+//! Validating method CanDropMimeData for insert new operation.
+
+TEST_F(InstructionEditorViewModelTest, CanDropNewMimeData)
+{
+  // Sequence
+  //    Wait0
+  //    Wait1
+  // Wait2
+
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait2 = m_model.InsertItem<WaitItem>();
+
+  auto sequence_index = m_view_model.index(0, 0);
+  auto wait0_index = m_view_model.index(0, 0, sequence_index);
+  auto wait1_index = m_view_model.index(1, 0, sequence_index);
+
+  // we can't perform drop if only one cell is selected
+  auto mime_data = CreateNewInstructionMimeData(
+      QString::fromStdString(domainconstants::kIncludeInstructionType));
+
+  // dropping before sequence
+  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, QModelIndex()));
+
+  // dropping between two waits
+  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, sequence_index));
+
+  // dropping onto wait1
+  EXPECT_FALSE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, wait1_index));
 }
 
 //! Validating method dropMimeData.
@@ -241,4 +273,33 @@ TEST_F(InstructionEditorViewModelTest, DropMimeDataLastToFirst)
 
   // validating new layout
   EXPECT_EQ(sequence->GetInstructions(), std::vector<InstructionItem*>({wait2, wait0, wait1}));
+}
+
+//! New item is created by dropping between two children.
+
+TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
+{
+  // Sequence
+  //    Wait0
+  //    Wait1
+
+  auto sequence = m_model.InsertItem<SequenceItem>();
+  auto wait0 = m_model.InsertItem<WaitItem>(sequence);
+  auto wait1 = m_model.InsertItem<WaitItem>(sequence);
+
+  auto sequence_index = m_view_model.index(0, 0);
+  auto wait0_index = m_view_model.index(0, 0, sequence_index);
+  auto wait1_index = m_view_model.index(1, 0, sequence_index);
+
+  // going to drag Include instruction
+  auto mime_data = CreateNewInstructionMimeData(
+      QString::fromStdString(domainconstants::kIncludeInstructionType));
+
+  // drop between Wait0 and Wait1
+  EXPECT_TRUE(m_view_model.dropMimeData(mime_data.get(), Qt::MoveAction, 1, 0, sequence_index));
+
+  // validating new layout
+  EXPECT_EQ(sequence->GetInstructions().size(), 3);
+  EXPECT_EQ(sequence->GetInstructions().at(1)->GetDomainType(),
+            domainconstants::kIncludeInstructionType);
 }

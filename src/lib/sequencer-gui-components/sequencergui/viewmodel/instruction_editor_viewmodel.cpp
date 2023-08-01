@@ -144,6 +144,11 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
   }
 
   auto parent_item = GetSessionItemFromIndex(parent);
+  if (!parent_item)
+  {
+    qDebug() << " canDropMimeData nullptr";
+    return false;
+  }
   qDebug() << " canDropMimeData" << QString::fromStdString(parent_item->GetDisplayName()) << action
            << row << column << parent;
 
@@ -169,10 +174,11 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
   {
     qDebug() << "    kInstructionMoveMimeType";
     auto drop_type = GetNewInstructionType(data);
-    if (!drop_type.empty())
+    auto pos = GetDropTagIndex(row);
+    if (CanInsertType(drop_type, parent_item, GetDropTagIndex(row)))
     {
+      return true;
     }
-    return true;
   }
 
   return false;
@@ -203,22 +209,21 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
       GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, pos);
       std::cout << "    moved" << std::endl;
     }
+    return true;
   }
 
   if (data->hasFormat(kNewInstructionMimeType))
   {
     std::cout << "    copy not implemented" << std::endl;
 
-
     if (auto drop_type = GetNewInstructionType(data); !drop_type.empty())
     {
-      auto pos = GetDropTagIndex(row);
-
+      DropInstruction(drop_type, parent_item, GetDropTagIndex(row));
     }
-
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 }  // namespace sequencergui
