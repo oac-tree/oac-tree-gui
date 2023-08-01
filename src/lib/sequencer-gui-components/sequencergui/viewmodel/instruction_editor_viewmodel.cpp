@@ -33,9 +33,7 @@
 #include <mvvm/viewmodel/viewmodel_utils.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
-#include <QDebug>
 #include <QMimeData>
-#include <iostream>
 
 namespace sequencergui
 {
@@ -146,24 +144,17 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
   auto parent_item = GetSessionItemFromIndex(parent);
   if (!parent_item)
   {
-    qDebug() << " canDropMimeData nullptr";
     return false;
   }
-  qDebug() << " canDropMimeData" << QString::fromStdString(parent_item->GetDisplayName()) << action
-           << row << column << parent;
 
   if (data->hasFormat(kInstructionMoveMimeType))
   {
-    qDebug() << "    kInstructionMoveMimeType";
     for (const auto &id : GetIdentifiersToMove(data))
     {
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
-      qDebug() << "    item to move" << QString::fromStdString(item->GetDisplayName()) << "pos "
-               << pos.index;
       if (!mvvm::utils::CanMoveItem(item, parent_item, pos).first)
       {
-        qDebug() << "    false";
         return false;
       }
     }
@@ -172,9 +163,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
 
   if (data->hasFormat(kNewInstructionMimeType))
   {
-    qDebug() << "    kInstructionMoveMimeType";
     auto drop_type = GetNewInstructionType(data);
-    auto pos = GetDropTagIndex(row);
     if (CanInsertType(drop_type, parent_item, GetDropTagIndex(row)))
     {
       return true;
@@ -194,9 +183,6 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
 
   auto parent_item = GetSessionItemFromIndex(parent);
 
-  qDebug() << " dropMimeData" << QString::fromStdString(parent_item->GetDisplayName()) << action
-           << row << column << parent;
-
   if (data->hasFormat(kInstructionMoveMimeType))
   {
     for (const auto &id : GetIdentifiersToMove(data))
@@ -204,18 +190,13 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
       auto item = GetRootSessionItem()->GetModel()->FindItem(id);
       auto pos = GetInternalMoveTagIndex(*item, *parent_item, row);
 
-      qDebug() << "    item to move" << QString::fromStdString(item->GetDisplayName()) << "pos "
-               << pos.index;
       GetRootSessionItem()->GetModel()->MoveItem(item, parent_item, pos);
-      std::cout << "    moved" << std::endl;
     }
     return true;
   }
 
   if (data->hasFormat(kNewInstructionMimeType))
   {
-    std::cout << "    copy not implemented" << std::endl;
-
     if (auto drop_type = GetNewInstructionType(data); !drop_type.empty())
     {
       DropInstruction(drop_type, parent_item, GetDropTagIndex(row));
