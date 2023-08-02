@@ -1,3 +1,19 @@
+Changes for 1.1.0:
+
+- Intermediate August 2023 release
+- Support for new Sequencer attribute system
+- Automatic support of all new instructions and variables, existing and coming
+- New XML code viewer
+- Persistent settings of most splitters and tree view headers
+- Performance improvements for large procedures
+- Partial support for sequencer procedures containing custom json types
+- Partial support for sequencer procedures containing $-varying variables
+- Load of procedure(s) from command line
+- Support for sequencer breakpoints
+- Change in default layout of composer view
+- Provide drag-and-drop of instructions onto the instruction tree
+- Standalong sequencer-operation application
+
 Changes for 1.0.0:
 
 - New workspace listener
