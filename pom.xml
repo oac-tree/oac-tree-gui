@@ -103,6 +103,7 @@
                             <include type="file" source="bin" target="bin">
                                 <include>sequencer-gui</include>
                                 <include>sup-pvmonitor</include>
+                                <include>sequencer-operation</include>
                             </include>
                             <!-- Shared resources -->
                             <include type="file" source="share/sup/icons" target="share/sup/icons">
