@@ -50,6 +50,8 @@ OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)
 {
+  setWindowTitle("Operations");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);

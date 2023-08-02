@@ -42,6 +42,8 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
     , m_job_property_widget(new JobPropertyWidget)
     , m_job_actions(new OperationJobPanelActions(this))
 {
+  setWindowTitle("Procedures");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
