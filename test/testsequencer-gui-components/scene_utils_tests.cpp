@@ -67,25 +67,6 @@ class SceneUtilsTest : public ::testing::Test
 {
 public:
   using points_t = std::vector<QPointF>;
-
-  //! Test instruction playing the role of domain instruction unknown to the GUI.
-  class UnknownDomainInstruction : public ::sup::sequencer::Instruction
-  {
-  public:
-    UnknownDomainInstruction() : Instruction(Type) {}
-
-    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface&,
-                                                        ::sup::sequencer::Workspace&) override
-    {
-      return {};
-    }
-    static inline const std::string Type = "UnknownDomainInstruction";
-
-    static void RegisterUnknownDomainInstruction()
-    {
-      sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
-    }
-  };
 };
 
 TEST_F(SceneUtilsTest, VectorOfPointsEquality)
