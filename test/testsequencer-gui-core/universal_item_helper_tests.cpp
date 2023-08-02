@@ -28,10 +28,8 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/utils/numeric_utils.h>
 
-#include <sup/sequencer/instruction.h>
-#include <sup/sequencer/instruction_registry.h>
-
 #include <gtest/gtest.h>
+#include <testutils/universal_items.h>
 
 using namespace sequencergui;
 
@@ -39,25 +37,6 @@ using namespace sequencergui;
 
 class UniversalItemHelperTest : public ::testing::Test
 {
-public:
-  //! Test instruction playing the role of domain instruction unknown to the GUI.
-  class UnknownDomainInstruction : public ::sup::sequencer::Instruction
-  {
-  public:
-    UnknownDomainInstruction() : Instruction(Type) {}
-
-    ::sup::sequencer::ExecutionStatus ExecuteSingleImpl(::sup::sequencer::UserInterface&,
-                                                        ::sup::sequencer::Workspace&) override
-    {
-      return {};
-    }
-    static inline const std::string Type = "UnknownDomainInstruction";
-
-    static void RegisterUnknownDomainInstruction()
-    {
-      sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
-    }
-  };
 };
 
 //! Validating helper method GetDropTagIndex.
@@ -88,6 +67,8 @@ TEST_F(UniversalItemHelperTest, AddKnownInstruction)
 
 TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
 {
+  using testutils::UnknownDomainInstruction;
+
   UnknownDomainInstruction::RegisterUnknownDomainInstruction();
 
   SequencerModel model;
