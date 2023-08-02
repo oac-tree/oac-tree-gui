@@ -71,6 +71,7 @@ int ItemStackWidget::GetCurrentIndex() const
 void ItemStackWidget::SetCurrentIndex(int index)
 {
   m_stacked_widget->setCurrentIndex(index);
+  m_widget_selection_menu->actions().at(index)->setChecked(true);
   UpdateControlElementsVisibility();
 }
 
@@ -81,8 +82,7 @@ QWidget *ItemStackWidget::GetCurrentWidget() const
 
 void ItemStackWidget::SetCurrentWidget(QWidget *widget)
 {
-  m_stacked_widget->setCurrentWidget(widget);
-  UpdateControlElementsVisibility();
+  SetCurrentIndex(m_stacked_widget->indexOf(widget));
 }
 
 //! Add entry to corner menu to switch to this widget.

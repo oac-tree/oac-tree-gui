@@ -61,9 +61,6 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   m_splitter->addWidget(m_central_panel);
   m_splitter->addWidget(m_right_panel);
 
-  m_central_panel->SetCurrentWidget(ComposerWidgetPanel::kInstructionTree);
-  m_right_panel->SetCurrentWidget(ComposerWidgetPanel::kWorkspace);
-
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(40) << mvvm::utils::UnitSize(80)
                                     << mvvm::utils::UnitSize(80));
 
