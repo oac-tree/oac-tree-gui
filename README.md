@@ -26,17 +26,25 @@ Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-uti
 
 - sup-utils
 - sup-dto
+- sup-di
 - sup-protocol
 - sup-epics
 - sequencer
 - sequencer-plugin-epics
 - sup-mvvm
+- sup-gui-extra
 - sup-gui-core
 - sequencer-gui
 
 ### Run
 
 /opt/codac/bin/sequencer-gui
+
+Other applications:
+
+/opt/codac/bin/sequencer-operation
+/opt/codac/bin/sup-pvmonitor
+/opt/codac/bin/anyvalue-editor
 
 ## Installation on custom Linux
 
@@ -57,7 +65,8 @@ It might be needed to add `<path-to-local-install>/lib` to `LD_LIBRARY_PATH`.
 ## Alternative installation on custom Linux
 
 This method doesn't require installation, all packages will be used from their `<build>` directories
-thanks to CMake magic (the magic is located in $HOME/.cmake directory).
+thanks to CMake magic (the magic is located in $HOME/.cmake directory). Use `-DDCOA_EXPORT_BUILD_TREE=OFF` 
+during CMake configuration phase.
 
 ```bash
 git clone https://git.iter.org/scm/coa/sup-utils.git
