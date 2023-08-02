@@ -52,7 +52,10 @@ public:
 
   static void RegisterUnknownDomainInstruction()
   {
-    sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
+    if (!sup::sequencer::GlobalInstructionRegistry().IsRegisteredInstructionName(Type))
+    {
+      sup::sequencer::RegisterGlobalInstruction<UnknownDomainInstruction>();
+    }
   }
 };
 
@@ -69,7 +72,10 @@ public:
 
   static void RegisterUnknownDomainVariable()
   {
-    sup::sequencer::RegisterGlobalVariable<UnknownDomainVariable>();
+    if (!sup::sequencer::GlobalVariableRegistry().IsRegisteredVariableName(Type))
+    {
+      sup::sequencer::RegisterGlobalVariable<UnknownDomainVariable>();
+    }
   }
 };
 
