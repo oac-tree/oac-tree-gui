@@ -104,6 +104,30 @@
                                 <include>sequencer-gui</include>
                                 <include>sup-pvmonitor</include>
                             </include>
+                            <!-- Shared resources -->
+                            <include type="file" source="share/sup/icons" target="share/sup/icons">
+                                <include>*.*</include>
+                            </include>
+                            <include type="file" source="-" targetroot="SYSTEM_ROOT" target="%{_datadir}/applications/codac-%{codac_version_mm}-sequencer-gui.desktop" rpmeval="true">
+<![CDATA[[Desktop Entry]
+Encoding=UTF-8
+Name=Sequencer GUI
+Comment=
+Type=Application
+Exec=/opt/codac/bin/sequencer-gui
+Icon=/opt/codac/share/sup/icons/sequencer-gui-96.png
+Categories=CODAC-%{codac_version_mm};]]>
+                            </include>
+                            <include type="file" source="-" targetroot="SYSTEM_ROOT" target="%{_datadir}/applications/codac-%{codac_version_mm}-sequencer-operation.desktop" rpmeval="true">
+<![CDATA[[Desktop Entry]
+Encoding=UTF-8
+Name=Sequencer Operation
+Comment=
+Type=Application
+Exec=/opt/codac/bin/sequencer-operation
+Icon=/opt/codac/share/sup/icons/sequencer-operation-96.png
+Categories=CODAC-%{codac_version_mm};]]>
+                            </include>
                             <!-- Package dependencies -->
                             <requires codac="true">sequencer</requires>
                             <requires codac="true">sup-mvvm</requires>
