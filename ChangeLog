@@ -1,8 +1,8 @@
 Changes for 1.1.0:
 
-- Intermediate August 2023 release
-- Support for new Sequencer attribute system
-- Automatic support of all new instructions and variables, existing and coming
+- COA Release v1.9, August 2023
+- Support for new Sequencer v2.1 attribute system
+- Automatic support of all instructions and variables, existing and coming
 - New XML code viewer
 - Persistent settings of most splitters and tree view headers
 - Performance improvements for large procedures
