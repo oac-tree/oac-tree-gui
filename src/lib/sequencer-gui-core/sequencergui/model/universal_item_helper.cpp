@@ -26,6 +26,7 @@
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/item_utils.h>
 
 namespace sequencergui
 {
@@ -46,21 +47,11 @@ InstructionItem *InsertAggregate(const std::string &domain_type, mvvm::SessionIt
 InstructionItem *InsertInstruction(std::unique_ptr<sequencergui::InstructionItem> item,
                                    mvvm::SessionItem *parent, const mvvm::TagIndex &tag_index)
 {
-  auto child_ptr = item.get();
-
-  if (auto model = parent->GetModel(); model)
-  {
-    model->InsertItem(std::move(item), parent, tag_index);
-  }
-  else
-  {
-    parent->InsertItem(std::move(item), tag_index);
-  }
-
-  return child_ptr;
+  return static_cast<InstructionItem *>(
+      mvvm::utils::InsertItem(std::move(item), parent, tag_index));
 }
 
-bool IsAggregateName(const std::string& name)
+bool IsAggregateName(const std::string &name)
 {
   static ::sequencergui::AggregateFactory factory;
   return factory.Contains(name);

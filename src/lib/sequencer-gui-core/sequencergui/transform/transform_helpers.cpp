@@ -67,20 +67,10 @@ namespace sequencergui
 
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
-  // we will be acting through the model, if it exists, to allow signaling
-  auto model = variable_item.GetModel();
-
   // in current implementation we remove old AnyValueItem, if it exists
   if (auto prev_item = variable_item.GetAnyValueItem(); prev_item)
   {
-    if (model)
-    {
-      model->RemoveItem(prev_item);
-    }
-    else
-    {
-      variable_item.TakeItem(variable_item.TagIndexOfItem(prev_item));
-    }
+    mvvm::utils::RemoveItem(*prev_item);
   }
 
   // Inserting new AnyValueItem
@@ -91,14 +81,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     anyvalue_item->SetToolTip(anyvalue_item->GetAnyTypeName());
   }
 
-  if (model)
-  {
-    model->InsertItem(std::move(anyvalue_item), &variable_item, {});
-  }
-  else
-  {
-    variable_item.InsertItem(std::move(anyvalue_item), {});
-  }
+  mvvm::utils::InsertItem(std::move(anyvalue_item), &variable_item, mvvm::TagIndex::First());
 }
 
 void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variable_item)
@@ -123,10 +106,7 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
         return sup::gui::AnyValueFromJSONString(
             anytype, variable.GetAttributeString(domainconstants::kValueAttribute));
       }
-      else
-      {
-        return sup::dto::AnyValue(anytype);
-      }
+      return sup::dto::AnyValue(anytype);
     };
 
     sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
