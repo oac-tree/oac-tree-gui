@@ -12,9 +12,21 @@ Composer view
 
 Operation view
 
-## Installation on CODAC machines from nightly RPMs
+## Installation on CODAC machines from RPMs
 
-To be written.
+```bash
+yum install codac-core-7.1-sequencer-gui.x86_64
+```
+
+## Run
+
+/opt/codac/bin/sequencer-gui
+
+Other applications:
+
+/opt/codac/bin/sequencer-operation
+/opt/codac/bin/sup-pvmonitor
+/opt/codac/bin/anyvalue-editor
 
 ## Installation on CODAC machines (manual)
 
@@ -44,16 +56,6 @@ Checkout packages from [COA git](https://git.iter.org/projects/COA/repos/sup-uti
 - sup-gui-core
 - sequencer-gui
 
-### Run
-
-/opt/codac/bin/sequencer-gui
-
-Other applications:
-
-/opt/codac/bin/sequencer-operation
-/opt/codac/bin/sup-pvmonitor
-/opt/codac/bin/anyvalue-editor
-
 ## Installation on custom Linux
 
 All COA packages are ordinary CMake packages and they can be compiled and installed on any Linux
@@ -73,7 +75,7 @@ It might be needed to add `<path-to-local-install>/lib` to `LD_LIBRARY_PATH`.
 ## Alternative installation on custom Linux
 
 This method doesn't require installation, all packages will be used from their `<build>` directories
-thanks to CMake magic (the magic is located in $HOME/.cmake directory). Use `-DDCOA_EXPORT_BUILD_TREE=OFF` 
+thanks to CMake magic (the magic is located in $HOME/.cmake directory). Use `-DCOA_EXPORT_BUILD_TREE=ON` 
 during CMake configuration phase.
 
 ```bash
