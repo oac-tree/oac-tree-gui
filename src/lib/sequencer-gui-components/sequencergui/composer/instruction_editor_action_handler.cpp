@@ -122,7 +122,7 @@ void InstructionEditorActionHandler::OnMoveUpRequest()
 {
   if (auto instruction = GetSelectedInstruction(); instruction)
   {
-    mvvm::utils::MoveUp(instruction);
+    mvvm::utils::MoveUp(*instruction);
     emit SelectItemRequest(instruction);
   }
 }
@@ -131,7 +131,7 @@ void InstructionEditorActionHandler::OnMoveDownRequest()
 {
   if (auto instruction = GetSelectedInstruction(); instruction)
   {
-    mvvm::utils::MoveDown(instruction);
+    mvvm::utils::MoveDown(*instruction);
     emit SelectItemRequest(instruction);
   }
 }
