@@ -25,11 +25,11 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/application_model.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 
@@ -45,7 +45,8 @@ public:
 };
 
 //! Single local variable in a workspace.
-//! ViewModel should see single row and 2 columns for VariableItem, and its properties beneath.
+//! ViewModel should see two rows and 2 columns for VariableItem, and its properties beneath (name
+//! and dynamicType).
 
 TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
 {
@@ -88,14 +89,23 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   EXPECT_TRUE(viewmodel.setData(variable_customname_index, "new_name", Qt::EditRole));
   EXPECT_EQ(variable_item->GetName(), std::string("new_name"));
 
-  // Access to properties beneath. There are only AnyValueItem, name property was filtered out.
-  EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 1);
+  // Access to properties beneath. There are only AnyValueItem and dynamicType, name property was
+  // filtered out.
+  EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 2);
   EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 2);
 
-  auto anyvalue_name_index = viewmodel.index(0, 0, variable_displayname_index);
-  auto anyvalue_value_index = viewmodel.index(0, 1, variable_displayname_index);
+  // dynamicProperty
+  auto dynamictype_name_index = viewmodel.index(0, 0, variable_displayname_index);
+  auto dynamictype_value_index = viewmodel.index(0, 1, variable_displayname_index);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(dynamictype_name_index),
+            variable_item->GetItem(domainconstants::kDynamicTypeAttribute));
+
+  // AnyValueItem
+  auto anyvalue_name_index = viewmodel.index(1, 0, variable_displayname_index);
+  auto anyvalue_value_index = viewmodel.index(1, 1, variable_displayname_index);
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_name_index),
             variable_item->GetAnyValueItem());
+
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(anyvalue_value_index),
             variable_item->GetAnyValueItem());
 }

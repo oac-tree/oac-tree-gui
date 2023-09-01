@@ -24,11 +24,11 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
 
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
 
@@ -259,10 +259,15 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   LocalVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 1);
-  auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
-  ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
+  ASSERT_EQ(children.size(), 2);
+
+  auto name_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  ASSERT_NE(name_item, nullptr);
+  EXPECT_EQ(name_item->GetDisplayName(), domainconstants::kNameAttribute);
+
+  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  ASSERT_NE(dynamic_type_item, nullptr);
+  EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
@@ -294,6 +299,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
   const std::string expected_name("abc");
   const std::string expected_type(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
+  const std::string expected_dynamic_flag("false");
 
   {  // case when AnyValueItem is set
     sequencergui::LocalVariableItem item;
@@ -304,10 +310,14 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
 
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
+
+    EXPECT_EQ(domain_item->GetStringAttributes().size(), 4);
+
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
-    EXPECT_EQ(domain_item->GetStringAttributes().size(), 3);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDynamicTypeAttribute),
+              expected_dynamic_flag);
 
     EXPECT_NO_THROW(domain_item->Setup());
   }
