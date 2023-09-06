@@ -38,31 +38,22 @@ class MockSequencerObserver : public userinterface_t
 public:
   using vector_string_t = std::vector<std::string>;
 
-  MOCK_METHOD(void, UpdateInstructionStatusImpl, (const instruction_t* instruction), (override));
-  MOCK_METHOD(void, VariableUpdatedImpl,
+  MOCK_METHOD(void, UpdateInstructionStatus, (const instruction_t* instruction), (override));
+  MOCK_METHOD(void, VariableUpdated,
               (const std::string& name, const anyvalue_t& value, bool available), (override));
 
-  MOCK_METHOD(bool, PutValueImpl, (const anyvalue_t& value, const std::string& description),
+  MOCK_METHOD(bool, PutValue, (const anyvalue_t& value, const std::string& description),
               (override));
-  MOCK_METHOD(bool, GetUserValueImpl, (anyvalue_t & value, const std::string& description),
+  MOCK_METHOD(bool, GetUserValue, (anyvalue_t & value, const std::string& description), (override));
+
+  MOCK_METHOD(int, GetUserChoice, (const vector_string_t& options, const anyvalue_t& metadata),
               (override));
 
-  MOCK_METHOD(int, GetUserChoiceImpl, (const vector_string_t& options, const anyvalue_t& metadata),
-              (override));
-
-  MOCK_METHOD(void, MessageImpl, (const std::string& message), (override));
-  MOCK_METHOD(void, LogImpl, (int level, const std::string& str), (override));
+  MOCK_METHOD(void, Message, (const std::string& message), (override));
+  MOCK_METHOD(void, Log, (int level, const std::string& str), (override));
 };
 
-class EmptyUserInterface : public sup::sequencer::UserInterface
-{
-private:
-  void UpdateInstructionStatusImpl(const sup::sequencer::Instruction* instruction) override {}
-
-public:
-  EmptyUserInterface() = default;
-  ~EmptyUserInterface() = default;
-};
+using EmptyUserInterface = sup::sequencer::DefaultUserInterface;
 
 }  // namespace testutils
 

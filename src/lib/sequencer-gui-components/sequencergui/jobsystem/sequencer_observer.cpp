@@ -23,8 +23,8 @@
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_reporter.h>
 #include <sequencergui/jobsystem/request_types.h>
-#include <sup/gui/model/anyvalue_utils.h>
 
+#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/instruction.h>
 
 #include <sstream>
@@ -46,13 +46,13 @@ SequencerObserver::SequencerObserver(ProcedureReporter *procedure_runner)
 
 SequencerObserver::~SequencerObserver() = default;
 
-void SequencerObserver::UpdateInstructionStatusImpl(const sup::sequencer::Instruction *instruction)
+void SequencerObserver::UpdateInstructionStatus(const sup::sequencer::Instruction *instruction)
 {
   m_procedure_reporter->OnDomainInstructionStatusChange(instruction, GetStatus(instruction));
 }
 
-void SequencerObserver::VariableUpdatedImpl(const std::string &name,
-                                            const sup::dto::AnyValue &value, bool connected)
+void SequencerObserver::VariableUpdated(const std::string &name, const sup::dto::AnyValue &value,
+                                        bool connected)
 {
   (void)connected;
   auto value_string = sup::gui::ValuesToJSONString(value);
@@ -61,8 +61,7 @@ void SequencerObserver::VariableUpdatedImpl(const std::string &name,
   m_procedure_reporter->OnLogEvent(CreateLogEvent(Severity::kDebug, ostr.str()));
 }
 
-bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
-                                     const std::string &description)
+bool SequencerObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
@@ -71,26 +70,26 @@ bool SequencerObserver::PutValueImpl(const sup::dto::AnyValue &value,
   return true;
 }
 
-bool SequencerObserver::GetUserValueImpl(sup::dto::AnyValue &value, const std::string &description)
+bool SequencerObserver::GetUserValue(sup::dto::AnyValue &value, const std::string &description)
 {
   auto result = m_procedure_reporter->OnUserInput({value, description});
   value = result.value;
   return result.processed;
 }
 
-int SequencerObserver::GetUserChoiceImpl(const std::vector<std::string> &options,
-                                         const sup::dto::AnyValue &metadata)
+int SequencerObserver::GetUserChoice(const std::vector<std::string> &options,
+                                     const sup::dto::AnyValue &metadata)
 {
   auto result = m_procedure_reporter->OnUserChoice({options, metadata});
   return result.processed ? result.index : -1;
 }
 
-void SequencerObserver::MessageImpl(const std::string &message)
+void SequencerObserver::Message(const std::string &message)
 {
   m_procedure_reporter->OnLogEvent(CreateLogEvent(Severity::kInfo, message));
 }
 
-void SequencerObserver::LogImpl(int severity, const std::string &message)
+void SequencerObserver::Log(int severity, const std::string &message)
 {
   // assuming sequencer severity is the same as GUI severity
   m_procedure_reporter->OnLogEvent(CreateLogEvent(static_cast<Severity>(severity), message));

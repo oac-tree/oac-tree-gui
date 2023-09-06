@@ -93,8 +93,8 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
-  EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(2);
+  EXPECT_CALL(m_observer, Message(_)).Times(1);
 
   // triggering action
   EXPECT_TRUE(adapter->Start());
@@ -131,7 +131,7 @@ TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(2);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(2);
   }
 
   // triggering action
@@ -178,10 +178,10 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleMessage)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(4);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(4);
   }
 
-  EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);  // message
+  EXPECT_CALL(m_observer, Message(_)).Times(1);  // message
 
   // triggering action
   time_t start_time = clock_used::now();
@@ -225,11 +225,11 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoMessages)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
   }
 
-  EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);  // message
+  EXPECT_CALL(m_observer, Message(_)).Times(2);  // message
 
   // triggering action
   time_t start_time = clock_used::now();
@@ -269,8 +269,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
   }
 
   // triggering action
@@ -308,11 +308,11 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
   }
 
-  EXPECT_CALL(m_observer, MessageImpl(_)).Times(2);
+  EXPECT_CALL(m_observer, Message(_)).Times(2);
 
   // triggering action
   EXPECT_TRUE(adapter->Step());
@@ -352,11 +352,11 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
   {  // observer signaling
     ::testing::InSequence seq;
     // first run (sequence, message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
-    EXPECT_CALL(m_observer, MessageImpl(_)).Times(1);                  // message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // message
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(1);  // sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(1);  // sequence
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, Message(_)).Times(1);                  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(1);  // message
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(1);  // sequence
   }
 
   // triggering action
@@ -390,7 +390,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
 
   {  // observer signaling
     ::testing::InSequence seq;
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
   }
 
   // triggering action
@@ -431,7 +431,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
   {  // observer signaling
     ::testing::InSequence seq;
     // first step
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
   }
 
   // triggering action
@@ -474,8 +474,8 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
     ::testing::InSequence seq;
 
     // first execution
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
-    EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
+    EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(3);
   }
 
   // triggering action
@@ -510,7 +510,7 @@ TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
     EXPECT_CALL(m_tick_listener, OnCallback(_)).Times(1);
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(1));
 
   // triggering action
   EXPECT_TRUE(adapter->Start());
@@ -560,8 +560,8 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
-  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(1);
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdated(_, _, _)).Times(1);
 
   // making step
   EXPECT_TRUE(adapter->Step());
@@ -582,8 +582,8 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(2));
-  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(2);
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(2));
+  EXPECT_CALL(m_observer, VariableUpdated(_, _, _)).Times(2);
 
   // continuing till the end
   EXPECT_TRUE(adapter->Start());
@@ -621,8 +621,8 @@ TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kRunning));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
-  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdated(_, _, _)).Times(AtLeast(1));
 
   EXPECT_TRUE(adapter->Start());  // action
 
@@ -642,8 +642,8 @@ TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
-  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(0));
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdated(_, _, _)).Times(AtLeast(0));
 
   EXPECT_TRUE(adapter->Pause());  // action
 
@@ -663,8 +663,8 @@ TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kPaused));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
-  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(0));
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdated(_, _, _)).Times(AtLeast(0));
 
   EXPECT_TRUE(adapter->Step());  // action
 
@@ -684,8 +684,8 @@ TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
     EXPECT_CALL(m_runner_listener, OnCallback(RunnerStatus::kCompleted));
   }
 
-  EXPECT_CALL(m_observer, UpdateInstructionStatusImpl(_)).Times(AtLeast(1));
-  EXPECT_CALL(m_observer, VariableUpdatedImpl(_, _, _)).Times(AtLeast(0));
+  EXPECT_CALL(m_observer, UpdateInstructionStatus(_)).Times(AtLeast(1));
+  EXPECT_CALL(m_observer, VariableUpdated(_, _, _)).Times(AtLeast(0));
 
   // continuing till the end
   EXPECT_TRUE(adapter->Start());

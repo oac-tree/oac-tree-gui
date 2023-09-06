@@ -36,21 +36,21 @@ public:
   explicit SequencerObserver(ProcedureReporter* procedure_runner);
   ~SequencerObserver() override;
 
-  void UpdateInstructionStatusImpl(const ::sup::sequencer::Instruction* instruction) override;
+  void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
 
-  void VariableUpdatedImpl(const std::string& name, const sup::dto::AnyValue& value,
-                           bool connected) override;
+  void VariableUpdated(const std::string& name, const sup::dto::AnyValue& value,
+                       bool connected) override;
 
-  bool PutValueImpl(const sup::dto::AnyValue& value, const std::string& description) override;
+  bool PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
 
-  bool GetUserValueImpl(sup::dto::AnyValue& value, const std::string& description) override;
+  bool GetUserValue(sup::dto::AnyValue& value, const std::string& description) override;
 
-  int GetUserChoiceImpl(const std::vector<std::string>& options,
-                        const sup::dto::AnyValue& metadata) override;
+  int GetUserChoice(const std::vector<std::string>& options,
+                    const sup::dto::AnyValue& metadata) override;
 
-  void MessageImpl(const std::string& message) override;
+  void Message(const std::string& message) override;
 
-  void LogImpl(int severity, const std::string& message) override;
+  void Log(int severity, const std::string& message) override;
 
 private:
   ProcedureReporter* m_procedure_reporter{nullptr};
