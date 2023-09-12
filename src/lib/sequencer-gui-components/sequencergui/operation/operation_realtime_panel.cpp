@@ -131,6 +131,9 @@ void OperationRealTimePanel::SetupConnections()
           &OperationRealTimePanel::InstructionClicked);
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
           this, &OperationRealTimePanel::ToggleBreakpointRequest);
+  connect(m_tool_bar, &MonitorRealTimeToolBar::scrollToSelectionRequest,
+          m_realtime_instruction_tree,
+          &RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag);
 }
 
 }  // namespace sequencergui
