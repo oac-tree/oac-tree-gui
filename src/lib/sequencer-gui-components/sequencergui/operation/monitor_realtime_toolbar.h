@@ -45,16 +45,20 @@ signals:
   void stepRequest();
   void stopRequest();
   void changeDelayRequest(int msec);
+  void scrollToSelectionRequest(bool);
 
 private:
   std::unique_ptr<QMenu> CreateDelayMenu();
+  std::unique_ptr<QMenu> CreateSettingsMenu();
 
   QToolButton* m_run_button{nullptr};
   QToolButton* m_pause_button{nullptr};
   QToolButton* m_step_button{nullptr};
   QToolButton* m_stop_button{nullptr};
   QToolButton* m_delay_button{nullptr};
+  QToolButton* m_settings_button{nullptr};
   std::unique_ptr<QMenu> m_delay_menu;
+  std::unique_ptr<QMenu> m_settings_menu;
 };
 
 }  // namespace sequencergui

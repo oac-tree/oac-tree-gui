@@ -47,7 +47,9 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
     , m_step_button(new QToolButton)
     , m_stop_button(new QToolButton)
     , m_delay_button(new QToolButton)
+    , m_settings_button(new QToolButton)
     , m_delay_menu(CreateDelayMenu())
+    , m_settings_menu(CreateSettingsMenu())
 {
   setIconSize(styleutils::ToolBarIconSize());
 
@@ -86,6 +88,14 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   m_delay_button->setMenu(m_delay_menu.get());
   m_delay_button->setPopupMode(QToolButton::InstantPopup);
   addWidget(m_delay_button);
+
+  m_settings_button->setText("Other");
+  m_settings_button->setIcon(styleutils::GetIcon("eye-settings-outline"));
+  m_settings_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_settings_button->setToolTip("Other settings");
+  m_settings_button->setMenu(m_settings_menu.get());
+  m_settings_button->setPopupMode(QToolButton::InstantPopup);
+  addWidget(m_settings_button);
 }
 
 MonitorRealTimeToolBar::~MonitorRealTimeToolBar() = default;
@@ -107,6 +117,22 @@ std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
     };
     connect(action, &QAction::triggered, this, on_action);
   }
+
+  return result;
+}
+
+std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateSettingsMenu()
+{
+  auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
+
+  auto scroll_action = result->addAction("Automatically scroll to current instruction");
+  scroll_action->setToolTip(
+      "Automatically scrolls tree view to display currently executed instruction");
+  scroll_action->setCheckable(true);
+  scroll_action->setChecked(true);
+  connect(scroll_action, &QAction::toggled, this,
+          &MonitorRealTimeToolBar::scrollToSelectionRequest);
 
   return result;
 }
