@@ -6,8 +6,6 @@ target_sources(${library_name} PRIVATE
   custom_tree_view_style.h
   dialog_message_handler.cpp
   dialog_message_handler.h
-  dots_toolbar.cpp
-  dots_toolbar.h
   file_tree_view.cpp
   file_tree_view.h
   item_list_widget.cpp

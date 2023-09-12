@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure>
+  <Repeat maxCount="-1">
+    <Sequence>
+      <Sequence>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 0"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 1"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 2"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 3"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 4"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 5"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 6"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 7"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 8"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 9"/>
+      </Sequence>
+      <Sequence>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 10"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 11"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 12"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 13"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 14"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 15"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 16"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 17"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 18"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 19"/>
+      </Sequence>
+      <Sequence>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 20"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 21"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 22"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 23"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 24"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 25"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 26"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 27"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 28"/>
+        <Wait timeout="0.5"/>
+        <Message text="aaa 29"/>
+      </Sequence>
+    </Sequence>
+  </Repeat>
+  <Workspace/>
+</Procedure>

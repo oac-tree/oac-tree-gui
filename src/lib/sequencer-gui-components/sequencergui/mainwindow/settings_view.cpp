@@ -22,7 +22,6 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/dots_toolbar.h>
 #include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/model/application_model.h>
@@ -43,12 +42,9 @@ namespace sequencergui
 
 SettingsView::SettingsView(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new DotsToolBar)
     , m_list_widget(new QListWidget)
     , m_stacked_widget(new QStackedWidget)
 {
-  m_tool_bar->AddDotsMenu();
-
   auto hlayout = new QHBoxLayout;
   hlayout->setContentsMargins(0, 0, 0, 0);
   hlayout->setSpacing(0);
