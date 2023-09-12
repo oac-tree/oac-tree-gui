@@ -21,6 +21,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QItemSelectionModel>
 #include <QMenu>
 #include <QTreeView>
 
@@ -91,6 +92,21 @@ std::function<void(const QPoint &)> CreateOnCustomMenuCallback(QTreeView &tree_v
 {
   auto result = [&tree_view](const QPoint &point) { SummonCollapseExpandMenu(point, tree_view); };
   return result;
+}
+
+void ScrollTreeViewportToSelection(QTreeView &tree_view)
+{
+  auto indexes = tree_view.selectionModel()->selectedIndexes();
+  if (indexes.empty())
+  {
+    return;
+  }
+
+  auto visible_rectangle = tree_view.visualRect(indexes.front());
+  if (visible_rectangle.top() < 0 || visible_rectangle.bottom() > tree_view.rect().bottom())
+  {
+    tree_view.scrollTo(indexes.front(), QAbstractItemView::PositionAtTop);
+  }
 }
 
 }  // namespace sequencergui

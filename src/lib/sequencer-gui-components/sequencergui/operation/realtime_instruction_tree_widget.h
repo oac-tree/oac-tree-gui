@@ -59,6 +59,11 @@ public:
 
   void SetSelectedInstructions(std::vector<InstructionItem*> items);
 
+  /**
+   * @brief Makes tree viewport follow currently selected instruction.
+   */
+  void SetViewportFollowsSelectionFlag(bool value);
+
 signals:
   void InstructionClicked(sequencergui::InstructionItem* instruction);
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
@@ -69,10 +74,17 @@ private:
   void AdjustTreeAppearance();
   void OnTreeDoubleClick(const QModelIndex& index);
 
+  /**
+   * @brief UpdateTreeViewport
+   */
+  void ScrollViewportToSelection();
+
   QTreeView* m_tree_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<BreakpointModelDelegate> m_delegate;
+
+  bool m_viewport_follows_selection{true};
 };
 
 }  // namespace sequencergui

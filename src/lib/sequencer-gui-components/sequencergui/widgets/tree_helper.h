@@ -51,6 +51,15 @@ void SummonCollapseExpandMenu(const QPoint& point, QTreeView& tree_view);
  */
 std::function<void(const QPoint& point)> CreateOnCustomMenuCallback(QTreeView& tree_view);
 
+/**
+ * @brief Scrolls tree viewport to selection.
+ *
+ * @details Performs scrolling of the tree viewport to show the current selection. The scrolling
+ * will be performed only if the current selection is located outside of the viewport. The viewport
+ * will be positioned to show selected item at the top.
+ */
+void ScrollTreeViewportToSelection(QTreeView& tree_view);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_WIDGETS_TREE_HELPER_H_

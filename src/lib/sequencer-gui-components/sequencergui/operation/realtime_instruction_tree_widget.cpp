@@ -25,12 +25,13 @@
 #include <sequencergui/operation/breakpoint_model_delegate.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sequencergui/widgets/tree_helper.h>
+#include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <sup/gui/widgets/custom_header_view.h>
-
+#include <QDebug>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -106,11 +107,19 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
 {
   m_component_provider->SetSelectedItem(item);
+  ScrollViewportToSelection();
 }
 
 void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
 {
   m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(items));
+  ScrollViewportToSelection();
+}
+
+void RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag(bool value)
+{
+  m_viewport_follows_selection = value;
+  ScrollViewportToSelection();
 }
 
 void RealTimeInstructionTreeWidget::ReadSettings()
@@ -152,6 +161,16 @@ void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
     auto instruction = m_component_provider->GetSelected<InstructionItem>();
     emit ToggleBreakpointRequest(instruction);
   }
+}
+
+void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
+{
+  if (!m_viewport_follows_selection)
+  {
+    return;
+  }
+
+  ScrollTreeViewportToSelection(*m_tree_view);
 }
 
 }  // namespace sequencergui
