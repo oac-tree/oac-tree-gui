@@ -142,7 +142,7 @@ bool IsSequencerPluginEpicsAvailable()
 
 bool IsSequencerControlPluginAvailable()
 {
-  return IsVariableTypeAvailable(domainconstants::kWaitForConditionInstructionType);  // simplified check
+  return IsInstructionTypeAvailable(domainconstants::kWaitForConditionInstructionType);  // simplified check
 }
 
 std::pair<bool, std::string> LoadPlugins()
