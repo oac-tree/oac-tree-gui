@@ -180,6 +180,17 @@ TEST_F(JobHandlerTest, PrematureDeletion)
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
 }
 
+TEST_F(JobHandlerTest, AttemptToStartWithoutPrepare)
+{
+  auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
+  m_job_item->SetProcedure(procedure);
+
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+
+  JobHandler job_handler(m_job_item);
+  EXPECT_THROW(job_handler.onStartRequest(), RuntimeException);
+}
+
 //! Normal execution of the procedure with single wait instruction.
 
 TEST_F(JobHandlerTest, ProcedureWithSingleMessage)

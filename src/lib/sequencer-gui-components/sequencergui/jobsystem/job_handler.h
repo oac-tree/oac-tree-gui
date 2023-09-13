@@ -88,6 +88,7 @@ signals:
 
 private:
   void onLogEvent(const sequencergui::LogEvent& event);
+  void ValidateJobHandler();
 
   JobModel* GetJobModel();
 

@@ -97,6 +97,7 @@ JobHandler::~JobHandler() = default;
 
 void JobHandler::onStartRequest()
 {
+  ValidateJobHandler();
   const bool was_paused = m_domain_runner_adapter->GetStatus() == RunnerStatus::kPaused;
   if (m_domain_runner_adapter->Start() && !was_paused)
   {
@@ -106,16 +107,19 @@ void JobHandler::onStartRequest()
 
 void JobHandler::onPauseRequest()
 {
+  ValidateJobHandler();
   m_domain_runner_adapter->Pause();
 }
 
 void JobHandler::onMakeStepRequest()
 {
+  ValidateJobHandler();
   m_domain_runner_adapter->Step();
 }
 
 void JobHandler::onStopRequest()
 {
+  ValidateJobHandler();
   if (m_domain_runner_adapter->Stop())
   {
     m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
@@ -145,7 +149,7 @@ ProcedureItem *JobHandler::GetExpandedProcedure() const
 //! Returns true if this context is in valid state
 bool JobHandler::IsValid() const
 {
-  return m_domain_procedure != nullptr;
+  return m_domain_procedure != nullptr && m_domain_runner_adapter;
 }
 
 RunnerStatus JobHandler::GetRunnerStatus() const
@@ -172,6 +176,14 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
 void JobHandler::onLogEvent(const sequencergui::LogEvent &event)
 {
   m_job_log->Append(event);
+}
+
+void JobHandler::ValidateJobHandler()
+{
+  if (!IsValid())
+  {
+    throw RuntimeException("Job wasn't properly initialised");
+  }
 }
 
 JobModel *JobHandler::GetJobModel()
