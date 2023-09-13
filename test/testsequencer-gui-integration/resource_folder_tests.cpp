@@ -78,34 +78,34 @@ public:
 
 TEST_P(ResourceFolderTests, RunProcedure)
 {
+  // load procedure from XML
   auto filename = GetResourceFolder() + "/" + GetParam();
   EXPECT_TRUE(mvvm::utils::IsExists(filename));
-
   auto procedure_item = sequencergui::ImportFromFile(filename);
   EXPECT_TRUE(procedure_item);
 
+  // insert procedure in the model
   auto procedure_ptr = procedure_item.get();
   auto model = m_models.GetSequencerModel();
   model->InsertItem(std::move(procedure_item), model->GetRootItem(), mvvm::TagIndex::Append());
 
+  // setup JobHandler to run procedure with the help of JobItem
   m_job_item->SetProcedure(procedure_ptr);
-
   JobHandler job_handler(m_job_item);
   job_handler.onPrepareJobRequest();
-
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
+  // starting procedure and waiting for completion
   job_handler.onStartRequest();
-
   auto predicate = [this]() { return m_job_item->GetStatus() == "Completed"; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 300));
 
+  // validating some of parameters after job is complet
   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
   EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kCompleted);
-
   auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }
 
 INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTests,
-                         ::testing::Values("wait_for_condition.xml"));
+                         ::testing::Values("wait_for_condition.xml", "fallback.xml"));
