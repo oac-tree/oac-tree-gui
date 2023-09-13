@@ -145,7 +145,8 @@ std::pair<bool, std::string> LoadPlugins()
   std::vector<std::string> failed_plugins;
 
   static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
-                                                   "libsequencer-misc.so"};
+                                                   "libsequencer-misc.so",
+                                                   "libsequencer-control.so"};
 
   for (const auto& name : plugins)
   {
