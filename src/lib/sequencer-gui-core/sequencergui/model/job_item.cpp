@@ -53,7 +53,6 @@ void JobItem::SetStatus(const std::string &status)
   SetProperty(itemconstants::kStatus, status);
 }
 
-//! Sets link to track given item.
 void JobItem::SetProcedure(const ProcedureItem *item)
 {
   GetItem<mvvm::LinkedItem>(kLink)->SetLink(item);

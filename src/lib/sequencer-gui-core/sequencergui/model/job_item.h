@@ -27,7 +27,13 @@ namespace sequencergui
 
 class ProcedureItem;
 
-//! Represents job.
+/**
+ * @brief The JobItem class represents a job to run a procedure.
+ *
+ * @details Job item links to ProcedureItem via item pool machinery, so it should be used only when
+ * it is a part of the model.
+ */
+
 class JobItem : public mvvm::CompoundItem
 {
 public:
@@ -42,8 +48,17 @@ public:
 
   void SetStatus(const std::string& status);
 
+  /**
+   * @brief Sets procedure to handle.
+   */
   void SetProcedure(const ProcedureItem* item);
 
+  /**
+   * @brief Returns a pointer to a procedure which is handled by given job item.
+   *
+   * @details It works only when both JobItem and ProcedureItem are belongs to the same model, or
+   * handled by the same memory pool.
+   */
   ProcedureItem* GetProcedure() const;
 
   ProcedureItem* GetExpandedProcedure();
