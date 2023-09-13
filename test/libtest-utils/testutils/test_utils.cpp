@@ -46,6 +46,11 @@ std::string GetTestSuiteOutputDir()
   return sequencergui::TestConfig::TestOutputDir();  // defined in auto-generated testconfig.h
 }
 
+std::string GetProjectSourceDir()
+{
+  return sequencergui::TestConfig::ProjectSourceDir();  // defined in auto-generated testconfig.h
+}
+
 std::string CreateXMLDocumentString(const std::string &body)
 {
   return header + body + footer;
@@ -93,7 +98,7 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout)
 std::string CreateProcedureString(const std::string &body, bool schema)
 {
   static const std::string header_with_schema{
-                                              R"RAW(<?xml version="1.0" encoding="UTF-8"?>
+      R"RAW(<?xml version="1.0" encoding="UTF-8"?>
 <Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
            name="Trivial procedure for testing purposes"
            xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
