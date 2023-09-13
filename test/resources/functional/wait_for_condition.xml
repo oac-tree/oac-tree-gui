@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Plugin>libsequencer-control.so</Plugin>
+    <Sequence>
+        <ParallelSequence successThreshold="2" failureThreshold="1">
+            <WaitForCondition varNames="live" timeout="2.0">
+                <Equals lhs="live" rhs="one"/>
+            </WaitForCondition>
+            <Sequence>
+                <Wait timeout="0.1"/>
+                <Copy input="one" output="live"/>
+            </Sequence>
+        </ParallelSequence>
+        <Message text="WaitForCondition successful!"/>
+    </Sequence>
+    <Workspace>
+        <Local name="live" type='{"type":"uint64"}' value='0' />
+        <Local name="zero" type='{"type":"uint64"}' value='0' />
+        <Local name="one" type='{"type":"uint64"}' value='1' />
+    </Workspace>
+</Procedure>
