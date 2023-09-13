@@ -140,6 +140,11 @@ bool IsSequencerPluginEpicsAvailable()
   return IsVariableTypeAvailable(domainconstants::kPvAccessServerVariableType);  // simplified check
 }
 
+bool IsSequencerControlPluginAvailable()
+{
+  return IsVariableTypeAvailable(domainconstants::kWaitForConditionInstructionType);  // simplified check
+}
+
 std::pair<bool, std::string> LoadPlugins()
 {
   std::vector<std::string> failed_plugins;

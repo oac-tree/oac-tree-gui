@@ -56,6 +56,8 @@ bool IsInstructionTypeAvailable(const std::string& domain_type);
 
 bool IsSequencerPluginEpicsAvailable();
 
+bool IsSequencerControlPluginAvailable();
+
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
 
 std::string GetTitleTextFromMetadata(const anyvalue_t& metadata);

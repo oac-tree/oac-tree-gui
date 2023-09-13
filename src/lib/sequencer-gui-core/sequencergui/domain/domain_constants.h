@@ -57,7 +57,7 @@ const std::string kEqualsInstructionType = "Equals";
 const std::string kGreaterThanOrEqualInstructionType = "GreaterThanOrEqual";
 const std::string kGreaterThanInstructionType = "GreaterThan";
 
-// sup-sequencer-plughin-epics instructions
+// sup-sequencer-plugin-epics instructions
 const std::string kChannelAccessReadInstructionType = "ChannelAccessRead";
 const std::string kChannelAccessWriteInstructionType = "ChannelAccessWrite";
 const std::string kPvAccessReadInstructionType = "PvAccessRead";
@@ -65,6 +65,11 @@ const std::string kPvAccessWriteInstructionType = "PvAccessWrite";
 const std::string kRPCClientInstructionType = "RPCClient";
 const std::string kSystemCallInstructionType = "SystemCall";
 const std::string kLogInstructionType = "Log";
+
+// sup-sequencer-plugin-control instructions
+const std::string kWaitForConditionInstructionType = "WaitForCondition";
+const std::string kExecuteWhileInstructionType = "ExecuteWhileInstruction";
+const std::string kAchieveConditionInstructionType = "AchieveConditionInstruction";
 
 // variables
 const std::string kLocalVariableType = "Local";
