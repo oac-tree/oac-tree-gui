@@ -37,6 +37,9 @@ namespace testutils
 //! Shoud point to CMAKE_BINARY_DIR/test_output
 std::string GetTestSuiteOutputDir();
 
+//! Returns full path to repository source directory.
+std::string GetProjectSourceDir();
+
 //! Creates vector of unique_ptr of given type.
 template <typename B, typename D>
 auto CreateRow(int ncolumns)
