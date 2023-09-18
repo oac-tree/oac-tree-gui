@@ -72,22 +72,22 @@ std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_
   return std::make_unique<ParallelSequenceItem>(*this, make_unique_id);
 }
 
-int ParallelSequenceItem::GetSuccessThreshold() const
+mvvm::uint32 ParallelSequenceItem::GetSuccessThreshold() const
 {
-  return Property<int>(domainconstants::kSuccessThresholdAttribute);
+  return Property<mvvm::uint32>(domainconstants::kSuccessThresholdAttribute);
 }
 
-void ParallelSequenceItem::SetSuccessThreshold(int value)
+void ParallelSequenceItem::SetSuccessThreshold(mvvm::uint32 value)
 {
   SetProperty(domainconstants::kSuccessThresholdAttribute, value);
 }
 
-int ParallelSequenceItem::GetFailureThreshold() const
+mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
 {
-  return Property<int>(domainconstants::kFailureThresholdAttribute);
+  return Property<mvvm::uint32>(domainconstants::kFailureThresholdAttribute);
 }
 
-void ParallelSequenceItem::SetFailureThreshold(int value)
+void ParallelSequenceItem::SetFailureThreshold(mvvm::uint32 value)
 {
   SetProperty(domainconstants::kFailureThresholdAttribute, value);
 }

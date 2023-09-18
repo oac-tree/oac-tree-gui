@@ -59,13 +59,13 @@ public:
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
-  int GetSuccessThreshold() const;
+  mvvm::uint32 GetSuccessThreshold() const;
 
-  void SetSuccessThreshold(int value);
+  void SetSuccessThreshold(mvvm::uint32 value);
 
-  int GetFailureThreshold() const;
+  mvvm::uint32 GetFailureThreshold() const;
 
-  void SetFailureThreshold(int value);
+  void SetFailureThreshold(mvvm::uint32 value);
 };
 
 //! Represent Repeat instruction.
