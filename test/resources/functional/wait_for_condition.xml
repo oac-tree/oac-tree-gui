@@ -7,11 +7,11 @@
     <Sequence>
         <ParallelSequence successThreshold="2" failureThreshold="1">
             <WaitForCondition varNames="live" timeout="2.0">
-                <Equals lhs="live" rhs="one"/>
+                <Equals leftVar="live" rightVar="one"/>
             </WaitForCondition>
             <Sequence>
                 <Wait timeout="0.1"/>
-                <Copy input="one" output="live"/>
+                <Copy inputVar="one" outputVar="live"/>
             </Sequence>
         </ParallelSequence>
         <Message text="WaitForCondition successful!"/>
