@@ -108,11 +108,6 @@ const std::string kMessageAttribute = "message";
 const std::string kPrettyJsonAttribute = "pretty";
 const std::string kDynamicTypeAttribute = "dynamicType";
 
-// attributes (instruction specific)
-const std::string kOutputSourceAttribute = "from";
-const std::string kListenVarNamesAttribute = "varNames";
-const std::string kListenForceSuccessAttribute = "forceSuccess";
-
 }  // namespace sequencergui::domainconstants
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_CONSTANTS_H_
