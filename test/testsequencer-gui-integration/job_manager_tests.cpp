@@ -67,6 +67,7 @@ TEST_F(JobManagerTest, InitialState)
   EXPECT_FALSE(manager.GetCurrentJobHandler());
   EXPECT_FALSE(manager.GetJobHandler(m_job_item));
   EXPECT_FALSE(manager.GetCurrentJob());
+  EXPECT_FALSE(manager.HasRunningJobs());
 }
 
 TEST_F(JobManagerTest, SubmitProcedure)
@@ -215,6 +216,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
 
   auto job_handler = manager.GetCurrentJobHandler();
   EXPECT_TRUE(job_handler->IsRunning());
+  EXPECT_TRUE(manager.HasRunningJobs());
 
   // it shouldn't be possible to remove running job without first stopping it
   EXPECT_THROW(manager.OnRemoveJobRequest(m_job_item), RuntimeException);
@@ -224,4 +226,5 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return !job_handler->IsRunning(); }, 50));
 
   EXPECT_FALSE(job_handler->IsRunning());
+  EXPECT_FALSE(manager.HasRunningJobs());
 }

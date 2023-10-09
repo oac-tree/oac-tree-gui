@@ -75,6 +75,11 @@ public:
 
   UserChoiceResult OnUserChoiceRequest(const UserChoiceArgs& args);
 
+  /**
+   * @brief Returns true if there are jobs running.
+   */
+  bool HasRunningJobs() const;
+
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);

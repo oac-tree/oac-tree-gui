@@ -35,6 +35,7 @@
 #include <sup/dto/anyvalue.h>
 
 #include <QMainWindow>
+#include <algorithm>
 
 namespace sequencergui
 {
@@ -186,6 +187,12 @@ UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
 UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
 {
   return GetUserChoiceDialogResult(args);
+}
+
+bool JobManager::HasRunningJobs() const
+{
+  return std::any_of(m_job_map.begin(), m_job_map.end(),
+                     [](const auto &iter) { return iter.second->IsRunning(); });
 }
 
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
