@@ -28,6 +28,19 @@
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
+namespace
+{
+
+/**
+ * @brief Returns text representing instruction.
+ */
+std::string GetText(const sequencergui::InstructionItem &item)
+{
+  return item.GetName().empty() ? item.GetDisplayName() : item.GetName();
+}
+
+}  // namespace
+
 namespace sequencergui
 {
 
@@ -36,7 +49,7 @@ class InstructionOperationRowStrategy : public mvvm::RowStrategyInterface
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Type", "Name", "Status", "BP"};
+    static const QStringList result = {"Instruction", "Status", "BP"};
     return result;
   }
 
@@ -49,13 +62,15 @@ public:
       return result;
     }
 
-    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
-
     if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
     {
-      result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
+      result.emplace_back(mvvm::CreateLabelViewItem(instruction, GetText(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*instruction)));
       result.emplace_back(mvvm::CreateDataViewItem(GetBreakpointItem(*instruction)));
+    }
+    else
+    {
+      result.emplace_back(mvvm::CreateDisplayNameViewItem(instruction));
     }
     return result;
   }
@@ -70,9 +85,9 @@ InstructionOperationViewModel::InstructionOperationViewModel(mvvm::SessionModelI
           model, this));
 }
 
-int InstructionOperationViewModel::GetBreakpointColum()
+int InstructionOperationViewModel::GetBreakpointColumn()
 {
-  return 3;
+  return 2;
 }
 
 }  // namespace sequencergui

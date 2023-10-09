@@ -43,7 +43,7 @@ public:
   /**
    * @brief Returns index of a column used to render breakpoints.
    */
-  static int GetBreakpointColum();
+  static int GetBreakpointColumn();
 };
 
 }  // namespace sequencergui
