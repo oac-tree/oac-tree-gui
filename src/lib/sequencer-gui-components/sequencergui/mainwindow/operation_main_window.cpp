@@ -45,6 +45,9 @@ OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<Applicati
 {
   PopulateModel();
   InitApplication();
+
+  connect(m_action_manager, &OperationMainWindowActions::ImportJobRequest, this,
+          [this]() { m_operation_view->OnImportJobRequest(); });
 }
 
 bool OperationMainWindow::ImportProcedure(const QString& file_name)

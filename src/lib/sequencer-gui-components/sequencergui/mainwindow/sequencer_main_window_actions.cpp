@@ -28,7 +28,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
-#include <QDebug>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
