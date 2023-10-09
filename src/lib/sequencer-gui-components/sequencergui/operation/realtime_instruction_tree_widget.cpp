@@ -44,9 +44,9 @@ const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 
 bool FixColumnAppearance(QTreeView *tree)
 {
-  tree->header()->setSectionResizeMode(2, QHeaderView::Stretch);
-  tree->header()->setSectionResizeMode(3, QHeaderView::Fixed);
-  tree->setColumnWidth(3, mvvm::utils::UnitSize(1));
+  const int breakpoint_colum = sequencergui::InstructionOperationViewModel::GetBreakpointColumn();
+  tree->header()->setSectionResizeMode(breakpoint_colum, QHeaderView::Fixed);
+  tree->setColumnWidth(breakpoint_colum, mvvm::utils::UnitSize(1));
   return true;
 }
 

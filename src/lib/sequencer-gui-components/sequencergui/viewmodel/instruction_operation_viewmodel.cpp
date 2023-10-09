@@ -66,7 +66,13 @@ InstructionOperationViewModel::InstructionOperationViewModel(mvvm::SessionModelI
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionOperationRowStrategy>(model, this));
+      mvvm::factory::CreateController<mvvm::TopItemsStrategy, InstructionOperationRowStrategy>(
+          model, this));
+}
+
+int InstructionOperationViewModel::GetBreakpointColum()
+{
+  return 3;
 }
 
 }  // namespace sequencergui

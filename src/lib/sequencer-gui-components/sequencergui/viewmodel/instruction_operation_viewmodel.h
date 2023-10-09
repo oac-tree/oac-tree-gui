@@ -37,7 +37,13 @@ class MVVM_VIEWMODEL_EXPORT InstructionOperationViewModel : public mvvm::ViewMod
   Q_OBJECT
 
 public:
-  explicit InstructionOperationViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+  explicit InstructionOperationViewModel(mvvm::SessionModelInterface* model,
+                                         QObject* parent = nullptr);
+
+  /**
+   * @brief Returns index of a column used to render breakpoints.
+   */
+  static int GetBreakpointColum();
 };
 
 }  // namespace sequencergui

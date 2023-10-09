@@ -20,6 +20,7 @@
 #include "breakpoint_model_delegate.h"
 
 #include <sequencergui/operation/breakpoint_types.h>
+#include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -54,7 +55,7 @@ BreakpointModelDelegate::BreakpointModelDelegate(QObject *parent) : QStyledItemD
 void BreakpointModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                     const QModelIndex &index) const
 {
-  if (index.column() == 3)
+  if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {
     if (option.state & QStyle::State_Selected)
     {
