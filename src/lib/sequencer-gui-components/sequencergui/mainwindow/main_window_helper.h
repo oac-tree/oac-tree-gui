@@ -96,6 +96,11 @@ int RunApplication(int argc, char** argv)
   return app.exec();
 }
 
+/**
+ * @brief Opens a message box with the question if running jobs should be stopped.
+ */
+bool ShouldStopRunningJobs();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

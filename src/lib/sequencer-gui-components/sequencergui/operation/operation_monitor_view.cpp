@@ -116,6 +116,16 @@ bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
   return false;
 }
 
+bool OperationMonitorView::HasRunningJobs() const
+{
+  return m_job_manager->HasRunningJobs();
+}
+
+void OperationMonitorView::StopAllJobs()
+{
+  m_job_manager->StopAllJobs();
+}
+
 void OperationMonitorView::showEvent(QShowEvent *event)
 {
   Q_UNUSED(event);

@@ -19,6 +19,7 @@
 
 #include "sequencer_main_window.h"
 
+#include "main_window_helper.h"
 #include "sequencer_main_window_actions.h"
 #include "settings_view.h"
 
@@ -54,19 +55,32 @@ SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<Applicati
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());
   m_composer_view->SetModel(m_models->GetSequencerModel());
-  m_monitor_view->SetApplicationModels(m_models.get());
+  m_operation_view->SetApplicationModels(m_models.get());
   m_settings_view->SetApplicationModels(m_models.get());
 }
 
 bool SequencerMainWindow::ImportProcedure(const QString& file_name)
 {
-  return file_name.isEmpty() ? false : m_monitor_view->OnImportJobRequest(file_name);
+  return file_name.isEmpty() ? false : m_operation_view->OnImportJobRequest(file_name);
 }
 
 SequencerMainWindow::~SequencerMainWindow() = default;
 
 void SequencerMainWindow::closeEvent(QCloseEvent* event)
 {
+  if (m_operation_view->HasRunningJobs())
+  {
+    if (ShouldStopRunningJobs())
+    {
+      m_operation_view->StopAllJobs();
+    }
+    else
+    {
+      event->ignore();
+      return;
+    }
+  }
+
   if (m_action_manager->CloseCurrentProject())
   {
     WriteSettings();
@@ -98,8 +112,8 @@ void SequencerMainWindow::InitComponents()
   m_composer_view = new SequencerComposerView;
   m_tab_widget->AddWidget(m_composer_view, "Compose", styleutils::GetIcon("graph-outline-light"));
 
-  m_monitor_view = new OperationMonitorView(OperationMonitorView::kIdeMode);
-  m_tab_widget->AddWidget(m_monitor_view, "Run",
+  m_operation_view = new OperationMonitorView(OperationMonitorView::kIdeMode);
+  m_tab_widget->AddWidget(m_operation_view, "Run",
                           styleutils::GetIcon("chevron-right-circle-outline-light"));
 
   m_tab_widget->AddSpacer();

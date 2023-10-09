@@ -59,6 +59,16 @@ public:
 
   bool OnImportJobRequest(const QString& file_name = {});
 
+  /**
+   * @brief Returns true if there are jobs running.
+   */
+  bool HasRunningJobs() const;
+
+  /**
+   * @brief Stop all running jobs.
+   */
+  void StopAllJobs();
+
 protected:
   void showEvent(QShowEvent* event) override;
 

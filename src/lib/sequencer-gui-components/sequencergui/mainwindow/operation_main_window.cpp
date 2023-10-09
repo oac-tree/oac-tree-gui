@@ -19,12 +19,14 @@
 
 #include "operation_main_window.h"
 
+#include "main_window_helper.h"
 #include "operation_main_window_actions.h"
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
 
+#include <QCloseEvent>
 #include <QMenuBar>
 #include <QSettings>
 
@@ -47,13 +49,26 @@ OperationMainWindow::OperationMainWindow() : m_models(std::make_unique<Applicati
 
 bool OperationMainWindow::ImportProcedure(const QString& file_name)
 {
-  return file_name.isEmpty() ? false : m_monitor_view->OnImportJobRequest(file_name);
+  return file_name.isEmpty() ? false : m_operation_view->OnImportJobRequest(file_name);
 }
 
 OperationMainWindow::~OperationMainWindow() = default;
 
 void OperationMainWindow::closeEvent(QCloseEvent* event)
 {
+  if (m_operation_view->HasRunningJobs())
+  {
+    if (ShouldStopRunningJobs())
+    {
+      m_operation_view->StopAllJobs();
+    }
+    else
+    {
+      event->ignore();
+      return;
+    }
+  }
+
   WriteSettings();
   QMainWindow::closeEvent(event);
 }
@@ -66,10 +81,10 @@ void OperationMainWindow::InitApplication()
 
   m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
 
-  m_monitor_view = new OperationMonitorView(OperationMonitorView::kOperationMode, this);
-  m_monitor_view->SetApplicationModels(m_models.get());
+  m_operation_view = new OperationMonitorView(OperationMonitorView::kOperationMode, this);
+  m_operation_view->SetApplicationModels(m_models.get());
 
-  setCentralWidget(m_monitor_view);
+  setCentralWidget(m_operation_view);
 }
 
 void OperationMainWindow::ReadSettings()

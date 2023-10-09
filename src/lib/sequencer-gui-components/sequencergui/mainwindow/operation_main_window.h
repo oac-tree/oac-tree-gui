@@ -57,7 +57,7 @@ private:
 
   OperationMainWindowActions* m_action_manager{nullptr};
 
-  OperationMonitorView* m_monitor_view{nullptr};
+  OperationMonitorView* m_operation_view{nullptr};
 };
 
 }  // namespace sequencergui

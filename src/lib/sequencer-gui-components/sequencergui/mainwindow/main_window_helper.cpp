@@ -21,6 +21,8 @@
 
 #include <mvvm/utils/file_utils.h>
 
+#include <QMessageBox>
+#include <QPushButton>
 #include <filesystem>
 
 namespace
@@ -48,6 +50,19 @@ std::vector<std::string> GetProcedureFiles(const std::string &path_name)
   }
 
   return result;
+}
+
+bool ShouldStopRunningJobs()
+{
+  QMessageBox msgBox;
+  msgBox.setText("Some procedures are in a running state.");
+  msgBox.setInformativeText("Do you want to stop all running jobs?\n");
+
+  auto yes_button = msgBox.addButton("Yes, stop jobs and quit", QMessageBox::YesRole);
+  msgBox.addButton("Cancel", QMessageBox::NoRole);
+
+  msgBox.exec();
+  return msgBox.clickedButton() == yes_button;
 }
 
 }  // namespace sequencergui
