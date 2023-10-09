@@ -228,3 +228,38 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   EXPECT_FALSE(job_handler->IsRunning());
   EXPECT_FALSE(manager.HasRunningJobs());
 }
+
+//! Attempt to remove long running job.
+
+TEST_F(JobManagerTest, StopAllJobs)
+{
+  auto procedure0 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+  auto procedure1 = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
+
+  MessagePanel panel;
+  m_job_item->SetProcedure(procedure0);
+  auto job_item1 = m_job_item;
+
+  auto job_item2 = m_models.GetJobModel()->InsertItem<JobItem>();
+  job_item2->SetProcedure(procedure1);
+
+  JobManager manager;
+  manager.SetMessagePanel(&panel);
+
+  EXPECT_NO_FATAL_FAILURE(manager.StopAllJobs());
+
+  manager.SubmitJob(job_item1);
+  manager.SubmitJob(job_item2);
+  manager.SetCurrentJob(job_item1);
+  manager.OnStartJobRequest();
+
+  manager.SetCurrentJob(job_item2);
+  manager.OnStartJobRequest();
+
+  EXPECT_TRUE(manager.HasRunningJobs());
+
+  manager.StopAllJobs();
+  EXPECT_TRUE(QTest::qWaitFor([&manager]() { return !manager.HasRunningJobs(); }, 50));
+
+  EXPECT_FALSE(manager.HasRunningJobs());
+}

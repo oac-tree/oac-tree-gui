@@ -195,6 +195,12 @@ bool JobManager::HasRunningJobs() const
                      [](const auto &iter) { return iter.second->IsRunning(); });
 }
 
+void JobManager::StopAllJobs()
+{
+  std::for_each(m_job_map.begin(), m_job_map.end(),
+                [](const auto &iter) { iter.second->onStopRequest(); });
+}
+
 void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leaves)
 {
   auto sending_job_handler = qobject_cast<JobHandler *>(sender());

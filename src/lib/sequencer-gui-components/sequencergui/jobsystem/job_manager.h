@@ -80,6 +80,11 @@ public:
    */
   bool HasRunningJobs() const;
 
+  /**
+   * @brief Stop all running jobs.
+   */
+  void StopAllJobs();
+
 signals:
   void InstructionStatusChanged(sequencergui::InstructionItem* instruction);
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
