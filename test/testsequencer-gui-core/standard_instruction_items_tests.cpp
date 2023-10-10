@@ -23,7 +23,7 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/item_utils.h>
