@@ -33,5 +33,6 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/model/universal_instruction_item.h>
+#include <sequencergui/model/attribute_item.h>
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

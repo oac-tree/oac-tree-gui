@@ -1,6 +1,8 @@
 # Collection of files related to the transformations from the GUI model to domain and back.
 
 target_sources(${library_name} PRIVATE
+  attribute_item_transform_helper.cpp
+  attribute_item_transform_helper.h
   domain_procedure_builder.cpp
   domain_procedure_builder.h
   domain_workspace_builder.cpp
