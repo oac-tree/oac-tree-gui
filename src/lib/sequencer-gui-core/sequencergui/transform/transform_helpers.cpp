@@ -212,20 +212,21 @@ template <typename T>
 void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
                                     sup::gui::AnyValueScalarItem &item)
 {
-  try
+  auto attribute_string = domain.GetAttributeString(attribute_name);
+  if (IsVaryingAttribute(attribute_string))
   {
-    auto anyvalue = domain.template GetAttributeValue<sup::dto::AnyValue>(attribute_name);
-    sup::gui::SetDataFromScalar(anyvalue, item);
+    // will change property type to string
+    sup::dto::AnyValue str(attribute_string);
+    sup::gui::SetDataFromScalar(str, item);
+    return;
   }
-  catch (const std::exception)
+
+  auto type_code = sup::gui::GetTypeCode(item.GetAnyTypeName());
+  auto any_type = sup::dto::AnyType(sup::gui::GetTypeCode(item.GetAnyTypeName()));
+  auto result = sup::sequencer::utils::ParseAttributeString(any_type, attribute_string);
+  if (result.first)
   {
-    auto attribute_string = domain.GetAttributeString(attribute_name);
-    if (IsVaryingAttribute(attribute_string))
-    {
-      // will change property type to string
-      sup::dto::AnyValue str(attribute_string);
-      sup::gui::SetDataFromScalar(str, item);
-    }
+    sup::gui::SetDataFromScalar(result.second, item);
   }
 }
 
