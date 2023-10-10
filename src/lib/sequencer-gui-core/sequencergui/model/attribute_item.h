@@ -42,6 +42,11 @@ public:
   AttributeItem();
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
+
+  void SetAnyTypeName(const std::string& type_name);
+
+  std::string GetAnyTypeName() const;
+
 };
 
 }  // namespace sequencergui

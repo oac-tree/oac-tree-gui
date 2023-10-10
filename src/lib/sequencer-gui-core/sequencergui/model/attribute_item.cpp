@@ -19,14 +19,35 @@
 
 #include "attribute_item.h"
 
+#include <sup/gui/model/scalar_conversion_utils.h>
+
+namespace
+{
+inline const int kAnyTypeNameRole = 10;  // role to store type name
+}
+
 namespace sequencergui
 {
 
-AttributeItem::AttributeItem() : CompoundItem(Type) {}
+AttributeItem::AttributeItem() : CompoundItem(Type)
+{
+  SetFlag(mvvm::Appearance::kProperty, true);
+}
 
 std::unique_ptr<mvvm::SessionItem> AttributeItem::Clone(bool make_unique_id) const
 {
   return std::make_unique<AttributeItem>(*this, make_unique_id);
+}
+
+void AttributeItem::SetAnyTypeName(const std::string &type_name)
+{
+  SetData(type_name, kAnyTypeNameRole);
+  SetData(sup::gui::GetVariantFromScalarTypeName(type_name));
+}
+
+std::string AttributeItem::GetAnyTypeName() const
+{
+  return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
 }
 
 }  // namespace sequencergui
