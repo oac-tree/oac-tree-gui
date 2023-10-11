@@ -56,3 +56,17 @@ TEST_F(AttributeItemTests, SetAnyTypeName)
   EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));
   EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
 }
+
+TEST_F(AttributeItemTests, SetAttributeAsString)
+{
+  AttributeItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+
+  item.SetAttributeAsString("abc");
+  EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+
+  item.SetAttributeAsString("def");
+  EXPECT_EQ(item.Data<std::string>(), std::string("def"));
+}

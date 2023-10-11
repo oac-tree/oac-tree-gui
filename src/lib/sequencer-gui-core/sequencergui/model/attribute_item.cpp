@@ -21,6 +21,8 @@
 
 #include <sup/gui/model/scalar_conversion_utils.h>
 
+#include <mvvm/model/item_utils.h>
+
 namespace
 {
 inline const int kAnyTypeNameRole = 10;  // role to store type name
@@ -48,6 +50,11 @@ void AttributeItem::SetAnyTypeName(const std::string &type_name)
 std::string AttributeItem::GetAnyTypeName() const
 {
   return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
+}
+
+void AttributeItem::SetAttributeAsString(const std::string &value)
+{
+  mvvm::utils::ReplaceData(*this, mvvm::variant_t(value), mvvm::DataRole::kData);
 }
 
 }  // namespace sequencergui
