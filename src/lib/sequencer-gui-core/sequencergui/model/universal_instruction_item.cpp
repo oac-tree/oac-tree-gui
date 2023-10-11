@@ -21,7 +21,9 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -87,7 +89,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   std::vector<std::string> processed_attribute_names;
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetPropertyFromDomainAttribute(*instruction, attribute_name, *item);
+    SetPropertyFromDomainAttributeV2(*instruction, attribute_name, *item);
     processed_attribute_names.push_back(attribute_name);
   }
 
@@ -108,7 +110,7 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetDomainAttribute(*item, attribute_name, *instruction);
+    SetDomainAttributeV2(*item, attribute_name, *instruction);
   }
 }
 
@@ -123,7 +125,7 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
 
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueScalarItem>(properties))
+  for (const auto property : mvvm::utils::CastItems<AttributeItem>(properties))
   {
     auto [tag, index] = property->GetTagIndex();
 
@@ -152,7 +154,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
   {
     if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
     {
-      AddPropertyFromDefinition(definition, *this);
+      AddPropertyFromDefinitionV2(definition, *this);
     }
   }
 

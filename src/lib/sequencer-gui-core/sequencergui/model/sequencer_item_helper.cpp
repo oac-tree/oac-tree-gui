@@ -108,6 +108,8 @@ std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatal
   result->RegisterItem<sup::gui::AnyValueStructItem>();
   result->RegisterItem<sup::gui::AnyValueArrayItem>();
 
+  result->RegisterItem<AttributeItem>();
+
   return result;
 }
 

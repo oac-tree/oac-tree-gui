@@ -24,13 +24,10 @@
 
 #include <sequencergui/model/instruction_item.h>
 
-namespace sup::gui
-{
-class AnyValueScalarItem;
-}
-
 namespace sequencergui
 {
+
+class AttributeItem;
 
 /**
  * @brief The UniversalInstructionItem class represents domain Instruction.
@@ -75,7 +72,7 @@ private:
   struct Attribute
   {
     std::string domain_name;             //! domain attribute name
-    sup::gui::AnyValueScalarItem* item;  //! item representing domain attribute
+    AttributeItem* item{nullptr};  //! item representing domain attribute
   };
 
   /**

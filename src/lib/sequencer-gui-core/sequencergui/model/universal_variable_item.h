@@ -23,13 +23,10 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/variable_item.h>
 
-namespace sup::gui
-{
-class AnyValueScalarItem;
-}
-
 namespace sequencergui
 {
+
+class AttributeItem;
 
 /**
  * @brief The UniversalVariableItem class represents domain Variable.
@@ -70,7 +67,7 @@ private:
   struct Attribute
   {
     std::string domain_name;             //! domain attribute name
-    sup::gui::AnyValueScalarItem* item;  //! item representing domain attribute
+    AttributeItem* item{nullptr};  //! item representing domain attribute
   };
 
   /**

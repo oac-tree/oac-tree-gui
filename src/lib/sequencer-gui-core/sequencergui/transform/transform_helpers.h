@@ -74,59 +74,59 @@ void SetJsonValueAttribute(const VariableItem& item, variable_t& variable);
 void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
                           instruction_t& instruction);
 
-/**
- * @brief Add property to item using sequencer attribute definition.
- *
- * @param attr Attribute definition to use for property construction.
- * @param item Compound item which will get a property on board.
- *
- * @return Returns item representing a new property.
- */
-sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
-                                                  mvvm::CompoundItem& item);
+///**
+// * @brief Add property to item using sequencer attribute definition.
+// *
+// * @param attr Attribute definition to use for property construction.
+// * @param item Compound item which will get a property on board.
+// *
+// * @return Returns item representing a new property.
+// */
+//sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
+//                                                  mvvm::CompoundItem& item);
 
-/**
- * @brief Set property item from the domain attribute.
- *
- * @tparam Domain instruction or variable.
- *
- * @param variable Domain object to set from.
- * @param attribute_name The attribute name of the domain object.
- * @param item An item representing an attribute.
- *
- */
+///**
+// * @brief Set property item from the domain attribute.
+// *
+// * @tparam Domain instruction or variable.
+// *
+// * @param variable Domain object to set from.
+// * @param attribute_name The attribute name of the domain object.
+// * @param item An item representing an attribute.
+// *
+// */
 
-template <typename T>
-void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
-                                    sup::gui::AnyValueScalarItem& item);
+//template <typename T>
+//void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
+//                                    sup::gui::AnyValueScalarItem& item);
 
-extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
-                                                                const std::string& attribute_name,
-                                                                sup::gui::AnyValueScalarItem& item);
-extern template void SetPropertyFromDomainAttribute<instruction_t>(
-    const instruction_t& domain, const std::string& attribute_name,
-    sup::gui::AnyValueScalarItem& item);
+//extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
+//                                                                const std::string& attribute_name,
+//                                                                sup::gui::AnyValueScalarItem& item);
+//extern template void SetPropertyFromDomainAttribute<instruction_t>(
+//    const instruction_t& domain, const std::string& attribute_name,
+//    sup::gui::AnyValueScalarItem& item);
 
-/**
- * @brief Set an attribute for domain variable from AnyValueScalarItem property.
- *
- * @tparam Domain instruction or variable.
- *
- * @param item The AnyValueScalarItem representing domain attribute.
- * @param attribute_name The name of the domain attribute to set.
- * @param variable The domain sequencer variable.
- */
+///**
+// * @brief Set an attribute for domain variable from AnyValueScalarItem property.
+// *
+// * @tparam Domain instruction or variable.
+// *
+// * @param item The AnyValueScalarItem representing domain attribute.
+// * @param attribute_name The name of the domain attribute to set.
+// * @param variable The domain sequencer variable.
+// */
 
-template <typename T>
-void SetDomainAttribute(const sup::gui::AnyValueScalarItem& item, const std::string& attribute_name,
-                        T& domain);
+//template <typename T>
+//void SetDomainAttribute(const sup::gui::AnyValueScalarItem& item, const std::string& attribute_name,
+//                        T& domain);
 
-extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem& item,
-                                                    const std::string& attribute_name,
-                                                    variable_t& domain);
-extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem& item,
-                                                       const std::string& attribute_name,
-                                                       instruction_t& domain);
+//extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem& item,
+//                                                    const std::string& attribute_name,
+//                                                    variable_t& domain);
+//extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem& item,
+//                                                       const std::string& attribute_name,
+//                                                       instruction_t& domain);
 
 /**
  * @brief Register tag in instruction item to be able to add other instructions as children.

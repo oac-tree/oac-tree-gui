@@ -301,81 +301,81 @@ TEST_F(TransformHelpersTests, SetAnyValueFromDomainVariableWithRegistry)
 
 //! Testing AddPropertyFromDefinition helper method.
 
-TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
-{
-  const std::string attribute_name("attr");
-  const sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
+//TEST_F(TransformHelpersTests, AddPropertyFromDefinition)
+//{
+//  const std::string attribute_name("attr");
+//  const sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
 
-  mvvm::CompoundItem item;
-  auto property = AddPropertyFromDefinition(attr, item);
-  ASSERT_NE(property, nullptr);
+//  mvvm::CompoundItem item;
+//  auto property = AddPropertyFromDefinition(attr, item);
+//  ASSERT_NE(property, nullptr);
 
-  // validating that CompoundItem got new property item
-  EXPECT_TRUE(mvvm::utils::HasTag(item, attribute_name));
+//  // validating that CompoundItem got new property item
+//  EXPECT_TRUE(mvvm::utils::HasTag(item, attribute_name));
 
-  std::vector<std::string> expected_tags({attribute_name});
-  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
+//  std::vector<std::string> expected_tags({attribute_name});
+//  EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
-  auto property_item = item.GetItem({attribute_name});
-  ASSERT_EQ(property_item, property);
-  EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
-  EXPECT_NE(dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item), nullptr);
+//  auto property_item = item.GetItem({attribute_name});
+//  ASSERT_EQ(property_item, property);
+//  EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
+//  EXPECT_NE(dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item), nullptr);
 
-  EXPECT_EQ(property_item->Data<int>(), 0);
+//  EXPECT_EQ(property_item->Data<int>(), 0);
 
-  // Checking that we can convert AnyValueScalarItem property back to AnyValue
-  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
+//  // Checking that we can convert AnyValueScalarItem property back to AnyValue
+//  sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
 
-  auto anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
-  auto any_value = GetAnyValueFromScalar(*anyvalue_item);
+//  auto anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
+//  auto any_value = GetAnyValueFromScalar(*anyvalue_item);
 
-  EXPECT_EQ(expected_anyvalue, any_value);
-}
+//  EXPECT_EQ(expected_anyvalue, any_value);
+//}
 
-//! Testing SetDomainAttribute method.
+////! Testing SetDomainAttribute method.
 
-TEST_F(TransformHelpersTests, SetDomainAttribute)
-{
-  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+//TEST_F(TransformHelpersTests, SetDomainAttribute)
+//{
+//  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
-  sup::gui::AnyValueScalarItem item;
-  item.SetAnyTypeName(sup::dto::kStringTypeName);
-  item.SetData("abc");
+//  sup::gui::AnyValueScalarItem item;
+//  item.SetAnyTypeName(sup::dto::kStringTypeName);
+//  item.SetData("abc");
 
-  SetDomainAttribute(item, domainconstants::kNameAttribute, *domain_variable);
-  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
-            std::string("abc"));
-}
+//  SetDomainAttribute(item, domainconstants::kNameAttribute, *domain_variable);
+//  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
+//            std::string("abc"));
+//}
 
-//! Testing SetPropertyFromDomainAttribute method.
+////! Testing SetPropertyFromDomainAttribute method.
 
-TEST_F(TransformHelpersTests, SetPropertyFromDomainAttribute)
-{
-  {  // case when variable was setup
-    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-    domain_variable->Setup();
+//TEST_F(TransformHelpersTests, SetPropertyFromDomainAttribute)
+//{
+//  {  // case when variable was setup
+//    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+//    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+//    domain_variable->Setup();
 
-    sup::gui::AnyValueScalarItem item;
-    item.SetAnyTypeName(sup::dto::kStringTypeName);
+//    sup::gui::AnyValueScalarItem item;
+//    item.SetAnyTypeName(sup::dto::kStringTypeName);
 
-    SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
-    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
-  }
+//    SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
+//    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+//  }
 
-  {  // case when variable wasn't setup
-    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+//  {  // case when variable wasn't setup
+//    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+//    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
 
-    sup::gui::AnyValueScalarItem item;
-    item.SetAnyTypeName(sup::dto::kStringTypeName);
+//    sup::gui::AnyValueScalarItem item;
+//    item.SetAnyTypeName(sup::dto::kStringTypeName);
 
-    EXPECT_NO_THROW(
-        SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
+//    EXPECT_NO_THROW(
+//        SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
 
-    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
-  }
-}
+//    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+//  }
+//}
 
 TEST_F(TransformHelpersTests, RegisterChildrenTag)
 {
@@ -409,51 +409,51 @@ TEST_F(TransformHelpersTests, RegisterChildrenTag)
   }
 }
 
-//! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
-//! contains $par attribute.
+////! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
+////! contains $par attribute.
 
-TEST_F(TransformHelpersTests, SetPropertyFromDomainAttributeVaryingCase)
-{
-  // domain Wait instruction constructed by the factory doesn't have attributes
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  EXPECT_TRUE(instruction->GetStringAttributes().empty());
+//TEST_F(TransformHelpersTests, SetPropertyFromDomainAttributeVaryingCase)
+//{
+//  // domain Wait instruction constructed by the factory doesn't have attributes
+//  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+//  EXPECT_TRUE(instruction->GetStringAttributes().empty());
 
-  // initial timeout property is AnyValueScalarItem representing a `double`
-  WaitItem item;
-  EXPECT_EQ(item.GetTimeout(), 0.0);
-  EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
-  auto property_item =
-      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
-  ASSERT_TRUE(property_item);
-  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kFloat64TypeName);
-  EXPECT_TRUE(std::holds_alternative<double>(property_item->Data()));
+//  // initial timeout property is AnyValueScalarItem representing a `double`
+//  WaitItem item;
+//  EXPECT_EQ(item.GetTimeout(), 0.0);
+//  EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kTimeoutAttribute));
+//  auto property_item =
+//      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
+//  ASSERT_TRUE(property_item);
+//  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kFloat64TypeName);
+//  EXPECT_TRUE(std::holds_alternative<double>(property_item->Data()));
 
-  // Seting property from the domain containing `$` sign
-  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
-  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
-  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, *property_item);
+//  // Seting property from the domain containing `$` sign
+//  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
+//  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
+//  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, *property_item);
 
-  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
-  EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));
-  EXPECT_EQ(property_item->Data<std::string>(), "$par1");
+//  EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
+//  EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));
+//  EXPECT_EQ(property_item->Data<std::string>(), "$par1");
 
-  EXPECT_THROW(item.GetTimeout(), std::bad_variant_access);
-}
+//  EXPECT_THROW(item.GetTimeout(), std::bad_variant_access);
+//}
 
-//! Testing SetDomainAttribute method for attribute containing $par varying parameter.
+////! Testing SetDomainAttribute method for attribute containing $par varying parameter.
 
-TEST_F(TransformHelpersTests, SetDomainAttributeVaryingCase)
-{
-  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+//TEST_F(TransformHelpersTests, SetDomainAttributeVaryingCase)
+//{
+//  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  sup::gui::AnyValueScalarItem item;
-  item.SetAnyTypeName(sup::dto::kStringTypeName);
-  item.SetData("$par1");
+//  sup::gui::AnyValueScalarItem item;
+//  item.SetAnyTypeName(sup::dto::kStringTypeName);
+//  item.SetData("$par1");
 
-  SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
-  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute),
-            std::string("$par1"));
-}
+//  SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
+//  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute),
+//            std::string("$par1"));
+//}
 
 TEST_F(TransformHelpersTests, PopulateProcedurePreambleFromItem)
 {

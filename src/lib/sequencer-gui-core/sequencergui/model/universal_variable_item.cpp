@@ -21,8 +21,10 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -79,7 +81,7 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   // for the moment any registered property has it's correspondance as domain attribute
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueScalarItem>(properties))
+  for (const auto property : mvvm::utils::CastItems<AttributeItem>(properties))
   {
     auto [tag, index] = property->GetTagIndex();
 
@@ -103,7 +105,7 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable,
 
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
+    SetPropertyFromDomainAttributeV2(*variable, attribute_name, *item);
   }
 
   SetAnyValueFromDomainVariable(*variable, *this, registry);
@@ -113,7 +115,7 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetDomainAttribute(*item, attribute_name, *variable);
+    SetDomainAttributeV2(*item, attribute_name, *variable);
   }
 
   if (GetAnyValueItem())
@@ -142,7 +144,7 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
   {
     if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
     {
-      AddPropertyFromDefinition(definition, *this);
+      AddPropertyFromDefinitionV2(definition, *this);
     }
   }
 

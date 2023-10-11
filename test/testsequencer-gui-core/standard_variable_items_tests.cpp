@@ -21,14 +21,15 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/property_item.h>
 
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
 
@@ -83,11 +84,11 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 
   ASSERT_EQ(children.size(), 3);
 
-  auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  auto name = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
 
-  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto channel = dynamic_cast<AttributeItem*>(children.at(1));
   ASSERT_NE(channel, nullptr);
   EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 
@@ -183,15 +184,15 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
   auto children = item.GetAllItems();
 
   ASSERT_EQ(children.size(), 3);
-  auto name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  auto name = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
 
-  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto file_name = dynamic_cast<AttributeItem*>(children.at(1));
   ASSERT_NE(file_name, nullptr);
   EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
-  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(2));
+  auto json_attr = dynamic_cast<AttributeItem*>(children.at(2));
   ASSERT_NE(json_attr, nullptr);
   EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
@@ -261,11 +262,11 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
 
   ASSERT_EQ(children.size(), 2);
 
-  auto name_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
+  auto name_item = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(name_item, nullptr);
   EXPECT_EQ(name_item->GetDisplayName(), domainconstants::kNameAttribute);
 
-  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
+  auto dynamic_type_item = dynamic_cast<AttributeItem*>(children.at(1));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
 }

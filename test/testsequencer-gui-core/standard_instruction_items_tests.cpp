@@ -20,10 +20,11 @@
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/item_utils.h>
@@ -139,7 +140,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomainWithCustomAttribute)
   IncludeItem item;
   item.SetPath("def");
 
-  auto property = item.AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
+  auto property = item.AddProperty<AttributeItem>(custom_name);
   property->SetAnyTypeName(sup::dto::kStringTypeName);
   property->SetData(custom_value);
 
@@ -384,10 +385,10 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomainVaryingTimeout)
   const WaitItem item;
 
   auto property_item =
-      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
+      dynamic_cast<AttributeItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
   ASSERT_TRUE(property_item);
 
-  SetDataFromScalar(sup::dto::AnyValue("$par1"), *property_item);
+  property_item->SetAttributeAsString("$par1");
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kTimeoutAttribute));
