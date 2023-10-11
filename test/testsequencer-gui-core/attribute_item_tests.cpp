@@ -19,10 +19,17 @@
 
 #include "sequencergui/model/attribute_item.h"
 
+#include <sup/dto/anytype.h>
+
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
 using namespace sequencergui;
+
+namespace
+{
+const int kAnyTypeNameRole = 10;  // defined in attribute_item.cpp
+}
 
 class AttributeItemTests : public ::testing::Test
 {
@@ -30,5 +37,22 @@ class AttributeItemTests : public ::testing::Test
 
 TEST_F(AttributeItemTests, InitialState)
 {
+  const AttributeItem item;
+  EXPECT_EQ(item.GetDisplayName(), AttributeItem::Type);
+  EXPECT_EQ(item.GetAnyTypeName(), std::string());
+  EXPECT_TRUE(item.HasFlag(mvvm::Appearance::kProperty));
+  EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
+}
 
+TEST_F(AttributeItemTests, SetAnyTypeName)
+{
+  AttributeItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_TRUE(mvvm::utils::IsValid(item.Data()));
+  EXPECT_TRUE(item.HasData(mvvm::DataRole::kData));
+  EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
 }

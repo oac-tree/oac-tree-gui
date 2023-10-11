@@ -24,8 +24,39 @@
 //! Collection of helper functions to transform VariableItem and InstructionItem properties
 //! from/to domain attributes.
 
+#include <sequencergui/domain/sequencer_types_fwd.h>
+
+#include <string>
+
+namespace mvvm
+{
+class SessionItem;
+class CompoundItem;
+}  // namespace mvvm
+
 namespace sequencergui
 {
+
+/**
+ * @brief Returns true if given attribute value is referring to `$placeholder`.
+ */
+bool IsPlaceholderAttribute(const std::string& attribute_value);
+
+/**
+ * @brief Returns true if given attribute value is referring to `@variable`.
+ */
+bool IsReferenceAttribute(const std::string& attribute_value);
+
+/**
+ * @brief Add property to item using sequencer attribute definition.
+ *
+ * @param attr Attribute definition to use for property construction.
+ * @param item Compound item which will get a property on board.
+ *
+ * @return Returns item representing a new property.
+ */
+mvvm::SessionItem* AddPropertyFromDefinitionV2(const attribute_definition_t& attr,
+                                             mvvm::CompoundItem& item);
 
 }  // namespace sequencergui
 
