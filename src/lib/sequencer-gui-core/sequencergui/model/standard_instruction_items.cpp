@@ -38,12 +38,12 @@ std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone(bool make_unique_id) const
 
 std::string IncludeItem::GetFileName() const
 {
-  return Property<std::string>(domainconstants::kFileAttribute);
+  return Property<std::string>(domainconstants::kFileNameAttribute);
 }
 
 void IncludeItem::SetFileName(const std::string &value)
 {
-  SetProperty(domainconstants::kFileAttribute, value);
+  SetProperty(domainconstants::kFileNameAttribute, value);
 }
 
 std::string IncludeItem::GetPath() const

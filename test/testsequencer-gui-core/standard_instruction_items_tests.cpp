@@ -72,7 +72,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  input->AddAttribute(domainconstants::kFileAttribute, "abc");
+  input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
   input->AddAttribute(domainconstants::kPathAttribute, "def");
 
   IncludeItem item;
@@ -88,7 +88,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomainWithCustomAttributes)
 {
   auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  input->AddAttribute(domainconstants::kFileAttribute, "abc");
+  input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
   input->AddAttribute(domainconstants::kPathAttribute, "def");
 
   const std::string custom_name("par1");
@@ -118,7 +118,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
-  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileAttribute));
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
 
   // Setup of Input instruction requires existance of instruction to include
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
@@ -147,7 +147,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomainWithCustomAttribute)
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
-  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileAttribute));
+  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
   EXPECT_TRUE(domain_item->HasAttribute(custom_name));
   EXPECT_EQ(domain_item->GetAttributeString(custom_name), custom_value);
 
