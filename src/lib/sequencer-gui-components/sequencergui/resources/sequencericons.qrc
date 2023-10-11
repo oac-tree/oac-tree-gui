@@ -44,5 +44,9 @@
         <file>icons/splash-bg1.png</file>
         <file>icons/arrow-up-thin-circle-outline.svg</file>
         <file>icons/arrow-down-thin-circle-outline.svg</file>
+        <file>icons/open-panel-left.svg</file>
+        <file>icons/open-panel-right.svg</file>
+        <file>icons/dock-left.svg</file>
+        <file>icons/dock-right.svg</file>
     </qresource>
 </RCC>
