@@ -63,10 +63,13 @@ TEST_F(AttributeItemTests, SetAttributeAsString)
 
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
   item.SetAttributeAsString("abc");
   EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
 
   item.SetAttributeAsString("def");
   EXPECT_EQ(item.Data<std::string>(), std::string("def"));
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
 }

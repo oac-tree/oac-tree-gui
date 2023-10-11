@@ -30,12 +30,13 @@
 
 namespace mvvm
 {
-class SessionItem;
 class CompoundItem;
 }  // namespace mvvm
 
 namespace sequencergui
 {
+
+class AttributeItem;
 
 /**
  * @brief Returns true if given attribute value is referring to `$placeholder`.
@@ -55,8 +56,28 @@ bool IsReferenceAttribute(const std::string& attribute_value);
  *
  * @return Returns item representing a new property.
  */
-mvvm::SessionItem* AddPropertyFromDefinitionV2(const attribute_definition_t& attr,
-                                             mvvm::CompoundItem& item);
+AttributeItem* AddPropertyFromDefinitionV2(const attribute_definition_t& attr,
+                                           mvvm::CompoundItem& item);
+
+/**
+ * @brief Set property item from the domain attribute.
+ *
+ * @tparam Domain instruction or variable.
+ *
+ * @param variable Domain object to set from.
+ * @param attribute_name The attribute name of the domain object.
+ * @param item An item representing an attribute.
+ */
+
+template <typename T>
+void SetPropertyFromDomainAttributeV2(const T& domain, const std::string& attribute_name,
+                                      AttributeItem& item);
+
+extern template void SetPropertyFromDomainAttributeV2<variable_t>(const variable_t& domain,
+                                                                  const std::string& attribute_name,
+                                                                  AttributeItem& item);
+extern template void SetPropertyFromDomainAttributeV2<instruction_t>(
+    const instruction_t& domain, const std::string& attribute_name, AttributeItem& item);
 
 }  // namespace sequencergui
 

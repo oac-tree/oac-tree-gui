@@ -54,6 +54,7 @@ std::string AttributeItem::GetAnyTypeName() const
 
 void AttributeItem::SetAttributeAsString(const std::string &value)
 {
+  SetData(mvvm::constants::kStringTypeName, kAnyTypeNameRole);
   mvvm::utils::ReplaceData(*this, mvvm::variant_t(value), mvvm::DataRole::kData);
 }
 

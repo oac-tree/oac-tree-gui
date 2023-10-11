@@ -19,7 +19,10 @@
 
 #include "sequencergui/transform/attribute_item_transform_helper.h"
 
+#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/compound_item.h>
@@ -28,6 +31,8 @@
 #include <sup/dto/anytype.h>
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_definition.h>
+#include <sup/sequencer/instruction.h>
+#include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
 
@@ -86,4 +91,80 @@ TEST_F(AttributeItemTransformHelperTests, AddPropertyFromDefinition)
   auto any_value = sup::gui::GetAnyValueFromScalar(anyvalue_item->Data());
 
   EXPECT_EQ(expected_anyvalue, any_value);
+}
+
+//! Testing SetPropertyFromDomainAttribute method.
+
+TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttribute)
+{
+  {  // case when variable was setup
+    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+    domain_variable->Setup();
+
+    AttributeItem item;
+    item.SetAnyTypeName(sup::dto::kStringTypeName);
+
+    SetPropertyFromDomainAttributeV2(*domain_variable, domainconstants::kNameAttribute, item);
+    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+  }
+
+  {  // case when variable wasn't setup
+    auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+    domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
+
+    AttributeItem item;
+    item.SetAnyTypeName(sup::dto::kStringTypeName);
+
+    EXPECT_NO_THROW(
+        SetPropertyFromDomainAttributeV2(*domain_variable, domainconstants::kNameAttribute, item));
+
+    EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+  }
+}
+
+//! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
+//! contains $par attribute.
+
+TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributePlaceholderCase)
+{
+  // domain Wait instruction constructed by the factory doesn't have attributes
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  EXPECT_TRUE(instruction->GetStringAttributes().empty());
+
+  AttributeItem item;
+  item.SetAnyTypeName(sup::dto::kInt32TypeName);
+  EXPECT_TRUE(std::holds_alternative<mvvm::int32>(item.Data()));
+
+  // Seting property from the domain containing `$` sign
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
+  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
+  SetPropertyFromDomainAttributeV2(*instruction, domainconstants::kTimeoutAttribute, item);
+
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
+  EXPECT_EQ(item.Data<std::string>(), "$par1");
+}
+
+//! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
+//! contains @par attribute.
+
+TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributeReferenceCase)
+{
+  // domain Wait instruction constructed by the factory doesn't have attributes
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  EXPECT_TRUE(instruction->GetStringAttributes().empty());
+
+  AttributeItem item;
+  item.SetAnyTypeName(sup::dto::kInt32TypeName);
+  EXPECT_TRUE(std::holds_alternative<mvvm::int32>(item.Data()));
+
+  // Seting property from the domain containing `@` sign
+  instruction->AddAttribute(domainconstants::kTimeoutAttribute, "@par1");
+  EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "@par1");
+  SetPropertyFromDomainAttributeV2(*instruction, domainconstants::kTimeoutAttribute, item);
+
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
+  EXPECT_EQ(item.Data<std::string>(), "@par1");
 }
