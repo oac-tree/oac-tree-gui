@@ -66,7 +66,7 @@ public:
 private:
   struct Attribute
   {
-    std::string domain_name;             //! domain attribute name
+    std::string domain_name;       //! domain attribute name
     AttributeItem* item{nullptr};  //! item representing domain attribute
   };
 
@@ -75,7 +75,7 @@ private:
    */
   std::vector<Attribute> GetAttributeItems() const;
 
-  void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t *registry) override;
+  void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry) override;
   void SetupDomainImpl(variable_t* variable) const override;
 
   void SetupFromDomain(const variable_t* variable);

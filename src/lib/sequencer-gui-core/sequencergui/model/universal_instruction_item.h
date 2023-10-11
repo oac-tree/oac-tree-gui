@@ -71,7 +71,7 @@ private:
 
   struct Attribute
   {
-    std::string domain_name;             //! domain attribute name
+    std::string domain_name;       //! domain attribute name
     AttributeItem* item{nullptr};  //! item representing domain attribute
   };
 

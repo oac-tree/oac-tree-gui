@@ -22,17 +22,12 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
-#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
-#include <mvvm/utils/container_utils.h>
 
 #include <sup/sequencer/instruction.h>
-
-#include <iostream>
 
 namespace
 {
@@ -89,7 +84,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   std::vector<std::string> processed_attribute_names;
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetPropertyFromDomainAttributeV2(*instruction, attribute_name, *item);
+    SetPropertyFromDomainAttribute(*instruction, attribute_name, *item);
     processed_attribute_names.push_back(attribute_name);
   }
 
@@ -98,7 +93,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   {
     if (!mvvm::utils::Contains(processed_attribute_names, name))
     {
-      auto property = AddProperty<sup::gui::AnyValueScalarItem>(name);
+      auto property = AddProperty<AttributeItem>(name);
       property->SetAnyTypeName(sup::dto::kStringTypeName);
       property->SetDisplayName(name);
       property->SetData(value);
@@ -110,7 +105,7 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
 {
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetDomainAttributeV2(*item, attribute_name, *instruction);
+    SetDomainAttribute(*item, attribute_name, *instruction);
   }
 }
 
@@ -154,7 +149,7 @@ void UniversalInstructionItem::SetupFromDomain(const instruction_t *instruction)
   {
     if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
     {
-      AddPropertyFromDefinitionV2(definition, *this);
+      AddPropertyFromDefinition(definition, *this);
     }
   }
 

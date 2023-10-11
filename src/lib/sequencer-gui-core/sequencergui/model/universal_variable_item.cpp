@@ -23,12 +23,10 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
-#include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
-#include <mvvm/utils/container_utils.h>
 
 #include <sup/sequencer/variable.h>
 
@@ -105,7 +103,7 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable,
 
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetPropertyFromDomainAttributeV2(*variable, attribute_name, *item);
+    SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
   }
 
   SetAnyValueFromDomainVariable(*variable, *this, registry);
@@ -115,7 +113,7 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
 {
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
-    SetDomainAttributeV2(*item, attribute_name, *variable);
+    SetDomainAttribute(*item, attribute_name, *variable);
   }
 
   if (GetAnyValueItem())
@@ -144,7 +142,7 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
   {
     if (!mvvm::utils::Contains(kSkipDomainAttributeList, definition.GetName()))
     {
-      AddPropertyFromDefinitionV2(definition, *this);
+      AddPropertyFromDefinition(definition, *this);
     }
   }
 

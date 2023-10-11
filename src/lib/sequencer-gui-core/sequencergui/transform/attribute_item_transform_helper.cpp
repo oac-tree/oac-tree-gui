@@ -57,7 +57,7 @@ bool IsReferenceAttribute(const std::string &attribute_value)
   return attribute_value.find_first_of('@') == 0;
 }
 
-AttributeItem *AddPropertyFromDefinitionV2(const attribute_definition_t &attr,
+AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
                                            mvvm::CompoundItem &item)
 {
   // Use attribute name for display name and tag name of the new property item.
@@ -68,7 +68,7 @@ AttributeItem *AddPropertyFromDefinitionV2(const attribute_definition_t &attr,
 }
 
 template <typename T>
-void SetPropertyFromDomainAttributeV2(const T &domain, const std::string &attribute_name,
+void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
                                       AttributeItem &item)
 {
   auto attribute_string = domain.GetAttributeString(attribute_name);
@@ -87,15 +87,15 @@ void SetPropertyFromDomainAttributeV2(const T &domain, const std::string &attrib
   }
 }
 
-template void SetPropertyFromDomainAttributeV2<variable_t>(const variable_t &domain,
+template void SetPropertyFromDomainAttribute<variable_t>(const variable_t &domain,
                                                            const std::string &attribute_name,
                                                            AttributeItem &item);
-template void SetPropertyFromDomainAttributeV2<instruction_t>(const instruction_t &domain,
+template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t &domain,
                                                               const std::string &attribute_name,
                                                               AttributeItem &item);
 
 template <typename T>
-void SetDomainAttributeV2(const AttributeItem &item, const std::string &attribute_name, T &domain)
+void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
 {
   auto anyvalue = sup::gui::GetAnyValueFromScalar(item.Data());
   auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
@@ -109,10 +109,10 @@ void SetDomainAttributeV2(const AttributeItem &item, const std::string &attribut
   }
 }
 
-template void SetDomainAttributeV2<variable_t>(const AttributeItem &item,
+template void SetDomainAttribute<variable_t>(const AttributeItem &item,
                                                const std::string &attribute_name,
                                                variable_t &domain);
-template void SetDomainAttributeV2<instruction_t>(const AttributeItem &item,
+template void SetDomainAttribute<instruction_t>(const AttributeItem &item,
                                                   const std::string &attribute_name,
                                                   instruction_t &domain);
 

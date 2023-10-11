@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
  *
  * Project       : Graphical User Interface for SUP Sequencer
  *
@@ -56,7 +56,7 @@ bool IsReferenceAttribute(const std::string& attribute_value);
  *
  * @return Returns item representing a new property.
  */
-AttributeItem* AddPropertyFromDefinitionV2(const attribute_definition_t& attr,
+AttributeItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
                                            mvvm::CompoundItem& item);
 
 /**
@@ -70,13 +70,13 @@ AttributeItem* AddPropertyFromDefinitionV2(const attribute_definition_t& attr,
  */
 
 template <typename T>
-void SetPropertyFromDomainAttributeV2(const T& domain, const std::string& attribute_name,
+void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
                                       AttributeItem& item);
 
-extern template void SetPropertyFromDomainAttributeV2<variable_t>(const variable_t& domain,
+extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
                                                                   const std::string& attribute_name,
                                                                   AttributeItem& item);
-extern template void SetPropertyFromDomainAttributeV2<instruction_t>(
+extern template void SetPropertyFromDomainAttribute<instruction_t>(
     const instruction_t& domain, const std::string& attribute_name, AttributeItem& item);
 
 /**
@@ -90,12 +90,12 @@ extern template void SetPropertyFromDomainAttributeV2<instruction_t>(
  */
 
 template <typename T>
-void SetDomainAttributeV2(const AttributeItem& item, const std::string& attribute_name, T& domain);
+void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_name, T& domain);
 
-extern template void SetDomainAttributeV2<variable_t>(const AttributeItem& item,
+extern template void SetDomainAttribute<variable_t>(const AttributeItem& item,
                                                       const std::string& attribute_name,
                                                       variable_t& domain);
-extern template void SetDomainAttributeV2<instruction_t>(const AttributeItem& item,
+extern template void SetDomainAttribute<instruction_t>(const AttributeItem& item,
                                                          const std::string& attribute_name,
                                                          instruction_t& domain);
 

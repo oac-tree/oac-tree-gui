@@ -102,7 +102,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomainWithCustomAttributes)
   EXPECT_EQ(item.GetPath(), std::string("def"));
 
   EXPECT_TRUE(mvvm::utils::HasTag(item, custom_name));
-  auto property_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(custom_name));
+  auto property_item = dynamic_cast<AttributeItem*>(item.GetItem(custom_name));
   ASSERT_TRUE(property_item);
   EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));

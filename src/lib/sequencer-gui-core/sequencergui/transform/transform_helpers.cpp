@@ -28,39 +28,13 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 #include <sup/gui/model/anyvalue_utils.h>
-#include <sup/gui/model/scalar_conversion_utils.h>
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/sequencer/attribute_handler.h>
-#include <sup/sequencer/attribute_utils.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
-
-namespace
-{
-bool IsVaryingAttribute(const std::string &attribute_value)
-{
-  return attribute_value.find_first_of('$') == 0;
-}
-
-/**
- * @brief Returns true if given attribute name and value should appear as domain attributes.
- */
-bool IsSuitableForDomainAttribute(const std::string &attribute_string,
-                                  const std::string &attribute_value)
-{
-  const bool not_empty = !attribute_value.empty();
-  const bool not_isroot_false =
-      !(attribute_string == sequencergui::domainconstants::kIsRootAttribute
-        && attribute_value == "false");
-  return not_empty && not_isroot_false;
-}
-
-}  // namespace
 
 namespace sequencergui
 {
@@ -196,68 +170,6 @@ void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &
     instruction.AddAttribute(attribute_name, attribute_value);
   }
 }
-
-//sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
-//                                                  mvvm::CompoundItem &item)
-//{
-//  // In the absence of other sources of the information we can only use attribute name
-//  // for both, display name and tag name of the new property item.
-//  auto property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
-//  property->SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
-//  property->SetDisplayName(attr.GetName());
-//  return property;
-//}
-
-//template <typename T>
-//void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
-//                                    sup::gui::AnyValueScalarItem &item)
-//{
-//  auto attribute_string = domain.GetAttributeString(attribute_name);
-//  if (IsVaryingAttribute(attribute_string))
-//  {
-//    // will change property type to string
-//    sup::dto::AnyValue str(attribute_string);
-//    sup::gui::SetDataFromScalar(str, item);
-//    return;
-//  }
-
-//  auto type_code = sup::gui::GetScalarTypeCode(item.GetAnyTypeName());
-//  auto any_type = sup::dto::AnyType(sup::gui::GetScalarTypeCode(item.GetAnyTypeName()));
-//  auto result = sup::sequencer::utils::ParseAttributeString(any_type, attribute_string);
-//  if (result.first)
-//  {
-//    sup::gui::SetDataFromScalar(result.second, item);
-//  }
-//}
-
-//template void SetPropertyFromDomainAttribute<variable_t>(const variable_t &domain,
-//                                                         const std::string &attribute_name,
-//                                                         sup::gui::AnyValueScalarItem &item);
-//template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t &domain,
-//                                                            const std::string &attribute_name,
-//                                                            sup::gui::AnyValueScalarItem &item);
-
-//template <typename T>
-//void SetDomainAttribute(const sup::gui::AnyValueScalarItem &item, const std::string &attribute_name,
-//                        T &domain)
-//{
-//  auto anyvalue = sup::gui::GetAnyValueFromScalar(item);
-//  auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
-//  if (!success)
-//  {
-//    throw LogicErrorException("Can't create an attribute string from item property");
-//  }
-//  if (IsSuitableForDomainAttribute(attribute_name, attribute_string))
-//  {
-//    domain.AddAttribute(attribute_name, attribute_string);
-//  }
-//}
-
-//template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueScalarItem &item,
-//                                             const std::string &attribute_name, variable_t &domain);
-//template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueScalarItem &item,
-//                                                const std::string &attribute_name,
-//                                                instruction_t &domain);
 
 void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &item)
 {

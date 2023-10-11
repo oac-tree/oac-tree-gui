@@ -68,7 +68,7 @@ TEST_F(AttributeItemTransformHelperTests, AddPropertyFromDefinition)
   const sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
 
   mvvm::CompoundItem item;
-  auto property = AddPropertyFromDefinitionV2(attr, item);
+  auto property = AddPropertyFromDefinition(attr, item);
   ASSERT_NE(property, nullptr);
 
   // validating that CompoundItem got new property item
@@ -105,7 +105,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttribute)
     AttributeItem item;
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
-    SetPropertyFromDomainAttributeV2(*domain_variable, domainconstants::kNameAttribute, item);
+    SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 
@@ -117,7 +117,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttribute)
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
     EXPECT_NO_THROW(
-        SetPropertyFromDomainAttributeV2(*domain_variable, domainconstants::kNameAttribute, item));
+        SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
 
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
@@ -139,7 +139,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributePlacehol
   // Seting property from the domain containing `$` sign
   instruction->AddAttribute(domainconstants::kTimeoutAttribute, "$par1");
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
-  SetPropertyFromDomainAttributeV2(*instruction, domainconstants::kTimeoutAttribute, item);
+  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, item);
 
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
@@ -162,7 +162,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributeReferenc
   // Seting property from the domain containing `@` sign
   instruction->AddAttribute(domainconstants::kTimeoutAttribute, "@par1");
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "@par1");
-  SetPropertyFromDomainAttributeV2(*instruction, domainconstants::kTimeoutAttribute, item);
+  SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, item);
 
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
@@ -179,7 +179,7 @@ TEST_F(AttributeItemTransformHelperTests, SetDomainAttribute)
   item.SetAnyTypeName(sup::dto::kStringTypeName);
   item.SetData("abc");
 
-  SetDomainAttributeV2(item, domainconstants::kNameAttribute, *domain_variable);
+  SetDomainAttribute(item, domainconstants::kNameAttribute, *domain_variable);
   EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
             std::string("abc"));
 }
