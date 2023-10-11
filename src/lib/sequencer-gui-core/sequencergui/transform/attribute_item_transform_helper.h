@@ -79,6 +79,26 @@ extern template void SetPropertyFromDomainAttributeV2<variable_t>(const variable
 extern template void SetPropertyFromDomainAttributeV2<instruction_t>(
     const instruction_t& domain, const std::string& attribute_name, AttributeItem& item);
 
+/**
+ * @brief Set an attribute for domain variable from AnyValueScalarItem property.
+ *
+ * @tparam Domain instruction or variable.
+ *
+ * @param item The AnyValueScalarItem representing domain attribute.
+ * @param attribute_name The name of the domain attribute to set.
+ * @param variable The domain sequencer variable.
+ */
+
+template <typename T>
+void SetDomainAttributeV2(const AttributeItem& item, const std::string& attribute_name, T& domain);
+
+extern template void SetDomainAttributeV2<variable_t>(const AttributeItem& item,
+                                                      const std::string& attribute_name,
+                                                      variable_t& domain);
+extern template void SetDomainAttributeV2<instruction_t>(const AttributeItem& item,
+                                                         const std::string& attribute_name,
+                                                         instruction_t& domain);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_

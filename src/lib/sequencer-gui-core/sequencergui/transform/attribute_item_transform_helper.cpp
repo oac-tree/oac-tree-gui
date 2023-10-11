@@ -19,6 +19,8 @@
 
 #include "attribute_item_transform_helper.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/attribute_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
@@ -28,6 +30,19 @@
 #include <sup/sequencer/attribute_utils.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
+
+/**
+ * @brief Returns true if given attribute name and value should appear as domain attributes.
+ */
+bool IsSuitableForDomainAttribute(const std::string &attribute_string,
+                                  const std::string &attribute_value)
+{
+  const bool not_empty = !attribute_value.empty();
+  const bool not_isroot_false =
+      !(attribute_string == sequencergui::domainconstants::kIsRootAttribute
+        && attribute_value == "false");
+  return not_empty && not_isroot_false;
+}
 
 namespace sequencergui
 {
@@ -78,5 +93,27 @@ template void SetPropertyFromDomainAttributeV2<variable_t>(const variable_t &dom
 template void SetPropertyFromDomainAttributeV2<instruction_t>(const instruction_t &domain,
                                                               const std::string &attribute_name,
                                                               AttributeItem &item);
+
+template <typename T>
+void SetDomainAttributeV2(const AttributeItem &item, const std::string &attribute_name, T &domain)
+{
+  auto anyvalue = sup::gui::GetAnyValueFromScalar(item.Data());
+  auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
+  if (!success)
+  {
+    throw LogicErrorException("Can't create an attribute string from item property");
+  }
+  if (IsSuitableForDomainAttribute(attribute_name, attribute_string))
+  {
+    domain.AddAttribute(attribute_name, attribute_string);
+  }
+}
+
+template void SetDomainAttributeV2<variable_t>(const AttributeItem &item,
+                                               const std::string &attribute_name,
+                                               variable_t &domain);
+template void SetDomainAttributeV2<instruction_t>(const AttributeItem &item,
+                                                  const std::string &attribute_name,
+                                                  instruction_t &domain);
 
 }  // namespace sequencergui

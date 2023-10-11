@@ -168,3 +168,19 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributeReferenc
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "@par1");
 }
+
+//! Testing SetDomainAttribute method.
+
+TEST_F(AttributeItemTransformHelperTests, SetDomainAttribute)
+{
+  auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+
+  AttributeItem item;
+  item.SetAnyTypeName(sup::dto::kStringTypeName);
+  item.SetData("abc");
+
+  SetDomainAttributeV2(item, domainconstants::kNameAttribute, *domain_variable);
+  EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
+            std::string("abc"));
+}
+
