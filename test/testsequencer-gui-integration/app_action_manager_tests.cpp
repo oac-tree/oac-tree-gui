@@ -45,13 +45,15 @@ TEST_F(AppActionManagerTest, MenuActionContainer)
   QAction action;
   EXPECT_TRUE(container.AddAction(&action));
   EXPECT_EQ(container.GetActionCount(), 1);
+  ASSERT_EQ(menu.actions().size(), 1);
+  ASSERT_EQ(menu.actions().at(0), &action);
 }
 
 TEST_F(AppActionManagerTest, ActionManagerInitialState)
 {
   ActionManager manager;
   EXPECT_EQ(manager.GetContainerCount(), 0);
-  EXPECT_EQ(manager.GetContainer(ActionManager::kViewMenu), nullptr);
+  EXPECT_EQ(manager.GetContainer("abc"), nullptr);
   EXPECT_EQ(manager.GetMenuBar(), nullptr);
 }
 

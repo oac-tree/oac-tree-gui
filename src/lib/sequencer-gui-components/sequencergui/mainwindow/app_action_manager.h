@@ -70,15 +70,15 @@ public:
    * @param name The name of the container.
    * @param menu The menu to serve.
    */
-  explicit MenuActionContainer(const std::string& name, QMenu* menu) : m_menu(menu), m_name(name) {}
+  MenuActionContainer(const std::string& name, QMenu* menu);
 
   std::string GetName() { return m_name; }
 
   QMenu* GetMenu() override { return m_menu; }
 
-  bool AddAction(QAction* action) override { m_actions.push_back(action); return true;}
+  bool AddAction(QAction* action) override;
 
-  size_t GetActionCount() override  { return m_actions.size(); }
+  size_t GetActionCount() override;
 
 private:
   std::string m_name;
@@ -103,13 +103,6 @@ public:
 class ActionManager : public IActionManager
 {
 public:
-  //!< the name of the group corresponding to main menus of the menubar
-
-  static inline const std::string kFileMenu = "&File";
-  static inline const std::string kViewMenu = "&View";
-  static inline const std::string kToolsMenu = "&Tools";
-  static inline const std::string kHelpMenu = "&Help";
-
   /**
    * @brief Returns menubar served by this manager.
    */

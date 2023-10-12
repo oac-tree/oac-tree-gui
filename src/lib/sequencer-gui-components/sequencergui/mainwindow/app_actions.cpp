@@ -45,6 +45,16 @@ bool AppRegisterAction(const std::string &menu_name, QAction *action)
   return GetGlobalActionManager().RegisterAction(menu_name, action);
 }
 
+bool AppRegisterActions(const std::string &menu_name, const QList<QAction *> &actions)
+{
+  bool result = true;
+  for (auto action : actions)
+  {
+    result &= AppRegisterAction(menu_name, action);
+  }
+  return result;
+}
+
 QMenu *AppGetMenu(const std::string &menu_name)
 {
   auto container = GetGlobalActionManager().GetContainer(menu_name);

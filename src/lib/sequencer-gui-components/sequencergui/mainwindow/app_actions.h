@@ -23,6 +23,7 @@
 //! @file
 //! Collection of helper method to register global actions.
 
+#include <QList>
 #include <string>
 
 class QMenuBar;
@@ -31,6 +32,16 @@ class QMenu;
 
 namespace sequencergui
 {
+
+namespace constants
+{
+//!< the name of the groups corresponding to main menus of the menubar
+
+static inline const std::string kFileMenu = "&File";
+static inline const std::string kViewMenu = "&View";
+static inline const std::string kToolsMenu = "&Tools";
+static inline const std::string kHelpMenu = "&Help";
+}  // namespace app
 
 class ActionManager;
 class IActionContainer;
@@ -54,6 +65,11 @@ IActionContainer* AppAddMenu(const std::string& menu_name);
  * @brief Register and add action to the menu.
  */
 bool AppRegisterAction(const std::string& menu_name, QAction* action);
+
+/**
+ * @brief Register and add action to the menu.
+ */
+bool AppRegisterActions(const std::string& menu_name, const QList<QAction*>& actions);
 
 /**
  * @brief Returns top level menu registered in a menubar under this name.

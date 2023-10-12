@@ -28,6 +28,31 @@
 namespace sequencergui
 {
 
+MenuActionContainer::MenuActionContainer(const std::string &name, QMenu *menu)
+    : m_menu(menu), m_name(name)
+{
+  if (!m_menu)
+  {
+    throw LogicErrorException("Menu is not initialised");
+  }
+}
+
+bool MenuActionContainer::AddAction(QAction *action)
+{
+  m_actions.push_back(action);
+  m_menu->addAction(action);
+  return true;
+}
+
+size_t MenuActionContainer::GetActionCount()
+{
+  return m_actions.size();
+}
+
+// ----------------------------------------------------------------------------
+// ActionManager
+// ----------------------------------------------------------------------------
+
 QMenuBar *ActionManager::GetMenuBar()
 {
   return m_menubar;
