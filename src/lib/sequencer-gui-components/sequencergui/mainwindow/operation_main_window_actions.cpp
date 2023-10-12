@@ -60,16 +60,6 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_exit_action->setStatusTip("Exit the application");
   connect(m_exit_action, &QAction::triggered, mainwindow, &QMainWindow::close);
 
-  m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
-  m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
-  m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
-  m_show_left_sidebar->setIcon(styleutils::GetIcon("dock-left"));
-
-  m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
-  m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
-  m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
-  m_show_right_sidebar->setIcon(styleutils::GetIcon("dock-right"));
-
   m_about_action = new QAction("About application", this);
   m_about_action->setStatusTip("About application");
   connect(m_about_action, &QAction::triggered, this, &OperationMainWindowActions::OnAbout);
@@ -87,10 +77,8 @@ void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  auto view_menu = AppAddMenu(constants::kViewMenu)->GetMenu();
-  view_menu->setToolTipsVisible(true);
-  view_menu->addAction(m_show_left_sidebar);
-  view_menu->addAction(m_show_right_sidebar);
+  // will be populated from other widgets
+  AppAddMenu(constants::kViewMenu);
 
   auto help_menu = AppAddMenu(constants::kHelpMenu)->GetMenu();
   help_menu->addAction(m_about_action);

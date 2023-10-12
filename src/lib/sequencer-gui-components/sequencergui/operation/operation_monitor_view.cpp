@@ -36,6 +36,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sequencergui/mainwindow/app_actions.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -80,6 +81,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
   layout->addWidget(m_splitter);
 
   SetupConnections();
+  SetupWidgetActions();
 
   m_actions->SetMessageHandler(CreateMessageBoxHandler());
   m_job_manager->SetMessagePanel(m_realtime_panel->GetMessagePanel());
@@ -218,6 +220,22 @@ void OperationMonitorView::SetupConnections()
   };
   connect(m_realtime_panel, &OperationRealTimePanel::ToggleBreakpointRequest, this,
           on_toggle_breakpoint_request);
+}
+
+void OperationMonitorView::SetupWidgetActions()
+{
+  m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
+  m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
+  m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
+  m_show_left_sidebar->setIcon(styleutils::GetIcon("dock-left"));
+
+  m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
+  m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
+  m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
+  m_show_right_sidebar->setIcon(styleutils::GetIcon("dock-right"));
+
+  AppRegisterAction(constants::kViewMenu, m_show_left_sidebar);
+  AppRegisterAction(constants::kViewMenu, m_show_right_sidebar);
 }
 
 //! Setup widgets to show currently selected job.

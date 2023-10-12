@@ -56,10 +56,6 @@ private:
 
   QAction* m_open_action{nullptr};
   QAction* m_exit_action{nullptr};
-
-  QAction* m_show_left_sidebar{nullptr};
-  QAction* m_show_right_sidebar{nullptr};
-
   QAction* m_about_action{nullptr};
 };
 

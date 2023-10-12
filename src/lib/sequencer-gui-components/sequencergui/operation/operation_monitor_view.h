@@ -76,11 +76,15 @@ private:
   void ReadSettings();
   void WriteSettings();
   void SetupConnections();
+  void SetupWidgetActions();
   void OnJobSelected(sequencergui::JobItem* item);
 
   QWidget* CreateLeftPanel(Mode mode);
   QWidget* CreateCentralPanel();
   QWidget* CreateRightPanel();
+
+  QAction* m_show_left_sidebar{nullptr};
+  QAction* m_show_right_sidebar{nullptr};
 
   OperationJobPanel* m_job_panel{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
