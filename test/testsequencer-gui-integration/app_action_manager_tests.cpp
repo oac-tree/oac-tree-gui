@@ -84,7 +84,7 @@ TEST_F(AppActionManagerTest, ActionManagerAddMenu)
   EXPECT_EQ(container, container2);
   EXPECT_EQ(manager.GetContainerCount(), 1);
 
-  // There is no way to check if menubar got a menu. We can check opnly an action associated with
+  // There is no way to check if menubar got a menu. We can check only an action associated with
   // the menu.
   EXPECT_EQ(menubar.actions().size(), 1);
 
