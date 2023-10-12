@@ -28,6 +28,7 @@
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/mainwindow/app_actions.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -36,7 +37,6 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sequencergui/mainwindow/app_actions.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -64,6 +64,8 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
     , m_workspace_panel(new OperationWorkspacePanel)
+    , m_left_panel(CreateLeftPanel(mode))
+    , m_right_panel(CreateRightPanel())
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
     , m_actions(new OperationActionHandler(
@@ -72,9 +74,9 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
 
-  m_splitter->addWidget(CreateLeftPanel(mode));
+  m_splitter->addWidget(m_left_panel);
   m_splitter->addWidget(CreateCentralPanel());
-  m_splitter->addWidget(CreateRightPanel());
+  m_splitter->addWidget(m_right_panel);
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
                                     << mvvm::utils::UnitSize(30));
 
@@ -228,11 +230,15 @@ void OperationMonitorView::SetupWidgetActions()
   m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
   m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
   m_show_left_sidebar->setIcon(styleutils::GetIcon("dock-left"));
+  connect(m_show_left_sidebar, &QAction::triggered, this,
+          [this](auto) { m_left_panel->setVisible(!m_left_panel->isVisible()); });
 
   m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
   m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
   m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
   m_show_right_sidebar->setIcon(styleutils::GetIcon("dock-right"));
+  connect(m_show_right_sidebar, &QAction::triggered, this,
+          [this](auto) { m_right_panel->setVisible(!m_right_panel->isVisible()); });
 
   AppRegisterAction(constants::kViewMenu, m_show_left_sidebar);
   AppRegisterAction(constants::kViewMenu, m_show_right_sidebar);

@@ -90,6 +90,9 @@ private:
   OperationRealTimePanel* m_realtime_panel{nullptr};
   OperationWorkspacePanel* m_workspace_panel{nullptr};
 
+  QWidget* m_left_panel{nullptr};
+  QWidget* m_right_panel{nullptr};
+
   QSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};
 
