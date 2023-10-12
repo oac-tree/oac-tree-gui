@@ -18,6 +18,8 @@
  *****************************************************************************/
 
 #include "operation_main_window_actions.h"
+#include "app_actions.h"
+#include "app_action_manager.h"
 
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -77,20 +79,20 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  auto file_menu = menubar->addMenu("&File");
-  file_menu->setToolTipsVisible(true);
+  AppRegisterMenuBar(menubar);
+
+  auto file_menu = AppAddMenu(constants::kFileMenu)->GetMenu();
 
   file_menu->addAction(m_open_action);
-
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  auto view_menu = menubar->addMenu("&View");
+  auto view_menu = AppAddMenu(constants::kViewMenu)->GetMenu();
   view_menu->setToolTipsVisible(true);
   view_menu->addAction(m_show_left_sidebar);
   view_menu->addAction(m_show_right_sidebar);
 
-  auto help_menu = menubar->addMenu("&Help");
+  auto help_menu = AppAddMenu(constants::kHelpMenu)->GetMenu();
   help_menu->addAction(m_about_action);
 }
 
