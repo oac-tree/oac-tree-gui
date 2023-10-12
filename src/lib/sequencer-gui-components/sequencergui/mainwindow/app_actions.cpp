@@ -45,4 +45,10 @@ bool AppRegisterAction(const std::string &menu_name, QAction *action)
   return GetGlobalActionManager().RegisterAction(menu_name, action);
 }
 
+QMenu *AppGetMenu(const std::string &menu_name)
+{
+  auto container = GetGlobalActionManager().GetContainer(menu_name);
+  return container ? container->GetMenu() : nullptr;
+}
+
 }  // namespace sequencergui

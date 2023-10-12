@@ -20,6 +20,8 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
+#include "app_action_manager.h"
+#include "app_actions.h"
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/components/project_handler.h>
@@ -58,7 +60,7 @@ bool SequencerMainWindowActions::CloseCurrentProject() const
 
 QMenu *SequencerMainWindowActions::GetToolsMenu()
 {
-  return m_tools_menu;
+  return AppGetMenu(ActionManager::kToolsMenu);
 }
 
 //! Create main actions.
@@ -79,8 +81,9 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  auto file_menu = menubar->addMenu("&File");
-  file_menu->setToolTipsVisible(true);
+  AppRegisterMenuBar(menubar);
+
+  auto file_menu = AppAddMenu(ActionManager::kFileMenu)->GetMenu();
 
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
@@ -98,10 +101,11 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  m_tools_menu = menubar->addMenu("&Tools");
-  m_tools_menu->setToolTipsVisible(true);
+  auto tools_menu = AppAddMenu(ActionManager::kToolsMenu)->GetMenu();
+  tools_menu = menubar->addMenu("&Tools");
+  tools_menu->setToolTipsVisible(true);
 
-  auto help_menu = menubar->addMenu("&Help");
+  auto help_menu = AppAddMenu(ActionManager::kHelpMenu)->GetMenu();
   help_menu->addAction(m_about_action);
 }
 

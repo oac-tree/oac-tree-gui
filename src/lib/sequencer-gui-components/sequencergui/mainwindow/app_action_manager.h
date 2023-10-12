@@ -103,8 +103,12 @@ public:
 class ActionManager : public IActionManager
 {
 public:
-  //!< the name of the group corresponding to MenuBar/View menu
+  //!< the name of the group corresponding to main menus of the menubar
+
+  static inline const std::string kFileMenu = "&File";
   static inline const std::string kViewMenu = "&View";
+  static inline const std::string kToolsMenu = "&Tools";
+  static inline const std::string kHelpMenu = "&Help";
 
   /**
    * @brief Returns menubar served by this manager.

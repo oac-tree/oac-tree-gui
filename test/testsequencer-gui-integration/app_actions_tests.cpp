@@ -58,6 +58,7 @@ TEST_F(AppActionsTest, ActionManagerRegisterAction)
   AppRegisterMenuBar(&menubar);
 
   auto container = AppAddMenu("File");
+  EXPECT_EQ(container->GetMenu(), AppGetMenu("File"));
 
   // Registering user action.
   QAction action;

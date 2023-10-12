@@ -27,6 +27,7 @@
 
 class QMenuBar;
 class QAction;
+class QMenu;
 
 namespace sequencergui
 {
@@ -53,6 +54,11 @@ IActionContainer* AppAddMenu(const std::string& menu_name);
  * @brief Register and add action to the menu.
  */
 bool AppRegisterAction(const std::string& menu_name, QAction* action);
+
+/**
+ * @brief Returns top level menu registered in a menubar under this name.
+ */
+QMenu* AppGetMenu(const std::string& menu_name);
 
 }  // namespace sequencergui
 
