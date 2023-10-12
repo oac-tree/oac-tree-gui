@@ -52,8 +52,6 @@ public:
 
   bool CloseCurrentProject() const;
 
-  QMenu* GetToolsMenu();
-
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);

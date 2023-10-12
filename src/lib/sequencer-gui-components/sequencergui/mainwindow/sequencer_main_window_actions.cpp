@@ -58,11 +58,6 @@ bool SequencerMainWindowActions::CloseCurrentProject() const
   return m_project_handler->CloseCurrentProject();
 }
 
-QMenu *SequencerMainWindowActions::GetToolsMenu()
-{
-  return AppGetMenu(ActionManager::kToolsMenu);
-}
-
 //! Create main actions.
 
 void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
@@ -83,7 +78,7 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
   AppRegisterMenuBar(menubar);
 
-  auto file_menu = AppAddMenu(ActionManager::kFileMenu)->GetMenu();
+  auto file_menu = AppAddMenu(constants::kFileMenu)->GetMenu();
 
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
@@ -101,11 +96,10 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  auto tools_menu = AppAddMenu(ActionManager::kToolsMenu)->GetMenu();
-  tools_menu = menubar->addMenu("&Tools");
-  tools_menu->setToolTipsVisible(true);
+  // tools menu will be populated from other widgets
+  AppAddMenu(constants::kToolsMenu);
 
-  auto help_menu = AppAddMenu(ActionManager::kHelpMenu)->GetMenu();
+  auto help_menu = AppAddMenu(constants::kHelpMenu)->GetMenu();
   help_menu->addAction(m_about_action);
 }
 

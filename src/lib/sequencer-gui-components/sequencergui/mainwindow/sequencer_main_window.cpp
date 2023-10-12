@@ -35,7 +35,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QCloseEvent>
-#include <QMenu>
 #include <QSettings>
 
 namespace
@@ -124,8 +123,6 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->SetCurrentIndex(0);
 
   setCentralWidget(m_tab_widget);
-
-  m_action_manager->GetToolsMenu()->addActions(m_composer_view->actions());
 }
 
 void SequencerMainWindow::ReadSettings()

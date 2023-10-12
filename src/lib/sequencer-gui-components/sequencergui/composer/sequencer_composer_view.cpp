@@ -22,6 +22,7 @@
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_widget_panel.h>
 #include <sequencergui/composer/sequencer_composer_actions.h>
+#include <sequencergui/mainwindow/app_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -68,9 +69,8 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 
   SetupConnections();
 
-  // Add actions from SequencerComposerActions to the list of as actions of this widget.
-  // They will be used by MainWindow for QMenuBar
-  addActions(m_composer_actions->GetMenuActions());
+  // Actions for main window's tools menu
+  AppRegisterActions(constants::kToolsMenu, m_composer_actions->GetMenuActions());
 
   ReadSettings();
 }
