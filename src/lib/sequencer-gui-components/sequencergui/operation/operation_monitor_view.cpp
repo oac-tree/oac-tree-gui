@@ -54,6 +54,8 @@ namespace
 {
 const QString kGroupName("OperationMonitorView");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+const QString kLeftPanelIsVisibleSettingName = kGroupName + "/" + "left_panel";
+const QString kRightPanelIsVisibleSettingName = kGroupName + "/" + "right_panel";
 }  // namespace
 
 namespace sequencergui
@@ -142,6 +144,11 @@ void OperationMonitorView::showEvent(QShowEvent *event)
   }
 }
 
+void OperationMonitorView::closeEvent(QCloseEvent *event)
+{
+  WriteSettings();
+}
+
 void OperationMonitorView::ReadSettings()
 {
   const QSettings settings;
@@ -150,12 +157,20 @@ void OperationMonitorView::ReadSettings()
   {
     m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
   }
+
+  // see comments to the method SetupWidgetActions)_
+  m_left_panel_is_visible = settings.value(kLeftPanelIsVisibleSettingName, true).toBool();
+  m_right_panel_is_visible = settings.value(kRightPanelIsVisibleSettingName, true).toBool();
+  m_left_panel->setVisible(m_left_panel_is_visible);
+  m_right_panel->setVisible(m_right_panel_is_visible);
 }
 
 void OperationMonitorView::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
+  settings.setValue(kLeftPanelIsVisibleSettingName, m_left_panel_is_visible);
+  settings.setValue(kRightPanelIsVisibleSettingName, m_right_panel_is_visible);
 }
 
 void OperationMonitorView::SetupConnections()
@@ -226,19 +241,33 @@ void OperationMonitorView::SetupConnections()
 
 void OperationMonitorView::SetupWidgetActions()
 {
+  // We setup actions to collapse/expand left and right panels. Here we are relying
+  // on two additional flags for that: m_show_left_sidebar and m_show_right_sidebar.
+  // We could do instead widget->setVisible(!widget->isVisible()), but this will not allow
+  // us to save visible/invisible state on application destruction: the reason is that widgets
+  // during shutdown phase are always invisible.
+
   m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
   m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
   m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
   m_show_left_sidebar->setIcon(styleutils::GetIcon("dock-left"));
   connect(m_show_left_sidebar, &QAction::triggered, this,
-          [this](auto) { m_left_panel->setVisible(!m_left_panel->isVisible()); });
+          [this](auto)
+          {
+            m_left_panel_is_visible = !m_left_panel_is_visible;
+            m_left_panel->setVisible(m_left_panel_is_visible);
+          });
 
   m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
   m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
   m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
   m_show_right_sidebar->setIcon(styleutils::GetIcon("dock-right"));
   connect(m_show_right_sidebar, &QAction::triggered, this,
-          [this](auto) { m_right_panel->setVisible(!m_right_panel->isVisible()); });
+          [this](auto)
+          {
+            m_right_panel_is_visible = !m_right_panel_is_visible;
+            m_right_panel->setVisible(m_right_panel_is_visible);
+          });
 
   AppRegisterAction(constants::kViewMenu, m_show_left_sidebar);
   AppRegisterAction(constants::kViewMenu, m_show_right_sidebar);

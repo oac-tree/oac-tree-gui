@@ -71,6 +71,7 @@ public:
 
 protected:
   void showEvent(QShowEvent* event) override;
+  void closeEvent(QCloseEvent* event) override;
 
 private:
   void ReadSettings();
@@ -98,6 +99,9 @@ private:
 
   JobManager* m_job_manager{nullptr};
   OperationActionHandler* m_actions{nullptr};
+
+  bool m_left_panel_is_visible{true};
+  bool m_right_panel_is_visible{true};
 };
 
 }  // namespace sequencergui
