@@ -1,23 +1,31 @@
 <RCC>
     <qresource prefix="/">
         <file>icons</file>
+        <file>icons/about_logo.awk</file>
+        <file>icons/arrow-down-thin-circle-outline.svg</file>
         <file>icons/arrow-right-circle-outline.svg</file>
         <file>icons/arrow-right-drop-circle-outline.svg</file>
         <file>icons/arrow-top-left.svg</file>
+        <file>icons/arrow-up-thin-circle-outline.svg</file>
         <file>icons/beaker-remove-outline.svg</file>
+        <file>icons/bell-alert-outline.svg</file>
         <file>icons/camera-metering-center.svg</file>
         <file>icons/card-bulleted-outline.svg</file>
         <file>icons/chevron-down.svg</file>
         <file>icons/chevron-right-circle-outline-light.svg</file>
         <file>icons/chevron-right-circle-outline.svg</file>
         <file>icons/chevron-right.svg</file>
+        <file>icons/chevron-triple-right.svg</file>
         <file>icons/cog-outline-light.svg</file>
         <file>icons/cog-outline.svg</file>
         <file>icons/cog.svg</file>
+        <file>icons/dock-left.svg</file>
+        <file>icons/dock-right.svg</file>
         <file>icons/dots-horizontal.svg</file>
         <file>icons/dots-triangle.svg</file>
         <file>icons/dots-vertical.svg</file>
         <file>icons/eye-settings-outline.svg</file>
+        <file>icons/file-export-outline.svg</file>
         <file>icons/file-plus-outline.svg</file>
         <file>icons/file-remove-outline.svg</file>
         <file>icons/file-search-outline-light.svg</file>
@@ -25,28 +33,21 @@
         <file>icons/focus-field.svg</file>
         <file>icons/graph-outline-light.svg</file>
         <file>icons/hand-back-right-outline.svg</file>
+        <file>icons/map-marker-outline.svg</file>
+        <file>icons/menu-open.svg</file>
+        <file>icons/menu.svg</file>
+        <file>icons/open-panel-left.svg</file>
+        <file>icons/open-panel-right.svg</file>
         <file>icons/pause-circle-outline.svg</file>
         <file>icons/play-pause.svg</file>
         <file>icons/playlist-plus.svg</file>
         <file>icons/plus-circle-multiple-outline.svg</file>
         <file>icons/plus-circle-outline.svg</file>
+        <file>icons/refresh.svg</file>
         <file>icons/speedometer-slow.svg</file>
         <file>icons/speedometer.svg</file>
+        <file>icons/splash-bg1.png</file>
         <file>icons/stop-circle-outline.svg</file>
         <file>icons/view-dashboard-edit-outline-light.svg</file>
-        <file>icons/chevron-triple-right.svg</file>
-        <file>icons/map-marker-outline.svg</file>
-        <file>icons/bell-alert-outline.svg</file>
-        <file>icons/refresh.svg</file>
-        <file>icons/about_logo.awk</file>
-        <file>icons/file-export-outline.svg</file>
-        <file>icons/menu-open.svg</file>
-        <file>icons/splash-bg1.png</file>
-        <file>icons/arrow-up-thin-circle-outline.svg</file>
-        <file>icons/arrow-down-thin-circle-outline.svg</file>
-        <file>icons/open-panel-left.svg</file>
-        <file>icons/open-panel-right.svg</file>
-        <file>icons/dock-left.svg</file>
-        <file>icons/dock-right.svg</file>
     </qresource>
 </RCC>

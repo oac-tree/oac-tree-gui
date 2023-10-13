@@ -90,7 +90,7 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   addWidget(m_delay_button);
 
   m_settings_button->setText("Other");
-  m_settings_button->setIcon(styleutils::GetIcon("eye-settings-outline"));
+  m_settings_button->setIcon(styleutils::GetIcon("menu"));
   m_settings_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_settings_button->setToolTip("Other settings");
   m_settings_button->setMenu(m_settings_menu.get());
