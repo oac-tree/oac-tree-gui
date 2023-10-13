@@ -24,6 +24,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
@@ -64,6 +65,8 @@ OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->header()->setStretchLastSection(true);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
   m_tool_bar->setIconSize(styleutils::ToolBarIconSize());
 

@@ -29,12 +29,12 @@
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
-
-#include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/widgets/custom_header_view.h>
 
 #include <QSettings>
 #include <QTreeView>
@@ -69,6 +69,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
   SetupConnections();
   addActions(m_editor_actions->GetActions());

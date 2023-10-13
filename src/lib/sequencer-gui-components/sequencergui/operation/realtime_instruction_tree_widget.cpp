@@ -27,6 +27,7 @@
 #include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -71,6 +72,8 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
 
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
   auto on_click = [this](auto)
   {

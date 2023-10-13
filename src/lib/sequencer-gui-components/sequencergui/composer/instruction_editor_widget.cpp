@@ -34,11 +34,10 @@
 #include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
-
-#include <sup/gui/widgets/tree_helper.h>
 
 #include <QSettings>
 #include <QSplitter>

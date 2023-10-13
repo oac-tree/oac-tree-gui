@@ -30,7 +30,6 @@
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
 
-#include <QDebug>
 #include <QPointF>
 #include <sstream>
 
