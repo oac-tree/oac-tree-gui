@@ -48,19 +48,9 @@ TEST_F(AppActionsTest, ActionManagerAddMenu)
 
   // We can get access to the menu via container. Menu was created, it has no actions yet.
   EXPECT_TRUE(container->GetMenu());
-  EXPECT_EQ(container->GetActionCount(), 0);
-}
-
-TEST_F(AppActionsTest, ActionManagerRegisterAction)
-{
-  QMenuBar menubar;
-
-  AppRegisterMenuBar(&menubar);
-
-  auto container = AppAddMenu("File");
   EXPECT_EQ(container->GetMenu(), AppGetMenu("File"));
+  EXPECT_EQ(container->GetActionCount(), 0);
 
-  // Registering user action.
   QAction action;
   EXPECT_TRUE(AppRegisterAction("File", &action));
 }
