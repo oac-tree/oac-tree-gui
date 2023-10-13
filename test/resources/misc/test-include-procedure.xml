@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Testing external include with own workspace -->
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+  name="Procedure for testing local IncludeNode"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+  <Sequence isRoot="True">
+    <Message text="Main sequence" />
+    <Output fromVar="in1" description="Variable in1:" />
+    <Copy inputVar="in1" outputVar="out1" />
+    <Output fromVar="out1" description="Variable out1:" />
+    <IncludeProcedure file="include/simple_copy.xml" path="SecondarySequence" />
+  </Sequence>
+  <Workspace>
+    <Local name="in1" type='{"type":"uint64"}' value='1' />
+    <Local name="out1" type='{"type":"uint64"}' value='0' />
+  </Workspace>
+</Procedure>

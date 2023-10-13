@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+    name="Definitions of single wait instructions for testing"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+    xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Sequence name="SecondarySequence">
+        <Message text="Secondary sequence" />
+        <Output fromVar="in2" description="Variable in2:" />
+        <Copy inputVar="in2" outputVar="out2" />
+        <Output fromVar="out2" description="Variable out2:" />
+    </Sequence>
+    <Workspace>
+        <Local name="in2" type='{"type":"uint64"}' value='42' />
+        <Local name="out2" type='{"type":"uint64"}' value='0' />
+    </Workspace>
+</Procedure>
