@@ -57,7 +57,7 @@ void SequencerObserver::VariableUpdated(const std::string &name, const sup::dto:
   (void)connected;
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
-  ostr << "VariableUpdatedImpl(): " << name << ", " << value_string;
+  ostr << "Update in variable [" << name << "], value [" << value_string << "]";
   m_procedure_reporter->OnLogEvent(CreateLogEvent(Severity::kDebug, ostr.str()));
 }
 
@@ -65,7 +65,7 @@ bool SequencerObserver::PutValue(const sup::dto::AnyValue &value, const std::str
 {
   auto value_string = sup::gui::ValuesToJSONString(value);
   std::ostringstream ostr;
-  ostr << "PutValueImpl(): " << description << ", " << value_string;
+  ostr << description << " " << value_string;
   m_procedure_reporter->OnLogEvent(CreateLogEvent(Severity::kInfo, ostr.str()));
   return true;
 }

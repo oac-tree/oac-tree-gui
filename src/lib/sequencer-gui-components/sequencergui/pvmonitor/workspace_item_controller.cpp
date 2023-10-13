@@ -30,6 +30,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/signals/model_listener.h>
 
+#include <iostream>
 #include <stdexcept>
 
 namespace sequencergui
@@ -67,6 +68,10 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
     {
       // Not sure what to do if variable is disconnected
     }
+  }
+  else
+  {
+    std::cout << "Can't find variable [" << event.variable_name << "]" << std::endl;
   }
 
   m_block_update_to_domain[event.variable_name] = false;
