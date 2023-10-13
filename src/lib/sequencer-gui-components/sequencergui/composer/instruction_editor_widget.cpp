@@ -38,6 +38,8 @@
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
 
+#include <sup/gui/widgets/tree_helper.h>
+
 #include <QSettings>
 #include <QSplitter>
 #include <QTreeView>
@@ -169,7 +171,7 @@ void InstructionEditorWidget::SetupTree()
   m_custom_header->setStretchLastSection(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          CreateOnCustomMenuCallback(*m_tree_view));
+          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
   m_tree_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
