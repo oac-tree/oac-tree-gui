@@ -128,6 +128,8 @@ void WorkspaceEditorWidget::WriteSettings()
 
 void WorkspaceEditorWidget::AdjustColumnWidth()
 {
+  m_tree_view->expandAll();
+
   if (m_custom_header->HasFavoriteState())
   {
     m_custom_header->RestoreFavoriteState();

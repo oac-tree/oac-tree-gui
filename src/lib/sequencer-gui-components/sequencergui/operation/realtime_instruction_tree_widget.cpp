@@ -142,6 +142,8 @@ void RealTimeInstructionTreeWidget::WriteSettings()
 
 void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
 {
+  m_tree_view->expandAll();
+
   if (m_custom_header->HasFavoriteState())
   {
     m_custom_header->RestoreFavoriteState();
@@ -150,7 +152,6 @@ void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
   {
     m_tree_view->resizeColumnToContents(0);
   }
-  m_tree_view->expandAll();
   static const bool adjust_columns_once = FixColumnAppearance(m_tree_view);
 }
 

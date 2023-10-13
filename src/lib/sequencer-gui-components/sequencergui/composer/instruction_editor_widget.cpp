@@ -184,6 +184,8 @@ void InstructionEditorWidget::SetupTree()
 
 void InstructionEditorWidget::AdjustTreeAppearance()
 {
+  m_tree_view->expandAll();
+
   if (m_custom_header->HasFavoriteState())
   {
     m_custom_header->RestoreFavoriteState();
