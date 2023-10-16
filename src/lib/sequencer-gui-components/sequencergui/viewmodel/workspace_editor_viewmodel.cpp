@@ -19,8 +19,8 @@
 
 #include "workspace_editor_viewmodel.h"
 
-#include "standard_children_strategies.h"
-#include "standard_row_strategies.h"
+#include "custom_children_strategies.h"
+#include "custom_row_strategies.h"
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
 

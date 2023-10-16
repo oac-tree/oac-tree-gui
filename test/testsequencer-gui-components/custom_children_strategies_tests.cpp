@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/standard_children_strategies.h"
+#include "sequencergui/viewmodel/custom_children_strategies.h"
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -33,14 +33,14 @@ using namespace sequencergui;
 
 //! Tests for strategies from standard_children_strategies.h
 
-class StandardChildrenStrategiesTest : public ::testing::Test
+class CustomChildrenStrategiesTest : public ::testing::Test
 {
 public:
 };
 
 //! Testing VariableChildrenStrategy.
 
-TEST_F(StandardChildrenStrategiesTest, VariableChildrenStrategy)
+TEST_F(CustomChildrenStrategiesTest, VariableChildrenStrategy)
 {
   {  // workspace with single variable
     WorkspaceItem workspace;
@@ -72,7 +72,7 @@ TEST_F(StandardChildrenStrategiesTest, VariableChildrenStrategy)
 
 //! Testing VariableTableChildrenStrategy.
 
-TEST_F(StandardChildrenStrategiesTest, VariableTableChildrenStrategy)
+TEST_F(CustomChildrenStrategiesTest, VariableTableChildrenStrategy)
 {
   {  // workspace with single variable
     WorkspaceItem workspace;

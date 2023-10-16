@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/standard_row_strategies.h"
+#include "sequencergui/viewmodel/custom_row_strategies.h"
 
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
@@ -32,13 +32,13 @@
 
 using namespace sequencergui;
 
-//! Tests for strategies from standard_row_strategies.h.
+//! Tests for strategies from custom_row_strategies.h.
 
-class StandardRowStrategiesTest : public ::testing::Test
+class CustomRowStrategiesTest : public ::testing::Test
 {
 };
 
-TEST_F(StandardRowStrategiesTest, VariableRowStrategy)
+TEST_F(CustomRowStrategiesTest, VariableRowStrategy)
 {
   {  // single local variable
     LocalVariableItem item;
@@ -54,7 +54,7 @@ TEST_F(StandardRowStrategiesTest, VariableRowStrategy)
   }
 }
 
-TEST_F(StandardRowStrategiesTest, VariableTableRowStrategyLocalVariable)
+TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
 {
   {  // single local variable with a scalar
     LocalVariableItem item;

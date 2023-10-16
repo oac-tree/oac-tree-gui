@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "standard_row_strategies.h"
+#include "custom_row_strategies.h"
 
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>

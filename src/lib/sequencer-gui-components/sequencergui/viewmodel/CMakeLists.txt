@@ -1,6 +1,10 @@
 # Collection of view models.
 
 target_sources(${library_name} PRIVATE
+  custom_children_strategies.cpp
+  custom_children_strategies.h
+  custom_row_strategies.cpp
+  custom_row_strategies.h
   drag_and_drop_helper.cpp
   drag_and_drop_helper.h
   instruction_editor_viewmodel.cpp
@@ -13,10 +17,6 @@ target_sources(${library_name} PRIVATE
   job_log_viewmodel.h
   procedure_viewmodel.cpp
   procedure_viewmodel.h
-  standard_children_strategies.cpp
-  standard_children_strategies.h
-  standard_row_strategies.cpp
-  standard_row_strategies.h
   workspace_editor_viewmodel.cpp
   workspace_editor_viewmodel.h
   workspace_operation_viewmodel.cpp
