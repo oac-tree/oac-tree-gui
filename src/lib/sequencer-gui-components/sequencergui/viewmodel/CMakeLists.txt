@@ -15,6 +15,8 @@ target_sources(${library_name} PRIVATE
   procedure_viewmodel.h
   standard_children_strategies.cpp
   standard_children_strategies.h
+  standard_row_strategies.cpp
+  standard_row_strategies.h
   workspace_editor_viewmodel.cpp
   workspace_editor_viewmodel.h
   workspace_operation_viewmodel.cpp

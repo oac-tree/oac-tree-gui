@@ -41,7 +41,6 @@ using namespace sequencergui;
 
 class WorkspaceEditorViewModelTest : public ::testing::Test
 {
-public:
 };
 
 //! Single local variable in a workspace.
