@@ -19,40 +19,17 @@
 
 #include "workspace_editor_viewmodel.h"
 
-#include <sequencergui/model/sequencer_item_helper.h>
+#include "standard_children_strategies.h"
+
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/interfaces/children_strategy_interface.h>
 #include <mvvm/interfaces/row_strategy_interface.h>
-#include <mvvm/utils/container_utils.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
-
-#include <algorithm>
-
-namespace
-{
-
-/**
- * @brief Returns copy of container, without elements in the exclude list.
- */
-
-template <typename T, typename F>
-T FilterElements(const T &container, const F &to_exclude)
-{
-  T result;
-
-  auto not_in_exclude_list = [&to_exclude](const auto &x)
-  { return !mvvm::utils::Contains(to_exclude, x); };
-
-  std::copy_if(container.begin(), container.end(), std::back_inserter(result), not_in_exclude_list);
-
-  return result;
-}
-
-}  // namespace
 
 namespace sequencergui
 {
@@ -97,30 +74,6 @@ public:
   }
 };
 
-/**
- * @brief The VariableChildrenStrategy class reports which items should be in the tree representing
- * WorkspaceItem.
- *
- * @details It allows all children items to appear in the tree, except PropertyItem representing the
- * name and IsAvailable status.
- */
-class VariableChildrenStrategy : public mvvm::ChildrenStrategyInterface
-{
-public:
-  std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override
-  {
-    if (!item)
-    {
-      return {};
-    }
-
-    std::vector<mvvm::SessionItem *> to_exclude = {GetNameItem(*item), GetIsAvailableItem(*item)};
-
-    auto result = FilterElements(item->GetAllItems(), to_exclude);
-
-    return result;
-  }
-};
 
 WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::SessionModelInterface *model,
                                                    QObject *parent)

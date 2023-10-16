@@ -1,0 +1,70 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2023 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "sequencergui/viewmodel/standard_children_strategies.h"
+
+#include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/transform_helpers.h>
+
+#include <sup/dto/anyvalue.h>
+
+#include <gtest/gtest.h>
+
+using namespace sequencergui;
+
+//! Tests for strategies from standard_children_strategies.h
+
+class StandardChildrenStrategiesTest : public ::testing::Test
+{
+public:
+};
+
+//! Testing VariableChildrenStrategy.
+
+TEST_F(StandardChildrenStrategiesTest, VariableChildrenStrategy)
+{
+  {  // single local variable
+    LocalVariableItem item;
+
+    const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+    SetAnyValue(anyvalue, item);
+    item.SetName("abc");
+
+    VariableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(&item);
+
+    // row of children has two items looking at dynamicType property and scalar value
+    ASSERT_EQ(children.size(), 2);
+    EXPECT_EQ(children.at(0)->GetDisplayName(),
+              std::string(domainconstants::kDynamicTypeAttribute));
+    EXPECT_EQ(children.at(1)->GetDisplayName(), std::string("value"));
+  }
+
+  {  // workspace with single variable
+    WorkspaceItem workspace;
+    auto variable0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+    auto variable1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+
+    VariableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(&workspace);
+    EXPECT_EQ(children, std::vector<mvvm::SessionItem*>({variable0, variable1}));
+  }
+}
