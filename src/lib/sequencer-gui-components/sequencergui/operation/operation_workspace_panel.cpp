@@ -28,6 +28,7 @@
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/tree_helper.h>
 
+#include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
@@ -38,20 +39,34 @@
 namespace
 {
 const QString kGroupName("OperationWorkspacePanel");
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+
+QString GetHeaderStateSettingName(int mode)
+{
+  static const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+  return QString("%1%2").arg(kHeaderStateSettingName, mode);
+}
+
 }  // namespace
 
 namespace sequencergui
 {
 
-OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
+OperationWorkspacePanel::OperationWorkspacePanel(Mode mode, QWidget *parent)
     : QWidget(parent)
+    , m_mode(mode)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
-    , m_component_provider(mvvm::CreateProvider<WorkspaceOperationViewModel>(m_tree_view))
 {
-  setWindowTitle("Workspace");
+  if (mode == Mode::kWorkspaceTree)
+  {
+    setWindowTitle("Variable Tree");
+    m_component_provider = mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view);
+  }
+  else
+  {
+    setWindowTitle("Variable Table");
+    m_component_provider = mvvm::CreateProvider<WorkspaceOperationViewModel>(m_tree_view);
+  }
 
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tree_view);
@@ -100,9 +115,10 @@ void OperationWorkspacePanel::ReadSettings()
 {
   const QSettings settings;
 
-  if (settings.contains(kHeaderStateSettingName))
+  if (settings.contains(GetHeaderStateSettingName(static_cast<int>(m_mode))))
   {
-    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
+    m_custom_header->SetAsFavoriteState(
+        settings.value(GetHeaderStateSettingName(static_cast<int>(m_mode))).toByteArray());
   }
 }
 
@@ -111,7 +127,8 @@ void OperationWorkspacePanel::WriteSettings()
   QSettings settings;
   if (m_custom_header->HasFavoriteState())
   {
-    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
+    settings.setValue(GetHeaderStateSettingName(static_cast<int>(m_mode)),
+                      m_custom_header->GetFavoriteState());
   }
 }
 

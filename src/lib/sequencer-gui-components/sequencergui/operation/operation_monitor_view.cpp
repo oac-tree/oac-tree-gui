@@ -65,7 +65,10 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
-    , m_workspace_panel(new OperationWorkspacePanel)
+    , m_workspace_tree_panel(
+          new OperationWorkspacePanel(OperationWorkspacePanel::Mode::kWorkspaceTree))
+    , m_workspace_table_panel(
+          new OperationWorkspacePanel(OperationWorkspacePanel::Mode::kWorkspaceTable))
     , m_left_panel(CreateLeftPanel(mode))
     , m_right_panel(CreateRightPanel())
     , m_splitter(new QSplitter)
@@ -278,7 +281,8 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
   m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-  m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_tree_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_table_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
@@ -309,7 +313,9 @@ QWidget *OperationMonitorView::CreateCentralPanel()
 QWidget *OperationMonitorView::CreateRightPanel()
 {
   auto result = new ItemStackWidget;
-  result->AddWidget(m_workspace_panel);
+  result->AddWidget(m_workspace_tree_panel);
+  result->AddWidget(m_workspace_table_panel);
+  result->SetCurrentIndex(0);
   return result;
 }
 

@@ -54,7 +54,17 @@ class OperationWorkspacePanel : public QWidget
   Q_OBJECT
 
 public:
-  explicit OperationWorkspacePanel(QWidget* parent = nullptr);
+
+  /**
+   * @brief The Mode enum defines the way workspace is shown
+   */
+  enum class Mode
+  {
+    kWorkspaceTree, //!< full tree with workspace variables
+    kWorkspaceTable //!< experimental table with workspace variables
+  };
+
+  explicit OperationWorkspacePanel(Mode mode, QWidget* parent = nullptr);
   ~OperationWorkspacePanel() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
@@ -65,6 +75,7 @@ private:
   void AdjustTreeAppearance();
   void SetProcedureIntern(ProcedureItem* procedure);
 
+  Mode m_mode;
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;

@@ -89,7 +89,8 @@ private:
 
   OperationJobPanel* m_job_panel{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
-  OperationWorkspacePanel* m_workspace_panel{nullptr};
+  OperationWorkspacePanel* m_workspace_tree_panel{nullptr};
+  OperationWorkspacePanel* m_workspace_table_panel{nullptr};
 
   QWidget* m_left_panel{nullptr};
   QWidget* m_right_panel{nullptr};
