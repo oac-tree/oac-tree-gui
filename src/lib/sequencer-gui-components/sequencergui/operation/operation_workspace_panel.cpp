@@ -22,17 +22,15 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/tree_helper.h>
 
-#include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QSettings>
-#include <QToolBar>
-#include <QToolButton>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -50,8 +48,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
-    , m_component_provider(mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view))
-    , m_tool_bar(new QToolBar)
+    , m_component_provider(mvvm::CreateProvider<WorkspaceOperationViewModel>(m_tree_view))
 {
   setWindowTitle("Workspace");
 
@@ -68,19 +65,6 @@ OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
-  m_tool_bar->setIconSize(styleutils::ToolBarIconSize());
-
-  auto toggle_panel_button = new QToolButton;
-  toggle_panel_button->setText("Workspace");
-  toggle_panel_button->setIcon(styleutils::GetIcon("menu-open"));
-  toggle_panel_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  toggle_panel_button->setToolTip("Show/hide Workspace panel");
-
-  auto on_toggle = [this]() { setVisible(!isVisible()); };
-  connect(toggle_panel_button, &QToolButton::clicked, this, on_toggle);
-
-  m_tool_bar->addWidget(toggle_panel_button);
-
   ReadSettings();
 }
 
@@ -96,11 +80,6 @@ void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure_item)
   {
     AdjustTreeAppearance();
   }
-}
-
-QToolBar *OperationWorkspacePanel::GetToolBar() const
-{
-  return m_tool_bar;
 }
 
 void OperationWorkspacePanel::ReadSettings()

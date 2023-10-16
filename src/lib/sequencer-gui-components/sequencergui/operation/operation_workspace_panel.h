@@ -41,7 +41,12 @@ class SequencerModel;
 class ProcedureItem;
 class InstructionItem;
 
-//! Right panel on SequencerMonitorView.
+/**
+ * @brief The OperationWorkspacePanel class is a right panel on OperationMonitorView representing
+ * workspace variables.
+ *
+ * @details Contains a panel with possibility to switch between full tree, and table-like view.
+ */
 
 class OperationWorkspacePanel : public QWidget
 {
@@ -53,8 +58,6 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  QToolBar* GetToolBar() const;
-
 private:
   void ReadSettings();
   void WriteSettings();
@@ -63,7 +66,6 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  QToolBar* m_tool_bar{nullptr};
 };
 
 }  // namespace sequencergui
