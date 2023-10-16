@@ -38,7 +38,7 @@ class StandardRowStrategiesTest : public ::testing::Test
 {
 };
 
-TEST_F(StandardRowStrategiesTest, LocalVariable)
+TEST_F(StandardRowStrategiesTest, VariableRowStrategy)
 {
   {  // single local variable
     LocalVariableItem item;
@@ -46,9 +46,27 @@ TEST_F(StandardRowStrategiesTest, LocalVariable)
 
     VariableRowStrategy strategy;
     auto view_items = strategy.ConstructRow(&item);
-    ASSERT_EQ(view_items.size(), 2);
 
+    // expectind two elements in a row looking at DisplayName and Name
+    ASSERT_EQ(view_items.size(), 2);
     EXPECT_EQ(view_items.at(0)->data(Qt::DisplayRole).toString(), QString("Local"));
     EXPECT_EQ(view_items.at(1)->data(Qt::DisplayRole).toString(), QString("abc"));
+  }
+}
+
+TEST_F(StandardRowStrategiesTest, VariableTableRowStrategyLocalVariable)
+{
+  {  // single local variable
+    LocalVariableItem item;
+    const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+    SetAnyValue(anyvalue, item);
+    item.SetName("abc");
+
+    VariableTableRowStrategy strategy;
+    auto view_items = strategy.ConstructRow(&item);
+    ASSERT_EQ(view_items.size(), 3);
+    EXPECT_EQ(view_items.at(0)->data(Qt::DisplayRole).toString(), QString("abc"));
+    EXPECT_EQ(view_items.at(1)->data(Qt::DisplayRole).toInt(), 42);
+    EXPECT_EQ(view_items.at(2)->data(Qt::DisplayRole).toString(), QString("Local"));
   }
 }

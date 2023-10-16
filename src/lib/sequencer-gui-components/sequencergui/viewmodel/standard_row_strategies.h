@@ -43,6 +43,21 @@ public:
   std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override;
 };
 
+/**
+ * @brief The VariableTableRowStrategy generates the row of 5 elements representing a variable.
+ *
+ * @details For VariableItem itself it will generate a row with [display_name, editable_name].
+ * For everything beneath it it will return usual [property_name, value] pair.
+ */
+
+class VariableTableRowStrategy : public mvvm::RowStrategyInterface
+{
+public:
+  QStringList GetHorizontalHeaderLabels() const override;
+
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override;
+};
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_STANDARD_ROW_STRATEGIES_H

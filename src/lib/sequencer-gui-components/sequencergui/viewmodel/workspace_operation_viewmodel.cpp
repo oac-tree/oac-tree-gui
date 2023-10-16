@@ -19,6 +19,9 @@
 
 #include "workspace_operation_viewmodel.h"
 
+#include "standard_children_strategies.h"
+#include "standard_row_strategies.h"
+
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/standard_row_strategies.h>
@@ -31,7 +34,7 @@ WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::SessionModelInter
     : ViewModel(parent)
 {
   SetController(
-      mvvm::factory::CreateController<mvvm::AllChildrenStrategy, mvvm::LabelDataRowStrategy>(
+      mvvm::factory::CreateController<VariableTableChildrenStrategy, VariableTableRowStrategy>(
           model, this));
 }
 
