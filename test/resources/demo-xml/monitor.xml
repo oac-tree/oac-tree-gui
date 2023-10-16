@@ -8,7 +8,7 @@
     <Sequence>
       <Wait timeout="1.2"/>
       <Sequence name="TestInRunningState">
-        <Equals lhs="test_is_running" rhs="one"/>
+        <Equals leftVar="test_is_running" rightVar="one"/>
       </Sequence>
 <!--      <Output from="test_is_running" description="test_is_running" />-->
       <ForceSuccess>
@@ -16,21 +16,21 @@
           <Inverter>
             <Sequence name="ConditionallySetSystemInReadyState">
               <Sequence name="AllReady">
-                <Equals lhs="dev1_status" rhs="one"/>
-                <Equals lhs="dev2_status" rhs="one"/>
+                <Equals leftVar="dev1_status" rightVar="one"/>
+                <Equals leftVar="dev2_status" rightVar="one"/>
               </Sequence>
-              <Copy name="Set status Ready" input="one" output="devices_ready"/>
+              <Copy name="Set status Ready" inputVar="one" outputVar="devices_ready"/>
               <Message text="----------------------"/>
               <Message text="We are up and running"/>
               <!-- <Output from="devices_ready" description="devices_ready" /> -->
             </Sequence>
           </Inverter>
-          <Copy name="Set status to Not Ready" input="zero" output="devices_ready"/>
+          <Copy name="Set status to Not Ready" inputVar="zero" outputVar="devices_ready"/>
           <Message text="---------------------------"/>
           <Message text="Oh, no, it's broken again"/>
         </Sequence>
       </ForceSuccess>
-      <Output from="devices_ready" description="devices_ready" />
+      <Output fromVar="devices_ready" description="devices_ready" />
     </Sequence>
   </Repeat>
 

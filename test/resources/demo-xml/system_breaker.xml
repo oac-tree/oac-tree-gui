@@ -8,10 +8,10 @@
     <Sequence>
       <Wait timeout="1.2"/>
       <Message text="Better switch it off ..."/>
-      <Copy name="Set device broken" input="zero" output="dev1_status"/>
+      <Copy name="Set device broken" inputVar="zero" outputVar="dev1_status"/>
       <Wait timeout="2"/>
       <Message text="or may be leave it on?"/>
-      <Copy name="Set device ready" input="one" output="dev1_status"/>
+      <Copy name="Set device ready" inputVar="one" outputVar="dev1_status"/>
     </Sequence>
   </Repeat>
 
