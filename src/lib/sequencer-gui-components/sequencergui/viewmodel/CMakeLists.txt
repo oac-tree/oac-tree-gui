@@ -15,4 +15,7 @@ target_sources(${library_name} PRIVATE
   procedure_viewmodel.h
   workspace_editor_viewmodel.cpp
   workspace_editor_viewmodel.h
+  workspace_operation_viewmodel.cpp
+  workspace_operation_viewmodel.h
   )
+

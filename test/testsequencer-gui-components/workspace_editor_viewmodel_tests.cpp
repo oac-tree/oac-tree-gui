@@ -37,7 +37,7 @@
 
 using namespace sequencergui;
 
-//! Tests for items from instructionitems.h
+//! Tests for WorkspaceEditorViewModel class.
 
 class WorkspaceEditorViewModelTest : public ::testing::Test
 {
