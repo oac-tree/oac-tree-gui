@@ -23,6 +23,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
 
@@ -41,6 +42,16 @@ public:
 
 TEST_F(StandardChildrenStrategiesTest, VariableChildrenStrategy)
 {
+  {  // workspace with single variable
+    WorkspaceItem workspace;
+    auto variable0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+    auto variable1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+
+    VariableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(&workspace);
+    EXPECT_EQ(children, std::vector<mvvm::SessionItem*>({variable0, variable1}));
+  }
+
   {  // single local variable
     LocalVariableItem item;
 
@@ -57,14 +68,48 @@ TEST_F(StandardChildrenStrategiesTest, VariableChildrenStrategy)
               std::string(domainconstants::kDynamicTypeAttribute));
     EXPECT_EQ(children.at(1)->GetDisplayName(), std::string("value"));
   }
+}
 
+//! Testing VariableTableChildrenStrategy.
+
+TEST_F(StandardChildrenStrategiesTest, VariableTableChildrenStrategy)
+{
   {  // workspace with single variable
     WorkspaceItem workspace;
     auto variable0 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
     auto variable1 = workspace.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
 
-    VariableChildrenStrategy strategy;
+    VariableTableChildrenStrategy strategy;
     auto children = strategy.GetChildren(&workspace);
     EXPECT_EQ(children, std::vector<mvvm::SessionItem*>({variable0, variable1}));
+  }
+
+  {  // single local variable
+    LocalVariableItem item;
+
+    const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+    SetAnyValue(anyvalue, item);
+    item.SetName("abc");
+
+    VariableTableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(&item);
+
+    // row of children is empty
+    ASSERT_TRUE(children.empty());
+  }
+
+  {  // single local variable with structure
+    LocalVariableItem item;
+
+    const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+    SetAnyValue(anyvalue, item);
+    item.SetName("abc");
+
+    VariableTableChildrenStrategy strategy;
+    auto children = strategy.GetChildren(&item);
+
+    // row of should contain our struct item
+    ASSERT_EQ(children.size(), 1);
+    EXPECT_EQ(children.at(0)->GetType(), std::string(sup::gui::AnyValueStructItem::Type));
   }
 }

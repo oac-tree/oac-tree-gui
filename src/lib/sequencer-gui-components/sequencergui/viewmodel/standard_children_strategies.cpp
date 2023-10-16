@@ -20,6 +20,9 @@
 #include "standard_children_strategies.h"
 
 #include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/workspace_item.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/utils/container_utils.h>
@@ -51,6 +54,10 @@ T FilterElements(const T &container, const F &to_exclude)
 namespace sequencergui
 {
 
+//! ---------------------------------------------------------------------------
+//! VariableChildrenStrategy
+//! ---------------------------------------------------------------------------
+
 std::vector<mvvm::SessionItem *> VariableChildrenStrategy::GetChildren(
     const mvvm::SessionItem *item) const
 {
@@ -64,6 +71,33 @@ std::vector<mvvm::SessionItem *> VariableChildrenStrategy::GetChildren(
 
   auto result = FilterElements(item->GetAllItems(), to_exclude);
 
+  return result;
+}
+
+//! ---------------------------------------------------------------------------
+//! VariableTableChildrenStrategy
+//! ---------------------------------------------------------------------------
+
+std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
+    const mvvm::SessionItem *item) const
+{
+  static const std::vector<std::string> allowed_types = {
+      WorkspaceItem::Type, sup::gui::AnyValueStructItem::Type, sup::gui::AnyValueArrayItem::Type};
+
+  // for items from list we return all their children
+  if (mvvm::utils::Contains(allowed_types, item->GetType()))
+  {
+    return item->GetAllItems();
+  }
+
+  // if children are from the list, return them
+
+  std::vector<mvvm::SessionItem *> result;
+  auto children = item->GetAllItems();
+  auto is_correct_type = [](auto child)
+  { return mvvm::utils::Contains(allowed_types, child->GetType()); };
+  std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
+               is_correct_type);
   return result;
 }
 
