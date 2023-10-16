@@ -19,6 +19,7 @@
 
 #include "operation_workspace_panel.h"
 
+#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
@@ -66,6 +67,13 @@ OperationWorkspacePanel::OperationWorkspacePanel(QWidget *parent)
           sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
   ReadSettings();
+
+  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
+
+  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 OperationWorkspacePanel::~OperationWorkspacePanel()
@@ -73,12 +81,18 @@ OperationWorkspacePanel::~OperationWorkspacePanel()
   WriteSettings();
 }
 
-void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure_item)
+void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure)
 {
-  m_component_provider->SetItem(procedure_item ? procedure_item->GetWorkspace() : nullptr);
-  if (procedure_item)
+  if (procedure == m_procedure)
   {
-    AdjustTreeAppearance();
+    return;
+  }
+
+  m_procedure = procedure;
+
+  if (m_procedure && isVisible())
+  {
+    SetProcedureIntern(m_procedure);
   }
 }
 
@@ -108,6 +122,16 @@ void OperationWorkspacePanel::AdjustTreeAppearance()
     m_custom_header->RestoreFavoriteState();
   }
   m_tree_view->expandAll();
+}
+
+void OperationWorkspacePanel::SetProcedureIntern(ProcedureItem *procedure)
+{
+  m_component_provider->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
+
+  if (procedure)
+  {
+    AdjustTreeAppearance();
+  }
 }
 
 }  // namespace sequencergui

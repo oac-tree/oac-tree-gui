@@ -40,6 +40,7 @@ namespace sequencergui
 class SequencerModel;
 class ProcedureItem;
 class InstructionItem;
+class VisibilityAgentBase;
 
 /**
  * @brief The OperationWorkspacePanel class is a right panel on OperationMonitorView representing
@@ -62,10 +63,13 @@ private:
   void ReadSettings();
   void WriteSettings();
   void AdjustTreeAppearance();
+  void SetProcedureIntern(ProcedureItem* procedure);
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+  ProcedureItem* m_procedure{nullptr};
+  VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui
