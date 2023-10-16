@@ -76,6 +76,26 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::Var
   // column #2: type of the variable (CA, Local, PVA-C, PVA-S
   result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item)));
 
+  // column #3: Channel
+  if (auto channel_property = sequencergui::GetChannelItem(item); channel_property)
+  {
+    result.emplace_back(mvvm::CreateDataViewItem(channel_property));
+  }
+  else
+  {
+    result.emplace_back(mvvm::CreateLabelViewItem(&item));
+  }
+
+  //  if (auto is_available_property = sequencergui::GetIsAvailableItem(item);
+  //  is_available_property)
+  //  {
+  //    result.emplace_back(mvvm::CreateDataViewItem(is_available_property));
+  //  }
+  //  else
+  //  {
+  //    result.emplace_back(mvvm::CreateLabelViewItem(&item));
+  //  }
+
   return result;
 }
 
@@ -138,7 +158,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
 
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static QStringList result = {"Name", "Value", "Type"};
+  static QStringList result = {"Name", "Value", "Type", "Channel"};
   return result;
 }
 
@@ -162,6 +182,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
     // and empty placeholders for the rest
+    result.emplace_back(mvvm::CreateLabelViewItem(item));
     result.emplace_back(mvvm::CreateLabelViewItem(item));
   }
 

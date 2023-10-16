@@ -139,4 +139,9 @@ mvvm::SessionItem *GetIsAvailableItem(const mvvm::SessionItem &parent)
   return GetPropertyItem(parent, itemconstants::kIsAvailable);
 }
 
+mvvm::SessionItem *GetChannelItem(const mvvm::SessionItem &parent)
+{
+  return GetPropertyItem(parent, domainconstants::kChannelAttribute);
+}
+
 }  // namespace sequencergui

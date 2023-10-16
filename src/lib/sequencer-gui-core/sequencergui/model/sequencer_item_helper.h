@@ -74,6 +74,12 @@ mvvm::SessionItem* GetBreakpointItem(const mvvm::SessionItem& parent);
  */
 mvvm::SessionItem* GetIsAvailableItem(const mvvm::SessionItem& parent);
 
+/**
+ * @brief Returns an item representing channel property, or nullptr if the given parent doesn't
+ * have such property registered.
+ */
+mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
