@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_STANDARD_CHILDREN_STRATEGIES_H
-#define SEQUENCERGUI_VIEWMODEL_STANDARD_CHILDREN_STRATEGIES_H
+#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_CHILDREN_STRATEGIES_H
+#define SEQUENCERGUI_VIEWMODEL_CUSTOM_CHILDREN_STRATEGIES_H
 
 //! @file
 //! Various strategies for instruction and workspace viewmodels.
@@ -57,4 +57,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_STANDARD_CHILDREN_STRATEGIES_H
+#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_CHILDREN_STRATEGIES_H

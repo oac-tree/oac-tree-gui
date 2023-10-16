@@ -3,6 +3,8 @@
 target_sources(${library_name} PRIVATE
   custom_children_strategies.cpp
   custom_children_strategies.h
+  custom_presentation_items.cpp
+  custom_presentation_items.h
   custom_row_strategies.cpp
   custom_row_strategies.h
   drag_and_drop_helper.cpp

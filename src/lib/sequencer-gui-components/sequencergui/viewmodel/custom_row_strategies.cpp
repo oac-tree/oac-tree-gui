@@ -19,6 +19,8 @@
 
 #include "custom_row_strategies.h"
 
+#include "custom_presentation_items.h"
+
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
@@ -31,6 +33,14 @@
 
 namespace
 {
+
+//! Creates view item representing is_available status.
+
+std::unique_ptr<mvvm::ViewItem> CreateAvailableViewItem(mvvm::SessionItem *item)
+{
+  auto presentation = std::make_unique<sequencergui::AvailablePresentationItem>(item);
+  return std::make_unique<mvvm::ViewItem>(std::move(presentation));
+}
 
 /**
  * @brief Returns string representing type in 3rd column of variable table.
@@ -86,15 +96,15 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::Var
     result.emplace_back(mvvm::CreateLabelViewItem(&item));
   }
 
-  //  if (auto is_available_property = sequencergui::GetIsAvailableItem(item);
-  //  is_available_property)
-  //  {
-  //    result.emplace_back(mvvm::CreateDataViewItem(is_available_property));
-  //  }
-  //  else
-  //  {
-  //    result.emplace_back(mvvm::CreateLabelViewItem(&item));
-  //  }
+  // column 4: is_available property
+  if (auto is_available_property = sequencergui::GetIsAvailableItem(item); is_available_property)
+  {
+    result.emplace_back(CreateAvailableViewItem(is_available_property));
+  }
+  else
+  {
+    result.emplace_back(mvvm::CreateLabelViewItem(&item));
+  }
 
   return result;
 }
@@ -158,7 +168,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
 
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static QStringList result = {"Name", "Value", "Type", "Channel"};
+  static QStringList result = {"Name", "Value", "Type", "Channel", " "};
   return result;
 }
 
@@ -182,6 +192,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
     // and empty placeholders for the rest
+    result.emplace_back(mvvm::CreateLabelViewItem(item));
     result.emplace_back(mvvm::CreateLabelViewItem(item));
     result.emplace_back(mvvm::CreateLabelViewItem(item));
   }
