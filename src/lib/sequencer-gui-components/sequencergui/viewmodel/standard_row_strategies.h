@@ -46,8 +46,7 @@ public:
 /**
  * @brief The VariableTableRowStrategy generates the row of 5 elements representing a variable.
  *
- * @details For VariableItem itself it will generate a row with [display_name, editable_name].
- * For everything beneath it it will return usual [property_name, value] pair.
+ * @details The row will containe "| Name | Value | Type | Channel | Connected |".
  */
 
 class VariableTableRowStrategy : public mvvm::RowStrategyInterface

@@ -56,7 +56,7 @@ TEST_F(StandardRowStrategiesTest, VariableRowStrategy)
 
 TEST_F(StandardRowStrategiesTest, VariableTableRowStrategyLocalVariable)
 {
-  {  // single local variable
+  {  // single local variable with a scalar
     LocalVariableItem item;
     const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);

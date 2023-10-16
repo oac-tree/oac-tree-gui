@@ -20,11 +20,33 @@
 #include "standard_row_strategies.h"
 
 #include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
+
+#include <map>
+
+namespace
+{
+
+/**
+ * @brief Returns string representing type in 3rd column of variable table.
+ */
+std::string GetTypeString(const mvvm::SessionItem &item)
+{
+  static const std::map<std::string, std::string> kNameMap = {
+      {sequencergui::PvAccessClientVariableItem::Type, std::string("PVA-C")},
+      {sequencergui::PvAccessServerVariableItem::Type, std::string("PVA-S")},
+      {sequencergui::ChannelAccessVariableItem::Type, std::string("CA")},
+  };
+
+  auto iter = kNameMap.find(item.GetType());
+  return iter == kNameMap.end() ? item.GetType() : iter->second;
+}
+}  // namespace
 
 namespace sequencergui
 {
@@ -83,6 +105,17 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
     return result;
   }
 
+  // For local variable with scalar on board we build row of 5 elements:
+  // | var0       | 42      | Local   |             |     |
+
+  // For local variable with struct on board we build row of 5 elements:
+  // | var0       |         | Local   |             |     |
+  // |   struct   |         |         |             |     |
+  // |      value | 42      |         |             |     |
+
+  // For channel access variable with scalar on board
+  // | var0       | 42      | CA      | PV_CHANNEL0 | [x] |
+
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
     result.emplace_back(mvvm::CreateLabelViewItem(variable, variable->GetName()));
@@ -98,14 +131,14 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
         result.emplace_back(mvvm::CreateLabelViewItem(variable, std::string("---")));
       }
     }
-    result.emplace_back(mvvm::CreateLabelViewItem(variable, variable->GetType()));
+    result.emplace_back(mvvm::CreateLabelViewItem(variable, GetTypeString(*variable)));
   }
   else
   {
     // It's AnyValueStructItem or AnyValueArrayItem
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
-    result.emplace_back(mvvm::CreateLabelViewItem(item)); // placeholder for third column
+    result.emplace_back(mvvm::CreateLabelViewItem(item));  // placeholder for third column
   }
 
   return result;
