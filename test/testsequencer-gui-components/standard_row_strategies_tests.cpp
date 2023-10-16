@@ -69,4 +69,34 @@ TEST_F(StandardRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     EXPECT_EQ(view_items.at(1)->data(Qt::DisplayRole).toInt(), 42);
     EXPECT_EQ(view_items.at(2)->data(Qt::DisplayRole).toString(), QString("Local"));
   }
+
+  {  // single local variable with a struct
+    LocalVariableItem item;
+    const sup::dto::AnyValue anyvalue = {{{"signed", {sup::dto::SignedInteger32Type, 42}}}};
+    SetAnyValue(anyvalue, item);
+    item.SetName("abc");
+
+    // row corresponding to the variable itself
+    VariableTableRowStrategy strategy;
+    auto view_items = strategy.ConstructRow(&item);
+    ASSERT_EQ(view_items.size(), 3);
+    EXPECT_EQ(view_items.at(0)->data(Qt::DisplayRole).toString(), QString("abc"));
+    // value column should contain a placeholder
+    EXPECT_EQ(view_items.at(1)->data(Qt::DisplayRole).toString(), QString("---"));
+    EXPECT_EQ(view_items.at(2)->data(Qt::DisplayRole).toString(), QString("Local"));
+
+    // row corresponding to the structure beneath
+    auto struct_view_items = strategy.ConstructRow(item.GetAnyValueItem());
+    ASSERT_EQ(struct_view_items.size(), 3);
+    EXPECT_EQ(struct_view_items.at(0)->data(Qt::DisplayRole).toString(), QString("struct"));
+    EXPECT_EQ(struct_view_items.at(1)->data(Qt::DisplayRole).toString(), QString(""));
+    EXPECT_EQ(struct_view_items.at(2)->data(Qt::DisplayRole).toString(), QString(""));
+
+    // row corresponding to the scalar beneath
+    auto scalar_view_items = strategy.ConstructRow(item.GetAnyValueItem()->GetChildren().at(0));
+    ASSERT_EQ(scalar_view_items.size(), 3);
+    EXPECT_EQ(scalar_view_items.at(0)->data(Qt::DisplayRole).toString(), QString("signed"));
+    EXPECT_EQ(scalar_view_items.at(1)->data(Qt::DisplayRole).toInt(), 42);
+    EXPECT_EQ(scalar_view_items.at(2)->data(Qt::DisplayRole).toString(), QString(""));
+  }
 }
