@@ -46,6 +46,39 @@ std::string GetTypeString(const mvvm::SessionItem &item)
   auto iter = kNameMap.find(item.GetType());
   return iter == kNameMap.end() ? item.GetType() : iter->second;
 }
+
+/**
+ * @brief Returns row of the table representing variable.
+ */
+
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::VariableItem &item)
+{
+  const std::string kEmptyValuePlaceholder("---");
+
+  std::vector<std::unique_ptr<mvvm::ViewItem>> result;
+
+  // column #0: it's name
+  result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetName()));
+
+  // column #1: scalar value, or placeholder
+  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
+  {
+    if (anyvalue_item->IsScalar())
+    {
+      result.emplace_back(mvvm::CreateDataViewItem(anyvalue_item));
+    }
+    else
+    {
+      result.emplace_back(mvvm::CreateLabelViewItem(&item, kEmptyValuePlaceholder));
+    }
+  }
+
+  // column #2: type of the variable (CA, Local, PVA-C, PVA-S
+  result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item)));
+
+  return result;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -71,6 +104,9 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
     return result;
   }
 
+  // If it's Variable itself, generate [display name, editable name]
+  // If it's variabl's property, generate standart [property display name, property value name]
+
   result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
@@ -89,6 +125,17 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
 //! VariableTableRowStrategy
 //! ---------------------------------------------------------------------------
 
+// For local variable with scalar on board we build row of 5 elements:
+// | var0       | 42      | Local   |             |     |
+
+// For local variable with struct on board we build row of 5 elements:
+// | var0       |         | Local   |             |     |
+// |   struct   |         |         |             |     |
+// |      value | 42      |         |             |     |
+
+// For channel access variable with scalar on board
+// | var0       | 42      | CA      | PV_CHANNEL0 | [x] |
+
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 {
   static QStringList result = {"Name", "Value", "Type"};
@@ -105,40 +152,17 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
     return result;
   }
 
-  // For local variable with scalar on board we build row of 5 elements:
-  // | var0       | 42      | Local   |             |     |
-
-  // For local variable with struct on board we build row of 5 elements:
-  // | var0       |         | Local   |             |     |
-  // |   struct   |         |         |             |     |
-  // |      value | 42      |         |             |     |
-
-  // For channel access variable with scalar on board
-  // | var0       | 42      | CA      | PV_CHANNEL0 | [x] |
-
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
-    result.emplace_back(mvvm::CreateLabelViewItem(variable, variable->GetName()));
-
-    if (auto anyvalue_item = variable->GetAnyValueItem(); anyvalue_item)
-    {
-      if (anyvalue_item->IsScalar())
-      {
-        result.emplace_back(mvvm::CreateDataViewItem(anyvalue_item));
-      }
-      else
-      {
-        result.emplace_back(mvvm::CreateLabelViewItem(variable, std::string("---")));
-      }
-    }
-    result.emplace_back(mvvm::CreateLabelViewItem(variable, GetTypeString(*variable)));
+    return CreateVariableRow(*variable);
   }
   else
   {
     // It's AnyValueStructItem or AnyValueArrayItem
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
-    result.emplace_back(mvvm::CreateLabelViewItem(item));  // placeholder for third column
+    // and empty placeholders for the rest
+    result.emplace_back(mvvm::CreateLabelViewItem(item));
   }
 
   return result;
