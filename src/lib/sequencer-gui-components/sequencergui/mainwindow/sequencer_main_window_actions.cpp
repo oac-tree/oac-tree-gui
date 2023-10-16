@@ -96,6 +96,9 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
+  // will be populated from other widgets
+  AppAddMenu(constants::kViewMenu);
+
   // tools menu will be populated from other widgets
   AppAddMenu(constants::kToolsMenu);
 
