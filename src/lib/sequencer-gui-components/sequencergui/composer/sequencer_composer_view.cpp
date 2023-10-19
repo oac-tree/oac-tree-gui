@@ -22,11 +22,11 @@
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_widget_panel.h>
 #include <sequencergui/composer/sequencer_composer_actions.h>
-#include <sequencergui/mainwindow/app_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sup/gui/widgets/app_actions.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -70,7 +70,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   SetupConnections();
 
   // Actions for main window's tools menu
-  AppRegisterActions(constants::kToolsMenu, m_composer_actions->GetMenuActions());
+  sup::gui::AppRegisterActions(sup::gui::constants::kToolsMenu, m_composer_actions->GetMenuActions());
 
   ReadSettings();
 }

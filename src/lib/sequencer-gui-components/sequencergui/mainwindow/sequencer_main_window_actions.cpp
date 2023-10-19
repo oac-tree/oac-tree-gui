@@ -20,12 +20,12 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
-#include "app_action_manager.h"
-#include "app_actions.h"
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/components/project_handler.h>
 #include <sup/gui/components/project_handler_utils.h>
+#include <sup/gui/widgets/app_action_manager.h>
+#include <sup/gui/widgets/app_actions.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -76,9 +76,9 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  AppRegisterMenuBar(menubar);
+  sup::gui::AppRegisterMenuBar(menubar);
 
-  auto file_menu = AppAddMenu(constants::kFileMenu)->GetMenu();
+  auto file_menu = sup::gui::AppAddMenu(sup::gui::constants::kFileMenu)->GetMenu();
 
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
@@ -97,12 +97,12 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addAction(m_exit_action);
 
   // will be populated from other widgets
-  AppAddMenu(constants::kViewMenu);
+  sup::gui::AppAddMenu(sup::gui::constants::kViewMenu);
 
   // tools menu will be populated from other widgets
-  AppAddMenu(constants::kToolsMenu);
+  sup::gui::AppAddMenu(sup::gui::constants::kToolsMenu);
 
-  auto help_menu = AppAddMenu(constants::kHelpMenu)->GetMenu();
+  auto help_menu = sup::gui::AppAddMenu(sup::gui::constants::kHelpMenu)->GetMenu();
   help_menu->addAction(m_about_action);
 }
 

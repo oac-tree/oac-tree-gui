@@ -28,7 +28,6 @@
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
-#include <sequencergui/mainwindow/app_actions.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
@@ -37,6 +36,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/app_actions.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -272,8 +272,8 @@ void OperationMonitorView::SetupWidgetActions()
             m_right_panel->setVisible(m_right_panel_is_visible);
           });
 
-  AppRegisterAction(constants::kViewMenu, m_show_left_sidebar);
-  AppRegisterAction(constants::kViewMenu, m_show_right_sidebar);
+  sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_left_sidebar);
+  sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_right_sidebar);
 }
 
 //! Setup widgets to show currently selected job.

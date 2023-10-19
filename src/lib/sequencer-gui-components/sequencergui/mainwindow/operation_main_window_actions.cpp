@@ -18,12 +18,12 @@
  *****************************************************************************/
 
 #include "operation_main_window_actions.h"
-#include "app_actions.h"
-#include "app_action_manager.h"
 
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/app_action_manager.h>
+#include <sup/gui/widgets/app_actions.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -69,18 +69,18 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  AppRegisterMenuBar(menubar);
+  sup::gui::AppRegisterMenuBar(menubar);
 
-  auto file_menu = AppAddMenu(constants::kFileMenu)->GetMenu();
+  auto file_menu = sup::gui::AppAddMenu(sup::gui::constants::kFileMenu)->GetMenu();
 
   file_menu->addAction(m_open_action);
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
   // will be populated from other widgets
-  AppAddMenu(constants::kViewMenu);
+  sup::gui::AppAddMenu(sup::gui::constants::kViewMenu);
 
-  auto help_menu = AppAddMenu(constants::kHelpMenu)->GetMenu();
+  auto help_menu = sup::gui::AppAddMenu(sup::gui::constants::kHelpMenu)->GetMenu();
   help_menu->addAction(m_about_action);
 }
 
