@@ -35,6 +35,30 @@ namespace
 {
 
 /**
+ * @brief Creates view item representing AnyValue in a column.
+ */
+std::unique_ptr<mvvm::ViewItem> CreateAnyValueViewItem(sequencergui::VariableItem &item)
+{
+  const std::string kSeeBelowPlaceholder("---");
+  auto anyvalue_item = item.GetAnyValueItem();
+
+  // if AnyValueItem is absent create empty placeholder
+  if (!anyvalue_item)
+  {
+    return mvvm::CreateLabelViewItem(&item);
+  }
+
+  // if it is a scalar, create ViewItem looking at scalar's value
+  if (anyvalue_item->IsScalar())
+  {
+    return mvvm::CreateDataViewItem(anyvalue_item);
+  }
+
+  // if it is a struct or array, create "see below" placeholder
+  return mvvm::CreateLabelViewItem(&item, kSeeBelowPlaceholder);
+}
+
+/**
  * @brief Returns string representing type in 3rd column of variable table.
  */
 std::string GetTypeString(const mvvm::SessionItem &item)
@@ -55,25 +79,13 @@ std::string GetTypeString(const mvvm::SessionItem &item)
 
 std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::VariableItem &item)
 {
-  const std::string kEmptyValuePlaceholder("---");
-
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
-  // column #0: it's name
+  // column #0: it's a name
   result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetName()));
 
   // column #1: scalar value, or placeholder
-  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
-  {
-    if (anyvalue_item->IsScalar())
-    {
-      result.emplace_back(mvvm::CreateDataViewItem(anyvalue_item));
-    }
-    else
-    {
-      result.emplace_back(mvvm::CreateLabelViewItem(&item, kEmptyValuePlaceholder));
-    }
-  }
+  result.emplace_back(CreateAnyValueViewItem(item));
 
   // column #2: type of the variable (CA, Local, PVA-C, PVA-S
   result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item)));
@@ -161,15 +173,13 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
   {
     return CreateVariableRow(*variable);
   }
-  else
-  {
-    // It's AnyValueStructItem or AnyValueArrayItem
-    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
-    result.emplace_back(mvvm::CreateDataViewItem(item));
-    // and empty placeholders for the rest
-    result.emplace_back(mvvm::CreateLabelViewItem(item));
-    result.emplace_back(mvvm::CreateLabelViewItem(item));
-  }
+
+  // It's AnyValueStructItem or AnyValueArrayItem and their branches
+  result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+  result.emplace_back(mvvm::CreateDataViewItem(item));
+  // and empty placeholders for the rest
+  result.emplace_back(mvvm::CreateLabelViewItem(item));
+  result.emplace_back(mvvm::CreateLabelViewItem(item));
 
   return result;
 }

@@ -90,12 +90,14 @@ std::vector<mvvm::SessionItem *> VariableTableChildrenStrategy::GetChildren(
     return item->GetAllItems();
   }
 
-  // if children are from the list, return them
+  // items not from the list are variables, let's allow them to show struct and arrays beneath
+  static const std::vector<std::string> allowed_variable_children_types = {
+      sup::gui::AnyValueStructItem::Type, sup::gui::AnyValueArrayItem::Type};
 
   std::vector<mvvm::SessionItem *> result;
   auto children = item->GetAllItems();
   auto is_correct_type = [](auto child)
-  { return mvvm::utils::Contains(allowed_types, child->GetType()); };
+  { return mvvm::utils::Contains(allowed_variable_children_types, child->GetType()); };
   std::copy_if(std::begin(children), std::end(children), std::back_inserter(result),
                is_correct_type);
   return result;
