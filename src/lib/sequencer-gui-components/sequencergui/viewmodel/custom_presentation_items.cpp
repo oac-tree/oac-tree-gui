@@ -32,12 +32,12 @@ const QColor kDisonnectedColor("#b9b9b9");
 namespace sequencergui
 {
 
-AvailablePresentationItem::AvailablePresentationItem(mvvm::SessionItem *item)
+ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item)
     : mvvm::DataPresentationItem(item, mvvm::DataRole::kDisplay)
 {
 }
 
-QVariant AvailablePresentationItem::Data(int qt_role) const
+QVariant ChannelPresentationItem::Data(int qt_role) const
 {
   if (qt_role == Qt::DecorationRole)
   {

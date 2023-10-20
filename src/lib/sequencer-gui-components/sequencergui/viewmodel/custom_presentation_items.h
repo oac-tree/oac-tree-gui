@@ -25,12 +25,21 @@
 namespace sequencergui
 {
 
-//! Presentation for IsAvailable variable status in the form of colored box.
+/**
+ * @brief The ChannelPresentationItem class is used to show IsAvailable status of InstructionItem
+ * together with channel name.
+ */
 
-class MVVM_VIEWMODEL_EXPORT AvailablePresentationItem : public mvvm::DataPresentationItem
+class MVVM_VIEWMODEL_EXPORT ChannelPresentationItem : public mvvm::DataPresentationItem
 {
 public:
-  explicit AvailablePresentationItem(mvvm::SessionItem* item);
+
+  /**
+   * @brief Main constructor.
+   *
+   * @param item The item representing IsAvailable property of the instruction item.
+   */
+  explicit ChannelPresentationItem(mvvm::SessionItem* item);
 
   QVariant Data(int qt_role) const override;
 };

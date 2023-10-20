@@ -38,7 +38,7 @@ namespace
 
 std::unique_ptr<mvvm::ViewItem> CreateAvailableViewItem(mvvm::SessionItem *item)
 {
-  auto presentation = std::make_unique<sequencergui::AvailablePresentationItem>(item);
+  auto presentation = std::make_unique<sequencergui::ChannelPresentationItem>(item);
   return std::make_unique<mvvm::ViewItem>(std::move(presentation));
 }
 
