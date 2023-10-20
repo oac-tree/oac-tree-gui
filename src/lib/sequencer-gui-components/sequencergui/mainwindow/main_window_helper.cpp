@@ -65,4 +65,21 @@ bool ShouldStopRunningJobs()
   return msgBox.clickedButton() == yes_button;
 }
 
+bool ShouldResetSettingsAndRestart()
+{
+  const QString question_text =
+      "All persistent application settings (i.e. window sizes, position of splitters, etc) "
+      " will be reset to their default values.";
+
+  QMessageBox msgBox;
+  msgBox.setText(question_text);
+  msgBox.setInformativeText("Do you want to reset settings and restart application?\n");
+
+  auto yes_button = msgBox.addButton("Yes, please restart", QMessageBox::YesRole);
+  msgBox.addButton("Cancel", QMessageBox::NoRole);
+
+  msgBox.exec();
+  return msgBox.clickedButton() == yes_button;
+}
+
 }  // namespace sequencergui

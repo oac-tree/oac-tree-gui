@@ -25,6 +25,13 @@
 namespace sequencergui
 {
 
+enum AppStatus
+{
+  NormalExit,
+  Restart,
+  CleanSettingsAndRestart
+};
+
 enum class BehaviorTreeStyle
 {
   kTopToBottom,

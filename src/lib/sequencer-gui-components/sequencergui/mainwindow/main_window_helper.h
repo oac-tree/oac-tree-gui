@@ -101,6 +101,12 @@ int RunApplication(int argc, char** argv)
  */
 bool ShouldStopRunningJobs();
 
+/**
+ * @brief Opens message box with the question if we should reset application settings and restart
+ * @return
+ */
+bool ShouldResetSettingsAndRestart();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

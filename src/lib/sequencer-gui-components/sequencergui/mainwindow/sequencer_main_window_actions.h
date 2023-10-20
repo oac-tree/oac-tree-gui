@@ -56,12 +56,19 @@ private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);
   void OnAbout();
+  void OnSummonSettingsDialogSettings();
+  void OnResetSettings();
 
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
+
+  QAction* m_summon_settings_dialog_action{nullptr};
+  QAction* m_reset_settings_action{nullptr};
+
   QMenu* m_recent_project_menu{nullptr};
 
   sup::gui::ProjectHandler* m_project_handler{nullptr};
+  bool m_reset_settings_request{false};
 };
 
 }  // namespace sequencergui

@@ -20,6 +20,7 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
+#include "main_window_helper.h"
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/components/project_handler.h>
@@ -33,6 +34,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
+#include <QSettings>
 
 namespace sequencergui
 {
@@ -70,6 +72,19 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_about_action = new QAction("About application", this);
   m_about_action->setStatusTip("About application");
   connect(m_about_action, &QAction::triggered, this, &SequencerMainWindowActions::OnAbout);
+
+  m_summon_settings_dialog_action = new QAction("Settings", this);
+  m_summon_settings_dialog_action->setStatusTip("Summon settings dialog");
+  connect(m_summon_settings_dialog_action, &QAction::triggered, this,
+          &SequencerMainWindowActions::OnSummonSettingsDialogSettings);
+
+  m_reset_settings_action = new QAction("Reset settings to defaults", this);
+  m_reset_settings_action->setStatusTip(
+      "Reset persistent application settings on disk to their defaults");
+  m_reset_settings_action->setToolTip(
+      "Reset persistent application settings on disk to their defaults");
+  connect(m_reset_settings_action, &QAction::triggered, this,
+          &SequencerMainWindowActions::OnResetSettings);
 }
 
 //! Equips menu with actions.
@@ -79,6 +94,7 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   sup::gui::AppRegisterMenuBar(menubar);
 
   auto file_menu = sup::gui::AppAddMenu(sup::gui::constants::kFileMenu)->GetMenu();
+  file_menu->setToolTipsVisible(true);
 
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
@@ -92,6 +108,12 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   sup::gui::AddSaveCurrentProjectAction(file_menu, *m_project_handler);
   sup::gui::AddSaveProjectAsAction(file_menu, *m_project_handler);
+
+  file_menu->addSeparator();
+  auto preferences_menu = file_menu->addMenu("Preferences");
+  preferences_menu->addAction(m_summon_settings_dialog_action);
+  preferences_menu->addSeparator();
+  preferences_menu->addAction(m_reset_settings_action);
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
@@ -110,6 +132,17 @@ void SequencerMainWindowActions::OnAbout()
 {
   AboutApplicationDialog dialog(mvvm::utils::FindMainWindow());
   dialog.exec();
+}
+
+void SequencerMainWindowActions::OnSummonSettingsDialogSettings() {}
+
+void SequencerMainWindowActions::OnResetSettings()
+{
+  if (ShouldResetSettingsAndRestart())
+  {
+    QSettings settings;
+    settings.clear();
+  }
 }
 
 }  // namespace sequencergui
