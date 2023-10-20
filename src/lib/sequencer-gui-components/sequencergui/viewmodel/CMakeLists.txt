@@ -7,6 +7,8 @@ target_sources(${library_name} PRIVATE
   custom_presentation_items.h
   custom_row_strategies.cpp
   custom_row_strategies.h
+  custom_viewitem_factory.cpp
+  custom_viewitem_factory.h
   drag_and_drop_helper.cpp
   drag_and_drop_helper.h
   instruction_editor_viewmodel.cpp

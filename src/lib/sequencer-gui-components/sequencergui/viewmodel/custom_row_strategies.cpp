@@ -19,7 +19,7 @@
 
 #include "custom_row_strategies.h"
 
-#include "custom_presentation_items.h"
+#include "custom_viewitem_factory.h"
 
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -33,14 +33,6 @@
 
 namespace
 {
-
-//! Creates view item representing is_available status.
-
-std::unique_ptr<mvvm::ViewItem> CreateAvailableViewItem(mvvm::SessionItem *item)
-{
-  auto presentation = std::make_unique<sequencergui::ChannelPresentationItem>(item);
-  return std::make_unique<mvvm::ViewItem>(std::move(presentation));
-}
 
 /**
  * @brief Returns string representing type in 3rd column of variable table.
@@ -97,14 +89,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::Var
   }
 
   // column 4: is_available property
-  if (auto is_available_property = sequencergui::GetIsAvailableItem(item); is_available_property)
-  {
-    result.emplace_back(CreateAvailableViewItem(is_available_property));
-  }
-  else
-  {
-    result.emplace_back(mvvm::CreateLabelViewItem(&item));
-  }
+  result.emplace_back(CreateChannelPresentationViewItem(item));
 
   return result;
 }
