@@ -32,6 +32,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMetaType>
+#include <QSettings>
 #include <memory>
 #include <string>
 #include <vector>
@@ -78,6 +79,12 @@ int RunApplication(int argc, char** argv)
   std::unique_ptr<T> win;
   do
   {
+    if (exit_code == CleanSettingsAndRestart)
+    {
+      QSettings settings;
+      settings.clear();
+    }
+
     win = std::make_unique<T>();
     win->show();
 
@@ -101,6 +108,7 @@ int RunApplication(int argc, char** argv)
 
     exit_code = app.exec();
   } while (exit_code != NormalExit);
+
 
   return exit_code;
 }
