@@ -19,15 +19,9 @@
 
 #include "custom_presentation_items.h"
 
+#include <sequencergui/mainwindow/app_settings.h>
+
 #include <mvvm/model/sessionitem.h>
-
-#include <QColor>
-
-namespace
-{
-const QColor kConnectedColor("#00aa00");
-const QColor kDisonnectedColor("#b9b9b9");
-}  // namespace
 
 namespace sequencergui
 {
@@ -39,6 +33,9 @@ ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item)
 
 QVariant ChannelPresentationItem::Data(int qt_role) const
 {
+  static const QColor kConnectedColor = GetConnectedColor();
+  static const QColor kDisonnectedColor = GetDisonnectedColor();
+
   if (qt_role == Qt::DecorationRole)
   {
     return GetItem()->Data<bool>() ? kConnectedColor : kDisonnectedColor;

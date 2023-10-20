@@ -34,4 +34,14 @@ bool AppSettings::IsTopToBottomStyle() const
   return m_tree_style == BehaviorTreeStyle::kTopToBottom;
 }
 
+QColor GetConnectedColor()
+{
+  return QColor("#00aa00");
+}
+
+QColor GetDisonnectedColor()
+{
+  return QColor("#b9b9b9");
+}
+
 }  // namespace sequencergui

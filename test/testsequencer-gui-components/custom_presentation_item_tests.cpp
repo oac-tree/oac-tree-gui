@@ -20,6 +20,7 @@
 #include "sequencergui/viewmodel/custom_presentation_items.h"
 
 #include <mvvm/model/compound_item.h>
+#include <sequencergui/mainwindow/app_settings.h>
 
 #include <gtest/gtest.h>
 
@@ -48,4 +49,8 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   EXPECT_FALSE(presentation.Data(Qt::EditRole).isValid());
   EXPECT_FALSE(presentation.Data(Qt::DisplayRole).isValid());
   EXPECT_TRUE(presentation.Data(Qt::DecorationRole).isValid());
+  EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
+
+  item.SetProperty(TestItem::kIsAvailable, false);
+  EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedColor());
 }
