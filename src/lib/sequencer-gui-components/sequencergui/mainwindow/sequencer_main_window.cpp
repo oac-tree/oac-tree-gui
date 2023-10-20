@@ -67,28 +67,13 @@ SequencerMainWindow::~SequencerMainWindow() = default;
 
 void SequencerMainWindow::closeEvent(QCloseEvent* event)
 {
-  if (m_operation_view->HasRunningJobs())
+  if (CanCloseApplication())
   {
-    if (ShouldStopRunningJobs())
-    {
-      m_operation_view->StopAllJobs();
-    }
-    else
-    {
-      event->ignore();
-      return;
-    }
+    QMainWindow::closeEvent(event);
+    return;
   }
 
-  if (m_action_manager->CloseCurrentProject())
-  {
-    WriteSettings();
-    QMainWindow::closeEvent(event);
-  }
-  else
-  {
-    event->ignore();
-  }
+  event->ignore();
 }
 
 void SequencerMainWindow::InitApplication()
@@ -100,6 +85,8 @@ void SequencerMainWindow::InitApplication()
 void SequencerMainWindow::InitComponents()
 {
   m_action_manager = new SequencerMainWindowActions(m_models->GetSequencerModel(), this);
+  connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
+          &SequencerMainWindow::OnRestartRequest);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
@@ -154,6 +141,37 @@ void SequencerMainWindow::PopulateModel()
   //  auto job_model = m_models->GetJobModel();
   //  job_model->InsertItem<JobItem>();
   //  job_model->InsertItem<JobItem>()->SetStatus("ccc");
+}
+
+bool SequencerMainWindow::CanCloseApplication()
+{
+  if (m_operation_view->HasRunningJobs())
+  {
+    if (ShouldStopRunningJobs())
+    {
+      m_operation_view->StopAllJobs();
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if (m_action_manager->CloseCurrentProject())
+  {
+    WriteSettings();
+    return true;
+  }
+
+  return false;
+}
+
+void SequencerMainWindow::OnRestartRequest(AppExitCode exit_code)
+{
+  if (CanCloseApplication())
+  {
+    QCoreApplication::exit(exit_code);
+  }
 }
 
 }  // namespace sequencergui

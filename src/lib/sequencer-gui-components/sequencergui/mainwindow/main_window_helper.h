@@ -23,6 +23,7 @@
 //! Collection of helper methods common for all main windows.
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/splash_screen.h>
 #include <sup/gui/widgets/application_helper.h>
@@ -31,6 +32,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMetaType>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -72,28 +74,35 @@ int RunApplication(int argc, char** argv)
     splash->Start(/*show_during*/ 1000);
   }
 
-  T win;
-  for (auto file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
+  int exit_code{0};
+  std::unique_ptr<T> win;
+  do
   {
-    if (win.ImportProcedure(QString::fromStdString(file_name)))
+    win = std::make_unique<T>();
+    win->show();
+
+    for (auto file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
     {
-      qInfo() << "Import OK:" << QString::fromStdString(file_name);
+      if (win->ImportProcedure(QString::fromStdString(file_name)))
+      {
+        qInfo() << "Import OK:" << QString::fromStdString(file_name);
+      }
+      else
+      {
+        qInfo() << "Failed to load procedure from file" << QString::fromStdString(file_name);
+      }
     }
-    else
+
+    if (splash)
     {
-      qInfo() << "Failed to load procedure from file" << QString::fromStdString(file_name);
+      splash->finish(win.get());
+      splash.reset();
     }
-  }
 
-  win.show();
+    exit_code = app.exec();
+  } while (exit_code != NormalExit);
 
-  if (splash)
-  {
-    splash->finish(&win);
-    splash.reset();
-  }
-
-  return app.exec();
+  return exit_code;
 }
 
 /**

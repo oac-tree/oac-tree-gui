@@ -25,7 +25,7 @@
 namespace sequencergui
 {
 
-enum AppStatus
+enum AppExitCode
 {
   NormalExit,
   Restart,

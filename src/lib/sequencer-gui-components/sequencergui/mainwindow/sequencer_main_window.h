@@ -23,6 +23,8 @@
 #include <QMainWindow>
 #include <memory>
 
+#include "app_settings.h"
+
 class QCloseEvent;
 
 namespace mvvm
@@ -61,6 +63,8 @@ private:
   void ReadSettings();
   void WriteSettings();
   void PopulateModel();
+  bool CanCloseApplication();
+  void OnRestartRequest(AppExitCode  exit_code);
 
   std::unique_ptr<ApplicationModels> m_models;
 

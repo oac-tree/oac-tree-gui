@@ -140,8 +140,7 @@ void SequencerMainWindowActions::OnResetSettings()
 {
   if (ShouldResetSettingsAndRestart())
   {
-    QSettings settings;
-    settings.clear();
+    emit RestartApplicationRequest(CleanSettingsAndRestart);
   }
 }
 

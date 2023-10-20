@@ -69,7 +69,7 @@ bool ShouldResetSettingsAndRestart()
 {
   const QString question_text =
       "All persistent application settings (i.e. window sizes, position of splitters, etc) "
-      " will be reset to their default values.";
+      " will be reset to their default values. Restart is required.";
 
   QMessageBox msgBox;
   msgBox.setText(question_text);

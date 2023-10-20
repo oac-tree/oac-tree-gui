@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
 
 #include <QObject>
+#include "app_settings.h"
 
 class QMainWindow;
 class QAction;
@@ -51,6 +52,9 @@ public:
   ~SequencerMainWindowActions() override;
 
   bool CloseCurrentProject() const;
+
+signals:
+  void RestartApplicationRequest(AppExitCode);
 
 private:
   void CreateActions(QMainWindow* mainwindow);
