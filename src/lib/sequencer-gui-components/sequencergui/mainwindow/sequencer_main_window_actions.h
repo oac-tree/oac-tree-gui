@@ -61,11 +61,13 @@ private:
   void SetupMenus(QMenuBar* menubar);
   void OnAbout();
   void OnSummonSettingsDialogSettings();
+  void OnChangeSystemFont();
   void OnResetSettings();
 
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
 
+  QAction* m_system_font_action{nullptr};
   QAction* m_summon_settings_dialog_action{nullptr};
   QAction* m_reset_settings_action{nullptr};
 

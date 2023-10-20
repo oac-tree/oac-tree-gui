@@ -21,6 +21,8 @@
 #define SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
 
 #include <QColor>
+#include <optional>
+#include <QFont>
 
 namespace sequencergui
 {
@@ -60,6 +62,16 @@ QColor GetConnectedColor();
  * @brief Returns color for the decoration used to display connected variables.
  */
 QColor GetDisonnectedColor();
+
+/**
+ * @brief Return application font stored in settings.
+ */
+std::optional<QFont> GetAppFontFromSettings();
+
+/**
+ * @brief Saves application font in settings
+ */
+void SaveAppFontInSettings(const QFont& font);
 
 }  // namespace sequencergui
 

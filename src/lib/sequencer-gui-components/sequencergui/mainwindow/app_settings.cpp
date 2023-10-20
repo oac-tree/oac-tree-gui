@@ -19,6 +19,13 @@
 
 #include "app_settings.h"
 
+#include <QSettings>
+
+namespace
+{
+const QString kAppFontSettingName = "MainWindow/font";
+}
+
 namespace sequencergui
 {
 
@@ -42,6 +49,23 @@ QColor GetConnectedColor()
 QColor GetDisonnectedColor()
 {
   return QColor("#b9b9b9");
+}
+
+std::optional<QFont> GetAppFontFromSettings()
+{
+  QSettings settings;
+  if (settings.contains(kAppFontSettingName))
+  {
+    return settings.value(kAppFontSettingName).value<QFont>();
+  }
+
+  return {};
+}
+
+void SaveAppFontInSettings(const QFont &font)
+{
+  QSettings settings;
+  settings.setValue(kAppFontSettingName, font);
 }
 
 }  // namespace sequencergui

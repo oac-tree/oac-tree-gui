@@ -31,6 +31,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
+#include <QFontDialog>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -73,6 +74,11 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_about_action->setStatusTip("About application");
   connect(m_about_action, &QAction::triggered, this, &SequencerMainWindowActions::OnAbout);
 
+  m_system_font_action = new QAction("System font", this);
+  m_system_font_action->setStatusTip("Summon font settings dialog");
+  connect(m_system_font_action, &QAction::triggered, this,
+          &SequencerMainWindowActions::OnChangeSystemFont);
+
   m_summon_settings_dialog_action = new QAction("Settings", this);
   m_summon_settings_dialog_action->setStatusTip("Summon settings dialog");
   connect(m_summon_settings_dialog_action, &QAction::triggered, this,
@@ -111,6 +117,8 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 
   file_menu->addSeparator();
   auto preferences_menu = file_menu->addMenu("Preferences");
+  preferences_menu->setToolTipsVisible(true);
+  preferences_menu->addAction(m_system_font_action);
   preferences_menu->addAction(m_summon_settings_dialog_action);
   preferences_menu->addSeparator();
   preferences_menu->addAction(m_reset_settings_action);
@@ -135,6 +143,17 @@ void SequencerMainWindowActions::OnAbout()
 }
 
 void SequencerMainWindowActions::OnSummonSettingsDialogSettings() {}
+
+void SequencerMainWindowActions::OnChangeSystemFont()
+{
+  bool ok;
+  QFont font = QFontDialog::getFont(&ok, QApplication::font(), nullptr);
+  if (ok)
+  {
+    // the user clicked OK and font is set to the font the user selected
+    SaveAppFontInSettings(font);
+  }
+}
 
 void SequencerMainWindowActions::OnResetSettings()
 {

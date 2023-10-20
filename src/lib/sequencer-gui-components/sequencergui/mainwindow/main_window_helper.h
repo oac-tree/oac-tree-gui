@@ -58,7 +58,15 @@ int RunApplication(int argc, char** argv)
 
   QApplication app(argc, argv);
 
-  sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
+  auto font = GetAppFontFromSettings();
+  if (font.has_value())
+  {
+    sup::gui::SetWindowStyle(options.style, font.value(), options.info);
+  }
+  else
+  {
+    sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
+  }
 
   auto [success, message] = sequencergui::LoadPlugins();
   if (!success)
@@ -109,7 +117,6 @@ int RunApplication(int argc, char** argv)
     exit_code = app.exec();
   } while (exit_code != NormalExit);
 
-
   return exit_code;
 }
 
@@ -120,7 +127,8 @@ bool ShouldStopRunningJobs();
 
 /**
  * @brief Opens message box with the question if we should reset application settings and restart
- * @return
+ *
+ * @return Truth if reset and restart was requested, false otherwise.
  */
 bool ShouldResetSettingsAndRestart();
 
