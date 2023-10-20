@@ -26,8 +26,9 @@
 namespace sequencergui
 {
 
-ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item)
-    : mvvm::DataPresentationItem(item, mvvm::DataRole::kDisplay)
+ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item,
+                                                 const QString &channel_name)
+    : mvvm::DataPresentationItem(item, mvvm::DataRole::kDisplay), m_channel_name(channel_name)
 {
 }
 
@@ -39,6 +40,11 @@ QVariant ChannelPresentationItem::Data(int qt_role) const
   if (qt_role == Qt::DecorationRole)
   {
     return GetItem()->Data<bool>() ? kConnectedColor : kDisonnectedColor;
+  }
+
+  if (qt_role == Qt::DisplayRole)
+  {
+    return m_channel_name;
   }
 
   return {};

@@ -19,8 +19,9 @@
 
 #include "sequencergui/viewmodel/custom_presentation_items.h"
 
-#include <mvvm/model/compound_item.h>
 #include <sequencergui/mainwindow/app_settings.h>
+
+#include <mvvm/model/compound_item.h>
 
 #include <gtest/gtest.h>
 
@@ -43,12 +44,13 @@ public:
 TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
 {
   TestItem item;
-
-  ChannelPresentationItem presentation(item.GetItem(TestItem::kIsAvailable));
+  ChannelPresentationItem presentation(item.GetItem(TestItem::kIsAvailable), "channel_name");
 
   EXPECT_FALSE(presentation.Data(Qt::EditRole).isValid());
-  EXPECT_FALSE(presentation.Data(Qt::DisplayRole).isValid());
+  EXPECT_TRUE(presentation.Data(Qt::DisplayRole).isValid());
   EXPECT_TRUE(presentation.Data(Qt::DecorationRole).isValid());
+
+  EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("channel_name"));
   EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
 
   item.SetProperty(TestItem::kIsAvailable, false);

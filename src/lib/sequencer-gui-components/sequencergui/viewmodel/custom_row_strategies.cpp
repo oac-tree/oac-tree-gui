@@ -78,17 +78,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::Var
   // column #2: type of the variable (CA, Local, PVA-C, PVA-S
   result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeString(item)));
 
-  // column #3: Channel
-  if (auto channel_property = sequencergui::GetChannelItem(item); channel_property)
-  {
-    result.emplace_back(mvvm::CreateDataViewItem(channel_property));
-  }
-  else
-  {
-    result.emplace_back(mvvm::CreateLabelViewItem(&item));
-  }
-
-  // column 4: is_available property
+  // column #3: Channel and is_available properties
   result.emplace_back(CreateChannelPresentationViewItem(item));
 
   return result;
@@ -140,20 +130,20 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
 //! VariableTableRowStrategy
 //! ---------------------------------------------------------------------------
 
-// For local variable with scalar on board we build row of 5 elements:
-// | var0       | 42      | Local   |             |     |
+// For local variable with scalar on board we build row of 4 elements:
+// | var0       | 42      | Local   |                |
 
-// For local variable with struct on board we build row of 5 elements:
-// | var0       |         | Local   |             |     |
-// |   struct   |         |         |             |     |
-// |      value | 42      |         |             |     |
+// For local variable with struct on board we build row of 4 elements:
+// | var0       |         | Local   |                |
+// |   struct   |         |         |                |
+// |      value | 42      |         |                |
 
 // For channel access variable with scalar on board
-// | var0       | 42      | CA      | PV_CHANNEL0 | [x] |
+// | var0       | 42      | CA      | [x] PV_CHANNEL0 |
 
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static QStringList result = {"Name", "Value", "Type", "Channel", " "};
+  static QStringList result = {"Name", "Value", "Type", "Channel"};
   return result;
 }
 
@@ -177,7 +167,6 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
     // and empty placeholders for the rest
-    result.emplace_back(mvvm::CreateLabelViewItem(item));
     result.emplace_back(mvvm::CreateLabelViewItem(item));
     result.emplace_back(mvvm::CreateLabelViewItem(item));
   }

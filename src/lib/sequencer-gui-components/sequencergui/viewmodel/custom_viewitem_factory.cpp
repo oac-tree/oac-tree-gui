@@ -27,15 +27,21 @@
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
+#include <QString>
+
 namespace sequencergui
 {
 
 std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionItem &item)
 {
-  if (auto is_available_property = sequencergui::GetIsAvailableItem(item); is_available_property)
+  auto is_available_property = sequencergui::GetIsAvailableItem(item);
+  auto channel_property = sequencergui::GetChannelItem(item);
+
+  if (is_available_property && channel_property)
   {
-    auto presentation =
-        std::make_unique<sequencergui::ChannelPresentationItem>(is_available_property);
+    auto channel_name = QString::fromStdString(channel_property->Data<std::string>());
+    auto presentation = std::make_unique<sequencergui::ChannelPresentationItem>(
+        is_available_property, channel_name);
     return std::make_unique<mvvm::ViewItem>(std::move(presentation));
   }
 

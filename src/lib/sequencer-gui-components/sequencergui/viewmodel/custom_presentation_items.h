@@ -39,9 +39,12 @@ public:
    *
    * @param item The item representing IsAvailable property of the instruction item.
    */
-  explicit ChannelPresentationItem(mvvm::SessionItem* item);
+  explicit ChannelPresentationItem(mvvm::SessionItem* item, const QString& channel_name);
 
   QVariant Data(int qt_role) const override;
+
+private:
+  QString m_channel_name;
 };
 
 }  // namespace sequencergui
