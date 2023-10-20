@@ -46,6 +46,8 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   TestItem item;
   ChannelPresentationItem presentation(item.GetItem(TestItem::kIsAvailable), "channel_name");
 
+  // it should looke like non-editable label with colored rectangle
+
   EXPECT_FALSE(presentation.Data(Qt::EditRole).isValid());
   EXPECT_TRUE(presentation.Data(Qt::DisplayRole).isValid());
   EXPECT_TRUE(presentation.Data(Qt::DecorationRole).isValid());
@@ -53,6 +55,7 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("channel_name"));
   EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
 
+  // changing IsAvailable status should change the color of the rectangle
   item.SetProperty(TestItem::kIsAvailable, false);
   EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedColor());
 }

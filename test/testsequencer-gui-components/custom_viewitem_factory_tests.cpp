@@ -20,8 +20,10 @@
 #include "sequencergui/viewmodel/custom_viewitem_factory.h"
 
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/mainwindow/app_settings.h>
 
 #include <mvvm/viewmodelbase/viewitem.h>
+#include <sequencergui/domain/domain_constants.h>
 
 #include <gtest/gtest.h>
 
@@ -32,6 +34,14 @@ using namespace sequencergui;
 class CustomViewItemFactoryTest : public ::testing::Test
 {
 public:
+  class TestVariableItem : public ConnectableVariableItem
+  {
+  public:
+    TestVariableItem() : ConnectableVariableItem("TestVariableItem")
+    {
+      AddProperty(domainconstants::kChannelAttribute, std::string(""));
+    }
+  };
 };
 
 //! Validating view item presenting channel and is_available status for LocalVariable.
@@ -48,6 +58,29 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
   EXPECT_EQ(viewitem->data(Qt::DisplayRole).toString(), QString());
   EXPECT_FALSE(viewitem->data(Qt::DecorationRole).isValid());
 
+  // it is not possible to set any data
+  EXPECT_FALSE(viewitem->setData(QString("aaa"), Qt::DisplayRole));
+  EXPECT_FALSE(viewitem->setData(QString("bbb"), Qt::EditRole));
+}
+
+//! Validating view item presenting channel and is_available status for LocalVariable.
+//! It should be just empty non-editable placeholder.
+
+TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
+{
+  TestVariableItem item;
+  item.SetChannel("CHANNEL");
+  item.SetIsAvailable(true);
+
+  auto viewitem = CreateChannelPresentationViewItem(item);
+
+  EXPECT_FALSE(viewitem->data(Qt::EditRole).isValid());
+  EXPECT_TRUE(viewitem->data(Qt::DisplayRole).isValid());
+  EXPECT_EQ(viewitem->data(Qt::DisplayRole).toString(), QString("CHANNEL"));
+  EXPECT_TRUE(viewitem->data(Qt::DecorationRole).isValid());
+  EXPECT_EQ(viewitem->data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
+
+  // it is not possible to set any data
   EXPECT_FALSE(viewitem->setData(QString("aaa"), Qt::DisplayRole));
   EXPECT_FALSE(viewitem->setData(QString("bbb"), Qt::EditRole));
 }

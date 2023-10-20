@@ -50,4 +50,9 @@ QVariant ChannelPresentationItem::Data(int qt_role) const
   return {};
 }
 
+bool ChannelPresentationItem::SetData(const QVariant &data, int qt_role)
+{
+  return false;
+}
+
 }  // namespace sequencergui

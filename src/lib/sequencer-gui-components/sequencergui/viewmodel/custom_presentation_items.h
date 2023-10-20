@@ -43,6 +43,8 @@ public:
 
   QVariant Data(int qt_role) const override;
 
+  bool SetData(const QVariant& data, int qt_role) override;
+
 private:
   QString m_channel_name;
 };
