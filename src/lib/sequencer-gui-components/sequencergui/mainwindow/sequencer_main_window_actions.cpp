@@ -152,6 +152,8 @@ void SequencerMainWindowActions::OnChangeSystemFont()
   {
     // the user clicked OK and font is set to the font the user selected
     SaveAppFontInSettings(font);
+    QApplication::setFont(font);
+    emit RestartApplicationRequest(Restart);
   }
 }
 

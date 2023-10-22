@@ -58,6 +58,8 @@ int RunApplication(int argc, char** argv)
 
   QApplication app(argc, argv);
 
+  const auto default_font = app.font();
+
   auto font = GetAppFontFromSettings();
   if (font.has_value())
   {
@@ -91,6 +93,7 @@ int RunApplication(int argc, char** argv)
     {
       QSettings settings;
       settings.clear();
+      QApplication::setFont(default_font);
     }
 
     win = std::make_unique<T>();
