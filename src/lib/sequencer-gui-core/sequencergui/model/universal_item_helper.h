@@ -25,6 +25,7 @@
 #include <mvvm/model/tagindex.h>
 
 #include <memory>
+#include <vector>
 
 namespace mvvm
 {
@@ -36,6 +37,7 @@ namespace sequencergui
 {
 
 class InstructionItem;
+class InstructionContainerItem;
 
 /**
  * @brief Convenience function to insert instruction in another instruction.
@@ -120,6 +122,11 @@ void AddShowCollapsedProperty(InstructionItem& item);
  * branches collapsed.
  */
 bool IsCollapsed(const InstructionItem& item);
+
+/**
+ * @brief Returns vector of instructions which wants their children's branch shown as collapsed.
+ */
+std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContainerItem& container);
 
 }  // namespace sequencergui
 

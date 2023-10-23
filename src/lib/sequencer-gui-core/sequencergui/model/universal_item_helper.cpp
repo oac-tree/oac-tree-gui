@@ -22,8 +22,10 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/aggregate_factory.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -107,6 +109,26 @@ bool IsCollapsed(const InstructionItem &item)
   return mvvm::utils::HasTag(item, itemconstants::kShowCollapsed)
              ? item.Property<bool>(itemconstants::kShowCollapsed)
              : false;
+}
+
+std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContainerItem &container)
+{
+  std::vector<const InstructionItem *> result;
+
+  auto func = [&result](const InstructionItem *item)
+  {
+    if (IsCollapsed(*item))
+    {
+      result.push_back(item);
+    }
+  };
+
+  for (auto instruction : container.GetInstructions())
+  {
+    IterateInstruction<const InstructionItem *>(instruction, func);
+  }
+
+  return result;
 }
 
 }  // namespace sequencergui

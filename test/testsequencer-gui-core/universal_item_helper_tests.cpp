@@ -91,3 +91,20 @@ TEST_F(UniversalItemHelperTest, IsCollapsed)
   item.SetProperty(itemconstants::kShowCollapsed, true);
   EXPECT_TRUE(IsCollapsed(item));
 }
+
+TEST_F(UniversalItemHelperTest, GetCollapsedItems)
+{
+  InstructionContainerItem container;
+  auto sequence0 = container.InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+  auto wait0 = container.InsertItem<WaitItem>(mvvm::TagIndex::Append());
+  auto sequence1 = sequence0->InsertItem<SequenceItem>(mvvm::TagIndex::Append());
+
+  auto collapsed = GetCollapsedItems(container);
+  EXPECT_TRUE(collapsed.empty());
+
+  sequence0->SetProperty(itemconstants::kShowCollapsed, true);
+  sequence1->SetProperty(itemconstants::kShowCollapsed, true);
+
+  collapsed = GetCollapsedItems(container);
+  EXPECT_EQ(collapsed, std::vector<const InstructionItem*>({sequence0, sequence1}));
+}
