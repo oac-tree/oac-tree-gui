@@ -81,3 +81,4 @@ TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
   EXPECT_EQ(item->GetDomainType(), UnknownDomainInstruction::Type);
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
+

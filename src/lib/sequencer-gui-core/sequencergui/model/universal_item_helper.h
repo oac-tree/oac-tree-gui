@@ -59,7 +59,7 @@ InstructionItem* InsertInstruction(const std::string& domain_type, mvvm::Session
  * @return Inserted item.
  */
 InstructionItem* InsertAggregate(const std::string& domain_type, mvvm::SessionItem* parent,
-                                   const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
+                                 const mvvm::TagIndex& tag_index = mvvm::TagIndex::Append());
 
 /**
  * @brief Convenience function to insert instruction in another instruction.
@@ -77,7 +77,7 @@ InstructionItem* InsertInstruction(std::unique_ptr<sequencergui::InstructionItem
 /**
  * @brief Returns true if given name correspond to the name of registered aggregate.
  */
-bool IsAggregateName(const std::string &name);
+bool IsAggregateName(const std::string& name);
 
 /**
  * @brief Set input property to instruction item.
@@ -103,6 +103,15 @@ void SetText(const std::string& value, InstructionItem* item);
  * @brief Set variable name property to instruction item.
  */
 void SetVariableName(const std::string& value, InstructionItem* item);
+
+/**
+ * @brief Add property to show children as collapsed branch.
+ *
+ * @details This property will be added to all instructions which can have children. For
+ * IncludeProcedure and Include instructions the value of this property will be put to true by
+ * default.
+ */
+void AddShowCollapsedProperty(InstructionItem& item);
 
 }  // namespace sequencergui
 

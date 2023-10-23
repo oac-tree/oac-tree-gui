@@ -36,6 +36,7 @@ const std::string kDecrementInstructionType = "Decrement";
 const std::string kFallbackInstructionType = "Fallback";
 const std::string kForceSuccessInstructionType = "ForceSuccess";
 const std::string kIncludeInstructionType = "Include";
+const std::string kIncludeProcedureInstructionType = "IncludeProcedure";
 const std::string kIncrementInstructionType = "Increment";
 const std::string kInputInstructionType = "Input";
 const std::string kInverterInstructionType = "Inverter";

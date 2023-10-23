@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/universal_item_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -128,6 +129,8 @@ void InstructionItem::RegisterCommonProperties()
       ->SetDisplayName("breakpoint")
       ->SetEditable(false)
       ->SetVisible(false);
+
+  AddShowCollapsedProperty(*this);
 }
 
 }  // namespace sequencergui

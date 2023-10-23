@@ -23,10 +23,12 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/aggregate_factory.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
+#include <mvvm/utils/container_utils.h>
 
 namespace sequencergui
 {
@@ -80,6 +82,24 @@ void SetText(const std::string &value, InstructionItem *item)
 void SetVariableName(const std::string &value, InstructionItem *item)
 {
   item->SetProperty(domainconstants::kVarNameAttribute, value);
+}
+
+void AddShowCollapsedProperty(InstructionItem &item)
+{
+  static const std::vector<std::string> collapsed_by_default{
+      domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
+
+  if (mvvm::utils::HasTag(item, itemconstants::kChildInstructions))
+  {
+    auto property = item.AddProperty(itemconstants::kShowCollapsed, false)
+                        ->SetDisplayName("Show collapsed")
+                        ->SetToolTip("Show child branch collapsed duing procedure execution");
+
+    if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
+    {
+      property->SetData(true);
+    }
+  }
 }
 
 }  // namespace sequencergui

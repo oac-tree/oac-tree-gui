@@ -115,6 +115,8 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   IncludeItem item;
   item.SetPath("def");
 
+  EXPECT_EQ(item.Property<bool>(itemconstants::kShowCollapsed), true);
+
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
@@ -175,6 +177,8 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
   ParallelSequenceItem item;
   EXPECT_EQ(item.GetSuccessThreshold(), 0);
   EXPECT_EQ(item.GetFailureThreshold(), 1);
+
+  EXPECT_EQ(item.Property<bool>(itemconstants::kShowCollapsed), false);
 
   item.SetSuccessThreshold(42);
   EXPECT_EQ(item.GetSuccessThreshold(), 42);
