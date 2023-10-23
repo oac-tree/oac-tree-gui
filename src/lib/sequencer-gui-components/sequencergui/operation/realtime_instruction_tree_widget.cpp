@@ -32,7 +32,6 @@
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -153,7 +152,7 @@ void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
 
 void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
 {
-  if (index.column() == 3)
+  if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
   {
     auto instruction = m_component_provider->GetSelected<InstructionItem>();
     emit ToggleBreakpointRequest(instruction);
