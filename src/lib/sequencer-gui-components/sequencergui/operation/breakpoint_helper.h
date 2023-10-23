@@ -24,9 +24,6 @@
 
 #include <sequencergui/operation/breakpoint_types.h>
 
-#include <functional>
-#include <stack>
-
 namespace sequencergui
 {
 
@@ -85,31 +82,6 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, Instruction
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
                             InstructionContainerItem& container);
 
-
-/**
- * @brief Iterates in non-recursive manner over instruction tree and calls user callback.
- */
-
-template <typename T>
-void IterateInstruction(T item, std::function<void(T)> func)
-{
-  std::stack<T> stack;
-  stack.push(item);
-
-  while (!stack.empty())
-  {
-    auto item = stack.top();
-    stack.pop();
-
-    func(item);
-
-    auto children = item->GetInstructions();
-    for (auto it = children.rbegin(); it != children.rend(); ++it)
-    {
-      stack.push(*it);
-    }
-  }
-}
 
 }  // namespace sequencergui
 

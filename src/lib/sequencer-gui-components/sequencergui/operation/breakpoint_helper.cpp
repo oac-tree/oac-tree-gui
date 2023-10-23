@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -70,7 +71,7 @@ std::vector<BreakpointInfo> CollectBreakpointInfo(const InstructionItem &item)
       result.push_back({status, mvvm::utils::PathFromItem(item)});
     }
   };
-  IterateInstruction<const InstructionItem*>(&item, save_breakpoint);
+  IterateInstruction<const InstructionItem *>(&item, save_breakpoint);
 
   return result;
 }
