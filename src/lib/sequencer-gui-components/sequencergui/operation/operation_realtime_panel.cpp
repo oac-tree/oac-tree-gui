@@ -127,8 +127,6 @@ void OperationRealTimePanel::SetupConnections()
   connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
           &OperationRealTimePanel::changeDelayRequest);
 
-  connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::InstructionClicked, this,
-          &OperationRealTimePanel::InstructionClicked);
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
           this, &OperationRealTimePanel::ToggleBreakpointRequest);
   connect(m_tool_bar, &MonitorRealTimeToolBar::scrollToSelectionRequest,

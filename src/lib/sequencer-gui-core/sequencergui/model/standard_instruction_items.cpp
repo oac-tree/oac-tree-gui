@@ -29,7 +29,10 @@ namespace sequencergui
 // IncludeItem
 // ----------------------------------------------------------------------------
 
-IncludeItem::IncludeItem() : UniversalInstructionItem(Type) {}
+IncludeItem::IncludeItem() : UniversalInstructionItem(Type)
+{
+  SetFlag(mvvm::Appearance::kCollapseChildren, true);
+}
 
 std::unique_ptr<mvvm::SessionItem> IncludeItem::Clone(bool make_unique_id) const
 {

@@ -64,7 +64,6 @@ signals:
   void stepRequest();
   void stopRequest();
   void changeDelayRequest(int msec);
-  void InstructionClicked(sequencergui::InstructionItem* instruction);
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 private:

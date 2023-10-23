@@ -5,7 +5,7 @@
       <Wait name="" isRoot="false" timeout="0.5"/>
       <Message name="" isRoot="false" text="Hello"/>
       <Wait name="" isRoot="false" timeout="0.5"/>
-      <Output name="" isRoot="false" from="monitor" description=""/>
+      <Output name="" isRoot="false" fromVar="monitor" description=""/>
     </Sequence>
   </Repeat>
   <Workspace>

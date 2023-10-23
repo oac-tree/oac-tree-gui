@@ -75,13 +75,6 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
 
-  auto on_click = [this](auto)
-  {
-    auto item = m_component_provider->GetSelected<InstructionItem>();
-    emit InstructionClicked(item);
-  };
-  connect(m_tree_view, &QTreeView::clicked, this, on_click);
-
   connect(m_tree_view, &QTreeView::doubleClicked, this,
           &RealTimeInstructionTreeWidget::OnTreeDoubleClick);
 

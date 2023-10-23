@@ -65,7 +65,6 @@ public:
   void SetViewportFollowsSelectionFlag(bool value);
 
 signals:
-  void InstructionClicked(sequencergui::InstructionItem* instruction);
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 private:
