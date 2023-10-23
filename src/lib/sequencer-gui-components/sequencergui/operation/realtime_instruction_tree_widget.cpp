@@ -22,6 +22,7 @@
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/operation/breakpoint_model_delegate.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
@@ -32,6 +33,7 @@
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QMenu>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -71,8 +73,9 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
 
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
+          &RealTimeInstructionTreeWidget::OnCustomContextMenuRequested);
 
   connect(m_tree_view, &QTreeView::doubleClicked, this,
           &RealTimeInstructionTreeWidget::OnTreeDoubleClick);
@@ -89,6 +92,8 @@ RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget()
 
 void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
+  m_procedure = procedure_item;
+
   m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
                                                : nullptr);
   m_tree_view->setItemDelegate(m_delegate.get());
@@ -157,6 +162,37 @@ void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
     auto instruction = m_component_provider->GetSelected<InstructionItem>();
     emit ToggleBreakpointRequest(instruction);
   }
+}
+
+void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint &pos)
+{
+  QMenu menu;
+
+  // setting up menu section with standard collapse/expand block
+  sup::gui::SetupCollapseExpandMenu(pos, menu, *m_tree_view);
+  menu.addSeparator();
+
+  // setting menu with "selective" expand option
+  auto selective_expand_action = menu.addAction("Selective expand");
+  selective_expand_action->setToolTip(
+      "Expand all except instructions with property 'show as collapsed' set.");
+
+  auto on_action = [this]()
+  {
+    m_tree_view->expandAll();
+    auto items = GetCollapsedItems(*m_procedure->GetInstructionContainer());
+    for (const auto item : items)
+    {
+      auto index = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
+      if (!index.empty())
+      {
+        m_tree_view->setExpanded(index.at(0), false);
+      }
+    }
+  };
+  QObject::connect(selective_expand_action, &QAction::triggered, this, on_action);
+
+  menu.exec(m_tree_view->mapToGlobal(pos));
 }
 
 void RealTimeInstructionTreeWidget::ScrollViewportToSelection()

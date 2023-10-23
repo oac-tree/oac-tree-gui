@@ -24,6 +24,7 @@
 #include <memory>
 
 class QTreeView;
+class QAction;
 
 namespace mvvm
 {
@@ -72,6 +73,7 @@ private:
   void WriteSettings();
   void AdjustTreeAppearance();
   void OnTreeDoubleClick(const QModelIndex& index);
+  void OnCustomContextMenuRequested(const QPoint &pos);
 
   /**
    * @brief UpdateTreeViewport
@@ -82,6 +84,7 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<BreakpointModelDelegate> m_delegate;
+  ProcedureItem* m_procedure{nullptr};
 
   bool m_viewport_follows_selection{true};
 };
