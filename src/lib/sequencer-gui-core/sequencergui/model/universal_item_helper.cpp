@@ -102,4 +102,11 @@ void AddShowCollapsedProperty(InstructionItem &item)
   }
 }
 
+bool IsCollapsed(const InstructionItem &item)
+{
+  return mvvm::utils::HasTag(item, itemconstants::kShowCollapsed)
+             ? item.Property<bool>(itemconstants::kShowCollapsed)
+             : false;
+}
+
 }  // namespace sequencergui

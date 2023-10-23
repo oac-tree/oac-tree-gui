@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
@@ -82,3 +83,11 @@ TEST_F(UniversalItemHelperTest, AddUnknownInstruction)
   EXPECT_EQ(procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 }
 
+TEST_F(UniversalItemHelperTest, IsCollapsed)
+{
+  SequenceItem item;
+  EXPECT_FALSE(IsCollapsed(item));
+
+  item.SetProperty(itemconstants::kShowCollapsed, true);
+  EXPECT_TRUE(IsCollapsed(item));
+}

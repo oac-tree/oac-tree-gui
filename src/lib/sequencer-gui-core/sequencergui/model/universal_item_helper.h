@@ -113,6 +113,14 @@ void SetVariableName(const std::string& value, InstructionItem* item);
  */
 void AddShowCollapsedProperty(InstructionItem& item);
 
+/**
+ * @brief Returns true if item has is_collapsed property and it is set to true.
+ *
+ * This will be taken into account during operation to show instruction tree with certain children
+ * branches collapsed.
+ */
+bool IsCollapsed(const InstructionItem& item);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
