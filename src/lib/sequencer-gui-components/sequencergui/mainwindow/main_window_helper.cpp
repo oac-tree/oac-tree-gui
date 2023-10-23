@@ -21,6 +21,7 @@
 
 #include <mvvm/utils/file_utils.h>
 
+#include <QFontDialog>
 #include <QMessageBox>
 #include <QPushButton>
 #include <filesystem>
@@ -80,6 +81,24 @@ bool ShouldResetSettingsAndRestart()
 
   msgBox.exec();
   return msgBox.clickedButton() == yes_button;
+}
+
+void SummonChangeSystemFontDialog()
+{
+  bool ok;
+  QFont font = QFontDialog::getFont(&ok, QApplication::font(), nullptr);
+  if (ok)
+  {
+    // the user clicked OK and font is set to the font the user selected
+    SaveAppFontInSettings(font);
+
+    QApplication::setFont(font);
+    // the problem is static variable in mvvm::FindSizeOfLetterM, it's not enough to restart the
+    // window, the whole application should be restarted
+
+    QMessageBox::information(nullptr, "Restart is required",
+                             "Please restart application to fully apply changes");
+  }
 }
 
 }  // namespace sequencergui

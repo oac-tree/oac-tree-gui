@@ -59,21 +59,13 @@ OperationMainWindow::~OperationMainWindow() = default;
 
 void OperationMainWindow::closeEvent(QCloseEvent* event)
 {
-  if (m_operation_view->HasRunningJobs())
+  if (CanCloseApplication())
   {
-    if (ShouldStopRunningJobs())
-    {
-      m_operation_view->StopAllJobs();
-    }
-    else
-    {
-      event->ignore();
-      return;
-    }
+    QMainWindow::closeEvent(event);
+    return;
   }
 
-  WriteSettings();
-  QMainWindow::closeEvent(event);
+  event->ignore();
 }
 
 void OperationMainWindow::PopulateModel() {}
@@ -83,6 +75,8 @@ void OperationMainWindow::InitApplication()
   ReadSettings();
 
   m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
+  connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,
+          &OperationMainWindow::OnRestartRequest);
 
   m_operation_view = new OperationMonitorView(OperationMonitorView::kOperationMode, this);
   m_operation_view->SetApplicationModels(m_models.get());
@@ -102,6 +96,31 @@ void OperationMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
+}
+
+bool OperationMainWindow::CanCloseApplication()
+{
+  if (m_operation_view->HasRunningJobs())
+  {
+    if (ShouldStopRunningJobs())
+    {
+      m_operation_view->StopAllJobs();
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void OperationMainWindow::OnRestartRequest(AppExitCode exit_code)
+{
+  if (CanCloseApplication())
+  {
+    QCoreApplication::exit(exit_code);
+  }
 }
 
 }  // namespace sequencergui

@@ -23,7 +23,7 @@
 #include <QMainWindow>
 #include <memory>
 
-#include "app_settings.h"
+#include <sequencergui/mainwindow/app_settings.h>
 
 class QCloseEvent;
 

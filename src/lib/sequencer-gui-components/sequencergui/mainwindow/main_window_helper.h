@@ -135,6 +135,12 @@ bool ShouldStopRunningJobs();
  */
 bool ShouldResetSettingsAndRestart();
 
+
+/**
+ * @brief Summons dialog to change system font.
+ */
+void SummonChangeSystemFontDialog();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_

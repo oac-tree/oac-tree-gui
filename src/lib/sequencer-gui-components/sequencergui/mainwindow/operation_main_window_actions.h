@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
 
 #include <QObject>
+#include <sequencergui/mainwindow/app_settings.h>
 
 class QMainWindow;
 class QAction;
@@ -48,15 +49,23 @@ public:
 
 signals:
   void ImportJobRequest();
+  void RestartApplicationRequest(AppExitCode);
 
 private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);
   void OnAbout();
+  void OnSummonSettingsDialogSettings();
+  void OnChangeSystemFont();
+  void OnResetSettings();
 
   QAction* m_open_action{nullptr};
   QAction* m_exit_action{nullptr};
   QAction* m_about_action{nullptr};
+
+  QAction* m_system_font_action{nullptr};
+  QAction* m_settings_dialog_action{nullptr};
+  QAction* m_reset_settings_action{nullptr};
 };
 
 

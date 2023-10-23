@@ -31,12 +31,9 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
-#include <QFontDialog>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
-#include <QMessageBox>
-#include <QSettings>
 
 namespace sequencergui
 {
@@ -75,7 +72,7 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_about_action->setStatusTip("About application");
   connect(m_about_action, &QAction::triggered, this, &SequencerMainWindowActions::OnAbout);
 
-  m_system_font_action = new QAction("System font", this);
+  m_system_font_action = new QAction("Set system font", this);
   m_system_font_action->setStatusTip("Summon font settings dialog");
   connect(m_system_font_action, &QAction::triggered, this,
           &SequencerMainWindowActions::OnChangeSystemFont);
@@ -147,22 +144,7 @@ void SequencerMainWindowActions::OnSummonSettingsDialogSettings() {}
 
 void SequencerMainWindowActions::OnChangeSystemFont()
 {
-  bool ok;
-  QFont font = QFontDialog::getFont(&ok, QApplication::font(), nullptr);
-  if (ok)
-  {
-    // the user clicked OK and font is set to the font the user selected
-    SaveAppFontInSettings(font);
-
-    QApplication::setFont(font);
-
-    // the problem is static variable in mvvm::FindSizeOfLetterM, it's not enough to restart the
-    // window, the whole application should be restarted
-    // emit RestartApplicationRequest(Restart);
-
-    QMessageBox::information(nullptr, "Restart is required",
-                             "Please restart application to apply changes");
-  }
+  SummonChangeSystemFontDialog();
 }
 
 void SequencerMainWindowActions::OnResetSettings()

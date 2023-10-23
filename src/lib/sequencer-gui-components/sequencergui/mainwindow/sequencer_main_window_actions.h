@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
 
 #include <QObject>
-#include "app_settings.h"
+#include <sequencergui/mainwindow/app_settings.h>
 
 class QMainWindow;
 class QAction;
