@@ -68,7 +68,7 @@ private:
   QAction* m_about_action{nullptr};
 
   QAction* m_system_font_action{nullptr};
-  QAction* m_summon_settings_dialog_action{nullptr};
+  QAction* m_settings_dialog_action{nullptr};
   QAction* m_reset_settings_action{nullptr};
 
   QMenu* m_recent_project_menu{nullptr};
