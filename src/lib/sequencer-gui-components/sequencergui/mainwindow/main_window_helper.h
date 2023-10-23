@@ -60,14 +60,17 @@ int RunApplication(int argc, char** argv)
 
   const auto default_font = app.font();
 
-  auto font = GetAppFontFromSettings();
-  if (font.has_value())
+  if (options.system_font_psize > 0)
   {
-    sup::gui::SetWindowStyle(options.style, font.value(), options.info);
+    sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
   }
   else
   {
-    sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
+    auto font = GetAppFontFromSettings();
+    if (font.has_value())
+    {
+      sup::gui::SetWindowStyle(options.style, font.value(), options.info);
+    }
   }
 
   auto [success, message] = sequencergui::LoadPlugins();
@@ -99,7 +102,7 @@ int RunApplication(int argc, char** argv)
     win = std::make_unique<T>();
     win->show();
 
-    for (auto file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
+    for (const auto& file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
     {
       if (win->ImportProcedure(QString::fromStdString(file_name)))
       {
@@ -134,7 +137,6 @@ bool ShouldStopRunningJobs();
  * @return Truth if reset and restart was requested, false otherwise.
  */
 bool ShouldResetSettingsAndRestart();
-
 
 /**
  * @brief Summons dialog to change system font.
