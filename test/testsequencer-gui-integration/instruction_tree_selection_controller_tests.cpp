@@ -71,6 +71,9 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInFullyExpandedTree)
 
   // selected Wait instruction, it should be selected in the reality
   controller.SetSelected(*wait);
+
+  EXPECT_EQ(controller.FindVisibleInstruction(*wait), wait);
+
   ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
   EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)), wait);
 }
@@ -97,6 +100,8 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
 
   // selected Wait instruction, sequence1 should be selected in the reality
   controller.SetSelected(*wait);
+  EXPECT_EQ(controller.FindVisibleInstruction(*wait), sequence1);
+
   ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
   EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)),
             sequence1);

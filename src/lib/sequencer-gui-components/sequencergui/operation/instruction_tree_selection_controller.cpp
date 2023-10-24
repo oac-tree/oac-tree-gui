@@ -37,6 +37,19 @@ InstructionTreeSelectionController::InstructionTreeSelectionController(QTreeView
 {
 }
 
+mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(
+    const mvvm::SessionItem &item)
+{
+  auto indexes = GetViewModel()->GetIndexOfSessionItem(&item);
+  if (!indexes.empty())
+  {
+    auto visible_index = FindVisibleCandidate(*m_tree_view, indexes.at(0));
+    return GetViewModel()->GetSessionItemFromIndex(visible_index);
+  }
+
+  return nullptr;
+}
+
 InstructionTreeSelectionController::~InstructionTreeSelectionController() = default;
 
 void InstructionTreeSelectionController::SetSelected(const InstructionItem &item)

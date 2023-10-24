@@ -27,6 +27,7 @@ class QTreeView;
 namespace mvvm
 {
 class ViewModel;
+class SessionItem;
 }
 
 namespace sequencergui
@@ -49,6 +50,8 @@ class InstructionTreeSelectionController : public QObject
 public:
   explicit InstructionTreeSelectionController(QTreeView* tree_view, QObject* parent = nullptr);
   ~InstructionTreeSelectionController() override;
+
+  mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem& item);
 
   void SetSelected(const InstructionItem& item);
 
