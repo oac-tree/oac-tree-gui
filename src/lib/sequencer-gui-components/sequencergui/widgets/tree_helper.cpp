@@ -39,4 +39,27 @@ void ScrollTreeViewportToSelection(QTreeView &tree_view)
   }
 }
 
+QModelIndex FindVisibleCandidate(const QTreeView &tree, const QModelIndex &child)
+{
+  if (!child.isValid())
+  {
+    return {};
+  }
+  QModelIndex result = child;
+
+  QModelIndex current = child;
+  while (current.isValid())
+  {
+    const int row_count = tree.model()->rowCount(current);
+    if (!tree.isExpanded(current) && row_count > 0)
+    {
+      result = current;
+    }
+
+    current = current.parent();
+  }
+
+  return result;
+}
+
 }  // namespace sequencergui

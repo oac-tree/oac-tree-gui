@@ -23,6 +23,7 @@
 //! Helper methods to deal with Qt trees.
 
 class QTreeView;
+class QModelIndex;
 
 namespace sequencergui
 {
@@ -35,6 +36,23 @@ namespace sequencergui
  * will be positioned to show selected item at the top.
  */
 void ScrollTreeViewportToSelection(QTreeView& tree_view);
+
+/**
+ * @brief Returns index of item which should be highlighted instead of the given item.
+ *
+ * @param tree The tree with some branches collapsed and some expanded.
+ * @param child The index of a child which we would like to highlight.
+ *
+ * @return The actual index of a parent that we have to highlight instead.
+ *
+ * @details The algorithm is used in the context of highlighting the current running instruction,
+ * when it is hidden inside collapsed branch of its parent. In this case we want to highlight the
+ * parent itself.
+ *
+ * @details The algorithm will go up in the hierarchy and look for parent, containing our child in
+ * one of collapsed branches. If all branches are expanded, will return child back.
+ */
+QModelIndex FindVisibleCandidate(const QTreeView& tree, const QModelIndex& child);
 
 }  // namespace sequencergui
 
