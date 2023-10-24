@@ -68,13 +68,14 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
   const bool is_editable{false};
   bool was_accepted{true};
 
-  auto selection = QInputDialog::getItem(
+  QString selection = QInputDialog::getItem(
       nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
       selection_list, selected_item_index, is_editable, &was_accepted);
 
   // dialog's feature: it returns selected_item_index if cancel button was pressed
 
-  return {was_accepted ? selection_list.indexOf(selection) : -1, was_accepted};
+  auto index = static_cast<int>(selection_list.indexOf(selection));
+  return {was_accepted ? index : -1, was_accepted};
 }
 
 UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
