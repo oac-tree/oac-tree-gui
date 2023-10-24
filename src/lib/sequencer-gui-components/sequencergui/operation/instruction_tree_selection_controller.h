@@ -51,7 +51,7 @@ public:
   explicit InstructionTreeSelectionController(QTreeView* tree_view, QObject* parent = nullptr);
   ~InstructionTreeSelectionController() override;
 
-  mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem& item);
+  mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item);
 
   void SetSelected(const InstructionItem& item);
 

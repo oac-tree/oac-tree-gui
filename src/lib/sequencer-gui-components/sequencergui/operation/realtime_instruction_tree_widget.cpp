@@ -19,11 +19,13 @@
 
 #include "realtime_instruction_tree_widget.h"
 
+#include "breakpoint_model_delegate.h"
+#include "instruction_tree_selection_controller.h"
+
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/universal_item_helper.h>
-#include <sequencergui/operation/breakpoint_model_delegate.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/tree_helper.h>
@@ -63,6 +65,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_delegate(std::make_unique<BreakpointModelDelegate>())
+    , m_selection_controller(std::make_unique<InstructionTreeSelectionController>(m_tree_view))
 {
   setWindowTitle("InstructionTree");
 
@@ -106,13 +109,19 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 
 void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
 {
-  m_component_provider->SetSelectedItem(item);
+  m_component_provider->SetSelectedItem(m_selection_controller->FindVisibleInstruction(item));
   ScrollViewportToSelection();
 }
 
 void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
 {
-  m_component_provider->SetSelectedItems(::mvvm::utils::CastItems<mvvm::SessionItem>(items));
+  std::vector<mvvm::SessionItem *> to_select;
+  for (auto item : items)
+  {
+    to_select.push_back(m_selection_controller->FindVisibleInstruction(item));
+  }
+
+  m_component_provider->SetSelectedItems(to_select);
   ScrollViewportToSelection();
 }
 
