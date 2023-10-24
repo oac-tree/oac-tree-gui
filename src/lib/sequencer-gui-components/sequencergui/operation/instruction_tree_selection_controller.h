@@ -22,8 +22,17 @@
 
 #include <QObject>
 
+class QTreeView;
+
+namespace mvvm
+{
+class ViewModel;
+}
+
 namespace sequencergui
 {
+
+class InstructionItem;
 
 /**
  * @brief The InstructionTreeSelectionController helper class provides logic for instruction
@@ -38,8 +47,16 @@ class InstructionTreeSelectionController : public QObject
   Q_OBJECT
 
 public:
-  explicit InstructionTreeSelectionController(QObject* parent = nullptr);
+  explicit InstructionTreeSelectionController(QTreeView* tree_view, QObject* parent = nullptr);
   ~InstructionTreeSelectionController() override;
+
+  void SetSelected(const InstructionItem& item);
+
+private:
+  void SetSelected(const QModelIndex& index);
+  mvvm::ViewModel* GetViewModel();
+
+  QTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace sequencergui

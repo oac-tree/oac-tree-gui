@@ -19,11 +19,48 @@
 
 #include "instruction_tree_selection_controller.h"
 
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/widgets/tree_helper.h>
+
+#include <mvvm/viewmodel/viewmodel.h>
+
+#include <QItemSelection>
+#include <QItemSelectionModel>
+#include <QTreeView>
+
 namespace sequencergui
 {
 
-InstructionTreeSelectionController::InstructionTreeSelectionController(QObject *parent) {}
+InstructionTreeSelectionController::InstructionTreeSelectionController(QTreeView *tree_view,
+                                                                       QObject *parent)
+    : QObject(parent), m_tree_view(tree_view)
+{
+}
 
 InstructionTreeSelectionController::~InstructionTreeSelectionController() = default;
+
+void InstructionTreeSelectionController::SetSelected(const InstructionItem &item)
+{
+  auto indexes = GetViewModel()->GetIndexOfSessionItem(&item);
+  if (!indexes.empty())
+  {
+    SetSelected(FindVisibleCandidate(*m_tree_view, indexes.at(0)));
+  }
+}
+
+void InstructionTreeSelectionController::SetSelected(const QModelIndex &index)
+{
+  auto selection_model = m_tree_view->selectionModel();
+
+  QItemSelection selection;
+  selection.push_back(QItemSelectionRange(index));
+  auto flags = QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows;
+  selection_model->select(selection, flags);
+}
+
+mvvm::ViewModel *InstructionTreeSelectionController::GetViewModel()
+{
+  return dynamic_cast<mvvm::ViewModel *>(m_tree_view->model());
+}
 
 }  // namespace sequencergui

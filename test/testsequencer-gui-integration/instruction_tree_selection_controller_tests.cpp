@@ -19,15 +19,85 @@
 
 #include "sequencergui/operation/instruction_tree_selection_controller.h"
 
+#include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
+
+#include <mvvm/model/application_model.h>
+
 #include <gtest/gtest.h>
+
+#include <QTreeView>
 
 using namespace sequencergui;
 
 class InstructionTreeSelectionControllerTest : public ::testing::Test
 {
+public:
+  InstructionTreeSelectionControllerTest() : m_viewmodel(&m_model) {}
+
+  class TestModel : public mvvm::ApplicationModel
+  {
+  public:
+    TestModel() : mvvm::ApplicationModel("TestModel")
+    {
+      RegisterItem<SequenceItem>();
+      RegisterItem<WaitItem>();
+    }
+  };
+
+  TestModel m_model;
+  InstructionOperationViewModel m_viewmodel;
 };
 
-TEST_F(InstructionTreeSelectionControllerTest, InitialState)
+TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInFullyExpandedTree)
 {
-  EXPECT_EQ(1, 1);
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+
+  EXPECT_EQ(m_viewmodel.rowCount(), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  auto selection_model = tree.selectionModel();
+  InstructionTreeSelectionController controller(&tree);
+
+  // tree is fully expanded, no item selected
+  tree.expandAll();
+  EXPECT_TRUE(selection_model->selectedIndexes().empty());
+
+  // selected Wait instruction, it should be selected in the reality
+  controller.SetSelected(*wait);
+  ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
+  EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)), wait);
+}
+
+TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
+{
+  auto sequence0 = m_model.InsertItem<SequenceItem>();
+  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+
+  EXPECT_EQ(m_viewmodel.rowCount(), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  auto selection_model = tree.selectionModel();
+  InstructionTreeSelectionController controller(&tree);
+
+  // collapsing sequence1 branch
+  tree.expandAll();
+  tree.setExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0), false);
+
+  EXPECT_TRUE(selection_model->selectedIndexes().empty());
+
+  // selected Wait instruction, sequence1 should be selected in the reality
+  controller.SetSelected(*wait);
+  ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
+  EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)),
+            sequence1);
 }
