@@ -25,7 +25,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/app/app_action_manager.h>
-#include <sup/gui/app/app_actions.h>
+#include <sup/gui/app/app_action_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -71,11 +71,6 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
   connect(m_system_font_action, &QAction::triggered, this,
           &OperationMainWindowActions::OnChangeSystemFont);
 
-  m_settings_dialog_action = new QAction("Settings", this);
-  m_settings_dialog_action->setStatusTip("Summon settings dialog");
-  connect(m_settings_dialog_action, &QAction::triggered, this,
-          &OperationMainWindowActions::OnSummonSettingsDialogSettings);
-
   m_reset_settings_action = new QAction("Reset settings to defaults", this);
   m_reset_settings_action->setStatusTip(
       "Reset persistent application settings on disk to their defaults");
@@ -117,11 +112,6 @@ void OperationMainWindowActions::OnAbout()
 {
   AboutApplicationDialog dialog(mvvm::utils::FindMainWindow());
   dialog.exec();
-}
-
-void OperationMainWindowActions::OnSummonSettingsDialogSettings()
-{
-
 }
 
 void OperationMainWindowActions::OnChangeSystemFont()

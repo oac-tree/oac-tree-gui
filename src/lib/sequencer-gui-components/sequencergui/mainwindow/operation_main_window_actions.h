@@ -56,7 +56,6 @@ private:
   void CreateActions(QMainWindow* mainwindow);
   void SetupMenus(QMenuBar* menubar);
   void OnAbout();
-  void OnSummonSettingsDialogSettings();
   void OnChangeSystemFont();
   void OnResetSettings();
 
