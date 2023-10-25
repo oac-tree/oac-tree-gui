@@ -26,7 +26,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sup/gui/widgets/app_actions.h>
+#include <sup/gui/app/app_actions.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/widget_utils.h>

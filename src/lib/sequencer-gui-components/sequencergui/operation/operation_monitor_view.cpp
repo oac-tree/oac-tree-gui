@@ -36,7 +36,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/widgets/app_actions.h>
+#include <sup/gui/app/app_actions.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>

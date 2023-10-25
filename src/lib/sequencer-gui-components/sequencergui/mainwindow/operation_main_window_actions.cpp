@@ -24,8 +24,8 @@
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/widgets/app_action_manager.h>
-#include <sup/gui/widgets/app_actions.h>
+#include <sup/gui/app/app_action_manager.h>
+#include <sup/gui/app/app_actions.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
