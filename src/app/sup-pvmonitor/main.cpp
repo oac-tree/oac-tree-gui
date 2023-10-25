@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
   QApplication app(argc, argv);
 
-  sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
+  sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
   sequencergui::RegisterCustomMetaTypes();
   Q_INIT_RESOURCE(sequencericons);

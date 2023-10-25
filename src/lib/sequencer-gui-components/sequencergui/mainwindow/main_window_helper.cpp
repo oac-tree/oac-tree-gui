@@ -19,9 +19,11 @@
 
 #include "main_window_helper.h"
 
+#include <sequencergui/domain/domain_utils.h>
+
 #include <mvvm/utils/file_utils.h>
 
-#include <QFontDialog>
+#include <QDebug>
 #include <QMessageBox>
 #include <QPushButton>
 #include <filesystem>
@@ -29,12 +31,34 @@
 namespace
 {
 const std::string kProcedureExtension(".xml");
-}
+}  // namespace
 
 namespace sequencergui
 {
 
-std::vector<std::string> GetProcedureFiles(const std::string &path_name)
+bool ShouldStopRunningJobs()
+{
+  QMessageBox msgBox;
+  msgBox.setText("Some procedures are in a running state.");
+  msgBox.setInformativeText("Do you want to stop all running jobs?\n");
+
+  auto yes_button = msgBox.addButton("Yes, stop jobs and quit", QMessageBox::YesRole);
+  msgBox.addButton("Cancel", QMessageBox::NoRole);
+
+  msgBox.exec();
+  return msgBox.clickedButton() == yes_button;
+}
+
+void LoadMainPlugins()
+{
+  auto [success, message] = sequencergui::LoadPlugins();
+  if (!success)
+  {
+    QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
+  }
+}
+
+std::vector<std::string> GetProcedureFiles(const std::string& path_name)
 {
   std::vector<std::string> result;
 
@@ -53,17 +77,19 @@ std::vector<std::string> GetProcedureFiles(const std::string &path_name)
   return result;
 }
 
-bool ShouldStopRunningJobs()
+void ImportProcedures(const QString& file_name, const std::function<bool(const QString&)>& func)
 {
-  QMessageBox msgBox;
-  msgBox.setText("Some procedures are in a running state.");
-  msgBox.setInformativeText("Do you want to stop all running jobs?\n");
-
-  auto yes_button = msgBox.addButton("Yes, stop jobs and quit", QMessageBox::YesRole);
-  msgBox.addButton("Cancel", QMessageBox::NoRole);
-
-  msgBox.exec();
-  return msgBox.clickedButton() == yes_button;
+  for (const auto& name : GetProcedureFiles(file_name.toStdString()))
+  {
+    if (func(QString::fromStdString(name)))
+    {
+      qInfo() << "Import OK:" << QString::fromStdString(name);
+    }
+    else
+    {
+      qInfo() << "Failed to load procedure from file" << QString::fromStdString(name);
+    }
+  }
 }
 
 }  // namespace sequencergui

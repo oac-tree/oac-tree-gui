@@ -20,38 +20,22 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
 #define SEQUENCERGUI_MAINWINDOW_MAIN_WINDOW_HELPER_H_
 
-//! Collection of helper methods common for all main windows.
+//! @file
+//! Collection of helper methods common for all sequencer main windows.
 
-#include "sequencergui/mainwindow/app_settings.h"
-
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/splash_screen.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_types.h>
 
 #include <QApplication>
-#include <QDebug>
-#include <QMessageBox>
-#include <QMetaType>
 #include <QSettings>
-#include <memory>
+#include <functional>
 #include <string>
 #include <vector>
 
 namespace sequencergui
 {
-
-/**
- * @brief Returns vector of names representing sequencer procedures located in a given folder.
- *
- * @param path The name of the folder, or the file name itself.
- *
- * @details If given path is the procedure itself, will return a vector with this name as a single
- * element.
- */
-std::vector<std::string> GetProcedureFiles(const std::string& path_name);
 
 template <typename T>
 int RunApplication(int argc, char** argv)
@@ -63,24 +47,7 @@ int RunApplication(int argc, char** argv)
 
   const auto default_font = app.font();
 
-  if (options.system_font_psize > 0)
-  {
-    sup::gui::SetWindowStyle(options.style, options.system_font_psize, options.info);
-  }
-  else
-  {
-    auto font = sup::gui::GetAppFontFromSettings();
-    if (font.has_value())
-    {
-      sup::gui::SetWindowStyle(options.style, font.value(), options.info);
-    }
-  }
-
-  auto [success, message] = sequencergui::LoadPlugins();
-  if (!success)
-  {
-    QMessageBox::warning(nullptr, "Failed to load plugins", QString::fromStdString(message));
-  }
+  sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
   std::unique_ptr<sequencergui::SplashScreen> splash;
 
@@ -104,18 +71,8 @@ int RunApplication(int argc, char** argv)
 
     win = std::make_unique<T>();
     win->show();
-
-    for (const auto& file_name : sequencergui::GetProcedureFiles(options.file_name.toStdString()))
-    {
-      if (win->ImportProcedure(QString::fromStdString(file_name)))
-      {
-        qInfo() << "Import OK:" << QString::fromStdString(file_name);
-      }
-      else
-      {
-        qInfo() << "Failed to load procedure from file" << QString::fromStdString(file_name);
-      }
-    }
+    auto on_import = [&win](auto file_name) { return win->ImportProcedure(file_name); };
+    ImportProcedures(options.file_name, on_import);
 
     if (splash)
     {
@@ -133,6 +90,31 @@ int RunApplication(int argc, char** argv)
  * @brief Opens a message box with the question if running jobs should be stopped.
  */
 bool ShouldStopRunningJobs();
+
+/**
+ * @brief Loads plugins and provide warning dialog if something went wrong.
+ */
+void LoadMainPlugins();
+
+/**
+ * @brief Returns vector of names representing sequencer procedures located in a given folder.
+ *
+ * @param path The name of the folder, or the file name itself.
+ *
+ * @details If given path is the procedure itself, will return a vector with this name as a single
+ * element.
+ */
+
+std::vector<std::string> GetProcedureFiles(const std::string& path_name);
+
+/**
+ * @brief Loads procedures, print warnings if something went wrong.
+ *
+ * @param file_name The name of the file or directory to load procedures.
+ * @param func A function to call on every procedure found.
+ */
+void ImportProcedures(const QString& file_name,
+                      const std::function<bool(const QString& name)>& func);
 
 }  // namespace sequencergui
 
