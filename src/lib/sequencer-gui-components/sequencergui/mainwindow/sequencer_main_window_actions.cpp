@@ -20,13 +20,14 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
-#include "main_window_helper.h"
 
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/mainwindow/main_window_helper.h>
+#include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_action_manager.h>
+#include <sup/gui/app/application_helper.h>
 #include <sup/gui/components/project_handler.h>
 #include <sup/gui/components/project_handler_utils.h>
-#include <sup/gui/app/app_action_manager.h>
-#include <sup/gui/app/app_action_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

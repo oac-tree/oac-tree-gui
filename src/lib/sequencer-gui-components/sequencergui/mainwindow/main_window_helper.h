@@ -23,12 +23,13 @@
 //! Collection of helper methods common for all main windows.
 
 #include "sequencergui/mainwindow/app_settings.h"
+
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/splash_screen.h>
-#include <sequencergui/mainwindow/app_settings.h>
+#include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_types.h>
-#include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
 #include <QDebug>

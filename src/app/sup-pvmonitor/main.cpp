@@ -24,7 +24,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 
-#include <sup/gui/widgets/application_helper.h>
+#include <sup/gui/app/application_helper.h>
 
 #include <QApplication>
 #include <QMessageBox>
