@@ -66,39 +66,4 @@ bool ShouldStopRunningJobs()
   return msgBox.clickedButton() == yes_button;
 }
 
-bool ShouldResetSettingsAndRestart()
-{
-  const QString question_text =
-      "All persistent application settings (i.e. window sizes, position of splitters, etc) "
-      " will be reset to their default values. Restart is required.";
-
-  QMessageBox msgBox;
-  msgBox.setText(question_text);
-  msgBox.setInformativeText("Do you want to reset settings and restart application?\n");
-
-  auto yes_button = msgBox.addButton("Yes, please restart", QMessageBox::YesRole);
-  msgBox.addButton("Cancel", QMessageBox::NoRole);
-
-  msgBox.exec();
-  return msgBox.clickedButton() == yes_button;
-}
-
-void SummonChangeSystemFontDialog()
-{
-  bool ok;
-  QFont font = QFontDialog::getFont(&ok, QApplication::font(), nullptr);
-  if (ok)
-  {
-    // the user clicked OK and font is set to the font the user selected
-    SaveAppFontInSettings(font);
-
-    QApplication::setFont(font);
-    // the problem is static variable in mvvm::FindSizeOfLetterM, it's not enough to restart the
-    // window, the whole application should be restarted
-
-    QMessageBox::information(nullptr, "Restart is required",
-                             "Please restart application to fully apply changes");
-  }
-}
-
 }  // namespace sequencergui

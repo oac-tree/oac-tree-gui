@@ -69,7 +69,7 @@ int RunApplication(int argc, char** argv)
   }
   else
   {
-    auto font = GetAppFontFromSettings();
+    auto font = sup::gui::GetAppFontFromSettings();
     if (font.has_value())
     {
       sup::gui::SetWindowStyle(options.style, font.value(), options.info);
@@ -133,18 +133,6 @@ int RunApplication(int argc, char** argv)
  * @brief Opens a message box with the question if running jobs should be stopped.
  */
 bool ShouldStopRunningJobs();
-
-/**
- * @brief Opens message box with the question if we should reset application settings and restart
- *
- * @return Truth if reset and restart was requested, false otherwise.
- */
-bool ShouldResetSettingsAndRestart();
-
-/**
- * @brief Summons dialog to change system font.
- */
-void SummonChangeSystemFontDialog();
 
 }  // namespace sequencergui
 

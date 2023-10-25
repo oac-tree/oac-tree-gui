@@ -56,16 +56,6 @@ QColor GetConnectedColor();
  */
 QColor GetDisonnectedColor();
 
-/**
- * @brief Return application font stored in settings.
- */
-std::optional<QFont> GetAppFontFromSettings();
-
-/**
- * @brief Saves application font in settings
- */
-void SaveAppFontInSettings(const QFont& font);
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_

@@ -19,13 +19,12 @@
 
 #include "operation_main_window_actions.h"
 
-#include "main_window_helper.h"
-
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -116,12 +115,12 @@ void OperationMainWindowActions::OnAbout()
 
 void OperationMainWindowActions::OnChangeSystemFont()
 {
-  SummonChangeSystemFontDialog();
+  sup::gui::SummonChangeSystemFontDialog();
 }
 
 void OperationMainWindowActions::OnResetSettings()
 {
-  if (ShouldResetSettingsAndRestart())
+  if (sup::gui::ShouldResetSettingsAndRestart())
   {
     emit RestartApplicationRequest(sup::gui::CleanSettingsAndRestart);
   }

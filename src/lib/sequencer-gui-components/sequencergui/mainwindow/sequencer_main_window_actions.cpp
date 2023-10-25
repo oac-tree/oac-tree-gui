@@ -21,11 +21,12 @@
 
 #include "about_application_dialog.h"
 
-#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/mainwindow/main_window_helper.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/application_helper.h>
+#include <sup/gui/app/main_window_helper.h>
 #include <sup/gui/components/project_handler.h>
 #include <sup/gui/components/project_handler_utils.h>
 
@@ -145,12 +146,12 @@ void SequencerMainWindowActions::OnSummonSettingsDialogSettings() {}
 
 void SequencerMainWindowActions::OnChangeSystemFont()
 {
-  SummonChangeSystemFontDialog();
+  sup::gui::SummonChangeSystemFontDialog();
 }
 
 void SequencerMainWindowActions::OnResetSettings()
 {
-  if (ShouldResetSettingsAndRestart())
+  if (sup::gui::ShouldResetSettingsAndRestart())
   {
     emit RestartApplicationRequest(sup::gui::CleanSettingsAndRestart);
   }
