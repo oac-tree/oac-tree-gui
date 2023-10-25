@@ -166,7 +166,7 @@ bool SequencerMainWindow::CanCloseApplication()
   return false;
 }
 
-void SequencerMainWindow::OnRestartRequest(AppExitCode exit_code)
+void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 {
   if (CanCloseApplication())
   {

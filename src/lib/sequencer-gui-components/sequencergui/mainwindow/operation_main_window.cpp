@@ -115,7 +115,7 @@ bool OperationMainWindow::CanCloseApplication()
   return true;
 }
 
-void OperationMainWindow::OnRestartRequest(AppExitCode exit_code)
+void OperationMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 {
   if (CanCloseApplication())
   {

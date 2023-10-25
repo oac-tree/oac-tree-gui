@@ -22,10 +22,12 @@
 
 //! Collection of helper methods common for all main windows.
 
+#include "sequencergui/mainwindow/app_settings.h"
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/mainwindow/command_line_options.h>
 #include <sequencergui/mainwindow/splash_screen.h>
+#include <sequencergui/mainwindow/app_settings.h>
+#include <sup/gui/app/main_window_types.h>
 #include <sup/gui/widgets/application_helper.h>
 
 #include <QApplication>
@@ -92,7 +94,7 @@ int RunApplication(int argc, char** argv)
   std::unique_ptr<T> win;
   do
   {
-    if (exit_code == CleanSettingsAndRestart)
+    if (exit_code == sup::gui::CleanSettingsAndRestart)
     {
       QSettings settings;
       settings.clear();
@@ -121,7 +123,7 @@ int RunApplication(int argc, char** argv)
     }
 
     exit_code = app.exec();
-  } while (exit_code != NormalExit);
+  } while (exit_code != sup::gui::NormalExit);
 
   return exit_code;
 }

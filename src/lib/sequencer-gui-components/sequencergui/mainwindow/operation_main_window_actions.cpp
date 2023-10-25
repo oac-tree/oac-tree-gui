@@ -133,7 +133,7 @@ void OperationMainWindowActions::OnResetSettings()
 {
   if (ShouldResetSettingsAndRestart())
   {
-    emit RestartApplicationRequest(CleanSettingsAndRestart);
+    emit RestartApplicationRequest(sup::gui::CleanSettingsAndRestart);
   }
 }
 

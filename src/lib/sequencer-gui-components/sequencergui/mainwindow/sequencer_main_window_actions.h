@@ -20,8 +20,9 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
 #define SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_ACTIONS_H_
 
+#include <sup/gui/app/main_window_types.h>
+
 #include <QObject>
-#include <sequencergui/mainwindow/app_settings.h>
 
 class QMainWindow;
 class QAction;
@@ -54,7 +55,7 @@ public:
   bool CloseCurrentProject() const;
 
 signals:
-  void RestartApplicationRequest(AppExitCode);
+  void RestartApplicationRequest(sup::gui::AppExitCode);
 
 private:
   void CreateActions(QMainWindow* mainwindow);

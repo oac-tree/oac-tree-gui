@@ -20,8 +20,9 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
 #define SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_ACTIONS_H_
 
+#include <sup/gui/app/main_window_types.h>
+
 #include <QObject>
-#include <sequencergui/mainwindow/app_settings.h>
 
 class QMainWindow;
 class QAction;
@@ -49,7 +50,7 @@ public:
 
 signals:
   void ImportJobRequest();
-  void RestartApplicationRequest(AppExitCode);
+  void RestartApplicationRequest(sup::gui::AppExitCode);
 
 private:
   void CreateActions(QMainWindow* mainwindow);
@@ -67,7 +68,6 @@ private:
   QAction* m_settings_dialog_action{nullptr};
   QAction* m_reset_settings_action{nullptr};
 };
-
 
 }  // namespace sequencergui
 

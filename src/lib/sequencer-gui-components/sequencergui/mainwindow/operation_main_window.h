@@ -22,7 +22,7 @@
 
 #include <QMainWindow>
 #include <memory>
-#include <sequencergui/mainwindow/app_settings.h>
+#include <sup/gui/app/main_window_types.h>
 
 class QCloseEvent;
 
@@ -54,7 +54,7 @@ private:
   void ReadSettings();
   void WriteSettings();
   bool CanCloseApplication();
-  void OnRestartRequest(AppExitCode  exit_code);
+  void OnRestartRequest(sup::gui::AppExitCode  exit_code);
 
   std::unique_ptr<ApplicationModels> m_models;
 

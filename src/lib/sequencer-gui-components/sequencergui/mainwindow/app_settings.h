@@ -21,18 +21,11 @@
 #define SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
 
 #include <QColor>
-#include <optional>
 #include <QFont>
+#include <optional>
 
 namespace sequencergui
 {
-
-enum AppExitCode
-{
-  NormalExit,
-  Restart,
-  CleanSettingsAndRestart
-};
 
 enum class BehaviorTreeStyle
 {
