@@ -93,7 +93,6 @@ void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
   auto preferences_menu = file_menu->addMenu("Preferences");
   preferences_menu->setToolTipsVisible(true);
   preferences_menu->addAction(m_system_font_action);
-  preferences_menu->addAction(m_settings_dialog_action);
   preferences_menu->addSeparator();
   preferences_menu->addAction(m_reset_settings_action);
 

@@ -112,6 +112,7 @@ bool OperationMainWindow::CanCloseApplication()
     }
   }
 
+  WriteSettings();
   return true;
 }
 
