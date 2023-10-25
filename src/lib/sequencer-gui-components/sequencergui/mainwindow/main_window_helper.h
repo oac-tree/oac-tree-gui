@@ -28,6 +28,8 @@
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_types.h>
 
+#include <mvvm/widgets/widget_utils.h>
+
 #include <QApplication>
 #include <QSettings>
 #include <functional>
@@ -66,7 +68,7 @@ int RunApplication(int argc, char** argv)
     {
       QSettings settings;
       settings.clear();
-      QApplication::setFont(default_font);
+      mvvm::utils::SetApplicationFont(default_font);
     }
 
     win = std::make_unique<T>();

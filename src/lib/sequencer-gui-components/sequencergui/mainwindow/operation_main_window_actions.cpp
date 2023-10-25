@@ -22,8 +22,8 @@
 #include <sequencergui/mainwindow/about_application_dialog.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/widgets/style_utils.h>
-#include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/main_window_helper.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -65,7 +65,7 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_about_action->setStatusTip("About application");
   connect(m_about_action, &QAction::triggered, this, &OperationMainWindowActions::OnAbout);
 
-  m_system_font_action = new QAction("System font", this);
+  m_system_font_action = new QAction("System font (restart is required)", this);
   m_system_font_action->setStatusTip("Summon font settings dialog");
   connect(m_system_font_action, &QAction::triggered, this,
           &OperationMainWindowActions::OnChangeSystemFont);
@@ -114,7 +114,10 @@ void OperationMainWindowActions::OnAbout()
 
 void OperationMainWindowActions::OnChangeSystemFont()
 {
-  sup::gui::SummonChangeSystemFontDialog();
+  if (sup::gui::SummonChangeSystemFontDialog())
+  {
+    emit RestartApplicationRequest(sup::gui::Restart);
+  }
 }
 
 void OperationMainWindowActions::OnResetSettings()

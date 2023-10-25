@@ -74,15 +74,10 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_about_action->setStatusTip("About application");
   connect(m_about_action, &QAction::triggered, this, &SequencerMainWindowActions::OnAbout);
 
-  m_system_font_action = new QAction("Set system font", this);
+  m_system_font_action = new QAction("Set system font (restart is required)", this);
   m_system_font_action->setStatusTip("Summon font settings dialog");
   connect(m_system_font_action, &QAction::triggered, this,
           &SequencerMainWindowActions::OnChangeSystemFont);
-
-  m_settings_dialog_action = new QAction("Settings", this);
-  m_settings_dialog_action->setStatusTip("Summon settings dialog");
-  connect(m_settings_dialog_action, &QAction::triggered, this,
-          &SequencerMainWindowActions::OnSummonSettingsDialogSettings);
 
   m_reset_settings_action = new QAction("Reset settings to defaults", this);
   m_reset_settings_action->setStatusTip(
@@ -119,7 +114,6 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   auto preferences_menu = file_menu->addMenu("Preferences");
   preferences_menu->setToolTipsVisible(true);
   preferences_menu->addAction(m_system_font_action);
-  preferences_menu->addAction(m_settings_dialog_action);
   preferences_menu->addSeparator();
   preferences_menu->addAction(m_reset_settings_action);
 
@@ -146,7 +140,10 @@ void SequencerMainWindowActions::OnSummonSettingsDialogSettings() {}
 
 void SequencerMainWindowActions::OnChangeSystemFont()
 {
-  sup::gui::SummonChangeSystemFontDialog();
+  if (sup::gui::SummonChangeSystemFontDialog())
+  {
+    emit RestartApplicationRequest(sup::gui::Restart);
+  }
 }
 
 void SequencerMainWindowActions::OnResetSettings()
