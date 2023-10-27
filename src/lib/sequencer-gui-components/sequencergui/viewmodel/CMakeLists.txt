@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   job_log_viewmodel.h
   procedure_viewmodel.cpp
   procedure_viewmodel.h
+  viewmodel_helper.cpp
+  viewmodel_helper.h
   workspace_editor_viewmodel.cpp
   workspace_editor_viewmodel.h
   workspace_operation_viewmodel.cpp
