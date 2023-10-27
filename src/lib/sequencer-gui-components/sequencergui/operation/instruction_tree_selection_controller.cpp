@@ -22,11 +22,12 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/viewmodel/viewmodel_helper.h>
 #include <sequencergui/widgets/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
+#include <mvvm/viewmodel/viewmodel_utils.h>
 
 #include <QItemSelection>
 #include <QItemSelectionModel>
@@ -80,19 +81,21 @@ void InstructionTreeSelectionController::SetDefaultExpandState()
     throw RuntimeException("Instruction container is not initialised");
   }
 
-  auto func = [this, viewmodel](const InstructionItem *item)
+  auto on_index = [this, viewmodel](const auto &index)
   {
-    auto index = viewmodel->GetIndexOfSessionItem(item);
-    if (!index.empty())
+    if (!index.isValid())
     {
-      m_tree_view->setExpanded(index.at(0), !IsCollapsed(*item));
+      return;
+    }
+
+    if (auto instruction =
+            mvvm::utils::GetItemFromView<InstructionItem>(viewmodel->itemFromIndex(index));
+        instruction)
+    {
+      m_tree_view->setExpanded(index, !IsCollapsed(*instruction));
     }
   };
-
-  for (auto instruction : m_instruction_container->GetInstructions())
-  {
-    IterateInstruction<const InstructionItem *>(instruction, func);
-  }
+  IterateFirstColumn(*viewmodel, QModelIndex(), on_index);
 }
 
 void InstructionTreeSelectionController::SetSelected(const QModelIndex &index)
