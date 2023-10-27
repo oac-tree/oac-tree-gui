@@ -114,7 +114,7 @@ void SequencerMainWindow::InitComponents()
 
 void SequencerMainWindow::ReadSettings()
 {
-  QSettings settings;
+  const QSettings settings;
   const auto default_size = QSize(mvvm::utils::UnitSize(80), mvvm::utils::UnitSize(60));
   resize(settings.value(kWindowSizeSettingName, default_size).toSize());
 

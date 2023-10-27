@@ -30,6 +30,7 @@
 #include <QAction>
 #include <QRegularExpression>
 #include <QScrollBar>
+#include <QSettings>
 #include <QSortFilterProxyModel>
 #include <QToolButton>
 #include <QTreeView>
@@ -38,12 +39,16 @@
 
 namespace
 {
+const QString kGroupName("MessagePanel");
+const QString kUncheckedSeveritiesSettingName = kGroupName + "/" + "unchecked";
+
 std::vector<sequencergui::Severity> kSeveritiesToSelect = {
     sequencergui::Severity::kEmergency, sequencergui::Severity::kAlert,
     sequencergui::Severity::kCritical,  sequencergui::Severity::kError,
     sequencergui::Severity::kWarning,   sequencergui::Severity::kNotice,
     sequencergui::Severity::kInfo,      sequencergui::Severity::kDebug,
     sequencergui::Severity::kTrace};
+
 }  // namespace
 
 namespace sequencergui
@@ -55,9 +60,9 @@ MessagePanel::MessagePanel(QWidget* parent)
     , m_view_model(new JobLogViewModel(nullptr))
     , m_proxy_model(new QSortFilterProxyModel(this))
     , m_severity_selector_action(new QWidgetAction(this))
-    , m_severity_selector_menu(CreateSeveritySelectorMenu())
 {
   setWindowTitle("LOG");
+  ReadSettings();
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -78,15 +83,51 @@ MessagePanel::MessagePanel(QWidget* parent)
   SetupAutoscroll();
 }
 
-MessagePanel::~MessagePanel() = default;
+MessagePanel::~MessagePanel()
+{
+  WriteSettings();
+}
 
 void MessagePanel::SetLog(JobLog* job_log)
 {
   m_view_model->SetLog(job_log);
 }
 
+void MessagePanel::ReadSettings()
+{
+  const QSettings settings;
+  if (settings.contains(kUncheckedSeveritiesSettingName))
+  {
+    m_unchecked_severitites =
+        settings.value(kUncheckedSeveritiesSettingName, true).value<QStringList>();
+  }
+  else
+  {
+    m_unchecked_severitites.push_back(
+        QString::fromStdString(SeverityToString(sequencergui::Severity::kDebug)));
+  }
+}
+
+void MessagePanel::WriteSettings()
+{
+  m_unchecked_severitites.clear();
+  QSettings settings;
+  // collecting the last status of checked severities
+  for (auto [severity, status] : m_show_severity_flag)
+  {
+    if (!status)
+    {
+      m_unchecked_severitites.push_back(QString::fromStdString(SeverityToString(severity)));
+    }
+  }
+
+  settings.setValue(kUncheckedSeveritiesSettingName, m_unchecked_severitites);
+}
+
 std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()
 {
+  m_severity_selector_menu = std::move(CreateSeveritySelectorMenu());
+
   auto result = std::make_unique<QToolButton>();
   result->setText("Severity");
   result->setIcon(styleutils::GetIcon("cog-outline"));
@@ -103,10 +144,14 @@ std::unique_ptr<SteadyMenu> MessagePanel::CreateSeveritySelectorMenu()
 
   for (auto severity : kSeveritiesToSelect)
   {
-    m_show_severity_flag[severity] = true;
-    auto action = result->addAction(QString::fromStdString(SeverityToString(severity)));
+    auto name = QString::fromStdString(SeverityToString(severity));
+    auto action = result->addAction(name);
+
+    m_show_severity_flag[severity] = !m_unchecked_severitites.contains(name);
+
     action->setCheckable(true);
-    action->setChecked(true);
+    action->setChecked(!m_unchecked_severitites.contains(name));
+
     auto on_action = [this, severity, action]()
     {
       m_show_severity_flag[severity] = action->isChecked();

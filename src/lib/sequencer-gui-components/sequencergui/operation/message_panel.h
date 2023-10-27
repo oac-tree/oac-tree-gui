@@ -25,6 +25,7 @@
 #include <QWidget>
 #include <map>
 #include <memory>
+#include <QStringList>
 
 class QAction;
 class QTreeView;
@@ -57,6 +58,8 @@ public:
   void SetLog(JobLog* job_log);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   std::unique_ptr<QWidget> CreateSeveritySelectorWidget();
   std::unique_ptr<SteadyMenu> CreateSeveritySelectorMenu();
 
@@ -81,6 +84,7 @@ private:
 
   //! controls if the tree was scrolled to the bottom to make auto scroll
   bool m_tree_at_the_bottom{false};
+  QStringList m_unchecked_severitites;
 };
 }  // namespace sequencergui
 
