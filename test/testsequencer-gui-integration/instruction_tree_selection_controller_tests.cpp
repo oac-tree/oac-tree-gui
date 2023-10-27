@@ -118,7 +118,7 @@ TEST_F(InstructionTreeSelectionControllerTest, SetDefaultExpandState)
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = m_model.InsertItem<SequenceItem>(container);
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
-  sequence1->SetProperty(itemconstants::kShowCollapsed, true);
+  sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
   auto wait = m_model.InsertItem<SequenceItem>(sequence1);
 
   EXPECT_EQ(m_viewmodel.rowCount(), 1);

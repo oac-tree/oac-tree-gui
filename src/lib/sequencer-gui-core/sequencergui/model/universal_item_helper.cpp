@@ -91,12 +91,11 @@ void AddShowCollapsedProperty(InstructionItem &item)
   static const std::vector<std::string> collapsed_by_default{
       domainconstants::kIncludeInstructionType, domainconstants::kIncludeProcedureInstructionType};
 
-  if (mvvm::utils::HasTag(item, itemconstants::kChildInstructions))
+  if (mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute))
   {
-    auto property = item.AddProperty(itemconstants::kShowCollapsed, false)
-                        ->SetDisplayName("Show collapsed")
-                        ->SetToolTip("Show child branch collapsed duing procedure execution");
-
+    auto property = item.GetItem(domainconstants::kShowCollapsedAttribute);
+    property->SetDisplayName("Show collapsed");
+    property->SetToolTip("Show child branch collapsed duing procedure execution");
     if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
     {
       property->SetData(true);
@@ -106,8 +105,8 @@ void AddShowCollapsedProperty(InstructionItem &item)
 
 bool IsCollapsed(const InstructionItem &item)
 {
-  return mvvm::utils::HasTag(item, itemconstants::kShowCollapsed)
-             ? item.Property<bool>(itemconstants::kShowCollapsed)
+  return mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute)
+             ? item.Property<bool>(domainconstants::kShowCollapsedAttribute)
              : false;
 }
 

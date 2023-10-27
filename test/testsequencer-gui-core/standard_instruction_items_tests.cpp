@@ -115,7 +115,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   IncludeItem item;
   item.SetPath("def");
 
-  EXPECT_EQ(item.Property<bool>(itemconstants::kShowCollapsed), true);
+  EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
@@ -178,7 +178,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
   EXPECT_EQ(item.GetSuccessThreshold(), 0);
   EXPECT_EQ(item.GetFailureThreshold(), 1);
 
-  EXPECT_EQ(item.Property<bool>(itemconstants::kShowCollapsed), false);
+  EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), false);
 
   item.SetSuccessThreshold(42);
   EXPECT_EQ(item.GetSuccessThreshold(), 42);
@@ -301,19 +301,21 @@ TEST_F(StandardInstructionItemsTest, SequenceItem)
 
 TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 {
-  {  // when IsRoot = true
+  {  // when IsRoot and collapsed = true
     SequenceItem item;
     item.SetIsRootFlag(true);
+    item.SetProperty(domainconstants::kShowCollapsedAttribute, true);
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
     EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
     // validating that no SessionItem related properties were propagated to the domain
-    std::vector<std::pair<std::string, std::string>> expected = {{"isRoot", "true"}};
+    std::vector<std::pair<std::string, std::string>> expected = {{"isRoot", "true"},
+                                                                 {"showCollapsed", "true"}};
     EXPECT_EQ(domain_item->GetStringAttributes(), expected);
   }
 
-  {  // when IsRoot = false
+  {  // when IsRoot and collapsed = false
     SequenceItem item;
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);

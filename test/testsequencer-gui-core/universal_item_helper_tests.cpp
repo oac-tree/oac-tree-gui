@@ -88,7 +88,7 @@ TEST_F(UniversalItemHelperTest, IsCollapsed)
   SequenceItem item;
   EXPECT_FALSE(IsCollapsed(item));
 
-  item.SetProperty(itemconstants::kShowCollapsed, true);
+  item.SetProperty(domainconstants::kShowCollapsedAttribute, true);
   EXPECT_TRUE(IsCollapsed(item));
 }
 
@@ -102,8 +102,8 @@ TEST_F(UniversalItemHelperTest, GetCollapsedItems)
   auto collapsed = GetCollapsedItems(container);
   EXPECT_TRUE(collapsed.empty());
 
-  sequence0->SetProperty(itemconstants::kShowCollapsed, true);
-  sequence1->SetProperty(itemconstants::kShowCollapsed, true);
+  sequence0->SetProperty(domainconstants::kShowCollapsedAttribute, true);
+  sequence1->SetProperty(domainconstants::kShowCollapsedAttribute, true);
 
   collapsed = GetCollapsedItems(container);
   EXPECT_EQ(collapsed, std::vector<const InstructionItem*>({sequence0, sequence1}));

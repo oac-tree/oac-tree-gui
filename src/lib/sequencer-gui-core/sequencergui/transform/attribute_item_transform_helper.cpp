@@ -41,7 +41,10 @@ bool IsSuitableForDomainAttribute(const std::string &attribute_string,
   const bool not_isroot_false =
       !(attribute_string == sequencergui::domainconstants::kIsRootAttribute
         && attribute_value == "false");
-  return not_empty && not_isroot_false;
+  const bool not_is_collapsed =
+      !(attribute_string == sequencergui::domainconstants::kShowCollapsedAttribute
+        && attribute_value == "false");
+  return not_empty && not_isroot_false && not_is_collapsed;
 }
 
 namespace sequencergui
@@ -58,7 +61,7 @@ bool IsReferenceAttribute(const std::string &attribute_value)
 }
 
 AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
-                                           mvvm::CompoundItem &item)
+                                         mvvm::CompoundItem &item)
 {
   // Use attribute name for display name and tag name of the new property item.
   auto property = item.AddProperty<AttributeItem>(attr.GetName());
@@ -69,7 +72,7 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
 
 template <typename T>
 void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
-                                      AttributeItem &item)
+                                    AttributeItem &item)
 {
   auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
@@ -88,11 +91,11 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
 }
 
 template void SetPropertyFromDomainAttribute<variable_t>(const variable_t &domain,
-                                                           const std::string &attribute_name,
-                                                           AttributeItem &item);
+                                                         const std::string &attribute_name,
+                                                         AttributeItem &item);
 template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t &domain,
-                                                              const std::string &attribute_name,
-                                                              AttributeItem &item);
+                                                            const std::string &attribute_name,
+                                                            AttributeItem &item);
 
 template <typename T>
 void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
@@ -110,10 +113,9 @@ void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_
 }
 
 template void SetDomainAttribute<variable_t>(const AttributeItem &item,
-                                               const std::string &attribute_name,
-                                               variable_t &domain);
+                                             const std::string &attribute_name, variable_t &domain);
 template void SetDomainAttribute<instruction_t>(const AttributeItem &item,
-                                                  const std::string &attribute_name,
-                                                  instruction_t &domain);
+                                                const std::string &attribute_name,
+                                                instruction_t &domain);
 
 }  // namespace sequencergui
