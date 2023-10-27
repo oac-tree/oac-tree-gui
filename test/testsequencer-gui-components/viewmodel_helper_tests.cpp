@@ -82,10 +82,9 @@ public:
   }
 };
 
-TEST_F(ViewmodelHelperTest, InterateIterateFirstColumn)
+TEST_F(ViewmodelHelperTest, IterateFirstColumn)
 {
   auto data = std::move(CreateTestData());
-  EXPECT_EQ(1, 1);
 
   std::vector<QModelIndex> visited_indices;
   auto on_index = [&visited_indices](const auto& index) { visited_indices.push_back(index); };
