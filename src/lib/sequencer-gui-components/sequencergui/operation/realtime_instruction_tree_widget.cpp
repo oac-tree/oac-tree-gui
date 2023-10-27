@@ -77,6 +77,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  m_tree_view->setItemDelegate(m_delegate.get());
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &RealTimeInstructionTreeWidget::OnCustomContextMenuRequested);
 
@@ -97,9 +98,10 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_procedure = procedure_item;
 
-  m_component_provider->SetItem(procedure_item ? procedure_item->GetInstructionContainer()
-                                               : nullptr);
-  m_tree_view->setItemDelegate(m_delegate.get());
+  auto container = procedure_item ? procedure_item->GetInstructionContainer() : nullptr;
+
+  m_component_provider->SetItem(container);
+  m_selection_controller->SetInstructionContainer(container);
 
   if (procedure_item)
   {
@@ -151,7 +153,7 @@ void RealTimeInstructionTreeWidget::WriteSettings()
 
 void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
 {
-  m_tree_view->expandAll();
+  m_selection_controller->SetDefaultExpandState();
 
   if (m_custom_header->HasFavoriteState())
   {
@@ -186,19 +188,7 @@ void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint &p
   selective_expand_action->setToolTip(
       "Expand all except instructions with property 'show as collapsed' set.");
 
-  auto on_action = [this]()
-  {
-    m_tree_view->expandAll();
-    auto items = GetCollapsedItems(*m_procedure->GetInstructionContainer());
-    for (const auto item : items)
-    {
-      auto index = m_component_provider->GetViewModel()->GetIndexOfSessionItem(item);
-      if (!index.empty())
-      {
-        m_tree_view->setExpanded(index.at(0), false);
-      }
-    }
-  };
+  auto on_action = [this]() { m_selection_controller->SetDefaultExpandState(); };
   QObject::connect(selective_expand_action, &QAction::triggered, this, on_action);
 
   menu.exec(m_tree_view->mapToGlobal(pos));
