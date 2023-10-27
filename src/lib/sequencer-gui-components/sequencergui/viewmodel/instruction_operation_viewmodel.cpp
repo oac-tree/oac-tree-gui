@@ -70,7 +70,9 @@ public:
     }
     else
     {
-      result.emplace_back(mvvm::CreateDisplayNameViewItem(instruction));
+      result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+      result.emplace_back(mvvm::CreateLabelViewItem(item));
+      result.emplace_back(mvvm::CreateLabelViewItem(item));
     }
     return result;
   }
