@@ -19,7 +19,11 @@
 
 #include "instruction_tree_selection_controller.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/iterate_helper.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/widgets/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
@@ -37,7 +41,14 @@ InstructionTreeSelectionController::InstructionTreeSelectionController(QTreeView
 {
 }
 
-mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(const mvvm::SessionItem *item)
+void InstructionTreeSelectionController::SetInstructionContainer(
+    InstructionContainerItem *instruction_container)
+{
+  m_instruction_container = instruction_container;
+}
+
+mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(
+    const mvvm::SessionItem *item)
 {
   auto indexes = GetViewModel()->GetIndexOfSessionItem(item);
   if (!indexes.empty())
@@ -60,6 +71,30 @@ void InstructionTreeSelectionController::SetSelected(const InstructionItem &item
   }
 }
 
+void InstructionTreeSelectionController::SetDefaultExpandState()
+{
+  auto viewmodel = GetViewModel();
+
+  if (!m_instruction_container)
+  {
+    throw RuntimeException("Instruction container is not initialised");
+  }
+
+  auto func = [this, viewmodel](const InstructionItem *item)
+  {
+    auto index = viewmodel->GetIndexOfSessionItem(item);
+    if (!index.empty())
+    {
+      m_tree_view->setExpanded(index.at(0), !IsCollapsed(*item));
+    }
+  };
+
+  for (auto instruction : m_instruction_container->GetInstructions())
+  {
+    IterateInstruction<const InstructionItem *>(instruction, func);
+  }
+}
+
 void InstructionTreeSelectionController::SetSelected(const QModelIndex &index)
 {
   auto selection_model = m_tree_view->selectionModel();
@@ -72,7 +107,14 @@ void InstructionTreeSelectionController::SetSelected(const QModelIndex &index)
 
 mvvm::ViewModel *InstructionTreeSelectionController::GetViewModel()
 {
-  return dynamic_cast<mvvm::ViewModel *>(m_tree_view->model());
+  auto result = dynamic_cast<mvvm::ViewModel *>(m_tree_view->model());
+
+  if (!result)
+  {
+    throw RuntimeException("The viewmodel is not initialized");
+  }
+
+  return result;
 }
 
 }  // namespace sequencergui

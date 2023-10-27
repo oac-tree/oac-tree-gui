@@ -28,12 +28,13 @@ namespace mvvm
 {
 class ViewModel;
 class SessionItem;
-}
+}  // namespace mvvm
 
 namespace sequencergui
 {
 
 class InstructionItem;
+class InstructionContainerItem;
 
 /**
  * @brief The InstructionTreeSelectionController helper class provides logic for instruction
@@ -51,15 +52,26 @@ public:
   explicit InstructionTreeSelectionController(QTreeView* tree_view, QObject* parent = nullptr);
   ~InstructionTreeSelectionController() override;
 
+  void SetInstructionContainer(InstructionContainerItem* instruction_container);
+
   mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item);
 
   void SetSelected(const InstructionItem& item);
+
+  /**
+   * @brief Sets the instruction tree view to the default expand state.
+   *
+   * @details The default expand state is what follows from is_collapsed property on board of
+   * instruction items.
+   */
+  void SetDefaultExpandState();
 
 private:
   void SetSelected(const QModelIndex& index);
   mvvm::ViewModel* GetViewModel();
 
   QTreeView* m_tree_view{nullptr};
+  InstructionContainerItem* m_instruction_container{nullptr};
 };
 
 }  // namespace sequencergui

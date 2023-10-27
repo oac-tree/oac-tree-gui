@@ -19,6 +19,9 @@
 
 #include "sequencergui/operation/instruction_tree_selection_controller.h"
 
+#include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
@@ -105,4 +108,50 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
   ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
   EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)),
             sequence1);
+}
+
+//! Validating SetDefaultExpandState method. We create a procedure with nestes sequence and mark it
+//! as collapsed. Tree view should have corresponding branches reflecting this state.
+
+TEST_F(InstructionTreeSelectionControllerTest, SetDefaultExpandState)
+{
+  auto container = m_model.InsertItem<InstructionContainerItem>();
+  auto sequence0 = m_model.InsertItem<SequenceItem>(container);
+  auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+  sequence1->SetProperty(itemconstants::kShowCollapsed, true);
+  auto wait = m_model.InsertItem<SequenceItem>(sequence1);
+
+  EXPECT_EQ(m_viewmodel.rowCount(), 1);
+  EXPECT_EQ(m_viewmodel.columnCount(), 3);
+
+  QTreeView tree;
+  tree.setModel(&m_viewmodel);
+  auto selection_model = tree.selectionModel();
+
+  InstructionTreeSelectionController controller(&tree);
+
+  // expanding all
+  tree.expandAll();
+
+  // container should be set first
+  EXPECT_THROW(controller.SetDefaultExpandState(), RuntimeException);
+
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
+
+  controller.SetInstructionContainer(container);
+
+  // checking expand state when initially everything was expanding
+  EXPECT_NO_THROW(controller.SetDefaultExpandState());
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
+  EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
+
+  // checking expand state when initially everything was collapsed
+  tree.collapseAll();
+  controller.SetDefaultExpandState();
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence0).at(0)));
+  EXPECT_FALSE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(sequence1).at(0)));
+  EXPECT_TRUE(tree.isExpanded(m_viewmodel.GetIndexOfSessionItem(wait).at(0)));
 }
