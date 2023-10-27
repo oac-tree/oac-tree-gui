@@ -58,6 +58,8 @@ public:
 
   QToolBar* GetToolBar() const;
 
+  int GetCurrentTickTimeout();
+
 signals:
   void runRequest();
   void pauseRequest();

@@ -39,6 +39,8 @@ public:
   explicit MonitorRealTimeToolBar(QWidget* parent = nullptr);
   ~MonitorRealTimeToolBar() override;
 
+  int GetCurrentTickTimeout();
+
 signals:
   void runRequest();
   void pauseRequest();
@@ -48,6 +50,8 @@ signals:
   void scrollToSelectionRequest(bool);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
   std::unique_ptr<QMenu> CreateDelayMenu();
   std::unique_ptr<QMenu> CreateSettingsMenu();
 
@@ -59,6 +63,8 @@ private:
   QToolButton* m_settings_button{nullptr};
   std::unique_ptr<QMenu> m_delay_menu;
   std::unique_ptr<QMenu> m_settings_menu;
+
+  int m_current_tick_timeout{0};
 };
 
 }  // namespace sequencergui

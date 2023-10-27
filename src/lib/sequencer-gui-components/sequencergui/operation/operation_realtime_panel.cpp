@@ -96,6 +96,11 @@ QToolBar *OperationRealTimePanel::GetToolBar() const
   return m_tool_bar;
 }
 
+int OperationRealTimePanel::GetCurrentTickTimeout()
+{
+  return m_tool_bar->GetCurrentTickTimeout();
+}
+
 void OperationRealTimePanel::ReadSettings()
 {
   const QSettings settings;

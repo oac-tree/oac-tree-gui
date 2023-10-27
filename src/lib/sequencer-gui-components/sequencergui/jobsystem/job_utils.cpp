@@ -23,9 +23,13 @@
 #include <map>
 #include <numeric>
 #include <stdexcept>
+#include <QString>
 
 namespace
 {
+
+const QString kGroupName("OperationMonitorView");
+const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 
 const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     {sequencergui::RunnerStatus::kIdle, "Idle"},
@@ -36,6 +40,7 @@ const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     {sequencergui::RunnerStatus::kStopping, "Stopping"},
     {sequencergui::RunnerStatus::kStopped, "Stopped"},
     {sequencergui::RunnerStatus::kFailed, "Failed"}};
+
 }  // namespace
 
 namespace sequencergui
@@ -61,7 +66,7 @@ RunnerStatus GetRunnerStatus(const std::string &status_name)
 
 int GetDefaultTickTimeoutMsc()
 {
-  const int kDefaultTimeout{200};
+  const int kDefaultTimeout{20};
   return kDefaultTimeout;
 }
 

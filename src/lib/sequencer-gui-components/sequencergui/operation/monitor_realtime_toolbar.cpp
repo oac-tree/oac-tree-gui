@@ -27,10 +27,15 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QPushButton>
+#include <QSettings>
 #include <QToolButton>
 
 namespace
 {
+
+const QString kGroupName("MonitorRealTimeToolBar");
+const QString kTickTimeOutSettingName = kGroupName + "/" + "tick_timeout";
+
 QString GetDelayText(int delay)
 {
   QString name = delay < 1000 ? QString("%1 msec").arg(delay) : QString("%1 sec").arg(delay / 1000);
@@ -51,6 +56,8 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
     , m_delay_menu(CreateDelayMenu())
     , m_settings_menu(CreateSettingsMenu())
 {
+  ReadSettings();
+
   setIconSize(styleutils::ToolBarIconSize());
 
   m_run_button->setText("Run");
@@ -81,7 +88,7 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_stop_button);
 
-  m_delay_button->setText(GetDelayText(GetDefaultTickTimeoutMsc()));
+  m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
   m_delay_button->setIcon(styleutils::GetIcon("speedometer-slow"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
@@ -98,7 +105,28 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   addWidget(m_settings_button);
 }
 
-MonitorRealTimeToolBar::~MonitorRealTimeToolBar() = default;
+void MonitorRealTimeToolBar::ReadSettings()
+{
+  QSettings settings;
+  m_current_tick_timeout =
+      settings.value(kTickTimeOutSettingName, GetDefaultTickTimeoutMsc()).toInt();
+}
+
+void MonitorRealTimeToolBar::WriteSettings()
+{
+  QSettings settings;
+  settings.setValue(kTickTimeOutSettingName, m_current_tick_timeout);
+}
+
+MonitorRealTimeToolBar::~MonitorRealTimeToolBar()
+{
+  WriteSettings();
+}
+
+int MonitorRealTimeToolBar::GetCurrentTickTimeout()
+{
+  return m_current_tick_timeout;
+}
 
 std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
 {
@@ -113,6 +141,7 @@ std::unique_ptr<QMenu> MonitorRealTimeToolBar::CreateDelayMenu()
     auto on_action = [this, delay, name]()
     {
       m_delay_button->setText(name);
+      m_current_tick_timeout = delay;
       emit changeDelayRequest(delay);
     };
     connect(action, &QAction::triggered, this, on_action);
