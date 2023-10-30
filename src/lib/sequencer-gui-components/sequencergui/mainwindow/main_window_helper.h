@@ -39,7 +39,17 @@
 namespace sequencergui
 {
 
-template <typename T>
+/**
+ * @brief Loads plugins and provide warning dialog if something went wrong.
+ */
+void LoadMainPlugins();
+
+/**
+ * @brief Create QApplication and main window.
+ * @tparam MainWindowT The type of main window to create.
+ */
+
+template <typename MainWindowT>
 int RunApplication(int argc, char** argv)
 {
   auto options = sequencergui::ParseOptions(argc, argv);
@@ -48,6 +58,8 @@ int RunApplication(int argc, char** argv)
   QApplication app(argc, argv);
 
   const auto default_font = app.font();
+
+  LoadMainPlugins();
 
   sup::gui::SetupApplication(options.system_font_psize, options.style, options.info);
 
@@ -61,7 +73,7 @@ int RunApplication(int argc, char** argv)
   }
 
   int exit_code{0};
-  std::unique_ptr<T> win;
+  std::unique_ptr<MainWindowT> win;
   do
   {
     if (exit_code == sup::gui::CleanSettingsAndRestart)
@@ -71,7 +83,7 @@ int RunApplication(int argc, char** argv)
       mvvm::utils::SetApplicationFont(default_font);
     }
 
-    win = std::make_unique<T>();
+    win = std::make_unique<MainWindowT>();
     win->show();
     auto on_import = [&win](auto file_name) { return win->ImportProcedure(file_name); };
     ImportProcedures(options.file_name, on_import);
@@ -92,11 +104,6 @@ int RunApplication(int argc, char** argv)
  * @brief Opens a message box with the question if running jobs should be stopped.
  */
 bool ShouldStopRunningJobs();
-
-/**
- * @brief Loads plugins and provide warning dialog if something went wrong.
- */
-void LoadMainPlugins();
 
 /**
  * @brief Returns vector of names representing sequencer procedures located in a given folder.
