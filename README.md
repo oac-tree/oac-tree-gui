@@ -1,16 +1,20 @@
 # Sequencer Graphical User Interface
 
-![Node editor](./doc/explorer-1000x.png)
+![Explorer view](./doc/explorer-1000x.png)
 
 Explorer view
 
-![Node editor](./doc/nodeeditor-1000x.png)
+![Composer view](./doc/nodeeditor-1000x.png)
 
 Composer view
 
-![Node editor](./doc/operation-1000x.png)
+![Operation View](./doc/operation-1000x.png)
 
 Operation view
+
+![Standalone Operation view](./doc/sequencer-operation-1000x.png)
+
+Standalone Operation view
 
 ## Installation on CODAC machines from RPMs
 
