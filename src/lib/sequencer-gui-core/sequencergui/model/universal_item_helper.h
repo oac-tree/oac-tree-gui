@@ -126,7 +126,7 @@ bool IsCollapsed(const InstructionItem& item);
 /**
  * @brief Returns vector of instructions which wants their children's branch shown as collapsed.
  */
-std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContainerItem& container);
+std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainerItem& container);
 
 }  // namespace sequencergui
 

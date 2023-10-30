@@ -19,11 +19,11 @@
 
 #include "sequencergui/viewmodel/custom_viewitem_factory.h"
 
-#include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/mainwindow/app_settings.h>
+#include <sequencergui/model/standard_variable_items.h>
 
 #include <mvvm/viewmodelbase/viewitem.h>
-#include <sequencergui/domain/domain_constants.h>
 
 #include <gtest/gtest.h>
 

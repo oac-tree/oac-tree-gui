@@ -50,7 +50,6 @@ std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageBoxHandler();
 //! Creates message handler that throws runtime exception.
 std::unique_ptr<sup::gui::MessageHandlerInterface> CreateThrowingMessageHandler();
 
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_COMPONENTS_MESSAGE_HANDLER_FACTORY_H_

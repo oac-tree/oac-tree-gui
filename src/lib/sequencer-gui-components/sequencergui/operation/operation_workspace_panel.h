@@ -54,14 +54,13 @@ class OperationWorkspacePanel : public QWidget
   Q_OBJECT
 
 public:
-
   /**
    * @brief The Mode enum defines the way workspace is shown
    */
   enum class Mode
   {
-    kWorkspaceTree, //!< full tree with workspace variables
-    kWorkspaceTable //!< experimental table with workspace variables
+    kWorkspaceTree,  //!< full tree with workspace variables
+    kWorkspaceTable  //!< experimental table with workspace variables
   };
 
   explicit OperationWorkspacePanel(Mode mode, QWidget* parent = nullptr);

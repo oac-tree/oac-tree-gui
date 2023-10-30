@@ -228,7 +228,7 @@ QColor ConnectableView::GetColor() const
 
 QString ConnectableView::GetLabel() const
 {
-   return m_item ? m_item->GetDisplayName() : QString("Unnamed");
+  return m_item ? m_item->GetDisplayName() : QString("Unnamed");
 }
 
 //! Init ports to connect.

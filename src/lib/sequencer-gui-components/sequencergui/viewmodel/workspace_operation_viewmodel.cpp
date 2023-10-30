@@ -69,14 +69,15 @@ public:
   /**
    * @brief Processes AboutToRemoveItemEvent.
    *
-   * @details If AnyValueItem is removed, we have to update the whole branch related to its parent, VariableItem.
+   * @details If AnyValueItem is removed, we have to update the whole branch related to its parent,
+   * VariableItem.
    */
   void OnModelEvent(const mvvm::AboutToRemoveItemEvent &event) override
   {
     auto [parent, tag_index] = event;
     if (auto child = dynamic_cast<sup::gui::AnyValueItem *>(parent->GetItem(tag_index)); child)
     {
-      UpdateBranch(parent); // update VariableItem row
+      UpdateBranch(parent);  // update VariableItem row
     }
     else
     {
@@ -87,7 +88,8 @@ public:
   /**
    * @brief Processes ItemInsertedEvent.
    *
-   * @details If AnyValueItem is inserted, we have to update the whole branch related to its parent, VariableItem.
+   * @details If AnyValueItem is inserted, we have to update the whole branch related to its parent,
+   * VariableItem.
    */
   void OnModelEvent(const mvvm::ItemInsertedEvent &event) override
   {

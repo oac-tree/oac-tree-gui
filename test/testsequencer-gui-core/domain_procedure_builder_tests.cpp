@@ -25,13 +25,13 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/procedure_preamble_items.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
-#include <sequencergui/model/universal_item_helper.h>
 
 #include <mvvm/model/sessionitem.h>
 
@@ -89,7 +89,6 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithPreamble)
   ASSERT_EQ(procedure->GetPreamble().GetTypeRegistrations().size(), 1);
   EXPECT_EQ(procedure->GetPreamble().GetTypeRegistrations().at(0).GetRegistrationMode(), 1);
   EXPECT_EQ(procedure->GetPreamble().GetTypeRegistrations().at(0).GetString(), "json_type");
-
 }
 
 //! Building domain procedure from ProcedureItem with a single sequence.

@@ -198,7 +198,7 @@ bool RequiresInitialAlignment(const InstructionItem &instruction)
 bool RequiresInitialAlignment(const std::vector<InstructionItem *> &instructions)
 {
   return std::all_of(instructions.begin(), instructions.end(),
-                      [](auto it) { return RequiresInitialAlignment(*it); });
+                     [](auto it) { return RequiresInitialAlignment(*it); });
 }
 
 }  // namespace sequencergui::algorithm

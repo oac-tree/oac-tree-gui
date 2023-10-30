@@ -82,7 +82,6 @@ void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info, Instruction
 void SetBreakpointsFromInfo(const std::vector<BreakpointInfo>& info,
                             InstructionContainerItem& container);
 
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_OPERATION_BREAKPOINT_HELPER_H_

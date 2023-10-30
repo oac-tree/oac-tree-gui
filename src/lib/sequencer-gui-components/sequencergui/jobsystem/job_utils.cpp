@@ -19,11 +19,11 @@
 
 #include "job_utils.h"
 
+#include <QString>
 #include <algorithm>
 #include <map>
 #include <numeric>
 #include <stdexcept>
-#include <QString>
 
 namespace
 {

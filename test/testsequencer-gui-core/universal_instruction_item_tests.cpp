@@ -128,4 +128,3 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
 
   // more tests in standard_instruction_item_tests.cpp
 }
-

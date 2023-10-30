@@ -24,10 +24,10 @@
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/sessionitem_container.h>
 #include <mvvm/model/sessionmodel.h>
-#include <mvvm/model/item_utils.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
 #include <mvvm/widgets/widget_utils.h>

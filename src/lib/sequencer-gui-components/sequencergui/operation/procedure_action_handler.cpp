@@ -24,10 +24,10 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
+#include <sup/gui/components/message_event.h>
 
 #include <mvvm/utils/file_utils.h>
 
-#include <sup/gui/components/message_event.h>
 #include <sup/sequencer/procedure.h>
 
 #include <QFileDialog>

@@ -42,4 +42,4 @@ std::string ProjectVersion()
   return kProjectVersionString;
 }
 
-}
+}  // namespace sequencergui

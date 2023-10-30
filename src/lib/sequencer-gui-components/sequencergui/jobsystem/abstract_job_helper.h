@@ -33,7 +33,6 @@ bool CanReleaseJob(::sequencergui::RunnerStatus current_status);
 
 bool CanStopJob(::sequencergui::RunnerStatus current_status);
 
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_ABSTRACT_JOB_HELPER_H_

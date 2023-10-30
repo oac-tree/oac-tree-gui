@@ -302,8 +302,8 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithPreamble)
 
   procedure.GetPreamble().AddPluginPath("abc");
   procedure.GetPreamble().AddPluginPath("def");
-  procedure.GetPreamble().AddTypeRegistration(TypeRegistrationInfo(
-      TypeRegistrationInfo::kJSONString, json_type));
+  procedure.GetPreamble().AddTypeRegistration(
+      TypeRegistrationInfo(TypeRegistrationInfo::kJSONString, json_type));
 
   sequencergui::ProcedureItem procedure_item;
   GUIObjectBuilder builder;

@@ -25,11 +25,11 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/application_model.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 

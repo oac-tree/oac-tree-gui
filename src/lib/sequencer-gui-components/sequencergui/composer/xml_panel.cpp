@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-
 #include "xml_panel.h"
 
 #include <sequencergui/components/visibility_agent_base.h>

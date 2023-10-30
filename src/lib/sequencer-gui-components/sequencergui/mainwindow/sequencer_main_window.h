@@ -20,10 +20,10 @@
 #ifndef SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 #define SEQUENCERGUI_MAINWINDOW_SEQUENCER_MAIN_WINDOW_H_
 
+#include <sup/gui/app/main_window_types.h>
+
 #include <QMainWindow>
 #include <memory>
-
-#include <sup/gui/app/main_window_types.h>
 
 class QCloseEvent;
 
@@ -64,7 +64,7 @@ private:
   void WriteSettings();
   void PopulateModel();
   bool CanCloseApplication();
-  void OnRestartRequest(sup::gui::AppExitCode  exit_code);
+  void OnRestartRequest(sup::gui::AppExitCode exit_code);
 
   std::unique_ptr<ApplicationModels> m_models;
 

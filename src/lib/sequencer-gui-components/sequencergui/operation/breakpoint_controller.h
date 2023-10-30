@@ -97,7 +97,7 @@ public:
   /**
    * @brief Find domain instruction corresponding to a given item.
    */
-  const instruction_t *FindDomainInstruction(const InstructionItem& item);
+  const instruction_t* FindDomainInstruction(const InstructionItem& item);
 
 private:
   //! callback to retrieve domain instruction corresponding to given InstructionItem

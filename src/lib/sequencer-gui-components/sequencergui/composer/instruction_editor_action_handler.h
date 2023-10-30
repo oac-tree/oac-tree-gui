@@ -46,7 +46,8 @@ class InstructionEditorActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit InstructionEditorActionHandler(InstructionEditorContext context, QObject* parent = nullptr);
+  explicit InstructionEditorActionHandler(InstructionEditorContext context,
+                                          QObject* parent = nullptr);
   ~InstructionEditorActionHandler() override;
 
   void OnInsertInstructionAfterRequest(const QString& item_type);

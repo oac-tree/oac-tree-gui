@@ -29,11 +29,11 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
 
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QTreeView>

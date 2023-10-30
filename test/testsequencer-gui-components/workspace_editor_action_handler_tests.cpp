@@ -25,9 +25,9 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_callback_listener.h>
@@ -177,7 +177,6 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 
   // attempty to add unknown variable type
   actions->OnAddVariableRequest("non-existing-type");
-
 }
 
 //! Inserting variable between two existing variables.

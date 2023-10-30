@@ -41,10 +41,9 @@ public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
 };
 
-
 /**
- * @brief The VariableTableChildrenStrategy class reports which items should be in the tree representing
- * WorkspaceItem.
+ * @brief The VariableTableChildrenStrategy class reports which items should be in the tree
+ * representing WorkspaceItem.
  *
  * @details All variable's properties are hidden, except AnyValueStructItem.
  */
@@ -53,7 +52,6 @@ class VariableTableChildrenStrategy : public mvvm::ChildrenStrategyInterface
 public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
 };
-
 
 }  // namespace sequencergui
 

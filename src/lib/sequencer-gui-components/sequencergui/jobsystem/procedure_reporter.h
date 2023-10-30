@@ -91,7 +91,7 @@ public:
    *
    * @details Should be called from the sequencer thread.
    */
-  void OnDomainInstructionStatusChange(const instruction_t* instruction, const std::string &value);
+  void OnDomainInstructionStatusChange(const instruction_t* instruction, const std::string& value);
 
   /**
    * @brief Processes the change of status of the domain runner.

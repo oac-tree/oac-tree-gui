@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_CONTROLLER_H_
 
 #include <mvvm/signals/event_types.h>
+
 #include <functional>
 #include <memory>
 

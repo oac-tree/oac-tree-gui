@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/components/custom_meta_types.h>
+#include <sequencergui/domain/domain_utils.h>
 
 #include <gtest/gtest.h>
 

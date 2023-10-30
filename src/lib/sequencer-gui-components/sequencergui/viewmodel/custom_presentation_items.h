@@ -33,7 +33,6 @@ namespace sequencergui
 class MVVM_VIEWMODEL_EXPORT ChannelPresentationItem : public mvvm::DataPresentationItem
 {
 public:
-
   /**
    * @brief Main constructor.
    *

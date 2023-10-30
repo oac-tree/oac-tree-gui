@@ -22,10 +22,10 @@
 
 #include <sequencergui/jobsystem/log_event.h>
 
+#include <QStringList>
 #include <QWidget>
 #include <map>
 #include <memory>
-#include <QStringList>
 
 class QAction;
 class QTreeView;

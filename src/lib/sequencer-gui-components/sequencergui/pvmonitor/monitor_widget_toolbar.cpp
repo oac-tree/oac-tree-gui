@@ -56,7 +56,7 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   m_start_action->setIcon(GetIcon("chevron-right-circle-outline"));
   m_start_action->setToolTip("Start monitoring workspace variables");
 
-  connect(m_start_action, &QAction::triggered, this,  &MonitorWidgetToolBar::StartMonitoringRequest);
+  connect(m_start_action, &QAction::triggered, this, &MonitorWidgetToolBar::StartMonitoringRequest);
   addAction(m_start_action);
 
   m_stop_action->setText("Stop");

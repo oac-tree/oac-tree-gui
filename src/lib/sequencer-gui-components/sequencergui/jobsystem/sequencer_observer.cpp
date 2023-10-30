@@ -23,8 +23,8 @@
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_reporter.h>
 #include <sequencergui/jobsystem/request_types.h>
-
 #include <sup/gui/model/anyvalue_utils.h>
+
 #include <sup/sequencer/instruction.h>
 
 #include <sstream>

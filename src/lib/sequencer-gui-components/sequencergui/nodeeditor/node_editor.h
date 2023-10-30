@@ -66,7 +66,7 @@ public:
 
   std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandler();
 
-//  std::unique_ptr<QToolBar> CreateToolBar();
+  //  std::unique_ptr<QToolBar> CreateToolBar();
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);

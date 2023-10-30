@@ -21,11 +21,12 @@
 #define SEQUENCERGUI_TRANSFORM_GUI_OBJECT_BUILDER_H_
 
 #include "sup/gui/core/dto_types_fwd.h"
+
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <map>
-#include <string>
 #include <memory>
+#include <string>
 
 namespace mvvm
 {
@@ -50,7 +51,6 @@ class VariableItem;
 class GUIObjectBuilder
 {
 public:
-
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
   void PopulateProcedureItem(const procedure_t* procedure, ProcedureItem* procedure_item,
@@ -59,7 +59,8 @@ public:
   void PopulateInstructionContainerItem(const procedure_t* procedure,
                                         InstructionContainerItem* container, bool root_only);
 
-  void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace, const anytype_registry_t* registry);
+  void PopulateWorkspaceItem(const procedure_t* procedure, WorkspaceItem* workspace,
+                             const anytype_registry_t* registry);
 
   InstructionItem* FindInstructionItem(const instruction_t* instruction) const;
   VariableItem* FindVariableItem(const variable_t* variable) const;

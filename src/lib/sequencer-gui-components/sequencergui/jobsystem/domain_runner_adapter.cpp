@@ -25,8 +25,8 @@
 #include <sup/sequencer/runner.h>
 
 #include <chrono>
-#include <thread>
 #include <iostream>
+#include <thread>
 
 namespace sequencergui
 {
@@ -95,7 +95,6 @@ void DomainRunnerAdapter::StopRequest()
   m_domain_runner->Halt();
   SetStatus(RunnerStatus::kStopped);
 }
-
 
 runner_t *DomainRunnerAdapter::GetDomainRunner()
 {

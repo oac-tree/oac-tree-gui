@@ -183,4 +183,3 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttribute)
   EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
             std::string("abc"));
 }
-

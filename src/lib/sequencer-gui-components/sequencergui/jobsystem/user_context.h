@@ -20,10 +20,10 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
 #define SEQUENCERGUI_JOBSYSTEM_USER_CONTEXT_H_
 
+#include <sequencergui/jobsystem/request_types.h>
+
 #include <QStringList>
 #include <functional>
-
-#include <sequencergui/jobsystem/request_types.h>
 
 namespace sequencergui
 {

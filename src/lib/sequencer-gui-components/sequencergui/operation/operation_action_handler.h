@@ -49,7 +49,7 @@ public:
   using selection_callback_t = std::function<JobItem*()>;
 
   explicit OperationActionHandler(JobManager* job_manager, selection_callback_t selection_callback,
-                                   QObject* parent = nullptr);
+                                  QObject* parent = nullptr);
 
   ~OperationActionHandler() override;
 

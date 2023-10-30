@@ -20,9 +20,9 @@
 #include "sequencergui/jobsystem/domain_runner_adapter.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>
-#include <sup/gui/model/anyvalue_utils.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
 #include <sup/sequencer/variable.h>

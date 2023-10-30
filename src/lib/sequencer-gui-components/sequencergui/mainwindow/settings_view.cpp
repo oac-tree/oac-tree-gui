@@ -41,9 +41,7 @@ namespace sequencergui
 {
 
 SettingsView::SettingsView(QWidget *parent)
-    : QWidget(parent)
-    , m_list_widget(new QListWidget)
-    , m_stacked_widget(new QStackedWidget)
+    : QWidget(parent), m_list_widget(new QListWidget), m_stacked_widget(new QStackedWidget)
 {
   auto hlayout = new QHBoxLayout;
   hlayout->setContentsMargins(0, 0, 0, 0);
@@ -62,7 +60,7 @@ void SettingsView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   SetupListSelector();
-//  SetupModelWidgets();
+  //  SetupModelWidgets();
   SetupGeneralSettingWidgets();
 }
 

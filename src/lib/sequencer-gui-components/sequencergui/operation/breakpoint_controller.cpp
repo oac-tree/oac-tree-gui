@@ -24,8 +24,8 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/iterate_helper.h>
+#include <sequencergui/model/procedure_item.h>
 
 #include <sup/sequencer/runner.h>
 

@@ -74,7 +74,7 @@ private:
   void WriteSettings();
   void AdjustTreeAppearance();
   void OnTreeDoubleClick(const QModelIndex& index);
-  void OnCustomContextMenuRequested(const QPoint &pos);
+  void OnCustomContextMenuRequested(const QPoint& pos);
 
   /**
    * @brief UpdateTreeViewport

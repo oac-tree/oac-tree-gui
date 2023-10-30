@@ -22,6 +22,7 @@
 
 //! Includes for all sequencer related items.
 
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -30,9 +31,8 @@
 #include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/workspace_item.h>
-#include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/model/universal_instruction_item.h>
-#include <sequencergui/model/attribute_item.h>
+#include <sequencergui/model/universal_variable_item.h>
+#include <sequencergui/model/workspace_item.h>
 
 #endif  // SEQUENCERGUI_MODEL_SEQUENCER_ITEM_INCLUDES_H_

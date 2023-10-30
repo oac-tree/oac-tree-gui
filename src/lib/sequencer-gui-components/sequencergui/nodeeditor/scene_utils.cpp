@@ -21,8 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/sequencer_item_helper.h>
+#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/core/exceptions.h>

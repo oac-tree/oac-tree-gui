@@ -28,8 +28,8 @@
 
 #include <gtest/gtest.h>
 
-#include <QSignalSpy>
 #include <QDebug>
+#include <QSignalSpy>
 
 using namespace sequencergui;
 

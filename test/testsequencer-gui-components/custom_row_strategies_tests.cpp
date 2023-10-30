@@ -68,7 +68,7 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     EXPECT_EQ(view_items.at(0)->data(Qt::DisplayRole).toString(), QString("abc"));
     EXPECT_EQ(view_items.at(1)->data(Qt::DisplayRole).toInt(), 42);
     EXPECT_EQ(view_items.at(2)->data(Qt::DisplayRole).toString(), QString("Local"));
-    EXPECT_EQ(view_items.at(3)->data(Qt::DisplayRole).toString(), QString("")); // channel
+    EXPECT_EQ(view_items.at(3)->data(Qt::DisplayRole).toString(), QString(""));  // channel
   }
 
   {  // single local variable with a struct
