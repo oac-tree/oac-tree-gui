@@ -1,3 +1,19 @@
+Changes for 1.2.0:
+
+- COA Release v2.0, October 2023
+- Implement table-like workspace monitor for sequencer-operation GUI
+- Provide support for collapsed instructions
+- Provide set application font dialog
+- Provide instruction selection algorithm for collapsed branches
+- Provide collapse/expand/selective_expand tree context menus
+- Implement AttributeItem and provide partial support for @var and $var attributes
+- Provide correct limits and embedded editors for all sup-dto scalars
+- Provide automatic tracing of current item during long procedure execution
+- Provide functionality to stop all running jobs on application exit
+- Make 20msec instruction tick timeout default (prev 200msec)
+- Do not show by default DEBUG log messages
+- Assure Qt6 compilation
+
 Changes for 1.1.0:
 
 - COA Release v1.9, August 2023
