@@ -75,7 +75,7 @@ public:
 
     row = CreateItemRow("item2");
     data.item2 = row.at(0);
-    data.item0->insertRow(0, row);
+    data.item0->insertRow(1, row);
 
     row = CreateItemRow("item3");
     data.item3 = row.at(0);
@@ -83,7 +83,7 @@ public:
 
     row = CreateItemRow("item4");
     data.item4 = row.at(0);
-    data.item2->insertRow(0, row);
+    data.item2->insertRow(1, row);
 
     return data;
   }

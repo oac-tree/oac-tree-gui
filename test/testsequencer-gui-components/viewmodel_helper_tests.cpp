@@ -72,7 +72,7 @@ public:
 
     row = CreateItemRow("item2");
     data.item2 = row.at(0);
-    data.item0->insertRow(0, row);
+    data.item0->insertRow(1, row);
 
     row = CreateItemRow("item3");
     data.item3 = row.at(0);
@@ -91,7 +91,10 @@ TEST_F(ViewmodelHelperTest, IterateFirstColumn)
 
   IterateFirstColumn(*data.model, QModelIndex(), on_index);
 
-  const std::vector<QModelIndex> expected_indices = {QModelIndex{}, data.item0->index(),
-                                                     data.item1->index(), data.item2->index(),
-                                                     data.item3->index()};
+  EXPECT_EQ(QModelIndex{}, data.item0->index());
+
+  const std::vector<QModelIndex> expected_indices = {data.item0->index(), data.item1->index(),
+                                                     data.item2->index(), data.item3->index()};
+
+  EXPECT_EQ(visited_indices, expected_indices);
 }
