@@ -25,17 +25,43 @@
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 #include <mvvm/viewmodel/standard_row_strategies.h>
+#include <mvvm/viewmodel/viewmodel_controller.h>
+#include <mvvm/viewmodel/viewmodel_controller_impl.h>
+
+namespace
+{
+std::unique_ptr<mvvm::IViewModelController> CreateImpl(mvvm::ViewModelBase *viewmodel)
+{
+  auto children_strategy = std::make_unique<sequencergui::VariableTableChildrenStrategy>();
+  auto row_strategy = std::make_unique<sequencergui::VariableTableRowStrategy>();
+
+  auto result = std::make_unique<mvvm::ViewModelControllerImpl>(
+      viewmodel, std::move(children_strategy), std::move(row_strategy));
+
+  return result;
+}
+
+}  // namespace
 
 namespace sequencergui
 {
+
+class WorkspaceOperationViewModelController : public mvvm::ViewModelController
+{
+public:
+  explicit WorkspaceOperationViewModelController(mvvm::ViewModelBase *viewmodel)
+      : mvvm::ViewModelController(CreateImpl(viewmodel))
+  {
+  }
+};
 
 WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::SessionModelInterface *model,
                                                          QObject *parent)
     : ViewModel(parent)
 {
-  SetController(
-      mvvm::factory::CreateController<VariableTableChildrenStrategy, VariableTableRowStrategy>(
-          model, this));
+  auto controller = std::make_unique<WorkspaceOperationViewModelController>(this);
+  controller->SetModel(model);
+  SetController(std::move(controller));
 }
 
 }  // namespace sequencergui
