@@ -27,17 +27,17 @@ using namespace sequencergui;
 
 //! Tests for JobItem class.
 
-class JobLogTests : public ::testing::Test
+class JobLogTest : public ::testing::Test
 {
 };
 
-TEST_F(JobLogTests, InitialState)
+TEST_F(JobLogTest, InitialState)
 {
   JobLog job_log;
   EXPECT_EQ(job_log.GetSize(), 0);
 }
 
-TEST_F(JobLogTests, Append)
+TEST_F(JobLogTest, Append)
 {
   JobLog job_log;
 
@@ -54,7 +54,7 @@ TEST_F(JobLogTests, Append)
   EXPECT_EQ(spy_cleared.count(), 0);
 }
 
-TEST_F(JobLogTests, ClearLog)
+TEST_F(JobLogTest, ClearLog)
 {
   JobLog job_log;
 

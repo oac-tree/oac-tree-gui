@@ -44,7 +44,7 @@ using namespace sequencergui;
 //! Tests for WorkspaceController class.
 //! Sequencer workspace is populated with PVAccessServer and PVAccessChannel variables.
 
-class SequencerWorkspaceListenerPVAccessTests : public ::testing::Test
+class SequencerWorkspaceListenerPVAccessTest : public ::testing::Test
 {
 public:
   //! Disables all tests in the fixture if PVAccess is not available
@@ -72,7 +72,7 @@ public:
 //! We start listening before the setup. Test confirms, that after the setup no callback
 //! with the initial value follows.
 
-TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerScalarVariable)
+TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVariable)
 {
   // creating server variable
   const std::string var_name("var");
@@ -132,7 +132,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerScalarV
 
 //! Single server variable (struct) in a workspace
 
-TEST_F(SequencerWorkspaceListenerPVAccessTests, WorkspaceWithSingleServerStructVariable)
+TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVariable)
 {
   // creating server variable
   const std::string var_name("var");

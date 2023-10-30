@@ -23,13 +23,13 @@
 
 using namespace sequencergui;
 
-//! Tests for WorkspaceSynchronizer class.
+//! Tests for WorkspaceEvent class.
 
-class WorkspaceEventTests : public ::testing::Test
+class WorkspaceEventTest : public ::testing::Test
 {
 };
 
-TEST_F(WorkspaceEventTests, EqualityOperators)
+TEST_F(WorkspaceEventTest, EqualityOperators)
 {
   {  // default constructed
     WorkspaceEvent event1;

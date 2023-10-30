@@ -27,13 +27,13 @@
 
 using namespace sequencergui;
 
-//! Tests for SequencerObserver class.
+//! Tests for LogEvent class.
 
-class LogEventTests : public ::testing::Test
+class LogEventTest : public ::testing::Test
 {
 };
 
-TEST_F(LogEventTests, EqualityOperator)
+TEST_F(LogEventTest, EqualityOperator)
 {
   const LogEvent event1;
   const LogEvent event2;
@@ -51,7 +51,7 @@ TEST_F(LogEventTests, EqualityOperator)
   EXPECT_TRUE(event5 != event6);
 }
 
-TEST_F(LogEventTests, CreateLogEvent)
+TEST_F(LogEventTest, CreateLogEvent)
 {
   auto event = CreateLogEvent(Severity::kWarning, "abc");
   EXPECT_EQ(event.severity, Severity::kWarning);

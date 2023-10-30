@@ -42,22 +42,22 @@ using ::testing::_;
 
 //! Tests for WorkspaceItemController class.
 
-class WorkspaceItemControllerTests : public ::testing::Test
+class WorkspaceItemControllerTest : public ::testing::Test
 {
 public:
-  WorkspaceItemControllerTests() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceItemControllerTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
   MonitorModel m_model;
   WorkspaceItem* m_workspace_item{nullptr};
 };
 
-TEST_F(WorkspaceItemControllerTests, InitialState)
+TEST_F(WorkspaceItemControllerTest, InitialState)
 {
   WorkspaceItemController controller(m_workspace_item);
   EXPECT_EQ(controller.GetWorkspaceItem(), m_workspace_item);
 }
 
-TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
+TEST_F(WorkspaceItemControllerTest, GeVariableItemForName)
 {
   auto variable_item = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName("abc");
@@ -69,7 +69,7 @@ TEST_F(WorkspaceItemControllerTests, GeVariableItemForName)
 //! Setting up the WorkspaceItem with single variable.
 //! Triggering domain workspace event and validating AnyValueItem update.
 
-TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainWhenConnected)
+TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 {
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
@@ -110,7 +110,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainWhenConnected)
 //! The difference with the previous test: on first update AnyValueItem should be created,
 //! on second update it should be updated (not re-created).
 
-TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
+TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 {
   testutils::MockCallbackListener<WorkspaceEvent> listener;
 
@@ -149,7 +149,7 @@ TEST_F(WorkspaceItemControllerTests, ProcessEventFromDomainTwice)
 //! Setting up the WorkspaceItem with single variable.
 //! Replacing AnyValueItem through the model and expecting callback toward the domain.
 
-TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
+TEST_F(WorkspaceItemControllerTest, ModifyAnyValueFromModelViaInsert)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -175,7 +175,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyAnyValueFromModelViaInsert)
 //! Setting up the workspace with two variables. Replacing variables one after another and checking
 //! the order of callbacks.
 
-TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
+TEST_F(WorkspaceItemControllerTest, ModifyTwoVariablesViaInserts)
 {
   sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
@@ -214,7 +214,7 @@ TEST_F(WorkspaceItemControllerTests, ModifyTwoVariablesViaInserts)
 //! There is no any real SoftIoc behind. The main purpose of the test is to validate
 //! that "connected" status is propagated from WorkspaceEvent to the item.
 
-TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
+TEST_F(WorkspaceItemControllerTest, ChannelAccessVariableInTheWorkspace)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -253,7 +253,7 @@ TEST_F(WorkspaceItemControllerTests, ChannelAccessVariableInTheWorkspace)
 //! and expecting notification to the domain. The purpose of the test is to validate propagation
 //! of DataChangedEvent from the model to the domain.
 
-TEST_F(WorkspaceItemControllerTests, SetScalarData)
+TEST_F(WorkspaceItemControllerTest, SetScalarData)
 {
   const std::string var_name("abc");
 
@@ -286,7 +286,7 @@ TEST_F(WorkspaceItemControllerTests, SetScalarData)
 //! Setting up the WorkspaceItem with struct variable with a scalar on board. Setting scalar value
 //! through the model and expecting notification to the domain.
 
-TEST_F(WorkspaceItemControllerTests, SetScalarDataInStruct)
+TEST_F(WorkspaceItemControllerTest, SetScalarDataInStruct)
 {
   const std::string var_name("abc");
 

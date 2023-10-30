@@ -48,7 +48,7 @@ using namespace sequencergui;
 //! Tests for WorkspaceController class.
 //! Sequencer workspace is populated with ChannelAccessVariable.
 
-class SequencerWorkspaceListenerSoftIocTests : public ::testing::Test
+class SequencerWorkspaceListenerSoftIocTest : public ::testing::Test
 {
 public:
   //! Disables all tests in the fixture if ChannelAccess is not available
@@ -79,12 +79,12 @@ public:
   static sup::epics::test::SoftIocRunner m_softioc_service;
 };
 
-sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTests::m_softioc_service{};
+sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTest::m_softioc_service{};
 
 //! The sequencer Workspace contains a single channel access variable.
 //! Validating that SequencerWorkspaceListener gets notifications.
 
-TEST_F(SequencerWorkspaceListenerSoftIocTests, ListeningWorkspaceWithSingleCAVariable)
+TEST_F(SequencerWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariable)
 {
   // creating ChannelAccessVariable
   auto variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);

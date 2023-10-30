@@ -25,11 +25,11 @@ using namespace sequencergui;
 
 //! Tests for WorkspaceSynchronizer class.
 
-class MonitorModelTests : public ::testing::Test
+class MonitorModelTest : public ::testing::Test
 {
 };
 
-TEST_F(MonitorModelTests, InitialState)
+TEST_F(MonitorModelTest, InitialState)
 {
   MonitorModel model;
   EXPECT_TRUE(model.GetWorkspaceItem() == nullptr);

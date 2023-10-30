@@ -51,10 +51,10 @@ const std::string kTestPrefix("WorkspaceSynchronizerPVAccessTests:");
 
 //! Tests for WorkspaceSynchronizer class.
 
-class WorkspaceSynchronizerPVAccessTests : public ::testing::Test
+class WorkspaceSynchronizerPVAccessTest : public ::testing::Test
 {
 public:
-  WorkspaceSynchronizerPVAccessTests() { m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceSynchronizerPVAccessTest() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Creates synchronizer for testing.
   std::unique_ptr<WorkspaceSynchronizer> CreateSynchronizer()
@@ -81,7 +81,7 @@ public:
 //! Creating variable on GUI side, duplicating in the domain workspace. Starting listening,
 //! making sure that correct signals are flying and initial values coincide.
 
-TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
+TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT1");
   const std::string var_name("var");
@@ -138,7 +138,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ServerVariableSimpleStart)
 //! Single server variable (struct) in a workspace.
 //! The data is set on the GUI side, validating updates on the domain side.
 
-TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
+TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT2");
   const std::string var_name("var");
@@ -181,7 +181,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromGUI)
 //! Single server variable (struct) in a workspace.
 //! The data is set on the domain side, validating updates on the GUI side.
 
-TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
+TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT3");
   const std::string var_name("var");
@@ -231,7 +231,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, SetDataFromDomain)
 //! Creating variables on a GUI side, duplicating in the domain workspace. Starting listening,
 //! making sure that correct signals are flying and initial values coincide.
 
-TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
+TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT4");
   const std::string server_var_name("server");
@@ -319,7 +319,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTests, ClientAndServerVariableConnection)
 //! client doesn't have AnyValueItem defined. It is expected that it will pick up right value from
 //! the server on the first connection.
 
-TEST_F(WorkspaceSynchronizerPVAccessTests, ClientWithoutAnyValueAndServerVariableConnection)
+TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariableConnection)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT5");
   const std::string server_var_name("server");

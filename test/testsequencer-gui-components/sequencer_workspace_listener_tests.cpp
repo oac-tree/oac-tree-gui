@@ -34,13 +34,13 @@ using namespace sequencergui;
 
 //! Tests for SequencerWorkspaceListener class.
 
-class SequencerWorkspaceListenerTests : public ::testing::Test
+class SequencerWorkspaceListenerTest : public ::testing::Test
 {
 };
 
 //! Initial state.
 
-TEST_F(SequencerWorkspaceListenerTests, InitialState)
+TEST_F(SequencerWorkspaceListenerTest, InitialState)
 {
   SequencerWorkspaceListener listener;
 
@@ -52,7 +52,7 @@ TEST_F(SequencerWorkspaceListenerTests, InitialState)
 
 //! Checking exceptions during start/stop listening.
 
-TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
+TEST_F(SequencerWorkspaceListenerTest, StartListeningStopListening)
 {
   SequencerWorkspaceListener listener;
 
@@ -73,7 +73,7 @@ TEST_F(SequencerWorkspaceListenerTests, StartListeningStopListening)
 //! Single local variable is created in the workspace.
 //! We change it's value several times, check signaling, and validate workspace events.
 
-TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
+TEST_F(SequencerWorkspaceListenerTest, LocalVariableInTheWorkspace)
 {
   const std::string var_name("abc");
 
@@ -134,7 +134,7 @@ TEST_F(SequencerWorkspaceListenerTests, LocalVariableInTheWorkspace)
 //! Single local variable is created in the workspace.
 //! After first update we stop listening and check that no signals have been issued after.
 
-TEST_F(SequencerWorkspaceListenerTests, StopListeningWorkspace)
+TEST_F(SequencerWorkspaceListenerTest, StopListeningWorkspace)
 {
   const std::string var_name("abc");
 

@@ -31,11 +31,11 @@ namespace
 const int kAnyTypeNameRole = 10;  // defined in attribute_item.cpp
 }
 
-class AttributeItemTests : public ::testing::Test
+class AttributeItemTest : public ::testing::Test
 {
 };
 
-TEST_F(AttributeItemTests, InitialState)
+TEST_F(AttributeItemTest, InitialState)
 {
   const AttributeItem item;
   EXPECT_EQ(item.GetDisplayName(), AttributeItem::Type);
@@ -44,7 +44,7 @@ TEST_F(AttributeItemTests, InitialState)
   EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));
 }
 
-TEST_F(AttributeItemTests, SetAnyTypeName)
+TEST_F(AttributeItemTest, SetAnyTypeName)
 {
   AttributeItem item;
 
@@ -57,7 +57,7 @@ TEST_F(AttributeItemTests, SetAnyTypeName)
   EXPECT_TRUE(item.HasData(kAnyTypeNameRole));
 }
 
-TEST_F(AttributeItemTests, SetAttributeAsString)
+TEST_F(AttributeItemTest, SetAttributeAsString)
 {
   AttributeItem item;
 

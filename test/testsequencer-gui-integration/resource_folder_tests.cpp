@@ -56,10 +56,10 @@ using namespace sequencergui;
 
 //! Tests for all XML procedures found in resource/functional folder.
 
-class ResourceFolderTests : public ::testing::TestWithParam<std::string>
+class ResourceFolderTest : public ::testing::TestWithParam<std::string>
 {
 public:
-  ResourceFolderTests() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
+  ResourceFolderTest() { m_job_item = m_models.GetJobModel()->InsertItem<JobItem>(); }
 
   /**
    * @brief Prevent any test from here running if not all plugins are loaded.
@@ -76,7 +76,7 @@ public:
   JobItem* m_job_item{nullptr};
 };
 
-TEST_P(ResourceFolderTests, RunProcedure)
+TEST_P(ResourceFolderTest, RunProcedure)
 {
   // load procedure from XML
   auto filename = GetResourceFolder() + "/" + GetParam();
@@ -107,5 +107,5 @@ TEST_P(ResourceFolderTests, RunProcedure)
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }
 
-INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTests,
+INSTANTIATE_TEST_SUITE_P(FunctionalTests, ResourceFolderTest,
                          ::testing::Values("wait_for_condition.xml", "fallback.xml"));

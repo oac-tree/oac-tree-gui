@@ -40,11 +40,11 @@ using namespace sequencergui;
 
 //! Tests for functions from variable_item_transform_utils.h
 
-class AttributeItemTransformHelperTests : public ::testing::Test
+class AttributeItemTransformHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(AttributeItemTransformHelperTests, IsPlaceholderAttribute)
+TEST_F(AttributeItemTransformHelperTest, IsPlaceholderAttribute)
 {
   EXPECT_TRUE(IsPlaceholderAttribute("$par"));
   EXPECT_FALSE(IsPlaceholderAttribute("@par"));
@@ -52,7 +52,7 @@ TEST_F(AttributeItemTransformHelperTests, IsPlaceholderAttribute)
   EXPECT_FALSE(IsPlaceholderAttribute(""));
 }
 
-TEST_F(AttributeItemTransformHelperTests, IsReferenceAttribute)
+TEST_F(AttributeItemTransformHelperTest, IsReferenceAttribute)
 {
   EXPECT_FALSE(IsReferenceAttribute("$par"));
   EXPECT_TRUE(IsReferenceAttribute("@par"));
@@ -62,7 +62,7 @@ TEST_F(AttributeItemTransformHelperTests, IsReferenceAttribute)
 
 //! Testing AddPropertyFromDefinition helper method.
 
-TEST_F(AttributeItemTransformHelperTests, AddPropertyFromDefinition)
+TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
 {
   const std::string attribute_name("attr");
   const sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
@@ -95,7 +95,7 @@ TEST_F(AttributeItemTransformHelperTests, AddPropertyFromDefinition)
 
 //! Testing SetPropertyFromDomainAttribute method.
 
-TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttribute)
+TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
 {
   {  // case when variable was setup
     auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
@@ -126,7 +126,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttribute)
 //! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
 //! contains $par attribute.
 
-TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributePlaceholderCase)
+TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlaceholderCase)
 {
   // domain Wait instruction constructed by the factory doesn't have attributes
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
@@ -149,7 +149,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributePlacehol
 //! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
 //! contains @par attribute.
 
-TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributeReferenceCase)
+TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReferenceCase)
 {
   // domain Wait instruction constructed by the factory doesn't have attributes
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
@@ -171,7 +171,7 @@ TEST_F(AttributeItemTransformHelperTests, SetPropertyFromDomainAttributeReferenc
 
 //! Testing SetDomainAttribute method.
 
-TEST_F(AttributeItemTransformHelperTests, SetDomainAttribute)
+TEST_F(AttributeItemTransformHelperTest, SetDomainAttribute)
 {
   auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 

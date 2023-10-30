@@ -33,11 +33,11 @@ using namespace sequencergui;
 
 //! Tests UniversalVariableItem.
 
-class UniversalVariableItemTests : public ::testing::Test
+class UniversalVariableItemTest : public ::testing::Test
 {
 };
 
-TEST_F(UniversalVariableItemTests, InitialState)
+TEST_F(UniversalVariableItemTest, InitialState)
 {
   UniversalVariableItem item;
 
@@ -51,7 +51,7 @@ TEST_F(UniversalVariableItemTests, InitialState)
 
 //! Initialisation from default constructed domain variable.
 
-TEST_F(UniversalVariableItemTests, InitFromDomain)
+TEST_F(UniversalVariableItemTest, InitFromDomain)
 {
   auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
@@ -86,7 +86,7 @@ TEST_F(UniversalVariableItemTests, InitFromDomain)
 
 //! Attempt to create domain variable using uninitialized item.
 
-TEST_F(UniversalVariableItemTests, AttemptToCreateDomainVariable)
+TEST_F(UniversalVariableItemTest, AttemptToCreateDomainVariable)
 {
   UniversalVariableItem item;
   EXPECT_THROW(item.CreateDomainVariable(), sup::sequencer::InvalidOperationException);
@@ -95,7 +95,7 @@ TEST_F(UniversalVariableItemTests, AttemptToCreateDomainVariable)
 //! Creating variable using existing domain name.
 //! Please note, that the resulting object will report same name for GetType() and GetDomainType().
 
-TEST_F(UniversalVariableItemTests, CreateUsingDomainName)
+TEST_F(UniversalVariableItemTest, CreateUsingDomainName)
 {
   UniversalVariableItem item(domainconstants::kLocalVariableType);
   item.SetProperty(domainconstants::kNameAttribute, "abc");
@@ -115,7 +115,7 @@ TEST_F(UniversalVariableItemTests, CreateUsingDomainName)
 //! Please note, that the resulting object will report different names for GetType() and
 //! GetDomainType().
 
-TEST_F(UniversalVariableItemTests, SetDomainName)
+TEST_F(UniversalVariableItemTest, SetDomainName)
 {
   UniversalVariableItem item;
 

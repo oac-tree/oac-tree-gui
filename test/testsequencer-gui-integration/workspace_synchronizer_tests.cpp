@@ -43,10 +43,10 @@ using ::testing::_;
 
 //! Tests for WorkspaceSynchronizer class.
 
-class WorkspaceSynchronizerTests : public ::testing::Test
+class WorkspaceSynchronizerTest : public ::testing::Test
 {
 public:
-  WorkspaceSynchronizerTests() { m_model.InsertItem<WorkspaceItem>(); }
+  WorkspaceSynchronizerTest() { m_model.InsertItem<WorkspaceItem>(); }
 
   //! Helper function to create LocalVariableItem with given name and initial AnyValue.
   static std::unique_ptr<LocalVariableItem> CreateLocalVariableItem(
@@ -81,7 +81,7 @@ public:
   sup::sequencer::Workspace m_workspace;
 };
 
-TEST_F(WorkspaceSynchronizerTests, InitialState)
+TEST_F(WorkspaceSynchronizerTest, InitialState)
 {
   auto synchronizer = CreateSynchronizer();
   EXPECT_EQ(synchronizer->GetWorkspace(), &m_workspace);
@@ -89,7 +89,7 @@ TEST_F(WorkspaceSynchronizerTests, InitialState)
   EXPECT_FALSE(synchronizer->HasStarted());
 }
 
-TEST_F(WorkspaceSynchronizerTests, AttemptToSynchronizeNonMatchingWorkspaces)
+TEST_F(WorkspaceSynchronizerTest, AttemptToSynchronizeNonMatchingWorkspaces)
 {
   {  // empty workspaces
     sup::sequencer::Workspace workspace;
@@ -118,7 +118,7 @@ TEST_F(WorkspaceSynchronizerTests, AttemptToSynchronizeNonMatchingWorkspaces)
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Validating initial values after synchronization was started.
 
-TEST_F(WorkspaceSynchronizerTests, Start)
+TEST_F(WorkspaceSynchronizerTest, Start)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -148,7 +148,7 @@ TEST_F(WorkspaceSynchronizerTests, Start)
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 
-TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
+TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -183,7 +183,7 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdated)
 //! Changing domain variable and checking that WorkspaceItem was properly updated.
 //! The test repeats the test above, except that synchronizer is constructed differently.
 
-TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdatedHandlerCase)
+TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdatedHandlerCase)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -217,7 +217,7 @@ TEST_F(WorkspaceSynchronizerTests, OnDomainVariableUpdatedHandlerCase)
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Changing GUI variable and checking that domain was properly updated.
 
-TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
+TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 {
   const std::string var_name("abc");
 
@@ -266,7 +266,7 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdate)
 //! Changing GUI variable and checking that domain was properly updated.
 //! The test repeats the test above, except that synchronizer is constructed differently.
 
-TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdateHandlerCase)
+TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdateHandlerCase)
 {
   const std::string var_name("abc");
 
@@ -314,7 +314,7 @@ TEST_F(WorkspaceSynchronizerTests, OnModelVariableUpdateHandlerCase)
 //! Creating WorkspaceItem with one LocalVariableItem.
 //! Update domain variable and check signaling.
 
-TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
+TEST_F(WorkspaceSynchronizerTest, UpdateDomainAndCheckSignals)
 {
   const std::string var_name("abc");
 
@@ -351,7 +351,7 @@ TEST_F(WorkspaceSynchronizerTests, UpdateDomainAndCheckSignals)
 //! Creating WorkspaceItem with one LocalVariableItem. Validating initial values and editable
 //! properties after start and after shutdown.
 
-TEST_F(WorkspaceSynchronizerTests, StartAndShutdown)
+TEST_F(WorkspaceSynchronizerTest, StartAndShutdown)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 

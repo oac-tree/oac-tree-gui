@@ -23,7 +23,7 @@
 
 using namespace sequencergui;
 
-class FactoryTests : public ::testing::Test
+class FactoryTest : public ::testing::Test
 {
 public:
   class TestFactory : public Factory<std::string, int>
@@ -31,7 +31,7 @@ public:
   };
 };
 
-TEST_F(FactoryTests, DomainTypeConstants)
+TEST_F(FactoryTest, DomainTypeConstants)
 {
   TestFactory factory;
   EXPECT_FALSE(factory.Contains("abc"));

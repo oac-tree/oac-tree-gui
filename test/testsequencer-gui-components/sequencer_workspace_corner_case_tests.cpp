@@ -39,7 +39,7 @@ const std::string kTestPrefix("SequencerWorkspaceCornerCaseTests:");
 
 //! Testing domain sequencer workspace for notifications accompanying Setup, and other corner cases.
 
-class SequencerWorkspaceCornerCaseTests : public ::testing::Test
+class SequencerWorkspaceCornerCaseTest : public ::testing::Test
 {
 public:
   sup::sequencer::Workspace m_workspace;
@@ -48,7 +48,7 @@ public:
 //! Single variable in workspace.
 //! Test prouves that workspace->Setup doesn't lead to the notification about initial value.
 
-TEST_F(SequencerWorkspaceCornerCaseTests, LocalVariable)
+TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 {
   const std::string var_name("var0");
 
@@ -88,7 +88,7 @@ TEST_F(SequencerWorkspaceCornerCaseTests, LocalVariable)
   EXPECT_EQ(current_value2, new_value);
 }
 
-TEST_F(SequencerWorkspaceCornerCaseTests, PVAccessServerVariable)
+TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
 {
   const std::string var_name("var0");
   const std::string channel_name("var0");

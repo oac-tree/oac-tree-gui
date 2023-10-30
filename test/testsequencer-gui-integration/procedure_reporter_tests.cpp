@@ -46,13 +46,13 @@ using namespace sequencergui;
 
 //! Test ProcedureReporter class.
 
-class ProcedureReporterTests : public ::testing::Test
+class ProcedureReporterTest : public ::testing::Test
 {
 };
 
 //! Validating that the call of the method from the domain triggers queued connection.
 
-TEST_F(ProcedureReporterTests, OnDomainRunnerStatusChanged)
+TEST_F(ProcedureReporterTest, OnDomainRunnerStatusChanged)
 {
   ProcedureReporter reporter({});
 
@@ -73,7 +73,7 @@ TEST_F(ProcedureReporterTests, OnDomainRunnerStatusChanged)
 //! Validating that tick callback from the domain leads to the signal with InstructionItems
 //! representing domain leaves.
 
-TEST_F(ProcedureReporterTests, OnDomainProcedureTick)
+TEST_F(ProcedureReporterTest, OnDomainProcedureTick)
 {
   // preparing domain procedure and its GUI counterpart
   GUIObjectBuilder builder;
@@ -124,7 +124,7 @@ TEST_F(ProcedureReporterTests, OnDomainProcedureTick)
 
 //! Validating that call to DomainInstructionStatusChange triggers queued connection.
 
-TEST_F(ProcedureReporterTests, OnDomainInstructionStatusChange)
+TEST_F(ProcedureReporterTest, OnDomainInstructionStatusChange)
 {
   WaitItem wait_item;
   auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);

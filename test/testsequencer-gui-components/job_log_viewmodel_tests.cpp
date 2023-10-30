@@ -29,11 +29,11 @@ using namespace sequencergui;
 
 //! Tests for JobItem class.
 
-class JobLogViewModelTests : public ::testing::Test
+class JobLogViewModelTest : public ::testing::Test
 {
 };
 
-TEST_F(JobLogViewModelTests, InitialState)
+TEST_F(JobLogViewModelTest, InitialState)
 {
   JobLog job_log;
 
@@ -45,7 +45,7 @@ TEST_F(JobLogViewModelTests, InitialState)
 //! JobLog contains a single event.
 //! Checking the data method for all columns.
 
-TEST_F(JobLogViewModelTests, SingleRowData)
+TEST_F(JobLogViewModelTest, SingleRowData)
 {
   JobLog job_log;
   LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
@@ -62,7 +62,7 @@ TEST_F(JobLogViewModelTests, SingleRowData)
   EXPECT_EQ(view_model.data(view_model.index(0, 4), Qt::DisplayRole), QString("message"));
 }
 
-TEST_F(JobLogViewModelTests, HeaderData)
+TEST_F(JobLogViewModelTest, HeaderData)
 {
   JobLog job_log;
   JobLogViewModel view_model(&job_log);
@@ -74,7 +74,7 @@ TEST_F(JobLogViewModelTests, HeaderData)
   EXPECT_EQ(view_model.headerData(4, Qt::Horizontal, Qt::DisplayRole), QString("message"));
 }
 
-TEST_F(JobLogViewModelTests, Flags)
+TEST_F(JobLogViewModelTest, Flags)
 {
   JobLog job_log;
   LogEvent log_event{"date", "time", Severity::kNotice, "source", "message"};
@@ -90,7 +90,7 @@ TEST_F(JobLogViewModelTests, Flags)
   }
 }
 
-TEST_F(JobLogViewModelTests, AppendRow)
+TEST_F(JobLogViewModelTest, AppendRow)
 {
   JobLog job_log;
 
@@ -109,7 +109,7 @@ TEST_F(JobLogViewModelTests, AppendRow)
   EXPECT_EQ(arguments.at(2).value<int>(), 0);
 }
 
-TEST_F(JobLogViewModelTests, ResetJobLog)
+TEST_F(JobLogViewModelTest, ResetJobLog)
 {
   JobLog job_log;
   job_log.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
@@ -129,7 +129,7 @@ TEST_F(JobLogViewModelTests, ResetJobLog)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
 }
 
-TEST_F(JobLogViewModelTests, ResetJobLogToNull)
+TEST_F(JobLogViewModelTest, ResetJobLogToNull)
 {
   JobLog job_log;
   job_log.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});
@@ -152,7 +152,7 @@ TEST_F(JobLogViewModelTests, ResetJobLogToNull)
   EXPECT_EQ(view_model.rowCount(QModelIndex()), 0);
 }
 
-TEST_F(JobLogViewModelTests, SwitchToAnotherJobLog)
+TEST_F(JobLogViewModelTest, SwitchToAnotherJobLog)
 {
   JobLog job_log1;
   job_log1.Append(LogEvent{"date", "time", Severity::kNotice, "source", "message"});

@@ -36,11 +36,11 @@ using namespace sequencergui;
 
 //! Tests for methods from workspace_monitor_helper.h.
 
-class WorkspaceMonitorHelperTests : public ::testing::Test
+class WorkspaceMonitorHelperTest : public ::testing::Test
 {
 };
 
-TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceEmptyWorkspaces)
+TEST_F(WorkspaceMonitorHelperTest, PopulateDomainWorkspaceEmptyWorkspaces)
 {
   const WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
@@ -49,7 +49,7 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceEmptyWorkspaces)
   EXPECT_TRUE(workspace.VariableNames().empty());
 }
 
-TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonEmptyWorkspace)
+TEST_F(WorkspaceMonitorHelperTest, PopulateDomainWorkspaceAttemptToPopulateNonEmptyWorkspace)
 {
   const WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
@@ -58,7 +58,7 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceAttemptToPopulateNonE
   EXPECT_THROW(PopulateDomainWorkspace(workspace_item, workspace), LogicErrorException);
 }
 
-TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
+TEST_F(WorkspaceMonitorHelperTest, PopulateDomainWorkspaceSingleVariables)
 {
   WorkspaceItem workspace_item;
   sup::sequencer::Workspace workspace;
@@ -80,7 +80,7 @@ TEST_F(WorkspaceMonitorHelperTests, PopulateDomainWorkspaceSingleVariables)
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
 }
 
-TEST_F(WorkspaceMonitorHelperTests, FindAncestor)
+TEST_F(WorkspaceMonitorHelperTest, FindAncestor)
 {
   WorkspaceItem workspace_item;
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -92,7 +92,7 @@ TEST_F(WorkspaceMonitorHelperTests, FindAncestor)
   EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
 }
 
-TEST_F(WorkspaceMonitorHelperTests, UpdateVariableEditableProperty)
+TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
 {
   if (!IsSequencerPluginEpicsAvailable())
   {
@@ -122,7 +122,7 @@ TEST_F(WorkspaceMonitorHelperTests, UpdateVariableEditableProperty)
 
 //! Validating helper method SetupNewVariable.
 
-TEST_F(WorkspaceMonitorHelperTests, SetupNewVariable)
+TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
 {
   WorkspaceItem workspace_item;
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());

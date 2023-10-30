@@ -43,10 +43,10 @@ using msec = std::chrono::milliseconds;
 
 Q_DECLARE_METATYPE(sequencergui::JobItem*)
 
-class OperationActionHandlerTests : public ::testing::Test
+class OperationActionHandlerTest : public ::testing::Test
 {
 public:
-  OperationActionHandlerTests() : m_actions(&m_job_manager, [this] { return m_selected_item; })
+  OperationActionHandlerTest() : m_actions(&m_job_manager, [this] { return m_selected_item; })
   {
     m_actions.SetJobModel(GetJobModel());
   }
@@ -62,7 +62,7 @@ public:
   JobItem* m_selected_item{nullptr};
 };
 
-TEST_F(OperationActionHandlerTests, AttemptToUseWhenMisconfigured)
+TEST_F(OperationActionHandlerTest, AttemptToUseWhenMisconfigured)
 {
   {
     OperationActionHandler actions(nullptr, {});
@@ -82,7 +82,7 @@ TEST_F(OperationActionHandlerTests, AttemptToUseWhenMisconfigured)
 
 //! Submission of the procedure.
 
-TEST_F(OperationActionHandlerTests, OnSubmitJobRequest)
+TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
   procedure->SetDisplayName("procedure_display_name");
@@ -125,7 +125,7 @@ TEST_F(OperationActionHandlerTests, OnSubmitJobRequest)
 
 //! Attempt to submit wronly configured procedure.
 
-TEST_F(OperationActionHandlerTests, AttemptToSubmitMalformedProcedure)
+TEST_F(OperationActionHandlerTest, AttemptToSubmitMalformedProcedure)
 {
   auto procedure = testutils::CreateInvalidProcedureItem(GetSequencerModel());
 
@@ -139,7 +139,7 @@ TEST_F(OperationActionHandlerTests, AttemptToSubmitMalformedProcedure)
 
 //! Submit the job, when start and wait till the end.
 
-TEST_F(OperationActionHandlerTests, OnStartJobRequest)
+TEST_F(OperationActionHandlerTest, OnStartJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -174,7 +174,7 @@ TEST_F(OperationActionHandlerTests, OnStartJobRequest)
 
 //! Removing submitted job.
 
-TEST_F(OperationActionHandlerTests, OnRemoveJobRequest)
+TEST_F(OperationActionHandlerTest, OnRemoveJobRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
 
@@ -193,7 +193,7 @@ TEST_F(OperationActionHandlerTests, OnRemoveJobRequest)
 
 //! Removing submitted job together with original procedure.
 
-TEST_F(OperationActionHandlerTests, OnRemoveJobAndCleanupRequest)
+TEST_F(OperationActionHandlerTest, OnRemoveJobAndCleanupRequest)
 {
   auto procedure = testutils::CreateCopyProcedureItem(GetSequencerModel());
   EXPECT_EQ(GetSequencerModel()->GetProcedureContainer()->GetSize(), 1);
@@ -214,7 +214,7 @@ TEST_F(OperationActionHandlerTests, OnRemoveJobAndCleanupRequest)
 
 //! Attempt to remove long running job.
 
-TEST_F(OperationActionHandlerTests, AttemptToRemoveLongRunningJob)
+TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
 {
   auto procedure = testutils::CreateSingleWaitProcedureItem(GetSequencerModel(), msec(10000));
 
@@ -243,7 +243,7 @@ TEST_F(OperationActionHandlerTests, AttemptToRemoveLongRunningJob)
 
 //! Regenerate submitted job.
 
-TEST_F(OperationActionHandlerTests, OnRegenerateJobRequest)
+TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -286,7 +286,7 @@ TEST_F(OperationActionHandlerTests, OnRegenerateJobRequest)
 
 //! Regenerate submitted job.
 
-TEST_F(OperationActionHandlerTests, OnRegenerateJobRequestWhenProcedureDeleted)
+TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 
@@ -322,7 +322,7 @@ TEST_F(OperationActionHandlerTests, OnRegenerateJobRequestWhenProcedureDeleted)
 
 //! Consequent execution of same job.
 
-TEST_F(OperationActionHandlerTests, ExecuteSameJobTwice)
+TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
 {
   auto procedure = testutils::CreateMessageProcedureItem(GetSequencerModel(), "text");
 

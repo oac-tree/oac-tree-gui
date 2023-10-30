@@ -25,11 +25,11 @@ using namespace sequencergui;
 
 //! Tests for helper functions in job_log_severity.h
 
-class JobLogSeverityTests : public ::testing::Test
+class JobLogSeverityTest : public ::testing::Test
 {
 };
 
-TEST_F(JobLogSeverityTests, SeverityToString)
+TEST_F(JobLogSeverityTest, SeverityToString)
 {
   EXPECT_EQ(SeverityToString(Severity::kEmergency), std::string("EMERGENCY"));
   EXPECT_EQ(SeverityToString(Severity::kAlert), std::string("ALERT"));

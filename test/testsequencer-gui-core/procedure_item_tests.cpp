@@ -25,11 +25,11 @@ using namespace sequencergui;
 
 //! Testing ProcedureItem class.
 
-class ProcedureItemTests : public ::testing::Test
+class ProcedureItemTest : public ::testing::Test
 {
 };
 
-TEST_F(ProcedureItemTests, InitialState)
+TEST_F(ProcedureItemTest, InitialState)
 {
   ProcedureItem item;
 
@@ -38,7 +38,7 @@ TEST_F(ProcedureItemTests, InitialState)
   EXPECT_TRUE(item.GetPreambleItem());
 }
 
-TEST_F(ProcedureItemTests, GetterAndSetter)
+TEST_F(ProcedureItemTest, GetterAndSetter)
 {
   ProcedureItem item;
 

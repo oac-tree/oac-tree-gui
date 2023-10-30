@@ -32,11 +32,11 @@ using namespace sequencergui;
 
 //! Tests UniversalVariableItem.
 
-class UniversalInstructionItemTests : public ::testing::Test
+class UniversalInstructionItemTest : public ::testing::Test
 {
 };
 
-TEST_F(UniversalInstructionItemTests, InitialState)
+TEST_F(UniversalInstructionItemTest, InitialState)
 {
   UniversalInstructionItem item;
 
@@ -50,7 +50,7 @@ TEST_F(UniversalInstructionItemTests, InitialState)
 
 //! Attempt to create domain variable using uninitialized item.
 
-TEST_F(UniversalInstructionItemTests, AttemptToCreateDomainVariable)
+TEST_F(UniversalInstructionItemTest, AttemptToCreateDomainVariable)
 {
   UniversalInstructionItem item;
   EXPECT_THROW(item.CreateDomainInstruction(), sup::sequencer::InvalidOperationException);
@@ -58,7 +58,7 @@ TEST_F(UniversalInstructionItemTests, AttemptToCreateDomainVariable)
 
 //! Initialisation from default constructed domain variable.
 
-TEST_F(UniversalInstructionItemTests, InitFromDomain)
+TEST_F(UniversalInstructionItemTest, InitFromDomain)
 {
   auto domain_instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
@@ -90,7 +90,7 @@ TEST_F(UniversalInstructionItemTests, InitFromDomain)
 //! Creating instruction using existing domain name.
 //! Please note, that the resulting object will report same name for GetType() and GetDomainType().
 
-TEST_F(UniversalInstructionItemTests, CreateUsingDomainName)
+TEST_F(UniversalInstructionItemTest, CreateUsingDomainName)
 {
   UniversalInstructionItem item(domainconstants::kWaitInstructionType);
   item.SetProperty(domainconstants::kNameAttribute, "abc");
@@ -110,7 +110,7 @@ TEST_F(UniversalInstructionItemTests, CreateUsingDomainName)
 //! Please note, that the resulting object will report different names for GetType() and
 //! GetDomainType().
 
-TEST_F(UniversalInstructionItemTests, SetDomainName)
+TEST_F(UniversalInstructionItemTest, SetDomainName)
 {
   UniversalInstructionItem item;
 

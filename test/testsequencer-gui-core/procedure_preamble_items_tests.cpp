@@ -27,11 +27,11 @@ using namespace sequencergui;
 
 //! Testing ProcedureItem class.
 
-class ProcedurePreambleItemsTests : public ::testing::Test
+class ProcedurePreambleItemsTest : public ::testing::Test
 {
 };
 
-TEST_F(ProcedurePreambleItemsTests, TypeRegistrationInfoItem)
+TEST_F(ProcedurePreambleItemsTest, TypeRegistrationInfoItem)
 {
   TypeRegistrationItem item;
 
@@ -45,7 +45,7 @@ TEST_F(ProcedurePreambleItemsTests, TypeRegistrationInfoItem)
   EXPECT_EQ(item.GetRegistrationString(), std::string("abc"));
 }
 
-TEST_F(ProcedurePreambleItemsTests, ProcedurePreambleItem)
+TEST_F(ProcedurePreambleItemsTest, ProcedurePreambleItem)
 {
   ProcedurePreambleItem item;
   EXPECT_TRUE(item.GetPluginPaths().empty());
@@ -54,7 +54,7 @@ TEST_F(ProcedurePreambleItemsTests, ProcedurePreambleItem)
   EXPECT_TRUE(item.GetPluginContainer());
 }
 
-TEST_F(ProcedurePreambleItemsTests, AddTypeRegistrationItem)
+TEST_F(ProcedurePreambleItemsTest, AddTypeRegistrationItem)
 {
   ProcedurePreambleItem item;
 
@@ -74,7 +74,7 @@ TEST_F(ProcedurePreambleItemsTests, AddTypeRegistrationItem)
   EXPECT_EQ(item.GetTypeRegistrations(), expected_info);
 }
 
-TEST_F(ProcedurePreambleItemsTests, AddPluginPath)
+TEST_F(ProcedurePreambleItemsTest, AddPluginPath)
 {
   ProcedurePreambleItem item;
 

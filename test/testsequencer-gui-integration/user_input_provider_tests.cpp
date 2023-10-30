@@ -30,13 +30,13 @@ using namespace sequencergui;
 
 //! Tests for UserInputProvider class.
 
-class UserInputProviderTests : public ::testing::Test
+class UserInputProviderTest : public ::testing::Test
 {
 };
 
 //! Single consumer thread asks for user input.
 
-TEST_F(UserInputProviderTests, SingleThreadAsksForUserInput)
+TEST_F(UserInputProviderTest, SingleThreadAsksForUserInput)
 {
   const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 41};
   const std::string description("description");

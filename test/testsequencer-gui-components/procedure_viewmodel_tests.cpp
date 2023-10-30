@@ -31,15 +31,15 @@
 
 using namespace sequencergui;
 
-//! Tests for items from instructionitems.h
+//! Tests for ProcedureViewModel class.
 
-class ProcedureViewModelTests : public ::testing::Test
+class ProcedureViewModelTest : public ::testing::Test
 {
 public:
   SequencerModel m_model;
 };
 
-TEST_F(ProcedureViewModelTests, SingleProcedure)
+TEST_F(ProcedureViewModelTest, SingleProcedure)
 {
   auto procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
 
@@ -67,7 +67,7 @@ TEST_F(ProcedureViewModelTests, SingleProcedure)
   EXPECT_EQ(procedure->GetDisplayName(), std::string("abc"));
 }
 
-TEST_F(ProcedureViewModelTests, TwoProcedures)
+TEST_F(ProcedureViewModelTest, TwoProcedures)
 {
   ProcedureViewModel viewmodel(&m_model);
   viewmodel.SetRootSessionItem(m_model.GetProcedureContainer());
@@ -88,7 +88,7 @@ TEST_F(ProcedureViewModelTests, TwoProcedures)
             std::string("Procedure1"));  // automaticaly generated display name
 }
 
-TEST_F(ProcedureViewModelTests, NotificationOnDisplayNameChange)
+TEST_F(ProcedureViewModelTest, NotificationOnDisplayNameChange)
 {
   ProcedureViewModel viewmodel(&m_model);
   viewmodel.SetRootSessionItem(m_model.GetProcedureContainer());
