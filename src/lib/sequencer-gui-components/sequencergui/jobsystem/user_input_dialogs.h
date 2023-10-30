@@ -45,4 +45,4 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_USER_INPUT_PROVIDER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_

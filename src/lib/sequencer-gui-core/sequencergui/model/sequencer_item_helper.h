@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
-#define SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
+#ifndef SEQUENCERGUI_MODEL_SEQUENCER_ITEM_HELPER_H_
+#define SEQUENCERGUI_MODEL_SEQUENCER_ITEM_HELPER_H_
 
 //! Various utils for GUI items.
 
@@ -82,4 +82,4 @@ mvvm::SessionItem* GetChannelItem(const mvvm::SessionItem& parent);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
+#endif  // SEQUENCERGUI_MODEL_SEQUENCER_ITEM_HELPER_H_

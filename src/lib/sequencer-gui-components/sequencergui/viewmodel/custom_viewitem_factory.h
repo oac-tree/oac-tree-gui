@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H
-#define SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H
+#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_
+#define SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_
 
 //! @file
 //! Collection of factory functions to create custom view items.
@@ -44,4 +44,4 @@ std::unique_ptr<mvvm::ViewItem> CreateChannelPresentationViewItem(mvvm::SessionI
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H
+#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_VIEWITEM_FACTORY_H_

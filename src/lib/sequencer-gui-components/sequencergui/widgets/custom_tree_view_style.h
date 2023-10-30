@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H
-#define SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H
+#ifndef SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
+#define SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_
 
 #include <QProxyStyle>
 
@@ -43,4 +43,4 @@ public:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H
+#endif  // SEQUENCERGUI_WIDGETS_CUSTOM_TREE_VIEW_STYLE_H_

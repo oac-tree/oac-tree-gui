@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H
-#define SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H
+#ifndef SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
+#define SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_
 
 #include <mvvm/viewmodel/standard_presentation_items.h>
 
@@ -51,4 +51,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H
+#endif  // SEQUENCERGUI_VIEWMODEL_CUSTOM_PRESENTATION_ITEMS_H_

@@ -65,4 +65,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_MAIN_WINDOW_H_
+#endif  // SEQUENCERGUI_MAINWINDOW_OPERATION_MAIN_WINDOW_H_

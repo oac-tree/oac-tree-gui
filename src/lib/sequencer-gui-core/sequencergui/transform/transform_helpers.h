@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
-#define SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
+#ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPERS_H_
+#define SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPERS_H_
 
 //! @file
 //! Collection of helper functions to transform AnyValueItem from/to domain.
@@ -104,4 +104,4 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& pr
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPER_H_
+#endif  // SEQUENCERGUI_TRANSFORM_TRANSFORM_HELPERS_H_

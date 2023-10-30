@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_USER_REQUEST_TYPES_H_
-#define SEQUENCERGUI_JOBSYSTEM_USER_REQUEST_TYPES_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_
+#define SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_
 
 #include <sup/dto/anyvalue.h>
 
@@ -54,4 +54,4 @@ struct UserInputResult
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_USER_REQUEST_TYPES_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_TYPES_H_

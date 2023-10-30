@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLE_H_
-#define SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLE_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
+#define SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_
 
 #include <functional>
 #include <future>
@@ -63,4 +63,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLE_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_REQUEST_HANDLER_H_

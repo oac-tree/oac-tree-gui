@@ -130,4 +130,4 @@ std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContaine
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_SEQUENCER_UTILS_H_
+#endif  // SEQUENCERGUI_MODEL_UNIVERSAL_ITEM_HELPER_H_
