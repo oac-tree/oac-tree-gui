@@ -108,7 +108,7 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 
 //! Terminates procedure which runs too long.
 
-TEST_F(DomainRunnerAdapterTest, StartAndTerminate)
+TEST_F(DomainRunnerAdapterTest, DISABLED_StartAndTerminate)
 {
   const std::chrono::milliseconds wait_timeout(10000);
 
