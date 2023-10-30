@@ -115,10 +115,7 @@ TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarAnyValue)
 //! Testing model layout when there is LocalVariable initially without any AnyValueItem on board.
 //! Then we check if row is regenerated correctly.
 
-// FIXME enable test after implementing special WorkspaceOperationViewModelController with
-// UpdateBranch functionality
-
-TEST_F(WorkspaceOperationViewModelTest, DISABLED_LocalVariableWithScalarInserted)
+TEST_F(WorkspaceOperationViewModelTest, LocalVariableWithScalarInserted)
 {
   mvvm::ApplicationModel model;
 
@@ -150,8 +147,6 @@ TEST_F(WorkspaceOperationViewModelTest, DISABLED_LocalVariableWithScalarInserted
   EXPECT_EQ(viewmodel.data(variable_name_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
 
-  // failing here because current version of the controller can't regenerate Variable's row
-  // on AnyValueItem insertion
   EXPECT_EQ(viewmodel.data(variable_value_index, Qt::DisplayRole).toInt(), 42);
 
   EXPECT_EQ(viewmodel.data(variable_type_index, Qt::DisplayRole).toString().toStdString(),
