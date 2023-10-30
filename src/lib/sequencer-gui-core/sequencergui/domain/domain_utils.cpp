@@ -142,16 +142,18 @@ bool IsSequencerPluginEpicsAvailable()
 
 bool IsSequencerControlPluginAvailable()
 {
-  return IsInstructionTypeAvailable(domainconstants::kWaitForConditionInstructionType);  // simplified check
+  return IsInstructionTypeAvailable(
+      domainconstants::kWaitForConditionInstructionType);  // simplified check
 }
 
 std::pair<bool, std::string> LoadPlugins()
 {
   std::vector<std::string> failed_plugins;
 
-  static const std::vector<std::string> plugins = {"libsequencer-ca.so", "libsequencer-pvxs.so",
-                                                   "libsequencer-misc.so",
-                                                   "libsequencer-control.so"};
+  static const std::vector<std::string> plugins = {
+      "libsequencer-ca.so",      "libsequencer-pvxs.so",       "libsequencer-misc.so",
+      "libsequencer-control.so", "libsequencer-sup-config.so", "libsequencer-sup-pulse-counter.so",
+      "libsequencer-mathexpr.so"};
 
   for (const auto& name : plugins)
   {
