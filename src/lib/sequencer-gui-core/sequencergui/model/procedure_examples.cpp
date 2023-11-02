@@ -143,25 +143,34 @@ ProcedureItem* AddUserChoiceProcedure(SequencerModel* model)
 ProcedureItem* AddComplexAlignmentProcedure(SequencerModel* model)
 {
   auto procedure_item = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  auto sequence_O = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer())
-                        ->SetDisplayName("O");
+  auto sequence_O = model->InsertItem<SequenceItem>(procedure_item->GetInstructionContainer());
+  sequence_O->SetDisplayName("O");
 
-  auto sequence_E = model->InsertItem<SequenceItem>(sequence_O)->SetDisplayName("E");
-  auto wait_A = model->InsertItem<WaitItem>(sequence_E)->SetDisplayName("A");
-  auto sequence_D = model->InsertItem<SequenceItem>(sequence_E)->SetDisplayName("D");
-  auto wait_B = model->InsertItem<WaitItem>(sequence_D)->SetDisplayName("B");
-  auto wait_C = model->InsertItem<WaitItem>(sequence_D)->SetDisplayName("C");
+  auto sequence_E = model->InsertItem<SequenceItem>(sequence_O);
+  sequence_E->SetDisplayName("E");
+  auto wait_A = model->InsertItem<WaitItem>(sequence_E);
+  wait_A->SetDisplayName("A");
+  auto sequence_D = model->InsertItem<SequenceItem>(sequence_E);
+  sequence_D->SetDisplayName("D");
+  auto wait_B = model->InsertItem<WaitItem>(sequence_D);
+  wait_B->SetDisplayName("B");
+  auto wait_C = model->InsertItem<WaitItem>(sequence_D);
+  wait_C->SetDisplayName("C");
 
-  auto wait_F = model->InsertItem<WaitItem>(sequence_O)->SetDisplayName("F");
+  auto wait_F = model->InsertItem<WaitItem>(sequence_O);
+  wait_F->SetDisplayName("F");
 
-  auto sequence_N = model->InsertItem<SequenceItem>(sequence_O)->SetDisplayName("N");
-  auto wait_G = model->InsertItem<WaitItem>(sequence_N)->SetDisplayName("G");
-  auto sequence_M = model->InsertItem<SequenceItem>(sequence_N)->SetDisplayName("M");
-  auto wait_H = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("H");
-  auto wait_I = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("I");
-  auto wait_J = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("J");
-  auto wait_K = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("K");
-  auto wait_L = model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("L");
+  auto sequence_N = model->InsertItem<SequenceItem>(sequence_O);
+  sequence_N->SetDisplayName("N");
+  auto wait_G = model->InsertItem<WaitItem>(sequence_N);
+  wait_G->SetDisplayName("G");
+  auto sequence_M = model->InsertItem<SequenceItem>(sequence_N);
+  wait_G->SetDisplayName("M");
+  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("H");
+  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("I");
+  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("J");
+  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("K");
+  model->InsertItem<WaitItem>(sequence_M)->SetDisplayName("L");
 
   return procedure_item;
 }

@@ -38,7 +38,7 @@ TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(Type)
       ->SetDisplayName("Mode");
   AddProperty(kTypeRegistrationString, std::string())
       ->SetDisplayName("String")
-      ->SetToolTip(
+      .SetToolTip(
           "JSON string or a filename for a file containing the JSON representation of the type");
 }
 

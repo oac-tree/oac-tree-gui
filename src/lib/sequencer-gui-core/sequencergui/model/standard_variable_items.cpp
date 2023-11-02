@@ -37,7 +37,7 @@ namespace sequencergui
 ConnectableVariableItem::ConnectableVariableItem(const std::string &variable_type)
     : UniversalVariableItem(variable_type)
 {
-  AddProperty(itemconstants::kIsAvailable, false)->SetDisplayName("connected")->SetEditable(false);
+  AddProperty(itemconstants::kIsAvailable, false)->SetDisplayName("connected").SetEditable(false);
 }
 
 std::unique_ptr<mvvm::SessionItem> ConnectableVariableItem::Clone(bool make_unique_id) const
