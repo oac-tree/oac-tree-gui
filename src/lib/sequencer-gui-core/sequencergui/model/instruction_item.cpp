@@ -120,13 +120,13 @@ void InstructionItem::SetY(double value)
 void InstructionItem::RegisterCommonProperties()
 {
   AddProperty(itemconstants::kStatus, std::string())
-      ->SetDisplayName("Status")
+      .SetDisplayName("Status")
       .SetVisible(false)
       .SetEditable(false);
-  AddProperty(itemconstants::kXpos, 0.0)->SetDisplayName("X").SetVisible(false);
-  AddProperty(itemconstants::kYpos, 0.0)->SetDisplayName("Y").SetVisible(false);
+  AddProperty(itemconstants::kXpos, 0.0).SetDisplayName("X").SetVisible(false);
+  AddProperty(itemconstants::kYpos, 0.0).SetDisplayName("Y").SetVisible(false);
   AddProperty(itemconstants::kBreakpoint, 0)
-      ->SetDisplayName("breakpoint")
+      .SetDisplayName("breakpoint")
       .SetEditable(false)
       .SetVisible(false);
 

@@ -64,10 +64,10 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
                                          mvvm::CompoundItem &item)
 {
   // Use attribute name for display name and tag name of the new property item.
-  auto property = item.AddProperty<AttributeItem>(attr.GetName());
-  property->SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
-  property->SetDisplayName(attr.GetName());
-  return property;
+  auto& property = item.AddProperty<AttributeItem>(attr.GetName());
+  property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
+  property.SetDisplayName(attr.GetName());
+  return &property;
 }
 
 template <typename T>

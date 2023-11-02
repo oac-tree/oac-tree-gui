@@ -34,12 +34,12 @@ static inline const std::string kFileName = "kFileName";
 
 ProcedureItem::ProcedureItem() : CompoundItem(Type)
 {
-  AddProperty(itemconstants::kName, std::string())->SetDisplayName("Name");
-  AddProperty(itemconstants::kDescription, std::string())->SetDisplayName("Description");
-  AddProperty(kFileName, std::string())->SetDisplayName("File name");
-  AddBranch<InstructionContainerItem>(kInstructions)->SetDisplayName("Instructions");
-  AddBranch<WorkspaceItem>(kWorkspace)->SetDisplayName("Workspace");
-  AddBranch<ProcedurePreambleItem>(kPreamble)->SetDisplayName("Preamble");
+  AddProperty(itemconstants::kName, std::string()).SetDisplayName("Name");
+  AddProperty(itemconstants::kDescription, std::string()).SetDisplayName("Description");
+  AddProperty(kFileName, std::string()).SetDisplayName("File name");
+  AddBranch<InstructionContainerItem>(kInstructions).SetDisplayName("Instructions");
+  AddBranch<WorkspaceItem>(kWorkspace).SetDisplayName("Workspace");
+  AddBranch<ProcedurePreambleItem>(kPreamble).SetDisplayName("Preamble");
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedureItem::Clone(bool make_unique_id) const

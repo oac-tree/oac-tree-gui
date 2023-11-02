@@ -142,9 +142,9 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomainWithCustomAttribute)
   IncludeItem item;
   item.SetPath("def");
 
-  auto property = item.AddProperty<AttributeItem>(custom_name);
-  property->SetAnyTypeName(sup::dto::kStringTypeName);
-  property->SetData(custom_value);
+  auto& property = item.AddProperty<AttributeItem>(custom_name);
+  property.SetAnyTypeName(sup::dto::kStringTypeName);
+  property.SetData(custom_value);
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);

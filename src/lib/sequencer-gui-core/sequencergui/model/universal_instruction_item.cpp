@@ -93,10 +93,10 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   {
     if (!mvvm::utils::Contains(processed_attribute_names, name))
     {
-      auto property = AddProperty<AttributeItem>(name);
-      property->SetAnyTypeName(sup::dto::kStringTypeName);
-      property->SetDisplayName(name);
-      property->SetData(value);
+      auto& property = AddProperty<AttributeItem>(name);
+      property.SetAnyTypeName(sup::dto::kStringTypeName);
+      property.SetDisplayName(name);
+      property.SetData(value);
     }
   }
 }

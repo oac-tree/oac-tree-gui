@@ -35,9 +35,9 @@ static const std::string kTypeRegistrationString = "kTypeRegistrationString";
 TypeRegistrationItem::TypeRegistrationItem() : CompoundItem(Type)
 {
   AddProperty(kTypeRegistrationMode, mvvm::ComboProperty({"JSON file", "JSON string"}))
-      ->SetDisplayName("Mode");
+      .SetDisplayName("Mode");
   AddProperty(kTypeRegistrationString, std::string())
-      ->SetDisplayName("String")
+      .SetDisplayName("String")
       .SetToolTip(
           "JSON string or a filename for a file containing the JSON representation of the type");
 }
@@ -80,8 +80,8 @@ static const std::string kPluginContainerTag = "kPluginContainerTag";
 ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(Type)
 {
   AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag)
-      ->SetDisplayName("Type registration");
-  AddBranch<mvvm::ContainerItem>(kPluginContainerTag)->SetDisplayName("Plugins");
+      .SetDisplayName("Type registration");
+  AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
 }
 
 std::unique_ptr<mvvm::SessionItem> ProcedurePreambleItem::Clone(bool make_unique_id) const
