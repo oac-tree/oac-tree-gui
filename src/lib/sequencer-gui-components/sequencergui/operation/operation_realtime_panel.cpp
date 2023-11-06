@@ -26,7 +26,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/item_stack_widget.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <mvvm/widgets/collapsible_list_view.h>
 

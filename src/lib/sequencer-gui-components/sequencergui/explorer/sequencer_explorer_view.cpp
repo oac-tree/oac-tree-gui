@@ -24,8 +24,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/procedure_action_handler.h>
-#include <sequencergui/widgets/item_stack_widget.h>
 #include <sup/gui/codeeditor/code_view.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -49,7 +49,7 @@ SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     , m_explorer_panel(new ExplorerPanel)
     , m_trees_widget(new ProcedureTreesWidget)
     , m_xml_view(new sup::gui::CodeView)
-    , m_right_panel(new ItemStackWidget)
+    , m_right_panel(new sup::gui::ItemStackWidget)
     , m_splitter(new QSplitter)
 {
   auto layout = new QVBoxLayout(this);

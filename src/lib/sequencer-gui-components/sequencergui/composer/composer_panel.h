@@ -29,11 +29,15 @@ namespace mvvm
 class CollapsibleListView;
 }
 
+namespace sup::gui
+{
+class PanelToolBar;
+}
+
 namespace sequencergui
 {
 class InstructionItemPanel;
 class ProcedureListWidget;
-class PanelToolBar;
 class SequencerModel;
 class ProcedureItem;
 class AggregatePanel;
@@ -62,7 +66,7 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
-  PanelToolBar* m_tool_bar{nullptr};
+  sup::gui::PanelToolBar* m_tool_bar{nullptr};
   mvvm::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};

@@ -26,7 +26,8 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/node_editor.h>
-#include <sequencergui/widgets/item_stack_widget.h>
+
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>
 
@@ -38,7 +39,7 @@ ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_node_editor(new NodeEditor)
     , m_xml_panel(new XmlPanel)
-    , m_stack_widget(new ItemStackWidget)
+      , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   setWindowTitle("Composer");
 

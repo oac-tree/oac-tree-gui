@@ -34,9 +34,9 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/item_stack_widget.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
@@ -288,7 +288,7 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 
 QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
 {
-  auto result = new ItemStackWidget;
+  auto result = new sup::gui::ItemStackWidget;
   auto actions = mode == kIdeMode ? m_job_panel->GetSequencerMonitorViewActions()
                                   : m_job_panel->GetOperationMonitorViewActions();
   result->AddWidget(m_job_panel, actions);
@@ -306,14 +306,14 @@ QWidget *OperationMonitorView::CreateCentralPanel()
   auto widget_action = new QWidgetAction(this);
   widget_action->setDefaultWidget(toolbar);
 
-  auto result = new ItemStackWidget;
+  auto result = new sup::gui::ItemStackWidget;
   result->AddWidget(m_realtime_panel, {widget_action});
   return result;
 }
 
 QWidget *OperationMonitorView::CreateRightPanel()
 {
-  auto result = new ItemStackWidget;
+  auto result = new sup::gui::ItemStackWidget;
   result->AddWidget(m_workspace_tree_panel);
   result->AddWidget(m_workspace_table_panel);
   result->SetCurrentIndex(0);

@@ -27,6 +27,7 @@ class QSplitter;
 namespace sup::gui
 {
 class CodeView;
+class ItemStackWidget;
 }
 
 namespace sequencergui
@@ -35,7 +36,6 @@ class SequencerModel;
 class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
-class ItemStackWidget;
 
 //! Main widget to browse procedures on disk. Contains file browser on the left, top items trees
 //! and property tree in the center, and XML viewer on the right. Belongs to MainWindow.
@@ -62,7 +62,7 @@ private:
   ExplorerPanel* m_explorer_panel{nullptr};
   ProcedureTreesWidget* m_trees_widget{nullptr};
   sup::gui::CodeView* m_xml_view{nullptr};
-  ItemStackWidget* m_right_panel{nullptr};
+  sup::gui::ItemStackWidget* m_right_panel{nullptr};
   QSplitter* m_splitter{nullptr};
 
   std::unique_ptr<SequencerModel> m_temp_model;  //!< temporary model for disk browsing

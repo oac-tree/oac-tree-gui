@@ -21,9 +21,9 @@
 
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/panel_toolbar.h>
 #include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/panel_toolbar.h>
 
 #include <mvvm/viewmodel/top_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
@@ -47,7 +47,7 @@ namespace sequencergui
 {
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new PanelToolBar)
+    , m_tool_bar(new sup::gui::PanelToolBar)
     , m_procedure_tree(new QTreeView)
     , m_procedure_tree_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_procedure_tree))
     , m_procedure_custom_header(new sup::gui::CustomHeaderView(this))

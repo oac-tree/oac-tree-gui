@@ -22,6 +22,11 @@
 
 #include <QWidget>
 
+namespace sup::gui
+{
+class ItemStackWidget;
+}
+
 namespace sequencergui
 {
 
@@ -30,7 +35,6 @@ class InstructionItem;
 class ProcedureItem;
 class SequencerModel;
 class WorkspaceEditorWidget;
-class ItemStackWidget;
 class NodeEditor;
 class XmlPanel;
 
@@ -75,7 +79,7 @@ private:
   WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
   NodeEditor* m_node_editor{nullptr};
   XmlPanel* m_xml_panel{nullptr};
-  ItemStackWidget* m_stack_widget{nullptr};
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
   ProcedureItem* m_procedure{nullptr};
   SequencerModel* m_model{nullptr};

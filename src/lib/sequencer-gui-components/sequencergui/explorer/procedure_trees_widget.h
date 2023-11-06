@@ -34,12 +34,12 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class CustomHeaderView;
+class PanelToolBar;
 }
 
 namespace sequencergui
 {
 class SequencerModel;
-class PanelToolBar;
 class ProcedureItem;
 
 //! The panel with two trees in the middle of SequencerXMLView.
@@ -61,7 +61,7 @@ private:
   void WriteSettings();
   void AdjustColumnWidth();
 
-  PanelToolBar* m_tool_bar{nullptr};
+  sup::gui::PanelToolBar* m_tool_bar{nullptr};
 
   QTreeView* m_procedure_tree{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_procedure_tree_provider;
