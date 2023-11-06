@@ -85,7 +85,45 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
     EXPECT_EQ(item.GetFileName(), std::string("abc"));
     EXPECT_EQ(item.GetPath(), std::string("def"));
 
-    // in the absence of showCollapsed on domain side, the value should true
+    // in the absence of showCollapsed on domain side, the value should be still true
+    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+  }
+
+  {  // when showCollapsed attribute is set to false on domain side
+    auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+    input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+    input->AddAttribute(domainconstants::kPathAttribute, "def");
+    input->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
+
+    IncludeItem item;
+    // default value for showCollapsed is true
+    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+
+    item.InitFromDomain(input.get());
+
+    EXPECT_EQ(item.GetFileName(), std::string("abc"));
+    EXPECT_EQ(item.GetPath(), std::string("def"));
+
+    // after setup from domain
+    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), false);
+  }
+
+  {  // when showCollapsed attribute is set to false on domain side
+    auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+    input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+    input->AddAttribute(domainconstants::kPathAttribute, "def");
+    input->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
+
+    IncludeItem item;
+    // default value for showCollapsed is true
+    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+
+    item.InitFromDomain(input.get());
+
+    EXPECT_EQ(item.GetFileName(), std::string("abc"));
+    EXPECT_EQ(item.GetPath(), std::string("def"));
+
+    // after setup from domain
     EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
   }
 }

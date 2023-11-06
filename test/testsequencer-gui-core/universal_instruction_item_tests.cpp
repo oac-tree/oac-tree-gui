@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/universal_item_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -127,4 +128,62 @@ TEST_F(UniversalInstructionItemTest, SetDomainName)
   EXPECT_EQ(domain_instruction->GetAttributeString(domainconstants::kNameAttribute), "abc");
 
   // more tests in standard_instruction_item_tests.cpp
+}
+
+TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
+{
+  {  // domain doesn't have ShowCollapsed defined
+    auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
+    domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+
+    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    item.InitFromDomain(domain.get());
+
+    // by default item is collapsed
+    EXPECT_TRUE(IsCollapsed(item));
+  }
+
+  {  // domain has ShowCollapsed set to false
+    auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
+    domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+    domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "false");
+
+    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    item.InitFromDomain(domain.get());
+
+    // item got the value from the domain
+    EXPECT_FALSE(IsCollapsed(item));
+  }
+
+  {  // domain has ShowCollapsed set to true
+    auto domain = CreateDomainInstruction(domainconstants::kIncludeProcedureInstructionType);
+    domain->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+    domain->AddAttribute(domainconstants::kShowCollapsedAttribute, "true");
+
+    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    item.InitFromDomain(domain.get());
+
+    // item got the value from the domain
+    EXPECT_TRUE(IsCollapsed(item));
+  }
+
+  {  // creating domain, when GUI has ShowCollapsed set to true
+    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    EXPECT_TRUE(IsCollapsed(item));
+
+    auto domain = item.CreateDomainInstruction();
+    EXPECT_TRUE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute));
+    EXPECT_EQ(domain->GetAttributeString(domainconstants::kShowCollapsedAttribute),
+              std::string("true"));
+  }
+
+  {  // creating domain, when GUI has ShowCollapsed set to false
+    UniversalInstructionItem item(domainconstants::kIncludeProcedureInstructionType);
+    item.SetProperty(domainconstants::kShowCollapsedAttribute, false);
+    EXPECT_FALSE(IsCollapsed(item));
+
+    auto domain = item.CreateDomainInstruction();
+    // we do not propagate false attributes
+    EXPECT_FALSE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute));
+  }
 }
