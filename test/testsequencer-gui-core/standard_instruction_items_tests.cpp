@@ -71,15 +71,23 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
 
 TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 {
-  auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
-  input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
-  input->AddAttribute(domainconstants::kPathAttribute, "def");
+  {  // when no showCollapsed attribute is present on domain side
+    auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
+    input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
+    input->AddAttribute(domainconstants::kPathAttribute, "def");
 
-  IncludeItem item;
-  item.InitFromDomain(input.get());
+    IncludeItem item;
+    // default value for showCollapsed is true
+    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
 
-  EXPECT_EQ(item.GetFileName(), std::string("abc"));
-  EXPECT_EQ(item.GetPath(), std::string("def"));
+    item.InitFromDomain(input.get());
+
+    EXPECT_EQ(item.GetFileName(), std::string("abc"));
+    EXPECT_EQ(item.GetPath(), std::string("def"));
+
+    // in the absence of showCollapsed on domain side, the value should true
+    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+  }
 }
 
 //! Validating transformation of Include instruction from domain to GUI, when domain contains custom
