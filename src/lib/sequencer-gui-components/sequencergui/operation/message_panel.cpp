@@ -23,7 +23,7 @@
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
 #include <sequencergui/widgets/steady_menu.h>
-#include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
 
@@ -130,7 +130,7 @@ std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()
 
   auto result = std::make_unique<QToolButton>();
   result->setText("Severity");
-  result->setIcon(styleutils::GetIcon("cog-outline"));
+  result->setIcon(sup::gui::utils::GetIcon("cog-outline"));
   result->setPopupMode(QToolButton::InstantPopup);
   result->setToolButtonStyle(Qt::ToolButtonIconOnly);
   result->setMenu(m_severity_selector_menu.get());

@@ -19,17 +19,10 @@
 
 #include "style_utils.h"
 
-#include <sup/gui/widgets/style_utils.h>
-
 #include <mvvm/widgets/style_utils.h>
 
 #include <QApplication>
 #include <QStyle>
-
-namespace
-{
-const QString DefaultIconExtension("svg");
-}  // namespace
 
 namespace sequencergui::styleutils
 {
@@ -44,23 +37,5 @@ void SetUnifiedPropertyStyle(QTreeView *tree)
   }
 }
 
-QIcon GetIcon(const QString &icon_name)
-{
-  const QString resource_name = icon_name.contains(".")
-                                    ? QString(":/icons/%1").arg(icon_name)
-                                    : QString(":/icons/%1.%2").arg(icon_name, DefaultIconExtension);
-
-  return QIcon(resource_name);
-}
-
-QSize ToolBarIconSize()
-{
-  return sup::gui::utils::ToolBarIconSize();
-}
-
-QSize NarrowToolBarIconSize()
-{
-  return sup::gui::utils::NarrowToolBarIconSize();
-}
 
 }  // namespace sequencergui::styleutils

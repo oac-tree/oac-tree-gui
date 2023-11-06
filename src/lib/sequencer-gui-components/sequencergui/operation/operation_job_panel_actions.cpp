@@ -20,7 +20,6 @@
 #include "operation_job_panel_actions.h"
 
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
@@ -41,7 +40,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
 {
   auto import_button = new QToolButton;
   import_button->setText("New");
-  import_button->setIcon(styleutils::GetIcon("file-plus-outline"));
+  import_button->setIcon(sup::gui::utils::GetIcon("file-plus-outline"));
   import_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   import_button->setToolTip("Open sequencer XML procedure from disk");
   connect(import_button, &QToolButton::clicked, this, &OperationJobPanelActions::ImportJobRequest);
@@ -49,7 +48,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
 
   auto submit_button = new QToolButton;
   submit_button->setText("Submit");
-  submit_button->setIcon(styleutils::GetIcon("file-plus-outline"));
+  submit_button->setIcon(sup::gui::utils::GetIcon("file-plus-outline"));
   submit_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   submit_button->setPopupMode(QToolButton::InstantPopup);
   submit_button->setMenu(m_submit_procedure_menu.get());
@@ -58,7 +57,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
 
   auto regenerate_button = new QToolButton;
   regenerate_button->setText("Reload");
-  regenerate_button->setIcon(styleutils::GetIcon("refresh"));
+  regenerate_button->setIcon(sup::gui::utils::GetIcon("refresh"));
   regenerate_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   regenerate_button->setToolTip("Reload selected procedure");
   connect(regenerate_button, &QToolButton::clicked, this,
@@ -67,7 +66,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
 
   auto remove_button = new QToolButton;
   remove_button->setText("Remove");
-  remove_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
+  remove_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline"));
   remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_button->setToolTip("Remove selected procedure from the list");
   connect(remove_button, &QToolButton::clicked, this, &OperationJobPanelActions::RemoveJobRequest);
@@ -75,7 +74,7 @@ OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
 
   auto remove_and_cleanup_button = new QToolButton;
   remove_and_cleanup_button->setText("Remove");
-  remove_and_cleanup_button->setIcon(styleutils::GetIcon("beaker-remove-outline"));
+  remove_and_cleanup_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline"));
   remove_and_cleanup_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_and_cleanup_button->setToolTip("Remove selected procedure from the list");
   connect(remove_and_cleanup_button, &QToolButton::clicked, this,

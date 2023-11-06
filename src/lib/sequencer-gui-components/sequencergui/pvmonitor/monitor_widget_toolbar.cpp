@@ -22,7 +22,7 @@
 #include "workspace_editor_actions.h"
 
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
 #include <QActionGroup>
@@ -36,10 +36,8 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
     , m_start_action(new QAction)
     , m_stop_action(new QAction)
 {
-  setIconSize(sequencergui::styleutils::ToolBarIconSize());
+  setIconSize(sup::gui::utils::ToolBarIconSize());
   setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-  using styleutils::GetIcon;
 
   connect(m_workspace_editor_actions, &WorkspaceEditorActions::AddVariableRequest, this,
           &MonitorWidgetToolBar::AddVariableRequest);
@@ -53,14 +51,14 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   addSeparator();
 
   m_start_action->setText("Start");
-  m_start_action->setIcon(GetIcon("chevron-right-circle-outline"));
+  m_start_action->setIcon(sup::gui::utils::GetIcon("chevron-right-circle-outline"));
   m_start_action->setToolTip("Start monitoring workspace variables");
 
   connect(m_start_action, &QAction::triggered, this, &MonitorWidgetToolBar::StartMonitoringRequest);
   addAction(m_start_action);
 
   m_stop_action->setText("Stop");
-  m_stop_action->setIcon(GetIcon("stop-circle-outline"));
+  m_stop_action->setIcon(sup::gui::utils::GetIcon("stop-circle-outline"));
   m_stop_action->setToolTip("Stop monitoring");
   m_stop_action->setEnabled(false);
   connect(m_stop_action, &QAction::triggered, this, &MonitorWidgetToolBar::StopMonitoringRequest);

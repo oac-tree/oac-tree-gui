@@ -29,7 +29,7 @@
 #include <sequencergui/model/procedure_examples.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
-#include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -93,19 +93,20 @@ void SequencerMainWindow::InitComponents()
 
   m_explorer_view = new SequencerExplorerView;
   m_tab_widget->AddWidget(m_explorer_view, "Explore",
-                          styleutils::GetIcon("file-search-outline-light"));
+                          sup::gui::utils::GetIcon("file-search-outline-light"));
 
   m_composer_view = new SequencerComposerView;
-  m_tab_widget->AddWidget(m_composer_view, "Compose", styleutils::GetIcon("graph-outline-light"));
+  m_tab_widget->AddWidget(m_composer_view, "Compose",
+                          sup::gui::utils::GetIcon("graph-outline-light"));
 
   m_operation_view = new OperationMonitorView(OperationMonitorView::kIdeMode);
   m_tab_widget->AddWidget(m_operation_view, "Run",
-                          styleutils::GetIcon("chevron-right-circle-outline-light"));
+                          sup::gui::utils::GetIcon("chevron-right-circle-outline-light"));
 
   m_tab_widget->AddSpacer();
 
   m_settings_view = new SettingsView;
-  m_tab_widget->AddWidget(m_settings_view, "", styleutils::GetIcon("cog-outline-light"));
+  m_tab_widget->AddWidget(m_settings_view, "", sup::gui::utils::GetIcon("cog-outline-light"));
 
   m_tab_widget->SetCurrentIndex(0);
 

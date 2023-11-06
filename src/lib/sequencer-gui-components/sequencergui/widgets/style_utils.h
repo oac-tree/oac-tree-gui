@@ -32,16 +32,6 @@ namespace sequencergui::styleutils
 //! Sets style for the tree to better look on CODAC systems.
 void SetUnifiedPropertyStyle(QTreeView* tree);
 
-//! Returns an icon for a given icon name. If the name doesn't contain an extension, will assume
-//! an existence of svg in the resource folder.
-QIcon GetIcon(const QString& icon_name);
-
-//! Size of tolbar icons.
-QSize ToolBarIconSize();
-
-//! Size of tolbar icons.
-QSize NarrowToolBarIconSize();
-
 }  // namespace sequencergui::styleutils
 
 #endif  // SEQUENCERGUI_WIDGETS_STYLE_UTILS_H_
