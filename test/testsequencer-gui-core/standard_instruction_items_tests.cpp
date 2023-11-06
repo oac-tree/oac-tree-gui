@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -78,7 +79,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 
     IncludeItem item;
     // default value for showCollapsed is true
-    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+    EXPECT_TRUE(IsCollapsed(item));
 
     item.InitFromDomain(input.get());
 
@@ -86,7 +87,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
     EXPECT_EQ(item.GetPath(), std::string("def"));
 
     // in the absence of showCollapsed on domain side, the value should be still true
-    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+    EXPECT_TRUE(IsCollapsed(item));
   }
 
   {  // when showCollapsed attribute is set to false on domain side
@@ -97,7 +98,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 
     IncludeItem item;
     // default value for showCollapsed is true
-    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+    EXPECT_TRUE(IsCollapsed(item));
 
     item.InitFromDomain(input.get());
 
@@ -105,7 +106,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
     EXPECT_EQ(item.GetPath(), std::string("def"));
 
     // after setup from domain
-    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), false);
+    EXPECT_FALSE(IsCollapsed(item));
   }
 
   {  // when showCollapsed attribute is set to false on domain side
@@ -116,7 +117,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
 
     IncludeItem item;
     // default value for showCollapsed is true
-    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+    EXPECT_TRUE(IsCollapsed(item));
 
     item.InitFromDomain(input.get());
 
@@ -124,7 +125,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
     EXPECT_EQ(item.GetPath(), std::string("def"));
 
     // after setup from domain
-    EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+    EXPECT_TRUE(IsCollapsed(item));
   }
 }
 
@@ -161,7 +162,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
   IncludeItem item;
   item.SetPath("def");
 
-  EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), true);
+  EXPECT_TRUE(IsCollapsed(item));
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
@@ -224,7 +225,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
   EXPECT_EQ(item.GetSuccessThreshold(), 0);
   EXPECT_EQ(item.GetFailureThreshold(), 1);
 
-  EXPECT_EQ(item.Property<bool>(domainconstants::kShowCollapsedAttribute), false);
+  EXPECT_FALSE(IsCollapsed(item));
 
   item.SetSuccessThreshold(42);
   EXPECT_EQ(item.GetSuccessThreshold(), 42);
