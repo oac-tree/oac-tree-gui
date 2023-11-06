@@ -116,7 +116,7 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   // We need to collect all property items, which has correspondance  on the domain side and should
   // be used for the domain update. These items, currently, satisfy simple criteria:
   // - They are visible property items
-  // - They are derived from AnyValueScalarItem
+  // - They are derived from AttributeItem
 
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 

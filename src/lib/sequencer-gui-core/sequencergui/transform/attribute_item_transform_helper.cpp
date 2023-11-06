@@ -64,7 +64,7 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
                                          mvvm::CompoundItem &item)
 {
   // Use attribute name for display name and tag name of the new property item.
-  auto& property = item.AddProperty<AttributeItem>(attr.GetName());
+  auto &property = item.AddProperty<AttributeItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
   return &property;
@@ -74,6 +74,11 @@ template <typename T>
 void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
                                     AttributeItem &item)
 {
+  if (!domain.HasAttribute(attribute_name))
+  {
+    return;
+  }
+
   auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
   {
