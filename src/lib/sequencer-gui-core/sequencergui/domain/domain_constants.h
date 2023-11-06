@@ -88,14 +88,17 @@ const std::string kDescriptionAttribute = sup::sequencer::Constants::DESCRIPTION
 const std::string kFailureThresholdAttribute =
     sup::sequencer::Constants::FAILURE_THRESHOLD_ATTRIBUTE_NAME;
 const std::string kFileNameAttribute = sup::sequencer::Constants::FILENAME_ATTRIBUTE_NAME;
-const std::string kInputAttribute = sup::sequencer::Constants::INPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kInputVariableNameAttribute =
+    sup::sequencer::Constants::INPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
 const std::string kIsRootAttribute = sup::sequencer::Constants::IS_ROOT_ATTRIBUTE_NAME;
-const std::string kLeftHandAttribute = sup::sequencer::Constants::LEFT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kLeftVariableNameAttribute =
+    sup::sequencer::Constants::LEFT_VARIABLE_NAME_ATTRIBUTE_NAME;
 const std::string kMaxCountAttribute = sup::sequencer::Constants::MAX_COUNT_ATTRIBUTE_NAME;
 const std::string kNameAttribute = sup::sequencer::Constants::NAME_ATTRIBUTE_NAME;
-const std::string kOutputAttribute = sup::sequencer::Constants::OUTPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kOutputVariableNameAttribute =
+    sup::sequencer::Constants::OUTPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
 const std::string kPathAttribute = sup::sequencer::Constants::PATH_ATTRIBUTE_NAME;
-const std::string kRightHandAttribute =
+const std::string kRightVariableNameAttribute =
     sup::sequencer::Constants::RIGHT_VARIABLE_NAME_ATTRIBUTE_NAME;
 const std::string kSuccessThresholdAttribute =
     sup::sequencer::Constants::SUCCESS_THRESHOLD_ATTRIBUTE_NAME;
@@ -104,7 +107,7 @@ const std::string kTickTimeOutAttribute = "tickTimeout";
 const std::string kTimeoutAttribute = sup::sequencer::Constants::TIMEOUT_SEC_ATTRIBUTE_NAME;
 const std::string kTypeAttribute = sup::sequencer::Constants::TYPE_ATTRIBUTE_NAME;
 const std::string kValueAttribute = sup::sequencer::Constants::VALUE_ATTRIBUTE_NAME;
-const std::string kVarNameAttribute =
+const std::string kGenericVariableNameAttribute =
     sup::sequencer::Constants::GENERIC_VARIABLE_NAME_ATTRIBUTE_NAME;
 const std::string kServiceAttribute = "service";
 const std::string kRequestAttribute = "requestVar";

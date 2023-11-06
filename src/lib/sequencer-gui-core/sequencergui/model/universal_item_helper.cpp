@@ -63,12 +63,12 @@ bool IsAggregateName(const std::string &name)
 
 void SetInput(const std::string &value, InstructionItem *item)
 {
-  item->SetProperty(domainconstants::kInputAttribute, value);
+  item->SetProperty(domainconstants::kInputVariableNameAttribute, value);
 }
 
 void SetOutput(const std::string &value, InstructionItem *item)
 {
-  item->SetProperty(domainconstants::kOutputAttribute, value);
+  item->SetProperty(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 void SetDescription(const std::string &value, InstructionItem *item)
@@ -83,7 +83,7 @@ void SetText(const std::string &value, InstructionItem *item)
 
 void SetVariableName(const std::string &value, InstructionItem *item)
 {
-  item->SetProperty(domainconstants::kVarNameAttribute, value);
+  item->SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
 void AddShowCollapsedProperty(InstructionItem &item)

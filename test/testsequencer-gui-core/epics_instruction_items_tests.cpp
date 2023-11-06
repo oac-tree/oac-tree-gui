@@ -74,7 +74,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessReadInstructionItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kChannelAccessReadInstructionType);
   input->AddAttribute(domainconstants::kChannelAttribute, "abc");
-  input->AddAttribute(domainconstants::kOutputAttribute, "def");
+  input->AddAttribute(domainconstants::kOutputVariableNameAttribute, "def");
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
 
   ChannelAccessReadInstructionItem item;
@@ -97,7 +97,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessReadInstructionItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessReadInstructionType);
 
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputAttribute), "def");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputVariableNameAttribute), "def");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
 
@@ -136,7 +136,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItem)
 TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kChannelAccessWriteInstructionType);
-  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
+  input->AddAttribute(domainconstants::kGenericVariableNameAttribute, "abc");
   input->AddAttribute(domainconstants::kChannelAttribute, "def");
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
   input->AddAttribute(domainconstants::kTypeAttribute, "json_type");
@@ -163,8 +163,8 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItemToDomain)
 
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessWriteInstructionType);
-
-    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
+    
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kGenericVariableNameAttribute), "abc");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "def");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
@@ -219,7 +219,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessReadInstructionItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kPvAccessReadInstructionType);
   input->AddAttribute(domainconstants::kChannelAttribute, "abc");
-  input->AddAttribute(domainconstants::kOutputAttribute, "def");
+  input->AddAttribute(domainconstants::kOutputVariableNameAttribute, "def");
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
 
   PvAccessReadInstructionItem item;
@@ -242,7 +242,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessReadInstructionItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessReadInstructionType);
 
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "abc");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputAttribute), "def");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputVariableNameAttribute), "def");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
 
@@ -281,7 +281,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItem)
 TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
-  input->AddAttribute(domainconstants::kVarNameAttribute, "abc");
+  input->AddAttribute(domainconstants::kGenericVariableNameAttribute, "abc");
   input->AddAttribute(domainconstants::kChannelAttribute, "def");
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
   input->AddAttribute(domainconstants::kTypeAttribute, "json_type");
@@ -308,8 +308,8 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemToDomain)
 
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessWriteInstructionType);
-
-    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kVarNameAttribute), "abc");
+    
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kGenericVariableNameAttribute), "abc");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "def");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
@@ -380,7 +380,7 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionFromDomain)
   input->AddAttribute(domainconstants::kTimeoutAttribute, "42.0");
   input->AddAttribute(domainconstants::kTypeAttribute, "json_type");
   input->AddAttribute(domainconstants::kValueAttribute, "json_value");
-  input->AddAttribute(domainconstants::kOutputAttribute, "output");
+  input->AddAttribute(domainconstants::kOutputVariableNameAttribute, "output");
 
   RPCClientInstruction item;
   item.InitFromDomain(input.get());
@@ -415,7 +415,7 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputAttribute), "output");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputVariableNameAttribute), "output");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));
 }
@@ -483,7 +483,7 @@ TEST_F(EpicsInstructionItemsTest, LogInstructionItemFromDomain)
 {
   auto input = CreateDomainInstruction(domainconstants::kLogInstructionType);
   input->AddAttribute(domainconstants::kMessageAttribute, "message");
-  input->AddAttribute(domainconstants::kInputAttribute, "input");
+  input->AddAttribute(domainconstants::kInputVariableNameAttribute, "input");
   input->AddAttribute(domainconstants::kSeverityAttribute, "severity");
 
   LogInstructionItem item;
@@ -507,7 +507,7 @@ TEST_F(EpicsInstructionItemsTest, LogInstructionItemToDomain)
   EXPECT_EQ(domain_item->GetType(), domainconstants::kLogInstructionType);
 
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kMessageAttribute), "message");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kInputAttribute), "input");
+  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kInputVariableNameAttribute), "input");
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kSeverityAttribute), "severity");
 
   EXPECT_NO_THROW(domain_item->Setup(m_procedure));

@@ -49,8 +49,8 @@ std::unique_ptr<procedure_t> CreateCopyProcedure()
   auto result = std::make_unique<procedure_t>();
 
   auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
-  copy->AddAttribute(domainconstants::kInputAttribute, "var0");
-  copy->AddAttribute(domainconstants::kOutputAttribute, "var1");
+  copy->AddAttribute(domainconstants::kInputVariableNameAttribute, "var0");
+  copy->AddAttribute(domainconstants::kOutputVariableNameAttribute, "var1");
   result->PushInstruction(std::move(copy));
 
   auto var0 = CreateDomainVariable(domainconstants::kLocalVariableType);
@@ -145,7 +145,7 @@ std::unique_ptr<procedure_t> CreateInputProcedure()
   auto result = std::make_unique<procedure_t>();
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
   auto input = CreateDomainInstruction(domainconstants::kInputInstructionType);
-  input->AddAttribute(domainconstants::kOutputAttribute, "var0");
+  input->AddAttribute(domainconstants::kOutputVariableNameAttribute, "var0");
   input->AddAttribute(domainconstants::kDescriptionAttribute, "description");
   sequence->InsertInstruction(std::move(input), 0);
   result->PushInstruction(std::move(sequence));
@@ -169,8 +169,8 @@ std::unique_ptr<procedure_t> CreateUserChoiceProcedure()
   wait0->AddAttribute(sequencergui::domainconstants::kTimeoutAttribute, "10");  // 10 sec
 
   auto copy = CreateDomainInstruction(domainconstants::kCopyInstructionType);
-  copy->AddAttribute(sequencergui::domainconstants::kInputAttribute, "var0");
-  copy->AddAttribute(sequencergui::domainconstants::kOutputAttribute, "var1");
+  copy->AddAttribute(sequencergui::domainconstants::kInputVariableNameAttribute, "var0");
+  copy->AddAttribute(sequencergui::domainconstants::kOutputVariableNameAttribute, "var1");
 
   userchoice->InsertInstruction(std::move(wait0), 0);
   userchoice->InsertInstruction(std::move(copy), 1);
@@ -245,7 +245,7 @@ std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions)
   auto result = std::make_unique<procedure_t>();
 
   auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
-  increment->AddAttribute(sequencergui::domainconstants::kVarNameAttribute, "counter");
+  increment->AddAttribute(sequencergui::domainconstants::kGenericVariableNameAttribute, "counter");
 
   // repeat instruction with increment inside
   auto repeat = CreateDomainInstruction(domainconstants::kRepeatInstructionType);
@@ -271,12 +271,12 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
   auto sequence = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
 
   auto less_than = CreateDomainInstruction(domainconstants::kLessThanInstructionType);
-  less_than->AddAttribute(sequencergui::domainconstants::kLeftHandAttribute, "counter");
-  less_than->AddAttribute(sequencergui::domainconstants::kRightHandAttribute, "max_counter");
+  less_than->AddAttribute(sequencergui::domainconstants::kLeftVariableNameAttribute, "counter");
+  less_than->AddAttribute(sequencergui::domainconstants::kRightVariableNameAttribute, "max_counter");
   sequence->InsertInstruction(std::move(less_than), 0);
 
   auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);
-  increment->AddAttribute(sequencergui::domainconstants::kVarNameAttribute, "counter");
+  increment->AddAttribute(sequencergui::domainconstants::kGenericVariableNameAttribute, "counter");
   sequence->InsertInstruction(std::move(increment), 0);
 
   // repeat instruction with increment inside

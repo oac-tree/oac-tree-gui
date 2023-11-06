@@ -52,12 +52,12 @@ void EpicsReadInstructionItem::SetChannel(const std::string &value)
 
 std::string EpicsReadInstructionItem::GetOutput() const
 {
-  return Property<std::string>(domainconstants::kOutputAttribute);
+  return Property<std::string>(domainconstants::kOutputVariableNameAttribute);
 }
 
 void EpicsReadInstructionItem::SetOutput(const std::string &value)
 {
-  SetProperty(domainconstants::kOutputAttribute, value);
+  SetProperty(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 double EpicsReadInstructionItem::GetTimeout() const
@@ -88,12 +88,12 @@ std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_un
 
 std::string EpicsWriteInstructionItem::GetVariableName() const
 {
-  return Property<std::string>(domainconstants::kVarNameAttribute);
+  return Property<std::string>(domainconstants::kGenericVariableNameAttribute);
 }
 
 void EpicsWriteInstructionItem::SetVariableName(const std::string &value)
 {
-  SetProperty(domainconstants::kVarNameAttribute, value);
+  SetProperty(domainconstants::kGenericVariableNameAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetChannel() const
@@ -253,12 +253,12 @@ void RPCClientInstruction::SetJsonValue(const std::string &value)
 
 std::string RPCClientInstruction::GetOutput() const
 {
-  return Property<std::string>(domainconstants::kOutputAttribute);
+  return Property<std::string>(domainconstants::kOutputVariableNameAttribute);
 }
 
 void RPCClientInstruction::SetOutput(const std::string &value)
 {
-  SetProperty(domainconstants::kOutputAttribute, value);
+  SetProperty(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -305,12 +305,12 @@ void LogInstructionItem::SetMessage(const std::string &value)
 
 std::string LogInstructionItem::GetInput() const
 {
-  return Property<std::string>(domainconstants::kInputAttribute);
+  return Property<std::string>(domainconstants::kInputVariableNameAttribute);
 }
 
 void LogInstructionItem::SetInput(const std::string &value)
 {
-  SetProperty(domainconstants::kInputAttribute, value);
+  SetProperty(domainconstants::kInputVariableNameAttribute, value);
 }
 
 std::string LogInstructionItem::GetSeverity() const
