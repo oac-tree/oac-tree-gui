@@ -24,6 +24,8 @@
 //! duplication) is dictated by the fact that many Sequencer's headers are not exposed, and many
 //! constants are literals in code.
 
+#include <sup/sequencer/constants.h>
+
 #include <string>
 
 namespace sequencergui::domainconstants
@@ -82,32 +84,37 @@ const std::string kSystemClockVariableType = "SystemClock";
 
 // attributes
 const std::string kChannelAttribute = "channel";
-const std::string kDescriptionAttribute = "description";
-const std::string kFailureThresholdAttribute = "failureThreshold";
-const std::string kFileNameAttribute = "file";
-const std::string kInputAttribute = "inputVar";
-const std::string kIsRootAttribute = "isRoot";
-const std::string kLeftHandAttribute = "leftVar";
-const std::string kMaxCountAttribute = "maxCount";
-const std::string kNameAttribute = "name";
-const std::string kOutputAttribute = "outputVar";
-const std::string kPathAttribute = "path";
-const std::string kRightHandAttribute = "rightVar";
-const std::string kSuccessThresholdAttribute = "successThreshold";
-const std::string kTextAttribute = "text";
+const std::string kDescriptionAttribute = sup::sequencer::Constants::DESCRIPTION_ATTRIBUTE_NAME;
+const std::string kFailureThresholdAttribute =
+    sup::sequencer::Constants::FAILURE_THRESHOLD_ATTRIBUTE_NAME;
+const std::string kFileNameAttribute = sup::sequencer::Constants::FILENAME_ATTRIBUTE_NAME;
+const std::string kInputAttribute = sup::sequencer::Constants::INPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kIsRootAttribute = sup::sequencer::Constants::IS_ROOT_ATTRIBUTE_NAME;
+const std::string kLeftHandAttribute = sup::sequencer::Constants::LEFT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kMaxCountAttribute = sup::sequencer::Constants::MAX_COUNT_ATTRIBUTE_NAME;
+const std::string kNameAttribute = sup::sequencer::Constants::NAME_ATTRIBUTE_NAME;
+const std::string kOutputAttribute = sup::sequencer::Constants::OUTPUT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kPathAttribute = sup::sequencer::Constants::PATH_ATTRIBUTE_NAME;
+const std::string kRightHandAttribute =
+    sup::sequencer::Constants::RIGHT_VARIABLE_NAME_ATTRIBUTE_NAME;
+const std::string kSuccessThresholdAttribute =
+    sup::sequencer::Constants::SUCCESS_THRESHOLD_ATTRIBUTE_NAME;
+const std::string kTextAttribute = sup::sequencer::Constants::TEXT_ATTRIBUTE_NAME;
 const std::string kTickTimeOutAttribute = "tickTimeout";
-const std::string kTimeoutAttribute = "timeout";
-const std::string kTypeAttribute = "type";
-const std::string kValueAttribute = "value";
-const std::string kVarNameAttribute = "varName";
+const std::string kTimeoutAttribute = sup::sequencer::Constants::TIMEOUT_SEC_ATTRIBUTE_NAME;
+const std::string kTypeAttribute = sup::sequencer::Constants::TYPE_ATTRIBUTE_NAME;
+const std::string kValueAttribute = sup::sequencer::Constants::VALUE_ATTRIBUTE_NAME;
+const std::string kVarNameAttribute =
+    sup::sequencer::Constants::GENERIC_VARIABLE_NAME_ATTRIBUTE_NAME;
 const std::string kServiceAttribute = "service";
 const std::string kRequestAttribute = "requestVar";
 const std::string kCommandAttribute = "command";
-const std::string kSeverityAttribute = "severity";
-const std::string kMessageAttribute = "message";
-const std::string kPrettyJsonAttribute = "pretty";
-const std::string kDynamicTypeAttribute = "dynamicType";
-const std::string kShowCollapsedAttribute = "showCollapsed";
+const std::string kSeverityAttribute = sup::sequencer::Constants::SEVERITY_ATTRIBUTE_NAME;
+const std::string kMessageAttribute = sup::sequencer::Constants::MESSAGE_ATTRIBUTE_NAME;
+const std::string kPrettyJsonAttribute = sup::sequencer::Constants::PRETTY_JSON_ATTRIBUTE_NAME;
+const std::string kDynamicTypeAttribute = sup::sequencer::Constants::IS_DYNAMIC_TYPE_ATTRIBUTE_NAME;
+const std::string kShowCollapsedAttribute =
+    sup::sequencer::Constants::SHOW_COLLAPSED_ATTRIBUTE_NAME;
 
 }  // namespace sequencergui::domainconstants
 
