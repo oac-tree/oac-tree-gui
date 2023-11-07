@@ -22,7 +22,6 @@
 #include "sequencergui/nodeeditor/node_editor_toolbar.h"
 
 #include <sequencergui/components/message_handler_factory.h>
-#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -34,6 +33,7 @@
 #include <sequencergui/nodeeditor/graphics_view.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
+#include <sup/gui/components/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
 
@@ -71,7 +71,7 @@ NodeEditor::NodeEditor(QWidget *parent)
   auto on_unsubscribe = [this]() { m_scene_controller.reset(); };
 
   // will be deleted as a child of QObject
-  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 NodeEditor::~NodeEditor() = default;

@@ -34,7 +34,8 @@ class SessionItem;
 namespace sup::gui
 {
 class CustomHeaderView;
-}
+class VisibilityAgentBase;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -44,7 +45,6 @@ class VariableItem;
 class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorActions;
-class VisibilityAgentBase;
 
 //! List of workspace variables at the right of SequencerComposerView.
 //! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
@@ -78,7 +78,7 @@ private:
   WorkspaceEditorActions* m_editor_actions{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
 
-  VisibilityAgentBase* m_visibility_agent{nullptr};
+  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui

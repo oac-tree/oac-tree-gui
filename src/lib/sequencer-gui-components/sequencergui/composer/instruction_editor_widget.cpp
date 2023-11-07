@@ -23,7 +23,7 @@
 
 #include <sequencergui/components/message_helper.h>
 #include <sequencergui/components/universal_property_editor.h>
-#include <sequencergui/components/visibility_agent_base.h>
+#include <sup/gui/components/visibility_agent_base.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -93,7 +93,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
   auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
 
   // will be deleted as a child of QObject
-  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 InstructionEditorWidget::~InstructionEditorWidget()

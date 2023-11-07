@@ -31,7 +31,8 @@ class QWidgetAction;
 namespace sup::gui
 {
 class MessageHandlerInterface;
-}
+class VisibilityAgentBase;
+}  // namespace sup::gui
 
 namespace mvvm
 {
@@ -46,7 +47,6 @@ class GraphicsSceneController;
 class InstructionItem;
 class NodeEditorToolBar;
 class ProcedureItem;
-class VisibilityAgentBase;
 
 //! NodeEditor widget (central part of SequencerComposerView).
 
@@ -83,7 +83,7 @@ private:
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_graphics_view_message_handler;
-  VisibilityAgentBase* m_visibility_agent{nullptr};
+  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 
   ProcedureItem* m_procedure_item{nullptr};
 };

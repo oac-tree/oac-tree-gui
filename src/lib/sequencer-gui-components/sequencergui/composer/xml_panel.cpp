@@ -19,10 +19,10 @@
 
 #include "xml_panel.h"
 
-#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/xml_utils.h>
 #include <sup/gui/codeeditor/code_view.h>
+#include <sup/gui/components/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/signals/model_listener.h>
@@ -59,7 +59,7 @@ XmlPanel::XmlPanel(QWidget *parent)
   auto on_unsubscribe = [this]() { m_listener.reset(); };
 
   // will be deleted as a child of QObject
-  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 void XmlPanel::SetModel(mvvm::SessionModelInterface *model)

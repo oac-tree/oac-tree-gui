@@ -33,7 +33,8 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class CustomHeaderView;
-}
+class VisibilityAgentBase;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -79,7 +80,7 @@ private:
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureItem* m_procedure{nullptr};
-  VisibilityAgentBase* m_visibility_agent{nullptr};
+  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui

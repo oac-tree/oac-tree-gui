@@ -20,7 +20,7 @@
 #include "workspace_editor_widget.h"
 
 #include <sequencergui/components/message_helper.h>
-#include <sequencergui/components/visibility_agent_base.h>
+#include <sup/gui/components/visibility_agent_base.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
@@ -82,7 +82,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
 
   // will be deleted as a child of QObject
-  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget()

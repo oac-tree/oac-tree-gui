@@ -34,6 +34,7 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class CustomHeaderView;
+class VisibilityAgentBase;
 }
 
 namespace sequencergui
@@ -44,7 +45,6 @@ class InstructionItem;
 class InstructionEditorContext;
 class InstructionEditorActionHandler;
 class InstructionEditorActions;
-class VisibilityAgentBase;
 class UniversalPropertyEditor;
 class CustomTreeViewStyle;
 
@@ -91,7 +91,7 @@ private:
   InstructionEditorActions* m_editor_actions{nullptr};
   std::unique_ptr<InstructionEditorActionHandler> m_action_handler;
 
-  VisibilityAgentBase* m_visibility_agent{nullptr};
+  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
   CustomTreeViewStyle* m_tree_view_style{nullptr};
 };
 

@@ -19,12 +19,12 @@
 
 #include "operation_workspace_panel.h"
 
-#include <sequencergui/components/visibility_agent_base.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/tree_helper.h>
 
@@ -88,7 +88,7 @@ OperationWorkspacePanel::OperationWorkspacePanel(Mode mode, QWidget *parent)
   auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
 
   // will be deleted as a child of QObject
-  m_visibility_agent = new VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
 OperationWorkspacePanel::~OperationWorkspacePanel()

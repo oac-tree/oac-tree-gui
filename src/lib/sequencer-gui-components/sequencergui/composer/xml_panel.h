@@ -34,6 +34,7 @@ class ModelListener;
 namespace sup::gui
 {
 class CodeView;
+class VisibilityAgentBase;
 }
 
 namespace sequencergui
@@ -67,7 +68,7 @@ private:
   mvvm::SessionModelInterface* m_model{nullptr};
   std::unique_ptr<listener_t> m_listener;
   ProcedureItem* m_procedure{nullptr};
-  VisibilityAgentBase* m_visibility_agent{nullptr};
+  sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };
 
 }  // namespace sequencergui
