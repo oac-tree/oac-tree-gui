@@ -61,4 +61,9 @@ ProcedureViewModel::ProcedureViewModel(mvvm::SessionModelInterface *model, QObje
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, ProcedureRowStrategy>(model, this));
 }
 
+int ProcedureViewModel::columnCount(const QModelIndex &parent) const
+{
+  return 1; // Type
+}
+
 }  // namespace sequencergui

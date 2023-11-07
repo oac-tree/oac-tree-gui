@@ -77,4 +77,9 @@ JobListViewModel::JobListViewModel(mvvm::SessionModelInterface *model, QObject *
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }
 
+int JobListViewModel::columnCount(const QModelIndex &parent) const
+{
+  return 2; // Name, Status
+}
+
 }  // namespace sequencergui

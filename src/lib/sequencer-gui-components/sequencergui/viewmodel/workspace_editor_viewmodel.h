@@ -43,6 +43,8 @@ class MVVM_VIEWMODEL_EXPORT WorkspaceEditorViewModel : public mvvm::ViewModel
 
 public:
   explicit WorkspaceEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+
+  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 }  // namespace sequencergui

@@ -92,4 +92,9 @@ int InstructionOperationViewModel::GetBreakpointColumn()
   return 2;
 }
 
+int InstructionOperationViewModel::columnCount(const QModelIndex &parent) const
+{
+  return 3;  // Instruction, Status, BP
+}
+
 }  // namespace sequencergui

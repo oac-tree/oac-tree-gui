@@ -133,4 +133,9 @@ WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::SessionModelInter
   SetController(std::move(controller));
 }
 
+int WorkspaceOperationViewModel::columnCount(const QModelIndex &parent) const
+{
+  return 4;  // "Name", "Value", "Type", "Channel"
+}
+
 }  // namespace sequencergui

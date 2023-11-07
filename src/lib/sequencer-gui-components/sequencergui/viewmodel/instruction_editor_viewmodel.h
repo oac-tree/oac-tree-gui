@@ -53,6 +53,8 @@ public:
 
   bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column,
                     const QModelIndex& parent) override;
+
+  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 }  // namespace sequencergui

@@ -35,4 +35,9 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::SessionModelInterface *
       mvvm::factory::CreateController<VariableChildrenStrategy, VariableRowStrategy>(model, this));
 }
 
+int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
+{
+  return 2; // Type, Name
+}
+
 }  // namespace sequencergui

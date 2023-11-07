@@ -38,6 +38,8 @@ class MVVM_VIEWMODEL_EXPORT ProcedureViewModel : public mvvm::ViewModel
 
 public:
   explicit ProcedureViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+
+  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 }  // namespace sequencergui
