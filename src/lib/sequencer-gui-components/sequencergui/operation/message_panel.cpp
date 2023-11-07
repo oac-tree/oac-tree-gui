@@ -81,6 +81,7 @@ MessagePanel::MessagePanel(QWidget* parent)
   m_proxy_model->setFilterKeyColumn(2);
 
   SetupAutoscroll();
+  UpdateSeverityFilter();
 }
 
 MessagePanel::~MessagePanel()
