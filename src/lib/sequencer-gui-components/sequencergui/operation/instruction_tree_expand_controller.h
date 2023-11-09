@@ -89,6 +89,9 @@ public:
    */
   void SetDefaultExpandState();
 
+signals:
+  void VisibilityHasChanged();
+
 private:
   mvvm::ViewModel* GetViewModel() const;
 

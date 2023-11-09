@@ -83,7 +83,7 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<BreakpointModelDelegate> m_delegate;
-  std::unique_ptr<InstructionTreeExpandController> m_selection_controller;
+  std::unique_ptr<InstructionTreeExpandController> m_expand_controller;
   ProcedureItem* m_procedure{nullptr};
 
   bool m_viewport_follows_selection{true};

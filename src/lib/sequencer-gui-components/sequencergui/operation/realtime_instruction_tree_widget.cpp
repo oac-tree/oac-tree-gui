@@ -65,7 +65,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_delegate(std::make_unique<BreakpointModelDelegate>())
-      , m_selection_controller(std::make_unique<InstructionTreeExpandController>(m_tree_view))
+    , m_expand_controller(std::make_unique<InstructionTreeExpandController>(m_tree_view))
 {
   setWindowTitle("InstructionTree");
 
@@ -84,6 +84,14 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   connect(m_tree_view, &QTreeView::doubleClicked, this,
           &RealTimeInstructionTreeWidget::OnTreeDoubleClick);
 
+  auto on_branch_change = [this]()
+  {
+    m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
+    ScrollViewportToSelection();
+  };
+  connect(m_expand_controller.get(), &InstructionTreeExpandController::VisibilityHasChanged, this,
+          on_branch_change);
+
   sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
 
   ReadSettings();
@@ -101,7 +109,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   auto container = procedure_item ? procedure_item->GetInstructionContainer() : nullptr;
 
   m_component_provider->SetItem(container);
-  m_selection_controller->SetInstructionContainer(container);
+  m_expand_controller->SetInstructionContainer(container);
 
   if (procedure_item)
   {
@@ -111,8 +119,8 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 
 void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
 {
-  m_selection_controller->SaveSelectionRequest(items);
-  m_component_provider->SetSelectedItems(m_selection_controller->GetInstructionsToSelect());
+  m_expand_controller->SaveSelectionRequest(items);
+  m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
   ScrollViewportToSelection();
 }
 
@@ -142,7 +150,7 @@ void RealTimeInstructionTreeWidget::WriteSettings()
 
 void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
 {
-  m_selection_controller->SetDefaultExpandState();
+  m_expand_controller->SetDefaultExpandState();
 
   if (m_custom_header->HasFavoriteState())
   {
@@ -177,7 +185,7 @@ void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint &p
   selective_expand_action->setToolTip(
       "Expand all except instructions with property 'show as collapsed' set.");
 
-  auto on_action = [this]() { m_selection_controller->SetDefaultExpandState(); };
+  auto on_action = [this]() { m_expand_controller->SetDefaultExpandState(); };
   QObject::connect(selective_expand_action, &QAction::triggered, this, on_action);
 
   menu.exec(m_tree_view->mapToGlobal(pos));
