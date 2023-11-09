@@ -162,16 +162,6 @@ void JobManager::OnChangeDelayRequest(int msec)
   }
 }
 
-UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
-{
-  return GetAnyValueEditorDialogResult(args);
-}
-
-UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
-{
-  return GetUserChoiceDialogResult(args);
-}
-
 bool JobManager::HasRunningJobs() const
 {
   return std::any_of(m_job_map.begin(), m_job_map.end(),
@@ -197,9 +187,9 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
-  auto on_user_input = [this](const auto &args) { return OnUserInputRequest(args); };
+  auto on_user_input = [](const auto &args) { return GetAnyValueEditorDialogResult(args); };
 
-  auto on_user_choice = [this](const auto &args) { return OnUserChoiceRequest(args); };
+  auto on_user_choice = [](const auto &args) { return GetUserChoiceDialogResult(args); };
 
   auto job_handler = std::make_unique<JobHandler>(item);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,

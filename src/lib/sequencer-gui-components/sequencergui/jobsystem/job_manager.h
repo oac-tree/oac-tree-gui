@@ -71,10 +71,6 @@ public:
   void SetMessagePanel(MessagePanel* panel);
   void OnChangeDelayRequest(int msec);
 
-  UserInputResult OnUserInputRequest(const UserInputArgs& args);
-
-  UserChoiceResult OnUserChoiceRequest(const UserChoiceArgs& args);
-
   /**
    * @brief Returns true if there are jobs running.
    */
