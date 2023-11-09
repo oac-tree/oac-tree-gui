@@ -21,10 +21,16 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/widgets/widget_utils.h>
 
 #include <sup/sequencer/constants.h>
 
 #include <QInputDialog>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -99,6 +105,22 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
   const int index = msg_box.clickedButton() == option0_button ? 0 : 1;
 
   return {index, true};
+}
+
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args)
+{
+  AnyValueEditorDialog dialog(mvvm::utils::FindMainWindow());
+
+  auto anyvalue_item = sup::gui::CreateItem(args.value);
+
+  dialog.SetInitialValue(anyvalue_item.get());
+  if (dialog.exec() == QDialog::Accepted)
+  {
+    auto anyvalue = sup::gui::CreateAnyValue(*dialog.GetResult());
+    return UserInputResult{anyvalue, true};
+  }
+
+  return UserInputResult{{}, false};
 }
 
 }  // namespace sequencergui

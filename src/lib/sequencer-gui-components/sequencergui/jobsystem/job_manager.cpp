@@ -26,15 +26,9 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/operation/message_panel.h>
-#include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_item.h>
-
-#include <mvvm/widgets/widget_utils.h>
 
 #include <sup/dto/anyvalue.h>
 
-#include <QMainWindow>
 #include <algorithm>
 
 namespace sequencergui
@@ -170,18 +164,7 @@ void JobManager::OnChangeDelayRequest(int msec)
 
 UserInputResult JobManager::OnUserInputRequest(const UserInputArgs &args)
 {
-  AnyValueEditorDialog dialog(mvvm::utils::FindMainWindow());
-
-  auto anyvalue_item = sup::gui::CreateItem(args.value);
-
-  dialog.SetInitialValue(anyvalue_item.get());
-  if (dialog.exec() == QDialog::Accepted)
-  {
-    auto anyvalue = sup::gui::CreateAnyValue(*dialog.GetResult());
-    return UserInputResult{anyvalue, true};
-  }
-
-  return UserInputResult{{}, false};
+  return GetAnyValueEditorDialogResult(args);
 }
 
 UserChoiceResult JobManager::OnUserChoiceRequest(const UserChoiceArgs &args)
