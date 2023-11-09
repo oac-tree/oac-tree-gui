@@ -19,9 +19,10 @@
 
 #include "tree_helper.h"
 
-#include <QDebug>
 #include <QHeaderView>
 #include <QTreeView>
+
+#include <numeric>
 
 namespace sequencergui
 {
