@@ -72,7 +72,7 @@ void AdjustWidthOfColumns(QTreeView &tree, std::vector<int> stretch_factors)
   // adjust array of stretch factors so it matches number of columns
   const int default_stretch{1};
   stretch_factors.resize(header->count(), default_stretch);
-  auto stretch_factor_sum = std::reduce(stretch_factors.begin(), stretch_factors.end());
+  auto stretch_factor_sum = std::accumulate(stretch_factors.begin(), stretch_factors.end(), 0);
 
   const auto width = header->width();
   for (int i = 0; i < header->count(); ++i)
