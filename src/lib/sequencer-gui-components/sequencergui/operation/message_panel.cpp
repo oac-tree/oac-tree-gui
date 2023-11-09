@@ -23,6 +23,8 @@
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
 #include <sequencergui/widgets/steady_menu.h>
+#include <sequencergui/widgets/tree_helper.h>
+#include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
@@ -41,6 +43,7 @@ namespace
 {
 const QString kGroupName("MessagePanel");
 const QString kUncheckedSeveritiesSettingName = kGroupName + "/" + "unchecked";
+const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 
 std::vector<sequencergui::Severity> kSeveritiesToSelect = {
     sequencergui::Severity::kEmergency, sequencergui::Severity::kAlert,
@@ -57,6 +60,7 @@ namespace sequencergui
 MessagePanel::MessagePanel(QWidget* parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
+    , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_view_model(new JobLogViewModel(nullptr))
     , m_proxy_model(new QSortFilterProxyModel(this))
     , m_severity_selector_action(new QWidgetAction(this))
@@ -72,6 +76,7 @@ MessagePanel::MessagePanel(QWidget* parent)
   m_severity_selector_action->setDefaultWidget(CreateSeveritySelectorWidget().release());
   addAction(m_severity_selector_action);
 
+  m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setModel(m_proxy_model);
@@ -82,6 +87,7 @@ MessagePanel::MessagePanel(QWidget* parent)
 
   SetupAutoscroll();
   UpdateSeverityFilter();
+
 }
 
 MessagePanel::~MessagePanel()
@@ -92,6 +98,18 @@ MessagePanel::~MessagePanel()
 void MessagePanel::SetLog(JobLog* job_log)
 {
   m_view_model->SetLog(job_log);
+}
+
+void MessagePanel::showEvent(QShowEvent *event)
+{
+  if (m_custom_header->HasFavoriteState())
+  {
+    m_custom_header->RestoreFavoriteState();
+  }
+  else
+  {
+    AdjustWidthOfColumns(*m_tree_view, {2,2,2,1,6});
+  }
 }
 
 void MessagePanel::ReadSettings()
@@ -106,6 +124,11 @@ void MessagePanel::ReadSettings()
   {
     m_unchecked_severitites.push_back(
         QString::fromStdString(SeverityToString(sequencergui::Severity::kDebug)));
+  }
+
+  if (settings.contains(kHeaderStateSettingName))
+  {
+    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
   }
 }
 
@@ -123,6 +146,11 @@ void MessagePanel::WriteSettings()
   }
 
   settings.setValue(kUncheckedSeveritiesSettingName, m_unchecked_severitites);
+
+  if (m_custom_header->HasFavoriteState())
+  {
+    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
+  }
 }
 
 std::unique_ptr<QWidget> MessagePanel::CreateSeveritySelectorWidget()

@@ -33,6 +33,11 @@ class QSortFilterProxyModel;
 class QToolButton;
 class QWidgetAction;
 
+namespace sup::gui
+{
+class CustomHeaderView;
+}
+
 namespace sequencergui
 {
 
@@ -57,6 +62,9 @@ public:
 
   void SetLog(JobLog* job_log);
 
+protected:
+  void showEvent(QShowEvent* event) override;
+
 private:
   void ReadSettings();
   void WriteSettings();
@@ -76,6 +84,7 @@ private:
   void UpdateSeverityFilter();
 
   QTreeView* m_tree_view{nullptr};
+  sup::gui::CustomHeaderView* m_custom_header{nullptr};
   JobLogViewModel* m_view_model{nullptr};
   QSortFilterProxyModel* m_proxy_model{nullptr};
   QWidgetAction* m_severity_selector_action{nullptr};
