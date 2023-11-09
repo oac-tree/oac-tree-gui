@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/operation/instruction_tree_selection_controller.h"
+#include "sequencergui/operation/instruction_tree_expand_controller.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -35,10 +35,10 @@
 
 using namespace sequencergui;
 
-class InstructionTreeSelectionControllerTest : public ::testing::Test
+class InstructionTreeExpandControllerTest : public ::testing::Test
 {
 public:
-  InstructionTreeSelectionControllerTest() : m_viewmodel(&m_model) {}
+  InstructionTreeExpandControllerTest() : m_viewmodel(&m_model) {}
 
   class TestModel : public mvvm::ApplicationModel
   {
@@ -54,7 +54,7 @@ public:
   InstructionOperationViewModel m_viewmodel;
 };
 
-TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInFullyExpandedTree)
+TEST_F(InstructionTreeExpandControllerTest, SelectWaitInFullyExpandedTree)
 {
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
@@ -66,7 +66,7 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInFullyExpandedTree)
   QTreeView tree;
   tree.setModel(&m_viewmodel);
   auto selection_model = tree.selectionModel();
-  InstructionTreeSelectionController controller(&tree);
+  InstructionTreeExpandController controller(&tree);
 
   // tree is fully expanded, no item selected
   tree.expandAll();
@@ -81,7 +81,7 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInFullyExpandedTree)
   EXPECT_TRUE(selection_model->selectedIndexes().empty());
 }
 
-TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
+TEST_F(InstructionTreeExpandControllerTest, SelectWaitInCollapsedBranch)
 {
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
@@ -93,7 +93,7 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
   QTreeView tree;
   tree.setModel(&m_viewmodel);
   auto selection_model = tree.selectionModel();
-  InstructionTreeSelectionController controller(&tree);
+  InstructionTreeExpandController controller(&tree);
 
   // collapsing sequence1 branch
   tree.expandAll();
@@ -111,7 +111,7 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
 //! Validating SetDefaultExpandState method. We create a procedure with nestes sequence and mark it
 //! as collapsed. Tree view should have corresponding branches reflecting this state.
 
-TEST_F(InstructionTreeSelectionControllerTest, SetDefaultExpandState)
+TEST_F(InstructionTreeExpandControllerTest, SetDefaultExpandState)
 {
   auto container = m_model.InsertItem<InstructionContainerItem>();
   auto sequence0 = m_model.InsertItem<SequenceItem>(container);
@@ -126,7 +126,7 @@ TEST_F(InstructionTreeSelectionControllerTest, SetDefaultExpandState)
   tree.setModel(&m_viewmodel);
   auto selection_model = tree.selectionModel();
 
-  InstructionTreeSelectionController controller(&tree);
+  InstructionTreeExpandController controller(&tree);
 
   // expanding all
   tree.expandAll();

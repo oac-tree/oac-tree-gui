@@ -20,7 +20,7 @@
 #include "realtime_instruction_tree_widget.h"
 
 #include "breakpoint_model_delegate.h"
-#include "instruction_tree_selection_controller.h"
+#include "instruction_tree_expand_controller.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -65,7 +65,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_delegate(std::make_unique<BreakpointModelDelegate>())
-    , m_selection_controller(std::make_unique<InstructionTreeSelectionController>(m_tree_view))
+      , m_selection_controller(std::make_unique<InstructionTreeExpandController>(m_tree_view))
 {
   setWindowTitle("InstructionTree");
 

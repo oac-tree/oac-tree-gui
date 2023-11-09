@@ -42,7 +42,7 @@ namespace sequencergui
 class ProcedureItem;
 class InstructionItem;
 class BreakpointModelDelegate;
-class InstructionTreeSelectionController;
+class InstructionTreeExpandController;
 
 //! Widget with expanded instruction tree for realtime job execution.
 //! Located at the central panel of SequencerMonitorView.
@@ -83,7 +83,7 @@ private:
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<BreakpointModelDelegate> m_delegate;
-  std::unique_ptr<InstructionTreeSelectionController> m_selection_controller;
+  std::unique_ptr<InstructionTreeExpandController> m_selection_controller;
   ProcedureItem* m_procedure{nullptr};
 
   bool m_viewport_follows_selection{true};

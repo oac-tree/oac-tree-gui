@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_SELECTION_CONTROLLER_H_
-#define SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_SELECTION_CONTROLLER_H_
+#ifndef SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_EXPAND_CONTROLLER_H_
+#define SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_EXPAND_CONTROLLER_H_
 
 #include <QObject>
 
@@ -37,20 +37,23 @@ class InstructionItem;
 class InstructionContainerItem;
 
 /**
- * @brief The InstructionTreeSelectionController helper class provides logic for instruction
- * selection on real-time instruction tree.
+ * @brief The InstructionTreeExpandController helper class provides a logic for instruction
+ * highlight depending on the tree branch collapse/expand status.
  *
- * As an input, it uses the instruction currenly being executed. If the instruction is located
- * inside collapsed branch, the algorithm will look for the parent which ownes collapsed branch, and
+ * @details It allows to save desired instruction list to highlight in a buffer, and then retrieve
+ * an actual list to highlight at the later stage, for current tree branch collapse/expand status.
+ *
+ * As an input, it uses instructions currenly being executed. If the instruction is located
+ * inside collapsed branch, the algorithm will look for the parent which owns collapsed branch, and
  * will select it instead. If current instruction is inside expanded branch, will simply select it.
  */
-class InstructionTreeSelectionController : public QObject
+class InstructionTreeExpandController : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit InstructionTreeSelectionController(QTreeView* tree_view, QObject* parent = nullptr);
-  ~InstructionTreeSelectionController() override;
+  explicit InstructionTreeExpandController(QTreeView* tree_view, QObject* parent = nullptr);
+  ~InstructionTreeExpandController() override;
 
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
@@ -71,6 +74,11 @@ public:
    */
   std::vector<mvvm::SessionItem*> GetInstructionsToSelect() const;
 
+  /**
+   * @brief Finds visible instruction up in the hierarchy located in non-collapsed branch.
+   *
+   * @details If all branches are in expand state, will simply return same item back.
+   */
   mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item) const;
 
   /**
@@ -92,4 +100,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_SELECTION_CONTROLLER_H_
+#endif  // SEQUENCERGUI_OPERATION_INSTRUCTION_TREE_EXPAND_CONTROLLER_H_

@@ -7,8 +7,8 @@ target_sources(${library_name} PRIVATE
   breakpoint_helper.h
   breakpoint_model_delegate.cpp
   breakpoint_model_delegate.h
-  instruction_tree_selection_controller.cpp
-  instruction_tree_selection_controller.h
+  instruction_tree_expand_controller.cpp
+  instruction_tree_expand_controller.h
   job_list_widget.cpp
   job_list_widget.h
   job_property_widget.cpp

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_tree_selection_controller.h"
+#include "instruction_tree_expand_controller.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -34,25 +34,25 @@
 namespace sequencergui
 {
 
-InstructionTreeSelectionController::InstructionTreeSelectionController(QTreeView *tree_view,
+InstructionTreeExpandController::InstructionTreeExpandController(QTreeView *tree_view,
                                                                        QObject *parent)
     : QObject(parent), m_tree_view(tree_view)
 {
 }
 
-void InstructionTreeSelectionController::SetInstructionContainer(
+void InstructionTreeExpandController::SetInstructionContainer(
     InstructionContainerItem *instruction_container)
 {
   m_instruction_container = instruction_container;
 }
 
-void InstructionTreeSelectionController::SaveSelectionRequest(
+void InstructionTreeExpandController::SaveSelectionRequest(
     const std::vector<InstructionItem *> &instructions)
 {
   m_selection_preferences = instructions;
 }
 
-std::vector<mvvm::SessionItem *> InstructionTreeSelectionController::GetInstructionsToSelect() const
+std::vector<mvvm::SessionItem *> InstructionTreeExpandController::GetInstructionsToSelect() const
 {
   std::vector<mvvm::SessionItem *> result;
   for (auto item : m_selection_preferences)
@@ -63,7 +63,7 @@ std::vector<mvvm::SessionItem *> InstructionTreeSelectionController::GetInstruct
   return result;
 }
 
-mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(
+mvvm::SessionItem *InstructionTreeExpandController::FindVisibleInstruction(
     const mvvm::SessionItem *item) const
 {
   auto indexes = GetViewModel()->GetIndexOfSessionItem(item);
@@ -76,9 +76,9 @@ mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(
   return nullptr;
 }
 
-InstructionTreeSelectionController::~InstructionTreeSelectionController() = default;
+InstructionTreeExpandController::~InstructionTreeExpandController() = default;
 
-void InstructionTreeSelectionController::SetDefaultExpandState()
+void InstructionTreeExpandController::SetDefaultExpandState()
 {
   auto viewmodel = GetViewModel();
 
@@ -104,7 +104,7 @@ void InstructionTreeSelectionController::SetDefaultExpandState()
   IterateFirstColumn(*viewmodel, QModelIndex(), on_index);
 }
 
-mvvm::ViewModel *InstructionTreeSelectionController::GetViewModel() const
+mvvm::ViewModel *InstructionTreeExpandController::GetViewModel() const
 {
   auto result = dynamic_cast<mvvm::ViewModel *>(m_tree_view->model());
 
