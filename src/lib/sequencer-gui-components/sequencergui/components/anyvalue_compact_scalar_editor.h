@@ -17,13 +17,18 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_EDITOR_H_
-#define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_EDITOR_H_
+#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
+#define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
 
 #include <QWidget>
 
 class QLabel;
 class QString;
+
+namespace sup::gui
+{
+class AnyValueItem;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -47,27 +52,6 @@ private:
   QLabel* m_label{nullptr};
 };
 
-/**
- * @brief The AnyValueCompactTreeEditor class provides a simplified AnyValueEditor in a form of the
- * tree.
- *
- * It is intended to type in value for struct and arrays, change of the type is not possible.
- */
-
-class AnyValueCompactTreeEditor : public QWidget
-{
-  Q_OBJECT
-
-public:
-  explicit AnyValueCompactTreeEditor(QWidget* parent = nullptr);
-  ~AnyValueCompactTreeEditor() override;
-
-  void SetDescription(const QString& text);
-
-private:
-  QLabel* m_label{nullptr};
-};
-
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_EDITOR_H_
+#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_

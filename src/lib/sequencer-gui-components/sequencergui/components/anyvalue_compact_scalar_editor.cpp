@@ -17,7 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "anyvalue_compact_editor.h"
+#include "anyvalue_compact_scalar_editor.h"
+
+#include <mvvm/viewmodel/property_viewmodel.h>
+#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -35,24 +38,6 @@ AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent)
 AnyValueCompactScalarEditor::~AnyValueCompactScalarEditor() = default;
 
 void AnyValueCompactScalarEditor::SetDescription(const QString &text)
-{
-  m_label->setText(text);
-}
-
-//! ---------------------------------------------------------------------------
-//!
-//! ---------------------------------------------------------------------------
-
-AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent)
-    : QWidget(parent), m_label(new QLabel)
-{
-  auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_label);
-}
-
-AnyValueCompactTreeEditor::~AnyValueCompactTreeEditor() = default;
-
-void AnyValueCompactTreeEditor::SetDescription(const QString &text)
 {
   m_label->setText(text);
 }
