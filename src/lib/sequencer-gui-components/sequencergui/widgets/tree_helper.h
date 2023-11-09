@@ -20,7 +20,10 @@
 #ifndef SEQUENCERGUI_WIDGETS_TREE_HELPER_H_
 #define SEQUENCERGUI_WIDGETS_TREE_HELPER_H_
 
+//! @file
 //! Helper methods to deal with Qt trees.
+
+#include <vector>
 
 class QTreeView;
 class QModelIndex;
@@ -53,6 +56,15 @@ void ScrollTreeViewportToSelection(QTreeView& tree_view);
  * one of collapsed branches. If all branches are expanded, will return child back.
  */
 QModelIndex FindVisibleCandidate(const QTreeView& tree, const QModelIndex& child);
+
+
+/**
+ * @brief Adjusts column width so they occupy whole horizontal space available for the tree.
+ *
+ * @param tree The tree to ajust
+ * @param stretch_factors Relative stretch factors
+ */
+void AdjustWidthOfColumns(QTreeView& tree, std::vector<int> stretch_factors = {});
 
 }  // namespace sequencergui
 

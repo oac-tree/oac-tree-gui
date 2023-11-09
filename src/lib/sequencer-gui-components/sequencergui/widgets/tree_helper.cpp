@@ -19,6 +19,8 @@
 
 #include "tree_helper.h"
 
+#include <QDebug>
+#include <QHeaderView>
 #include <QTreeView>
 
 namespace sequencergui
@@ -60,6 +62,26 @@ QModelIndex FindVisibleCandidate(const QTreeView &tree, const QModelIndex &child
   }
 
   return result;
+}
+
+void AdjustWidthOfColumns(QTreeView &tree, std::vector<int> stretch_factors)
+{
+  auto header = tree.header();
+
+  // adjust array of stretch factors so it matches number of columns
+  const int default_stretch{1};
+  stretch_factors.resize(header->count(), default_stretch);
+  auto stretch_factor_sum = std::reduce(stretch_factors.begin(), stretch_factors.end());
+
+  const auto width = header->width();
+  for (int i = 0; i < header->count(); ++i)
+  {
+    // set column width proportional to stretch factors
+    header->resizeSection(i, width * stretch_factors[i] / stretch_factor_sum);
+  }
+
+  // last column might be off by one pixel
+  header->setStretchLastSection(true);
 }
 
 }  // namespace sequencergui
