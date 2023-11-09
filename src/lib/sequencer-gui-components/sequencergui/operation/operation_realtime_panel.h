@@ -50,8 +50,6 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
-  void SetSelectedInstruction(InstructionItem* item);
-
   void SetSelectedInstructions(std::vector<InstructionItem*> items);
 
   MessagePanel* GetMessagePanel();

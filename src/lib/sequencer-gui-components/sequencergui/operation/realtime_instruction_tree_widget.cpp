@@ -109,12 +109,6 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   }
 }
 
-void RealTimeInstructionTreeWidget::SetSelectedInstruction(InstructionItem *item)
-{
-  m_component_provider->SetSelectedItem(m_selection_controller->FindVisibleInstruction(item));
-  ScrollViewportToSelection();
-}
-
 void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
 {
   std::vector<mvvm::SessionItem *> to_select;
