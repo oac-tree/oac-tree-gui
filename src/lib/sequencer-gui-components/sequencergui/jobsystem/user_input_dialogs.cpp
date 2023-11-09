@@ -123,4 +123,9 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args)
   return UserInputResult{{}, false};
 }
 
+UserInputResult GetAnyValueCompactEditorDialogResult(const UserInputArgs &args)
+{
+  return {};
+}
+
 }  // namespace sequencergui

@@ -48,6 +48,11 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args);
  */
 UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args);
 
+/**
+ * @brief Summons AnyValueCompactDialog and reports result to the caller.
+ */
+UserInputResult GetAnyValueCompactEditorDialogResult(const UserInputArgs &args);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_USER_INPUT_DIALOGS_H_
