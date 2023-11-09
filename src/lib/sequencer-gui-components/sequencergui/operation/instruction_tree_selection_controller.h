@@ -54,7 +54,24 @@ public:
 
   void SetInstructionContainer(InstructionContainerItem* instruction_container);
 
-  mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item);
+  /**
+   * @brief Save list of instructions to select.
+   *
+   * @details The actual list of instruction to select can be obtained via GetInstructionToSelect
+   * and will depend on current branch collapse/expand status.
+   */
+  void SaveSelectionRequest(const std::vector<InstructionItem*>& instructions);
+
+  /**
+   * @brief Returns list of instructions to make actual selection.
+   *
+   * @details Will take into account branch collapse/expand status and transform selection
+   * preferences to the real list of instructions to select. It is expected that
+   * SaveSelectionRequest has beem called before.
+   */
+  std::vector<mvvm::SessionItem*> GetInstructionsToSelect() const;
+
+  mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item) const;
 
   void SetSelected(const InstructionItem& item);
 
@@ -68,10 +85,12 @@ public:
 
 private:
   void SetSelected(const QModelIndex& index);
-  mvvm::ViewModel* GetViewModel();
+  mvvm::ViewModel* GetViewModel() const;
 
   QTreeView* m_tree_view{nullptr};
   InstructionContainerItem* m_instruction_container{nullptr};
+
+  std::vector<InstructionItem*> m_selection_preferences;
 };
 
 }  // namespace sequencergui

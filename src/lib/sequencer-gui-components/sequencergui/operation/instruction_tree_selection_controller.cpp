@@ -48,8 +48,25 @@ void InstructionTreeSelectionController::SetInstructionContainer(
   m_instruction_container = instruction_container;
 }
 
+void InstructionTreeSelectionController::SaveSelectionRequest(
+    const std::vector<InstructionItem *> &instructions)
+{
+  m_selection_preferences = instructions;
+}
+
+std::vector<mvvm::SessionItem *> InstructionTreeSelectionController::GetInstructionsToSelect() const
+{
+  std::vector<mvvm::SessionItem *> result;
+  for (auto item : m_selection_preferences)
+  {
+    result.push_back(FindVisibleInstruction(item));
+  }
+
+  return result;
+}
+
 mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(
-    const mvvm::SessionItem *item)
+    const mvvm::SessionItem *item) const
 {
   auto indexes = GetViewModel()->GetIndexOfSessionItem(item);
   if (!indexes.empty())
@@ -108,7 +125,7 @@ void InstructionTreeSelectionController::SetSelected(const QModelIndex &index)
   selection_model->select(selection, flags);
 }
 
-mvvm::ViewModel *InstructionTreeSelectionController::GetViewModel()
+mvvm::ViewModel *InstructionTreeSelectionController::GetViewModel() const
 {
   auto result = dynamic_cast<mvvm::ViewModel *>(m_tree_view->model());
 
