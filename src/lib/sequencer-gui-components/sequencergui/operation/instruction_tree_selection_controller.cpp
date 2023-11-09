@@ -29,8 +29,6 @@
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
 
-#include <QItemSelection>
-#include <QItemSelectionModel>
 #include <QTreeView>
 
 namespace sequencergui
@@ -80,15 +78,6 @@ mvvm::SessionItem *InstructionTreeSelectionController::FindVisibleInstruction(
 
 InstructionTreeSelectionController::~InstructionTreeSelectionController() = default;
 
-void InstructionTreeSelectionController::SetSelected(const InstructionItem &item)
-{
-  auto indexes = GetViewModel()->GetIndexOfSessionItem(&item);
-  if (!indexes.empty())
-  {
-    SetSelected(FindVisibleCandidate(*m_tree_view, indexes.at(0)));
-  }
-}
-
 void InstructionTreeSelectionController::SetDefaultExpandState()
 {
   auto viewmodel = GetViewModel();
@@ -113,16 +102,6 @@ void InstructionTreeSelectionController::SetDefaultExpandState()
     }
   };
   IterateFirstColumn(*viewmodel, QModelIndex(), on_index);
-}
-
-void InstructionTreeSelectionController::SetSelected(const QModelIndex &index)
-{
-  auto selection_model = m_tree_view->selectionModel();
-
-  QItemSelection selection;
-  selection.push_back(QItemSelectionRange(index));
-  auto flags = QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows;
-  selection_model->select(selection, flags);
 }
 
 mvvm::ViewModel *InstructionTreeSelectionController::GetViewModel() const

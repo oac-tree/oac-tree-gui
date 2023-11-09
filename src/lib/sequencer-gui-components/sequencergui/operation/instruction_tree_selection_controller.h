@@ -73,8 +73,6 @@ public:
 
   mvvm::SessionItem* FindVisibleInstruction(const mvvm::SessionItem* item) const;
 
-  void SetSelected(const InstructionItem& item);
-
   /**
    * @brief Sets the instruction tree view to the default expand state.
    *
@@ -84,7 +82,6 @@ public:
   void SetDefaultExpandState();
 
 private:
-  void SetSelected(const QModelIndex& index);
   mvvm::ViewModel* GetViewModel() const;
 
   QTreeView* m_tree_view{nullptr};

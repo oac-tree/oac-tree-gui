@@ -73,12 +73,12 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInFullyExpandedTree)
   EXPECT_TRUE(selection_model->selectedIndexes().empty());
 
   // selected Wait instruction, it should be selected in the reality
-  controller.SetSelected(*wait);
+  controller.SaveSelectionRequest({wait});
+  EXPECT_EQ(controller.GetInstructionsToSelect(), std::vector<mvvm::SessionItem*>({wait}));
 
   EXPECT_EQ(controller.FindVisibleInstruction(wait), wait);
 
-  ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
-  EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)), wait);
+  EXPECT_TRUE(selection_model->selectedIndexes().empty());
 }
 
 TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
@@ -102,12 +102,10 @@ TEST_F(InstructionTreeSelectionControllerTest, SelectWaitInCollapsedBranch)
   EXPECT_TRUE(selection_model->selectedIndexes().empty());
 
   // selected Wait instruction, sequence1 should be selected in the reality
-  controller.SetSelected(*wait);
+  controller.SaveSelectionRequest({wait});
   EXPECT_EQ(controller.FindVisibleInstruction(wait), sequence1);
 
-  ASSERT_EQ(selection_model->selectedIndexes().size(), 3);
-  EXPECT_EQ(m_viewmodel.GetSessionItemFromIndex(selection_model->selectedIndexes().at(0)),
-            sequence1);
+  EXPECT_EQ(controller.GetInstructionsToSelect(), std::vector<mvvm::SessionItem*>({sequence1}));
 }
 
 //! Validating SetDefaultExpandState method. We create a procedure with nestes sequence and mark it
