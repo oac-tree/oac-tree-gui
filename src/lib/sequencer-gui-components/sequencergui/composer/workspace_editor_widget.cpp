@@ -19,16 +19,16 @@
 
 #include "workspace_editor_widget.h"
 
+#include <sequencergui/components/anyvalue_editor_dialog.h>
 #include <sequencergui/components/message_helper.h>
-#include <sup/gui/components/visibility_agent_base.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/pvmonitor/anyvalue_editor_dialog.h>
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/tree_helper.h>

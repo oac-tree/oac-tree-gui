@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_
-#define SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_
+#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_H_
+#define SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_H_
 
 #include <QDialog>
 #include <memory>
@@ -59,4 +59,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_ANYVALUE_EDITOR_DIALOG_H_
+#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_H_
