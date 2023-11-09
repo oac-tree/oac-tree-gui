@@ -7,9 +7,8 @@ include(CodeTools)
 include(GNUInstallDirs)
 
 # -----------------------------------------------------------------------------
-# CODAC enviorenment
+# CODAC environment
 # -----------------------------------------------------------------------------
-
 if(NOT COA_NO_CODAC)
   find_package(CODAC OPTIONAL_COMPONENTS site-packages Python MODULE)
 endif()
@@ -45,6 +44,10 @@ set(SEQUENCERGUI_SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 set(SEQUENCERGUI_BUILDVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 set(SEQUENCERGUI_TESTRESULT_DIR ${CMAKE_BINARY_DIR}/test_result)
 
+# Qt related variables
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 # -----------------------------------------------------------------------------
 # Directories
 # -----------------------------------------------------------------------------
@@ -71,21 +74,26 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_AUTOGEN_DIR})
 # -----------------------------------------------------------------------------
 # Dependencies
 # -----------------------------------------------------------------------------
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
-if (COA_USE_QT6)
-  find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets Core Gui PrintSupport Test Concurrent)
+if(COA_USE_QT6)
+  set(QT_VERSION_MAJOR 6)
+  set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test Concurrent)
 else()
-  find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets Core Gui PrintSupport Test Concurrent)
+  set(QT_VERSION_MAJOR 5)
+  set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test Concurrent)
 endif()
 
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Core Gui PrintSupport Test Concurrent)
-message(STATUS "Qt${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH} found")
+if(CODAC_FOUND)
+  # Set NO_CMAKE_PATH and PATHS to CMAKE_PREFIX_PATH, so that find_package will use the system Qt first
+  # if it finds one, but still look in CMAKE_PREFIX_PATH as a last resort. This gives system Qt priority over CODAC Qt
+  set(QT_FIND_OPTIONS NO_CMAKE_PATH PATHS ${CMAKE_PREFIX_PATH})
+endif()
+
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
+
+message(STATUS "Qt${Qt${QT_VERSION_MAJOR}_VERSION_MAJOR}.${Qt${QT_VERSION_MAJOR}_VERSION_MINOR}.${Qt${QT_VERSION_MAJOR}_VERSION_PATCH} found")
 message(STATUS " Includes: ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}")
-get_target_property(QtWidgets_location Qt${QT_VERSION_MAJOR}::Core LOCATION_Release)
-message(STATUS " Core library: ${QtWidgets_location}")
+get_target_property(QT_CORE_LIB_LOCATION Qt${QT_VERSION_MAJOR}::Core LOCATION_Release)
+message(STATUS " Core library: ${QT_CORE_LIB_LOCATION}")
 
 find_package(Threads)
 
@@ -111,4 +119,3 @@ configure_file(${SEQUENCERGUI_PROJECT_DIR}/cmake/configs/version_constants.h.in 
 #else()
 #    add_compile_options(-Wall -Wextra -pedantic)
 #endif()
-
