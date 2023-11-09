@@ -29,6 +29,7 @@ class QTreeView;
 namespace mvvm
 {
 class ItemViewComponentProvider;
+class ApplicationModel;
 }  // namespace mvvm
 
 namespace sup::gui
@@ -61,8 +62,11 @@ public:
   std::unique_ptr<sup::gui::AnyValueItem> GetResult();
 
 private:
+  std::unique_ptr<mvvm::ApplicationModel> m_model;
+
   QLabel* m_label{nullptr};
   QTreeView* m_tree_view{nullptr};
+
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
 };
 
