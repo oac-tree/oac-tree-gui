@@ -63,6 +63,9 @@ void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem *
   m_model->InsertItem(mvvm::utils::CloneItem(*item), m_model->GetRootItem(),
                       mvvm::TagIndex::Append());
 
+  // FIXME find better way to use our custom cell-editors
+  // this one is way too verbose
+
   m_widget_mapper->setModel(m_view_model.get());
   m_widget_mapper->setItemDelegate(m_delegate.get());
   m_widget_mapper->setRootIndex(QModelIndex());

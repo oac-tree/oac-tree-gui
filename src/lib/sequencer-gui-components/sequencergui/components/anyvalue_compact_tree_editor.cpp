@@ -52,10 +52,6 @@ AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent)
   layout->addWidget(m_tree_view);
 
   m_label->setHidden(true);
-
-  m_model->RegisterItem<sup::gui::AnyValueStructItem>();
-  m_model->RegisterItem<sup::gui::AnyValueArrayItem>();
-  m_model->RegisterItem<sup::gui::AnyValueScalarItem>();
 }
 
 AnyValueCompactTreeEditor::~AnyValueCompactTreeEditor() = default;
