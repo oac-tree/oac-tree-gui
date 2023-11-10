@@ -20,8 +20,8 @@
 #include "anyvalue_editor_dialog.h"
 
 #include "abstract_anyvalue_editor.h"
-#include "anyvalue_extended_editor.h"
 #include "anyvalue_compact_tree_editor.h"
+#include "anyvalue_extended_editor.h"
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -29,6 +29,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDialogButtonBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QSettings>
 #include <QVBoxLayout>
@@ -48,7 +49,7 @@ AnyValueEditorDialog::AnyValueEditorDialog(std::unique_ptr<AbstractAnyValueEdito
                                            QWidget* parent)
     : QDialog(parent), m_anyvalue_editor(editor.release())
 {
-  setWindowTitle("AnyValueEditor");
+  setWindowTitle("Input request");
   ReadSettings();
 
   auto layout = new QVBoxLayout(this);
@@ -74,6 +75,11 @@ void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
 {
   return m_anyvalue_editor->GetResult();
+}
+
+void AnyValueEditorDialog::SetDescription(const QString& description)
+{
+  m_anyvalue_editor->SetDescription(description);
 }
 
 //! Loads persistence widget settings from disk.

@@ -24,6 +24,7 @@
 #include <memory>
 
 class QBoxLayout;
+class QLabel;
 
 namespace sup::gui
 {
@@ -51,6 +52,8 @@ public:
   void SetInitialValue(const sup::gui::AnyValueItem* item);
 
   std::unique_ptr<sup::gui::AnyValueItem> GetResult();
+
+  void SetDescription(const QString& description);
 
 private:
   void ReadSettings();

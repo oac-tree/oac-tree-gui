@@ -27,6 +27,7 @@
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/widgets/widget_utils.h>
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -44,8 +45,13 @@ AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent)
           mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view, m_model.get()))
 {
   auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, mvvm::utils::UnitSize(0.5), 0);
+  layout->addSpacing(mvvm::utils::UnitSize(0.8));
   layout->addWidget(m_label);
+  layout->addSpacing(mvvm::utils::UnitSize(0.5));
   layout->addWidget(m_tree_view);
+
+  m_label->setHidden(true);
 
   m_model->RegisterItem<sup::gui::AnyValueStructItem>();
   m_model->RegisterItem<sup::gui::AnyValueArrayItem>();
@@ -56,6 +62,7 @@ AnyValueCompactTreeEditor::~AnyValueCompactTreeEditor() = default;
 
 void AnyValueCompactTreeEditor::SetDescription(const QString &text)
 {
+  m_label->setHidden(false);
   m_label->setText(text);
 }
 
@@ -63,6 +70,7 @@ void AnyValueCompactTreeEditor::SetInitialValue(const sup::gui::AnyValueItem *it
 {
   m_model->InsertItem(mvvm::utils::CloneItem(*item), m_model->GetRootItem(),
                       mvvm::TagIndex::Append());
+  m_tree_view->expandAll();
 }
 
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactTreeEditor::GetResult()

@@ -55,7 +55,7 @@ public:
   explicit AnyValueCompactTreeEditor(QWidget* parent = nullptr);
   ~AnyValueCompactTreeEditor() override;
 
-  void SetDescription(const QString& text);
+  void SetDescription(const QString& description) override;
 
   void SetInitialValue(const sup::gui::AnyValueItem* item) override;
 
