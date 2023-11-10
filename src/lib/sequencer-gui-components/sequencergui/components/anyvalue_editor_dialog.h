@@ -29,12 +29,13 @@ class QBoxLayout;
 
 namespace sup::gui
 {
-class AnyValueEditor;
 class AnyValueItem;
 }  // namespace sup::gui
 
 namespace sequencergui
 {
+
+class AnyValueExtendedEditor;
 
 class AnyValueEditorDialog : public QDialog
 {
@@ -54,7 +55,7 @@ private:
 
   QBoxLayout* CreateButtonLayout();
 
-  sup::gui::AnyValueEditor* m_anyvalue_editor{nullptr};
+  AnyValueExtendedEditor* m_anyvalue_editor{nullptr};
 };
 
 }  // namespace sequencergui

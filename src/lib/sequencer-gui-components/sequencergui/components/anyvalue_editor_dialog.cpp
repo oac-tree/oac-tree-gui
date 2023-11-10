@@ -19,7 +19,8 @@
 
 #include "anyvalue_editor_dialog.h"
 
-#include <sup/gui/anyvalueeditor/anyvalue_editor.h>
+#include "anyvalue_extended_editor.h"
+
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -42,7 +43,7 @@ namespace sequencergui
 {
 
 AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
-    : QDialog(parent), m_anyvalue_editor(new sup::gui::AnyValueEditor)
+    : QDialog(parent), m_anyvalue_editor(new AnyValueExtendedEditor)
 {
   setWindowTitle("AnyValueEditor");
   ReadSettings();
@@ -61,10 +62,7 @@ AnyValueEditorDialog::~AnyValueEditorDialog()
 
 void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
 {
-  if (item)
-  {
-    m_anyvalue_editor->SetInitialValue(*item);
-  }
+  m_anyvalue_editor->SetInitialValue(item);
 }
 
 //! Returns result of the editing.
@@ -72,12 +70,7 @@ void AnyValueEditorDialog::SetInitialValue(const sup::gui::AnyValueItem* item)
 
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
 {
-  if (auto top_item = m_anyvalue_editor->GetTopItem(); top_item)
-  {
-    return mvvm::utils::CloneItem(*top_item);
-  }
-
-  return {};
+  return m_anyvalue_editor->GetResult();
 }
 
 //! Loads persistence widget settings from disk.

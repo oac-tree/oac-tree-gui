@@ -8,6 +8,8 @@ target_sources(${library_name} PRIVATE
   anyvalue_compact_tree_editor.h
   anyvalue_editor_dialog.cpp
   anyvalue_editor_dialog.h
+  anyvalue_extended_editor.cpp
+  anyvalue_extended_editor.h
   custom_meta_types.cpp
   custom_meta_types.h
   message_handler_factory.cpp
