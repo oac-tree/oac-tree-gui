@@ -37,10 +37,33 @@
 
 namespace
 {
+
 QString GetDialogSizeSettingName()
 {
   return "AnyValueEditorDialog/window_size";
 }
+
+//! Creates layout with OK/Cancel buttons.
+std::unique_ptr<QBoxLayout> CreateButtonLayout(QDialog* dialog)
+{
+  std::unique_ptr<QBoxLayout> result = std::make_unique<QVBoxLayout>();
+
+  auto button_box = new QDialogButtonBox;
+  auto button = button_box->addButton("Set AnyValue", QDialogButtonBox::AcceptRole);
+  button->setAutoDefault(false);
+  button->setDefault(false);
+  button = button_box->addButton("Cancel", QDialogButtonBox::RejectRole);
+  button->setAutoDefault(false);
+  button->setDefault(false);
+  QDialogButtonBox::connect(button_box, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
+  QDialogButtonBox::connect(button_box, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+
+  auto gap = mvvm::utils::UnitSize(0.5);
+  result->setContentsMargins(gap, gap, gap, gap);
+  result->addWidget(button_box);
+  return result;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -57,7 +80,7 @@ AnyValueEditorDialog::AnyValueEditorDialog(std::unique_ptr<AbstractAnyValueEdito
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_anyvalue_editor);
-  layout->addLayout(CreateButtonLayout());
+  layout->addLayout(CreateButtonLayout(this).release());
 }
 
 AnyValueEditorDialog::~AnyValueEditorDialog()
@@ -95,27 +118,6 @@ void AnyValueEditorDialog::WriteSettings()
 {
   QSettings settings;
   settings.setValue(GetDialogSizeSettingName(), size());
-}
-
-//! Creates layout with OK/CANCEL buttons.
-
-QBoxLayout* AnyValueEditorDialog::CreateButtonLayout()
-{
-  auto button_box = new QDialogButtonBox;
-  auto button = button_box->addButton("Set AnyValue", QDialogButtonBox::AcceptRole);
-  button->setAutoDefault(false);
-  button->setDefault(false);
-  button = button_box->addButton("Cancel", QDialogButtonBox::RejectRole);
-  button->setAutoDefault(false);
-  button->setDefault(false);
-  connect(button_box, &QDialogButtonBox::accepted, this, &AnyValueEditorDialog::accept);
-  connect(button_box, &QDialogButtonBox::rejected, this, &AnyValueEditorDialog::reject);
-
-  auto result = new QVBoxLayout;
-  auto gap = mvvm::utils::UnitSize(0.5);
-  result->setContentsMargins(gap, gap, gap, gap);
-  result->addWidget(button_box);
-  return result;
 }
 
 std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(

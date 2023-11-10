@@ -59,8 +59,6 @@ private:
   void ReadSettings();
   void WriteSettings();
 
-  QBoxLayout* CreateButtonLayout();
-
   AbstractAnyValueEditor* m_anyvalue_editor{nullptr};
 };
 
