@@ -110,8 +110,17 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
 UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args)
 {
   auto anyvalue_item = sup::gui::CreateItem(args.value);
-  auto dialog =
-      CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+  std::unique_ptr<AnyValueEditorDialog> dialog;
+  if (anyvalue_item->IsScalar())
+  {
+    dialog =
+        CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+  }
+  else
+  {
+    dialog =
+        CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+  }
   dialog->SetDescription(QString::fromStdString(args.description));
   if (dialog->exec() == QDialog::Accepted)
   {
