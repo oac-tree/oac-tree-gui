@@ -23,8 +23,6 @@
 #include <QDialog>
 #include <memory>
 
-class QLineEdit;
-class QComboBox;
 class QBoxLayout;
 
 namespace sup::gui
@@ -35,14 +33,19 @@ class AnyValueItem;
 namespace sequencergui
 {
 
-class AnyValueExtendedEditor;
+class AbstractAnyValueEditor;
+
+/**
+ * @brief The AnyValueEditorDialog class is a modal dialog containing one of AnyValue editors.
+ */
 
 class AnyValueEditorDialog : public QDialog
 {
   Q_OBJECT
 
 public:
-  explicit AnyValueEditorDialog(QWidget* parent = nullptr);
+  explicit AnyValueEditorDialog(std::unique_ptr<AbstractAnyValueEditor> editor,
+                                QWidget* parent = nullptr);
   ~AnyValueEditorDialog() override;
 
   void SetInitialValue(const sup::gui::AnyValueItem* item);
@@ -55,8 +58,19 @@ private:
 
   QBoxLayout* CreateButtonLayout();
 
-  AnyValueExtendedEditor* m_anyvalue_editor{nullptr};
+  AbstractAnyValueEditor* m_anyvalue_editor{nullptr};
 };
+
+/**
+ * @brief Helper function to create a dialog containing full-dleged AnyValueEditor
+ *
+ * @param item Initial value.
+ * @param parent Parent widget.
+ *
+ * @return Created dialog.
+ */
+std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
+    const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
 
 }  // namespace sequencergui
 

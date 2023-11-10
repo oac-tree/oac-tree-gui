@@ -19,6 +19,7 @@
 
 #include "anyvalue_editor_dialog.h"
 
+#include "abstract_anyvalue_editor.h"
 #include "anyvalue_extended_editor.h"
 
 #include <sup/gui/model/anyvalue_item.h>
@@ -42,8 +43,9 @@ QString GetDialogSizeSettingName()
 namespace sequencergui
 {
 
-AnyValueEditorDialog::AnyValueEditorDialog(QWidget* parent)
-    : QDialog(parent), m_anyvalue_editor(new AnyValueExtendedEditor)
+AnyValueEditorDialog::AnyValueEditorDialog(std::unique_ptr<AbstractAnyValueEditor> editor,
+                                           QWidget* parent)
+    : QDialog(parent), m_anyvalue_editor(editor.release())
 {
   setWindowTitle("AnyValueEditor");
   ReadSettings();
@@ -106,6 +108,14 @@ QBoxLayout* AnyValueEditorDialog::CreateButtonLayout()
   result->setContentsMargins(gap, gap, gap, gap);
   result->addWidget(button_box);
   return result;
+}
+
+std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
+    const sup::gui::AnyValueItem* item, QWidget* parent)
+{
+  auto editor = std::make_unique<AnyValueExtendedEditor>();
+  editor->SetInitialValue(item);
+  return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
 }
 
 }  // namespace sequencergui

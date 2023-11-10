@@ -20,7 +20,6 @@
 #include "workspace_editor_context.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog.h>
-
 #include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
@@ -30,11 +29,10 @@ std::function<AnyValueDialogResult(const sup::gui::AnyValueItem *)> CreateAnyVal
 {
   auto edit_anyvalue_callback = [](const sup::gui::AnyValueItem *item) -> AnyValueDialogResult
   {
-    AnyValueEditorDialog dialog;
-    dialog.SetInitialValue(item);
-    if (dialog.exec() == QDialog::Accepted)
+    auto dialog = CreateAnyValueExtendedEditorDialog(item);
+    if (dialog->exec() == QDialog::Accepted)
     {
-      return {true, dialog.GetResult()};
+      return {true, dialog->GetResult()};
     }
     return {false, {}};  // returning false denotes that dialog was canceled
   };
