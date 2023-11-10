@@ -111,7 +111,7 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args)
 {
   auto anyvalue_item = sup::gui::CreateItem(args.value);
   auto dialog =
-      CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+      CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
   dialog->SetDescription(QString::fromStdString(args.description));
   if (dialog->exec() == QDialog::Accepted)
   {

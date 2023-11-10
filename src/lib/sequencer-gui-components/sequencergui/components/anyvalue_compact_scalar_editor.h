@@ -24,6 +24,14 @@
 
 class QLabel;
 class QString;
+class QDataWidgetMapper;
+
+namespace mvvm
+{
+class ApplicationModel;
+class ViewModelDelegate;
+class ViewModel;
+}  // namespace mvvm
 
 namespace sup::gui
 {
@@ -37,7 +45,13 @@ namespace sequencergui
  * @brief The AnyValueCompactScalarEditor class provides a simplified AnyValueEditor for scalar
  * types.
  *
- * It has only a single cell editor occupying horizontal space.
+ * @details It has only a single cell editor occupying horizontal space.
+ *
+ * The implementation looks bulky for what it does. The are following reasons:
+ * a) We want to re-use cell-editor machinery since it has all proper limits for all scalar types.
+ * This requires viewmodel and delegate to be in place.
+ * b) We might consider to extend this editor to show more than one cell-editor in a grid view, i.e.
+ * for all leaves of a simple struct.
  */
 
 class AnyValueCompactScalarEditor : public AbstractAnyValueEditor
@@ -48,9 +62,20 @@ public:
   explicit AnyValueCompactScalarEditor(QWidget* parent = nullptr);
   ~AnyValueCompactScalarEditor() override;
 
+  void SetDescription(const QString& text) override;
+
   void SetInitialValue(const sup::gui::AnyValueItem* item) override;
 
   std::unique_ptr<sup::gui::AnyValueItem> GetResult() override;
+
+private:
+  std::unique_ptr<mvvm::ApplicationModel> m_model;
+  std::unique_ptr<mvvm::ViewModelDelegate> m_delegate;
+  std::unique_ptr<mvvm::ViewModel> m_view_model;
+  std::unique_ptr<QDataWidgetMapper> m_widget_mapper;
+
+  QLabel* m_label{nullptr};
+  QWidget* m_editor{nullptr};
 };
 
 }  // namespace sequencergui
