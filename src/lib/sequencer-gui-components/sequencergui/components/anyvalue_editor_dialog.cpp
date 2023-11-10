@@ -30,6 +30,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QDialogButtonBox>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QPushButton>
 #include <QSettings>
@@ -104,6 +105,19 @@ std::unique_ptr<sup::gui::AnyValueItem> AnyValueEditorDialog::GetResult()
 void AnyValueEditorDialog::SetDescription(const QString& description)
 {
   m_anyvalue_editor->SetDescription(description);
+}
+
+//! Prevent dialog from closing on enter-key-event. This is necessary since some of underlying
+//! widgets might have own ideas and might forward this key event back.
+
+void AnyValueEditorDialog::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+  {
+    return;
+  }
+
+  QDialog::keyPressEvent(event);
 }
 
 //! Loads persistence widget settings from disk.

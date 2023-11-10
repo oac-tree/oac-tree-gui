@@ -55,6 +55,9 @@ public:
 
   void SetDescription(const QString& description);
 
+protected:
+  void keyPressEvent(QKeyEvent* event) override;
+
 private:
   void ReadSettings();
   void WriteSettings();
