@@ -25,6 +25,7 @@
 class QLabel;
 class QString;
 class QDataWidgetMapper;
+class QBoxLayout;
 
 namespace mvvm
 {
@@ -74,6 +75,7 @@ private:
   std::unique_ptr<mvvm::ViewModel> m_view_model;
   std::unique_ptr<QDataWidgetMapper> m_widget_mapper;
 
+  QBoxLayout* m_layout{nullptr};
   QLabel* m_label{nullptr};
   QWidget* m_editor{nullptr};
 };

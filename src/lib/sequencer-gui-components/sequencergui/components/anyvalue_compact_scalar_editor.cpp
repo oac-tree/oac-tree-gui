@@ -42,13 +42,14 @@ AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent)
     , m_delegate(std::make_unique<mvvm::ViewModelDelegate>())
     , m_view_model(std::make_unique<mvvm::PropertyViewModel>(m_model.get()))
     , m_widget_mapper(std::make_unique<QDataWidgetMapper>())
+    , m_layout(new QVBoxLayout(this))
     , m_label(new QLabel)
 {
-  auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, mvvm::utils::UnitSize(0.5), 0);
-  layout->addSpacing(mvvm::utils::UnitSize(0.8));
-  layout->addWidget(m_label);
-  layout->addSpacing(mvvm::utils::UnitSize(0.5));
+  setWindowTitle("AnyValueCompactScalarEditor");
+
+  m_layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, mvvm::utils::UnitSize(0.5), 0);
+  m_layout->addSpacing(mvvm::utils::UnitSize(0.8));
+  m_layout->addWidget(m_label);
 }
 
 AnyValueCompactScalarEditor::~AnyValueCompactScalarEditor() = default;
@@ -80,7 +81,9 @@ void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem *
   m_widget_mapper->addMapping(editor.get(), 1);
 
   m_editor = editor.release();
-  layout()->addWidget(m_editor);
+  m_layout->addWidget(m_editor);
+  m_layout->addStretch(1);
+  m_layout->addSpacing(mvvm::utils::UnitSize(0.5));
 }
 
 std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactScalarEditor::GetResult()

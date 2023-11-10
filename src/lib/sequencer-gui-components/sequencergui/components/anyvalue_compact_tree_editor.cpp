@@ -44,6 +44,8 @@ AnyValueCompactTreeEditor::AnyValueCompactTreeEditor(QWidget *parent)
     , m_component_provider(
           mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view, m_model.get()))
 {
+  setWindowTitle("AnyValueCompactTreeEditor");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(mvvm::utils::UnitSize(0.5), 0, mvvm::utils::UnitSize(0.5), 0);
   layout->addSpacing(mvvm::utils::UnitSize(0.8));

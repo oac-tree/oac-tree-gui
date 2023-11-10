@@ -38,9 +38,9 @@
 namespace
 {
 
-QString GetDialogSizeSettingName()
+QString GetDialogSizeSettingName(const QString& editor_name)
 {
-  return "AnyValueEditorDialog/window_size";
+  return QString("AnyValueEditorDialog") + "/" + editor_name + "window_size";
 }
 
 //! Creates layout with OK/Cancel buttons.
@@ -110,14 +110,18 @@ void AnyValueEditorDialog::SetDescription(const QString& description)
 void AnyValueEditorDialog::ReadSettings()
 {
   const QSettings settings;
-  resize(settings.value(GetDialogSizeSettingName(), QSize(800, 600)).toSize());
+  const auto setting_name = GetDialogSizeSettingName(m_anyvalue_editor->windowTitle());
+  if (settings.contains(setting_name))
+  {
+    resize(settings.value(setting_name).toSize());
+  }
 }
 
 //! Writes persistence widget settings on disk.
 void AnyValueEditorDialog::WriteSettings()
 {
   QSettings settings;
-  settings.setValue(GetDialogSizeSettingName(), size());
+  settings.setValue(GetDialogSizeSettingName(m_anyvalue_editor->windowTitle()), size());
 }
 
 std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
