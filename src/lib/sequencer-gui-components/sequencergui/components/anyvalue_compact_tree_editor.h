@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_TREE_EDITOR_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_TREE_EDITOR_H_
 
-#include <QWidget>
+#include <sequencergui/components/abstract_anyvalue_editor.h>
 
 class QLabel;
 class QString;
@@ -47,7 +47,7 @@ namespace sequencergui
  * It is intended to type in values for struct and arrays, change of the type is not possible.
  */
 
-class AnyValueCompactTreeEditor : public QWidget
+class AnyValueCompactTreeEditor : public AbstractAnyValueEditor
 {
   Q_OBJECT
 
@@ -57,9 +57,9 @@ public:
 
   void SetDescription(const QString& text);
 
-  void SetInitialValue(const sup::gui::AnyValueItem* item);
+  void SetInitialValue(const sup::gui::AnyValueItem* item) override;
 
-  std::unique_ptr<sup::gui::AnyValueItem> GetResult();
+  std::unique_ptr<sup::gui::AnyValueItem> GetResult() override;
 
 private:
   std::unique_ptr<mvvm::ApplicationModel> m_model;

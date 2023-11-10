@@ -19,6 +19,8 @@
 
 #include "anyvalue_compact_scalar_editor.h"
 
+#include <sup/gui/model/anyvalue_item.h>
+
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
@@ -29,17 +31,17 @@ namespace sequencergui
 {
 
 AnyValueCompactScalarEditor::AnyValueCompactScalarEditor(QWidget *parent)
-    : QWidget(parent), m_label(new QLabel)
+    : AbstractAnyValueEditor(parent)
 {
-  auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_label);
+}
+
+void AnyValueCompactScalarEditor::SetInitialValue(const sup::gui::AnyValueItem *item) {}
+
+std::unique_ptr<sup::gui::AnyValueItem> AnyValueCompactScalarEditor::GetResult()
+{
+  return {};
 }
 
 AnyValueCompactScalarEditor::~AnyValueCompactScalarEditor() = default;
-
-void AnyValueCompactScalarEditor::SetDescription(const QString &text)
-{
-  m_label->setText(text);
-}
 
 }  // namespace sequencergui

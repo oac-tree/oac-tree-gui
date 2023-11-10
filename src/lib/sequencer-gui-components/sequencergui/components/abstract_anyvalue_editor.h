@@ -17,13 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
-#define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
+#ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_ABSTRACT_EDITOR_H_
+#define SEQUENCERGUI_COMPONENTS_ANYVALUE_ABSTRACT_EDITOR_H_
 
-#include <sequencergui/components/abstract_anyvalue_editor.h>
-
-class QLabel;
-class QString;
+#include <QWidget>
 
 namespace sup::gui
 {
@@ -34,23 +31,22 @@ namespace sequencergui
 {
 
 /**
- * @brief The AnyValueCompactScalarEditor class provides a simplified AnyValueEditor for scalar
- * types.
+ * @brief The AbstractAnyValueEditor class it's a base class for all widgets intended for AnyValue
+ * editing.
  */
 
-class AnyValueCompactScalarEditor : public AbstractAnyValueEditor
+class AbstractAnyValueEditor : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit AnyValueCompactScalarEditor(QWidget* parent = nullptr);
-  ~AnyValueCompactScalarEditor() override;
+  explicit AbstractAnyValueEditor(QWidget* parent) : QWidget(parent) {}
 
-  void SetInitialValue(const sup::gui::AnyValueItem* item) override;
+  virtual void SetInitialValue(const sup::gui::AnyValueItem* item) = 0;
 
-  std::unique_ptr<sup::gui::AnyValueItem> GetResult() override;
+  virtual std::unique_ptr<sup::gui::AnyValueItem> GetResult() = 0;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
+#endif  // SEQUENCERGUI_COMPONENTS_ANYVALUE_ABSTRACT_EDITOR_H_
