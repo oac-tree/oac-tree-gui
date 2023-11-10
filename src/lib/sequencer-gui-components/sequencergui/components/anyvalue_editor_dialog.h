@@ -62,7 +62,7 @@ private:
 };
 
 /**
- * @brief Helper function to create a dialog containing full-dleged AnyValueEditor
+ * @brief Helper function to create a dialog containing full-fleged AnyValueEditor.
  *
  * @param item Initial value.
  * @param parent Parent widget.
@@ -70,6 +70,17 @@ private:
  * @return Created dialog.
  */
 std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
+    const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
+
+/**
+ * @brief Helper function to create a dialog containing simplified tree-like AnyValue editor.
+ *
+ * @param item Initial value.
+ * @param parent Parent widget.
+ *
+ * @return Created dialog.
+ */
+std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
 
 }  // namespace sequencergui

@@ -21,6 +21,7 @@
 
 #include "abstract_anyvalue_editor.h"
 #include "anyvalue_extended_editor.h"
+#include "anyvalue_compact_tree_editor.h"
 
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -114,6 +115,14 @@ std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent)
 {
   auto editor = std::make_unique<AnyValueExtendedEditor>();
+  editor->SetInitialValue(item);
+  return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
+}
+
+std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
+    const sup::gui::AnyValueItem* item, QWidget* parent)
+{
+  auto editor = std::make_unique<AnyValueCompactTreeEditor>();
   editor->SetInitialValue(item);
   return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
 }

@@ -111,7 +111,7 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args)
 {
   auto anyvalue_item = sup::gui::CreateItem(args.value);
   auto dialog =
-      CreateAnyValueExtendedEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+      CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
   if (dialog->exec() == QDialog::Accepted)
   {
     auto anyvalue = sup::gui::CreateAnyValue(*dialog->GetResult());
