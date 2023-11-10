@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Procedure xmlns="http://codac.iter.org/sup/sequencer" version="1.0"
+           name="Trivial procedure for testing purposes"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:schemaLocation="http://codac.iter.org/sup/sequencer sequencer.xsd">
+    <Sequence>
+        <Input outputVar="var1" description="Public profile (true/false)" />
+        <Input outputVar="var2" description="Your name" />
+        <Input outputVar="var3" description="@alt_descr" />
+        <Input outputVar="var4" description="Some complex struct" />
+    </Sequence>
+    <Workspace>
+        <Local name="var1" type='{"type":"bool"}' />
+        <Local name="var2" type='{"type":"string"}' />
+        <Local name="var3" type='{"type":"uint64"}'/>
+        <Local name="alt_descr" type='{"type":"string"}' value='"Your age"' />
+        <Local name="var4" type='{"type":"","attributes":[{"field0":{"type":"int8"}},{"field1":{"type":"uint8"}},{"field2":{"type":"string"}},{"field3":{"type":"float32"}}]}' value='{"field0":42,"field1":43,"field2":"","field3":0.0}'/>
+    </Workspace>
+</Procedure>
