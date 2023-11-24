@@ -27,10 +27,11 @@
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/test/mock_callback_listener.h>
+
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
 
 #include <QSignalSpy>
 
@@ -97,7 +98,7 @@ public:
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
-  testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
   MockDialog m_mock_dialog;
 };
 

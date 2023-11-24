@@ -28,12 +28,13 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/test/mock_callback_listener.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
 
 #include <stdexcept>
 
@@ -71,7 +72,7 @@ TEST_F(WorkspaceItemControllerTest, GeVariableItemForName)
 
 TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 {
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -112,7 +113,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 
 TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 {
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -153,7 +154,7 @@ TEST_F(WorkspaceItemControllerTest, ModifyAnyValueFromModelViaInsert)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item0->SetName("abc");
@@ -181,7 +182,7 @@ TEST_F(WorkspaceItemControllerTest, ModifyTwoVariablesViaInserts)
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
 
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   SetAnyValue(value0, *variable_item0);
@@ -231,7 +232,7 @@ TEST_F(WorkspaceItemControllerTest, ChannelAccessVariableInTheWorkspace)
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -268,7 +269,7 @@ TEST_F(WorkspaceItemControllerTest, SetScalarData)
   ASSERT_NE(scalar_anyvalue_item, nullptr);
   EXPECT_EQ(scalar_anyvalue_item->Data<int>(), 42);
 
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());
@@ -297,7 +298,7 @@ TEST_F(WorkspaceItemControllerTest, SetScalarDataInStruct)
   auto scalar_item = struct_item->AddScalarField("value", sup::dto::kInt32TypeName, 42);
   EXPECT_EQ(scalar_item->Data<int>(), 42);
 
-  testutils::MockCallbackListener<WorkspaceEvent> listener;
+  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
 
   WorkspaceItemController controller(m_workspace_item);
   controller.SetCallback(listener.CreateCallback());

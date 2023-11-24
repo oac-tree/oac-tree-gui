@@ -22,6 +22,8 @@
 #include <sequencergui/core/exceptions.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
+#include <mvvm/test/mock_callback_listener.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/runner.h>
@@ -29,7 +31,6 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
 #include <testutils/mock_sequencer_observer.h>
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
@@ -61,8 +62,8 @@ public:
   }
 
   testutils::MockSequencerObserver m_observer;
-  testutils::MockCallbackListener<sequencergui::RunnerStatus> m_runner_listener;
-  testutils::MockCallbackListener<procedure_t> m_tick_listener;
+  mvvm::test::MockCallbackListener<sequencergui::RunnerStatus> m_runner_listener;
+  mvvm::test::MockCallbackListener<procedure_t> m_tick_listener;
 };
 
 TEST_F(DomainRunnerAdapterTest, InitialState)

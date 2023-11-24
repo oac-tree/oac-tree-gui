@@ -28,9 +28,9 @@
 #include <sequencergui/model/universal_instruction_item.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/mock_callback_listener.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_callback_listener.h>
 
 #include <QSignalSpy>
 
@@ -68,7 +68,7 @@ public:
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
-  testutils::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
 };
 
 //! Attempt to insert an instruction when no procedure created upfront.

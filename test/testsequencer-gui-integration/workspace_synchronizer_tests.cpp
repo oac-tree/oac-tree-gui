@@ -29,12 +29,13 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
+#include <mvvm/test/mock_model_listener.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
-#include <testutils/mock_model_listener.h>
 
 #include <QTest>
 
@@ -231,7 +232,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   SetAnyValue(value0, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizer();
 
@@ -280,7 +281,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdateHandlerCase)
   SetAnyValue(value0, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizerJobHandlerCase();
 
@@ -328,7 +329,7 @@ TEST_F(WorkspaceSynchronizerTest, UpdateDomainAndCheckSignals)
   auto synchronizer = CreateSynchronizer();
   synchronizer->Start();
 
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
 
   auto expected_event =

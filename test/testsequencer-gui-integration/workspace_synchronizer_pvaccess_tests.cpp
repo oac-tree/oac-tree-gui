@@ -31,12 +31,13 @@
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
+#include <mvvm/test/mock_model_listener.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_workspace_listener.h>
-#include <testutils/mock_model_listener.h>
 #include <testutils/test_utils.h>
 
 using namespace sequencergui;
@@ -101,7 +102,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
 
   // Creating listeners and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   // After domain workspace was set-up, there will be DataChangedEvent for IsAvailable
   // status, and two more events for editable attributes change, caused by Start method.
@@ -164,7 +165,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
   EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
 
   // creating model listener and setting expectations
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
   auto scalar_field = anyvalue_item->GetChildren().at(0);
   auto expected_event = mvvm::DataChangedEvent{scalar_field, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
@@ -207,7 +208,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
   //  EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
 
   // creating model listener and setting expectations
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
   auto scalar_field = anyvalue_item->GetChildren().at(0);
   auto expected_event = mvvm::DataChangedEvent{scalar_field, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
@@ -260,7 +261,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
 
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   // expected events from client variable
   {
@@ -348,7 +349,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
 
-  testutils::MockModelListenerV2 model_listener(&m_model);
+  mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   // expected events from client variable
   {

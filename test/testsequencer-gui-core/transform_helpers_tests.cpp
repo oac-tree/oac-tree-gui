@@ -32,6 +32,7 @@
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/sessionitem_container.h>
 #include <mvvm/model/tagged_items.h>
+#include <mvvm/test/mock_model_listener.h>
 
 #include <sup/dto/anytype.h>
 #include <sup/dto/anytype_registry.h>
@@ -41,7 +42,6 @@
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_model_listener.h>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -87,7 +87,7 @@ TEST_F(TransformHelpersTest, UpdateAnyValueSignaling)
   SequencerModel model;
   auto item = model.InsertItem<LocalVariableItem>();
 
-  testutils::MockModelListener listener(&model);
+  mvvm::test::MockModelListener listener(&model);
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 

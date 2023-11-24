@@ -37,12 +37,12 @@
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/mock_item_listener.h>
 
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 
 #include <gtest/gtest.h>
-#include <testutils/mock_item_listener.h>
 #include <testutils/standard_procedure_items.h>
 
 #include <QSignalSpy>
@@ -241,7 +241,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   auto message_item = instructions.at(0);
 
-  testutils::MockItemListener listener(message_item);
+  mvvm::test::MockItemListener listener(message_item);
 
   mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
   EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
