@@ -24,7 +24,7 @@
 
 class QSplitter;
 
-namespace mvvm
+namespace sup::gui
 {
 class CollapsibleListView;
 }
@@ -67,7 +67,7 @@ signals:
 
 private:
   sup::gui::PanelToolBar* m_tool_bar{nullptr};
-  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
+  sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};
   AggregatePanel* m_workspace_panel{nullptr};

@@ -24,7 +24,7 @@
 
 class QToolBar;
 
-namespace mvvm
+namespace sup::gui
 {
 class CollapsibleListView;
 }
@@ -73,7 +73,7 @@ private:
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
 
-  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
+  sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};
   MessagePanel* m_message_panel{nullptr};
 };

@@ -22,13 +22,9 @@
 
 #include <QWidget>
 
-namespace mvvm
-{
-class CollapsibleListView;
-}
-
 namespace sup::gui{
 class PanelToolBar;
+class CollapsibleListView;
 }
 
 namespace sequencergui
@@ -63,7 +59,7 @@ private:
   void WriteSettings();
 
   sup::gui::PanelToolBar* m_tool_bar{nullptr};
-  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
+  sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
 };

@@ -24,7 +24,7 @@
 
 class QToolBar;
 
-namespace mvvm
+namespace sup::gui
 {
 class CollapsibleListView;
 }
@@ -71,7 +71,7 @@ private:
   void SetupConnections();
   void OnJobSelectedIntern(JobItem* item);
 
-  mvvm::CollapsibleListView* m_collapsible_list{nullptr};
+  sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   JobListWidget* m_job_list_widget{nullptr};
   JobPropertyWidget* m_job_property_widget{nullptr};
   OperationJobPanelActions* m_job_actions{nullptr};

@@ -26,7 +26,7 @@
 #include <sequencergui/widgets/item_list_widget.h>
 #include <sup/gui/widgets/panel_toolbar.h>
 
-#include <mvvm/widgets/collapsible_list_view.h>
+#include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QLabel>
 #include <QToolBar>
@@ -39,7 +39,7 @@ namespace sequencergui
 ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
       , m_tool_bar(new sup::gui::PanelToolBar)
-    , m_collapsible_list(new mvvm::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_procedure_list_view(new ProcedureListWidget)
     , m_instruction_panel(new InstructionItemPanel)
     , m_workspace_panel(new AggregatePanel)

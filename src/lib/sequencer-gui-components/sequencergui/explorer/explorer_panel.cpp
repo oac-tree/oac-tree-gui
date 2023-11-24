@@ -24,7 +24,7 @@
 #include <sequencergui/widgets/file_tree_view.h>
 #include <sup/gui/widgets/panel_toolbar.h>
 
-#include <mvvm/widgets/collapsible_list_view.h>
+#include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QLabel>
 #include <QSettings>
@@ -43,7 +43,7 @@ namespace sequencergui
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new sup::gui::PanelToolBar)
-    , m_collapsible_list(new mvvm::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)
 {

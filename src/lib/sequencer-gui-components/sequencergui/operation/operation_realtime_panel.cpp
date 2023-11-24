@@ -28,7 +28,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
-#include <mvvm/widgets/collapsible_list_view.h>
+#include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -46,7 +46,7 @@ namespace sequencergui
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
-    , m_collapsible_list(new mvvm::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)
 {
