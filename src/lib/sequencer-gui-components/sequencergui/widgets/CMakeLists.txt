@@ -18,8 +18,6 @@ target_sources(${library_name} PRIVATE
   overlay_widget_position_strategy.h
   steady_menu.cpp
   steady_menu.h
-  style_utils.cpp
-  style_utils.h
   tree_helper.cpp
   tree_helper.h
   warning_sign_widget.cpp

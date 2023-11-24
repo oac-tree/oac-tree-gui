@@ -23,7 +23,6 @@
 
 #include <sequencergui/components/message_helper.h>
 #include <sequencergui/components/universal_property_editor.h>
-#include <sup/gui/components/visibility_agent_base.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -31,9 +30,10 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/custom_tree_view_style.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/tree_helper.h>
+#include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
@@ -43,7 +43,6 @@
 #include <QSplitter>
 #include <QTreeView>
 #include <QVBoxLayout>
-#include <iostream>
 
 namespace
 {
@@ -163,7 +162,7 @@ void InstructionEditorWidget::WriteSettings()
 
 void InstructionEditorWidget::SetupTree()
 {
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);

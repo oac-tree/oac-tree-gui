@@ -21,7 +21,6 @@
 
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/node_connection.h>
-#include <sequencergui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

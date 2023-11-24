@@ -21,9 +21,9 @@
 
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/panel_toolbar.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/viewmodel/top_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
@@ -72,7 +72,7 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   connect(m_procedure_tree_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged,
           m_property_tree, &mvvm::PropertyTreeView::SetItem);
 
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_procedure_tree);
+  sup::gui::utils::BeautifyTreeStyle(m_procedure_tree);
 
   ReadSettings();
 }

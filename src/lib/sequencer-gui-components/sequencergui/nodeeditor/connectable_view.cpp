@@ -50,7 +50,7 @@ QRectF GetLabelRectangle(const QRectF& rect)
 
 int GetSmallFontSize()
 {
-  static const int kSmallFontSize(mvvm::utils::AppFontSize() * 0.8);
+  static const int kSmallFontSize(mvvm::utils::SystemPointSize() * 0.8);
   return kSmallFontSize;
 }
 

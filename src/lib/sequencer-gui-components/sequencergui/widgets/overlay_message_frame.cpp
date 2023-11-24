@@ -22,7 +22,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QColor>
-#include <QDebug>
 #include <QFont>
 #include <QPainter>
 
@@ -49,7 +48,7 @@ OverlayMessageFrame::OverlayMessageFrame(const QString& text, QWidget* parent)
     : QFrame(parent)
     , m_text(text)
     , m_bounding_rect(0, 0, GetMaximumBoxWidth(), GetMinimumBoxHeight())
-    , m_font("Monospace", mvvm::utils::AppFontSize(), QFont::Normal, true)
+    , m_font("Monospace", mvvm::utils::SystemPointSize(), QFont::Normal, true)
 {
   setAttribute(Qt::WA_TransparentForMouseEvents);
   setAttribute(Qt::WA_NoSystemBackground);

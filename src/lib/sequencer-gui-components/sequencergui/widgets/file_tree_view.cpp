@@ -19,7 +19,7 @@
 
 #include "file_tree_view.h"
 
-#include <sequencergui/widgets/style_utils.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -71,7 +71,7 @@ FileTreeView::FileTreeView(QWidget *parent)
 
   SetCurrentDir(m_current_workdir);
 
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 }
 
 FileTreeView::~FileTreeView()

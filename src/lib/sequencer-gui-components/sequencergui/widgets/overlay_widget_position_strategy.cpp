@@ -19,8 +19,6 @@
 
 #include "overlay_widget_position_strategy.h"
 
-#include <sequencergui/widgets/style_utils.h>
-
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAbstractScrollArea>

@@ -27,10 +27,10 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
-#include <sequencergui/widgets/style_utils.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/tree_helper.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
@@ -92,7 +92,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   connect(m_expand_controller.get(), &InstructionTreeExpandController::VisibilityHasChanged, this,
           on_branch_change);
 
-  sequencergui::styleutils::SetUnifiedPropertyStyle(m_tree_view);
+  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
   ReadSettings();
 }
