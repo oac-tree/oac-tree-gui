@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_PANEL_H_
-#define SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_PANEL_H_
+#ifndef SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_WIDGET_H_
+#define SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_WIDGET_H_
 
 #include <QWidget>
 
@@ -41,16 +41,15 @@ namespace sequencergui
 class SequencerModel;
 class ProcedureItem;
 class InstructionItem;
-class VisibilityAgentBase;
 
 /**
- * @brief The OperationWorkspacePanel class is a right panel on OperationMonitorView representing
+ * @brief The OperationWorkspaceWidget class is a right panel on OperationMonitorView representing
  * workspace variables.
  *
  * @details Contains a panel with possibility to switch between full tree, and table-like view.
  */
 
-class OperationWorkspacePanel : public QWidget
+class OperationWorkspaceWidget : public QWidget
 {
   Q_OBJECT
 
@@ -64,8 +63,8 @@ public:
     kWorkspaceTable  //!< experimental table with workspace variables
   };
 
-  explicit OperationWorkspacePanel(Mode mode, QWidget* parent = nullptr);
-  ~OperationWorkspacePanel() override;
+  explicit OperationWorkspaceWidget(Mode mode, QWidget* parent = nullptr);
+  ~OperationWorkspaceWidget() override;
 
   void SetProcedure(ProcedureItem* procedure_item);
 
@@ -85,4 +84,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_PANEL_H_
+#endif  // SEQUENCERGUI_OPERATION_OPERATION_WORKSPACE_WIDGET_H_

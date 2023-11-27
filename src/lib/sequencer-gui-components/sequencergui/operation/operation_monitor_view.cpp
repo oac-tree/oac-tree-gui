@@ -22,7 +22,7 @@
 #include "operation_action_handler.h"
 #include "operation_job_panel.h"
 #include "operation_realtime_panel.h"
-#include "operation_workspace_panel.h"
+#include "operation_workspace_widget.h"
 #include "procedure_action_handler.h"
 
 #include <sequencergui/components/message_handler_factory.h>
@@ -65,10 +65,10 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
-    , m_workspace_tree_panel(
-          new OperationWorkspacePanel(OperationWorkspacePanel::Mode::kWorkspaceTree))
-    , m_workspace_table_panel(
-          new OperationWorkspacePanel(OperationWorkspacePanel::Mode::kWorkspaceTable))
+    , m_workspace_tree_widget(
+          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTree))
+    , m_workspace_table_widget(
+          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTable))
     , m_left_panel(CreateLeftPanel(mode))
     , m_right_panel(CreateRightPanel())
     , m_splitter(new QSplitter)
@@ -149,6 +149,7 @@ void OperationMonitorView::showEvent(QShowEvent *event)
 
 void OperationMonitorView::closeEvent(QCloseEvent *event)
 {
+  Q_UNUSED(event);
   WriteSettings();
 }
 
@@ -161,7 +162,7 @@ void OperationMonitorView::ReadSettings()
     m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
   }
 
-  // see comments to the method SetupWidgetActions)_
+  // see comments to the method SetupWidgetActions
   m_left_panel_is_visible = settings.value(kLeftPanelIsVisibleSettingName, true).toBool();
   m_right_panel_is_visible = settings.value(kRightPanelIsVisibleSettingName, true).toBool();
   m_left_panel->setVisible(m_left_panel_is_visible);
@@ -282,8 +283,8 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
   m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-  m_workspace_tree_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-  m_workspace_table_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_tree_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_table_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
@@ -314,8 +315,8 @@ QWidget *OperationMonitorView::CreateCentralPanel()
 QWidget *OperationMonitorView::CreateRightPanel()
 {
   auto result = new sup::gui::ItemStackWidget;
-  result->AddWidget(m_workspace_tree_panel);
-  result->AddWidget(m_workspace_table_panel);
+  result->AddWidget(m_workspace_tree_widget);
+  result->AddWidget(m_workspace_table_widget);
   result->SetCurrentIndex(0);
   return result;
 }

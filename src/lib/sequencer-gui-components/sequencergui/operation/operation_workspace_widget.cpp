@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "operation_workspace_panel.h"
+#include "operation_workspace_widget.h"
 
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -51,7 +51,7 @@ QString GetHeaderStateSettingName(int mode)
 namespace sequencergui
 {
 
-OperationWorkspacePanel::OperationWorkspacePanel(Mode mode, QWidget *parent)
+OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_mode(mode)
     , m_tree_view(new QTreeView)
@@ -91,12 +91,12 @@ OperationWorkspacePanel::OperationWorkspacePanel(Mode mode, QWidget *parent)
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
-OperationWorkspacePanel::~OperationWorkspacePanel()
+OperationWorkspaceWidget::~OperationWorkspaceWidget()
 {
   WriteSettings();
 }
 
-void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure)
+void OperationWorkspaceWidget::SetProcedure(ProcedureItem *procedure)
 {
   if (procedure == m_procedure)
   {
@@ -111,7 +111,7 @@ void OperationWorkspacePanel::SetProcedure(ProcedureItem *procedure)
   }
 }
 
-void OperationWorkspacePanel::ReadSettings()
+void OperationWorkspaceWidget::ReadSettings()
 {
   const QSettings settings;
 
@@ -122,7 +122,7 @@ void OperationWorkspacePanel::ReadSettings()
   }
 }
 
-void OperationWorkspacePanel::WriteSettings()
+void OperationWorkspaceWidget::WriteSettings()
 {
   QSettings settings;
   if (m_custom_header->HasFavoriteState())
@@ -132,7 +132,7 @@ void OperationWorkspacePanel::WriteSettings()
   }
 }
 
-void OperationWorkspacePanel::AdjustTreeAppearance()
+void OperationWorkspaceWidget::AdjustTreeAppearance()
 {
   if (m_custom_header->HasFavoriteState())
   {
@@ -141,7 +141,7 @@ void OperationWorkspacePanel::AdjustTreeAppearance()
   m_tree_view->expandAll();
 }
 
-void OperationWorkspacePanel::SetProcedureIntern(ProcedureItem *procedure)
+void OperationWorkspaceWidget::SetProcedureIntern(ProcedureItem *procedure)
 {
   m_component_provider->SetItem(procedure ? procedure->GetWorkspace() : nullptr);
 

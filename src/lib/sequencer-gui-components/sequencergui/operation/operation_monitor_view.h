@@ -31,15 +31,17 @@ namespace sequencergui
 class ApplicationModels;
 class JobItem;
 class JobManager;
-class OperationWorkspacePanel;
+class OperationWorkspaceWidget;
 class OperationRealTimePanel;
 class OperationJobPanel;
 class ProcedureItem;
 class OperationActionHandler;
 
-//! The SequencerMonitorView is the main window component to run sequences and monitor execution.
-//! Contains the panel with jobs on the left, main sequence tree in the middle, and
-//! the panel to monitor variables on the right.
+/**
+ * @brief The OperationMonitorView class is the main window component to run sequences and monitor
+ * execution. Contains the panel with jobs on the left, main sequence tree in the middle, and the
+ * panel to monitor variables on the right.
+ */
 
 class OperationMonitorView : public QWidget
 {
@@ -89,8 +91,8 @@ private:
 
   OperationJobPanel* m_job_panel{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
-  OperationWorkspacePanel* m_workspace_tree_panel{nullptr};
-  OperationWorkspacePanel* m_workspace_table_panel{nullptr};
+  OperationWorkspaceWidget* m_workspace_tree_widget{nullptr};
+  OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
 
   QWidget* m_left_panel{nullptr};
   QWidget* m_right_panel{nullptr};
