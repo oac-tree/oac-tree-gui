@@ -33,6 +33,7 @@
 #include <gtest/gtest.h>
 #include <testutils/mock_sequencer_observer.h>
 #include <testutils/standard_procedures.h>
+#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QSignalSpy>
@@ -64,10 +65,7 @@ TEST_F(ProcedureReporterTest, OnDomainRunnerStatusChanged)
   auto predicate = [&spy_runner_status]() { return spy_runner_status.count() == 1; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
 
-  QList<QVariant> arguments = spy_runner_status.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto status = arguments.at(0).value<RunnerStatus>();
-  EXPECT_EQ(status, RunnerStatus::kCompleted);
+  EXPECT_EQ(testutils::GetSendItem<RunnerStatus>(spy_runner_status), RunnerStatus::kCompleted);
 }
 
 //! Validating that tick callback from the domain leads to the signal with InstructionItems
@@ -116,10 +114,8 @@ TEST_F(ProcedureReporterTest, OnDomainProcedureTick)
   auto predicate = [&spy_next_leaves]() { return spy_next_leaves.count() == 1; };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 50));
 
-  QList<QVariant> arguments = spy_next_leaves.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto leaves = arguments.at(0).value<std::vector<InstructionItem*>>();
-  EXPECT_EQ(leaves, std::vector<InstructionItem*>({message_item1}));
+  EXPECT_EQ(testutils::GetSendItem<std::vector<InstructionItem*>>(spy_next_leaves),
+            std::vector<InstructionItem*>({message_item1}));
 }
 
 //! Validating that call to DomainInstructionStatusChange triggers queued connection.
@@ -144,8 +140,6 @@ TEST_F(ProcedureReporterTest, OnDomainInstructionStatusChange)
 
   EXPECT_EQ(wait_item.GetStatus(), "Success");
 
-  QList<QVariant> arguments = spy_instruction_status.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto reported_item = arguments.at(0).value<sequencergui::InstructionItem*>();
-  EXPECT_EQ(reported_item, &wait_item);
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::InstructionItem*>(spy_instruction_status),
+            &wait_item);
 }

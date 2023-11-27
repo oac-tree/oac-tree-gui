@@ -33,6 +33,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
@@ -107,10 +108,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
 
-  EXPECT_EQ(spy_selected_request.count(), 1);
-  auto arguments = spy_selected_request.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  EXPECT_EQ(arguments.at(0).value<JobItem*>(), job_item);
+  EXPECT_EQ(testutils::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
   // we can submit same procedure twice, it will be two different jobs
   m_actions.OnSubmitJobRequest(procedure);
@@ -271,10 +269,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
   // on regeneration status should be reset
   EXPECT_TRUE(job_item->GetStatus().empty());
 
-  EXPECT_EQ(spy_selected_request.count(), 1);
-  auto arguments = spy_selected_request.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  EXPECT_EQ(arguments.at(0).value<JobItem*>(), job_item);
+  EXPECT_EQ(testutils::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
   ASSERT_EQ(GetJobItems().size(), 1);
 

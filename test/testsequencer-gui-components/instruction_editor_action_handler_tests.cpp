@@ -31,6 +31,7 @@
 #include <mvvm/test/mock_callback_listener.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 
@@ -102,11 +103,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
 
-  EXPECT_EQ(spy_selection_request.count(), 1);
-  auto arguments = spy_selection_request.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
-  EXPECT_EQ(selected_item, instructions.at(0));
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
 }
 
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
@@ -310,11 +307,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   EXPECT_EQ(sequence->GetInstructions(), expected);
 
   // checking the request to select just moved item
-  EXPECT_EQ(spy_selection_request.count(), 1);
-  auto arguments = spy_selection_request.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
-  EXPECT_EQ(selected_item, wait2);
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait2);
 }
 
 //! Move selected instruction up.
@@ -341,9 +334,5 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   EXPECT_EQ(sequence->GetInstructions(), expected);
 
   // checking the request to select just moved item
-  EXPECT_EQ(spy_selection_request.count(), 1);
-  auto arguments = spy_selection_request.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
-  EXPECT_EQ(selected_item, wait0);
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait0);
 }

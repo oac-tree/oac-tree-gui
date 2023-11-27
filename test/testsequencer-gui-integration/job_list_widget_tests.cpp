@@ -26,6 +26,7 @@
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTreeView>
@@ -60,13 +61,8 @@ TEST_F(JobListWidgetTest, SelectJob)
   // selecting an item and checking results
   view.SetSelectedJob(job);
   EXPECT_EQ(view.GetSelectedJob(), job);
-  EXPECT_EQ(spy_selected.count(), 1);
-  QList<QVariant> arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_job = arguments.at(0).value<sequencergui::JobItem*>();
-  EXPECT_EQ(selected_job, job);
 
-  spy_selected.clear();
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
 
   // removing selection
 
@@ -74,9 +70,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   EXPECT_EQ(view.GetSelectedJob(), nullptr);
   EXPECT_EQ(spy_selected.count(), 1);
 
-  arguments = spy_selected.takeFirst();
-  selected_job = arguments.at(0).value<sequencergui::JobItem*>();
-  EXPECT_EQ(selected_job, nullptr);
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -99,11 +93,7 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(job);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(spy_selected.count(), 1);
-  auto arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_job = arguments.at(0).value<sequencergui::JobItem*>();
-  EXPECT_EQ(selected_job, nullptr);
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -128,9 +118,6 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
   view.GetTreeView()->setCurrentIndex(job_indexes.at(0));
 
   EXPECT_EQ(view.GetSelectedJob(), job);
-  EXPECT_EQ(spy_selected.count(), 1);
-  QList<QVariant> arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_job = arguments.at(0).value<sequencergui::JobItem*>();
-  EXPECT_EQ(selected_job, job);
+
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
 }

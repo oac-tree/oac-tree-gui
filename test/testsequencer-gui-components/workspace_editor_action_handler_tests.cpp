@@ -32,6 +32,7 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 
@@ -150,11 +151,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
 
   // just inserted variable was selected
-  EXPECT_EQ(spy_selection_request.count(), 1);
-  auto arguments = spy_selection_request.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_item = arguments.at(0).value<mvvm::SessionItem*>();
-  EXPECT_EQ(selected_item, inserted_variable0);
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
 
   // it has scalar AnyValueItem on board by default
   auto anyvalue_item =

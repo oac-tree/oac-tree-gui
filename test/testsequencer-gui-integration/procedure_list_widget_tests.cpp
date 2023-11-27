@@ -26,6 +26,7 @@
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
+#include <testutils/test_utils.h>
 
 #include <QDebug>
 #include <QListView>
@@ -68,23 +69,16 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   view.SetSelectedProcedure(procedure);
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
-  EXPECT_EQ(spy_selected.count(), 1);
-  QList<QVariant> arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
-  EXPECT_EQ(selected_procedure, procedure);
+
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
 
   spy_selected.clear();
 
   // removing selection
-
   view.SetSelectedProcedure(nullptr);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
-  EXPECT_EQ(spy_selected.count(), 1);
 
-  arguments = spy_selected.takeFirst();
-  selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
-  EXPECT_EQ(selected_procedure, nullptr);
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications

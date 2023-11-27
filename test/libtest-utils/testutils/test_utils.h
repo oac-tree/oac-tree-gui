@@ -28,6 +28,7 @@
 #include <memory>
 #include <thread>
 #include <vector>
+#include <QSignalSpy>
 
 //! Various common utils for unit tests.
 
@@ -119,6 +120,23 @@ double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
 //! Creates Sequencer XML procedure by wrapping the body into necessary Procedure directive.
 std::string CreateProcedureString(const std::string& body, bool schema = true);
+
+/**
+ * @brief Helper function that retrieves an object from QSignalSpy arguments.
+ */
+template <typename T>
+T GetSendItem(QSignalSpy& signal_spy)
+{
+  if (signal_spy.count() == 1)
+  {
+    auto arguments = signal_spy.takeFirst();
+    if (arguments.size() == 1)
+    {
+      return arguments.at(0).value<T>();
+    }
+  }
+  return {};
+}
 
 }  // namespace testutils
 
