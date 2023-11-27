@@ -40,19 +40,13 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
+#include <QDebug>
+
 namespace
 {
 const QString kGroupName("RealTimeInstructionTreeWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
-
-bool FixColumnAppearance(QTreeView *tree)
-{
-  const int breakpoint_colum = sequencergui::InstructionOperationViewModel::GetBreakpointColumn();
-  tree->header()->setSectionResizeMode(breakpoint_colum, QHeaderView::Fixed);
-  tree->setColumnWidth(breakpoint_colum, mvvm::utils::UnitSize(1));
-  return true;
-}
 
 }  // namespace
 
@@ -113,6 +107,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 
   if (procedure_item)
   {
+    m_expand_controller->SetDefaultExpandState();
     AdjustTreeAppearance();
   }
 }
@@ -128,6 +123,11 @@ void RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag(bool value)
 {
   m_viewport_follows_selection = value;
   ScrollViewportToSelection();
+}
+
+void RealTimeInstructionTreeWidget::showEvent(QShowEvent *event)
+{
+  AdjustTreeAppearance();
 }
 
 void RealTimeInstructionTreeWidget::ReadSettings()
@@ -150,17 +150,14 @@ void RealTimeInstructionTreeWidget::WriteSettings()
 
 void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
 {
-  m_expand_controller->SetDefaultExpandState();
-
   if (m_custom_header->HasFavoriteState())
   {
     m_custom_header->RestoreFavoriteState();
   }
   else
   {
-    m_tree_view->resizeColumnToContents(0);
+    AdjustWidthOfColumns(*m_tree_view, {15,5,1});
   }
-  static const bool adjust_columns_once = FixColumnAppearance(m_tree_view);
 }
 
 void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)

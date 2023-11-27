@@ -87,7 +87,6 @@ MessagePanel::MessagePanel(QWidget* parent)
 
   SetupAutoscroll();
   UpdateSeverityFilter();
-
 }
 
 MessagePanel::~MessagePanel()

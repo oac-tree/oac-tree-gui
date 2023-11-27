@@ -67,6 +67,9 @@ public:
 signals:
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
+protected:
+  void showEvent(QShowEvent* event) override;
+
 private:
   void ReadSettings();
   void WriteSettings();
