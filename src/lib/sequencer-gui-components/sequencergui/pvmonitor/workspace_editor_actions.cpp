@@ -51,7 +51,7 @@ void WorkspaceEditorActions::SetupActions()
 
   auto add_variable_button = new QToolButton;
   add_variable_button->setText("Add");
-  add_variable_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline"));
+  add_variable_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
   add_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   add_variable_button->setPopupMode(QToolButton::InstantPopup);
   add_variable_button->setMenu(m_add_variable_menu.get());
@@ -64,7 +64,7 @@ void WorkspaceEditorActions::SetupActions()
 
   auto edit_anyvalue_button = new QToolButton;
   edit_anyvalue_button->setText("Edit");
-  edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline"));
+  edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
   edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   edit_anyvalue_button->setToolTip("Edit value of currently selected variable");
   connect(edit_anyvalue_button, &QToolButton::clicked, this,
@@ -74,7 +74,7 @@ void WorkspaceEditorActions::SetupActions()
 
   auto remove_variable_button = new QToolButton;
   remove_variable_button->setText("Remove");
-  remove_variable_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline"));
+  remove_variable_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   remove_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_variable_button->setToolTip("Remove currently selected variable");
   connect(remove_variable_button, &QToolButton::clicked, this,

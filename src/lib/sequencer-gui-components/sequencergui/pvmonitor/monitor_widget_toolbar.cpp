@@ -51,14 +51,14 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   addSeparator();
 
   m_start_action->setText("Start");
-  m_start_action->setIcon(sup::gui::utils::GetIcon("chevron-right-circle-outline"));
+  m_start_action->setIcon(sup::gui::utils::GetIcon("chevron-right-circle-outline.svg"));
   m_start_action->setToolTip("Start monitoring workspace variables");
 
   connect(m_start_action, &QAction::triggered, this, &MonitorWidgetToolBar::StartMonitoringRequest);
   addAction(m_start_action);
 
   m_stop_action->setText("Stop");
-  m_stop_action->setIcon(sup::gui::utils::GetIcon("stop-circle-outline"));
+  m_stop_action->setIcon(sup::gui::utils::GetIcon("stop-circle-outline.svg"));
   m_stop_action->setToolTip("Stop monitoring");
   m_stop_action->setEnabled(false);
   connect(m_stop_action, &QAction::triggered, this, &MonitorWidgetToolBar::StopMonitoringRequest);

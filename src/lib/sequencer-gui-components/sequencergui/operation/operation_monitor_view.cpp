@@ -254,7 +254,7 @@ void OperationMonitorView::SetupWidgetActions()
   m_show_left_sidebar = new QAction("Show/hide Left Sidebar", this);
   m_show_left_sidebar->setShortcut(QKeySequence(QString("Ctrl+0")));
   m_show_left_sidebar->setStatusTip("Show/hide Left Sidebar");
-  m_show_left_sidebar->setIcon(sup::gui::utils::GetIcon("dock-left"));
+  m_show_left_sidebar->setIcon(sup::gui::utils::GetIcon("dock-left.svg"));
   connect(m_show_left_sidebar, &QAction::triggered, this,
           [this](auto)
           {
@@ -265,7 +265,7 @@ void OperationMonitorView::SetupWidgetActions()
   m_show_right_sidebar = new QAction("Show/hide Right Sidebar", this);
   m_show_right_sidebar->setShortcut(QKeySequence(QString("Ctrl+Shift+0")));
   m_show_right_sidebar->setStatusTip("Show/hide Right Sidebar");
-  m_show_right_sidebar->setIcon(sup::gui::utils::GetIcon("dock-right"));
+  m_show_right_sidebar->setIcon(sup::gui::utils::GetIcon("dock-right.svg"));
   connect(m_show_right_sidebar, &QAction::triggered, this,
           [this](auto)
           {

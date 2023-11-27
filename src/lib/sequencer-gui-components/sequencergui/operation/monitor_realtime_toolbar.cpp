@@ -61,35 +61,35 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   setIconSize(sup::gui::utils::ToolBarIconSize());
 
   m_run_button->setText("Run");
-  m_run_button->setIcon(sup::gui::utils::GetIcon("arrow-right-drop-circle-outline"));
+  m_run_button->setIcon(sup::gui::utils::GetIcon("arrow-right-drop-circle-outline.svg"));
   m_run_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_run_button->setToolTip("Run procedure");
   connect(m_run_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::runRequest);
   addWidget(m_run_button);
 
   m_pause_button->setText("Pause");
-  m_pause_button->setIcon(sup::gui::utils::GetIcon("pause-circle-outline"));
+  m_pause_button->setIcon(sup::gui::utils::GetIcon("pause-circle-outline.svg"));
   m_pause_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_pause_button->setToolTip("Pause sequence at the next occasion");
   connect(m_pause_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::pauseRequest);
   addWidget(m_pause_button);
 
   m_step_button->setText("Step");
-  m_step_button->setIcon(sup::gui::utils::GetIcon("play-pause"));
+  m_step_button->setIcon(sup::gui::utils::GetIcon("play-pause.svg"));
   m_step_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_step_button->setToolTip("Execute single instruction");
   connect(m_step_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stepRequest);
   addWidget(m_step_button);
 
   m_stop_button->setText("Stop");
-  m_stop_button->setIcon(sup::gui::utils::GetIcon("stop-circle-outline"));
+  m_stop_button->setIcon(sup::gui::utils::GetIcon("stop-circle-outline.svg"));
   m_stop_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_stop_button->setToolTip("Stop procedure");
   connect(m_stop_button, &QToolButton::clicked, this, &MonitorRealTimeToolBar::stopRequest);
   addWidget(m_stop_button);
 
   m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
-  m_delay_button->setIcon(sup::gui::utils::GetIcon("speedometer-slow"));
+  m_delay_button->setIcon(sup::gui::utils::GetIcon("speedometer-slow.svg"));
   m_delay_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_delay_button->setToolTip("Artificial delay after each change of instruction status");
   m_delay_button->setMenu(m_delay_menu.get());
@@ -97,7 +97,7 @@ MonitorRealTimeToolBar::MonitorRealTimeToolBar(QWidget *parent)
   addWidget(m_delay_button);
 
   m_settings_button->setText("Other");
-  m_settings_button->setIcon(sup::gui::utils::GetIcon("menu"));
+  m_settings_button->setIcon(sup::gui::utils::GetIcon("menu.svg"));
   m_settings_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_settings_button->setToolTip("Other settings");
   m_settings_button->setMenu(m_settings_menu.get());

@@ -53,7 +53,7 @@ void InstructionEditorActions::SetupActions()
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("Add");
-  insert_after_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline"));
+  insert_after_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
   insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   insert_after_button->setPopupMode(QToolButton::InstantPopup);
   insert_after_button->setMenu(m_insert_after_menu.get());
@@ -63,7 +63,7 @@ void InstructionEditorActions::SetupActions()
 
   auto insert_into_button = new QToolButton;
   insert_into_button->setText("Insert");
-  insert_into_button->setIcon(sup::gui::utils::GetIcon("plus-circle-multiple-outline"));
+  insert_into_button->setIcon(sup::gui::utils::GetIcon("plus-circle-multiple-outline.svg"));
   insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   insert_into_button->setPopupMode(QToolButton::InstantPopup);
   insert_into_button->setMenu(m_insert_into_menu.get());
@@ -73,7 +73,7 @@ void InstructionEditorActions::SetupActions()
 
   auto remove_button = new QToolButton;
   remove_button->setText("Remove");
-  remove_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline"));
+  remove_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_button->setToolTip("Remove currently selected instruction together with its children");
   connect(remove_button, &QToolButton::clicked, this,
@@ -83,7 +83,7 @@ void InstructionEditorActions::SetupActions()
 
   auto move_up_button = new QToolButton;
   move_up_button->setText("Move Up");
-  move_up_button->setIcon(sup::gui::utils::GetIcon("arrow-up-thin-circle-outline"));
+  move_up_button->setIcon(sup::gui::utils::GetIcon("arrow-up-thin-circle-outline.svg"));
   move_up_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   move_up_button->setToolTip(
       "Move currently selected instruction up, works within the same parent");
@@ -93,7 +93,7 @@ void InstructionEditorActions::SetupActions()
 
   auto move_down_button = new QToolButton;
   move_down_button->setText("Move Down");
-  move_down_button->setIcon(sup::gui::utils::GetIcon("arrow-down-thin-circle-outline"));
+  move_down_button->setIcon(sup::gui::utils::GetIcon("arrow-down-thin-circle-outline.svg"));
   move_down_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   move_down_button->setToolTip(
       "Move currently selected instruction down, works within the same parent");

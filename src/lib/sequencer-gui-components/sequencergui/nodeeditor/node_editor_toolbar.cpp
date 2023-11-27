@@ -47,14 +47,14 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
 {
   setIconSize(sup::gui::utils::ToolBarIconSize());
 
-  m_pointer_button->setIcon(sup::gui::utils::GetIcon("arrow-top-left"));
+  m_pointer_button->setIcon(sup::gui::utils::GetIcon("arrow-top-left.svg"));
   m_pointer_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pointer_button->setToolTip("Scene in edit mode");
   m_pointer_button->setCheckable(true);
   m_pointer_button->setChecked(true);
   addWidget(m_pointer_button);
 
-  m_pan_button->setIcon(sup::gui::utils::GetIcon("hand-back-right-outline"));
+  m_pan_button->setIcon(sup::gui::utils::GetIcon("hand-back-right-outline.svg"));
   m_pan_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pan_button->setToolTip("Scene in pan mode (space)");
   m_pan_button->setCheckable(true);
@@ -66,7 +66,7 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
 
   m_zoom_menu = CreateZoomMenu();
   m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
-  m_zoom_button->setIcon(sup::gui::utils::GetIcon("magnify-plus-outline"));
+  m_zoom_button->setIcon(sup::gui::utils::GetIcon("magnify-plus-outline.svg"));
 
   //  m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   m_zoom_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -76,14 +76,14 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_zoom_button->setToolTip("Zoom");
   addWidget(m_zoom_button);
 
-  m_center_button->setIcon(sup::gui::utils::GetIcon("camera-metering-center"));
+  m_center_button->setIcon(sup::gui::utils::GetIcon("camera-metering-center.svg"));
   m_center_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_center_button->setToolTip("Center view");
   connect(m_center_button, &QToolButton::clicked, this, &NodeEditorToolBar::centerView);
 
   addWidget(m_center_button);
 
-  m_align_button->setIcon(sup::gui::utils::GetIcon("dots-triangle"));
+  m_align_button->setIcon(sup::gui::utils::GetIcon("dots-triangle.svg"));
   m_align_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_align_button->setToolTip("Align children of currently selected item");
   connect(m_align_button, &QToolButton::clicked, this, &NodeEditorToolBar::alignSelectedRequest);
