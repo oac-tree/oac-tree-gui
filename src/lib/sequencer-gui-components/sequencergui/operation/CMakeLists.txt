@@ -27,6 +27,8 @@ target_sources(${library_name} PRIVATE
   operation_monitor_view.h
   operation_realtime_panel.cpp
   operation_realtime_panel.h
+  operation_workspace_panel.cpp
+  operation_workspace_panel.h
   operation_workspace_widget.cpp
   operation_workspace_widget.h
   procedure_action_handler.cpp
