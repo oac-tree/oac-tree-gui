@@ -22,15 +22,15 @@
 #include "operation_action_handler.h"
 #include "operation_job_panel.h"
 #include "operation_realtime_panel.h"
-#include "operation_workspace_widget.h"
+#include "operation_workspace_panel.h"
 #include "procedure_action_handler.h"
 
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
-#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -40,8 +40,6 @@
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/widgets/all_items_tree_view.h>
-#include <mvvm/widgets/top_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QSettings>
@@ -65,12 +63,8 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_job_panel(new OperationJobPanel)
     , m_realtime_panel(new OperationRealTimePanel)
-    , m_workspace_tree_widget(
-          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTree))
-    , m_workspace_table_widget(
-          new OperationWorkspaceWidget(OperationWorkspaceWidget::Mode::kWorkspaceTable))
     , m_left_panel(CreateLeftPanel(mode))
-    , m_right_panel(CreateRightPanel())
+    , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
     , m_actions(new OperationActionHandler(
@@ -81,7 +75,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
 
   m_splitter->addWidget(m_left_panel);
   m_splitter->addWidget(CreateCentralPanel());
-  m_splitter->addWidget(m_right_panel);
+  m_splitter->addWidget(m_workspace_panel);
   m_splitter->setSizes(QList<int>() << mvvm::utils::UnitSize(30) << mvvm::utils::UnitSize(90)
                                     << mvvm::utils::UnitSize(30));
 
@@ -166,7 +160,7 @@ void OperationMonitorView::ReadSettings()
   m_left_panel_is_visible = settings.value(kLeftPanelIsVisibleSettingName, true).toBool();
   m_right_panel_is_visible = settings.value(kRightPanelIsVisibleSettingName, true).toBool();
   m_left_panel->setVisible(m_left_panel_is_visible);
-  m_right_panel->setVisible(m_right_panel_is_visible);
+  m_workspace_panel->setVisible(m_right_panel_is_visible);
 }
 
 void OperationMonitorView::WriteSettings()
@@ -271,7 +265,7 @@ void OperationMonitorView::SetupWidgetActions()
           [this](auto)
           {
             m_right_panel_is_visible = !m_right_panel_is_visible;
-            m_right_panel->setVisible(m_right_panel_is_visible);
+            m_workspace_panel->setVisible(m_right_panel_is_visible);
           });
 
   sup::gui::AppRegisterAction(sup::gui::constants::kViewMenu, m_show_left_sidebar);
@@ -283,8 +277,7 @@ void OperationMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
   m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-  m_workspace_tree_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
-  m_workspace_table_widget->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
@@ -309,15 +302,6 @@ QWidget *OperationMonitorView::CreateCentralPanel()
 
   auto result = new sup::gui::ItemStackWidget;
   result->AddWidget(m_realtime_panel, {widget_action});
-  return result;
-}
-
-QWidget *OperationMonitorView::CreateRightPanel()
-{
-  auto result = new sup::gui::ItemStackWidget;
-  result->AddWidget(m_workspace_tree_widget);
-  result->AddWidget(m_workspace_table_widget);
-  result->SetCurrentIndex(0);
   return result;
 }
 

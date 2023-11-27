@@ -31,7 +31,7 @@ namespace sequencergui
 class ApplicationModels;
 class JobItem;
 class JobManager;
-class OperationWorkspaceWidget;
+class OperationWorkspacePanel;
 class OperationRealTimePanel;
 class OperationJobPanel;
 class ProcedureItem;
@@ -84,18 +84,14 @@ private:
 
   QWidget* CreateLeftPanel(Mode mode);
   QWidget* CreateCentralPanel();
-  QWidget* CreateRightPanel();
 
   QAction* m_show_left_sidebar{nullptr};
   QAction* m_show_right_sidebar{nullptr};
 
   OperationJobPanel* m_job_panel{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
-  OperationWorkspaceWidget* m_workspace_tree_widget{nullptr};
-  OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
-
   QWidget* m_left_panel{nullptr};
-  QWidget* m_right_panel{nullptr};
+  OperationWorkspacePanel* m_workspace_panel{nullptr};
 
   QSplitter* m_splitter{nullptr};
   ApplicationModels* m_models{nullptr};

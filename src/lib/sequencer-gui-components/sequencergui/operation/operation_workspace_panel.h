@@ -22,8 +22,16 @@
 
 #include <QWidget>
 
+namespace sup::gui
+{
+class ItemStackWidget;
+}
+
 namespace sequencergui
 {
+
+class OperationWorkspaceWidget;
+class ProcedureItem;
 
 /**
  * @brief The OperationWorkspacePanel class represents vertical panel on the right part of
@@ -40,6 +48,13 @@ class OperationWorkspacePanel : public QWidget
 public:
   explicit OperationWorkspacePanel(QWidget* parent = nullptr);
   ~OperationWorkspacePanel() override;
+
+  void SetProcedure(ProcedureItem* item);
+
+private:
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
+  OperationWorkspaceWidget* m_workspace_tree_widget{nullptr};
+  OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
 };
 
 }  // namespace sequencergui
