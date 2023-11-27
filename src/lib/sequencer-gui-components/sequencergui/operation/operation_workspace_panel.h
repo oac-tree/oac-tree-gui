@@ -52,6 +52,9 @@ public:
   void SetProcedure(ProcedureItem* item);
 
 private:
+  void ReadSettings();
+  void WriteSettings();
+
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
   OperationWorkspaceWidget* m_workspace_tree_widget{nullptr};
   OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
