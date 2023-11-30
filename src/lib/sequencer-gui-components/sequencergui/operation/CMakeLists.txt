@@ -35,4 +35,6 @@ target_sources(${library_name} PRIVATE
   procedure_action_handler.h
   realtime_instruction_tree_widget.cpp
   realtime_instruction_tree_widget.h
+  tooltip_helper.cpp
+  tooltip_helper.h
 )

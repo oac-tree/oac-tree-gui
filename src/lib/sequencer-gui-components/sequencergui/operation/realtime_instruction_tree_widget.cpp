@@ -21,6 +21,7 @@
 
 #include "breakpoint_model_delegate.h"
 #include "instruction_tree_expand_controller.h"
+#include "tooltip_helper.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -29,18 +30,19 @@
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/tree_helper.h>
 #include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QEvent>
+#include <QHelpEvent>
 #include <QMenu>
 #include <QSettings>
+#include <QToolTip>
 #include <QTreeView>
 #include <QVBoxLayout>
-
-#include <QDebug>
 
 namespace
 {
@@ -130,6 +132,28 @@ void RealTimeInstructionTreeWidget::showEvent(QShowEvent *event)
   AdjustTreeAppearance();
 }
 
+bool RealTimeInstructionTreeWidget::event(QEvent *event)
+{
+  if (event->type() == QEvent::ToolTip)
+  {
+    auto gloal_pos = static_cast<QHelpEvent *>(event)->globalPos();
+    auto pos = m_tree_view->viewport()->mapFromGlobal(gloal_pos);
+    auto index = m_tree_view->indexAt(pos);
+    auto item = m_component_provider->GetViewModel()->GetSessionItemFromIndex(index);
+    auto text = GetInstructionToolTipText(item);
+    if (text.isEmpty())
+    {
+      QToolTip::hideText();
+      event->ignore();
+    }
+    else
+    {
+      QToolTip::showText(pos, text, this);
+    }
+  }
+  return QWidget::event(event);
+}
+
 void RealTimeInstructionTreeWidget::ReadSettings()
 {
   const QSettings settings;
@@ -156,7 +180,7 @@ void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
   }
   else
   {
-    AdjustWidthOfColumns(*m_tree_view, {15,5,1});
+    AdjustWidthOfColumns(*m_tree_view, {15, 5, 1});
   }
 }
 

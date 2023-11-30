@@ -69,6 +69,7 @@ signals:
 
 protected:
   void showEvent(QShowEvent* event) override;
+  bool event(QEvent *event) override;
 
 private:
   void ReadSettings();
