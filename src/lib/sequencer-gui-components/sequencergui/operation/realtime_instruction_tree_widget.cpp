@@ -139,8 +139,8 @@ bool RealTimeInstructionTreeWidget::event(QEvent *event)
 {
   if (event->type() == QEvent::ToolTip)
   {
-    auto gloal_pos = static_cast<QHelpEvent *>(event)->globalPos();
-    auto pos = m_tree_view->viewport()->mapFromGlobal(gloal_pos);
+    auto global_pos = static_cast<QHelpEvent *>(event)->globalPos();
+    auto pos = m_tree_view->viewport()->mapFromGlobal(global_pos);
     auto index = m_tree_view->indexAt(pos);
     auto item = m_component_provider->GetViewModel()->GetSessionItemFromIndex(index);
     auto text = GetInstructionToolTipText(item);
@@ -151,7 +151,7 @@ bool RealTimeInstructionTreeWidget::event(QEvent *event)
     }
     else
     {
-      QToolTip::showText(gloal_pos, text, this);
+      QToolTip::showText(global_pos, text, this);
     }
   }
   return QWidget::event(event);
