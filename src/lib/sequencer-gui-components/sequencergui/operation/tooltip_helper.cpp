@@ -19,16 +19,95 @@
 
 #include "tooltip_helper.h"
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/item_constants.h>
 
+#include <mvvm/core/variant.h>
+#include <mvvm/model/item_utils.h>
 #include <mvvm/model/sessionitem.h>
+#include <mvvm/utils/container_utils.h>
+
+#include <QDebug>
+#include <QFont>
+#include <QTextEdit>
+
+namespace
+{
+const std::vector<std::string> kSkipDomainAttributeList = {
+    sequencergui::itemconstants::kName, sequencergui::domainconstants::kIsRootAttribute};
+
+bool IsPropertyToShow(const std::string& tag_name)
+{
+  return !mvvm::utils::Contains(kSkipDomainAttributeList, tag_name);
+}
+
+void AppendTitle(const std::string& text, QTextEdit& text_edit)
+{
+  text_edit.append("<b>" + QString::fromStdString(text) + "</b>");
+}
+
+void AppendDescription(const std::string& text, QTextEdit& text_edit)
+{
+  if (!text.empty())
+  {
+    text_edit.append(QString::fromStdString(text));
+  }
+}
+
+void AppendLittleVerticalGap(QTextEdit& text_edit)
+{
+  auto base_font = text_edit.font();
+  auto new_font = base_font;
+  new_font.setPointSize(2);
+  text_edit.setCurrentFont(new_font);
+  text_edit.append(" ");
+  text_edit.setCurrentFont(base_font);
+}
+
+void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
+                         QTextEdit& text_edit)
+{
+  auto base_font = text_edit.font();
+
+  QFont f("Monospace", base_font.pointSize());
+  text_edit.setCurrentFont(f);
+
+  QString name = QString::fromStdString(s_name);
+  name.resize(18, ' ');
+  QString value = QString::fromStdString(s_value);
+  text_edit.append(name + " : " + value);
+}
+
+}  // namespace
 
 namespace sequencergui
 {
 
-QString GetInstructionToolTipText(const mvvm::SessionItem *item)
+QString GetInstructionToolTipText(const mvvm::SessionItem* item)
 {
-  return {};
+  auto instruction = mvvm::utils::FindItemUp<InstructionItem>(item);
+  if (!instruction)
+  {
+    return {};
+  }
+
+  QTextEdit text_edit;
+
+  AppendTitle(instruction->GetDomainType(), text_edit);
+  AppendDescription(instruction->GetName(), text_edit);
+  AppendLittleVerticalGap(text_edit);
+
+  for (auto property : mvvm::utils::SinglePropertyItems(*instruction))
+  {
+    if (IsPropertyToShow(property->GetTagIndex().tag))
+    {
+      AppendNameValuePair(property->GetDisplayName(), mvvm::utils::ValueToString(property->Data()),
+                          text_edit);
+    }
+  }
+
+  return text_edit.toHtml();
 }
 
 }  // namespace sequencergui

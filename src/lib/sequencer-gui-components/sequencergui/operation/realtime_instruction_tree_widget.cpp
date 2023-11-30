@@ -91,6 +91,9 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
   ReadSettings();
+
+  setStyleSheet("QToolTip {border: 2px solid darkgrey; padding: 5px; border-radius: 3px;}");
+
 }
 
 RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget()
@@ -148,7 +151,7 @@ bool RealTimeInstructionTreeWidget::event(QEvent *event)
     }
     else
     {
-      QToolTip::showText(pos, text, this);
+      QToolTip::showText(gloal_pos, text, this);
     }
   }
   return QWidget::event(event);
