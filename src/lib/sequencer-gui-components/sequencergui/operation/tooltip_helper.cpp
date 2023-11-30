@@ -59,7 +59,7 @@ void AppendLittleVerticalGap(QTextEdit& text_edit)
 {
   auto base_font = text_edit.font();
   auto new_font = base_font;
-  new_font.setPointSize(2);
+  new_font.setPointSize(5);
   text_edit.setCurrentFont(new_font);
   text_edit.append(" ");
   text_edit.setCurrentFont(base_font);
@@ -76,7 +76,8 @@ void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
   QString name = QString::fromStdString(s_name);
   name.resize(18, ' ');
   QString value = QString::fromStdString(s_value);
-  text_edit.append(name + " : " + value);
+
+  text_edit.append("<div style=\"width=500px\"><pre>"+name + " : " + value+"</pre></div>");
 }
 
 }  // namespace
