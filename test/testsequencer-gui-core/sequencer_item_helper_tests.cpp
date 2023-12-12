@@ -25,7 +25,6 @@
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_variable_item.h>
 
-#include <mvvm/factories/item_catalogue_factory.h>
 #include <mvvm/interfaces/item_manager_interface.h>
 
 #include <gtest/gtest.h>
