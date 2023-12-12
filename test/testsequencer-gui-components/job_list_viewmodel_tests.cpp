@@ -40,7 +40,7 @@ public:
   class TestModel : public mvvm::ApplicationModel
   {
   public:
-    TestModel() : mvvm::ApplicationModel("TestModel") { RegisterItem<JobItem>(); }
+    TestModel() : mvvm::ApplicationModel("TestModel") {}
   };
 };
 

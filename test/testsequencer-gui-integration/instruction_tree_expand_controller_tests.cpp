@@ -43,11 +43,7 @@ public:
   class TestModel : public mvvm::ApplicationModel
   {
   public:
-    TestModel() : mvvm::ApplicationModel("TestModel")
-    {
-      RegisterItem<SequenceItem>();
-      RegisterItem<WaitItem>();
-    }
+    TestModel() : mvvm::ApplicationModel("TestModel") {}
   };
 
   TestModel m_model;

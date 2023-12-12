@@ -19,30 +19,14 @@
 
 #include "monitor_model.h"
 
-#include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/model_utils.h>
 
 namespace sequencergui
 {
 
-MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
-{
-  RegisterItem<ChannelAccessVariableItem>();
-  RegisterItem<LocalVariableItem>();
-  RegisterItem<PvAccessClientVariableItem>();
-  RegisterItem<PvAccessServerVariableItem>();
-  RegisterItem<UniversalVariableItem>();
-  RegisterItem<FileVariableItem>();
-  RegisterItem<WorkspaceItem>();
-  RegisterItem<sup::gui::AnyValueEmptyItem>();
-  RegisterItem<sup::gui::AnyValueScalarItem>();
-  RegisterItem<sup::gui::AnyValueArrayItem>();
-  RegisterItem<sup::gui::AnyValueStructItem>();
-}
+MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel") {}
 
 WorkspaceItem *MonitorModel::GetWorkspaceItem() const
 {
