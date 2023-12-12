@@ -72,11 +72,6 @@ bool RegisterSequencerItems()
   mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
   mvvm::RegisterGlobalItem<sequencergui::AttributeItem>();
 
-  mvvm::RegisterGlobalItem<sup::gui::AnyValueEmptyItem>();
-  mvvm::RegisterGlobalItem<sup::gui::AnyValueScalarItem>();
-  mvvm::RegisterGlobalItem<sup::gui::AnyValueStructItem>();
-  mvvm::RegisterGlobalItem<sup::gui::AnyValueArrayItem>();
-
   return true;
 }
 
