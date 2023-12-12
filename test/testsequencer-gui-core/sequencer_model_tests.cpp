@@ -27,6 +27,7 @@
 
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/model/item_factory.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_based_test.h>
@@ -51,7 +52,7 @@ TEST_F(SequencerModelTest, InitialState)
   EXPECT_TRUE(model.GetProcedures().empty());
 
   // trying to insert procedure to make sure that catalogue is there
-  auto item = model.InsertItem(model.GetFactory()->CreateItem(ProcedureItem::Type),
+  auto item = model.InsertItem(mvvm::GetGlobalItemFactory().CreateItem(ProcedureItem::Type),
                                model.GetRootItem(), mvvm::TagIndex::Append());
   EXPECT_EQ(item->GetType(), ProcedureItem::Type);
   EXPECT_NE(dynamic_cast<ProcedureItem*>(item), nullptr);
