@@ -23,6 +23,7 @@
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/item_factory.h>
 #include <mvvm/model/item_catalogue.h>
 #include <mvvm/model/item_manager.h>
 #include <mvvm/model/item_utils.h>
@@ -33,6 +34,51 @@
 
 namespace
 {
+
+bool RegisterSequencerItems()
+{
+  // instructions
+  mvvm::RegisterGlobalItem<sequencergui::IncludeItem>();
+  mvvm::RegisterGlobalItem<sequencergui::ParallelSequenceItem>();
+  mvvm::RegisterGlobalItem<sequencergui::RepeatItem>();
+  mvvm::RegisterGlobalItem<sequencergui::SequenceItem>();
+  mvvm::RegisterGlobalItem<sequencergui::WaitItem>();
+  mvvm::RegisterGlobalItem<sequencergui::UniversalInstructionItem>();
+
+  // sequencer-plugin-epics instructions
+  mvvm::RegisterGlobalItem<sequencergui::ChannelAccessReadInstructionItem>();
+  mvvm::RegisterGlobalItem<sequencergui::ChannelAccessWriteInstructionItem>();
+  mvvm::RegisterGlobalItem<sequencergui::PvAccessReadInstructionItem>();
+  mvvm::RegisterGlobalItem<sequencergui::PvAccessWriteInstructionItem>();
+  mvvm::RegisterGlobalItem<sequencergui::RPCClientInstruction>();
+  mvvm::RegisterGlobalItem<sequencergui::SystemCallInstructionItem>();
+  mvvm::RegisterGlobalItem<sequencergui::LogInstructionItem>();
+
+  // variables
+  mvvm::RegisterGlobalItem<sequencergui::FileVariableItem>();
+  mvvm::RegisterGlobalItem<sequencergui::LocalVariableItem>();
+  mvvm::RegisterGlobalItem<sequencergui::UniversalVariableItem>();
+
+  // variables sequencer-plugin-epics
+  mvvm::RegisterGlobalItem<sequencergui::ChannelAccessVariableItem>();
+  mvvm::RegisterGlobalItem<sequencergui::PvAccessClientVariableItem>();
+  mvvm::RegisterGlobalItem<sequencergui::PvAccessServerVariableItem>();
+
+  // other items
+  mvvm::RegisterGlobalItem<sequencergui::InstructionContainerItem>();
+  mvvm::RegisterGlobalItem<sequencergui::JobItem>();
+  mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
+  mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
+  mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
+  mvvm::RegisterGlobalItem<sequencergui::AttributeItem>();
+
+  mvvm::RegisterGlobalItem<sup::gui::AnyValueEmptyItem>();
+  mvvm::RegisterGlobalItem<sup::gui::AnyValueScalarItem>();
+  mvvm::RegisterGlobalItem<sup::gui::AnyValueStructItem>();
+  mvvm::RegisterGlobalItem<sup::gui::AnyValueArrayItem>();
+
+  return true;
+}
 
 std::vector<std::string> GetDomainDecoratorNames()
 {
@@ -54,6 +100,8 @@ mvvm::SessionItem *GetPropertyItem(const mvvm::SessionItem &parent, const std::s
 namespace sequencergui
 {
 
+static bool sequencer_items_registered_flag = RegisterSequencerItems();
+
 bool IsCompoundInstruction(const InstructionItem *instruction)
 {
   return instruction->GetTaggedItems()->HasTag(itemconstants::kChildInstructions);
@@ -65,58 +113,11 @@ bool IsDecoratorInstruction(const InstructionItem *instruction)
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
 }
 
-std::unique_ptr<mvvm::ItemCatalogue<mvvm::SessionItem>> CreateSequencerItemCatalogue()
-{
-  auto result = std::make_unique<mvvm::ItemCatalogue<mvvm::SessionItem>>();
-
-  // instructions
-  result->RegisterItem<IncludeItem>();
-  result->RegisterItem<ParallelSequenceItem>();
-  result->RegisterItem<RepeatItem>();
-  result->RegisterItem<SequenceItem>();
-  result->RegisterItem<WaitItem>();
-  result->RegisterItem<UniversalInstructionItem>();
-
-  // sequencer-plugin-epics instructions
-  result->RegisterItem<ChannelAccessReadInstructionItem>();
-  result->RegisterItem<ChannelAccessWriteInstructionItem>();
-  result->RegisterItem<PvAccessReadInstructionItem>();
-  result->RegisterItem<PvAccessWriteInstructionItem>();
-  result->RegisterItem<RPCClientInstruction>();
-  result->RegisterItem<SystemCallInstructionItem>();
-  result->RegisterItem<LogInstructionItem>();
-
-  // variables
-  result->RegisterItem<FileVariableItem>();
-  result->RegisterItem<LocalVariableItem>();
-  result->RegisterItem<UniversalVariableItem>();
-
-  // variables sequencer-plugin-epics
-  result->RegisterItem<ChannelAccessVariableItem>();
-  result->RegisterItem<PvAccessClientVariableItem>();
-  result->RegisterItem<PvAccessServerVariableItem>();
-
-  // other items
-  result->RegisterItem<InstructionContainerItem>();
-  result->RegisterItem<JobItem>();
-  result->RegisterItem<ProcedureItem>();
-  result->RegisterItem<WorkspaceItem>();
-  result->RegisterItem<ProcedurePreambleItem>();
-
-  result->RegisterItem<sup::gui::AnyValueEmptyItem>();
-  result->RegisterItem<sup::gui::AnyValueScalarItem>();
-  result->RegisterItem<sup::gui::AnyValueStructItem>();
-  result->RegisterItem<sup::gui::AnyValueArrayItem>();
-
-  result->RegisterItem<AttributeItem>();
-
-  return result;
-}
-
 std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
     std::shared_ptr<mvvm::ItemPool> pool)
 {
-  return mvvm::CreateDefaultItemManager(CreateSequencerItemCatalogue(), std::move(pool));
+
+  return mvvm::CreateDefaultItemManager(std::move(pool));
 }
 
 mvvm::SessionItem *GetNameItem(const mvvm::SessionItem &parent)

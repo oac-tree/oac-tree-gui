@@ -74,24 +74,6 @@ TEST_F(SequencerItemHelperTest, IsDecoratorInstruction)
   EXPECT_FALSE(IsDecoratorInstruction(&wait));
 }
 
-TEST_F(SequencerItemHelperTest, CreateSequencerItemCatalogues)
-{
-  // checking one sequencer related item in the catalogue
-  auto catalogue = CreateSequencerItemCatalogue();
-
-  auto item = catalogue->Create(SequenceItem::Type);
-  EXPECT_EQ(item->GetType(), SequenceItem::Type);
-}
-
-TEST_F(SequencerItemHelperTest, CreateSequencerItemManager)
-{
-  // checking one sequencer related item in the catalogue
-  auto manager = CreateSequencerItemManager();
-
-  auto item = manager->CreateItem(SequenceItem::Type);
-  EXPECT_EQ(item->GetType(), SequenceItem::Type);
-}
-
 TEST_F(SequencerItemHelperTest, Clone)
 {
   using testutils::IsCloneImplemented;

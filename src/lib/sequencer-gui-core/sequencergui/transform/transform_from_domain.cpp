@@ -106,7 +106,7 @@ std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type)
 {
   static const auto catalogue = CreateVariableItemCatalogue();
 
-  if (!catalogue->Contains(domain_type))
+  if (!catalogue->IsRegistered(domain_type))
   {
     auto result = std::make_unique<UniversalVariableItem>();
     result->SetDomainType(domain_type);
@@ -120,7 +120,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain
 {
   static const auto catalogue = CreateInstructionItemCatalogue();
 
-  if (!catalogue->Contains(domain_type))
+  if (!catalogue->IsRegistered(domain_type))
   {
     auto result = std::make_unique<UniversalInstructionItem>();
     result->SetDomainType(domain_type);
