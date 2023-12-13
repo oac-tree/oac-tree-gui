@@ -20,17 +20,14 @@
 #ifndef SEQUENCERGUI_MODEL_SEQUENCER_ITEM_HELPER_H_
 #define SEQUENCERGUI_MODEL_SEQUENCER_ITEM_HELPER_H_
 
-//! Various utils for GUI items.
+//! @file
+//! Various auxiliary functions for sequencer items.
 
 #include <memory>
 
 namespace mvvm
 {
 class SessionItem;
-template <typename T>
-class ItemCatalogue;
-class ItemManagerInterface;
-class ItemPool;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -42,10 +39,6 @@ class SequencerModel;
 bool IsCompoundInstruction(const InstructionItem* instruction);
 
 bool IsDecoratorInstruction(const InstructionItem* instruction);
-
-//! Creates manager for sequencer presentation items.
-std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
-    std::shared_ptr<mvvm::ItemPool> pool = {});
 
 /**
  * @brief Returns an item representing a name property, or nullptr if the given parent doesn't have

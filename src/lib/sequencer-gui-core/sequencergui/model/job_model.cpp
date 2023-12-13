@@ -21,8 +21,6 @@
 
 #include <sequencergui/model/sequencer_item_helper.h>
 
-#include <mvvm/interfaces/item_manager_interface.h>
-
 namespace sequencergui
 {
 

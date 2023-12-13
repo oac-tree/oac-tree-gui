@@ -25,7 +25,6 @@
 
 #include <mvvm/model/item_factory.h>
 #include <mvvm/model/item_catalogue.h>
-#include <mvvm/model/item_manager.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/utils/container_utils.h>
@@ -106,13 +105,6 @@ bool IsDecoratorInstruction(const InstructionItem *instruction)
 {
   static const std::vector<std::string> domain_names = GetDomainDecoratorNames();
   return mvvm::utils::Contains(domain_names, instruction->GetDomainType());
-}
-
-std::unique_ptr<mvvm::ItemManagerInterface> CreateSequencerItemManager(
-    std::shared_ptr<mvvm::ItemPool> pool)
-{
-
-  return mvvm::CreateDefaultItemManager(std::move(pool));
 }
 
 mvvm::SessionItem *GetNameItem(const mvvm::SessionItem &parent)
