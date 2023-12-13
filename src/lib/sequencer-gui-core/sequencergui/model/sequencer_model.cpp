@@ -29,10 +29,9 @@
 
 namespace sequencergui
 {
-SequencerModel::SequencerModel() : SequencerModel(CreateSequencerItemManager()) {}
 
-SequencerModel::SequencerModel(std::unique_ptr<mvvm::ItemManagerInterface> manager)
-    : mvvm::ApplicationModel("SequencerModel", std::move(manager))
+SequencerModel::SequencerModel(std::shared_ptr<mvvm::ItemPool> pool)
+    : mvvm::ApplicationModel("SequencerModel", std::move(pool))
 
 {
   InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");

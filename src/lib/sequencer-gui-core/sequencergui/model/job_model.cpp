@@ -26,10 +26,8 @@
 namespace sequencergui
 {
 
-JobModel::JobModel() : JobModel(CreateSequencerItemManager()) {}
-
-JobModel::JobModel(std::unique_ptr<mvvm::ItemManagerInterface> manager)
-    : mvvm::ApplicationModel("JobModel", std::move(manager))
+JobModel::JobModel(std::shared_ptr<mvvm::ItemPool> pool)
+    : mvvm::ApplicationModel("JobModel", std::move(pool))
 {
 }
 

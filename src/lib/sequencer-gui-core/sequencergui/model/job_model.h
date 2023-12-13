@@ -30,8 +30,7 @@ namespace sequencergui
 class JobModel : public mvvm::ApplicationModel
 {
 public:
-  JobModel();
-  explicit JobModel(std::unique_ptr<mvvm::ItemManagerInterface> manager);
+  explicit JobModel(std::shared_ptr<mvvm::ItemPool> pool = {});
 };
 
 }  // namespace sequencergui
