@@ -277,8 +277,8 @@ TEST_F(DomainProcedureBuilderTest, ProcedureWithVariable)
 
   EXPECT_EQ(procedure->VariableNames(), std::vector<std::string>({"var0", "var1"}));
 
-  auto domain_var0 = procedure->GetWorkspace()->GetVariable("var0");
-  auto domain_var1 = procedure->GetWorkspace()->GetVariable("var1");
+  auto domain_var0 = procedure->GetWorkspace().GetVariable("var0");
+  auto domain_var1 = procedure->GetWorkspace().GetVariable("var1");
   EXPECT_EQ(domain_var0->GetName(), var_item0->GetName());
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
   EXPECT_EQ(builder.FindVariableItemIdentifier(domain_var0), var_item0->GetIdentifier());

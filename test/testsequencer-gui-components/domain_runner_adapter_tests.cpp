@@ -542,7 +542,7 @@ TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
 TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
 {
   auto procedure = testutils::CreateCounterProcedure(3);
-  auto variable = procedure->GetWorkspace()->GetVariable("counter");
+  auto variable = procedure->GetWorkspace().GetVariable("counter");
   procedure->Setup();
 
   sup::dto::AnyValue counter_value;
@@ -603,7 +603,7 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
 TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
 {
   auto procedure = testutils::CreateCounterProcedure(1000);
-  auto variable = procedure->GetWorkspace()->GetVariable("counter");
+  auto variable = procedure->GetWorkspace().GetVariable("counter");
   procedure->Setup();
 
   sup::dto::AnyValue counter_value;

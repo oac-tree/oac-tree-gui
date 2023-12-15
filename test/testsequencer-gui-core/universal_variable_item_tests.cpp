@@ -26,6 +26,7 @@
 
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 
@@ -78,7 +79,8 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // setting up domain variable and repeat initialisation
   domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-  domain_variable->Setup();
+  workspace_t ws;
+  domain_variable->Setup(ws);
   EXPECT_NO_THROW(item.InitFromDomain(domain_variable.get()));
 
   EXPECT_EQ(item.Property<std::string>(domainconstants::kNameAttribute), std::string("abc"));

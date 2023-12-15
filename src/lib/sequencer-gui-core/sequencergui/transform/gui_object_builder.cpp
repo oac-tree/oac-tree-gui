@@ -46,7 +46,7 @@ std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &pro
   for (const auto &type_registration : procedure.GetPreamble().GetTypeRegistrations())
   {
     auto anytype =
-        ParseTypeRegistrationInfo(type_registration, procedure.GetFilename(), result.get());
+        ParseTypeRegistrationInfo(type_registration, procedure.GetFilename(), *result);
     result->RegisterType(anytype);
   }
 
@@ -99,7 +99,7 @@ void GUIObjectBuilder::PopulateWorkspaceItem(const procedure_t *procedure, Works
     throw std::runtime_error("Error: WorkspaceItem is not empty.");
   }
 
-  for (auto variable : procedure->GetWorkspace()->GetVariables())
+  for (auto variable : procedure->GetWorkspace().GetVariables())
   {
     auto item = sequencergui::CreateVariableItem(variable->GetType());
     Save(variable, item.get());

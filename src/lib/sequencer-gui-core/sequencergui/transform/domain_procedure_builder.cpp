@@ -109,7 +109,7 @@ void DomainProcedureBuilder::PopulateDomainWorkspace(const WorkspaceItem* worksp
 {
   m_workspace_builder = std::make_unique<DomainWorkspaceBuilder>();
   m_workspace_builder->PopulateDomainWorkspace(workspace,
-                                               const_cast<workspace_t*>(procedure->GetWorkspace()));
+                                               const_cast<workspace_t*>(&procedure->GetWorkspace()));
 }
 void DomainProcedureBuilder::PopulateProcedure(const ProcedureItem& procedure_item,
                                                procedure_t& procedure)

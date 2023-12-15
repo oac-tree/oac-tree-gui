@@ -33,6 +33,7 @@
 #include <sup/sequencer/attribute_definition.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 
@@ -97,10 +98,11 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
 
 TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
 {
+  workspace_t ws;
   {  // case when variable was setup
     auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
     domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
-    domain_variable->Setup();
+    domain_variable->Setup(ws);
 
     AttributeItem item;
     item.SetAnyTypeName(sup::dto::kStringTypeName);

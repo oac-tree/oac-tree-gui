@@ -217,10 +217,10 @@ void JobHandler::SetupDomainProcedure()
   // building domain procedure
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
 
-  if (!m_domain_procedure->GetWorkspace()->GetVariables().empty())
+  if (!m_domain_procedure->GetWorkspace().GetVariables().empty())
   {
     m_workspace_synchronizer =
-        std::make_unique<WorkspaceSynchronizer>(m_domain_procedure->GetWorkspace());
+        std::make_unique<WorkspaceSynchronizer>(&m_domain_procedure->GetWorkspace());
   }
 
   m_domain_procedure->Setup();

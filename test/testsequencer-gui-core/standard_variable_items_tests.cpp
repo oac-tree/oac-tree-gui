@@ -32,6 +32,7 @@
 
 #include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
@@ -113,7 +114,8 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   ca_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   ca_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  ca_variable->Setup();
+  workspace_t ws;
+  ca_variable->Setup(ws);
 
   ChannelAccessVariableItem item;
   item.InitFromDomain(ca_variable.get());
@@ -154,7 +156,8 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
               expected_channel);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
 
-    EXPECT_NO_THROW(domain_item->Setup());
+    workspace_t ws;
+    EXPECT_NO_THROW(domain_item->Setup(ws));
   }
 }
 
@@ -206,7 +209,8 @@ TEST_F(StandardVariableItemsTest, FileVariableItemFromDomain)
   local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
   local_variable->AddAttribute(domainconstants::kFileNameAttribute, expected_file_name);
 
-  local_variable->Setup();  // to propagate string attributes to AnyValues
+  workspace_t ws;
+  local_variable->Setup(ws);  // to propagate string attributes to AnyValues
 
   sequencergui::FileVariableItem item;
   item.InitFromDomain(local_variable.get());
@@ -230,7 +234,8 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
   EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kFileNameAttribute),
             expected_file_name);
 
-  EXPECT_NO_THROW(domain_item->Setup());
+  workspace_t ws;
+  EXPECT_NO_THROW(domain_item->Setup(ws));
 }
 
 //! ---------------------------------------------------------------------------
@@ -282,7 +287,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   local_variable->AddAttribute("type", expected_type);
   local_variable->AddAttribute("value", expected_value);
 
-  local_variable->Setup();
+  workspace_t ws;
+  local_variable->Setup(ws);
 
   sequencergui::LocalVariableItem item;
   item.InitFromDomain(local_variable.get());
@@ -320,7 +326,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDynamicTypeAttribute),
               expected_dynamic_flag);
 
-    EXPECT_NO_THROW(domain_item->Setup());
+    workspace_t ws;
+    EXPECT_NO_THROW(domain_item->Setup(ws));
   }
 }
 
@@ -363,7 +370,8 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   pv_variable->AddAttribute(domainconstants::kChannelAttribute, expected_channel);
   pv_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
 
-  pv_variable->Setup();
+  workspace_t ws;
+  pv_variable->Setup(ws);
 
   PvAccessClientVariableItem item;
   item.InitFromDomain(pv_variable.get());
@@ -446,7 +454,8 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   pvxs_variable->AddAttribute(domainconstants::kTypeAttribute, expected_datatype);
   pvxs_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
-  pvxs_variable->Setup();
+  workspace_t ws;
+  pvxs_variable->Setup(ws);
 
   PvAccessServerVariableItem item;
   item.InitFromDomain(pvxs_variable.get());
@@ -489,6 +498,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_datatype);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
 
-    EXPECT_NO_THROW(domain_item->Setup());
+    workspace_t ws;
+    EXPECT_NO_THROW(domain_item->Setup(ws));
   }
 }
