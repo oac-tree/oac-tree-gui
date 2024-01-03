@@ -12,4 +12,5 @@ target_sources(${library_name} PRIVATE
   standard_procedures.h
   test_utils.cpp
   test_utils.h
+  universal_items.h
 )
