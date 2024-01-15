@@ -19,6 +19,8 @@
 
 #include "app_settings.h"
 
+#include <sup/gui/app/application_helper.h>
+
 #include <QSettings>
 
 namespace sequencergui
@@ -44,6 +46,20 @@ QColor GetConnectedColor()
 QColor GetDisonnectedColor()
 {
   return QColor("#b9b9b9");
+}
+
+QString GetCustomToolTipStyle()
+{
+  static QString style(
+      "QToolTip {border: 2px solid darkgrey; padding: 5px; border-radius: 3px;}");
+
+  // Adwaita style has own white-on-black semi-transparent tooltip style.
+  // We have to define dark background to match this style.
+  static QString adwaita_style(
+      "QToolTip {border: 2px solid lightgray; padding: 5px; border-radius: 3px; background-color: "
+      "darkgray}");
+
+  return sup::gui::IsOnCodac() ? adwaita_style : style;
 }
 
 }  // namespace sequencergui

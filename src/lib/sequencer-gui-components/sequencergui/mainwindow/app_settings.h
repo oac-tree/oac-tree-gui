@@ -56,6 +56,11 @@ QColor GetConnectedColor();
  */
 QColor GetDisonnectedColor();
 
+/**
+ * @brief Returns a string representing a custom tooltip style.
+ */
+QString GetCustomToolTipStyle();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_

@@ -27,6 +27,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -92,8 +93,7 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
 
   ReadSettings();
 
-  setStyleSheet("QToolTip {border: 2px solid darkgrey; padding: 5px; border-radius: 3px;}");
-
+  setStyleSheet(GetCustomToolTipStyle());
 }
 
 RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget()
