@@ -183,7 +183,9 @@ TEST_F(UniversalInstructionItemTest, IncludeProcedureCollapsedAttribute)
     EXPECT_FALSE(IsCollapsed(item));
 
     auto domain = item.CreateDomainInstruction();
-    // we do not propagate false attributes
-    EXPECT_FALSE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute));
+    // we propagate false attributes too
+    EXPECT_TRUE(domain->HasAttribute(domainconstants::kShowCollapsedAttribute));
+    EXPECT_EQ(domain->GetAttributeString(domainconstants::kShowCollapsedAttribute),
+              std::string("false"));
   }
 }

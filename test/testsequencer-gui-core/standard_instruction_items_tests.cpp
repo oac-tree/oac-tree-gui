@@ -57,6 +57,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItem)
   IncludeItem item;
   EXPECT_EQ(item.GetFileName(), std::string());
   EXPECT_EQ(item.GetPath(), std::string());
+  EXPECT_TRUE(mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute));
 
   item.SetFileName("abc");
   EXPECT_EQ(item.GetFileName(), std::string("abc"));
@@ -109,7 +110,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomain)
     EXPECT_FALSE(IsCollapsed(item));
   }
 
-  {  // when showCollapsed attribute is set to false on domain side
+  {  // when showCollapsed attribute is set to true on domain side
     auto input = CreateDomainInstruction(domainconstants::kIncludeInstructionType);
     input->AddAttribute(domainconstants::kFileNameAttribute, "abc");
     input->AddAttribute(domainconstants::kPathAttribute, "def");
@@ -158,23 +159,49 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomainWithCustomAttributes)
 
 TEST_F(StandardInstructionItemsTest, IncludeItemToDomain)
 {
-  // we are testing only "local include" instruction
-  IncludeItem item;
-  item.SetPath("def");
+  {  // is expanded
+    IncludeItem item;
+    item.SetPath("def");
 
-  EXPECT_TRUE(IsCollapsed(item));
+    item.GetItem(domainconstants::kShowCollapsedAttribute)->SetData(false);
 
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
-  EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
+    EXPECT_FALSE(IsCollapsed(item));
 
-  // Setup of Input instruction requires existance of instruction to include
-  auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
-  wait->SetName("def");
-  m_procedure.InsertInstruction(std::move(wait), 0);
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
+    EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kShowCollapsedAttribute));
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kShowCollapsedAttribute), "false");
 
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+    // Setup of Include instruction requires existance of instruction to include
+    auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    wait->SetName("def");
+    m_procedure.InsertInstruction(std::move(wait), 0);
+
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  }
+
+  {  // is collapsed
+    IncludeItem item;
+    item.SetPath("def");
+
+    EXPECT_TRUE(IsCollapsed(item));
+
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kIncludeInstructionType);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kPathAttribute), "def");
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kFileNameAttribute));
+    EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kShowCollapsedAttribute));
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kShowCollapsedAttribute), "true");
+
+    // Setup of Include instruction requires existance of instruction to include
+    auto wait = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+    wait->SetName("def");
+    m_procedure.InsertInstruction(std::move(wait), 0);
+
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  }
 }
 
 //! Validating transformation from GUI to domain, when Include instruction contains a custom
@@ -369,7 +396,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 
     EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
     // validating that no SessionItem related properties were propagated to the domain
-    std::vector<std::pair<std::string, std::string>> expected = {};
+    std::vector<std::pair<std::string, std::string>> expected = {{"showCollapsed", "false"}};
     EXPECT_EQ(domain_item->GetStringAttributes(), expected);
   }
 }

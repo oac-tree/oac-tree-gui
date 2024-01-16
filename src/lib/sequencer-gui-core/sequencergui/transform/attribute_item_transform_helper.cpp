@@ -41,10 +41,7 @@ bool IsSuitableForDomainAttribute(const std::string &attribute_string,
   const bool not_isroot_false =
       !(attribute_string == sequencergui::domainconstants::kIsRootAttribute
         && attribute_value == "false");
-  const bool not_is_collapsed =
-      !(attribute_string == sequencergui::domainconstants::kShowCollapsedAttribute
-        && attribute_value == "false");
-  return not_empty && not_isroot_false && not_is_collapsed;
+  return not_empty && not_isroot_false;
 }
 
 namespace sequencergui
