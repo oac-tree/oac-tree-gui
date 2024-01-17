@@ -102,6 +102,11 @@ template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t 
 template <typename T>
 void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
 {
+  if (item.IsUnset())
+  {
+    return;
+  }
+
   auto anyvalue = sup::gui::GetAnyValueFromScalar(item.Data());
   auto [success, attribute_string] = sup::sequencer::utils::CreateAttributeString(anyvalue);
   if (!success)

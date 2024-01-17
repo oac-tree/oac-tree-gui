@@ -191,3 +191,18 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttribute)
   EXPECT_EQ(domain_variable->GetAttributeString(domainconstants::kNameAttribute),
             std::string("abc"));
 }
+
+//! Testing SetDomainAttribute method when attribute is marked as unsetd
+
+TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
+{
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+
+  AttributeItem item;
+  item.SetAnyTypeName(sup::dto::kFloat64TypeName);
+  item.SetData(5.0);
+  item.MarkAsUnset();
+
+  SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
+  EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
+}

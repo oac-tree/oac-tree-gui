@@ -112,6 +112,6 @@ TEST_F(AttributeItemTest, SetAttributeFromTypeName)
   item.SetAttributeFromTypeName();
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-  EXPECT_FALSE(item.IsEditable());
-  EXPECT_FALSE(item.IsEnabled());
+  EXPECT_TRUE(item.IsEditable());
+  EXPECT_TRUE(item.IsEnabled());
 }

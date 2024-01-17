@@ -82,8 +82,8 @@ void AttributeItem::MarkAsUnset()
 
 void AttributeItem::SetAttributeFromTypeName()
 {
-  SetEditable(false);
-  SetEnabled(false);
+  SetEditable(true);
+  SetEnabled(true);
   mvvm::utils::ReplaceData(*this, sup::gui::GetVariantFromScalarTypeName(GetAnyTypeName()),
                            mvvm::DataRole::kData);
 }
