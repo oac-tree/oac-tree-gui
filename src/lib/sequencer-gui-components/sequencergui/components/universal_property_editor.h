@@ -60,6 +60,10 @@ private:
   void ReadSettings();
   void WriteSettings();
   void AdjustTreeAppearance();
+  /**
+   * @brief Summons custom context menu to modify attributes.
+   */
+  void SummonCustomMenu(const QPoint& point);
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};

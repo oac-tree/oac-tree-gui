@@ -21,12 +21,16 @@
 
 #include <sup/gui/widgets/custom_header_view.h>
 
+#include <mvvm/model/sessionitem.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
+#include <QDebug>
+#include <QMenu>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <iostream>
 
 namespace
 {
@@ -50,6 +54,11 @@ UniversalPropertyEditor::UniversalPropertyEditor(QWidget *parent)
 
   m_custom_header->setStretchLastSection(true);
   m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          &UniversalPropertyEditor::SummonCustomMenu);
+
   ReadSettings();
   AdjustTreeAppearance();
 }
@@ -94,6 +103,31 @@ void UniversalPropertyEditor::AdjustTreeAppearance()
   {
     m_tree_view->resizeColumnToContents(0);
   }
+}
+
+void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
+{
+  auto index = m_tree_view->indexAt(point);
+  auto item = m_component_provider->GetViewModel()->GetSessionItemFromIndex(index);
+
+  QMenu menu;
+  menu.setToolTipsVisible(true);
+
+  auto action = menu.addAction("Unset attribute");
+  action->setToolTip("Mark attribute as unset");
+
+  auto on_unset = [item]() {
+
+  };
+
+  action = menu.addAction("Set default value");
+  action->setToolTip("The attribute will be set to its default value");
+
+  action = menu.addAction("Set placeholder attribute");
+  action->setToolTip(
+      "Attribute will be defined as string, allowing to use placeholders $par and references @par");
+
+  menu.exec(m_tree_view->mapToGlobal(point));
 }
 
 }  // namespace sequencergui
