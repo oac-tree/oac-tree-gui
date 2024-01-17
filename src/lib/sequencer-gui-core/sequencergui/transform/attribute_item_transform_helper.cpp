@@ -84,7 +84,7 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   }
 
   auto type_code = sup::gui::GetScalarTypeCode(item.GetAnyTypeName());
-  auto any_type = sup::dto::AnyType(sup::gui::GetScalarTypeCode(item.GetAnyTypeName()));
+  auto any_type = sup::dto::AnyType(type_code);
   auto result = sup::sequencer::utils::ParseAttributeString(any_type, attribute_string);
   if (result.first)
   {

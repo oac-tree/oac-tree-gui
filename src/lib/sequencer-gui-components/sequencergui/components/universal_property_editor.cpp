@@ -127,6 +127,8 @@ void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
 
   action = menu.addAction("Set default value");
   action->setToolTip("The attribute will be set to its default value");
+  auto on_default_attribute = [item]() { item->SetAttributeFromTypeName(); };
+  connect(action, &QAction::triggered, this, on_default_attribute);
 
   action = menu.addAction("Set placeholder attribute");
   action->setToolTip(

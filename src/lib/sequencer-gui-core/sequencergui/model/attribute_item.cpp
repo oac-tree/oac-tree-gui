@@ -24,11 +24,16 @@
 
 #include <mvvm/model/item_utils.h>
 
+#include <sup/dto/anyvalue.h>
+
 namespace
 {
 inline const int kAnyTypeNameRole = 10;  // role to store type name
 }  // namespace
 
+/**
+ * @brief Sets default constructed attribute value from AnyType name.
+ */
 namespace sequencergui
 {
 
@@ -73,6 +78,14 @@ void AttributeItem::MarkAsUnset()
   SetEditable(false);
   SetEnabled(false);
   mvvm::utils::ReplaceData(*this, itemconstants::kUnsetValue, mvvm::DataRole::kData);
+}
+
+void AttributeItem::SetAttributeFromTypeName()
+{
+  SetEditable(false);
+  SetEnabled(false);
+  mvvm::utils::ReplaceData(*this, sup::gui::GetVariantFromScalarTypeName(GetAnyTypeName()),
+                           mvvm::DataRole::kData);
 }
 
 }  // namespace sequencergui

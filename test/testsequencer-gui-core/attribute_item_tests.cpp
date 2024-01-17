@@ -94,3 +94,24 @@ TEST_F(AttributeItemTest, MarkAsUnset)
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<std::string>(), itemconstants::kUnsetValue);
 }
+
+TEST_F(AttributeItemTest, SetAttributeFromTypeName)
+{
+  AttributeItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  item.MarkAsUnset();
+  EXPECT_TRUE(item.IsUnset());
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
+  EXPECT_EQ(item.Data<std::string>(), itemconstants::kUnsetValue);
+
+  item.SetAttributeFromTypeName();
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
+}

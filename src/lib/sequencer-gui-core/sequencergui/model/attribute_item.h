@@ -64,17 +64,26 @@ public:
    */
   void SetAttributeAsString(const std::string& value);
 
-
   /**
    * @brief Returns true if this attribute item is marked as unset.
-   * Unset item appears in property editors as disabled, non-editable item with "unset" gray text.
+   *
+   * @details Unset item appears in property editors as disabled, non-editable item with "unset"
+   * gray text.
    */
   bool IsUnset() const;
 
   /**
    * @brief Mark attribute unset.
+   *
+   * @details Unset item appears in property editors as disabled, non-editable item with "unset"
+   * gray text.
    */
   void MarkAsUnset();
+
+  /**
+   * @brief Sets default constructed attribute value from AnyType name.
+   */
+  void SetAttributeFromTypeName();
 };
 
 }  // namespace sequencergui
