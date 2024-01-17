@@ -63,6 +63,18 @@ public:
    * domain attribute contains is a placeholder or a reference to variable name.
    */
   void SetAttributeAsString(const std::string& value);
+
+
+  /**
+   * @brief Returns true if this attribute item is marked as unset.
+   * Unset item appears in property editors as disabled, non-editable item with "unset" gray text.
+   */
+  bool IsUnset() const;
+
+  /**
+   * @brief Mark attribute unset.
+   */
+  void MarkAsUnset();
 };
 
 }  // namespace sequencergui

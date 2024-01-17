@@ -19,6 +19,7 @@
 
 #include "universal_property_editor.h"
 
+#include <sequencergui/model/attribute_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
 #include <mvvm/model/sessionitem.h>
@@ -108,7 +109,8 @@ void UniversalPropertyEditor::AdjustTreeAppearance()
 void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
 {
   auto index = m_tree_view->indexAt(point);
-  auto item = m_component_provider->GetViewModel()->GetSessionItemFromIndex(index);
+  auto item = dynamic_cast<AttributeItem *>(
+      m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
 
   QMenu menu;
   menu.setToolTipsVisible(true);
@@ -116,9 +118,8 @@ void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
   auto action = menu.addAction("Unset attribute");
   action->setToolTip("Mark attribute as unset");
 
-  auto on_unset = [item]() {
-
-  };
+  auto on_unset = [item]() { item->MarkAsUnset(); };
+  connect(action, &QAction::triggered, this, on_unset);
 
   action = menu.addAction("Set default value");
   action->setToolTip("The attribute will be set to its default value");

@@ -19,6 +19,7 @@
 
 #include "attribute_item.h"
 
+#include <sequencergui/model/item_constants.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
@@ -26,7 +27,7 @@
 namespace
 {
 inline const int kAnyTypeNameRole = 10;  // role to store type name
-}
+}  // namespace
 
 namespace sequencergui
 {
@@ -56,6 +57,20 @@ void AttributeItem::SetAttributeAsString(const std::string &value)
 {
   SetData(mvvm::constants::kStringTypeName, kAnyTypeNameRole);
   mvvm::utils::ReplaceData(*this, mvvm::variant_t(value), mvvm::DataRole::kData);
+}
+
+bool AttributeItem::IsUnset() const
+{
+  auto data = Data();
+  return std::holds_alternative<std::string>(data)
+         && std::get<std::string>(data) == itemconstants::kUnsetValue;
+}
+
+void AttributeItem::MarkAsUnset()
+{
+  SetEditable(false);
+  SetEnabled(false);
+  mvvm::utils::ReplaceData(*this, itemconstants::kUnsetValue, mvvm::DataRole::kData);
 }
 
 }  // namespace sequencergui

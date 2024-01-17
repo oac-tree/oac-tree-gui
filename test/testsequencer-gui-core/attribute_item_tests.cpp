@@ -19,6 +19,8 @@
 
 #include "sequencergui/model/attribute_item.h"
 
+#include <sequencergui/model/item_constants.h>
+
 #include <sup/dto/anytype.h>
 
 #include <gtest/gtest.h>
@@ -72,4 +74,21 @@ TEST_F(AttributeItemTest, SetAttributeAsString)
   item.SetAttributeAsString("def");
   EXPECT_EQ(item.Data<std::string>(), std::string("def"));
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+}
+
+TEST_F(AttributeItemTest, MarkAsUnset)
+{
+  AttributeItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  EXPECT_FALSE(item.IsUnset());
+
+  item.MarkAsUnset();
+  EXPECT_TRUE(item.IsUnset());
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
+  EXPECT_EQ(item.Data<std::string>(), itemconstants::kUnsetValue);
 }
