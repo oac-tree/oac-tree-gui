@@ -69,11 +69,13 @@ TEST_F(AttributeItemTest, SetAttributeAsString)
 
   item.SetAttributeAsString("abc");
   EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+  // current convention is to keep original AnyTypeName after setting attribute as a string
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
   item.SetAttributeAsString("def");
+  // current convention is to keep original AnyTypeName after setting attribute as a string
   EXPECT_EQ(item.Data<std::string>(), std::string("def"));
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 }
 
 TEST_F(AttributeItemTest, MarkAsUnset)

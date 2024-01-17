@@ -111,6 +111,10 @@ void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
   auto index = m_tree_view->indexAt(point);
   auto item = dynamic_cast<AttributeItem *>(
       m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
+  if (!item)
+  {
+    return;
+  }
 
   QMenu menu;
   menu.setToolTipsVisible(true);
@@ -127,6 +131,8 @@ void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
   action = menu.addAction("Set placeholder attribute");
   action->setToolTip(
       "Attribute will be defined as string, allowing to use placeholders $par and references @par");
+  auto on_placeholder = [item]() { item->SetAttributeAsString("$par"); };
+  connect(action, &QAction::triggered, this, on_placeholder);
 
   menu.exec(m_tree_view->mapToGlobal(point));
 }

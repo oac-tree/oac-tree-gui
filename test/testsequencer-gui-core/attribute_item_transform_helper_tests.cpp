@@ -143,7 +143,10 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlacehold
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "$par1");
   SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, item);
 
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+  // current convention in AttributeItem::SetAttributeAsString is to keep original
+  // AnyTypeName after setting attribute as a string
+
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "$par1");
 }
@@ -166,7 +169,10 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReference
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "@par1");
   SetPropertyFromDomainAttribute(*instruction, domainconstants::kTimeoutAttribute, item);
 
-  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kStringTypeName);
+  // current convention in AttributeItem::SetAttributeAsString is to keep original
+  // AnyTypeName after setting attribute as a string
+
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "@par1");
 }

@@ -55,8 +55,10 @@ std::string AttributeItem::GetAnyTypeName() const
 
 void AttributeItem::SetAttributeAsString(const std::string &value)
 {
-  SetData(mvvm::constants::kStringTypeName, kAnyTypeNameRole);
+  // current convention is to keep original AnyTypeName after setting attribute as a string
   mvvm::utils::ReplaceData(*this, mvvm::variant_t(value), mvvm::DataRole::kData);
+  SetEditable(true);
+  SetEnabled(true);
 }
 
 bool AttributeItem::IsUnset() const
