@@ -47,7 +47,7 @@ std::string EpicsReadInstructionItem::GetChannel() const
 
 void EpicsReadInstructionItem::SetChannel(const std::string &value)
 {
-  SetProperty(domainconstants::kChannelAttribute, value);
+  SetAttribute(domainconstants::kChannelAttribute, value);
 }
 
 std::string EpicsReadInstructionItem::GetOutput() const
@@ -57,7 +57,7 @@ std::string EpicsReadInstructionItem::GetOutput() const
 
 void EpicsReadInstructionItem::SetOutput(const std::string &value)
 {
-  SetProperty(domainconstants::kOutputVariableNameAttribute, value);
+  SetAttribute(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 double EpicsReadInstructionItem::GetTimeout() const
@@ -67,7 +67,7 @@ double EpicsReadInstructionItem::GetTimeout() const
 
 void EpicsReadInstructionItem::SetTimeout(double value)
 {
-  SetProperty(domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ std::string EpicsWriteInstructionItem::GetVariableName() const
 
 void EpicsWriteInstructionItem::SetVariableName(const std::string &value)
 {
-  SetProperty(domainconstants::kGenericVariableNameAttribute, value);
+  SetAttribute(domainconstants::kGenericVariableNameAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetChannel() const
@@ -103,7 +103,7 @@ std::string EpicsWriteInstructionItem::GetChannel() const
 
 void EpicsWriteInstructionItem::SetChannel(const std::string &value)
 {
-  SetProperty(domainconstants::kChannelAttribute, value);
+  SetAttribute(domainconstants::kChannelAttribute, value);
 }
 
 double EpicsWriteInstructionItem::GetTimeout() const
@@ -113,7 +113,7 @@ double EpicsWriteInstructionItem::GetTimeout() const
 
 void EpicsWriteInstructionItem::SetTimeout(double value)
 {
-  SetProperty(domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetJsonType() const
@@ -123,7 +123,7 @@ std::string EpicsWriteInstructionItem::GetJsonType() const
 
 void EpicsWriteInstructionItem::SetJsonType(const std::string &value)
 {
-  SetProperty(domainconstants::kTypeAttribute, value);
+  SetAttribute(domainconstants::kTypeAttribute, value);
 }
 
 std::string EpicsWriteInstructionItem::GetJsonValue() const
@@ -133,7 +133,7 @@ std::string EpicsWriteInstructionItem::GetJsonValue() const
 
 void EpicsWriteInstructionItem::SetJsonValue(const std::string &value)
 {
-  SetProperty(domainconstants::kValueAttribute, value);
+  SetAttribute(domainconstants::kValueAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -208,7 +208,7 @@ std::string RPCClientInstruction::GetService() const
 
 void RPCClientInstruction::SetService(const std::string &value)
 {
-  SetProperty(domainconstants::kServiceAttribute, value);
+  SetAttribute(domainconstants::kServiceAttribute, value);
 }
 
 std::string RPCClientInstruction::GetRequestVar() const
@@ -218,7 +218,7 @@ std::string RPCClientInstruction::GetRequestVar() const
 
 void RPCClientInstruction::SetRequestVar(const std::string &value)
 {
-  SetProperty(domainconstants::kRequestAttribute, value);
+  SetAttribute(domainconstants::kRequestAttribute, value);
 }
 
 double RPCClientInstruction::GetTimeout() const
@@ -228,7 +228,7 @@ double RPCClientInstruction::GetTimeout() const
 
 void RPCClientInstruction::SetTimeout(double value)
 {
-  SetProperty(domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 std::string RPCClientInstruction::GetJsonType() const
@@ -238,7 +238,7 @@ std::string RPCClientInstruction::GetJsonType() const
 
 void RPCClientInstruction::SetJsonType(const std::string &value)
 {
-  SetProperty(domainconstants::kTypeAttribute, value);
+  SetAttribute(domainconstants::kTypeAttribute, value);
 }
 
 std::string RPCClientInstruction::GetJsonValue() const
@@ -248,7 +248,7 @@ std::string RPCClientInstruction::GetJsonValue() const
 
 void RPCClientInstruction::SetJsonValue(const std::string &value)
 {
-  SetProperty(domainconstants::kValueAttribute, value);
+  SetAttribute(domainconstants::kValueAttribute, value);
 }
 
 std::string RPCClientInstruction::GetOutput() const
@@ -258,7 +258,7 @@ std::string RPCClientInstruction::GetOutput() const
 
 void RPCClientInstruction::SetOutput(const std::string &value)
 {
-  SetProperty(domainconstants::kOutputVariableNameAttribute, value);
+  SetAttribute(domainconstants::kOutputVariableNameAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -279,7 +279,7 @@ std::string SystemCallInstructionItem::GetCommand() const
 
 void SystemCallInstructionItem::SetCommand(const std::string &value)
 {
-  SetProperty(domainconstants::kCommandAttribute, value);
+  SetAttribute(domainconstants::kCommandAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -300,7 +300,7 @@ std::string LogInstructionItem::GetMessage() const
 
 void LogInstructionItem::SetMessage(const std::string &value)
 {
-  SetProperty(domainconstants::kMessageAttribute, value);
+  SetAttribute(domainconstants::kMessageAttribute, value);
 }
 
 std::string LogInstructionItem::GetInput() const
@@ -310,7 +310,7 @@ std::string LogInstructionItem::GetInput() const
 
 void LogInstructionItem::SetInput(const std::string &value)
 {
-  SetProperty(domainconstants::kInputVariableNameAttribute, value);
+  SetAttribute(domainconstants::kInputVariableNameAttribute, value);
 }
 
 std::string LogInstructionItem::GetSeverity() const
@@ -320,7 +320,7 @@ std::string LogInstructionItem::GetSeverity() const
 
 void LogInstructionItem::SetSeverity(const std::string &value)
 {
-  SetProperty(domainconstants::kSeverityAttribute, value);
+  SetAttribute(domainconstants::kSeverityAttribute, value);
 }
 
 }  // namespace sequencergui

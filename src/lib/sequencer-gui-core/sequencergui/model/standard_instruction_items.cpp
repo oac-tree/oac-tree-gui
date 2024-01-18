@@ -43,7 +43,7 @@ std::string IncludeItem::GetFileName() const
 
 void IncludeItem::SetFileName(const std::string &value)
 {
-  SetProperty(domainconstants::kFileNameAttribute, value);
+  SetAttribute(domainconstants::kFileNameAttribute, value);
 }
 
 std::string IncludeItem::GetPath() const
@@ -53,7 +53,7 @@ std::string IncludeItem::GetPath() const
 
 void IncludeItem::SetPath(const std::string &value)
 {
-  SetProperty(domainconstants::kPathAttribute, value);
+  SetAttribute(domainconstants::kPathAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -110,7 +110,7 @@ int RepeatItem::GetRepeatCount() const
 
 void RepeatItem::SetRepeatCount(int value)
 {
-  SetProperty(domainconstants::kMaxCountAttribute, value);
+  SetAttribute(domainconstants::kMaxCountAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -127,7 +127,10 @@ std::unique_ptr<mvvm::SessionItem> SequenceItem::Clone(bool make_unique_id) cons
 // WaitItem
 // ----------------------------------------------------------------------------
 
-WaitItem::WaitItem() : UniversalInstructionItem(Type) {}
+WaitItem::WaitItem() : UniversalInstructionItem(Type)
+{
+  SetTimeout(0.0);
+}
 
 std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
 {
@@ -136,7 +139,7 @@ std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
 
 void WaitItem::SetTimeout(double value)
 {
-  SetProperty(domainconstants::kTimeoutAttribute, value);
+  SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
 double WaitItem::GetTimeout() const

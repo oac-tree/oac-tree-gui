@@ -53,17 +53,8 @@ bool GetIsPresentFlag(const attribute_definition_t &attr)
   static const std::vector<std::string> kAlwaysPresentAttributeList = {
       sequencergui::domainconstants::kNameAttribute,
       sequencergui::domainconstants::kShowCollapsedAttribute,
-      sequencergui::domainconstants::kTimeoutAttribute,
       sequencergui::domainconstants::kIsRootAttribute,
-      sequencergui::domainconstants::kDynamicTypeAttribute,
-      sequencergui::domainconstants::kMaxCountAttribute,
-      sequencergui::domainconstants::kGenericVariableNameAttribute,
-      sequencergui::domainconstants::kTypeAttribute,
-      sequencergui::domainconstants::kValueAttribute,
-      sequencergui::domainconstants::kOutputVariableNameAttribute,
-      sequencergui::domainconstants::kMessageAttribute,
-      sequencergui::domainconstants::kInputVariableNameAttribute,
-      sequencergui::domainconstants::kSeverityAttribute};
+      sequencergui::domainconstants::kDynamicTypeAttribute};
   return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysPresentAttributeList, attr.GetName());
 }
 
