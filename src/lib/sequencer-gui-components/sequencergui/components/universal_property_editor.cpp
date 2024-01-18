@@ -120,9 +120,7 @@ void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
   menu.setToolTipsVisible(true);
 
   auto action = menu.addAction("Attribute is enabled flag");
-  action->setToolTip(
-      "Attribute with enabled flag set will be propagated to domain."
-      "\nIf attribute is disabled, the domain will try to provade the default behavior");
+  action->setToolTip("Attribute with enabled flag set will be propagated to domain.");
   action->setCheckable(true);
   action->setChecked(item->IsPresent());
   auto on_unset = [item]() { item->SetPresentFlag(!item->IsPresent()); };
