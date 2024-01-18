@@ -81,7 +81,9 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   auto property_item = item.GetItem({attribute_name});
   ASSERT_EQ(property_item, property);
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
-  EXPECT_NE(dynamic_cast<AttributeItem*>(property_item), nullptr);
+  auto attribute_item = dynamic_cast<AttributeItem*>(property_item);
+  ASSERT_NE(attribute_item, nullptr);
+  EXPECT_FALSE(attribute_item->IsPresent());
 
   EXPECT_EQ(property_item->Data<int>(), 0);
 
@@ -92,6 +94,23 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   auto any_value = sup::gui::GetAnyValueFromScalar(anyvalue_item->Data());
 
   EXPECT_EQ(expected_anyvalue, any_value);
+}
+
+//! Testing AddPropertyFromDefinition helper method. The difference with previous test is mandatory
+//! flag.
+
+TEST_F(AttributeItemTransformHelperTest, AddMandatoryPropertyFromDefinition)
+{
+  const std::string attribute_name("attr");
+  sup::sequencer::AttributeDefinition attr(attribute_name, sup::dto::SignedInteger32Type);
+  attr.SetMandatory(true);
+
+  mvvm::CompoundItem item;
+  auto property = dynamic_cast<AttributeItem*>(AddPropertyFromDefinition(attr, item));
+  ASSERT_NE(property, nullptr);
+
+  EXPECT_EQ(property->GetDisplayName(), attribute_name);
+  EXPECT_TRUE(property->IsPresent());
 }
 
 //! Testing SetPropertyFromDomainAttribute method.
@@ -108,6 +127,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
     SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
+    EXPECT_TRUE(item.IsPresent());
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 
@@ -121,6 +141,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     EXPECT_NO_THROW(
         SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
 
+    EXPECT_TRUE(item.IsPresent());
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 }
@@ -149,6 +170,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlacehold
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "$par1");
+  EXPECT_TRUE(item.IsPresent());
 }
 
 //! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
@@ -175,6 +197,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReference
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "@par1");
+  EXPECT_TRUE(item.IsPresent());
 }
 
 //! Testing SetDomainAttribute method.
@@ -192,7 +215,7 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttribute)
             std::string("abc"));
 }
 
-//! Testing SetDomainAttribute method when attribute is marked as unsetd
+//! Testing SetDomainAttribute method when attribute is marked as unset
 
 TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
 {

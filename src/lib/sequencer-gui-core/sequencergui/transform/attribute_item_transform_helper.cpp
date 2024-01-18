@@ -44,6 +44,31 @@ bool IsSuitableForDomainAttribute(const std::string &attribute_string,
   return not_empty && not_isroot_false;
 }
 
+/**
+ * @brief Returns is present flag for given attribute definition
+ */
+bool GetIsPresentFlag(const attribute_definition_t &attr)
+{
+  // list of domain attributes that should be always marked as present
+  static const std::vector<std::string> kAlwaysPresentAttributeList = {
+      sequencergui::domainconstants::kNameAttribute,
+      sequencergui::domainconstants::kShowCollapsedAttribute,
+      sequencergui::domainconstants::kTimeoutAttribute,
+      sequencergui::domainconstants::kIsRootAttribute,
+      sequencergui::domainconstants::kSuccessThresholdAttribute,
+      sequencergui::domainconstants::kFailureThresholdAttribute,
+      sequencergui::domainconstants::kDynamicTypeAttribute,
+      sequencergui::domainconstants::kMaxCountAttribute,
+      sequencergui::domainconstants::kGenericVariableNameAttribute,
+      sequencergui::domainconstants::kTypeAttribute,
+      sequencergui::domainconstants::kValueAttribute,
+      sequencergui::domainconstants::kOutputVariableNameAttribute,
+      sequencergui::domainconstants::kMessageAttribute,
+      sequencergui::domainconstants::kInputVariableNameAttribute,
+      sequencergui::domainconstants::kSeverityAttribute};
+  return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysPresentAttributeList, attr.GetName());
+}
+
 namespace sequencergui
 {
 
@@ -64,10 +89,7 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
   auto &property = item.AddProperty<AttributeItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
-  // if (!attr.IsMandatory())
-  // {
-  //   property.MarkAsUnset();
-  // }
+  property.SetPresentFlag(GetIsPresentFlag(attr));
   return &property;
 }
 
@@ -79,6 +101,7 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   {
     return;
   }
+  item.SetPresentFlag(true);
 
   auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
