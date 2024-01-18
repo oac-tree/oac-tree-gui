@@ -57,14 +57,6 @@ public:
   std::string GetAnyTypeName() const;
 
   /**
-   * @brief Sets attribute value as string.
-   *
-   * @details Internal data will be replaced with a string. This can happen when corresponding
-   * domain attribute contains is a placeholder or a reference to variable name.
-   */
-  void SetAttributeAsString(const std::string& value);
-
-  /**
    * @brief Returns true if this attribute item is marked as present.
    *
    * @details The flag determines whether the attribute should be propagated into the domain. The
@@ -81,6 +73,14 @@ public:
    * item with present flag set to false appears disabled (in gray) and non-editable.
    */
   void SetPresentFlag(bool value);
+
+  /**
+   * @brief Sets attribute value as string.
+   *
+   * @details Internal data will be replaced with a string. This can happen when corresponding
+   * domain attribute contains is a placeholder or a reference to variable name.
+   */
+  void SetAttributeAsString(const std::string& value);
 
   /**
    * @brief Sets default constructed attribute value from AnyType name.
