@@ -378,7 +378,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   {  // when IsRoot and collapsed = true
     SequenceItem item;
     item.SetIsRootFlag(true);
-    item.SetProperty(domainconstants::kShowCollapsedAttribute, true);
+    item.SetAttribute(domainconstants::kShowCollapsedAttribute, true);
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
@@ -396,7 +396,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
 
     EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
     // validating that no SessionItem related properties were propagated to the domain
-    std::vector<std::pair<std::string, std::string>> expected = {{"showCollapsed", "false"}};
+    std::vector<std::pair<std::string, std::string>> expected = {};
     EXPECT_EQ(domain_item->GetStringAttributes(), expected);
   }
 }

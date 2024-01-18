@@ -26,6 +26,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/iterate_helper.h>
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -93,12 +94,13 @@ void AddShowCollapsedProperty(InstructionItem &item)
 
   if (mvvm::utils::HasTag(item, domainconstants::kShowCollapsedAttribute))
   {
-    auto property = item.GetItem(domainconstants::kShowCollapsedAttribute);
+    auto property = item.GetItem<AttributeItem>(domainconstants::kShowCollapsedAttribute);
     property->SetDisplayName("Show collapsed");
     property->SetToolTip("Show child branch collapsed duing procedure execution");
     if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
     {
       property->SetData(true);
+      property->SetPresentFlag(true);
     }
   }
 }
