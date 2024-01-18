@@ -65,20 +65,22 @@ public:
   void SetAttributeAsString(const std::string& value);
 
   /**
-   * @brief Returns true if this attribute item is marked as unset.
+   * @brief Returns true if this attribute item is marked as present.
    *
-   * @details Unset item appears in property editors as disabled, non-editable item with "unset"
-   * gray text.
+   * @details The flag determines whether the attribute should be propagated into the domain. The
+   * item with present flag set to false appears disabled (in gray) and non-editable.
    */
-  bool IsUnset() const;
+  bool IsPresent() const;
 
   /**
-   * @brief Mark attribute unset.
+   * @brief Set attribute present flag to a given value.
    *
-   * @details Unset item appears in property editors as disabled, non-editable item with "unset"
-   * gray text.
+   * @param value The value of present flag.
+   *
+   * @details The flag determines whether the attribute should be propagated into the domain. The
+   * item with present flag set to false appears disabled (in gray) and non-editable.
    */
-  void MarkAsUnset();
+  void SetPresentFlag(bool value);
 
   /**
    * @brief Sets default constructed attribute value from AnyType name.

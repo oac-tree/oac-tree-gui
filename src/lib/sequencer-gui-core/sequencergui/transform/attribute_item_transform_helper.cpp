@@ -64,6 +64,10 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
   auto &property = item.AddProperty<AttributeItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
+  // if (!attr.IsMandatory())
+  // {
+  //   property.MarkAsUnset();
+  // }
   return &property;
 }
 
@@ -102,7 +106,7 @@ template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t 
 template <typename T>
 void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
 {
-  if (item.IsUnset())
+  if (!item.IsPresent())
   {
     return;
   }

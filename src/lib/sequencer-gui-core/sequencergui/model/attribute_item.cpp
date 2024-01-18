@@ -62,28 +62,21 @@ void AttributeItem::SetAttributeAsString(const std::string &value)
 {
   // current convention is to keep original AnyTypeName after setting attribute as a string
   mvvm::utils::ReplaceData(*this, mvvm::variant_t(value), mvvm::DataRole::kData);
-  SetEditable(true);
-  SetEnabled(true);
 }
 
-bool AttributeItem::IsUnset() const
+bool AttributeItem::IsPresent() const
 {
-  auto data = Data();
-  return std::holds_alternative<std::string>(data)
-         && std::get<std::string>(data) == itemconstants::kUnsetValue;
+  return IsEditable() && IsEnabled();
 }
 
-void AttributeItem::MarkAsUnset()
+void AttributeItem::SetPresentFlag(bool value)
 {
-  SetEditable(false);
-  SetEnabled(false);
-  mvvm::utils::ReplaceData(*this, itemconstants::kUnsetValue, mvvm::DataRole::kData);
+  SetEditable(value);
+  SetEnabled(value);
 }
 
 void AttributeItem::SetAttributeFromTypeName()
 {
-  SetEditable(true);
-  SetEnabled(true);
   mvvm::utils::ReplaceData(*this, sup::gui::GetVariantFromScalarTypeName(GetAnyTypeName()),
                            mvvm::DataRole::kData);
 }

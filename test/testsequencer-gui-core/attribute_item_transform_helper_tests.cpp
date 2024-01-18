@@ -201,7 +201,7 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
   AttributeItem item;
   item.SetAnyTypeName(sup::dto::kFloat64TypeName);
   item.SetData(5.0);
-  item.MarkAsUnset();
+  item.SetPresentFlag(false);
 
   SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
   EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));

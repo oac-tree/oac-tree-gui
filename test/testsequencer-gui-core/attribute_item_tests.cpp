@@ -78,21 +78,22 @@ TEST_F(AttributeItemTest, SetAttributeAsString)
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 }
 
-TEST_F(AttributeItemTest, MarkAsUnset)
+TEST_F(AttributeItemTest, SetPresentFlag)
 {
   AttributeItem item;
 
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  EXPECT_FALSE(item.IsUnset());
-
-  item.MarkAsUnset();
-  EXPECT_TRUE(item.IsUnset());
+  
+  EXPECT_TRUE(item.IsPresent());
+  
+  item.SetPresentFlag(false);
+  EXPECT_FALSE(item.IsPresent());
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
-  EXPECT_EQ(item.Data<std::string>(), itemconstants::kUnsetValue);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 }
 
 TEST_F(AttributeItemTest, SetAttributeFromTypeName)
@@ -102,16 +103,19 @@ TEST_F(AttributeItemTest, SetAttributeFromTypeName)
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-
-  item.MarkAsUnset();
-  EXPECT_TRUE(item.IsUnset());
+  
+  item.SetPresentFlag(false);
+  EXPECT_FALSE(item.IsPresent());
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
-  EXPECT_EQ(item.Data<std::string>(), itemconstants::kUnsetValue);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
   item.SetAttributeFromTypeName();
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-  EXPECT_TRUE(item.IsEditable());
-  EXPECT_TRUE(item.IsEnabled());
+
+  // SetAttributeFromTypeName do not change present flags
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
 }

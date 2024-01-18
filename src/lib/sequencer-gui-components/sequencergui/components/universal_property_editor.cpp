@@ -121,8 +121,8 @@ void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
 
   auto action = menu.addAction("Unset attribute");
   action->setToolTip("Mark attribute as unset");
-
-  auto on_unset = [item]() { item->MarkAsUnset(); };
+  
+  auto on_unset = [item]() { item->SetPresentFlag(!item->IsPresent()); };
   connect(action, &QAction::triggered, this, on_unset);
 
   action = menu.addAction("Set default value");
