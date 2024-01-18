@@ -62,9 +62,6 @@ void IncludeItem::SetPath(const std::string &value)
 
 ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(Type)
 {
-  // FIXME How to define default values? Or, how to pretend that attribute wasn't set?
-  SetSuccessThreshold(0);
-  SetFailureThreshold(1);
 }
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_id) const
@@ -79,7 +76,7 @@ mvvm::uint32 ParallelSequenceItem::GetSuccessThreshold() const
 
 void ParallelSequenceItem::SetSuccessThreshold(mvvm::uint32 value)
 {
-  SetProperty(domainconstants::kSuccessThresholdAttribute, value);
+  SetAttribute(domainconstants::kSuccessThresholdAttribute, value);
 }
 
 mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
@@ -89,7 +86,7 @@ mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
 
 void ParallelSequenceItem::SetFailureThreshold(mvvm::uint32 value)
 {
-  SetProperty(domainconstants::kFailureThresholdAttribute, value);
+  SetAttribute(domainconstants::kFailureThresholdAttribute, value);
 }
 
 // ----------------------------------------------------------------------------

@@ -55,8 +55,6 @@ bool GetIsPresentFlag(const attribute_definition_t &attr)
       sequencergui::domainconstants::kShowCollapsedAttribute,
       sequencergui::domainconstants::kTimeoutAttribute,
       sequencergui::domainconstants::kIsRootAttribute,
-      sequencergui::domainconstants::kSuccessThresholdAttribute,
-      sequencergui::domainconstants::kFailureThresholdAttribute,
       sequencergui::domainconstants::kDynamicTypeAttribute,
       sequencergui::domainconstants::kMaxCountAttribute,
       sequencergui::domainconstants::kGenericVariableNameAttribute,

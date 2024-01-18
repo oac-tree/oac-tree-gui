@@ -250,7 +250,7 @@ TEST_F(StandardInstructionItemsTest, ParallelSequenceItem)
   // Correctly initialised item
   ParallelSequenceItem item;
   EXPECT_EQ(item.GetSuccessThreshold(), 0);
-  EXPECT_EQ(item.GetFailureThreshold(), 1);
+  EXPECT_EQ(item.GetFailureThreshold(), 0);
 
   EXPECT_FALSE(IsCollapsed(item));
 
