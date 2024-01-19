@@ -187,9 +187,9 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
-  auto on_user_input = [](const auto &args) { return GetAnyValueEditorDialogResult(args); };
+  auto on_user_input = [](const auto &args) { return GetAnyValueEditorDialogResult(args, nullptr); };
 
-  auto on_user_choice = [](const auto &args) { return GetUserChoiceDialogResult(args); };
+  auto on_user_choice = [](const auto &args) { return GetUserChoiceDialogResult(args, nullptr); };
 
   auto job_handler = std::make_unique<JobHandler>(item);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,

@@ -51,22 +51,22 @@ QStringList GetSelectionList(const sequencergui::UserChoiceArgs &args)
 namespace sequencergui
 {
 
-UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args)
+UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget *parent)
 {
   if (IsSelectTextDialog(args.metadata))
   {
-    return GetTextSelectionDialogResult(args);
+    return GetTextSelectionDialogResult(args, parent);
   }
 
   if (IsMessageBoxDialog(args.metadata))
   {
-    return GetConfirmationDialogResult(args);
+    return GetConfirmationDialogResult(args, parent);
   }
 
   return {0, false};
 }
 
-UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
+UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidget *parent)
 {
   auto selection_list = GetSelectionList(args);
 
@@ -75,7 +75,7 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
   bool was_accepted{true};
 
   QString selection = QInputDialog::getItem(
-      nullptr, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
+      parent, "Input request", QString::fromStdString(GetMainTextFromMetadata(args.metadata)),
       selection_list, selected_item_index, is_editable, &was_accepted);
 
   // dialog's feature: it returns selected_item_index if cancel button was pressed
@@ -84,7 +84,7 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args)
   return {was_accepted ? index : -1, was_accepted};
 }
 
-UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
+UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget *parent)
 {
   auto selection_list = GetSelectionList(args);
   if (selection_list.size() != 2)
@@ -92,7 +92,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
     throw RuntimeException("Can't make confirmation dialog out of given choice");
   }
 
-  QMessageBox msg_box;
+  QMessageBox msg_box(parent);
   msg_box.setWindowTitle(QString::fromStdString(GetTitleTextFromMetadata(args.metadata)));
   msg_box.setText(QString::fromStdString(GetMainTextFromMetadata(args.metadata)));
   msg_box.setIcon(QMessageBox::Information);
@@ -107,19 +107,19 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args)
   return {index, true};
 }
 
-UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args)
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget *parent)
 {
+  auto parent_widget = parent ? parent : mvvm::utils::FindMainWindow();
+
   auto anyvalue_item = sup::gui::CreateItem(args.value);
   std::unique_ptr<AnyValueEditorDialog> dialog;
   if (anyvalue_item->IsScalar())
   {
-    dialog =
-        CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+    dialog = CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), parent_widget);
   }
   else
   {
-    dialog =
-        CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), mvvm::utils::FindMainWindow());
+    dialog = CreateAnyValueCompactTreeEditorDialog(anyvalue_item.get(), parent_widget);
   }
   dialog->SetDescription(QString::fromStdString(args.description));
   if (dialog->exec() == QDialog::Accepted)

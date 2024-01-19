@@ -24,29 +24,46 @@
 
 #include <sequencergui/jobsystem/request_types.h>
 
+class QWidget;
+
 namespace sequencergui
 {
 
 /**
  * @brief Summons user choice dialog appropriate for given input arguments and reports result to the
  * caller.
+ *
+ * @param args Input arguments to form the question.
+ * @param parent Parent widget to center given dialog.
+ *
+ * @return Structure representing results of user choice.
  */
-UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args);
+UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget* parent);
 
 /**
  * @brief Summons dialog for text selection and reports results to the caller.
  */
-UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args);
+UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidget* parent);
 
 /**
  * @brief Summons confirmation dialog and reports results to the caller.
+ *
+ * @param args Input arguments to form the question.
+ * @param parent Parent widget to center given dialog.
+ *
+ * @return Structure representing results of user choice.
  */
-UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args);
+UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget* parent);
 
 /**
  * @brief Summons AnyValueEditorDialog and reports result to the caller.
+ *
+ * @param args Input arguments to form the question.
+ * @param parent Parent widget to center given dialog.
+ *
+ * @return Structure representing results of user input.
  */
-UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args);
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget* parent);
 
 }  // namespace sequencergui
 
