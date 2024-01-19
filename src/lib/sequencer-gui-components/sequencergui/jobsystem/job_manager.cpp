@@ -187,9 +187,12 @@ void JobManager::OnNextLeavesChanged(const std::vector<InstructionItem *> &leave
 
 std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 {
-  auto on_user_input = [](const auto &args) { return GetAnyValueEditorDialogResult(args, nullptr); };
+  auto parent_widget = dynamic_cast<QWidget *>(parent());
+  auto on_user_input = [parent_widget](const auto &args)
+  { return GetAnyValueEditorDialogResult(args, parent_widget); };
 
-  auto on_user_choice = [](const auto &args) { return GetUserChoiceDialogResult(args, nullptr); };
+  auto on_user_choice = [parent_widget](const auto &args)
+  { return GetUserChoiceDialogResult(args, parent_widget); };
 
   auto job_handler = std::make_unique<JobHandler>(item);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
