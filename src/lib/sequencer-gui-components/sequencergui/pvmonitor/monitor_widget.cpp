@@ -134,7 +134,7 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
   auto send_message_callback = [](const auto &event) { return SendWarningMessage(event); };
 
   return {selected_workspace_callback, selected_item_callback, send_message_callback,
-          CreateAnyValueDialogCallback()};
+          CreateAnyValueDialogCallback(this)};
 }
 
 }  // namespace sequencergui

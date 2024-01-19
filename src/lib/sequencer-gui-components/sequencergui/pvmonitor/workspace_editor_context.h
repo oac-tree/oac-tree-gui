@@ -27,6 +27,8 @@
 #include <optional>
 #include <string>
 
+class QWidget;
+
 namespace mvvm
 {
 class SessionItem;
@@ -75,8 +77,11 @@ struct WorkspaceEditorContext
 
 /**
  * @brief Create callback to summon AnyValueItem editor dialog.
+ *
+ * @param parent Parent widget to use for initial dialog placement.
  */
-std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback();
+std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
+    QWidget* parent);
 
 }  // namespace sequencergui
 

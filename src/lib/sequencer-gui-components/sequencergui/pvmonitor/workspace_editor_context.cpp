@@ -22,14 +22,17 @@
 #include <sequencergui/components/anyvalue_editor_dialog.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <QWidget>
+
 namespace sequencergui
 {
 
-std::function<AnyValueDialogResult(const sup::gui::AnyValueItem *)> CreateAnyValueDialogCallback()
+std::function<AnyValueDialogResult(const sup::gui::AnyValueItem *)> CreateAnyValueDialogCallback(
+    QWidget *parent)
 {
-  auto edit_anyvalue_callback = [](const sup::gui::AnyValueItem *item) -> AnyValueDialogResult
+  auto edit_anyvalue_callback = [parent](const sup::gui::AnyValueItem *item) -> AnyValueDialogResult
   {
-    auto dialog = CreateAnyValueExtendedEditorDialog(item);
+    auto dialog = CreateAnyValueExtendedEditorDialog(item, parent);
     if (dialog->exec() == QDialog::Accepted)
     {
       return {true, dialog->GetResult()};

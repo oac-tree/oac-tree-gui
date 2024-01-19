@@ -194,7 +194,7 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
   auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
 
-  result.edit_anyvalue_callback = CreateAnyValueDialogCallback();
+  result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
 
   return result;
 }
