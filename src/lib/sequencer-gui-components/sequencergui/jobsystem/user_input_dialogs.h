@@ -42,6 +42,11 @@ UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget* 
 
 /**
  * @brief Summons dialog for text selection and reports results to the caller.
+ *
+ * @param args Input arguments to form the question.
+ * @param parent Parent widget to center given dialog.
+ *
+ * @return Structure representing results of user choice.
  */
 UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidget* parent);
 
