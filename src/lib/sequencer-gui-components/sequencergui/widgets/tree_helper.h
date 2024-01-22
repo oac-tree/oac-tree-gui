@@ -57,15 +57,6 @@ void ScrollTreeViewportToSelection(QTreeView& tree_view);
  */
 QModelIndex FindVisibleCandidate(const QTreeView& tree, const QModelIndex& child);
 
-
-/**
- * @brief Adjusts column width so they occupy whole horizontal space available for the tree.
- *
- * @param tree The tree to ajust
- * @param stretch_factors Relative stretch factors
- */
-void AdjustWidthOfColumns(QTreeView& tree, std::vector<int> stretch_factors = {});
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_WIDGETS_TREE_HELPER_H_

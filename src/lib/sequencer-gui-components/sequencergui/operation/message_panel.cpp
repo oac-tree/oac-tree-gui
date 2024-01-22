@@ -23,9 +23,9 @@
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/viewmodel/job_log_viewmodel.h>
 #include <sequencergui/widgets/steady_menu.h>
-#include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
 
@@ -99,7 +99,7 @@ void MessagePanel::SetLog(JobLog* job_log)
   m_view_model->SetLog(job_log);
 }
 
-void MessagePanel::showEvent(QShowEvent *event)
+void MessagePanel::showEvent(QShowEvent* event)
 {
   if (m_custom_header->HasFavoriteState())
   {
@@ -107,7 +107,7 @@ void MessagePanel::showEvent(QShowEvent *event)
   }
   else
   {
-    AdjustWidthOfColumns(*m_tree_view, {2,2,2,1,6});
+    sup::gui::AdjustWidthOfColumns(*m_tree_view, {2, 2, 2, 1, 6});
   }
 }
 

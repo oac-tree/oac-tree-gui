@@ -183,7 +183,7 @@ void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
   }
   else
   {
-    AdjustWidthOfColumns(*m_tree_view, {15, 5, 1});
+    sup::gui::AdjustWidthOfColumns(*m_tree_view, {15, 5, 1});
   }
 }
 
