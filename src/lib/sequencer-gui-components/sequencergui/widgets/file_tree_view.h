@@ -26,6 +26,7 @@ class QTreeView;
 class QFileSystemModel;
 class QLabel;
 class QAction;
+class QWidgetAction;
 
 namespace sequencergui
 {
@@ -60,6 +61,7 @@ private:
   QString m_current_workdir;
   QString m_current_xml_file;
   QAction* m_import_file_action{nullptr};
+  QWidgetAction* m_bookmark_action{nullptr};
 };
 
 }  // namespace sequencergui

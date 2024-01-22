@@ -30,6 +30,8 @@
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <QWidgetAction>
+#include <QToolButton>
 
 namespace
 {
@@ -52,6 +54,7 @@ FileTreeView::FileTreeView(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_path_label(new QLabel)
     , m_import_file_action(new QAction(this))
+    , m_bookmark_action(new QWidgetAction(this))
 {
   setWindowTitle("EXPLORER");
   setToolTip("File explorer");
@@ -157,10 +160,11 @@ void FileTreeView::WriteSettings()
 
 void FileTreeView::SetupActions()
 {
+  // Import procedure action
   m_import_file_action->setText("Import");
   m_import_file_action->setToolTip(
-      "Import procedure from currently selected file.\n"
-      "Alternatively, double-click on selected file.");
+      "Import procedure from currently selected file\n"
+      "(alternatively, double-click on it)");
   m_import_file_action->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
   auto on_import_from_file = [this]()
   {
@@ -174,6 +178,20 @@ void FileTreeView::SetupActions()
   };
   connect(m_import_file_action, &QAction::triggered, this, on_import_from_file);
   addAction(m_import_file_action);
+
+  // Bookmark action
+  // QAction with menu doesn't provide instant popup capabilities.
+  // But we can use QToolButton and wrap it into QWidgetAction
+
+  auto bookmark_button = new QToolButton;
+  bookmark_button->setText("Bookmark");
+  bookmark_button->setIcon(sup::gui::utils::GetIcon("bookmark-outline.svg"));
+  bookmark_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  bookmark_button->setPopupMode(QToolButton::InstantPopup);
+  // bookmark_button->setMenu(m_insert_after_menu.get());
+  bookmark_button->setToolTip("Manage bookmarks");
+  m_bookmark_action->setDefaultWidget(bookmark_button);
+  addAction(m_bookmark_action);
 }
 
 }  // namespace sequencergui
