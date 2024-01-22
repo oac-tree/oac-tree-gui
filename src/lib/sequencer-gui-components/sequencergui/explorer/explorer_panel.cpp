@@ -47,6 +47,8 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)
 {
+  setWindowTitle("Explorer View");
+
   m_collapsible_list->AddCollapsibleWidget(m_file_tree_view, m_file_tree_view->actions());
   m_procedure_list_view->SetupActions(ProcedureListWidget::kRemoveSelected);
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, m_procedure_list_view->actions());

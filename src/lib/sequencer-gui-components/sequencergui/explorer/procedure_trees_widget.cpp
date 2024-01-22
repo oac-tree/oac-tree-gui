@@ -53,6 +53,8 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     , m_procedure_custom_header(new sup::gui::CustomHeaderView(this))
     , m_property_tree(new mvvm::PropertyTreeView)
 {
+  setWindowTitle("Procedure View");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);

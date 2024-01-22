@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QFileSystemModel>
+#include <QItemSelectionModel>
 #include <QLabel>
 #include <QSettings>
 #include <QTreeView>
@@ -157,9 +158,21 @@ void FileTreeView::WriteSettings()
 void FileTreeView::SetupActions()
 {
   m_import_file_action->setText("Import");
-  m_import_file_action->setToolTip("Import procedure from currently selected file.\n"
-                                   "Alternatively, double-click on selected file.");
+  m_import_file_action->setToolTip(
+      "Import procedure from currently selected file.\n"
+      "Alternatively, double-click on selected file.");
   m_import_file_action->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
+  auto on_import_from_file = [this]()
+  {
+    for (auto index : m_tree_view->selectionModel()->selectedIndexes())
+    {
+      if (index.column() == 0)
+      {
+        OnTreeDoubleClick(index);
+      }
+    }
+  };
+  connect(m_import_file_action, &QAction::triggered, this, on_import_from_file);
   addAction(m_import_file_action);
 }
 
