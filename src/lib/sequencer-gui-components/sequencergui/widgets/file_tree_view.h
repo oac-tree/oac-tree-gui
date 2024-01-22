@@ -25,6 +25,7 @@
 class QTreeView;
 class QFileSystemModel;
 class QLabel;
+class QAction;
 
 namespace sequencergui
 {
@@ -51,12 +52,14 @@ private:
   void OnTreeSingleClick(const QModelIndex& index);
   void ReadSettings();
   void WriteSettings();
+  void SetupActions();
 
   QFileSystemModel* m_file_system_model{nullptr};
   QTreeView* m_tree_view{nullptr};
   QLabel* m_path_label{nullptr};
   QString m_current_workdir;
   QString m_current_xml_file;
+  QAction* m_import_file_action{nullptr};
 };
 
 }  // namespace sequencergui

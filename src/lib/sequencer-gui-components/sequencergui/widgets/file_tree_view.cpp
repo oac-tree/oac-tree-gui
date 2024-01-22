@@ -23,6 +23,7 @@
 
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QAction>
 #include <QFileSystemModel>
 #include <QLabel>
 #include <QSettings>
@@ -43,12 +44,17 @@ bool IsProcedureFile(const QFileInfo &info)
 
 namespace sequencergui
 {
+
 FileTreeView::FileTreeView(QWidget *parent)
     : QWidget(parent)
     , m_file_system_model(new QFileSystemModel(this))
     , m_tree_view(new QTreeView)
     , m_path_label(new QLabel)
+    , m_import_file_action(new QAction(this))
 {
+  setWindowTitle("EXPLORER");
+  setToolTip("File explorer");
+
   ReadSettings();
 
   m_tree_view->setModel(m_file_system_model);
@@ -72,6 +78,8 @@ FileTreeView::FileTreeView(QWidget *parent)
   SetCurrentDir(m_current_workdir);
 
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
+
+  SetupActions();
 }
 
 FileTreeView::~FileTreeView()
@@ -144,6 +152,15 @@ void FileTreeView::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
+}
+
+void FileTreeView::SetupActions()
+{
+  m_import_file_action->setText("Import");
+  m_import_file_action->setToolTip("Import procedure from currently selected file.\n"
+                                   "Alternatively, double-click on selected file.");
+  m_import_file_action->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
+  addAction(m_import_file_action);
 }
 
 }  // namespace sequencergui
