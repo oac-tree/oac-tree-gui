@@ -19,6 +19,7 @@
 
 #include "file_tree_view.h"
 
+#include <sup/gui/components/recent_project_settings.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -28,16 +29,13 @@
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QSettings>
+#include <QToolButton>
 #include <QTreeView>
 #include <QVBoxLayout>
 #include <QWidgetAction>
-#include <QToolButton>
 
 namespace
 {
-const QString kGroupName = "FileTreeView";
-const QString kCurrentWorkdirSettingName = kGroupName + "/" + "currentworkdir";
-
 //! Returns true if given file is a procedure file.
 bool IsProcedureFile(const QFileInfo &info)
 {
@@ -55,11 +53,10 @@ FileTreeView::FileTreeView(QWidget *parent)
     , m_path_label(new QLabel)
     , m_import_file_action(new QAction(this))
     , m_bookmark_action(new QWidgetAction(this))
+    , m_recent_dirs(std::make_unique<sup::gui::RecentProjectSettings>("FileTreeView"))
 {
   setWindowTitle("EXPLORER");
   setToolTip("File explorer");
-
-  ReadSettings();
 
   m_tree_view->setModel(m_file_system_model);
   m_tree_view->setColumnHidden(1, true);
@@ -79,19 +76,14 @@ FileTreeView::FileTreeView(QWidget *parent)
           [this](auto index) { OnTreeDoubleClick(index); });
   connect(m_tree_view, &QTreeView::clicked, this, [this](auto index) { OnTreeSingleClick(index); });
 
-  SetCurrentDir(m_current_workdir);
+  SetCurrentDir(m_recent_dirs->GetCurrentWorkdir());
 
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
   SetupActions();
 }
 
-FileTreeView::~FileTreeView()
-{
-  WriteSettings();
-}
-
-//! Sets the directory to be shown in breadcrumb, and in a file tree view.
+FileTreeView::~FileTreeView() = default;
 
 void FileTreeView::SetCurrentDir(const QString &dirname)
 {
@@ -99,7 +91,7 @@ void FileTreeView::SetCurrentDir(const QString &dirname)
   m_file_system_model->setRootPath(dirname);
   const QModelIndex root_index = m_file_system_model->index(dirname);
   m_tree_view->setRootIndex(root_index);
-  m_current_workdir = dirname;
+  m_recent_dirs->SetCurrentWorkdir(dirname);
 }
 
 //! Processes click on active label with directory names embedded.
@@ -144,26 +136,12 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
   }
 }
 
-//! Reads widget settings from file.
-void FileTreeView::ReadSettings()
-{
-  const QSettings settings;
-  m_current_workdir = settings.value(kCurrentWorkdirSettingName, QDir::homePath()).toString();
-}
-
-//! Write widget settings to file.
-void FileTreeView::WriteSettings()
-{
-  QSettings settings;
-  settings.setValue(kCurrentWorkdirSettingName, m_current_workdir);
-}
-
 void FileTreeView::SetupActions()
 {
   // Import procedure action
-  m_import_file_action->setText("Import");
+  m_import_file_action->setText("Open");
   m_import_file_action->setToolTip(
-      "Import procedure from currently selected file\n"
+      "Open procedure from currently selected file\n"
       "(alternatively, double-click on it)");
   m_import_file_action->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
   auto on_import_from_file = [this]()

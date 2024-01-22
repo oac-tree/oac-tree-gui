@@ -28,11 +28,18 @@ class QLabel;
 class QAction;
 class QWidgetAction;
 
+namespace sup::gui
+{
+class RecentProjectSettings;
+}
+
 namespace sequencergui
 {
 
-//! Simple file browser with bread crumb on top, and tree view at the bottom.
-
+/**
+ * @brief The FileTreeView class is a simple file browser with bread crumb on top, and tree view at
+ * the bottom.
+ */
 class FileTreeView : public QWidget
 {
   Q_OBJECT
@@ -41,6 +48,9 @@ public:
   explicit FileTreeView(QWidget* parent = nullptr);
   ~FileTreeView() override;
 
+  /**
+   * @brief Sets the directory to be shown in a breadcrumb, and in a file tree view.
+   */
   void SetCurrentDir(const QString& dirname);
 
 signals:
@@ -51,17 +61,15 @@ private:
   void OnLabelClick(const QString& link);
   void OnTreeDoubleClick(const QModelIndex& index);
   void OnTreeSingleClick(const QModelIndex& index);
-  void ReadSettings();
-  void WriteSettings();
   void SetupActions();
 
   QFileSystemModel* m_file_system_model{nullptr};
   QTreeView* m_tree_view{nullptr};
   QLabel* m_path_label{nullptr};
-  QString m_current_workdir;
   QString m_current_xml_file;
   QAction* m_import_file_action{nullptr};
   QWidgetAction* m_bookmark_action{nullptr};
+  std::unique_ptr<sup::gui::RecentProjectSettings> m_recent_dirs;
 };
 
 }  // namespace sequencergui
