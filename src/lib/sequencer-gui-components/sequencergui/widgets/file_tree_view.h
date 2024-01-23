@@ -27,6 +27,7 @@ class QFileSystemModel;
 class QLabel;
 class QAction;
 class QWidgetAction;
+class QMenu;
 
 namespace sup::gui
 {
@@ -63,6 +64,11 @@ private:
   void OnTreeSingleClick(const QModelIndex& index);
   void SetupActions();
 
+  /**
+   * @brief Populates bookmark menu with entries.
+   */
+  void OnAboutToShowBookmarkMenu();
+
   QFileSystemModel* m_file_system_model{nullptr};
   QTreeView* m_tree_view{nullptr};
   QLabel* m_path_label{nullptr};
@@ -70,6 +76,7 @@ private:
   QAction* m_import_file_action{nullptr};
   QWidgetAction* m_bookmark_action{nullptr};
   std::unique_ptr<sup::gui::RecentProjectSettings> m_recent_dirs;
+  std::unique_ptr<QMenu> m_bookmark_menu;
 };
 
 }  // namespace sequencergui

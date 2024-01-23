@@ -28,6 +28,7 @@
 #include <QFileSystemModel>
 #include <QItemSelectionModel>
 #include <QLabel>
+#include <QMenu>
 #include <QSettings>
 #include <QToolButton>
 #include <QTreeView>
@@ -54,6 +55,7 @@ FileTreeView::FileTreeView(QWidget *parent)
     , m_import_file_action(new QAction(this))
     , m_bookmark_action(new QWidgetAction(this))
     , m_recent_dirs(std::make_unique<sup::gui::RecentProjectSettings>("FileTreeView"))
+    , m_bookmark_menu(std::make_unique<QMenu>())
 {
   setWindowTitle("EXPLORER");
   setToolTip("File explorer");
@@ -158,18 +160,57 @@ void FileTreeView::SetupActions()
   addAction(m_import_file_action);
 
   // Bookmark action
-  // QAction with menu doesn't provide instant popup capabilities.
-  // But we can use QToolButton and wrap it into QWidgetAction
 
+  // QAction with menu doesn't provide instant popup capabilities, thus we use QToolButton and wrap
+  // it into QWidgetAction.
+
+  m_bookmark_menu->setToolTipsVisible(true);
+  connect(m_bookmark_menu.get(), &QMenu::aboutToShow, this,
+          &FileTreeView::OnAboutToShowBookmarkMenu);
   auto bookmark_button = new QToolButton;
   bookmark_button->setText("Bookmark");
   bookmark_button->setIcon(sup::gui::utils::GetIcon("bookmark-outline.svg"));
   bookmark_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   bookmark_button->setPopupMode(QToolButton::InstantPopup);
-  // bookmark_button->setMenu(m_insert_after_menu.get());
+  bookmark_button->setMenu(m_bookmark_menu.get());
   bookmark_button->setToolTip("Manage bookmarks");
   m_bookmark_action->setDefaultWidget(bookmark_button);
   addAction(m_bookmark_action);
+}
+
+void FileTreeView::OnAboutToShowBookmarkMenu()
+{
+  // We clear menu and populate it with entries: add bookmark, clear bookmarks and go to list of
+  // bookmarks. This is done just before showing the menu to check if directories are still exist.
+  // Class RecentProjectSettings will take care that directories exist, and there are not
+  // duplications.
+
+  m_bookmark_menu->clear();
+  auto recent_projects = m_recent_dirs->GetRecentProjectList();
+
+  // Action to add current dir to bookmarks.
+  auto bookmark_action = m_bookmark_menu->addAction("Add bookmark");
+  bookmark_action->setToolTip("Bookmark current directory");
+  auto on_bookmark_action = [this]()
+  { m_recent_dirs->AddToRecentProjectList(m_recent_dirs->GetCurrentWorkdir()); };
+  connect(bookmark_action, &QAction::triggered, this, on_bookmark_action);
+
+  // Action to clear all existing bookmarks.
+  auto clear_action = m_bookmark_menu->addAction("Clear bookmarks");
+  clear_action->setToolTip("Clear all bookmarks");
+  auto on_clear_action = [this]() { m_recent_dirs->ClearRecentProjectsList(); };
+  connect(clear_action, &QAction::triggered, this, on_clear_action);
+  clear_action->setEnabled(!recent_projects.isEmpty());
+
+  // Actions to go to bookmarks.
+  m_bookmark_menu->addSeparator();
+  for (const auto &project_dir : recent_projects)
+  {
+    auto trimmed_project_dir = mvvm::utils::WithTildeHomePath(project_dir);
+    auto action = m_bookmark_menu->addAction(trimmed_project_dir);
+    auto on_project_selected = [this, project_dir]() { SetCurrentDir(project_dir); };
+    connect(action, &QAction::triggered, this, on_project_selected);
+  }
 }
 
 }  // namespace sequencergui
