@@ -32,9 +32,12 @@
 #include <mvvm/model/item_utils.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/attribute_definition.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
+
+#include <algorithm>
 
 namespace sequencergui
 {
@@ -206,8 +209,29 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &pr
   }
 }
 
-template <typename T>
-void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, T &domain)
+template <typename DomainT>
+bool HasAttributeDefinition(const DomainT &domain, const std::string &definition_name)
+{
+  auto definitions = domain.GetAttributeDefinitions();
+  auto on_element = [&definition_name](const auto &elem)
+  { return elem.GetName() == definition_name; };
+  return std::any_of(std::begin(definitions), std::end(definitions), on_element);
+}
+
+template bool HasAttributeDefinition<variable_t>(const variable_t &domain,
+                                                 const std::string &definition_name);
+
+template <typename DomainT>
+bool HasJsonTypeAndNameAttributes(const DomainT &domain)
+{
+  return HasAttributeDefinition(domain, domainconstants::kTypeAttribute)
+         && HasAttributeDefinition(domain, domainconstants::kValueAttribute);
+}
+
+template bool HasJsonTypeAndNameAttributes<variable_t>(const variable_t &domain);
+
+template <typename DomainT>
+void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)
 {
   auto anyvalue = sup::gui::CreateAnyValue(item);
   domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));

@@ -366,6 +366,22 @@ TEST_F(TransformHelpersTest, PopulateProcedurePreambleFromItem)
   }
 }
 
+TEST_F(TransformHelpersTest, HasAttributeDefinition)
+{
+  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  EXPECT_TRUE(HasAttributeDefinition(*local_variable, domainconstants::kTypeAttribute));
+  EXPECT_FALSE(HasAttributeDefinition(*local_variable, std::string("non-existing-attribute")));
+}
+
+TEST_F(TransformHelpersTest, HasJsonTypeAndNameAttributes)
+{
+  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*local_variable));
+
+  auto file_variable = CreateDomainVariable(domainconstants::kFileVariableType);
+  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*file_variable));
+}
+
 TEST_F(TransformHelpersTest, SetJsonAttributesFromItem)
 {
   sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);

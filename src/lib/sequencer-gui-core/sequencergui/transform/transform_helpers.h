@@ -108,9 +108,34 @@ void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& i
 void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& preamble);
 
 /**
+ * @brief Checks if given instruction or variable contains attribute definition with the given name.
+ *
+ * @tparam DomainT Sequencer domain type (instruction or variable).
+ *
+ * @param domain Domain object to check.
+ */
+template <typename DomainT>
+bool HasAttributeDefinition(const DomainT& domain, const std::string& definition_name);
+
+extern template bool HasAttributeDefinition<variable_t>(const variable_t& domain,
+                                                        const std::string& definition_name);
+
+/**
+ * @brief Checks if given instruction or variable contains Anyvalue JSON type and name attributes.
+ *
+ * @tparam DomainT Sequencer domain type (instruction or variable).
+ *
+ * @param domain Domain object to check.
+ */
+template <typename DomainT>
+bool HasJsonTypeAndNameAttributes(const DomainT& domain);
+
+extern template bool HasJsonTypeAndNameAttributes<variable_t>(const variable_t& domain);
+
+/**
  * @brief Sets domain JSON type and value attributes for given domain instruction or variable.
  *
- * @tparam DomainT Sequencer domain instruction or variable.
+ * @tparam DomainT Sequencer domain type (instruction or variable).
  *
  * @param item AnyValueItem to use to construct JSON attributes
  * @param domain Domain object to set pair of attributes.
