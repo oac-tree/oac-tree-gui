@@ -125,8 +125,6 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
   }
 }
 
-//! Provides first setup of all atributes from the domain variable.
-
 void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
 {
   if (!GetDomainType().empty())

@@ -23,24 +23,14 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
 
 #include <mvvm/model/item_utils.h>
 
 #include <sup/sequencer/variable.h>
 
-namespace
-{
-const std::vector<std::string> kExpectedAnyValueItemTypes{
-    sup::gui::AnyValueEmptyItem::Type, sup::gui::AnyValueScalarItem::Type,
-    sup::gui::AnyValueArrayItem::Type, sup::gui::AnyValueStructItem::Type};
-
-}  // namespace
-
 namespace sequencergui
 {
-// ----------------------------------------------------------------------------
-// VariableItem
-// ----------------------------------------------------------------------------
 
 VariableItem::VariableItem(const std::string &item_type) : CompoundItem(item_type) {}
 
@@ -85,13 +75,9 @@ void VariableItem::SetIsAvailable(bool value)
   (void)value;
 }
 
-//! Provides tag registration for AnyValueItem insertion.
-//! The method is protected to allow derived classes to call it at the proper moment and so
-//! manipulate the order of children.
-
 void VariableItem::RegisterAnyValueItemTag()
 {
-  RegisterTag(mvvm::TagInfo(itemconstants::kAnyValueTag, 0, 1, kExpectedAnyValueItemTypes), true);
+  RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 }
 
 }  // namespace sequencergui

@@ -32,36 +32,81 @@ class AnyValueItem;
 
 namespace sequencergui
 {
-//! Base class for all variable items.
+
+/**
+ * @brief The VariableItem class is a base for all variable items.
+ */
 class VariableItem : public mvvm::CompoundItem
 {
 public:
   using CompoundItem::CompoundItem;
   explicit VariableItem(const std::string& item_type);
 
+  /**
+   * @brief Returns domain type.
+   */
   virtual std::string GetDomainType() const = 0;
 
-  //! Init given item from the domain variable.
+  /**
+   * @brief Inits given item from the domain variable.
+   *
+   * @param variable The domain variable.
+   * @param registry Optional type registry containing already existing domain types.
+   */
   void InitFromDomain(const variable_t* variable, const anytype_registry_t* registry = nullptr);
 
-  //! Creates domain variable corresponding to given item.
+  /**
+   * @brief Creates domain variable corresponding to a given item.
+   */
   std::unique_ptr<variable_t> CreateDomainVariable() const;
 
+  /**
+   * @brief Returns variable name.
+   */
   std::string GetName() const;
 
+  /**
+   * @brief Sets the name of the variable.
+   */
   void SetName(const std::string& value);
 
+  /**
+   * @brief Returns underlying AnyValueItem if exists, or nullptr if no item has been set.
+   */
   sup::gui::AnyValueItem* GetAnyValueItem() const;
 
+  /**
+   * @brief Checks if variable is available.
+   *
+   * @details This method just returns the value of the corersponding flag. It is the job of
+   * workspace syncronizer to update flag status on domain variable actual status change.
+   */
   virtual bool IsAvailable() const;
+
+  /**
+   * @brief Sets availability flag to a given value.
+   */
   virtual void SetIsAvailable(bool value);
 
 protected:
+  /**
+   * @brief Provides tag registration for AnyValueItem insertion.
+   *
+   * @details The method is protected to allow derived classes to call it along with other tag
+   * creation, and so manipulate the order of properties as they appear in editors.
+   */
   void RegisterAnyValueItemTag();
 
 private:
+  /**
+   * @brief Implementation to provide to init this VariableItem from the domain variable.
+   */
   virtual void InitFromDomainImpl(const variable_t* variable,
                                   const anytype_registry_t* registry) = 0;
+
+  /**
+   * @brief Implementation to provide to setup domain variable from this VariableItem.
+   */
   virtual void SetupDomainImpl(variable_t* variable) const = 0;
 };
 

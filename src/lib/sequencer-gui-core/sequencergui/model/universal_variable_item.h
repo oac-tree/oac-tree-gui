@@ -78,6 +78,10 @@ private:
   void InitFromDomainImpl(const variable_t* variable, const anytype_registry_t* registry) override;
   void SetupDomainImpl(variable_t* variable) const override;
 
+  /**
+   * @brief Provides initial setup of all attributes from the domain variable.
+   * @param variable
+   */
   void SetupFromDomain(const variable_t* variable);
 };
 
