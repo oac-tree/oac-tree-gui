@@ -52,7 +52,6 @@ public:
    * If item_type is empty, the resulting object can be used either after SetDomainType
    * call or after InitFromDomain call.
    */
-
   explicit UniversalInstructionItem(const std::string& item_type = Type);
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
@@ -93,7 +92,7 @@ private:
   };
 
   /**
-   * @brief Get items representing domain attributes
+   * @brief Returns items representing domain attributes.
    */
   std::vector<Attribute> GetAttributeItems() const;
 

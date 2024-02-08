@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 
@@ -34,12 +35,15 @@ namespace
 const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
-const std::vector<std::string> kSkipDomainAttributeList = {};
+const std::vector<std::string> kSkipDomainAttributeList = {
+    // sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+    // sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
+};
 
-// These are properties that shouldn't go to domain. The list is empty for the moment because
-// all GUI-only properties are hidden, and filtered out in
-// UniversalInstructionItem::GetAttributeItems()
-const std::vector<std::string> kSkipItemTagList = {};
+// these are properties that shouldn't go to domain
+const std::vector<std::string> kSkipItemTagList = {
+    sequencergui::itemconstants::kAnyValueTag
+};
 
 }  // namespace
 
@@ -126,7 +130,7 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
 
     if (!mvvm::utils::Contains(kSkipItemTagList, tag))
     {
-      // tag of property item should coincide to domain's attribute name
+      // tag of property item should coincide with the domain attribute name
       result.push_back({tag, property});
     }
   }
