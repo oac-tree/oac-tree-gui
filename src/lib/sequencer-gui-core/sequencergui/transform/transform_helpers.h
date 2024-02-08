@@ -32,6 +32,11 @@
 namespace mvvm
 {
 class CompoundItem;
+}  // namespace mvvm
+
+namespace sup::gui
+{
+class AnyValueItem;
 }
 
 namespace sequencergui
@@ -101,6 +106,23 @@ void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& i
  * @brief Populates domain preamble from ProcedurePreambleItem.
  */
 void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& preamble);
+
+/**
+ * @brief Sets domain JSON type and value attributes for given domain instruction or variable.
+ *
+ * @tparam DomainT Sequencer domain instruction or variable.
+ *
+ * @param item AnyValueItem to use to construct JSON attributes
+ * @param domain Domain object to set pair of attributes.
+ *
+ * @details This will first convert given AnyValueItem into AnyValue, and then set a pair of
+ * attributes with names "type" and "value" using AnyValue JSON representation.
+ */
+template <typename DomainT>
+void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& domain);
+
+extern template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem& item,
+                                                           variable_t& domain);
 
 }  // namespace sequencergui
 

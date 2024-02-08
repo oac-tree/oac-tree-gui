@@ -41,7 +41,7 @@ namespace sequencergui
 
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
-  // in current implementation we remove old AnyValueItem, if it exists
+  // in current implementation we remove old AnyValueItem, if it is exist
   if (auto prev_item = variable_item.GetAnyValueItem(); prev_item)
   {
     mvvm::utils::RemoveItem(*prev_item);
@@ -205,5 +205,16 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &pr
         TypeRegistrationInfo(static_cast<TypeRegistrationInfo::RegistrationMode>(mode), str));
   }
 }
+
+template <typename T>
+void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, T &domain)
+{
+  auto anyvalue = sup::gui::CreateAnyValue(item);
+  domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+  domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+}
+
+template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem &item,
+                                                    variable_t &domain);
 
 }  // namespace sequencergui

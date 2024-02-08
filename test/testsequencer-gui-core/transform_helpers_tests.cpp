@@ -365,3 +365,21 @@ TEST_F(TransformHelpersTest, PopulateProcedurePreambleFromItem)
     EXPECT_THROW(PopulateProcedurePreamble(item, preamble), LogicErrorException);
   }
 }
+
+TEST_F(TransformHelpersTest, SetJsonAttributesFromItem)
+{
+  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+
+  LocalVariableItem item;
+  SetAnyValue(anyvalue, item);
+
+  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
+  SetJsonAttributesFromItem(*item.GetAnyValueItem(), *variable);
+
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute),
+            R"RAW({"type":"int32"})RAW");
+
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), "42");
+}
