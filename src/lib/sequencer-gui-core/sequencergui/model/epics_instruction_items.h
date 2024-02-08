@@ -78,6 +78,15 @@ public:
   std::string GetJsonValue() const;
 
   void SetJsonValue(const std::string& value);
+
+protected:
+  /**
+   * @brief Provides tag registration for AnyValueItem insertion.
+   *
+   * @details The method is protected to allow derived classes to call it along with other tag
+   * creation, and so manipulate the order of properties as they appear in editors.
+   */
+  void RegisterAnyValueItemTag();
 };
 
 //! Represents ChannelAccessReadInstruction.

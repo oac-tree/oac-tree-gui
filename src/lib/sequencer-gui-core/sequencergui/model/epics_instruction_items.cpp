@@ -20,6 +20,8 @@
 #include "epics_instruction_items.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/model/item_constants.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
 
 namespace sequencergui
 {
@@ -78,6 +80,7 @@ EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruct
     : UniversalInstructionItem(instruction_type)
 {
   SetTimeout(1.0);
+  RegisterAnyValueItemTag();
 }
 
 std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_unique_id) const
@@ -134,6 +137,11 @@ std::string EpicsWriteInstructionItem::GetJsonValue() const
 void EpicsWriteInstructionItem::SetJsonValue(const std::string &value)
 {
   SetAttribute(domainconstants::kValueAttribute, value);
+}
+
+void EpicsWriteInstructionItem::RegisterAnyValueItemTag()
+{
+  RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 }
 
 // ----------------------------------------------------------------------------
