@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -63,8 +64,9 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // registered tags should coincide with name and dynamicType attributes, and AnyValueTag
   // (json type and value are filtered out)
-  const std::vector<std::string> expected_tags(
-      {domainconstants::kNameAttribute, domainconstants::kDynamicTypeAttribute, "kAnyValueTag"});
+  const std::vector<std::string> expected_tags({domainconstants::kNameAttribute,
+                                                domainconstants::kDynamicTypeAttribute,
+                                                itemconstants::kAnyValueTag});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access

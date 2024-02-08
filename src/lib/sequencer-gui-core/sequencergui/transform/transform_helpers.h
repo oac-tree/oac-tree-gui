@@ -119,6 +119,8 @@ bool HasAttributeDefinition(const DomainT& domain, const std::string& definition
 
 extern template bool HasAttributeDefinition<variable_t>(const variable_t& domain,
                                                         const std::string& definition_name);
+extern template bool HasAttributeDefinition<instruction_t>(const instruction_t& domain,
+                                                        const std::string& definition_name);
 
 /**
  * @brief Checks if given instruction or variable contains Anyvalue JSON type and name attributes.
@@ -131,6 +133,7 @@ template <typename DomainT>
 bool HasJsonTypeAndNameAttributes(const DomainT& domain);
 
 extern template bool HasJsonTypeAndNameAttributes<variable_t>(const variable_t& domain);
+extern template bool HasJsonTypeAndNameAttributes<instruction_t>(const instruction_t& domain);
 
 /**
  * @brief Sets domain JSON type and value attributes for given domain instruction or variable.
@@ -148,6 +151,8 @@ void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& doma
 
 extern template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem& item,
                                                            variable_t& domain);
+extern template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem& item,
+                                                           instruction_t& domain);
 
 }  // namespace sequencergui
 

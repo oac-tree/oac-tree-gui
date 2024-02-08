@@ -91,7 +91,7 @@ TEST_F(TransformHelpersTest, UpdateAnyValueSignaling)
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
 
-  const mvvm::TagIndex tag_index{"kAnyValueTag", 0};
+  const mvvm::TagIndex tag_index{itemconstants::kAnyValueTag, 0};
 
   {
     const ::testing::InSequence seq;
@@ -380,6 +380,32 @@ TEST_F(TransformHelpersTest, HasJsonTypeAndNameAttributes)
 
   auto file_variable = CreateDomainVariable(domainconstants::kFileVariableType);
   EXPECT_FALSE(HasJsonTypeAndNameAttributes(*file_variable));
+
+  auto instr = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
+  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*instr));
+}
+
+TEST_F(TransformHelpersTest, HasJsonTypeAndNameAttributesForEpicsInstruction)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
+  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
+
+  instr = CreateDomainInstruction(domainconstants::kPvAccessReadInstructionType);
+  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*instr));
+
+  instr = CreateDomainInstruction(domainconstants::kChannelAccessWriteInstructionType);
+  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
+
+  instr = CreateDomainInstruction(domainconstants::kChannelAccessReadInstructionType);
+  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*instr));
+
+  instr = CreateDomainInstruction(domainconstants::kRPCClientInstructionType);
+  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
 }
 
 TEST_F(TransformHelpersTest, SetJsonAttributesFromItem)

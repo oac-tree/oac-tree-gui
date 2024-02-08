@@ -220,6 +220,8 @@ bool HasAttributeDefinition(const DomainT &domain, const std::string &definition
 
 template bool HasAttributeDefinition<variable_t>(const variable_t &domain,
                                                  const std::string &definition_name);
+template bool HasAttributeDefinition<instruction_t>(const instruction_t &domain,
+                                                    const std::string &definition_name);
 
 template <typename DomainT>
 bool HasJsonTypeAndNameAttributes(const DomainT &domain)
@@ -229,6 +231,7 @@ bool HasJsonTypeAndNameAttributes(const DomainT &domain)
 }
 
 template bool HasJsonTypeAndNameAttributes<variable_t>(const variable_t &domain);
+template bool HasJsonTypeAndNameAttributes<instruction_t>(const instruction_t &domain);
 
 template <typename DomainT>
 void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)
@@ -240,5 +243,7 @@ void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &doma
 
 template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem &item,
                                                     variable_t &domain);
+template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem &item,
+                                                       instruction_t &domain);
 
 }  // namespace sequencergui
