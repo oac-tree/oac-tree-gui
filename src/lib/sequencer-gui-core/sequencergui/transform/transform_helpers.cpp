@@ -237,8 +237,14 @@ template <typename DomainT>
 void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)
 {
   auto anyvalue = sup::gui::CreateAnyValue(item);
-  domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
-  domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+  if (HasAttributeDefinition(domain, domainconstants::kTypeAttribute))
+  {
+    domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+  }
+  if (HasAttributeDefinition(domain, domainconstants::kValueAttribute))
+  {
+    domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
+  }
 }
 
 template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem &item,

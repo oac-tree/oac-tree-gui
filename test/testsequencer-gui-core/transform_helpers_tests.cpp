@@ -408,15 +408,13 @@ TEST_F(TransformHelpersTest, HasJsonTypeAndNameAttributesForEpicsInstruction)
   EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
 }
 
-TEST_F(TransformHelpersTest, SetJsonAttributesFromItem)
+TEST_F(TransformHelpersTest, SetLocalVariableJsonAttributesFromItem)
 {
   sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-
-  LocalVariableItem item;
-  SetAnyValue(anyvalue, item);
+  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
 
   auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  SetJsonAttributesFromItem(*item.GetAnyValueItem(), *variable);
+  SetJsonAttributesFromItem(*anyvalue_item, *variable);
 
   EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute),
@@ -424,4 +422,54 @@ TEST_F(TransformHelpersTest, SetJsonAttributesFromItem)
 
   EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
   EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), "42");
+}
+
+TEST_F(TransformHelpersTest, SetChannelAccessVariableJsonAttributesFromItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+
+  auto variable = CreateDomainVariable(domainconstants::kChannelAccessVariableType);
+  SetJsonAttributesFromItem(*anyvalue_item, *variable);
+
+  EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute),
+            R"RAW({"type":"int32"})RAW");
+
+  // channel access variable doesn't have value attribute
+  EXPECT_FALSE(variable->HasAttribute(domainconstants::kValueAttribute));
+}
+
+TEST_F(TransformHelpersTest, SetInstructionJsonAttributesFromItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+
+  // PvAccessWriteInstruction should get attributes
+  auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
+  SetJsonAttributesFromItem(*anyvalue_item, *instr);
+
+  EXPECT_TRUE(instr->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_EQ(instr->GetAttributeString(domainconstants::kTypeAttribute),
+            R"RAW({"type":"int32"})RAW");
+
+  EXPECT_TRUE(instr->HasAttribute(domainconstants::kValueAttribute));
+  EXPECT_EQ(instr->GetAttributeString(domainconstants::kValueAttribute), "42");
+
+  instr = CreateDomainInstruction(domainconstants::kPvAccessReadInstructionType);
+  SetJsonAttributesFromItem(*anyvalue_item, *instr);
+
+  EXPECT_FALSE(instr->HasAttribute(domainconstants::kTypeAttribute));
+
+  EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
 }
