@@ -118,12 +118,9 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
     SetDomainAttribute(*item, attribute_name, *variable);
   }
 
-  if (GetAnyValueItem())
+  if (auto anyvalue_item = GetAnyValueItem(); anyvalue_item)
   {
-    // Here we allow LocalVariableItem do not have AnyValueItem on board.
-    // FIXME make sure variable needs such attributes
-    SetJsonTypeAttribute(*this, *variable);
-    SetJsonValueAttribute(*this, *variable);
+    SetJsonAttributesFromItem(*anyvalue_item, *variable);
   }
 }
 

@@ -77,18 +77,6 @@ void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& 
                           variable_t& variable);
 
 /**
- * @brief Sets JSON type attribute from given item to the domain variable.
- * @param item
- * @param variable
- */
-void SetJsonTypeAttribute(const VariableItem& item, variable_t& variable);
-
-/**
- * @brief Sets JSON value attribute from given item to the domain variable.
- */
-void SetJsonValueAttribute(const VariableItem& item, variable_t& variable);
-
-/**
  * @brief Adds an attribute to given value. If the value is empty string, do nothing.
  */
 void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,

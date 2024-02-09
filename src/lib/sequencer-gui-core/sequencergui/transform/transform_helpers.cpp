@@ -129,42 +129,6 @@ void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &
   }
 }
 
-void SetJsonTypeAttribute(const VariableItem &item, variable_t &variable)
-{
-  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
-  {
-    // if AnyValueItem is defined, jenerate JSON TYPE attribute from it
-    auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
-
-    AddNonEmptyAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue),
-                         variable);
-  }
-  else
-  {
-    std::string error_message = "Can't setup JSON type for variable name [" + item.GetName()
-                                + "] if AnyValueItem is absent";
-    throw LogicErrorException(error_message);
-  }
-}
-
-void SetJsonValueAttribute(const VariableItem &item, variable_t &variable)
-{
-  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
-  {
-    // if AnyValueItem is defined, jenerate JSON TYPE attribute from it
-    auto anyvalue = sup::gui::CreateAnyValue(*anyvalue_item);
-
-    AddNonEmptyAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue),
-                         variable);
-  }
-  else
-  {
-    std::string error_message = "Can't setup JSON value for variable name [" + item.GetName()
-                                + "] if AnyValueItem is absent";
-    throw LogicErrorException(error_message);
-  }
-}
-
 void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
                           instruction_t &instruction)
 {

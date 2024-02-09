@@ -193,35 +193,6 @@ TEST_F(TransformHelpersTest, AddNonEmptyAttributeToInstruction)
   EXPECT_TRUE(instruction->HasAttribute("custom_attribute_name"));
 }
 
-TEST_F(TransformHelpersTest, SetJsonTypeAttribute)
-{
-  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-
-  LocalVariableItem item;
-  SetAnyValue(anyvalue, item);
-
-  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  SetJsonTypeAttribute(item, *variable);
-
-  EXPECT_TRUE(variable->HasAttribute(domainconstants::kTypeAttribute));
-  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute),
-            R"RAW({"type":"int32"})RAW");
-}
-
-TEST_F(TransformHelpersTest, SetJsonValueAttribute)
-{
-  sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
-
-  LocalVariableItem item;
-  SetAnyValue(anyvalue, item);
-
-  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  SetJsonValueAttribute(item, *variable);
-
-  EXPECT_TRUE(variable->HasAttribute(domainconstants::kValueAttribute));
-  EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), "42");
-}
-
 //! Validate SetAnyValueFromDomainVariable helper method.
 //! Domain sequencer variable with json type and value attributes is used to set AnyValueItem on
 //! board of VariableItem.
