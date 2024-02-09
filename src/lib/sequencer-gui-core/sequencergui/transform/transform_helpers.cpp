@@ -21,8 +21,10 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/procedure_preamble_items.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -61,6 +63,29 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   mvvm::utils::InsertItem(std::move(anyvalue_item), &variable_item, mvvm::TagIndex::First());
 }
 
+void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
+{
+  if (!mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag))
+  {
+    throw LogicErrorException("This instruction is not inteded for storing AnyValueItem");
+  }
+
+  if (auto prev_item = GetAnyValueItem(item); prev_item)
+  {
+    mvvm::utils::RemoveItem(*prev_item);
+  }
+
+  // Inserting new AnyValueItem
+  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+  if (anyvalue_item->IsScalar())
+  {
+    anyvalue_item->SetDisplayName("value");
+    anyvalue_item->SetToolTip(anyvalue_item->GetAnyTypeName());
+  }
+
+  mvvm::utils::InsertItem(std::move(anyvalue_item), &item, mvvm::TagIndex::First());
+}
+
 void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
                                    const anytype_registry_t *registry)
 {
@@ -81,6 +106,21 @@ void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &var
 
     sup::dto::AnyValue anyvalue = get_anyvalue();  // executing lambda at initialisation
     SetAnyValue(anyvalue, variable_item);
+  }
+}
+
+void SetAnyValueFromDomainInstruction(const instruction_t &instruction, InstructionItem &item)
+{
+  if (instruction.HasAttribute(domainconstants::kTypeAttribute)
+      && instruction.HasAttribute(domainconstants::kValueAttribute))
+  {
+    auto anytype = sup::gui::AnyTypeFromJSONString(
+        instruction.GetAttributeString(domainconstants::kTypeAttribute));
+
+    auto anyvalue = sup::gui::AnyValueFromJSONString(
+        anytype, instruction.GetAttributeString(domainconstants::kValueAttribute));
+
+    SetAnyValue(anyvalue, item);
   }
 }
 

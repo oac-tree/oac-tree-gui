@@ -43,6 +43,7 @@ namespace sequencergui
 {
 
 class VariableItem;
+class InstructionItem;
 class ProcedurePreambleItem;
 
 /**
@@ -53,10 +54,29 @@ class ProcedurePreambleItem;
 void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 /**
+ * @brief Sets AnyValueItem on board of instruction item using given anyvalue.
+ *
+ * @param anyvalue Domain AnyValue.
+ * @param item Instruction item capable of storing AnyValueItem.
+ *
+ * @details Works for ChannelAccessWriteInstructionItem, PvAccessWriteInstructionItem and
+ * RPCClientInstructi. If AnyValueItem already exist, it will be replaced.
+ */
+void SetAnyValue(const anyvalue_t& anyvalue, InstructionItem& item);
+
+/**
  * @brief Sets AnyValueItem on board of variable item using domain variable.
  */
 void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& variable_item,
                                    const anytype_registry_t* registry = nullptr);
+
+/**
+ * @brief Sets AnyValueItem on board of instruction item using domain instruction.
+ * @param instruction Domain instruction with JSON type and value attribute defined.
+ * @param item Instruction item with tag intended for AnyValueItem.
+ */
+void SetAnyValueFromDomainInstruction(const instruction_t& instruction,
+                                      InstructionItem& item);
 
 /**
  * @brief Updates existing AnyValueItem on board of variable_item using given anyvalue.

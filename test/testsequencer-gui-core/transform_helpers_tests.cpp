@@ -26,8 +26,10 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
 
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/sessionitem_container.h>
@@ -52,7 +54,7 @@ class TransformHelpersTest : public ::testing::Test
 {
 };
 
-//! Checking UpdateAnyValue function.
+//! Checking SetAnyValue function.
 
 TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
 {
@@ -137,7 +139,7 @@ TEST_F(TransformHelpersTest, UpdateAnyValueFromScalarWithTypeChange)
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 0);
 
-  // ACreate and set AnyValueItem representing anyvalue
+  // Create and set AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(anyvalue, stored_anyvalue);
@@ -148,6 +150,37 @@ TEST_F(TransformHelpersTest, UpdateAnyValueFromScalarWithTypeChange)
 
   auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
   EXPECT_EQ(new_anyvalue, stored_anyvalue2);
+}
+
+//! Setting AnyValue to instruction.
+
+TEST_F(TransformHelpersTest, SetInstructionAnyValueFromScalar)
+{
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  WaitItem item;
+
+  // WaitItem is not intended for storing AnyValueItem
+  EXPECT_THROW(SetAnyValue(anyvalue, item), LogicErrorException);
+
+  // Let's create a corresponding tag
+  item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+
+  EXPECT_EQ(GetAnyValueItem(item), nullptr);
+  SetAnyValue(anyvalue, item);
+
+  // checking constructed AnyValueItem and its visual properties
+  auto anyvalue_item = GetAnyValueItem(item);
+  ASSERT_NE(anyvalue_item, nullptr);
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), std::string("value"));
+  EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
+
+  auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));
+  EXPECT_EQ(anyvalue, stored_anyvalue);
+
+  // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
+  auto prev_anyvalue_item = GetAnyValueItem(item);
+  SetAnyValue(anyvalue, item);
+  EXPECT_NE(GetAnyValueItem(item), prev_anyvalue_item);
 }
 
 TEST_F(TransformHelpersTest, AddNonEmptyAttributeToVariable)
@@ -245,6 +278,27 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariableWithRegistry)
 
   ASSERT_NE(item.GetAnyValueItem(), nullptr);
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
+  EXPECT_EQ(expected_anyvalue, stored_anyvalue);
+}
+
+TEST_F(TransformHelpersTest, SetAnyValueFromDomainInstruction)
+{
+  // We use Wait instruction for test event if it is not intended for storing json type and value
+  // attributes.
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
+  instruction->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
+  instruction->AddAttribute(domainconstants::kValueAttribute, "42");
+
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  WaitItem item;
+  // registering tag to make possible adding AnyValueItem
+  item.RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+
+  SetAnyValueFromDomainInstruction(*instruction, item);
+
+  ASSERT_NE(GetAnyValueItem(item), nullptr);
+  auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));
   EXPECT_EQ(expected_anyvalue, stored_anyvalue);
 }
 
