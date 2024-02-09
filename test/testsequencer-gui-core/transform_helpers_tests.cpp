@@ -104,22 +104,6 @@ TEST_F(TransformHelpersTest, UpdateAnyValueSignaling)
   SetAnyValue(anyvalue, *item);
 }
 
-TEST_F(TransformHelpersTest, SetAnyValueFromJsonType)
-{
-  LocalVariableItem item;
-  EXPECT_EQ(item.GetAnyValueItem(), nullptr);
-
-  SetAnyValueFromJsonType(R"RAW({"type":"int32"})RAW", item);
-
-  auto anyvalue_item = item.GetAnyValueItem();
-  ASSERT_TRUE(anyvalue_item != nullptr);
-
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
-
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(expected_anyvalue, stored_anyvalue);
-}
-
 //! Checking UpdateAnyValue function.
 
 TEST_F(TransformHelpersTest, UpdateAnyValueFromScalar)

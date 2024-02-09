@@ -53,11 +53,6 @@ class ProcedurePreambleItem;
 void SetAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 /**
- * @brief Sets AnyValueItem on board of variable_item using json_type provided.
- */
-void SetAnyValueFromJsonType(const std::string& json_type, VariableItem& variable_item);
-
-/**
  * @brief Sets AnyValueItem on board of variable item using domain variable.
  */
 void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& variable_item,

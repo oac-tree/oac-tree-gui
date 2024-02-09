@@ -61,13 +61,6 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   mvvm::utils::InsertItem(std::move(anyvalue_item), &variable_item, mvvm::TagIndex::First());
 }
 
-void SetAnyValueFromJsonType(const std::string &json_type, VariableItem &variable_item)
-{
-  auto anytype = ::sup::gui::AnyTypeFromJSONString(json_type);
-  const sup::dto::AnyValue anyvalue(anytype);
-  SetAnyValue(anyvalue, variable_item);
-}
-
 void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
                                    const anytype_registry_t *registry)
 {
