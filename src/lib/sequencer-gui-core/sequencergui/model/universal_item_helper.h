@@ -33,6 +33,11 @@ class SessionModelInterface;
 class SessionItem;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace sequencergui
 {
 
@@ -127,6 +132,15 @@ bool IsCollapsed(const InstructionItem& item);
  * @brief Returns vector of instructions which wants their children's branch shown as collapsed.
  */
 std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainerItem& container);
+
+/**
+ * @brief Returns AnyValueItem associated with given instruction, or nullptr if no such item exist.
+ *
+ * @details This method checks if corresponding tag has been registered and contain AnyValueItem.
+ * For the moment PvAccessWriteItem, ChannelAccessWriteItem and RPCClientInstructionItem
+ * might cary AnyValueItem representing jsonn type and value attributes.
+ */
+sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 
 }  // namespace sequencergui
 

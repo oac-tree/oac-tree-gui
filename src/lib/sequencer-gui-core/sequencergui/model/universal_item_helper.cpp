@@ -22,12 +22,13 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/aggregate_factory.h>
+#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/iterate_helper.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
@@ -130,6 +131,13 @@ std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContaine
   }
 
   return result;
+}
+
+sup::gui::AnyValueItem *GetAnyValueItem(const InstructionItem &item)
+{
+  return mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag)
+             ? item.GetItem<sup::gui::AnyValueItem>(sequencergui::itemconstants::kAnyValueTag)
+             : nullptr;
 }
 
 }  // namespace sequencergui
