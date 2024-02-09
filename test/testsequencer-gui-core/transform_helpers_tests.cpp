@@ -433,14 +433,11 @@ TEST_F(TransformHelpersTest, SetInstructionJsonAttributesFromItem)
   EXPECT_TRUE(instr->HasAttribute(domainconstants::kTypeAttribute));
   EXPECT_EQ(instr->GetAttributeString(domainconstants::kTypeAttribute),
             R"RAW({"type":"int32"})RAW");
-
   EXPECT_TRUE(instr->HasAttribute(domainconstants::kValueAttribute));
   EXPECT_EQ(instr->GetAttributeString(domainconstants::kValueAttribute), "42");
 
   instr = CreateDomainInstruction(domainconstants::kPvAccessReadInstructionType);
   SetJsonAttributesFromItem(*anyvalue_item, *instr);
-
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kTypeAttribute));
-
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
 }

@@ -71,16 +71,25 @@ void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& var
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 /**
- * @brief Adds an attribute to given value. If the value is empty string, do nothing.
+ * @brief Adds non-empty attribute to given domain instruction or variable.
+ *
+ * @tparam DomainT Sequencer domain type (instruction or variable).
+ * @param attribute_name The name of the attribute.
+ * @param attribute_value Non empty attribute value.
+ * @param domain The domain object (instruction or variable).
+ *
+ * @details If attribute value is empty, will do nothing.
  */
+template <typename DomainT>
 void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
-                          variable_t& variable);
+                          DomainT& domain);
 
-/**
- * @brief Adds an attribute to given value. If the value is empty string, do nothing.
- */
-void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
-                          instruction_t& instruction);
+extern template void AddNonEmptyAttribute<variable_t>(const std::string& attribute_name,
+                                                      const std::string& attribute_value,
+                                                      variable_t& domain);
+extern template void AddNonEmptyAttribute<instruction_t>(const std::string& attribute_name,
+                                                         const std::string& attribute_value,
+                                                         instruction_t& domain);
 
 /**
  * @brief Register tag in instruction item to be able to add other instructions as children.

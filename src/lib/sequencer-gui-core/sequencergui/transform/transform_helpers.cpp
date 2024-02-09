@@ -120,23 +120,22 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   SetAnyValue(anyvalue, variable_item);
 }
 
+template <typename DomainT>
 void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
-                          variable_t &variable)
+                          DomainT &domain)
 {
   if (!attribute_value.empty())
   {
-    variable.AddAttribute(attribute_name, attribute_value);
+    domain.AddAttribute(attribute_name, attribute_value);
   }
 }
 
-void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
-                          instruction_t &instruction)
-{
-  if (!attribute_value.empty())
-  {
-    instruction.AddAttribute(attribute_name, attribute_value);
-  }
-}
+template void AddNonEmptyAttribute<variable_t>(const std::string &attribute_name,
+                                               const std::string &attribute_value,
+                                               variable_t &domain);
+template void AddNonEmptyAttribute<instruction_t>(const std::string &attribute_name,
+                                                  const std::string &attribute_value,
+                                                  instruction_t &domain);
 
 void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &item)
 {
