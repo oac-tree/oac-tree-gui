@@ -46,7 +46,7 @@ namespace sequencergui
 
 void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
 {
-  // in current implementation we remove old AnyValueItem, if it is exist
+  // in current implementation we remove old AnyValueItem, if it exists
   if (auto prev_item = variable_item.GetAnyValueItem(); prev_item)
   {
     mvvm::utils::RemoveItem(*prev_item);
