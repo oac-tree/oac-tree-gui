@@ -119,26 +119,6 @@ void EpicsWriteInstructionItem::SetTimeout(double value)
   SetAttribute(domainconstants::kTimeoutAttribute, value);
 }
 
-std::string EpicsWriteInstructionItem::GetJsonType() const
-{
-  return Property<std::string>(domainconstants::kTypeAttribute);
-}
-
-void EpicsWriteInstructionItem::SetJsonType(const std::string &value)
-{
-  SetAttribute(domainconstants::kTypeAttribute, value);
-}
-
-std::string EpicsWriteInstructionItem::GetJsonValue() const
-{
-  return Property<std::string>(domainconstants::kValueAttribute);
-}
-
-void EpicsWriteInstructionItem::SetJsonValue(const std::string &value)
-{
-  SetAttribute(domainconstants::kValueAttribute, value);
-}
-
 void EpicsWriteInstructionItem::RegisterAnyValueItemTag()
 {
   RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
@@ -203,6 +183,7 @@ std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone(bool make
 RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(Type)
 {
   SetTimeout(1.0);
+  RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone(bool make_unique_id) const
@@ -237,26 +218,6 @@ double RPCClientInstruction::GetTimeout() const
 void RPCClientInstruction::SetTimeout(double value)
 {
   SetAttribute(domainconstants::kTimeoutAttribute, value);
-}
-
-std::string RPCClientInstruction::GetJsonType() const
-{
-  return Property<std::string>(domainconstants::kTypeAttribute);
-}
-
-void RPCClientInstruction::SetJsonType(const std::string &value)
-{
-  SetAttribute(domainconstants::kTypeAttribute, value);
-}
-
-std::string RPCClientInstruction::GetJsonValue() const
-{
-  return Property<std::string>(domainconstants::kValueAttribute);
-}
-
-void RPCClientInstruction::SetJsonValue(const std::string &value)
-{
-  SetAttribute(domainconstants::kValueAttribute, value);
 }
 
 std::string RPCClientInstruction::GetOutput() const

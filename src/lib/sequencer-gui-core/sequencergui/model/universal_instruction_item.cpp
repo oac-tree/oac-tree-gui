@@ -23,8 +23,10 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -36,14 +38,12 @@ const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
-    // sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
-    // sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
+    sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
+    sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
 };
 
 // these are properties that shouldn't go to domain
-const std::vector<std::string> kSkipItemTagList = {
-    sequencergui::itemconstants::kAnyValueTag
-};
+const std::vector<std::string> kSkipItemTagList = {sequencergui::itemconstants::kAnyValueTag};
 
 }  // namespace
 
@@ -103,6 +103,12 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
       property.SetData(value);
     }
   }
+
+  if (mvvm::utils::HasTag(*this, sequencergui::itemconstants::kAnyValueTag))
+  {
+    // FIXME What to do with registry of types (see UniversalVariableItem::InitFromDomainImpl
+    SetAnyValueFromDomainInstruction(*instruction, *this);
+  }
 }
 
 void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
@@ -110,6 +116,11 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
   for (const auto &[attribute_name, item] : GetAttributeItems())
   {
     SetDomainAttribute(*item, attribute_name, *instruction);
+  }
+
+  if (auto anyvalue_item = GetAnyValueItem(*this); anyvalue_item)
+  {
+    SetJsonAttributesFromItem(*anyvalue_item, *instruction);
   }
 }
 

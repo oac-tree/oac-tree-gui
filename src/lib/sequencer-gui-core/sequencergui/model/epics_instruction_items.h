@@ -71,14 +71,6 @@ public:
 
   void SetTimeout(double value);
 
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
-
 protected:
   /**
    * @brief Provides tag registration for AnyValueItem insertion.
@@ -163,14 +155,6 @@ public:
   double GetTimeout() const;
 
   void SetTimeout(double value);
-
-  std::string GetJsonType() const;
-
-  void SetJsonType(const std::string& value);
-
-  std::string GetJsonValue() const;
-
-  void SetJsonValue(const std::string& value);
 
   std::string GetOutput() const;
 
