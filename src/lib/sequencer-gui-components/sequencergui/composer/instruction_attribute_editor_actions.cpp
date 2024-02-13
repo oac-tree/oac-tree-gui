@@ -36,6 +36,7 @@ InstructionAttributeEditorActions::InstructionAttributeEditorActions(
     : QObject(parent)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new QWidgetAction(this))
+    , m_edit_anyvalue_action(new QWidgetAction(this))
     , m_editor_context(std::move(context))
 {
   m_modify_attribute_menu->setToolTipsVisible(true);
@@ -52,13 +53,22 @@ InstructionAttributeEditorActions::InstructionAttributeEditorActions(
   modify_attribute_button->setMenu(m_modify_attribute_menu.get());
   modify_attribute_button->setToolTip("Modifies currently selected attribute");
   m_modify_attribute_action->setDefaultWidget(modify_attribute_button);
+
+  auto edit_anyvalue_button = new QToolButton;
+  edit_anyvalue_button->setText("Edit AnyValue");
+  edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  edit_anyvalue_button->setToolTip("Edit value of currently selected instruction");
+  connect(edit_anyvalue_button, &QToolButton::clicked, this,
+          &InstructionAttributeEditorActions::OnEditAnyvalueRequest);
+  m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
 }
 
 InstructionAttributeEditorActions::~InstructionAttributeEditorActions() = default;
 
 QList<QAction *> InstructionAttributeEditorActions::GetToolBarActions() const
 {
-  return QList<QAction *>({m_modify_attribute_action});
+  return QList<QAction *>({m_modify_attribute_action, m_edit_anyvalue_action});
 }
 
 void InstructionAttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *attribute_item)
@@ -109,6 +119,8 @@ void InstructionAttributeEditorActions::OnAboutToShowMenu()
   m_modify_attribute_menu->clear();
   SetupMenu(*m_modify_attribute_menu, GetSelectedAttributeItem());
 }
+
+void InstructionAttributeEditorActions::OnEditAnyvalueRequest() {}
 
 AttributeItem *InstructionAttributeEditorActions::GetSelectedAttributeItem()
 {
