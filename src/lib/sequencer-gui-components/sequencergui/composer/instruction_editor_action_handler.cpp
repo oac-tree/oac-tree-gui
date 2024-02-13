@@ -36,7 +36,9 @@
 namespace
 {
 
-//! Update child coordinate so it is located near the reference
+/**
+ * @brief Updates child coordinate so it is located near the reference
+ */
 void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm::SessionItem *child)
 {
   const int coordinate_offset = 10;  // to place a child aproximately near the parent
@@ -78,8 +80,6 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
 
 InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
-//! Inserts new instruction of given type after the current selection.
-//! The selection is retrieved via a callback.
 void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QString &item_type)
 {
   auto instruction_container = GetInstructionContainer();
@@ -98,8 +98,6 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
   UpdateChildCoordinate(item, child);
 }
 
-//! Inserts new instruction of given type after the current selection.
-//! The selection is retrieved via a callback.
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   auto selected_instruction = GetSelectedInstruction();
@@ -107,8 +105,6 @@ void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QStrin
   UpdateChildCoordinate(selected_instruction, child);
 }
 
-//! Removes currently selected instruction.
-//! The selection is retrieved via a callback.
 void InstructionEditorActionHandler::OnRemoveInstructionRequest()
 {
   if (auto selected_instruction = GetSelectedInstruction(); selected_instruction)

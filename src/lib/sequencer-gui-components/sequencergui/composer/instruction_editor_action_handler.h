@@ -27,7 +27,6 @@
 
 namespace mvvm
 {
-
 class SessionItem;
 class TagIndex;
 class SessionModelInterface;
@@ -35,12 +34,17 @@ class SessionModelInterface;
 
 namespace sequencergui
 {
+
 class SequencerModel;
 class InstructionContainerItem;
 
-//! The InstructionEditorActionHandler class implements logic to add/remove instructions in
-//! InstructionContainerItem.
-
+/**
+ * @brief The InstructionEditorActionHandler class implements logic to add/remove instructions in
+ * InstructionContainerItem.
+ *
+ * @details The handler uses callbacks to retrieve current selection and thus deduce where to insert
+ * and what to remove.
+ */
 class InstructionEditorActionHandler : public QObject
 {
   Q_OBJECT
@@ -50,14 +54,37 @@ public:
                                           QObject* parent = nullptr);
   ~InstructionEditorActionHandler() override;
 
+  /**
+   * @brief Inserts new instruction of given type after the current selection.
+   *
+   * @param item_type The item type name.
+   */
   void OnInsertInstructionAfterRequest(const QString& item_type);
 
+  /**
+   * @brief Inserts new instruction of given type after the current selection.
+   *
+   * @param item_type The item type name.
+   */
   void OnInsertInstructionIntoRequest(const QString& item_type);
 
+  /**
+   * @brief Removes currently selected instruction.
+   */
   void OnRemoveInstructionRequest();
 
+  /**
+   * @brief Moves instruction up (decrement index) in parent's container.
+   *
+   * @details The method doesn't change a parent, so will do nothing for the first child.
+   */
   void OnMoveUpRequest();
 
+  /**
+   * @brief Moves instruction down (increment index) in parent's container.
+   *
+   * @details The method doesn't change a parent, so will do nothing for the last child.
+   */
   void OnMoveDownRequest();
 
 signals:
