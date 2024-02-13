@@ -479,3 +479,22 @@ TEST_F(TransformHelpersTest, SetInstructionJsonAttributesFromItem)
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kTypeAttribute));
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
 }
+
+TEST_F(TransformHelpersTest, SetInstructionJsonAttributesFromEmptyItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  sup::dto::AnyValue anyvalue;
+  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
+
+  // PvAccessWriteInstruction should get attributes
+  auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
+  SetJsonAttributesFromItem(*anyvalue_item, *instr);
+
+  EXPECT_FALSE(instr->HasAttribute(domainconstants::kTypeAttribute));
+  EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
+}
+

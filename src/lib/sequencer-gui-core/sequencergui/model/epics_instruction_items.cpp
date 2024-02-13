@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/item_constants.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
@@ -122,6 +123,7 @@ void EpicsWriteInstructionItem::SetTimeout(double value)
 void EpicsWriteInstructionItem::RegisterAnyValueItemTag()
 {
   RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
 }
 
 // ----------------------------------------------------------------------------
@@ -184,6 +186,7 @@ RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(Type)
 {
   SetTimeout(1.0);
   RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
+  InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone(bool make_unique_id) const

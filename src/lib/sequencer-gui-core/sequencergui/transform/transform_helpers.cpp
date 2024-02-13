@@ -233,6 +233,11 @@ template <typename DomainT>
 void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)
 {
   auto anyvalue = sup::gui::CreateAnyValue(item);
+  if (sup::dto::IsEmptyValue(anyvalue))
+  {
+    return;
+  }
+
   if (HasAttributeDefinition(domain, domainconstants::kTypeAttribute))
   {
     domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
