@@ -21,6 +21,7 @@
 
 #include "instruction_attribute_editor_context.h"
 
+#include <sequencergui/model/attribute_item.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
@@ -66,6 +67,45 @@ void InstructionAttributeEditorActions::OnAboutToShowMenu()
 
   // We clear menu and modify it with entries. It is done just a moment before showing the menu, to
   // take into account current selection and properly mark actions as enabled/disabled.
+
+  auto enable_action = m_modify_attribute_menu->addAction("Attribute is enabled");
+  enable_action->setToolTip("Attribute with enabled flag set will be propagated to domain.");
+  enable_action->setCheckable(true);
+  enable_action->setEnabled(false);
+
+  auto set_default_value_action = m_modify_attribute_menu->addAction("Set default value");
+  set_default_value_action->setToolTip("The attribute will be set to its default value");
+  set_default_value_action->setEnabled(false);
+
+  m_modify_attribute_menu->addSeparator();
+
+  auto set_placeholder_action = m_modify_attribute_menu->addAction("Set placeholder attribute");
+  set_placeholder_action->setToolTip(
+      "Attribute will be defined as string, allowing to use placeholders $par and references "
+      "@par");
+  set_placeholder_action->setEnabled(false);
+
+  if (auto attribute_item = GetSelectedAttributeItem(); attribute_item)
+  {
+    enable_action->setEnabled(true);
+    enable_action->setChecked(attribute_item->IsPresent());
+    auto on_unset = [attribute_item]()
+    { attribute_item->SetPresentFlag(!attribute_item->IsPresent()); };
+    connect(enable_action, &QAction::triggered, this, on_unset);
+
+    set_default_value_action->setEnabled(true);
+    auto on_default_attribute = [attribute_item]() { attribute_item->SetAttributeFromTypeName(); };
+    connect(set_default_value_action, &QAction::triggered, this, on_default_attribute);
+
+    set_placeholder_action->setEnabled(true);
+    auto on_placeholder = [attribute_item]() { attribute_item->SetAttributeAsString("$par"); };
+    connect(set_placeholder_action, &QAction::triggered, this, on_placeholder);
+  }
+}
+
+AttributeItem *InstructionAttributeEditorActions::GetSelectedAttributeItem()
+{
+  return dynamic_cast<AttributeItem *>(m_editor_context.selected_item_callback());
 }
 
 }  // namespace sequencergui

@@ -32,6 +32,8 @@ class QAction;
 namespace sequencergui
 {
 
+class AttributeItem;
+
 /**
  * @brief The InstructionAttributeEditorActions class represent various actions which can be
  * performed with instruction attributes.
@@ -55,6 +57,7 @@ public:
 
 private:
   void OnAboutToShowMenu();
+  AttributeItem* GetSelectedAttributeItem();
 
   //!< the menu attached to action, generated on the fly
   std::unique_ptr<QMenu> m_modify_attribute_menu;
