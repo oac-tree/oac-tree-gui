@@ -20,14 +20,15 @@
 #include "instruction_attribute_editor.h"
 
 #include "instruction_attribute_editor_actions.h"
+#include "instruction_attribute_editor_context.h"
 
 #include <sequencergui/model/attribute_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QSettings>
@@ -50,7 +51,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view))
-    , m_actions(new InstructionAttributeEditorActions(this))
+    , m_actions(new InstructionAttributeEditorActions(CreateActionContext(), this))
 {
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
   m_tool_bar->addActions(m_actions->GetToolBarActions());
@@ -148,6 +149,13 @@ void InstructionAttributeEditor::SummonCustomMenu(const QPoint &point)
   connect(action, &QAction::triggered, this, on_placeholder);
 
   menu.exec(m_tree_view->mapToGlobal(point));
+}
+
+InstructionAttributeEditorContext InstructionAttributeEditor::CreateActionContext()
+{
+  auto selected_item_callback = [this]() { return m_component_provider->GetSelectedItem(); };
+
+  return {selected_item_callback};
 }
 
 }  // namespace sequencergui

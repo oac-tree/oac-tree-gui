@@ -23,6 +23,7 @@
 #include <QObject>
 
 #include <memory>
+#include <sequencergui/composer/instruction_attribute_editor_context.h>
 
 class QWidgetAction;
 class QMenu;
@@ -44,7 +45,7 @@ class InstructionAttributeEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit InstructionAttributeEditorActions(QObject* parent = nullptr);
+  explicit InstructionAttributeEditorActions(InstructionAttributeEditorContext context, QObject* parent = nullptr);
   ~InstructionAttributeEditorActions() override;
 
   /**
@@ -60,6 +61,8 @@ private:
 
   //!< a tool button with instant menu to embed in a toolbar
   QWidgetAction* m_modify_attribute_action{nullptr};
+
+  InstructionAttributeEditorContext m_editor_context;
 };
 
 }  // namespace sequencergui

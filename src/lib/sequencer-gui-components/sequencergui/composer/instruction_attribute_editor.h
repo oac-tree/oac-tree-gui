@@ -40,6 +40,7 @@ namespace sequencergui
 {
 
 class InstructionAttributeEditorActions;
+class InstructionAttributeEditorContext;
 
 /**
  * @brief The InstructionAttributeEditor provides a toolbar and two-column tree for editing
@@ -66,6 +67,11 @@ private:
    * @brief Summons custom context menu to modify attributes.
    */
   void SummonCustomMenu(const QPoint& point);
+
+  /**
+   * @brief Returns context necessary to setup context menu and toolbar actions.
+   */
+  InstructionAttributeEditorContext CreateActionContext();
 
   QToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};

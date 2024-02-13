@@ -19,6 +19,8 @@
 
 #include "instruction_attribute_editor_actions.h"
 
+#include "instruction_attribute_editor_context.h"
+
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
@@ -28,10 +30,12 @@
 namespace sequencergui
 {
 
-InstructionAttributeEditorActions::InstructionAttributeEditorActions(QObject *parent)
+InstructionAttributeEditorActions::InstructionAttributeEditorActions(
+    InstructionAttributeEditorContext context, QObject *parent)
     : QObject(parent)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new QWidgetAction(this))
+    , m_editor_context(std::move(context))
 {
   m_modify_attribute_menu->setToolTipsVisible(true);
   connect(m_modify_attribute_menu.get(), &QMenu::aboutToShow, this,

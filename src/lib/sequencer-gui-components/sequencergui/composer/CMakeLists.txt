@@ -11,6 +11,7 @@ target_sources(${library_name} PRIVATE
   instruction_attribute_editor.h
   instruction_attribute_editor_actions.cpp
   instruction_attribute_editor_actions.h
+  instruction_attribute_editor_context.h
   instruction_editor_action_handler.cpp
   instruction_editor_action_handler.h
   instruction_editor_actions.cpp
