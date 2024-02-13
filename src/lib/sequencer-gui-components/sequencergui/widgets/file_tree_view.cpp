@@ -161,8 +161,8 @@ void FileTreeView::SetupActions()
 
   // Bookmark action
 
-  // QAction with menu doesn't provide instant popup capabilities, thus we use QToolButton and wrap
-  // it into QWidgetAction.
+  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
+  // a QToolButton feature) and still be able to pass actions around.
 
   m_bookmark_menu->setToolTipsVisible(true);
   connect(m_bookmark_menu.get(), &QMenu::aboutToShow, this,

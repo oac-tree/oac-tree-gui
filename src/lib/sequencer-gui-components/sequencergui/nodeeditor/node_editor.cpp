@@ -37,9 +37,7 @@
 
 #include <mvvm/model/application_model.h>
 
-#include <QDebug>
 #include <QPointF>
-#include <QToolBar>
 #include <QVBoxLayout>
 #include <QWidgetAction>
 

@@ -25,7 +25,6 @@
 #include <QWidget>
 
 class QKeyEvent;
-class QToolBar;
 class QWidgetAction;
 
 namespace sup::gui
@@ -65,8 +64,6 @@ public:
   void SetSelectedInstructions(const std::vector<InstructionItem*>& instructions) const;
 
   std::unique_ptr<sup::gui::MessageHandlerInterface> CreateMessageHandler();
-
-  //  std::unique_ptr<QToolBar> CreateToolBar();
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);

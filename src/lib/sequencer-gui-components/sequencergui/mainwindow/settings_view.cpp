@@ -33,7 +33,6 @@
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QTabWidget>
-#include <QToolBar>
 #include <QTreeView>
 #include <QVBoxLayout>
 

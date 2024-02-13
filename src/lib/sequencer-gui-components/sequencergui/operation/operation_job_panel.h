@@ -22,8 +22,6 @@
 
 #include <QWidget>
 
-class QToolBar;
-
 namespace sup::gui
 {
 class CollapsibleListView;

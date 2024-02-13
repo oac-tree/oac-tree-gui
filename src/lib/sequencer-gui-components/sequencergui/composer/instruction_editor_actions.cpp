@@ -48,8 +48,8 @@ QList<QAction *> InstructionEditorActions::GetActions() const
 
 void InstructionEditorActions::SetupActions()
 {
-  // QAction with menu doesn't provide instant popup capabilities.
-  // But we can use QToolButton and wrap it into QWidgetAction
+  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
+  // a QToolButton feature) and still be able to pass actions around.
 
   auto insert_after_button = new QToolButton;
   insert_after_button->setText("Add");

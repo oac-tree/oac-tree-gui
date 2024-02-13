@@ -31,7 +31,6 @@
 
 #include <QSettings>
 #include <QSplitter>
-#include <QToolBar>
 #include <QVBoxLayout>
 
 namespace

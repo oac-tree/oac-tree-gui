@@ -46,8 +46,8 @@ WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
 void WorkspaceEditorActions::SetupActions()
 {
-  // QAction with menu doesn't provide instant popup capabilities.
-  // But we can use QToolButton and wrap it into QWidgetAction
+  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
+  // a QToolButton feature) and still be able to pass actions around.
 
   auto add_variable_button = new QToolButton;
   add_variable_button->setText("Add");
