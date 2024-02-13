@@ -55,6 +55,11 @@ public:
    */
   QList<QAction*> GetToolBarActions() const;
 
+  /**
+   * @brief Setup empty menu with actions available for given attribute.
+   */
+  static void SetupMenu(QMenu& menu, AttributeItem* attribute_item);
+
 private:
   void OnAboutToShowMenu();
   AttributeItem* GetSelectedAttributeItem();

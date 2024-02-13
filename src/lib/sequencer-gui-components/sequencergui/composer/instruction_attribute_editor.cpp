@@ -120,34 +120,9 @@ void InstructionAttributeEditor::SummonCustomMenu(const QPoint &point)
   auto index = m_tree_view->indexAt(point);
   auto item = dynamic_cast<AttributeItem *>(
       m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
-  if (!item)
-  {
-    return;
-  }
 
   QMenu menu;
-  menu.setToolTipsVisible(true);
-
-  auto action = menu.addAction("Attribute is enabled flag");
-  action->setToolTip("Attribute with enabled flag set will be propagated to domain.");
-  action->setCheckable(true);
-  action->setChecked(item->IsPresent());
-  auto on_unset = [item]() { item->SetPresentFlag(!item->IsPresent()); };
-  connect(action, &QAction::triggered, this, on_unset);
-
-  menu.addSeparator();
-
-  action = menu.addAction("Set default value");
-  action->setToolTip("The attribute will be set to its default value");
-  auto on_default_attribute = [item]() { item->SetAttributeFromTypeName(); };
-  connect(action, &QAction::triggered, this, on_default_attribute);
-
-  action = menu.addAction("Set placeholder attribute");
-  action->setToolTip(
-      "Attribute will be defined as string, allowing to use placeholders $par and references @par");
-  auto on_placeholder = [item]() { item->SetAttributeAsString("$par"); };
-  connect(action, &QAction::triggered, this, on_placeholder);
-
+  m_actions->SetupMenu(menu, item);
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
