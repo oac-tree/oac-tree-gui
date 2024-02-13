@@ -27,13 +27,13 @@
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
+#include <sup/gui/widgets/style_utils.h>
 
-#include <QDebug>
 #include <QMenu>
 #include <QSettings>
+#include <QToolBar>
 #include <QTreeView>
 #include <QVBoxLayout>
-#include <iostream>
 
 namespace
 {
@@ -46,14 +46,19 @@ namespace sequencergui
 
 InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     : QWidget(parent)
+    , m_tool_bar(new QToolBar)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view))
     , m_actions(new InstructionAttributeEditorActions(this))
 {
+  m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
+  m_tool_bar->addActions(m_actions->GetToolBarActions());
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
+  layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
 
   m_custom_header->setStretchLastSection(true);

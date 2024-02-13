@@ -22,15 +22,44 @@
 
 #include <QObject>
 
+#include <memory>
+
+class QWidgetAction;
+class QMenu;
+class QAction;
+
 namespace sequencergui
 {
 
+/**
+ * @brief The InstructionAttributeEditorActions class represent various actions which can be
+ * performed with instruction attributes.
+ *
+ * @details It's a part of InstructionAttributeEditor. It is responsible for consrtuction of context
+ * menu for instruction property editor. Handles the logic which actions can be applied to given
+ * selection.
+ */
 class InstructionAttributeEditorActions : public QObject
 {
   Q_OBJECT
 
 public:
   explicit InstructionAttributeEditorActions(QObject* parent = nullptr);
+  ~InstructionAttributeEditorActions() override;
+
+  /**
+   * @brief Returns list of actions intended for a toolbar.
+   */
+  QList<QAction*> GetToolBarActions() const;
+
+private:
+  void OnAboutToShowMenu();
+
+  //!< the menu attached to action, generated on the fly
+  std::unique_ptr<QMenu> m_modify_attribute_menu;
+
+  //!< a tool button with instant menu to embed in a toolbar
+  QWidgetAction* m_modify_attribute_action{nullptr};
 };
 
 }  // namespace sequencergui

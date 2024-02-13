@@ -23,6 +23,7 @@
 #include <QWidget>
 
 class QTreeView;
+class QToolBar;
 
 namespace mvvm
 {
@@ -66,6 +67,7 @@ private:
    */
   void SummonCustomMenu(const QPoint& point);
 
+  QToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
