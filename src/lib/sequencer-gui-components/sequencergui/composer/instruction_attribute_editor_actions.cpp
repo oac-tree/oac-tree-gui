@@ -22,7 +22,14 @@
 #include "instruction_attribute_editor_context.h"
 
 #include <sequencergui/model/attribute_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/pvmonitor/workspace_editor_context.h>
+#include <sequencergui/pvmonitor/workspace_monitor_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/style_utils.h>
+
+#include <mvvm/model/item_utils.h>
+#include <mvvm/model/sessionmodel.h>
 
 #include <QMenu>
 #include <QToolButton>
@@ -120,11 +127,53 @@ void InstructionAttributeEditorActions::OnAboutToShowMenu()
   SetupMenu(*m_modify_attribute_menu, GetSelectedAttributeItem());
 }
 
-void InstructionAttributeEditorActions::OnEditAnyvalueRequest() {}
+void InstructionAttributeEditorActions::OnEditAnyvalueRequest()
+{
+  if (!GetInstructionItem())
+  {
+    return;
+  }
+
+  if (auto selected_anyvalue = GetSelectedAnyValueItem(); selected_anyvalue)
+  {
+    auto edited_anyvalue = CreateAnyValueDialogCallback(nullptr)(selected_anyvalue);
+
+    // existent value means that the user exited from the dialog with OK
+    if (edited_anyvalue.is_accepted)
+    {
+      // remove previous AnyValueItem
+      if (selected_anyvalue)
+      {
+        GetModel()->RemoveItem(selected_anyvalue);
+      }
+
+      if (edited_anyvalue.result)
+      {
+        // if unique_ptr<AnyValueItem> is not empty, move it as a new value
+        GetModel()->InsertItem(std::move(edited_anyvalue.result), GetInstructionItem(), {});
+      }
+    }
+  }
+}
 
 AttributeItem *InstructionAttributeEditorActions::GetSelectedAttributeItem()
 {
   return dynamic_cast<AttributeItem *>(m_editor_context.selected_item_callback());
+}
+
+sup::gui::AnyValueItem *InstructionAttributeEditorActions::GetSelectedAnyValueItem()
+{
+  return dynamic_cast<sup::gui::AnyValueItem *>(m_editor_context.selected_item_callback());
+}
+
+mvvm::SessionModelInterface *InstructionAttributeEditorActions::GetModel()
+{
+  return GetSelectedAnyValueItem() ? GetSelectedAnyValueItem()->GetModel() : nullptr;
+}
+
+InstructionItem *InstructionAttributeEditorActions::GetInstructionItem()
+{
+  return FindAncestor<InstructionItem>(m_editor_context.selected_item_callback());
 }
 
 }  // namespace sequencergui

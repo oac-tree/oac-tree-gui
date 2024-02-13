@@ -46,7 +46,6 @@ class WorkspaceItem;
 /**
  * @brief The AnyValueDialogResult struct is intended to return AnyValueItem from the dialog.
  */
-
 struct AnyValueDialogResult
 {
   //!< Flag showing if operation was finished (OK button), or dialog was canceled. Canceled dialog
@@ -56,8 +55,9 @@ struct AnyValueDialogResult
   std::unique_ptr<sup::gui::AnyValueItem> result;
 };
 
-//! Context to setup WorkspaceEditorActions.
-
+/**
+ * @brief The WorkspaceEditorContext class represents a context to setup WorkspaceEditorActions.
+ */
 struct WorkspaceEditorContext
 {
   //!< callback to retrieve current workspace to operate

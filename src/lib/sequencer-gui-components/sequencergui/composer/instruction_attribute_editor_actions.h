@@ -29,10 +29,20 @@ class QWidgetAction;
 class QMenu;
 class QAction;
 
+namespace mvvm
+{
+class SessionModelInterface;
+}
+
+namespace sup::gui{
+class AnyValueItem;
+}
+
 namespace sequencergui
 {
 
 class AttributeItem;
+class InstructionItem;
 
 /**
  * @brief The InstructionAttributeEditorActions class represent various actions which can be
@@ -66,6 +76,12 @@ private:
   void OnEditAnyvalueRequest();
 
   AttributeItem* GetSelectedAttributeItem();
+
+  sup::gui::AnyValueItem* GetSelectedAnyValueItem();
+
+  mvvm::SessionModelInterface* GetModel();
+
+  InstructionItem* GetInstructionItem();
 
   //!< the menu attached to action, generated on the fly
   std::unique_ptr<QMenu> m_modify_attribute_menu;
