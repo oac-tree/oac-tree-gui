@@ -18,7 +18,5 @@ target_sources(${library_name} PRIVATE
   message_helper.h
   procedure_list_widget.cpp
   procedure_list_widget.h
-  universal_property_editor.cpp
-  universal_property_editor.h
 )
 

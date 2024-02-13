@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "universal_property_editor.h"
+#include "instruction_attribute_editor.h"
 
 #include <sequencergui/model/attribute_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -42,7 +42,7 @@ const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
 namespace sequencergui
 {
 
-UniversalPropertyEditor::UniversalPropertyEditor(QWidget *parent)
+InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
@@ -58,24 +58,24 @@ UniversalPropertyEditor::UniversalPropertyEditor(QWidget *parent)
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          &UniversalPropertyEditor::SummonCustomMenu);
+          &InstructionAttributeEditor::SummonCustomMenu);
 
   ReadSettings();
   AdjustTreeAppearance();
 }
 
-UniversalPropertyEditor::~UniversalPropertyEditor()
+InstructionAttributeEditor::~InstructionAttributeEditor()
 {
   WriteSettings();
 }
 
-void UniversalPropertyEditor::SetItem(mvvm::SessionItem *item)
+void InstructionAttributeEditor::SetItem(mvvm::SessionItem *item)
 {
   m_component_provider->SetItem(item);
   AdjustTreeAppearance();
 }
 
-void UniversalPropertyEditor::ReadSettings()
+void InstructionAttributeEditor::ReadSettings()
 {
   const QSettings settings;
 
@@ -85,7 +85,7 @@ void UniversalPropertyEditor::ReadSettings()
   }
 }
 
-void UniversalPropertyEditor::WriteSettings()
+void InstructionAttributeEditor::WriteSettings()
 {
   QSettings settings;
   if (m_custom_header->HasFavoriteState())
@@ -94,7 +94,7 @@ void UniversalPropertyEditor::WriteSettings()
   }
 }
 
-void UniversalPropertyEditor::AdjustTreeAppearance()
+void InstructionAttributeEditor::AdjustTreeAppearance()
 {
   if (m_custom_header->HasFavoriteState())
   {
@@ -106,7 +106,7 @@ void UniversalPropertyEditor::AdjustTreeAppearance()
   }
 }
 
-void UniversalPropertyEditor::SummonCustomMenu(const QPoint &point)
+void InstructionAttributeEditor::SummonCustomMenu(const QPoint &point)
 {
   auto index = m_tree_view->indexAt(point);
   auto item = dynamic_cast<AttributeItem *>(

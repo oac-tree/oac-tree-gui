@@ -45,7 +45,7 @@ class InstructionItem;
 class InstructionEditorContext;
 class InstructionEditorActionHandler;
 class InstructionEditorActions;
-class UniversalPropertyEditor;
+class InstructionAttributeEditor;
 class CustomTreeViewStyle;
 
 //! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
@@ -83,7 +83,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  UniversalPropertyEditor* m_property_tree{nullptr};
+  InstructionAttributeEditor* m_property_tree{nullptr};
 
   QSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};

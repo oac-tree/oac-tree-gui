@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_UNIVERSAL_PROPERTY_EDITOR_H_
-#define SEQUENCERGUI_COMPONENTS_UNIVERSAL_PROPERTY_EDITOR_H_
+#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_
+#define SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_
 
 #include <QWidget>
 
@@ -39,20 +39,19 @@ namespace sequencergui
 {
 
 /**
- * @brief The UniversalPropertyEditor provide two column tree for editing properties of universal
- * variables and instructions.
+ * @brief The InstructionPropertyEditor provide two column tree for editing instruction properties.
  *
  * @details For the moment it's just a normal property editor. It will be further extended tiwth
  * additional tool buttons and context menu.
  */
 
-class UniversalPropertyEditor : public QWidget
+class InstructionAttributeEditor : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit UniversalPropertyEditor(QWidget* parent = nullptr);
-  ~UniversalPropertyEditor() override;
+  explicit InstructionAttributeEditor(QWidget* parent = nullptr);
+  ~InstructionAttributeEditor() override;
 
   void SetItem(mvvm::SessionItem* item);
 
@@ -72,4 +71,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_UNIVERSAL_PROPERTY_EDITOR_H_
+#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_H_

@@ -14,6 +14,8 @@ target_sources(${library_name} PRIVATE
   instruction_editor_context.h
   instruction_editor_widget.cpp
   instruction_editor_widget.h
+  instruction_attribute_editor.cpp
+  instruction_attribute_editor.h
   instruction_item_panel.cpp
   instruction_item_panel.h
   sequencer_composer_actions.cpp

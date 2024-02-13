@@ -19,10 +19,10 @@
 
 #include "instruction_editor_widget.h"
 
+#include "instruction_attribute_editor.h"
 #include "instruction_editor_context.h"
 
 #include <sequencergui/components/message_helper.h>
-#include <sequencergui/components/universal_property_editor.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -59,7 +59,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
-    , m_property_tree(new UniversalPropertyEditor)
+    , m_property_tree(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))
     , m_action_handler(
