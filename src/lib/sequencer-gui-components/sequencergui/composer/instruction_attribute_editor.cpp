@@ -19,6 +19,8 @@
 
 #include "instruction_attribute_editor.h"
 
+#include "instruction_attribute_editor_actions.h"
+
 #include <sequencergui/model/attribute_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
@@ -47,6 +49,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view))
+    , m_actions(new InstructionAttributeEditorActions(this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

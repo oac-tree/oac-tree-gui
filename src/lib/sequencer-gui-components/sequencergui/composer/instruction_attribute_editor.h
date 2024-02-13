@@ -38,13 +38,15 @@ class CustomHeaderView;
 namespace sequencergui
 {
 
-/**
- * @brief The InstructionPropertyEditor provide two column tree for editing instruction properties.
- *
- * @details For the moment it's just a normal property editor. It will be further extended tiwth
- * additional tool buttons and context menu.
- */
+class InstructionAttributeEditorActions;
 
+/**
+ * @brief The InstructionAttributeEditor provides a toolbar and two-column tree for editing
+ * instruction attributes.
+ *
+ * @details It is located at the bottom of the InstructionEditorWidget (main SequencerComposerView).
+ * It is just the usual property editor with additional actions to enable/disable attributes.
+ */
 class InstructionAttributeEditor : public QWidget
 {
   Q_OBJECT
@@ -67,6 +69,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+  InstructionAttributeEditorActions* m_actions{nullptr};
 };
 
 }  // namespace sequencergui
