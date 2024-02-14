@@ -302,7 +302,9 @@ TEST_F(GraphicsSceneControllerTest, RemoveProcedure)
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
 }
 
-//! Testing the case when
+//! Testing the case when AnyValue is replaced on board of PvAccessWriteInstructionItem.
+//! The graphics controller should be happy with that and shouldn't try to create/remove
+//! instructions related views.
 
 TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
 {
@@ -321,4 +323,5 @@ TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
 
   EXPECT_NO_THROW(SetAnyValue(expected_anyvalue, *instruction_item));
+  EXPECT_EQ(m_scene.GetConnectableViews(), std::vector<ConnectableView*>({instruction_view}));
 }
