@@ -173,7 +173,8 @@ mvvm::SessionModelInterface *InstructionAttributeEditorActions::GetModel()
 
 InstructionItem *InstructionAttributeEditorActions::GetInstructionItem()
 {
-  return FindAncestor<InstructionItem>(m_editor_context.selected_item_callback());
+  return const_cast<InstructionItem *>(
+      mvvm::utils::FindItemUp<InstructionItem>(m_editor_context.selected_item_callback()));
 }
 
 }  // namespace sequencergui

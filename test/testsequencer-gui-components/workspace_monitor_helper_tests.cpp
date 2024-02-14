@@ -28,6 +28,8 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/model/item_utils.h>
+
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -80,16 +82,16 @@ TEST_F(WorkspaceMonitorHelperTest, PopulateDomainWorkspaceSingleVariables)
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
 }
 
-TEST_F(WorkspaceMonitorHelperTest, FindAncestor)
+TEST_F(WorkspaceMonitorHelperTest, FindItemUp)
 {
   WorkspaceItem workspace_item;
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
 
-  EXPECT_EQ(FindAncestor<WorkspaceItem>(nullptr), nullptr);
-  EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0), &workspace_item);
-  EXPECT_EQ(FindAncestor<LocalVariableItem>(var_item0->GetAnyValueItem()), var_item0);
-  EXPECT_EQ(FindAncestor<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
+  EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(nullptr), nullptr);
+  EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(var_item0), &workspace_item);
+  EXPECT_EQ(mvvm::utils::FindItemUp<LocalVariableItem>(var_item0->GetAnyValueItem()), var_item0);
+  EXPECT_EQ(mvvm::utils::FindItemUp<WorkspaceItem>(var_item0->GetAnyValueItem()), &workspace_item);
 }
 
 TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)

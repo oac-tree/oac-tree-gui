@@ -27,6 +27,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/item_utils.h>
 
 namespace
 {
@@ -108,7 +109,9 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
   }
 
   auto selected_variable =
-      GetSelectedVariable() ? GetSelectedVariable() : FindAncestor<VariableItem>(selected_item);
+      GetSelectedVariable()
+          ? GetSelectedVariable()
+          : const_cast<VariableItem *>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
 
   if (!kIsPvClientAnyValueEditingAllowed
       && selected_variable->GetDomainType() == domainconstants::kPvAccessClientVariableType)

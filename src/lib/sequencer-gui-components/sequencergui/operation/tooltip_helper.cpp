@@ -87,7 +87,7 @@ namespace sequencergui
 
 QString GetInstructionToolTipText(const mvvm::SessionItem* item)
 {
-  auto instruction = mvvm::utils::FindItemUp<InstructionItem>(item);
+  const auto instruction = mvvm::utils::FindItemUp<InstructionItem>(item);
   if (!instruction)
   {
     return {};

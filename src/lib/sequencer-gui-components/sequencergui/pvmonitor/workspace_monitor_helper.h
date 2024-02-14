@@ -50,34 +50,6 @@ namespace sequencergui
 void PopulateDomainWorkspace(const WorkspaceItem& item, workspace_t& workspace);
 
 /**
- * @brief Find ancestor of given type by going up in the hierarchy.
- *
- * @param item The child to start with.
- * @return First parent which was successfully dynamically casted to a given type.
- */
-template <typename T>
-T* FindAncestor(const mvvm::SessionItem* item)
-{
-  if (!item)
-  {
-    return nullptr;
-  }
-
-  mvvm::SessionItem* parent = item->GetParent();
-
-  while (parent)
-  {
-    if (auto result = dynamic_cast<T*>(parent); result)
-    {
-      return result;
-    }
-    parent = parent->GetParent();
-  }
-
-  return nullptr;
-}
-
-/**
  * @brief Mark variable properties as enabled or disabled depending on if workspace is idle or
  * running.
  *
