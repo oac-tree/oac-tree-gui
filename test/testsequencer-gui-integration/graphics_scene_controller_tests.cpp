@@ -19,6 +19,8 @@
 
 #include "sequencergui/nodeeditor/graphics_scene_controller.h"
 
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -28,13 +30,12 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
-#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <sequencergui/domain/domain_utils.h>
 
 #include <sup/dto/anyvalue.h>
+
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -320,5 +321,4 @@ TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
 
   EXPECT_NO_THROW(SetAnyValue(expected_anyvalue, *instruction_item));
-
 }

@@ -21,6 +21,7 @@
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/nodeeditor/connectable_view.h>
 #include <sequencergui/nodeeditor/connectable_view_factory.h>
 #include <sequencergui/nodeeditor/connectable_view_map.h>
@@ -183,6 +184,11 @@ GraphicsSceneController::~GraphicsSceneController() = default;
 
 void GraphicsSceneController::OnModelEvent(const mvvm::ItemInsertedEvent& event)
 {
+  if (event.m_tag_index.tag == itemconstants::kAnyValueTag)
+  {
+    return;
+  }
+
   if (p_impl->IsInScope(event.m_item))
   {
     p_impl->InsertView(event.m_item, event.m_tag_index);
@@ -193,6 +199,10 @@ void GraphicsSceneController::OnModelEvent(const mvvm::AboutToRemoveItemEvent& e
 {
   auto [parent, tag_index] = event;
   auto item_to_remove = parent->GetItem(tag_index);
+  if (tag_index.tag == itemconstants::kAnyValueTag)
+  {
+    return;
+  }
 
   // Special case when user removes procedure owning our instruction container.
   if (item_to_remove == p_impl->m_root_item->GetParent())

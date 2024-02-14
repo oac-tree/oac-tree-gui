@@ -129,29 +129,29 @@ void InstructionAttributeEditorActions::OnAboutToShowMenu()
 
 void InstructionAttributeEditorActions::OnEditAnyvalueRequest()
 {
-  if (!GetInstructionItem())
+  auto instruction_item = GetInstructionItem();
+  if (!instruction_item)
   {
     return;
   }
 
-  if (auto selected_anyvalue = GetSelectedAnyValueItem(); selected_anyvalue)
+  auto model = GetInstructionItem()->GetModel();
+  auto selected_anyvalue = GetSelectedAnyValueItem();
+
+  auto edited_anyvalue = CreateAnyValueDialogCallback(nullptr)(selected_anyvalue);
+
+  // existent value means that the user exited from the dialog with OK
+  if (edited_anyvalue.is_accepted)
   {
-    auto edited_anyvalue = CreateAnyValueDialogCallback(nullptr)(selected_anyvalue);
-
-    // existent value means that the user exited from the dialog with OK
-    if (edited_anyvalue.is_accepted)
+    // remove previous AnyValueItem
+    if (selected_anyvalue)
     {
-      // remove previous AnyValueItem
-      if (selected_anyvalue)
-      {
-        GetModel()->RemoveItem(selected_anyvalue);
-      }
+      model->RemoveItem(selected_anyvalue);
+    }
 
-      if (edited_anyvalue.result)
-      {
-        // if unique_ptr<AnyValueItem> is not empty, move it as a new value
-        GetModel()->InsertItem(std::move(edited_anyvalue.result), GetInstructionItem(), {});
-      }
+    if (edited_anyvalue.result)
+    {
+      model->InsertItem(std::move(edited_anyvalue.result), instruction_item, {});
     }
   }
 }
