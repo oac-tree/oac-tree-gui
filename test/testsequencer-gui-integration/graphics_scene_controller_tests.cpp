@@ -28,12 +28,14 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
+#include <sequencergui/model/epics_instruction_items.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <sequencergui/domain/domain_utils.h>
 
+#include <sup/dto/anyvalue.h>
 #include <gtest/gtest.h>
-
-#include <iostream>
 
 using namespace sequencergui;
 
@@ -297,4 +299,26 @@ TEST_F(GraphicsSceneControllerTest, RemoveProcedure)
 
   // graphics scene should be cleaned up
   EXPECT_EQ(m_scene.GetConnectableViews().size(), 0);
+}
+
+//! Testing the case when
+
+TEST_F(GraphicsSceneControllerTest, InsertAnyValueItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  auto controller = CreateController();
+
+  auto instruction_item = m_model.InsertItem<PvAccessWriteInstructionItem>(GetContainer());
+
+  auto instruction_view = m_scene.FindViewForInstruction(instruction_item);
+  EXPECT_EQ(m_scene.GetConnectableViews(), std::vector<ConnectableView*>({instruction_view}));
+
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+
+  EXPECT_NO_THROW(SetAnyValue(expected_anyvalue, *instruction_item));
+
 }
