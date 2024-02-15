@@ -67,7 +67,7 @@ std::string ExportToXMLString(const ProcedureItem &procedure_item)
 {
   DomainProcedureBuilder builder;
   auto domain_procedure = builder.CreateProcedure(procedure_item);
-  return GetXMLString(*domain_procedure);
+  return ReplaceQuotationMarks(GetXMLString(*domain_procedure));
 }
 
 std::string ReplaceQuotationMarks(const std::string &str)
