@@ -28,8 +28,24 @@
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/sequence_parser.h>
 
-#include <iostream>
 #include <stdexcept>
+
+namespace
+{
+
+/**
+ * @brief Finds position of two quotes in a string starting from given position.
+ */
+std::pair<size_t, size_t> FindQuotes(const std::string &str, size_t pos = 0)
+{
+  const char quote = '"';
+  auto pos1 = str.find(quote, pos);
+  size_t pos2 = pos1 == std::string::npos ? std::string::npos : str.find(quote, pos1 + 1);
+  return {pos1, pos2};
+}
+
+}  // namespace
+
 namespace sequencergui
 {
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string &file_name)
@@ -52,6 +68,40 @@ std::string ExportToXMLString(const ProcedureItem &procedure_item)
   DomainProcedureBuilder builder;
   auto domain_procedure = builder.CreateProcedure(procedure_item);
   return GetXMLString(*domain_procedure);
+}
+
+std::string ReplaceQuotationMarks(const std::string &str)
+{
+  const std::string double_quote("\"");
+  const std::string html_quote = "&quot;";
+  const char single_quote = '\'';
+
+  std::string result(str);
+  auto pos = FindQuotes(result);
+
+  while (pos.first != std::string::npos && pos.second != std::string::npos)
+  {
+    auto pos_html = result.find(html_quote, pos.first + 1);
+
+    bool contains = false;
+    while (pos_html < pos.second)
+    {
+      result.replace(pos_html, html_quote.length(), double_quote);
+      pos.second = pos.second - html_quote.length() + double_quote.length();
+
+      pos_html = result.find(html_quote, pos_html + 1);
+      contains = true;
+    }
+    if (contains)
+    {
+      result[pos.first] = single_quote;
+      result[pos.second] = single_quote;
+    }
+
+    pos = FindQuotes(result, pos.second + 1);
+  }
+
+  return result;
 }
 
 }  // namespace sequencergui

@@ -103,3 +103,30 @@ TEST_F(XmlUtilsTest, ExportToXMLStringProcedureWithSingleWait)
   auto expected_string = testutils::CreateProcedureString(body, /*schema*/ false);
   EXPECT_EQ(sequencergui::ExportToXMLString(procedure_item), expected_string);
 }
+
+TEST_F(XmlUtilsTest, ReplaceQuotationMarks)
+{
+  using sequencergui::ReplaceQuotationMarks;
+
+  // string stays the same
+  EXPECT_EQ(ReplaceQuotationMarks(""), std::string());
+  EXPECT_EQ(ReplaceQuotationMarks("abc"), std::string("abc"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW("type")RAW"), std::string(R"RAW("type")RAW"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW(value='0')RAW"), std::string(R"RAW(value='0')RAW"));
+
+  // html quotes replaced
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW("&quot;")RAW"), std::string(R"RAW('"')RAW"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW(type="{&quot;abc&quot;}")RAW"),
+            std::string(R"RAW(type='{"abc"}')RAW"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW(type="{&quot;type&quot;:&quot;uint64&quot;}")RAW"),
+            std::string(R"RAW(type='{"type":"uint64"}')RAW"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW(value="&quot;My variable&quot;")RAW"),
+            std::string(R"RAW(value='"My variable"')RAW"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW(value="&quot;My variable&quot;")RAW"),
+            std::string(R"RAW(value='"My variable"')RAW"));
+  const std::string long_str(
+      R"RAW(<Local name="cancel_text" dynamicType="false" type="{&quot;type&quot;:&quot;string&quot;}" value="&quot;Negative&quot;"/>)RAW");
+  const std::string expected(
+      R"RAW(<Local name="cancel_text" dynamicType="false" type='{"type":"string"}' value='"Negative"'/>)RAW");
+  EXPECT_EQ(ReplaceQuotationMarks(long_str), expected);
+}

@@ -29,12 +29,35 @@ namespace sequencergui
 {
 class ProcedureItem;
 
-//! Returns ProcedureItem representing a sequencer procedure stored in given xml file.
+/**
+ * @brief Returns ProcedureItem representing a sequencer procedure stored in given xml file.
+ */
 std::unique_ptr<ProcedureItem> ImportFromFile(const std::string& file_name);
 
-//! Exports procedure to XML string.
+/**
+ * @brief Exports procedure to XML string.
+ * @param procedure_item
+ * @return
+ */
 std::string ExportToXMLString(const ProcedureItem& procedure_item);
 
+/**
+ * @brief Replaces quotation marks with double quotes.
+ *
+ * @param str Original string.
+ * @return New string without quotation marks.
+ *
+ * @details
+ * @code{xml}
+ *    type="{&quot;type&quot;:&quot;uint64&quot;}"
+ * @endcode
+ * should become
+ * @code{xml}
+ *    type='{"type":"uint64"}'
+ * @endcode
+ */
+
+std::string ReplaceQuotationMarks(const std::string& str);
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_XML_UTILS_H_
