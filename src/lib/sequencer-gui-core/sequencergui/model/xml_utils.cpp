@@ -45,7 +45,7 @@ std::pair<size_t, size_t> FindQuotes(const std::string &str, size_t pos = 0)
 }
 
 /**
- * @brief Replace alls occurences of HTML-quot symbol with normal double quotes.
+ * @brief Replaces all occurences of HTML-quot symbol with normal double quotes.
  *
  * @param str Reference to the string to be modified.
  *
@@ -64,8 +64,8 @@ size_t ReplaceHtmlQuotes(std::string &str, size_t pos1, size_t pos2)
   while (pos_html < pos2)
   {
     str.replace(pos_html, html_quote.length(), double_quote);
-    pos2 = pos2 - html_quote.length() + double_quote.length();
-    pos_html = str.find(html_quote, pos_html + 1);
+    pos_html = str.find(html_quote, pos_html + double_quote.length());
+    pos2 = pos2 - html_quote.length() + double_quote.length(); // new end adjust
   }
 
   return pos2;
