@@ -118,6 +118,8 @@ TEST_F(XmlUtilsTest, ReplaceQuotationMarks)
   EXPECT_EQ(ReplaceQuotationMarks(R"RAW("&quot;")RAW"), std::string(R"RAW('"')RAW"));
   EXPECT_EQ(ReplaceQuotationMarks(R"RAW(type="{&quot;abc&quot;}")RAW"),
             std::string(R"RAW(type='{"abc"}')RAW"));
+  EXPECT_EQ(ReplaceQuotationMarks(R"RAW("&quot;abc&quot;&quot;def&quot;")RAW"),
+            std::string(R"RAW('"abc""def"')RAW"));
   EXPECT_EQ(ReplaceQuotationMarks(R"RAW(type="{&quot;type&quot;:&quot;uint64&quot;}")RAW"),
             std::string(R"RAW(type='{"type":"uint64"}')RAW"));
   EXPECT_EQ(ReplaceQuotationMarks(R"RAW(value="&quot;My variable&quot;")RAW"),
