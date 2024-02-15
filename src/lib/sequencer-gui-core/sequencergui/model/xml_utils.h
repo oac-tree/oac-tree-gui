@@ -42,7 +42,8 @@ std::unique_ptr<ProcedureItem> ImportFromFile(const std::string& file_name);
 std::string ExportToXMLString(const ProcedureItem& procedure_item);
 
 /**
- * @brief Replaces quotation marks with double quotes.
+ * @brief Replaces HTML quotation marks with double quotes, and turn existing double quotes to
+ * single quotes.
  *
  * @param str Original string.
  * @return New string without quotation marks.
@@ -55,6 +56,8 @@ std::string ExportToXMLString(const ProcedureItem& procedure_item);
  * @code{xml}
  *    type='{"type":"uint64"}'
  * @endcode
+ *
+ * @details If HTML quotation marks are not there, leave everything, including quotes, untouched.
  */
 
 std::string ReplaceQuotationMarks(const std::string& str);

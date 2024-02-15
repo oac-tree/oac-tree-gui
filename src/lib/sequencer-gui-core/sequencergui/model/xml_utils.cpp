@@ -44,6 +44,33 @@ std::pair<size_t, size_t> FindQuotes(const std::string &str, size_t pos = 0)
   return {pos1, pos2};
 }
 
+/**
+ * @brief Replace alls occurences of HTML-quot symbol with normal double quotes.
+ *
+ * @param str Reference to the string to be modified.
+ *
+ * @param pos1 The position to start search.
+ * @param pos2 The position to end the search.
+ *
+ * @return New position of the end if replacement had occured.
+ */
+size_t ReplaceHtmlQuotes(std::string &str, size_t pos1, size_t pos2)
+{
+  const std::string double_quote("\"");
+  const std::string html_quote = "&quot;";
+
+  auto pos_html = str.find(html_quote, pos1 + 1);
+
+  while (pos_html < pos2)
+  {
+    str.replace(pos_html, html_quote.length(), double_quote);
+    pos2 = pos2 - html_quote.length() + double_quote.length();
+    pos_html = str.find(html_quote, pos_html + 1);
+  }
+
+  return pos2;
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -72,33 +99,23 @@ std::string ExportToXMLString(const ProcedureItem &procedure_item)
 
 std::string ReplaceQuotationMarks(const std::string &str)
 {
-  const std::string double_quote("\"");
-  const std::string html_quote = "&quot;";
-  const char single_quote = '\'';
-
   std::string result(str);
+
   auto pos = FindQuotes(result);
 
   while (pos.first != std::string::npos && pos.second != std::string::npos)
   {
-    auto pos_html = result.find(html_quote, pos.first + 1);
+    auto new_pos2 = ReplaceHtmlQuotes(result, pos.first, pos.second);
 
-    bool contains = false;
-    while (pos_html < pos.second)
+    // if new end of the string differs, we have to turn external double quotes to single quotes.
+    if (new_pos2 != pos.second)
     {
-      result.replace(pos_html, html_quote.length(), double_quote);
-      pos.second = pos.second - html_quote.length() + double_quote.length();
-
-      pos_html = result.find(html_quote, pos_html + 1);
-      contains = true;
-    }
-    if (contains)
-    {
+      const char single_quote = '\'';
       result[pos.first] = single_quote;
-      result[pos.second] = single_quote;
+      result[new_pos2] = single_quote;
     }
 
-    pos = FindQuotes(result, pos.second + 1);
+    pos = FindQuotes(result, new_pos2 + 1);
   }
 
   return result;
