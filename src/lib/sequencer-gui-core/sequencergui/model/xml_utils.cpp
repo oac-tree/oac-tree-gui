@@ -59,7 +59,7 @@ size_t ReplaceHtmlQuotes(std::string &str, size_t pos1, size_t pos2)
   const std::string double_quote("\"");
   const std::string html_quote = "&quot;";
 
-  auto pos_html = str.find(html_quote, pos1 + 1);
+  auto pos_html = str.find(html_quote, pos1);
 
   while (pos_html < pos2)
   {
@@ -105,7 +105,7 @@ std::string ReplaceQuotationMarks(const std::string &str)
 
   while (pos.first != std::string::npos && pos.second != std::string::npos)
   {
-    auto new_pos2 = ReplaceHtmlQuotes(result, pos.first, pos.second);
+    auto new_pos2 = ReplaceHtmlQuotes(result, pos.first + 1, pos.second);
 
     // if new end of the string differs, we have to turn external double quotes to single quotes.
     if (new_pos2 != pos.second)
