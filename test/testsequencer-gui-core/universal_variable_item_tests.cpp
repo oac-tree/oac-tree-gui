@@ -64,19 +64,15 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // registered tags should coincide with name and dynamicType attributes, and AnyValueTag
   // (json type and value are filtered out)
-  const std::vector<std::string> expected_tags({domainconstants::kNameAttribute,
-                                                domainconstants::kDynamicTypeAttribute,
+  const std::vector<std::string> expected_tags({domainconstants::kDynamicTypeAttribute,
                                                 itemconstants::kAnyValueTag});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access
   auto properties = mvvm::utils::SinglePropertyItems(item);
-  ASSERT_EQ(properties.size(), 2);
+  ASSERT_EQ(properties.size(), 1);
 
-  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kNameAttribute);
-  EXPECT_TRUE(item.Property<std::string>(domainconstants::kNameAttribute).empty());
-
-  EXPECT_EQ(properties.at(1)->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
+  EXPECT_EQ(properties.at(0)->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
   EXPECT_EQ(item.Property<bool>(domainconstants::kDynamicTypeAttribute), false);
 
   // setting up domain variable and repeat initialisation
@@ -85,7 +81,7 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
   domain_variable->Setup(ws);
   EXPECT_NO_THROW(item.InitFromDomain(domain_variable.get()));
 
-  EXPECT_EQ(item.Property<std::string>(domainconstants::kNameAttribute), std::string("abc"));
+  EXPECT_EQ(item.GetDisplayName(), std::string("abc"));
 }
 
 //! Attempt to create domain variable using uninitialized item.
@@ -102,7 +98,7 @@ TEST_F(UniversalVariableItemTest, AttemptToCreateDomainVariable)
 TEST_F(UniversalVariableItemTest, CreateUsingDomainName)
 {
   UniversalVariableItem item(domainconstants::kLocalVariableType);
-  item.SetProperty(domainconstants::kNameAttribute, "abc");
+  item.SetDisplayName("abc");
 
   // different wrt test below
   EXPECT_EQ(item.GetType(), domainconstants::kLocalVariableType);
@@ -129,7 +125,7 @@ TEST_F(UniversalVariableItemTest, SetDomainName)
   EXPECT_EQ(item.GetType(), UniversalVariableItem::Type);
   EXPECT_EQ(item.GetDomainType(), domainconstants::kLocalVariableType);
 
-  item.SetProperty(domainconstants::kNameAttribute, "abc");
+  item.SetDisplayName("abc");
 
   auto domain_variable = item.CreateDomainVariable();
   EXPECT_EQ(domain_variable->GetType(), domainconstants::kLocalVariableType);

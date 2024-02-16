@@ -107,18 +107,12 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableEditableProperty)
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   auto var_item1 = workspace_item.InsertItem<PvAccessServerVariableItem>(mvvm::TagIndex::Append());
 
-  EXPECT_TRUE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
-  EXPECT_TRUE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
   EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
 
   UpdateVariableEditableProperty(/*is_running*/ true, workspace_item);
-  EXPECT_FALSE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
-  EXPECT_FALSE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
   EXPECT_FALSE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
 
   UpdateVariableEditableProperty(/*is_running*/ false, workspace_item);
-  EXPECT_TRUE(var_item0->GetItem(domainconstants::kNameAttribute)->IsEditable());
-  EXPECT_TRUE(var_item1->GetItem(domainconstants::kNameAttribute)->IsEditable());
   EXPECT_TRUE(var_item1->GetItem(domainconstants::kChannelAttribute)->IsEditable());
 }
 

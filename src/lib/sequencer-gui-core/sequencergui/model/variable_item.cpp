@@ -48,12 +48,12 @@ void VariableItem::InitFromDomain(const variable_t *variable, const anytype_regi
 
 std::string VariableItem::GetName() const
 {
-  return Property<std::string>(itemconstants::kName);
+  return GetDisplayName();
 }
 
 void VariableItem::SetName(const std::string &value)
 {
-  SetProperty(itemconstants::kName, value);
+  SetDisplayName(value);
 }
 
 sup::gui::AnyValueItem *VariableItem::GetAnyValueItem() const

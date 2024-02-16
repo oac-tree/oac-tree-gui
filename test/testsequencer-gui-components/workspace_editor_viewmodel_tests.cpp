@@ -74,12 +74,11 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   auto variable_customname_index = viewmodel.index(0, 1);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index),
-            GetNameItem(*variable_item));
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index), variable_item);
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("Local"));
+            std::string("abc"));
   EXPECT_EQ(viewmodel.data(variable_customname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
 
@@ -144,12 +143,11 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   auto variable_customname_index = viewmodel.index(0, 1);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index),
-            GetNameItem(*variable_item));
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index), variable_item);
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_displayname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("ChannelAccessClient"));
+            std::string("abc"));
   EXPECT_EQ(viewmodel.data(variable_customname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
 

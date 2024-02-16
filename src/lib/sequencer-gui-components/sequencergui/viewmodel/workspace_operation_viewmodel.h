@@ -34,9 +34,8 @@ namespace sequencergui
  * @brief The WorkspaceOperationViewModel class forms non-editable five-columns tree with Workspace
  * items.
  *
- * @details The WorkspaceItem is represented by name, value, type, channel and is_connected flag.
+ * The WorkspaceItem is represented by name, value, type, channel and is_connected flag.
  */
-
 class MVVM_VIEWMODEL_EXPORT WorkspaceOperationViewModel : public mvvm::ViewModel
 {
   Q_OBJECT

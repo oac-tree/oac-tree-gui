@@ -128,7 +128,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
 
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
-    result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*variable)));
+    result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(variable));
   }
   else
   {

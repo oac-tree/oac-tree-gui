@@ -30,6 +30,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QDebug>
+
 using namespace sequencergui;
 
 //! Tests for strategies from custom_row_strategies.h.
@@ -49,7 +51,7 @@ TEST_F(CustomRowStrategiesTest, VariableRowStrategy)
 
     // expectind two elements in a row looking at DisplayName and Name
     ASSERT_EQ(view_items.size(), 2);
-    EXPECT_EQ(view_items.at(0)->data(Qt::DisplayRole).toString(), QString("Local"));
+    EXPECT_EQ(view_items.at(0)->data(Qt::DisplayRole).toString(), QString("abc"));
     EXPECT_EQ(view_items.at(1)->data(Qt::DisplayRole).toString(), QString("abc"));
   }
 }

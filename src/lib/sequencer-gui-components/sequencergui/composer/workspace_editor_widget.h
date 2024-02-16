@@ -46,9 +46,12 @@ class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorActions;
 
-//! List of workspace variables at the right of SequencerComposerView.
-//! Defines set of actions to add/remove variables. Part of ComposerProcedureEditor.
-
+/**
+ * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
+ *
+ * It is located at the right of SequencerComposerView (second main view). Defines set of actions to
+ * add and remove variables.
+ */
 class WorkspaceEditorWidget : public QWidget
 {
   Q_OBJECT

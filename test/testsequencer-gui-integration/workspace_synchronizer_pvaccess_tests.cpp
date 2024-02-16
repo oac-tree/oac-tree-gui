@@ -115,10 +115,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
   auto expected_event2 = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
 
-  auto name_property = variable_item->GetItem(domainconstants::kNameAttribute);
-  auto expected_event3 = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event3)).Times(1);
-
   synchronizer->Start();
 
   QTest::qWait(100);  // queued signals need special waiting
@@ -272,10 +268,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
     auto channel_property = client_item->GetItem(domainconstants::kChannelAttribute);
     auto expected_event1a = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event1a)).Times(1);
-
-    auto name_property = client_item->GetItem(domainconstants::kNameAttribute);
-    auto expected_event1b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
-    EXPECT_CALL(model_listener, OnDataChanged(expected_event1b)).Times(1);
   }
 
   // expected events from server variable
@@ -287,10 +279,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
     auto channel_property = server_item->GetItem(domainconstants::kChannelAttribute);
     auto expected_event2a = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event2a)).Times(1);
-
-    auto name_property = server_item->GetItem(domainconstants::kNameAttribute);
-    auto expected_event2b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
-    EXPECT_CALL(model_listener, OnDataChanged(expected_event2b)).Times(1);
   }
 
   // Creating domain listener and setting callback expectations.
@@ -361,10 +349,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
     auto expected_event1a = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event1a)).Times(1);
 
-    auto name_property = client_item->GetItem(domainconstants::kNameAttribute);
-    auto expected_event1b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
-    EXPECT_CALL(model_listener, OnDataChanged(expected_event1b)).Times(1);
-
     EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
     EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
   }
@@ -378,10 +362,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
     auto channel_property = server_item->GetItem(domainconstants::kChannelAttribute);
     auto expected_event2a = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
     EXPECT_CALL(model_listener, OnDataChanged(expected_event2a)).Times(1);
-
-    auto name_property = server_item->GetItem(domainconstants::kNameAttribute);
-    auto expected_event2b = mvvm::DataChangedEvent{name_property, mvvm::DataRole::kAppearance};
-    EXPECT_CALL(model_listener, OnDataChanged(expected_event2b)).Times(1);
   }
 
   // Creating domain listener and setting callback expectations.

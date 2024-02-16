@@ -36,6 +36,7 @@ const int kDomainTypeNameRole = 10;  // role to store type name
 
 // These attributes shouldn't be used from the domain to build properties.
 const std::vector<std::string> kSkipDomainAttributeList = {
+    sequencergui::domainconstants::kNameAttribute,  // handled via display name
     sequencergui::domainconstants::kTypeAttribute,  // handled via AnyValueItem
     sequencergui::domainconstants::kValueAttribute  // handled via AnyValueItem
 };
@@ -108,6 +109,8 @@ void UniversalVariableItem::InitFromDomainImpl(const variable_t *variable,
     SetPropertyFromDomainAttribute(*variable, attribute_name, *item);
   }
 
+  SetDisplayName(variable->GetName().empty() ? variable->GetType() : variable->GetName());
+
   SetAnyValueFromDomainVariable(*variable, *this, registry);
 }
 
@@ -117,6 +120,8 @@ void UniversalVariableItem::SetupDomainImpl(variable_t *variable) const
   {
     SetDomainAttribute(*item, attribute_name, *variable);
   }
+
+  variable->SetName(GetDisplayName());
 
   if (auto anyvalue_item = GetAnyValueItem(); anyvalue_item)
   {
@@ -132,8 +137,6 @@ void UniversalVariableItem::SetupFromDomain(const variable_t *variable)
   }
 
   SetData(variable->GetType(), kDomainTypeNameRole);
-
-  SetDisplayName(variable->GetType());
 
   for (const auto &definition : variable->GetAttributeDefinitions())
   {

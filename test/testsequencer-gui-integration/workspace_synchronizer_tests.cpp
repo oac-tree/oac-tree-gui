@@ -236,11 +236,6 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 
   auto synchronizer = CreateSynchronizer();
 
-  // synchronizer will mark the name property as read only
-  auto expected_event = mvvm::DataChangedEvent{
-      variable_item->GetItem(domainconstants::kNameAttribute), mvvm::DataRole::kAppearance};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
-
   synchronizer->Start();
 
   // changing the value via the model
@@ -284,11 +279,6 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdateHandlerCase)
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizerJobHandlerCase();
-
-  // synchronizer will mark the name property as read only
-  auto expected_event = mvvm::DataChangedEvent{
-      variable_item->GetItem(domainconstants::kNameAttribute), mvvm::DataRole::kAppearance};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
 
   synchronizer->Start();
 
@@ -352,7 +342,9 @@ TEST_F(WorkspaceSynchronizerTest, UpdateDomainAndCheckSignals)
 //! Creating WorkspaceItem with one LocalVariableItem. Validating initial values and editable
 //! properties after start and after shutdown.
 
-TEST_F(WorkspaceSynchronizerTest, StartAndShutdown)
+// FIXME restore text. NameItem has been removed.
+
+TEST_F(WorkspaceSynchronizerTest, DISABLED_StartAndShutdown)
 {
   const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 

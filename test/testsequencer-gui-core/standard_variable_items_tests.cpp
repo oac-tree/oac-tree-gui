@@ -57,7 +57,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItem)
   }
 
   ChannelAccessVariableItem item;
-  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_FALSE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_FALSE(item.IsAvailable());
 
@@ -83,17 +83,13 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
   ChannelAccessVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 3);
+  ASSERT_EQ(children.size(), 2);
 
-  auto name = dynamic_cast<AttributeItem*>(children.at(0));
-  ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
-
-  auto channel = dynamic_cast<AttributeItem*>(children.at(1));
+  auto channel = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(channel, nullptr);
   EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 
-  auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(2));
+  auto available = dynamic_cast<mvvm::PropertyItem*>(children.at(1));
   ASSERT_NE(available, nullptr);
   EXPECT_EQ(available->GetDisplayName(), itemconstants::kIsAvailable);
 }
@@ -168,7 +164,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
 TEST_F(StandardVariableItemsTest, FileVariableItem)
 {
   FileVariableItem item;
-  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_FALSE(item.GetName().empty());
   EXPECT_TRUE(item.GetFileName().empty());
   EXPECT_TRUE(item.IsAvailable());
 
@@ -186,16 +182,13 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
   FileVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 3);
-  auto name = dynamic_cast<AttributeItem*>(children.at(0));
-  ASSERT_NE(name, nullptr);
-  EXPECT_EQ(name->GetDisplayName(), domainconstants::kNameAttribute);
+  ASSERT_EQ(children.size(), 2);
 
-  auto file_name = dynamic_cast<AttributeItem*>(children.at(1));
+  auto file_name = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(file_name, nullptr);
   EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
-  auto json_attr = dynamic_cast<AttributeItem*>(children.at(2));
+  auto json_attr = dynamic_cast<AttributeItem*>(children.at(1));
   ASSERT_NE(json_attr, nullptr);
   EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
@@ -245,7 +238,7 @@ TEST_F(StandardVariableItemsTest, FileVariableItemToDomain)
 TEST_F(StandardVariableItemsTest, LocalVariableItem)
 {
   sequencergui::LocalVariableItem item;
-  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_FALSE(item.GetName().empty());
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
   EXPECT_TRUE(item.IsAvailable());
 
@@ -265,13 +258,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   LocalVariableItem item;
   auto children = item.GetAllItems();
 
-  ASSERT_EQ(children.size(), 2);
+  ASSERT_EQ(children.size(), 1);
 
-  auto name_item = dynamic_cast<AttributeItem*>(children.at(0));
-  ASSERT_NE(name_item, nullptr);
-  EXPECT_EQ(name_item->GetDisplayName(), domainconstants::kNameAttribute);
-
-  auto dynamic_type_item = dynamic_cast<AttributeItem*>(children.at(1));
+  auto dynamic_type_item = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
 }
@@ -343,7 +332,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItem)
   }
 
   PvAccessClientVariableItem item;
-  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_FALSE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_FALSE(item.IsAvailable());
 
@@ -425,7 +414,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItem)
   }
 
   PvAccessServerVariableItem item;
-  EXPECT_TRUE(item.GetName().empty());
+  EXPECT_FALSE(item.GetName().empty());
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_FALSE(item.IsAvailable());
 
@@ -487,7 +476,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
     item.SetChannel(expected_channel);
     item.SetName(expected_name);
 
-    sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
+    const sup::dto::AnyValue anyvalue(sup::dto::UnsignedInteger32Type, 42);
     SetAnyValue(anyvalue, item);
 
     auto domain_item = item.CreateDomainVariable();
