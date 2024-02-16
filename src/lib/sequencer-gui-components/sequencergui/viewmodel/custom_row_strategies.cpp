@@ -74,6 +74,19 @@ std::string GetTypeString(const mvvm::SessionItem &item)
 }
 
 /**
+ * @brief Returns string representing type in 3rd column of variable tree.
+ */
+std::string GetTypeStringForVariableTree(const mvvm::SessionItem &item)
+{
+  if (auto anyvalue_item = dynamic_cast<const sup::gui::AnyValueItem*>(&item); anyvalue_item)
+  {
+    return anyvalue_item->GetAnyTypeName();
+  }
+
+  return item.GetType();
+}
+
+/**
  * @brief Returns row of the table representing variable.
  */
 
@@ -124,7 +137,6 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
   // If it's Variable itself, generate [editable name, empty label, modelType]
   // If it's variabl's property, generate standart [property display name, property value name]
 
-
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
     result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(variable));
@@ -135,7 +147,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
   {
     result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
-    result.emplace_back(mvvm::CreateLabelViewItem(item, item->GetType()));
+    result.emplace_back(mvvm::CreateLabelViewItem(item, GetTypeStringForVariableTree(*item)));
   }
 
   return result;
