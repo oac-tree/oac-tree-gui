@@ -138,7 +138,7 @@ void WorkspaceEditorWidget::AdjustColumnWidth()
   }
   else
   {
-    m_tree_view->resizeColumnToContents(0);
+    sup::gui::AdjustWidthOfColumns(*m_tree_view, {3, 2, 2});
   }
 }
 
@@ -147,7 +147,6 @@ void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
   if (procedure)
   {
     m_component_provider->SetItem(procedure->GetWorkspace());
-    m_tree_view->header()->setStretchLastSection(true);
     AdjustColumnWidth();
   }
   else
