@@ -5,14 +5,18 @@
 include(CTest)
 include(CodeTools)
 include(GNUInstallDirs)
+include(FindPackageMessage)
 
 # -----------------------------------------------------------------------------
 # CODAC environment
 # -----------------------------------------------------------------------------
 if(NOT COA_NO_CODAC)
-  find_package(CODAC OPTIONAL_COMPONENTS site-packages Python MODULE)
+  find_package(CODAC OPTIONAL_COMPONENTS site-packages Python MODULE QUIET)
 endif()
+
 if(CODAC_FOUND)
+  set(CODAC_FOUND_MESSAGE "Building with CODAC")
+
   # Append CODAC_CMAKE_PREFIXES to cmake seard directories, this helps cmake find packages installed in the CODAC enviorenment
   list(APPEND CMAKE_PREFIX_PATH ${CODAC_CMAKE_PREFIXES})
 
@@ -21,12 +25,22 @@ if(CODAC_FOUND)
     set(Python3_EXECUTABLE ${CODAC_PYTHON_EXECUTABLE})
   endif()
 
-  # When operating inside a CODAC CICD system build the documentation
+  # Check if operating inside a CODAC CICD system
   if(CODAC_CICD)
+    string(APPEND CODAC_FOUND_MESSAGE " CICD environment")
+
     set(COA_BUILD_DOCUMENTATION ON)
+  else()
+    string(APPEND CODAC_FOUND_MESSAGE " environment")
   endif()
+
+  find_package_message(
+    CODAC_DETAILS
+    "${CODAC_FOUND_MESSAGE}: ${CODAC_DIR} (version \"${CODAC_VERSION}\")"
+    "[${CODAC_FOUND}][${CODAC_DIR}][${CODAC_CICD}][v${CODAC_VERSION}]"
+  )
 else()
-  message(STATUS "Compiling without CODAC")
+  find_package_message(CODAC_DETAILS "Building without CODAC environment" "[${CODAC_FOUND}]")
 endif()
 
 # -----------------------------------------------------------------------------
@@ -90,12 +104,23 @@ endif()
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
 
-message(STATUS "Found Qt: version ${Qt${QT_VERSION_MAJOR}_VERSION_MAJOR}.${Qt${QT_VERSION_MAJOR}_VERSION_MINOR}.${Qt${QT_VERSION_MAJOR}_VERSION_PATCH}")
-message(VERBOSE "\tIncludes: ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}")
+# Gather details about the Qt package found
+set(QT_VERSION "${Qt${QT_VERSION_MAJOR}_VERSION_MAJOR}.${Qt${QT_VERSION_MAJOR}_VERSION_MINOR}.${Qt${QT_VERSION_MAJOR}_VERSION_PATCH}")
+set(QT_DETAILS "[${Qt${QT_VERSION_MAJOR}_DIR}][v${QT_VERSION}]")
 foreach(QT_COMPONENT ${QT_FIND_COMPONENTS})
   get_target_property(QT_${QT_COMPONENT}_LOCATION Qt${QT_VERSION_MAJOR}::${QT_COMPONENT} LOCATION)
-  message(VERBOSE "\tQt::${QT_COMPONENT}: ${QT_${QT_COMPONENT}_LOCATION}")
+  string(PREPEND QT_DETAILS "[${QT_COMPONENT}:${QT_${QT_COMPONENT}_LOCATION}]")
 endforeach()
+
+# Print the message about finding Qt if it has not been printed yet, or if the details have changed
+# This is essentially a reimplementaion of find_package_message, but with more detailed information gated by verbosity
+if(NOT "${QT_DETAILS}" STREQUAL "${FIND_PACKAGE_MESSAGE_DETAILS_QT}")
+  message(STATUS "Found Qt: ${Qt${QT_VERSION_MAJOR}_DIR} (version \"${QT_VERSION}\")")
+  foreach(QT_COMPONENT ${QT_FIND_COMPONENTS})
+    message(VERBOSE "\tQt::${QT_COMPONENT}: ${QT_${QT_COMPONENT}_LOCATION}")
+  endforeach()
+  set(FIND_PACKAGE_MESSAGE_DETAILS_QT ${QT_DETAILS} CACHE INTERNAL "Details about finding Qt")
+endif()
 
 find_package(Threads)
 
