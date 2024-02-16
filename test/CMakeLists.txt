@@ -8,9 +8,6 @@ else()
   fetch_googletest()
 endif()
 
-
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Test REQUIRED)
-find_package(Threads)
 include(GoogleTest)
 
 add_subdirectory(libtest-utils)
