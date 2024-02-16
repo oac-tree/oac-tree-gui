@@ -44,7 +44,7 @@ class WorkspaceEditorViewModelTest : public ::testing::Test
 };
 
 //! Single local variable in a workspace.
-//! ViewModel should see two rows and 2 columns for VariableItem, and its properties beneath (name
+//! ViewModel should see two rows and 3 columns for VariableItem, and its properties beneath (name
 //! and dynamicType).
 
 TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
@@ -56,7 +56,7 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
   WorkspaceEditorViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
   EXPECT_EQ(viewmodel.rowCount(), 0);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  EXPECT_EQ(viewmodel.columnCount(), 3);
 
   // adding single variable and populating with values
   auto variable_item = model.InsertItem<LocalVariableItem>(workspace_item);
@@ -68,29 +68,34 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
 
   // one parent item with type, and editable name
   EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  EXPECT_EQ(viewmodel.columnCount(), 3);
 
   auto variable_displayname_index = viewmodel.index(0, 0);
-  auto variable_customname_index = viewmodel.index(0, 1);
+  auto variable_emptylabel_index = viewmodel.index(0, 1);
+  auto variable_typename_index = viewmodel.index(0, 2);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index), variable_item);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_emptylabel_index), variable_item);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_typename_index), variable_item);
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
-  EXPECT_EQ(viewmodel.data(variable_customname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("abc"));
+  EXPECT_EQ(viewmodel.data(variable_emptylabel_index, Qt::DisplayRole).toString().toStdString(),
+            std::string(""));
+  EXPECT_EQ(viewmodel.data(variable_typename_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("Local"));
 
   // writing data to cells
-  EXPECT_FALSE(viewmodel.setData(variable_displayname_index, "cant_change", Qt::EditRole));
-  EXPECT_TRUE(viewmodel.setData(variable_customname_index, "new_name", Qt::EditRole));
+  EXPECT_TRUE(viewmodel.setData(variable_displayname_index, "new_name", Qt::EditRole));
+  EXPECT_FALSE(viewmodel.setData(variable_emptylabel_index, "cant_change", Qt::EditRole));
+  EXPECT_FALSE(viewmodel.setData(variable_typename_index, "cant_change", Qt::EditRole));
   EXPECT_EQ(variable_item->GetName(), std::string("new_name"));
 
   // Access to properties beneath. There are only AnyValueItem and dynamicType, name property was
   // filtered out.
   EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 2);
-  EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 2);
+  EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 3);
 
   // dynamicProperty
   auto dynamictype_name_index = viewmodel.index(0, 0, variable_displayname_index);
@@ -108,8 +113,8 @@ TEST_F(WorkspaceEditorViewModelTest, LocalVariable)
             variable_item->GetAnyValueItem());
 }
 
-//! Single local variable in a workspace.
-//! ViewModel should see single row and 2 columns for VariableItem, and its properties beneath.
+//! Single ChannelAccessVariable in a workspace.
+//! ViewModel should see single row and 3 columns for VariableItem, and its properties beneath.
 
 TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
 {
@@ -125,7 +130,7 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   WorkspaceEditorViewModel viewmodel(&model);
   viewmodel.SetRootSessionItem(workspace_item);
   EXPECT_EQ(viewmodel.rowCount(), 0);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  EXPECT_EQ(viewmodel.columnCount(), 3);
 
   // adding single variable and populating with values
   auto variable_item = model.InsertItem<ChannelAccessVariableItem>(workspace_item);
@@ -137,29 +142,33 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
 
   // one parent item with type, and editable name
   EXPECT_EQ(viewmodel.rowCount(), 1);
-  EXPECT_EQ(viewmodel.columnCount(), 2);
+  EXPECT_EQ(viewmodel.columnCount(), 3);
 
   auto variable_displayname_index = viewmodel.index(0, 0);
-  auto variable_customname_index = viewmodel.index(0, 1);
+  auto variable_emptylabel_index = viewmodel.index(0, 1);
+  auto variable_typename_index = viewmodel.index(0, 2);
 
   EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_displayname_index), variable_item);
-  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_customname_index), variable_item);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_emptylabel_index), variable_item);
+  EXPECT_EQ(viewmodel.GetSessionItemFromIndex(variable_typename_index), variable_item);
 
   // reading data from cell
   EXPECT_EQ(viewmodel.data(variable_displayname_index, Qt::DisplayRole).toString().toStdString(),
             std::string("abc"));
-  EXPECT_EQ(viewmodel.data(variable_customname_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("abc"));
+  EXPECT_EQ(viewmodel.data(variable_emptylabel_index, Qt::DisplayRole).toString().toStdString(),
+            std::string(""));
+  EXPECT_EQ(viewmodel.data(variable_typename_index, Qt::DisplayRole).toString().toStdString(),
+            std::string("ChannelAccessClient"));
 
   // writing data to cells
-  EXPECT_FALSE(viewmodel.setData(variable_displayname_index, "cant_change", Qt::EditRole));
-  EXPECT_TRUE(viewmodel.setData(variable_customname_index, "new_name", Qt::EditRole));
+  EXPECT_TRUE(viewmodel.setData(variable_displayname_index, "new_name", Qt::EditRole));
+  EXPECT_FALSE(viewmodel.setData(variable_emptylabel_index, "cant_change", Qt::EditRole));
   EXPECT_EQ(variable_item->GetName(), std::string("new_name"));
 
   // Access to properties beneath. There are only AnyValueItem and channel, name and is_available
   // properties were filtered out.
   EXPECT_EQ(viewmodel.rowCount(variable_displayname_index), 2);
-  EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 2);
+  EXPECT_EQ(viewmodel.columnCount(variable_displayname_index), 3);
 
   auto channel_name_index = viewmodel.index(0, 0, variable_displayname_index);
   auto channel_value_index = viewmodel.index(0, 1, variable_displayname_index);

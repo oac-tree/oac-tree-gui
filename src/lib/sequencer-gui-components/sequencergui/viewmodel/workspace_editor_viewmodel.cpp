@@ -37,7 +37,7 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::SessionModelInterface *
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
 {
-  return 2; // Type, Name
+  return 3; // Name, Value, TypeName
 }
 
 }  // namespace sequencergui

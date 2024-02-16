@@ -107,7 +107,7 @@ namespace sequencergui
 
 QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static QStringList result = {"Type", "Name"};
+  static QStringList result = {"Name", "Value", "TypeName"};
   return result;
 }
 
@@ -121,18 +121,21 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
     return result;
   }
 
-  // If it's Variable itself, generate [display name, editable name]
+  // If it's Variable itself, generate [editable name, empty label, modelType]
   // If it's variabl's property, generate standart [property display name, property value name]
 
-  result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
     result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(variable));
+    result.emplace_back(mvvm::CreateLabelViewItem(variable));
+    result.emplace_back(mvvm::CreateLabelViewItem(variable, variable->GetType()));
   }
   else
   {
+    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
+    result.emplace_back(mvvm::CreateLabelViewItem(item, item->GetType()));
   }
 
   return result;

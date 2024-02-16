@@ -29,10 +29,11 @@ namespace sequencergui
 {
 
 /**
- * @brief The VariableRowStrategy generates the row of two elements representing a Variable.
+ * @brief The VariableRowStrategy generates the row of three elements representing a Variable.
  *
- * @details For VariableItem itself it will generate a row with [display_name, editable_name].
- * For everything beneath it it will return usual [property_name, value] pair.
+ * @details For VariableItem itself it will generate a row with [editable_display_name, empty space,
+ * typeName label]. For everything beneath it it will generate [property_name, value, typeName
+ * label].
  */
 
 class VariableRowStrategy : public mvvm::RowStrategyInterface
