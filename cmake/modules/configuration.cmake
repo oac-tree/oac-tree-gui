@@ -74,17 +74,18 @@ file(MAKE_DIRECTORY ${SEQUENCERGUI_AUTOGEN_DIR})
 # -----------------------------------------------------------------------------
 # Dependencies
 # -----------------------------------------------------------------------------
+if(COA_USE_QT6)
+  set(QT_VERSION_MAJOR 6)
+  set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test)
+else()
+  set(QT_VERSION_MAJOR 5)
+  set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test)
+endif()
+
 if(CODAC_FOUND)
   # Set NO_CMAKE_PATH and PATHS to CMAKE_PREFIX_PATH, so that find_package will use the system Qt first
   # if it finds one, but still look in CMAKE_PREFIX_PATH as a last resort. This gives system Qt priority over CODAC Qt
   set(QT_FIND_OPTIONS NO_CMAKE_PATH PATHS ${CMAKE_PREFIX_PATH})
-endif()
-
-set(QT_FIND_COMPONENTS Widgets Core Gui PrintSupport Test)
-if (COA_USE_QT6)
-  find_package(QT NAMES Qt6 REQUIRED ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
-else()
-  find_package(QT NAMES Qt5 REQUIRED ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
 endif()
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
