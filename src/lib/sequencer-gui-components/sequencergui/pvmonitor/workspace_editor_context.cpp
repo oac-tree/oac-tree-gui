@@ -20,6 +20,7 @@
 #include "workspace_editor_context.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog.h>
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <QWidget>

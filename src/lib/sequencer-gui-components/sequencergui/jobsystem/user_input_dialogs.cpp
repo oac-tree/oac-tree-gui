@@ -20,6 +20,7 @@
 #include "user_input_dialogs.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog.h>
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
