@@ -19,7 +19,7 @@
 
 #include "instruction_attribute_editor.h"
 
-#include "instruction_attribute_editor_actions.h"
+#include "attribute_editor_actions.h"
 #include "instruction_attribute_editor_context.h"
 
 #include <sequencergui/model/attribute_item.h>
@@ -51,7 +51,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view))
-    , m_actions(new InstructionAttributeEditorActions(CreateActionContext(), this))
+    , m_actions(new AttributeEditorActions(CreateActionContext(), this))
 {
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
   m_tool_bar->addActions(m_actions->GetToolBarActions());

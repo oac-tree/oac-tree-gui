@@ -3,14 +3,14 @@
 target_sources(${library_name} PRIVATE
   aggregate_panel.cpp
   aggregate_panel.h
+  attribute_editor_actions.cpp
+  attribute_editor_actions.h
   composer_panel.cpp
   composer_panel.h
   composer_widget_panel.cpp
   composer_widget_panel.h
   instruction_attribute_editor.cpp
   instruction_attribute_editor.h
-  instruction_attribute_editor_actions.cpp
-  instruction_attribute_editor_actions.h
   instruction_attribute_editor_context.h
   instruction_editor_action_handler.cpp
   instruction_editor_action_handler.h

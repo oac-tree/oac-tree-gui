@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_ACTIONS_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_ACTIONS_H_
+#ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
+#define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
 #include <sequencergui/composer/instruction_attribute_editor_context.h>
 #include <sequencergui/model/attribute_item.h>
@@ -35,7 +35,8 @@ namespace mvvm
 class SessionModelInterface;
 }
 
-namespace sup::gui{
+namespace sup::gui
+{
 class AnyValueItem;
 }
 
@@ -52,14 +53,14 @@ class InstructionItem;
  * menu for instruction property editor. Handles the logic which actions can be applied to given
  * selection.
  */
-class InstructionAttributeEditorActions : public QObject
+class AttributeEditorActions : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit InstructionAttributeEditorActions(InstructionAttributeEditorContext context,
-                                             QObject* parent = nullptr);
-  ~InstructionAttributeEditorActions() override;
+  explicit AttributeEditorActions(InstructionAttributeEditorContext context,
+                                  QObject* parent = nullptr);
+  ~AttributeEditorActions() override;
 
   /**
    * @brief Returns list of actions intended for a toolbar.
@@ -97,4 +98,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_ACTIONS_H_
+#endif  // SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_

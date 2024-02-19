@@ -35,7 +35,7 @@ namespace sup::gui
 {
 class CustomHeaderView;
 class VisibilityAgentBase;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -48,9 +48,12 @@ class InstructionEditorActions;
 class InstructionAttributeEditor;
 class CustomTreeViewStyle;
 
-//! InstructionEditor to compose instruction tree (add,remove, move instructions). Occupies the
-//! center (and right side if necessary) os SequencerComposerView.
-
+/**
+ * @brief The InstructionEditorWidget class is a main panel to compose instruction tree.
+ *
+ * Belongs to SequencerComposerView (the second main widget). Contains instruction tree on top, and
+ * attribute editor at the bottom.
+ */
 class InstructionEditorWidget : public QWidget
 {
   Q_OBJECT

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_attribute_editor_actions.h"
+#include "attribute_editor_actions.h"
 
 #include "instruction_attribute_editor_context.h"
 
@@ -39,7 +39,7 @@
 namespace sequencergui
 {
 
-InstructionAttributeEditorActions::InstructionAttributeEditorActions(
+AttributeEditorActions::AttributeEditorActions(
     InstructionAttributeEditorContext context, QObject *parent)
     : QObject(parent)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
@@ -49,7 +49,7 @@ InstructionAttributeEditorActions::InstructionAttributeEditorActions(
 {
   m_modify_attribute_menu->setToolTipsVisible(true);
   connect(m_modify_attribute_menu.get(), &QMenu::aboutToShow, this,
-          &InstructionAttributeEditorActions::OnAboutToShowMenu);
+          &AttributeEditorActions::OnAboutToShowMenu);
 
   // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
   // a QToolButton feature) and still be able to pass actions around.
@@ -68,18 +68,18 @@ InstructionAttributeEditorActions::InstructionAttributeEditorActions(
   edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   edit_anyvalue_button->setToolTip("Edit value of currently selected instruction");
   connect(edit_anyvalue_button, &QToolButton::clicked, this,
-          &InstructionAttributeEditorActions::OnEditAnyvalueRequest);
+          &AttributeEditorActions::OnEditAnyvalueRequest);
   m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
 }
 
-InstructionAttributeEditorActions::~InstructionAttributeEditorActions() = default;
+AttributeEditorActions::~AttributeEditorActions() = default;
 
-QList<QAction *> InstructionAttributeEditorActions::GetToolBarActions() const
+QList<QAction *> AttributeEditorActions::GetToolBarActions() const
 {
   return QList<QAction *>({m_modify_attribute_action, m_edit_anyvalue_action});
 }
 
-void InstructionAttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *attribute_item)
+void AttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *attribute_item)
 {
   // We clear menu and modify it with entries. It is done just a moment before showing the menu, to
   // take into account current selection and properly mark actions as enabled/disabled.
@@ -122,13 +122,13 @@ void InstructionAttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *at
   }
 }
 
-void InstructionAttributeEditorActions::OnAboutToShowMenu()
+void AttributeEditorActions::OnAboutToShowMenu()
 {
   m_modify_attribute_menu->clear();
   SetupMenu(*m_modify_attribute_menu, GetSelectedAttributeItem());
 }
 
-void InstructionAttributeEditorActions::OnEditAnyvalueRequest()
+void AttributeEditorActions::OnEditAnyvalueRequest()
 {
   auto instruction_item = GetInstructionItem();
   if (!instruction_item)
@@ -157,22 +157,22 @@ void InstructionAttributeEditorActions::OnEditAnyvalueRequest()
   }
 }
 
-AttributeItem *InstructionAttributeEditorActions::GetSelectedAttributeItem()
+AttributeItem *AttributeEditorActions::GetSelectedAttributeItem()
 {
   return dynamic_cast<AttributeItem *>(m_editor_context.selected_item_callback());
 }
 
-sup::gui::AnyValueItem *InstructionAttributeEditorActions::GetSelectedAnyValueItem()
+sup::gui::AnyValueItem *AttributeEditorActions::GetSelectedAnyValueItem()
 {
   return dynamic_cast<sup::gui::AnyValueItem *>(m_editor_context.selected_item_callback());
 }
 
-mvvm::SessionModelInterface *InstructionAttributeEditorActions::GetModel()
+mvvm::SessionModelInterface *AttributeEditorActions::GetModel()
 {
   return GetSelectedAnyValueItem() ? GetSelectedAnyValueItem()->GetModel() : nullptr;
 }
 
-InstructionItem *InstructionAttributeEditorActions::GetInstructionItem()
+InstructionItem *AttributeEditorActions::GetInstructionItem()
 {
   return mvvm::utils::FindItemUp<InstructionItem>(m_editor_context.selected_item_callback());
 }
