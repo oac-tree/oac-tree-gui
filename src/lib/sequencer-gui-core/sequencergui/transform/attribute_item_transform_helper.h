@@ -29,6 +29,11 @@
 
 #include <string>
 
+namespace sup::gui
+{
+class AnyValueItem;
+}
+
 namespace mvvm
 {
 class CompoundItem;
@@ -56,7 +61,7 @@ bool IsReferenceAttribute(const std::string& attribute_value);
    * @param attribute_item The item to set attribute.
    * @return Boolean representing the value of IsPresent attribute.
    */
-bool IsAttributePresent(const AttributeItem &attribute_item);
+bool IsAttributePresent(const sup::gui::AnyValueItem &attribute_item);
 
 /**
    * @brief Sets attribute present flag to a given value.
@@ -67,7 +72,7 @@ bool IsAttributePresent(const AttributeItem &attribute_item);
    * @param value The value of present flag.
    * @param attribute_item The item to set attribute.
    */
-void SetAttributePresentFlag(bool value, AttributeItem& attribute_item);
+void SetAttributePresentFlag(bool value, sup::gui::AnyValueItem& attribute_item);
 
 /**
    * @brief Sets attribute value as string.
@@ -78,12 +83,12 @@ void SetAttributePresentFlag(bool value, AttributeItem& attribute_item);
    * @param value The string wich will be used as new attribute value.
    * @param attribute_item The item to set attribute.
    */
-void SetAttributeAsString(const std::string& value, AttributeItem& attribute_item);
+void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attribute_item);
 
 /**
    * @brief Sets default constructed attribute value from AnyType name.
    */
-void SetAttributeFromTypeName(AttributeItem& attribute_item);
+void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item);
 
 /**
  * @brief Add property to item using sequencer attribute definition.

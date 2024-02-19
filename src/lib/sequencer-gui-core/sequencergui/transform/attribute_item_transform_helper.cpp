@@ -72,24 +72,24 @@ bool IsReferenceAttribute(const std::string &attribute_value)
   return attribute_value.find_first_of('@') == 0;
 }
 
-bool IsAttributePresent(const AttributeItem &attribute_item)
+bool IsAttributePresent(const sup::gui::AnyValueItem &attribute_item)
 {
   return attribute_item.IsEditable() && attribute_item.IsEnabled();
 }
 
-void SetAttributePresentFlag(bool value, AttributeItem &attribute_item)
+void SetAttributePresentFlag(bool value, sup::gui::AnyValueItem &attribute_item)
 {
   attribute_item.SetEditable(value);
   attribute_item.SetEnabled(value);
 }
 
-void SetAttributeAsString(const std::string &value, AttributeItem &attribute_item)
+void SetAttributeAsString(const std::string &value, sup::gui::AnyValueItem &attribute_item)
 {
   // current convention is to keep original AnyTypeName after setting attribute as a string
   mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
 }
 
-void SetAttributeFromTypeName(AttributeItem &attribute_item)
+void SetAttributeFromTypeName(sup::gui::AnyValueItem &attribute_item)
 {
   mvvm::utils::ReplaceData(attribute_item,
                            sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
