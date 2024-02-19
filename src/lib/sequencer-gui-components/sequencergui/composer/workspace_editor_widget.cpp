@@ -19,7 +19,7 @@
 
 #include "workspace_editor_widget.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog.h>
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>

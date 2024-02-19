@@ -18,12 +18,12 @@
  *****************************************************************************/
 
 #include "anyvalue_editor_dialog_factory.h"
-
-#include "abstract_anyvalue_editor.h"
 #include "anyvalue_compact_scalar_editor.h"
 #include "anyvalue_compact_tree_editor.h"
 #include "anyvalue_editor_dialog.h"
 #include "anyvalue_extended_editor.h"
+
+#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
@@ -50,6 +50,22 @@ std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
   auto editor = std::make_unique<AnyValueCompactScalarEditor>();
   editor->SetInitialValue(item);
   return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
+}
+
+std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
+    QWidget* parent)
+{
+  auto edit_anyvalue_callback = [parent](const sup::gui::AnyValueItem* item) -> AnyValueDialogResult
+  {
+    auto dialog = CreateAnyValueExtendedEditorDialog(item, parent);
+    if (dialog->exec() == QDialog::Accepted)
+    {
+      return {true, dialog->GetResult()};
+    }
+    return {false, {}};  // returning false denotes that dialog was canceled
+  };
+
+  return edit_anyvalue_callback;
 }
 
 }  // namespace sequencergui

@@ -25,6 +25,7 @@
 #include "workspace_monitor_helper.h"
 #include "workspace_synchronizer.h"
 
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>

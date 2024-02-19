@@ -14,7 +14,6 @@ target_sources(${library_name} PRIVATE
   workspace_editor_action_handler.h
   workspace_editor_actions.cpp
   workspace_editor_actions.h
-  workspace_editor_context.cpp
   workspace_editor_context.h
   workspace_event.cpp
   workspace_event.h

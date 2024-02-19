@@ -21,9 +21,9 @@
 
 #include "instruction_attribute_editor_context.h"
 
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -39,8 +39,8 @@
 namespace sequencergui
 {
 
-AttributeEditorActions::AttributeEditorActions(
-    InstructionAttributeEditorContext context, QObject *parent)
+AttributeEditorActions::AttributeEditorActions(InstructionAttributeEditorContext context,
+                                               QObject *parent)
     : QObject(parent)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new QWidgetAction(this))

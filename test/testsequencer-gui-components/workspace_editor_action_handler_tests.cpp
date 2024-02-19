@@ -19,6 +19,7 @@
 
 #include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
 
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>

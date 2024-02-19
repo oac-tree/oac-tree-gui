@@ -42,18 +42,7 @@ namespace sequencergui
 {
 
 class WorkspaceItem;
-
-/**
- * @brief The AnyValueDialogResult struct is intended to return AnyValueItem from the dialog.
- */
-struct AnyValueDialogResult
-{
-  //!< Flag showing if operation was finished (OK button), or dialog was canceled. Canceled dialog
-  //!< means that the user whants to leave previous AnyValueItem intact.
-  bool is_accepted;
-  //!< result of editing; empty object means that the user wants to remove previous item
-  std::unique_ptr<sup::gui::AnyValueItem> result;
-};
+struct AnyValueDialogResult;
 
 /**
  * @brief The WorkspaceEditorContext class represents a context to setup WorkspaceEditorActions.
@@ -73,14 +62,6 @@ struct WorkspaceEditorContext
   //!< AnyValueItem back
   std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> edit_anyvalue_callback;
 };
-
-/**
- * @brief Create callback to summon AnyValueItem editor dialog.
- *
- * @param parent Parent widget to use for initial dialog placement.
- */
-std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
-    QWidget* parent);
 
 }  // namespace sequencergui
 
