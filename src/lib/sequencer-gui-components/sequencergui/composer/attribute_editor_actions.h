@@ -39,12 +39,12 @@ namespace sequencergui
 {
 
 /**
- * @brief The InstructionAttributeEditorActions class represent various actions which can be
- * performed with instruction attributes.
+ * @brief The AttributeEditorActions class represents various actions that can be performed with
+ * instruction/variable attributes.
  *
- * @details It's a part of InstructionAttributeEditor. It is responsible for consrtuction of context
- * menu for instruction property editor. Handles the logic which actions can be applied to given
- * selection.
+ * It's a part of InstructionAttributeEditor and WorkspaceEditor. It is responsible for the
+ * construction of a context menu for the attribute property editor with actions properly enabled
+ * or disabled.
  */
 class AttributeEditorActions : public QObject
 {
@@ -63,15 +63,13 @@ public:
   /**
    * @brief Setup empty menu with actions available for given attribute.
    */
-  static void SetupMenu(QMenu& menu, AttributeItem* attribute_item);
+  void SetupMenu(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
 
 signals:
   void EditAnyvalueRequest();
 
 private:
   void OnAboutToShowMenu();
-
-  AttributeItem* GetSelectedAttributeItem();
 
   sup::gui::AnyValueItem* GetSelectedAnyValueItem();
 

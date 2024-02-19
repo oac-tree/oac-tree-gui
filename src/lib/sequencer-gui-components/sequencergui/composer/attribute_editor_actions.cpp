@@ -22,7 +22,9 @@
 #include "instruction_attribute_editor_context.h"
 
 #include <sequencergui/model/attribute_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
@@ -59,7 +61,10 @@ AttributeEditorActions::AttributeEditorActions(InstructionAttributeEditorContext
   edit_anyvalue_button->setText("Edit AnyValue");
   edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
   edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  edit_anyvalue_button->setToolTip("Edit value of currently selected instruction");
+  edit_anyvalue_button->setToolTip(
+      "Edit AnyValue of currently selected instruction in external editor.\n"
+      "Please note that only few instructions have optional AnyValue on board, namely\n"
+      "PvAccessWrite, ChannelAccessWrite and RPCClient.");
   connect(edit_anyvalue_button, &QToolButton::clicked, this,
           &AttributeEditorActions::EditAnyvalueRequest);
   m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
@@ -72,7 +77,7 @@ QList<QAction *> AttributeEditorActions::GetToolBarActions() const
   return QList<QAction *>({m_modify_attribute_action, m_edit_anyvalue_action});
 }
 
-void AttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *attribute_item)
+void AttributeEditorActions::SetupMenu(QMenu &menu, sup::gui::AnyValueItem *attribute_item)
 {
   // We clear menu and modify it with entries. It is done just a moment before showing the menu, to
   // take into account current selection and properly mark actions as enabled/disabled.
@@ -97,33 +102,42 @@ void AttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *attribute_ite
       "@par");
   set_placeholder_action->setEnabled(false);
 
-  if (attribute_item)
+  if (!attribute_item)
   {
-    enable_action->setEnabled(true);
-    enable_action->setChecked(IsAttributePresent(*attribute_item));
-    auto on_unset = [attribute_item]()
-    { SetAttributePresentFlag(!IsAttributePresent(*attribute_item), *attribute_item); };
-    connect(enable_action, &QAction::triggered, on_unset);
-
-    set_default_value_action->setEnabled(true);
-    auto on_default_attribute = [attribute_item]() { SetAttributeFromTypeName(*attribute_item); };
-    connect(set_default_value_action, &QAction::triggered, on_default_attribute);
-
-    set_placeholder_action->setEnabled(true);
-    auto on_placeholder = [attribute_item]() { SetAttributeAsString("$par", *attribute_item); };
-    connect(set_placeholder_action, &QAction::triggered, on_placeholder);
+    return;
   }
+
+  const bool is_anyvalue = attribute_item->GetTagIndex().tag == itemconstants::kAnyValueTag;
+
+  enable_action->setEnabled(true);
+  enable_action->setChecked(IsAttributePresent(*attribute_item));
+  auto on_unset = [attribute_item]()
+  { SetAttributePresentFlag(!IsAttributePresent(*attribute_item), *attribute_item); };
+  connect(enable_action, &QAction::triggered, on_unset);
+
+  set_default_value_action->setEnabled(!is_anyvalue);
+  auto on_default_attribute = [attribute_item]() { SetAttributeFromTypeName(*attribute_item); };
+  connect(set_default_value_action, &QAction::triggered, on_default_attribute);
+
+  set_placeholder_action->setEnabled(!is_anyvalue);
+  auto on_placeholder = [attribute_item]() { SetAttributeAsString("$par", *attribute_item); };
+  connect(set_placeholder_action, &QAction::triggered, on_placeholder);
+
+  menu.addSeparator();
+
+  auto edit_anyvalue_action = menu.addAction("Set placeholder attribute");
+  edit_anyvalue_action->setText("Edit AnyValue");
+  edit_anyvalue_action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  edit_anyvalue_action->setToolTip("Edit AnyValue in external editor");
+  edit_anyvalue_action->setEnabled(is_anyvalue);
+  connect(edit_anyvalue_action, &QAction::triggered, this,
+          &AttributeEditorActions::EditAnyvalueRequest);
 }
 
 void AttributeEditorActions::OnAboutToShowMenu()
 {
   m_modify_attribute_menu->clear();
-  SetupMenu(*m_modify_attribute_menu, GetSelectedAttributeItem());
-}
-
-AttributeItem *AttributeEditorActions::GetSelectedAttributeItem()
-{
-  return dynamic_cast<AttributeItem *>(m_editor_context.selected_item_callback());
+  SetupMenu(*m_modify_attribute_menu, GetSelectedAnyValueItem());
 }
 
 sup::gui::AnyValueItem *AttributeEditorActions::GetSelectedAnyValueItem()

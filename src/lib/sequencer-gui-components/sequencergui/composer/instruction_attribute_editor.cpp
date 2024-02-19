@@ -121,7 +121,7 @@ void InstructionAttributeEditor::AdjustTreeAppearance()
 void InstructionAttributeEditor::SummonCustomMenu(const QPoint &point)
 {
   auto index = m_tree_view->indexAt(point);
-  auto item = dynamic_cast<AttributeItem *>(
+  auto item = dynamic_cast<sup::gui::AnyValueItem *>(
       m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
 
   QMenu menu;

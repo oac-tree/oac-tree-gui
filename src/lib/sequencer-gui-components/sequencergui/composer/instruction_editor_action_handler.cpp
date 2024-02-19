@@ -34,7 +34,6 @@
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
 
-#include <QDebug>
 #include <QPointF>
 #include <sstream>
 
@@ -142,8 +141,6 @@ void InstructionEditorActionHandler::OnMoveDownRequest()
 
 void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
-  qDebug() << "XXX ";
-
   auto instruction_item = GetSelectedInstruction();
 
   if (!instruction_item || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
