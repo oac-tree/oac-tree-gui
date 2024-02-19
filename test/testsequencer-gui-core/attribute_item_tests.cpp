@@ -68,12 +68,12 @@ TEST_F(AttributeItemTest, SetAttributeAsString)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
-  item.SetAttributeAsString("abc");
+  SetAttributeAsString("abc", item);
   EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   // current convention is to keep original AnyTypeName after setting attribute as a string
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
-  item.SetAttributeAsString("def");
+  SetAttributeAsString("def", item);
   // current convention is to keep original AnyTypeName after setting attribute as a string
   EXPECT_EQ(item.Data<std::string>(), std::string("def"));
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);

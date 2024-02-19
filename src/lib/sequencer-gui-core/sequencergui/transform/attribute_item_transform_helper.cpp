@@ -25,6 +25,8 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
+#include <mvvm/model/item_utils.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/attribute_definition.h>
 #include <sup/sequencer/attribute_utils.h>
@@ -81,6 +83,12 @@ void SetAttributePresentFlag(bool value, AttributeItem &attribute_item)
   attribute_item.SetEnabled(value);
 }
 
+void SetAttributeAsString(const std::string &value, AttributeItem &attribute_item)
+{
+  // current convention is to keep original AnyTypeName after setting attribute as a string
+  mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
+}
+
 AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
                                          mvvm::CompoundItem &item)
 {
@@ -105,7 +113,7 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
   {
-    item.SetAttributeAsString(attribute_string);
+    SetAttributeAsString(attribute_string, item);
     return;
   }
 

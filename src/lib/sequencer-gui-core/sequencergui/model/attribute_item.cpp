@@ -58,12 +58,6 @@ std::string AttributeItem::GetAnyTypeName() const
   return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
 }
 
-void AttributeItem::SetAttributeAsString(const std::string &value)
-{
-  // current convention is to keep original AnyTypeName after setting attribute as a string
-  mvvm::utils::ReplaceData(*this, mvvm::variant_t(value), mvvm::DataRole::kData);
-}
-
 void AttributeItem::SetAttributeFromTypeName()
 {
   mvvm::utils::ReplaceData(*this, sup::gui::GetVariantFromScalarTypeName(GetAnyTypeName()),

@@ -468,7 +468,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomainVaryingTimeout)
       dynamic_cast<AttributeItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
   ASSERT_TRUE(property_item);
 
-  property_item->SetAttributeAsString("$par1");
+  SetAttributeAsString("$par1", *property_item);
 
   auto domain_item = item.CreateDomainInstruction();
   EXPECT_TRUE(domain_item->HasAttribute(domainconstants::kTimeoutAttribute));

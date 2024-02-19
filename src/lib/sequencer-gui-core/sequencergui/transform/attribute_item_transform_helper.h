@@ -71,6 +71,17 @@ bool IsAttributePresent(const AttributeItem &attribute_item);
 void SetAttributePresentFlag(bool value, AttributeItem& attribute_item);
 
 /**
+   * @brief Sets attribute value as string.
+   *
+   * Internal data will be replaced with a string. This can happen when corresponding
+   * domain attribute contains is a placeholder or a reference to variable name.
+   *
+   * @param value The string wich will be used as new attribute value.
+   * @param attribute_item The item to set attribute.
+   */
+void SetAttributeAsString(const std::string& value, AttributeItem& attribute_item);
+
+/**
  * @brief Add property to item using sequencer attribute definition.
  *
  * @param attr Attribute definition to use for property construction.

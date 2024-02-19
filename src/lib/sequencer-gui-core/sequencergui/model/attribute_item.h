@@ -57,14 +57,6 @@ public:
   std::string GetAnyTypeName() const;
 
   /**
-   * @brief Sets attribute value as string.
-   *
-   * @details Internal data will be replaced with a string. This can happen when corresponding
-   * domain attribute contains is a placeholder or a reference to variable name.
-   */
-  void SetAttributeAsString(const std::string& value);
-
-  /**
    * @brief Sets default constructed attribute value from AnyType name.
    */
   void SetAttributeFromTypeName();

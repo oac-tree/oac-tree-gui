@@ -117,7 +117,7 @@ void InstructionAttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *at
     connect(set_default_value_action, &QAction::triggered, on_default_attribute);
 
     set_placeholder_action->setEnabled(true);
-    auto on_placeholder = [attribute_item]() { attribute_item->SetAttributeAsString("$par"); };
+    auto on_placeholder = [attribute_item]() { SetAttributeAsString("$par", *attribute_item); };
     connect(set_placeholder_action, &QAction::triggered, on_placeholder);
   }
 }
