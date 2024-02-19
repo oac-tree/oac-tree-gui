@@ -21,16 +21,20 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/universal_instruction_item.h>
+#include <sequencergui/model/universal_item_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/mock_callback_listener.h>
 
 #include <gtest/gtest.h>
+#include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
 
 #include <QSignalSpy>
@@ -52,24 +56,31 @@ public:
 
   //! Creates InstructionEditorContext for testing purposes. It contains callbacks to mimick
   //! user choice regarding the selected procedure and instruction.
-  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction)
+  InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction,
+                                         AnyValueDialogResult dialog_result = {})
   {
+    m_mock_dialog.SetItemToReturn(std::move(dialog_result));
+
     InstructionEditorContext result;
     result.selected_procedure = [procedure]() { return procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
     result.send_message_callback = m_warning_listener.CreateCallback();
+    result.edit_anyvalue_callback = m_mock_dialog.CreateCallback();
     return result;
   }
 
-  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(ProcedureItem* procedure,
-                                                                      InstructionItem* instruction)
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
+      ProcedureItem* procedure, InstructionItem* instruction,
+      AnyValueDialogResult dialog_result = {})
   {
-    return std::make_unique<InstructionEditorActionHandler>(CreateContext(procedure, instruction));
+    return std::make_unique<InstructionEditorActionHandler>(
+        CreateContext(procedure, instruction, std::move(dialog_result)));
   }
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
   mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  testutils::MockDialog m_mock_dialog;
 };
 
 //! Attempt to insert an instruction when no procedure created upfront.
@@ -335,4 +346,55 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
 
   // checking the request to select just moved item
   EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait0);
+}
+
+//! Attempt to edit AnyValueItem when nothing appropriate is selected.
+
+TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
+{
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+
+  // pretending that sequence is selected
+  auto actions = CreateActionHandler(m_procedure, sequence);
+
+  // expecting warning callbacks complaining that sequence can't have AnyValueItem
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  actions->OnEditAnyvalueRequest();
+}
+
+//! Editing AnyValueItem when EPICS instruction is selected.
+
+TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelected)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+  const bool dialog_was_acccepted = true;
+
+  auto item =
+      m_model.InsertItem<PvAccessWriteInstructionItem>(m_procedure->GetInstructionContainer());
+
+  auto previous_anyvalue = GetAnyValueItem(*item);
+  ASSERT_NE(previous_anyvalue, nullptr);
+  EXPECT_EQ(previous_anyvalue->GetType(), sup::gui::AnyValueEmptyItem::Type);
+
+  // item mimicking editing result
+  auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
+  auto editing_result_ptr = editing_result.get();
+
+  // pretending that instruction is selected
+  auto actions =
+      CreateActionHandler(m_procedure, item, {dialog_was_acccepted, std::move(editing_result)});
+
+  // expecting no callbacks
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  // expecting call to editing widget
+  EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
+
+  actions->OnEditAnyvalueRequest();
+
+  // checking that instruction got new AnyValueItem
+  EXPECT_EQ(GetAnyValueItem(*item), editing_result_ptr);
 }

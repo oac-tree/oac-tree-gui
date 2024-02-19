@@ -21,18 +21,27 @@
 #define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_CONTEXT_H_
 
 #include <sup/gui/components/message_event.h>
+
 #include <functional>
+
+namespace sup::gui
+{
+class AnyValueItem;
+}
 
 namespace sequencergui
 {
 
 class ProcedureItem;
 class InstructionItem;
-class VariableItem;
+struct AnyValueDialogResult;
 
-//! Context representing current state of widgets related to the instruction composition.
-//! Allows to retrieve currently selected procedure and instruction.
-
+/**
+ * @brief The InstructionEditorContext struct represents a state of widget related to the
+ * instruction composition.
+ *
+ * Allows to retrieve currently selected procedure and instruction.
+ */
 struct InstructionEditorContext
 {
   //! Callback to get currently selected procedure.
@@ -43,6 +52,10 @@ struct InstructionEditorContext
 
   //!< callback to report an error
   std::function<void(const sup::gui::MessageEvent&)> send_message_callback;
+
+  //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
+  //!< AnyValueItem back
+  std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> edit_anyvalue_callback;
 };
 
 }  // namespace sequencergui

@@ -19,17 +19,22 @@
 
 #include "instruction_editor_action_handler.h"
 
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
 
+#include <QDebug>
 #include <QPointF>
 #include <sstream>
 
@@ -137,7 +142,34 @@ void InstructionEditorActionHandler::OnMoveDownRequest()
 
 void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 {
+  qDebug() << "XXX ";
 
+  auto instruction_item = GetSelectedInstruction();
+
+  if (!instruction_item || !mvvm::utils::HasTag(*instruction_item, itemconstants::kAnyValueTag))
+  {
+    SendMessage("Please select an instruction which is intended for AnyValue storing");
+    return;
+  }
+
+  auto selected_anyvalue = GetAnyValueItem(*instruction_item);
+
+  auto dialog_result = m_context.edit_anyvalue_callback(selected_anyvalue);
+
+  // existent value means that the user exited from the dialog with OK
+  if (dialog_result.is_accepted)
+  {
+    // remove previous AnyValueItem
+    if (selected_anyvalue)
+    {
+      GetModel()->RemoveItem(selected_anyvalue);
+    }
+
+    if (dialog_result.result)
+    {
+      GetModel()->InsertItem(std::move(dialog_result.result), instruction_item, {});
+    }
+  }
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction()

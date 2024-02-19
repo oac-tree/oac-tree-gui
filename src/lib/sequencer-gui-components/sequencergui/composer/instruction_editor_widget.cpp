@@ -22,6 +22,7 @@
 #include "instruction_attribute_editor.h"
 #include "instruction_editor_context.h"
 
+#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/components/message_helper.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
@@ -231,6 +232,8 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::OnMoveUpRequest);
   connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest, m_action_handler.get(),
           &InstructionEditorActionHandler::OnMoveDownRequest);
+  connect(m_property_tree, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler.get(),
+          &InstructionEditorActionHandler::OnEditAnyvalueRequest);
 
   // propagate selection request from action handler component provider
   auto on_make_instruction_selected_request = [this](auto item)
@@ -254,6 +257,8 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
 
   auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
+
+  result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
 
   return result;
 }
