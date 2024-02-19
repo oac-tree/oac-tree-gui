@@ -19,7 +19,6 @@
 
 #include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -34,6 +33,7 @@
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
+#include <testutils/mock_dialog.h>
 
 #include <QSignalSpy>
 
@@ -46,30 +46,6 @@ class WorkspaceEditorActionHandlerTest : public ::testing::Test
 {
 public:
   WorkspaceEditorActionHandlerTest() { m_model.InsertItem<WorkspaceItem>(); }
-
-  //! Mock dialog that pretend to take an item for editing and return the result to the user.
-  class MockDialog
-  {
-  public:
-    void SetItemToReturn(AnyValueDialogResult dialog_result)
-    {
-      m_dialog_result = std::move(dialog_result);
-    }
-
-    MOCK_METHOD(void, OnEditingRequest, (const sup::gui::AnyValueItem* item));
-
-    //! Creates a callback that mimicks editing request and returning the result to the user
-    std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateCallback()
-    {
-      return [this](const sup::gui::AnyValueItem* item) -> AnyValueDialogResult
-      {
-        OnEditingRequest(item);
-        return std::move(m_dialog_result);
-      };
-    }
-
-    AnyValueDialogResult m_dialog_result;
-  };
 
   //! Creates context necessary for AnyValueEditActions to function.
   WorkspaceEditorContext CreateContext(mvvm::SessionItem* selected_item,
@@ -101,7 +77,7 @@ public:
 
   MonitorModel m_model;
   mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
-  MockDialog m_mock_dialog;
+  testutils::MockDialog m_mock_dialog;
 };
 
 TEST_F(WorkspaceEditorActionHandlerTest, InitialState)
@@ -263,7 +239,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 }
 
-//! Attempt to edit variable when nothing is selected.
+//! Attempt to edit AnyValueItem when nothing is selected.
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
