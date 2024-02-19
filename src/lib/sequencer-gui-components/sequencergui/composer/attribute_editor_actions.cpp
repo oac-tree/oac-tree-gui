@@ -21,16 +21,9 @@
 
 #include "instruction_attribute_editor_context.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/model/attribute_item.h>
-#include <sequencergui/model/instruction_item.h>
-#include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/style_utils.h>
-
-#include <mvvm/model/item_utils.h>
-#include <mvvm/model/sessionmodel.h>
 
 #include <QMenu>
 #include <QToolButton>
@@ -68,7 +61,7 @@ AttributeEditorActions::AttributeEditorActions(InstructionAttributeEditorContext
   edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   edit_anyvalue_button->setToolTip("Edit value of currently selected instruction");
   connect(edit_anyvalue_button, &QToolButton::clicked, this,
-          &AttributeEditorActions::OnEditAnyvalueRequest);
+          &AttributeEditorActions::EditAnyvalueRequest);
   m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
 }
 
@@ -128,35 +121,6 @@ void AttributeEditorActions::OnAboutToShowMenu()
   SetupMenu(*m_modify_attribute_menu, GetSelectedAttributeItem());
 }
 
-void AttributeEditorActions::OnEditAnyvalueRequest()
-{
-  auto instruction_item = GetInstructionItem();
-  if (!instruction_item)
-  {
-    return;
-  }
-
-  auto model = GetInstructionItem()->GetModel();
-  auto selected_anyvalue = GetSelectedAnyValueItem();
-
-  auto edited_anyvalue = CreateAnyValueDialogCallback(nullptr)(selected_anyvalue);
-
-  // existent value means that the user exited from the dialog with OK
-  if (edited_anyvalue.is_accepted)
-  {
-    // remove previous AnyValueItem
-    if (selected_anyvalue)
-    {
-      model->RemoveItem(selected_anyvalue);
-    }
-
-    if (edited_anyvalue.result)
-    {
-      model->InsertItem(std::move(edited_anyvalue.result), instruction_item, {});
-    }
-  }
-}
-
 AttributeItem *AttributeEditorActions::GetSelectedAttributeItem()
 {
   return dynamic_cast<AttributeItem *>(m_editor_context.selected_item_callback());
@@ -165,16 +129,6 @@ AttributeItem *AttributeEditorActions::GetSelectedAttributeItem()
 sup::gui::AnyValueItem *AttributeEditorActions::GetSelectedAnyValueItem()
 {
   return dynamic_cast<sup::gui::AnyValueItem *>(m_editor_context.selected_item_callback());
-}
-
-mvvm::SessionModelInterface *AttributeEditorActions::GetModel()
-{
-  return GetSelectedAnyValueItem() ? GetSelectedAnyValueItem()->GetModel() : nullptr;
-}
-
-InstructionItem *AttributeEditorActions::GetInstructionItem()
-{
-  return mvvm::utils::FindItemUp<InstructionItem>(m_editor_context.selected_item_callback());
 }
 
 }  // namespace sequencergui
