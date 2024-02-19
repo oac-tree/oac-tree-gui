@@ -23,6 +23,8 @@
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 
 #include <sup/dto/anytype.h>
+#include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_constants.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
@@ -41,7 +43,7 @@ class AttributeItemTest : public ::testing::Test
 TEST_F(AttributeItemTest, InitialState)
 {
   const AttributeItem item;
-  EXPECT_EQ(item.GetDisplayName(), AttributeItem::Type);
+  EXPECT_EQ(item.GetDisplayName(), sup::gui::constants::kScalarTypeName);
   EXPECT_EQ(item.GetAnyTypeName(), std::string());
   EXPECT_TRUE(item.HasFlag(mvvm::Appearance::kProperty));
   EXPECT_FALSE(mvvm::utils::IsValid(item.Data()));

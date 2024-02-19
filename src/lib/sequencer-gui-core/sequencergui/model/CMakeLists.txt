@@ -7,7 +7,6 @@ target_sources(${library_name} PRIVATE
   aggregate_factory.h
   application_models.cpp
   application_models.h
-  attribute_item.cpp
   attribute_item.h
   epics_instruction_items.cpp
   epics_instruction_items.h

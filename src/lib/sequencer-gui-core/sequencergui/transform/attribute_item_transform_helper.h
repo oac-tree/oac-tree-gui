@@ -25,6 +25,7 @@
 //! from/to domain attributes.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/model/attribute_item.h>
 
 #include <string>
 
@@ -35,8 +36,6 @@ class CompoundItem;
 
 namespace sequencergui
 {
-
-class AttributeItem;
 
 /**
  * @brief Returns true if given attribute value is referring to `$placeholder`.

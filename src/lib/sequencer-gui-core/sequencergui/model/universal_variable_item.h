@@ -22,11 +22,10 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/attribute_item.h>
 
 namespace sequencergui
 {
-
-class AttributeItem;
 
 /**
  * @brief The UniversalVariableItem class represents domain Variable.

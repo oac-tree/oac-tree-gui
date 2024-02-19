@@ -20,7 +20,12 @@
 #ifndef SEQUENCERGUI_MODEL_ATTRIBUTE_ITEM_H_
 #define SEQUENCERGUI_MODEL_ATTRIBUTE_ITEM_H_
 
-#include <mvvm/model/compound_item.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+namespace sup::gui
+{
+class AnyValueItem;
+}
 
 namespace sequencergui
 {
@@ -33,29 +38,7 @@ namespace sequencergui
  * property item on board of UniversalInstructionItem and UniversalVariableItem.
  */
 
-class AttributeItem : public mvvm::CompoundItem
-{
-public:
-  static inline const std::string Type = "Attribute";
-
-  using CompoundItem::CompoundItem;
-  AttributeItem();
-
-  std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
-
-  /**
-   * @brief Sets AnyType name which this attribute is going to hold.
-   *
-   * @details One of sup::dto scalar names is expected. Internal data of AttributeItem will be set
-   * to corresponding variant_t.
-   */
-  void SetAnyTypeName(const std::string& type_name);
-
-  /**
-   * @brief Returns a string representing AnyType name.
-   */
-  std::string GetAnyTypeName() const;
-};
+using AttributeItem = sup::gui::AnyValueScalarItem;
 
 }  // namespace sequencergui
 

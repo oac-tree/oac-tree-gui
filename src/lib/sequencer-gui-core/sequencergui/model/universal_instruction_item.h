@@ -29,8 +29,6 @@
 namespace sequencergui
 {
 
-class AttributeItem;
-
 /**
  * @brief The UniversalInstructionItem class represents domain Instruction.
  */
