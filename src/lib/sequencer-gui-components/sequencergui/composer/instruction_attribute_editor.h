@@ -59,6 +59,9 @@ public:
 
   void SetItem(mvvm::SessionItem* item);
 
+signals:
+  void EditAnyvalueRequest();
+
 private:
   void ReadSettings();
   void WriteSettings();

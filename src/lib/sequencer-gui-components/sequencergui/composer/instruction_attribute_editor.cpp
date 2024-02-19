@@ -71,6 +71,9 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
 
   ReadSettings();
   AdjustTreeAppearance();
+
+  connect(m_actions, &AttributeEditorActions::EditAnyvalueRequest, this,
+          &InstructionAttributeEditor::EditAnyvalueRequest);
 }
 
 InstructionAttributeEditor::~InstructionAttributeEditor()

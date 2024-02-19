@@ -72,6 +72,9 @@ public:
    */
   static void SetupMenu(QMenu& menu, AttributeItem* attribute_item);
 
+signals:
+  void EditAnyvalueRequest();
+
 private:
   void OnAboutToShowMenu();
   void OnEditAnyvalueRequest();

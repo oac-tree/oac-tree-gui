@@ -135,6 +135,11 @@ void InstructionEditorActionHandler::OnMoveDownRequest()
   }
 }
 
+void InstructionEditorActionHandler::OnEditAnyvalueRequest()
+{
+
+}
+
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction()
 {
   return m_context.selected_instruction();

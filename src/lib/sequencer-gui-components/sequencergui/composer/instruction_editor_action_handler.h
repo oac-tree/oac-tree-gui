@@ -87,6 +87,11 @@ public:
    */
   void OnMoveDownRequest();
 
+  /**
+   * @brief Cals external dialog for AnyValueItem editing.
+   */
+  void OnEditAnyvalueRequest();
+
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);
 
