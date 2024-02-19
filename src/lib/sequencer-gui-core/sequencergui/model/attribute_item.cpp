@@ -58,17 +58,6 @@ std::string AttributeItem::GetAnyTypeName() const
   return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
 }
 
-bool AttributeItem::IsPresent() const
-{
-  return IsEditable() && IsEnabled();
-}
-
-void AttributeItem::SetPresentFlag(bool value)
-{
-  SetEditable(value);
-  SetEnabled(value);
-}
-
 void AttributeItem::SetAttributeAsString(const std::string &value)
 {
   // current convention is to keep original AnyTypeName after setting attribute as a string

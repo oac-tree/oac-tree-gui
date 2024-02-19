@@ -27,6 +27,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/iterate_helper.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -101,7 +102,7 @@ void AddShowCollapsedProperty(InstructionItem &item)
     if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
     {
       property->SetData(true);
-      property->SetPresentFlag(true);
+      SetAttributePresentFlag(true, *property);
     }
   }
 }

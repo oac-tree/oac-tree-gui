@@ -25,6 +25,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/style_utils.h>
 
@@ -106,9 +107,9 @@ void InstructionAttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *at
   if (attribute_item)
   {
     enable_action->setEnabled(true);
-    enable_action->setChecked(attribute_item->IsPresent());
+    enable_action->setChecked(IsAttributePresent(*attribute_item));
     auto on_unset = [attribute_item]()
-    { attribute_item->SetPresentFlag(!attribute_item->IsPresent()); };
+    { SetAttributePresentFlag(!IsAttributePresent(*attribute_item), *attribute_item); };
     connect(enable_action, &QAction::triggered, on_unset);
 
     set_default_value_action->setEnabled(true);

@@ -24,6 +24,7 @@
 
 #include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 
 namespace sequencergui
 {
@@ -77,7 +78,7 @@ public:
   void SetAttribute(const std::string& name, const T& value)
   {
     auto attribute = GetItem<AttributeItem>(name);
-    attribute->SetPresentFlag(true);
+    SetAttributePresentFlag(true, *attribute);
     attribute->SetData(value);
   }
 

@@ -83,7 +83,7 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
   auto attribute_item = dynamic_cast<AttributeItem*>(property_item);
   ASSERT_NE(attribute_item, nullptr);
-  EXPECT_FALSE(attribute_item->IsPresent());
+  EXPECT_FALSE(IsAttributePresent(*attribute_item));
 
   EXPECT_EQ(property_item->Data<int>(), 0);
 
@@ -110,7 +110,7 @@ TEST_F(AttributeItemTransformHelperTest, AddMandatoryPropertyFromDefinition)
   ASSERT_NE(property, nullptr);
 
   EXPECT_EQ(property->GetDisplayName(), attribute_name);
-  EXPECT_TRUE(property->IsPresent());
+  EXPECT_TRUE(IsAttributePresent(*property));
 }
 
 //! Testing SetPropertyFromDomainAttribute method.
@@ -127,7 +127,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
     SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
-    EXPECT_TRUE(item.IsPresent());
+    EXPECT_TRUE(IsAttributePresent(item));
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 
@@ -141,7 +141,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     EXPECT_NO_THROW(
         SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
 
-    EXPECT_TRUE(item.IsPresent());
+    EXPECT_TRUE(IsAttributePresent(item));
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 }
@@ -170,7 +170,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlacehold
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "$par1");
-  EXPECT_TRUE(item.IsPresent());
+  EXPECT_TRUE(IsAttributePresent(item));
 }
 
 //! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
@@ -197,7 +197,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReference
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "@par1");
-  EXPECT_TRUE(item.IsPresent());
+  EXPECT_TRUE(IsAttributePresent(item));
 }
 
 //! Testing SetDomainAttribute method.
@@ -224,7 +224,7 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
   AttributeItem item;
   item.SetAnyTypeName(sup::dto::kFloat64TypeName);
   item.SetData(5.0);
-  item.SetPresentFlag(false);
+  SetAttributePresentFlag(false, item);
 
   SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
   EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));

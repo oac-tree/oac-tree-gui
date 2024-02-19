@@ -49,6 +49,28 @@ bool IsPlaceholderAttribute(const std::string& attribute_value);
 bool IsReferenceAttribute(const std::string& attribute_value);
 
 /**
+   * @brief Returns true if this attribute item is marked as present.
+   *
+   * The flag determines whether the attribute should be propagated into the domain. The
+   * item with present flag set to false appears disabled (in gray) and non-editable.
+   *
+   * @param attribute_item The item to set attribute.
+   * @return Boolean representing the value of IsPresent attribute.
+   */
+bool IsAttributePresent(const AttributeItem &attribute_item);
+
+/**
+   * @brief Sets attribute present flag to a given value.
+   *
+   * The flag determines whether the attribute should be propagated into the domain. The
+   * item with present flag set to false appears disabled (in gray) and non-editable.
+   *
+   * @param value The value of present flag.
+   * @param attribute_item The item to set attribute.
+   */
+void SetAttributePresentFlag(bool value, AttributeItem& attribute_item);
+
+/**
  * @brief Add property to item using sequencer attribute definition.
  *
  * @param attr Attribute definition to use for property construction.

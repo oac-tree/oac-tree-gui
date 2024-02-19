@@ -20,6 +20,7 @@
 #include "sequencergui/model/attribute_item.h"
 
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 
 #include <sup/dto/anytype.h>
 
@@ -86,10 +87,10 @@ TEST_F(AttributeItemTest, SetPresentFlag)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
   
-  EXPECT_TRUE(item.IsPresent());
+  EXPECT_TRUE(IsAttributePresent(item));
   
-  item.SetPresentFlag(false);
-  EXPECT_FALSE(item.IsPresent());
+  SetAttributePresentFlag(false, item);
+  EXPECT_FALSE(IsAttributePresent(item));
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
@@ -104,8 +105,8 @@ TEST_F(AttributeItemTest, SetAttributeFromTypeName)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
   
-  item.SetPresentFlag(false);
-  EXPECT_FALSE(item.IsPresent());
+  SetAttributePresentFlag(false, item);
+  EXPECT_FALSE(IsAttributePresent(item));
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);

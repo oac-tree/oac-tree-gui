@@ -57,24 +57,6 @@ public:
   std::string GetAnyTypeName() const;
 
   /**
-   * @brief Returns true if this attribute item is marked as present.
-   *
-   * @details The flag determines whether the attribute should be propagated into the domain. The
-   * item with present flag set to false appears disabled (in gray) and non-editable.
-   */
-  bool IsPresent() const;
-
-  /**
-   * @brief Set attribute present flag to a given value.
-   *
-   * @param value The value of present flag.
-   *
-   * @details The flag determines whether the attribute should be propagated into the domain. The
-   * item with present flag set to false appears disabled (in gray) and non-editable.
-   */
-  void SetPresentFlag(bool value);
-
-  /**
    * @brief Sets attribute value as string.
    *
    * @details Internal data will be replaced with a string. This can happen when corresponding

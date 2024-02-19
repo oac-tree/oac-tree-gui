@@ -138,7 +138,7 @@ std::vector<const InstructionItem*> GetCollapsedItems(const InstructionContainer
  *
  * @details This method checks if corresponding tag has been registered and contain AnyValueItem.
  * For the moment PvAccessWriteItem, ChannelAccessWriteItem and RPCClientInstructionItem
- * might cary AnyValueItem representing jsonn type and value attributes.
+ * might cary AnyValueItem representing json type and value attributes.
  */
 sup::gui::AnyValueItem* GetAnyValueItem(const InstructionItem& item);
 

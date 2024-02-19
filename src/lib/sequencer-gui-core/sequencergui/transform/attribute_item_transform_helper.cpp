@@ -70,6 +70,17 @@ bool IsReferenceAttribute(const std::string &attribute_value)
   return attribute_value.find_first_of('@') == 0;
 }
 
+bool IsAttributePresent(const AttributeItem &attribute_item)
+{
+  return attribute_item.IsEditable() && attribute_item.IsEnabled();
+}
+
+void SetAttributePresentFlag(bool value, AttributeItem &attribute_item)
+{
+  attribute_item.SetEditable(value);
+  attribute_item.SetEnabled(value);
+}
+
 AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
                                          mvvm::CompoundItem &item)
 {
@@ -77,7 +88,7 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
   auto &property = item.AddProperty<AttributeItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
-  property.SetPresentFlag(GetIsPresentFlag(attr));
+  SetAttributePresentFlag(GetIsPresentFlag(attr), property);
   return &property;
 }
 
@@ -89,7 +100,7 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   {
     return;
   }
-  item.SetPresentFlag(true);
+  SetAttributePresentFlag(true, item);
 
   auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
@@ -117,7 +128,7 @@ template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t 
 template <typename T>
 void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
 {
-  if (!item.IsPresent())
+  if (!IsAttributePresent(item))
   {
     return;
   }
