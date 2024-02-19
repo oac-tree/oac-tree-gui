@@ -58,10 +58,4 @@ std::string AttributeItem::GetAnyTypeName() const
   return HasData(kAnyTypeNameRole) ? Data<std::string>(kAnyTypeNameRole) : std::string();
 }
 
-void AttributeItem::SetAttributeFromTypeName()
-{
-  mvvm::utils::ReplaceData(*this, sup::gui::GetVariantFromScalarTypeName(GetAnyTypeName()),
-                           mvvm::DataRole::kData);
-}
-
 }  // namespace sequencergui

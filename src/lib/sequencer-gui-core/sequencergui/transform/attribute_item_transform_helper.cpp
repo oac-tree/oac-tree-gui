@@ -89,6 +89,13 @@ void SetAttributeAsString(const std::string &value, AttributeItem &attribute_ite
   mvvm::utils::ReplaceData(attribute_item, mvvm::variant_t(value), mvvm::DataRole::kData);
 }
 
+void SetAttributeFromTypeName(AttributeItem &attribute_item)
+{
+  mvvm::utils::ReplaceData(attribute_item,
+                           sup::gui::GetVariantFromScalarTypeName(attribute_item.GetAnyTypeName()),
+                           mvvm::DataRole::kData);
+}
+
 AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
                                          mvvm::CompoundItem &item)
 {

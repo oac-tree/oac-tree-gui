@@ -113,7 +113,7 @@ void InstructionAttributeEditorActions::SetupMenu(QMenu &menu, AttributeItem *at
     connect(enable_action, &QAction::triggered, on_unset);
 
     set_default_value_action->setEnabled(true);
-    auto on_default_attribute = [attribute_item]() { attribute_item->SetAttributeFromTypeName(); };
+    auto on_default_attribute = [attribute_item]() { SetAttributeFromTypeName(*attribute_item); };
     connect(set_default_value_action, &QAction::triggered, on_default_attribute);
 
     set_placeholder_action->setEnabled(true);

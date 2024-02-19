@@ -55,11 +55,6 @@ public:
    * @brief Returns a string representing AnyType name.
    */
   std::string GetAnyTypeName() const;
-
-  /**
-   * @brief Sets default constructed attribute value from AnyType name.
-   */
-  void SetAttributeFromTypeName();
 };
 
 }  // namespace sequencergui

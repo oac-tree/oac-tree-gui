@@ -112,7 +112,7 @@ TEST_F(AttributeItemTest, SetAttributeFromTypeName)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
-  item.SetAttributeFromTypeName();
+  SetAttributeFromTypeName(item);
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 

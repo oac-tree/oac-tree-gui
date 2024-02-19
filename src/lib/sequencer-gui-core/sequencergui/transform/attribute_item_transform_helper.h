@@ -82,6 +82,11 @@ void SetAttributePresentFlag(bool value, AttributeItem& attribute_item);
 void SetAttributeAsString(const std::string& value, AttributeItem& attribute_item);
 
 /**
+   * @brief Sets default constructed attribute value from AnyType name.
+   */
+void SetAttributeFromTypeName(AttributeItem& attribute_item);
+
+/**
  * @brief Add property to item using sequencer attribute definition.
  *
  * @param attr Attribute definition to use for property construction.
