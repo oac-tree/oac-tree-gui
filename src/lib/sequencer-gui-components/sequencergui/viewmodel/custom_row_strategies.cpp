@@ -28,8 +28,11 @@
 
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <map>
+#include <QColor>
+#include <QIcon>
 
 namespace
 {
@@ -78,7 +81,7 @@ std::string GetTypeString(const mvvm::SessionItem &item)
  */
 std::string GetTypeStringForVariableTree(const mvvm::SessionItem &item)
 {
-  if (auto anyvalue_item = dynamic_cast<const sup::gui::AnyValueItem*>(&item); anyvalue_item)
+  if (auto anyvalue_item = dynamic_cast<const sup::gui::AnyValueItem *>(&item); anyvalue_item)
   {
     return anyvalue_item->GetAnyTypeName();
   }
@@ -145,7 +148,12 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
   }
   else
   {
-    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+    // result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+    auto view_item = mvvm::CreateFixedDataViewItem(
+        item, {{Qt::DisplayRole, QString::fromStdString(item->GetDisplayName())},
+               {Qt::DecorationRole, QVariant::fromValue(QIcon(sup::gui::utils::GetIcon("file-tree-outline.svg")))}});
+    // view_item->SetData(QVariant::fromValue(Qt::red), Qt::DecorationRole);
+    result.emplace_back(std::move(view_item));
     result.emplace_back(mvvm::CreateDataViewItem(item));
     result.emplace_back(mvvm::CreateLabelViewItem(item, GetTypeStringForVariableTree(*item)));
   }
