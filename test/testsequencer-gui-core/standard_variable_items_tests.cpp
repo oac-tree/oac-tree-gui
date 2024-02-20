@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -263,6 +264,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   auto dynamic_type_item = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
+  EXPECT_FALSE(IsAttributePresent(*dynamic_type_item));
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
@@ -272,9 +274,9 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
   const std::string expected_value("42");
 
   auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  local_variable->AddAttribute("name", expected_name);
-  local_variable->AddAttribute("type", expected_type);
-  local_variable->AddAttribute("value", expected_value);
+  local_variable->AddAttribute(domainconstants::kNameAttribute, expected_name);
+  local_variable->AddAttribute(domainconstants::kTypeAttribute, expected_type);
+  local_variable->AddAttribute(domainconstants::kValueAttribute, expected_value);
 
   workspace_t ws;
   local_variable->Setup(ws);
@@ -307,13 +309,11 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     auto domain_item = item.CreateDomainVariable();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
 
-    EXPECT_EQ(domain_item->GetStringAttributes().size(), 4);
+    EXPECT_EQ(domain_item->GetStringAttributes().size(), 3);
 
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
     EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
-    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kDynamicTypeAttribute),
-              expected_dynamic_flag);
 
     workspace_t ws;
     EXPECT_NO_THROW(domain_item->Setup(ws));

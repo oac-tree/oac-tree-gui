@@ -54,8 +54,7 @@ bool GetIsPresentFlag(const attribute_definition_t &attr)
   // list of domain attributes that should be always marked as present
   static const std::vector<std::string> kAlwaysPresentAttributeList = {
       sequencergui::domainconstants::kNameAttribute,
-      sequencergui::domainconstants::kIsRootAttribute,
-      sequencergui::domainconstants::kDynamicTypeAttribute};
+      sequencergui::domainconstants::kIsRootAttribute};
   return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysPresentAttributeList, attr.GetName());
 }
 
