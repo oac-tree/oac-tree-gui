@@ -36,9 +36,11 @@
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
+#include <QMenu>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <QDebug>
 
 namespace
 {
@@ -69,8 +71,9 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
+          &WorkspaceEditorWidget::OnTreeContextMenuRequest);
 
   SetupConnections();
   addActions(m_editor_actions->GetActions());
@@ -128,7 +131,7 @@ void WorkspaceEditorWidget::WriteSettings()
   }
 }
 
-void WorkspaceEditorWidget::AdjustColumnWidth()
+void WorkspaceEditorWidget::AdjustTreeAppearance()
 {
   m_tree_view->expandAll();
 
@@ -142,12 +145,24 @@ void WorkspaceEditorWidget::AdjustColumnWidth()
   }
 }
 
+void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
+{
+  qDebug() << "XXX";
+  QMenu menu;
+
+  menu.addSection("Tree settings");
+
+  // auto collapse_menu = menu.addMenu("Tree settings");
+  sup::gui::SetupCollapseExpandMenu(point, menu, *m_tree_view);
+  menu.exec(m_tree_view->mapToGlobal(point));
+}
+
 void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
 {
   if (procedure)
   {
     m_component_provider->SetItem(procedure->GetWorkspace());
-    AdjustColumnWidth();
+    AdjustTreeAppearance();
   }
   else
   {

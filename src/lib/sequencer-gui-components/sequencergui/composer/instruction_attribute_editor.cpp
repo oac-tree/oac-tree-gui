@@ -67,7 +67,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          &InstructionAttributeEditor::SummonCustomMenu);
+          &InstructionAttributeEditor::OnTreeContextMenuRequest);
 
   ReadSettings();
   AdjustTreeAppearance();
@@ -118,7 +118,7 @@ void InstructionAttributeEditor::AdjustTreeAppearance()
   }
 }
 
-void InstructionAttributeEditor::SummonCustomMenu(const QPoint &point)
+void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)
 {
   auto index = m_tree_view->indexAt(point);
   auto item = dynamic_cast<sup::gui::AnyValueItem *>(

@@ -67,7 +67,12 @@ public:
 private:
   void ReadSettings();
   void WriteSettings();
-  void AdjustColumnWidth();
+  void AdjustTreeAppearance();
+  /**
+   * @brief Summons custom tree context menu to modify attributes.
+   */
+  void OnTreeContextMenuRequest(const QPoint& point);
+
   void SetProcedureIntern(ProcedureItem* procedure);
 
   void SetupConnections();

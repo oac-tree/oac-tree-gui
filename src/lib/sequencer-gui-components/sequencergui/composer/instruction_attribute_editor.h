@@ -67,9 +67,9 @@ private:
   void WriteSettings();
   void AdjustTreeAppearance();
   /**
-   * @brief Summons custom context menu to modify attributes.
+   * @brief Summons custom tree context menu to modify attributes.
    */
-  void SummonCustomMenu(const QPoint& point);
+  void OnTreeContextMenuRequest(const QPoint& point);
 
   /**
    * @brief Returns context necessary to setup context menu and toolbar actions.

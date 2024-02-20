@@ -128,7 +128,9 @@ void AttributeEditorActions::SetupMenu(QMenu &menu, sup::gui::AnyValueItem *attr
   auto edit_anyvalue_action = menu.addAction("Set placeholder attribute");
   edit_anyvalue_action->setText("Edit AnyValue");
   edit_anyvalue_action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
-  edit_anyvalue_action->setToolTip("Edit AnyValue in external editor");
+  edit_anyvalue_action->setToolTip(
+      "Edit AnyValue in external editor. Only variables and EPICS related instructions\ncan have "
+      "complex AnyValues");
   edit_anyvalue_action->setEnabled(is_anyvalue);
   connect(edit_anyvalue_action, &QAction::triggered, this,
           &AttributeEditorActions::EditAnyvalueRequest);
