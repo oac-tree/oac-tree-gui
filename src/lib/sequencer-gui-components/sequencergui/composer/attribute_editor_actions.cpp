@@ -84,61 +84,89 @@ void AttributeEditorActions::SetupMenu(QMenu &menu, sup::gui::AnyValueItem *attr
 
   menu.setToolTipsVisible(true);
 
-  auto enable_action = menu.addAction("Attribute is enabled");
-  enable_action->setToolTip("Attribute with enabled flag set will be propagated to domain.");
-  enable_action->setCheckable(true);
-  enable_action->setEnabled(false);
+  auto enable_action = AddEnableAttributeAction(menu, attribute_item);
 
   menu.addSeparator();
+  auto set_default_value_action = AddSetDefaultValueAction(menu, attribute_item);
+  auto set_placeholder_action = AddSetPlaceholderValueAction(menu, attribute_item);
 
-  auto set_default_value_action = menu.addAction("Set default value");
-  set_default_value_action->setToolTip("The attribute will be set to its default value");
-  set_default_value_action->setEnabled(false);
+  menu.addSeparator();
+  auto edit_anyvalue_action = AddEditAnyValueAction(menu, attribute_item);
 
-  auto set_placeholder_action = menu.addAction("Set placeholder attribute");
-  set_placeholder_action->setToolTip(
-      "Attribute will be defined as string, allowing to use placeholders $par and references "
-      "@par");
-  set_placeholder_action->setEnabled(false);
-
-  if (!attribute_item)
+  if (attribute_item)
   {
-    return;
+    // all actions have been created in disable state, should re-enable some
+    const bool is_anyvalue = attribute_item->GetTagIndex().tag == itemconstants::kAnyValueTag;
+
+    enable_action->setEnabled(true);
+    set_default_value_action->setEnabled(!is_anyvalue);
+    set_placeholder_action->setEnabled(!is_anyvalue);
+    edit_anyvalue_action->setEnabled(is_anyvalue);
   }
-
-  const bool is_anyvalue = attribute_item->GetTagIndex().tag == itemconstants::kAnyValueTag;
-
-  enable_action->setEnabled(true);
-  enable_action->setChecked(IsAttributePresent(*attribute_item));
-  auto on_unset = [attribute_item]()
-  { SetAttributePresentFlag(!IsAttributePresent(*attribute_item), *attribute_item); };
-  connect(enable_action, &QAction::triggered, on_unset);
-
-  set_default_value_action->setEnabled(!is_anyvalue);
-  auto on_default_attribute = [attribute_item]() { SetAttributeFromTypeName(*attribute_item); };
-  connect(set_default_value_action, &QAction::triggered, on_default_attribute);
-
-  set_placeholder_action->setEnabled(!is_anyvalue);
-  auto on_placeholder = [attribute_item]() { SetAttributeAsString("$par", *attribute_item); };
-  connect(set_placeholder_action, &QAction::triggered, on_placeholder);
-
-  menu.addSeparator();
-
-  auto edit_anyvalue_action = menu.addAction("Set placeholder attribute");
-  edit_anyvalue_action->setText("Edit AnyValue");
-  edit_anyvalue_action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
-  edit_anyvalue_action->setToolTip(
-      "Edit AnyValue in external editor. Only variables and EPICS related instructions\ncan have "
-      "complex AnyValues");
-  edit_anyvalue_action->setEnabled(is_anyvalue);
-  connect(edit_anyvalue_action, &QAction::triggered, this,
-          &AttributeEditorActions::EditAnyvalueRequest);
 }
 
 void AttributeEditorActions::OnAboutToShowMenu()
 {
   m_modify_attribute_menu->clear();
   SetupMenu(*m_modify_attribute_menu, GetSelectedAnyValueItem());
+}
+
+QAction *AttributeEditorActions::AddEnableAttributeAction(QMenu &menu,
+                                                          sup::gui::AnyValueItem *attribute_item)
+{
+  auto result = menu.addAction("Attribute is enabled");
+  result->setToolTip("Attribute with enabled flag set will be propagated to domain");
+  result->setCheckable(true);
+
+  result->setChecked(attribute_item && IsAttributePresent(*attribute_item));
+
+  auto on_action = [attribute_item]()
+  { SetAttributePresentFlag(!IsAttributePresent(*attribute_item), *attribute_item); };
+  connect(result, &QAction::triggered, on_action);
+  result->setEnabled(false);
+
+  return result;
+}
+
+QAction *AttributeEditorActions::AddSetDefaultValueAction(QMenu &menu,
+                                                          sup::gui::AnyValueItem *attribute_item)
+{
+  auto result = menu.addAction("Set default value");
+  result->setToolTip("The attribute will be set to its default value");
+  auto on_action = [attribute_item]() { SetAttributeFromTypeName(*attribute_item); };
+  connect(result, &QAction::triggered, on_action);
+  result->setEnabled(false);
+
+  return result;
+}
+
+QAction *AttributeEditorActions::AddSetPlaceholderValueAction(
+    QMenu &menu, sup::gui::AnyValueItem *attribute_item)
+{
+  auto result = menu.addAction("Set placeholder attribute");
+  result->setToolTip(
+      "Attribute will be defined as string, allowing to use placeholders $par and references "
+      "@par");
+  auto on_action = [attribute_item]() { SetAttributeAsString("$par", *attribute_item); };
+  connect(result, &QAction::triggered, on_action);
+  result->setEnabled(false);
+
+  return result;
+}
+
+QAction *AttributeEditorActions::AddEditAnyValueAction(QMenu &menu,
+                                                       sup::gui::AnyValueItem *attribute_item)
+{
+  auto result = menu.addAction("Set placeholder attribute");
+  result->setText("Edit AnyValue");
+  result->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  result->setToolTip(
+      "Edit AnyValue in external editor. Only variables and EPICS related instructions\ncan have "
+      "complex AnyValues");
+  connect(result, &QAction::triggered, this, &AttributeEditorActions::EditAnyvalueRequest);
+  result->setEnabled(false);
+
+  return result;
 }
 
 sup::gui::AnyValueItem *AttributeEditorActions::GetSelectedAnyValueItem()

@@ -62,6 +62,8 @@ public:
 
   /**
    * @brief Setup empty menu with actions available for given attribute.
+   *
+   * The menu can come from outside (context menu), or it can be the menu of our own tool button.
    */
   void SetupMenu(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
 
@@ -69,7 +71,30 @@ signals:
   void EditAnyvalueRequest();
 
 private:
+  /**
+   * @brief Populates menu of the button with actions available for given attribute.
+   */
   void OnAboutToShowMenu();
+
+  /**
+   * @brief Adds action to the menu which will toggle attribute between enabled/disabled.
+   */
+  QAction* AddEnableAttributeAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+
+  /**
+   * @brief Adds action to set attribute default value.
+   */
+  static QAction* AddSetDefaultValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+
+  /**
+   * @brief Adds action to set attribute placeholder value.
+   */
+  static QAction* AddSetPlaceholderValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+
+  /**
+   * @brief Adds action to edit AnyValue.
+   */
+  QAction* AddEditAnyValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
 
   sup::gui::AnyValueItem* GetSelectedAnyValueItem();
 
