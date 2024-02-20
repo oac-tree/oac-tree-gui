@@ -39,7 +39,7 @@ WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
 
 QList<QAction *> WorkspaceEditorActions::GetActions() const
 {
-  return {m_add_variable_action, m_edit_anyvalue_action, m_remove_variable_action};
+  return {m_add_variable_action, m_remove_variable_action};
 }
 
 WorkspaceEditorActions::~WorkspaceEditorActions() = default;
@@ -50,7 +50,7 @@ void WorkspaceEditorActions::SetupActions()
   // a QToolButton feature) and still be able to pass actions around.
 
   auto add_variable_button = new QToolButton;
-  add_variable_button->setText("Add");
+  add_variable_button->setText("Add variable");
   add_variable_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
   add_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   add_variable_button->setPopupMode(QToolButton::InstantPopup);
@@ -62,18 +62,8 @@ void WorkspaceEditorActions::SetupActions()
   m_add_variable_action = new QWidgetAction(this);
   m_add_variable_action->setDefaultWidget(add_variable_button);
 
-  auto edit_anyvalue_button = new QToolButton;
-  edit_anyvalue_button->setText("Edit");
-  edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
-  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  edit_anyvalue_button->setToolTip("Edit value of currently selected variable");
-  connect(edit_anyvalue_button, &QToolButton::clicked, this,
-          &WorkspaceEditorActions::EditAnyvalueRequest);
-  m_edit_anyvalue_action = new QWidgetAction(this);
-  m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
-
   auto remove_variable_button = new QToolButton;
-  remove_variable_button->setText("Remove");
+  remove_variable_button->setText("Remove variable");
   remove_variable_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   remove_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   remove_variable_button->setToolTip("Remove currently selected variable");

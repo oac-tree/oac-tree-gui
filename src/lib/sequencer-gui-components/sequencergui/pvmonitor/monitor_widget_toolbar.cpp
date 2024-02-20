@@ -41,8 +41,6 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
 
   connect(m_workspace_editor_actions, &WorkspaceEditorActions::AddVariableRequest, this,
           &MonitorWidgetToolBar::AddVariableRequest);
-  connect(m_workspace_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, this,
-          &MonitorWidgetToolBar::EditAnyvalueRequest);
   connect(m_workspace_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, this,
           &MonitorWidgetToolBar::RemoveVariableRequest);
 

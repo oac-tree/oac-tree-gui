@@ -30,9 +30,12 @@ class QAction;
 namespace sequencergui
 {
 
-//! Collection of Qt actions related to the construction of WorkspaceItem tree.
-//! Actual job is done by the WorspaceEditorActionHandler.
-
+/**
+ * @brief The WorkspaceEditorActions class holds collection of Qt actions to construct variables in
+ * the workspace.
+ *
+ * The actual job is done by WorkspaceEditorActionHandler.
+ */
 class WorkspaceEditorActions : public QObject
 {
   Q_OBJECT
@@ -45,7 +48,6 @@ public:
 
 signals:
   void AddVariableRequest(const QString& name);
-  void EditAnyvalueRequest();
   void RemoveVariableRequest();
 
 private:
@@ -55,7 +57,6 @@ private:
 
   std::unique_ptr<QMenu> m_add_variable_menu;
   QWidgetAction* m_add_variable_action{nullptr};
-  QWidgetAction* m_edit_anyvalue_action{nullptr};
   QWidgetAction* m_remove_variable_action{nullptr};
 };
 

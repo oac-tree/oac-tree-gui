@@ -31,6 +31,13 @@
 #include <QToolButton>
 #include <QWidgetAction>
 
+namespace
+{
+const QString kEditAnyValueToolTip =
+    "Edit AnyValue in external editor. Only certain variables as well as\n"
+    "some EPICS related instructions can have complex AnyValues";
+}  // namespace
+
 namespace sequencergui
 {
 
@@ -61,10 +68,7 @@ AttributeEditorActions::AttributeEditorActions(InstructionAttributeEditorContext
   edit_anyvalue_button->setText("Edit AnyValue");
   edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
   edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  edit_anyvalue_button->setToolTip(
-      "Edit AnyValue of currently selected instruction in external editor.\n"
-      "Please note that only few instructions have optional AnyValue on board, namely\n"
-      "PvAccessWrite, ChannelAccessWrite and RPCClient.");
+  edit_anyvalue_button->setToolTip(kEditAnyValueToolTip);
   connect(edit_anyvalue_button, &QToolButton::clicked, this,
           &AttributeEditorActions::EditAnyvalueRequest);
   m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
@@ -160,9 +164,7 @@ QAction *AttributeEditorActions::AddEditAnyValueAction(QMenu &menu,
   auto result = menu.addAction("Set placeholder attribute");
   result->setText("Edit AnyValue");
   result->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
-  result->setToolTip(
-      "Edit AnyValue in external editor. Only variables and EPICS related instructions\ncan have "
-      "complex AnyValues");
+  result->setToolTip(kEditAnyValueToolTip);
   connect(result, &QAction::triggered, this, &AttributeEditorActions::EditAnyvalueRequest);
   result->setEnabled(false);
 

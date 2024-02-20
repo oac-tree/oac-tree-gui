@@ -79,7 +79,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
           &WorkspaceEditorWidget::OnTreeContextMenuRequest);
 
   SetupConnections();
-  addActions(m_editor_actions->GetActions());
+  addActions(m_editor_actions->GetActions() + m_attribute_actions->GetToolBarActions());
 
   ReadSettings();
 
@@ -187,8 +187,6 @@ void WorkspaceEditorWidget::SetupConnections()
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
   connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
-  connect(m_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, m_action_handler.get(),
-          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
   connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 
