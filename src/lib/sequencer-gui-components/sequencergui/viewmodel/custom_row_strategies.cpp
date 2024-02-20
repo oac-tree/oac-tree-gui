@@ -21,21 +21,25 @@
 
 #include "custom_viewitem_factory.h"
 
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
-#include <sup/gui/widgets/style_utils.h>
 
-#include <map>
 #include <QColor>
 #include <QIcon>
+#include <map>
 
 namespace
 {
+
+const QVariant kEditorIcon =
+    QVariant::fromValue(QIcon(sup::gui::utils::GetIcon("file-tree-outline.svg")));
 
 /**
  * @brief Creates view item representing AnyValue in a column.
@@ -93,7 +97,8 @@ std::string GetTypeStringForVariableTree(const mvvm::SessionItem &item)
  * @brief Returns row of the table representing variable.
  */
 
-std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::VariableItem &item)
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTableRow(
+    sequencergui::VariableItem &item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
@@ -108,6 +113,44 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableRow(sequencergui::Var
 
   // column #3: Channel and is_available properties
   result.emplace_back(CreateChannelPresentationViewItem(item));
+
+  return result;
+}
+
+/**
+ * @brief Returns row of the table representing variable.
+ */
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableTreeRow(sequencergui::VariableItem &item)
+{
+  std::vector<std::unique_ptr<mvvm::ViewItem>> result;
+  result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(&item));
+  result.emplace_back(mvvm::CreateLabelViewItem(&item));
+  result.emplace_back(mvvm::CreateLabelViewItem(&item, item.GetType()));
+
+  return result;
+}
+
+/**
+ * @brief Returns row for the tree representing variable attribute.
+ */
+std::vector<std::unique_ptr<mvvm::ViewItem>> CreateVariableAttributeTreeRow(mvvm::SessionItem &item)
+{
+  std::vector<std::unique_ptr<mvvm::ViewItem>> result;
+
+  // If it's a tag corresponding to AnyValue, let's place an icon before display name.
+  if (item.GetTagIndex().tag == sequencergui::itemconstants::kAnyValueTag)
+  {
+    auto view_item = mvvm::CreateFixedDataViewItem(&item);
+    view_item->SetData(kEditorIcon, Qt::DecorationRole);
+    view_item->SetData(QString::fromStdString(item.GetDisplayName()), Qt::DisplayRole);
+    result.emplace_back(std::move(view_item));
+  }
+  else
+  {
+    result.emplace_back(mvvm::CreateDisplayNameViewItem(&item));
+  }
+  result.emplace_back(mvvm::CreateDataViewItem(&item));
+  result.emplace_back(mvvm::CreateLabelViewItem(&item, GetTypeStringForVariableTree(item)));
 
   return result;
 }
@@ -130,35 +173,22 @@ QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
 std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
     mvvm::SessionItem *item)
 {
-  std::vector<std::unique_ptr<mvvm::ViewItem>> result;
 
   if (!item)
   {
-    return result;
+    return {};
   }
-
-  // If it's Variable itself, generate [editable name, empty label, modelType]
-  // If it's variabl's property, generate standart [property display name, property value name]
 
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
-    result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(variable));
-    result.emplace_back(mvvm::CreateLabelViewItem(variable));
-    result.emplace_back(mvvm::CreateLabelViewItem(variable, variable->GetType()));
+    // If it's Variable itself, generate [editable name, empty label, modelType]
+    return CreateVariableTreeRow(*variable);
   }
   else
   {
-    // result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
-    auto view_item = mvvm::CreateFixedDataViewItem(
-        item, {{Qt::DisplayRole, QString::fromStdString(item->GetDisplayName())},
-               {Qt::DecorationRole, QVariant::fromValue(QIcon(sup::gui::utils::GetIcon("file-tree-outline.svg")))}});
-    // view_item->SetData(QVariant::fromValue(Qt::red), Qt::DecorationRole);
-    result.emplace_back(std::move(view_item));
-    result.emplace_back(mvvm::CreateDataViewItem(item));
-    result.emplace_back(mvvm::CreateLabelViewItem(item, GetTypeStringForVariableTree(*item)));
+    // If it's variabl's property, generate standart [property display name, property value name]
+    return CreateVariableAttributeTreeRow(*item);
   }
-
-  return result;
 }
 
 //! ---------------------------------------------------------------------------
@@ -194,7 +224,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
 
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
-    return CreateVariableRow(*variable);
+    return CreateVariableTableRow(*variable);
   }
 
   // It's AnyValueStructItem or AnyValueArrayItem and their branches
