@@ -53,14 +53,14 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForLocalVariable)
 
   auto viewitem = CreateChannelPresentationViewItem(item);
 
-  EXPECT_FALSE(viewitem->data(Qt::EditRole).isValid());
-  EXPECT_TRUE(viewitem->data(Qt::DisplayRole).isValid());
-  EXPECT_EQ(viewitem->data(Qt::DisplayRole).toString(), QString());
-  EXPECT_FALSE(viewitem->data(Qt::DecorationRole).isValid());
+  EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
+  EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
+  EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString());
+  EXPECT_FALSE(viewitem->Data(Qt::DecorationRole).isValid());
 
   // it is not possible to set any data
-  EXPECT_FALSE(viewitem->setData(QString("aaa"), Qt::DisplayRole));
-  EXPECT_FALSE(viewitem->setData(QString("bbb"), Qt::EditRole));
+  EXPECT_FALSE(viewitem->SetData(QString("aaa"), Qt::DisplayRole));
+  EXPECT_FALSE(viewitem->SetData(QString("bbb"), Qt::EditRole));
 }
 
 //! Validating view item presenting channel and is_available status for LocalVariable.
@@ -74,13 +74,13 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
 
   auto viewitem = CreateChannelPresentationViewItem(item);
 
-  EXPECT_FALSE(viewitem->data(Qt::EditRole).isValid());
-  EXPECT_TRUE(viewitem->data(Qt::DisplayRole).isValid());
-  EXPECT_EQ(viewitem->data(Qt::DisplayRole).toString(), QString("CHANNEL"));
-  EXPECT_TRUE(viewitem->data(Qt::DecorationRole).isValid());
-  EXPECT_EQ(viewitem->data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
+  EXPECT_FALSE(viewitem->Data(Qt::EditRole).isValid());
+  EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
+  EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString("CHANNEL"));
+  EXPECT_TRUE(viewitem->Data(Qt::DecorationRole).isValid());
+  EXPECT_EQ(viewitem->Data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
 
   // it is not possible to set any data
-  EXPECT_FALSE(viewitem->setData(QString("aaa"), Qt::DisplayRole));
-  EXPECT_FALSE(viewitem->setData(QString("bbb"), Qt::EditRole));
+  EXPECT_FALSE(viewitem->SetData(QString("aaa"), Qt::DisplayRole));
+  EXPECT_FALSE(viewitem->SetData(QString("bbb"), Qt::EditRole));
 }
