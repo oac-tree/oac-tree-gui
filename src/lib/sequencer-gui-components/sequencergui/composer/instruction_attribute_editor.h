@@ -80,7 +80,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  AttributeEditorActions* m_actions{nullptr};
+  AttributeEditorActions* m_attribute_actions{nullptr};
 };
 
 }  // namespace sequencergui

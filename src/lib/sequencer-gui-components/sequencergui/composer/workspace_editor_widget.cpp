@@ -19,6 +19,8 @@
 
 #include "workspace_editor_widget.h"
 
+#include "attribute_editor_actions.h"
+
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/procedure_item.h>
@@ -40,7 +42,6 @@
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
-#include <QDebug>
 
 namespace
 {
@@ -60,6 +61,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_editor_actions(new WorkspaceEditorActions(this))
     , m_action_handler(
           std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
+    , m_attribute_actions(new AttributeEditorActions(
+          {[this]() { return m_component_provider->GetSelectedItem(); }}, this))
 {
   setWindowTitle("Workspace");
 
@@ -147,13 +150,20 @@ void WorkspaceEditorWidget::AdjustTreeAppearance()
 
 void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
 {
-  qDebug() << "XXX";
+  auto index = m_tree_view->indexAt(point);
+  auto item = dynamic_cast<sup::gui::AnyValueItem *>(
+      m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
+
   QMenu menu;
 
-  menu.addSection("Tree settings");
+  // populate attribute menu
+  m_attribute_actions->SetupMenu(menu, item);
 
-  // auto collapse_menu = menu.addMenu("Tree settings");
-  sup::gui::SetupCollapseExpandMenu(point, menu, *m_tree_view);
+  menu.addSeparator();
+
+  // populate tree menu
+  auto collapse_menu = menu.addMenu("Tree settings");
+  sup::gui::SetupCollapseExpandMenu(point, *collapse_menu, *m_tree_view);
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
@@ -178,6 +188,8 @@ void WorkspaceEditorWidget::SetupConnections()
   connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
   connect(m_editor_actions, &WorkspaceEditorActions::EditAnyvalueRequest, m_action_handler.get(),
+          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
+  connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler.get(),
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 
   // make inserted item selected, and tree branch expanded

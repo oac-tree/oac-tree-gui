@@ -51,10 +51,10 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view))
-    , m_actions(new AttributeEditorActions(CreateActionContext(), this))
+    , m_attribute_actions(new AttributeEditorActions(CreateActionContext(), this))
 {
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
-  m_tool_bar->addActions(m_actions->GetToolBarActions());
+  m_tool_bar->addActions(m_attribute_actions->GetToolBarActions());
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -72,7 +72,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
   ReadSettings();
   AdjustTreeAppearance();
 
-  connect(m_actions, &AttributeEditorActions::EditAnyvalueRequest, this,
+  connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, this,
           &InstructionAttributeEditor::EditAnyvalueRequest);
 }
 
@@ -125,7 +125,7 @@ void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)
       m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
 
   QMenu menu;
-  m_actions->SetupMenu(menu, item);
+  m_attribute_actions->SetupMenu(menu, item);
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 

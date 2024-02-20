@@ -82,7 +82,6 @@ void AttributeEditorActions::SetupMenu(QMenu &menu, sup::gui::AnyValueItem *attr
   // We clear menu and modify it with entries. It is done just a moment before showing the menu, to
   // take into account current selection and properly mark actions as enabled/disabled.
 
-  menu.clear();
   menu.setToolTipsVisible(true);
 
   auto enable_action = menu.addAction("Attribute is enabled");

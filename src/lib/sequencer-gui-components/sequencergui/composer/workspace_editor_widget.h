@@ -45,6 +45,7 @@ class VariableItem;
 class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorActions;
+class AttributeEditorActions;
 
 /**
  * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
@@ -85,6 +86,7 @@ private:
 
   WorkspaceEditorActions* m_editor_actions{nullptr};
   std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
+  AttributeEditorActions* m_attribute_actions{nullptr};
 
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };
