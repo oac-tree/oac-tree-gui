@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
@@ -29,6 +30,7 @@
 #include <mvvm/core/exceptions.h>
 #include <mvvm/model/item_utils.h>
 
+#include <sup/sequencer/exceptions.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 
@@ -120,7 +122,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItem)
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
   EXPECT_TRUE(mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag));
-  EXPECT_NE(GetAnyValueItem(item), nullptr); // by default we create empty AnyValue
+  EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetVariableName("abc");
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -200,6 +202,29 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItemToDomain)
 
     EXPECT_NO_THROW(domain_item->Setup(m_procedure));
   }
+
+  {  // case when AnyValueItem marked as non-present
+    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+    const std::string expected_type(R"RAW({"type":"int32"})RAW");
+    const std::string expected_value("42");
+
+    ChannelAccessWriteInstructionItem item;
+    item.SetChannel("def");
+    item.SetTimeout(42.0);
+    SetAnyValue(expected_anyvalue, item);
+    SetAttributePresentFlag(false, *GetAnyValueItem(item));
+
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessWriteInstructionType);
+
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "def");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+
+    // we have disabled AnyValueItem and didn't provide variable reference
+    EXPECT_THROW(domain_item->Setup(m_procedure), sup::sequencer::InstructionSetupException);
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -268,7 +293,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItem)
   EXPECT_TRUE(item.GetChannel().empty());
   EXPECT_EQ(item.GetTimeout(), 1.0);
   EXPECT_TRUE(mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag));
-  EXPECT_NE(GetAnyValueItem(item), nullptr); // by default we create empty AnyValue
+  EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetVariableName("abc");
   EXPECT_EQ(item.GetVariableName(), std::string("abc"));
@@ -348,6 +373,31 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemToDomain)
 
     EXPECT_NO_THROW(domain_item->Setup(m_procedure));
   }
+
+  {  // case when AnyValueItem marked as non-present
+    const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+    const std::string expected_type(R"RAW({"type":"int32"})RAW");
+    const std::string expected_value("42");
+
+    PvAccessWriteInstructionItem item;
+    item.SetChannel("def");
+    item.SetTimeout(42.0);
+
+    // setting variable name but disabling AnyValueItem
+    item.SetVariableName("var");
+    SetAnyValue(expected_anyvalue, item);
+    SetAttributePresentFlag(false, *GetAnyValueItem(item));
+
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessWriteInstructionType);
+
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kChannelAttribute), "def");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -362,7 +412,7 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstruction)
   EXPECT_EQ(item.GetTimeout(), 1.0);
   EXPECT_TRUE(item.GetOutput().empty());
   EXPECT_TRUE(mvvm::utils::HasTag(item, sequencergui::itemconstants::kAnyValueTag));
-  EXPECT_NE(GetAnyValueItem(item), nullptr); // by default we create empty AnyValue
+  EXPECT_NE(GetAnyValueItem(item), nullptr);  // by default we create empty AnyValue
 
   item.SetService("service");
   EXPECT_EQ(item.GetService(), std::string("service"));
@@ -409,26 +459,55 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
   const std::string expected_type(R"RAW({"type":"int32"})RAW");
   const std::string expected_value("42");
 
-  // either RequestVar or type and value. Testing Type And Value case
-  RPCClientInstruction item;
-  item.SetService("service");
-  item.SetTimeout(42.0);
-  item.SetIsRootFlag(true);
-  SetAnyValue(expected_anyvalue, item);
-  item.SetOutput("output");
+  {  // case with type and value
+    RPCClientInstruction item;
+    item.SetService("service");
+    item.SetTimeout(42.0);
+    item.SetIsRootFlag(true);
+    SetAnyValue(expected_anyvalue, item);
+    item.SetOutput("output");
 
-  auto domain_item = item.CreateDomainInstruction();
-  EXPECT_EQ(domain_item->GetType(), domainconstants::kRPCClientInstructionType);
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kRPCClientInstructionType);
 
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kServiceAttribute), "service");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
-  EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputVariableNameAttribute),
-            "output");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kServiceAttribute), "service");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kValueAttribute), expected_value);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputVariableNameAttribute),
+              "output");
 
-  EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  }
+
+  {  // case with variable name
+    RPCClientInstruction item;
+    item.SetService("service");
+    item.SetTimeout(42.0);
+    item.SetIsRootFlag(true);
+    SetAnyValue(expected_anyvalue, item);
+    item.SetOutput("output");
+
+    // setting variable name but disabling AnyValueItem
+    item.SetRequestVar("abc");
+    SetAnyValue(expected_anyvalue, item);
+    SetAttributePresentFlag(false, *GetAnyValueItem(item));
+
+    auto domain_item = item.CreateDomainInstruction();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kRPCClientInstructionType);
+
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kServiceAttribute), "service");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kTimeoutAttribute), "42.0");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kIsRootAttribute), "true");
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kOutputVariableNameAttribute),
+              "output");
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kRequestAttribute), "abc");
+
+    EXPECT_NO_THROW(domain_item->Setup(m_procedure));
+  }
 }
 
 // ----------------------------------------------------------------------------

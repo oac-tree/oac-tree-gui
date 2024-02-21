@@ -118,7 +118,8 @@ void UniversalInstructionItem::SetupDomainImpl(instruction_t *instruction) const
     SetDomainAttribute(*item, attribute_name, *instruction);
   }
 
-  if (auto anyvalue_item = GetAnyValueItem(*this); anyvalue_item)
+  auto anyvalue_item = GetAnyValueItem(*this);
+  if (anyvalue_item && IsAttributePresent(*anyvalue_item))
   {
     SetJsonAttributesFromItem(*anyvalue_item, *instruction);
   }
