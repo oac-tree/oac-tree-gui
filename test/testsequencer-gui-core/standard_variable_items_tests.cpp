@@ -264,7 +264,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   auto dynamic_type_item = dynamic_cast<AttributeItem*>(children.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
-  EXPECT_FALSE(IsAttributePresent(*dynamic_type_item));
+  EXPECT_FALSE(GetAttributePresentFlag(*dynamic_type_item));
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)

@@ -71,7 +71,7 @@ bool IsReferenceAttribute(const std::string &attribute_value)
   return attribute_value.find_first_of('@') == 0;
 }
 
-bool IsAttributePresent(const sup::gui::AnyValueItem &attribute_item)
+bool GetAttributePresentFlag(const sup::gui::AnyValueItem &attribute_item)
 {
   return attribute_item.IsEditable() && attribute_item.IsEnabled();
 }
@@ -142,7 +142,7 @@ template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t 
 template <typename T>
 void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
 {
-  if (!IsAttributePresent(item))
+  if (!GetAttributePresentFlag(item))
   {
     return;
   }

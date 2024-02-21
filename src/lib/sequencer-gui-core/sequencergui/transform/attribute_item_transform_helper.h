@@ -61,7 +61,7 @@ bool IsReferenceAttribute(const std::string& attribute_value);
    * @param attribute_item The item to set attribute.
    * @return Boolean representing the value of IsPresent attribute.
    */
-bool IsAttributePresent(const sup::gui::AnyValueItem &attribute_item);
+bool GetAttributePresentFlag(const sup::gui::AnyValueItem &attribute_item);
 
 /**
    * @brief Sets attribute present flag to a given value.

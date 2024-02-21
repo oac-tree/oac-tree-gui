@@ -121,11 +121,11 @@ QAction *AttributeEditorActions::AddEnableAttributeAction(QMenu &menu,
   auto result = menu.addAction("Attribute is enabled");
   result->setToolTip("Attribute with enabled flag set will be propagated to domain");
   result->setCheckable(true);
-
-  result->setChecked(attribute_item && IsAttributePresent(*attribute_item));
+  
+  result->setChecked(attribute_item && GetAttributePresentFlag(*attribute_item));
 
   auto on_action = [attribute_item]()
-  { SetAttributePresentFlag(!IsAttributePresent(*attribute_item), *attribute_item); };
+  { SetAttributePresentFlag(!GetAttributePresentFlag(*attribute_item), *attribute_item); };
   connect(result, &QAction::triggered, on_action);
   result->setEnabled(false);
 

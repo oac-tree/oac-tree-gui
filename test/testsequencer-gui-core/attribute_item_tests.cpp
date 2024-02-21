@@ -89,10 +89,10 @@ TEST_F(AttributeItemTest, SetPresentFlag)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
   
-  EXPECT_TRUE(IsAttributePresent(item));
+  EXPECT_TRUE(GetAttributePresentFlag(item));
   
   SetAttributePresentFlag(false, item);
-  EXPECT_FALSE(IsAttributePresent(item));
+  EXPECT_FALSE(GetAttributePresentFlag(item));
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
@@ -108,7 +108,7 @@ TEST_F(AttributeItemTest, SetAttributeFromTypeName)
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
   
   SetAttributePresentFlag(false, item);
-  EXPECT_FALSE(IsAttributePresent(item));
+  EXPECT_FALSE(GetAttributePresentFlag(item));
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
