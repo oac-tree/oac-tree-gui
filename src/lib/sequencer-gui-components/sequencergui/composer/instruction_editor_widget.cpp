@@ -60,7 +60,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
-    , m_property_tree(new InstructionAttributeEditor)
+      , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))
     , m_action_handler(
@@ -76,7 +76,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
   m_splitter->setOrientation(Qt::Vertical);
   m_splitter->addWidget(m_tree_view);
-  m_splitter->addWidget(m_property_tree);
+  m_splitter->addWidget(m_attribute_editor);
   m_splitter->setSizes(QList<int>() << 300 << 200);
   layout->addWidget(m_splitter);
 
@@ -215,7 +215,7 @@ void InstructionEditorWidget::SetupConnections()
   auto on_selected_instruction_changed = [this](auto)
   {
     auto selected = GetSelectedInstruction();
-    m_property_tree->SetItem(selected);
+    m_attribute_editor->SetItem(selected);
     emit InstructionSelected(selected);
   };
   connect(m_component_provider.get(), &::mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
@@ -232,7 +232,7 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::OnMoveUpRequest);
   connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest, m_action_handler.get(),
           &InstructionEditorActionHandler::OnMoveDownRequest);
-  connect(m_property_tree, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler.get(),
+  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler.get(),
           &InstructionEditorActionHandler::OnEditAnyvalueRequest);
 
   // propagate selection request from action handler component provider

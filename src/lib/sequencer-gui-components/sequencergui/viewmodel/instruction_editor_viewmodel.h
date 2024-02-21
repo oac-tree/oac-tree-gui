@@ -30,8 +30,12 @@ class SessionModelInterface;
 namespace sequencergui
 {
 
-//! View model to show instruction tree with three columns: display_name, name and status.
-
+/**
+ * @brief The InstructionEditorViewModel class is a model with two columns: display name and
+ * editable description.
+ *
+ * It allows to drag-and-drop instructions, and move instructions from one parent to another.
+ */
 class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
