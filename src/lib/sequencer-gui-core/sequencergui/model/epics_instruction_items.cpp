@@ -21,8 +21,23 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/item_constants.h>
-#include <sup/gui/model/anyvalue_item_utils.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_utils.h>
+
+namespace
+{
+const std::string kAnyValueDefaultDisplayName = "value";
+
+void InitDefaultAnyValue(mvvm::CompoundItem &item)
+{
+  item.RegisterTag(sup::gui::CreateAnyValueTag(sequencergui::itemconstants::kAnyValueTag), true);
+  auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
+  anyvalue_item->SetDisplayName(kAnyValueDefaultDisplayName);
+  sequencergui::SetAttributePresentFlag(false, *anyvalue_item);
+}
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -81,7 +96,7 @@ EpicsWriteInstructionItem::EpicsWriteInstructionItem(const std::string &instruct
     : UniversalInstructionItem(instruction_type)
 {
   SetTimeout(1.0);
-  RegisterAnyValueItemTag();
+  InitDefaultAnyValue(*this);
 }
 
 std::unique_ptr<mvvm::SessionItem> EpicsWriteInstructionItem::Clone(bool make_unique_id) const
@@ -118,12 +133,6 @@ double EpicsWriteInstructionItem::GetTimeout() const
 void EpicsWriteInstructionItem::SetTimeout(double value)
 {
   SetAttribute(domainconstants::kTimeoutAttribute, value);
-}
-
-void EpicsWriteInstructionItem::RegisterAnyValueItemTag()
-{
-  RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
-  InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
 }
 
 // ----------------------------------------------------------------------------
@@ -185,8 +194,7 @@ std::unique_ptr<mvvm::SessionItem> PvAccessWriteInstructionItem::Clone(bool make
 RPCClientInstruction::RPCClientInstruction() : UniversalInstructionItem(Type)
 {
   SetTimeout(1.0);
-  RegisterTag(sup::gui::CreateAnyValueTag(itemconstants::kAnyValueTag), true);
-  InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
+  InitDefaultAnyValue(*this);
 }
 
 std::unique_ptr<mvvm::SessionItem> RPCClientInstruction::Clone(bool make_unique_id) const
