@@ -36,6 +36,9 @@ class InstructionItemPanel : public QWidget
 public:
   explicit InstructionItemPanel(QWidget* parent = nullptr);
 
+signals:
+  void InstructionDoubleClicked(const QString& name);
+
 private:
   ItemListWidget* m_list_widget{nullptr};
 };

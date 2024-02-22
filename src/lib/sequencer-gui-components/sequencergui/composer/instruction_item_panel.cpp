@@ -40,6 +40,9 @@ InstructionItemPanel::InstructionItemPanel(QWidget *parent)
   layout->addWidget(m_list_widget);
 
   m_list_widget->AddEntries(::mvvm::utils::GetStringList(GetDomainInstructionNames()));
+
+  connect(m_list_widget, &ItemListWidget::InstructionDoubleClicked, this,
+          &InstructionItemPanel::InstructionDoubleClicked);
 }
 
 }  // namespace sequencergui

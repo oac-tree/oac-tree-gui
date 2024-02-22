@@ -64,6 +64,7 @@ signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
   void CreateNewProcedureRequest();
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
+  void InstructionDoubleClicked(const QString& name);
 
 private:
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};

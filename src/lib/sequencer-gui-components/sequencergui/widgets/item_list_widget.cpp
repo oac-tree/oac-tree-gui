@@ -61,6 +61,10 @@ ItemListWidget::ItemListWidget(QWidget* parent) : QListWidget(parent)
   setIconSize(QSize(rect.width(), rect.height()));
   setAcceptDrops(false);
   setUniformItemSizes(true);
+
+  auto on_double_click = [this](auto item)
+  { emit InstructionDoubleClicked(item->data(Qt::DisplayRole).toString()); };
+  connect(this, &ItemListWidget::itemDoubleClicked, this, on_double_click);
 }
 
 QSize ItemListWidget::sizeHint() const

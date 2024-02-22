@@ -39,6 +39,9 @@ public:
 
   void AddEntries(const QStringList& entries);
 
+signals:
+  void InstructionDoubleClicked(const QString& name);
+
 protected:
   void startDrag(Qt::DropActions supportedActions) override;
 
