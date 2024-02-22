@@ -28,18 +28,21 @@ class QShowEvent;
 
 namespace sequencergui
 {
+
 class SequencerModel;
 class ComposerWidgetPanel;
 class ComposerPanel;
 class ProcedureItem;
 class SequencerComposerActions;
 
-//! Main widget for model editing. Contains up to 3 vertical panels:
-//! - a narrow panel on the left with procedure selector and instruction toolbox
-//! - instruction tree view in the center
-//! - workspace tree on the right
-//! Belongs to MainWindow.
-
+/**
+ * @brief The SequencerComposerView class is a main widget for model editing.
+ *
+ * It is a second main view of sequencer main window. Contains 3 vertical panels:
+ * - a narrow panel on the left with procedure selector and instruction toolbox
+ * - instruction tree view in the center
+ * - workspace tree on the right
+ */
 class SequencerComposerView : public QWidget
 {
   Q_OBJECT

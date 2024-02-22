@@ -26,20 +26,20 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/nodeeditor/node_editor.h>
-
 #include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
+
 ComposerWidgetPanel::ComposerWidgetPanel(QWidget* parent)
     : QWidget(parent)
     , m_instruction_editor_widget(new InstructionEditorWidget)
     , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_node_editor(new NodeEditor)
     , m_xml_panel(new XmlPanel)
-      , m_stack_widget(new sup::gui::ItemStackWidget)
+    , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   setWindowTitle("Composer");
 

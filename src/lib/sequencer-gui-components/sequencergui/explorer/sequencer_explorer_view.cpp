@@ -43,6 +43,7 @@ const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 
 namespace sequencergui
 {
+
 SequencerExplorerView::SequencerExplorerView(QWidget *parent)
     : QWidget(parent)
     , m_explorer_panel(new ExplorerPanel)

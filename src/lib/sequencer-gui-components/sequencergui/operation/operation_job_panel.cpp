@@ -27,7 +27,6 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-
 #include <sup/gui/widgets/collapsible_list_view.h>
 
 #include <QVBoxLayout>
@@ -37,7 +36,7 @@ namespace sequencergui
 
 OperationJobPanel::OperationJobPanel(QWidget *parent)
     : QWidget(parent)
-      , m_collapsible_list(new sup::gui::CollapsibleListView)
+    , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_job_list_widget(new JobListWidget)
     , m_job_property_widget(new JobPropertyWidget)
     , m_job_actions(new OperationJobPanelActions(this))

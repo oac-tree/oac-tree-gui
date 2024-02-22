@@ -36,16 +36,20 @@ class PanelToolBar;
 
 namespace sequencergui
 {
+
 class InstructionItemPanel;
 class ProcedureListWidget;
 class SequencerModel;
 class ProcedureItem;
 class AggregatePanel;
 
-//! Left panel on SequencerComposerView.
-//! Contains list of opened procedures, list of available instruction, and list of available
-//! variables.
-
+/**
+ * @brief The ComposerPanel class represent a left panel of SequencerComposerView (second main
+ * view).
+ *
+ * Contains list of opened procedures, list of available instruction, and list of available
+ * variables.
+ */
 class ComposerPanel : public QWidget
 {
   Q_OBJECT

@@ -22,20 +22,26 @@
 
 #include <QWidget>
 
-namespace sup::gui{
+namespace sup::gui
+{
 class PanelToolBar;
 class CollapsibleListView;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {
+
 class FileTreeView;
 class ProcedureListWidget;
 class SequencerModel;
 class ProcedureItem;
 
-//! Vertical panel located on the left of SequencerExplorerView.
-
+/**
+ * @brief The ExplorerPanel class represents a vertical panel on the left of SequencerExplorerView.
+ *
+ * Contains a FileTree widget to browse directories on top, and list of opened procedures at the
+ * bottom.
+ */
 class ExplorerPanel : public QWidget
 {
   Q_OBJECT

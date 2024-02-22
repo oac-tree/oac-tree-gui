@@ -38,9 +38,17 @@ class WorkspaceEditorWidget;
 class NodeEditor;
 class XmlPanel;
 
-//! The panel with stack of widgets for procedure editing: instruction tree editor, workspace
-//! editor, node editor and code view.
-
+/**
+ * @brief The ComposerWidgetPanel class is a main vertical panel with a stack of widget for
+ * procedure editing.
+ *
+ * It is located both at the center and on the right of SequencerComposerView (a second main view).
+ * Depending on the current selection can show
+ * - instruction tree editor
+ * - workspace editor
+ * - node editor
+ * - XML viewer
+ */
 class ComposerWidgetPanel : public QWidget
 {
   Q_OBJECT

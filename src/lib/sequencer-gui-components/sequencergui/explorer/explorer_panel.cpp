@@ -22,9 +22,8 @@
 #include <sequencergui/components/procedure_list_widget.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/widgets/file_tree_view.h>
-#include <sup/gui/widgets/panel_toolbar.h>
-
 #include <sup/gui/widgets/collapsible_list_view.h>
+#include <sup/gui/widgets/panel_toolbar.h>
 
 #include <QLabel>
 #include <QSettings>

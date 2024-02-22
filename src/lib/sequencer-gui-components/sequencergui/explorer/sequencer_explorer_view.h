@@ -32,14 +32,20 @@ class ItemStackWidget;
 
 namespace sequencergui
 {
+
 class SequencerModel;
 class ExplorerPanel;
 class ProcedureTreesWidget;
 class ProcedureItem;
 
-//! Main widget to browse procedures on disk. Contains file browser on the left, top items trees
-//! and property tree in the center, and XML viewer on the right. Belongs to MainWindow.
-
+/**
+ * @brief The SequencerExplorerView class is a main widget to browse procedures on disk.
+ *
+ * It is a first main view of sequencer main window. Contains 3 vertical panels:
+ * - file browser on the left
+ * - two trees with procedure structure and item properties
+ * - XML viewer
+ */
 class SequencerExplorerView : public QWidget
 {
   Q_OBJECT

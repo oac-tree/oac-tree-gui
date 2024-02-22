@@ -42,7 +42,6 @@ class OperationActionHandler;
  * execution. Contains the panel with jobs on the left, main sequence tree in the middle, and the
  * panel to monitor variables on the right.
  */
-
 class OperationMonitorView : public QWidget
 {
   Q_OBJECT

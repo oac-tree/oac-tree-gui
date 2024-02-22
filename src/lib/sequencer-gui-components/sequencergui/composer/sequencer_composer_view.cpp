@@ -33,7 +33,6 @@
 
 #include <QSettings>
 #include <QSplitter>
-#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace
