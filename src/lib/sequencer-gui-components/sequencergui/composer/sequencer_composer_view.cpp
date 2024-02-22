@@ -107,18 +107,18 @@ void SequencerComposerView::ReadSettings()
   }
 
   auto central_index = settings.value(kCentralPanel, ComposerWidgetPanel::kInstructionTree).toInt();
-  m_central_panel->SetCurrentWidget(static_cast<ComposerWidgetPanel::WidgetType>(central_index));
+  m_central_panel->SetCurrentWidgetType(static_cast<ComposerWidgetPanel::WidgetType>(central_index));
 
   auto right_index = settings.value(kRightPanel, ComposerWidgetPanel::kWorkspace).toInt();
-  m_right_panel->SetCurrentWidget(static_cast<ComposerWidgetPanel::WidgetType>(right_index));
+  m_right_panel->SetCurrentWidgetType(static_cast<ComposerWidgetPanel::WidgetType>(right_index));
 }
 
 void SequencerComposerView::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
-  settings.setValue(kCentralPanel, m_central_panel->GetCurrentWidget());
-  settings.setValue(kRightPanel, m_right_panel->GetCurrentWidget());
+  settings.setValue(kCentralPanel, m_central_panel->GetCurrentWidgetType());
+  settings.setValue(kRightPanel, m_right_panel->GetCurrentWidgetType());
 }
 
 void SequencerComposerView::SetupConnections()

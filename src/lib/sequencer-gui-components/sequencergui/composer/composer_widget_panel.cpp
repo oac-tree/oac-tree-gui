@@ -105,12 +105,12 @@ InstructionItem* ComposerWidgetPanel::GetSelectedInstruction() const
   return selected.empty() ? nullptr : selected.front();
 }
 
-ComposerWidgetPanel::WidgetType ComposerWidgetPanel::GetCurrentWidget() const
+ComposerWidgetPanel::WidgetType ComposerWidgetPanel::GetCurrentWidgetType() const
 {
   return static_cast<WidgetType>(m_stack_widget->GetCurrentIndex());
 }
 
-void ComposerWidgetPanel::SetCurrentWidget(WidgetType widget_type)
+void ComposerWidgetPanel::SetCurrentWidgetType(WidgetType widget_type)
 {
   m_stack_widget->SetCurrentIndex(static_cast<int>(widget_type));
 }

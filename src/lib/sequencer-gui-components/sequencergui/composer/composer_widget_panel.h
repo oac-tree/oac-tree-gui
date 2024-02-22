@@ -74,8 +74,8 @@ public:
   std::vector<InstructionItem*> GetSelectedInstructions() const;
   InstructionItem* GetSelectedInstruction() const;
 
-  WidgetType GetCurrentWidget() const;
-  void SetCurrentWidget(WidgetType widget_type);
+  WidgetType GetCurrentWidgetType() const;
+  void SetCurrentWidgetType(WidgetType widget_type);
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
