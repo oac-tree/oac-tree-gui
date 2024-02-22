@@ -52,7 +52,7 @@ FileTreeView::FileTreeView(QWidget *parent)
     , m_file_system_model(new QFileSystemModel(this))
     , m_tree_view(new QTreeView)
     , m_path_label(new QLabel)
-    , m_import_file_action(new QAction(this))
+    , m_import_file_action(new QWidgetAction(this))
     , m_bookmark_action(new QWidgetAction(this))
     , m_recent_dirs(std::make_unique<sup::gui::RecentProjectSettings>("FileTreeView"))
     , m_bookmark_menu(std::make_unique<QMenu>())
@@ -96,14 +96,10 @@ void FileTreeView::SetCurrentDir(const QString &dirname)
   m_recent_dirs->SetCurrentWorkdir(dirname);
 }
 
-//! Processes click on active label with directory names embedded.
-
 void FileTreeView::OnLabelClick(const QString &link)
 {
   SetCurrentDir(link);
 }
-
-//! Processed double clicks.
 
 void FileTreeView::OnTreeDoubleClick(const QModelIndex &index)
 {
@@ -140,12 +136,17 @@ void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
 
 void FileTreeView::SetupActions()
 {
+  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
+  // a QToolButton feature) and still be able to pass actions around.
+
   // Import procedure action
-  m_import_file_action->setText("Open");
-  m_import_file_action->setToolTip(
-      "Open procedure from currently selected file\n"
+  auto import_file_button = new QToolButton;
+  import_file_button->setText("Import Selected");
+  import_file_button->setToolTip(
+      "Import procedure from currently selected file\n"
       "(alternatively, double-click on it)");
-  m_import_file_action->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
+  import_file_button->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
+  import_file_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   auto on_import_from_file = [this]()
   {
     for (auto index : m_tree_view->selectionModel()->selectedIndexes())
@@ -156,21 +157,18 @@ void FileTreeView::SetupActions()
       }
     }
   };
-  connect(m_import_file_action, &QAction::triggered, this, on_import_from_file);
+  connect(import_file_button, &QToolButton::clicked, this, on_import_from_file);
+  m_import_file_action->setDefaultWidget(import_file_button);
   addAction(m_import_file_action);
 
   // Bookmark action
-
-  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
-  // a QToolButton feature) and still be able to pass actions around.
-
   m_bookmark_menu->setToolTipsVisible(true);
   connect(m_bookmark_menu.get(), &QMenu::aboutToShow, this,
           &FileTreeView::OnAboutToShowBookmarkMenu);
   auto bookmark_button = new QToolButton;
-  bookmark_button->setText("Bookmark");
+  bookmark_button->setText("Bookmark Dir");
   bookmark_button->setIcon(sup::gui::utils::GetIcon("bookmark-outline.svg"));
-  bookmark_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  bookmark_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   bookmark_button->setPopupMode(QToolButton::InstantPopup);
   bookmark_button->setMenu(m_bookmark_menu.get());
   bookmark_button->setToolTip("Manage bookmarks");

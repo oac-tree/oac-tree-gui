@@ -23,9 +23,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/widgets/file_tree_view.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
-#include <sup/gui/widgets/panel_toolbar.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
-#include <QLabel>
 #include <QSettings>
 #include <QSplitter>
 #include <QToolButton>
@@ -41,22 +40,23 @@ namespace sequencergui
 {
 ExplorerPanel::ExplorerPanel(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new sup::gui::PanelToolBar)
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_file_tree_view(new FileTreeView)
     , m_procedure_list_view(new ProcedureListWidget)
+    , m_stack_widget(new sup::gui::ItemStackWidget)
 {
-  setWindowTitle("Explorer View");
+  m_collapsible_list->setWindowTitle("Explorer View");
 
-  m_collapsible_list->AddCollapsibleWidget(m_file_tree_view, m_file_tree_view->actions());
+  m_collapsible_list->AddWidget(m_file_tree_view);
   m_procedure_list_view->SetupActions(ProcedureListWidget::kRemoveSelected);
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, m_procedure_list_view->actions());
+
+  m_stack_widget->AddWidget(m_collapsible_list, m_file_tree_view->actions());
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_tool_bar);
-  layout->addWidget(m_collapsible_list);
+  layout->addWidget(m_stack_widget);
 
   connect(m_file_tree_view, &FileTreeView::ProcedureFileClicked, this,
           &ExplorerPanel::ProcedureFileClicked);

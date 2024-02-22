@@ -24,8 +24,8 @@
 
 namespace sup::gui
 {
-class PanelToolBar;
 class CollapsibleListView;
+class ItemStackWidget;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -39,7 +39,7 @@ class ProcedureItem;
 /**
  * @brief The ExplorerPanel class represents a vertical panel on the left of SequencerExplorerView.
  *
- * Contains a FileTree widget to browse directories on top, and list of opened procedures at the
+ * Contains a FileTree widget on top directory browsing, and list of opened procedures at the
  * bottom.
  */
 class ExplorerPanel : public QWidget
@@ -64,10 +64,10 @@ private:
   void ReadSettings();
   void WriteSettings();
 
-  sup::gui::PanelToolBar* m_tool_bar{nullptr};
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   FileTreeView* m_file_tree_view{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 
 }  // namespace sequencergui

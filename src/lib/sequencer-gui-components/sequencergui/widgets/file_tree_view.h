@@ -38,7 +38,7 @@ namespace sequencergui
 {
 
 /**
- * @brief The FileTreeView class is a simple file browser with bread crumb on top, and tree view at
+ * @brief The FileTreeView class is a simple file browser with breadcrumb on top, and tree view at
  * the bottom.
  */
 class FileTreeView : public QWidget
@@ -59,9 +59,32 @@ signals:
   void ProcedureFileDoubleClicked(const QString& filename);
 
 private:
+  /**
+   * @brief Processes mouse click on a breadcrumb label.
+   *
+   * Navigates to a directory following the label link.
+   *
+   * @param link A special html text encoded in a label.
+   */
   void OnLabelClick(const QString& link);
+
+  /**
+   * @brief Processes double click on a file tree.
+   *
+   * Used to import procedures, or change working directories.
+   */
   void OnTreeDoubleClick(const QModelIndex& index);
+
+  /**
+   * @brief Processes single click on a file tree.
+   *
+   * Used to show content of the file in XML view, or in a tree view.
+   */
   void OnTreeSingleClick(const QModelIndex& index);
+
+  /**
+   * @brief Setups actions for toolbar.
+   */
   void SetupActions();
 
   /**
@@ -73,7 +96,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   QLabel* m_path_label{nullptr};
   QString m_current_xml_file;
-  QAction* m_import_file_action{nullptr};
+  QWidgetAction* m_import_file_action{nullptr};
   QWidgetAction* m_bookmark_action{nullptr};
   std::unique_ptr<sup::gui::RecentProjectSettings> m_recent_dirs;
   std::unique_ptr<QMenu> m_bookmark_menu;
