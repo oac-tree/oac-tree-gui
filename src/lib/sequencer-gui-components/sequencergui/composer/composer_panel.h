@@ -27,11 +27,7 @@ class QSplitter;
 namespace sup::gui
 {
 class CollapsibleListView;
-}
-
-namespace sup::gui
-{
-class PanelToolBar;
+class ItemStackWidget;
 }
 
 namespace sequencergui
@@ -70,11 +66,11 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
-  sup::gui::PanelToolBar* m_tool_bar{nullptr};
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};
   AggregatePanel* m_workspace_panel{nullptr};
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 
 }  // namespace sequencergui

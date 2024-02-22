@@ -24,7 +24,7 @@
 #include <sequencergui/composer/instruction_item_panel.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
-#include <sup/gui/widgets/panel_toolbar.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QVBoxLayout>
 
@@ -33,24 +33,25 @@ namespace sequencergui
 
 ComposerPanel::ComposerPanel(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new sup::gui::PanelToolBar)
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_procedure_list_view(new ProcedureListWidget)
     , m_instruction_panel(new InstructionItemPanel)
     , m_workspace_panel(new AggregatePanel)
+    , m_stack_widget(new sup::gui::ItemStackWidget)
 
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_tool_bar);
-  layout->addWidget(m_collapsible_list);
+  layout->addWidget(m_stack_widget);
 
   m_procedure_list_view->SetupActions(ProcedureListWidget::kCreateNew
                                       | ProcedureListWidget::kRemoveSelected);
-  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, m_procedure_list_view->actions());
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, {});
   m_collapsible_list->AddCollapsibleWidget(m_instruction_panel, {});
   m_collapsible_list->AddCollapsibleWidget(m_workspace_panel, {});
+
+  m_stack_widget->AddWidget(m_collapsible_list, m_procedure_list_view->actions());
 
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
