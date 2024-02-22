@@ -27,10 +27,12 @@
 #include <sequencergui/explorer/sequencer_explorer_view.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/procedure_examples.h>
+#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
 #include <sup/gui/widgets/style_utils.h>
 
+#include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>
 
@@ -132,16 +134,12 @@ void SequencerMainWindow::WriteSettings()
 
 void SequencerMainWindow::PopulateModel()
 {
-  //  Examples::AddCopyProcedure(m_models->GetSequencerModel());
-  //  Examples::AddLocalIncludeProcedure(m_models->GetSequencerModel());
-  //    Examples::AddUserChoiceProcedure(m_models->GetSequencerModel());
-  //  Examples::AddInputProcedure(m_models->GetSequencerModel());
-  //  Examples::AddComplexAlignmentProcedure(m_models->GetSequencerModel());
-  //  Examples::AddComplexAlignmentProcedureV2(m_models->GetSequencerModel());
+  //
+  auto model = m_models->GetSequencerModel();
+  auto procedure = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
+  procedure->SetDisplayName("Untitled");
 
-  //  auto job_model = m_models->GetJobModel();
-  //  job_model->InsertItem<JobItem>();
-  //  job_model->InsertItem<JobItem>()->SetStatus("ccc");
+  //  Examples::AddCopyProcedure(m_models->GetSequencerModel());
 }
 
 bool SequencerMainWindow::CanCloseApplication()

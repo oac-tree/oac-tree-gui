@@ -143,7 +143,7 @@ void FileTreeView::SetupActions()
   auto import_file_button = new QToolButton;
   import_file_button->setText("Import Selected");
   import_file_button->setToolTip(
-      "Import procedure from currently selected file\n"
+      "Import procedure from currently selected XML file\n"
       "(alternatively, double-click on it)");
   import_file_button->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
   import_file_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
