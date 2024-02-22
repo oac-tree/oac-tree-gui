@@ -96,8 +96,8 @@ void ProcedureListWidget::SetupActions(int action_flag)
 {
   if (action_flag & kCreateNew)
   {
-    m_new_procedure_action->setText("New");
-    m_new_procedure_action->setToolTip("Create new empty procedure");
+    m_new_procedure_action->setText("New Procedure");
+    m_new_procedure_action->setToolTip("Creates new empty procedure");
     m_new_procedure_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
     connect(m_new_procedure_action, &QAction::triggered, this,
             &ProcedureListWidget::CreateNewProcedureRequest);
@@ -106,9 +106,9 @@ void ProcedureListWidget::SetupActions(int action_flag)
 
   if (action_flag & kRemoveSelected)
   {
-    m_remove_selected_action->setText("Remove");
-    m_remove_selected_action->setToolTip("Remove selected procedure");
-    m_remove_selected_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+    m_remove_selected_action->setText("Remove Procedure");
+    m_remove_selected_action->setToolTip("Removes selected procedure");
+    m_remove_selected_action->setIcon(sup::gui::utils::GetIcon("file-remove-outline.svg"));
     auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
     connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
     addAction(m_remove_selected_action);

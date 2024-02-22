@@ -38,7 +38,6 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     , m_instruction_panel(new InstructionItemPanel)
     , m_workspace_panel(new AggregatePanel)
     , m_stack_widget(new sup::gui::ItemStackWidget)
-
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
