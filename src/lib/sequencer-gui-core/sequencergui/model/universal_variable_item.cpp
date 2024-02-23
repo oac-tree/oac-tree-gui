@@ -21,10 +21,10 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -82,7 +82,7 @@ std::vector<UniversalVariableItem::Attribute> UniversalVariableItem::GetAttribut
   // for the moment any registered property has it's correspondance as domain attribute
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  for (const auto property : mvvm::utils::CastItems<AttributeItem>(properties))
+  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
   {
     auto [tag, index] = property->GetTagIndex();
 

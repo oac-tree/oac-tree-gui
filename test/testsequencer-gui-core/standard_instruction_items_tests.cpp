@@ -20,7 +20,6 @@
 #include "sequencergui/model/standard_instruction_items.h"
 
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
@@ -150,7 +149,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemFromDomainWithCustomAttributes)
   EXPECT_EQ(item.GetPath(), std::string("def"));
 
   EXPECT_TRUE(mvvm::utils::HasTag(item, custom_name));
-  auto property_item = dynamic_cast<AttributeItem*>(item.GetItem(custom_name));
+  auto property_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(custom_name));
   ASSERT_TRUE(property_item);
   EXPECT_EQ(property_item->GetAnyTypeName(), sup::dto::kStringTypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(property_item->Data()));
@@ -216,7 +215,7 @@ TEST_F(StandardInstructionItemsTest, IncludeItemToDomainWithCustomAttribute)
   IncludeItem item;
   item.SetPath("def");
 
-  auto& property = item.AddProperty<AttributeItem>(custom_name);
+  auto& property = item.AddProperty<sup::gui::AnyValueScalarItem>(custom_name);
   property.SetAnyTypeName(sup::dto::kStringTypeName);
   property.SetData(custom_value);
 
@@ -465,7 +464,7 @@ TEST_F(StandardInstructionItemsTest, WaitItemToDomainVaryingTimeout)
   const WaitItem item;
 
   auto property_item =
-      dynamic_cast<AttributeItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(item.GetItem(domainconstants::kTimeoutAttribute));
   ASSERT_TRUE(property_item);
 
   SetAttributeAsString("$par1", *property_item);

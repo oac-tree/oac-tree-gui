@@ -22,7 +22,6 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/model/variable_item.h>
-#include <sequencergui/model/attribute_item.h>
 
 namespace sequencergui
 {
@@ -65,8 +64,8 @@ public:
 private:
   struct Attribute
   {
-    std::string domain_name;       //! domain attribute name
-    AttributeItem* item{nullptr};  //! item representing domain attribute
+    std::string domain_name;                //! domain attribute name
+    sup::gui::AnyValueItem* item{nullptr};  //! item representing domain attribute
   };
 
   /**

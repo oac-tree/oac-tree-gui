@@ -21,7 +21,6 @@
 
 #include "instruction_attribute_editor_context.h"
 
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -121,7 +120,7 @@ QAction *AttributeEditorActions::AddEnableAttributeAction(QMenu &menu,
   auto result = menu.addAction("Attribute is enabled");
   result->setToolTip("Attribute with enabled flag set will be propagated to domain");
   result->setCheckable(true);
-  
+
   result->setChecked(attribute_item && GetAttributePresentFlag(*attribute_item));
 
   auto on_action = [attribute_item]()

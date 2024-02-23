@@ -25,7 +25,6 @@
 //! from/to domain attributes.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/model/attribute_item.h>
 
 #include <string>
 
@@ -53,41 +52,41 @@ bool IsPlaceholderAttribute(const std::string& attribute_value);
 bool IsReferenceAttribute(const std::string& attribute_value);
 
 /**
-   * @brief Returns true if this attribute item is marked as present.
-   *
-   * The flag determines whether the attribute should be propagated into the domain. The
-   * item with present flag set to false appears disabled (in gray) and non-editable.
-   *
-   * @param attribute_item The item to set attribute.
-   * @return Boolean representing the value of IsPresent attribute.
-   */
-bool GetAttributePresentFlag(const sup::gui::AnyValueItem &attribute_item);
+ * @brief Returns true if this attribute item is marked as present.
+ *
+ * The flag determines whether the attribute should be propagated into the domain. The
+ * item with present flag set to false appears disabled (in gray) and non-editable.
+ *
+ * @param attribute_item The item to set attribute.
+ * @return Boolean representing the value of IsPresent attribute.
+ */
+bool GetAttributePresentFlag(const sup::gui::AnyValueItem& attribute_item);
 
 /**
-   * @brief Sets attribute present flag to a given value.
-   *
-   * The flag determines whether the attribute should be propagated into the domain. The
-   * item with present flag set to false appears disabled (in gray) and non-editable.
-   *
-   * @param value The value of present flag.
-   * @param attribute_item The item to set attribute.
-   */
+ * @brief Sets attribute present flag to a given value.
+ *
+ * The flag determines whether the attribute should be propagated into the domain. The
+ * item with present flag set to false appears disabled (in gray) and non-editable.
+ *
+ * @param value The value of present flag.
+ * @param attribute_item The item to set attribute.
+ */
 void SetAttributePresentFlag(bool value, sup::gui::AnyValueItem& attribute_item);
 
 /**
-   * @brief Sets attribute value as string.
-   *
-   * Internal data will be replaced with a string. This can happen when corresponding
-   * domain attribute contains is a placeholder or a reference to variable name.
-   *
-   * @param value The string wich will be used as new attribute value.
-   * @param attribute_item The item to set attribute.
-   */
+ * @brief Sets attribute value as string.
+ *
+ * Internal data will be replaced with a string. This can happen when corresponding
+ * domain attribute contains is a placeholder or a reference to variable name.
+ *
+ * @param value The string wich will be used as new attribute value.
+ * @param attribute_item The item to set attribute.
+ */
 void SetAttributeAsString(const std::string& value, sup::gui::AnyValueItem& attribute_item);
 
 /**
-   * @brief Sets default constructed attribute value from AnyType name.
-   */
+ * @brief Sets default constructed attribute value from AnyType name.
+ */
 void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item);
 
 /**
@@ -98,8 +97,8 @@ void SetAttributeFromTypeName(sup::gui::AnyValueItem& attribute_item);
  *
  * @return Returns item representing a new property.
  */
-AttributeItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
-                                         mvvm::CompoundItem& item);
+sup::gui::AnyValueItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
+                                                  mvvm::CompoundItem& item);
 
 /**
  * @brief Set property item from the domain attribute.
@@ -113,13 +112,13 @@ AttributeItem* AddPropertyFromDefinition(const attribute_definition_t& attr,
 
 template <typename T>
 void SetPropertyFromDomainAttribute(const T& domain, const std::string& attribute_name,
-                                    AttributeItem& item);
+                                    sup::gui::AnyValueItem& item);
 
 extern template void SetPropertyFromDomainAttribute<variable_t>(const variable_t& domain,
                                                                 const std::string& attribute_name,
-                                                                AttributeItem& item);
+                                                                sup::gui::AnyValueItem& item);
 extern template void SetPropertyFromDomainAttribute<instruction_t>(
-    const instruction_t& domain, const std::string& attribute_name, AttributeItem& item);
+    const instruction_t& domain, const std::string& attribute_name, sup::gui::AnyValueItem& item);
 
 /**
  * @brief Set an attribute for domain variable from AnyValueScalarItem property.
@@ -132,12 +131,13 @@ extern template void SetPropertyFromDomainAttribute<instruction_t>(
  */
 
 template <typename T>
-void SetDomainAttribute(const AttributeItem& item, const std::string& attribute_name, T& domain);
+void SetDomainAttribute(const sup::gui::AnyValueItem& item, const std::string& attribute_name,
+                        T& domain);
 
-extern template void SetDomainAttribute<variable_t>(const AttributeItem& item,
+extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem& item,
                                                     const std::string& attribute_name,
                                                     variable_t& domain);
-extern template void SetDomainAttribute<instruction_t>(const AttributeItem& item,
+extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
                                                        const std::string& attribute_name,
                                                        instruction_t& domain);
 

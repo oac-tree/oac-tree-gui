@@ -22,9 +22,9 @@
 
 //! Collection of classes to represent Sequencer instructions.
 
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
@@ -75,7 +75,7 @@ public:
   template <typename T>
   void SetAttribute(const std::string& name, const T& value)
   {
-    auto attribute = GetItem<AttributeItem>(name);
+    auto attribute = GetItem<sup::gui::AnyValueItem>(name);
     SetAttributePresentFlag(true, *attribute);
     attribute->SetData(value);
   }
@@ -86,8 +86,8 @@ private:
 
   struct Attribute
   {
-    std::string domain_name;       //! domain attribute name
-    AttributeItem* item{nullptr};  //! item representing domain attribute
+    std::string domain_name;                //! domain attribute name
+    sup::gui::AnyValueItem* item{nullptr};  //! item representing domain attribute
   };
 
   /**

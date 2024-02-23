@@ -22,8 +22,8 @@
 #include "attribute_editor_actions.h"
 #include "instruction_attribute_editor_context.h"
 
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/viewmodel/attribute_editor_viewmodel.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 

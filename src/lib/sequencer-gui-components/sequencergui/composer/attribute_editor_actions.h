@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
 #include <sequencergui/composer/instruction_attribute_editor_context.h>
-#include <sequencergui/model/attribute_item.h>
 
 #include <QObject>
 #include <memory>

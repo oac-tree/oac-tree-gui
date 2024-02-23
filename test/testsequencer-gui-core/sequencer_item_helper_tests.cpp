@@ -94,7 +94,6 @@ TEST_F(SequencerItemHelperTest, Clone)
   EXPECT_TRUE(IsCloneImplemented<TypeRegistrationItem>());
   EXPECT_TRUE(IsCloneImplemented<ProcedurePreambleItem>());
   EXPECT_TRUE(IsCloneImplemented<WorkspaceItem>());
-  EXPECT_TRUE(IsCloneImplemented<AttributeItem>());
 }
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)

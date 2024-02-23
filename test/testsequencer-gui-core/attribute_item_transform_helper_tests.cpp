@@ -20,7 +20,6 @@
 #include "sequencergui/transform/attribute_item_transform_helper.h"
 
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
@@ -81,7 +80,7 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   auto property_item = item.GetItem({attribute_name});
   ASSERT_EQ(property_item, property);
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
-  auto attribute_item = dynamic_cast<AttributeItem*>(property_item);
+  auto attribute_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item);
   ASSERT_NE(attribute_item, nullptr);
   EXPECT_FALSE(GetAttributePresentFlag(*attribute_item));
 
@@ -90,7 +89,7 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   // Checking that we can convert AnyValueScalarItem property back to AnyValue
   sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type};
 
-  auto anyvalue_item = item.GetItem<AttributeItem>(attr.GetName());
+  auto anyvalue_item = item.GetItem<sup::gui::AnyValueScalarItem>(attr.GetName());
   auto any_value = sup::gui::GetAnyValueFromScalar(anyvalue_item->Data());
 
   EXPECT_EQ(expected_anyvalue, any_value);
@@ -106,7 +105,8 @@ TEST_F(AttributeItemTransformHelperTest, AddMandatoryPropertyFromDefinition)
   attr.SetMandatory(true);
 
   mvvm::CompoundItem item;
-  auto property = dynamic_cast<AttributeItem*>(AddPropertyFromDefinition(attr, item));
+  auto property =
+      dynamic_cast<sup::gui::AnyValueScalarItem*>(AddPropertyFromDefinition(attr, item));
   ASSERT_NE(property, nullptr);
 
   EXPECT_EQ(property->GetDisplayName(), attribute_name);
@@ -123,7 +123,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
     domain_variable->Setup(ws);
 
-    AttributeItem item;
+    sup::gui::AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
     SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
@@ -135,7 +135,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
     domain_variable->AddAttribute(domainconstants::kNameAttribute, "abc");
 
-    AttributeItem item;
+    sup::gui::AnyValueScalarItem item;
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
     EXPECT_NO_THROW(
@@ -155,7 +155,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlacehold
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   EXPECT_TRUE(instruction->GetStringAttributes().empty());
 
-  AttributeItem item;
+  sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<mvvm::int32>(item.Data()));
 
@@ -182,7 +182,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReference
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
   EXPECT_TRUE(instruction->GetStringAttributes().empty());
 
-  AttributeItem item;
+  sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<mvvm::int32>(item.Data()));
 
@@ -206,7 +206,7 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttribute)
 {
   auto domain_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
 
-  AttributeItem item;
+  sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kStringTypeName);
   item.SetData("abc");
 
@@ -221,11 +221,72 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
 {
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  AttributeItem item;
+  sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kFloat64TypeName);
   item.SetData(5.0);
   SetAttributePresentFlag(false, item);
 
   SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
   EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
+}
+
+TEST_F(AttributeItemTransformHelperTest, SetAttributeAsString)
+{
+  sup::gui::AnyValueScalarItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  SetAttributeAsString("abc", item);
+  EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
+  // current convention is to keep original AnyTypeName after setting attribute as a string
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  SetAttributeAsString("def", item);
+  // current convention is to keep original AnyTypeName after setting attribute as a string
+  EXPECT_EQ(item.Data<std::string>(), std::string("def"));
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+}
+
+TEST_F(AttributeItemTransformHelperTest, SetPresentFlag)
+{
+  sup::gui::AnyValueScalarItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  EXPECT_TRUE(GetAttributePresentFlag(item));
+
+  SetAttributePresentFlag(false, item);
+  EXPECT_FALSE(GetAttributePresentFlag(item));
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+}
+
+TEST_F(AttributeItemTransformHelperTest, SetAttributeFromTypeName)
+{
+  sup::gui::AnyValueScalarItem item;
+
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  SetAttributePresentFlag(false, item);
+  EXPECT_FALSE(GetAttributePresentFlag(item));
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  SetAttributeFromTypeName(item);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  // SetAttributeFromTypeName do not change present flags
+  EXPECT_FALSE(item.IsEditable());
+  EXPECT_FALSE(item.IsEnabled());
 }

@@ -21,7 +21,6 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
@@ -97,7 +96,7 @@ void UniversalInstructionItem::InitFromDomainImpl(const instruction_t *instructi
   {
     if (!mvvm::utils::Contains(processed_attribute_names, name))
     {
-      auto &property = AddProperty<AttributeItem>(name);
+      auto &property = AddProperty<sup::gui::AnyValueScalarItem>(name);
       property.SetAnyTypeName(sup::dto::kStringTypeName);
       property.SetDisplayName(name);
       property.SetData(value);
@@ -132,11 +131,11 @@ std::vector<UniversalInstructionItem::Attribute> UniversalInstructionItem::GetAt
   // We need to collect all property items, which has correspondance  on the domain side and should
   // be used for the domain update. These items, currently, satisfy simple criteria:
   // - They are visible property items
-  // - They are derived from AttributeItem
+  // - They are derived from AnyValueItem
 
   auto properties = mvvm::utils::SinglePropertyItems(*this);
 
-  for (const auto property : mvvm::utils::CastItems<AttributeItem>(properties))
+  for (const auto property : mvvm::utils::CastItems<sup::gui::AnyValueItem>(properties))
   {
     auto [tag, index] = property->GetTagIndex();
 

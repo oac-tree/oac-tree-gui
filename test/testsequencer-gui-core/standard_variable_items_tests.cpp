@@ -21,7 +21,6 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
@@ -86,7 +85,7 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableItemPropertyAppearance)
 
   ASSERT_EQ(children.size(), 2);
 
-  auto channel = dynamic_cast<AttributeItem*>(children.at(0));
+  auto channel = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(channel, nullptr);
   EXPECT_EQ(channel->GetDisplayName(), domainconstants::kChannelAttribute);
 
@@ -185,11 +184,11 @@ TEST_F(StandardVariableItemsTest, FileVariableItemPropertyAppearance)
 
   ASSERT_EQ(children.size(), 2);
 
-  auto file_name = dynamic_cast<AttributeItem*>(children.at(0));
+  auto file_name = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(file_name, nullptr);
   EXPECT_EQ(file_name->GetDisplayName(), domainconstants::kFileNameAttribute);
 
-  auto json_attr = dynamic_cast<AttributeItem*>(children.at(1));
+  auto json_attr = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(1));
   ASSERT_NE(json_attr, nullptr);
   EXPECT_EQ(json_attr->GetDisplayName(), domainconstants::kPrettyJsonAttribute);
 }
@@ -261,7 +260,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
 
   ASSERT_EQ(children.size(), 1);
 
-  auto dynamic_type_item = dynamic_cast<AttributeItem*>(children.at(0));
+  auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
   EXPECT_FALSE(GetAttributePresentFlag(*dynamic_type_item));

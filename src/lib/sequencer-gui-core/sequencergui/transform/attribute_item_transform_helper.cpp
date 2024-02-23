@@ -21,8 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/model/attribute_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/scalar_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
@@ -95,11 +95,11 @@ void SetAttributeFromTypeName(sup::gui::AnyValueItem &attribute_item)
                            mvvm::DataRole::kData);
 }
 
-AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
-                                         mvvm::CompoundItem &item)
+sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
+                                                  mvvm::CompoundItem &item)
 {
   // Use attribute name for display name and tag name of the new property item.
-  auto &property = item.AddProperty<AttributeItem>(attr.GetName());
+  auto &property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
   SetAttributePresentFlag(GetIsPresentFlag(attr), property);
@@ -108,7 +108,7 @@ AttributeItem *AddPropertyFromDefinition(const attribute_definition_t &attr,
 
 template <typename T>
 void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribute_name,
-                                    AttributeItem &item)
+                                    sup::gui::AnyValueItem &item)
 {
   if (!domain.HasAttribute(attribute_name))
   {
@@ -134,13 +134,14 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
 
 template void SetPropertyFromDomainAttribute<variable_t>(const variable_t &domain,
                                                          const std::string &attribute_name,
-                                                         AttributeItem &item);
+                                                         sup::gui::AnyValueItem &item);
 template void SetPropertyFromDomainAttribute<instruction_t>(const instruction_t &domain,
                                                             const std::string &attribute_name,
-                                                            AttributeItem &item);
+                                                            sup::gui::AnyValueItem &item);
 
 template <typename T>
-void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_name, T &domain)
+void SetDomainAttribute(const sup::gui::AnyValueItem &item, const std::string &attribute_name,
+                        T &domain)
 {
   if (!GetAttributePresentFlag(item))
   {
@@ -159,9 +160,9 @@ void SetDomainAttribute(const AttributeItem &item, const std::string &attribute_
   }
 }
 
-template void SetDomainAttribute<variable_t>(const AttributeItem &item,
+template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem &item,
                                              const std::string &attribute_name, variable_t &domain);
-template void SetDomainAttribute<instruction_t>(const AttributeItem &item,
+template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem &item,
                                                 const std::string &attribute_name,
                                                 instruction_t &domain);
 

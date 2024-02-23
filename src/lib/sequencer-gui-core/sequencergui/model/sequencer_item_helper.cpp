@@ -69,7 +69,6 @@ bool RegisterSequencerItems()
   mvvm::RegisterGlobalItem<sequencergui::ProcedureItem>();
   mvvm::RegisterGlobalItem<sequencergui::WorkspaceItem>();
   mvvm::RegisterGlobalItem<sequencergui::ProcedurePreambleItem>();
-  mvvm::RegisterGlobalItem<sequencergui::AttributeItem>();
 
   return true;
 }
