@@ -29,6 +29,7 @@
 #include <sequencergui/model/universal_item_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/model/anyvalue_item_constants.h>
 #include <sup/gui/model/anyvalue_item_utils.h>
 
 #include <mvvm/model/item_utils.h>
@@ -60,6 +61,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
 {
   // LocalVariableItem doesn't have AnyValuteItem at the beginning
   LocalVariableItem item;
+
   EXPECT_EQ(item.GetAnyValueItem(), nullptr);
 
   const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
@@ -70,7 +72,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
   // checking constructed AnyValueItem and its visual properties
   auto anyvalue_item = item.GetAnyValueItem();
   EXPECT_NE(anyvalue_item, nullptr);
-  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), sup::gui::constants::kScalarTypeName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
@@ -171,7 +173,7 @@ TEST_F(TransformHelpersTest, SetInstructionAnyValueFromScalar)
   // checking constructed AnyValueItem and its visual properties
   auto anyvalue_item = GetAnyValueItem(item);
   ASSERT_NE(anyvalue_item, nullptr);
-  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), sup::gui::constants::kScalarTypeName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
   auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));
@@ -497,4 +499,3 @@ TEST_F(TransformHelpersTest, SetInstructionJsonAttributesFromEmptyItem)
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kTypeAttribute));
   EXPECT_FALSE(instr->HasAttribute(domainconstants::kValueAttribute));
 }
-

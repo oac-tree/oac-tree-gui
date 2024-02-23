@@ -183,5 +183,5 @@ TEST_F(WorkspaceEditorViewModelTest, ChannelAccessVariable)
   EXPECT_EQ(viewmodel.data(channel_name_index, Qt::DisplayRole).toString().toStdString(),
             std::string("channel"));
   EXPECT_EQ(viewmodel.data(anyvalue_name_index, Qt::DisplayRole).toString().toStdString(),
-            std::string("value"));
+            std::string("scalar"));
 }

@@ -52,15 +52,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  // Inserting new AnyValueItem
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
-  if (anyvalue_item->IsScalar())
-  {
-    anyvalue_item->SetDisplayName("value");
-    anyvalue_item->SetToolTip(anyvalue_item->GetAnyTypeName());
-  }
-
-  mvvm::utils::InsertItem(std::move(anyvalue_item), &variable_item, mvvm::TagIndex::First());
+  mvvm::utils::InsertItem(sup::gui::CreateItem(anyvalue), &variable_item, mvvm::TagIndex::First());
 }
 
 void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
@@ -75,15 +67,7 @@ void SetAnyValue(const anyvalue_t &anyvalue, InstructionItem &item)
     mvvm::utils::RemoveItem(*prev_item);
   }
 
-  // Inserting new AnyValueItem
-  auto anyvalue_item = sup::gui::CreateItem(anyvalue);
-  if (anyvalue_item->IsScalar())
-  {
-    anyvalue_item->SetDisplayName("value");
-    anyvalue_item->SetToolTip(anyvalue_item->GetAnyTypeName());
-  }
-
-  mvvm::utils::InsertItem(std::move(anyvalue_item), &item, mvvm::TagIndex::First());
+  mvvm::utils::InsertItem(sup::gui::CreateItem(anyvalue), &item, mvvm::TagIndex::First());
 }
 
 void SetAnyValueFromDomainVariable(const variable_t &variable, VariableItem &variable_item,
