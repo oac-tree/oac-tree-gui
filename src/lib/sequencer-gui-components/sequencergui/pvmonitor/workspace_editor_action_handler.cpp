@@ -79,9 +79,9 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
   try
   {
     auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    auto inserted = GetModel()->InsertItem(CreateVariableItem(variable_type_name.toStdString()),
-                                           GetWorkspaceItem(), tagindex);
-    SetupNewVariable(dynamic_cast<VariableItem *>(inserted));
+    auto variable_item = CreateVariableItem(variable_type_name.toStdString());
+    SetupNewVariable(variable_item.get(), GetWorkspaceItem()->GetVariableCount());
+    auto inserted = GetModel()->InsertItem(std::move(variable_item), GetWorkspaceItem(), tagindex);
     emit SelectItemRequest(inserted);
   }
   catch (const std::exception &ex)

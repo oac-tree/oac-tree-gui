@@ -40,15 +40,6 @@ std::vector<std::string> GetVariableReadonlyAttributesWhenRunning()
           sequencergui::domainconstants::kNameAttribute};
 }
 
-std::string ProposeVariableName(const sequencergui::VariableItem &item)
-{
-  if (auto workspace = dynamic_cast<sequencergui::WorkspaceItem *>(item.GetParent()); workspace)
-  {
-    return "var" + std::to_string(workspace->GetVariableCount() - 1);
-  }
-  return {};
-}
-
 }  // namespace
 
 namespace sequencergui
@@ -76,14 +67,14 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem &item)
   }
 }
 
-void SetupNewVariable(VariableItem *item)
+void SetupNewVariable(VariableItem *item, int total_variable_count)
 {
   if (!item)
   {
     return;
   }
 
-  item->SetName(ProposeVariableName(*item));
+  item->SetName("var" + std::to_string(total_variable_count));
 
   // Normally, we set scalar AnyValue to any VariableItem added to the WorkspaceItem. If user wants
   // something else, he has to start AnyValueEditor.

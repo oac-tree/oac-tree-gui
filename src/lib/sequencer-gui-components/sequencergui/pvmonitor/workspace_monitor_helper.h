@@ -65,10 +65,11 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item);
  * @brief Provide initial setup of just created variable.
  *
  * @param item Variable item to setup.
+ * @param total_variable_count Number of variables already existing in a workspace.
  *
  * @details Provide reasonable default name, and initial AnyValueItem if necessary.
  */
-void SetupNewVariable(VariableItem* item);
+void SetupNewVariable(VariableItem* item, int total_variable_count = 0);
 
 }  // namespace sequencergui
 

@@ -123,16 +123,16 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
 {
   WorkspaceItem workspace_item;
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  SetupNewVariable(var_item0);
+  SetupNewVariable(var_item0, workspace_item.GetVariableCount());
 
   EXPECT_EQ(var_item0->GetAnyValueItem()->GetDisplayName(),
             itemconstants::kAnyValueDefaultDisplayName);
 
   auto var_item1 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
-  SetupNewVariable(var_item1);
+  SetupNewVariable(var_item1, workspace_item.GetVariableCount());
 
-  EXPECT_EQ(var_item0->GetName(), "var0");
-  EXPECT_EQ(var_item1->GetName(), "var1");
+  EXPECT_EQ(var_item0->GetName(), "var1");
+  EXPECT_EQ(var_item1->GetName(), "var2");
 
   sup::dto::AnyValue expected_value(sup::dto::SignedInteger32Type, 0);
 
@@ -148,10 +148,10 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   }
 
   auto var_item2 = workspace_item.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
-  SetupNewVariable(var_item2);
+  SetupNewVariable(var_item2, workspace_item.GetVariableCount());
 
   // PvAccessClient variable is different, it shouldn't have just empty AnyValue
-  EXPECT_EQ(var_item2->GetName(), "var2");
+  EXPECT_EQ(var_item2->GetName(), "var3");
   ASSERT_NE(var_item2->GetAnyValueItem(), nullptr);
   EXPECT_TRUE(sup::dto::IsEmptyValue(sup::gui::CreateAnyValue(*var_item2->GetAnyValueItem())));
   EXPECT_EQ(var_item2->GetAnyValueItem()->GetDisplayName(),
