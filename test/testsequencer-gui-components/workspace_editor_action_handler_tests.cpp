@@ -319,8 +319,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Pretending that the user has
-//! removed initial AnyValueItem and has pushed OK button. That should lead to the dissapearance of
-//! AnyValueItem child on board of LocalVariableItem.
+//! removed initial AnyValueItem and has pushed OK button. That should trigger the warning.
 
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
 {
@@ -340,7 +339,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no warning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -348,7 +347,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   actions->OnEditAnyvalueRequest();
 
   // checking that previous AnyValueItem has been removed
-  EXPECT_EQ(var0->GetAnyValueItem(), nullptr);
+  EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem. Pretending that the user has

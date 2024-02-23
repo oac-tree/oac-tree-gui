@@ -30,14 +30,6 @@
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
 
-namespace
-{
-
-// For the moment we allow editing. There are some implications between scalar/struct on the way
-// from PvAccess server to client and back.
-const bool kIsPvClientAnyValueEditingAllowed = true;
-}  // namespace
-
 namespace sequencergui
 {
 
@@ -114,12 +106,11 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
           ? GetSelectedVariable()
           : const_cast<VariableItem *>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
 
-  if (!kIsPvClientAnyValueEditingAllowed
-      && selected_variable->GetDomainType() == domainconstants::kPvAccessClientVariableType)
+  if (selected_variable->GetDomainType() == domainconstants::kPvAccessClientVariableType)
   {
     SendMessage(
-        "It is not possible to edit AnyValue for PvAccessClientVariable, it will get it from the"
-        " server on startup");
+        "It is not possible to edit AnyValue for PvAccessClientVariable, it will get the value"
+        "from the server on startup");
     return;
   }
 
@@ -130,17 +121,19 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
   // existent value means that the user exited from the dialog with OK
   if (edited_anyvalue.is_accepted)
   {
+    if (!edited_anyvalue.result)
+    {
+      SendMessage("It is not possible to remove AnyValue from variable.");
+      return;
+    }
+
     // remove previous AnyValueItem
     if (selected_anyvalue)
     {
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    if (edited_anyvalue.result)
-    {
-      // if unique_ptr<AnyValueItem> is not empty, move it as a new value
-      GetModel()->InsertItem(std::move(edited_anyvalue.result), selected_variable, {});
-    }
+    GetModel()->InsertItem(std::move(edited_anyvalue.result), selected_variable, {});
   }
 }
 
