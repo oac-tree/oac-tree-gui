@@ -66,8 +66,7 @@ std::vector<mvvm::SessionItem *> VariableChildrenStrategy::GetChildren(
     return {};
   }
 
-  const std::vector<mvvm::SessionItem *> to_exclude = {GetNameItem(*item),
-                                                       GetIsAvailableItem(*item)};
+  const std::vector<mvvm::SessionItem *> to_exclude = {GetIsAvailableItem(*item)};
 
   auto result = FilterElements(item->GetAllItems(), to_exclude);
 
