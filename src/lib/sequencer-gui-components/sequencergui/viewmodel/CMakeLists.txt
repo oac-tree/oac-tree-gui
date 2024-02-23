@@ -1,6 +1,8 @@
 # Collection of view models.
 
 target_sources(${library_name} PRIVATE
+  attribute_editor_viewmodel.cpp
+  attribute_editor_viewmodel.h
   custom_children_strategies.cpp
   custom_children_strategies.h
   custom_presentation_items.cpp

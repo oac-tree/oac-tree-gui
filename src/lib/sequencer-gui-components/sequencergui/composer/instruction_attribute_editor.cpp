@@ -23,11 +23,11 @@
 #include "instruction_attribute_editor_context.h"
 
 #include <sequencergui/model/attribute_item.h>
+#include <sequencergui/viewmodel/attribute_editor_viewmodel.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/sessionitem.h>
-#include <mvvm/viewmodel/property_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QMenu>
@@ -50,7 +50,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_tool_bar(new QToolBar)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
-    , m_component_provider(mvvm::CreateProvider<mvvm::PropertyViewModel>(m_tree_view))
+    , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
     , m_attribute_actions(new AttributeEditorActions(CreateActionContext(), this))
 {
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());

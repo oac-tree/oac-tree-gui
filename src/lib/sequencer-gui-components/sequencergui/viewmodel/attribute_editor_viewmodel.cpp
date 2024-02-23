@@ -17,36 +17,28 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
-#define SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
+#include "attribute_editor_viewmodel.h"
 
-#include <mvvm/viewmodel/viewmodel.h>
+#include "custom_row_strategies.h"
 
-namespace mvvm
-{
-class SessionModelInterface;
-}
+#include <mvvm/factories/viewmodel_controller_factory.h>
+#include <mvvm/viewmodel/standard_children_strategies.h>
 
 namespace sequencergui
 {
 
-/**
- * @brief The WorkspaceEditorViewModel class forms editable three-columns tree with Workspace
- * variables.
- *
- * The variable is represented by type and editable name, with variable attributes in a branch
- * below.
- */
-class MVVM_VIEWMODEL_EXPORT WorkspaceEditorViewModel : public mvvm::ViewModel
+AttributeEditorViewModel::AttributeEditorViewModel(mvvm::SessionModelInterface *model,
+                                                   QObject *parent)
+    : ViewModel(parent)
 {
-  Q_OBJECT
+  // we reuse VariableRowStrategy which covers AnyValueItems too
+  SetController(mvvm::factory::CreateController<mvvm::PropertyItemsStrategy, VariableRowStrategy>(
+      model, this));
+}
 
-public:
-  explicit WorkspaceEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
-
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-};
+int AttributeEditorViewModel::columnCount(const QModelIndex &parent) const
+{
+  return 3;  // Name, Value, TypeName
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_

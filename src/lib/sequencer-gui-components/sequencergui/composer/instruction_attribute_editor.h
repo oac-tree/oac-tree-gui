@@ -47,7 +47,6 @@ class InstructionAttributeEditorContext;
  * instruction attributes.
  *
  * It is located at the bottom of the InstructionEditorWidget (main SequencerComposerView).
- * It is just the usual property editor with additional actions to enable/disable attributes.
  */
 class InstructionAttributeEditor : public QWidget
 {

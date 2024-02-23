@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
-#define SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
+#ifndef SEQUENCERGUI_VIEWMODEL_ATTRIBUTE_EDITOR_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_ATTRIBUTE_EDITOR_VIEWMODEL_H_
 
 #include <mvvm/viewmodel/viewmodel.h>
 
@@ -31,22 +31,21 @@ namespace sequencergui
 {
 
 /**
- * @brief The WorkspaceEditorViewModel class forms editable three-columns tree with Workspace
- * variables.
+ * @brief The AttributeEditorViewModel class forms editable three-columns tree with instruction
+ * attributes.
  *
- * The variable is represented by type and editable name, with variable attributes in a branch
- * below.
+ * @details The attribute is represented by name, value, and typename.
  */
-class MVVM_VIEWMODEL_EXPORT WorkspaceEditorViewModel : public mvvm::ViewModel
+class MVVM_VIEWMODEL_EXPORT AttributeEditorViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 
 public:
-  explicit WorkspaceEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+  explicit AttributeEditorViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
 
   int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWMODEL_WORKSPACE_EDITOR_VIEWMODEL_H_
+#endif  // SEQUENCERGUI_VIEWMODEL_ATTRIBUTE_EDITOR_VIEWMODEL_H_
