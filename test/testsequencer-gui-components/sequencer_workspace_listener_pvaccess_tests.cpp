@@ -61,9 +61,9 @@ public:
                                                                  const sup::dto::AnyValue& anyvalue)
   {
     auto result = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
-    result->AddAttribute("channel", channel_name);
-    result->AddAttribute("type", sup::gui::AnyTypeToJSONString(anyvalue));
-    result->AddAttribute("value", sup::gui::ValuesToJSONString(anyvalue));
+    result->AddAttribute(domainconstants::kChannelAttribute, channel_name);
+    result->AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
+    result->AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
     return result;
   }
 };

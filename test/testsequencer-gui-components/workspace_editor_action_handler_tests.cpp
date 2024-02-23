@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
@@ -32,8 +33,8 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 #include <testutils/mock_dialog.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 
@@ -134,7 +135,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   auto anyvalue_item =
       dynamic_cast<sup::gui::AnyValueScalarItem*>(inserted_variable0->GetAnyValueItem());
   ASSERT_NE(anyvalue_item, nullptr);
-  EXPECT_EQ(anyvalue_item->GetDisplayName(), std::string("value"));
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 

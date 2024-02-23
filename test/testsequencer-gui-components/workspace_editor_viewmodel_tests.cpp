@@ -20,6 +20,7 @@
 #include "sequencergui/viewmodel/workspace_editor_viewmodel.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_variable_items.h>

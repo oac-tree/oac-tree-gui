@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -66,7 +67,7 @@ TEST_F(CustomChildrenStrategiesTest, VariableChildrenStrategy)
     ASSERT_EQ(children.size(), 2);
     EXPECT_EQ(children.at(0)->GetDisplayName(),
               std::string(domainconstants::kDynamicTypeAttribute));
-    EXPECT_EQ(children.at(1)->GetDisplayName(), std::string("value"));
+    EXPECT_EQ(children.at(1)->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
   }
 }
 

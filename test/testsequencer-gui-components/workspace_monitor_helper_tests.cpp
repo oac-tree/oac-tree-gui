@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
@@ -124,6 +125,9 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   SetupNewVariable(var_item0);
 
+  EXPECT_EQ(var_item0->GetAnyValueItem()->GetDisplayName(),
+            itemconstants::kAnyValueDefaultDisplayName);
+
   auto var_item1 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   SetupNewVariable(var_item1);
 
@@ -150,4 +154,6 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   EXPECT_EQ(var_item2->GetName(), "var2");
   ASSERT_NE(var_item2->GetAnyValueItem(), nullptr);
   EXPECT_TRUE(sup::dto::IsEmptyValue(sup::gui::CreateAnyValue(*var_item2->GetAnyValueItem())));
+  EXPECT_EQ(var_item2->GetAnyValueItem()->GetDisplayName(),
+            itemconstants::kAnyValueDefaultDisplayName);
 }

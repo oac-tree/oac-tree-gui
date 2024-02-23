@@ -70,7 +70,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
   // checking constructed AnyValueItem and its visual properties
   auto anyvalue_item = item.GetAnyValueItem();
   EXPECT_NE(anyvalue_item, nullptr);
-  EXPECT_EQ(anyvalue_item->GetDisplayName(), std::string("value"));
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
   auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
@@ -171,7 +171,7 @@ TEST_F(TransformHelpersTest, SetInstructionAnyValueFromScalar)
   // checking constructed AnyValueItem and its visual properties
   auto anyvalue_item = GetAnyValueItem(item);
   ASSERT_NE(anyvalue_item, nullptr);
-  EXPECT_EQ(anyvalue_item->GetDisplayName(), std::string("value"));
+  EXPECT_EQ(anyvalue_item->GetDisplayName(), itemconstants::kAnyValueDefaultDisplayName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
   auto stored_anyvalue = CreateAnyValue(*GetAnyValueItem(item));

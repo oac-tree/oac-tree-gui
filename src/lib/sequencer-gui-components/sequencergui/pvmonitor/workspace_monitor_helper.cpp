@@ -25,6 +25,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -98,6 +99,7 @@ void SetupNewVariable(VariableItem *item)
   {
     SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
   }
+  item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
 }
 
 }  // namespace sequencergui
