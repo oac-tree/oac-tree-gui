@@ -156,16 +156,21 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
   // existent value means that the user exited from the dialog with OK
   if (dialog_result.is_accepted)
   {
+    if (!dialog_result.result)
+    {
+      SendMessage(
+          "It is not possible to remove AnyValue from instruction, but you can mark is as "
+          "disabled.");
+      return;
+    }
+
     // remove previous AnyValueItem
     if (selected_anyvalue)
     {
       GetModel()->RemoveItem(selected_anyvalue);
     }
 
-    if (dialog_result.result)
-    {
-      GetModel()->InsertItem(std::move(dialog_result.result), instruction_item, {});
-    }
+    GetModel()->InsertItem(std::move(dialog_result.result), instruction_item, {});
   }
 }
 

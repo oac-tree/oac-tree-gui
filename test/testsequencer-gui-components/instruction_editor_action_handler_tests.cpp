@@ -398,3 +398,39 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
   // checking that instruction got new AnyValueItem
   EXPECT_EQ(GetAnyValueItem(*item), editing_result_ptr);
 }
+
+//! Simulating the case when user removes AnyValueItem in the editor.
+//! It shouldn't be allowed.
+
+TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+  const bool dialog_was_acccepted = true;
+
+  auto item =
+      m_model.InsertItem<PvAccessWriteInstructionItem>(m_procedure->GetInstructionContainer());
+
+  auto previous_anyvalue = GetAnyValueItem(*item);
+  ASSERT_NE(previous_anyvalue, nullptr);
+  EXPECT_EQ(previous_anyvalue->GetType(), sup::gui::AnyValueEmptyItem::Type);
+
+  // item intentionally uninitialised to mimick item removal in the editor
+  std::unique_ptr<sup::gui::AnyValueStructItem> editing_result;
+
+  // pretending that instruction is selected
+  auto actions =
+      CreateActionHandler(m_procedure, item, {dialog_was_acccepted, std::move(editing_result)});
+
+  // expecting error callback.
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  // expecting call to editing widget
+  EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
+
+  actions->OnEditAnyvalueRequest();
+
+  // checking that instruction still has old AnyValye
+  EXPECT_EQ(GetAnyValueItem(*item), previous_anyvalue);
+}

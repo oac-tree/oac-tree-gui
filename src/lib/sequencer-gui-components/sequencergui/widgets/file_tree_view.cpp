@@ -166,7 +166,7 @@ void FileTreeView::SetupActions()
   connect(m_bookmark_menu.get(), &QMenu::aboutToShow, this,
           &FileTreeView::OnAboutToShowBookmarkMenu);
   auto bookmark_button = new QToolButton;
-  bookmark_button->setText("Bookmark Dir");
+  bookmark_button->setText("Bookmark");
   bookmark_button->setIcon(sup::gui::utils::GetIcon("bookmark-outline.svg"));
   bookmark_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   bookmark_button->setPopupMode(QToolButton::InstantPopup);
