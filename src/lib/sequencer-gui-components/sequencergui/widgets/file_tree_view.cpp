@@ -103,7 +103,7 @@ void FileTreeView::OnLabelClick(const QString &link)
 
 void FileTreeView::OnTreeDoubleClick(const QModelIndex &index)
 {
-  QFileInfo info(m_file_system_model->filePath(index));
+  const QFileInfo info(m_file_system_model->filePath(index));
 
   if (info.isFile())
   {
@@ -114,15 +114,27 @@ void FileTreeView::OnTreeDoubleClick(const QModelIndex &index)
     SetCurrentDir(info.filePath());  // directory which was clicked
   }
 
-  if (IsProcedureFile(info))
+  OnImportFromFileRequest();
+}
+
+void FileTreeView::OnImportFromFileRequest()
+{
+  for (auto index : m_tree_view->selectionModel()->selectedIndexes())
   {
-    emit ProcedureFileDoubleClicked(info.filePath());
+    if (index.column() == 0)
+    {
+      const QFileInfo info(m_file_system_model->filePath(index));
+      if (IsProcedureFile(info))
+      {
+        emit ProcedureFileDoubleClicked(info.filePath());
+      }
+    }
   }
 }
 
 void FileTreeView::OnTreeSingleClick(const QModelIndex &index)
 {
-  QFileInfo info(m_file_system_model->filePath(index));
+  const QFileInfo info(m_file_system_model->filePath(index));
 
   if (info.isFile() && info.completeSuffix().toLower() == QStringLiteral("xml"))
   {
@@ -147,17 +159,8 @@ void FileTreeView::SetupActions()
       "(alternatively, double-click on it)");
   import_file_button->setIcon(sup::gui::utils::GetIcon("file-import-outline.svg"));
   import_file_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  auto on_import_from_file = [this]()
-  {
-    for (auto index : m_tree_view->selectionModel()->selectedIndexes())
-    {
-      if (index.column() == 0)
-      {
-        OnTreeDoubleClick(index);
-      }
-    }
-  };
-  connect(import_file_button, &QToolButton::clicked, this, on_import_from_file);
+  auto on_import_from_file = [this]() {};
+  connect(import_file_button, &QToolButton::clicked, this, &FileTreeView::OnImportFromFileRequest);
   m_import_file_action->setDefaultWidget(import_file_button);
   addAction(m_import_file_action);
 

@@ -76,6 +76,11 @@ private:
   void OnTreeDoubleClick(const QModelIndex& index);
 
   /**
+   * @brief Process import from file button request.
+   */
+  void OnImportFromFileRequest();
+
+  /**
    * @brief Processes single click on a file tree.
    *
    * Used to show content of the file in XML view, or in a tree view.
