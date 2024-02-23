@@ -38,6 +38,8 @@ const std::string kAnyValueTag = "kAnyValueTag";
 const std::string kIsAvailable = "connected";
 const std::string kBreakpoint = "breakpoint";
 
+const std::string kAnyValueDefaultDisplayName = "value";
+
 }  // namespace sequencergui::itemconstants
 
 #endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H_

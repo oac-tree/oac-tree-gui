@@ -87,10 +87,14 @@ void SetupNewVariable(VariableItem *item)
   // Normally, we set scalar AnyValue to any VariableItem added to the WorkspaceItem. If user wants
   // something else, he has to start AnyValueEditor.
 
-  // PvAccessClient is currently an exception, it shouldn't have any AnyValueItem set. It will get
-  // it through the network from the server on workspace start.
-
-  if (item->GetType() != domainconstants::kPvAccessClientVariableType)
+  if (item->GetType() == domainconstants::kPvAccessClientVariableType)
+  {
+    // PvAccessClient gets it's value from the network. Nethertheless, we
+    // set empty AnyValue to make it look the same in the editor, as others.
+    // Editor call will be disallowed.
+    SetAnyValue(sup::dto::AnyValue(), *item);
+  }
+  else
   {
     SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
   }

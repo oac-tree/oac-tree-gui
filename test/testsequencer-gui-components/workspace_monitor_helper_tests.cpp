@@ -146,7 +146,8 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   auto var_item2 = workspace_item.InsertItem<PvAccessClientVariableItem>(mvvm::TagIndex::Append());
   SetupNewVariable(var_item2);
 
-  // PvAccessClient variable is different, it shouldn't have any AnyValue from the start
+  // PvAccessClient variable is different, it shouldn't have just empty AnyValue
   EXPECT_EQ(var_item2->GetName(), "var2");
-  ASSERT_FALSE(var_item2->GetAnyValueItem());
+  ASSERT_NE(var_item2->GetAnyValueItem(), nullptr);
+  EXPECT_TRUE(sup::dto::IsEmptyValue(sup::gui::CreateAnyValue(*var_item2->GetAnyValueItem())));
 }
