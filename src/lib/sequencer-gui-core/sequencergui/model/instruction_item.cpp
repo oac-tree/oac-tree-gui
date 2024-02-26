@@ -24,6 +24,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -74,7 +75,7 @@ bool InstructionItem::IsRoot() const
 
 void InstructionItem::SetIsRootFlag(bool value)
 {
-  SetProperty(domainconstants::kIsRootAttribute, value);
+  SetAttribute(*this, domainconstants::kIsRootAttribute, value);
 }
 
 std::string InstructionItem::GetName() const
