@@ -23,8 +23,11 @@
 //! Collection of classes to represent Sequencer instructions.
 
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/transform/attribute_item_transform_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
+
+namespace sup::gui
+{
+class AnyValueItem;
+}
 
 namespace sequencergui
 {
@@ -63,22 +66,6 @@ public:
   void SetDomainType(const std::string& domain_type);
 
   std::string GetDomainType() const override;
-
-  /**
-   * @brief Sets attribute to given value.
-   *
-   * @param name The name of the attribute.
-   * @param value The attribute value
-   *
-   * @details This method simultaneously marks an attribute as "present" and set the value to it.
-   */
-  template <typename T>
-  void SetAttribute(const std::string& name, const T& value)
-  {
-    auto attribute = GetItem<sup::gui::AnyValueItem>(name);
-    SetAttributePresentFlag(true, *attribute);
-    attribute->SetData(value);
-  }
 
 private:
   void InitFromDomainImpl(const instruction_t* instruction) override;

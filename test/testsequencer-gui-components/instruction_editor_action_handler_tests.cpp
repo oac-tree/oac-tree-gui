@@ -29,6 +29,7 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/mock_callback_listener.h>

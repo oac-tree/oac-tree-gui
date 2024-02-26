@@ -25,18 +25,11 @@
 //! from/to domain attributes.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sup/gui/model/anyvalue_item.h>
+
+#include <mvvm/model/compound_item.h>
 
 #include <string>
-
-namespace sup::gui
-{
-class AnyValueItem;
-}
-
-namespace mvvm
-{
-class CompoundItem;
-}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -140,6 +133,22 @@ extern template void SetDomainAttribute<variable_t>(const sup::gui::AnyValueItem
 extern template void SetDomainAttribute<instruction_t>(const sup::gui::AnyValueItem& item,
                                                        const std::string& attribute_name,
                                                        instruction_t& domain);
+
+/**
+ * @brief Sets attribute to given value.
+
+ * Simultaneously marks an attribute as "present" and set the value to it.
+ *
+ * @param name The name of the attribute.
+ * @param value The attribute value
+ */
+template <typename T>
+void SetAttribute(const mvvm::CompoundItem& item, const std::string& name, const T& value)
+{
+  auto attribute = item.GetItem<sup::gui::AnyValueItem>(name);
+  SetAttributePresentFlag(true, *attribute);
+  attribute->SetData(value);
+}
 
 }  // namespace sequencergui
 

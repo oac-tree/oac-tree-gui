@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 
 namespace sequencergui
 {
@@ -43,7 +44,7 @@ std::string IncludeItem::GetFileName() const
 
 void IncludeItem::SetFileName(const std::string &value)
 {
-  SetAttribute(domainconstants::kFileNameAttribute, value);
+  SetAttribute(*this, domainconstants::kFileNameAttribute, value);
 }
 
 std::string IncludeItem::GetPath() const
@@ -53,7 +54,7 @@ std::string IncludeItem::GetPath() const
 
 void IncludeItem::SetPath(const std::string &value)
 {
-  SetAttribute(domainconstants::kPathAttribute, value);
+  SetAttribute(*this, domainconstants::kPathAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -76,7 +77,7 @@ mvvm::uint32 ParallelSequenceItem::GetSuccessThreshold() const
 
 void ParallelSequenceItem::SetSuccessThreshold(mvvm::uint32 value)
 {
-  SetAttribute(domainconstants::kSuccessThresholdAttribute, value);
+  SetAttribute(*this, domainconstants::kSuccessThresholdAttribute, value);
 }
 
 mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
@@ -86,7 +87,7 @@ mvvm::uint32 ParallelSequenceItem::GetFailureThreshold() const
 
 void ParallelSequenceItem::SetFailureThreshold(mvvm::uint32 value)
 {
-  SetAttribute(domainconstants::kFailureThresholdAttribute, value);
+  SetAttribute(*this, domainconstants::kFailureThresholdAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -110,7 +111,7 @@ int RepeatItem::GetRepeatCount() const
 
 void RepeatItem::SetRepeatCount(int value)
 {
-  SetAttribute(domainconstants::kMaxCountAttribute, value);
+  SetAttribute(*this, domainconstants::kMaxCountAttribute, value);
 }
 
 // ----------------------------------------------------------------------------
@@ -139,7 +140,7 @@ std::unique_ptr<mvvm::SessionItem> WaitItem::Clone(bool make_unique_id) const
 
 void WaitItem::SetTimeout(double value)
 {
-  SetAttribute(domainconstants::kTimeoutAttribute, value);
+  SetAttribute(*this, domainconstants::kTimeoutAttribute, value);
 }
 
 double WaitItem::GetTimeout() const

@@ -22,6 +22,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -377,7 +378,7 @@ TEST_F(StandardInstructionItemsTest, SequenceItemToDomain)
   {  // when IsRoot and collapsed = true
     SequenceItem item;
     item.SetIsRootFlag(true);
-    item.SetAttribute(domainconstants::kShowCollapsedAttribute, true);
+    SetAttribute(item, domainconstants::kShowCollapsedAttribute, true);
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kSequenceInstructionType);
 
