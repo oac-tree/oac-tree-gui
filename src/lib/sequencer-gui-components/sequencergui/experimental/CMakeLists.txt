@@ -1,4 +1,6 @@
 target_sources(${library_name} PRIVATE
+  domain_event_dispatcher.cpp
+  domain_event_dispatcher.h
   domain_event_queue.cpp
   domain_event_queue.h
   domain_events.cpp

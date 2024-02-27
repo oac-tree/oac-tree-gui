@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENTS_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/jobsystem/log_event.h>
 
 #include <string>
 #include <variant>
@@ -55,7 +54,7 @@ struct JobStatusChanged
 };
 
 using domain_event_t =
-    std::variant<std::monostate, InstructionStatusChanged, JobStatusChanged, LogEvent>;
+    std::variant<std::monostate, InstructionStatusChanged, JobStatusChanged>;
 
 bool IsValid(const domain_event_t& value);
 
