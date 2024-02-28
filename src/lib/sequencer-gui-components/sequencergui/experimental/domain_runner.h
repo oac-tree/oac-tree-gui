@@ -22,7 +22,14 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
+#include <sup/sequencer/job_states.h>
+
 #include <memory>
+
+namespace sup::sequencer
+{
+class JobController;
+}
 
 namespace sequencergui::experimental
 {
@@ -45,7 +52,7 @@ public:
     kStepPressed
   };
 
-  explicit DomainRunner(DomainEventDispatcherContext context);
+  explicit DomainRunner(DomainEventDispatcherContext context, procedure_t* procedure);
   ~DomainRunner();
 
   bool Start();
@@ -56,7 +63,9 @@ public:
 
   bool Step();
 
-  RunnerState GetRunnerState() const;
+  sup::sequencer::JobState WaitForFinished() const;
+
+  bool IsFinished() const;
 
 private:
   bool IsReady();
@@ -65,6 +74,7 @@ private:
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
+  std::unique_ptr<sup::sequencer::JobController> m_job_controller;
 
   RunnerState m_runner_state{kReady};
 };
