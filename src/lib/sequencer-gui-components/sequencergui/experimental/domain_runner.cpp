@@ -19,8 +19,32 @@
 
 #include "domain_runner.h"
 
+#include "domain_event_dispatcher.h"
+#include "domain_event_queue.h"
+#include "domain_job_observer.h"
+#include "domain_procedure_observer.h"
+
 namespace sequencergui::experimental
 {
+
+DomainRunner::DomainRunner(DomainEventDispatcherContext context)
+{
+  m_event_queue = std::make_unique<DomainEventQueue>();
+
+  context.get_event = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
+
+  m_event_dispatcher = std::make_unique<DomainEventDispatcher>(context);
+
+  QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
+                   &DomainEventDispatcher::OnNewEvent);
+
+  auto post_event = [this](const domain_event_t& event) { m_event_queue->PushEvent(event); };
+  m_job_observer = std::make_unique<DomainJobObserver>(post_event);
+
+  m_procedure_observer = std::make_unique<DomainProcedureObserver>(post_event);
+}
+
+DomainRunner::~DomainRunner() = default;
 
 bool DomainRunner::Start()
 {

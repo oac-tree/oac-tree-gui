@@ -24,23 +24,25 @@
 
 namespace sup::sequencer
 {
-class Procedure;
+class AttributeDefinition;
 class Instruction;
-class Variable;
+class JobController;
+class Procedure;
+class ProcedurePreamble;
 class Runner;
 class UserInterface;
+class Variable;
 class Workspace;
-class AttributeDefinition;
-class ProcedurePreamble;
 }  // namespace sup::sequencer
 
-using procedure_t = sup::sequencer::Procedure;
+using attribute_definition_t = sup::sequencer::AttributeDefinition;
 using instruction_t = sup::sequencer::Instruction;
-using variable_t = sup::sequencer::Variable;
+using job_controller_t = sup::sequencer::JobController;
+using preamble_t = sup::sequencer::ProcedurePreamble;
+using procedure_t = sup::sequencer::Procedure;
 using runner_t = sup::sequencer::Runner;
 using userinterface_t = sup::sequencer::UserInterface;
+using variable_t = sup::sequencer::Variable;
 using workspace_t = sup::sequencer::Workspace;
-using attribute_definition_t = sup::sequencer::AttributeDefinition;
-using preamble_t = sup::sequencer::ProcedurePreamble;
 
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

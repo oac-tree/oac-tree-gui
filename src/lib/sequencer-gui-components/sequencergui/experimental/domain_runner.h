@@ -20,8 +20,18 @@
 #ifndef SEQUENCERGUI_EXPERIMENTAL_DOMAIN_RUNNER_H_
 #define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_RUNNER_H_
 
+#include <sequencergui/domain/sequencer_types_fwd.h>
+
+#include <memory>
+
 namespace sequencergui::experimental
 {
+
+class DomainEventQueue;
+class DomainEventDispatcher;
+class DomainJobObserver;
+class DomainProcedureObserver;
+class DomainEventDispatcherContext;
 
 class DomainRunner
 {
@@ -35,6 +45,9 @@ public:
     kStepPressed
   };
 
+  explicit DomainRunner(DomainEventDispatcherContext context);
+  ~DomainRunner();
+
   bool Start();
 
   bool Stop();
@@ -47,6 +60,11 @@ public:
 
 private:
   bool IsReady();
+
+  std::unique_ptr<DomainEventQueue> m_event_queue;
+  std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;
+  std::unique_ptr<DomainJobObserver> m_job_observer;
+  std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
 
   RunnerState m_runner_state{kReady};
 };
