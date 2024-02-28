@@ -68,8 +68,6 @@ public:
   bool IsFinished() const;
 
 private:
-  bool IsReady();
-
   std::unique_ptr<DomainEventQueue> m_event_queue;
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;
   std::unique_ptr<DomainJobObserver> m_job_observer;

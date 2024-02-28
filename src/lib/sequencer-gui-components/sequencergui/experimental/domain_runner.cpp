@@ -60,11 +60,6 @@ DomainRunner::~DomainRunner() = default;
 
 bool DomainRunner::Start()
 {
-  if (!IsReady())
-  {
-    return false;
-  }
-
   m_runner_state = kStartPressed;
 
   m_job_controller->Start();
@@ -74,11 +69,6 @@ bool DomainRunner::Start()
 
 bool DomainRunner::Stop()
 {
-  if (!IsReady())
-  {
-    return false;
-  }
-
   m_runner_state = kStopPressed;
 
   m_job_controller->Halt();
@@ -88,11 +78,6 @@ bool DomainRunner::Stop()
 
 bool DomainRunner::Pause()
 {
-  if (!IsReady())
-  {
-    return false;
-  }
-
   m_runner_state = kPausePressed;
 
   m_job_controller->Pause();
@@ -102,11 +87,6 @@ bool DomainRunner::Pause()
 
 bool DomainRunner::Step()
 {
-  if (!IsReady())
-  {
-    return false;
-  }
-
   m_runner_state = kStepPressed;
 
   m_job_controller->Step();
@@ -122,11 +102,6 @@ sup::sequencer::JobState DomainRunner::WaitForFinished() const
 bool DomainRunner::IsFinished() const
 {
   return sup::sequencer::IsFinishedJobState(m_job_observer->GetCurrentState());
-}
-
-bool DomainRunner::IsReady()
-{
-  return m_runner_state == kReady;
 }
 
 }  // namespace sequencergui::experimental
