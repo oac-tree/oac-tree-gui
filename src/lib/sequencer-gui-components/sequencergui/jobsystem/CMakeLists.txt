@@ -8,8 +8,6 @@ target_sources(${library_name} PRIVATE
   domain_runner_adapter.cpp
   domain_runner_adapter.h
   domain_runner_context.h
-  flow_controller.cpp
-  flow_controller.h
   job_handler.cpp
   job_handler.h
   job_log_severity.cpp
