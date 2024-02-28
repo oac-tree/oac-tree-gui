@@ -17,23 +17,25 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPERIMENTAL_DOMAIN_JOB_OBSERVER_H_
-#define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_JOB_OBSERVER_H_
+#ifndef SEQUENCERGUI_EXPERIMENTAL_DOMAIN_PROCEDURE_OBSERVER_H_
+#define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_PROCEDURE_OBSERVER_H_
 
 #include <sequencergui/experimental/domain_events.h>
 
-#include <sup/sequencer/job_state_monitor.h>
+#include <sup/sequencer/user_interface.h>
 
 #include <functional>
 
 namespace sequencergui::experimental
 {
 
+class DomainEventQueue;
+
 /**
- * @brief The DomainJobObserver class listens for state changes in the domain JobController and
+ * @brief The DomainProcedureObserver class listens for changes in the domain procedure and
  * reports them to the event queue.
  */
-class DomainJobObserver : public sup::sequencer::JobStateMonitor
+class DomainProcedureObserver : public sup::sequencer::UserInterface
 {
 public:
   using post_event_callback_t = std::function<void(const domain_event_t& event)>;
@@ -43,12 +45,23 @@ public:
    *
    * @param post_event_callback A callback to report events to the GUI.
    */
-  explicit DomainJobObserver(post_event_callback_t post_event_callback);
+  explicit DomainProcedureObserver(post_event_callback_t post_event_callback);
 
-  void OnStateChange(sup::sequencer::JobState state) noexcept override;
+  void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
 
-  void OnBreakpointChange(const sup::sequencer::Instruction* instruction,
-                          bool breakpoint_set) noexcept override;
+  void VariableUpdated(const std::string& name, const sup::dto::AnyValue& value,
+                       bool connected) override;
+
+  bool PutValue(const sup::dto::AnyValue& value, const std::string& description) override;
+
+  bool GetUserValue(sup::dto::AnyValue& value, const std::string& description) override;
+
+  int GetUserChoice(const std::vector<std::string>& options,
+                    const sup::dto::AnyValue& metadata) override;
+
+  void Message(const std::string& message) override;
+
+  void Log(int severity, const std::string& message) override;
 
 private:
   post_event_callback_t m_post_event_callback;
@@ -56,4 +69,4 @@ private:
 
 }  // namespace sequencergui::experimental
 
-#endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_JOB_OBSERVER_H_
+#endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_PROCEDURE_OBSERVER_H_

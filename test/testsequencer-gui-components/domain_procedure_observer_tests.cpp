@@ -17,36 +17,44 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/experimental/domain_job_observer.h"
+#include "sequencergui/experimental/domain_procedure_observer.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/domain/domain_utils.h>
 
 #include <mvvm/test/mock_callback_listener.h>
+
+#include <sup/sequencer/execution_status.h>
+#include <sup/sequencer/instruction.h>
 
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
 using ::testing::_;
 
-//! Tests for DomainJobObserver class.
+//! Tests for DomainProcedureObserver class.
 
-class DomainJobObserverTest : public ::testing::Test
+class DomainProcedureObserverTest : public ::testing::Test
 {
 public:
   mvvm::test::MockCallbackListener<experimental::domain_event_t> m_event_listener;
 };
 
-TEST_F(DomainJobObserverTest, InitialState)
+TEST_F(DomainProcedureObserverTest, InitialState)
 {
-  EXPECT_THROW(experimental::DomainJobObserver({}), RuntimeException);
+  EXPECT_THROW(experimental::DomainProcedureObserver({}), RuntimeException);
 }
 
-TEST_F(DomainJobObserverTest, OnStateChange)
+TEST_F(DomainProcedureObserverTest, OnStateChange)
 {
-  experimental::DomainJobObserver observer(m_event_listener.CreateCallback());
+  auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  experimental::domain_event_t expected_event(experimental::JobStatusChanged{"Initial"});
+  experimental::DomainProcedureObserver observer(m_event_listener.CreateCallback());
+
+  experimental::domain_event_t expected_event(
+      experimental::InstructionStatusChanged{instruction.get(), "Not started"});
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 
-  observer.OnStateChange(sup::sequencer::JobState::kInitial);
+  observer.UpdateInstructionStatus(instruction.get());
 }
