@@ -20,6 +20,10 @@
 #ifndef SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENTS_H_
 #define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENTS_H_
 
+//! @file
+//! Contains a collection of classes representing various events happening on the domain side during
+//! sequencer execution.
+
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <string>
@@ -53,8 +57,7 @@ struct JobStatusChanged
   bool operator!=(const JobStatusChanged& other) const;
 };
 
-using domain_event_t =
-    std::variant<std::monostate, InstructionStatusChanged, JobStatusChanged>;
+using domain_event_t = std::variant<std::monostate, InstructionStatusChanged, JobStatusChanged>;
 
 bool IsValid(const domain_event_t& value);
 
