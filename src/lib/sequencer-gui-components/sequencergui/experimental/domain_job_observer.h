@@ -24,7 +24,9 @@
 
 #include <sup/sequencer/job_state_monitor.h>
 
+#include <condition_variable>
 #include <functional>
+#include <mutex>
 
 namespace sequencergui::experimental
 {
@@ -50,8 +52,15 @@ public:
   void OnBreakpointChange(const sup::sequencer::Instruction* instruction,
                           bool breakpoint_set) noexcept override;
 
+  sup::sequencer::JobState GetCurrentState() const;
+
+  sup::sequencer::JobState WaitForFinished() const;
+
 private:
   post_event_callback_t m_post_event_callback;
+  sup::sequencer::JobState m_state;
+  mutable std::mutex m_mutex;
+  mutable std::condition_variable m_cv;
 };
 
 }  // namespace sequencergui::experimental

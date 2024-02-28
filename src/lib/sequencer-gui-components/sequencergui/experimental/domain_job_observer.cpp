@@ -37,7 +37,12 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback)
 
 void DomainJobObserver::OnStateChange(sup::sequencer::JobState state) noexcept
 {
-  m_post_event_callback(experimental::JobStatusChanged{sup::sequencer::ToString(state)});
+  {
+    std::lock_guard<std::mutex> lk{m_mutex};
+    m_state = state;
+    m_post_event_callback(experimental::JobStatusChanged{sup::sequencer::ToString(state)});
+  }
+  m_cv.notify_one();
 }
 
 void DomainJobObserver::OnBreakpointChange(const sup::sequencer::Instruction *instruction,
@@ -45,6 +50,20 @@ void DomainJobObserver::OnBreakpointChange(const sup::sequencer::Instruction *in
 {
   (void)instruction;
   (void)breakpoint_set;
+}
+
+sup::sequencer::JobState DomainJobObserver::GetCurrentState() const
+{
+  std::lock_guard<std::mutex> lk{m_mutex};
+  return m_state;
+}
+
+sup::sequencer::JobState DomainJobObserver::WaitForFinished() const
+{
+  auto pred = [this]() { return sup::sequencer::IsFinishedJobState(m_state); };
+  std::unique_lock<std::mutex> lk{m_mutex};
+  m_cv.wait(lk, pred);
+  return m_state;
 }
 
 }  // namespace sequencergui::experimental
