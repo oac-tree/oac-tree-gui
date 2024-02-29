@@ -46,7 +46,7 @@ TEST_F(DomainJobObserverTest, OnStateChange)
   experimental::DomainJobObserver observer(m_event_listener.CreateCallback());
 
   experimental::domain_event_t expected_event(
-      experimental::JobStatusChanged{::sup::sequencer::JobState::kInitial});
+      experimental::JobStateChanged{::sup::sequencer::JobState::kInitial});
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 
   observer.OnStateChange(sup::sequencer::JobState::kInitial);

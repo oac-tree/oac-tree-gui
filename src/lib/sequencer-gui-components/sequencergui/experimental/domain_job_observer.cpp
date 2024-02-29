@@ -40,7 +40,7 @@ void DomainJobObserver::OnStateChange(sup::sequencer::JobState state) noexcept
   {
     std::lock_guard<std::mutex> lk{m_mutex};
     m_state = state;
-    m_post_event_callback(experimental::JobStatusChanged{state});
+    m_post_event_callback(experimental::JobStateChanged{state});
   }
   m_cv.notify_one();
 }

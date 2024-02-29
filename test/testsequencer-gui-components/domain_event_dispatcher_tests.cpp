@@ -44,7 +44,7 @@ public:
   }
 
   mvvm::test::MockCallbackListener<InstructionStatusChanged> m_instruction_status_listener;
-  mvvm::test::MockCallbackListener<JobStatusChanged> m_job_status_listener;
+  mvvm::test::MockCallbackListener<JobStateChanged> m_job_status_listener;
 };
 
 TEST_F(DomainEventDispatcherTest, EmptyEvent)
@@ -71,7 +71,7 @@ TEST_F(DomainEventDispatcherTest, InstructionStatusChanged)
 
 TEST_F(DomainEventDispatcherTest, JobStatusChanged)
 {
-  JobStatusChanged expected_event{::sup::sequencer::JobState::kInitial};
+  JobStateChanged expected_event{::sup::sequencer::JobState::kInitial};
   DomainEventDispatcher dispatcher(CreateContext(expected_event));
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(_)).Times(0);

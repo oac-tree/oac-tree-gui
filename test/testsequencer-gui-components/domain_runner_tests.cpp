@@ -67,7 +67,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 {
   using experimental::domain_event_t;
   using experimental::InstructionStatusChanged;
-  using experimental::JobStatusChanged;
+  using experimental::JobStateChanged;
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::JobState;
 
@@ -78,10 +78,10 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     const ::testing::InSequence seq;
 
     // triggered by JobController c-tor
-    const domain_event_t event1(JobStatusChanged{JobState::kInitial});
+    const domain_event_t event1(JobStateChanged{JobState::kInitial});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
 
-    const domain_event_t event2(JobStatusChanged{JobState::kRunning});
+    const domain_event_t event2(JobStateChanged{JobState::kRunning});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
 
     const domain_event_t event3(
@@ -92,7 +92,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
         InstructionStatusChanged{instruction_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
 
-    const domain_event_t event5(JobStatusChanged{JobState::kSucceeded});
+    const domain_event_t event5(JobStateChanged{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
 
     // triggered by JobController d-tor

@@ -40,7 +40,7 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
-  std::string operator()(const sequencergui::experimental::JobStatusChanged &event) const
+  std::string operator()(const sequencergui::experimental::JobStateChanged &event) const
   {
     return std::string("JobStatusChanged") + " " + sup::sequencer::ToString(event.status);
   }
@@ -65,12 +65,12 @@ bool InstructionStatusChanged::operator!=(const InstructionStatusChanged &other)
 
 // JobStatusChanged
 
-bool JobStatusChanged::operator==(const JobStatusChanged &other) const
+bool JobStateChanged::operator==(const JobStateChanged &other) const
 {
   return status == other.status;
 }
 
-bool JobStatusChanged::operator!=(const JobStatusChanged &other) const
+bool JobStateChanged::operator!=(const JobStateChanged &other) const
 {
   return !(*this == other);
 }

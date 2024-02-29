@@ -52,11 +52,11 @@ void DomainEventDispatcher::operator()(const InstructionStatusChanged &event)  c
   }
 }
 
-void DomainEventDispatcher::operator()(const JobStatusChanged &event)  const
+void DomainEventDispatcher::operator()(const JobStateChanged &event)  const
 {
-  if (m_context.process_job_status_changed)
+  if (m_context.process_job_state_changed)
   {
-    m_context.process_job_status_changed(event);
+    m_context.process_job_state_changed(event);
   }
 }
 
