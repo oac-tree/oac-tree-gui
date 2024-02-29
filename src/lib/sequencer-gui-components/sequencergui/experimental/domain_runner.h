@@ -56,6 +56,8 @@ public:
   explicit DomainRunner(const post_event_callback_t& post_event_callback, procedure_t& procedure);
   ~DomainRunner();
 
+  sup::sequencer::JobState GetCurrentState() const;
+
   bool Start();
 
   bool Stop();

@@ -51,6 +51,16 @@ public:
   mvvm::test::MockCallbackListener<experimental::domain_event_t> m_event_listener;
 };
 
+TEST_F(DomainRunnerTest, InitialState)
+{
+  auto procedure = testutils::CreateMessageProcedure("text");
+  experimental::DomainRunner runner(CreatePrintCallback(), *procedure);
+  runner.Start();
+
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
+  EXPECT_FALSE(runner.IsFinished());
+}
+
 //! Running short domain procedure that executes normally.
 
 TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
