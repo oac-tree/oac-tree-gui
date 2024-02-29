@@ -24,10 +24,12 @@
 
 #include <mvvm/test/mock_callback_listener.h>
 
+#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedures.h>
+#include <testutils/test_utils.h>
 
 #include <iostream>
 
@@ -39,6 +41,8 @@ using ::testing::_;
 class DomainRunnerTest : public ::testing::Test
 {
 public:
+  using msec = std::chrono::milliseconds;
+
   /**
    * @brief Test helper function to print event.
    */
@@ -102,4 +106,43 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 
   auto final_state = runner.WaitForFinished();
   EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
+}
+
+//! Terminates procedure that runs too long.
+
+TEST_F(DomainRunnerTest, StartAndTerminate)
+{
+  using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::JobState;
+  const std::chrono::milliseconds wait_timeout(10000);
+
+  auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
+  auto instruction_ptr = procedure->RootInstruction();
+
+  DomainRunner runner(CreatePrintCallback(), *procedure);
+  runner.Start();
+
+  EXPECT_TRUE(runner.Start());  // trigger action
+
+  std::this_thread::sleep_for(msec(50));
+
+  auto has_started = [instruction_ptr, &runner]()
+  {
+    return instruction_ptr->GetStatus() == ExecutionStatus::NOT_FINISHED
+           && runner.GetCurrentState() == JobState::kRunning;
+  };
+  EXPECT_TRUE(testutils::WaitFor(has_started, msec(50)));
+
+  runner.Stop();
+
+  auto has_finished = [instruction_ptr, &runner]() { return runner.IsFinished(); };
+  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
+
+  EXPECT_TRUE(runner.IsFinished());
+
+  EXPECT_EQ(runner.GetCurrentState(), JobState::kFailed);
+  // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
+  std::cout << static_cast<int>(runner.GetCurrentState()) << std::endl;
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+  EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }
