@@ -120,7 +120,6 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
   auto instruction_ptr = procedure->RootInstruction();
 
   DomainRunner runner(CreatePrintCallback(), *procedure);
-  runner.Start();
 
   EXPECT_TRUE(runner.Start());  // trigger action
 
