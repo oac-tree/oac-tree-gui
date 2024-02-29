@@ -19,8 +19,6 @@
 
 #include "domain_runner.h"
 
-#include "domain_event_dispatcher.h"
-#include "domain_event_queue.h"
 #include "domain_job_observer.h"
 #include "domain_procedure_observer.h"
 
@@ -31,29 +29,12 @@
 namespace sequencergui::experimental
 {
 
-DomainRunner::DomainRunner(DomainEventDispatcherContext context, procedure_t* procedure)
+DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback, procedure_t& procedure)
+    : m_job_observer(std::make_unique<DomainJobObserver>(post_event_callback))
+    , m_procedure_observer(std::make_unique<DomainProcedureObserver>(post_event_callback))
+    , m_job_controller(std::make_unique<sup::sequencer::JobController>(
+          procedure, *m_procedure_observer, *m_job_observer))
 {
-  if (!procedure)
-  {
-    throw RuntimeException("Procedure is not initialized");
-  }
-
-  m_event_queue = std::make_unique<DomainEventQueue>();
-  context.get_event = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
-  m_event_dispatcher = std::make_unique<DomainEventDispatcher>(context);
-
-  // connecting event queue with event dispatcher using queued connection
-  QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
-                   &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
-
-  // setting up observers to post events in a queue
-  auto post_event = [this](const domain_event_t& event) { m_event_queue->PushEvent(event); };
-  m_job_observer = std::make_unique<DomainJobObserver>(post_event);
-  m_procedure_observer = std::make_unique<DomainProcedureObserver>(post_event);
-
-  // creating job controller
-  m_job_controller = std::make_unique<sup::sequencer::JobController>(
-      *procedure, *m_procedure_observer, *m_job_observer);
 }
 
 DomainRunner::~DomainRunner() = default;

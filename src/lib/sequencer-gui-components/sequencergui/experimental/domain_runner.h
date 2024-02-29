@@ -21,9 +21,11 @@
 #define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_RUNNER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/experimental/domain_events.h>
 
 #include <sup/sequencer/job_states.h>
 
+#include <functional>
 #include <memory>
 
 namespace sup::sequencer
@@ -34,15 +36,14 @@ class JobController;
 namespace sequencergui::experimental
 {
 
-class DomainEventQueue;
-class DomainEventDispatcher;
 class DomainJobObserver;
 class DomainProcedureObserver;
-class DomainEventDispatcherContext;
 
 class DomainRunner
 {
 public:
+  using post_event_callback_t = std::function<void(const domain_event_t& event)>;
+
   enum RunnerState
   {
     kReady,
@@ -52,7 +53,7 @@ public:
     kStepPressed
   };
 
-  explicit DomainRunner(DomainEventDispatcherContext context, procedure_t* procedure);
+  explicit DomainRunner(const post_event_callback_t& post_event_callback, procedure_t& procedure);
   ~DomainRunner();
 
   bool Start();
@@ -68,8 +69,6 @@ public:
   bool IsFinished() const;
 
 private:
-  std::unique_ptr<DomainEventQueue> m_event_queue;
-  std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
   std::unique_ptr<sup::sequencer::JobController> m_job_controller;
