@@ -25,7 +25,7 @@
 
 #include <QObject>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 /**
@@ -52,6 +52,6 @@ private:
   DomainEventDispatcherContext m_context;
 };
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENT_DISPATCHER_H_

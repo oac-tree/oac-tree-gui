@@ -23,15 +23,7 @@
 
 #include <sup/sequencer/instruction.h>
 
-namespace
-{
-std::string GetStatus(const instruction_t *instruction)
-{
-  return ::sup::sequencer::StatusToString(instruction->GetStatus());
-}
-}  // namespace
-
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_event_callback)
@@ -93,4 +85,4 @@ void DomainProcedureObserver::Log(int severity, const std::string &message)
   (void)(message);
 }
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui

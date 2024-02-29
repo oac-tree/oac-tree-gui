@@ -26,7 +26,7 @@
 
 #include <QObject>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 /**
@@ -70,9 +70,9 @@ signals:
   void NewEvent();
 
 private:
-  mvvm::threadsafe_queue<experimental::domain_event_t> m_domain_events;
+  mvvm::threadsafe_queue<domain_event_t> m_domain_events;
 };
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENT_QUEUE_H_

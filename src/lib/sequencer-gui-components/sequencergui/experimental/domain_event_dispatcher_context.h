@@ -24,7 +24,7 @@
 
 #include <functional>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 /**
@@ -42,6 +42,6 @@ struct DomainEventDispatcherContext
   std::function<void(const JobStateChanged&)> process_job_state_changed;
 };
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENT_DISPATCHER_CONTEXT_H_

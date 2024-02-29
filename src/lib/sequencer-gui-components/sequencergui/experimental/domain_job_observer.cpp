@@ -23,7 +23,7 @@
 
 #include <sup/sequencer/job_states.h>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback)
@@ -40,7 +40,7 @@ void DomainJobObserver::OnStateChange(sup::sequencer::JobState state) noexcept
   {
     std::lock_guard<std::mutex> lk{m_mutex};
     m_state = state;
-    m_post_event_callback(experimental::JobStateChanged{state});
+    m_post_event_callback(JobStateChanged{state});
   }
   m_cv.notify_one();
 }
@@ -66,4 +66,4 @@ sup::sequencer::JobState DomainJobObserver::WaitForFinished() const
   return m_state;
 }
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui

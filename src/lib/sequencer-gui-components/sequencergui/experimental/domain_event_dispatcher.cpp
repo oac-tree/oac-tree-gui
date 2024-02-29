@@ -21,7 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 DomainEventDispatcher::DomainEventDispatcher(DomainEventDispatcherContext context, QObject *parent)
@@ -39,12 +39,9 @@ void DomainEventDispatcher::OnNewEvent()
   std::visit(*this, event);
 }
 
-void DomainEventDispatcher::operator()(const std::monostate &event) const
-{
+void DomainEventDispatcher::operator()(const std::monostate &event) const {}
 
-}
-
-void DomainEventDispatcher::operator()(const InstructionStatusChanged &event)  const
+void DomainEventDispatcher::operator()(const InstructionStatusChanged &event) const
 {
   if (m_context.process_instruction_status_changed)
   {
@@ -52,7 +49,7 @@ void DomainEventDispatcher::operator()(const InstructionStatusChanged &event)  c
   }
 }
 
-void DomainEventDispatcher::operator()(const JobStateChanged &event)  const
+void DomainEventDispatcher::operator()(const JobStateChanged &event) const
 {
   if (m_context.process_job_state_changed)
   {
@@ -60,4 +57,4 @@ void DomainEventDispatcher::operator()(const JobStateChanged &event)  const
   }
 }
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui

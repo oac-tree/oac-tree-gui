@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui::experimental;
+using namespace sequencergui;
 
 //! Tests events defined in domain_events.h
 

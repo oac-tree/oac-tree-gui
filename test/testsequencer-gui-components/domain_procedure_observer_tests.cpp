@@ -38,22 +38,22 @@ using ::testing::_;
 class DomainProcedureObserverTest : public ::testing::Test
 {
 public:
-  mvvm::test::MockCallbackListener<experimental::domain_event_t> m_event_listener;
+  mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
 };
 
 TEST_F(DomainProcedureObserverTest, InitialState)
 {
-  EXPECT_THROW(experimental::DomainProcedureObserver({}), RuntimeException);
+  EXPECT_THROW(DomainProcedureObserver({}), RuntimeException);
 }
 
 TEST_F(DomainProcedureObserverTest, OnStateChange)
 {
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  experimental::DomainProcedureObserver observer(m_event_listener.CreateCallback());
+  DomainProcedureObserver observer(m_event_listener.CreateCallback());
 
-  experimental::domain_event_t expected_event(experimental::InstructionStatusChanged{
-      instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
+  domain_event_t expected_event(
+      InstructionStatusChanged{instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
 
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 

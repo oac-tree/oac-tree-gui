@@ -32,7 +32,7 @@
 #include <string>
 #include <variant>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 /**
@@ -66,6 +66,6 @@ bool IsValid(const domain_event_t& value);
 
 std::string ToString(const domain_event_t& value);
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENTS_H_

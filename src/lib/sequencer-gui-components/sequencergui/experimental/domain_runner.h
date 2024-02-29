@@ -33,7 +33,7 @@ namespace sup::sequencer
 class JobController;
 }
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 class DomainJobObserver;
@@ -78,6 +78,6 @@ private:
   RunnerState m_runner_state{kReady};
 };
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_

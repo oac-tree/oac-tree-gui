@@ -23,7 +23,7 @@
 
 #include <QSignalSpy>
 
-using namespace sequencergui::experimental;
+using namespace sequencergui;
 
 //! Tests for DomainEventQueue class.
 

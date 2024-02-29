@@ -30,7 +30,7 @@ struct DomainEventToStringVisitor
 {
   std::string operator()(const std::monostate &event) const { return std::string("monostate"); }
 
-  std::string operator()(const sequencergui::experimental::InstructionStatusChanged &event) const
+  std::string operator()(const ::sequencergui::InstructionStatusChanged &event) const
   {
     std::ostringstream ostr;
     const std::string name = (event.instruction ? event.instruction->GetName() : std::string());
@@ -40,15 +40,15 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
-  std::string operator()(const sequencergui::experimental::JobStateChanged &event) const
+  std::string operator()(const ::sequencergui::JobStateChanged &event) const
   {
-    return std::string("JobStatusChanged") + " " + sup::sequencer::ToString(event.status);
+    return std::string("JobStatusChanged") + " " + ::sup::sequencer::ToString(event.status);
   }
 };
 
 }  // namespace
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 // InstructionStatusChanged
@@ -85,4 +85,4 @@ std::string ToString(const domain_event_t &value)
   return std::visit(DomainEventToStringVisitor{}, value);
 }
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui

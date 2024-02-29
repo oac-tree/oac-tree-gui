@@ -26,7 +26,7 @@
 
 #include <functional>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 class DomainEventQueue;
@@ -67,6 +67,6 @@ private:
   post_event_callback_t m_post_event_callback;
 };
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_PROCEDURE_OBSERVER_H_

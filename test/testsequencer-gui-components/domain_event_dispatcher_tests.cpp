@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace sequencergui::experimental;
+using namespace sequencergui;
 using ::testing::_;
 
 //! Tests for DomainEventDispatcher class.

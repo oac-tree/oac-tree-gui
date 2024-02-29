@@ -26,7 +26,7 @@
 
 #include <sup/sequencer/job_controller.h>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback, procedure_t& procedure)
@@ -90,4 +90,4 @@ bool DomainRunner::IsFinished() const
   return sup::sequencer::IsFinishedJobState(m_job_observer->GetCurrentState());
 }
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui

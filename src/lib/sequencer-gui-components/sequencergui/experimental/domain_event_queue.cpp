@@ -19,7 +19,7 @@
 
 #include "domain_event_queue.h"
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 DomainEventQueue::DomainEventQueue(QObject *parent) : QObject(parent) {}
@@ -42,4 +42,4 @@ size_t DomainEventQueue::GetEventCount() const
   return m_domain_events.size();
 }
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui

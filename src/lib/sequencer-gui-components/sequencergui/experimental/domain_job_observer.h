@@ -28,7 +28,7 @@
 #include <functional>
 #include <mutex>
 
-namespace sequencergui::experimental
+namespace sequencergui
 {
 
 /**
@@ -63,6 +63,6 @@ private:
   mutable std::condition_variable m_cv;
 };
 
-}  // namespace sequencergui::experimental
+}  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_JOB_OBSERVER_H_

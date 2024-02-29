@@ -42,19 +42,18 @@ public:
   /**
    * @brief Test helper function to print event.
    */
-  static std::function<void(const experimental::domain_event_t& event)> CreatePrintCallback()
+  static std::function<void(const domain_event_t& event)> CreatePrintCallback()
   {
-    return [](const experimental::domain_event_t& event)
-    { std::cout << experimental::ToString(event) << std::endl; };
+    return [](const domain_event_t& event) { std::cout << ToString(event) << std::endl; };
   }
 
-  mvvm::test::MockCallbackListener<experimental::domain_event_t> m_event_listener;
+  mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
 };
 
 TEST_F(DomainRunnerTest, InitialState)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
-  experimental::DomainRunner runner(CreatePrintCallback(), *procedure);
+  DomainRunner runner(CreatePrintCallback(), *procedure);
   runner.Start();
 
   EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
@@ -65,9 +64,6 @@ TEST_F(DomainRunnerTest, InitialState)
 
 TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 {
-  using experimental::domain_event_t;
-  using experimental::InstructionStatusChanged;
-  using experimental::JobStateChanged;
   using ::sup::sequencer::ExecutionStatus;
   using ::sup::sequencer::JobState;
 
@@ -101,7 +97,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
   }
 
-  experimental::DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
+  DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
   runner.Start();
 
   auto final_state = runner.WaitForFinished();

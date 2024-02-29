@@ -33,20 +33,19 @@ using ::testing::_;
 class DomainJobObserverTest : public ::testing::Test
 {
 public:
-  mvvm::test::MockCallbackListener<experimental::domain_event_t> m_event_listener;
+  mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
 };
 
 TEST_F(DomainJobObserverTest, InitialState)
 {
-  EXPECT_THROW(experimental::DomainJobObserver({}), RuntimeException);
+  EXPECT_THROW(DomainJobObserver({}), RuntimeException);
 }
 
 TEST_F(DomainJobObserverTest, OnStateChange)
 {
-  experimental::DomainJobObserver observer(m_event_listener.CreateCallback());
+  DomainJobObserver observer(m_event_listener.CreateCallback());
 
-  experimental::domain_event_t expected_event(
-      experimental::JobStateChanged{::sup::sequencer::JobState::kInitial});
+  domain_event_t expected_event(JobStateChanged{::sup::sequencer::JobState::kInitial});
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 
   observer.OnStateChange(sup::sequencer::JobState::kInitial);
