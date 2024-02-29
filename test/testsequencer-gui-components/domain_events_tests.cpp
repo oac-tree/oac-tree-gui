@@ -83,16 +83,16 @@ TEST_F(DomainEventTest, JobStatusChanged)
   EXPECT_TRUE(IsValid(domain_event_t{JobStatusChanged{}}));
 
   {  // default constructed
-    const JobStatusChanged event1;
-    const JobStatusChanged event2;
+    const JobStatusChanged event1{};
+    const JobStatusChanged event2{};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // names
-    const JobStatusChanged event1{"abc"};
-    const JobStatusChanged event2{"abc"};
-    const JobStatusChanged event3{"def"};
+    const JobStatusChanged event1{::sup::sequencer::JobState::kInitial};
+    const JobStatusChanged event2{::sup::sequencer::JobState::kInitial};
+    const JobStatusChanged event3{::sup::sequencer::JobState::kRunning};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);

@@ -54,7 +54,7 @@ struct InstructionStatusChanged
  */
 struct JobStatusChanged
 {
-  std::string status;
+  sup::sequencer::JobState status;
 
   bool operator==(const JobStatusChanged& other) const;
   bool operator!=(const JobStatusChanged& other) const;

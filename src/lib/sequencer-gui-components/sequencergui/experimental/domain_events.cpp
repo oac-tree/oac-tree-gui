@@ -42,7 +42,7 @@ struct DomainEventToStringVisitor
 
   std::string operator()(const sequencergui::experimental::JobStatusChanged &event) const
   {
-    return std::string("JobStatusChanged") + " " + event.status;
+    return std::string("JobStatusChanged") + " " + sup::sequencer::ToString(event.status);
   }
 };
 

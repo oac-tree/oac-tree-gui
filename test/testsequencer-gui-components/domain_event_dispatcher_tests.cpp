@@ -49,7 +49,7 @@ public:
 
 TEST_F(DomainEventDispatcherTest, EmptyEvent)
 {
-  domain_event_t event;
+  const domain_event_t event;
   DomainEventDispatcher dispatcher(CreateContext(event));
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(_)).Times(0);
@@ -71,7 +71,7 @@ TEST_F(DomainEventDispatcherTest, InstructionStatusChanged)
 
 TEST_F(DomainEventDispatcherTest, JobStatusChanged)
 {
-  JobStatusChanged expected_event{"abc"};
+  JobStatusChanged expected_event{::sup::sequencer::JobState::kInitial};
   DomainEventDispatcher dispatcher(CreateContext(expected_event));
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(_)).Times(0);
