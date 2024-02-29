@@ -52,6 +52,8 @@ public:
   void OnBreakpointChange(const sup::sequencer::Instruction* instruction,
                           bool breakpoint_set) noexcept override;
 
+  void OnProcedureTick(const sup::sequencer::Procedure& proc) noexcept override;
+
   sup::sequencer::JobState GetCurrentState() const;
 
   sup::sequencer::JobState WaitForFinished() const;

@@ -52,6 +52,11 @@ void DomainJobObserver::OnBreakpointChange(const sup::sequencer::Instruction *in
   (void)breakpoint_set;
 }
 
+void DomainJobObserver::OnProcedureTick(const sup::sequencer::Procedure &proc) noexcept
+{
+  (void)proc;
+}
+
 sup::sequencer::JobState DomainJobObserver::GetCurrentState() const
 {
   std::lock_guard<std::mutex> lk{m_mutex};
