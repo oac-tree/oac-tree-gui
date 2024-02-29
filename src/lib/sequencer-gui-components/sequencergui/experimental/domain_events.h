@@ -61,6 +61,8 @@ using domain_event_t = std::variant<std::monostate, InstructionStatusChanged, Jo
 
 bool IsValid(const domain_event_t& value);
 
+std::string ToString(const domain_event_t& value);
+
 }  // namespace sequencergui::experimental
 
 #endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENTS_H_

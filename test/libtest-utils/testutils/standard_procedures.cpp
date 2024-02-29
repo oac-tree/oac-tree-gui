@@ -72,6 +72,8 @@ std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string &text)
 {
   auto result = std::make_unique<procedure_t>();
   auto message = CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  message->AddAttribute(sequencergui::domainconstants::kNameAttribute,
+                        domainconstants::kMessageInstructionType);
   message->AddAttribute(sequencergui::domainconstants::kTextAttribute, text);
   result->PushInstruction(std::move(message));
 
@@ -272,7 +274,8 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
 
   auto less_than = CreateDomainInstruction(domainconstants::kLessThanInstructionType);
   less_than->AddAttribute(sequencergui::domainconstants::kLeftVariableNameAttribute, "counter");
-  less_than->AddAttribute(sequencergui::domainconstants::kRightVariableNameAttribute, "max_counter");
+  less_than->AddAttribute(sequencergui::domainconstants::kRightVariableNameAttribute,
+                          "max_counter");
   sequence->InsertInstruction(std::move(less_than), 0);
 
   auto increment = CreateDomainInstruction(domainconstants::kIncrementInstructionType);

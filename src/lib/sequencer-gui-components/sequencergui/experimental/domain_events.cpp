@@ -19,6 +19,34 @@
 
 #include "domain_events.h"
 
+#include <sup/sequencer/instruction.h>
+
+#include <sstream>
+
+namespace
+{
+
+struct DomainEventToStringVisitor
+{
+  std::string operator()(const std::monostate &event) const { return std::string("monostate"); }
+
+  std::string operator()(const sequencergui::experimental::InstructionStatusChanged &event) const
+  {
+    std::ostringstream ostr;
+    const std::string name = (event.instruction ? event.instruction->GetName() : std::string());
+    ostr << "InstructionStatusChanged"
+         << " " << (event.instruction) << " " << name << " " << event.status;
+    return ostr.str();
+  }
+
+  std::string operator()(const sequencergui::experimental::JobStatusChanged &event) const
+  {
+    return std::string("JobStatusChanged") + " " + event.status;
+  }
+};
+
+}  // namespace
+
 namespace sequencergui::experimental
 {
 
@@ -49,6 +77,11 @@ bool JobStatusChanged::operator!=(const JobStatusChanged &other) const
 bool IsValid(const domain_event_t &value)
 {
   return value.index() != 0;  // index==0 corresponds to `monostate`
+}
+
+std::string ToString(const domain_event_t &value)
+{
+  return std::visit(DomainEventToStringVisitor{}, value);
 }
 
 }  // namespace sequencergui::experimental

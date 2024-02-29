@@ -29,6 +29,8 @@
 #include <gtest/gtest.h>
 #include <testutils/standard_procedures.h>
 
+#include <iostream>
+
 using namespace sequencergui;
 using ::testing::_;
 
@@ -37,6 +39,15 @@ using ::testing::_;
 class DomainRunnerTest : public ::testing::Test
 {
 public:
+  /**
+   * @brief Test helper function to print event.
+   */
+  static std::function<void(const experimental::domain_event_t& event)> CreatePrintCallback()
+  {
+    return [](const experimental::domain_event_t& event)
+    { std::cout << experimental::ToString(event) << std::endl; };
+  }
+
   mvvm::test::MockCallbackListener<experimental::domain_event_t> m_event_listener;
 };
 
@@ -44,9 +55,38 @@ public:
 
 TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 {
-  auto procedure = testutils::CreateMessageProcedure("text");
-  experimental::DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
+  using experimental::domain_event_t;
+  using experimental::InstructionStatusChanged;
+  using experimental::JobStatusChanged;
 
+  auto procedure = testutils::CreateMessageProcedure("text");
+  auto instruction_ptr = procedure->RootInstruction();
+
+  {
+    const ::testing::InSequence seq;
+
+    // triggered by JobController c-tor
+    const domain_event_t event1(JobStatusChanged{"Initial"});
+    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+
+    const domain_event_t event2(JobStatusChanged{"Running"});
+    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+
+    const domain_event_t event3(InstructionStatusChanged{instruction_ptr, "Not finished"});
+    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+
+    const domain_event_t event4(InstructionStatusChanged{instruction_ptr, "Success"});
+    EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
+
+    const domain_event_t event5(JobStatusChanged{"Success"});
+    EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
+
+    // triggered by JobController d-tor
+    const domain_event_t event6(InstructionStatusChanged{instruction_ptr, "Not started"});
+    EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
+  }
+
+  experimental::DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
   runner.Start();
 
   auto final_state = runner.WaitForFinished();
