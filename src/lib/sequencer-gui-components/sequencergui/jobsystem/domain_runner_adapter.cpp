@@ -31,7 +31,7 @@
 namespace sequencergui
 {
 
-DomainRunnerAdapter::DomainRunnerAdapter(const DomainRunnerContext &context) : m_context(context)
+DomainRunnerAdapter::DomainRunnerAdapter(const DomainRunnerAdapterContext &context) : m_context(context)
 {
   m_domain_runner = std::make_unique<runner_t>(*m_context.user_interface);
   m_domain_runner->SetProcedure(m_context.procedure);

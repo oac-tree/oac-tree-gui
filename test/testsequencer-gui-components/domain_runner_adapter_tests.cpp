@@ -54,7 +54,7 @@ public:
   std::unique_ptr<DomainRunnerAdapter> CreateRunnerAdapter(procedure_t* procedure)
   {
     procedure->Setup();
-    DomainRunnerContext context{procedure, &m_observer, m_runner_listener.CreateCallback(),
+    DomainRunnerAdapterContext context{procedure, &m_observer, m_runner_listener.CreateCallback(),
                                 m_tick_listener.CreateCallback()};
     auto result = std::make_unique<DomainRunnerAdapter>(context);
 

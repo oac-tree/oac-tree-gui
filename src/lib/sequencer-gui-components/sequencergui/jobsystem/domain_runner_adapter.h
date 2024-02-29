@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
 
 #include <sequencergui/jobsystem/abstract_job.h>
-#include <sequencergui/jobsystem/domain_runner_context.h>
+#include <sequencergui/jobsystem/domain_runner_adapter_context.h>
 
 #include <atomic>
 #include <chrono>
@@ -44,7 +44,7 @@ class FunctionRunner;
 class DomainRunnerAdapter : public AbstractJob
 {
 public:
-  explicit DomainRunnerAdapter(const DomainRunnerContext& context);
+  explicit DomainRunnerAdapter(const DomainRunnerAdapterContext& context);
 
   ~DomainRunnerAdapter() override;
 
@@ -77,7 +77,7 @@ private:
 
   std::unique_ptr<runner_t> m_domain_runner;  //! domain runner for procedure
   std::atomic<int> m_tick_timeout_ms{0};      //! delay in event loop
-  DomainRunnerContext m_context;              //! adapter's input data
+  DomainRunnerAdapterContext m_context;              //! adapter's input data
   std::future<void> m_future_result;          //! result of async job
 };
 

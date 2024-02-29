@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_CONTEXT_H_
-#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_CONTEXT_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_CONTEXT_H_
+#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_CONTEXT_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/job_types.h>
@@ -32,7 +32,7 @@ namespace sequencergui
  * @brief The DomainRunnerContext structure provides initial parameters for DomainRunnerAdapter to
  * run.
  */
-struct DomainRunnerContext
+struct DomainRunnerAdapterContext
 {
   //! domain procedure to execute in a thread, must be after Setup call
   procedure_t* procedure{nullptr};
@@ -49,4 +49,4 @@ struct DomainRunnerContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_CONTEXT_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_CONTEXT_H_

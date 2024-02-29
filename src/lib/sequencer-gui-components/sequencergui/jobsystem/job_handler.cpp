@@ -253,8 +253,8 @@ void JobHandler::SetupDomainRunnerAdapter()
 
   auto on_tick = [this](const auto &procedure)
   { m_procedure_reporter->OnDomainProcedureTick(procedure); };
-
-  DomainRunnerContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
+  
+  DomainRunnerAdapterContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
                               status_changed, on_tick};
   m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(context);
 
