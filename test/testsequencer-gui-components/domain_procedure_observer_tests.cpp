@@ -52,8 +52,9 @@ TEST_F(DomainProcedureObserverTest, OnStateChange)
 
   experimental::DomainProcedureObserver observer(m_event_listener.CreateCallback());
 
-  experimental::domain_event_t expected_event(
-      experimental::InstructionStatusChanged{instruction.get(), "Not started"});
+  experimental::domain_event_t expected_event(experimental::InstructionStatusChanged{
+      instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
+
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 
   observer.UpdateInstructionStatus(instruction.get());

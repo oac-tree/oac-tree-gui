@@ -68,6 +68,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
   using experimental::domain_event_t;
   using experimental::InstructionStatusChanged;
   using experimental::JobStatusChanged;
+  using ::sup::sequencer::ExecutionStatus;
 
   auto procedure = testutils::CreateMessageProcedure("text");
   auto instruction_ptr = procedure->RootInstruction();
@@ -82,17 +83,20 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     const domain_event_t event2(JobStatusChanged{"Running"});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
 
-    const domain_event_t event3(InstructionStatusChanged{instruction_ptr, "Not finished"});
+    const domain_event_t event3(
+        InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
 
-    const domain_event_t event4(InstructionStatusChanged{instruction_ptr, "Success"});
+    const domain_event_t event4(
+        InstructionStatusChanged{instruction_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
 
     const domain_event_t event5(JobStatusChanged{"Success"});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
 
     // triggered by JobController d-tor
-    const domain_event_t event6(InstructionStatusChanged{instruction_ptr, "Not started"});
+    const domain_event_t event6(
+        InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
   }
 

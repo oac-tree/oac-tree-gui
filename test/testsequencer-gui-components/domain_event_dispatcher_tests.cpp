@@ -60,7 +60,7 @@ TEST_F(DomainEventDispatcherTest, EmptyEvent)
 
 TEST_F(DomainEventDispatcherTest, InstructionStatusChanged)
 {
-  InstructionStatusChanged expected_event{nullptr, "abc"};
+  InstructionStatusChanged expected_event{nullptr, ::sup::sequencer::ExecutionStatus::NOT_STARTED};
   DomainEventDispatcher dispatcher(CreateContext(expected_event));
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(expected_event)).Times(1);

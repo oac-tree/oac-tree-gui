@@ -35,7 +35,8 @@ struct DomainEventToStringVisitor
     std::ostringstream ostr;
     const std::string name = (event.instruction ? event.instruction->GetName() : std::string());
     ostr << "InstructionStatusChanged"
-         << " " << (event.instruction) << " " << name << " " << event.status;
+         << " " << (event.instruction) << " " << name << " "
+         << ::sup::sequencer::StatusToString(event.status);
     return ostr.str();
   }
 

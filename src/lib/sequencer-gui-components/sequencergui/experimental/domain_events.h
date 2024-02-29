@@ -26,6 +26,9 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
+#include <sup/sequencer/execution_status.h>
+#include <sup/sequencer/job_states.h>
+
 #include <string>
 #include <variant>
 
@@ -39,7 +42,7 @@ namespace sequencergui::experimental
 struct InstructionStatusChanged
 {
   const instruction_t* instruction{nullptr};
-  std::string status;
+  sup::sequencer::ExecutionStatus status;
 
   bool operator==(const InstructionStatusChanged& other) const;
   bool operator!=(const InstructionStatusChanged& other) const;

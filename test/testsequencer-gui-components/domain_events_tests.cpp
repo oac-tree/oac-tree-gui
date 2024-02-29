@@ -42,19 +42,21 @@ TEST_F(DomainEventTest, Monostate)
 
 TEST_F(DomainEventTest, InstructionStatusChanged)
 {
+  using ::sup::sequencer::ExecutionStatus;
+
   EXPECT_TRUE(IsValid(domain_event_t{InstructionStatusChanged{}}));
 
   {  // default constructed
-    InstructionStatusChanged event1;
-    InstructionStatusChanged event2;
+    const InstructionStatusChanged event1{};
+    const InstructionStatusChanged event2{};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // names
-    InstructionStatusChanged event1{nullptr, "abc"};
-    InstructionStatusChanged event2{nullptr, "abc"};
-    InstructionStatusChanged event3{nullptr, "def"};
+    const InstructionStatusChanged event1{nullptr, ExecutionStatus::RUNNING};
+    const InstructionStatusChanged event2{nullptr, ExecutionStatus::RUNNING};
+    const InstructionStatusChanged event3{nullptr, ExecutionStatus::SUCCESS};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);
@@ -66,9 +68,9 @@ TEST_F(DomainEventTest, InstructionStatusChanged)
         ::sequencergui::domainconstants::kWaitInstructionType);
     auto instr2 = ::sequencergui::CreateDomainInstruction(
         ::sequencergui::domainconstants::kWaitInstructionType);
-    InstructionStatusChanged event1{instr1.get(), "abc"};
-    InstructionStatusChanged event2{instr1.get(), "abc"};
-    InstructionStatusChanged event3{instr2.get(), "abc"};
+    const InstructionStatusChanged event1{instr1.get(), ExecutionStatus::RUNNING};
+    const InstructionStatusChanged event2{instr1.get(), ExecutionStatus::RUNNING};
+    const InstructionStatusChanged event3{instr2.get(), ExecutionStatus::RUNNING};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);
@@ -81,16 +83,16 @@ TEST_F(DomainEventTest, JobStatusChanged)
   EXPECT_TRUE(IsValid(domain_event_t{JobStatusChanged{}}));
 
   {  // default constructed
-    JobStatusChanged event1;
-    JobStatusChanged event2;
+    const JobStatusChanged event1;
+    const JobStatusChanged event2;
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // names
-    JobStatusChanged event1{"abc"};
-    JobStatusChanged event2{"abc"};
-    JobStatusChanged event3{"def"};
+    const JobStatusChanged event1{"abc"};
+    const JobStatusChanged event2{"abc"};
+    const JobStatusChanged event3{"def"};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);

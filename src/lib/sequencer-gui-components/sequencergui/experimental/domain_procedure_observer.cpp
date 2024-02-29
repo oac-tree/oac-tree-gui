@@ -47,7 +47,7 @@ void DomainProcedureObserver::UpdateInstructionStatus(
     const sup::sequencer::Instruction *instruction)
 {
   (void)(instruction);
-  m_post_event_callback(InstructionStatusChanged{instruction, GetStatus(instruction)});
+  m_post_event_callback(InstructionStatusChanged{instruction, instruction->GetStatus()});
 }
 
 void DomainProcedureObserver::VariableUpdated(const std::string &name,
