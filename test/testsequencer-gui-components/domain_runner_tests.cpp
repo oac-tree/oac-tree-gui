@@ -31,8 +31,6 @@
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 
-#include <iostream>
-
 using namespace sequencergui;
 using ::testing::_;
 
@@ -41,6 +39,9 @@ using ::testing::_;
 class DomainRunnerTest : public ::testing::Test
 {
 public:
+  using clock_used = std::chrono::high_resolution_clock;
+  using time_t = std::chrono::time_point<clock_used>;
+  using duration_unit = std::chrono::milliseconds;
   using msec = std::chrono::milliseconds;
 
   /**
@@ -110,10 +111,15 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
   }
 
   DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
   runner.Start();
 
   auto final_state = runner.WaitForFinished();
   EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 }
 
 //! Terminates procedure that runs too long.
@@ -142,7 +148,7 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
 
   runner.Stop();
 
-  auto has_finished = [instruction_ptr, &runner]() { return runner.IsFinished(); };
+  auto has_finished = [&runner]() { return runner.IsFinished(); };
   EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
 
   EXPECT_TRUE(runner.IsFinished());
@@ -152,4 +158,64 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
   std::cout << static_cast<int>(runner.GetCurrentState()) << std::endl;
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
   EXPECT_EQ(instruction_ptr->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
+}
+
+//! Sequence with single message in normal start mode. Validating that tick timeout is ignored for
+//! single instructions.
+
+TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
+{
+  const int tick_timeout_msec(1000);  // intenionally long timeout
+
+  auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
+  DomainRunner runner(CreateNoopCallback(), *procedure);
+
+  runner.SetTickTimeout(tick_timeout_msec);
+
+  const time_t start_time = clock_used::now();
+
+  // triggering action
+  EXPECT_TRUE(runner.Start());
+
+  auto has_finished = [&runner]() { return runner.IsFinished(); };
+  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
+
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+  const time_t end_time = clock_used::now();
+
+  // Here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
+  // since we have only one child that gets executed during single step.
+  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
+              < msec(tick_timeout_msec));
+}
+
+//! Sequence with two messages in normal start mode. Additional tick timeout slows down the
+//! execution.
+TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
+{
+  const int tick_timeout_msec(50);
+
+  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+  DomainRunner runner(CreateNoopCallback(), *procedure);
+
+  runner.SetTickTimeout(tick_timeout_msec);
+
+  const time_t start_time = clock_used::now();
+
+  // triggering action
+  EXPECT_TRUE(runner.Start());
+
+  auto has_finished = [&runner]() { return runner.IsFinished(); };
+  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(200)));
+
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+  const time_t end_time = clock_used::now();
+
+  // Here we test that adapter.SetTickTimeout(100) was invoked once
+  EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
+              > msec(tick_timeout_msec));
 }

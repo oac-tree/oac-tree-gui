@@ -70,6 +70,8 @@ public:
 
   bool IsFinished() const;
 
+  void SetTickTimeout(int msec);
+
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;

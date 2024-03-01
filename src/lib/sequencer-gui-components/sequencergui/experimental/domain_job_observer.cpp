@@ -22,6 +22,19 @@
 #include <sequencergui/core/exceptions.h>
 
 #include <sup/sequencer/job_states.h>
+#include <sup/sequencer/procedure.h>
+
+#include <thread>
+
+namespace
+{
+bool IsLastTick(const sup::sequencer::Procedure &proc)
+{
+  using sup::sequencer::ExecutionStatus;
+  const auto status = proc.GetStatus();
+  return status == ExecutionStatus::SUCCESS || status == ExecutionStatus::FAILURE;
+}
+}  // namespace
 
 namespace sequencergui
 {
@@ -38,7 +51,7 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback)
 void DomainJobObserver::OnStateChange(sup::sequencer::JobState state) noexcept
 {
   {
-    std::lock_guard<std::mutex> lk{m_mutex};
+    const std::lock_guard<std::mutex> lk{m_mutex};
     m_state = state;
     m_post_event_callback(JobStateChanged{state});
   }
@@ -55,11 +68,16 @@ void DomainJobObserver::OnBreakpointChange(const sup::sequencer::Instruction *in
 void DomainJobObserver::OnProcedureTick(const sup::sequencer::Procedure &proc) noexcept
 {
   (void)proc;
+  const std::unique_lock<std::mutex> lk{m_mutex};
+  if (m_tick_timeout_msec > 0 && !IsLastTick(proc))
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_msec));
+  }
 }
 
 sup::sequencer::JobState DomainJobObserver::GetCurrentState() const
 {
-  std::lock_guard<std::mutex> lk{m_mutex};
+  const std::lock_guard<std::mutex> lk{m_mutex};
   return m_state;
 }
 
@@ -69,6 +87,12 @@ sup::sequencer::JobState DomainJobObserver::WaitForFinished() const
   std::unique_lock<std::mutex> lk{m_mutex};
   m_cv.wait(lk, pred);
   return m_state;
+}
+
+void DomainJobObserver::SetTickTimeout(int msec)
+{
+  const std::unique_lock<std::mutex> lk{m_mutex};
+  m_tick_timeout_msec = msec;
 }
 
 }  // namespace sequencergui

@@ -58,11 +58,14 @@ public:
 
   sup::sequencer::JobState WaitForFinished() const;
 
+  void SetTickTimeout(int msec);
+
 private:
   post_event_callback_t m_post_event_callback;
   sup::sequencer::JobState m_state;
   mutable std::mutex m_mutex;
   mutable std::condition_variable m_cv;
+  int m_tick_timeout_msec{0};
 };
 
 }  // namespace sequencergui

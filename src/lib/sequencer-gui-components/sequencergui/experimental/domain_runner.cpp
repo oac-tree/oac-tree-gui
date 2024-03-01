@@ -90,4 +90,9 @@ bool DomainRunner::IsFinished() const
   return sup::sequencer::IsFinishedJobState(m_job_observer->GetCurrentState());
 }
 
+void DomainRunner::SetTickTimeout(int msec)
+{
+  m_job_observer->SetTickTimeout(msec);
+}
+
 }  // namespace sequencergui
