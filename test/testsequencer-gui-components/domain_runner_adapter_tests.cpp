@@ -612,6 +612,7 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
 //! Repeat procedure with increment instruction inside. We start in run mode, then pause, then make
 //! a step and finally continue till the end.
 //! Test is unstabled and disabled.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, DISABLED_RunPauseStepRun)
 {

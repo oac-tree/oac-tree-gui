@@ -26,6 +26,7 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/variable.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -69,7 +70,7 @@ public:
 TEST_F(DomainRunnerTest, InitialState)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
-  DomainRunner runner(CreatePrintCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), *procedure);
   runner.Start();
 
   EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
@@ -273,8 +274,8 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   // Step #1 right from initial state
   EXPECT_TRUE(runner.Step());
 
-  auto has_paused = [&runner]() { return runner.GetCurrentState() == JobState::kPaused; };
-  EXPECT_TRUE(testutils::WaitFor(has_paused, msec(max_after_step_wait_time)));
+  auto is_paused = [&runner]() { return runner.GetCurrentState() == JobState::kPaused; };
+  EXPECT_TRUE(testutils::WaitFor(is_paused, msec(max_after_step_wait_time)));
 
   {
     const ::testing::InSequence seq;
@@ -395,4 +396,86 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
 
   // destruction of jobController, two instructions (not_started)
   EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(2);
+}
+
+//! Repeat procedure with increment instruction for infinite repeat for run-pause-run scenario.
+//!
+//! - Repeat
+//!   - Sequence
+//!     - Compare
+//!     - Increment
+//!
+//! We start in run mode, then pause, then push run again to continue till the end. The procedure
+//! contains two variables: a counter for increment, and interruption variable to quit from the
+//! repeat. Test scenario:
+//! - Run
+//! - Pause
+//! - Run again, wait a bit, and stop via interrupt variable.
+
+TEST_F(DomainRunnerTest, RunPauseRun)
+{
+  using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::JobState;
+
+  // The procedure contains two variables: a counter, and variable for interruption. By magic we
+  // know variable names.
+  auto procedure = testutils::CreateRepeatIncrementAndCompare();
+  const std::string kCounterVarName("counter");
+  const std::string kContinueVarName("to_continue");
+  auto& workspace = procedure->GetWorkspace();
+  auto counter_var = workspace.GetVariable(kCounterVarName);
+
+  procedure->Setup();
+
+  // counter is 0 at the beginning
+  sup::dto::AnyValue counter_value;
+  counter_var->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 0U);
+
+  DomainRunner runner(CreateNoopCallback(), *procedure);
+
+  // staring and waiting a bit to let the counter to increment
+  EXPECT_TRUE(runner.Start());
+
+  auto is_incremented = [counter_var]()
+  {
+    sup::dto::AnyValue counter_value;
+    counter_var->GetValue(counter_value);
+    return counter_value.As<int>() > 1U;
+  };
+  EXPECT_TRUE(testutils::WaitFor(is_incremented, msec(50)));
+
+  // pause
+  EXPECT_TRUE(runner.Pause());
+  auto is_paused = [&runner]() { return runner.GetCurrentState() == JobState::kPaused; };
+  EXPECT_TRUE(testutils::WaitFor(is_paused, msec(50)));
+
+  // It is paused now, increment counter should increase.
+  counter_var->GetValue(counter_value);
+  auto current_counter1 = counter_value.As<int>();
+  EXPECT_TRUE(current_counter1 > 1);
+
+  // continuing till the end
+  EXPECT_TRUE(runner.Start());
+
+  auto is_running = [&runner]() { return runner.GetCurrentState() == JobState::kRunning; };
+  EXPECT_TRUE(testutils::WaitFor(is_paused, msec(50)));
+
+  std::this_thread::sleep_for(msec(25));
+
+  // to stop incrementing use interruption variable
+  sup::dto::AnyValue interrupt_value(0U);
+  procedure->GetWorkspace().SetValue("to_continue", interrupt_value);
+
+  std::this_thread::sleep_for(msec(25));
+
+  runner.WaitForFinished();
+
+  counter_var->GetValue(counter_value);
+  auto current_counter2 = counter_value.As<int>();
+  EXPECT_TRUE(current_counter2 > current_counter1);
+
+  // it is failed because we've made a sequence quite
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kFailed);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::FAILURE);
 }

@@ -77,6 +77,9 @@ std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions);
 //! Creates domain procedure with repeat, sequence and possibility to terminate
 std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, int max_counter);
 
+//! Creates domain procedure with increment inside a repeat. It is intended to test DomainRunner
+//! in run-pause-run scenario.
+std::unique_ptr<procedure_t> CreateRepeatIncrementAndCompare();
 
 }  // namespace testutils
 

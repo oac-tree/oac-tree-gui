@@ -26,6 +26,7 @@
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/sequence_parser.h>
 #include <sup/sequencer/variable.h>
 
 using namespace sequencergui;
@@ -303,6 +304,27 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
   result->AddVariable("max_counter", std::move(var1));
 
   return result;
+}
+
+std::unique_ptr<procedure_t> CreateRepeatIncrementAndCompare()
+{
+  // Will continue incrementing, until to_continue variable is equal to one.
+  const std::string procedure_xml = R"RAW(
+<Procedure>
+  <Repeat maxCount="-1">
+    <Sequence>
+      <Equals leftVar="to_continue" rightVar="one"/>
+      <Increment varName="counter"/>
+    </Sequence>
+  </Repeat>
+  <Workspace>
+    <Local name="counter" type='{"type":"int32"}' value="0"/>
+    <Local name="one" type='{"type":"int32"}' value="1"/>
+    <Local name="to_continue" type='{"type":"int32"}' value="1"/>
+  </Workspace>
+</Procedure>
+)RAW";
+  return sup::sequencer::ParseProcedureString(procedure_xml);
 }
 
 }  // namespace testutils
