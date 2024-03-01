@@ -219,3 +219,96 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
   EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
               > msec(tick_timeout_msec));
 }
+
+//! Sequence with two waits in step mode. Making steps until complete.
+TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
+{
+  const msec wait_time(10);  // parameter for Wait instruction
+  const msec safety_gap(50); // some additional safety gap
+
+  // wait time after each step for procedure containing two Wait instructions
+  const msec max_after_step_wait_time(2 * (testutils::kDefaultWaitPrecision + wait_time)
+                                      + safety_gap);
+
+  using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::JobState;
+
+  auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(wait_time, wait_time);
+
+  auto sequence_ptr = procedure->RootInstruction();
+  auto wait0_ptr = sequence_ptr->ChildInstructions().at(0);
+  auto wait1_ptr = sequence_ptr->ChildInstructions().at(1);
+
+  {
+    const ::testing::InSequence seq;
+
+    const domain_event_t event0(JobStateChanged{JobState::kInitial});
+    EXPECT_CALL(m_event_listener, OnCallback(event0)).Times(1);
+
+    const domain_event_t event1(JobStateChanged{JobState::kStepping});
+    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+
+    const domain_event_t event2(
+        InstructionStatusChanged{sequence_ptr, ExecutionStatus::NOT_FINISHED});
+    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+
+    const domain_event_t event3(InstructionStatusChanged{wait0_ptr, ExecutionStatus::NOT_FINISHED});
+    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+
+    const domain_event_t event4(InstructionStatusChanged{wait0_ptr, ExecutionStatus::SUCCESS});
+    EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
+
+    const domain_event_t event5(JobStateChanged{JobState::kPaused});
+    EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
+  }
+
+  DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
+
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  // Step #1 right from initial state
+  EXPECT_TRUE(runner.Step());
+
+  auto has_paused = [&runner]() { return runner.GetCurrentState() == JobState::kPaused; };
+  EXPECT_TRUE(testutils::WaitFor(has_paused, msec(max_after_step_wait_time)));
+
+  {
+    const ::testing::InSequence seq;
+
+    const domain_event_t event1(JobStateChanged{JobState::kStepping});
+    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+
+    const domain_event_t event2(InstructionStatusChanged{wait1_ptr, ExecutionStatus::NOT_FINISHED});
+    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+
+    const domain_event_t event3(InstructionStatusChanged{wait1_ptr, ExecutionStatus::SUCCESS});
+    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+
+    const domain_event_t event4(InstructionStatusChanged{sequence_ptr, ExecutionStatus::SUCCESS});
+    EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
+
+    const domain_event_t event5(JobStateChanged{JobState::kSucceeded});
+    EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
+  }
+
+  // Step #2 and waiting till the end
+  EXPECT_TRUE(runner.Step());
+
+  auto has_succeeded = [&runner]() { return runner.GetCurrentState() == JobState::kSucceeded; };
+  EXPECT_TRUE(testutils::WaitFor(has_succeeded, max_after_step_wait_time));
+
+  {  // on destruction of job controller
+    const ::testing::InSequence seq;
+
+    const domain_event_t event1(InstructionStatusChanged{wait0_ptr, ExecutionStatus::NOT_STARTED});
+    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+
+    const domain_event_t event2(InstructionStatusChanged{wait1_ptr, ExecutionStatus::NOT_STARTED});
+    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+
+    const domain_event_t event3(
+        InstructionStatusChanged{sequence_ptr, ExecutionStatus::NOT_STARTED});
+    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+  }
+}
