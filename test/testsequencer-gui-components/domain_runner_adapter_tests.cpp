@@ -420,6 +420,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
 //! Sequence with two waits in step mode. After first step it is interrupted, and then started from
 //! the beginning. This time exception should be thrown, since same adapter can't be run twice with
 //! the same procedure.
+// NOTE: MIGRATION_TO_CONSIDER
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRestarted)
 {
@@ -464,6 +465,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterruptedAndRest
 //! Sequence with two waits in step mode. We start procedure normally and let is run till
 //! completion. Then start again in step mode. This time exception should be thrown,
 //! since same adapter can't be run twice with the same procedure.
+// NOTE: MIGRATION_TO_CONSIDER
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 {
@@ -499,6 +501,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsRunTillCompletionThenStep)
 }
 
 //! Long running procedure gets stopped, then started again.
+// NOTE: MIGRATION_TO_CONSIDER
 
 TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
 {
@@ -547,6 +550,7 @@ TEST_F(DomainRunnerAdapterTest, AttemptToStartAfterAbnormalStop)
 
 //! Repeat procedure with increment instruction inside. We start in step mode, and after the first
 //! step continue till the end without interruptions.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
 {
@@ -556,7 +560,7 @@ TEST_F(DomainRunnerAdapterTest, StepAndRunTillTheEnd)
 
   sup::dto::AnyValue counter_value;
   variable->GetValue(counter_value);
-  EXPECT_EQ(counter_value, 0u);
+  EXPECT_EQ(counter_value, 0U);
 
   auto adapter = CreateRunnerAdapter(procedure.get());
 

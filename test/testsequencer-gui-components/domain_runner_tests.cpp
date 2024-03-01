@@ -26,13 +26,16 @@
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/mock_domain_event_listener.h>
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 
 using namespace sequencergui;
 using ::testing::_;
+using ::testing::AtLeast;
 
 //! Tests for DomainRunner class.
 
@@ -161,7 +164,7 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
 }
 
 //! Sequence with single message in normal start mode. Validating that tick timeout is ignored for
-//! single instructions.
+//! a single instructions.
 
 TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
 {
@@ -338,4 +341,58 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
 
   EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kHalted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
+}
+
+//! Repeat procedure with increment instruction inside. We start in step mode, and after the first
+//! step continue till the end without interruptions.
+
+TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
+{
+  testutils::MockDomainEventListener listener;
+
+  auto procedure = testutils::CreateCounterProcedure(3);
+  auto variable = procedure->GetWorkspace().GetVariable("counter");
+  procedure->Setup();
+
+  sup::dto::AnyValue counter_value;
+  variable->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 0U);
+
+  // JobState: initial, stepping, paused
+  EXPECT_CALL(listener, OnJobStateChanged(_)).Times(3);
+  // Instruction: repeat (not finished) + one increment (not finished, success)
+  EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(3);
+
+  DomainRunner runner(listener.CreateCallback(), *procedure);
+
+  // making step
+  EXPECT_TRUE(runner.Step());
+
+  auto is_incremented = [variable]()
+  {
+    sup::dto::AnyValue counter_value;
+    variable->GetValue(counter_value);
+    return counter_value == 1U;
+  };
+
+  EXPECT_TRUE(testutils::WaitFor(is_incremented, msec(50)));
+
+  // JobState: running, success
+  EXPECT_CALL(listener, OnJobStateChanged(_)).Times(2);
+  // Instruction: two increments 2*(not started, not finished, success) + repeat (success)
+  EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(7);
+
+  // continuing till the end
+  EXPECT_TRUE(runner.Start());
+
+  runner.WaitForFinished();
+
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kSucceeded);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+
+  variable->GetValue(counter_value);
+  EXPECT_EQ(counter_value, 3U);
+
+  // destruction of jobController, two instructions (not_started)
+  EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(2);
 }
