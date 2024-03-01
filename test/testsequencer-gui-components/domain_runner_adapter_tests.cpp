@@ -66,6 +66,8 @@ public:
   mvvm::test::MockCallbackListener<procedure_t> m_tick_listener;
 };
 
+// NOTE: MIGRATION_DONE
+
 TEST_F(DomainRunnerAdapterTest, InitialState)
 {
   const std::chrono::milliseconds timeout(10);
@@ -77,6 +79,7 @@ TEST_F(DomainRunnerAdapterTest, InitialState)
 }
 
 //! Single instruction procedure started in normal way. Waiting upon completion.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 {
@@ -108,6 +111,7 @@ TEST_F(DomainRunnerAdapterTest, ShortProcedureThatExecutesNormally)
 }
 
 //! Terminates procedure which runs too long.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, DISABLED_StartAndTerminate)
 {
@@ -157,6 +161,7 @@ TEST_F(DomainRunnerAdapterTest, DISABLED_StartAndTerminate)
 
 //! Sequence with single message in normal start mode.
 //! Validation that tick timeout is ignored for single instructions.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithSingleMessage)
 {
@@ -204,6 +209,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithSingleMessage)
 
 //! Sequence with two messages in normal start mode.
 //! Additional tick timeout slows down the execution.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoMessages)
 {
@@ -249,6 +255,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoMessages)
 }
 
 //! Sequence with two waits in step mode. Making steps until complete.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 {
@@ -288,6 +295,7 @@ TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepMode)
 }
 
 //! Sequencer with two messages in step mode. Making steps until complete.
+// NOTE: MIGRATION_NO_NEED
 
 TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
 {
@@ -334,7 +342,7 @@ TEST_F(DomainRunnerAdapterTest, StepwiseExecution)
 
 //! Running procedure (sequence with message) and let is finish.
 //! Then run same procedure again.
-
+// NOTE: MIGRATION_TO_CONSIDER
 TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
 {
   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
@@ -371,6 +379,7 @@ TEST_F(DomainRunnerAdapterTest, ConsequitiveProcedureExecution)
 }
 
 //! Sequence with two waits in step mode. After first step it is interrupted.
+// NOTE: MIGRATION_DONE
 
 TEST_F(DomainRunnerAdapterTest, SequenceWithTwoWaitsInStepModeInterrupted)
 {

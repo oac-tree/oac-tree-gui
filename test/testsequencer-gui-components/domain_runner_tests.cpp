@@ -223,15 +223,15 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
 //! Sequence with two waits in step mode. Making steps until complete.
 TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 {
-  const msec wait_time(10);  // parameter for Wait instruction
-  const msec safety_gap(50); // some additional safety gap
+  using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::JobState;
+
+  const msec wait_time(10);   // parameter for Wait instruction
+  const msec safety_gap(50);  // some additional waiting time safety gap
 
   // wait time after each step for procedure containing two Wait instructions
   const msec max_after_step_wait_time(2 * (testutils::kDefaultWaitPrecision + wait_time)
                                       + safety_gap);
-
-  using ::sup::sequencer::ExecutionStatus;
-  using ::sup::sequencer::JobState;
 
   auto procedure = testutils::CreateSequenceWithTwoWaitsProcedure(wait_time, wait_time);
 
@@ -298,7 +298,8 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   auto has_succeeded = [&runner]() { return runner.GetCurrentState() == JobState::kSucceeded; };
   EXPECT_TRUE(testutils::WaitFor(has_succeeded, max_after_step_wait_time));
 
-  {  // on destruction of job controller
+  // the rest will listen for activity during JobController destruction
+  {
     const ::testing::InSequence seq;
 
     const domain_event_t event1(InstructionStatusChanged{wait0_ptr, ExecutionStatus::NOT_STARTED});
@@ -311,4 +312,30 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
         InstructionStatusChanged{sequence_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
   }
+}
+
+//! Sequence with two messages in a step mode. After first step it is interrupted.
+
+TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
+{
+  using ::sup::sequencer::ExecutionStatus;
+  using ::sup::sequencer::JobState;
+
+  auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
+
+  DomainRunner runner(CreateNoopCallback(), *procedure);
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
+
+  runner.Step();
+
+  auto has_paused = [&runner]() { return runner.GetCurrentState() == JobState::kPaused; };
+  EXPECT_TRUE(testutils::WaitFor(has_paused, msec(50)));
+
+  EXPECT_TRUE(runner.Stop());
+
+  runner.WaitForFinished();
+
+  EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kHalted);
+  EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
 }
