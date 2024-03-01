@@ -44,11 +44,19 @@ public:
   using msec = std::chrono::milliseconds;
 
   /**
-   * @brief Test helper function to print event.
+   * @brief Test helper function to create callbacks to print events.
    */
   static std::function<void(const domain_event_t& event)> CreatePrintCallback()
   {
     return [](const domain_event_t& event) { std::cout << ToString(event) << std::endl; };
+  }
+
+  /**
+   * @brief Test helper function to create callbacks that do nothing.
+   */
+  static std::function<void(const domain_event_t& event)> CreateNoopCallback()
+  {
+    return [](const domain_event_t& event) { (void)event; };
   }
 
   mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
@@ -119,7 +127,7 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
   auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
   auto instruction_ptr = procedure->RootInstruction();
 
-  DomainRunner runner(CreatePrintCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), *procedure);
 
   EXPECT_TRUE(runner.Start());  // trigger action
 
