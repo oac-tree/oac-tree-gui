@@ -86,7 +86,7 @@ int DomainProcedureObserver::GetUserChoice(const std::vector<std::string> &optio
 
 void DomainProcedureObserver::Message(const std::string &message)
 {
-  (void)(message);
+  m_post_event_callback(CreateLogEvent(Severity::kInfo, message));
 }
 
 void DomainProcedureObserver::Log(int severity, const std::string &message)

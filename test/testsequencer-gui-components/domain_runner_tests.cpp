@@ -101,6 +101,9 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
         InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
 
+    // message instruction (too difficult to make proper comparison because of time stamp
+    EXPECT_CALL(m_event_listener, OnCallback(_)).Times(1);
+
     const domain_event_t event4(
         InstructionStatusChanged{instruction_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
@@ -114,6 +117,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
   }
 
+  // DomainRunner runner(CreatePrintCallback(), *procedure);
   DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
   EXPECT_EQ(runner.GetCurrentState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);

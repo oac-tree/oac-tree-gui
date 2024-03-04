@@ -49,7 +49,10 @@ public:
     auto job_state_changed = [this](const JobStateChanged& event)
     { m_listener.OnJobStateChanged(event); };
 
-    return {{}, instruction_status_changed, job_state_changed};
+    auto log_event = [this](const LogEvent& event)
+    { m_listener.OnLogEvent(event); };
+
+    return {{}, instruction_status_changed, job_state_changed, log_event};
 
     return result;
   }
@@ -70,6 +73,7 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(3);
   // Instruction: repeat (not finished) + one increment (not finished, success)
   EXPECT_CALL(m_listener, OnInstructionStatusChanged(_)).Times(2);
+  EXPECT_CALL(m_listener, OnLogEvent(_)).Times(1);
 
   runner.Start();
 
