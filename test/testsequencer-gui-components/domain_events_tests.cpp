@@ -99,3 +99,32 @@ TEST_F(DomainEventTest, JobStatusChanged)
     EXPECT_TRUE(event1 != event3);
   }
 }
+
+TEST_F(DomainEventTest, NextLeavesChanged)
+{
+  using ::sup::sequencer::ExecutionStatus;
+
+  {  // default constructed
+    const NextLeavesChanged event1{};
+    const NextLeavesChanged event2{};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // instruction
+    auto instr1 = ::sequencergui::CreateDomainInstruction(
+        ::sequencergui::domainconstants::kWaitInstructionType);
+    auto instr2 = ::sequencergui::CreateDomainInstruction(
+        ::sequencergui::domainconstants::kWaitInstructionType);
+
+    const NextLeavesChanged event1{{instr1.get()}};
+    const NextLeavesChanged event2{{instr1.get()}};
+    const NextLeavesChanged event3{{instr2.get()}};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+    EXPECT_FALSE(event1 == event3);
+    EXPECT_TRUE(event1 != event3);
+  }
+}
+
+

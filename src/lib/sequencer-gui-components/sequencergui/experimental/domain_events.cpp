@@ -83,6 +83,18 @@ bool JobStateChanged::operator!=(const JobStateChanged &other) const
   return !(*this == other);
 }
 
+// NextLeavesChanged
+
+bool NextLeavesChanged::operator==(const NextLeavesChanged &other) const
+{
+  return leaves == other.leaves;
+}
+
+bool NextLeavesChanged::operator!=(const NextLeavesChanged &other) const
+{
+  return !(*this == other);
+}
+
 bool IsValid(const domain_event_t &value)
 {
   return value.index() != 0;  // index==0 corresponds to `monostate`
