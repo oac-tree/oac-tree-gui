@@ -459,7 +459,7 @@ TEST_F(DomainRunnerTest, RunPauseRun)
   EXPECT_TRUE(runner.Start());
 
   auto is_running = [&runner]() { return runner.GetCurrentState() == JobState::kRunning; };
-  EXPECT_TRUE(testutils::WaitFor(is_paused, msec(50)));
+  EXPECT_TRUE(testutils::WaitFor(is_running, msec(50)));
 
   std::this_thread::sleep_for(msec(25));
 
