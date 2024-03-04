@@ -25,6 +25,7 @@
 //! sequencer execution.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/jobsystem/log_event.h>
 
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/job_states.h>
@@ -60,7 +61,8 @@ struct JobStateChanged
   bool operator!=(const JobStateChanged& other) const;
 };
 
-using domain_event_t = std::variant<std::monostate, InstructionStatusChanged, JobStateChanged>;
+using domain_event_t =
+    std::variant<std::monostate, InstructionStatusChanged, JobStateChanged, LogEvent>;
 
 bool IsValid(const domain_event_t& value);
 

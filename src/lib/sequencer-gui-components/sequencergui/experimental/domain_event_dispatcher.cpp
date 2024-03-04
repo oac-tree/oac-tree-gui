@@ -57,4 +57,12 @@ void DomainEventDispatcher::operator()(const JobStateChanged &event) const
   }
 }
 
+void DomainEventDispatcher::operator()(const LogEvent &event) const
+{
+  if (m_context.process_job_state_changed)
+  {
+    m_context.process_log_event(event);
+  }
+}
+
 }  // namespace sequencergui

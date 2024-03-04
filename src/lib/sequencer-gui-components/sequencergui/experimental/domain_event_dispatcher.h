@@ -47,6 +47,7 @@ public:
   void operator()(const std::monostate& event) const;
   void operator()(const InstructionStatusChanged& event) const;
   void operator()(const JobStateChanged& event) const;
+  void operator()(const LogEvent& event) const;
 
 private:
   DomainEventDispatcherContext m_context;

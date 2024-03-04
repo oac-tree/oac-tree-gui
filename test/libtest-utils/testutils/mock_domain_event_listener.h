@@ -77,9 +77,15 @@ public:
     OnJobStateChanged(job_event);
   }
 
+  /**
+   * @brief Operator to visit LogEvent and trigger mock method.
+   */
+  void operator()(const sequencergui::LogEvent& log_event) const { OnLogEvent(log_event); }
+
   MOCK_METHOD(void, OnInstructionStatusChanged, (const sequencergui::InstructionStatusChanged&),
               (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChanged&), (const));
+  MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
 };
 
 }  // namespace testutils

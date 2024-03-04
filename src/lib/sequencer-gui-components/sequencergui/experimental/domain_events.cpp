@@ -44,6 +44,14 @@ struct DomainEventToStringVisitor
   {
     return std::string("JobStatusChanged") + " " + ::sup::sequencer::ToString(event.status);
   }
+
+  std::string operator()(const ::sequencergui::LogEvent &event) const
+  {
+    std::ostringstream ostr;
+    ostr << std::string("LogEvent") << " " << ::sequencergui::SeverityToString(event.severity);
+    ostr << " " << event.message;
+    return ostr.str();
+  }
 };
 
 }  // namespace
