@@ -26,17 +26,13 @@
 namespace sequencergui
 {
 
-DomainRunnerService::DomainRunnerService(procedure_t& procedure)
-{
-  SetupDomainRunner(procedure);
-}
-
-DomainRunnerService::~DomainRunnerService() = default;
-
-void DomainRunnerService::SetupDomainRunner(procedure_t& procedure)
+DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext context,
+                                         procedure_t& procedure)
 {
   m_event_queue = std::make_unique<DomainEventQueue>();
-  m_event_dispatcher = std::make_unique<DomainEventDispatcher>(CreateDispatcherContext());
+  context.get_event = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
+
+  m_event_dispatcher = std::make_unique<DomainEventDispatcher>(context);
 
   // connecting event queue with event dispatcher using queued connection
   QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
@@ -46,25 +42,30 @@ void DomainRunnerService::SetupDomainRunner(procedure_t& procedure)
   m_domain_runner = std::make_unique<DomainRunner>(post_event, procedure);
 }
 
-DomainEventDispatcherContext DomainRunnerService::CreateDispatcherContext()
+sup::sequencer::JobState DomainRunnerService::GetCurrentState() const
 {
-  auto get_event = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
-  auto instruction_status_changed = [this](const InstructionStatusChanged& event)
-  { OnInstructionStatusChanged(event); };
-
-  auto job_state_changed = [this](const JobStateChanged& event) { OnJobStateChanged(event); };
-
-  return {get_event, instruction_status_changed, job_state_changed};
+  return m_domain_runner->GetCurrentState();
 }
 
-void DomainRunnerService::OnInstructionStatusChanged(const InstructionStatusChanged& event)
+bool DomainRunnerService::Start()
 {
-  (void)event;
+  return m_domain_runner->Start();
 }
 
-void DomainRunnerService::OnJobStateChanged(const JobStateChanged& event)
+bool DomainRunnerService::Stop()
 {
-  (void)event;
+  return m_domain_runner->Stop();
 }
 
+bool DomainRunnerService::Pause()
+{
+  return m_domain_runner->Pause();
+}
+
+bool DomainRunnerService::Step()
+{
+  return m_domain_runner->Step();
+}
+
+DomainRunnerService::~DomainRunnerService() = default;
 }  // namespace sequencergui

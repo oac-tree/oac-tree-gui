@@ -23,7 +23,6 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/experimental/domain_events.h>
 
-#include <QObject>
 #include <memory>
 
 namespace sequencergui
@@ -38,19 +37,23 @@ class DomainEventDispatcherContext;
  * @brief The DomainRunnerService class is a wrapper around DomainRunner which provide all event
  * queue/dispatcher wiring.
  */
-class DomainRunnerService : public QObject
+class DomainRunnerService
 {
 public:
-  explicit DomainRunnerService(procedure_t& procedure);
-  ~DomainRunnerService() override;
+  explicit DomainRunnerService(DomainEventDispatcherContext context, procedure_t& procedure);
+  ~DomainRunnerService();
+
+  sup::sequencer::JobState GetCurrentState() const;
+
+  bool Start();
+
+  bool Stop();
+
+  bool Pause();
+
+  bool Step();
 
 private:
-  void SetupDomainRunner(procedure_t& procedure);
-  DomainEventDispatcherContext CreateDispatcherContext();
-
-  void OnInstructionStatusChanged(const InstructionStatusChanged&);
-  void OnJobStateChanged(const JobStateChanged&);
-
   std::unique_ptr<DomainEventQueue> m_event_queue;
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;
   std::unique_ptr<DomainRunner> m_domain_runner;

@@ -191,7 +191,7 @@ TEST_F(JobHandlerTest, AttemptToStartWithoutPrepare)
   EXPECT_THROW(job_handler.onStartRequest(), RuntimeException);
 }
 
-//! Normal execution of the procedure with single wait instruction.
+//! Normal execution of the procedure with single message instruction.
 
 TEST_F(JobHandlerTest, ProcedureWithSingleMessage)
 {
