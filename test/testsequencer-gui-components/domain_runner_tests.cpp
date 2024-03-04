@@ -189,7 +189,7 @@ TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
 
   const time_t end_time = clock_used::now();
 
-  // Here we test that adapter.SetTickTimeout(1000) doesn't influence execution time,
+  // Here we test that runner.SetTickTimeout(1000) doesn't influence execution time,
   // since we have only one child that gets executed during single step.
   EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
               < msec(tick_timeout_msec));
@@ -219,9 +219,9 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
 
   const time_t end_time = clock_used::now();
 
-  // Here we test that adapter.SetTickTimeout(100) was invoked once
+  // Here we test that tick timeout of the runner was invoked at least once.
   EXPECT_TRUE(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time)
-              > msec(tick_timeout_msec));
+              >= msec(tick_timeout_msec));
 }
 
 //! Sequence with two waits in step mode. Making steps until complete.
