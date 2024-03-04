@@ -61,9 +61,11 @@ void DomainProcedureObserver::VariableUpdated(const std::string &name,
 bool DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
                                        const std::string &description)
 {
-  (void)(value);
-  (void)(description);
-  return false;
+  auto value_string = sup::gui::ValuesToJSONString(value);
+  std::ostringstream ostr;
+  ostr << description << " " << value_string;
+  m_post_event_callback(CreateLogEvent(Severity::kInfo, ostr.str()));
+  return true;
 }
 
 bool DomainProcedureObserver::GetUserValue(sup::dto::AnyValue &value,
@@ -89,8 +91,8 @@ void DomainProcedureObserver::Message(const std::string &message)
 
 void DomainProcedureObserver::Log(int severity, const std::string &message)
 {
-  (void)(severity);
-  (void)(message);
+  // assuming sequencer severity is the same as GUI severity
+  m_post_event_callback(CreateLogEvent(static_cast<Severity>(severity), message));
 }
 
 }  // namespace sequencergui
