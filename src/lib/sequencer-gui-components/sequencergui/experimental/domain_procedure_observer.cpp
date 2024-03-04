@@ -20,8 +20,13 @@
 #include "domain_procedure_observer.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sup/gui/model/anyvalue_utils.h>
+
+#include <mvvm/utils/string_utils.h>
 
 #include <sup/sequencer/instruction.h>
+
+#include <sstream>
 
 namespace sequencergui
 {
@@ -45,9 +50,12 @@ void DomainProcedureObserver::UpdateInstructionStatus(
 void DomainProcedureObserver::VariableUpdated(const std::string &name,
                                               const sup::dto::AnyValue &value, bool connected)
 {
-  (void)(name);
-  (void)(value);
-  (void)(connected);
+  auto value_string = sup::gui::ValuesToJSONString(value);
+  std::ostringstream ostr;
+  ostr << "Update in variable [" << name << "], value [" << value_string << "]";
+  ostr << " "
+       << "connected: " << mvvm::utils::FromBool(connected);
+  m_post_event_callback(CreateLogEvent(Severity::kDebug, ostr.str()));
 }
 
 bool DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
