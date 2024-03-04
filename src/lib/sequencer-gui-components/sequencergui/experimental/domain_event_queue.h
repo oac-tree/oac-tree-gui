@@ -33,7 +33,7 @@ namespace sequencergui
  * @brief The DomainEventQueue class represents a thread-safe queue to store events coming from the
  * domain sequencer.
  *
- * It is expected that sequencer UserInterfasce, JobStateMonitor will post events in this queue.
+ * It is expected that sequencer UserInterface, JobStateMonitor will post events in this queue.
  */
 class DomainEventQueue : public QObject
 {
