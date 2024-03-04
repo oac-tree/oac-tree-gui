@@ -308,7 +308,7 @@ std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, i
 
 std::unique_ptr<procedure_t> CreateRepeatIncrementAndCompare()
 {
-  // Will continue incrementing, until to_continue variable is equal to one.
+  // Will continue incrementing, while to_continue variable is equal to one.
   const std::string procedure_xml = R"RAW(
 <Procedure>
   <Repeat maxCount="-1">

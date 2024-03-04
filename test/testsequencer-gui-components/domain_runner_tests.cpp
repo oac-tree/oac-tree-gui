@@ -169,7 +169,7 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
 
 TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
 {
-  const int tick_timeout_msec(1000);  // intenionally long timeout
+  const int tick_timeout_msec(1000);  // intentionally long timeout
 
   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
   DomainRunner runner(CreateNoopCallback(), *procedure);
@@ -434,7 +434,7 @@ TEST_F(DomainRunnerTest, RunPauseRun)
 
   DomainRunner runner(CreateNoopCallback(), *procedure);
 
-  // staring and waiting a bit to let the counter to increment
+  // starting and waiting a bit to let the counter to increment
   EXPECT_TRUE(runner.Start());
 
   auto is_incremented = [counter_var]()
