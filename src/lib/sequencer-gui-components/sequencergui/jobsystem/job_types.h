@@ -25,14 +25,6 @@
 namespace sequencergui
 {
 
-//! Defines possible execution modes of ProcedureRunner.
-enum class WaitingMode
-{
-  kProceed,         //! proceed without waiting
-  kWaitForRelease,  //! wait for external "step" command
-  kSleepFor         //! sleep certain amount of time
-};
-
 //! Defines possible states that runner can have during job execution.
 enum class RunnerStatus
 {
@@ -43,15 +35,6 @@ enum class RunnerStatus
   kStopping,   //! in the process of stopping (performed Halt of procedure)
   kStopped,    //! was stopped
   kFailed      //! something went wrong in the domain runner
-};
-
-//! Defines actions which can be performed on a job.
-enum class JobAction
-{
-  kStart,  //! start a job
-  kPause,  //! pause job execution
-  kStep,   //! make a step till the next break point
-  kStop    //! stop the job
 };
 
 }  // namespace sequencergui
