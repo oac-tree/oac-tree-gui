@@ -68,9 +68,10 @@ void DomainJobObserver::OnBreakpointChange(const sup::sequencer::Instruction *in
 void DomainJobObserver::OnProcedureTick(const sup::sequencer::Procedure &proc) noexcept
 {
   (void)proc;
-  const std::unique_lock<std::mutex> lk{m_mutex};
+  std::unique_lock<std::mutex> lock{m_mutex};
   if (m_tick_timeout_msec > 0 && !IsLastTick(proc))
   {
+    lock.unlock();
     std::this_thread::sleep_for(std::chrono::milliseconds(m_tick_timeout_msec));
   }
 }
