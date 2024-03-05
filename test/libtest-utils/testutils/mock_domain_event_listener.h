@@ -20,6 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_DOMAIN_EVENT_LISTENER_H_
 
+#include <sequencergui/experimental/domain_event_dispatcher_context.h>
 #include <sequencergui/experimental/domain_events.h>
 
 #include <gmock/gmock.h>
@@ -95,6 +96,29 @@ public:
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChanged&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
   MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChanged&), (const));
+
+  /**
+   * @brief Creates a structure with callbacks to trigger mock methods.
+   */
+  sequencergui::DomainEventDispatcherContext CreateDispatcherContext()
+  {
+    sequencergui::DomainEventDispatcherContext result;
+
+    auto instruction_status_changed = [this](const sequencergui::InstructionStatusChanged& event)
+    { OnInstructionStatusChanged(event); };
+
+    auto job_state_changed = [this](const sequencergui::JobStateChanged& event)
+    { OnJobStateChanged(event); };
+
+    auto log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
+
+    auto next_leaves_event = [this](const sequencergui::NextLeavesChanged& event)
+    { OnNextLeavesChanged(event); };
+
+    return {instruction_status_changed, job_state_changed, log_event, next_leaves_event};
+
+    return result;
+  }
 };
 
 }  // namespace testutils

@@ -36,29 +36,6 @@ using ::testing::_;
 class DomainRunnerServiceTest : public ::testing::Test
 {
 public:
-  /**
-   * @brief Test functions which create context for DomainRunnerService.
-   */
-  DomainEventDispatcherContext CreateContext() const
-  {
-    DomainEventDispatcherContext result;
-
-    auto instruction_status_changed = [this](const InstructionStatusChanged& event)
-    { m_listener.OnInstructionStatusChanged(event); };
-
-    auto job_state_changed = [this](const JobStateChanged& event)
-    { m_listener.OnJobStateChanged(event); };
-
-    auto log_event = [this](const LogEvent& event) { m_listener.OnLogEvent(event); };
-
-    auto next_leaves_event = [this](const NextLeavesChanged& event)
-    { m_listener.OnNextLeavesChanged(event); };
-
-    return {instruction_status_changed, job_state_changed, log_event, next_leaves_event};
-
-    return result;
-  }
-
   testutils::MockDomainEventListener m_listener;
 };
 
@@ -69,7 +46,7 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
 
-  DomainRunnerService runner(CreateContext(), *procedure);
+  DomainRunnerService runner(m_listener.CreateDispatcherContext(), *procedure);
 
   // JobState: initial, stepping, paused
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(3);
