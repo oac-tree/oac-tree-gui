@@ -67,5 +67,15 @@ bool DomainRunnerService::Step()
   return m_domain_runner->Step();
 }
 
+bool DomainRunnerService::IsFinished() const
+{
+  return m_domain_runner->IsFinished();
+}
+
+void DomainRunnerService::SetTickTimeout(int msec)
+{
+  m_domain_runner->SetTickTimeout(msec);
+}
+
 DomainRunnerService::~DomainRunnerService() = default;
 }  // namespace sequencergui

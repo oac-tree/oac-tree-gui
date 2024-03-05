@@ -20,6 +20,9 @@
 #include "domain_procedure_observer.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/user_choice_provider.h>
+#include <sequencergui/jobsystem/user_context.h>
+#include <sequencergui/jobsystem/user_input_provider.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/utils/string_utils.h>
@@ -38,6 +41,14 @@ DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_even
   {
     throw RuntimeException("Callback is not initialised");
   }
+}
+
+DomainProcedureObserver::~DomainProcedureObserver() = default;
+
+void DomainProcedureObserver::SetUserContext(const UserContext &user_context)
+{
+  m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
+  m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
 }
 
 void DomainProcedureObserver::UpdateInstructionStatus(
@@ -71,17 +82,16 @@ bool DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
 bool DomainProcedureObserver::GetUserValue(sup::dto::AnyValue &value,
                                            const std::string &description)
 {
-  (void)(value);
-  (void)(description);
-  return false;
+  auto result = m_input_provider->GetUserInput({value, description});
+  value = result.value;
+  return result.processed;
 }
 
 int DomainProcedureObserver::GetUserChoice(const std::vector<std::string> &options,
                                            const sup::dto::AnyValue &metadata)
 {
-  (void)(options);
-  (void)(metadata);
-  return 0;
+  auto result =  m_choice_provider->GetUserChoice({options, metadata});
+  return result.processed ? result.index : -1;
 }
 
 void DomainProcedureObserver::Message(const std::string &message)

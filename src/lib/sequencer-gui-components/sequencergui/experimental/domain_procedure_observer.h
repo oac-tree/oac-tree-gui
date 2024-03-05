@@ -30,6 +30,9 @@ namespace sequencergui
 {
 
 class DomainEventQueue;
+class UserContext;
+class UserChoiceProvider;
+class UserInputProvider;
 
 /**
  * @brief The DomainProcedureObserver class listens for changes in the domain procedure and
@@ -46,6 +49,9 @@ public:
    * @param post_event_callback A callback to report events to the GUI.
    */
   explicit DomainProcedureObserver(post_event_callback_t post_event_callback);
+  ~DomainProcedureObserver();
+
+  void SetUserContext(const UserContext &user_context);
 
   void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
 
@@ -65,6 +71,8 @@ public:
 
 private:
   post_event_callback_t m_post_event_callback;
+  std::unique_ptr<UserChoiceProvider> m_choice_provider;
+  std::unique_ptr<UserInputProvider> m_input_provider;
 };
 
 }  // namespace sequencergui

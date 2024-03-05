@@ -53,6 +53,10 @@ public:
 
   bool Step();
 
+  bool IsFinished() const;
+
+  void SetTickTimeout(int msec);
+
 private:
   std::unique_ptr<DomainEventQueue> m_event_queue;
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;

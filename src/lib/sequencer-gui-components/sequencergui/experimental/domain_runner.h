@@ -38,6 +38,7 @@ namespace sequencergui
 
 class DomainJobObserver;
 class DomainProcedureObserver;
+class UserContext;
 
 class DomainRunner
 {
@@ -71,6 +72,8 @@ public:
   bool IsFinished() const;
 
   void SetTickTimeout(int msec);
+
+  void SetUserContext(const UserContext &user_context);
 
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;

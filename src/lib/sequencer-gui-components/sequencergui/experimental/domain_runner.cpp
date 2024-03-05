@@ -23,6 +23,7 @@
 #include "domain_procedure_observer.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/sequencer/job_controller.h>
 
@@ -93,6 +94,11 @@ bool DomainRunner::IsFinished() const
 void DomainRunner::SetTickTimeout(int msec)
 {
   m_job_observer->SetTickTimeout(msec);
+}
+
+void DomainRunner::SetUserContext(const UserContext& user_context)
+{
+  m_procedure_observer->SetUserContext(user_context);
 }
 
 }  // namespace sequencergui
