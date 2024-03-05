@@ -24,10 +24,11 @@
 namespace sequencergui
 {
 
-DomainEventDispatcher::DomainEventDispatcher(DomainEventDispatcherContext context, QObject *parent)
-    : QObject(parent), m_context(std::move(context))
+DomainEventDispatcher::DomainEventDispatcher(get_event_callback_t get_event_callback,
+                                             DomainEventDispatcherContext context, QObject *parent)
+    : QObject(parent), m_get_event(std::move(get_event_callback)), m_context(std::move(context))
 {
-  if (!m_context.get_event)
+  if (!m_get_event)
   {
     throw RuntimeException("Callback to get event is not initialised");
   }
@@ -35,7 +36,7 @@ DomainEventDispatcher::DomainEventDispatcher(DomainEventDispatcherContext contex
 
 void DomainEventDispatcher::OnNewEvent()
 {
-  auto event = m_context.get_event();
+  auto event = m_get_event();
   std::visit(*this, event);
 }
 

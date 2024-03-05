@@ -54,7 +54,7 @@ public:
     auto next_leaves_event = [this](const NextLeavesChanged& event)
     { m_listener.OnNextLeavesChanged(event); };
 
-    return {{}, instruction_status_changed, job_state_changed, log_event, next_leaves_event};
+    return {instruction_status_changed, job_state_changed, log_event, next_leaves_event};
 
     return result;
   }

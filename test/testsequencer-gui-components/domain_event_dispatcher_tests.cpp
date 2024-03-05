@@ -36,11 +36,26 @@ public:
   /**
    * @brief Test helper method to create a context necessary for DomainEventDispatcher to function.
    */
-  DomainEventDispatcherContext CreateContext(const domain_event_t& event)
+  DomainEventDispatcherContext CreateContext()
   {
-    auto get_event_callback = [this, event]() { return event; };
-    return {get_event_callback, m_instruction_status_listener.CreateCallback(),
-            m_job_status_listener.CreateCallback()};
+    return {m_instruction_status_listener.CreateCallback(), m_job_status_listener.CreateCallback()};
+  }
+
+  /**
+   * @brief Test helper method to create a callback reporting given event.
+   */
+  static DomainEventDispatcher::get_event_callback_t CreateGetEventCallback(
+      const domain_event_t& event)
+  {
+    return [event]() { return event; };
+  }
+
+  /**
+   * @brief Test helper method to create a dispatcher acting on given event.
+   */
+  std::unique_ptr<DomainEventDispatcher> CreateDispatcher(const domain_event_t& event)
+  {
+    return std::make_unique<DomainEventDispatcher>(CreateGetEventCallback(event), CreateContext());
   }
 
   mvvm::test::MockCallbackListener<InstructionStatusChanged> m_instruction_status_listener;
@@ -50,32 +65,32 @@ public:
 TEST_F(DomainEventDispatcherTest, EmptyEvent)
 {
   const domain_event_t event;
-  DomainEventDispatcher dispatcher(CreateContext(event));
+  auto dispatcher = CreateDispatcher(event);
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(_)).Times(0);
   EXPECT_CALL(m_job_status_listener, OnCallback(_)).Times(0);
 
-  dispatcher.OnNewEvent();
+  dispatcher->OnNewEvent();
 }
 
 TEST_F(DomainEventDispatcherTest, InstructionStatusChanged)
 {
   InstructionStatusChanged expected_event{nullptr, ::sup::sequencer::ExecutionStatus::NOT_STARTED};
-  DomainEventDispatcher dispatcher(CreateContext(expected_event));
+  auto dispatcher = CreateDispatcher(expected_event);
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(expected_event)).Times(1);
   EXPECT_CALL(m_job_status_listener, OnCallback(_)).Times(0);
 
-  dispatcher.OnNewEvent();
+  dispatcher->OnNewEvent();
 }
 
 TEST_F(DomainEventDispatcherTest, JobStatusChanged)
 {
   JobStateChanged expected_event{::sup::sequencer::JobState::kInitial};
-  DomainEventDispatcher dispatcher(CreateContext(expected_event));
+  auto dispatcher = CreateDispatcher(expected_event);
 
   EXPECT_CALL(m_instruction_status_listener, OnCallback(_)).Times(0);
   EXPECT_CALL(m_job_status_listener, OnCallback(expected_event)).Times(1);
 
-  dispatcher.OnNewEvent();
+  dispatcher->OnNewEvent();
 }

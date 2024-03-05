@@ -32,9 +32,6 @@ namespace sequencergui
  */
 struct DomainEventDispatcherContext
 {
-  //! a callback to retrieve domain event from a queue
-  std::function<domain_event_t()> get_event;
-
   //! a callback to process a change in instruction status
   std::function<void(const InstructionStatusChanged&)> process_instruction_status_changed;
 

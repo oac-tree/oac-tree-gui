@@ -30,9 +30,9 @@ DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext context,
                                          procedure_t& procedure)
 {
   m_event_queue = std::make_unique<DomainEventQueue>();
-  context.get_event = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
+  auto get_event_callback = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
 
-  m_event_dispatcher = std::make_unique<DomainEventDispatcher>(context);
+  m_event_dispatcher = std::make_unique<DomainEventDispatcher>(get_event_callback, context);
 
   // connecting event queue with event dispatcher using queued connection
   QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
