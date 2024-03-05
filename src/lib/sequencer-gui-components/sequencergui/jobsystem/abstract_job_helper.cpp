@@ -24,10 +24,10 @@ namespace sequencergui
 
 bool CanStartJob(RunnerStatus current_status)
 {
-  return current_status == ::sequencergui::RunnerStatus::kIdle
+  return current_status == ::sequencergui::RunnerStatus::kInitial
          || current_status == ::sequencergui::RunnerStatus::kFailed
-         || current_status == ::sequencergui::RunnerStatus::kStopped
-         || current_status == ::sequencergui::RunnerStatus::kCompleted;
+         || current_status == ::sequencergui::RunnerStatus::kHalted
+         || current_status == ::sequencergui::RunnerStatus::kSucceeded;
 }
 
 bool CanPauseJob(RunnerStatus current_status)
@@ -42,10 +42,9 @@ bool CanReleaseJob(RunnerStatus current_status)
 
 bool CanStopJob(RunnerStatus current_status)
 {
-  return current_status != ::sequencergui::RunnerStatus::kStopping
-         && current_status != ::sequencergui::RunnerStatus::kIdle
-         && current_status != ::sequencergui::RunnerStatus::kCompleted
-         && current_status != ::sequencergui::RunnerStatus::kStopped;
+  return current_status != ::sequencergui::RunnerStatus::kInitial
+         && current_status != ::sequencergui::RunnerStatus::kSucceeded
+         && current_status != ::sequencergui::RunnerStatus::kHalted;
 }
 
 }  // namespace sequencergui

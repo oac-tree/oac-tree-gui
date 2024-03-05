@@ -32,6 +32,7 @@ class DomainRunner;
 class DomainEventQueue;
 class DomainEventDispatcher;
 class DomainEventDispatcherContext;
+class UserContext;
 
 /**
  * @brief The DomainRunnerService class is a wrapper around DomainRunner which provide all event
@@ -58,6 +59,8 @@ public:
   bool IsBusy() const;
 
   void SetTickTimeout(int msec);
+
+  void SetUserContext(const UserContext &user_context);
 
 private:
   std::unique_ptr<DomainEventQueue> m_event_queue;

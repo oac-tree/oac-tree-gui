@@ -73,7 +73,7 @@ protected:
   virtual void OnStatusChange(RunnerStatus status) {}
 
 private:
-  RunnerStatus m_status{RunnerStatus::kIdle};
+  RunnerStatus m_status{RunnerStatus::kInitial};
   mutable std::mutex m_mutex;
 };
 

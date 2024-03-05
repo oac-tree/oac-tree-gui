@@ -234,8 +234,8 @@ void OperationActionHandler::ResubmitIfNecessary()
   if (auto job_handler = m_job_manager->GetCurrentJobHandler(); job_handler)
   {
     auto status = job_handler->GetRunnerStatus();
-    if (status == RunnerStatus::kFailed || status == RunnerStatus::kCompleted
-        || status == RunnerStatus::kStopped)
+    if (status == RunnerStatus::kFailed || status == RunnerStatus::kSucceeded
+        || status == RunnerStatus::kHalted)
     {
       OnRegenerateJobRequest();
     }

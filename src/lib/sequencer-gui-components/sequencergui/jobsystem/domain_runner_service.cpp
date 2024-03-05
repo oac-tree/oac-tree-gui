@@ -42,6 +42,8 @@ DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext context,
   m_domain_runner = std::make_unique<DomainRunner>(post_event, procedure);
 }
 
+DomainRunnerService::~DomainRunnerService() = default;
+
 sup::sequencer::JobState DomainRunnerService::GetCurrentState() const
 {
   return m_domain_runner->GetCurrentState();
@@ -74,7 +76,7 @@ bool DomainRunnerService::IsFinished() const
 
 bool DomainRunnerService::IsBusy() const
 {
-  return GetCurrentState() != sup::sequencer::JobState::kInitial || IsFinished();
+  return GetCurrentState() != sup::sequencer::JobState::kInitial && !IsFinished();
 }
 
 void DomainRunnerService::SetTickTimeout(int msec)
@@ -82,5 +84,9 @@ void DomainRunnerService::SetTickTimeout(int msec)
   m_domain_runner->SetTickTimeout(msec);
 }
 
-DomainRunnerService::~DomainRunnerService() = default;
+void DomainRunnerService::SetUserContext(const UserContext& user_context)
+{
+  m_domain_runner->SetUserContext(user_context);
+}
+
 }  // namespace sequencergui

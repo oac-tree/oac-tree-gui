@@ -43,7 +43,7 @@ public:
 TEST_F(AbstractJobTest, InitialState)
 {
   TestJob job;
-  EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
+  EXPECT_EQ(job.GetStatus(), RunnerStatus::kInitial);
 }
 
 //! The transition of TestJob from idle state to all other states.
@@ -59,7 +59,7 @@ TEST_F(AbstractJobTest, FromIdle)
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Start());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kInitial);
   }
 
   {  // IdleState + PauseAction -> no activity
@@ -70,7 +70,7 @@ TEST_F(AbstractJobTest, FromIdle)
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.Pause());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kInitial);
   }
 
   {  // IdleState + StepAction -> StepRequest
@@ -84,7 +84,7 @@ TEST_F(AbstractJobTest, FromIdle)
     EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Step());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kInitial);
   }
 
   {  // IdleState + StopAction -> no activity
@@ -95,7 +95,7 @@ TEST_F(AbstractJobTest, FromIdle)
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.Stop());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kIdle);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kInitial);
   }
 }
 
@@ -219,7 +219,7 @@ TEST_F(AbstractJobTest, FromStopped)
 {
   {  // kStopped + StartAction -> StartRequest
     TestJob job;
-    job.SetStatus(RunnerStatus::kStopped);
+    job.SetStatus(RunnerStatus::kHalted);
 
     EXPECT_CALL(job, StartRequest()).Times(1);
     EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
@@ -227,24 +227,24 @@ TEST_F(AbstractJobTest, FromStopped)
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Start());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kHalted);
   }
 
   {  // kStopped + PauseAction -> no activity
     TestJob job;
-    job.SetStatus(RunnerStatus::kStopped);
+    job.SetStatus(RunnerStatus::kHalted);
     EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.Pause());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kHalted);
   }
 
   {  // kStopped + StepAction -> StepRequest
     TestJob job;
-    job.SetStatus(RunnerStatus::kStopped);
+    job.SetStatus(RunnerStatus::kHalted);
     {
       EXPECT_CALL(job, StepRequest()).Times(1);
     }
@@ -254,19 +254,19 @@ TEST_F(AbstractJobTest, FromStopped)
     EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Step());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kHalted);
   }
 
   {  // kStopped + StopAction -> no activity
     TestJob job;
-    job.SetStatus(RunnerStatus::kStopped);
+    job.SetStatus(RunnerStatus::kHalted);
     EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.Stop());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kStopped);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kHalted);
   }
 }
 
@@ -276,7 +276,7 @@ TEST_F(AbstractJobTest, FromCompleted)
 {
   {  // kCompleted + StartAction -> StartRequest
     TestJob job;
-    job.SetStatus(RunnerStatus::kCompleted);
+    job.SetStatus(RunnerStatus::kSucceeded);
 
     EXPECT_CALL(job, StartRequest()).Times(1);
     EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
@@ -284,24 +284,24 @@ TEST_F(AbstractJobTest, FromCompleted)
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Start());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kSucceeded);
   }
 
   {  // kCompleted + PauseAction -> no activity
     TestJob job;
-    job.SetStatus(RunnerStatus::kCompleted);
+    job.SetStatus(RunnerStatus::kSucceeded);
     EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.Pause());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kSucceeded);
   }
 
   {  // kCompleted + StepAction -> StepRequest
     TestJob job;
-    job.SetStatus(RunnerStatus::kCompleted);
+    job.SetStatus(RunnerStatus::kSucceeded);
     {
       EXPECT_CALL(job, StepRequest()).Times(1);
     }
@@ -311,18 +311,18 @@ TEST_F(AbstractJobTest, FromCompleted)
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_TRUE(job.Step());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kSucceeded);
   }
 
   {  // kCompleted + StopAction -> no activity
     TestJob job;
-    job.SetStatus(RunnerStatus::kCompleted);
+    job.SetStatus(RunnerStatus::kSucceeded);
     EXPECT_CALL(job, StartRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOnRequest()).Times(0);
     EXPECT_CALL(job, PauseModeOffRequest()).Times(0);
     EXPECT_CALL(job, StepRequest()).Times(0);
     EXPECT_CALL(job, StopRequest()).Times(0);
     EXPECT_FALSE(job.Stop());
-    EXPECT_EQ(job.GetStatus(), RunnerStatus::kCompleted);
+    EXPECT_EQ(job.GetStatus(), RunnerStatus::kSucceeded);
   }
 }

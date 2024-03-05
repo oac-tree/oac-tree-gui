@@ -91,9 +91,8 @@ void DomainRunnerAdapter::StepRequest()
 
 void DomainRunnerAdapter::StopRequest()
 {
-  SetStatus(RunnerStatus::kStopping);
   m_domain_runner->Halt();
-  SetStatus(RunnerStatus::kStopped);
+  SetStatus(RunnerStatus::kHalted);
 }
 
 runner_t *DomainRunnerAdapter::GetDomainRunner()
@@ -143,23 +142,23 @@ void DomainRunnerAdapter::RunProcedure(bool in_step_mode)
 
 void DomainRunnerAdapter::UpdateStatusOnRunnerCompletion()
 {
-  // can't find more elegant way
+  // // can't find more elegant way
 
-  if (GetStatus() == RunnerStatus::kRunning)
-  {
-    if (m_domain_runner->IsFinished())
-    {
-      SetStatus(RunnerStatus::kCompleted);
-    }
-    else
-    {
-      SetStatus(RunnerStatus::kPaused);
-    }
-  }
-  else if (GetStatus() == RunnerStatus::kStopping)
-  {
-    SetStatus(RunnerStatus::kStopped);
-  }
+  // if (GetStatus() == RunnerStatus::kRunning)
+  // {
+  //   if (m_domain_runner->IsFinished())
+  //   {
+  //     SetStatus(RunnerStatus::kSucceeded);
+  //   }
+  //   else
+  //   {
+  //     SetStatus(RunnerStatus::kPaused);
+  //   }
+  // }
+  // else if (GetStatus() == RunnerStatus::kStopping)
+  // {
+  //   SetStatus(RunnerStatus::kStopped);
+  // }
 }
 
 }  // namespace sequencergui

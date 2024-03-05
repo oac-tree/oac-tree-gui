@@ -31,24 +31,24 @@ class JobUtilsTest : public ::testing::Test
 
 TEST_F(JobUtilsTest, RunnerStatusToString)
 {
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kIdle), "Idle");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kRunning), "Running");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kInitial), "Initial");
   EXPECT_EQ(RunnerStatusToString(RunnerStatus::kPaused), "Paused");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kCompleted), "Completed");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kStopping), "Stopping");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kStopped), "Stopped");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kFailed), "Failed");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kStepping), "Stepping");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kRunning), "Running");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kSucceeded), "Success");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kFailed), "Failure");
+  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kHalted), "Halted");
 }
 
 TEST_F(JobUtilsTest, GetRunnerStatus)
 {
-  EXPECT_EQ(GetRunnerStatus("Idle"), RunnerStatus::kIdle);
-  EXPECT_EQ(GetRunnerStatus("Running"), RunnerStatus::kRunning);
+  EXPECT_EQ(GetRunnerStatus("Initial"), RunnerStatus::kInitial);
   EXPECT_EQ(GetRunnerStatus("Paused"), RunnerStatus::kPaused);
-  EXPECT_EQ(GetRunnerStatus("Completed"), RunnerStatus::kCompleted);
-  EXPECT_EQ(GetRunnerStatus("Stopping"), RunnerStatus::kStopping);
-  EXPECT_EQ(GetRunnerStatus("Stopped"), RunnerStatus::kStopped);
-  EXPECT_EQ(GetRunnerStatus("Failed"), RunnerStatus::kFailed);
+  EXPECT_EQ(GetRunnerStatus("Stepping"), RunnerStatus::kStepping);
+  EXPECT_EQ(GetRunnerStatus("Running"), RunnerStatus::kRunning);
+  EXPECT_EQ(GetRunnerStatus("Success"), RunnerStatus::kSucceeded);
+  EXPECT_EQ(GetRunnerStatus("Failure"), RunnerStatus::kFailed);
+  EXPECT_EQ(GetRunnerStatus("Halted"), RunnerStatus::kHalted);
 }
 
 TEST_F(JobUtilsTest, GetRegExpPattern)

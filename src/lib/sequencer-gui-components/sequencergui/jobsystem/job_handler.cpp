@@ -137,6 +137,12 @@ void JobHandler::onStopRequest()
 
 bool JobHandler::IsRunning() const
 {
+  // std::cout << "AAA 1.1" << m_domain_runner_service.get() << std::endl;
+  std::cout << "AAA 1.2"
+            << (m_domain_runner_service
+                    ? sup::sequencer::ToString(m_domain_runner_service->GetCurrentState())
+                    : std::string("null"))
+            << std::endl;
   // return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
   return m_domain_runner_service ? m_domain_runner_service->IsBusy() : false;
 }
@@ -149,7 +155,8 @@ void JobHandler::SetSleepTime(int time_msec)
 
 void JobHandler::SetUserContext(const UserContext &user_context)
 {
-  m_procedure_reporter->SetUserContext(user_context);
+  // m_procedure_reporter->SetUserContext(user_context);
+  m_domain_runner_service->SetUserContext(user_context);
 }
 
 ProcedureItem *JobHandler::GetExpandedProcedure() const
@@ -166,7 +173,8 @@ bool JobHandler::IsValid() const
 
 RunnerStatus JobHandler::GetRunnerStatus() const
 {
-  return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kIdle;
+  // return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kInitial;
+  return m_domain_runner_service ? static_cast<RunnerStatus>(m_domain_runner_service->GetCurrentState()) : RunnerStatus::kInitial;
 }
 
 JobLog *JobHandler::GetJobLog() const

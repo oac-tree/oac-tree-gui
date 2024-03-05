@@ -220,7 +220,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleMessage)
   ASSERT_EQ(instructions.size(), 1);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
 }
 
 //! Normal execution of procedure with single wait.
@@ -251,7 +251,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   QTest::qWait(50);
 
   EXPECT_FALSE(job_handler.IsRunning());
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
 }
 
 TEST_F(JobHandlerTest, ProcedureWithVariableCopy)
@@ -437,7 +437,7 @@ TEST_F(JobHandlerTest, LogEvents)
   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
 
   ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
 

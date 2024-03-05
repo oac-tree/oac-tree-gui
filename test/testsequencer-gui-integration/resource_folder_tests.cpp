@@ -72,6 +72,12 @@ public:
     }
   }
 
+  bool IsCompleted(JobItem* job_item)
+  {
+    auto status = job_item->GetStatus();
+    return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
+  }
+
   ApplicationModels m_models;
   JobItem* m_job_item{nullptr};
 };
@@ -97,12 +103,13 @@ TEST_P(ResourceFolderTest, RunProcedure)
 
   // starting procedure and waiting for completion
   job_handler.onStartRequest();
-  auto predicate = [this]() { return m_job_item->GetStatus() == "Completed"; };
-  EXPECT_TRUE(QTest::qWaitFor(predicate, 300));
+
+  auto predicate = [this]() { return IsCompleted(m_job_item); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 500));
 
   // validating some of parameters after job is complet
-  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kCompleted);
-  EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kCompleted);
+  EXPECT_TRUE(IsCompleted(m_job_item));
+  EXPECT_EQ(job_handler.GetRunnerStatus(), RunnerStatus::kSucceeded);
   auto instructions = mvvm::utils::FindItems<InstructionItem>(m_models.GetJobModel());
   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 }

@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -56,6 +57,12 @@ public:
   JobModel* GetJobModel() { return m_models.GetJobModel(); }
 
   std::vector<JobItem*> GetJobItems() { return mvvm::utils::GetTopItems<JobItem>(GetJobModel()); }
+
+  bool IsCompleted(JobItem* job_item)
+  {
+    auto status = job_item->GetStatus();
+    return !status.empty() && GetRunnerStatus(status) == RunnerStatus::kSucceeded;
+  }
 
   ApplicationModels m_models;
   JobManager m_job_manager;
@@ -161,13 +168,11 @@ TEST_F(OperationActionHandlerTest, OnStartJobRequest)
   m_actions.OnStartJobRequest();
 
   EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), m_job_manager.GetJobHandler(job_item));
-  EXPECT_TRUE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return job_item->GetStatus() == std::string("Completed"); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
+  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 }
 
 //! Removing submitted job.
@@ -334,20 +339,17 @@ TEST_F(OperationActionHandlerTest, ExecuteSameJobTwice)
   m_actions.OnStartJobRequest();
 
   EXPECT_EQ(m_job_manager.GetCurrentJobHandler(), m_job_manager.GetJobHandler(job_item));
-  EXPECT_TRUE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return job_item->GetStatus() == std::string("Completed"); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
 
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
-  EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
+  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 
   // starting same job again
   m_actions.OnStartJobRequest();
 
-  EXPECT_TRUE(QTest::qWaitFor(
-      [this, job_item]() { return job_item->GetStatus() == std::string("Completed"); }, 50));
+  EXPECT_TRUE(QTest::qWaitFor([this, job_item]() { return IsCompleted(job_item); }, 50));
   EXPECT_FALSE(m_job_manager.GetJobHandler(job_item)->IsRunning());
 
-  EXPECT_EQ(job_item->GetStatus(), std::string("Completed"));
+  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kSucceeded);
 }

@@ -28,18 +28,26 @@
 namespace
 {
 
-const QString kGroupName("OperationMonitorView");
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+// const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
+//     {sequencergui::RunnerStatus::kIdle, "Idle"},
+//     {sequencergui::RunnerStatus::kRunning, "Running"},
+//     {sequencergui::RunnerStatus::kPaused, "Paused"},
+//     {sequencergui::RunnerStatus::kCompleted, "Completed"},
+//     {sequencergui::RunnerStatus::kPaused, "Paused"},
+//     {sequencergui::RunnerStatus::kStopping, "Stopping"},
+//     {sequencergui::RunnerStatus::kStopped, "Stopped"},
+//     {sequencergui::RunnerStatus::kFailed, "Failed"}};
 
-const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
-    {sequencergui::RunnerStatus::kIdle, "Idle"},
-    {sequencergui::RunnerStatus::kRunning, "Running"},
-    {sequencergui::RunnerStatus::kPaused, "Paused"},
-    {sequencergui::RunnerStatus::kCompleted, "Completed"},
-    {sequencergui::RunnerStatus::kPaused, "Paused"},
-    {sequencergui::RunnerStatus::kStopping, "Stopping"},
-    {sequencergui::RunnerStatus::kStopped, "Stopped"},
-    {sequencergui::RunnerStatus::kFailed, "Failed"}};
+// exact copy of sup::sequencer::JobState
+static const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
+    { sequencergui::RunnerStatus::kInitial, "Initial" },
+    { sequencergui::RunnerStatus::kPaused, "Paused" },
+    { sequencergui::RunnerStatus::kStepping, "Stepping" },
+    { sequencergui::RunnerStatus::kRunning, "Running" },
+    { sequencergui::RunnerStatus::kSucceeded, "Success" },
+    { sequencergui::RunnerStatus::kFailed, "Failure" },
+    { sequencergui::RunnerStatus::kHalted, "Halted" }
+};
 
 }  // namespace
 
