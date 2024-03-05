@@ -48,6 +48,7 @@ public:
   void operator()(const InstructionStatusChanged& event) const;
   void operator()(const JobStateChanged& event) const;
   void operator()(const LogEvent& event) const;
+  void operator()(const NextLeavesChanged& event) const;
 
 private:
   DomainEventDispatcherContext m_context;

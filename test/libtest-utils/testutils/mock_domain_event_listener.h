@@ -82,10 +82,19 @@ public:
    */
   void operator()(const sequencergui::LogEvent& log_event) const { OnLogEvent(log_event); }
 
+  /**
+   * @brief Operator to visit NextLeavesChanged and trigger mock method.
+   */
+  void operator()(const sequencergui::NextLeavesChanged& leaves_event) const
+  {
+    OnNextLeavesChangedEvent(leaves_event);
+  }
+
   MOCK_METHOD(void, OnInstructionStatusChanged, (const sequencergui::InstructionStatusChanged&),
               (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChanged&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
+  MOCK_METHOD(void, OnNextLeavesChangedEvent, (const sequencergui::NextLeavesChanged&), (const));
 };
 
 }  // namespace testutils

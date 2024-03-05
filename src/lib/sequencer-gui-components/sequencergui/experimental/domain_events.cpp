@@ -52,6 +52,17 @@ struct DomainEventToStringVisitor
     ostr << " " << event.message;
     return ostr.str();
   }
+
+  std::string operator()(const ::sequencergui::NextLeavesChanged &event) const
+  {
+    std::ostringstream ostr;
+    ostr << std::string("NextLeavesChanged") << " ";
+    for (auto instr : event.leaves)
+    {
+      ostr << instr->GetType() << " ";
+    }
+    return ostr.str();
+  }
 };
 
 }  // namespace
