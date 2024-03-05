@@ -101,20 +101,23 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
         InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
 
-    // message instruction (too difficult to make proper comparison because of time stamp
+    // message instruction (too difficult to make proper comparison because of time stamp)
     EXPECT_CALL(m_event_listener, OnCallback(_)).Times(1);
 
-    const domain_event_t event4(
+    const domain_event_t event5(
         InstructionStatusChanged{instruction_ptr, ExecutionStatus::SUCCESS});
-    EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
-
-    const domain_event_t event5(JobStateChanged{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
 
-    // triggered by JobController d-tor
-    const domain_event_t event6(
-        InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_STARTED});
+    const domain_event_t event6(JobStateChanged{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
+
+    const domain_event_t event7(NextLeavesChanged{});
+    EXPECT_CALL(m_event_listener, OnCallback(event7)).Times(1);
+
+    // triggered by JobController d-tor
+    const domain_event_t event8(
+        InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_STARTED});
+    EXPECT_CALL(m_event_listener, OnCallback(event8)).Times(1);
   }
 
   // DomainRunner runner(CreatePrintCallback(), *procedure);
@@ -367,7 +370,8 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   EXPECT_CALL(listener, OnJobStateChanged(_)).Times(3);
   // Instruction: repeat (not finished) + one increment (not finished, success)
   EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(3);
-  EXPECT_CALL(listener, OnLogEvent(_)).Times(1); // variable changed (increment 1)
+  EXPECT_CALL(listener, OnLogEvent(_)).Times(1);  // variable changed (increment 1)
+  EXPECT_CALL(listener, OnNextLeavesChanged(_)).Times(2);
 
   DomainRunner runner(listener.CreateCallback(), *procedure);
 
@@ -387,7 +391,7 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   EXPECT_CALL(listener, OnJobStateChanged(_)).Times(2);
   // Instruction: two increments 2*(not started, not finished, success) + repeat (success)
   EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(7);
-  EXPECT_CALL(listener, OnLogEvent(_)).Times(2); // variable changed (increment 2 and 3)
+  EXPECT_CALL(listener, OnLogEvent(_)).Times(2);  // variable changed (increment 2 and 3)
 
   // continuing till the end
   EXPECT_TRUE(runner.Start());

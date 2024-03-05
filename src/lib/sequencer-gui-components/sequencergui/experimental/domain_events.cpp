@@ -56,7 +56,7 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::sequencergui::NextLeavesChanged &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("NextLeavesChanged") << " ";
+    ostr << std::string("NextLeavesChanged") << " " << event.leaves.size() << " ";
     for (auto instr : event.leaves)
     {
       ostr << instr->GetType() << " ";
