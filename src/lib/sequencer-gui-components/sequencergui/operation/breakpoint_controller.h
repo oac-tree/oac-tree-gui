@@ -80,6 +80,8 @@ public:
    */
   bool PropagateBreakpointsToDomain(const ProcedureItem& item, runner_t& runner);
 
+  bool PropagateBreakpointsToDomain(const ProcedureItem& item, job_controller_t& job_controller);
+
   /**
    * @brief Updates domain breakpoint to the InstructionItem breakpoint.
    *
@@ -93,6 +95,7 @@ public:
    * disabled will remove breakpoint from the domain.
    */
   bool UpdateDomainBreakpoint(const InstructionItem& item, runner_t& runner);
+  bool UpdateDomainBreakpoint(const InstructionItem& item,  job_controller_t& job_controller);
 
   /**
    * @brief Find domain instruction corresponding to a given item.

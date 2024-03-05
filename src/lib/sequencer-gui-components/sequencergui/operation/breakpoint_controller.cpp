@@ -27,6 +27,7 @@
 #include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/procedure_item.h>
 
+#include <sup/sequencer/job_controller.h>
 #include <sup/sequencer/runner.h>
 
 #include <QDebug>
@@ -68,6 +69,20 @@ bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &ite
   return true;
 }
 
+bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &item,
+                                                        job_controller_t &job_controller)
+{
+  auto func = [this, &job_controller](const InstructionItem *item)
+  { UpdateDomainBreakpoint(*item, job_controller); };
+
+  for (auto instruction : item.GetInstructionContainer()->GetInstructions())
+  {
+    IterateInstruction<const InstructionItem *>(instruction, func);
+  }
+
+  return true;
+}
+
 bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, runner_t &runner)
 {
   if (runner.IsRunning())
@@ -93,6 +108,31 @@ bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, r
     // We do not use "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
     // disabled, will remove breakpoint from the domain
     runner.RemoveBreakpoint(domain_instruction);
+  }
+
+  return true;
+}
+
+bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item,
+                                                  job_controller_t &controller)
+{
+  auto domain_instruction = FindDomainInstruction(item);
+  if (!domain_instruction)
+  {
+    qDebug() << "Can't find domain instruction corresponding to current InstructionItem.";
+    return false;
+  }
+
+  auto breakpoint_status = GetBreakpointStatus(item);
+  if (breakpoint_status == BreakpointStatus::kSet)
+  {
+    controller.SetBreakpoint(domain_instruction);
+  }
+  else
+  {
+    // We do not use "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
+    // disabled, will remove breakpoint from the domain
+    controller.RemoveBreakpoint(domain_instruction);
   }
 
   return true;
