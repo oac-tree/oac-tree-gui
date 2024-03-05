@@ -42,7 +42,7 @@ void DomainEventDispatcher::OnNewEvent()
 
 void DomainEventDispatcher::operator()(const std::monostate &event) const {}
 
-void DomainEventDispatcher::operator()(const InstructionStatusChanged &event) const
+void DomainEventDispatcher::operator()(const InstructionStatusChangedEvent &event) const
 {
   if (m_context.process_instruction_status_changed)
   {

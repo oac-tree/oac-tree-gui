@@ -38,16 +38,16 @@ namespace sequencergui
 {
 
 /**
- * @brief The InstructionStatusChanged struct represents an event when instruction status has
+ * @brief The InstructionStatusChangedEvent struct represents an event when instruction status has
  * changed.
  */
-struct InstructionStatusChanged
+struct InstructionStatusChangedEvent
 {
   const instruction_t* instruction{nullptr};
   sup::sequencer::ExecutionStatus status;
 
-  bool operator==(const InstructionStatusChanged& other) const;
-  bool operator!=(const InstructionStatusChanged& other) const;
+  bool operator==(const InstructionStatusChangedEvent& other) const;
+  bool operator!=(const InstructionStatusChangedEvent& other) const;
 };
 
 /**
@@ -74,7 +74,7 @@ struct NextLeavesChanged
   bool operator!=(const NextLeavesChanged& other) const;
 };
 
-using domain_event_t = std::variant<std::monostate, InstructionStatusChanged, JobStateChanged,
+using domain_event_t = std::variant<std::monostate, InstructionStatusChangedEvent, JobStateChanged,
                                     LogEvent, NextLeavesChanged>;
 
 bool IsValid(const domain_event_t& value);

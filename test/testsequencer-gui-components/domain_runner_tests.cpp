@@ -98,14 +98,14 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
 
     const domain_event_t event3(
-        InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_FINISHED});
+        InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
 
     // message instruction (too difficult to make proper comparison because of time stamp)
     EXPECT_CALL(m_event_listener, OnCallback(_)).Times(1);
 
     const domain_event_t event5(
-        InstructionStatusChanged{instruction_ptr, ExecutionStatus::SUCCESS});
+        InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
 
     const domain_event_t event6(JobStateChanged{JobState::kSucceeded});
@@ -116,7 +116,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 
     // triggered by JobController d-tor
     const domain_event_t event8(
-        InstructionStatusChanged{instruction_ptr, ExecutionStatus::NOT_STARTED});
+        InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event8)).Times(1);
   }
 
@@ -260,13 +260,13 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
 
     const domain_event_t event2(
-        InstructionStatusChanged{sequence_ptr, ExecutionStatus::NOT_FINISHED});
+        InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
-
-    const domain_event_t event3(InstructionStatusChanged{wait0_ptr, ExecutionStatus::NOT_FINISHED});
+    
+    const domain_event_t event3(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
-
-    const domain_event_t event4(InstructionStatusChanged{wait0_ptr, ExecutionStatus::SUCCESS});
+    
+    const domain_event_t event4(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
 
     const domain_event_t event5(JobStateChanged{JobState::kPaused});
@@ -289,14 +289,14 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 
     const domain_event_t event1(JobStateChanged{JobState::kStepping});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
-
-    const domain_event_t event2(InstructionStatusChanged{wait1_ptr, ExecutionStatus::NOT_FINISHED});
+    
+    const domain_event_t event2(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
-
-    const domain_event_t event3(InstructionStatusChanged{wait1_ptr, ExecutionStatus::SUCCESS});
+    
+    const domain_event_t event3(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
-
-    const domain_event_t event4(InstructionStatusChanged{sequence_ptr, ExecutionStatus::SUCCESS});
+    
+    const domain_event_t event4(InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
 
     const domain_event_t event5(JobStateChanged{JobState::kSucceeded});
@@ -312,15 +312,15 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   // the rest will listen for activity during JobController destruction
   {
     const ::testing::InSequence seq;
-
-    const domain_event_t event1(InstructionStatusChanged{wait0_ptr, ExecutionStatus::NOT_STARTED});
+    
+    const domain_event_t event1(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
-
-    const domain_event_t event2(InstructionStatusChanged{wait1_ptr, ExecutionStatus::NOT_STARTED});
+    
+    const domain_event_t event2(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
 
     const domain_event_t event3(
-        InstructionStatusChanged{sequence_ptr, ExecutionStatus::NOT_STARTED});
+        InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
   }
 }

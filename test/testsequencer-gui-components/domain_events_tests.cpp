@@ -40,23 +40,23 @@ TEST_F(DomainEventTest, Monostate)
   EXPECT_FALSE(IsValid(event));
 }
 
-TEST_F(DomainEventTest, InstructionStatusChanged)
+TEST_F(DomainEventTest, InstructionStatusChangedEvent)
 {
   using ::sup::sequencer::ExecutionStatus;
-
-  EXPECT_TRUE(IsValid(domain_event_t{InstructionStatusChanged{}}));
+  
+  EXPECT_TRUE(IsValid(domain_event_t{InstructionStatusChangedEvent{}}));
 
   {  // default constructed
-    const InstructionStatusChanged event1{};
-    const InstructionStatusChanged event2{};
+    const InstructionStatusChangedEvent event1{};
+    const InstructionStatusChangedEvent event2{};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
 
   {  // names
-    const InstructionStatusChanged event1{nullptr, ExecutionStatus::RUNNING};
-    const InstructionStatusChanged event2{nullptr, ExecutionStatus::RUNNING};
-    const InstructionStatusChanged event3{nullptr, ExecutionStatus::SUCCESS};
+    const InstructionStatusChangedEvent event1{nullptr, ExecutionStatus::RUNNING};
+    const InstructionStatusChangedEvent event2{nullptr, ExecutionStatus::RUNNING};
+    const InstructionStatusChangedEvent event3{nullptr, ExecutionStatus::SUCCESS};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);
@@ -68,9 +68,9 @@ TEST_F(DomainEventTest, InstructionStatusChanged)
         ::sequencergui::domainconstants::kWaitInstructionType);
     auto instr2 = ::sequencergui::CreateDomainInstruction(
         ::sequencergui::domainconstants::kWaitInstructionType);
-    const InstructionStatusChanged event1{instr1.get(), ExecutionStatus::RUNNING};
-    const InstructionStatusChanged event2{instr1.get(), ExecutionStatus::RUNNING};
-    const InstructionStatusChanged event3{instr2.get(), ExecutionStatus::RUNNING};
+    const InstructionStatusChangedEvent event1{instr1.get(), ExecutionStatus::RUNNING};
+    const InstructionStatusChangedEvent event2{instr1.get(), ExecutionStatus::RUNNING};
+    const InstructionStatusChangedEvent event3{instr2.get(), ExecutionStatus::RUNNING};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);

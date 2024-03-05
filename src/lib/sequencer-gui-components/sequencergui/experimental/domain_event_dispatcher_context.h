@@ -33,7 +33,7 @@ namespace sequencergui
 struct DomainEventDispatcherContext
 {
   //! a callback to process a change in instruction status
-  std::function<void(const InstructionStatusChanged&)> process_instruction_status_changed;
+  std::function<void(const InstructionStatusChangedEvent&)> process_instruction_status_changed;
 
   //! a callback to process job status change
   std::function<void(const JobStateChanged&)> process_job_state_changed;
