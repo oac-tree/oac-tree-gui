@@ -69,8 +69,8 @@ void DomainJobObserver::OnProcedureTick(const sup::sequencer::Procedure &proc) n
 {
   (void)proc;
   std::unique_lock<std::mutex> lock{m_mutex};
-
-  m_post_event_callback(NextLeavesChanged{sup::sequencer::GetNextLeaves(proc)});
+  
+  m_post_event_callback(NextLeavesChangedEvent{sup::sequencer::GetNextLeaves(proc)});
 
   if (m_tick_timeout_msec > 0 && !IsLastTick(proc))
   {

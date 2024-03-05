@@ -66,7 +66,7 @@ void DomainEventDispatcher::operator()(const LogEvent &event) const
   }
 }
 
-void DomainEventDispatcher::operator()(const NextLeavesChanged &event) const
+void DomainEventDispatcher::operator()(const NextLeavesChangedEvent &event) const
 {
   if (m_context.process_job_state_changed)
   {

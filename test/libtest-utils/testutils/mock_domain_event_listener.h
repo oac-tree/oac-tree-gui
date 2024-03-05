@@ -86,7 +86,7 @@ public:
   /**
    * @brief Operator to visit NextLeavesChanged and trigger mock method.
    */
-  void operator()(const sequencergui::NextLeavesChanged& leaves_event) const
+  void operator()(const sequencergui::NextLeavesChangedEvent& leaves_event) const
   {
     OnNextLeavesChanged(leaves_event);
   }
@@ -95,7 +95,7 @@ public:
               (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
-  MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChanged&), (const));
+  MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChangedEvent&), (const));
 
   /**
    * @brief Creates a structure with callbacks to trigger mock methods.
@@ -111,8 +111,8 @@ public:
     { OnJobStateChanged(event); };
 
     auto log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
-
-    auto next_leaves_event = [this](const sequencergui::NextLeavesChanged& event)
+    
+    auto next_leaves_event = [this](const sequencergui::NextLeavesChangedEvent& event)
     { OnNextLeavesChanged(event); };
 
     return {instruction_status_changed, job_state_changed, log_event, next_leaves_event};

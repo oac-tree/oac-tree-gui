@@ -110,8 +110,8 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     
     const domain_event_t event6(JobStateChangedEvent{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
-
-    const domain_event_t event7(NextLeavesChanged{});
+    
+    const domain_event_t event7(NextLeavesChangedEvent{});
     EXPECT_CALL(m_event_listener, OnCallback(event7)).Times(1);
 
     // triggered by JobController d-tor

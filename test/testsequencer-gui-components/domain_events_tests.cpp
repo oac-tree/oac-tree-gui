@@ -100,13 +100,13 @@ TEST_F(DomainEventTest, JobStateChangedEvent)
   }
 }
 
-TEST_F(DomainEventTest, NextLeavesChanged)
+TEST_F(DomainEventTest, NextLeavesChangedEvent)
 {
   using ::sup::sequencer::ExecutionStatus;
 
   {  // default constructed
-    const NextLeavesChanged event1{};
-    const NextLeavesChanged event2{};
+    const NextLeavesChangedEvent event1{};
+    const NextLeavesChangedEvent event2{};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
   }
@@ -117,9 +117,9 @@ TEST_F(DomainEventTest, NextLeavesChanged)
     auto instr2 = ::sequencergui::CreateDomainInstruction(
         ::sequencergui::domainconstants::kWaitInstructionType);
 
-    const NextLeavesChanged event1{{instr1.get()}};
-    const NextLeavesChanged event2{{instr1.get()}};
-    const NextLeavesChanged event3{{instr2.get()}};
+    const NextLeavesChangedEvent event1{{instr1.get()}};
+    const NextLeavesChangedEvent event2{{instr1.get()}};
+    const NextLeavesChangedEvent event3{{instr2.get()}};
     EXPECT_TRUE(event1 == event2);
     EXPECT_FALSE(event1 != event2);
     EXPECT_FALSE(event1 == event3);

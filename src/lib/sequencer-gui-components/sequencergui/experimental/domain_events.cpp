@@ -52,8 +52,8 @@ struct DomainEventToStringVisitor
     ostr << " " << event.message;
     return ostr.str();
   }
-
-  std::string operator()(const ::sequencergui::NextLeavesChanged &event) const
+  
+  std::string operator()(const ::sequencergui::NextLeavesChangedEvent &event) const
   {
     std::ostringstream ostr;
     ostr << std::string("NextLeavesChanged") << " " << event.leaves.size() << " ";
@@ -96,12 +96,12 @@ bool JobStateChangedEvent::operator!=(const JobStateChangedEvent &other) const
 
 // NextLeavesChanged
 
-bool NextLeavesChanged::operator==(const NextLeavesChanged &other) const
+bool NextLeavesChangedEvent::operator==(const NextLeavesChangedEvent &other) const
 {
   return leaves == other.leaves;
 }
 
-bool NextLeavesChanged::operator!=(const NextLeavesChanged &other) const
+bool NextLeavesChangedEvent::operator!=(const NextLeavesChangedEvent &other) const
 {
   return !(*this == other);
 }
