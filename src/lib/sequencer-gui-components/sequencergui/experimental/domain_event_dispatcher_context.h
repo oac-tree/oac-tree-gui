@@ -36,7 +36,7 @@ struct DomainEventDispatcherContext
   std::function<void(const InstructionStatusChangedEvent&)> process_instruction_status_changed;
 
   //! a callback to process job status change
-  std::function<void(const JobStateChanged&)> process_job_state_changed;
+  std::function<void(const JobStateChangedEvent&)> process_job_state_changed;
 
   //! a callback to process log event
   std::function<void(const LogEvent&)> process_log_event;

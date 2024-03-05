@@ -28,7 +28,7 @@
 namespace sequencergui
 {
 class InstructionStatusChangedEvent;
-class JobStateChanged;
+class JobStateChangedEvent;
 }  // namespace sequencergui
 
 namespace testutils
@@ -73,7 +73,7 @@ public:
   /**
    * @brief Operator to visit JobStateChanged and trigger mock method.
    */
-  void operator()(const sequencergui::JobStateChanged& job_event) const
+  void operator()(const sequencergui::JobStateChangedEvent& job_event) const
   {
     OnJobStateChanged(job_event);
   }
@@ -93,7 +93,7 @@ public:
   
   MOCK_METHOD(void, OnInstructionStatusChanged, (const sequencergui::InstructionStatusChangedEvent&),
               (const));
-  MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChanged&), (const));
+  MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
   MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChanged&), (const));
 
@@ -106,8 +106,8 @@ public:
     
     auto instruction_status_changed = [this](const sequencergui::InstructionStatusChangedEvent& event)
     { OnInstructionStatusChanged(event); };
-
-    auto job_state_changed = [this](const sequencergui::JobStateChanged& event)
+    
+    auto job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
     { OnJobStateChanged(event); };
 
     auto log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };

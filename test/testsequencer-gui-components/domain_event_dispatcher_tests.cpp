@@ -77,7 +77,7 @@ TEST_F(DomainEventDispatcherTest, InstructionStatusChanged)
 
 TEST_F(DomainEventDispatcherTest, JobStatusChanged)
 {
-  JobStateChanged expected_event{::sup::sequencer::JobState::kInitial};
+  JobStateChangedEvent expected_event{::sup::sequencer::JobState::kInitial};
   auto dispatcher = CreateDispatcher(expected_event);
 
   EXPECT_CALL(m_listener, OnInstructionStatusChanged(_)).Times(0);

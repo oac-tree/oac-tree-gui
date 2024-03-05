@@ -51,15 +51,15 @@ struct InstructionStatusChangedEvent
 };
 
 /**
- * @brief The JobStateChanged struct represents an event when instruction status has
+ * @brief The JobStateChangedEvent struct represents an event when instruction status has
  * changed.
  */
-struct JobStateChanged
+struct JobStateChangedEvent
 {
   sup::sequencer::JobState status;
 
-  bool operator==(const JobStateChanged& other) const;
-  bool operator!=(const JobStateChanged& other) const;
+  bool operator==(const JobStateChangedEvent& other) const;
+  bool operator!=(const JobStateChangedEvent& other) const;
 };
 
 /**
@@ -74,7 +74,7 @@ struct NextLeavesChanged
   bool operator!=(const NextLeavesChanged& other) const;
 };
 
-using domain_event_t = std::variant<std::monostate, InstructionStatusChangedEvent, JobStateChanged,
+using domain_event_t = std::variant<std::monostate, InstructionStatusChangedEvent, JobStateChangedEvent,
                                     LogEvent, NextLeavesChanged>;
 
 bool IsValid(const domain_event_t& value);
