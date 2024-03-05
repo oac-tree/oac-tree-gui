@@ -93,7 +93,7 @@ void JobHandler::onPrepareJobRequest()
 
   SetupExpandedProcedureItem();
 
-  SetupDomainRunnerAdapter();
+  // SetupDomainRunnerAdapter();
 
   SetupDomainRunner();
 }
@@ -103,42 +103,48 @@ JobHandler::~JobHandler() = default;
 void JobHandler::onStartRequest()
 {
   ValidateJobHandler();
-  const bool was_paused = m_domain_runner_adapter->GetStatus() == RunnerStatus::kPaused;
-  if (m_domain_runner_adapter->Start() && !was_paused)
-  {
-    m_job_log->ClearLog();
-  }
+  // const bool was_paused = m_domain_runner_adapter->GetStatus() == RunnerStatus::kPaused;
+  // if (m_domain_runner_adapter->Start() && !was_paused)
+  // {
+  //   m_job_log->ClearLog();
+  // }
+  m_domain_runner_service->Start();
 }
 
 void JobHandler::onPauseRequest()
 {
   ValidateJobHandler();
-  m_domain_runner_adapter->Pause();
+  // m_domain_runner_adapter->Pause();
+  m_domain_runner_service->Pause();
 }
 
 void JobHandler::onMakeStepRequest()
 {
   ValidateJobHandler();
-  m_domain_runner_adapter->Step();
+  // m_domain_runner_adapter->Step();
+  m_domain_runner_service->Step();
 }
 
 void JobHandler::onStopRequest()
 {
   ValidateJobHandler();
-  if (m_domain_runner_adapter->Stop())
-  {
-    m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
-  }
+  // if (m_domain_runner_adapter->Stop())
+  // {
+  //   m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
+  // }
+  m_domain_runner_service->Stop();
 }
 
 bool JobHandler::IsRunning() const
 {
-  return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
+  // return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
+  return m_domain_runner_service ? m_domain_runner_service->IsBusy() : false;
 }
 
 void JobHandler::SetSleepTime(int time_msec)
 {
-  m_domain_runner_adapter->SetTickTimeout(time_msec);
+  // m_domain_runner_adapter->SetTickTimeout(time_msec);
+  m_domain_runner_service->SetTickTimeout(time_msec);
 }
 
 void JobHandler::SetUserContext(const UserContext &user_context)
@@ -154,7 +160,8 @@ ProcedureItem *JobHandler::GetExpandedProcedure() const
 //! Returns true if this context is in valid state
 bool JobHandler::IsValid() const
 {
-  return m_domain_procedure != nullptr && m_domain_runner_adapter;
+  // return m_domain_procedure != nullptr && m_domain_runner_adapter;
+  return m_domain_procedure != nullptr && m_domain_runner_service;
 }
 
 RunnerStatus JobHandler::GetRunnerStatus() const
