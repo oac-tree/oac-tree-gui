@@ -26,6 +26,8 @@
 #include "sequencer_observer.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/experimental/domain_event_dispatcher_context.h>
+#include <sequencergui/jobsystem/domain_runner_service.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
@@ -44,6 +46,7 @@
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
 
+#include <QDebug>
 #include <iostream>
 
 namespace sequencergui
@@ -91,6 +94,8 @@ void JobHandler::onPrepareJobRequest()
   SetupExpandedProcedureItem();
 
   SetupDomainRunnerAdapter();
+
+  SetupDomainRunner();
 }
 
 JobHandler::~JobHandler() = default;
@@ -173,9 +178,45 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
                                                   *m_domain_runner_adapter->GetDomainRunner());
 }
 
+void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent &event)
+{
+  if (auto *item = m_guiobject_builder->FindInstructionItem(event.instruction); item)
+  {
+    item->SetStatus(::sup::sequencer::StatusToString(event.status));
+    emit InstructionStatusChanged(item);
+  }
+  else
+  {
+    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+  }
+}
+
+void JobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
+{
+  m_job_item->SetStatus(::sup::sequencer::ToString(event.status));
+}
+
 void JobHandler::onLogEvent(const sequencergui::LogEvent &event)
 {
   m_job_log->Append(event);
+}
+
+void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
+{
+  std::vector<InstructionItem *> items;
+  for (const auto *instruction : event.leaves)
+  {
+    if (auto *item = m_guiobject_builder->FindInstructionItem(instruction); item)
+    {
+      items.push_back(item);
+    }
+    else
+    {
+      qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+    }
+  }
+
+  emit NextLeavesChanged(items);
 }
 
 void JobHandler::ValidateJobHandler()
@@ -253,14 +294,35 @@ void JobHandler::SetupDomainRunnerAdapter()
 
   auto on_tick = [this](const auto &procedure)
   { m_procedure_reporter->OnDomainProcedureTick(procedure); };
-  
+
   DomainRunnerAdapterContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
-                              status_changed, on_tick};
+                                     status_changed, on_tick};
   m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(context);
 
   // setup breakpoint
   m_breakpoint_controller->PropagateBreakpointsToDomain(
       *GetExpandedProcedure(), *m_domain_runner_adapter->GetDomainRunner());
+}
+
+void JobHandler::SetupDomainRunner()
+{
+  m_domain_runner_service =
+      std::make_unique<DomainRunnerService>(CreateContext(), *m_domain_procedure);
+}
+
+DomainEventDispatcherContext JobHandler::CreateContext()
+{
+  auto on_instruction_status = [this](const InstructionStatusChangedEvent &event)
+  { OnInstructionStatusChanged(event); };
+
+  auto on_job_state = [this](const JobStateChangedEvent &event) { OnJobStateChanged(event); };
+
+  auto on_log_event = [this](const LogEvent &event) { onLogEvent(event); };
+
+  auto on_next_leaves = [this](const NextLeavesChangedEvent &event)
+  { OnNextLeavesChangedEvent(event); };
+
+  return {on_instruction_status, on_job_state, on_log_event, on_next_leaves};
 }
 
 }  // namespace sequencergui

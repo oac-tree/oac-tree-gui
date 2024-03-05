@@ -23,6 +23,7 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_context.h>
+#include <sequencergui/experimental/domain_events.h>
 
 #include <QObject>
 #include <memory>
@@ -40,6 +41,8 @@ class WorkspaceSynchronizer;
 class DomainRunnerAdapter;
 class JobModel;
 class BreakpointController;
+class DomainRunnerService;
+class DomainEventDispatcherContext;
 
 //! Contains all information necessary for job to run: runner, log, domain builder.
 class JobHandler : public QObject
@@ -87,7 +90,11 @@ signals:
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
 private:
+  void OnInstructionStatusChanged(const InstructionStatusChangedEvent& event);
+  void OnJobStateChanged(const JobStateChangedEvent& event);
   void onLogEvent(const sequencergui::LogEvent& event);
+  void OnNextLeavesChangedEvent(const NextLeavesChangedEvent& event);
+
   void ValidateJobHandler();
 
   JobModel* GetJobModel();
@@ -96,6 +103,8 @@ private:
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
   void SetupDomainRunnerAdapter();
+  void SetupDomainRunner();
+  DomainEventDispatcherContext CreateContext();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
 
@@ -104,6 +113,7 @@ private:
 
   std::unique_ptr<ProcedureReporter> m_procedure_reporter;
   std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
+  std::unique_ptr<DomainRunnerService> m_domain_runner_service;
 
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 
