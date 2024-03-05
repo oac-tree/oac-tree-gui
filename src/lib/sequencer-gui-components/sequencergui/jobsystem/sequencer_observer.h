@@ -23,10 +23,15 @@
 #include <sup/gui/core/dto_types_fwd.h>
 
 #include <sup/sequencer/user_interface.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 namespace sequencergui
 {
+
 class ProcedureReporter;
+class UserChoiceProvider;
+class UserInputProvider;
+struct UserChoiceResult;
 
 //! Sequencer observer which will be invoked during domain Procedure execution.
 //! Reports to ProcedureRunner.
@@ -36,6 +41,8 @@ class SequencerObserver : public ::sup::sequencer::UserInterface
 public:
   explicit SequencerObserver(ProcedureReporter* procedure_runner);
   ~SequencerObserver() override;
+
+  void SetUserContext(const UserContext& user_context);
 
   void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
 
@@ -55,6 +62,8 @@ public:
 
 private:
   ProcedureReporter* m_procedure_reporter{nullptr};
+  std::unique_ptr<UserChoiceProvider> m_choice_provider;
+  std::unique_ptr<UserInputProvider> m_input_provider;
 };
 
 }  // namespace sequencergui

@@ -19,6 +19,9 @@
 
 #include "sequencer_observer.h"
 
+#include "user_choice_provider.h"
+#include "user_input_provider.h"
+
 #include <sequencergui/jobsystem/job_log_severity.h>
 #include <sequencergui/jobsystem/log_event.h>
 #include <sequencergui/jobsystem/procedure_reporter.h>
@@ -42,6 +45,12 @@ namespace sequencergui
 SequencerObserver::SequencerObserver(ProcedureReporter *procedure_runner)
     : m_procedure_reporter(procedure_runner)
 {
+}
+
+void SequencerObserver::SetUserContext(const UserContext &user_context)
+{
+  m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
+  m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
 }
 
 SequencerObserver::~SequencerObserver() = default;
@@ -72,7 +81,7 @@ bool SequencerObserver::PutValue(const sup::dto::AnyValue &value, const std::str
 
 bool SequencerObserver::GetUserValue(sup::dto::AnyValue &value, const std::string &description)
 {
-  auto result = m_procedure_reporter->OnUserInput({value, description});
+  auto result = m_input_provider->GetUserInput({value, description});
   value = result.value;
   return result.processed;
 }
@@ -80,7 +89,7 @@ bool SequencerObserver::GetUserValue(sup::dto::AnyValue &value, const std::strin
 int SequencerObserver::GetUserChoice(const std::vector<std::string> &options,
                                      const sup::dto::AnyValue &metadata)
 {
-  auto result = m_procedure_reporter->OnUserChoice({options, metadata});
+  auto result =  m_choice_provider->GetUserChoice({options, metadata});
   return result.processed ? result.index : -1;
 }
 

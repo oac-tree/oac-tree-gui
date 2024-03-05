@@ -34,8 +34,6 @@ class InstructionItem;
 class LogEvent;
 class SequencerObserver;
 class SignalQueue;
-class UserChoiceProvider;
-class UserInputProvider;
 struct UserChoiceResult;
 
 /**
@@ -76,10 +74,6 @@ public:
   void SetUserContext(const UserContext& user_context);
 
   void OnLogEvent(const LogEvent& event);
-
-  UserInputResult OnUserInput(const UserInputArgs& args);
-
-  UserChoiceResult OnUserChoice(const UserChoiceArgs& args);
 
   SequencerObserver* GetObserver();
 
@@ -147,8 +141,6 @@ private:
   void ProcessDomainInstructionStatusChange(const instruction_t* instruction, const QString& value);
 
   std::unique_ptr<SequencerObserver> m_observer;
-  std::unique_ptr<UserChoiceProvider> m_choice_provider;
-  std::unique_ptr<UserInputProvider> m_input_provider;
   SignalQueue* m_signal_queue{nullptr};
 
   //! callback to retrieve instruction item corresponding to given domain instruction

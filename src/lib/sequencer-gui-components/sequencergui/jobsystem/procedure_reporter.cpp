@@ -21,8 +21,6 @@
 
 #include "log_event.h"
 #include "sequencer_observer.h"
-#include "user_choice_provider.h"
-#include "user_input_provider.h"
 
 #include <sequencergui/model/instruction_item.h>
 
@@ -53,8 +51,7 @@ ProcedureReporter::~ProcedureReporter() = default;
 
 void ProcedureReporter::SetUserContext(const UserContext &user_context)
 {
-  m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
-  m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
+  m_observer->SetUserContext(user_context);
 }
 
 //! Propagate log message from observer up in the form of signals.
@@ -62,16 +59,6 @@ void ProcedureReporter::SetUserContext(const UserContext &user_context)
 void ProcedureReporter::OnLogEvent(const LogEvent &event)
 {
   emit LogEventReceived(event);
-}
-
-UserInputResult ProcedureReporter::OnUserInput(const UserInputArgs &args)
-{
-  return m_input_provider->GetUserInput(args);
-}
-
-UserChoiceResult ProcedureReporter::OnUserChoice(const UserChoiceArgs &args)
-{
-  return m_choice_provider->GetUserChoice(args);
 }
 
 SequencerObserver *ProcedureReporter::GetObserver()
