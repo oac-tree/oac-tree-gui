@@ -69,6 +69,9 @@ public:
 
   sup::sequencer::JobState WaitForFinished() const;
 
+  /**
+   * @brief Check if the job is in one of succeeded, failed or halted states.
+   */
   bool IsFinished() const;
 
   void SetTickTimeout(int msec);

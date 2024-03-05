@@ -55,6 +55,8 @@ public:
 
   bool IsFinished() const;
 
+  bool IsBusy() const;
+
   void SetTickTimeout(int msec);
 
 private:
