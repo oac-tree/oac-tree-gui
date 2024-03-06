@@ -78,6 +78,11 @@ public:
 
   void SetUserContext(const UserContext &user_context);
 
+  /**
+   * @brief Returns underlying job controller.
+   */
+  sup::sequencer::JobController* GetJobController();
+
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;

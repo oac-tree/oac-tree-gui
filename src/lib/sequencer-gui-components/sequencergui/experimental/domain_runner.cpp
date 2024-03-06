@@ -101,4 +101,9 @@ void DomainRunner::SetUserContext(const UserContext& user_context)
   m_procedure_observer->SetUserContext(user_context);
 }
 
+sup::sequencer::JobController *DomainRunner::GetJobController()
+{
+  return m_job_controller.get();
+}
+
 }  // namespace sequencergui
