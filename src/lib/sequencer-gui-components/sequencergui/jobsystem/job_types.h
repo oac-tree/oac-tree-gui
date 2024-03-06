@@ -26,16 +26,6 @@ namespace sequencergui
 {
 
 //! Defines possible states that runner can have during job execution.
-// enum class RunnerStatus
-// {
-//   kIdle,       //! wasn't started yet
-//   kRunning,    //! running
-//   kPaused,     //! paused
-//   kCompleted,  //! completed
-//   kStopping,   //! in the process of stopping (performed Halt of procedure)
-//   kStopped,    //! was stopped
-//   kFailed      //! something went wrong in the domain runner
-// };
 
 enum class RunnerStatus
 {

@@ -49,12 +49,9 @@ class JobHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit JobHandler(JobItem* job_item);
+  explicit JobHandler(JobItem* job_item, const UserContext& user_context = {},
+                      int sleep_time_msec = 0);
   ~JobHandler() override;
-
-  // Methods to control procedure execution.
-
-  void onPrepareJobRequest();
 
   void onStartRequest();
 
@@ -66,17 +63,9 @@ public:
 
   bool IsRunning() const;
 
-  // Methods to setup procedure execution.
-
   void SetSleepTime(int time_msec);
 
-  void SetUserContext(const UserContext& user_context);
-
-  // Access to internals
-
   ProcedureItem* GetExpandedProcedure() const;
-
-  bool IsValid() const;  // FIXME find better name
 
   RunnerStatus GetRunnerStatus() const;
 
@@ -94,14 +83,12 @@ private:
   void onLogEvent(const sequencergui::LogEvent& event);
   void OnNextLeavesChangedEvent(const NextLeavesChangedEvent& event);
 
-  void ValidateJobHandler();
-
   JobModel* GetJobModel();
 
   void PrepareForRun();
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
-  void SetupDomainRunner();
+  void SetupDomainRunner(const UserContext& user_context, int sleep_time_msec);
   DomainEventDispatcherContext CreateContext();
 
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;

@@ -194,16 +194,13 @@ std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
   auto on_user_choice = [parent_widget](const auto &args)
   { return GetUserChoiceDialogResult(args, parent_widget); };
 
-  auto job_handler = std::make_unique<JobHandler>(item);
+  UserContext user_context{on_user_input, on_user_choice};
+
+  auto job_handler = std::make_unique<JobHandler>(item, user_context, m_current_delay);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
   connect(job_handler.get(), &JobHandler::NextLeavesChanged, this,
           &JobManager::OnNextLeavesChanged);
-
-  job_handler->onPrepareJobRequest();
-  // FIXME two calls below must be after onPrepareJobRequest
-  job_handler->SetUserContext({on_user_input, on_user_choice});
-  job_handler->SetSleepTime(m_current_delay);
 
   return job_handler;
 }

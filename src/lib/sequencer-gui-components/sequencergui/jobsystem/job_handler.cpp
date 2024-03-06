@@ -42,22 +42,19 @@
 namespace sequencergui
 {
 
-JobHandler::JobHandler(JobItem *job_item)
+JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int sleep_time_msec)
     : m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
 {
+  if (!job_item)
+  {
+    throw RuntimeException("JobItem is not initialised");
+  }
+
   auto find_instruction = [this](const InstructionItem &item)
   { return m_guiobject_builder->FindInstruction(&item); };
   m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
-}
-
-void JobHandler::onPrepareJobRequest()
-{
-  if (IsRunning())
-  {
-    throw RuntimeException("Attempt to reset already running job");
-  }
 
   PrepareForRun();
 
@@ -65,38 +62,34 @@ void JobHandler::onPrepareJobRequest()
 
   SetupExpandedProcedureItem();
 
-  SetupDomainRunner();
+  SetupDomainRunner(user_context, sleep_time_msec);
 }
 
 JobHandler::~JobHandler() = default;
 
 void JobHandler::onStartRequest()
 {
-  ValidateJobHandler();
   m_domain_runner_service->Start();
 }
 
 void JobHandler::onPauseRequest()
 {
-  ValidateJobHandler();
   m_domain_runner_service->Pause();
 }
 
 void JobHandler::onMakeStepRequest()
 {
-  ValidateJobHandler();
   m_domain_runner_service->Step();
 }
 
 void JobHandler::onStopRequest()
 {
-  ValidateJobHandler();
   m_domain_runner_service->Stop();
 }
 
 bool JobHandler::IsRunning() const
 {
-  return m_domain_runner_service ? m_domain_runner_service->IsBusy() : false;
+  return m_domain_runner_service->IsBusy();
 }
 
 void JobHandler::SetSleepTime(int time_msec)
@@ -104,27 +97,15 @@ void JobHandler::SetSleepTime(int time_msec)
   m_domain_runner_service->SetTickTimeout(time_msec);
 }
 
-void JobHandler::SetUserContext(const UserContext &user_context)
-{
-  m_domain_runner_service->SetUserContext(user_context);
-}
-
 ProcedureItem *JobHandler::GetExpandedProcedure() const
 {
   return m_job_item->GetExpandedProcedure();
 }
 
-//! Returns true if this context is in valid state
-bool JobHandler::IsValid() const
-{
-  return m_domain_procedure != nullptr && m_domain_runner_service;
-}
-
 RunnerStatus JobHandler::GetRunnerStatus() const
 {
-  return m_domain_runner_service
-      ? static_cast<RunnerStatus>(m_domain_runner_service->GetJobState())
-             : RunnerStatus::kInitial;
+  return m_domain_runner_service ? static_cast<RunnerStatus>(m_domain_runner_service->GetJobState())
+                                 : RunnerStatus::kInitial;
 }
 
 JobLog *JobHandler::GetJobLog() const
@@ -139,8 +120,8 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
     return;
   }
   ToggleBreakpointStatus(*instruction);
-  // m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
-  //                                                 *m_domain_runner_adapter->GetDomainRunner());
+  m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
+                                                  *m_domain_runner_service->GetJobController());
 }
 
 void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent &event)
@@ -182,14 +163,6 @@ void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
   }
 
   emit NextLeavesChanged(items);
-}
-
-void JobHandler::ValidateJobHandler()
-{
-  if (!IsValid())
-  {
-    throw RuntimeException("Job wasn't properly initialised");
-  }
 }
 
 JobModel *JobHandler::GetJobModel()
@@ -250,12 +223,14 @@ void JobHandler::SetupExpandedProcedureItem()
   }
 }
 
-void JobHandler::SetupDomainRunner()
+void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
 {
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), *m_domain_procedure);
   m_breakpoint_controller->PropagateBreakpointsToDomain(
       *GetExpandedProcedure(), *m_domain_runner_service->GetJobController());
+  m_domain_runner_service->SetUserContext(user_context);
+  m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }
 
 DomainEventDispatcherContext JobHandler::CreateContext()

@@ -98,7 +98,6 @@ TEST_P(ResourceFolderTest, RunProcedure)
   // setup JobHandler to run procedure with the help of JobItem
   m_job_item->SetProcedure(procedure_ptr);
   JobHandler job_handler(m_job_item);
-  job_handler.onPrepareJobRequest();
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
   // starting procedure and waiting for completion
