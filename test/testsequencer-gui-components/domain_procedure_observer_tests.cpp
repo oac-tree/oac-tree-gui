@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/experimental/domain_procedure_observer.h"
+#include "sequencergui/jobsystem/domain_procedure_observer.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
@@ -52,8 +52,8 @@ TEST_F(DomainProcedureObserverTest, OnStateChange)
 
   DomainProcedureObserver observer(m_event_listener.CreateCallback());
 
-  domain_event_t expected_event(
-      InstructionStatusChangedEvent{instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
+  domain_event_t expected_event(InstructionStatusChangedEvent{
+      instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
 
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 

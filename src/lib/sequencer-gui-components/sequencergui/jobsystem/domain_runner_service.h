@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_SERVICE_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/experimental/domain_events.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <memory>
 

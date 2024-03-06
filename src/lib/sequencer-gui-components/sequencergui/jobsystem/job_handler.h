@@ -21,7 +21,7 @@
 #define SEQUENCERGUI_JOBSYSTEM_JOB_HANDLER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/experimental/domain_events.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_context.h>
 

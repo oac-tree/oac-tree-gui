@@ -21,9 +21,9 @@
 
 #include "domain_job_observer.h"
 #include "domain_procedure_observer.h"
+#include "user_context.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/sequencer/job_controller.h>
 

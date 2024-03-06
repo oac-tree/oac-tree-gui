@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/experimental/domain_job_observer.h"
+#include "sequencergui/jobsystem/domain_job_observer.h"
 
 #include <sequencergui/core/exceptions.h>
 
@@ -44,7 +44,7 @@ TEST_F(DomainJobObserverTest, InitialState)
 TEST_F(DomainJobObserverTest, OnStateChange)
 {
   DomainJobObserver observer(m_event_listener.CreateCallback());
-  
+
   domain_event_t expected_event(JobStateChangedEvent{::sup::sequencer::JobState::kInitial});
   EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
 

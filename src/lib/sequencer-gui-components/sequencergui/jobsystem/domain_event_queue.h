@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENT_QUEUE_H_
-#define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENT_QUEUE_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_
+#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_
 
-#include <sequencergui/experimental/domain_events.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 
@@ -75,4 +75,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPERIMENTAL_DOMAIN_EVENT_QUEUE_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_EVENT_QUEUE_H_

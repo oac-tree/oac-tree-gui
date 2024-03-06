@@ -5,6 +5,18 @@ target_sources(${library_name} PRIVATE
   abstract_job.h
   abstract_job_helper.cpp
   abstract_job_helper.h
+  domain_event_dispatcher.cpp
+  domain_event_dispatcher.h
+  domain_event_queue.cpp
+  domain_event_queue.h
+  domain_events.cpp
+  domain_events.h
+  domain_job_observer.cpp
+  domain_job_observer.h
+  domain_procedure_observer.cpp
+  domain_procedure_observer.h
+  domain_runner.cpp
+  domain_runner.h
   domain_runner_adapter.cpp
   domain_runner_adapter.h
   domain_runner_adapter_context.h
@@ -12,13 +24,13 @@ target_sources(${library_name} PRIVATE
   domain_runner_service.h
   job_handler.cpp
   job_handler.h
+  job_log.cpp
+  job_log.h
   job_log_severity.cpp
   job_log_severity.h
   job_manager.cpp
   job_manager.h
   job_types.h
-  job_log.cpp
-  job_log.h
   job_utils.cpp
   job_utils.h
   log_event.cpp

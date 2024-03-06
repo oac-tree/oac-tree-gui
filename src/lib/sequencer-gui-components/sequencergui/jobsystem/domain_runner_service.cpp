@@ -19,9 +19,9 @@
 
 #include "domain_runner_service.h"
 
-#include <sequencergui/experimental/domain_event_dispatcher.h>
-#include <sequencergui/experimental/domain_event_queue.h>
-#include <sequencergui/experimental/domain_runner.h>
+#include "domain_event_dispatcher.h"
+#include "domain_event_queue.h"
+#include "domain_runner.h"
 
 namespace sequencergui
 {
@@ -89,7 +89,7 @@ void DomainRunnerService::SetUserContext(const UserContext& user_context)
   m_domain_runner->SetUserContext(user_context);
 }
 
-sup::sequencer::JobController *DomainRunnerService::GetJobController()
+sup::sequencer::JobController* DomainRunnerService::GetJobController()
 {
   return m_domain_runner->GetJobController();
 }

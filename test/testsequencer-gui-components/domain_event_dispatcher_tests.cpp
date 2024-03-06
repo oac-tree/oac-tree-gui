@@ -17,9 +17,9 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/experimental/domain_event_dispatcher.h"
+#include "sequencergui/jobsystem/domain_event_dispatcher.h"
 
-#include <sequencergui/experimental/domain_events.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>

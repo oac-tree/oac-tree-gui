@@ -17,10 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/experimental/domain_runner.h"
+#include "sequencergui/jobsystem/domain_runner.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/experimental/domain_events.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <mvvm/test/mock_callback_listener.h>
 
@@ -93,7 +93,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     // triggered by JobController c-tor
     const domain_event_t event1(JobStateChangedEvent{JobState::kInitial});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
-    
+
     const domain_event_t event2(JobStateChangedEvent{JobState::kRunning});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
 
@@ -107,10 +107,10 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
     const domain_event_t event5(
         InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
-    
+
     const domain_event_t event6(JobStateChangedEvent{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
-    
+
     const domain_event_t event7(NextLeavesChangedEvent{});
     EXPECT_CALL(m_event_listener, OnCallback(event7)).Times(1);
 
@@ -252,23 +252,24 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 
   {
     const ::testing::InSequence seq;
-    
+
     const domain_event_t event0(JobStateChangedEvent{JobState::kInitial});
     EXPECT_CALL(m_event_listener, OnCallback(event0)).Times(1);
-    
+
     const domain_event_t event1(JobStateChangedEvent{JobState::kStepping});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
 
     const domain_event_t event2(
         InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
-    
-    const domain_event_t event3(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_FINISHED});
+
+    const domain_event_t event3(
+        InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
-    
+
     const domain_event_t event4(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
-    
+
     const domain_event_t event5(JobStateChangedEvent{JobState::kPaused});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
   }
@@ -286,19 +287,21 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 
   {
     const ::testing::InSequence seq;
-    
+
     const domain_event_t event1(JobStateChangedEvent{JobState::kStepping});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
-    
-    const domain_event_t event2(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_FINISHED});
+
+    const domain_event_t event2(
+        InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_FINISHED});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
-    
+
     const domain_event_t event3(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
-    
-    const domain_event_t event4(InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::SUCCESS});
+
+    const domain_event_t event4(
+        InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
-    
+
     const domain_event_t event5(JobStateChangedEvent{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
   }
@@ -312,11 +315,13 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   // the rest will listen for activity during JobController destruction
   {
     const ::testing::InSequence seq;
-    
-    const domain_event_t event1(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_STARTED});
+
+    const domain_event_t event1(
+        InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
-    
-    const domain_event_t event2(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_STARTED});
+
+    const domain_event_t event2(
+        InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_STARTED});
     EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
 
     const domain_event_t event3(

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/experimental/domain_event_queue.h"
+#include "sequencergui/jobsystem/domain_event_queue.h"
 
 #include <gtest/gtest.h>
 

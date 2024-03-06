@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPERIMENTAL_DOMAIN_RUNNER_H_
-#define SEQUENCERGUI_EXPERIMENTAL_DOMAIN_RUNNER_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_H_
+#define SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
-#include <sequencergui/experimental/domain_events.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <sup/sequencer/job_states.h>
 
@@ -76,7 +76,7 @@ public:
 
   void SetTickTimeout(int msec);
 
-  void SetUserContext(const UserContext &user_context);
+  void SetUserContext(const UserContext& user_context);
 
   /**
    * @brief Returns underlying job controller.
@@ -93,4 +93,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_H_

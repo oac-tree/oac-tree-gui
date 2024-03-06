@@ -19,7 +19,7 @@
 
 #include "sequencergui/jobsystem/domain_runner_service.h"
 
-#include <sequencergui/experimental/domain_event_dispatcher_context.h>
+#include <sequencergui/jobsystem/domain_event_dispatcher_context.h>
 
 #include <sup/sequencer/procedure.h>
 

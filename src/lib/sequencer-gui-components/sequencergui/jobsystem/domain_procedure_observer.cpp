@@ -19,10 +19,11 @@
 
 #include "domain_procedure_observer.h"
 
+#include "user_choice_provider.h"
+#include "user_context.h"
+#include "user_input_provider.h"
+
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/user_choice_provider.h>
-#include <sequencergui/jobsystem/user_context.h>
-#include <sequencergui/jobsystem/user_input_provider.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/utils/string_utils.h>
@@ -90,7 +91,7 @@ bool DomainProcedureObserver::GetUserValue(sup::dto::AnyValue &value,
 int DomainProcedureObserver::GetUserChoice(const std::vector<std::string> &options,
                                            const sup::dto::AnyValue &metadata)
 {
-  auto result =  m_choice_provider->GetUserChoice({options, metadata});
+  auto result = m_choice_provider->GetUserChoice({options, metadata});
   return result.processed ? result.index : -1;
 }
 
