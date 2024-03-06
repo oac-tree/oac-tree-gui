@@ -17,9 +17,6 @@ target_sources(${library_name} PRIVATE
   domain_procedure_observer.h
   domain_runner.cpp
   domain_runner.h
-  domain_runner_adapter.cpp
-  domain_runner_adapter.h
-  domain_runner_adapter_context.h
   domain_runner_service.cpp
   domain_runner_service.h
   job_handler.cpp
