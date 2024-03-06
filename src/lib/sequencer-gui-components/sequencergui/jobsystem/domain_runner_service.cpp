@@ -89,4 +89,9 @@ void DomainRunnerService::SetUserContext(const UserContext& user_context)
   m_domain_runner->SetUserContext(user_context);
 }
 
+sup::sequencer::JobController *DomainRunnerService::GetJobController()
+{
+  return m_domain_runner->GetJobController();
+}
+
 }  // namespace sequencergui

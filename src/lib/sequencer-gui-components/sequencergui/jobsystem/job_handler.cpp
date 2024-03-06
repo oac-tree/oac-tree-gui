@@ -203,7 +203,7 @@ void JobHandler::PrepareForRun()
 
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
-    // m_breakpoint_controller->SaveBreakpoints(*expanded_procedure);
+    m_breakpoint_controller->SaveBreakpoints(*expanded_procedure);
     GetJobModel()->RemoveItem(expanded_procedure);
   }
 
@@ -242,7 +242,7 @@ void JobHandler::SetupExpandedProcedureItem()
                                              /*root_only*/ true);
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
-  // m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
+  m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
   if (m_workspace_synchronizer)
   {
     m_workspace_synchronizer->SetWorkspaceItem(expanded_procedure_ptr->GetWorkspace());
@@ -254,8 +254,8 @@ void JobHandler::SetupDomainRunner()
 {
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), *m_domain_procedure);
-  // m_breakpoint_controller->PropagateBreakpointsToDomain(
-  //     *GetExpandedProcedure(), *m_domain_runner_adapter->GetDomainRunner());
+  m_breakpoint_controller->PropagateBreakpointsToDomain(
+      *GetExpandedProcedure(), *m_domain_runner_service->GetJobController());
 }
 
 DomainEventDispatcherContext JobHandler::CreateContext()
