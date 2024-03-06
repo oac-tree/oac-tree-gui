@@ -68,34 +68,32 @@ public:
   void RestoreBreakpoints(ProcedureItem& procedure_item);
 
   /**
-   * @brief Sets breakpoints to the runner using breakpoint information from instruction tree.
+   * @brief Sets breakpoints to the controller using breakpoint information from instruction tree.
    *
-   * @param procedure_item Expanded ProcedureItem
+   * It is expected that the controller doesn't have any breakpoints set, that it contains a domain
+   * procedure corresponding to a given item. The controller should be also not running, or be in
+   * pause state.
    *
-   * @return Returns true if breakpoints have been successfully set (i.e., the runner is paused or
-   * not running).
+   * @param procedure_item Expanded procedure item.
+   * @param job_controller Sequencer domain job controller.
    *
-   * @details It is expected that the runner doesn't have any breakpoints set, that it contains
-   * a domain procedure corresponding to a given item.
+   * @return true if breakpoints have been successfully set.
+   *
    */
-  bool PropagateBreakpointsToDomain(const ProcedureItem& item, runner_t& runner);
-
   bool PropagateBreakpointsToDomain(const ProcedureItem& item, job_controller_t& job_controller);
 
   /**
-   * @brief Updates domain breakpoint to the InstructionItem breakpoint.
+   * @brief Updates domain breakpoint using InstructionItem breakpoint.
+   *
+   * Please note, that we do not use disabled status in the domain. InstructionItem's breakpoint
+   * marked as disabled will remove breakpoint from the domain.
    *
    * @param item Instruction item
-   * @param runner Runner to use to set breakpoints
+   * @param job_controller Sequencer domain job controller.
    *
-   * @return Returns true if breakpoints have been successfully set (i.e., the runner is paused or
-   * not running).
-   *
-   * @details We do not use disabled status in the domain. InstructionItem's breakpoint marked as
-   * disabled will remove breakpoint from the domain.
+   * @return true if breakpoints have been successfully set.
    */
-  bool UpdateDomainBreakpoint(const InstructionItem& item, runner_t& runner);
-  bool UpdateDomainBreakpoint(const InstructionItem& item,  job_controller_t& job_controller);
+  bool UpdateDomainBreakpoint(const InstructionItem& item, job_controller_t& job_controller);
 
   /**
    * @brief Find domain instruction corresponding to a given item.

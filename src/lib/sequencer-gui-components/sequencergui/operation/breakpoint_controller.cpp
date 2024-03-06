@@ -28,7 +28,6 @@
 #include <sequencergui/model/procedure_item.h>
 
 #include <sup/sequencer/job_controller.h>
-#include <sup/sequencer/runner.h>
 
 #include <QDebug>
 
@@ -50,25 +49,6 @@ void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
   SetBreakpointsFromInfo(m_breakpoints, *procedure_item.GetInstructionContainer());
 }
 
-bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &item, runner_t &runner)
-{
-  if (runner.IsRunning())
-  {
-    qDebug() << "Can't propagate instruction breakpoint to the domain. Runner is still running.";
-    return false;
-  }
-
-  auto func = [this, &runner](const InstructionItem *item)
-  { UpdateDomainBreakpoint(*item, runner); };
-
-  for (auto instruction : item.GetInstructionContainer()->GetInstructions())
-  {
-    IterateInstruction<const InstructionItem *>(instruction, func);
-  }
-
-  return true;
-}
-
 bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &item,
                                                         job_controller_t &job_controller)
 {
@@ -78,36 +58,6 @@ bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &ite
   for (auto instruction : item.GetInstructionContainer()->GetInstructions())
   {
     IterateInstruction<const InstructionItem *>(instruction, func);
-  }
-
-  return true;
-}
-
-bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item, runner_t &runner)
-{
-  if (runner.IsRunning())
-  {
-    qDebug() << "Can't propagate instruction breakpoint to the domain. Runner is still running.";
-    return false;
-  }
-
-  auto domain_instruction = FindDomainInstruction(item);
-  if (!domain_instruction)
-  {
-    qDebug() << "Can't find domain instruction corresponding to current InstructionItem.";
-    return false;
-  }
-
-  auto breakpoint_status = GetBreakpointStatus(item);
-  if (breakpoint_status == BreakpointStatus::kSet)
-  {
-    runner.SetBreakpoint(domain_instruction);
-  }
-  else
-  {
-    // We do not use "disabled" breakpoints in the domain, InstructionItem's breakpoint marked as
-    // disabled, will remove breakpoint from the domain
-    runner.RemoveBreakpoint(domain_instruction);
   }
 
   return true;
