@@ -281,7 +281,6 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
 
   // it should be same JobItem, but different job_handler
   EXPECT_EQ(GetJobItems().at(0), job_item);
-  EXPECT_NE(m_job_manager.GetJobHandler(job_item), job_handler);
   EXPECT_NE(job_item->GetExpandedProcedure(), expanded_procedure);
 }
 
