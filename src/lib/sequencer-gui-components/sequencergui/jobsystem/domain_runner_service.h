@@ -44,7 +44,7 @@ public:
   explicit DomainRunnerService(DomainEventDispatcherContext context, procedure_t& procedure);
   ~DomainRunnerService();
 
-  sup::sequencer::JobState GetCurrentState() const;
+  sup::sequencer::JobState GetJobState() const;
 
   bool Start();
 

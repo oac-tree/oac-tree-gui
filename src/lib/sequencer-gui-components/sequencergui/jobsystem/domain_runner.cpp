@@ -38,7 +38,7 @@ DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback, pro
 {
 }
 
-sup::sequencer::JobState DomainRunner::GetCurrentState() const
+sup::sequencer::JobState DomainRunner::GetJobState() const
 {
   return m_job_observer->GetCurrentState();
 }
@@ -86,6 +86,11 @@ sup::sequencer::JobState DomainRunner::WaitForFinished() const
   return m_job_observer->WaitForFinished();
 }
 
+bool DomainRunner::WaitForState(sup::sequencer::JobState state, double msec) const
+{
+  return m_job_observer->WaitForState(state, msec);
+}
+
 bool DomainRunner::IsFinished() const
 {
   return sup::sequencer::IsFinishedJobState(m_job_observer->GetCurrentState());
@@ -101,7 +106,7 @@ void DomainRunner::SetUserContext(const UserContext& user_context)
   m_procedure_observer->SetUserContext(user_context);
 }
 
-sup::sequencer::JobController *DomainRunner::GetJobController()
+sup::sequencer::JobController* DomainRunner::GetJobController()
 {
   return m_job_controller.get();
 }

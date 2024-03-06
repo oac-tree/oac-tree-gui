@@ -123,7 +123,7 @@ bool JobHandler::IsValid() const
 RunnerStatus JobHandler::GetRunnerStatus() const
 {
   return m_domain_runner_service
-             ? static_cast<RunnerStatus>(m_domain_runner_service->GetCurrentState())
+      ? static_cast<RunnerStatus>(m_domain_runner_service->GetJobState())
              : RunnerStatus::kInitial;
 }
 

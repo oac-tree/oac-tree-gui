@@ -58,7 +58,7 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
   runner.Start();
 
   auto predicate = [this, &runner]()
-  { return runner.GetCurrentState() == sup::sequencer::JobState::kSucceeded; };
+  { return runner.GetJobState() == sup::sequencer::JobState::kSucceeded; };
 
   EXPECT_TRUE(QTest::qWaitFor(predicate, 100));  // letting event loop to work
 

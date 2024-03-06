@@ -40,6 +40,13 @@ class DomainJobObserver;
 class DomainProcedureObserver;
 class UserContext;
 
+/**
+ * @brief The DomainRunner class provides the necessary components to run sequencer domain
+ * procedure.
+ *
+ * It owns a job monitor, sequencer observer, and job controller and provides a way to report to the
+ * GUI events happening on the domain side.
+ */
 class DomainRunner
 {
 public:
@@ -57,23 +64,46 @@ public:
   explicit DomainRunner(const post_event_callback_t& post_event_callback, procedure_t& procedure);
   ~DomainRunner();
 
-  sup::sequencer::JobState GetCurrentState() const;
+  /**
+   * @brief Returns last reported job state.
+   */
+  sup::sequencer::JobState GetJobState() const;
 
+  /**
+   * @brief Starts procedure execution.
+   */
   bool Start();
 
+  /**
+   * @brief Stops procedure execution.
+   */
   bool Stop();
 
+  /**
+   * @brief Pauses execution.
+   */
   bool Pause();
 
+  /**
+   * @brief Make a step after pause.
+   */
   bool Step();
 
   sup::sequencer::JobState WaitForFinished() const;
+
+  /**
+   * @brief Waits for given state.
+   */
+  bool WaitForState(sup::sequencer::JobState state, double msec) const;
 
   /**
    * @brief Check if the job is in one of succeeded, failed or halted states.
    */
   bool IsFinished() const;
 
+  /**
+   * @brief Sets sleep time on every tick.
+   */
   void SetTickTimeout(int msec);
 
   void SetUserContext(const UserContext& user_context);

@@ -44,9 +44,9 @@ DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext context,
 
 DomainRunnerService::~DomainRunnerService() = default;
 
-sup::sequencer::JobState DomainRunnerService::GetCurrentState() const
+sup::sequencer::JobState DomainRunnerService::GetJobState() const
 {
-  return m_domain_runner->GetCurrentState();
+  return m_domain_runner->GetJobState();
 }
 
 bool DomainRunnerService::Start()
@@ -76,7 +76,7 @@ bool DomainRunnerService::IsFinished() const
 
 bool DomainRunnerService::IsBusy() const
 {
-  return GetCurrentState() != sup::sequencer::JobState::kInitial && !IsFinished();
+  return GetJobState() != sup::sequencer::JobState::kInitial && !IsFinished();
 }
 
 void DomainRunnerService::SetTickTimeout(int msec)

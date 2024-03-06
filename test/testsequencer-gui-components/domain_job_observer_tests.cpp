@@ -26,7 +26,6 @@
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
-using ::testing::_;
 
 //! Tests for DomainJobObserver class.
 
