@@ -76,7 +76,7 @@ bool DomainRunnerService::IsFinished() const
 
 bool DomainRunnerService::IsBusy() const
 {
-  return GetJobState() != sup::sequencer::JobState::kInitial && !IsFinished();
+  return m_domain_runner->IsBusy();
 }
 
 void DomainRunnerService::SetTickTimeout(int msec)

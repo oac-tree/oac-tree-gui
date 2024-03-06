@@ -27,6 +27,8 @@
 
 #include <sup/sequencer/job_controller.h>
 
+#include <set>
+
 namespace sequencergui
 {
 
@@ -96,19 +98,27 @@ bool DomainRunner::IsFinished() const
   return sup::sequencer::IsFinishedJobState(m_job_observer->GetCurrentState());
 }
 
+bool DomainRunner::IsBusy() const
+{
+  using sup::sequencer::JobState;
+  static const std::set<JobState> busy_states = {JobState::kPaused, JobState::kStepping,
+                                                 JobState::kRunning};
+  return busy_states.find(GetJobState()) != busy_states.end();
+}
+
 void DomainRunner::SetTickTimeout(int msec)
 {
   m_job_observer->SetTickTimeout(msec);
 }
 
-void DomainRunner::SetUserContext(const UserContext& user_context)
-{
-  m_procedure_observer->SetUserContext(user_context);
-}
-
 sup::sequencer::JobController* DomainRunner::GetJobController()
 {
   return m_job_controller.get();
+}
+
+void DomainRunner::SetUserContext(const UserContext& user_context)
+{
+  m_procedure_observer->SetUserContext(user_context);
 }
 
 }  // namespace sequencergui

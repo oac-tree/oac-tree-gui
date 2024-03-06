@@ -71,10 +71,10 @@ TEST_F(DomainRunnerTest, InitialState)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
   DomainRunner runner(CreateNoopCallback(), *procedure);
-  runner.Start();
-  
+
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_FALSE(runner.IsFinished());
+  EXPECT_FALSE(runner.IsBusy());
 }
 
 //! Running short domain procedure that executes normally.
@@ -131,6 +131,8 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
   EXPECT_EQ(final_state, sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
+  EXPECT_TRUE(runner.IsFinished());
+  EXPECT_FALSE(runner.IsBusy());
 }
 
 //! Terminates procedure that runs too long.
@@ -157,13 +159,16 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
   };
   EXPECT_TRUE(testutils::WaitFor(has_started, msec(50)));
 
+  EXPECT_FALSE(runner.IsFinished());
+  EXPECT_TRUE(runner.IsBusy());
+
   runner.Stop();
 
   auto is_finished = [&runner]() { return runner.IsFinished(); };
   EXPECT_TRUE(testutils::WaitFor(is_finished, msec(100)));
 
   EXPECT_TRUE(runner.IsFinished());
-  
+
   EXPECT_EQ(runner.GetJobState(), JobState::kFailed);
   // it is FAILURE here (and not NOT_FINISHED) because we have interrupted Wait with the Halt
   std::cout << static_cast<int>(runner.GetJobState()) << std::endl;
@@ -190,7 +195,7 @@ TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
 
   auto has_finished = [&runner]() { return runner.IsFinished(); };
   EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
-  
+
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
@@ -220,7 +225,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
 
   auto has_finished = [&runner]() { return runner.IsFinished(); };
   EXPECT_TRUE(testutils::WaitFor(has_finished, msec(200)));
-  
+
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
@@ -275,15 +280,18 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
   }
 
   DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
-  
+
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   // Step #1 right from initial state
   EXPECT_TRUE(runner.Step());
-  
+
   auto is_paused = [&runner]() { return runner.GetJobState() == JobState::kPaused; };
   EXPECT_TRUE(testutils::WaitFor(is_paused, msec(max_after_step_wait_time)));
+
+  EXPECT_FALSE(runner.IsFinished());
+  EXPECT_TRUE(runner.IsBusy());
 
   {
     const ::testing::InSequence seq;
@@ -308,7 +316,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 
   // Step #2 and waiting till the end
   EXPECT_TRUE(runner.Step());
-  
+
   auto has_succeeded = [&runner]() { return runner.GetJobState() == JobState::kSucceeded; };
   EXPECT_TRUE(testutils::WaitFor(has_succeeded, max_after_step_wait_time));
 
@@ -344,14 +352,14 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
   runner.Step();
-  
+
   auto has_paused = [&runner]() { return runner.GetJobState() == JobState::kPaused; };
   EXPECT_TRUE(testutils::WaitFor(has_paused, msec(50)));
 
   EXPECT_TRUE(runner.Stop());
 
   runner.WaitForFinished();
-  
+
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kHalted);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_FINISHED);
 }
@@ -402,7 +410,7 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   EXPECT_TRUE(runner.Start());
 
   runner.WaitForFinished();
-  
+
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kSucceeded);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::SUCCESS);
 
@@ -472,7 +480,7 @@ TEST_F(DomainRunnerTest, RunPauseRun)
 
   // continuing till the end
   EXPECT_TRUE(runner.Start());
-  
+
   auto is_running = [&runner]() { return runner.GetJobState() == JobState::kRunning; };
   EXPECT_TRUE(testutils::WaitFor(is_running, msec(50)));
 

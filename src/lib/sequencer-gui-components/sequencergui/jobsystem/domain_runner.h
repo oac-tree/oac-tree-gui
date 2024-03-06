@@ -97,27 +97,31 @@ public:
   bool WaitForState(sup::sequencer::JobState state, double msec) const;
 
   /**
-   * @brief Check if the job is in one of succeeded, failed or halted states.
+   * @brief Checks if the job is in one of succeeded/failed/halted states.
    */
   bool IsFinished() const;
+
+  /**
+   * @brief Checks if the the job is in one of paused/stepping/running states.
+   */
+  bool IsBusy() const;
 
   /**
    * @brief Sets sleep time on every tick.
    */
   void SetTickTimeout(int msec);
 
-  void SetUserContext(const UserContext& user_context);
-
   /**
    * @brief Returns underlying job controller.
    */
   sup::sequencer::JobController* GetJobController();
 
+  void SetUserContext(const UserContext& user_context);
+
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
   std::unique_ptr<sup::sequencer::JobController> m_job_controller;
-
   RunnerState m_runner_state{kReady};
 };
 
