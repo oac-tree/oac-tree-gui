@@ -54,15 +54,29 @@ public:
 
   void OnProcedureTick(const sup::sequencer::Procedure& proc) noexcept override;
 
+  /**
+   * @brief Returns last reported job state.
+   */
   sup::sequencer::JobState GetCurrentState() const;
 
+  /**
+   * @brief Waits for given state.
+   */
+  bool WaitForState(sup::sequencer::JobState state, double msec) const;
+
+  /**
+   * @brief Waits for job finished state, which is one of succeeded/failed/halted.
+   */
   sup::sequencer::JobState WaitForFinished() const;
 
+  /**
+   * @brief Sets sleep time on every tick.
+   */
   void SetTickTimeout(int msec);
 
 private:
   post_event_callback_t m_post_event_callback;
-  sup::sequencer::JobState m_state;
+  sup::sequencer::JobState m_state{sup::sequencer::JobState::kInitial};
   mutable std::mutex m_mutex;
   mutable std::condition_variable m_cv;
   int m_tick_timeout_msec{0};

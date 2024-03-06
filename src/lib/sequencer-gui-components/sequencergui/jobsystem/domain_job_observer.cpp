@@ -24,16 +24,22 @@
 #include <sup/sequencer/job_states.h>
 #include <sup/sequencer/procedure.h>
 
+#include <cmath>
 #include <thread>
 
 namespace
 {
+
+/**
+ * @brief Checks if this is the last tick of the given procedure.
+ */
 bool IsLastTick(const sup::sequencer::Procedure &proc)
 {
   using sup::sequencer::ExecutionStatus;
   const auto status = proc.GetStatus();
   return status == ExecutionStatus::SUCCESS || status == ExecutionStatus::FAILURE;
 }
+
 }  // namespace
 
 namespace sequencergui
@@ -51,7 +57,7 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback)
 void DomainJobObserver::OnStateChange(sup::sequencer::JobState state) noexcept
 {
   {
-    const std::lock_guard<std::mutex> lk{m_mutex};
+    const std::lock_guard<std::mutex> lock{m_mutex};
     m_state = state;
     m_post_event_callback(JobStateChangedEvent{state});
   }
@@ -69,7 +75,7 @@ void DomainJobObserver::OnProcedureTick(const sup::sequencer::Procedure &proc) n
 {
   (void)proc;
   std::unique_lock<std::mutex> lock{m_mutex};
-  
+
   m_post_event_callback(NextLeavesChangedEvent{sup::sequencer::GetNextLeaves(proc)});
 
   if (m_tick_timeout_msec > 0 && !IsLastTick(proc))
@@ -81,21 +87,29 @@ void DomainJobObserver::OnProcedureTick(const sup::sequencer::Procedure &proc) n
 
 sup::sequencer::JobState DomainJobObserver::GetCurrentState() const
 {
-  const std::lock_guard<std::mutex> lk{m_mutex};
+  const std::lock_guard<std::mutex> lock{m_mutex};
   return m_state;
+}
+
+bool DomainJobObserver::WaitForState(sup::sequencer::JobState state, double msec) const
+{
+  const double nano_in_msec{1e6};
+  auto duration = std::chrono::nanoseconds(std::lround(msec * nano_in_msec));
+  std::unique_lock<std::mutex> lock{m_mutex};
+  return m_cv.wait_for(lock, duration, [this, state]() { return m_state == state; });
 }
 
 sup::sequencer::JobState DomainJobObserver::WaitForFinished() const
 {
   auto pred = [this]() { return sup::sequencer::IsFinishedJobState(m_state); };
-  std::unique_lock<std::mutex> lk{m_mutex};
-  m_cv.wait(lk, pred);
+  std::unique_lock<std::mutex> lock{m_mutex};
+  m_cv.wait(lock, pred);
   return m_state;
 }
 
 void DomainJobObserver::SetTickTimeout(int msec)
 {
-  const std::unique_lock<std::mutex> lk{m_mutex};
+  const std::unique_lock<std::mutex> lock{m_mutex};
   m_tick_timeout_msec = msec;
 }
 
