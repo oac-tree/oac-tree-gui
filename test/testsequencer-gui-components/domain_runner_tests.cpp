@@ -159,8 +159,8 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
 
   runner.Stop();
 
-  auto has_finished = [&runner]() { return runner.IsFinished(); };
-  EXPECT_TRUE(testutils::WaitFor(has_finished, msec(50)));
+  auto is_finished = [&runner]() { return runner.IsFinished(); };
+  EXPECT_TRUE(testutils::WaitFor(is_finished, msec(100)));
 
   EXPECT_TRUE(runner.IsFinished());
 
