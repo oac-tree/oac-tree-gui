@@ -21,24 +21,23 @@
 #define SEQUENCERGUI_JOBSYSTEM_JOB_HANDLER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/experimental/domain_events.h>
 #include <sequencergui/jobsystem/job_types.h>
 #include <sequencergui/jobsystem/user_context.h>
-#include <sequencergui/experimental/domain_events.h>
 
 #include <QObject>
 #include <memory>
 
 namespace sequencergui
 {
+
 class ProcedureItem;
-class ProcedureReporter;
 class JobLog;
 class JobItem;
 class InstructionItem;
 class GUIObjectBuilder;
 class LogEvent;
 class WorkspaceSynchronizer;
-class DomainRunnerAdapter;
 class JobModel;
 class BreakpointController;
 class DomainRunnerService;
@@ -102,7 +101,6 @@ private:
   void PrepareForRun();
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
-  void SetupDomainRunnerAdapter();
   void SetupDomainRunner();
   DomainEventDispatcherContext CreateContext();
 
@@ -111,8 +109,6 @@ private:
   //!< domain procedure should live longer than the runner
   std::unique_ptr<procedure_t> m_domain_procedure;
 
-  std::unique_ptr<ProcedureReporter> m_procedure_reporter;
-  std::unique_ptr<DomainRunnerAdapter> m_domain_runner_adapter;
   std::unique_ptr<DomainRunnerService> m_domain_runner_service;
 
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;

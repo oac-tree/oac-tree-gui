@@ -230,6 +230,7 @@ TEST_F(OperationActionHandlerTest, AttemptToRemoveLongRunningJob)
   m_actions.OnStartJobRequest();
 
   auto job_handler = m_job_manager.GetCurrentJobHandler();
+  EXPECT_TRUE(QTest::qWaitFor([job_handler]() { return job_handler->IsRunning(); }, 50));
   EXPECT_TRUE(job_handler->IsRunning());
 
   // it shouldn't be possible to remove running job without first stopping it

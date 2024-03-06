@@ -19,35 +19,25 @@
 
 #include "job_handler.h"
 
-#include "domain_runner_adapter.h"
 #include "job_log.h"
-#include "job_utils.h"
-#include "procedure_reporter.h"
-#include "sequencer_observer.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/experimental/domain_event_dispatcher_context.h>
 #include <sequencergui/jobsystem/domain_runner_service.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/standard_variable_items.h>
-#include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
 
-#include <mvvm/standarditems/container_item.h>
-
-#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
 
 #include <QDebug>
-#include <iostream>
 
 namespace sequencergui
 {
@@ -60,24 +50,6 @@ JobHandler::JobHandler(JobItem *job_item)
   auto find_instruction = [this](const InstructionItem &item)
   { return m_guiobject_builder->FindInstruction(&item); };
   m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
-
-  auto find_instruction_ietm = [this](const instruction_t &instruction)
-  { return m_guiobject_builder->FindInstructionItem(&instruction); };
-  m_procedure_reporter = std::make_unique<ProcedureReporter>(find_instruction_ietm);
-
-  connect(m_procedure_reporter.get(), &ProcedureReporter::InstructionStatusChanged, this,
-          &JobHandler::InstructionStatusChanged);
-
-  connect(m_procedure_reporter.get(), &ProcedureReporter::NextLeavesChanged, this,
-          &JobHandler::NextLeavesChanged);
-
-  connect(m_procedure_reporter.get(), &ProcedureReporter::LogEventReceived, this,
-          &JobHandler::onLogEvent, Qt::QueuedConnection);
-
-  auto on_status_changed = [this](auto status)
-  { m_job_item->SetStatus(RunnerStatusToString(status)); };
-  connect(m_procedure_reporter.get(), &ProcedureReporter::RunnerStatusChanged, this,
-          on_status_changed);
 }
 
 void JobHandler::onPrepareJobRequest()
@@ -93,8 +65,6 @@ void JobHandler::onPrepareJobRequest()
 
   SetupExpandedProcedureItem();
 
-  // SetupDomainRunnerAdapter();
-
   SetupDomainRunner();
 }
 
@@ -103,59 +73,39 @@ JobHandler::~JobHandler() = default;
 void JobHandler::onStartRequest()
 {
   ValidateJobHandler();
-  // const bool was_paused = m_domain_runner_adapter->GetStatus() == RunnerStatus::kPaused;
-  // if (m_domain_runner_adapter->Start() && !was_paused)
-  // {
-  //   m_job_log->ClearLog();
-  // }
   m_domain_runner_service->Start();
 }
 
 void JobHandler::onPauseRequest()
 {
   ValidateJobHandler();
-  // m_domain_runner_adapter->Pause();
   m_domain_runner_service->Pause();
 }
 
 void JobHandler::onMakeStepRequest()
 {
   ValidateJobHandler();
-  // m_domain_runner_adapter->Step();
   m_domain_runner_service->Step();
 }
 
 void JobHandler::onStopRequest()
 {
   ValidateJobHandler();
-  // if (m_domain_runner_adapter->Stop())
-  // {
-  //   m_job_log->Append(CreateLogEvent(Severity::kWarning, "Stop request"));
-  // }
   m_domain_runner_service->Stop();
 }
 
 bool JobHandler::IsRunning() const
 {
-  // std::cout << "AAA 1.1" << m_domain_runner_service.get() << std::endl;
-  std::cout << "AAA 1.2"
-            << (m_domain_runner_service
-                    ? sup::sequencer::ToString(m_domain_runner_service->GetCurrentState())
-                    : std::string("null"))
-            << std::endl;
-  // return m_domain_runner_adapter ? m_domain_runner_adapter->IsBusy() : false;
   return m_domain_runner_service ? m_domain_runner_service->IsBusy() : false;
 }
 
 void JobHandler::SetSleepTime(int time_msec)
 {
-  // m_domain_runner_adapter->SetTickTimeout(time_msec);
   m_domain_runner_service->SetTickTimeout(time_msec);
 }
 
 void JobHandler::SetUserContext(const UserContext &user_context)
 {
-  // m_procedure_reporter->SetUserContext(user_context);
   m_domain_runner_service->SetUserContext(user_context);
 }
 
@@ -167,14 +117,14 @@ ProcedureItem *JobHandler::GetExpandedProcedure() const
 //! Returns true if this context is in valid state
 bool JobHandler::IsValid() const
 {
-  // return m_domain_procedure != nullptr && m_domain_runner_adapter;
   return m_domain_procedure != nullptr && m_domain_runner_service;
 }
 
 RunnerStatus JobHandler::GetRunnerStatus() const
 {
-  // return m_domain_runner_adapter ? m_domain_runner_adapter->GetStatus() : RunnerStatus::kInitial;
-  return m_domain_runner_service ? static_cast<RunnerStatus>(m_domain_runner_service->GetCurrentState()) : RunnerStatus::kInitial;
+  return m_domain_runner_service
+             ? static_cast<RunnerStatus>(m_domain_runner_service->GetCurrentState())
+             : RunnerStatus::kInitial;
 }
 
 JobLog *JobHandler::GetJobLog() const
@@ -189,8 +139,8 @@ void JobHandler::OnToggleBreakpointRequest(InstructionItem *instruction)
     return;
   }
   ToggleBreakpointStatus(*instruction);
-  m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
-                                                  *m_domain_runner_adapter->GetDomainRunner());
+  // m_breakpoint_controller->UpdateDomainBreakpoint(*instruction,
+  //                                                 *m_domain_runner_adapter->GetDomainRunner());
 }
 
 void JobHandler::OnInstructionStatusChanged(const InstructionStatusChangedEvent &event)
@@ -253,12 +203,12 @@ void JobHandler::PrepareForRun()
 
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
-    m_breakpoint_controller->SaveBreakpoints(*expanded_procedure);
+    // m_breakpoint_controller->SaveBreakpoints(*expanded_procedure);
     GetJobModel()->RemoveItem(expanded_procedure);
   }
 
   m_workspace_synchronizer.reset();
-  m_domain_runner_adapter.reset();
+  // m_domain_runner_service.reset();
 }
 
 //! Setup domain procedure.
@@ -292,7 +242,7 @@ void JobHandler::SetupExpandedProcedureItem()
                                              /*root_only*/ true);
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
-  m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
+  // m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
   if (m_workspace_synchronizer)
   {
     m_workspace_synchronizer->SetWorkspaceItem(expanded_procedure_ptr->GetWorkspace());
@@ -300,29 +250,12 @@ void JobHandler::SetupExpandedProcedureItem()
   }
 }
 
-//! Setup adapter to run procedures.
-
-void JobHandler::SetupDomainRunnerAdapter()
-{
-  auto status_changed = [this](auto status)
-  { m_procedure_reporter->OnDomainRunnerStatusChanged(status); };
-
-  auto on_tick = [this](const auto &procedure)
-  { m_procedure_reporter->OnDomainProcedureTick(procedure); };
-
-  DomainRunnerAdapterContext context{m_domain_procedure.get(), m_procedure_reporter->GetObserver(),
-                                     status_changed, on_tick};
-  m_domain_runner_adapter = std::make_unique<DomainRunnerAdapter>(context);
-
-  // setup breakpoint
-  m_breakpoint_controller->PropagateBreakpointsToDomain(
-      *GetExpandedProcedure(), *m_domain_runner_adapter->GetDomainRunner());
-}
-
 void JobHandler::SetupDomainRunner()
 {
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), *m_domain_procedure);
+  // m_breakpoint_controller->PropagateBreakpointsToDomain(
+  //     *GetExpandedProcedure(), *m_domain_runner_adapter->GetDomainRunner());
 }
 
 DomainEventDispatcherContext JobHandler::CreateContext()
