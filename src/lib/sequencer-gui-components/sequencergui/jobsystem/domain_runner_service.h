@@ -41,7 +41,8 @@ class UserContext;
 class DomainRunnerService
 {
 public:
-  explicit DomainRunnerService(DomainEventDispatcherContext context, procedure_t& procedure);
+  explicit DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
+                               const UserContext& user_context, procedure_t& procedure);
   ~DomainRunnerService();
 
   sup::sequencer::JobState GetJobState() const;
@@ -60,9 +61,8 @@ public:
 
   void SetTickTimeout(int msec);
 
-  void SetUserContext(const UserContext &user_context);
-
   sup::sequencer::JobController* GetJobController();
+
 private:
   std::unique_ptr<DomainEventQueue> m_event_queue;
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;

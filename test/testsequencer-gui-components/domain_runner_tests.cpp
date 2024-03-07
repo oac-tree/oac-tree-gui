@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_events.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 #include <mvvm/test/mock_callback_listener.h>
 
@@ -70,7 +71,7 @@ public:
 TEST_F(DomainRunnerTest, InitialState)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
-  DomainRunner runner(CreateNoopCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_FALSE(runner.IsFinished());
@@ -121,7 +122,7 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
   }
 
   // DomainRunner runner(CreatePrintCallback(), *procedure);
-  DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
+  DomainRunner runner(m_event_listener.CreateCallback(), {}, *procedure);
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
@@ -146,7 +147,7 @@ TEST_F(DomainRunnerTest, StartAndTerminate)
   auto procedure = testutils::CreateSingleWaitProcedure(wait_timeout);
   auto instruction_ptr = procedure->RootInstruction();
 
-  DomainRunner runner(CreateNoopCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
 
   EXPECT_TRUE(runner.Start());  // trigger action
 
@@ -184,7 +185,7 @@ TEST_F(DomainRunnerTest, SequenceWithSingleMessage)
   const int tick_timeout_msec(1000);  // intentionally long timeout
 
   auto procedure = testutils::CreateSequenceWithSingleMessageProcedure();
-  DomainRunner runner(CreateNoopCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
 
   runner.SetTickTimeout(tick_timeout_msec);
 
@@ -214,7 +215,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoMessages)
   const int tick_timeout_msec(50);
 
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
-  DomainRunner runner(CreateNoopCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
 
   runner.SetTickTimeout(tick_timeout_msec);
 
@@ -282,7 +283,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
   }
 
-  DomainRunner runner(m_event_listener.CreateCallback(), *procedure);
+  DomainRunner runner(m_event_listener.CreateCallback(), {}, *procedure);
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -353,7 +354,7 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepModeInterrupted)
 
   auto procedure = testutils::CreateSequenceWithTwoMessagesProcedure();
 
-  DomainRunner runner(CreateNoopCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
@@ -392,7 +393,7 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   EXPECT_CALL(listener, OnLogEvent(_)).Times(1);  // variable changed (increment 1)
   EXPECT_CALL(listener, OnNextLeavesChanged(_)).Times(3);
 
-  DomainRunner runner(listener.CreateCallback(), *procedure);
+  DomainRunner runner(listener.CreateCallback(), {}, *procedure);
 
   // making step
   EXPECT_TRUE(runner.Step());
@@ -461,7 +462,7 @@ TEST_F(DomainRunnerTest, RunPauseRun)
   counter_var->GetValue(counter_value);
   EXPECT_EQ(counter_value, 0U);
 
-  DomainRunner runner(CreateNoopCallback(), *procedure);
+  DomainRunner runner(CreateNoopCallback(), {}, *procedure);
 
   // starting and waiting a bit to let the counter to increment
   EXPECT_TRUE(runner.Start());

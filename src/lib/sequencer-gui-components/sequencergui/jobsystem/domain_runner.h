@@ -61,7 +61,8 @@ public:
     kStepPressed
   };
 
-  explicit DomainRunner(const post_event_callback_t& post_event_callback, procedure_t& procedure);
+  explicit DomainRunner(const post_event_callback_t& post_event_callback,
+                        const UserContext& user_context, procedure_t& procedure);
   ~DomainRunner();
 
   /**
@@ -115,8 +116,6 @@ public:
    * @brief Returns underlying job controller.
    */
   sup::sequencer::JobController* GetJobController();
-
-  void SetUserContext(const UserContext& user_context);
 
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;

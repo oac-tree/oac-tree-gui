@@ -222,10 +222,9 @@ void JobHandler::SetupExpandedProcedureItem()
 void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
 {
   m_domain_runner_service =
-      std::make_unique<DomainRunnerService>(CreateContext(), *m_domain_procedure);
+      std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
   m_breakpoint_controller->PropagateBreakpointsToDomain(
       *GetExpandedProcedure(), *m_domain_runner_service->GetJobController());
-  m_domain_runner_service->SetUserContext(user_context);
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }
 

@@ -20,6 +20,7 @@
 #include "sequencergui/jobsystem/domain_runner_service.h"
 
 #include <sequencergui/jobsystem/domain_event_dispatcher_context.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/sequencer/procedure.h>
 
@@ -46,7 +47,7 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
 
-  DomainRunnerService runner(m_listener.CreateDispatcherContext(), *procedure);
+  DomainRunnerService runner(m_listener.CreateDispatcherContext(), {},  *procedure);
 
   // JobState: initial, stepping, paused
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(3);
