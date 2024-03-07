@@ -41,7 +41,7 @@ static const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap 
 
 namespace sequencergui
 {
-std::string RunnerStatusToString(RunnerStatus status)
+std::string ToString(RunnerStatus status)
 {
   auto iter = kRunnerStatusMap.find(status);
   return iter == kRunnerStatusMap.end() ? std::string("Unknown") : iter->second;

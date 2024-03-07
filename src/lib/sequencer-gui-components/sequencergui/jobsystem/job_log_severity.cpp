@@ -55,7 +55,7 @@ std::map<sequencergui::Severity, std::string> CreateSeverityMap()
 namespace sequencergui
 {
 
-std::string SeverityToString(Severity severity)
+std::string ToString(Severity severity)
 {
   static const auto severity_map = CreateSeverityMap();
   auto iter = severity_map.find(severity);

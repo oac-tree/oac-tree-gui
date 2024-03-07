@@ -29,15 +29,15 @@ class RunnerStatusTest : public ::testing::Test
 {
 };
 
-TEST_F(RunnerStatusTest, RunnerStatusToString)
+TEST_F(RunnerStatusTest, ToString)
 {
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kInitial), "Initial");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kPaused), "Paused");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kStepping), "Stepping");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kRunning), "Running");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kSucceeded), "Success");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kFailed), "Failure");
-  EXPECT_EQ(RunnerStatusToString(RunnerStatus::kHalted), "Halted");
+  EXPECT_EQ(ToString(RunnerStatus::kInitial), "Initial");
+  EXPECT_EQ(ToString(RunnerStatus::kPaused), "Paused");
+  EXPECT_EQ(ToString(RunnerStatus::kStepping), "Stepping");
+  EXPECT_EQ(ToString(RunnerStatus::kRunning), "Running");
+  EXPECT_EQ(ToString(RunnerStatus::kSucceeded), "Success");
+  EXPECT_EQ(ToString(RunnerStatus::kFailed), "Failure");
+  EXPECT_EQ(ToString(RunnerStatus::kHalted), "Halted");
 }
 
 TEST_F(RunnerStatusTest, GetRunnerStatus)

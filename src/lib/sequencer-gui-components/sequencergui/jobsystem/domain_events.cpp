@@ -48,7 +48,7 @@ struct DomainEventToStringVisitor
   std::string operator()(const ::sequencergui::LogEvent &event) const
   {
     std::ostringstream ostr;
-    ostr << std::string("LogEvent") << " " << ::sequencergui::SeverityToString(event.severity);
+    ostr << std::string("LogEvent") << " " << ::sequencergui::ToString(event.severity);
     ostr << " " << event.message;
     return ostr.str();
   }

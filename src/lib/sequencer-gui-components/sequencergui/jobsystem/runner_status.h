@@ -44,7 +44,7 @@ enum class RunnerStatus
 /**
  * @brief Returns string representation of the RunerStatus.
  */
-std::string RunnerStatusToString(RunnerStatus status);
+std::string ToString(RunnerStatus status);
 
 /**
  * @brief Returns RunnerStatus from string representation.

@@ -31,13 +31,13 @@ class JobLogSeverityTest : public ::testing::Test
 
 TEST_F(JobLogSeverityTest, SeverityToString)
 {
-  EXPECT_EQ(SeverityToString(Severity::kEmergency), std::string("EMERGENCY"));
-  EXPECT_EQ(SeverityToString(Severity::kAlert), std::string("ALERT"));
-  EXPECT_EQ(SeverityToString(Severity::kCritical), std::string("CRITICAL"));
-  EXPECT_EQ(SeverityToString(Severity::kError), std::string("ERROR"));
-  EXPECT_EQ(SeverityToString(Severity::kWarning), std::string("WARNING"));
-  EXPECT_EQ(SeverityToString(Severity::kNotice), std::string("NOTICE"));
-  EXPECT_EQ(SeverityToString(Severity::kInfo), std::string("INFO"));
-  EXPECT_EQ(SeverityToString(Severity::kDebug), std::string("DEBUG"));
-  EXPECT_EQ(SeverityToString(Severity::kTrace), std::string("TRACE"));
+  EXPECT_EQ(ToString(Severity::kEmergency), std::string("EMERGENCY"));
+  EXPECT_EQ(ToString(Severity::kAlert), std::string("ALERT"));
+  EXPECT_EQ(ToString(Severity::kCritical), std::string("CRITICAL"));
+  EXPECT_EQ(ToString(Severity::kError), std::string("ERROR"));
+  EXPECT_EQ(ToString(Severity::kWarning), std::string("WARNING"));
+  EXPECT_EQ(ToString(Severity::kNotice), std::string("NOTICE"));
+  EXPECT_EQ(ToString(Severity::kInfo), std::string("INFO"));
+  EXPECT_EQ(ToString(Severity::kDebug), std::string("DEBUG"));
+  EXPECT_EQ(ToString(Severity::kTrace), std::string("TRACE"));
 }

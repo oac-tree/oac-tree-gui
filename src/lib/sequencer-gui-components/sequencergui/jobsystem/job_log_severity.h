@@ -42,7 +42,7 @@ enum class Severity
   kTrace
 };
 
-std::string SeverityToString(Severity severity);
+std::string ToString(Severity severity);
 
 }  // namespace sequencergui
 

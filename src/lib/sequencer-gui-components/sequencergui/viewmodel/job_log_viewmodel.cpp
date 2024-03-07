@@ -105,7 +105,7 @@ QVariant JobLogViewModel::data(const QModelIndex &index, int role) const
     case 1:
       return QString::fromStdString(record.time);
     case 2:
-      return QString::fromStdString(SeverityToString(record.severity));
+      return QString::fromStdString(ToString(record.severity));
     case 3:
       return QString::fromStdString(record.source);
     case 4:

@@ -122,7 +122,7 @@ void MessagePanel::ReadSettings()
   else
   {
     m_unchecked_severitites.push_back(
-        QString::fromStdString(SeverityToString(sequencergui::Severity::kDebug)));
+        QString::fromStdString(ToString(sequencergui::Severity::kDebug)));
   }
 
   if (settings.contains(kHeaderStateSettingName))
@@ -140,7 +140,7 @@ void MessagePanel::WriteSettings()
   {
     if (!status)
     {
-      m_unchecked_severitites.push_back(QString::fromStdString(SeverityToString(severity)));
+      m_unchecked_severitites.push_back(QString::fromStdString(ToString(severity)));
     }
   }
 
@@ -172,7 +172,7 @@ std::unique_ptr<SteadyMenu> MessagePanel::CreateSeveritySelectorMenu()
 
   for (auto severity : kSeveritiesToSelect)
   {
-    auto name = QString::fromStdString(SeverityToString(severity));
+    auto name = QString::fromStdString(ToString(severity));
     auto action = result->addAction(name);
 
     m_show_severity_flag[severity] = !m_unchecked_severitites.contains(name);
@@ -219,7 +219,7 @@ void MessagePanel::UpdateSeverityFilter()
   {
     if (flag)
     {
-      names.push_back(SeverityToString(severity));
+      names.push_back(ToString(severity));
     }
   }
 
