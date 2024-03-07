@@ -308,9 +308,11 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequestWhenProcedureDeleted)
   m_selected_item = job_item;
   EXPECT_THROW(m_actions.OnRegenerateJobRequest(), sequencergui::RuntimeException);
 
-  // job item has lost it's procedure and expanded procedure
+  // job item has lost it's procedure
   EXPECT_FALSE(job_item->GetProcedure());
-  EXPECT_FALSE(job_item->GetExpandedProcedure());
+
+  // expanded procedure is still the same
+  EXPECT_EQ(job_item->GetExpandedProcedure(), expanded_procedure);
 
   EXPECT_EQ(spy_selected_request.count(), 0);
   ASSERT_EQ(GetJobItems().size(), 1);

@@ -52,11 +52,12 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int s
     throw RuntimeException("JobItem is not initialised");
   }
 
-  auto find_instruction = [this](const InstructionItem &item)
-  { return m_guiobject_builder->FindInstruction(&item); };
-  m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
+  if (!m_job_item->GetProcedure())
+  {
+    throw RuntimeException("Procedure doesn't exist");
+  }
 
-  PrepareForRun();
+  SetupBreakpointController();
 
   SetupDomainProcedure();
 
@@ -170,29 +171,20 @@ JobModel *JobHandler::GetJobModel()
   return dynamic_cast<JobModel *>(m_job_item->GetModel());
 }
 
-void JobHandler::PrepareForRun()
+void JobHandler::SetupBreakpointController()
 {
-  m_domain_procedure.reset();
+  auto find_instruction = [this](const InstructionItem &item)
+  { return m_guiobject_builder->FindInstruction(&item); };
+  m_breakpoint_controller = std::make_unique<BreakpointController>(find_instruction);
 
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
     m_breakpoint_controller->SaveBreakpoints(*expanded_procedure);
-    GetJobModel()->RemoveItem(expanded_procedure);
   }
-
-  m_workspace_synchronizer.reset();
-  // m_domain_runner_service.reset();
 }
-
-//! Setup domain procedure.
 
 void JobHandler::SetupDomainProcedure()
 {
-  if (!m_job_item->GetProcedure())
-  {
-    throw RuntimeException("Procedure doesn't exist");
-  }
-
   // building domain procedure
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
 
@@ -205,10 +197,14 @@ void JobHandler::SetupDomainProcedure()
   m_domain_procedure->Setup();
 }
 
-//! Setup expanded procedure item. It will reflect the content of domain procedure after its Setup.
-
 void JobHandler::SetupExpandedProcedureItem()
 {
+  // remove previous expanded procedure
+  if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
+  {
+    GetJobModel()->RemoveItem(expanded_procedure);
+  }
+
   auto expanded_procedure = std::make_unique<ProcedureItem>();
   auto expanded_procedure_ptr = expanded_procedure.get();
   m_guiobject_builder->PopulateProcedureItem(m_domain_procedure.get(), expanded_procedure.get(),

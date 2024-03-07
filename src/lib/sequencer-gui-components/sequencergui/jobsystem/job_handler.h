@@ -46,11 +46,11 @@ class DomainEventDispatcherContext;
 /**
  * @brief The JobHandler class is the main class to run a job represented by the JobItem.
  *
- * It is used by the JobManager, where each JobItem is handled by its own JobHandler. It has
+ * It is used by the JobManager, where each JobItem is handled by its own JobHandler. JobHandler has
  * multiple responsibilities:
  *
  * - generate sequencer domain procedure using ProcedureItem
- * - setup domain procedure, and generate corresponding expanded procedure
+ * - setup domain procedure, and generate corresponding expanded ProcedureItem
  * - handle start/stop/pause/step requests
  * - listen for all sequencer domain events and update GUI items accordingly
  */
@@ -150,9 +150,29 @@ private:
    */
   JobModel* GetJobModel();
 
-  void PrepareForRun();
+  /**
+   * @brief Setups breakpoint controller.
+   */
+  void SetupBreakpointController();
+
+  /**
+   * @brief Creates domain procedure from ProcedureItem, and performs its setup.
+   */
   void SetupDomainProcedure();
+
+  /**
+   * @brief Setup expanded procedure item.
+   *
+   * It will reflect the content of domain procedure after its Setup.
+   */
   void SetupExpandedProcedureItem();
+
+  /**
+   * @brief Setups the domain runner.
+   *
+   * @param user_context The context to provide interaction with the user.
+   * @param sleep_time_msec Sleep time at the end of each tick.
+   */
   void SetupDomainRunner(const UserContext& user_context, int sleep_time_msec);
 
   /**
