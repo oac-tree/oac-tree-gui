@@ -17,8 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
-#define SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
+#ifndef SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_
+#define SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_
+
+#include <string>
 
 namespace sequencergui
 {

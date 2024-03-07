@@ -22,7 +22,7 @@
 
 //! Collection of various utility functions for job execution.
 
-#include <sequencergui/jobsystem/job_types.h>
+#include <sequencergui/jobsystem/runner_status.h>
 
 #include <string>
 #include <vector>

@@ -23,7 +23,6 @@ target_sources(${library_name} PRIVATE
   job_log_severity.h
   job_manager.cpp
   job_manager.h
-  job_types.h
   job_utils.cpp
   job_utils.h
   log_event.cpp
@@ -33,6 +32,7 @@ target_sources(${library_name} PRIVATE
   request_handler.h
   request_handler_queue.h
   request_types.h
+  runner_status.h
   sequencer_observer.cpp
   sequencer_observer.h
   user_choice_provider.cpp

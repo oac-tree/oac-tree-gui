@@ -22,7 +22,7 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/domain_events.h>
-#include <sequencergui/jobsystem/job_types.h>
+#include <sequencergui/jobsystem/runner_status.h>
 #include <sequencergui/jobsystem/user_context.h>
 
 #include <QObject>

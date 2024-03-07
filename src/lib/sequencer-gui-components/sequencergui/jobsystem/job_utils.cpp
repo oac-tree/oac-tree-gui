@@ -28,16 +28,6 @@
 namespace
 {
 
-// const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
-//     {sequencergui::RunnerStatus::kIdle, "Idle"},
-//     {sequencergui::RunnerStatus::kRunning, "Running"},
-//     {sequencergui::RunnerStatus::kPaused, "Paused"},
-//     {sequencergui::RunnerStatus::kCompleted, "Completed"},
-//     {sequencergui::RunnerStatus::kPaused, "Paused"},
-//     {sequencergui::RunnerStatus::kStopping, "Stopping"},
-//     {sequencergui::RunnerStatus::kStopped, "Stopped"},
-//     {sequencergui::RunnerStatus::kFailed, "Failed"}};
-
 // exact copy of sup::sequencer::JobState
 static const std::map<sequencergui::RunnerStatus, std::string> kRunnerStatusMap = {
     { sequencergui::RunnerStatus::kInitial, "Initial" },
