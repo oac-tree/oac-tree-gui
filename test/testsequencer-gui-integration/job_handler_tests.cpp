@@ -109,367 +109,325 @@ TEST_F(JobHandlerTest, JobItemWithProcedure)
 //! Creating expanded procedure upfront and populating it with breakpoints.
 //! JobItem should preserve breakpoints after initial setup.
 
-// TEST_F(JobHandlerTest, PrepareJobRequestBreakpoints)
-// {
-//   auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
-//   m_job_item->SetProcedure(procedure);
+TEST_F(JobHandlerTest, PrepareJobRequestBreakpoints)
+{
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
+  m_job_item->SetProcedure(procedure);
 
-//   auto expanded_procedure =
-//       testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
+  // adding expanded procedure to the existing JobItem
+  auto expanded_procedure = testutils::CreateSingleWaitProcedureItem(msec(10));
+  auto expanded_procedure_ptr = expanded_procedure.get();
+  m_job_item->InsertItem(std::move(expanded_procedure), mvvm::TagIndex::Append());
 
-//   // JobHandler job_handler(m_job_item);
+  // populating it with breakpoints
+  auto wait_item = expanded_procedure_ptr->GetInstructionContainer()->GetInstructions().at(0);
+  SetBreakpointStatus(*wait_item, BreakpointStatus::kSet);
 
-//   // auto expanded_procedure = job_handler.GetExpandedProcedure();
-//   // EXPECT_NE(expanded_procedure, nullptr);
-//   // EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
-//   // EXPECT_TRUE(job_handler.IsValid());
+  JobHandler job_handler(m_job_item);
 
-//   // // setting breakpoint, pretending that the user has edited expanded procedure
-//   // auto wait_item = expanded_procedure->GetInstructionContainer()->GetInstructions().at(0);
-//   // SetBreakpointStatus(*wait_item, BreakpointStatus::kSet);
+  // at this point expanded procedure should be regenerated
+  auto new_expanded_procedure = job_handler.GetExpandedProcedure();
+  EXPECT_NE(new_expanded_procedure, expanded_procedure_ptr);
+  EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
 
-//   // // calling expanded second time
-//   // job_handler.onPrepareJobRequest();
-
-//   // EXPECT_NE(expanded_procedure, nullptr);
-//   // EXPECT_NE(job_handler.GetExpandedProcedure(),
-//   //           expanded_procedure);  // old procedure was regenerated
-//   // EXPECT_EQ(job_handler.GetExpandedProcedure(), m_job_item->GetExpandedProcedure());
-
-//   // // validating that breakpoints have breen preserved
-//   // auto new_wait_item =
-//   //     job_handler.GetExpandedProcedure()->GetInstructionContainer()->GetInstructions().at(0);
-//   // EXPECT_NE(wait_item, new_wait_item);
-//   // EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kSet);
-// }
+  // validating that breakpoints have breen preserved
+  auto new_wait_item =
+      job_handler.GetExpandedProcedure()->GetInstructionContainer()->GetInstructions().at(0);
+  EXPECT_NE(wait_item, new_wait_item);
+  EXPECT_EQ(GetBreakpointStatus(*new_wait_item), BreakpointStatus::kSet);
+}
 
 //! Attempt to use JobHandler with invalid procedure.
 
-// TEST_F(JobHandlerTest, InvalidProcedure)
-// {
-//   auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
-//   m_job_item->SetProcedure(procedure);
+TEST_F(JobHandlerTest, InvalidProcedure)
+{
+  auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//   JobHandler job_handler(m_job_item);
-//   EXPECT_THROW(job_handler.onPrepareJobRequest(), sup::sequencer::InvalidOperationException);
-//   EXPECT_FALSE(job_handler.IsValid());
-// }
+  EXPECT_THROW(JobHandler(m_job_item, {}, 0), sup::sequencer::InvalidOperationException);
+}
 
-// //! Delete JobHanlder after procedure start.
+//! Delete JobHanlder after procedure start.
 
-// TEST_F(JobHandlerTest, PrematureDeletion)
-// {
-//   auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(),
-//   msec(10)); m_job_item->SetProcedure(procedure);
+TEST_F(JobHandlerTest, PrematureDeletion)
+{
+  auto procedure = testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10));
+  m_job_item->SetProcedure(procedure);
 
-//   {
-//     JobHandler job_handler(m_job_item);
-//     job_handler.onPrepareJobRequest();
-//     job_handler.onStartRequest();
-//   }
+  {
+    JobHandler job_handler(m_job_item);
+    job_handler.onStartRequest();
+  }
 
-//   EXPECT_EQ(m_job_item->GetStatus(), std::string());
-// }
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
+}
 
-// TEST_F(JobHandlerTest, AttemptToStartWithoutPrepare)
-// {
-//   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
-//   m_job_item->SetProcedure(procedure);
+//! Normal execution of the procedure with single message instruction.
 
-//   EXPECT_EQ(m_job_item->GetStatus(), std::string());
+TEST_F(JobHandlerTest, ProcedureWithSingleMessage)
+{
+  auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
+  m_job_item->SetProcedure(procedure);
 
-//   JobHandler job_handler(m_job_item);
-//   EXPECT_THROW(job_handler.onStartRequest(), RuntimeException);
-// }
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
-// //! Normal execution of the procedure with single message instruction.
+  JobHandler job_handler(m_job_item);
 
-// TEST_F(JobHandlerTest, ProcedureWithSingleMessage)
-// {
-//   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
-//   m_job_item->SetProcedure(procedure);
+  QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-//   EXPECT_EQ(m_job_item->GetStatus(), std::string());
+  job_handler.onStartRequest();
 
-//   JobHandler job_handler(m_job_item);
-//   EXPECT_FALSE(job_handler.IsValid());
-//   job_handler.onPrepareJobRequest();
-//   EXPECT_TRUE(job_handler.IsValid());
+  auto predicate = [this, &job_handler, &spy_instruction_status]()
+  { return !job_handler.IsRunning() && spy_instruction_status.count() == 2; };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
 
-//   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
+  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 2);
 
-//   job_handler.onStartRequest();
+  auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
+  ASSERT_EQ(instructions.size(), 1);
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-//   auto predicate = [this, &job_handler, &spy_instruction_status]()
-//   { return !job_handler.IsRunning() && spy_instruction_status.count() == 2; };
-//   EXPECT_TRUE(QTest::qWaitFor(predicate, 100));
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+}
 
-//   EXPECT_FALSE(job_handler.IsRunning());
-//   EXPECT_EQ(spy_instruction_status.count(), 2);
+//! Normal execution of procedure with single wait.
+//! Validating signaling going from expanded procedure (instruction status change).
 
-//   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
-//   ASSERT_EQ(instructions.size(), 1);
-//   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
+{
+  auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
+  m_job_item->SetProcedure(procedure);
 
-//   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
-// }
+  EXPECT_EQ(m_job_item->GetStatus(), std::string());
 
-// //! Normal execution of procedure with single wait.
-// //! Validating signaling going from expanded procedure (instruction status change).
+  JobHandler job_handler(m_job_item);
 
-// TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
-// {
-//   auto procedure = testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), "abc");
-//   m_job_item->SetProcedure(procedure);
+  auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
+  auto message_item = instructions.at(0);
 
-//   EXPECT_EQ(m_job_item->GetStatus(), std::string());
+  mvvm::test::MockItemListener listener(message_item);
 
-//   JobHandler job_handler(m_job_item);
-//   EXPECT_FALSE(job_handler.IsValid());
-//   job_handler.onPrepareJobRequest();
-//   EXPECT_TRUE(job_handler.IsValid());
+  mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
+  EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
 
-//   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
-//   auto message_item = instructions.at(0);
+  job_handler.onStartRequest();
 
-//   mvvm::test::MockItemListener listener(message_item);
+  QTest::qWait(50);
 
-//   mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
-//   EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
+  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+}
 
-//   job_handler.onStartRequest();
+TEST_F(JobHandlerTest, ProcedureWithVariableCopy)
+{
+  const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
+  const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
 
-//   QTest::qWait(50);
+  auto procedure = testutils::CreateCopyProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//   EXPECT_FALSE(job_handler.IsRunning());
-//   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
-// }
+  auto vars = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  ASSERT_EQ(vars.size(), 2);
 
-// TEST_F(JobHandlerTest, ProcedureWithVariableCopy)
-// {
-//   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
-//   const sup::dto::AnyValue anyvalue1{sup::dto::SignedInteger32Type, 43};
+  auto initial_anyvalue_item0 = vars.at(0)->GetAnyValueItem();
+  auto initial_anyvalue_item1 = vars.at(1)->GetAnyValueItem();
 
-//   auto procedure = testutils::CreateCopyProcedureItem(m_models.GetSequencerModel());
-//   m_job_item->SetProcedure(procedure);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item1), anyvalue1);
 
-//   auto vars = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
-//   ASSERT_EQ(vars.size(), 2);
+  JobHandler job_handler(m_job_item);
 
-//   auto initial_anyvalue_item0 = vars.at(0)->GetAnyValueItem();
-//   auto initial_anyvalue_item1 = vars.at(1)->GetAnyValueItem();
+  // expanded procedure has different variables
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
+  auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
 
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item0), anyvalue0);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*initial_anyvalue_item1), anyvalue1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
 
-//   JobHandler job_handler(m_job_item);
-//   job_handler.onPrepareJobRequest();
+  job_handler.onStartRequest();
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(50);
 
-//   // expanded procedure has different variables
-//   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-//   auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
-//   auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0);  // value was changed
+}
 
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
+TEST_F(JobHandlerTest, LocalIncludeScenario)
+{
+  auto procedure = testutils::CreateIncludeProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//   job_handler.onStartRequest();
-//   // We are testing here queued signals, need special waiting
-//   QTest::qWait(50);
+  JobHandler job_handler(m_job_item);
 
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue0);  // value was changed
-// }
+  QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-// TEST_F(JobHandlerTest, LocalIncludeScenario)
-// {
-//   auto procedure = testutils::CreateIncludeProcedureItem(m_models.GetSequencerModel());
-//   m_job_item->SetProcedure(procedure);
+  job_handler.onStartRequest();
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(50);
 
-//   JobHandler job_handler(m_job_item);
-//   job_handler.onPrepareJobRequest();
+  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
 
-//   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
+  auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+}
 
-//   job_handler.onStartRequest();
-//   // We are testing here queued signals, need special waiting
-//   QTest::qWait(50);
+TEST_F(JobHandlerTest, UserInputScenario)
+{
+  // value defined in testutils::CreateInputProcedureItem
+  const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 0};
 
-//   EXPECT_FALSE(job_handler.IsRunning());
-//   EXPECT_EQ(spy_instruction_status.count(), 8);  // Repeat, Include, Sequence, Wait x 2
+  auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
 
-//   auto instructions = mvvm::utils::FindItems<WaitItem>(m_models.GetJobModel());
-//   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
-// }
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
+  ASSERT_EQ(vars_inside.size(), 1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*vars_inside.at(0)->GetAnyValueItem()), initial_value);
 
-// TEST_F(JobHandlerTest, UserInputScenario)
-// {
-//   // value defined in testutils::CreateInputProcedureItem
-//   const sup::dto::AnyValue initial_value{sup::dto::SignedInteger32Type, 0};
+  m_job_item->SetProcedure(procedure);
 
-//   auto procedure = testutils::CreateInputProcedureItem(m_models.GetSequencerModel());
+  const sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, 42};
+  auto on_user_input = [new_value](auto) { return UserInputResult{new_value, true}; };
 
-//   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetSequencerModel());
-//   ASSERT_EQ(vars_inside.size(), 1);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*vars_inside.at(0)->GetAnyValueItem()), initial_value);
+  JobHandler job_handler(m_job_item, {on_user_input});
 
-//   m_job_item->SetProcedure(procedure);
+  QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-//   JobHandler job_handler(m_job_item);
+  job_handler.onStartRequest();
+  QTest::qWait(50);
 
-//   job_handler.onPrepareJobRequest();
+  EXPECT_EQ(spy_instruction_status.count(), 6);  // 3 instructions
 
-//   const sup::dto::AnyValue new_value{sup::dto::SignedInteger32Type, 42};
-//   auto on_user_input = [new_value](auto) { return UserInputResult{new_value, true}; };
-//   job_handler.SetUserContext({on_user_input});
+  EXPECT_FALSE(job_handler.IsRunning());
 
-//   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
+  vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  ASSERT_EQ(vars_inside.size(), 1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*vars_inside.at(0)->GetAnyValueItem()), new_value);
+}
 
-//   job_handler.onStartRequest();
-//   QTest::qWait(50);
+TEST_F(JobHandlerTest, UserChoiceScenario)
+{
+  // value defined in testutils::CreateUserChoiceProcedureItem
+  const sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
 
-//   EXPECT_EQ(spy_instruction_status.count(), 6);  // 3 instructions
+  // creating test procedure offering user the choice between two instructions: 0) wait 1) copy
+  auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//   EXPECT_FALSE(job_handler.IsRunning());
+  // callback to select Copy instruction
+  auto on_user_choice = [](auto) { return UserChoiceResult{1, true}; };
 
-//   vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-//   ASSERT_EQ(vars_inside.size(), 1);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*vars_inside.at(0)->GetAnyValueItem()), new_value);
-// }
+  JobHandler job_handler(m_job_item, {{}, on_user_choice});
 
-// TEST_F(JobHandlerTest, UserChoiceScenario)
-// {
-//   // value defined in testutils::CreateUserChoiceProcedureItem
-//   const sup::dto::AnyValue expected_anyvalue{sup::dto::SignedInteger32Type, 42};
+  QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-//   // creating test procedure offering user the choice between two instructions: 0) wait 1) copy
-//   auto procedure = testutils::CreateUserChoiceProcedureItem(m_models.GetSequencerModel());
-//   m_job_item->SetProcedure(procedure);
+  job_handler.onStartRequest();
+  QTest::qWait(50);
 
-//   JobHandler job_handler(m_job_item);
+  EXPECT_EQ(spy_instruction_status.count(), 4);
 
-//   job_handler.onPrepareJobRequest();
+  // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
+  // var1
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto anyvalue_item = vars_inside.at(1)->GetAnyValueItem();
+  EXPECT_EQ(sup::gui::CreateAnyValue(*anyvalue_item), expected_anyvalue);
+  EXPECT_FALSE(job_handler.IsRunning());
+}
 
-//   // callback to select Copy instruction
-//   auto on_user_choice = [](auto) { return UserChoiceResult{1, true}; };
-//   job_handler.SetUserContext({{}, on_user_choice});
+//! Stop long running job.
 
-//   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
+TEST_F(JobHandlerTest, StopLongRunningJob)
+{
+  auto procedure =
+      testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
+  m_job_item->SetProcedure(procedure);
 
-//   job_handler.onStartRequest();
-//   QTest::qWait(50);
+  JobHandler job_handler(m_job_item);
 
-//   EXPECT_EQ(spy_instruction_status.count(), 4);
+  QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-//   // validating that the copy instruction worked, i.e. that is has successfully copied var0 into
-//   // var1
-//   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-//   auto anyvalue_item = vars_inside.at(1)->GetAnyValueItem();
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*anyvalue_item), expected_anyvalue);
-//   EXPECT_FALSE(job_handler.IsRunning());
-// }
+  job_handler.onStartRequest();
 
-// //! Stop long running job.
+  EXPECT_TRUE(QTest::qWaitFor(
+      [&spy_instruction_status]() { return spy_instruction_status.count() == 1; }, 100));
 
-// TEST_F(JobHandlerTest, StopLongRunningJob)
-// {
-//   auto procedure =
-//       testutils::CreateSingleWaitProcedureItem(m_models.GetSequencerModel(), msec(10000));
-//   m_job_item->SetProcedure(procedure);
+  EXPECT_TRUE(job_handler.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 1);
 
-//   JobHandler job_handler(m_job_item);
-//   EXPECT_FALSE(job_handler.IsValid());
-//   job_handler.onPrepareJobRequest();
-//   EXPECT_TRUE(job_handler.IsValid());
+  job_handler.onStopRequest();
 
-//   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
+  EXPECT_TRUE(QTest::qWaitFor(
+      [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
 
-//   job_handler.onStartRequest();
+  EXPECT_FALSE(job_handler.IsRunning());
+  EXPECT_EQ(spy_instruction_status.count(), 2);
+}
 
-//   EXPECT_TRUE(QTest::qWaitFor(
-//       [&spy_instruction_status]() { return spy_instruction_status.count() == 1; }, 100));
+//! Control log events with the help of MessageInstruction.
 
-//   EXPECT_TRUE(job_handler.IsRunning());
-//   EXPECT_EQ(spy_instruction_status.count(), 1);
+TEST_F(JobHandlerTest, LogEvents)
+{
+  const std::string expected_message("abc");
+  auto procedure =
+      testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), expected_message);
+  m_job_item->SetProcedure(procedure);
 
-//   job_handler.onStopRequest();
+  JobHandler job_handler(m_job_item);
 
-//   EXPECT_TRUE(QTest::qWaitFor(
-//       [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
+  QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-//   EXPECT_FALSE(job_handler.IsRunning());
-//   EXPECT_EQ(spy_instruction_status.count(), 2);
-// }
+  job_handler.onStartRequest();
+  QTest::qWait(50);
+  //  EXPECT_TRUE(QTest::qWaitFor([&job_handler]() { return !job_handler.IsRunning(); }, 10));
 
-// //! Control log events with the help of MessageInstruction.
+  EXPECT_FALSE(job_handler.IsRunning());
 
-// TEST_F(JobHandlerTest, LogEvents)
-// {
-//   const std::string expected_message("abc");
-//   auto procedure =
-//       testutils::CreateMessageProcedureItem(m_models.GetSequencerModel(), expected_message);
-//   m_job_item->SetProcedure(procedure);
+  EXPECT_EQ(spy_instruction_status.count(), 2);
 
-//   JobHandler job_handler(m_job_item);
-//   EXPECT_FALSE(job_handler.IsValid());
-//   job_handler.onPrepareJobRequest();
-//   EXPECT_TRUE(job_handler.IsValid());
+  auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
+  EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
 
-//   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
+  EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
 
-//   job_handler.onStartRequest();
-//   QTest::qWait(50);
-//   //  EXPECT_TRUE(QTest::qWaitFor([&job_handler]() { return !job_handler.IsRunning(); }, 10));
+  ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
 
-//   EXPECT_FALSE(job_handler.IsRunning());
+  auto event = job_handler.GetJobLog()->At(0);
+  EXPECT_EQ(event.severity, Severity::kInfo);
+  EXPECT_EQ(event.message, expected_message);
+}
 
-//   EXPECT_EQ(spy_instruction_status.count(), 2);
+TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
+{
+  auto procedure = testutils::CreateVariableResetProcedureItem(m_models.GetSequencerModel());
+  m_job_item->SetProcedure(procedure);
 
-//   auto instructions = FindExpandedInstructions(domainconstants::kMessageInstructionType);
-//   EXPECT_EQ(instructions.at(0)->GetStatus(), "Success");
+  JobHandler job_handler(m_job_item);
 
-//   EXPECT_EQ(GetRunnerStatus(m_job_item->GetStatus()), RunnerStatus::kSucceeded);
+  // expanded procedure has different variables
+  auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
+  auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
+  auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
+  auto new_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
 
-//   ASSERT_EQ(job_handler.GetJobLog()->GetSize(), 1);
+  const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
+  const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
 
-//   auto event = job_handler.GetJobLog()->At(0);
-//   EXPECT_EQ(event.severity, Severity::kInfo);
-//   EXPECT_EQ(event.message, expected_message);
-// }
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item2), sup::dto::AnyValue());
 
-// TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
-// {
-//   auto procedure = testutils::CreateVariableResetProcedureItem(m_models.GetSequencerModel());
-//   m_job_item->SetProcedure(procedure);
+  job_handler.onStartRequest();
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(100);
 
-//   JobHandler job_handler(m_job_item);
-//   job_handler.onPrepareJobRequest();
+  EXPECT_FALSE(job_handler.IsRunning());
 
-//   // expanded procedure has different variables
-//   auto vars_inside = mvvm::utils::FindItems<LocalVariableItem>(m_models.GetJobModel());
-//   auto new_anyvalue_item0 = vars_inside.at(0)->GetAnyValueItem();
-//   auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
-//   auto new_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
 
-//   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
-//   const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
-
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item2), sup::dto::AnyValue());
-
-//   job_handler.onStartRequest();
-//   // We are testing here queued signals, need special waiting
-//   QTest::qWait(100);
-
-//   EXPECT_FALSE(job_handler.IsRunning());
-
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
-
-//   // AnyValueItem on board was regenerated
-//   auto regenerated_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
-//   EXPECT_NE(new_anyvalue_item2, regenerated_anyvalue_item2);
-//   EXPECT_EQ(sup::gui::CreateAnyValue(*regenerated_anyvalue_item2), anyvalue1);  // value was
-//   changed
-// }
+  // AnyValueItem on board was regenerated
+  auto regenerated_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
+  EXPECT_NE(new_anyvalue_item2, regenerated_anyvalue_item2);
+  EXPECT_EQ(sup::gui::CreateAnyValue(*regenerated_anyvalue_item2), anyvalue1);  // value was changed
+}
