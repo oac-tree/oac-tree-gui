@@ -27,14 +27,10 @@ target_sources(${library_name} PRIVATE
   job_utils.h
   log_event.cpp
   log_event.h
-  procedure_reporter.cpp
-  procedure_reporter.h
   request_handler.h
   request_handler_queue.h
   request_types.h
   runner_status.h
-  sequencer_observer.cpp
-  sequencer_observer.h
   user_choice_provider.cpp
   user_choice_provider.h
   user_context.h

@@ -21,9 +21,9 @@
 
 #include "domain_event_dispatcher_context.h"
 #include "job_log.h"
+#include "domain_runner_service.h
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/jobsystem/domain_runner_service.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
