@@ -30,6 +30,7 @@ target_sources(${library_name} PRIVATE
   request_handler.h
   request_handler_queue.h
   request_types.h
+  runner_status.cpp
   runner_status.h
   user_choice_provider.cpp
   user_choice_provider.h

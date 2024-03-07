@@ -41,6 +41,16 @@ enum class RunnerStatus
   kHalted
 };
 
+/**
+ * @brief Returns string representation of the RunerStatus.
+ */
+std::string RunnerStatusToString(RunnerStatus status);
+
+/**
+ * @brief Returns RunnerStatus from string representation.
+ */
+RunnerStatus GetRunnerStatus(const std::string& status_name);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_

@@ -20,21 +20,14 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_UTILS_H_
 
+//! @file
 //! Collection of various utility functions for job execution.
-
-#include <sequencergui/jobsystem/runner_status.h>
 
 #include <string>
 #include <vector>
 
 namespace sequencergui
 {
-
-//! Returns string representation of the RunerStatus.
-std::string RunnerStatusToString(RunnerStatus status);
-
-//! Get RunnerStatus from string representation.
-RunnerStatus GetRunnerStatus(const std::string& status_name);
 
 //! Returns default tick timeout in msec.
 int GetDefaultTickTimeoutMsc();
