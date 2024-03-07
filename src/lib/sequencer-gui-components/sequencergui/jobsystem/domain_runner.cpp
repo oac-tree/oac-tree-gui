@@ -35,11 +35,11 @@ namespace sequencergui
 DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
                            const UserContext& user_context, procedure_t& procedure)
     : m_job_observer(std::make_unique<DomainJobObserver>(post_event_callback))
-    , m_procedure_observer(std::make_unique<DomainProcedureObserver>(post_event_callback))
+    , m_procedure_observer(
+          std::make_unique<DomainProcedureObserver>(post_event_callback, user_context))
     , m_job_controller(std::make_unique<sup::sequencer::JobController>(
           procedure, *m_procedure_observer, *m_job_observer))
 {
-  m_procedure_observer->SetUserContext(user_context);
 }
 
 sup::sequencer::JobState DomainRunner::GetJobState() const

@@ -35,22 +35,27 @@
 namespace sequencergui
 {
 
-DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_event_callback)
+DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_event_callback,
+                                                 const UserContext &user_context)
     : m_post_event_callback(std::move(post_event_callback))
 {
   if (!m_post_event_callback)
   {
     throw RuntimeException("Callback is not initialised");
   }
+
+  if (user_context.m_user_choice_callback)
+  {
+    m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
+  }
+
+  if (user_context.m_user_input_callback)
+  {
+    m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
+  }
 }
 
 DomainProcedureObserver::~DomainProcedureObserver() = default;
-
-void DomainProcedureObserver::SetUserContext(const UserContext &user_context)
-{
-  m_choice_provider = std::make_unique<UserChoiceProvider>(user_context.m_user_choice_callback);
-  m_input_provider = std::make_unique<UserInputProvider>(user_context.m_user_input_callback);
-}
 
 void DomainProcedureObserver::UpdateInstructionStatus(
     const sup::sequencer::Instruction *instruction)
@@ -83,16 +88,28 @@ bool DomainProcedureObserver::PutValue(const sup::dto::AnyValue &value,
 bool DomainProcedureObserver::GetUserValue(sup::dto::AnyValue &value,
                                            const std::string &description)
 {
-  auto result = m_input_provider->GetUserInput({value, description});
-  value = result.value;
-  return result.processed;
+  if (m_input_provider)
+  {
+    auto result = m_input_provider->GetUserInput({value, description});
+    value = result.value;
+    return result.processed;
+  }
+
+  m_post_event_callback(CreateLogEvent(Severity::kWarning, "User input callback is not set"));
+  return false;
 }
 
 int DomainProcedureObserver::GetUserChoice(const std::vector<std::string> &options,
                                            const sup::dto::AnyValue &metadata)
 {
-  auto result = m_choice_provider->GetUserChoice({options, metadata});
-  return result.processed ? result.index : -1;
+  if (m_choice_provider)
+  {
+    auto result = m_choice_provider->GetUserChoice({options, metadata});
+    return result.processed ? result.index : -1;
+  }
+
+  m_post_event_callback(CreateLogEvent(Severity::kWarning, "User choice callback is not set"));
+  return -1;
 }
 
 void DomainProcedureObserver::Message(const std::string &message)

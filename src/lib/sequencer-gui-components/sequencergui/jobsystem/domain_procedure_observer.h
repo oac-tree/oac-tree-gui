@@ -47,11 +47,11 @@ public:
    * @brief The main c-tor.
    *
    * @param post_event_callback A callback to report events to the GUI.
+   * @param user_context Special user dialog callbacks to interact with the user.
    */
-  explicit DomainProcedureObserver(post_event_callback_t post_event_callback);
-  ~DomainProcedureObserver();
-
-  void SetUserContext(const UserContext &user_context);
+  explicit DomainProcedureObserver(post_event_callback_t post_event_callback,
+                                   const UserContext& user_context);
+  ~DomainProcedureObserver() override;
 
   void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
 

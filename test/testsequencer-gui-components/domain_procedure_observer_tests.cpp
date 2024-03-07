@@ -19,6 +19,8 @@
 
 #include "sequencergui/jobsystem/domain_procedure_observer.h"
 
+#include <sequencergui/jobsystem/user_context.h>
+
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
@@ -43,14 +45,14 @@ public:
 
 TEST_F(DomainProcedureObserverTest, InitialState)
 {
-  EXPECT_THROW(DomainProcedureObserver({}), RuntimeException);
+  EXPECT_THROW(DomainProcedureObserver({}, {}), RuntimeException);
 }
 
 TEST_F(DomainProcedureObserverTest, OnStateChange)
 {
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  DomainProcedureObserver observer(m_event_listener.CreateCallback());
+  DomainProcedureObserver observer(m_event_listener.CreateCallback(), {});
 
   domain_event_t expected_event(InstructionStatusChangedEvent{
       instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
