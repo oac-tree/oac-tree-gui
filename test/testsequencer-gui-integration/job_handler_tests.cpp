@@ -156,7 +156,7 @@ TEST_F(JobHandlerTest, PrematureDeletion)
 
   {
     JobHandler job_handler(m_job_item);
-    job_handler.onStartRequest();
+    job_handler.OnStartRequest();
   }
 
   EXPECT_EQ(m_job_item->GetStatus(), std::string());
@@ -175,7 +175,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleMessage)
 
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
 
   auto predicate = [this, &job_handler, &spy_instruction_status]()
   { return !job_handler.IsRunning() && spy_instruction_status.count() == 2; };
@@ -211,7 +211,7 @@ TEST_F(JobHandlerTest, ProcedureWithSingleMessageStatusChangedSignals)
   mvvm::PropertyChangedEvent expected_event{message_item, itemconstants::kStatus};
   EXPECT_CALL(listener, OnEvent(mvvm::event_variant_t(expected_event))).Times(2);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
 
   QTest::qWait(50);
 
@@ -246,7 +246,7 @@ TEST_F(JobHandlerTest, ProcedureWithVariableCopy)
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
@@ -263,7 +263,7 @@ TEST_F(JobHandlerTest, LocalIncludeScenario)
 
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
@@ -294,7 +294,7 @@ TEST_F(JobHandlerTest, UserInputScenario)
 
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
   QTest::qWait(50);
 
   EXPECT_EQ(spy_instruction_status.count(), 6);  // 3 instructions
@@ -322,7 +322,7 @@ TEST_F(JobHandlerTest, UserChoiceScenario)
 
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
   QTest::qWait(50);
 
   EXPECT_EQ(spy_instruction_status.count(), 4);
@@ -347,7 +347,7 @@ TEST_F(JobHandlerTest, StopLongRunningJob)
 
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
 
   EXPECT_TRUE(QTest::qWaitFor(
       [&spy_instruction_status]() { return spy_instruction_status.count() == 1; }, 100));
@@ -355,7 +355,7 @@ TEST_F(JobHandlerTest, StopLongRunningJob)
   EXPECT_TRUE(job_handler.IsRunning());
   EXPECT_EQ(spy_instruction_status.count(), 1);
 
-  job_handler.onStopRequest();
+  job_handler.OnStopRequest();
 
   EXPECT_TRUE(QTest::qWaitFor(
       [&spy_instruction_status]() { return spy_instruction_status.count() == 2; }, 100));
@@ -377,7 +377,7 @@ TEST_F(JobHandlerTest, LogEvents)
 
   QSignalSpy spy_instruction_status(&job_handler, &JobHandler::InstructionStatusChanged);
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
   QTest::qWait(50);
   //  EXPECT_TRUE(QTest::qWaitFor([&job_handler]() { return !job_handler.IsRunning(); }, 10));
 
@@ -417,7 +417,7 @@ TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item2), sup::dto::AnyValue());
 
-  job_handler.onStartRequest();
+  job_handler.OnStartRequest();
   // We are testing here queued signals, need special waiting
   QTest::qWait(100);
 

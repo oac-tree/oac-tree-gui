@@ -58,13 +58,11 @@ void JobItem::SetProcedure(const ProcedureItem *item)
   GetItem<mvvm::LinkedItem>(kLink)->SetLink(item);
 }
 
-//! Returns procedure linked to this JobItem.
 ProcedureItem *JobItem::GetProcedure() const
 {
   return GetItem<mvvm::LinkedItem>(kLink)->Get<ProcedureItem>();
 }
 
-//! Returns procedure
 ProcedureItem *JobItem::GetExpandedProcedure()
 {
   return GetItem<ProcedureItem>(kExpandedProcedure);

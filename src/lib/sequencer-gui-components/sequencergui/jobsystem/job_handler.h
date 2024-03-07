@@ -43,7 +43,17 @@ class BreakpointController;
 class DomainRunnerService;
 class DomainEventDispatcherContext;
 
-//! Contains all information necessary for job to run: runner, log, domain builder.
+/**
+ * @brief The JobHandler class is the main class to run a job represented by the JobItem.
+ *
+ * It is used by the JobManager, where each JobItem is handled by its own JobHandler. It has
+ * multiple responsibilities:
+ *
+ * - generate sequencer domain procedure using ProcedureItem
+ * - setup domain procedure, and generate corresponding expanded procedure
+ * - handle start/stop/pause/step requests
+ * - listen for all sequencer domain events and update GUI items accordingly
+ */
 class JobHandler : public QObject
 {
   Q_OBJECT
@@ -53,24 +63,60 @@ public:
                       int sleep_time_msec = 0);
   ~JobHandler() override;
 
-  void onStartRequest();
+  /**
+   * @brief Run sequencer procedure in continuous manner, if allowed.
+   */
+  void OnStartRequest();
 
-  void onPauseRequest();
+  /**
+   * @brief Pause procedure's execution.
+   */
+  void OnPauseRequest();
 
-  void onMakeStepRequest();
+  /**
+   * @brief Execute a single step of the procedure, if allowed.
+   */
+  void OnMakeStepRequest();
 
-  void onStopRequest();
+  /**
+   * @brief Stops the procedure execution.
+   */
+  void OnStopRequest();
 
+  /**
+   * @brief Checks if the job is running, which is one of pause/stepping/running states.
+   */
   bool IsRunning() const;
 
+  /**
+   * @brief Sets sleeping time at the end of each tick.
+   */
   void SetSleepTime(int time_msec);
 
+  /**
+   * @brief Returns expanded ProcedureItem.
+   */
   ProcedureItem* GetExpandedProcedure() const;
 
+  /**
+   * @brief Returns runner status.
+   */
   RunnerStatus GetRunnerStatus() const;
 
+  /**
+   * @brief Returns a job log.
+   */
   JobLog* GetJobLog() const;
 
+  /**
+   * @brief Set/unset a breakpoint for given instruction.
+   *
+   * It is used to handle double-clicks in a tree of instructions belonging to ExpandedProcedure
+   * item. Each double-click will toggle breakpoint status in a circle set/disabled/not-set.
+   *
+   * @param instruction Instruction item from expanded procedure tree.
+   *
+   */
   void OnToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 signals:
@@ -78,32 +124,61 @@ signals:
   void NextLeavesChanged(const std::vector<sequencergui::InstructionItem*>&);
 
 private:
+  /**
+   * @brief Processes instruction status change in the domain, and update InstructionItem's status
+   * accordingly.
+   */
   void OnInstructionStatusChanged(const InstructionStatusChangedEvent& event);
+
+  /**
+   * @brief Processes job status changed from the domain, and update JobItem status accordingly.
+   */
   void OnJobStateChanged(const JobStateChangedEvent& event);
+
+  /**
+   * @brief Processes log events from the domain, and put them in GUI JobLog.
+   */
   void onLogEvent(const sequencergui::LogEvent& event);
+
+  /**
+   * @brief Handles events reporting for changes in domain's next leaves.
+   */
   void OnNextLeavesChangedEvent(const NextLeavesChangedEvent& event);
 
+  /**
+   * @brief Returns job model to which our JobItem
+   */
   JobModel* GetJobModel();
 
   void PrepareForRun();
   void SetupDomainProcedure();
   void SetupExpandedProcedureItem();
   void SetupDomainRunner(const UserContext& user_context, int sleep_time_msec);
+
+  /**
+   * @brief Returns a context necessary for sequencer event queue to function.
+   */
   DomainEventDispatcherContext CreateContext();
 
+  //!< GUI object builder holding domain/GUI object correspondance
   std::unique_ptr<GUIObjectBuilder> m_guiobject_builder;
 
   //!< domain procedure should live longer than the runner
   std::unique_ptr<procedure_t> m_domain_procedure;
 
+  //!< main runner to start/stop jobs
   std::unique_ptr<DomainRunnerService> m_domain_runner_service;
 
+  //!< dedicated listener to provide communication bween domain/GUI workspace variables
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
 
+  //!< main controller to handle breakpoints toggling
   std::unique_ptr<BreakpointController> m_breakpoint_controller;
 
+  //!< the job log
   JobLog* m_job_log{nullptr};
 
+  //!< the JobItem being handled
   JobItem* m_job_item{nullptr};
 };
 

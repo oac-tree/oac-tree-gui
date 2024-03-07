@@ -31,7 +31,8 @@ class ProcedureItem;
  * @brief The JobItem class represents a job to run a procedure.
  *
  * @details Job item links to ProcedureItem via item pool machinery, so it should be used only when
- * it is a part of the model.
+ * it is a part of the model. JobItem doesn't have own logic to run a job and is handled by
+ * JobHandler.
  */
 
 class JobItem : public mvvm::CompoundItem
@@ -44,8 +45,14 @@ public:
 
   std::unique_ptr<SessionItem> Clone(bool make_unique_id) const override;
 
+  /**
+   * @brief Returns job status.
+   */
   std::string GetStatus() const;
 
+  /**
+   * @brief Sets the job status.
+   */
   void SetStatus(const std::string& status);
 
   /**
@@ -56,11 +63,25 @@ public:
   /**
    * @brief Returns a pointer to a procedure which is handled by given job item.
    *
-   * @details It works only when both JobItem and ProcedureItem are belongs to the same model, or
-   * handled by the same memory pool.
+   * @details We store procedure via LinkIetm mechanism to provide persistence. It works only when
+   * both JobItem and ProcedureItem are belongs to the same model, or handled by the same memory
+   * pool.
    */
   ProcedureItem* GetProcedure() const;
 
+  /**
+   * @brief Returns underlying expanded procedure.
+   *
+   * Expanded procedure is a ProcedureItem which is obtained from the sequencer domain procedure
+   * after its Setup. Expanded ProcedureItem is stored on board this JobItem, and may contain
+   * breakpoint information, and is shown in a real-time instruction tree. The whole chain looks
+   * like the following.
+   *
+   * - ProcedureItem is what the user has created in the editor
+   * - Sequencer domain procedure
+   * - Sequencer domain procedure after Setup call
+   * - Expanded ProcedureItem
+   */
   ProcedureItem* GetExpandedProcedure();
 };
 

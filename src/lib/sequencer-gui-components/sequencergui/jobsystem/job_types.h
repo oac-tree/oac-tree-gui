@@ -20,13 +20,14 @@
 #ifndef SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
 #define SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
 
-//! Provide conveniece types for procedure execution in the JobManager.
-
 namespace sequencergui
 {
 
-//! Defines possible states that runner can have during job execution.
-
+/**
+ * @brief The RunnerStatus enum defines possible states that runner can have during job execution.
+ *
+ * For the moment, it matches one-to-one sup::sequencer::JobStatus.
+ */
 enum class RunnerStatus
 {
   kInitial,

@@ -67,22 +67,22 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int s
 
 JobHandler::~JobHandler() = default;
 
-void JobHandler::onStartRequest()
+void JobHandler::OnStartRequest()
 {
   m_domain_runner_service->Start();
 }
 
-void JobHandler::onPauseRequest()
+void JobHandler::OnPauseRequest()
 {
   m_domain_runner_service->Pause();
 }
 
-void JobHandler::onMakeStepRequest()
+void JobHandler::OnMakeStepRequest()
 {
   m_domain_runner_service->Step();
 }
 
-void JobHandler::onStopRequest()
+void JobHandler::OnStopRequest()
 {
   m_domain_runner_service->Stop();
 }
