@@ -275,6 +275,9 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     const domain_event_t event4(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
 
+    const domain_event_t event4a(NextLeavesChangedEvent{{wait1_ptr}});
+    EXPECT_CALL(m_event_listener, OnCallback(event4a)).Times(1);
+
     const domain_event_t event5(JobStateChangedEvent{JobState::kPaused});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
   }
@@ -309,6 +312,9 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     const domain_event_t event4(
         InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::SUCCESS});
     EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
+
+    const domain_event_t event4a(NextLeavesChangedEvent{});
+    EXPECT_CALL(m_event_listener, OnCallback(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kSucceeded});
     EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
@@ -384,7 +390,7 @@ TEST_F(DomainRunnerTest, StepAndRunTillTheEnd)
   // Instruction: repeat (not finished) + one increment (not finished, success)
   EXPECT_CALL(listener, OnInstructionStatusChanged(_)).Times(3);
   EXPECT_CALL(listener, OnLogEvent(_)).Times(1);  // variable changed (increment 1)
-  EXPECT_CALL(listener, OnNextLeavesChanged(_)).Times(2);
+  EXPECT_CALL(listener, OnNextLeavesChanged(_)).Times(3);
 
   DomainRunner runner(listener.CreateCallback(), *procedure);
 
