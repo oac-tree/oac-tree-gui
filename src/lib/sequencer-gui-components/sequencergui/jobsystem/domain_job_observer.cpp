@@ -93,8 +93,8 @@ sup::sequencer::JobState DomainJobObserver::GetCurrentState() const
 
 bool DomainJobObserver::WaitForState(sup::sequencer::JobState state, double msec) const
 {
-  const double nano_in_msec{1e6};
-  auto duration = std::chrono::nanoseconds(std::lround(msec * nano_in_msec));
+  const double nanosec_per_msec{1e6};
+  auto duration = std::chrono::nanoseconds(std::lround(msec * nanosec_per_msec));
   std::unique_lock<std::mutex> lock{m_mutex};
   return m_cv.wait_for(lock, duration, [this, state]() { return m_state == state; });
 }
