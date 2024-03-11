@@ -1,36 +1,36 @@
 # Sequencer Graphical User Interface
 
-![Explorer view](./doc/explorer-1000x.png)
+![Explorer view](./doc/explorer-1200x.png)
 
 Explorer view
 
-![Composer view](./doc/nodeeditor-1000x.png)
+![Composer view](./doc/nodeeditor-1200x.png)
 
-Composer view
+Composer view (NodeEditor and InstructionTree panels)
 
-![Operation View](./doc/operation-1000x.png)
+![Composer view](./doc/composer-1200x.png)
 
-Operation view
+Composer view (InstructionTree and Workspace panels)
 
-![Standalone Operation view](./doc/sequencer-operation-1000x.png)
+![Operation View](./doc/operation-1200x.png)
 
-Standalone Operation view
+Operation view (Real-time instruction tree with breakpoints and variable table)
 
 ## Installation on CODAC machines from RPMs
 
 ```bash
-yum install codac-core-7.1-sequencer-gui.x86_64
+yum install codac-core-7.2-sequencer-gui.x86_64
 ```
 
 ## Run
 
-/opt/codac/bin/sequencer-gui
+- /opt/codac/bin/sequencer-gui
 
 Other applications:
 
-/opt/codac/bin/sequencer-operation
-/opt/codac/bin/sup-pvmonitor
-/opt/codac/bin/anyvalue-editor
+- /opt/codac/bin/sequencer-operation
+- /opt/codac/bin/sup-pvmonitor
+- /opt/codac/bin/anyvalue-editor
 
 ## Installation on CODAC machines (manual)
 
@@ -39,7 +39,7 @@ The `sequencer-gui` application depends on a number of Codac Operation Applicati
 ### Install prerequisites
 
 ```bash
-yum install codac-core-7.1-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
+yum install codac-core-7.2-gtest-1.12.1-devel.x86_64 libxml2-devel.x86_64
 yum install qt5-qtbase-devel.x86_64 qt5-qtsvg-devel.x86_64 qt5-qttools-devel.x86_64 qt5-qtbase-gui.x86_64 adwaita-qt5.x86_64 mesa-libGL-devel.x86_64
 ```
 
