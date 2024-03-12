@@ -62,8 +62,6 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
           &ExplorerPanel::ProcedureFileClicked);
   connect(m_file_tree_view, &FileTreeView::ProcedureFileDoubleClicked, this,
           &ExplorerPanel::ProcedureFileDoubleClicked);
-  connect(m_procedure_list_view, &ProcedureListWidget::CreateNewProcedureRequest, this,
-          &ExplorerPanel::CreateNewProcedureRequest);
   connect(m_procedure_list_view, &ProcedureListWidget::RemoveProcedureRequest, this,
           &ExplorerPanel::RemoveProcedureRequest);
 

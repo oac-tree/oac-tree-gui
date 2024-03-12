@@ -73,8 +73,6 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
-  void OnRemoveSelectedRequest();
-
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};
 
