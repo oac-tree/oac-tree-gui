@@ -30,6 +30,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
+#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -86,6 +87,10 @@ void SequencerMainWindow::InitApplication()
 
 void SequencerMainWindow::InitComponents()
 {
+  sup::gui::AppAddMenus(menuBar(), {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
+                                    sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
+                                    sup::gui::constants::kHelpMenu});
+
   m_action_manager = new SequencerMainWindowActions(m_models->GetSequencerModel(), this);
   connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
           &SequencerMainWindow::OnRestartRequest);

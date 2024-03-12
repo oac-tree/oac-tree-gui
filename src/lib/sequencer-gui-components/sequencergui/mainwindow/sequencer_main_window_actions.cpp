@@ -92,9 +92,7 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  sup::gui::AppRegisterMenuBar(menubar);
-
-  auto file_menu = sup::gui::AppAddMenu(sup::gui::constants::kFileMenu)->GetMenu();
+  auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
   file_menu->setToolTipsVisible(true);
 
   auto about_to_show_menu = [this]()
@@ -120,13 +118,7 @@ void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  // will be populated from other widgets
-  sup::gui::AppAddMenu(sup::gui::constants::kViewMenu);
-
-  // tools menu will be populated from other widgets
-  sup::gui::AppAddMenu(sup::gui::constants::kToolsMenu);
-
-  auto help_menu = sup::gui::AppAddMenu(sup::gui::constants::kHelpMenu)->GetMenu();
+  auto help_menu = sup::gui::AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }
 
