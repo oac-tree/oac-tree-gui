@@ -46,7 +46,7 @@ SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterfa
 
 {
   CreateActions(mainwindow);
-  SetupMenus(mainwindow->menuBar());
+  SetupMenus();
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
@@ -90,10 +90,9 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 //! Equips menu with actions.
 
-void SequencerMainWindowActions::SetupMenus(QMenuBar *menubar)
+void SequencerMainWindowActions::SetupMenus()
 {
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
-  file_menu->setToolTipsVisible(true);
 
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };

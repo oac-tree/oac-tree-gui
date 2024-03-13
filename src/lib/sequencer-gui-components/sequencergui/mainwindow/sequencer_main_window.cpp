@@ -87,7 +87,8 @@ void SequencerMainWindow::InitApplication()
 
 void SequencerMainWindow::InitComponents()
 {
-  sup::gui::AppAddMenus(menuBar(), {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
+  sup::gui::AppRegisterMainMenuBar(menuBar(),
+                                   {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
                                     sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
                                     sup::gui::constants::kHelpMenu});
 

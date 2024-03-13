@@ -25,6 +25,7 @@
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
+#include <sup/gui/app/app_action_helper.h>
 
 #include <QCloseEvent>
 #include <QMenuBar>
@@ -73,6 +74,10 @@ void OperationMainWindow::PopulateModel() {}
 void OperationMainWindow::InitApplication()
 {
   ReadSettings();
+
+  sup::gui::AppRegisterMainMenuBar(menuBar(),
+                                   {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
+                                    sup::gui::constants::kHelpMenu});
 
   m_action_manager = new OperationMainWindowActions(m_models->GetSequencerModel(), this);
   connect(m_action_manager, &OperationMainWindowActions::RestartApplicationRequest, this,

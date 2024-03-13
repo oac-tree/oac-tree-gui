@@ -82,9 +82,7 @@ void OperationMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  sup::gui::AppRegisterMenuBar(menubar);
-
-  auto file_menu = sup::gui::AppAddMenu(sup::gui::constants::kFileMenu)->GetMenu();
+  auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
   file_menu->addAction(m_open_action);
 
@@ -98,10 +96,7 @@ void OperationMainWindowActions::SetupMenus(QMenuBar *menubar)
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
 
-  // will be populated from other widgets
-  sup::gui::AppAddMenu(sup::gui::constants::kViewMenu);
-
-  auto help_menu = sup::gui::AppAddMenu(sup::gui::constants::kHelpMenu)->GetMenu();
+  auto help_menu = sup::gui::AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }
 
