@@ -18,6 +18,10 @@ target_sources(${library_name} PRIVATE
   message_handler_factory.h
   message_helper.cpp
   message_helper.h
+  procedure_list_action_handler.cpp
+  procedure_list_action_handler.h
+  procedure_list_actions.cpp
+  procedure_list_actions.h
   procedure_list_widget.cpp
   procedure_list_widget.h
 )
