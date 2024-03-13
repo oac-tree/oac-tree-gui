@@ -42,8 +42,9 @@ class ProjectHandler;
 namespace sequencergui
 {
 
-//! Main menu bar actions for the main window.
-
+/**
+ * @brief The SequencerMainWindowActions class handles actions of the main menubar.
+ */
 class SequencerMainWindowActions : public QObject
 {
   Q_OBJECT
@@ -52,14 +53,32 @@ public:
   explicit SequencerMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
+  /**
+   * @brief Closes current project.
+   *
+   * Internally performs check for unsaved data, and proceeds via save/discard/cancel dialog.
+   * Returns true if project was successfully saved or user has agreed to discard unsaved changes,
+   * and false otherwise. The later normally means that the user has changed his mind in the course
+   * of this operation, canceled dialog, and the project has remained in unsaved state.
+   *
+   * @return True in the case of success.
+   */
   bool CloseCurrentProject() const;
 
 signals:
   void RestartApplicationRequest(sup::gui::AppExitCode);
 
 private:
+  /**
+   * @brief Create main actions.
+   */
   void CreateActions(QMainWindow* mainwindow);
+
+  /**
+   * @brief Populates main menu with actions.
+   */
   void SetupMenus();
+
   void OnAbout();
   void OnSummonSettingsDialogSettings();
   void OnChangeSystemFont();

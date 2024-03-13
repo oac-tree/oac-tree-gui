@@ -51,17 +51,10 @@ SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterfa
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
 
-//! Closes current project. Internally performs check for unsaved data, and proceeds via
-//! save/discard/cancel dialog. Returns true if project was successfully saved, and false otherwise.
-//! The later normally means that the user has changed his mind in the course of this operation and
-//! the project has remained in unsaved state.
-
 bool SequencerMainWindowActions::CloseCurrentProject() const
 {
   return m_project_handler->CloseCurrentProject();
 }
-
-//! Create main actions.
 
 void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 {
@@ -87,8 +80,6 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
   connect(m_reset_settings_action, &QAction::triggered, this,
           &SequencerMainWindowActions::OnResetSettings);
 }
-
-//! Equips menu with actions.
 
 void SequencerMainWindowActions::SetupMenus()
 {

@@ -38,8 +38,9 @@ namespace sequencergui
 
 class ApplicationModels;
 
-//! Main menu bar actions for the main window.
-
+/**
+ * @brief The OperationMainWindowActions class  handles actions of the main menubar.
+ */
 class OperationMainWindowActions : public QObject
 {
   Q_OBJECT
