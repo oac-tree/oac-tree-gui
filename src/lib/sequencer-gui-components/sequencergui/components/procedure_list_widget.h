@@ -20,6 +20,8 @@
 #ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
 
+#include <sequencergui/components/procedure_list_actions.h>
+
 #include <QWidget>
 
 namespace mvvm
@@ -29,28 +31,24 @@ class ItemViewComponentProvider;
 }  // namespace mvvm
 
 class QListView;
-class QAction;
 
 namespace sequencergui
 {
+
 class SequencerModel;
 class ProcedureItem;
-class SelectionModel;
-class ProcedureList;
 
-//! List view for ProcedureItem with selection abilities.
-
+/**
+ * @brief The ProcedureListWidget class represent a simple list with procedures with editable names.
+ *
+ * It is located in left-bottom corner of SequencerExplorerView and left-top corner of
+ * SequencerComposerView. It contains a list of actions to add/remove/copy procedures.
+ */
 class ProcedureListWidget : public QWidget
 {
   Q_OBJECT
 
 public:
-  enum Actions
-  {
-    kCreateNew = 1,
-    kRemoveSelected = 2
-  };
-
   explicit ProcedureListWidget(QWidget* parent = nullptr);
   ~ProcedureListWidget() override;
 
@@ -65,7 +63,7 @@ public:
 
   mvvm::ViewModel* GetViewModel();
 
-  void SetupActions(int action_flag);
+  QList<QAction*> GetActions(const std::vector<ProcedureListActions::ActionKey>& action_keys);
 
 signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
@@ -73,11 +71,9 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
-  QAction* m_new_procedure_action{nullptr};
-  QAction* m_remove_selected_action{nullptr};
-
   QListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+  ProcedureListActions* m_actions{nullptr};
 
   SequencerModel* m_model{nullptr};
 };

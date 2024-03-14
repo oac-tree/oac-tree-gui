@@ -46,12 +46,12 @@ ProcedureListActions::ProcedureListActions(QObject *parent)
   m_actions[ActionKey::kRemoveSelected] = m_remove_selected_action;
 }
 
-QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &actions)
+QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys)
 {
   QList<QAction *> result;
-  for (auto action : actions)
+  for (auto key : action_keys)
   {
-    auto iter = m_actions.find(action);
+    auto iter = m_actions.find(key);
     if (iter != m_actions.end())
     {
       result.push_back(iter->second);

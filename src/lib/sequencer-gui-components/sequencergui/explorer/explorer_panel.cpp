@@ -48,8 +48,10 @@ ExplorerPanel::ExplorerPanel(QWidget *parent)
   m_collapsible_list->setWindowTitle("Explorer View");
 
   m_collapsible_list->AddWidget(m_file_tree_view);
-  m_procedure_list_view->SetupActions(ProcedureListWidget::kRemoveSelected);
-  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, m_procedure_list_view->actions());
+
+  auto toolbar_actions =
+      m_procedure_list_view->GetActions({ProcedureListActions::ActionKey::kRemoveSelected});
+  m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, toolbar_actions);
 
   m_stack_widget->AddWidget(m_collapsible_list, m_file_tree_view->actions());
 

@@ -19,6 +19,8 @@
 
 #include "procedure_list_widget.h"
 
+#include "procedure_list_actions.h"
+
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -29,7 +31,6 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
-#include <QAction>
 #include <QListView>
 #include <QVBoxLayout>
 
@@ -38,10 +39,9 @@ namespace sequencergui
 
 ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     : QWidget(parent)
-    , m_new_procedure_action(new QAction(this))
-    , m_remove_selected_action(new QAction(this))
     , m_list_view(new QListView)
     , m_component_provider(mvvm::CreateProvider<ProcedureViewModel>(m_list_view))
+    , m_actions(new ProcedureListActions(this))
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");
@@ -53,6 +53,11 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
 
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
+
+  connect(m_actions, &ProcedureListActions::CreateNewProcedureRequest, this,
+          &ProcedureListWidget::CreateNewProcedureRequest);
+  connect(m_actions, &ProcedureListActions::RemoveProcedureRequest, this,
+          [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); });
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;
@@ -92,27 +97,10 @@ mvvm::ViewModel *ProcedureListWidget::GetViewModel()
   return m_component_provider->GetViewModel();
 }
 
-void ProcedureListWidget::SetupActions(int action_flag)
+QList<QAction *> ProcedureListWidget::GetActions(
+    const std::vector<ProcedureListActions::ActionKey> &action_keys)
 {
-  if (action_flag & kCreateNew)
-  {
-    m_new_procedure_action->setText("New Procedure");
-    m_new_procedure_action->setToolTip("Creates new empty procedure");
-    m_new_procedure_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
-    connect(m_new_procedure_action, &QAction::triggered, this,
-            &ProcedureListWidget::CreateNewProcedureRequest);
-    addAction(m_new_procedure_action);
-  }
-
-  if (action_flag & kRemoveSelected)
-  {
-    m_remove_selected_action->setText("Remove Procedure");
-    m_remove_selected_action->setToolTip("Removes selected procedure");
-    m_remove_selected_action->setIcon(sup::gui::utils::GetIcon("file-remove-outline.svg"));
-    auto on_remove = [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); };
-    connect(m_remove_selected_action, &QAction::triggered, this, on_remove);
-    addAction(m_remove_selected_action);
-  }
+  return m_actions->GetActions(action_keys);
 }
 
 }  // namespace sequencergui

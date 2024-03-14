@@ -49,7 +49,7 @@ public:
   /**
    * @brief Returns list of actions according to provided flags.
    */
-  QList<QAction*> GetActions(const std::vector<ActionKey>& actions);
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
 
 signals:
   void CreateNewProcedureRequest();

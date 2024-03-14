@@ -47,13 +47,14 @@ ComposerPanel::ComposerPanel(QWidget *parent)
   layout->setSpacing(0);
   layout->addWidget(m_stack_widget);
 
-  m_procedure_list_view->SetupActions(ProcedureListWidget::kCreateNew
-                                      | ProcedureListWidget::kRemoveSelected);
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, {});
   m_collapsible_list->AddCollapsibleWidget(m_instruction_panel, {});
   m_collapsible_list->AddCollapsibleWidget(m_workspace_panel, {});
 
-  m_stack_widget->AddWidget(m_collapsible_list, m_procedure_list_view->actions());
+  auto toolbar_actions =
+      m_procedure_list_view->GetActions({ProcedureListActions::ActionKey::kCreateNew,
+                                         ProcedureListActions::ActionKey::kRemoveSelected});
+  m_stack_widget->AddWidget(m_collapsible_list, toolbar_actions);
 
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
