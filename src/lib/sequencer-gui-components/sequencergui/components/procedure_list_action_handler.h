@@ -20,7 +20,15 @@
 #ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
 
+#include <sequencergui/components/procedure_list_context.h>
+
 #include <QObject>
+
+namespace mvvm
+{
+class ContainerItem;
+class SessionModelInterface;
+}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -30,7 +38,27 @@ class ProcedureListActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit ProcedureListActionHandler(QObject* parent = nullptr);
+  explicit ProcedureListActionHandler(ProcedureListContext context, QObject* parent = nullptr);
+
+  /**
+   * @brief Creates empty procedure after the current selection.
+   */
+  void OnCreateNewProcedureRequest();
+
+  /**
+   * @brief Removes currently selected procedure.
+   */
+  void OnRemoveProcedureRequest();
+
+signals:
+  void SelectProcedureRequest(ProcedureItem* item);
+
+private:
+  mvvm::ContainerItem* GetProcedureContainer() const;
+  ProcedureItem* GetSelectedProcedure() const;
+  mvvm::SessionModelInterface* GetModel();
+
+  ProcedureListContext m_context;
 };
 
 }  // namespace sequencergui
