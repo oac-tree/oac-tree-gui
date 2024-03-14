@@ -37,11 +37,13 @@ class InstructionItem;
 struct AnyValueDialogResult;
 
 /**
- * @brief The InstructionEditorContext struct represents a state of widget related to the
- * instruction composition.
+ * @brief The InstructionEditorContext struct holds collection of callbacks to retrieve current
+ * state of InstructionEditor.
  *
- * Allows to retrieve currently selected procedure and instruction.
+ * It is used by InstructionEditorActionHandler to handle actions related to instruction tree
+ * composition.
  */
+
 struct InstructionEditorContext
 {
   //! Callback to get currently selected procedure.

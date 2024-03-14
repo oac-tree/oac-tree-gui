@@ -45,7 +45,7 @@ using ::testing::_;
 
 Q_DECLARE_METATYPE(mvvm::SessionItem*)
 
-//! Tests for SequencerObserver class.
+//! Tests for InstructionEditorActionHandler class.
 
 class InstructionEditorActionHandlerTest : public ::testing::Test
 {
