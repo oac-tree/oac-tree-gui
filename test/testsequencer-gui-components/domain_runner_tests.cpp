@@ -35,6 +35,8 @@
 #include <testutils/standard_procedures.h>
 #include <testutils/test_utils.h>
 
+#include <thread>
+
 using namespace sequencergui;
 using ::testing::_;
 using ::testing::AtLeast;
