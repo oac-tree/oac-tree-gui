@@ -138,16 +138,6 @@ void SequencerExplorerView::SetupConnections()
 
   connect(m_explorer_panel, &ExplorerPanel::ProcedureFileDoubleClicked, this,
           &SequencerExplorerView::ImportProcedure);
-
-  auto on_remove_procedure = [this](auto procedure)
-  {
-    if (procedure)
-    {
-      m_model->RemoveItem(procedure);
-    }
-  };
-
-  connect(m_explorer_panel, &ExplorerPanel::RemoveProcedureRequest, this, on_remove_procedure);
 }
 
 }  // namespace sequencergui

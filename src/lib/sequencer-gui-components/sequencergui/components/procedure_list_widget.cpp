@@ -55,10 +55,10 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit ProcedureSelected(GetSelectedProcedure()); });
 
-  connect(m_actions, &ProcedureListActions::CreateNewProcedureRequest, this,
-          &ProcedureListWidget::CreateNewProcedureRequest);
-  connect(m_actions, &ProcedureListActions::RemoveProcedureRequest, this,
-          [this]() { emit RemoveProcedureRequest(GetSelectedProcedure()); });
+  connect(m_actions, &ProcedureListActions::CreateNewProcedureRequest, m_action_handler,
+          &ProcedureListActionHandler::OnCreateNewProcedureRequest);
+  connect(m_actions, &ProcedureListActions::RemoveProcedureRequest, m_action_handler,
+          &ProcedureListActionHandler::OnRemoveProcedureRequest);
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;

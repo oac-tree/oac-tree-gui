@@ -131,22 +131,6 @@ void SequencerComposerView::SetupConnections()
   };
   connect(m_composer_panel, &ComposerPanel::ProcedureSelected, this, on_procedure_selected);
 
-  auto on_create_procedure = [this]()
-  {
-    auto procedure_item = m_model->InsertItem<ProcedureItem>(m_model->GetProcedureContainer());
-    m_composer_panel->SetSelectedProcedure(procedure_item);
-  };
-  connect(m_composer_panel, &ComposerPanel::CreateNewProcedureRequest, this, on_create_procedure);
-
-  auto on_remove_procedure = [this](auto procedure)
-  {
-    if (procedure)
-    {
-      m_model->RemoveItem(procedure);
-    }
-  };
-  connect(m_composer_panel, &ComposerPanel::RemoveProcedureRequest, this, on_remove_procedure);
-
   // propagate selection from central panel to the right panel
   auto on_central_selection = [this](auto)
   { m_right_panel->SetSelectedInstructions(m_central_panel->GetSelectedInstructions()); };

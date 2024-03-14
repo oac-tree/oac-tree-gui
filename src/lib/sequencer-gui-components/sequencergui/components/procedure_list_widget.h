@@ -69,8 +69,6 @@ public:
 
 signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
-  void CreateNewProcedureRequest();
-  void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
   ProcedureListContext CreateContext();

@@ -57,7 +57,6 @@ public:
 signals:
   void ProcedureFileClicked(const QString& filename);
   void ProcedureFileDoubleClicked(const QString& filename);
-  void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
   void ReadSettings();

@@ -58,10 +58,6 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   connect(m_procedure_list_view, &ProcedureListWidget::ProcedureSelected, this,
           &ComposerPanel::ProcedureSelected);
-  connect(m_procedure_list_view, &ProcedureListWidget::CreateNewProcedureRequest, this,
-          &ComposerPanel::CreateNewProcedureRequest);
-  connect(m_procedure_list_view, &ProcedureListWidget::RemoveProcedureRequest, this,
-          &ComposerPanel::RemoveProcedureRequest);
 
   auto append_instruction = [this](const QString &name)
   {

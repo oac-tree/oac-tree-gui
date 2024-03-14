@@ -62,8 +62,6 @@ public:
 
 signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedureItem);
-  void CreateNewProcedureRequest();
-  void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
