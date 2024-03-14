@@ -23,7 +23,6 @@
 #include <sequencergui/composer/instruction_editor_context.h>
 
 #include <QObject>
-#include <memory>
 
 namespace mvvm
 {

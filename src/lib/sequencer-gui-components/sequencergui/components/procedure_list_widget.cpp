@@ -19,7 +19,7 @@
 
 #include "procedure_list_widget.h"
 
-#include "procedure_list_actions.h"
+#include "procedure_list_action_handler.h"
 
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -42,6 +42,7 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
     , m_list_view(new QListView)
     , m_component_provider(mvvm::CreateProvider<ProcedureViewModel>(m_list_view))
     , m_actions(new ProcedureListActions(this))
+    , m_action_handler(new ProcedureListActionHandler(CreateContext(), this))
 {
   setWindowTitle("PROCEDURES");
   setToolTip("List of currently opened procedures");
@@ -101,6 +102,15 @@ QList<QAction *> ProcedureListWidget::GetActions(
     const std::vector<ProcedureListActions::ActionKey> &action_keys)
 {
   return m_actions->GetActions(action_keys);
+}
+
+ProcedureListContext ProcedureListWidget::CreateContext()
+{
+  auto get_container_callback = [this]()
+  { return m_model ? m_model->GetProcedureContainer() : nullptr; };
+  auto get_selected_procedure_callback = [this]() { return GetSelectedProcedure(); };
+
+  return {get_container_callback, get_selected_procedure_callback};
 }
 
 }  // namespace sequencergui

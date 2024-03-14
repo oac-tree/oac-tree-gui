@@ -37,6 +37,8 @@ namespace sequencergui
 
 class SequencerModel;
 class ProcedureItem;
+class ProcedureListActionHandler;
+class ProcedureListContext;
 
 /**
  * @brief The ProcedureListWidget class represent a simple list with procedures with editable names.
@@ -71,9 +73,12 @@ signals:
   void RemoveProcedureRequest(sequencergui::ProcedureItem* procedure_item);
 
 private:
+  ProcedureListContext CreateContext();
+
   QListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};
+  ProcedureListActionHandler* m_action_handler{nullptr};
 
   SequencerModel* m_model{nullptr};
 };
