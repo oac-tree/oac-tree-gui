@@ -21,16 +21,45 @@
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTIONS_H_
 
 #include <QObject>
+#include <map>
+
+class QAction;
 
 namespace sequencergui
 {
 
+/**
+ * @brief The ProcedureListActions class defines actions for toolbars and context menus of
+ * ProcedureListWidget.
+ */
 class ProcedureListActions : public QObject
 {
   Q_OBJECT
 
 public:
+  enum class ActionKey
+  {
+    kCreateNew,
+    kRemoveSelected,
+    kTotalCount
+  };
+
   explicit ProcedureListActions(QObject* parent = nullptr);
+
+  /**
+   * @brief Returns list of actions according to provided flags.
+   */
+  QList<QAction*> GetActions(const std::vector<ActionKey>& actions);
+
+signals:
+  void CreateNewProcedureRequest();
+  void RemoveProcedureRequest();
+
+private:
+  QAction* m_new_procedure_action{nullptr};
+  QAction* m_remove_selected_action{nullptr};
+
+  std::map<ActionKey, QAction*> m_actions;
 };
 
 }  // namespace sequencergui
