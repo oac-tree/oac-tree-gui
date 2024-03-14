@@ -44,6 +44,7 @@ void ProcedureListActionHandler::OnCreateNewProcedureRequest()
   auto selected = GetSelectedProcedure();
   auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
   auto procedure_item = GetModel()->InsertItem<ProcedureItem>(GetProcedureContainer(), tag_index);
+  procedure_item->SetDisplayName("Untitled");
   // select just inserted procedure
   emit SelectProcedureRequest(procedure_item);
 }

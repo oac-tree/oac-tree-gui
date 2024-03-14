@@ -59,6 +59,8 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
           &ProcedureListActionHandler::OnCreateNewProcedureRequest);
   connect(m_actions, &ProcedureListActions::RemoveProcedureRequest, m_action_handler,
           &ProcedureListActionHandler::OnRemoveProcedureRequest);
+  connect(m_action_handler, &ProcedureListActionHandler::SelectProcedureRequest, this,
+          &ProcedureListWidget::SetSelectedProcedure);
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;
