@@ -29,6 +29,8 @@ class QMenu;
 namespace sequencergui
 {
 
+class ProcedureListActionHandler;
+
 /**
  * @brief The ProcedureListActions class defines actions for toolbars and context menus of
  * ProcedureListWidget.
@@ -59,9 +61,9 @@ public:
    * @brief Setup cut/copy/paste actions in given menu.
    *
    * @param External, possibly empty, menu.
-   * @param Collection of keys
+   * @param handler An action handler to retrieve status of enabled/disabled actions.
    */
-  void SetupMenu(QMenu& menu, const std::vector<ActionKey>& disabled_actions);
+  void SetupMenu(QMenu& menu, const ProcedureListActionHandler* handler);
 
   /**
    * @brief Returns action for given key.

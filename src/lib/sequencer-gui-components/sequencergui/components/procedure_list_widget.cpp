@@ -34,6 +34,7 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QListView>
+#include <QMenu>
 #include <QMimeData>
 #include <QVBoxLayout>
 
@@ -71,6 +72,10 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
           &ProcedureListActionHandler::Copy);
   connect(m_actions, &ProcedureListActions::PasteRequest, m_action_handler,
           &ProcedureListActionHandler::Paste);
+
+  m_list_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(m_list_view, &QListView::customContextMenuRequested, this,
+          &ProcedureListWidget::OnContextMenuRequest);
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;
@@ -129,6 +134,13 @@ ProcedureListContext ProcedureListWidget::CreateContext()
 
   return {get_container_callback, get_selected_procedure_callback, get_mime_data_callback,
           set_mime_data_callback};
+}
+
+void ProcedureListWidget::OnContextMenuRequest(const QPoint &point)
+{
+  QMenu menu;
+  m_actions->SetupMenu(menu, m_action_handler);
+  menu.exec(m_list_view->mapToGlobal(point));
 }
 
 }  // namespace sequencergui

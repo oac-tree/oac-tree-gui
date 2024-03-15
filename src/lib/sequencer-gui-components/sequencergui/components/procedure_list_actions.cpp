@@ -19,6 +19,8 @@
 
 #include "procedure_list_actions.h"
 
+#include "procedure_list_action_handler.h"
+
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
@@ -74,7 +76,7 @@ QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &
   return result;
 }
 
-void ProcedureListActions::SetupMenu(QMenu &menu, const std::vector<ActionKey> &disabled_actions)
+void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandler *handler)
 {
   menu.setToolTipsVisible(true);
   menu.addAction(m_new_procedure_action);
@@ -85,10 +87,9 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const std::vector<ActionKey> &
   menu.addSeparator();
   menu.addAction(m_remove_selected_action);
 
-  for (auto key : disabled_actions)
-  {
-    GetAction(key)->setEnabled(false);
-  }
+  m_cut_action->setEnabled(handler->CanCut());
+  m_copy_action->setEnabled(handler->CanCopy());
+  m_paste_action->setEnabled(handler->CanPaste());
 }
 
 QAction *ProcedureListActions::GetAction(ActionKey key) const
