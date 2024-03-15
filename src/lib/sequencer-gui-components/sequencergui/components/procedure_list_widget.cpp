@@ -31,7 +31,10 @@
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
+#include <QClipboard>
+#include <QGuiApplication>
 #include <QListView>
+#include <QMimeData>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -61,6 +64,13 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
           &ProcedureListActionHandler::OnRemoveProcedureRequest);
   connect(m_action_handler, &ProcedureListActionHandler::SelectProcedureRequest, this,
           &ProcedureListWidget::SetSelectedProcedure);
+
+  connect(m_actions, &ProcedureListActions::CutRequest, m_action_handler,
+          &ProcedureListActionHandler::Cut);
+  connect(m_actions, &ProcedureListActions::CopyRequest, m_action_handler,
+          &ProcedureListActionHandler::Copy);
+  connect(m_actions, &ProcedureListActions::PasteRequest, m_action_handler,
+          &ProcedureListActionHandler::Paste);
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;
@@ -112,7 +122,13 @@ ProcedureListContext ProcedureListWidget::CreateContext()
   { return m_model ? m_model->GetProcedureContainer() : nullptr; };
   auto get_selected_procedure_callback = [this]() { return GetSelectedProcedure(); };
 
-  return {get_container_callback, get_selected_procedure_callback};
+  auto get_mime_data_callback = []() { return QGuiApplication::clipboard()->mimeData(); };
+
+  auto set_mime_data_callback = [](std::unique_ptr<QMimeData> data)
+  { return QGuiApplication::clipboard()->setMimeData(data.release()); };
+
+  return {get_container_callback, get_selected_procedure_callback, get_mime_data_callback,
+          set_mime_data_callback};
 }
 
 }  // namespace sequencergui

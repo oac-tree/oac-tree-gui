@@ -189,6 +189,7 @@ TEST_F(ProcedureListActionHandlerTest, CopyPasteWhenNothingIsSelected)
   auto handler = CreateHandler(nullptr);
   EXPECT_FALSE(handler->CanCopy());
   EXPECT_FALSE(handler->CanPaste());  // because mime data is empty
+  EXPECT_FALSE(handler->CanCut());
 }
 
 //! Copy operation when item is selected.
