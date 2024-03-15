@@ -21,6 +21,9 @@
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_CONTEXT_H_
 
 #include <functional>
+#include <memory>
+
+class QMimeData;
 
 namespace mvvm
 {
@@ -45,6 +48,12 @@ struct ProcedureListContext
 
   //! callback to get currently selected procedure
   std::function<ProcedureItem*()> selected_procedure;
+
+  //! callback to get mime data
+  std::function<const QMimeData*()> get_mime_data;
+
+  //! callback to set mime data
+  std::function<void(std::unique_ptr<QMimeData>)> set_mime_data;
 };
 
 }  // namespace sequencergui

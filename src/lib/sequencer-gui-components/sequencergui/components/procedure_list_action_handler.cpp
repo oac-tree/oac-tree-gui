@@ -21,10 +21,13 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
+
+#include <QMimeData>
 
 namespace sequencergui
 {
@@ -68,19 +71,24 @@ bool ProcedureListActionHandler::CanCut() const
   return false;
 }
 
-void ProcedureListActionHandler::Cut()
-{
-
-}
+void ProcedureListActionHandler::Cut() {}
 
 bool ProcedureListActionHandler::CanCopy() const
 {
-  return false;
+  return GetSelectedProcedure() != nullptr;
 }
 
 void ProcedureListActionHandler::Copy()
 {
+  if (!m_context.set_mime_data)
+  {
+    throw RuntimeException("Context to copy mime data is not set");
+  }
 
+  if (auto selected = GetSelectedProcedure(); selected)
+  {
+    m_context.set_mime_data(CreateProcedureCopyMimeData(*selected));
+  }
 }
 
 bool ProcedureListActionHandler::CanPaste() const
@@ -88,10 +96,7 @@ bool ProcedureListActionHandler::CanPaste() const
   return false;
 }
 
-void ProcedureListActionHandler::Paste()
-{
-
-}
+void ProcedureListActionHandler::Paste() {}
 
 mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const
 {
@@ -106,6 +111,11 @@ ProcedureItem *ProcedureListActionHandler::GetSelectedProcedure() const
 mvvm::SessionModelInterface *ProcedureListActionHandler::GetModel()
 {
   return GetProcedureContainer()->GetModel();
+}
+
+const QMimeData *ProcedureListActionHandler::GetMimeData() const
+{
+  return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
 }  // namespace sequencergui

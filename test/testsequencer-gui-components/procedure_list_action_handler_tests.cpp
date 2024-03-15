@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/standarditems/container_item.h>
@@ -28,6 +29,7 @@
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
 
+#include <QMimeData>
 #include <QSignalSpy>
 
 using namespace sequencergui;
@@ -46,12 +48,19 @@ public:
 
   /**
    * @brief Test helper to create context mimicking current widget state.
+   *
+   * @param current_selection Will be returned to the caller as current selection.
+   * @param  current_mime Will be returned to the caller as current clipboard content.
    */
-  ProcedureListContext CreateContext(ProcedureItem* current_selection)
+  ProcedureListContext CreateContext(ProcedureItem* current_selection,
+                                     const QMimeData* current_mime = nullptr)
   {
     auto container_callback = [this]() { return m_procedure_container; };
     auto selected_calback = [current_selection]() { return current_selection; };
-    return {container_callback, selected_calback};
+    auto get_mime_data_callback = [current_mime]() { return current_mime; };
+    auto set_mime_data_callback = [this](std::unique_ptr<QMimeData> data)
+    { m_copy_result = std::move(data); };
+    return {container_callback, selected_calback, get_mime_data_callback, set_mime_data_callback};
   }
 
   /**
@@ -64,6 +73,7 @@ public:
 
   mvvm::ContainerItem* m_procedure_container{nullptr};
   mvvm::ApplicationModel m_model;
+  std::unique_ptr<QMimeData> m_copy_result;
 };
 
 //! Initial state of action handler.
@@ -116,7 +126,8 @@ TEST_F(ProcedureListActionHandlerTest, AppendInContainerWhenNothingIsSelected)
   auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
 
   // in the absence of selection item was appended to the container
-  EXPECT_EQ(m_procedure_container->GetAllItems(), std::vector<mvvm::SessionItem*>({proc0, send_item}));
+  EXPECT_EQ(m_procedure_container->GetAllItems(),
+            std::vector<mvvm::SessionItem*>({proc0, send_item}));
 }
 
 //! Insert procedure between two procedures.
@@ -167,4 +178,30 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
   EXPECT_EQ(send_item, proc2);
 
   EXPECT_EQ(m_procedure_container->GetAllItems(), std::vector<mvvm::SessionItem*>({proc0, proc2}));
+}
+
+//! Copy operation when nothing is selected.
+TEST_F(ProcedureListActionHandlerTest, CopyPasteWhenNothingIsSelected)
+{
+  // nothing is selected
+  auto handler = CreateHandler(nullptr);
+  EXPECT_FALSE(handler->CanCopy());
+}
+
+//! Copy operation when item is selected.
+TEST_F(ProcedureListActionHandlerTest, CopyOperation)
+{
+  auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
+  proc0->SetName("abc");
+
+  EXPECT_EQ(m_copy_result.get(), nullptr);
+
+  auto handler = CreateHandler(proc0);  // selected procedure
+  EXPECT_TRUE(handler->CanCopy());
+
+  handler->Copy();
+
+  // As a result of copy QMimeData object was created
+  ASSERT_NE(m_copy_result.get(), nullptr);
+  EXPECT_TRUE(m_copy_result->hasFormat(kCopyProcedureMimeType));
 }

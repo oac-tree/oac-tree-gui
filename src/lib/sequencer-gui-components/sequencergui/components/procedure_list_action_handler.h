@@ -24,6 +24,8 @@
 
 #include <QObject>
 
+class QMimeData;
+
 namespace mvvm
 {
 class ContainerItem;
@@ -87,6 +89,7 @@ private:
   mvvm::ContainerItem* GetProcedureContainer() const;
   ProcedureItem* GetSelectedProcedure() const;
   mvvm::SessionModelInterface* GetModel();
+  const QMimeData* GetMimeData() const;
 
   ProcedureListContext m_context;
 };
