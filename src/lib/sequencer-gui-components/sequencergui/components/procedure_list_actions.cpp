@@ -68,14 +68,8 @@ ProcedureListActions::ProcedureListActions(QObject *parent)
 QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys)
 {
   QList<QAction *> result;
-  for (auto key : action_keys)
-  {
-    auto iter = m_actions.find(key);
-    if (iter != m_actions.end())
-    {
-      result.push_back(iter->second);
-    }
-  }
+  std::transform(action_keys.begin(), action_keys.end(), std::back_inserter(result),
+                 [this](auto element) { return GetAction(element); });
 
   return result;
 }
@@ -93,12 +87,14 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const std::vector<ActionKey> &
 
   for (auto key : disabled_actions)
   {
-    auto iter = m_actions.find(key);
-    if (iter != m_actions.end())
-    {
-      iter->second->setEnabled(false);
-    }
+    GetAction(key)->setEnabled(false);
   }
+}
+
+QAction *ProcedureListActions::GetAction(ActionKey key) const
+{
+  auto iter = m_actions.find(key);
+  return iter == m_actions.end() ? nullptr : iter->second;
 }
 
 }  // namespace sequencergui

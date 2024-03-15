@@ -63,6 +63,11 @@ public:
    */
   void SetupMenu(QMenu& menu, const std::vector<ActionKey>& disabled_actions);
 
+  /**
+   * @brief Returns action for given key.
+   */
+  QAction* GetAction(ActionKey key) const;
+
 signals:
   void CreateNewProcedureRequest();
   void RemoveProcedureRequest();
