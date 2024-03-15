@@ -39,12 +39,16 @@ namespace sequencergui
 {
 
 class InstructionItem;
+class ProcedureItem;
 
 //! Mime type for drag-and-drop event leading to the instruction move.
 const QString kInstructionMoveMimeType = "application/coa.sequencer.instruction.move";
 
 //! Mime type for drag-and-drop event leading to the creation of new instruction.
 const QString kNewInstructionMimeType = "application/coa.sequencer.instruction.new";
+
+//! Mime type for procedure copy.
+const QString kCopyProcedureMimeType = "application/coa.sequencer.procedure.copy";
 
 /**
  * @brief Creates mime data carrying information for instruction move.
@@ -111,6 +115,18 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
  */
 bool CanInsertType(const std::string& instruction_type, const mvvm::SessionItem* parent,
                    const mvvm::TagIndex& tag_index);
+
+/**
+ * @brief Creates mime data to copy given procedure.
+ *
+ * @param item The procedure to copy.
+ */
+std::unique_ptr<QMimeData> CreateProcedureCopyMimeData(const ProcedureItem& item);
+
+/**
+ * @brief Creates procedure item from mime data.
+ */
+std::unique_ptr<ProcedureItem> CreateProcedureItem(const QMimeData* mime_data);
 
 }  // namespace sequencergui
 

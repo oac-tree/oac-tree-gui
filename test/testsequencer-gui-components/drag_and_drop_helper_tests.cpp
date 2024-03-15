@@ -36,23 +36,23 @@ using namespace sequencergui;
 
 //! Tests for helper methods from drag_and_drop_helper.h
 
-class DragAndDropHelperTestTest : public ::testing::Test
+class DragAndDropHelperTest : public ::testing::Test
 {
 public:
-  DragAndDropHelperTestTest() : m_view_model(&m_model) {}
+  DragAndDropHelperTest() : m_view_model(&m_model) {}
 
   mvvm::ApplicationModel m_model;
   InstructionEditorViewModel m_view_model;
 };
 
-TEST_F(DragAndDropHelperTestTest, GetIdentifiersToMove)
+TEST_F(DragAndDropHelperTest, GetIdentifiersToMove)
 {
   const QMimeData mime_data;
   EXPECT_TRUE(GetIdentifiersToMove(&mime_data).empty());
   // more tests below
 }
 
-TEST_F(DragAndDropHelperTestTest, CreateInstructionMoveMimeData)
+TEST_F(DragAndDropHelperTest, CreateInstructionMoveMimeData)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
 
@@ -77,14 +77,14 @@ TEST_F(DragAndDropHelperTestTest, CreateInstructionMoveMimeData)
   }
 }
 
-TEST_F(DragAndDropHelperTestTest, GetNewInstructionType)
+TEST_F(DragAndDropHelperTest, GetNewInstructionType)
 {
   const QMimeData mime_data;
   EXPECT_TRUE(GetNewInstructionType(&mime_data).empty());
   // more tests below
 }
 
-TEST_F(DragAndDropHelperTestTest, CreateNewInstructionMimeData)
+TEST_F(DragAndDropHelperTest, CreateNewInstructionMimeData)
 {
   EXPECT_EQ(GetNewInstructionType(nullptr), std::string(""));
 
@@ -97,7 +97,7 @@ TEST_F(DragAndDropHelperTestTest, CreateNewInstructionMimeData)
 
 //! Validating helper method GetInternalMoveTagIndex.
 
-TEST_F(DragAndDropHelperTestTest, GetInternalMoveTagIndex)
+TEST_F(DragAndDropHelperTest, GetInternalMoveTagIndex)
 {
   auto sequence0 = m_model.InsertItem<SequenceItem>();
   auto wait0 = m_model.InsertItem<WaitItem>(sequence0);
@@ -129,14 +129,14 @@ TEST_F(DragAndDropHelperTestTest, GetInternalMoveTagIndex)
 
 //! Validating helper method GetDropTagIndex.
 
-TEST_F(DragAndDropHelperTestTest, GetDropTagIndex)
+TEST_F(DragAndDropHelperTest, GetDropTagIndex)
 {
   // item is hovered on top of another item
   EXPECT_TRUE(GetDropTagIndex(-1) == mvvm::TagIndex("", 0));
   EXPECT_TRUE(GetDropTagIndex(42) == mvvm::TagIndex("", 42));
 }
 
-TEST_F(DragAndDropHelperTestTest, DropInstruction)
+TEST_F(DragAndDropHelperTest, DropInstruction)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -151,7 +151,7 @@ TEST_F(DragAndDropHelperTestTest, DropInstruction)
 
 //! Checking adding instruction aggregate.
 
-TEST_F(DragAndDropHelperTestTest, DropAggregate)
+TEST_F(DragAndDropHelperTest, DropAggregate)
 {
   SequencerModel model;
   auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
@@ -164,7 +164,7 @@ TEST_F(DragAndDropHelperTestTest, DropAggregate)
   EXPECT_EQ(item->GetDomainType(), domainconstants::kFallbackInstructionType);
 }
 
-TEST_F(DragAndDropHelperTestTest, CanInsertType)
+TEST_F(DragAndDropHelperTest, CanInsertType)
 {
   auto sequence = m_model.InsertItem<SequenceItem>();
   auto wait = m_model.InsertItem<WaitItem>(sequence);
@@ -173,4 +173,26 @@ TEST_F(DragAndDropHelperTestTest, CanInsertType)
       CanInsertType(domainconstants::kWaitInstructionType, sequence, mvvm::TagIndex::Append()));
   EXPECT_FALSE(
       CanInsertType(domainconstants::kWaitInstructionType, wait, mvvm::TagIndex::Append()));
+}
+
+TEST_F(DragAndDropHelperTest, CreateProcedureFromMime)
+{
+  {
+    // wrong mime type
+    QMimeData data;
+    auto procedure_item = CreateProcedureItem(&data);
+    EXPECT_EQ(procedure_item.get(), nullptr);
+  }
+
+  {
+    const std::string expected_name("abc");
+    ProcedureItem item;
+    item.SetName(expected_name);
+
+    auto data = CreateProcedureCopyMimeData(item);
+    EXPECT_TRUE(data->hasFormat(kCopyProcedureMimeType));
+
+    auto reconstructed_item = CreateProcedureItem(data.get());
+    EXPECT_EQ(reconstructed_item->GetName(), expected_name);
+  }
 }
