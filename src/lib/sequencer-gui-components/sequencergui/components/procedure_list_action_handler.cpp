@@ -63,6 +63,36 @@ void ProcedureListActionHandler::OnRemoveProcedureRequest()
   }
 }
 
+bool ProcedureListActionHandler::CanCut() const
+{
+  return false;
+}
+
+void ProcedureListActionHandler::Cut()
+{
+
+}
+
+bool ProcedureListActionHandler::CanCopy() const
+{
+  return false;
+}
+
+void ProcedureListActionHandler::Copy()
+{
+
+}
+
+bool ProcedureListActionHandler::CanPaste() const
+{
+  return false;
+}
+
+void ProcedureListActionHandler::Paste()
+{
+
+}
+
 mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const
 {
   return m_context.procedure_container();

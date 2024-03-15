@@ -41,6 +41,9 @@ public:
   {
     kCreateNew,
     kRemoveSelected,
+    kCut,
+    kCopy,
+    kPaste,
     kTotalCount
   };
 
@@ -54,10 +57,16 @@ public:
 signals:
   void CreateNewProcedureRequest();
   void RemoveProcedureRequest();
+  void CutRequest();
+  void CopyRequest();
+  void PasteRequest();
 
 private:
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};
+  QAction* m_cut_action{nullptr};
+  QAction* m_copy_action{nullptr};
+  QAction* m_paste_action{nullptr};
 
   std::map<ActionKey, QAction*> m_actions;
 };
