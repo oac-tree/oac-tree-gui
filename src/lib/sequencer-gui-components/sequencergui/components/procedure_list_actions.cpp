@@ -22,6 +22,7 @@
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
+#include <QMenu>
 
 namespace sequencergui
 {
@@ -77,6 +78,27 @@ QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &
   }
 
   return result;
+}
+
+void ProcedureListActions::SetupMenu(QMenu &menu, const std::vector<ActionKey> &disabled_actions)
+{
+  menu.setToolTipsVisible(true);
+  menu.addAction(m_new_procedure_action);
+  menu.addSeparator();
+  menu.addAction(m_cut_action);
+  menu.addAction(m_copy_action);
+  menu.addAction(m_paste_action);
+  menu.addSeparator();
+  menu.addAction(m_remove_selected_action);
+
+  for (auto key : disabled_actions)
+  {
+    auto iter = m_actions.find(key);
+    if (iter != m_actions.end())
+    {
+      iter->second->setEnabled(false);
+    }
+  }
 }
 
 }  // namespace sequencergui

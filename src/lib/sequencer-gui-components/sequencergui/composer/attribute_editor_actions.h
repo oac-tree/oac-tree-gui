@@ -60,7 +60,7 @@ public:
   QList<QAction*> GetToolBarActions() const;
 
   /**
-   * @brief Setup empty menu with actions available for given attribute.
+   * @brief Setup menu with actions available for given attribute.
    *
    * The menu can come from outside (context menu), or it can be the menu of our own tool button.
    */

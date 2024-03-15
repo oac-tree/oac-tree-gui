@@ -24,6 +24,7 @@
 #include <map>
 
 class QAction;
+class QMenu;
 
 namespace sequencergui
 {
@@ -53,6 +54,14 @@ public:
    * @brief Returns list of actions according to provided flags.
    */
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
+
+  /**
+   * @brief Setup cut/copy/paste actions in given menu.
+   *
+   * @param External, possibly empty, menu.
+   * @param Collection of keys
+   */
+  void SetupMenu(QMenu& menu, const std::vector<ActionKey>& disabled_actions);
 
 signals:
   void CreateNewProcedureRequest();
