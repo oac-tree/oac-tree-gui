@@ -93,10 +93,33 @@ void ProcedureListActionHandler::Copy()
 
 bool ProcedureListActionHandler::CanPaste() const
 {
+  if (auto mime_data = GetMimeData(); mime_data)
+  {
+    return mime_data->hasFormat(kCopyProcedureMimeType);
+  }
+
   return false;
 }
 
-void ProcedureListActionHandler::Paste() {}
+void ProcedureListActionHandler::Paste()
+{
+  auto mime_data = GetMimeData();
+  if (!mime_data || !mime_data->hasFormat(kCopyProcedureMimeType))
+  {
+    return;
+  }
+
+  auto selected = GetSelectedProcedure();
+  auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+  auto new_procedure = CreateProcedureItem(mime_data);
+  auto new_procedure_ptr = new_procedure.get();
+
+  GetModel()->InsertItem(std::move(new_procedure), GetProcedureContainer(), tag_index);
+
+  // select just inserted procedure
+  emit SelectProcedureRequest(new_procedure_ptr);
+}
 
 mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const
 {
