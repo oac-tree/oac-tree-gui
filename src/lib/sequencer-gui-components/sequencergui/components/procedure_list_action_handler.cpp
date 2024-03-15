@@ -68,10 +68,14 @@ void ProcedureListActionHandler::OnRemoveProcedureRequest()
 
 bool ProcedureListActionHandler::CanCut() const
 {
-  return false;
+  return GetSelectedProcedure() != nullptr;
 }
 
-void ProcedureListActionHandler::Cut() {}
+void ProcedureListActionHandler::Cut()
+{
+  Copy();
+  OnRemoveProcedureRequest();
+}
 
 bool ProcedureListActionHandler::CanCopy() const
 {

@@ -291,3 +291,25 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   // request to select just inserted procedure
   EXPECT_EQ(testutils::GetSendItem<ProcedureItem*>(spy_selection_request), pasted_item);
 }
+
+//! Cut operation when item is selected.
+TEST_F(ProcedureListActionHandlerTest, CutOperation)
+{
+  auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
+  auto proc1 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
+
+  EXPECT_EQ(m_copy_result.get(), nullptr);
+
+  auto handler = CreateHandler(proc0);  // first item is selected
+  QSignalSpy spy_selection_request(handler.get(),
+                                   &ProcedureListActionHandler::SelectProcedureRequest);
+
+  EXPECT_TRUE(handler->CanCut());
+
+  handler->Cut();
+
+  ASSERT_EQ(m_procedure_container->GetSize(), 1);
+
+  // request to select remaining item
+  EXPECT_EQ(testutils::GetSendItem<ProcedureItem*>(spy_selection_request), proc1);
+}
