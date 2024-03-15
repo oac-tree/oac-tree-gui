@@ -70,6 +70,9 @@ public:
 signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
 
+protected:
+  void keyPressEvent(QKeyEvent *event) override;
+
 private:
   ProcedureListContext CreateContext();
   void OnContextMenuRequest(const QPoint &point);

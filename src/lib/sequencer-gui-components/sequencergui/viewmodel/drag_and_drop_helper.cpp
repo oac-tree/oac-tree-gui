@@ -50,6 +50,9 @@ std::unique_ptr<QMimeData> CreateCopyMimeData(const mvvm::SessionItem& item,
   auto result = std::make_unique<QMimeData>();
   auto xml_str = mvvm::utils::ToXMLString(item);
   result->setData(mime_format, mvvm::utils::GetByteArray({QString::fromStdString(xml_str)}));
+  QString clipboard_text = QString("Copy of sequencer item '%1'")
+                               .arg(QString::fromStdString(item.GetDisplayName()));
+  result->setText(clipboard_text);
   return result;
 }
 

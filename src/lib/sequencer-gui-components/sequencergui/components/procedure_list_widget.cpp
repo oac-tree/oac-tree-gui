@@ -33,6 +33,7 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QKeyEvent>
 #include <QListView>
 #include <QMenu>
 #include <QMimeData>
@@ -119,6 +120,26 @@ QList<QAction *> ProcedureListWidget::GetActions(
     const std::vector<ProcedureListActions::ActionKey> &action_keys)
 {
   return m_actions->GetActions(action_keys);
+}
+
+void ProcedureListWidget::keyPressEvent(QKeyEvent *event)
+{
+  if (event == QKeySequence::Cut)
+  {
+    m_action_handler->Cut();
+  }
+  else if (event == QKeySequence::Copy)
+  {
+    m_action_handler->Copy();
+  }
+  else if (event == QKeySequence::Paste)
+  {
+    m_action_handler->Paste();
+  }
+  else
+  {
+    QWidget::keyPressEvent(event);
+  }
 }
 
 ProcedureListContext ProcedureListWidget::CreateContext()
