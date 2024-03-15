@@ -44,12 +44,8 @@ ProcedureListActionHandler::ProcedureListActionHandler(ProcedureListContext cont
 
 void ProcedureListActionHandler::OnCreateNewProcedureRequest()
 {
-  auto selected = GetSelectedProcedure();
-  auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
-  auto procedure_item = GetModel()->InsertItem<ProcedureItem>(GetProcedureContainer(), tag_index);
-  procedure_item->SetDisplayName("Untitled");
-  // select just inserted procedure
-  emit SelectProcedureRequest(procedure_item);
+  auto result = InsertProcedure(std::make_unique<ProcedureItem>());
+  result->SetDisplayName("Untitled");
 }
 
 void ProcedureListActionHandler::OnRemoveProcedureRequest()
@@ -73,6 +69,11 @@ bool ProcedureListActionHandler::CanCut() const
 
 void ProcedureListActionHandler::Cut()
 {
+  if (!CanCut())
+  {
+    return;
+  }
+
   Copy();
   OnRemoveProcedureRequest();
 }
@@ -84,15 +85,12 @@ bool ProcedureListActionHandler::CanCopy() const
 
 void ProcedureListActionHandler::Copy()
 {
-  if (!m_context.set_mime_data)
+  if (!CanCopy())
   {
-    throw RuntimeException("Context to copy mime data is not set");
+    return;
   }
 
-  if (auto selected = GetSelectedProcedure(); selected)
-  {
-    m_context.set_mime_data(CreateProcedureCopyMimeData(*selected));
-  }
+  m_context.set_mime_data(CreateProcedureCopyMimeData(*GetSelectedProcedure()));
 }
 
 bool ProcedureListActionHandler::CanPaste() const
@@ -107,22 +105,13 @@ bool ProcedureListActionHandler::CanPaste() const
 
 void ProcedureListActionHandler::Paste()
 {
-  auto mime_data = GetMimeData();
-  if (!mime_data || !mime_data->hasFormat(kCopyProcedureMimeType))
+  if (!CanPaste())
   {
     return;
   }
 
-  auto selected = GetSelectedProcedure();
-  auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
-
-  auto new_procedure = CreateProcedureItem(mime_data);
-  auto new_procedure_ptr = new_procedure.get();
-
-  GetModel()->InsertItem(std::move(new_procedure), GetProcedureContainer(), tag_index);
-
-  // select just inserted procedure
-  emit SelectProcedureRequest(new_procedure_ptr);
+  auto mime_data = GetMimeData();
+  InsertProcedure(CreateProcedureItem(mime_data));
 }
 
 mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const
@@ -143,6 +132,19 @@ mvvm::SessionModelInterface *ProcedureListActionHandler::GetModel()
 const QMimeData *ProcedureListActionHandler::GetMimeData() const
 {
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
+}
+
+ProcedureItem *ProcedureListActionHandler::InsertProcedure(std::unique_ptr<ProcedureItem> item)
+{
+  auto procedure_item_ptr = item.get();
+
+  auto selected = GetSelectedProcedure();
+  auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
+  GetModel()->InsertItem(std::move(item), GetProcedureContainer(), tag_index);
+  // select just inserted procedure
+  emit SelectProcedureRequest(procedure_item_ptr);
+
+  return procedure_item_ptr;
 }
 
 }  // namespace sequencergui

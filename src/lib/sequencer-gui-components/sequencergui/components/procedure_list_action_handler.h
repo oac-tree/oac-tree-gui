@@ -91,6 +91,8 @@ private:
   mvvm::SessionModelInterface* GetModel();
   const QMimeData* GetMimeData() const;
 
+  ProcedureItem* InsertProcedure(std::unique_ptr<ProcedureItem> item);
+
   ProcedureListContext m_context;
 };
 
