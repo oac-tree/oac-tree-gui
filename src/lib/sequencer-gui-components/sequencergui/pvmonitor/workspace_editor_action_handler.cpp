@@ -106,14 +106,6 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
           ? GetSelectedVariable()
           : const_cast<VariableItem *>(mvvm::utils::FindItemUp<VariableItem>(selected_item));
 
-  if (selected_variable->GetDomainType() == domainconstants::kPvAccessClientVariableType)
-  {
-    SendMessage(
-        "It is not possible to edit AnyValue for PvAccessClientVariable, it will get the value"
-        "from the server on startup");
-    return;
-  }
-
   auto selected_anyvalue = selected_variable->GetAnyValueItem();
 
   auto edited_anyvalue = m_context.edit_anyvalue_callback(selected_anyvalue);
