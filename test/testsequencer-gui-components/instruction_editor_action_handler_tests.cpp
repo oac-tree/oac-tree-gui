@@ -38,7 +38,6 @@
 #include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
 
-#include <QMimeData>
 #include <QSignalSpy>
 
 using namespace sequencergui;
@@ -80,25 +79,21 @@ public:
     result.selected_instruction = [instruction]() { return instruction; };
     result.send_message_callback = m_warning_listener.CreateCallback();
     result.edit_anyvalue_callback = m_mock_dialog.CreateCallback();
-    result.get_mime_data = [current_mime]() { return current_mime; };
-    result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
-    { m_copy_result = std::move(data); };
     return result;
   }
 
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
       ProcedureItem* procedure, InstructionItem* instruction,
-      AnyValueDialogResult dialog_result = {}, const QMimeData* current_mime = nullptr)
+      AnyValueDialogResult dialog_result = {})
   {
     return std::make_unique<InstructionEditorActionHandler>(
-        CreateContext(procedure, instruction, std::move(dialog_result), current_mime));
+        CreateContext(procedure, instruction, std::move(dialog_result)));
   }
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
   mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
   testutils::MockDialog m_mock_dialog;
-  std::unique_ptr<QMimeData> m_copy_result;
 };
 
 //! Attempt to insert an instruction when no procedure created upfront.

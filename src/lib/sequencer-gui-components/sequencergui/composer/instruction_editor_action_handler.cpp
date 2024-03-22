@@ -25,15 +25,15 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/core/exceptions.h>
 #include <mvvm/model/model_utils.h>
 
+#include <QMimeData>
 #include <QPointF>
 #include <sstream>
 
@@ -189,7 +189,7 @@ void InstructionEditorActionHandler::Cut()
 
 bool InstructionEditorActionHandler::CanCopy() const
 {
-  return false;
+  return GetSelectedInstruction() != nullptr || !m_context.set_mime_data;
 }
 
 void InstructionEditorActionHandler::Copy()
@@ -198,6 +198,8 @@ void InstructionEditorActionHandler::Copy()
   {
     return;
   }
+
+  m_context.set_mime_data(CreateInstructionCopyMimeData(*GetSelectedInstruction()));
 }
 
 bool InstructionEditorActionHandler::CanPaste() const
@@ -213,7 +215,7 @@ void InstructionEditorActionHandler::Paste()
   }
 }
 
-InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction()
+InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
 {
   return m_context.selected_instruction();
 }

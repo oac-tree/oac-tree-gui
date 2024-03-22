@@ -50,6 +50,9 @@ const QString kNewInstructionMimeType = "application/coa.sequencer.instruction.n
 //! Mime type for procedure copy.
 const QString kCopyProcedureMimeType = "application/coa.sequencer.procedure.copy";
 
+//! Mime type for instruction copy.
+const QString kCopyInstructionMimeType = "application/coa.sequencer.instruction.copy";
+
 /**
  * @brief Creates mime data carrying information for instruction move.
  *
@@ -121,6 +124,18 @@ std::unique_ptr<QMimeData> CreateProcedureCopyMimeData(const ProcedureItem& item
  * @brief Creates procedure item from mime data.
  */
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const QMimeData* mime_data);
+
+/**
+ * @brief Creates mime data to copy given instruction.
+ *
+ * @param item The instruction to copy.
+ */
+std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& item);
+
+/**
+ * @brief Creates instruction item from mime data.
+ */
+std::unique_ptr<InstructionItem> CreateInstructionItem(const QMimeData* mime_data);
 
 }  // namespace sequencergui
 

@@ -50,8 +50,8 @@ std::unique_ptr<QMimeData> CreateCopyMimeData(const mvvm::SessionItem& item,
   auto result = std::make_unique<QMimeData>();
   auto xml_str = mvvm::utils::ToXMLString(item);
   result->setData(mime_format, mvvm::utils::GetByteArray({QString::fromStdString(xml_str)}));
-  QString clipboard_text = QString("Copy of sequencer item '%1'")
-                               .arg(QString::fromStdString(item.GetDisplayName()));
+  QString clipboard_text =
+      QString("Copy of sequencer item '%1'").arg(QString::fromStdString(item.GetDisplayName()));
   result->setText(clipboard_text);
   return result;
 }
@@ -208,6 +208,7 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
   return result;
 }
 
+// FIXME merge Procedure and Instruction functions
 
 std::unique_ptr<QMimeData> CreateProcedureCopyMimeData(const ProcedureItem& item)
 {
@@ -219,6 +220,17 @@ std::unique_ptr<ProcedureItem> CreateProcedureItem(const QMimeData* mime_data)
   auto item = CreateSessionItem(mime_data, kCopyProcedureMimeType);
   // FIXME do we really need ProcedureItem return type?
   return std::unique_ptr<ProcedureItem>(static_cast<ProcedureItem*>(item.release()));
+}
+
+std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& item)
+{
+  return CreateCopyMimeData(item, kCopyInstructionMimeType);
+}
+
+std::unique_ptr<InstructionItem> CreateInstructionItem(const QMimeData* mime_data)
+{
+  auto item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
+  return std::unique_ptr<InstructionItem>(static_cast<InstructionItem*>(item.release()));
 }
 
 }  // namespace sequencergui

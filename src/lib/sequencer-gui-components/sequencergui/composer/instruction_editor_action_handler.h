@@ -125,7 +125,7 @@ signals:
   void SelectItemRequest(mvvm::SessionItem* item);
 
 private:
-  InstructionItem* GetSelectedInstruction();
+  InstructionItem* GetSelectedInstruction() const;
 
   mvvm::SessionModelInterface* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
