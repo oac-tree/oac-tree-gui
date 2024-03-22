@@ -23,6 +23,9 @@
 #include <sup/gui/components/message_event.h>
 
 #include <functional>
+#include <memory>
+
+class QMimeData;
 
 namespace sup::gui
 {
@@ -58,6 +61,12 @@ struct InstructionEditorContext
   //!< callback that sends AnyValueItem for editing, and receives cloned (and possibly edited)
   //!< AnyValueItem back
   std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> edit_anyvalue_callback;
+
+  //! callback to get mime data from the clipboard
+  std::function<const QMimeData*()> get_mime_data;
+
+  //! callback to set mime data to the clipboard
+  std::function<void(std::unique_ptr<QMimeData>)> set_mime_data;
 };
 
 }  // namespace sequencergui

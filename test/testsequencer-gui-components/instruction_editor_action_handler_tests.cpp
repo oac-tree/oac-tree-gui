@@ -38,6 +38,7 @@
 #include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
 
+#include <QMimeData>
 #include <QSignalSpy>
 
 using namespace sequencergui;
@@ -55,10 +56,22 @@ public:
     m_procedure = m_model.InsertItem<ProcedureItem>(m_model.GetProcedureContainer());
   }
 
-  //! Creates InstructionEditorContext for testing purposes. It contains callbacks to mimick
-  //! user choice regarding the selected procedure and instruction.
+  /**
+   * @brief Test helper to create context mimicking current InstructionEditor widget state.
+   *
+   * It contains a callbacks to mimick currently selected procedure and instruction, callback to
+   * edit AnyValue and copy/paste activity.
+   *
+   * @param procedure Currently selected procedure.
+   * @param instruction Currently selected instruction
+   * @param dialog_result The data to return to the caller mimicking dialog answer.
+   * @param current_mime The content of the clipboard.
+   *
+   * @return Context object.
+   */
   InstructionEditorContext CreateContext(ProcedureItem* procedure, InstructionItem* instruction,
-                                         AnyValueDialogResult dialog_result = {})
+                                         AnyValueDialogResult dialog_result = {},
+                                         const QMimeData* current_mime = nullptr)
   {
     m_mock_dialog.SetItemToReturn(std::move(dialog_result));
 
@@ -67,21 +80,25 @@ public:
     result.selected_instruction = [instruction]() { return instruction; };
     result.send_message_callback = m_warning_listener.CreateCallback();
     result.edit_anyvalue_callback = m_mock_dialog.CreateCallback();
+    result.get_mime_data = [current_mime]() { return current_mime; };
+    result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
+    { m_copy_result = std::move(data); };
     return result;
   }
 
   std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(
       ProcedureItem* procedure, InstructionItem* instruction,
-      AnyValueDialogResult dialog_result = {})
+      AnyValueDialogResult dialog_result = {}, const QMimeData* current_mime = nullptr)
   {
     return std::make_unique<InstructionEditorActionHandler>(
-        CreateContext(procedure, instruction, std::move(dialog_result)));
+        CreateContext(procedure, instruction, std::move(dialog_result), current_mime));
   }
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
   mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
   testutils::MockDialog m_mock_dialog;
+  std::unique_ptr<QMimeData> m_copy_result;
 };
 
 //! Attempt to insert an instruction when no procedure created upfront.
