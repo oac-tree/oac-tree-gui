@@ -111,12 +111,6 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
                                  const mvvm::TagIndex& tag_index);
 
 /**
- * @brief Returns true if given type can be inserted into the parent.
- */
-bool CanInsertType(const std::string& instruction_type, const mvvm::SessionItem* parent,
-                   const mvvm::TagIndex& tag_index);
-
-/**
  * @brief Creates mime data to copy given procedure.
  *
  * @param item The procedure to copy.

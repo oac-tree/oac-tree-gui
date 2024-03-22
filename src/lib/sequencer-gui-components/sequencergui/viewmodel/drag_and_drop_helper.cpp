@@ -208,22 +208,6 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
   return result;
 }
 
-bool CanInsertType(const std::string& instruction_type, const mvvm::SessionItem* parent,
-                   const mvvm::TagIndex& tag_index)
-{
-  // FIXME temporary solution, should be moved to our validate_utils
-
-  if (instruction_type.empty() || parent->GetTaggedItems()->GetDefaultTag().empty())
-  {
-    return false;
-  }
-
-  if (auto container = parent->GetTaggedItems()->GetContainer(tag_index.tag); container)
-  {
-    return !container->IsMaximumReached();
-  }
-  return false;
-}
 
 std::unique_ptr<QMimeData> CreateProcedureCopyMimeData(const ProcedureItem& item)
 {
