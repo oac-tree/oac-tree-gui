@@ -49,6 +49,11 @@ public:
    */
   enum class ActionKey
   {
+    kInsertAfter,
+    kInsertInto,
+    kRemoveSelected,
+    kMoveUp,
+    kMoveDown,
     kCut,
     kCopy,
     kPaste,
@@ -59,6 +64,16 @@ public:
   ~InstructionEditorActions() override;
 
   QList<QAction*> GetActions() const;
+
+  /**
+   * @brief Returns list of actions according to provided flags.
+   */
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
+
+  /**
+   * @brief Returns action for given key.
+   */
+  QAction* GetAction(ActionKey key) const;
 
 signals:
   void InsertIntoRequest(const QString& name);
@@ -84,8 +99,8 @@ private:
    */
   std::unique_ptr<QMenu> CreateInsertIntoMenu();
 
-  std::unique_ptr<QMenu> m_insert_into_menu;
   std::unique_ptr<QMenu> m_insert_after_menu;
+  std::unique_ptr<QMenu> m_insert_into_menu;
 
   QWidgetAction* m_insert_after_action{nullptr};
   QWidgetAction* m_insert_into_action{nullptr};

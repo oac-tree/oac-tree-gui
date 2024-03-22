@@ -23,7 +23,7 @@
 
 using namespace sequencergui;
 
-//! Tests for WorkspaceSynchronizer class.
+//! Tests of ProcedureListActions class.
 
 class ProcedureListActionsTest : public ::testing::Test
 {
