@@ -174,6 +174,45 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
   }
 }
 
+bool InstructionEditorActionHandler::CanCut() const
+{
+  return false;
+}
+
+void InstructionEditorActionHandler::Cut()
+{
+  if (!CanCut())
+  {
+    return;
+  }
+}
+
+bool InstructionEditorActionHandler::CanCopy() const
+{
+  return false;
+}
+
+void InstructionEditorActionHandler::Copy()
+{
+  if (!CanCopy())
+  {
+    return;
+  }
+}
+
+bool InstructionEditorActionHandler::CanPaste() const
+{
+  return false;
+}
+
+void InstructionEditorActionHandler::Paste()
+{
+  if (!CanPaste())
+  {
+    return;
+  }
+}
+
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction()
 {
   return m_context.selected_instruction();

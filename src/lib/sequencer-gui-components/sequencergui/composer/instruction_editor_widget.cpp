@@ -258,6 +258,13 @@ void InstructionEditorWidget::SetupConnections()
   };
   connect(m_action_handler.get(), &InstructionEditorActionHandler::SelectItemRequest, this,
           on_make_instruction_selected_request);
+
+  connect(m_editor_actions, &InstructionEditorActions::CutRequest, m_action_handler.get(),
+          &InstructionEditorActionHandler::Cut);
+  connect(m_editor_actions, &InstructionEditorActions::CopyRequest, m_action_handler.get(),
+          &InstructionEditorActionHandler::Copy);
+  connect(m_editor_actions, &InstructionEditorActions::PasteRequest, m_action_handler.get(),
+          &InstructionEditorActionHandler::Paste);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()

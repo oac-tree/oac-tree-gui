@@ -91,6 +91,36 @@ public:
    */
   void OnEditAnyvalueRequest();
 
+  /**
+   * @brief Checks if cut operation is possible.
+   */
+  bool CanCut() const;
+
+  /**
+   * @brief Cut selected procedure.
+   */
+  void Cut();
+
+  /**
+   * @brief Checks if copy operation is possible.
+   */
+  bool CanCopy() const;
+
+  /**
+   * @brief Copy selected procedure.
+   */
+  void Copy();
+
+  /**
+   * @brief Checks if paste operation is possible.
+   */
+  bool CanPaste() const;
+
+  /**
+   * @brief Paste procedure.
+   */
+  void Paste();
+
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);
 
