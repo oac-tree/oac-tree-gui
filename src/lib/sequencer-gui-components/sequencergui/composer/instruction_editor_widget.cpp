@@ -74,8 +74,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))
-    , m_action_handler(
-          std::make_unique<InstructionEditorActionHandler>(CreateInstructionEditorContext()))
+    , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
     , m_tree_view_style(new CustomTreeViewStyle(style()))
 {
   setWindowTitle("Instruction Tree");
@@ -233,18 +232,18 @@ void InstructionEditorWidget::SetupConnections()
           on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
-  connect(m_editor_actions, &InstructionEditorActions::InsertAfterRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::InsertAfterRequest, m_action_handler,
           &InstructionEditorActionHandler::OnInsertInstructionAfterRequest);
-  connect(m_editor_actions, &InstructionEditorActions::InsertIntoRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::InsertIntoRequest, m_action_handler,
           &InstructionEditorActionHandler::OnInsertInstructionIntoRequest);
-  connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest,
-          m_action_handler.get(), &InstructionEditorActionHandler::OnRemoveInstructionRequest);
-  connect(m_editor_actions, &InstructionEditorActions::MoveUpRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest, m_action_handler,
+          &InstructionEditorActionHandler::OnRemoveInstructionRequest);
+  connect(m_editor_actions, &InstructionEditorActions::MoveUpRequest, m_action_handler,
           &InstructionEditorActionHandler::OnMoveUpRequest);
-  connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest, m_action_handler,
           &InstructionEditorActionHandler::OnMoveDownRequest);
-  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest,
-          m_action_handler.get(), &InstructionEditorActionHandler::OnEditAnyvalueRequest);
+  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler,
+          &InstructionEditorActionHandler::OnEditAnyvalueRequest);
 
   // propagate selection request from action handler component provider
   auto on_make_instruction_selected_request = [this](auto item)
@@ -256,14 +255,14 @@ void InstructionEditorWidget::SetupConnections()
       m_tree_view->setExpanded(index_of_inserted.front(), true);
     }
   };
-  connect(m_action_handler.get(), &InstructionEditorActionHandler::SelectItemRequest, this,
+  connect(m_action_handler, &InstructionEditorActionHandler::SelectItemRequest, this,
           on_make_instruction_selected_request);
 
-  connect(m_editor_actions, &InstructionEditorActions::CutRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::CutRequest, m_action_handler,
           &InstructionEditorActionHandler::Cut);
-  connect(m_editor_actions, &InstructionEditorActions::CopyRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::CopyRequest, m_action_handler,
           &InstructionEditorActionHandler::Copy);
-  connect(m_editor_actions, &InstructionEditorActions::PasteRequest, m_action_handler.get(),
+  connect(m_editor_actions, &InstructionEditorActions::PasteRequest, m_action_handler,
           &InstructionEditorActionHandler::Paste);
 }
 
