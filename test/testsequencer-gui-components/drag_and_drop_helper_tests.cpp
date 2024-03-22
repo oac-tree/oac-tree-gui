@@ -26,6 +26,7 @@
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/validate_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
 #include <gtest/gtest.h>
@@ -169,10 +170,12 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
   auto sequence = m_model.InsertItem<SequenceItem>();
   auto wait = m_model.InsertItem<WaitItem>(sequence);
 
-  EXPECT_TRUE(
-      CanInsertType(domainconstants::kWaitInstructionType, sequence, mvvm::TagIndex::Append()));
-  EXPECT_FALSE(
-      CanInsertType(domainconstants::kWaitInstructionType, wait, mvvm::TagIndex::Append()));
+  EXPECT_TRUE(mvvm::utils::CanInsertType(domainconstants::kWaitInstructionType, sequence,
+                                         mvvm::TagIndex::Default(0))
+                  .first);
+  EXPECT_FALSE(mvvm::utils::CanInsertType(domainconstants::kWaitInstructionType, wait,
+                                          mvvm::TagIndex::Default(0))
+                   .first);
 }
 
 TEST_F(DragAndDropHelperTest, CreateProcedureFromMime)

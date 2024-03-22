@@ -164,7 +164,7 @@ bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::Drop
   if (data->hasFormat(kNewInstructionMimeType))
   {
     auto drop_type = GetNewInstructionType(data);
-    if (mvvm::utils::CanInsertType(drop_type, parent_item, GetDropTagIndex(row)))
+    if (mvvm::utils::CanInsertType(drop_type, parent_item, GetDropTagIndex(row)).first)
     {
       return true;
     }

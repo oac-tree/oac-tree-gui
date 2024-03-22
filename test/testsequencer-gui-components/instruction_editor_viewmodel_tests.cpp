@@ -131,6 +131,7 @@ TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
   auto sequence_index = m_view_model.index(1, 0);
   auto wait0_index = m_view_model.index(0, 0, sequence_index);
   auto wait1_index = m_view_model.index(1, 0, sequence_index);
+  auto wait2_index = m_view_model.index(2, 0);
 
   // we can't perform drop if only one cell is selected
   auto mime_data = CreateInstructionMoveMimeData({incl_index_col0});
@@ -141,7 +142,7 @@ TEST_F(InstructionEditorViewModelTest, CanDropMoveMimeData)
   mime_data = CreateInstructionMoveMimeData({incl_index_col0, incl_index_col1});
 
   // drop after Wait2
-  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, -1, -1, QModelIndex()));
+  EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 3, 0, QModelIndex()));
 
   // drop before Wait0
   EXPECT_TRUE(m_view_model.canDropMimeData(mime_data.get(), Qt::MoveAction, 0, 0, sequence_index));
