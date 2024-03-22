@@ -63,8 +63,6 @@ public:
   explicit InstructionEditorActions(QObject* parent = nullptr);
   ~InstructionEditorActions() override;
 
-  QList<QAction*> GetActions() const;
-
   /**
    * @brief Returns list of actions according to provided flags.
    */

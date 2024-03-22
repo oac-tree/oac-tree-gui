@@ -50,6 +50,17 @@ namespace
 const QString kGroupName("InstructionEditorWidget");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
 const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+
+/**
+ * @brief Returns action keys intended for a toolbar.
+ */
+std::vector<sequencergui::InstructionEditorActions::ActionKey> GetToolBarActionKeys()
+{
+  using ActionKey = sequencergui::InstructionEditorActions::ActionKey;
+  return {ActionKey::kInsertAfter, ActionKey::kInsertInto, ActionKey::kRemoveSelected,
+          ActionKey::kMoveUp, ActionKey::kMoveDown};
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -60,7 +71,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
-      , m_attribute_editor(new InstructionAttributeEditor)
+    , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
     , m_editor_actions(new InstructionEditorActions(this))
     , m_action_handler(
@@ -86,7 +97,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
   SetupConnections();
 
-  addActions(m_editor_actions->GetActions());
+  addActions(m_editor_actions->GetActions(GetToolBarActionKeys()));
 
   auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
 
@@ -232,8 +243,8 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::OnMoveUpRequest);
   connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest, m_action_handler.get(),
           &InstructionEditorActionHandler::OnMoveDownRequest);
-  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler.get(),
-          &InstructionEditorActionHandler::OnEditAnyvalueRequest);
+  connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest,
+          m_action_handler.get(), &InstructionEditorActionHandler::OnEditAnyvalueRequest);
 
   // propagate selection request from action handler component provider
   auto on_make_instruction_selected_request = [this](auto item)

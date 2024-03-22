@@ -41,12 +41,6 @@ InstructionEditorActions::InstructionEditorActions(QObject *parent)
 
 InstructionEditorActions::~InstructionEditorActions() = default;
 
-QList<QAction *> InstructionEditorActions::GetActions() const
-{
-  return {m_insert_after_action, m_insert_into_action, m_remove_action, m_move_up_action,
-          m_move_down_action};
-}
-
 QList<QAction *> InstructionEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
 {
   QList<QAction *> result;
