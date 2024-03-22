@@ -32,14 +32,29 @@ class QMenu;
 namespace sequencergui
 {
 
-//! Collection of Qt actions related to the construction of InstructionItem tree.
-//! They are used to trigger InstructionEditorController, which does a real job.
-
+/**
+ * @brief The InstructionEditorActions class defines actions related to the contrsution of the
+ * Instruction item tree.
+ *
+ * Belongs to InstructionEditorWidget, action logic is handled by the
+ * InstructionEditorActionHandler.
+ */
 class InstructionEditorActions : public QObject
 {
   Q_OBJECT
 
 public:
+  /**
+   * @brief The ActionKey enum defines keys for all available actions.
+   */
+  enum class ActionKey
+  {
+    kCut,
+    kCopy,
+    kPaste,
+    kTotalCount
+  };
+
   explicit InstructionEditorActions(QObject* parent = nullptr);
   ~InstructionEditorActions() override;
 
@@ -51,11 +66,22 @@ signals:
   void RemoveSelectedRequest();
   void MoveUpRequest();
   void MoveDownRequest();
+  void CutRequest();
+  void CopyRequest();
+  void PasteRequest();
 
 private:
-  void SetupActions();
+  void SetupInsertRemoveActions();
+  void SetupCutCopyPasteActions();
 
+  /**
+   * @brief Creates an instruction to insert an instruction after currently selected instruction.
+   */
   std::unique_ptr<QMenu> CreateInsertAfterMenu();
+
+  /**
+   * @brief Creates menu to insert an instruction into currently selected instruction.
+   */
   std::unique_ptr<QMenu> CreateInsertIntoMenu();
 
   std::unique_ptr<QMenu> m_insert_into_menu;
@@ -66,6 +92,12 @@ private:
   QWidgetAction* m_remove_action{nullptr};
   QWidgetAction* m_move_up_action{nullptr};
   QWidgetAction* m_move_down_action{nullptr};
+
+  QAction* m_cut_action{nullptr};
+  QAction* m_copy_action{nullptr};
+  QAction* m_paste_action{nullptr};
+
+  std::map<ActionKey, QAction*> m_actions;
 };
 
 }  // namespace sequencergui

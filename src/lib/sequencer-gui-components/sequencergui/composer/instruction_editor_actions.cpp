@@ -34,8 +34,12 @@ InstructionEditorActions::InstructionEditorActions(QObject *parent)
     : QObject(parent)
     , m_insert_into_menu(CreateInsertIntoMenu())
     , m_insert_after_menu(CreateInsertAfterMenu())
+    , m_cut_action(new QAction(this))
+    , m_copy_action(new QAction(this))
+    , m_paste_action(new QAction(this))
 {
-  SetupActions();
+  SetupInsertRemoveActions();
+  SetupCutCopyPasteActions();
 }
 
 InstructionEditorActions::~InstructionEditorActions() = default;
@@ -46,7 +50,7 @@ QList<QAction *> InstructionEditorActions::GetActions() const
           m_move_down_action};
 }
 
-void InstructionEditorActions::SetupActions()
+void InstructionEditorActions::SetupInsertRemoveActions()
 {
   // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
   // a QToolButton feature) and still be able to pass actions around.
@@ -103,6 +107,24 @@ void InstructionEditorActions::SetupActions()
   m_move_down_action->setDefaultWidget(move_down_button);
 }
 
+void InstructionEditorActions::SetupCutCopyPasteActions()
+{
+  m_cut_action->setText("Cut");
+  m_cut_action->setToolTip("Cuts selected procedure");
+  connect(m_cut_action, &QAction::triggered, this, &InstructionEditorActions::CutRequest);
+  m_actions[ActionKey::kCut] = m_cut_action;
+
+  m_copy_action->setText("Copy");
+  m_copy_action->setToolTip("Copies selected procedure");
+  connect(m_copy_action, &QAction::triggered, this, &InstructionEditorActions::CopyRequest);
+  m_actions[ActionKey::kCopy] = m_copy_action;
+
+  m_paste_action->setText("Paste");
+  m_paste_action->setToolTip("Paste selected procedure");
+  connect(m_paste_action, &QAction::triggered, this, &InstructionEditorActions::PasteRequest);
+  m_actions[ActionKey::kPaste] = m_paste_action;
+}
+
 std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()
 {
   auto result = std::make_unique<QMenu>();
@@ -119,12 +141,11 @@ std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()
   return result;
 }
 
-//! Creates menu to insert an instruction into currently selected instruction.
-//! Code mostly coincides with the code above. However, this duplication is temporary and it
-//! will diverge in the future (idea to disable some actions if an operation is not possible).
-
 std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu()
 {
+  // Code mostly coincides with the code above. However, this duplication is temporary and it
+  // will diverge in the future (idea to disable some actions if an operation is not possible).
+
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
 
