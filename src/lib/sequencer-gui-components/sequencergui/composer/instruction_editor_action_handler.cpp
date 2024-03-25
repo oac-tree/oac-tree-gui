@@ -32,6 +32,7 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/model_utils.h>
+#include <mvvm/model/validate_utils.h>
 
 #include <QMimeData>
 #include <QPointF>
@@ -56,6 +57,15 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
                                    ? reference->GetY() + sequencergui::GetInstructionDropOffset()
                                    : default_center.y());
   }
+}
+
+/**
+ * @brief Returns type of item enclosed inside the given mime data.
+ */
+std::string GetSessionItemType(const QMimeData *mime_data)
+{
+  auto item = sequencergui::CreateSessionItem(mime_data, sequencergui::kCopyInstructionMimeType);
+  return item ? item->GetType() : std::string();
 }
 
 }  // namespace
@@ -206,12 +216,24 @@ void InstructionEditorActionHandler::Copy()
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
 {
-  if (auto mime_data = GetMimeData(); mime_data)
+  auto mime_data = GetMimeData();
+
+  if (!mime_data || !mime_data->hasFormat(kCopyInstructionMimeType))
   {
-    return mime_data->hasFormat(kCopyInstructionMimeType);
+    return false;
   }
 
-  return false;
+  // Checking if there is a selection inside another parent. To paste after this selection, the
+  // parent should have the room for more items.
+  if (auto selected_item = GetSelectedInstruction(); selected_item)
+  {
+    auto item_type = GetSessionItemType(mime_data);
+    return mvvm::utils::CanInsertType(item_type, selected_item->GetParent(),
+                                      selected_item->GetTagIndex().Next())
+        .first;
+  }
+
+  return true;
 }
 
 void InstructionEditorActionHandler::PasteAfter()

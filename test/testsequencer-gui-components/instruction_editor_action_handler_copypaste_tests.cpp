@@ -146,13 +146,41 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
     const WaitItem item_to_paste;
     auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
-    auto sequence = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
+    auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
     auto handler = CreateActionHandler(sequence, mime_data.get());
+    EXPECT_TRUE(handler->CanPasteAfter());
+  }
+
+  {  // Repeat instruction with Sequence, attempt to paste after a sequence
+    const WaitItem item_to_paste;
+    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+    auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
+    auto sequence = m_model.InsertItem<SequenceItem>(repeat);
+
+    auto handler = CreateActionHandler(sequence, mime_data.get());
+
+    // it shouldn't be possible to paste after a sequence, since repeat can hold only one
+    // instruction
+    EXPECT_FALSE(handler->CanPasteAfter());
+  }
+
+  {  // Sequence instruction inside Sequence, attempt to paste after internal sequence
+    const WaitItem item_to_paste;
+    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+    auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+    auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
+
+    auto handler = CreateActionHandler(sequence1, mime_data.get());
+
+    // It is possible to paste inside a sequence0, right after sequence1
     EXPECT_TRUE(handler->CanPasteAfter());
   }
 }
 
-//! Empty model, nothing is selected, pasted item should just appear as a first item.
+//! Testing PasteAfter for the following scenario: empty model, nothing is selected, pasted item
+//! should just appear as a first item.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer)
 {
   // creating mime data representing clipboard content
@@ -168,6 +196,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
+  EXPECT_TRUE(handler->CanPasteAfter());
   handler->PasteAfter();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
@@ -179,7 +208,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
 }
 
-//! Instruction in a model, selected, pasing new instruction right after it.
+//! Testing PasteAfter for the following scenario: sequence a model, selected, pasting new
+//! instruction right after it.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 {
   // inserting instruction in the container
@@ -214,4 +244,42 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
+}
+
+//! Testing PasteAfter for the following scenario: sequence has two items, the first one selected,
+//! pasting after it.
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequenceAfterSelectedItem)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto wait0 = m_model.InsertItem<SequenceItem>(sequence);
+  const double wait0_x = 10;
+  const double wait0_y = 20;
+  wait0->SetX(wait0_x);
+  wait0->SetY(wait0_y);
+  auto wait1 = m_model.InsertItem<SequenceItem>(sequence);
+
+  // creating mime data representing clipboard content
+  WaitItem item_to_paste;
+  item_to_paste.SetDisplayName("abc");
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+  // wait0 is selected
+  auto handler = CreateActionHandler(wait0, mime_data.get());
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // appending instruction to the container
+  handler->PasteAfter();
+  ASSERT_EQ(sequence->GetInstructions().size(), 3);
+
+  // Wait instruction should be after Sequence instruction
+  auto inserted_wait = sequence->GetInstructions().at(1);
+  EXPECT_EQ(inserted_wait->GetType(), WaitItem::Type);
+  EXPECT_EQ(inserted_wait->GetDisplayName(), std::string("abc"));
+
+  // Check coordinates of Wait instruction. It should be placed nearby to the selected one
+  const double offset = GetInstructionDropOffset();
+  EXPECT_DOUBLE_EQ(inserted_wait->GetX(), offset + wait0_x);
+  EXPECT_DOUBLE_EQ(inserted_wait->GetY(), offset + wait0_y);
 }
