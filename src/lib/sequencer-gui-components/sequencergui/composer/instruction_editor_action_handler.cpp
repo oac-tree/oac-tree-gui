@@ -204,6 +204,11 @@ void InstructionEditorActionHandler::Copy()
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
 {
+  if (auto mime_data = GetMimeData(); mime_data)
+  {
+    return mime_data->hasFormat(kCopyInstructionMimeType);
+  }
+
   return false;
 }
 
@@ -237,6 +242,11 @@ void InstructionEditorActionHandler::SendMessage(const std::string &text,
 {
   auto message = sup::gui::CreateInvalidOperationMessage(text, informative, details);
   m_context.send_message_callback(message);
+}
+
+const QMimeData *InstructionEditorActionHandler::GetMimeData() const
+{
+  return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(const std::string &item_type,

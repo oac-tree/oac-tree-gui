@@ -182,7 +182,6 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   EXPECT_EQ(instructions.at(1)->GetY(), coordinate_offset + sequence_y);
 }
 
-//! Insertion instruction after selected instruction.
 //! Mimicking the case when no instruction is actually selected.
 //! Items should be added one after another.
 

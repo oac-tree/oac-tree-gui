@@ -117,7 +117,7 @@ public:
   bool CanPasteAfter() const;
 
   /**
-   * @brief Paste procedure.
+   * @brief Paste instruction after current selection.
    */
   void Paste();
 
@@ -131,6 +131,7 @@ private:
   InstructionContainerItem* GetInstructionContainer() const;
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
+  const QMimeData* GetMimeData() const;
 
   ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
                                   const ::mvvm::TagIndex& index);

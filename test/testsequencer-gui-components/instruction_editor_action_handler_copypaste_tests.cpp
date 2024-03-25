@@ -119,3 +119,33 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
   ASSERT_NE(m_copy_result.get(), nullptr);
   EXPECT_TRUE(m_copy_result->hasFormat(kCopyInstructionMimeType));
 }
+
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
+{
+  {  // nothing is selected, no mime data
+    auto handler = CreateHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
+    EXPECT_FALSE(handler->CanPasteAfter());
+  }
+
+  {  // nothing is selected, wrong mime data
+    const QMimeData mime_data;
+    auto handler = CreateHandler(nullptr, &mime_data);
+    EXPECT_FALSE(handler->CanPasteAfter());
+  }
+
+  {  // nothing is selected, correct mime data
+    const WaitItem item_to_paste;
+    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto handler = CreateHandler(nullptr, mime_data.get());
+    EXPECT_TRUE(handler->CanPasteAfter());
+  }
+
+  {  // selected item in the container, correct mime data
+    const WaitItem item_to_paste;
+    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+    auto sequence = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
+    auto handler = CreateHandler(sequence, mime_data.get());
+    EXPECT_TRUE(handler->CanPasteAfter());
+  }
+}
