@@ -264,6 +264,22 @@ void InstructionEditorActionHandler::PasteAfter()
 
 bool InstructionEditorActionHandler::CanPasteInto() const
 {
+  auto mime_data = GetMimeData();
+
+  if (!mime_data || !mime_data->hasFormat(kCopyInstructionMimeType))
+  {
+    return false;
+  }
+
+  // Checking if there is a selection inside another parent. To paste after this selection, the
+  // parent should have the room for more items.
+  if (auto selected_item = GetSelectedInstruction(); selected_item)
+  {
+    auto item_type = GetSessionItemType(mime_data);
+    return mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append()).first;
+  }
+
+  // paste-into is not possible if no selection exist
   return false;
 }
 

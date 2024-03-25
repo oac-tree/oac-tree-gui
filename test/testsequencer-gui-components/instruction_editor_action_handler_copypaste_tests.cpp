@@ -94,11 +94,11 @@ public:
 //! Copy operation when nothing is selected.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyPasteWhenNothingIsSelected)
 {
-  //
   auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
 
   EXPECT_FALSE(handler->CanCopy());
-  EXPECT_FALSE(handler->CanPasteAfter());  // because mime data is empty
+  EXPECT_FALSE(handler->CanPasteAfter());
+  EXPECT_FALSE(handler->CanPasteInto());
   EXPECT_FALSE(handler->CanCut());
 }
 
@@ -121,25 +121,32 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
   EXPECT_TRUE(m_copy_result->hasFormat(kCopyInstructionMimeType));
 }
 
-//! Testing CanPasteAfter method at different selections.
-TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
+//! Testing CanPasteAfter and CanPasteInto methods at different selections.
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 {
   {  // nothing is selected, no mime data
     auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
     EXPECT_FALSE(handler->CanPasteAfter());
+    EXPECT_FALSE(handler->CanPasteInto());
   }
 
   {  // nothing is selected, wrong mime data
     const QMimeData mime_data;
     auto handler = CreateActionHandler(nullptr, &mime_data);
     EXPECT_FALSE(handler->CanPasteAfter());
+    EXPECT_FALSE(handler->CanPasteInto());
   }
 
   {  // nothing is selected, correct mime data
     const WaitItem item_to_paste;
     auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
     auto handler = CreateActionHandler(nullptr, mime_data.get());
+
+    // paste-after when nothing is selected is allowed
     EXPECT_TRUE(handler->CanPasteAfter());
+
+    // paste-into when nothing is selected is forbidden
+    EXPECT_FALSE(handler->CanPasteInto());
   }
 
   {  // selected item in the container, correct mime data
@@ -149,9 +156,10 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
     auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
     auto handler = CreateActionHandler(sequence, mime_data.get());
     EXPECT_TRUE(handler->CanPasteAfter());
+    EXPECT_TRUE(handler->CanPasteInto());
   }
 
-  {  // Repeat instruction with Sequence, attempt to paste after a sequence
+  {  // repeat instruction with Sequence
     const WaitItem item_to_paste;
     auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
@@ -163,9 +171,12 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
     // it shouldn't be possible to paste after a sequence, since repeat can hold only one
     // instruction
     EXPECT_FALSE(handler->CanPasteAfter());
+
+    // it is possible to paste into a sequence itself
+    EXPECT_TRUE(handler->CanPasteInto());
   }
 
-  {  // Sequence instruction inside Sequence, attempt to paste after internal sequence
+  {  // sequence instruction inside Sequence
     const WaitItem item_to_paste;
     auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
@@ -176,6 +187,9 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
 
     // It is possible to paste inside a sequence0, right after sequence1
     EXPECT_TRUE(handler->CanPasteAfter());
+
+    // it is possible to paste into a sequence1 itself
+    EXPECT_TRUE(handler->CanPasteInto());
   }
 }
 
@@ -208,7 +222,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
 }
 
-//! Testing PasteAfter for the following scenario: sequence a model, selected, pasting new
+//! Testing PasteAfter for the following scenario: sequence in a model, selected, pasting new
 //! instruction right after it.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
 {
