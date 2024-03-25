@@ -29,6 +29,7 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -172,14 +173,12 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::Type);
   EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::Type);
 
-  // Check coordinates of Wait instruction. It should be placed nearby to original
-  // instruction
+  // Check coordinates of Wait instruction. It should be placed nearby to the original
+  // instruction.
+  const double offset = GetInstructionDropOffset();
 
-  // hardcoded in composer_actions.cpp in UpdateChildCoordinate() function
-  const double coordinate_offset = 10;
-
-  EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);
-  EXPECT_EQ(instructions.at(1)->GetY(), coordinate_offset + sequence_y);
+  EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
+  EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 }
 
 //! Consequent insert of one instruction after the other, nothing is selected.
@@ -256,14 +255,11 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   ASSERT_NE(universal, nullptr);
   EXPECT_EQ(universal->GetDomainType(), domainconstants::kMessageInstructionType);
 
-  // Check coordinates of Wait instruction. It should be placed nearby to original
-  // instruction
+  // Check coordinates of the instruction. It should be placed nearby to the original instruction.
+  const double offset = GetInstructionDropOffset();
 
-  // hardcoded in composer_actions.cpp in UpdateChildCoordinate() function
-  const double coordinate_offset = 10;
-
-  EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);
-  EXPECT_EQ(instructions.at(1)->GetY(), coordinate_offset + sequence_y);
+  EXPECT_DOUBLE_EQ(instructions.at(1)->GetX(), offset + sequence_x);
+  EXPECT_DOUBLE_EQ(instructions.at(1)->GetY(), offset + sequence_y);
 }
 
 //! Attempt to insert instruction into the one, that can't have children.

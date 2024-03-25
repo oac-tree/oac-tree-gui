@@ -45,15 +45,16 @@ namespace
  */
 void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm::SessionItem *child)
 {
-  const int coordinate_offset = 10;  // to place a child aproximately near the parent
   const auto default_center = sequencergui::GetGraphicsViewportCenter();
   if (auto inserted_instruction = dynamic_cast<sequencergui::InstructionItem *>(child);
       inserted_instruction)
   {
-    inserted_instruction->SetX(reference ? reference->GetX() + coordinate_offset
-                                         : default_center.x());
-    inserted_instruction->SetY(reference ? reference->GetY() + coordinate_offset
-                                         : default_center.y());
+    inserted_instruction->SetX(reference
+                                   ? reference->GetX() + sequencergui::GetInstructionDropOffset()
+                                   : default_center.x());
+    inserted_instruction->SetY(reference
+                                   ? reference->GetY() + sequencergui::GetInstructionDropOffset()
+                                   : default_center.y());
   }
 }
 

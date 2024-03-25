@@ -32,7 +32,6 @@
 #include <QLinearGradient>
 #include <QRectF>
 #include <cctype>
-#include <numeric>
 
 namespace sequencergui
 {
@@ -135,6 +134,12 @@ std::string InsertSpaceAtCamelCase(std::string str)
   }
 
   return str;
+}
+
+double GetInstructionDropOffset()
+{
+  const double shift_of_child_wrt_parent{10};
+  return shift_of_child_wrt_parent;
 }
 
 }  // namespace sequencergui

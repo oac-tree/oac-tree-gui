@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
 #define SEQUENCERGUI_NODEEDITOR_SCENE_UTILS_H_
 
+//! @file
 //! Collection of utility functions for graphics scene.
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -35,41 +35,86 @@ class QSizeF;
 
 namespace sequencergui
 {
+
 class InstructionContainerItem;
 class InstructionItem;
 class SequencerModel;
 
-//! Returns maximum size of graphics viewport.
+/**
+ * @brief Returns maximum size of graphics viewport.
+ */
 QSizeF GetGraphicsViewportSize();
 
-//! Returns origin of graphics viewport.
+/**
+ * @brief Returns origin of graphics viewport.
+ */
 QPointF GetGraphicsViewportOrigin();
 
-//! Returns initial center of graphics viewport.
+/**
+ * @brief Returns initial center of graphics viewport.
+ */
 QPointF GetGraphicsViewportCenter();
 
-//! Returns vertical gradient to paint connectable view with given color and bounding rectangle.
+/**
+ * @brief Returns vertical gradient to paint connectable view.
+ *
+ * @param color Base color of the gradient.
+ * @param rect Gradient's bounding box.
+ * @return Qt gradient.
+ */
 QGradient ConnectableViewGradient(const QColor& color, const QRectF& rect);
 
-//! Returns characteristic rectangle to represent connectable view on a graphics scene.
+/**
+ * @brief Returns rectangle to represent connectable view on a graphics scene.
+ * @return
+ */
 QRectF ConnectableViewRectangle();
 
-//! Returns vector of points symmetrically distributed in a horizontal direction with
-//! center at `reference`.
+/**
+ * @brief Returns vector of points symmetrically distributed in a horizontal direction around
+ * reference point.
+ *
+ * @param reference Coordinate of the reference point.
+ * @param n_points Number of points to generate.
+ * @param width Width of the horizontal area.
+ *
+ * @return Coordinates of points.
+ */
 std::vector<QPointF> GetPositions(const QPointF& reference, int n_points, double width);
 
-//! Returns vertical size of the alignment grid.
+/**
+ * @brief Returns vertical size of the alignment grid.
+ *
+ * It is used to align instruction rectangles on the graphics scene.
+ */
 double GetAlignmentGridHeight();
 
-//! Returns horizontal size of the alignment grid.
+/**
+ * @brief Returns horizontal size of the alignment grid.
+ *
+ * It is used to align instruction rectangles on the graphics scene.
+ */
 double GetAlignmentGridWidth();
 
-//! Returns base color of given instruction
+/**
+ * @brief Returns base color of given instruction
+ */
 QColor GetBaseColor(const InstructionItem* instruction);
 
-//! Returns a string with space inserted at word boundaries.
-//! "CamelCase" -> "Camel Case"
+/**
+ * @brief Returns a string with space inserted at word boundaries.
+ *
+ * "CamelCase" -> "Camel Case"
+ */
 std::string InsertSpaceAtCamelCase(std::string str);
+
+/**
+ * @brief An offset to add to child coordinates concerning its parent.
+ *
+ * It is used when a child is added to a parent via the context menu. The resulting instruction
+ * rectangle will be located next to its parent (slightly shifted) on the graphics scene.
+ */
+double GetInstructionDropOffset();
 
 }  // namespace sequencergui
 
