@@ -116,6 +116,12 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   auto selected_instruction = GetSelectedInstruction();
+  if (!selected_instruction)
+  {
+    SendMessage("No instruction selected");
+    return;
+  }
+
   auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), selected_instruction,
                           mvvm::TagIndex::Append());
   UpdateChildCoordinate(selected_instruction, child);
@@ -338,6 +344,11 @@ const QMimeData *InstructionEditorActionHandler::GetMimeData() const
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
     std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index)
 {
+  if (parent == nullptr)
+  {
+    throw RuntimeException("Uninitialised parent");
+  }
+
   mvvm::SessionItem *result{nullptr};
   auto item_type = item->GetType();
   try

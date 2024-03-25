@@ -279,6 +279,18 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
+//! Attempt to insert instruction into something, when nothing is selected.
+
+TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
+{
+  // creating action handler mimicking `wait` instruction selected
+  auto handler = CreateActionHandler(m_procedure, nullptr);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+
+  handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
+}
+
 //! Removing selected instruction.
 
 TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
