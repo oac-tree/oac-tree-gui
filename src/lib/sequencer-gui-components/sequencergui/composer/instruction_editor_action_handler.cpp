@@ -131,7 +131,13 @@ void InstructionEditorActionHandler::OnRemoveInstructionRequest()
 {
   if (auto selected_instruction = GetSelectedInstruction(); selected_instruction)
   {
+    auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_instruction);
     GetModel()->RemoveItem(selected_instruction);
+    if (next_to_select)
+    {
+      // suggest to select something else instead of just deleted instruction
+      emit SelectItemRequest(next_to_select);
+    }
   }
 }
 
@@ -194,7 +200,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 
 bool InstructionEditorActionHandler::CanCut() const
 {
-  return false;
+  return GetSelectedInstruction() != nullptr;
 }
 
 void InstructionEditorActionHandler::Cut()
@@ -203,6 +209,9 @@ void InstructionEditorActionHandler::Cut()
   {
     return;
   }
+
+  Copy();
+  OnRemoveInstructionRequest();
 }
 
 bool InstructionEditorActionHandler::CanCopy() const

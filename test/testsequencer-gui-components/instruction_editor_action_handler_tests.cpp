@@ -291,26 +291,44 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
   handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
 }
 
-//! Removing selected instruction.
+//! Remove operation when nothing is selected.
 
-TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
+TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelected)
 {
   // inserting instruction in the container
-  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
 
   // creating action handler mimicking no instruction selected
   auto handler = CreateActionHandler(m_procedure, nullptr);
+
+  QSignalSpy spy_selection_request(handler.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
 
   // nothing selected, remove request does nothing
   handler->OnRemoveInstructionRequest();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
-  // creating action handler mimicking sequencer selected
-  handler = CreateActionHandler(m_procedure, sequence);
+  EXPECT_EQ(spy_selection_request.count(), 0);
+}
 
-  // remove request should remove item
+TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
+{
+  // inserting instruction in the container
+  auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  auto sequence1 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+
+  // creating action handler mimicking sequence0 is selected
+  auto handler = CreateActionHandler(m_procedure, sequence0);
+
+  QSignalSpy spy_selection_request(handler.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
+
+  // nothing selected, remove request does nothing
   handler->OnRemoveInstructionRequest();
-  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 0);
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
+
+  // checking the request to select remaining item
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), sequence1);
 }
 
 //! Move selected instruction up.

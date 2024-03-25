@@ -334,3 +334,31 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetX(), offset + sequence_x);
   EXPECT_DOUBLE_EQ(instructions.at(0)->GetY(), offset + sequence_y);
 }
+
+//! Cut selected instruction.
+
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
+{
+  // inserting instruction in the container
+  auto wait0 = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
+  auto wait1 = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
+
+  // wait0 is selected
+  auto handler = CreateActionHandler(wait0, nullptr);
+
+  QSignalSpy spy_selection_request(handler.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // inserting instruction into selected instruction
+  EXPECT_TRUE(handler->CanCut());
+
+  handler->Cut();
+
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+
+  // checking the request to select remaining item
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait1);
+}
