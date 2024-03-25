@@ -192,18 +192,6 @@ std::unique_ptr<mvvm::SessionItem> CreateSessionItem(const QMimeData* mime_data,
   return {};
 }
 
-std::unique_ptr<QMimeData> CreateProcedureCopyMimeData(const ProcedureItem& item)
-{
-  return CreateCopyMimeData(item, kCopyProcedureMimeType);
-}
-
-std::unique_ptr<ProcedureItem> CreateProcedureItem(const QMimeData* mime_data)
-{
-  auto item = CreateSessionItem(mime_data, kCopyProcedureMimeType);
-  // FIXME do we really need ProcedureItem return type?
-  return std::unique_ptr<ProcedureItem>(static_cast<ProcedureItem*>(item.release()));
-}
-
 std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& item)
 {
   return CreateCopyMimeData(item, kCopyInstructionMimeType);

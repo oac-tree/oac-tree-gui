@@ -90,7 +90,7 @@ void ProcedureListActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateProcedureCopyMimeData(*GetSelectedProcedure()));
+  m_context.set_mime_data(CreateCopyMimeData(*GetSelectedProcedure(), kCopyProcedureMimeType));
 }
 
 bool ProcedureListActionHandler::CanPaste() const
@@ -111,7 +111,7 @@ void ProcedureListActionHandler::Paste()
   }
 
   auto mime_data = GetMimeData();
-  InsertProcedure(CreateProcedureItem(mime_data));
+  InsertProcedure(CreateSessionItem(mime_data, kCopyProcedureMimeType));
 }
 
 mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const
@@ -134,7 +134,8 @@ const QMimeData *ProcedureListActionHandler::GetMimeData() const
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
-ProcedureItem *ProcedureListActionHandler::InsertProcedure(std::unique_ptr<ProcedureItem> item)
+mvvm::SessionItem *ProcedureListActionHandler::InsertProcedure(
+    std::unique_ptr<mvvm::SessionItem> item)
 {
   auto procedure_item_ptr = item.get();
 
@@ -142,7 +143,7 @@ ProcedureItem *ProcedureListActionHandler::InsertProcedure(std::unique_ptr<Proce
   auto tag_index = selected ? selected->GetTagIndex().Next() : mvvm::TagIndex::Append();
   GetModel()->InsertItem(std::move(item), GetProcedureContainer(), tag_index);
   // select just inserted procedure
-  emit SelectProcedureRequest(procedure_item_ptr);
+  emit SelectProcedureRequest(dynamic_cast<ProcedureItem *>(procedure_item_ptr));
 
   return procedure_item_ptr;
 }

@@ -133,18 +133,6 @@ std::unique_ptr<mvvm::SessionItem> CreateSessionItem(const QMimeData* mime_data,
                                                      const QString& mime_format);
 
 /**
- * @brief Creates mime data to copy given procedure.
- *
- * @param item The procedure to copy.
- */
-std::unique_ptr<QMimeData> CreateProcedureCopyMimeData(const ProcedureItem& item);
-
-/**
- * @brief Creates procedure item from mime data.
- */
-std::unique_ptr<ProcedureItem> CreateProcedureItem(const QMimeData* mime_data);
-
-/**
  * @brief Creates mime data to copy given instruction.
  *
  * @param item The instruction to copy.

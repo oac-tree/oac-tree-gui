@@ -236,7 +236,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
   ProcedureItem item_to_paste;
   item_to_paste.SetName("abc");
 
-  auto mime_data = CreateProcedureCopyMimeData(item_to_paste);
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
 
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
@@ -269,7 +269,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   ProcedureItem item_to_paste;
   item_to_paste.SetName("abc");
 
-  auto mime_data = CreateProcedureCopyMimeData(item_to_paste);
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
 
   EXPECT_EQ(m_procedure_container->GetSize(), 2);
 

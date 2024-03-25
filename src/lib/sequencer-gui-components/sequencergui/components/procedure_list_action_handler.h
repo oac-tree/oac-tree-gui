@@ -30,6 +30,7 @@ namespace mvvm
 {
 class ContainerItem;
 class SessionModelInterface;
+class SessionItem;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -91,7 +92,7 @@ private:
   mvvm::SessionModelInterface* GetModel();
   const QMimeData* GetMimeData() const;
 
-  ProcedureItem* InsertProcedure(std::unique_ptr<ProcedureItem> item);
+  mvvm::SessionItem* InsertProcedure(std::unique_ptr<mvvm::SessionItem> item);
 
   ProcedureListContext m_context;
 };

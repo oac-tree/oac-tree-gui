@@ -183,19 +183,20 @@ TEST_F(DragAndDropHelperTest, CreateProcedureFromMime)
   {
     // wrong mime type
     QMimeData data;
-    auto procedure_item = CreateProcedureItem(&data);
+    auto procedure_item = CreateSessionItem(&data, kCopyProcedureMimeType);
     EXPECT_EQ(procedure_item.get(), nullptr);
   }
 
   {
     const std::string expected_name("abc");
     ProcedureItem item;
-    item.SetName(expected_name);
+    item.SetDisplayName(expected_name);
 
-    auto data = CreateProcedureCopyMimeData(item);
+    auto data = CreateCopyMimeData(item, kCopyProcedureMimeType);
     EXPECT_TRUE(data->hasFormat(kCopyProcedureMimeType));
 
-    auto reconstructed_item = CreateProcedureItem(data.get());
-    EXPECT_EQ(reconstructed_item->GetName(), expected_name);
+    auto reconstructed_item = CreateSessionItem(data.get(), kCopyProcedureMimeType);
+    EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
+    EXPECT_NE(dynamic_cast<ProcedureItem*>(reconstructed_item.get()), nullptr);
   }
 }
