@@ -56,7 +56,7 @@ public:
     kMoveDown,
     kCut,
     kCopy,
-    kPaste,
+    kPasteAfter,
     kTotalCount
   };
 
@@ -81,7 +81,7 @@ signals:
   void MoveDownRequest();
   void CutRequest();
   void CopyRequest();
-  void PasteRequest();
+  void PasteAfterRequest();
 
 private:
   void SetupInsertRemoveActions();
@@ -108,7 +108,7 @@ private:
 
   QAction* m_cut_action{nullptr};
   QAction* m_copy_action{nullptr};
-  QAction* m_paste_action{nullptr};
+  QAction* m_paste_after_action{nullptr};
 
   std::map<ActionKey, QAction*> m_actions;
 };

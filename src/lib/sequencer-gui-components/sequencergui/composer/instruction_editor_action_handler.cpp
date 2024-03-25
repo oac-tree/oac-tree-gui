@@ -202,14 +202,14 @@ void InstructionEditorActionHandler::Copy()
   m_context.set_mime_data(CreateCopyMimeData(*GetSelectedInstruction(), kCopyInstructionMimeType));
 }
 
-bool InstructionEditorActionHandler::CanPaste() const
+bool InstructionEditorActionHandler::CanPasteAfter() const
 {
   return false;
 }
 
 void InstructionEditorActionHandler::Paste()
 {
-  if (!CanPaste())
+  if (!CanPasteAfter())
   {
     return;
   }

@@ -262,7 +262,7 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::Cut);
   connect(m_editor_actions, &InstructionEditorActions::CopyRequest, m_action_handler,
           &InstructionEditorActionHandler::Copy);
-  connect(m_editor_actions, &InstructionEditorActions::PasteRequest, m_action_handler,
+  connect(m_editor_actions, &InstructionEditorActions::PasteAfterRequest, m_action_handler,
           &InstructionEditorActionHandler::Paste);
 }
 

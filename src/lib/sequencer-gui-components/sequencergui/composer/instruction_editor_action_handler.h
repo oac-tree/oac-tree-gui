@@ -114,7 +114,7 @@ public:
   /**
    * @brief Checks if paste operation is possible.
    */
-  bool CanPaste() const;
+  bool CanPasteAfter() const;
 
   /**
    * @brief Paste procedure.

@@ -97,7 +97,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyPasteWhenNothingIsSelect
   auto handler = CreateHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
 
   EXPECT_FALSE(handler->CanCopy());
-  EXPECT_FALSE(handler->CanPaste());  // because mime data is empty
+  EXPECT_FALSE(handler->CanPasteAfter());  // because mime data is empty
   EXPECT_FALSE(handler->CanCut());
 }
 
