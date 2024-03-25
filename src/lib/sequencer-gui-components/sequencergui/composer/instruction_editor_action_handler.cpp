@@ -289,6 +289,21 @@ void InstructionEditorActionHandler::PasteInto()
   {
     return;
   }
+
+  auto instruction_container = GetInstructionContainer();
+  if (!instruction_container)
+  {
+    SendMessage("No procedure selected");
+    return;
+  }
+
+  auto mime_data = GetMimeData();
+  auto instruction_item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
+
+  auto selected_instruction = GetSelectedInstruction();
+  auto child =
+      InsertItem(std::move(instruction_item), selected_instruction, mvvm::TagIndex::Append());
+  UpdateChildCoordinate(selected_instruction, child);
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const

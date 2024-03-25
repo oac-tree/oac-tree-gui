@@ -297,3 +297,40 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   EXPECT_DOUBLE_EQ(inserted_wait->GetX(), offset + wait0_x);
   EXPECT_DOUBLE_EQ(inserted_wait->GetY(), offset + wait0_y);
 }
+
+//! Insertion instruction in the selected instruction.
+
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  const double sequence_x = 10;
+  const double sequence_y = 20;
+  sequence->SetX(sequence_x);
+  sequence->SetY(sequence_y);
+
+  // creating mime data representing clipboard content
+  WaitItem item_to_paste;
+  item_to_paste.SetDisplayName("abc");
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+  // creating action handler mimicking `sequence` instruction selected
+  auto handler = CreateActionHandler(sequence, mime_data.get());
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // inserting instruction into selected instruction
+  handler->PasteInto();
+  auto instructions = sequence->GetInstructions();
+  ASSERT_EQ(instructions.size(), 1);
+
+  // Wait instruction should be after Sequence instruction
+  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+  EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
+
+  // Check coordinates of the instruction. It should be placed nearby to the original instruction.
+  const double offset = GetInstructionDropOffset();
+
+  EXPECT_DOUBLE_EQ(instructions.at(0)->GetX(), offset + sequence_x);
+  EXPECT_DOUBLE_EQ(instructions.at(0)->GetY(), offset + sequence_y);
+}
