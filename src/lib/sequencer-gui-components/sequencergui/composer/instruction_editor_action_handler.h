@@ -112,14 +112,31 @@ public:
   void Copy();
 
   /**
-   * @brief Checks if paste operation is possible.
+   * @brief Checks if paste-after operation is possible.
+   *
+   * Paste-after operation inserts new item after the current selection.
    */
   bool CanPasteAfter() const;
 
   /**
-   * @brief PasteAfter instruction after current selection.
+   * @brief Paste new instruction after the current selection.
    */
   void PasteAfter();
+
+  /**
+   * @brief Checks if paste-into operation is possible.
+   *
+   * Paste-into operation appends a new child to existing children of currently selected
+   * instruction.
+   */
+  bool CanPasteInto() const;
+
+  /**
+   * @brief Paste instruction as a child into currently selected instruction.
+   *
+   * It will be appended to already existing children.
+   */
+  void PasteInto();
 
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);
@@ -133,8 +150,8 @@ private:
                    const std::string& details = {});
   const QMimeData* GetMimeData() const;
 
-  ::mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, ::mvvm::SessionItem* parent,
-                                  const ::mvvm::TagIndex& index);
+  ::mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item,
+                                  ::mvvm::SessionItem* parent, const ::mvvm::TagIndex& index);
 
   InstructionEditorContext m_context;
 };

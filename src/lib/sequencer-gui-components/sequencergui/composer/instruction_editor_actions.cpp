@@ -135,8 +135,16 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_paste_after_action = new QAction(this);
   m_paste_after_action->setText("Paste After");
   m_paste_after_action->setToolTip("Paste selected instruction after current selection");
-  connect(m_paste_after_action, &QAction::triggered, this, &InstructionEditorActions::PasteAfterRequest);
+  connect(m_paste_after_action, &QAction::triggered, this,
+          &InstructionEditorActions::PasteAfterRequest);
   m_actions[ActionKey::kPasteAfter] = m_paste_after_action;
+
+  m_paste_into_action = new QAction(this);
+  m_paste_into_action->setText("Paste Into");
+  m_paste_into_action->setToolTip("Paste selected instruction into current selection");
+  connect(m_paste_into_action, &QAction::triggered, this,
+          &InstructionEditorActions::PasteIntoRequest);
+  m_actions[ActionKey::kPasteInto] = m_paste_into_action;
 }
 
 std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()

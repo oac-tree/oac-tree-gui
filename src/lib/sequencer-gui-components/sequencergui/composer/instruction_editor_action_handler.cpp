@@ -262,6 +262,19 @@ void InstructionEditorActionHandler::PasteAfter()
   UpdateChildCoordinate(item, child);
 }
 
+bool InstructionEditorActionHandler::CanPasteInto() const
+{
+  return false;
+}
+
+void InstructionEditorActionHandler::PasteInto()
+{
+  if (!CanPasteInto())
+  {
+    return;
+  }
+}
+
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
 {
   return m_context.selected_instruction();
