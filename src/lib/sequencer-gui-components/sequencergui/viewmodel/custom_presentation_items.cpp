@@ -34,8 +34,8 @@ ChannelPresentationItem::ChannelPresentationItem(mvvm::SessionItem *item,
 
 QVariant ChannelPresentationItem::Data(int qt_role) const
 {
-  static const QColor kConnectedColor = GetConnectedColor();
-  static const QColor kDisonnectedColor = GetDisonnectedColor();
+  static const QColor kConnectedColor = GetConnectedVariableColor();
+  static const QColor kDisonnectedColor = GetDisonnectedVariableColor();
 
   if (qt_role == Qt::DecorationRole)
   {

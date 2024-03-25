@@ -38,13 +38,13 @@ bool AppSettings::IsTopToBottomStyle() const
   return m_tree_style == BehaviorTreeStyle::kTopToBottom;
 }
 
-QColor GetConnectedColor()
+QColor GetConnectedVariableColor()
 {
   static const QColor result("#00aa00");  // green
   return result;
 }
 
-QColor GetDisonnectedColor()
+QColor GetDisonnectedVariableColor()
 {
   static const QColor result("#b9b9b9");  // gray
   return result;

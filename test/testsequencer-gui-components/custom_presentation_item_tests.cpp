@@ -53,9 +53,9 @@ TEST_F(CustomPresentationItemTest, ChannelPresentationItem)
   EXPECT_TRUE(presentation.Data(Qt::DecorationRole).isValid());
 
   EXPECT_EQ(presentation.Data(Qt::DisplayRole).toString(), QString("channel_name"));
-  EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
+  EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetConnectedVariableColor());
 
   // changing IsAvailable status should change the color of the rectangle
   item.SetProperty(TestItem::kIsAvailable, false);
-  EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedColor());
+  EXPECT_EQ(presentation.Data(Qt::DecorationRole).value<QColor>(), GetDisonnectedVariableColor());
 }

@@ -22,7 +22,6 @@
 
 #include <QColor>
 #include <QFont>
-#include <optional>
 
 namespace sequencergui
 {
@@ -49,12 +48,12 @@ private:
 /**
  * @brief Returns color for the decoration used to display connected variables.
  */
-QColor GetConnectedColor();
+QColor GetConnectedVariableColor();
 
 /**
  * @brief Returns color for the decoration used to display connected variables.
  */
-QColor GetDisonnectedColor();
+QColor GetDisonnectedVariableColor();
 
 /**
  * @brief Returns a string representing a custom tooltip style.

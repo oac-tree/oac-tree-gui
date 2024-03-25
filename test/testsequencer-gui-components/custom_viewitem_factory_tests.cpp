@@ -78,7 +78,7 @@ TEST_F(CustomViewItemFactoryTest, ChannelPresentationItemForConnectableVariable)
   EXPECT_TRUE(viewitem->Data(Qt::DisplayRole).isValid());
   EXPECT_EQ(viewitem->Data(Qt::DisplayRole).toString(), QString("CHANNEL"));
   EXPECT_TRUE(viewitem->Data(Qt::DecorationRole).isValid());
-  EXPECT_EQ(viewitem->Data(Qt::DecorationRole).value<QColor>(), GetConnectedColor());
+  EXPECT_EQ(viewitem->Data(Qt::DecorationRole).value<QColor>(), GetConnectedVariableColor());
 
   // it is not possible to set any data
   EXPECT_FALSE(viewitem->SetData(QString("aaa"), Qt::DisplayRole));
