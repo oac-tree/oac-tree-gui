@@ -263,7 +263,7 @@ void InstructionEditorWidget::SetupConnections()
   connect(m_editor_actions, &InstructionEditorActions::CopyRequest, m_action_handler,
           &InstructionEditorActionHandler::Copy);
   connect(m_editor_actions, &InstructionEditorActions::PasteAfterRequest, m_action_handler,
-          &InstructionEditorActionHandler::Paste);
+          &InstructionEditorActionHandler::PasteAfter);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()

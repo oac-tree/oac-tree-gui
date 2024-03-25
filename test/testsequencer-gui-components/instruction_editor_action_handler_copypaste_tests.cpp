@@ -120,6 +120,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
   EXPECT_TRUE(m_copy_result->hasFormat(kCopyInstructionMimeType));
 }
 
+//! Testing CanPasteAfter method at different selections.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
 {
   {  // nothing is selected, no mime data
@@ -148,4 +149,70 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
     auto handler = CreateHandler(sequence, mime_data.get());
     EXPECT_TRUE(handler->CanPasteAfter());
   }
+}
+
+//! Empty model, nothing is selected, pasted item should just appear as a first item.
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer)
+{
+  // creating mime data representing clipboard content
+  WaitItem item_to_paste;
+  item_to_paste.SetDisplayName("abc");
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+  // nothing is selected, copied item in a buffer
+  auto action_handler = CreateHandler(nullptr, mime_data.get());
+
+  QSignalSpy spy_selection_request(action_handler.get(),
+                                   &InstructionEditorActionHandler::SelectItemRequest);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  action_handler->PasteAfter();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
+
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
+  EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
+
+  // validating request to select just inserted item
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
+}
+
+//! Instruction in a model, selected, pasing new instruction right after it.
+TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
+{
+  // inserting instruction in the container
+  auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
+  const double sequence_x = 10;
+  const double sequence_y = 20;
+  sequence->SetX(sequence_x);
+  sequence->SetY(sequence_y);
+
+  // creating mime data representing clipboard content
+  WaitItem item_to_paste;
+  item_to_paste.SetDisplayName("abc");
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+
+  // creating the context mimicking `sequence` instruction selected, and mime data in a buffer
+  auto handler = CreateHandler(sequence, mime_data.get());
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  // appending instruction to the container
+  handler->PasteAfter();
+  ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
+
+  // Wait instruction should be after Sequence instruction
+  auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
+  EXPECT_EQ(instructions.at(0)->GetType(), SequenceItem::Type);
+  EXPECT_EQ(instructions.at(1)->GetType(), WaitItem::Type);
+
+  // Check coordinates of Wait instruction. It should be placed nearby to original
+  // instruction
+
+  // hardcoded in composer_actions.cpp in UpdateChildCoordinate() function
+  const double coordinate_offset = 10;
+
+  EXPECT_EQ(instructions.at(1)->GetX(), coordinate_offset + sequence_x);
+  EXPECT_EQ(instructions.at(1)->GetY(), coordinate_offset + sequence_y);
 }

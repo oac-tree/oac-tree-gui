@@ -98,14 +98,15 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
   auto parent = item ? item->GetParent() : instruction_container;
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
-  auto child = InsertItem(item_type.toStdString(), parent, tagindex);
+  auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), parent, tagindex);
   UpdateChildCoordinate(item, child);
 }
 
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   auto selected_instruction = GetSelectedInstruction();
-  auto child = InsertItem(item_type.toStdString(), selected_instruction, mvvm::TagIndex::Append());
+  auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), selected_instruction,
+                          mvvm::TagIndex::Append());
   UpdateChildCoordinate(selected_instruction, child);
 }
 
@@ -212,12 +213,30 @@ bool InstructionEditorActionHandler::CanPasteAfter() const
   return false;
 }
 
-void InstructionEditorActionHandler::Paste()
+void InstructionEditorActionHandler::PasteAfter()
 {
   if (!CanPasteAfter())
   {
     return;
   }
+
+  auto instruction_container = GetInstructionContainer();
+  if (!instruction_container)
+  {
+    SendMessage("No procedure selected");
+    return;
+  }
+
+  auto mime_data = GetMimeData();
+  auto instruction_item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
+
+  auto item = GetSelectedInstruction();
+
+  auto parent = item ? item->GetParent() : instruction_container;
+  auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+  auto child = InsertItem(std::move(instruction_item), parent, tagindex);
+  UpdateChildCoordinate(item, child);
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
@@ -249,21 +268,21 @@ const QMimeData *InstructionEditorActionHandler::GetMimeData() const
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
-mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(const std::string &item_type,
-                                                              mvvm::SessionItem *parent,
-                                                              const mvvm::TagIndex &index)
+mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
+    std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index)
 {
   mvvm::SessionItem *result{nullptr};
+  auto item_type = item->GetType();
   try
   {
-    result = GetModel()->InsertItem(CreateInstructionItem(item_type), parent, index);
+    result = GetModel()->InsertItem(std::move(item), parent, index);
     emit SelectItemRequest(result);
   }
   catch (const std::exception &ex)
   {
     std::ostringstream ostr;
-    ostr << "Can't insert variable '" << item_type << "' into parent '" << parent->GetType()
-         << "'. Maximum allowed number of children exceeded?";
+    ostr << "Can't insert instruction [" << item_type << "] into parent [" << parent->GetType()
+         << "]. Maximum allowed number of children exceeded?";
     SendMessage(ostr.str());
   }
   return result;

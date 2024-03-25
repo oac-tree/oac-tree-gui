@@ -117,9 +117,9 @@ public:
   bool CanPasteAfter() const;
 
   /**
-   * @brief Paste instruction after current selection.
+   * @brief PasteAfter instruction after current selection.
    */
-  void Paste();
+  void PasteAfter();
 
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);
@@ -133,7 +133,7 @@ private:
                    const std::string& details = {});
   const QMimeData* GetMimeData() const;
 
-  ::mvvm::SessionItem* InsertItem(const std::string& item_type, ::mvvm::SessionItem* parent,
+  ::mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, ::mvvm::SessionItem* parent,
                                   const ::mvvm::TagIndex& index);
 
   InstructionEditorContext m_context;
