@@ -180,10 +180,11 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
 
 TEST_F(DragAndDropHelperTest, CreateProcedureFromMime)
 {
+  const QString mime_type = kCopyProcedureMimeType;
   {
     // wrong mime type
     QMimeData data;
-    auto procedure_item = CreateSessionItem(&data, kCopyProcedureMimeType);
+    auto procedure_item = CreateSessionItem(&data, mime_type);
     EXPECT_EQ(procedure_item.get(), nullptr);
   }
 
@@ -192,11 +193,27 @@ TEST_F(DragAndDropHelperTest, CreateProcedureFromMime)
     ProcedureItem item;
     item.SetDisplayName(expected_name);
 
-    auto data = CreateCopyMimeData(item, kCopyProcedureMimeType);
-    EXPECT_TRUE(data->hasFormat(kCopyProcedureMimeType));
+    auto data = CreateCopyMimeData(item, mime_type);
+    EXPECT_TRUE(data->hasFormat(mime_type));
 
-    auto reconstructed_item = CreateSessionItem(data.get(), kCopyProcedureMimeType);
+    auto reconstructed_item = CreateSessionItem(data.get(), mime_type);
     EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
     EXPECT_NE(dynamic_cast<ProcedureItem*>(reconstructed_item.get()), nullptr);
   }
+}
+
+TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
+{
+  const QString mime_type = kCopyInstructionMimeType;
+
+  const std::string expected_name("abc");
+  WaitItem item;
+  item.SetDisplayName(expected_name);
+
+  auto data = CreateCopyMimeData(item, mime_type);
+  EXPECT_TRUE(data->hasFormat(mime_type));
+
+  auto reconstructed_item = CreateSessionItem(data.get(), mime_type);
+  EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
+  EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_item.get()), nullptr);
 }

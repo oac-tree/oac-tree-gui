@@ -199,7 +199,7 @@ void InstructionEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateInstructionCopyMimeData(*GetSelectedInstruction()));
+  m_context.set_mime_data(CreateCopyMimeData(*GetSelectedInstruction(), kCopyInstructionMimeType));
 }
 
 bool InstructionEditorActionHandler::CanPaste() const

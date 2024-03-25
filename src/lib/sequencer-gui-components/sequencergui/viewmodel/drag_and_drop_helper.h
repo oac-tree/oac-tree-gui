@@ -131,19 +131,6 @@ std::unique_ptr<QMimeData> CreateCopyMimeData(const mvvm::SessionItem& item,
  */
 std::unique_ptr<mvvm::SessionItem> CreateSessionItem(const QMimeData* mime_data,
                                                      const QString& mime_format);
-
-/**
- * @brief Creates mime data to copy given instruction.
- *
- * @param item The instruction to copy.
- */
-std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& item);
-
-/**
- * @brief Creates instruction item from mime data.
- */
-std::unique_ptr<InstructionItem> CreateInstructionItem(const QMimeData* mime_data);
-
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_

@@ -192,15 +192,4 @@ std::unique_ptr<mvvm::SessionItem> CreateSessionItem(const QMimeData* mime_data,
   return {};
 }
 
-std::unique_ptr<QMimeData> CreateInstructionCopyMimeData(const InstructionItem& item)
-{
-  return CreateCopyMimeData(item, kCopyInstructionMimeType);
-}
-
-std::unique_ptr<InstructionItem> CreateInstructionItem(const QMimeData* mime_data)
-{
-  auto item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
-  return std::unique_ptr<InstructionItem>(static_cast<InstructionItem*>(item.release()));
-}
-
 }  // namespace sequencergui
