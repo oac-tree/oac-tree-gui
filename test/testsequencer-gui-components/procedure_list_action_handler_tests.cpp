@@ -66,8 +66,8 @@ public:
   /**
    * @brief Test helper to create action handler.
    */
-  std::unique_ptr<ProcedureListActionHandler> CreateHandler(ProcedureItem* current_selection,
-                                                            const QMimeData* current_mime = nullptr)
+  std::unique_ptr<ProcedureListActionHandler> CreateActionHandler(
+      ProcedureItem* current_selection, const QMimeData* current_mime = nullptr)
   {
     return std::make_unique<ProcedureListActionHandler>(
         CreateContext(current_selection, current_mime));
@@ -92,7 +92,7 @@ TEST_F(ProcedureListActionHandlerTest, InitialState)
 //! Insert new procedure in empty container.
 TEST_F(ProcedureListActionHandlerTest, InsertInEmptyContainer)
 {
-  auto handler = CreateHandler(nullptr);  // nothing is selected
+  auto handler = CreateActionHandler(nullptr);  // nothing is selected
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
 
@@ -113,7 +113,7 @@ TEST_F(ProcedureListActionHandlerTest, AppendInContainerWhenNothingIsSelected)
 {
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
 
-  auto handler = CreateHandler(nullptr);  // nothing is selected
+  auto handler = CreateActionHandler(nullptr);  // nothing is selected
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
 
@@ -138,7 +138,7 @@ TEST_F(ProcedureListActionHandlerTest, InsertBetweenTwoProceduresContainer)
   auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
   auto proc1 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
 
-  auto handler = CreateHandler(proc0);  // first procedure is selected
+  auto handler = CreateActionHandler(proc0);  // first procedure is selected
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
 
@@ -164,7 +164,7 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
   auto proc1 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
   auto proc2 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
 
-  auto handler = CreateHandler(proc1);  // second procedure is selected
+  auto handler = CreateActionHandler(proc1);  // second procedure is selected
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
 
@@ -186,7 +186,7 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
 TEST_F(ProcedureListActionHandlerTest, CopyPasteWhenNothingIsSelected)
 {
   // nothing is selected
-  auto handler = CreateHandler(nullptr);
+  auto handler = CreateActionHandler(nullptr);
   EXPECT_FALSE(handler->CanCopy());
   EXPECT_FALSE(handler->CanPaste());  // because mime data is empty
   EXPECT_FALSE(handler->CanCut());
@@ -200,7 +200,7 @@ TEST_F(ProcedureListActionHandlerTest, CopyOperation)
 
   EXPECT_EQ(m_copy_result.get(), nullptr);
 
-  auto handler = CreateHandler(proc0);  // selected procedure
+  auto handler = CreateActionHandler(proc0);  // selected procedure
   EXPECT_TRUE(handler->CanCopy());
 
   handler->Copy();
@@ -218,7 +218,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteWrongType)
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
   // nothing is selected, invalid clipboard
-  auto handler = CreateHandler(nullptr, &mime_data);
+  auto handler = CreateActionHandler(nullptr, &mime_data);
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
@@ -241,7 +241,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
   // nothing is selected, valid clipboard
-  auto handler = CreateHandler(nullptr, mime_data.get());
+  auto handler = CreateActionHandler(nullptr, mime_data.get());
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
@@ -274,7 +274,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   EXPECT_EQ(m_procedure_container->GetSize(), 2);
 
   // first procedure is selected, valid clipboard
-  auto handler = CreateHandler(proc0, mime_data.get());
+  auto handler = CreateActionHandler(proc0, mime_data.get());
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
@@ -301,7 +301,7 @@ TEST_F(ProcedureListActionHandlerTest, CutOperation)
 
   EXPECT_EQ(m_copy_result.get(), nullptr);
 
-  auto handler = CreateHandler(proc0);  // first item is selected
+  auto handler = CreateActionHandler(proc0);  // first item is selected
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
 

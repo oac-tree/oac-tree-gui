@@ -111,15 +111,15 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
 TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
 {
   // pretending that nothing is selected
-  auto actions = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
-  QSignalSpy spy_selection_request(actions.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
+  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding variable
-  actions->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
+  handler->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -140,7 +140,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 
   // adding another variable
-  actions->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
+  handler->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 =
@@ -152,7 +152,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // attempty to add unknown variable type
-  actions->OnAddVariableRequest("non-existing-type");
+  handler->OnAddVariableRequest("non-existing-type");
 }
 
 //! Inserting variable between two existing variables.
@@ -163,13 +163,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWHenNothingIsSelected)
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 
   // pretending that var0 is selected
-  auto actions = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding variable
-  actions->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
+  handler->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -186,13 +186,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
 
   // pretending that var0 is selected
-  auto actions = CreateActionHandler(var0);
+  auto handler = CreateActionHandler(var0);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding variable
-  actions->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
+  handler->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -209,13 +209,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 
   // pretending that var0 is selected
-  auto actions = CreateActionHandler(var0);
+  auto handler = CreateActionHandler(var0);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // removing variable
-  actions->OnRemoveVariableRequest();
+  handler->OnRemoveVariableRequest();
 
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 0);
 }
@@ -228,13 +228,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 
   // nothing is selected
-  auto actions = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // removing variable
-  actions->OnRemoveVariableRequest();
+  handler->OnRemoveVariableRequest();
 
   // still same amount of variables
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -245,13 +245,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
 TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
 {
   // pretending that var0 is selected
-  auto actions = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // removing variabl
-  actions->OnEditAnyvalueRequest();
+  handler->OnEditAnyvalueRequest();
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
@@ -270,8 +270,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing actions
-  auto actions = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
+  // preparing handler
+  auto handler = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -279,7 +279,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions->OnEditAnyvalueRequest();
+  handler->OnEditAnyvalueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -302,8 +302,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing actions
-  auto actions =
+  // preparing handler
+  auto handler =
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no waning callbacks
@@ -312,7 +312,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions->OnEditAnyvalueRequest();
+  handler->OnEditAnyvalueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -334,8 +334,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   // AnyValue
   std::unique_ptr<sup::gui::AnyValueItem> editing_result;
 
-  // preparing actions
-  auto actions =
+  // preparing handler
+  auto handler =
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no warning callbacks
@@ -344,7 +344,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions->OnEditAnyvalueRequest();
+  handler->OnEditAnyvalueRequest();
 
   // checking that previous AnyValueItem has been removed
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
@@ -366,8 +366,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing actions
-  auto actions =
+  // preparing handler
+  auto handler =
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no waning callbacks
@@ -376,7 +376,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions->OnEditAnyvalueRequest();
+  handler->OnEditAnyvalueRequest();
 
   // checking that previous item remained the same
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
@@ -397,8 +397,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   auto editing_result = std::make_unique<sup::gui::AnyValueStructItem>();
   auto editing_result_ptr = editing_result.get();
 
-  // preparing actions
-  auto actions = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
+  // preparing handler
+  auto handler = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no warning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
@@ -406,7 +406,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  actions->OnEditAnyvalueRequest();
+  handler->OnEditAnyvalueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -424,13 +424,13 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   }
 
   // pretending that nothing is selected
-  auto actions = CreateActionHandler(nullptr);
+  auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // adding variable
-  actions->OnAddVariableRequest(QString::fromStdString(domainconstants::kSystemClockVariableType));
+  handler->OnAddVariableRequest(QString::fromStdString(domainconstants::kSystemClockVariableType));
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);

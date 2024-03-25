@@ -29,8 +29,8 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
-#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -79,8 +79,8 @@ public:
     return result;
   }
 
-  std::unique_ptr<InstructionEditorActionHandler> CreateHandler(InstructionItem* instruction,
-                                                                const QMimeData* current_mime)
+  std::unique_ptr<InstructionEditorActionHandler> CreateActionHandler(InstructionItem* instruction,
+                                                                      const QMimeData* current_mime)
   {
     return std::make_unique<InstructionEditorActionHandler>(
         CreateContext(instruction, current_mime));
@@ -95,7 +95,7 @@ public:
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyPasteWhenNothingIsSelected)
 {
   //
-  auto handler = CreateHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
+  auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
 
   EXPECT_FALSE(handler->CanCopy());
   EXPECT_FALSE(handler->CanPasteAfter());  // because mime data is empty
@@ -111,7 +111,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
   EXPECT_EQ(m_copy_result.get(), nullptr);
 
   // instruction is selected, no mime
-  auto handler = CreateHandler(sequence, nullptr);
+  auto handler = CreateActionHandler(sequence, nullptr);
   EXPECT_TRUE(handler->CanCopy());
 
   handler->Copy();
@@ -125,20 +125,20 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyOperation)
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
 {
   {  // nothing is selected, no mime data
-    auto handler = CreateHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
+    auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);
     EXPECT_FALSE(handler->CanPasteAfter());
   }
 
   {  // nothing is selected, wrong mime data
     const QMimeData mime_data;
-    auto handler = CreateHandler(nullptr, &mime_data);
+    auto handler = CreateActionHandler(nullptr, &mime_data);
     EXPECT_FALSE(handler->CanPasteAfter());
   }
 
   {  // nothing is selected, correct mime data
     const WaitItem item_to_paste;
     auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
-    auto handler = CreateHandler(nullptr, mime_data.get());
+    auto handler = CreateActionHandler(nullptr, mime_data.get());
     EXPECT_TRUE(handler->CanPasteAfter());
   }
 
@@ -147,7 +147,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPasteAfter)
     auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
     auto sequence = m_model.InsertItem<WaitItem>(m_procedure->GetInstructionContainer());
-    auto handler = CreateHandler(sequence, mime_data.get());
+    auto handler = CreateActionHandler(sequence, mime_data.get());
     EXPECT_TRUE(handler->CanPasteAfter());
   }
 }
@@ -161,14 +161,14 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   // nothing is selected, copied item in a buffer
-  auto action_handler = CreateHandler(nullptr, mime_data.get());
+  auto handler = CreateActionHandler(nullptr, mime_data.get());
 
-  QSignalSpy spy_selection_request(action_handler.get(),
+  QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
-  action_handler->PasteAfter();
+  handler->PasteAfter();
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -194,8 +194,8 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   item_to_paste.SetDisplayName("abc");
   auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
-  // creating the context mimicking `sequence` instruction selected, and mime data in a buffer
-  auto handler = CreateHandler(sequence, mime_data.get());
+  // creating action handler mimicking `sequence` instruction selected, and mime data in a buffer
+  auto handler = CreateActionHandler(sequence, mime_data.get());
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
