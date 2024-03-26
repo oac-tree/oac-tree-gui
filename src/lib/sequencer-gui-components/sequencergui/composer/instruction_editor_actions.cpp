@@ -139,18 +139,21 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_cut_action = new QAction(this);
   m_cut_action->setText("Cut");
   m_cut_action->setToolTip("Cuts selected instruction");
+  m_cut_action->setShortcut(QKeySequence("Ctrl+X"));
   connect(m_cut_action, &QAction::triggered, this, &InstructionEditorActions::CutRequest);
   m_actions[ActionKey::kCut] = m_cut_action;
 
   m_copy_action = new QAction(this);
   m_copy_action->setText("Copy");
   m_copy_action->setToolTip("Copies selected instruction");
+  m_copy_action->setShortcut(QKeySequence("Ctrl+C"));
   connect(m_copy_action, &QAction::triggered, this, &InstructionEditorActions::CopyRequest);
   m_actions[ActionKey::kCopy] = m_copy_action;
 
   m_paste_after_action = new QAction(this);
   m_paste_after_action->setText("Paste After");
   m_paste_after_action->setToolTip("Paste selected instruction after current selection");
+  m_paste_after_action->setShortcut(QKeySequence("Ctrl+V"));
   connect(m_paste_after_action, &QAction::triggered, this,
           &InstructionEditorActions::PasteAfterRequest);
   m_actions[ActionKey::kPasteAfter] = m_paste_after_action;
@@ -158,6 +161,7 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_paste_into_action = new QAction(this);
   m_paste_into_action->setText("Paste Into");
   m_paste_into_action->setToolTip("Paste selected instruction into current selection");
+  m_paste_into_action->setShortcut(QKeySequence("Ctrl+Shift+V"));
   connect(m_paste_into_action, &QAction::triggered, this,
           &InstructionEditorActions::PasteIntoRequest);
   m_actions[ActionKey::kPasteInto] = m_paste_into_action;

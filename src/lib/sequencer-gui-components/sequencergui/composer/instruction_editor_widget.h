@@ -73,6 +73,9 @@ public:
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 
+protected:
+  void keyPressEvent(QKeyEvent *event) override;
+
 private:
   void ReadSettings();
   void WriteSettings();

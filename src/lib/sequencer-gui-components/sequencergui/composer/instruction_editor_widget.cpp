@@ -42,6 +42,7 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QKeyEvent>
 #include <QMimeData>
 #include <QSettings>
 #include <QSplitter>
@@ -148,6 +149,26 @@ InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
+}
+
+void InstructionEditorWidget::keyPressEvent(QKeyEvent *event)
+{
+  if (event == QKeySequence::Cut)
+  {
+    m_action_handler->Cut();
+  }
+  else if (event == QKeySequence::Copy)
+  {
+    m_action_handler->Copy();
+  }
+  else if (event == QKeySequence::Paste)
+  {
+    m_action_handler->PasteAfter();
+  }
+  else
+  {
+    QWidget::keyPressEvent(event);
+  }
 }
 
 void InstructionEditorWidget::ReadSettings()
