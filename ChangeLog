@@ -1,4 +1,4 @@
-Changes for 1.3.0:
+Changes for 1.4.0:
 
 - COA Release v2.1, March 2024
 - Implement new job system based on sequencer JobController
@@ -12,8 +12,12 @@ Changes for 1.3.0:
 - Implement optional attributes for instruction and variables
 - Implement bookmarks for file browser
 - Tooltips for instruction real-time tree
-- Fix to find system's qt5 on CODAC
 - Less verbose CMake find package machinery
+
+Changes for 1.3.0:
+
+- Special TMCR bugfix Release, November 2023
+- Fix to find system's qt5 on CODAC
 - Fix for default instruction collapse/expand status
 - Fix for default NODEBUG level of log view
 - Provide automatic instruction re-highlight on branch collapse/expand
