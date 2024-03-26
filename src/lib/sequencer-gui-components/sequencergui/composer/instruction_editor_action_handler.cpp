@@ -107,13 +107,7 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
     return;
   }
 
-  auto item = GetSelectedInstruction();
-
-  auto parent = item ? item->GetParent() : GetInstructionContainer();
-  auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-
-  auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), parent, tagindex);
-  UpdateChildCoordinate(item, child);
+  InsertAfterCurrentSelection(CreateInstructionItem(item_type.toStdString()));
 }
 
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
@@ -125,9 +119,7 @@ void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QStrin
     return;
   }
 
-  auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), GetSelectedInstruction(),
-                          mvvm::TagIndex::Append());
-  UpdateChildCoordinate(GetSelectedInstruction(), child);
+  InsertIntoCurrentSelection(CreateInstructionItem(item_type.toStdString()));
 }
 
 void InstructionEditorActionHandler::OnRemoveInstructionRequest()
@@ -252,16 +244,7 @@ void InstructionEditorActionHandler::PasteAfter()
     return;
   }
 
-  auto mime_data = GetMimeData();
-  auto instruction_item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
-
-  auto item = GetSelectedInstruction();
-
-  auto parent = item ? item->GetParent() : GetInstructionContainer();
-  auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-
-  auto child = InsertItem(std::move(instruction_item), parent, tagindex);
-  UpdateChildCoordinate(item, child);
+  InsertAfterCurrentSelection(CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
 }
 
 bool InstructionEditorActionHandler::CanPasteInto() const
@@ -284,13 +267,7 @@ void InstructionEditorActionHandler::PasteInto()
     return;
   }
 
-  auto mime_data = GetMimeData();
-  auto instruction_item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
-
-  auto selected_instruction = GetSelectedInstruction();
-  auto child =
-      InsertItem(std::move(instruction_item), selected_instruction, mvvm::TagIndex::Append());
-  UpdateChildCoordinate(selected_instruction, child);
+  InsertIntoCurrentSelection(CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
@@ -377,6 +354,25 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
   }
 
   return QuerryResult::Success();
+}
+
+void InstructionEditorActionHandler::InsertAfterCurrentSelection(
+    std::unique_ptr<mvvm::SessionItem> item)
+{
+  auto selected_item = GetSelectedInstruction();
+
+  auto parent = selected_item ? selected_item->GetParent() : GetInstructionContainer();
+  auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+
+  auto child = InsertItem(std::move(item), parent, tagindex);
+  UpdateChildCoordinate(selected_item, child);
+}
+
+void InstructionEditorActionHandler::InsertIntoCurrentSelection(
+    std::unique_ptr<mvvm::SessionItem> item)
+{
+  auto child = InsertItem(std::move(item), GetSelectedInstruction(), mvvm::TagIndex::Append());
+  UpdateChildCoordinate(GetSelectedInstruction(), child);
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(

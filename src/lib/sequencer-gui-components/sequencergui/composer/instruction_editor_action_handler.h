@@ -42,8 +42,8 @@ class QuerryResult;
  * @brief The InstructionEditorActionHandler class implements logic to add/remove instructions in
  * InstructionContainerItem.
  *
- * @details The handler uses callbacks to retrieve current selection and thus deduce where to insert
- * and what to remove.
+ * The handler uses callbacks to retrieve current selection and thus deduce where to insert and what
+ * to remove.
  */
 class InstructionEditorActionHandler : public QObject
 {
@@ -169,8 +169,21 @@ private:
    */
   QuerryResult CanInsertTypeIntoCurrentSelection(const std::string& item_type) const;
 
-  ::mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item,
-                                  ::mvvm::SessionItem* parent, const ::mvvm::TagIndex& index);
+  /**
+   * @brief Inserts given item after current selection.
+   */
+  void InsertAfterCurrentSelection(std::unique_ptr<mvvm::SessionItem> item);
+
+  /**
+   * @brief Inserts given item into current selection.
+   */
+  void InsertIntoCurrentSelection(std::unique_ptr<mvvm::SessionItem> item);
+
+  /**
+   * @brief Inserts given item in the given parent.
+   */
+  mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem* parent,
+                                const mvvm::TagIndex& index);
 
   InstructionEditorContext m_context;
 };
