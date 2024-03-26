@@ -62,8 +62,8 @@ void InstructionEditorActions::SetupMenu(QMenu &menu, const InstructionEditorAct
 {
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
-  menu.addAction(m_paste_into_action);
   menu.addAction(m_paste_after_action);
+  menu.addAction(m_paste_into_action);
   menu.addSeparator();
 
   m_cut_action->setEnabled(handler->CanCut());

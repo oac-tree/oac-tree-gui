@@ -211,7 +211,7 @@ void InstructionEditorActionHandler::Cut()
 
 bool InstructionEditorActionHandler::CanCopy() const
 {
-  return GetSelectedInstruction() != nullptr || !m_context.set_mime_data;
+  return GetSelectedInstruction() != nullptr && m_context.set_mime_data;
 }
 
 void InstructionEditorActionHandler::Copy()

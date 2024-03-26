@@ -40,6 +40,9 @@
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
 
+#include <QClipboard>
+#include <QGuiApplication>
+#include <QMimeData>
 #include <QSettings>
 #include <QSplitter>
 #include <QTreeView>
@@ -264,6 +267,8 @@ void InstructionEditorWidget::SetupConnections()
           &InstructionEditorActionHandler::Copy);
   connect(m_editor_actions, &InstructionEditorActions::PasteAfterRequest, m_action_handler,
           &InstructionEditorActionHandler::PasteAfter);
+  connect(m_editor_actions, &InstructionEditorActions::PasteIntoRequest, m_action_handler,
+          &InstructionEditorActionHandler::PasteInto);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()
@@ -276,6 +281,11 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.send_message_callback = send_message_callback;
 
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
+
+  result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
+
+  result.set_mime_data = [](std::unique_ptr<QMimeData> data)
+  { return QGuiApplication::clipboard()->setMimeData(data.release()); };
 
   return result;
 }
