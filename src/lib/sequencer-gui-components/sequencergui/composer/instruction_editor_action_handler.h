@@ -36,6 +36,7 @@ namespace sequencergui
 
 class SequencerModel;
 class InstructionContainerItem;
+class QuerryResult;
 
 /**
  * @brief The InstructionEditorActionHandler class implements logic to add/remove instructions in
@@ -148,7 +149,18 @@ private:
   InstructionContainerItem* GetInstructionContainer() const;
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
+  void SendMessage(const sup::gui::MessageEvent& message_event);
+
   const QMimeData* GetMimeData() const;
+
+  /**
+   * @brief Checks if SessionItem of the given type can be inserted after the current selection.
+   *
+   * @param item_type Type of the SessionItem to insert.
+   * @return A result of the querry with error flag and message.
+   */
+  QuerryResult CanInsertTypeAfterCurrentSelection(
+      const std::string& item_type) const;
 
   ::mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item,
                                   ::mvvm::SessionItem* parent, const ::mvvm::TagIndex& index);

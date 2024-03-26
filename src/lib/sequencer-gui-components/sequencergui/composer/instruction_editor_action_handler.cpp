@@ -20,6 +20,7 @@
 #include "instruction_editor_action_handler.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
+#include <sequencergui/components/querry_result.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -68,6 +69,8 @@ std::string GetSessionItemType(const QMimeData *mime_data)
   return item ? item->GetType() : std::string();
 }
 
+const std::string kInvalidOperation = "Invalid Operation";
+
 }  // namespace
 
 namespace sequencergui
@@ -97,16 +100,16 @@ InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
 void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QString &item_type)
 {
-  auto instruction_container = GetInstructionContainer();
-  if (!instruction_container)
+  auto querry = CanInsertTypeAfterCurrentSelection(item_type.toStdString());
+  if (!querry.IsSuccess())
   {
-    SendMessage("No procedure selected");
+    SendMessage(querry.GetMessage());
     return;
   }
 
   auto item = GetSelectedInstruction();
 
-  auto parent = item ? item->GetParent() : instruction_container;
+  auto parent = item ? item->GetParent() : GetInstructionContainer();
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
   auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), parent, tagindex);
@@ -238,17 +241,8 @@ bool InstructionEditorActionHandler::CanPasteAfter() const
     return false;
   }
 
-  // Checking if there is a selection inside another parent. To paste after this selection, the
-  // parent should have the room for more items.
-  if (auto selected_item = GetSelectedInstruction(); selected_item)
-  {
-    auto item_type = GetSessionItemType(mime_data);
-    return mvvm::utils::CanInsertType(item_type, selected_item->GetParent(),
-                                      selected_item->GetTagIndex().Next())
-        .first;
-  }
-
-  return true;
+  auto querry = CanInsertTypeAfterCurrentSelection(GetSessionItemType(mime_data));
+  return querry.IsSuccess();
 }
 
 void InstructionEditorActionHandler::PasteAfter()
@@ -345,9 +339,40 @@ void InstructionEditorActionHandler::SendMessage(const std::string &text,
   m_context.send_message_callback(message);
 }
 
+void InstructionEditorActionHandler::SendMessage(const sup::gui::MessageEvent &message_event)
+{
+  m_context.send_message_callback(message_event);
+}
+
 const QMimeData *InstructionEditorActionHandler::GetMimeData() const
 {
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
+}
+
+QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
+    const std::string &item_type) const
+{
+  static const std::string kText("Can't insert type after current selection");
+
+  auto instruction_container = GetInstructionContainer();
+  if (!instruction_container)
+  {
+    return QuerryResult::Failure({kInvalidOperation, kText, "No procedure selected"});
+  }
+
+  // Checking if there is a selection inside another parent. To paste after this selection, the
+  // parent should have the room for more items.
+  if (auto selected_item = GetSelectedInstruction(); selected_item)
+  {
+    auto [success_flag, informative] = mvvm::utils::CanInsertType(
+        item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
+    if (!success_flag)
+    {
+      return QuerryResult::Failure({kInvalidOperation, kText, informative});
+    }
+  }
+
+  return QuerryResult::Success();
 }
 
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
@@ -359,7 +384,7 @@ mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
   }
 
   mvvm::SessionItem *result{nullptr};
-  auto item_type = item->GetType();
+  const auto item_type = item->GetType();
   try
   {
     result = GetModel()->InsertItem(std::move(item), parent, index);
