@@ -32,6 +32,8 @@ class QMenu;
 namespace sequencergui
 {
 
+class InstructionEditorActionHandler;
+
 /**
  * @brief The InstructionEditorActions class defines actions related to the contrsution of the
  * Instruction item tree.
@@ -73,6 +75,14 @@ public:
    * @brief Returns action for given key.
    */
   QAction* GetAction(ActionKey key) const;
+
+  /**
+   * @brief Setup cut/copy/paste actions in given menu.
+   *
+   * @param External, possibly empty, menu.
+   * @param handler An action handler to retrieve status of enabled/disabled actions.
+   */
+  void SetupMenu(QMenu& menu, const InstructionEditorActionHandler* handler);
 
 signals:
   void InsertIntoRequest(const QString& name);

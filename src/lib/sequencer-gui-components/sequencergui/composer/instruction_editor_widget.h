@@ -83,6 +83,8 @@ private:
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
 
+  void OnContextMenuRequest(const QPoint &point);
+
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;

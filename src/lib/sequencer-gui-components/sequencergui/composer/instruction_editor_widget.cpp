@@ -180,7 +180,7 @@ void InstructionEditorWidget::SetupTree()
   m_custom_header->setStretchLastSection(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
+          &InstructionEditorWidget::OnContextMenuRequest);
 
   m_tree_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -278,6 +278,16 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
 
   return result;
+}
+
+void InstructionEditorWidget::OnContextMenuRequest(const QPoint &point)
+{
+  QMenu menu;
+
+  m_editor_actions->SetupMenu(menu, m_action_handler);
+
+  sup::gui::SetupCollapseExpandMenu(point, menu, *m_tree_view);
+  menu.exec(m_tree_view->mapToGlobal(point));
 }
 
 }  // namespace sequencergui

@@ -19,6 +19,8 @@
 
 #include "instruction_editor_actions.h"
 
+#include "instruction_editor_action_handler.h"
+
 #include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/widgets/style_utils.h>
 
@@ -54,6 +56,20 @@ QAction *InstructionEditorActions::GetAction(ActionKey key) const
 {
   auto iter = m_actions.find(key);
   return iter == m_actions.end() ? nullptr : iter->second;
+}
+
+void InstructionEditorActions::SetupMenu(QMenu &menu, const InstructionEditorActionHandler *handler)
+{
+  menu.addAction(m_cut_action);
+  menu.addAction(m_copy_action);
+  menu.addAction(m_paste_into_action);
+  menu.addAction(m_paste_after_action);
+  menu.addSeparator();
+
+  m_cut_action->setEnabled(handler->CanCut());
+  m_copy_action->setEnabled(handler->CanCopy());
+  m_paste_into_action->setEnabled(handler->CanPasteInto());
+  m_paste_after_action->setEnabled(handler->CanPasteAfter());
 }
 
 void InstructionEditorActions::SetupInsertRemoveActions()
