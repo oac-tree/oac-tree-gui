@@ -118,16 +118,16 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
 
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
-  auto selected_instruction = GetSelectedInstruction();
-  if (!selected_instruction)
+  auto querry = CanInsertTypeIntoCurrentSelection(item_type.toStdString());
+  if (!querry.IsSuccess())
   {
-    SendMessage("No instruction selected");
+    SendMessage(querry.GetMessage());
     return;
   }
 
-  auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), selected_instruction,
+  auto child = InsertItem(CreateInstructionItem(item_type.toStdString()), GetSelectedInstruction(),
                           mvvm::TagIndex::Append());
-  UpdateChildCoordinate(selected_instruction, child);
+  UpdateChildCoordinate(GetSelectedInstruction(), child);
 }
 
 void InstructionEditorActionHandler::OnRemoveInstructionRequest()
@@ -252,19 +252,12 @@ void InstructionEditorActionHandler::PasteAfter()
     return;
   }
 
-  auto instruction_container = GetInstructionContainer();
-  if (!instruction_container)
-  {
-    SendMessage("No procedure selected");
-    return;
-  }
-
   auto mime_data = GetMimeData();
   auto instruction_item = CreateSessionItem(mime_data, kCopyInstructionMimeType);
 
   auto item = GetSelectedInstruction();
 
-  auto parent = item ? item->GetParent() : instruction_container;
+  auto parent = item ? item->GetParent() : GetInstructionContainer();
   auto tagindex = item ? item->GetTagIndex().Next() : mvvm::TagIndex::Append();
 
   auto child = InsertItem(std::move(instruction_item), parent, tagindex);
@@ -280,29 +273,14 @@ bool InstructionEditorActionHandler::CanPasteInto() const
     return false;
   }
 
-  // Checking if there is a selection inside another parent. To paste after this selection, the
-  // parent should have the room for more items.
-  if (auto selected_item = GetSelectedInstruction(); selected_item)
-  {
-    auto item_type = GetSessionItemType(mime_data);
-    return mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append()).first;
-  }
-
-  // paste-into is not possible if no selection exist
-  return false;
+  auto querry = CanInsertTypeIntoCurrentSelection(GetSessionItemType(mime_data));
+  return querry.IsSuccess();
 }
 
 void InstructionEditorActionHandler::PasteInto()
 {
   if (!CanPasteInto())
   {
-    return;
-  }
-
-  auto instruction_container = GetInstructionContainer();
-  if (!instruction_container)
-  {
-    SendMessage("No procedure selected");
     return;
   }
 
@@ -366,6 +344,32 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
   {
     auto [success_flag, informative] = mvvm::utils::CanInsertType(
         item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
+    if (!success_flag)
+    {
+      return QuerryResult::Failure({kInvalidOperation, kText, informative});
+    }
+  }
+
+  return QuerryResult::Success();
+}
+
+QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
+    const std::string &item_type) const
+{
+  static const std::string kText("Can't insert type into current selection");
+
+  auto selected_instruction = GetSelectedInstruction();
+  if (!selected_instruction)
+  {
+    return QuerryResult::Failure({kInvalidOperation, kText, "No instruction selected"});
+  }
+
+  // Checking if there is a selection inside another parent. To paste after this selection, the
+  // parent should have the room for more items.
+  if (auto selected_item = GetSelectedInstruction(); selected_item)
+  {
+    auto [success_flag, informative] =
+        mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append());
     if (!success_flag)
     {
       return QuerryResult::Failure({kInvalidOperation, kText, informative});

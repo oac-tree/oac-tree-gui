@@ -159,8 +159,15 @@ private:
    * @param item_type Type of the SessionItem to insert.
    * @return A result of the querry with error flag and message.
    */
-  QuerryResult CanInsertTypeAfterCurrentSelection(
-      const std::string& item_type) const;
+  QuerryResult CanInsertTypeAfterCurrentSelection(const std::string& item_type) const;
+
+  /**
+   * @brief Checks if SessionItem of the given type can be inserted into the current selection.
+   *
+   * @param item_type Type of the SessionItem to insert.
+   * @return A result of the querry with error flag and message.
+   */
+  QuerryResult CanInsertTypeIntoCurrentSelection(const std::string& item_type) const;
 
   ::mvvm::SessionItem* InsertItem(std::unique_ptr<mvvm::SessionItem> item,
                                   ::mvvm::SessionItem* parent, const ::mvvm::TagIndex& index);
