@@ -1,9 +1,27 @@
+Changes for 1.4.0:
+
+- COA Release v2.1, March 2024
+- Implement new job system based on sequencer JobController
+- Implement event queue and event dispatcher to handle domain events
+- Create empty procedure on application startup
+- Unify style of toolbar buttons
+- Make consistent 3-columns trees for instruction and variables attribute editors
+- Accurantly handle double quotes during XML generation
+- Provide possibility to edit AnyValues via editor for EPICS-related instructions
+- Implement possibility to switch between native scalar and $par-like attributes
+- Implement optional attributes for instruction and variables
+- Implement bookmarks for file browser
+- Tooltips for instruction real-time tree
+- Less verbose CMake find package machinery
+
 Changes for 1.3.0:
 
+- Special TMCR bugfix Release, November 2023
 - Fix to find system's qt5 on CODAC
 - Fix for default instruction collapse/expand status
 - Fix for default NODEBUG level of log view
 - Provide automatic instruction re-highlight on branch collapse/expand
+- Fix modal dialog appearance on multiple monitor systems
 - Refactor user input dialogs (simplified scalar editors and tree editor)
 
 Changes for 1.2.0:
