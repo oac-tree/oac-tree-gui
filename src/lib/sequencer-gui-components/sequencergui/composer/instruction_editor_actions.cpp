@@ -22,6 +22,7 @@
 #include "instruction_editor_action_handler.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sup/gui/widgets/proxy_action.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -129,14 +130,10 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   connect(m_remove_action, &QAction::triggered, this,
           &InstructionEditorActions::RemoveSelectedRequest);
 
-  // remove action (own toolbar version to avoind disabled status)
-  // FIXME remove duplication after ProxyAction creation
-  m_remove_toolbar_action = new QAction(this);
-  m_remove_toolbar_action->setText("Remove");
-  m_remove_toolbar_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  m_remove_toolbar_action->setToolTip("Remove currently selected instruction together with its children");
-  connect(m_remove_toolbar_action, &QAction::triggered, this,
-          &InstructionEditorActions::RemoveSelectedRequest);
+  // remove action (own toolbar version to avoid disabled status)
+  m_remove_toolbar_action = new sup::gui::ProxyAction(this);
+  m_remove_toolbar_action->SetTrackEnabled(false);
+  m_remove_toolbar_action->SetAction(m_remove_action);
   m_actions[ActionKey::kRemoveSelected] = m_remove_toolbar_action;
 
   m_move_up_action = new QAction(this);
