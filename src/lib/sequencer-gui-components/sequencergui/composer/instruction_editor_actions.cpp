@@ -99,38 +99,29 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_insert_into_action->setDefaultWidget(insert_into_button);
   m_actions[ActionKey::kInsertInto] = m_insert_into_action;
 
-  m_remove_action = new QWidgetAction(this);
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_button->setToolTip("Remove currently selected instruction together with its children");
-  connect(remove_button, &QToolButton::clicked, this,
+  m_remove_action = new QAction(this);
+  m_remove_action->setText("Remove");
+  m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_action->setToolTip("Remove currently selected instruction together with its children");
+  connect(m_remove_action, &QAction::triggered, this,
           &InstructionEditorActions::RemoveSelectedRequest);
-  m_remove_action->setDefaultWidget(remove_button);
   m_actions[ActionKey::kRemoveSelected] = m_remove_action;
 
-  m_move_up_action = new QWidgetAction(this);
-  auto move_up_button = new QToolButton;
-  move_up_button->setText("Move Up");
-  move_up_button->setIcon(sup::gui::utils::GetIcon("arrow-up-thin-circle-outline.svg"));
-  move_up_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  move_up_button->setToolTip(
+  m_move_up_action = new QAction(this);
+  m_move_up_action->setText("Move Up");
+  m_move_up_action->setIcon(sup::gui::utils::GetIcon("arrow-up-thin-circle-outline.svg"));
+  m_move_up_action->setToolTip(
       "Move currently selected instruction up, works within the same parent");
-  connect(move_up_button, &QToolButton::clicked, this, &InstructionEditorActions::MoveUpRequest);
-  m_move_up_action->setDefaultWidget(move_up_button);
+  connect(m_move_up_action, &QAction::triggered, this, &InstructionEditorActions::MoveUpRequest);
   m_actions[ActionKey::kMoveUp] = m_move_up_action;
 
-  m_move_down_action = new QWidgetAction(this);
-  auto move_down_button = new QToolButton;
-  move_down_button->setText("Move Down");
-  move_down_button->setIcon(sup::gui::utils::GetIcon("arrow-down-thin-circle-outline.svg"));
-  move_down_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  move_down_button->setToolTip(
+  m_move_down_action = new QAction(this);
+  m_move_down_action->setText("Move Down");
+  m_move_down_action->setIcon(sup::gui::utils::GetIcon("arrow-down-thin-circle-outline.svg"));
+  m_move_down_action->setToolTip(
       "Move currently selected instruction down, works within the same parent");
-  connect(move_down_button, &QToolButton::clicked, this,
+  connect(m_move_down_action, &QAction::triggered, this,
           &InstructionEditorActions::MoveDownRequest);
-  m_move_down_action->setDefaultWidget(move_down_button);
   m_actions[ActionKey::kMoveDown] = m_move_down_action;
 }
 
