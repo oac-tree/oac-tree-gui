@@ -96,6 +96,11 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
   }
 }
 
+bool InstructionEditorActionHandler::CanInsertAfter(const QString &item_type) const
+{
+  return CanInsertTypeAfterCurrentSelection(item_type.toStdString()).IsSuccess();
+}
+
 InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
 void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QString &item_type)
@@ -110,6 +115,11 @@ void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QStri
   InsertAfterCurrentSelection(CreateInstructionItem(item_type.toStdString()));
 }
 
+bool InstructionEditorActionHandler::CanInsertInto(const QString &item_type) const
+{
+  return CanInsertTypeIntoCurrentSelection(item_type.toStdString()).IsSuccess();
+}
+
 void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
 {
   auto querry = CanInsertTypeIntoCurrentSelection(item_type.toStdString());
@@ -120,6 +130,11 @@ void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QStrin
   }
 
   InsertIntoCurrentSelection(CreateInstructionItem(item_type.toStdString()));
+}
+
+bool InstructionEditorActionHandler::CanRemoveInstruction() const
+{
+  return GetSelectedInstruction() != nullptr;
 }
 
 void InstructionEditorActionHandler::OnRemoveInstructionRequest()

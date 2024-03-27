@@ -214,6 +214,11 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(m_procedure, sequence);
 
+  EXPECT_TRUE(
+      handler->CanInsertInto(QString::fromStdString(domainconstants::kMessageInstructionType)));
+  EXPECT_FALSE(
+      handler->CanInsertAfter(QString::fromStdString(domainconstants::kMessageInstructionType)));
+
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // It is not possible to add second instruction to repeat instruction, expecting warning callback
@@ -235,6 +240,11 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
 
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(m_procedure, sequence);
+
+  EXPECT_TRUE(
+      handler->CanInsertInto(QString::fromStdString(domainconstants::kMessageInstructionType)));
+  EXPECT_TRUE(
+      handler->CanInsertAfter(QString::fromStdString(domainconstants::kMessageInstructionType)));
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -301,6 +311,8 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstructionWhenNothingIsSelecte
   // creating action handler mimicking no instruction selected
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
+  EXPECT_FALSE(handler->CanRemoveInstruction());
+
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
@@ -319,6 +331,9 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
 
   // creating action handler mimicking sequence0 is selected
   auto handler = CreateActionHandler(m_procedure, sequence0);
+  EXPECT_TRUE(handler->CanRemoveInstruction());
+
+  EXPECT_TRUE(handler->CanRemoveInstruction());
 
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
