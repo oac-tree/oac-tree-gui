@@ -141,6 +141,7 @@ private:
   QAction* m_insert_into_action{nullptr};
   QWidgetAction* m_insert_into_toolbar_action{nullptr};  //!< toolbar version with instant popup
   QAction* m_remove_action{nullptr};
+  QAction* m_remove_toolbar_action{nullptr};  //!< toolbar version without enable/disable features
   QAction* m_move_up_action{nullptr};
   QAction* m_move_down_action{nullptr};
 

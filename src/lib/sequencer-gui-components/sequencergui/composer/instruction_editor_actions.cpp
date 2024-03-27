@@ -100,7 +100,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   insert_after_button->setMenu(m_insert_after_menu.get());
   insert_after_button->setToolTip("Add instruction after current selection");
   m_insert_after_toolbar_action->setDefaultWidget(insert_after_button);
-  m_actions[ActionKey::kInsertAfter] = m_insert_after_toolbar_action;
+  m_actions[ActionKey::kInsertAfter] = m_insert_after_action;
 
   // insert instruction into
   m_insert_into_action = new QWidgetAction(this);
@@ -121,13 +121,23 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_insert_into_toolbar_action->setDefaultWidget(insert_into_button);
   m_actions[ActionKey::kInsertInto] = m_insert_into_toolbar_action;
 
+  // remove action
   m_remove_action = new QAction(this);
   m_remove_action->setText("Remove");
   m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
   m_remove_action->setToolTip("Remove currently selected instruction together with its children");
   connect(m_remove_action, &QAction::triggered, this,
           &InstructionEditorActions::RemoveSelectedRequest);
-  m_actions[ActionKey::kRemoveSelected] = m_remove_action;
+
+  // remove action (own toolbar version to avoind disabled status)
+  // FIXME remove duplication after ProxyAction creation
+  m_remove_toolbar_action = new QAction(this);
+  m_remove_toolbar_action->setText("Remove");
+  m_remove_toolbar_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_toolbar_action->setToolTip("Remove currently selected instruction together with its children");
+  connect(m_remove_toolbar_action, &QAction::triggered, this,
+          &InstructionEditorActions::RemoveSelectedRequest);
+  m_actions[ActionKey::kRemoveSelected] = m_remove_toolbar_action;
 
   m_move_up_action = new QAction(this);
   m_move_up_action->setText("Move Up");

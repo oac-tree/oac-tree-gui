@@ -23,8 +23,6 @@
 //! @file
 //! Helper methods to deal with Qt trees.
 
-#include <vector>
-
 class QTreeView;
 class QModelIndex;
 
