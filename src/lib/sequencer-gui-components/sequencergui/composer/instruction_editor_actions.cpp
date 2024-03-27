@@ -62,6 +62,10 @@ QAction *InstructionEditorActions::GetAction(ActionKey key) const
 
 void InstructionEditorActions::SetupMenu(QMenu &menu)
 {
+  menu.addAction(m_insert_after_action);
+  menu.addAction(m_insert_into_action);
+  menu.addAction(m_remove_action);
+  menu.addSeparator();
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
   menu.addAction(m_paste_after_action);

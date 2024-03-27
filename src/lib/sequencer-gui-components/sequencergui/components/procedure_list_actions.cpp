@@ -90,6 +90,7 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
   m_cut_action->setEnabled(handler->CanCut());
   m_copy_action->setEnabled(handler->CanCopy());
   m_paste_action->setEnabled(handler->CanPaste());
+  m_remove_selected_action->setEnabled(handler->CanRemove());
 }
 
 QAction *ProcedureListActions::GetAction(ActionKey key) const

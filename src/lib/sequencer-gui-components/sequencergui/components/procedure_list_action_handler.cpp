@@ -48,6 +48,11 @@ void ProcedureListActionHandler::OnCreateNewProcedureRequest()
   result->SetDisplayName("Untitled");
 }
 
+bool ProcedureListActionHandler::CanRemove() const
+{
+  return GetSelectedProcedure() != nullptr;
+}
+
 void ProcedureListActionHandler::OnRemoveProcedureRequest()
 {
   if (auto selected_procedure = GetSelectedProcedure(); selected_procedure)

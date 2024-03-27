@@ -49,6 +49,11 @@ public:
   void OnCreateNewProcedureRequest();
 
   /**
+   * @brief Checks if removal is possible.
+   */
+  bool CanRemove() const;
+
+  /**
    * @brief Removes currently selected procedure.
    */
   void OnRemoveProcedureRequest();

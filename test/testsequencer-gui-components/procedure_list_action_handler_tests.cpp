@@ -93,6 +93,9 @@ TEST_F(ProcedureListActionHandlerTest, InitialState)
 TEST_F(ProcedureListActionHandlerTest, InsertInEmptyContainer)
 {
   auto handler = CreateActionHandler(nullptr);  // nothing is selected
+
+  EXPECT_FALSE(handler->CanRemove());
+
   QSignalSpy spy_selection_request(handler.get(),
                                    &ProcedureListActionHandler::SelectProcedureRequest);
 
@@ -170,6 +173,7 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
 
   EXPECT_EQ(m_procedure_container->GetSize(), 3);
 
+  EXPECT_TRUE(handler->CanRemove());
   handler->OnRemoveProcedureRequest();
 
   // new item disappeared from the container
