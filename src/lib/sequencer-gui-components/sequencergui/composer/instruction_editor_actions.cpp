@@ -158,39 +158,48 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_actions[ActionKey::kPasteInto] = m_paste_into_action;
 }
 
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()
+std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu() const
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);
-
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
-  for (const auto &name : names)
-  {
-    auto action = result->addAction(name);
-    auto on_action = [this, name]() { emit InsertAfterRequest(name); };
-    connect(action, &QAction::triggered, this, on_action);
-  }
-
+  connect(result.get(), &QMenu::aboutToShow, this,
+          &InstructionEditorActions::OnAboutToShowInsertAfterMenu);
   return result;
 }
 
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu()
+void InstructionEditorActions::OnAboutToShowInsertAfterMenu()
 {
-  // Code mostly coincides with the code above. However, this duplication is temporary and it
-  // will diverge in the future (idea to disable some actions if an operation is not possible).
-
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
+  auto menu = m_insert_after_menu.get();
 
   auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
   for (const auto &name : names)
   {
-    auto action = result->addAction(name);
+    auto action = menu->addAction(name);
+    auto on_action = [this, name]() { emit InsertAfterRequest(name); };
+    connect(action, &QAction::triggered, this, on_action);
+  }
+}
+
+std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu() const
+{
+  auto result = std::make_unique<QMenu>();
+  result->setToolTipsVisible(true);
+  connect(result.get(), &QMenu::aboutToShow, this,
+          &InstructionEditorActions::OnAboutToShowInsertIntoMenu);
+  return result;
+}
+
+void InstructionEditorActions::OnAboutToShowInsertIntoMenu()
+{
+  auto menu = m_insert_into_menu.get();
+
+  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
+  for (const auto &name : names)
+  {
+    auto action = menu->addAction(name);
     auto on_action = [this, name]() { emit InsertIntoRequest(name); };
     connect(action, &QAction::triggered, this, on_action);
   }
-
-  return result;
 }
 
 }  // namespace sequencergui

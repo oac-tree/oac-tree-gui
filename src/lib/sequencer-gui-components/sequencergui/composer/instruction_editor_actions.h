@@ -96,18 +96,37 @@ signals:
   void PasteIntoRequest();
 
 private:
+  /**
+   * @brief Setups all actions related to insert/remove operations.
+   */
   void SetupInsertRemoveActions();
+
+  /**
+   * @brief Setups all copy-paste actions.
+   */
   void SetupCutCopyPasteActions();
 
   /**
    * @brief Creates an instruction to insert an instruction after currently selected instruction.
    */
-  std::unique_ptr<QMenu> CreateInsertAfterMenu();
+  std::unique_ptr<QMenu> CreateInsertAfterMenu() const;
+
+  /**
+   * @brief Populates content of m_insert_after_menu with actions relevant to currently selected
+   * instruction.
+   */
+  void OnAboutToShowInsertAfterMenu();
 
   /**
    * @brief Creates menu to insert an instruction into currently selected instruction.
    */
-  std::unique_ptr<QMenu> CreateInsertIntoMenu();
+  std::unique_ptr<QMenu> CreateInsertIntoMenu() const;
+
+  /**
+   * @brief Populates content of m_insert_into_menu with actions relevant to currently selected
+   * instruction.
+   */
+  void OnAboutToShowInsertIntoMenu();
 
   std::unique_ptr<QMenu> m_insert_after_menu;
   std::unique_ptr<QMenu> m_insert_into_menu;
