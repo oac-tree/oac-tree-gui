@@ -100,6 +100,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
   SetupConnections();
 
+  // Add toolbar actions to the list of widget's actions to use in ItemStackWidget context.
   addActions(m_editor_actions->GetActions(GetToolBarActionKeys()));
 
   auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
