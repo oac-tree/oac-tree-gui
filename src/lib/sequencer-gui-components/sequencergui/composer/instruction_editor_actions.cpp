@@ -66,6 +66,9 @@ void InstructionEditorActions::SetupMenu(QMenu &menu)
   menu.addAction(m_insert_into_action);
   menu.addAction(m_remove_action);
   menu.addSeparator();
+
+  m_remove_action->setEnabled(m_handler->CanRemoveInstruction());
+
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
   menu.addAction(m_paste_after_action);
@@ -194,6 +197,7 @@ void InstructionEditorActions::OnAboutToShowInsertAfterMenu()
   for (const auto &name : names)
   {
     auto action = menu->addAction(name);
+    action->setEnabled(m_handler->CanInsertAfter(name));
     auto on_action = [this, name]() { emit InsertAfterRequest(name); };
     connect(action, &QAction::triggered, this, on_action);
   }
@@ -216,6 +220,7 @@ void InstructionEditorActions::OnAboutToShowInsertIntoMenu()
   for (const auto &name : names)
   {
     auto action = menu->addAction(name);
+    action->setEnabled(m_handler->CanInsertInto(name));
     auto on_action = [this, name]() { emit InsertIntoRequest(name); };
     connect(action, &QAction::triggered, this, on_action);
   }
