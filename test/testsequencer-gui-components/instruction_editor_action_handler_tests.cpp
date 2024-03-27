@@ -283,7 +283,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
 
 TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 {
-  // creating action handler mimicking `wait` instruction selected
+  // creating action handler mimicking no instruction selected
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);

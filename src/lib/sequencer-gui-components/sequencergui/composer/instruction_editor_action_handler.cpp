@@ -69,7 +69,7 @@ std::string GetSessionItemType(const QMimeData *mime_data)
   return item ? item->GetType() : std::string();
 }
 
-const std::string kInvalidOperation = "Invalid Operation";
+const std::string kFailedActionTitle = "Invalid Operation";
 
 }  // namespace
 
@@ -307,12 +307,13 @@ const QMimeData *InstructionEditorActionHandler::GetMimeData() const
 QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
     const std::string &item_type) const
 {
-  static const std::string kText("Can't insert type after current selection");
+  static const std::string kFailedActionText("Can't insert type after current selection");
 
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
   {
-    return QuerryResult::Failure({kInvalidOperation, kText, "No procedure selected"});
+    return QuerryResult::Failure(
+        {kFailedActionTitle, kFailedActionText, "No procedure selected"});
   }
 
   // Checking if there is a selection inside another parent. To paste after this selection, the
@@ -323,7 +324,7 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
         item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
     if (!success_flag)
     {
-      return QuerryResult::Failure({kInvalidOperation, kText, informative});
+      return QuerryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
     }
   }
 
@@ -333,12 +334,13 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
 QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
     const std::string &item_type) const
 {
-  static const std::string kText("Can't insert type into current selection");
+  static const std::string kFailedActionText("Can't insert type into current selection");
 
   auto selected_instruction = GetSelectedInstruction();
   if (!selected_instruction)
   {
-    return QuerryResult::Failure({kInvalidOperation, kText, "No instruction selected"});
+    return QuerryResult::Failure(
+        {kFailedActionTitle, kFailedActionText, "No instruction selected"});
   }
 
   // Checking if there is a selection inside another parent. To paste after this selection, the
@@ -349,7 +351,7 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
         mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append());
     if (!success_flag)
     {
-      return QuerryResult::Failure({kInvalidOperation, kText, informative});
+      return QuerryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
     }
   }
 
