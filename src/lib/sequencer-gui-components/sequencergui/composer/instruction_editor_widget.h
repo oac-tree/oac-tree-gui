@@ -96,8 +96,8 @@ private:
   QSplitter* m_splitter{nullptr};
   ProcedureItem* m_procedure{nullptr};
 
-  InstructionEditorActions* m_editor_actions{nullptr};
   InstructionEditorActionHandler* m_action_handler{nullptr};
+  InstructionEditorActions* m_editor_actions{nullptr};
 
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
   CustomTreeViewStyle* m_tree_view_style{nullptr};

@@ -32,8 +32,10 @@
 namespace sequencergui
 {
 
-InstructionEditorActions::InstructionEditorActions(QObject *parent)
+InstructionEditorActions::InstructionEditorActions(const InstructionEditorActionHandler *handler,
+                                                   QObject *parent)
     : QObject(parent)
+    , m_handler(handler)
     , m_insert_after_menu(CreateInsertAfterMenu())
     , m_insert_into_menu(CreateInsertIntoMenu())
 {
@@ -58,7 +60,7 @@ QAction *InstructionEditorActions::GetAction(ActionKey key) const
   return iter == m_actions.end() ? nullptr : iter->second;
 }
 
-void InstructionEditorActions::SetupMenu(QMenu &menu, const InstructionEditorActionHandler *handler)
+void InstructionEditorActions::SetupMenu(QMenu &menu)
 {
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
@@ -66,10 +68,10 @@ void InstructionEditorActions::SetupMenu(QMenu &menu, const InstructionEditorAct
   menu.addAction(m_paste_into_action);
   menu.addSeparator();
 
-  m_cut_action->setEnabled(handler->CanCut());
-  m_copy_action->setEnabled(handler->CanCopy());
-  m_paste_into_action->setEnabled(handler->CanPasteInto());
-  m_paste_after_action->setEnabled(handler->CanPasteAfter());
+  m_cut_action->setEnabled(m_handler->CanCut());
+  m_copy_action->setEnabled(m_handler->CanCopy());
+  m_paste_into_action->setEnabled(m_handler->CanPasteInto());
+  m_paste_after_action->setEnabled(m_handler->CanPasteAfter());
 }
 
 void InstructionEditorActions::SetupInsertRemoveActions()

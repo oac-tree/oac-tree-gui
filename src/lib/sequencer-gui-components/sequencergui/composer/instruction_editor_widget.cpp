@@ -77,8 +77,8 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
     , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
-    , m_editor_actions(new InstructionEditorActions(this))
-    , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
+      , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
+    , m_editor_actions(new InstructionEditorActions(m_action_handler, this))
     , m_tree_view_style(new CustomTreeViewStyle(style()))
 {
   setWindowTitle("Instruction Tree");
@@ -316,7 +316,7 @@ void InstructionEditorWidget::OnContextMenuRequest(const QPoint &point)
 {
   QMenu menu;
 
-  m_editor_actions->SetupMenu(menu, m_action_handler);
+  m_editor_actions->SetupMenu(menu);
 
   sup::gui::SetupCollapseExpandMenu(point, menu, *m_tree_view);
   menu.exec(m_tree_view->mapToGlobal(point));

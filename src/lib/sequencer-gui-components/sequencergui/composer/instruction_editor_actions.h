@@ -63,7 +63,13 @@ public:
     kTotalCount
   };
 
-  explicit InstructionEditorActions(QObject* parent = nullptr);
+  /**
+   * @brief Main c-tor
+   *
+   * @param An action handler to retrieve status of enabled/disabled actions.
+   * @param parent Parent Qobject.
+   */
+  explicit InstructionEditorActions(const InstructionEditorActionHandler* handler, QObject* parent = nullptr);
   ~InstructionEditorActions() override;
 
   /**
@@ -78,11 +84,8 @@ public:
 
   /**
    * @brief Setup cut/copy/paste actions in given menu.
-   *
-   * @param External, possibly empty, menu.
-   * @param handler An action handler to retrieve status of enabled/disabled actions.
    */
-  void SetupMenu(QMenu& menu, const InstructionEditorActionHandler* handler);
+  void SetupMenu(QMenu& menu);
 
 signals:
   void InsertIntoRequest(const QString& name);
@@ -127,6 +130,8 @@ private:
    * instruction.
    */
   void OnAboutToShowInsertIntoMenu();
+
+  const InstructionEditorActionHandler* m_handler{nullptr};
 
   std::unique_ptr<QMenu> m_insert_after_menu;
   std::unique_ptr<QMenu> m_insert_into_menu;
