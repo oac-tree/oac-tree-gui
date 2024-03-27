@@ -100,7 +100,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   insert_after_button->setMenu(m_insert_after_menu.get());
   insert_after_button->setToolTip("Add instruction after current selection");
   m_insert_after_toolbar_action->setDefaultWidget(insert_after_button);
-  m_actions[ActionKey::kInsertAfter] = m_insert_after_action;
+  m_actions[ActionKey::kInsertAfter] = m_insert_after_toolbar_action;
 
   // insert instruction into
   m_insert_into_action = new QWidgetAction(this);
