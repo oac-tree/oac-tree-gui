@@ -192,6 +192,7 @@ std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu() const
 void InstructionEditorActions::OnAboutToShowInsertAfterMenu()
 {
   auto menu = m_insert_after_menu.get();
+  menu->clear();
 
   auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
   for (const auto &name : names)
@@ -215,6 +216,7 @@ std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu() const
 void InstructionEditorActions::OnAboutToShowInsertIntoMenu()
 {
   auto menu = m_insert_into_menu.get();
+  menu->clear();
 
   auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
   for (const auto &name : names)
