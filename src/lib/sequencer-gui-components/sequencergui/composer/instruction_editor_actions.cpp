@@ -22,6 +22,7 @@
 #include "instruction_editor_action_handler.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/proxy_action.h>
 #include <sup/gui/widgets/style_utils.h>
 
@@ -84,43 +85,21 @@ void InstructionEditorActions::SetupMenu(QMenu &menu)
 
 void InstructionEditorActions::SetupInsertRemoveActions()
 {
-  // insert instruction after
-  m_insert_after_action = new QAction(this);
+  // insert instruction after (special version whick looks nice in a toolbar and in pop-up menu)
+  m_insert_after_action = new sup::gui::ActionMenu(this);
   m_insert_after_action->setText("Add");
   m_insert_after_action->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
   m_insert_after_action->setMenu(m_insert_after_menu.get());
   m_insert_after_action->setToolTip("Add instruction after current selection");
-
-  // insert instruction after (toolbar version with instant pop-up capability)
-  m_insert_after_toolbar_action = new QWidgetAction(this);
-  auto insert_after_button = new QToolButton;
-  insert_after_button->setText("Add");
-  insert_after_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
-  insert_after_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  insert_after_button->setPopupMode(QToolButton::InstantPopup);
-  insert_after_button->setMenu(m_insert_after_menu.get());
-  insert_after_button->setToolTip("Add instruction after current selection");
-  m_insert_after_toolbar_action->setDefaultWidget(insert_after_button);
-  m_actions[ActionKey::kInsertAfter] = m_insert_after_toolbar_action;
+  m_actions[ActionKey::kInsertAfter] = m_insert_after_action;
 
   // insert instruction into
-  m_insert_into_action = new QWidgetAction(this);
+  m_insert_into_action = new sup::gui::ActionMenu(this);
   m_insert_into_action->setText("Insert");
   m_insert_into_action->setIcon(sup::gui::utils::GetIcon("plus-circle-multiple-outline.svg"));
   m_insert_into_action->setMenu(m_insert_into_menu.get());
   m_insert_into_action->setToolTip("Insert instruction into currently selected instruction");
-
-  // insert instruction into (toolbar version with instant pop-up capability)
-  m_insert_into_toolbar_action = new QWidgetAction(this);
-  auto insert_into_button = new QToolButton;
-  insert_into_button->setText("Insert");
-  insert_into_button->setIcon(sup::gui::utils::GetIcon("plus-circle-multiple-outline.svg"));
-  insert_into_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  insert_into_button->setPopupMode(QToolButton::InstantPopup);
-  insert_into_button->setMenu(m_insert_into_menu.get());
-  insert_into_button->setToolTip("Insert instruction into currently selected instruction");
-  m_insert_into_toolbar_action->setDefaultWidget(insert_into_button);
-  m_actions[ActionKey::kInsertInto] = m_insert_into_toolbar_action;
+  m_actions[ActionKey::kInsertInto] = m_insert_into_action;
 
   // remove action
   m_remove_action = new QAction(this);
