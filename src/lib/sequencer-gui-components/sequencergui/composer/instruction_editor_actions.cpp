@@ -132,7 +132,6 @@ void InstructionEditorActions::SetupInsertRemoveActions()
 
   // remove action (own toolbar version to avoid disabled status)
   m_remove_toolbar_action = new sup::gui::ProxyAction(this);
-  m_remove_toolbar_action->SetTrackEnabled(false);
   m_remove_toolbar_action->SetAction(m_remove_action);
   m_actions[ActionKey::kRemoveSelected] = m_remove_toolbar_action;
 
