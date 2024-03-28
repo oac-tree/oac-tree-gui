@@ -29,7 +29,6 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QToolButton>
-#include <QWidgetAction>
 
 namespace sequencergui
 {

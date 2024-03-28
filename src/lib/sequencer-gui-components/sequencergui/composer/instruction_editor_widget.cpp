@@ -318,7 +318,8 @@ void InstructionEditorWidget::OnContextMenuRequest(const QPoint &point)
 
   m_editor_actions->SetupMenu(menu);
 
-  sup::gui::SetupCollapseExpandMenu(point, menu, *m_tree_view);
+  auto collapse_menu = menu.addMenu("Tree settings");
+  sup::gui::SetupCollapseExpandMenu(point, *collapse_menu, *m_tree_view);
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
