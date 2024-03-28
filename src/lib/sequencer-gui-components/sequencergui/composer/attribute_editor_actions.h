@@ -25,13 +25,13 @@
 #include <QObject>
 #include <memory>
 
-class QWidgetAction;
 class QMenu;
 class QAction;
 
 namespace sup::gui
 {
 class AnyValueItem;
+class ActionMenu;
 }
 
 namespace sequencergui
@@ -101,10 +101,10 @@ private:
   std::unique_ptr<QMenu> m_modify_attribute_menu;
 
   //!< a tool button with instant menu to embed in a toolbar
-  QWidgetAction* m_modify_attribute_action{nullptr};
+  sup::gui::ActionMenu* m_modify_attribute_action{nullptr};
 
   //!< a tool button to summon AnyValue editor
-  QWidgetAction* m_edit_anyvalue_action{nullptr};
+  QAction* m_edit_anyvalue_action{nullptr};
 
   InstructionAttributeEditorContext m_editor_context;
 };

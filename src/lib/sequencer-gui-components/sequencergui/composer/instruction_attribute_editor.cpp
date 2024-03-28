@@ -53,6 +53,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
     , m_attribute_actions(new AttributeEditorActions(CreateActionContext(), this))
 {
+  m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
   m_tool_bar->addActions(m_attribute_actions->GetToolBarActions());
 

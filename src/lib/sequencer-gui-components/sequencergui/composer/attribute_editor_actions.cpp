@@ -24,11 +24,11 @@
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QToolButton>
-#include <QWidgetAction>
 
 namespace
 {
@@ -44,33 +44,24 @@ AttributeEditorActions::AttributeEditorActions(InstructionAttributeEditorContext
                                                QObject *parent)
     : QObject(parent)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
-    , m_modify_attribute_action(new QWidgetAction(this))
-    , m_edit_anyvalue_action(new QWidgetAction(this))
+    , m_modify_attribute_action(new sup::gui::ActionMenu(this))
+    , m_edit_anyvalue_action(new QAction(this))
     , m_editor_context(std::move(context))
 {
   m_modify_attribute_menu->setToolTipsVisible(true);
   connect(m_modify_attribute_menu.get(), &QMenu::aboutToShow, this,
           &AttributeEditorActions::OnAboutToShowMenu);
 
-  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
-  // a QToolButton feature) and still be able to pass actions around.
-  auto modify_attribute_button = new QToolButton;
-  modify_attribute_button->setText("Modify attribute");
-  modify_attribute_button->setIcon(sup::gui::utils::GetIcon("page-previous-outline.svg"));
-  modify_attribute_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  modify_attribute_button->setPopupMode(QToolButton::InstantPopup);
-  modify_attribute_button->setMenu(m_modify_attribute_menu.get());
-  modify_attribute_button->setToolTip("Modifies currently selected attribute");
-  m_modify_attribute_action->setDefaultWidget(modify_attribute_button);
+  m_modify_attribute_action->setText("Modify attribute");
+  m_modify_attribute_action->setIcon(sup::gui::utils::GetIcon("page-previous-outline.svg"));
+  m_modify_attribute_action->setMenu(m_modify_attribute_menu.get());
+  m_modify_attribute_action->setToolTip("Modifies currently selected attribute");
 
-  auto edit_anyvalue_button = new QToolButton;
-  edit_anyvalue_button->setText("Edit AnyValue");
-  edit_anyvalue_button->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
-  edit_anyvalue_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  edit_anyvalue_button->setToolTip(kEditAnyValueToolTip);
-  connect(edit_anyvalue_button, &QToolButton::clicked, this,
+  m_edit_anyvalue_action->setText("Edit AnyValue");
+  m_edit_anyvalue_action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  m_edit_anyvalue_action->setToolTip(kEditAnyValueToolTip);
+  connect(m_edit_anyvalue_action, &QAction::triggered, this,
           &AttributeEditorActions::EditAnyvalueRequest);
-  m_edit_anyvalue_action->setDefaultWidget(edit_anyvalue_button);
 }
 
 AttributeEditorActions::~AttributeEditorActions() = default;
