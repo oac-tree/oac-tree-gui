@@ -24,8 +24,12 @@
 #include <memory>
 
 class QMenu;
-class QWidgetAction;
 class QAction;
+
+namespace sup::gui
+{
+class ActionMenu;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -56,8 +60,8 @@ private:
   std::unique_ptr<QMenu> CreateInsertAfterMenu();
 
   std::unique_ptr<QMenu> m_add_variable_menu;
-  QWidgetAction* m_add_variable_action{nullptr};
-  QWidgetAction* m_remove_variable_action{nullptr};
+  sup::gui::ActionMenu* m_add_variable_action{nullptr};
+  QAction* m_remove_variable_action{nullptr};
 };
 
 }  // namespace sequencergui

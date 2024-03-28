@@ -20,13 +20,13 @@
 #include "workspace_editor_actions.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QMenu>
 #include <QToolButton>
-#include <QWidgetAction>
 
 namespace sequencergui
 {
@@ -46,31 +46,21 @@ WorkspaceEditorActions::~WorkspaceEditorActions() = default;
 
 void WorkspaceEditorActions::SetupActions()
 {
-  // We wrap QToolButton into QWidgetAction to have a menu with instant popup capabilties (which is
-  // a QToolButton feature) and still be able to pass actions around.
-
-  auto add_variable_button = new QToolButton;
-  add_variable_button->setText("Add variable");
-  add_variable_button->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
-  add_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  add_variable_button->setPopupMode(QToolButton::InstantPopup);
-  add_variable_button->setMenu(m_add_variable_menu.get());
-  add_variable_button->setToolTip(
+  m_add_variable_action = new sup::gui::ActionMenu(this);
+  m_add_variable_action->setText("Add variable");
+  m_add_variable_action->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
+  m_add_variable_action->setMenu(m_add_variable_menu.get());
+  m_add_variable_action->setToolTip(
       "Add sequencer variable to the workspace\n\n"
       "- If existing variable is selected, new variable\n"
       "  will be inserted after");
-  m_add_variable_action = new QWidgetAction(this);
-  m_add_variable_action->setDefaultWidget(add_variable_button);
 
-  auto remove_variable_button = new QToolButton;
-  remove_variable_button->setText("Remove variable");
-  remove_variable_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  remove_variable_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_variable_button->setToolTip("Remove currently selected variable");
-  connect(remove_variable_button, &QToolButton::clicked, this,
+  m_remove_variable_action = new QAction(this);
+  m_remove_variable_action->setText("Remove variable");
+  m_remove_variable_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_variable_action->setToolTip("Remove currently selected variable");
+  connect(m_remove_variable_action, &QAction::triggered, this,
           &WorkspaceEditorActions::RemoveVariableRequest);
-  m_remove_variable_action = new QWidgetAction(this);
-  m_remove_variable_action->setDefaultWidget(remove_variable_button);
 }
 
 //! Creates menu to insert Variables in a workspace.
