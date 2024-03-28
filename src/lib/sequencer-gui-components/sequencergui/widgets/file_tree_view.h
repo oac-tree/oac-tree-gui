@@ -26,12 +26,12 @@ class QTreeView;
 class QFileSystemModel;
 class QLabel;
 class QAction;
-class QWidgetAction;
 class QMenu;
 
 namespace sup::gui
 {
 class RecentProjectSettings;
+class ActionMenu;
 }
 
 namespace sequencergui
@@ -101,8 +101,8 @@ private:
   QTreeView* m_tree_view{nullptr};
   QLabel* m_path_label{nullptr};
   QString m_current_xml_file;
-  QWidgetAction* m_import_file_action{nullptr};
-  QWidgetAction* m_bookmark_action{nullptr};
+  QAction* m_import_file_action{nullptr};
+  sup::gui::ActionMenu* m_bookmark_action{nullptr};
   std::unique_ptr<sup::gui::RecentProjectSettings> m_recent_dirs;
   std::unique_ptr<QMenu> m_bookmark_menu;
 };
