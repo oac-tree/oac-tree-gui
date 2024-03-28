@@ -20,66 +20,48 @@
 #include "operation_job_panel_actions.h"
 
 #include <sequencergui/model/procedure_item.h>
+#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QMenu>
 #include <QToolButton>
-#include <QWidgetAction>
 
 namespace sequencergui
 {
 
 OperationJobPanelActions::OperationJobPanelActions(QObject *parent)
     : QObject(parent)
-    , m_import_action(new QWidgetAction(this))
-    , m_submit_action(new QWidgetAction(this))
-    , m_regenerate_action(new QWidgetAction(this))
-    , m_remove_action(new QWidgetAction(this))
-    , m_remove_and_cleanup_action(new QWidgetAction(this))
+    , m_import_action(new QAction(this))
+    , m_submit_action(new sup::gui::ActionMenu(this))
+    , m_regenerate_action(new QAction(this))
+    , m_remove_action(new QAction(this))
+    , m_remove_and_cleanup_action(new QAction(this))
     , m_submit_procedure_menu(CreateSubmitProcedureMenu())
 {
-  auto import_button = new QToolButton;
-  import_button->setText("New");
-  import_button->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
-  import_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  import_button->setToolTip("Open sequencer XML procedure from disk");
-  connect(import_button, &QToolButton::clicked, this, &OperationJobPanelActions::ImportJobRequest);
-  m_import_action->setDefaultWidget(import_button);
+  m_import_action->setText("New");
+  m_import_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
+  m_import_action->setToolTip("Open sequencer XML procedure from disk");
+  connect(m_import_action, &QAction::triggered, this, &OperationJobPanelActions::ImportJobRequest);
 
-  auto submit_button = new QToolButton;
-  submit_button->setText("Submit");
-  submit_button->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
-  submit_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  submit_button->setPopupMode(QToolButton::InstantPopup);
-  submit_button->setMenu(m_submit_procedure_menu.get());
-  submit_button->setToolTip("Submit existing sequencer procedure for execution");
-  m_submit_action->setDefaultWidget(submit_button);
+  m_submit_action->setText("Submit");
+  m_submit_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
+  m_submit_action->setMenu(m_submit_procedure_menu.get());
+  m_submit_action->setToolTip("Submit existing sequencer procedure for execution");
 
-  auto regenerate_button = new QToolButton;
-  regenerate_button->setText("Reload");
-  regenerate_button->setIcon(sup::gui::utils::GetIcon("refresh.svg"));
-  regenerate_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  regenerate_button->setToolTip("Reload selected procedure");
-  connect(regenerate_button, &QToolButton::clicked, this,
+  m_regenerate_action->setText("Reload");
+  m_regenerate_action->setIcon(sup::gui::utils::GetIcon("refresh.svg"));
+  connect(m_regenerate_action, &QAction::triggered, this,
           &OperationJobPanelActions::RegenerateJobRequest);
-  m_regenerate_action->setDefaultWidget(regenerate_button);
 
-  auto remove_button = new QToolButton;
-  remove_button->setText("Remove");
-  remove_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  remove_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_button->setToolTip("Remove selected procedure from the list");
-  connect(remove_button, &QToolButton::clicked, this, &OperationJobPanelActions::RemoveJobRequest);
-  m_remove_action->setDefaultWidget(remove_button);
+  m_remove_action->setText("Remove");
+  m_remove_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  connect(m_remove_action, &QAction::triggered, this, &OperationJobPanelActions::RemoveJobRequest);
 
-  auto remove_and_cleanup_button = new QToolButton;
-  remove_and_cleanup_button->setText("Remove");
-  remove_and_cleanup_button->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
-  remove_and_cleanup_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  remove_and_cleanup_button->setToolTip("Remove selected procedure from the list");
-  connect(remove_and_cleanup_button, &QToolButton::clicked, this,
+  m_remove_and_cleanup_action->setText("Remove");
+  m_remove_and_cleanup_action->setIcon(sup::gui::utils::GetIcon("beaker-remove-outline.svg"));
+  m_remove_and_cleanup_action->setToolTip("Remove selected procedure from the list");
+  connect(m_remove_and_cleanup_action, &QAction::triggered, this,
           &OperationJobPanelActions::RemoveAndCleanupJobRequest);
-  m_remove_and_cleanup_action->setDefaultWidget(remove_and_cleanup_button);
 }
 
 void OperationJobPanelActions::SetAvailableProcedures(callback_t available_procedures)

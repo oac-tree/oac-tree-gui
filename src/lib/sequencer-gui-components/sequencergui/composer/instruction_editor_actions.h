@@ -26,7 +26,6 @@
 #include <memory>
 
 class QAction;
-class QWidgetAction;
 class QMenu;
 
 namespace sup::gui

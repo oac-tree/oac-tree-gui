@@ -22,8 +22,6 @@
 
 #include <QToolBar>
 
-class QWidgetAction;
-
 namespace sequencergui
 {
 

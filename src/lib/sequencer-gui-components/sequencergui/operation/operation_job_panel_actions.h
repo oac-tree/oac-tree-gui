@@ -25,8 +25,12 @@
 #include <memory>
 
 class QMenu;
-class QWidgetAction;
 class QAction;
+
+namespace sup::gui
+{
+class ActionMenu;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -65,11 +69,11 @@ private:
 
   std::unique_ptr<QMenu> m_submit_procedure_menu;
 
-  QWidgetAction* m_import_action{nullptr};
-  QWidgetAction* m_submit_action{nullptr};
-  QWidgetAction* m_regenerate_action{nullptr};
-  QWidgetAction* m_remove_action{nullptr};
-  QWidgetAction* m_remove_and_cleanup_action{nullptr};
+  QAction* m_import_action{nullptr};
+  sup::gui::ActionMenu* m_submit_action{nullptr};
+  QAction* m_regenerate_action{nullptr};
+  QAction* m_remove_action{nullptr};
+  QAction* m_remove_and_cleanup_action{nullptr};
 
   callback_t m_available_procedures;
 };
