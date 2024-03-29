@@ -42,6 +42,8 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     , m_workspace_panel(new AggregatePanel)
     , m_stack_widget(new sup::gui::ItemStackWidget)
 {
+  m_collapsible_list->setWindowTitle("Procedures & Tools");
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
