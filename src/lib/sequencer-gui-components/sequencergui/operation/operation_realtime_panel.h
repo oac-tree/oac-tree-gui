@@ -33,6 +33,7 @@ namespace sequencergui
 {
 class SequencerModel;
 class MonitorRealTimeToolBar;
+class MonitorRealTimeActions;
 class InstructionItem;
 class ProcedureItem;
 class MessagePanel;
@@ -72,6 +73,7 @@ private:
   void SetupConnections();
 
   MonitorRealTimeToolBar* m_tool_bar{nullptr};
+  MonitorRealTimeActions* m_actions{nullptr};
 
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   RealTimeInstructionTreeWidget* m_realtime_instruction_tree{nullptr};

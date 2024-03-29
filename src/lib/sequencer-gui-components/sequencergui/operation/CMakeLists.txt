@@ -16,6 +16,8 @@ target_sources(${library_name} PRIVATE
   job_property_widget.h
   message_panel.cpp
   message_panel.h
+  monitor_realtime_actions.cpp
+  monitor_realtime_actions.h
   monitor_realtime_toolbar.cpp
   monitor_realtime_toolbar.h
   operation_action_handler.cpp

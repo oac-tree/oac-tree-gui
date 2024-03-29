@@ -20,15 +20,15 @@
 #include "operation_realtime_panel.h"
 
 #include "message_panel.h"
+#include "monitor_realtime_actions.h"
 #include "monitor_realtime_toolbar.h"
 #include "realtime_instruction_tree_widget.h"
 
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sup/gui/widgets/item_stack_widget.h>
-
 #include <sup/gui/widgets/collapsible_list_view.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -46,6 +46,7 @@ namespace sequencergui
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
+      , m_actions(new MonitorRealTimeActions(this))
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)
