@@ -24,6 +24,7 @@
 #include <QMenu>
 #include <QWidget>
 #include <memory>
+#include <map>
 
 class QAction;
 class QMenu;
