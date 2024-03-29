@@ -39,7 +39,7 @@
         <cppcheck.args>--enable=all --suppress=missingInclude --inline-suppr</cppcheck.args>
         <sonar.sources.cpp>src</sonar.sources.cpp>
         <sonar.tests.cpp>test</sonar.tests.cpp>
-        <sonar.exclusions>test/**</sonar.exclusions>
+        <sonar.exclusions>test/**, src/app/**, src/lib/sequencer-gui-components/**</sonar.exclusions>
         <valgrind.enable>false</valgrind.enable>
         <coverage>false</coverage>
     </properties>
@@ -175,7 +175,7 @@ Categories=CODAC-%{codac_version_mm};]]>
                                 <argument>-DCMAKE_INSTALL_LIBDIR=lib</argument>
                                 <argument>-DCMAKE_INSTALL_DOCDIR=doc/${project.artifactId}</argument>
                                 <argument>-DTEST_OUTPUT_DIRECTORY=${project.build.directory}/test</argument>
-                                <argument>-DCOVERAGE=${coverage}</argument>
+                                <argument>-DCOA_COVERAGE=${coverage}</argument>
                                 <argument>${project.build.directory}/main</argument>
                             </arguments>
                         </configuration>

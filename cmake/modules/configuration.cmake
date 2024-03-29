@@ -43,15 +43,15 @@ else()
   find_package_message(CODAC_DETAILS "Building without CODAC environment" "[${CODAC_FOUND}]")
 endif()
 
-# -----------------------------------------------------------------------------
-# Variables
-# -----------------------------------------------------------------------------
-
-if(COVERAGE)
-  # On coverage builds  alsways skip building docs and build tests
+if(COA_COVERAGE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fno-inline --coverage")
+  message(STATUS "Enabling test coverage information: ${CMAKE_CXX_FLAGS}")
   set(COA_BUILD_DOCUMENTATION OFF)
 endif()
 
+# -----------------------------------------------------------------------------
+# Variables
+# -----------------------------------------------------------------------------
 get_filename_component(SEQUENCERGUI_PROJECT_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
 
 set(SEQUENCERGUI_SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
