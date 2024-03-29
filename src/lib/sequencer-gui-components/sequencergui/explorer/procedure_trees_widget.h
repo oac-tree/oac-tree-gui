@@ -34,7 +34,7 @@ class ItemViewComponentProvider;
 namespace sup::gui
 {
 class CustomHeaderView;
-class PanelToolBar;
+class ItemStackWidget;
 }
 
 namespace sequencergui
@@ -61,7 +61,7 @@ private:
   void WriteSettings();
   void AdjustColumnWidth();
 
-  sup::gui::PanelToolBar* m_tool_bar{nullptr};
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 
   QTreeView* m_procedure_tree{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_procedure_tree_provider;

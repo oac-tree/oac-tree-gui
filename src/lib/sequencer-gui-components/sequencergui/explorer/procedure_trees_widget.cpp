@@ -28,6 +28,7 @@
 #include <mvvm/viewmodel/top_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 #include <mvvm/widgets/property_tree_view.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <QSettings>
 #include <QSplitter>
@@ -47,7 +48,7 @@ namespace sequencergui
 {
 ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new sup::gui::PanelToolBar)
+    , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_procedure_tree(new QTreeView)
     , m_procedure_tree_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_procedure_tree))
     , m_procedure_custom_header(new sup::gui::CustomHeaderView(this))
@@ -64,8 +65,9 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
   m_splitter->addWidget(m_procedure_tree);
   m_splitter->addWidget(m_property_tree);
 
-  layout->addWidget(m_tool_bar);
-  layout->addWidget(m_splitter);
+  m_splitter->setWindowTitle("Procedure View");
+  m_stack_widget->AddWidget(m_splitter);
+  layout->addWidget(m_stack_widget);
 
   m_procedure_tree->setHeader(m_procedure_custom_header);
   m_procedure_tree->setAlternatingRowColors(true);
