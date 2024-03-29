@@ -62,6 +62,16 @@ public:
 
   int GetCurrentTickTimeout();
 
+  /**
+   * @brief Returns list of actions according to provided flags.
+   */
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
+
+  /**
+   * @brief Returns action for given key.
+   */
+  QAction* GetAction(ActionKey key) const;
+
 signals:
   void RunRequest();
   void PauseRequest();

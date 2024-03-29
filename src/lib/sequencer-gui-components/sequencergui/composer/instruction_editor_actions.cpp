@@ -57,8 +57,8 @@ QList<QAction *> InstructionEditorActions::GetActions(const std::vector<ActionKe
 
 QAction *InstructionEditorActions::GetAction(ActionKey key) const
 {
-  auto iter = m_actions.find(key);
-  return iter == m_actions.end() ? nullptr : iter->second;
+  auto iter = m_action_map.find(key);
+  return iter == m_action_map.end() ? nullptr : iter->second;
 }
 
 void InstructionEditorActions::SetupMenu(QMenu &menu)
@@ -90,7 +90,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_insert_after_action->setIcon(sup::gui::utils::GetIcon("plus-circle-outline.svg"));
   m_insert_after_action->setMenu(m_insert_after_menu.get());
   m_insert_after_action->setToolTip("Add instruction after current selection");
-  m_actions[ActionKey::kInsertAfter] = m_insert_after_action;
+  m_action_map[ActionKey::kInsertAfter] = m_insert_after_action;
 
   // insert instruction into
   m_insert_into_action = new sup::gui::ActionMenu(this);
@@ -98,7 +98,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_insert_into_action->setIcon(sup::gui::utils::GetIcon("plus-circle-multiple-outline.svg"));
   m_insert_into_action->setMenu(m_insert_into_menu.get());
   m_insert_into_action->setToolTip("Insert instruction into currently selected instruction");
-  m_actions[ActionKey::kInsertInto] = m_insert_into_action;
+  m_action_map[ActionKey::kInsertInto] = m_insert_into_action;
 
   // remove action
   m_remove_action = new QAction(this);
@@ -111,7 +111,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   // remove action (own toolbar version to avoid disabled status)
   m_remove_toolbar_action = new sup::gui::ProxyAction(this);
   m_remove_toolbar_action->SetAction(m_remove_action);
-  m_actions[ActionKey::kRemoveSelected] = m_remove_toolbar_action;
+  m_action_map[ActionKey::kRemoveSelected] = m_remove_toolbar_action;
 
   m_move_up_action = new QAction(this);
   m_move_up_action->setText("Move Up");
@@ -119,7 +119,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
   m_move_up_action->setToolTip(
       "Move currently selected instruction up, works within the same parent");
   connect(m_move_up_action, &QAction::triggered, this, &InstructionEditorActions::MoveUpRequest);
-  m_actions[ActionKey::kMoveUp] = m_move_up_action;
+  m_action_map[ActionKey::kMoveUp] = m_move_up_action;
 
   m_move_down_action = new QAction(this);
   m_move_down_action->setText("Move Down");
@@ -128,7 +128,7 @@ void InstructionEditorActions::SetupInsertRemoveActions()
       "Move currently selected instruction down, works within the same parent");
   connect(m_move_down_action, &QAction::triggered, this,
           &InstructionEditorActions::MoveDownRequest);
-  m_actions[ActionKey::kMoveDown] = m_move_down_action;
+  m_action_map[ActionKey::kMoveDown] = m_move_down_action;
 }
 
 void InstructionEditorActions::SetupCutCopyPasteActions()
@@ -138,14 +138,14 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_cut_action->setToolTip("Cuts selected instruction");
   m_cut_action->setShortcut(QKeySequence("Ctrl+X"));
   connect(m_cut_action, &QAction::triggered, this, &InstructionEditorActions::CutRequest);
-  m_actions[ActionKey::kCut] = m_cut_action;
+  m_action_map[ActionKey::kCut] = m_cut_action;
 
   m_copy_action = new QAction(this);
   m_copy_action->setText("Copy");
   m_copy_action->setToolTip("Copies selected instruction");
   m_copy_action->setShortcut(QKeySequence("Ctrl+C"));
   connect(m_copy_action, &QAction::triggered, this, &InstructionEditorActions::CopyRequest);
-  m_actions[ActionKey::kCopy] = m_copy_action;
+  m_action_map[ActionKey::kCopy] = m_copy_action;
 
   m_paste_after_action = new QAction(this);
   m_paste_after_action->setText("Paste After");
@@ -153,7 +153,7 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_paste_after_action->setShortcut(QKeySequence("Ctrl+V"));
   connect(m_paste_after_action, &QAction::triggered, this,
           &InstructionEditorActions::PasteAfterRequest);
-  m_actions[ActionKey::kPasteAfter] = m_paste_after_action;
+  m_action_map[ActionKey::kPasteAfter] = m_paste_after_action;
 
   m_paste_into_action = new QAction(this);
   m_paste_into_action->setText("Paste Into");
@@ -161,7 +161,7 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_paste_into_action->setShortcut(QKeySequence("Ctrl+Shift+V"));
   connect(m_paste_into_action, &QAction::triggered, this,
           &InstructionEditorActions::PasteIntoRequest);
-  m_actions[ActionKey::kPasteInto] = m_paste_into_action;
+  m_action_map[ActionKey::kPasteInto] = m_paste_into_action;
 }
 
 std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu() const

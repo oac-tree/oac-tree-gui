@@ -42,29 +42,29 @@ ProcedureListActions::ProcedureListActions(QObject *parent)
   m_new_procedure_action->setIcon(sup::gui::utils::GetIcon("file-plus-outline.svg"));
   connect(m_new_procedure_action, &QAction::triggered, this,
           &ProcedureListActions::CreateNewProcedureRequest);
-  m_actions[ActionKey::kCreateNew] = m_new_procedure_action;
+  m_action_map[ActionKey::kCreateNew] = m_new_procedure_action;
 
   m_remove_selected_action->setText("Remove Procedure");
   m_remove_selected_action->setToolTip("Removes selected procedure");
   m_remove_selected_action->setIcon(sup::gui::utils::GetIcon("file-remove-outline.svg"));
   connect(m_remove_selected_action, &QAction::triggered, this,
           &ProcedureListActions::RemoveProcedureRequest);
-  m_actions[ActionKey::kRemoveSelected] = m_remove_selected_action;
+  m_action_map[ActionKey::kRemoveSelected] = m_remove_selected_action;
 
   m_cut_action->setText("Cut");
   m_cut_action->setToolTip("Cuts selected procedure");
   connect(m_cut_action, &QAction::triggered, this, &ProcedureListActions::CutRequest);
-  m_actions[ActionKey::kCut] = m_cut_action;
+  m_action_map[ActionKey::kCut] = m_cut_action;
 
   m_copy_action->setText("Copy");
   m_copy_action->setToolTip("Copies selected procedure");
   connect(m_copy_action, &QAction::triggered, this, &ProcedureListActions::CopyRequest);
-  m_actions[ActionKey::kCopy] = m_copy_action;
+  m_action_map[ActionKey::kCopy] = m_copy_action;
 
   m_paste_action->setText("Paste");
   m_paste_action->setToolTip("Paste selected procedure");
   connect(m_paste_action, &QAction::triggered, this, &ProcedureListActions::PasteRequest);
-  m_actions[ActionKey::kPaste] = m_paste_action;
+  m_action_map[ActionKey::kPaste] = m_paste_action;
 }
 
 QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys)
@@ -95,8 +95,8 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
 
 QAction *ProcedureListActions::GetAction(ActionKey key) const
 {
-  auto iter = m_actions.find(key);
-  return iter == m_actions.end() ? nullptr : iter->second;
+  auto iter = m_action_map.find(key);
+  return iter == m_action_map.end() ? nullptr : iter->second;
 }
 
 }  // namespace sequencergui

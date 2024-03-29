@@ -84,7 +84,7 @@ private:
   QAction* m_copy_action{nullptr};
   QAction* m_paste_action{nullptr};
 
-  std::map<ActionKey, QAction*> m_actions;
+  std::map<ActionKey, QAction*> m_action_map;
 };
 
 }  // namespace sequencergui

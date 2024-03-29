@@ -93,6 +93,21 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
 
 MonitorRealTimeActions::~MonitorRealTimeActions() = default;
 
+QList<QAction *> MonitorRealTimeActions::GetActions(const std::vector<ActionKey> &action_keys)
+{
+  QList<QAction *> result;
+  std::transform(action_keys.begin(), action_keys.end(), std::back_inserter(result),
+                 [this](auto element) { return GetAction(element); });
+
+  return result;
+}
+
+QAction *MonitorRealTimeActions::GetAction(ActionKey key) const
+{
+  auto iter = m_action_map.find(key);
+  return iter == m_action_map.end() ? nullptr : iter->second;
+}
+
 int MonitorRealTimeActions::GetCurrentTickTimeout()
 {
   return m_current_tick_timeout;
