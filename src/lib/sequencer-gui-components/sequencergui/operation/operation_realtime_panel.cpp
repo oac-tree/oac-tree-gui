@@ -38,6 +38,14 @@ namespace
 {
 const QString kGroupName("OperationRealTimePanel");
 const QString kSplitterSettingName = kGroupName + "/" + "splitter";
+
+QList<QAction *> GetToolBarActions(sequencergui::MonitorRealTimeActions *actions)
+{
+  using ActionKey = sequencergui::MonitorRealTimeActions::ActionKey;
+  return actions->GetActions({ActionKey::kRun, ActionKey::kPause, ActionKey::kStep,
+                              ActionKey::kStop, ActionKey::kDelay, ActionKey::kSettings});
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -46,7 +54,7 @@ namespace sequencergui
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorRealTimeToolBar)
-      , m_actions(new MonitorRealTimeActions(this))
+    , m_actions(new MonitorRealTimeActions(this))
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
     , m_message_panel(new MessagePanel)
@@ -65,6 +73,8 @@ OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
 
   SetupConnections();
   ReadSettings();
+
+  addActions(GetToolBarActions(m_actions));
 }
 
 OperationRealTimePanel::~OperationRealTimePanel()

@@ -46,7 +46,6 @@
 #include <QSplitter>
 #include <QToolBar>
 #include <QVBoxLayout>
-#include <QWidgetAction>
 
 namespace
 {
@@ -293,15 +292,8 @@ QWidget *OperationMonitorView::CreateLeftPanel(Mode mode)
 
 QWidget *OperationMonitorView::CreateCentralPanel()
 {
-  // tuning tool bar to place it into tool bar of ItemStackWidget
-  auto toolbar = m_realtime_panel->GetToolBar();
-  toolbar->layout()->setContentsMargins(0, 0, 0, 0);
-  toolbar->layout()->setSpacing(0);
-  auto widget_action = new QWidgetAction(this);
-  widget_action->setDefaultWidget(toolbar);
-
   auto result = new sup::gui::ItemStackWidget;
-  result->AddWidget(m_realtime_panel, {widget_action});
+  result->AddWidget(m_realtime_panel, m_realtime_panel->actions());
   return result;
 }
 

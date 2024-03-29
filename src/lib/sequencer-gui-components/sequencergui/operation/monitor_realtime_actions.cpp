@@ -55,27 +55,34 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
     , m_delay_button(new QToolButton)
     , m_delay_action(new QWidgetAction(this))
     , m_settings_action(new sup::gui::ActionMenu)
-
+    , m_delay_menu(CreateDelayMenu())
+    , m_settings_menu(CreateSettingsMenu())
 {
+  ReadSettings();
+
   m_run_action->setText("Run");
   m_run_action->setIcon(sup::gui::utils::GetIcon("arrow-right-drop-circle-outline.svg"));
   m_run_action->setToolTip("Run procedure");
   connect(m_run_action, &QAction::triggered, this, &MonitorRealTimeActions::RunRequest);
+  m_action_map[ActionKey::kRun] = m_run_action;
 
   m_pause_action->setText("Pause");
   m_pause_action->setIcon(sup::gui::utils::GetIcon("pause-circle-outline.svg"));
   m_pause_action->setToolTip("Pause sequence at the next occasion");
   connect(m_pause_action, &QAction::triggered, this, &MonitorRealTimeActions::PauseRequest);
+  m_action_map[ActionKey::kPause] = m_pause_action;
 
   m_step_action->setText("Step");
   m_step_action->setIcon(sup::gui::utils::GetIcon("play-pause.svg"));
   m_step_action->setToolTip("Execute single instruction");
   connect(m_step_action, &QAction::triggered, this, &MonitorRealTimeActions::StepRequest);
+  m_action_map[ActionKey::kStep] = m_step_action;
 
   m_stop_action->setText("Stop");
   m_stop_action->setIcon(sup::gui::utils::GetIcon("stop-circle-outline.svg"));
   m_stop_action->setToolTip("Stop procedure");
   connect(m_stop_action, &QAction::triggered, this, &MonitorRealTimeActions::StopRequest);
+  m_action_map[ActionKey::kStop] = m_stop_action;
 
   m_delay_button->setText(GetDelayText(GetCurrentTickTimeout()));
   m_delay_button->setIcon(sup::gui::utils::GetIcon("speedometer-slow.svg"));
@@ -84,14 +91,19 @@ MonitorRealTimeActions::MonitorRealTimeActions(QObject *parent)
   m_delay_button->setMenu(m_delay_menu.get());
   m_delay_button->setPopupMode(QToolButton::InstantPopup);
   m_delay_action->setDefaultWidget(m_delay_button);
+  m_action_map[ActionKey::kDelay] = m_delay_action;
 
   m_settings_action->setText("Other");
   m_settings_action->setIcon(sup::gui::utils::GetIcon("menu.svg"));
   m_settings_action->setToolTip("Other settings");
   m_settings_action->setMenu(m_settings_menu.get());
+  m_action_map[ActionKey::kSettings] = m_settings_action;
 }
 
-MonitorRealTimeActions::~MonitorRealTimeActions() = default;
+MonitorRealTimeActions::~MonitorRealTimeActions()
+{
+  WriteSettings();
+}
 
 QList<QAction *> MonitorRealTimeActions::GetActions(const std::vector<ActionKey> &action_keys)
 {
