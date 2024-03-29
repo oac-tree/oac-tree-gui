@@ -44,7 +44,7 @@ class GraphicsView;
 class GraphicsScene;
 class GraphicsSceneController;
 class InstructionItem;
-class NodeEditorToolBar;
+class NodeEditorActions;
 class ProcedureItem;
 
 //! NodeEditor widget (central part of SequencerComposerView).
@@ -74,7 +74,7 @@ private:
   void OnAlignRequest();
   void SetupController();
 
-  NodeEditorToolBar* m_tool_bar{nullptr};
+  NodeEditorActions* m_actions{nullptr};
   QWidgetAction* m_tool_bar_action{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};

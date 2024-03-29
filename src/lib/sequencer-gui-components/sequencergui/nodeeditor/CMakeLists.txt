@@ -6,15 +6,15 @@ target_sources(${library_name} PRIVATE
   connectable_instruction_adapter.cpp
   connectable_instruction_adapter.h
   connectable_view.cpp
+  connectable_view.h
   connectable_view_factory.cpp
   connectable_view_factory.h
-  connectable_view.h
   connectable_view_map.cpp
   connectable_view_map.h
-  graphics_scene_controller.cpp
-  graphics_scene_controller.h
   graphics_scene.cpp
   graphics_scene.h
+  graphics_scene_controller.cpp
+  graphics_scene_controller.h
   graphics_view.cpp
   graphics_view.h
   node_connection.cpp
@@ -23,8 +23,8 @@ target_sources(${library_name} PRIVATE
   node_controller.h
   node_editor.cpp
   node_editor.h
-  node_editor_toolbar.cpp
-  node_editor_toolbar.h
+  node_editor_actions.cpp
+  node_editor_actions.h
   node_port.cpp
   node_port.h
   port_info.h

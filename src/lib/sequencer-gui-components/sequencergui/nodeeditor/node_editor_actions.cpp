@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "node_editor_toolbar.h"
+#include "node_editor_actions.h"
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/nodeeditor/graphics_view.h>
@@ -36,7 +36,7 @@ const int kDefaultZoomLevel = 100;
 
 namespace sequencergui
 {
-NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
+NodeEditorActions::NodeEditorActions(QWidget *parent)
     : QToolBar(parent)
     , m_pointer_mode_group(new QButtonGroup(this))
     , m_pointer_button(new QToolButton)
@@ -62,7 +62,7 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
 
   m_pointer_mode_group->addButton(m_pointer_button, GraphicsView::kRubberSelection);
   m_pointer_mode_group->addButton(m_pan_button, GraphicsView::kHandDrag);
-  connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorToolBar::selectionMode);
+  connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorActions::selectionMode);
 
   m_zoom_menu = CreateZoomMenu();
   m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
@@ -79,20 +79,20 @@ NodeEditorToolBar::NodeEditorToolBar(QWidget *parent)
   m_center_button->setIcon(sup::gui::utils::GetIcon("camera-metering-center.svg"));
   m_center_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_center_button->setToolTip("Center view");
-  connect(m_center_button, &QToolButton::clicked, this, &NodeEditorToolBar::centerView);
+  connect(m_center_button, &QToolButton::clicked, this, &NodeEditorActions::centerView);
 
   addWidget(m_center_button);
 
   m_align_button->setIcon(sup::gui::utils::GetIcon("dots-triangle.svg"));
   m_align_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_align_button->setToolTip("Align children of currently selected item");
-  connect(m_align_button, &QToolButton::clicked, this, &NodeEditorToolBar::alignSelectedRequest);
+  connect(m_align_button, &QToolButton::clicked, this, &NodeEditorActions::alignSelectedRequest);
   addWidget(m_align_button);
 }
 
-NodeEditorToolBar::~NodeEditorToolBar() = default;
+NodeEditorActions::~NodeEditorActions() = default;
 
-void NodeEditorToolBar::onViewSelectionMode(int mode)
+void NodeEditorActions::onViewSelectionMode(int mode)
 {
   if (mode == GraphicsView::kRubberSelection || mode == GraphicsView::kHandDrag)
   {
@@ -100,7 +100,7 @@ void NodeEditorToolBar::onViewSelectionMode(int mode)
   }
 }
 
-std::unique_ptr<QMenu> NodeEditorToolBar::CreateZoomMenu()
+std::unique_ptr<QMenu> NodeEditorActions::CreateZoomMenu()
 {
   auto result = std::make_unique<QMenu>();
   result->setToolTipsVisible(true);

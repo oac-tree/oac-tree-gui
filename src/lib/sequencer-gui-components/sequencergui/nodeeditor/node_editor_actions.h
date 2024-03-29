@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_TOOLBAR_H_
-#define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_TOOLBAR_H_
+#ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
+#define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
 
 #include <QToolBar>
 
@@ -32,13 +32,13 @@ namespace sequencergui
 
 //! Instrument tool bar on top of NodeEditor
 
-class NodeEditorToolBar : public QToolBar
+class NodeEditorActions : public QToolBar
 {
   Q_OBJECT
 
 public:
-  explicit NodeEditorToolBar(QWidget* parent = nullptr);
-  ~NodeEditorToolBar() override;
+  explicit NodeEditorActions(QWidget* parent = nullptr);
+  ~NodeEditorActions() override;
 
   void onViewSelectionMode(int mode);
 
@@ -62,4 +62,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_TOOLBAR_H_
+#endif  // SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
