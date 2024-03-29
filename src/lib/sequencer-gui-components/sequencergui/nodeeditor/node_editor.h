@@ -20,12 +20,11 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_
 #define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_H_
 
-#include "sup/gui/components/message_handler_interface.h"
+#include <sup/gui/components/message_handler_interface.h>
 
 #include <QWidget>
 
 class QKeyEvent;
-class QWidgetAction;
 
 namespace sup::gui
 {
@@ -70,12 +69,10 @@ signals:
 
 private:
   void SetupConnections();
-  void SetupToolBar();
   void OnAlignRequest();
   void SetupController();
 
   NodeEditorActions* m_actions{nullptr};
-  QWidgetAction* m_tool_bar_action{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   GraphicsView* m_graphics_view{nullptr};
   std::unique_ptr<GraphicsSceneController> m_scene_controller;

@@ -19,7 +19,7 @@
 
 #include "node_editor.h"
 
-#include "sequencergui/nodeeditor/node_editor_actions.h"
+#include "node_editor_actions.h"
 
 #include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -41,13 +41,22 @@
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
+namespace
+{
+QList<QAction *> GetToolBarActions(sequencergui::NodeEditorActions *actions)
+{
+  using ActionKey = sequencergui::NodeEditorActions::ActionKey;
+  return actions->GetActions({ActionKey::kPointer, ActionKey::kPan, ActionKey::kZoom,
+                              ActionKey::kCenter, ActionKey::kAlign});
+}
+}  // namespace
+
 namespace sequencergui
 {
 
 NodeEditor::NodeEditor(QWidget *parent)
     : QWidget(parent)
-      , m_actions(new NodeEditorActions)
-    , m_tool_bar_action(new QWidgetAction(this))
+    , m_actions(new NodeEditorActions)
     , m_graphics_scene(new GraphicsScene(this))
     , m_graphics_view(new GraphicsView(m_graphics_scene, this))
     , m_graphics_view_message_handler(CreateWidgetOverlayMessageHandler(m_graphics_view))
@@ -62,7 +71,6 @@ NodeEditor::NodeEditor(QWidget *parent)
   m_graphics_scene->SetMessageHandler(CreateMessageHandler());
 
   SetupConnections();
-  SetupToolBar();
 
   auto on_subscribe = [this]() { SetupController(); };
 
@@ -70,6 +78,8 @@ NodeEditor::NodeEditor(QWidget *parent)
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+
+  addActions(GetToolBarActions(m_actions));
 }
 
 NodeEditor::~NodeEditor() = default;
@@ -117,19 +127,6 @@ void NodeEditor::SetSelectedInstructions(const std::vector<InstructionItem *> &i
 std::unique_ptr<sup::gui::MessageHandlerInterface> NodeEditor::CreateMessageHandler()
 {
   return CreateMessageHandlerDecorator(m_graphics_view_message_handler.get());
-}
-
-//! Setup a toolbar so it can be used via widget's action mechanism.
-
-void NodeEditor::SetupToolBar()
-{
-  // remove extra spacing so it can be embedded into another toolbar
-  m_actions->layout()->setContentsMargins(0, 0, 0, 0);
-  m_actions->layout()->setSpacing(0);
-
-  // add toolbar to the list of widgert's action
-  m_tool_bar_action->setDefaultWidget(m_actions);
-  addAction(m_tool_bar_action);
 }
 
 //! Provides node alignment on graphics view.

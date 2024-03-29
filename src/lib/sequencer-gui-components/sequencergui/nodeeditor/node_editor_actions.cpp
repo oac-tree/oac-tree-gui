@@ -39,62 +39,51 @@ const int kDefaultZoomLevel = 100;
 namespace sequencergui
 {
 NodeEditorActions::NodeEditorActions(QWidget *parent)
-    : QToolBar(parent)
+    : QObject(parent)
     , m_pointer_mode_group(new QButtonGroup(this))
     , m_pointer_button(new QToolButton)
     , m_pointer_action(new QWidgetAction(this))
     , m_pan_button(new QToolButton)
     , m_pan_action(new QWidgetAction(this))
-    , m_center_button(new QToolButton)
     , m_center_action(new QAction(this))
-    , m_zoom_button(new QToolButton)
     , m_zoom_action(new sup::gui::ActionMenu(this))
-    , m_align_button(new QToolButton)
     , m_align_action(new QAction(this))
 {
-  setIconSize(sup::gui::utils::ToolBarIconSize());
-
   m_pointer_button->setIcon(sup::gui::utils::GetIcon("arrow-top-left.svg"));
   m_pointer_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pointer_button->setToolTip("Scene in edit mode");
   m_pointer_button->setCheckable(true);
   m_pointer_button->setChecked(true);
-  addWidget(m_pointer_button);
+  m_pointer_action->setDefaultWidget(m_pointer_button);
+  m_action_map[ActionKey::kPointer] = m_pointer_action;
 
   m_pan_button->setIcon(sup::gui::utils::GetIcon("hand-back-right-outline.svg"));
   m_pan_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
   m_pan_button->setToolTip("Scene in pan mode (space)");
   m_pan_button->setCheckable(true);
-  addWidget(m_pan_button);
+  m_pan_action->setDefaultWidget(m_pan_button);
+  m_action_map[ActionKey::kPan] = m_pan_action;
 
   m_pointer_mode_group->addButton(m_pointer_button, GraphicsView::kRubberSelection);
   m_pointer_mode_group->addButton(m_pan_button, GraphicsView::kHandDrag);
   connect(m_pointer_mode_group, &QButtonGroup::idClicked, this, &NodeEditorActions::selectionMode);
 
   m_zoom_menu = CreateZoomMenu();
-  m_zoom_button->setText(QString("%1 \%").arg(kDefaultZoomLevel));
-  m_zoom_button->setIcon(sup::gui::utils::GetIcon("magnify-plus-outline.svg"));
+  m_zoom_action->setText(QString("%1 \%").arg(kDefaultZoomLevel));
+  m_zoom_action->setIcon(sup::gui::utils::GetIcon("magnify-plus-outline.svg"));
+  m_zoom_action->setMenu(m_zoom_menu.get());
+  m_zoom_action->setToolTip("Zoom");
+  m_action_map[ActionKey::kZoom] = m_zoom_action;
 
-  //  m_zoom_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  m_zoom_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  m_center_action->setIcon(sup::gui::utils::GetIcon("camera-metering-center.svg"));
+  m_center_action->setToolTip("Center view");
+  connect(m_center_action, &QAction::triggered, this, &NodeEditorActions::centerView);
+  m_action_map[ActionKey::kCenter] = m_center_action;
 
-  m_zoom_button->setPopupMode(QToolButton::InstantPopup);
-  m_zoom_button->setMenu(m_zoom_menu.get());
-  m_zoom_button->setToolTip("Zoom");
-  addWidget(m_zoom_button);
-
-  m_center_button->setIcon(sup::gui::utils::GetIcon("camera-metering-center.svg"));
-  m_center_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_center_button->setToolTip("Center view");
-  connect(m_center_button, &QToolButton::clicked, this, &NodeEditorActions::centerView);
-
-  addWidget(m_center_button);
-
-  m_align_button->setIcon(sup::gui::utils::GetIcon("dots-triangle.svg"));
-  m_align_button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-  m_align_button->setToolTip("Align children of currently selected item");
-  connect(m_align_button, &QToolButton::clicked, this, &NodeEditorActions::alignSelectedRequest);
-  addWidget(m_align_button);
+  m_align_action->setIcon(sup::gui::utils::GetIcon("dots-triangle.svg"));
+  m_align_action->setToolTip("Align children of currently selected item");
+  connect(m_align_action, &QAction::triggered, this, &NodeEditorActions::alignSelectedRequest);
+  m_action_map[ActionKey::kAlign] = m_align_action;
 }
 
 NodeEditorActions::~NodeEditorActions() = default;
@@ -105,6 +94,21 @@ void NodeEditorActions::onViewSelectionMode(int mode)
   {
     m_pointer_mode_group->button(mode)->setChecked(true);
   }
+}
+
+QList<QAction *> NodeEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
+{
+  QList<QAction *> result;
+  std::transform(action_keys.begin(), action_keys.end(), std::back_inserter(result),
+                 [this](auto element) { return GetAction(element); });
+
+  return result;
+}
+
+QAction *NodeEditorActions::GetAction(ActionKey key) const
+{
+  auto iter = m_action_map.find(key);
+  return iter == m_action_map.end() ? nullptr : iter->second;
 }
 
 std::unique_ptr<QMenu> NodeEditorActions::CreateZoomMenu()
@@ -121,7 +125,7 @@ std::unique_ptr<QMenu> NodeEditorActions::CreateZoomMenu()
     scale_to_action[scale] = action;
     auto on_action = [this, scale, text]()
     {
-      m_zoom_button->setText(text);
+      m_zoom_action->setText(text);
       emit changeScale(scale / 100.);
     };
     connect(action, &QAction::triggered, this, on_action);
