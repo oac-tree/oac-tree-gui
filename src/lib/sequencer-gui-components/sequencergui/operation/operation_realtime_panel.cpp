@@ -21,12 +21,10 @@
 
 #include "message_panel.h"
 #include "monitor_realtime_actions.h"
-#include "monitor_realtime_toolbar.h"
 #include "realtime_instruction_tree_widget.h"
 
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
-#include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 
@@ -53,7 +51,6 @@ namespace sequencergui
 
 OperationRealTimePanel::OperationRealTimePanel(QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new MonitorRealTimeToolBar)
     , m_actions(new MonitorRealTimeActions(this))
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_realtime_instruction_tree(new RealTimeInstructionTreeWidget)
@@ -97,14 +94,9 @@ MessagePanel *OperationRealTimePanel::GetMessagePanel()
   return m_message_panel;
 }
 
-QToolBar *OperationRealTimePanel::GetToolBar() const
-{
-  return m_tool_bar;
-}
-
 int OperationRealTimePanel::GetCurrentTickTimeout()
 {
-  return m_tool_bar->GetCurrentTickTimeout();
+  return m_actions->GetCurrentTickTimeout();
 }
 
 void OperationRealTimePanel::ReadSettings()
@@ -127,21 +119,20 @@ void OperationRealTimePanel::WriteSettings()
 void OperationRealTimePanel::SetupConnections()
 {
   // forward signals from a toolbar further up
-  connect(m_tool_bar, &MonitorRealTimeToolBar::runRequest, this,
+  connect(m_actions, &MonitorRealTimeActions::RunRequest, this,
           &OperationRealTimePanel::runRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::pauseRequest, this,
+  connect(m_actions, &MonitorRealTimeActions::PauseRequest, this,
           &OperationRealTimePanel::pauseRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::stepRequest, this,
+  connect(m_actions, &MonitorRealTimeActions::StepRequest, this,
           &OperationRealTimePanel::stepRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::stopRequest, this,
+  connect(m_actions, &MonitorRealTimeActions::StopRequest, this,
           &OperationRealTimePanel::stopRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::changeDelayRequest, this,
+  connect(m_actions, &MonitorRealTimeActions::ChangeDelayRequest, this,
           &OperationRealTimePanel::changeDelayRequest);
 
   connect(m_realtime_instruction_tree, &RealTimeInstructionTreeWidget::ToggleBreakpointRequest,
           this, &OperationRealTimePanel::ToggleBreakpointRequest);
-  connect(m_tool_bar, &MonitorRealTimeToolBar::scrollToSelectionRequest,
-          m_realtime_instruction_tree,
+  connect(m_actions, &MonitorRealTimeActions::ScrollToSelectionRequest, m_realtime_instruction_tree,
           &RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag);
 }
 

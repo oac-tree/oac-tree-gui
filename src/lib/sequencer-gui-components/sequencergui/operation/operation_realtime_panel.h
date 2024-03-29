@@ -32,7 +32,6 @@ class CollapsibleListView;
 namespace sequencergui
 {
 class SequencerModel;
-class MonitorRealTimeToolBar;
 class MonitorRealTimeActions;
 class InstructionItem;
 class ProcedureItem;
@@ -55,8 +54,6 @@ public:
 
   MessagePanel* GetMessagePanel();
 
-  QToolBar* GetToolBar() const;
-
   int GetCurrentTickTimeout();
 
 signals:
@@ -72,7 +69,6 @@ private:
   void WriteSettings();
   void SetupConnections();
 
-  MonitorRealTimeToolBar* m_tool_bar{nullptr};
   MonitorRealTimeActions* m_actions{nullptr};
 
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};

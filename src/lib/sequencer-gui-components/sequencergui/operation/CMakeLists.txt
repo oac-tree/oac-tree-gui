@@ -18,8 +18,6 @@ target_sources(${library_name} PRIVATE
   message_panel.h
   monitor_realtime_actions.cpp
   monitor_realtime_actions.h
-  monitor_realtime_toolbar.cpp
-  monitor_realtime_toolbar.h
   operation_action_handler.cpp
   operation_action_handler.h
   operation_job_panel.cpp
