@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/nodeeditor/graphics_view.h>
+#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -28,6 +29,7 @@
 #include <QButtonGroup>
 #include <QMenu>
 #include <QToolButton>
+#include <QWidgetAction>
 
 namespace
 {
@@ -40,10 +42,15 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
     : QToolBar(parent)
     , m_pointer_mode_group(new QButtonGroup(this))
     , m_pointer_button(new QToolButton)
+    , m_pointer_action(new QWidgetAction(this))
     , m_pan_button(new QToolButton)
+    , m_pan_action(new QWidgetAction(this))
     , m_center_button(new QToolButton)
+    , m_center_action(new QAction(this))
     , m_zoom_button(new QToolButton)
+    , m_zoom_action(new sup::gui::ActionMenu(this))
     , m_align_button(new QToolButton)
+    , m_align_action(new QAction(this))
 {
   setIconSize(sup::gui::utils::ToolBarIconSize());
 

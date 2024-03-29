@@ -26,6 +26,13 @@ class QToolBar;
 class QButtonGroup;
 class QToolButton;
 class QMenu;
+class QAction;
+class QWidgetAction;
+
+namespace sup::gui
+{
+class ActionMenu;
+}
 
 namespace sequencergui
 {
@@ -37,6 +44,15 @@ class NodeEditorActions : public QToolBar
   Q_OBJECT
 
 public:
+  enum class ActionKey
+  {
+    kPointer,
+    kPan,
+    kZoom,
+    kCenter,
+    kAlign
+  };
+
   explicit NodeEditorActions(QWidget* parent = nullptr);
   ~NodeEditorActions() override;
 
@@ -52,12 +68,25 @@ private:
   std::unique_ptr<QMenu> CreateZoomMenu();
 
   QButtonGroup* m_pointer_mode_group{nullptr};
+
   QToolButton* m_pointer_button{nullptr};
+  QWidgetAction* m_pointer_action{nullptr};
+
   QToolButton* m_pan_button{nullptr};
+  QWidgetAction* m_pan_action{nullptr};
+
   QToolButton* m_center_button{nullptr};
+  QAction* m_center_action{nullptr};
+
   QToolButton* m_zoom_button{nullptr};
+  sup::gui::ActionMenu* m_zoom_action{nullptr};
+
   QToolButton* m_align_button{nullptr};
+  QAction* m_align_action{nullptr};
+
   std::unique_ptr<QMenu> m_zoom_menu;
+
+  std::map<ActionKey, QAction*> m_action_map;
 };
 
 }  // namespace sequencergui
