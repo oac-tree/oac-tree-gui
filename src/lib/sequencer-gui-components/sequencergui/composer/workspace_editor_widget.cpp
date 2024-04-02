@@ -79,7 +79,9 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
           &WorkspaceEditorWidget::OnTreeContextMenuRequest);
 
   SetupConnections();
-  addActions(m_editor_actions->GetActions() + m_attribute_actions->GetToolBarActions());
+  using ActionKey = WorkspaceEditorActions::ActionKey;
+  addActions(m_editor_actions->GetActions({ActionKey::kAdd, ActionKey::kRemove})
+             + m_attribute_actions->GetToolBarActions());
 
   ReadSettings();
 

@@ -56,7 +56,7 @@ public:
   /**
    * @brief Returns list of actions according to provided keys.
    */
-  QList<QAction*> GetActions(const std::vector<ActionKeyT>& action_keys)
+  QList<QAction*> GetActions(const std::vector<ActionKeyT>& action_keys) const
   {
     QList<QAction*> result;
     std::transform(action_keys.begin(), action_keys.end(), std::back_inserter(result),

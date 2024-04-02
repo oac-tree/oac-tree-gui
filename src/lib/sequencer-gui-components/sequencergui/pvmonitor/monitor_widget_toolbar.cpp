@@ -44,7 +44,8 @@ MonitorWidgetToolBar::MonitorWidgetToolBar(QWidget *parent)
   connect(m_workspace_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, this,
           &MonitorWidgetToolBar::RemoveVariableRequest);
 
-  addActions(m_workspace_editor_actions->GetActions());
+  using ActionKey = WorkspaceEditorActions::ActionKey;
+  addActions(m_workspace_editor_actions->GetActions({ActionKey::kAdd, ActionKey::kRemove}));
 
   addSeparator();
 
@@ -79,8 +80,10 @@ void MonitorWidgetToolBar::UpdateActionsState(bool is_running)
   // when in running state, stop action should be enabled, others disabled, and vice versa
   auto enabled_when_is_running = QList<QAction *>() << m_stop_action;
 
-  auto disabled_when_is_running = QList<QAction *>()
-                                  << m_workspace_editor_actions->GetActions() << m_start_action;
+  auto disabled_when_is_running =
+      QList<QAction *>() << m_workspace_editor_actions->GetActions(
+          {WorkspaceEditorActions::ActionKey::kAdd, WorkspaceEditorActions::ActionKey::kRemove})
+                         << m_start_action;
 
   for (auto action : enabled_when_is_running)
   {

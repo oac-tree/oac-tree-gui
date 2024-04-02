@@ -37,9 +37,9 @@ WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
   SetupActions();
 }
 
-QList<QAction *> WorkspaceEditorActions::GetActions() const
+QList<QAction *> WorkspaceEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
-  return {m_add_variable_action, m_remove_variable_action};
+  return m_action_map.GetActions(action_keys);
 }
 
 WorkspaceEditorActions::~WorkspaceEditorActions() = default;
@@ -54,6 +54,7 @@ void WorkspaceEditorActions::SetupActions()
       "Add sequencer variable to the workspace\n\n"
       "- If existing variable is selected, new variable\n"
       "  will be inserted after");
+  m_action_map.Add(ActionKey::kAdd, m_add_variable_action);
 
   m_remove_variable_action = new QAction(this);
   m_remove_variable_action->setText("Remove variable");
@@ -61,6 +62,7 @@ void WorkspaceEditorActions::SetupActions()
   m_remove_variable_action->setToolTip("Remove currently selected variable");
   connect(m_remove_variable_action, &QAction::triggered, this,
           &WorkspaceEditorActions::RemoveVariableRequest);
+  m_action_map.Add(ActionKey::kRemove, m_remove_variable_action);
 }
 
 //! Creates menu to insert Variables in a workspace.

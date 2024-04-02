@@ -22,9 +22,9 @@
 
 #include <QObject>
 #include <memory>
+#include <sequencergui/components/action_map.h>
 
 class QMenu;
-class QAction;
 
 namespace sup::gui
 {
@@ -45,10 +45,17 @@ class WorkspaceEditorActions : public QObject
   Q_OBJECT
 
 public:
+  enum class ActionKey
+  {
+    kAdd,
+    kRemove,
+    kTotalCount
+  };
+
   explicit WorkspaceEditorActions(QObject* parent = nullptr);
   ~WorkspaceEditorActions() override;
 
-  QList<QAction*> GetActions() const;
+  QList<QAction*> GetActions(const std::vector<ActionKey> &action_keys) const;
 
 signals:
   void AddVariableRequest(const QString& name);
@@ -62,6 +69,8 @@ private:
   std::unique_ptr<QMenu> m_add_variable_menu;
   sup::gui::ActionMenu* m_add_variable_action{nullptr};
   QAction* m_remove_variable_action{nullptr};
+
+  ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui
