@@ -24,9 +24,8 @@
 #include <QMenu>
 #include <QWidget>
 #include <memory>
-#include <map>
+#include <sequencergui/components/action_map.h>
 
-class QAction;
 class QMenu;
 
 namespace sup::gui
@@ -83,11 +82,6 @@ public:
    * @brief Returns list of actions according to provided flags.
    */
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
-
-  /**
-   * @brief Returns action for given key.
-   */
-  QAction* GetAction(ActionKey key) const;
 
   /**
    * @brief Setup cut/copy/paste actions in given menu.
@@ -156,7 +150,7 @@ private:
   QAction* m_paste_after_action{nullptr};
   QAction* m_paste_into_action{nullptr};
 
-  std::map<ActionKey, QAction*> m_action_map;
+  ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

@@ -40,14 +40,14 @@ QString GetZoomText(int scale)
   return QString("Zoom %1 \%").arg(scale);
 }
 
-}
+}  // namespace
 
 namespace sequencergui
 {
 NodeEditorActions::NodeEditorActions(QWidget *parent)
     : QObject(parent)
     , m_pointer_mode_group(new QButtonGroup(this))
-      , m_pointer_button(new QToolButton)
+    , m_pointer_button(new QToolButton)
     , m_pointer_action(new QWidgetAction(this))
     , m_pan_button(new QToolButton)
     , m_pan_action(new QWidgetAction(this))
@@ -63,7 +63,7 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
   m_pointer_button->setChecked(true);
   m_pointer_button->setToolButtonStyle(Qt::ToolButtonFollowStyle);
   m_pointer_action->setDefaultWidget(m_pointer_button);
-  m_action_map[ActionKey::kPointer] = m_pointer_action;
+  m_action_map.Add(ActionKey::kPointer, m_pointer_action);
 
   m_pan_button->setText("Pan");
   m_pan_button->setIcon(sup::gui::utils::GetIcon("hand-back-right-outline.svg"));
@@ -72,7 +72,7 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
   m_pan_button->setToolButtonStyle(Qt::ToolButtonFollowStyle);
   m_pan_action->setText("Select");
   m_pan_action->setDefaultWidget(m_pan_button);
-  m_action_map[ActionKey::kPan] = m_pan_action;
+  m_action_map.Add(ActionKey::kPan, m_pan_action);
 
   m_pointer_mode_group->addButton(m_pointer_button, GraphicsView::kRubberSelection);
   m_pointer_mode_group->addButton(m_pan_button, GraphicsView::kHandDrag);
@@ -82,20 +82,19 @@ NodeEditorActions::NodeEditorActions(QWidget *parent)
   m_zoom_action->setIcon(sup::gui::utils::GetIcon("magnify-plus-outline.svg"));
   m_zoom_action->setMenu(m_zoom_menu.get());
   m_zoom_action->setToolTip("Zoom");
-
-  m_action_map[ActionKey::kZoom] = m_zoom_action;
+  m_action_map.Add(ActionKey::kZoom, m_zoom_action);
 
   m_center_action->setText("Center");
   m_center_action->setIcon(sup::gui::utils::GetIcon("camera-metering-center.svg"));
   m_center_action->setToolTip("Center view");
   connect(m_center_action, &QAction::triggered, this, &NodeEditorActions::centerView);
-  m_action_map[ActionKey::kCenter] = m_center_action;
+  m_action_map.Add(ActionKey::kCenter, m_center_action);
 
   m_align_action->setText("Align");
   m_align_action->setIcon(sup::gui::utils::GetIcon("dots-triangle.svg"));
   m_align_action->setToolTip("Align children of currently selected item");
   connect(m_align_action, &QAction::triggered, this, &NodeEditorActions::alignSelectedRequest);
-  m_action_map[ActionKey::kAlign] = m_align_action;
+  m_action_map.Add(ActionKey::kAlign, m_align_action);
 }
 
 NodeEditorActions::~NodeEditorActions() = default;
@@ -110,17 +109,7 @@ void NodeEditorActions::onViewSelectionMode(int mode)
 
 QList<QAction *> NodeEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
 {
-  QList<QAction *> result;
-  std::transform(action_keys.begin(), action_keys.end(), std::back_inserter(result),
-                 [this](auto element) { return GetAction(element); });
-
-  return result;
-}
-
-QAction *NodeEditorActions::GetAction(ActionKey key) const
-{
-  auto iter = m_action_map.find(key);
-  return iter == m_action_map.end() ? nullptr : iter->second;
+  return m_action_map.GetActions(action_keys);
 }
 
 std::unique_ptr<QMenu> NodeEditorActions::CreateZoomMenu()

@@ -21,11 +21,10 @@
 #define SEQUENCERGUI_OPERATION_MONITOR_REALTIME_ACTIONS_H_
 
 #include <QObject>
-#include <map>
 #include <memory>
+#include <sequencergui/components/action_map.h>
 
 class QMenu;
-class QAction;
 class QWidgetAction;
 class QToolButton;
 
@@ -67,11 +66,6 @@ public:
    */
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
 
-  /**
-   * @brief Returns action for given key.
-   */
-  QAction* GetAction(ActionKey key) const;
-
 signals:
   void RunRequest();
   void PauseRequest();
@@ -98,7 +92,7 @@ private:
   std::unique_ptr<QMenu> m_settings_menu;
 
   int m_current_tick_timeout{0};
-  std::map<ActionKey, QAction*> m_action_map;
+  ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

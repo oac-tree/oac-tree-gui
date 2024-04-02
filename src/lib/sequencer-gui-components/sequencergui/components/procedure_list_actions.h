@@ -21,9 +21,9 @@
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTIONS_H_
 
 #include <QObject>
-#include <map>
 
-class QAction;
+#include <sequencergui/components/action_map.h>
+
 class QMenu;
 
 namespace sequencergui
@@ -65,11 +65,6 @@ public:
    */
   void SetupMenu(QMenu& menu, const ProcedureListActionHandler* handler);
 
-  /**
-   * @brief Returns action for given key.
-   */
-  QAction* GetAction(ActionKey key) const;
-
 signals:
   void CreateNewProcedureRequest();
   void RemoveProcedureRequest();
@@ -84,7 +79,7 @@ private:
   QAction* m_copy_action{nullptr};
   QAction* m_paste_action{nullptr};
 
-  std::map<ActionKey, QAction*> m_action_map;
+  ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

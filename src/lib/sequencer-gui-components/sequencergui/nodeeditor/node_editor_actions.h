@@ -22,12 +22,12 @@
 
 #include <QObject>
 #include <memory>
+#include <sequencergui/components/action_map.h>
 
 class QToolBar;
 class QButtonGroup;
 class QToolButton;
 class QMenu;
-class QAction;
 class QWidgetAction;
 
 namespace sup::gui
@@ -64,11 +64,6 @@ public:
    */
   QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
 
-  /**
-   * @brief Returns action for given key.
-   */
-  QAction* GetAction(ActionKey key) const;
-
 signals:
   void selectionMode(int);
   void changeScale(double);
@@ -89,7 +84,7 @@ private:
 
   std::unique_ptr<QMenu> m_zoom_menu;
 
-  std::map<ActionKey, QAction*> m_action_map;
+  ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui
