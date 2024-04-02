@@ -129,6 +129,36 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
   }
 }
 
+bool WorkspaceEditorActionHandler::CanCut() const
+{
+  return false;
+}
+
+void WorkspaceEditorActionHandler::Cut()
+{
+
+}
+
+bool WorkspaceEditorActionHandler::CanCopy() const
+{
+  return false;
+}
+
+void WorkspaceEditorActionHandler::Copy()
+{
+
+}
+
+bool WorkspaceEditorActionHandler::CanPaste() const
+{
+  return false;
+}
+
+void WorkspaceEditorActionHandler::Paste()
+{
+
+}
+
 mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const
 {
   return GetWorkspaceItem()->GetModel();

@@ -115,7 +115,7 @@ public:
   bool CanCut() const;
 
   /**
-   * @brief Cut selected procedure.
+   * @brief Cut selected instruction.
    */
   void Cut();
 
@@ -125,7 +125,7 @@ public:
   bool CanCopy() const;
 
   /**
-   * @brief Copy selected procedure.
+   * @brief Copy selected instruction.
    */
   void Copy();
 

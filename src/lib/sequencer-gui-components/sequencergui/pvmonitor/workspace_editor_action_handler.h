@@ -35,9 +35,10 @@ namespace sequencergui
 class VariableItem;
 class WorkspaceItem;
 
-//! The WorkspaceEditorActionHandler class implements logic to add/remove/edit variables in
-//! WorkspaceItem.
-
+/**
+ * @brief The WorkspaceEditorActionHandler class logic to add/remove/edit variables, and to prform
+ * standard cut/copy/paster operations.
+ */
 class WorkspaceEditorActionHandler : public QObject
 {
   Q_OBJECT
@@ -46,8 +47,40 @@ public:
   explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject* parent = nullptr);
 
   void OnAddVariableRequest(const QString& variable_type_name);
+
   void OnRemoveVariableRequest();
+
   void OnEditAnyvalueRequest();
+
+  /**
+   * @brief Checks if cut operation is possible.
+   */
+  bool CanCut() const;
+
+  /**
+   * @brief Cut selected variable.
+   */
+  void Cut();
+
+  /**
+   * @brief Checks if copy operation is possible.
+   */
+  bool CanCopy() const;
+
+  /**
+   * @brief Copy selected variable.
+   */
+  void Copy();
+
+  /**
+   * @brief Checks if paste operation is possible.
+   */
+  bool CanPaste() const;
+
+  /**
+   * @brief Paste new variable after currently selected variable.
+   */
+  void Paste();
 
 signals:
   void SelectItemRequest(mvvm::SessionItem* item);

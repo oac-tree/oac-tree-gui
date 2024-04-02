@@ -49,6 +49,9 @@ public:
   {
     kAdd,
     kRemove,
+    kCut,
+    kCopy,
+    kPaste,
     kTotalCount
   };
 
@@ -60,6 +63,9 @@ public:
 signals:
   void AddVariableRequest(const QString& name);
   void RemoveVariableRequest();
+  void CutRequest();
+  void CopyRequest();
+  void PasteRequest();
 
 private:
   void SetupActions();
@@ -69,6 +75,9 @@ private:
   std::unique_ptr<QMenu> m_add_variable_menu;
   sup::gui::ActionMenu* m_add_variable_action{nullptr};
   QAction* m_remove_variable_action{nullptr};
+  QAction* m_cut_action{nullptr};
+  QAction* m_copy_action{nullptr};
+  QAction* m_paste_action{nullptr};
 
   ActionMap<ActionKey> m_action_map;
 };
