@@ -17,7 +17,6 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
@@ -70,7 +69,8 @@ public:
     result.selected_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
     result.send_message_callback = m_warning_listener.CreateCallback();
     result.edit_anyvalue_callback = {};  // editing is not checked in this test
-    result.get_mime_data = [current_mime]() { return current_mime; };
+    result.get_mime_data = [current_mime, this]()
+    { return current_mime ? current_mime : m_copy_result.get(); };
     result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
     { m_copy_result = std::move(data); };
 
@@ -227,7 +227,11 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   EXPECT_TRUE(handler->CanCut());
+
+  EXPECT_FALSE(handler->CanPaste());
   handler->Cut();
+
+  EXPECT_TRUE(handler->CanPaste());
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 

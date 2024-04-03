@@ -38,7 +38,10 @@
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
+#include <QClipboard>
+#include <QGuiApplication>
 #include <QMenu>
+#include <QMimeData>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -229,6 +232,11 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
   result.send_message_callback = send_message_callback;
 
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
+
+  result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
+
+  result.set_mime_data = [](std::unique_ptr<QMimeData> data)
+  { return QGuiApplication::clipboard()->setMimeData(data.release()); };
 
   return result;
 }
