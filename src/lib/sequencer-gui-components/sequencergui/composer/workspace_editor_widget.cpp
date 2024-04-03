@@ -40,6 +40,7 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QKeyEvent>
 #include <QMenu>
 #include <QMimeData>
 #include <QSettings>
@@ -118,6 +119,26 @@ void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
 mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
 {
   return m_component_provider->GetSelectedItem();
+}
+
+void WorkspaceEditorWidget::keyPressEvent(QKeyEvent *event)
+{
+  if (event == QKeySequence::Cut)
+  {
+    m_action_handler->Cut();
+  }
+  else if (event == QKeySequence::Copy)
+  {
+    m_action_handler->Copy();
+  }
+  else if (event == QKeySequence::Paste)
+  {
+    m_action_handler->Paste();
+  }
+  else
+  {
+    QWidget::keyPressEvent(event);
+  }
 }
 
 void WorkspaceEditorWidget::ReadSettings()
