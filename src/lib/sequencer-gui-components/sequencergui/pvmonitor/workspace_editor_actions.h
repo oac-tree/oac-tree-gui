@@ -34,6 +34,8 @@ class ActionMenu;
 namespace sequencergui
 {
 
+class WorkspaceEditorActionHandler;
+
 /**
  * @brief The WorkspaceEditorActions class holds collection of Qt actions to construct variables in
  * the workspace.
@@ -59,6 +61,11 @@ public:
   ~WorkspaceEditorActions() override;
 
   QList<QAction*> GetActions(const std::vector<ActionKey> &action_keys) const;
+
+  /**
+   * @brief Setup cut/copy/paste actions in given menu.
+   */
+  void SetupMenu(QMenu& menu, WorkspaceEditorActionHandler* handler);
 
 signals:
   void AddVariableRequest(const QString& name);

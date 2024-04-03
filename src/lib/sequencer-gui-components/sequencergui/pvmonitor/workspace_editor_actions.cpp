@@ -19,6 +19,8 @@
 
 #include "workspace_editor_actions.h"
 
+#include "workspace_editor_action_handler.h"
+
 #include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
@@ -46,6 +48,18 @@ WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
 QList<QAction *> WorkspaceEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
+}
+
+void WorkspaceEditorActions::SetupMenu(QMenu &menu, WorkspaceEditorActionHandler *handler)
+{
+  menu.addAction(m_cut_action);
+  menu.addAction(m_copy_action);
+  menu.addAction(m_paste_action);
+  menu.addSeparator();
+
+  m_cut_action->setEnabled(handler->CanCut());
+  m_copy_action->setEnabled(handler->CanCopy());
+  m_paste_action->setEnabled(handler->CanPaste());
 }
 
 WorkspaceEditorActions::~WorkspaceEditorActions() = default;

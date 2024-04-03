@@ -85,7 +85,7 @@ private:
   ProcedureItem* m_procedure{nullptr};
 
   WorkspaceEditorActions* m_editor_actions{nullptr};
-  std::unique_ptr<WorkspaceEditorActionHandler> m_action_handler;
+  WorkspaceEditorActionHandler* m_action_handler{nullptr};
   AttributeEditorActions* m_attribute_actions{nullptr};
 
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};

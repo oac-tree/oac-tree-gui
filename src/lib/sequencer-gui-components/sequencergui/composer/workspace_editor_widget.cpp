@@ -59,8 +59,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<WorkspaceEditorViewModel>(m_tree_view))
     , m_editor_actions(new WorkspaceEditorActions(this))
-    , m_action_handler(
-          std::make_unique<WorkspaceEditorActionHandler>(CreateWorkspaceEditorContext()))
+    , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
     , m_attribute_actions(new AttributeEditorActions(
           {[this]() { return m_component_provider->GetSelectedItem(); }}, this))
 {
@@ -161,9 +160,11 @@ void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
   // populate attribute menu
   m_attribute_actions->SetupMenu(menu, item);
 
-  menu.addSeparator();
+  // populate cut/copy/paste menu
+  m_editor_actions->SetupMenu(menu, m_action_handler);
 
   // populate tree menu
+  menu.addSeparator();
   auto collapse_menu = menu.addMenu("Tree settings");
   sup::gui::SetupCollapseExpandMenu(point, *collapse_menu, *m_tree_view);
   menu.exec(m_tree_view->mapToGlobal(point));
@@ -185,18 +186,18 @@ void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
 void WorkspaceEditorWidget::SetupConnections()
 {
   // propagate variable related requests from WorkspaceEditorActions to WorkspaceEditorActionHandler
-  connect(m_editor_actions, &WorkspaceEditorActions::AddVariableRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::AddVariableRequest, m_action_handler,
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
-  connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler,
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
-  connect(m_editor_actions, &WorkspaceEditorActions::CutRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::CutRequest, m_action_handler,
           &WorkspaceEditorActionHandler::Cut);
-  connect(m_editor_actions, &WorkspaceEditorActions::CopyRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::CopyRequest, m_action_handler,
           &WorkspaceEditorActionHandler::Copy);
-  connect(m_editor_actions, &WorkspaceEditorActions::PasteRequest, m_action_handler.get(),
+  connect(m_editor_actions, &WorkspaceEditorActions::PasteRequest, m_action_handler,
           &WorkspaceEditorActionHandler::Paste);
 
-  connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler.get(),
+  connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler,
           &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
 
   // make inserted item selected, and tree branch expanded
@@ -210,7 +211,7 @@ void WorkspaceEditorWidget::SetupConnections()
       m_tree_view->setExpanded(index_of_inserted.front(), true);
     }
   };
-  connect(m_action_handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest, this,
+  connect(m_action_handler, &WorkspaceEditorActionHandler::SelectItemRequest, this,
           on_select_variable_request);
 }
 
