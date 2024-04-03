@@ -73,7 +73,13 @@ void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
 {
   if (auto selected = GetSelectedVariable(); selected)
   {
+    auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected);
     GetModel()->RemoveItem(selected);
+    if (next_to_select)
+    {
+      // suggest to select something else instead of just deleted variable
+      emit SelectItemRequest(next_to_select);
+    }
   }
 }
 
@@ -118,10 +124,19 @@ void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
 
 bool WorkspaceEditorActionHandler::CanCut() const
 {
-  return false;
+  return GetSelectedVariable() != nullptr;
 }
 
-void WorkspaceEditorActionHandler::Cut() {}
+void WorkspaceEditorActionHandler::Cut()
+{
+  if (!CanCut())
+  {
+    return;
+  }
+
+  Copy();
+  OnRemoveVariableRequest();
+}
 
 bool WorkspaceEditorActionHandler::CanCopy() const
 {

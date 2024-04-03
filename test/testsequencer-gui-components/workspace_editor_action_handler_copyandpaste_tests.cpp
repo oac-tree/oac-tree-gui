@@ -182,3 +182,55 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   // validating request to select just inserted item
   EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
 }
+
+//! Testing Paste for the following scenario: two variables in a model, the first one is selected,
+//! pasting new variable right after it.
+TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
+{
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+
+  LocalVariableItem item_to_paste;
+  item_to_paste.SetDisplayName("abc");
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+
+  // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
+  auto handler = CreateActionHandler(var0, mime_data.get());
+  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  EXPECT_TRUE(handler->CanPaste());
+  handler->Paste();
+
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
+
+  auto inserted_variable0 = m_model.GetWorkspaceItem()->GetVariables().at(1);
+  ASSERT_NE(inserted_variable0, nullptr);
+  EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
+
+  // validating request to select just inserted item
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+}
+
+//! Cut selected variable.
+
+TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
+{
+  auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+  auto var1 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+
+  // creating action handler mimicking `var0` instruction selected
+  auto handler = CreateActionHandler(var0, nullptr);
+  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  EXPECT_TRUE(handler->CanCut());
+  handler->Cut();
+
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+
+  // checking the request to select remaining item
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);
+}
