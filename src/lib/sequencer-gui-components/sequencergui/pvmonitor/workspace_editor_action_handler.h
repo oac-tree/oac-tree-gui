@@ -88,7 +88,7 @@ signals:
 private:
   mvvm::SessionModelInterface* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;
-  VariableItem* GetSelectedVariable();
+  VariableItem* GetSelectedVariable() const;
 
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});

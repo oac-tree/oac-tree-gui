@@ -53,6 +53,9 @@ const QString kCopyProcedureMimeType = "application/coa.sequencer.procedure.copy
 //! Mime type for instruction copy.
 const QString kCopyInstructionMimeType = "application/coa.sequencer.instruction.copy";
 
+//! Mime type for variable copy.
+const QString kCopyVariableMimeType = "application/coa.sequencer.variable.copy";
+
 /**
  * @brief Creates mime data carrying information for instruction move.
  *

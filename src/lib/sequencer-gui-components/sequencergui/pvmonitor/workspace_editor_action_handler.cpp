@@ -25,10 +25,13 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
+
+#include <QMimeData>
 
 namespace sequencergui
 {
@@ -50,11 +53,6 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
   if (!m_context.send_message_callback)
   {
     throw RuntimeException("Absent callback to send messages");
-  }
-
-  if (!m_context.edit_anyvalue_callback)
-  {
-    throw RuntimeException("Absent callback to get AnyValueItem");
   }
 }
 
@@ -134,19 +132,21 @@ bool WorkspaceEditorActionHandler::CanCut() const
   return false;
 }
 
-void WorkspaceEditorActionHandler::Cut()
-{
-
-}
+void WorkspaceEditorActionHandler::Cut() {}
 
 bool WorkspaceEditorActionHandler::CanCopy() const
 {
-  return false;
+  return GetSelectedVariable() != nullptr && m_context.set_mime_data;
 }
 
 void WorkspaceEditorActionHandler::Copy()
 {
+  if (!CanCopy())
+  {
+    return;
+  }
 
+  m_context.set_mime_data(CreateCopyMimeData(*GetSelectedVariable(), kCopyVariableMimeType));
 }
 
 bool WorkspaceEditorActionHandler::CanPaste() const
@@ -154,10 +154,7 @@ bool WorkspaceEditorActionHandler::CanPaste() const
   return false;
 }
 
-void WorkspaceEditorActionHandler::Paste()
-{
-
-}
+void WorkspaceEditorActionHandler::Paste() {}
 
 mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const
 {
@@ -169,7 +166,7 @@ WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
   return m_context.selected_workspace_callback();
 }
 
-VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable()
+VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
 {
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
 }

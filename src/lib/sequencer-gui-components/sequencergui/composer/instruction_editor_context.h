@@ -46,7 +46,6 @@ struct AnyValueDialogResult;
  * It is used by InstructionEditorActionHandler to handle actions related to instruction tree
  * composition.
  */
-
 struct InstructionEditorContext
 {
   //! Callback to get currently selected procedure.
