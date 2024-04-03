@@ -64,20 +64,9 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
     return;
   }
 
-  auto selected_item = GetSelectedVariable();
-
-  try
-  {
-    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
-    auto variable_item = CreateVariableItem(variable_type_name.toStdString());
-    SetupNewVariable(variable_item.get(), GetWorkspaceItem()->GetVariableCount());
-    auto inserted = GetModel()->InsertItem(std::move(variable_item), GetWorkspaceItem(), tagindex);
-    emit SelectItemRequest(inserted);
-  }
-  catch (const std::exception &ex)
-  {
-    SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
-  }
+  auto variable_item = CreateVariableItem(variable_type_name.toStdString());
+  SetupNewVariable(variable_item.get(), GetWorkspaceItem()->GetVariableCount());
+  InsertVariableAfterCurrentSelection(std::move(variable_item));
 }
 
 void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
@@ -151,10 +140,19 @@ void WorkspaceEditorActionHandler::Copy()
 
 bool WorkspaceEditorActionHandler::CanPaste() const
 {
-  return false;
+  auto mime_data = GetMimeData();
+  return mime_data && mime_data->hasFormat(kCopyVariableMimeType);
 }
 
-void WorkspaceEditorActionHandler::Paste() {}
+void WorkspaceEditorActionHandler::Paste()
+{
+  if (!CanPaste())
+  {
+    return;
+  }
+
+  InsertVariableAfterCurrentSelection(CreateSessionItem(GetMimeData(), kCopyVariableMimeType));
+}
 
 mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const
 {
@@ -169,6 +167,28 @@ WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
 VariableItem *WorkspaceEditorActionHandler::GetSelectedVariable() const
 {
   return dynamic_cast<VariableItem *>(m_context.selected_item_callback());
+}
+
+const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const
+{
+  return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
+}
+
+void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
+    std::unique_ptr<mvvm::SessionItem> variable_item)
+{
+  auto selected_item = GetSelectedVariable();
+
+  try
+  {
+    auto tagindex = selected_item ? selected_item->GetTagIndex().Next() : mvvm::TagIndex::Append();
+    auto inserted = GetModel()->InsertItem(std::move(variable_item), GetWorkspaceItem(), tagindex);
+    emit SelectItemRequest(inserted);
+  }
+  catch (const std::exception &ex)
+  {
+    SendMessage("Can't add new workspace variable", "Exception was caught", ex.what());
+  }
 }
 
 void WorkspaceEditorActionHandler::SendMessage(const std::string &text,

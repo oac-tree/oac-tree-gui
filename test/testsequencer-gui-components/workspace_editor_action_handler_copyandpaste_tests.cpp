@@ -17,6 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
+#include "sequencergui/model/standard_instruction_items.h"
 #include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
@@ -120,4 +121,64 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CopyOperation)
   // As a result of copy QMimeData object was created
   ASSERT_NE(m_copy_result.get(), nullptr);
   EXPECT_TRUE(m_copy_result->hasFormat(kCopyVariableMimeType));
+}
+
+//! Testing CanPaste.
+TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
+{
+  {  // nothing is selected, no mime data
+    auto handler = CreateActionHandler(nullptr, nullptr);
+    EXPECT_FALSE(handler->CanPaste());
+  }
+
+  {  // nothing is selected, wrong mime data
+    const QMimeData mime_data;
+    auto handler = CreateActionHandler(nullptr, &mime_data);
+    EXPECT_FALSE(handler->CanPaste());
+  }
+
+  {  // nothing is selected, correct mime data
+    const LocalVariableItem item_to_paste;
+    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+    auto handler = CreateActionHandler(nullptr, mime_data.get());
+
+    EXPECT_TRUE(handler->CanPaste());
+  }
+
+  {  // selected item in the container, correct mime data
+    const LocalVariableItem item_to_paste;
+    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+
+    auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
+    auto handler = CreateActionHandler(var0, mime_data.get());
+    EXPECT_TRUE(handler->CanPaste());
+  }
+}
+
+//! Testing Paste operation for the following scenario: empty model, nothing is selected, pasted
+//! item should just appear as a first item.
+TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContainer)
+{
+  // creating mime data representing clipboard content
+  LocalVariableItem item_to_paste;
+  item_to_paste.SetDisplayName("abc");
+  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+
+  // nothing is selected, copied item in a buffer
+  auto handler = CreateActionHandler(nullptr, mime_data.get());
+
+  QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
+
+  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+
+  EXPECT_TRUE(handler->CanPaste());
+  handler->Paste();
+  ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
+
+  auto inserted_variable0 = m_model.GetWorkspaceItem()->GetVariables().at(0);
+  ASSERT_NE(inserted_variable0, nullptr);
+  EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
+
+  // validating request to select just inserted item
+  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
 }

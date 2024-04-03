@@ -31,6 +31,7 @@
 #include <mvvm/test/mock_callback_listener.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/sequencer/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_dialog.h>
@@ -148,11 +149,9 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   ASSERT_NE(inserted_variable1, nullptr);
   EXPECT_EQ(inserted_variable1->GetName(), std::string("var1"));
 
-  // expecting warning below
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
-
   // attempty to add unknown variable type
-  handler->OnAddVariableRequest("non-existing-type");
+  EXPECT_THROW(handler->OnAddVariableRequest("non-existing-type"),
+               sup::sequencer::InvalidOperationException);
 }
 
 //! Inserting variable between two existing variables.

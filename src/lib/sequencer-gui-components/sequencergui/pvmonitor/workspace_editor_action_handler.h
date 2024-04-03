@@ -90,6 +90,13 @@ private:
   WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable() const;
 
+  const QMimeData* GetMimeData() const;
+
+  /**
+   * @brief Inserts variable after currently selected item.
+   */
+  void InsertVariableAfterCurrentSelection(std::unique_ptr<mvvm::SessionItem> variable_item);
+
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});
 
