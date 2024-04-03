@@ -73,7 +73,7 @@ void MonitorWidget::SetupConnections()
           &WorkspaceEditorActionHandler::OnAddVariableRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_workspace_editor_action_handler,
-          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
+          &WorkspaceEditorActionHandler::OnEditAnyValueRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest,
           m_workspace_editor_action_handler,

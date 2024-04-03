@@ -250,7 +250,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
 
   // removing variabl
-  handler->OnEditAnyvalueRequest();
+  handler->OnEditAnyValueRequest();
 }
 
 //! Full scenario: editing AnyValueItem on board of LocalVariableItem.
@@ -278,7 +278,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  handler->OnEditAnyvalueRequest();
+  handler->OnEditAnyValueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -311,7 +311,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  handler->OnEditAnyvalueRequest();
+  handler->OnEditAnyValueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);
@@ -343,7 +343,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  handler->OnEditAnyvalueRequest();
+  handler->OnEditAnyValueRequest();
 
   // checking that previous AnyValueItem has been removed
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
@@ -375,7 +375,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  handler->OnEditAnyvalueRequest();
+  handler->OnEditAnyValueRequest();
 
   // checking that previous item remained the same
   EXPECT_EQ(var0->GetAnyValueItem(), initial_anyvalue_item);
@@ -405,7 +405,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
   // editing request
-  handler->OnEditAnyvalueRequest();
+  handler->OnEditAnyValueRequest();
 
   // checking that variable got new AnyValueItem
   EXPECT_EQ(var0->GetAnyValueItem(), editing_result_ptr);

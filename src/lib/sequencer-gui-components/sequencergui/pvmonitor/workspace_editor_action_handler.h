@@ -50,7 +50,7 @@ public:
 
   void OnRemoveVariableRequest();
 
-  void OnEditAnyvalueRequest();
+  void OnEditAnyValueRequest();
 
   /**
    * @brief Checks if cut operation is possible.

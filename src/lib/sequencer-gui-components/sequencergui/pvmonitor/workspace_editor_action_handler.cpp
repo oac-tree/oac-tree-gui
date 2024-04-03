@@ -83,7 +83,7 @@ void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
   }
 }
 
-void WorkspaceEditorActionHandler::OnEditAnyvalueRequest()
+void WorkspaceEditorActionHandler::OnEditAnyValueRequest()
 {
   auto selected_item = m_context.selected_item_callback();
   if (!selected_item)

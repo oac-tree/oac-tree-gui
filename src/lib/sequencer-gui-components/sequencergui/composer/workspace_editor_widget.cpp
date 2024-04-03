@@ -222,7 +222,7 @@ void WorkspaceEditorWidget::SetupConnections()
           &WorkspaceEditorActionHandler::Paste);
 
   connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, m_action_handler,
-          &WorkspaceEditorActionHandler::OnEditAnyvalueRequest);
+          &WorkspaceEditorActionHandler::OnEditAnyValueRequest);
 
   // make inserted item selected, and tree branch expanded
   auto on_select_variable_request = [this](auto item)
