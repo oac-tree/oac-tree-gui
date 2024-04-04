@@ -55,19 +55,21 @@ AttributeEditorActions::AttributeEditorActions(AttributeEditorContext context, Q
   m_modify_attribute_action->setIcon(sup::gui::utils::GetIcon("page-previous-outline.svg"));
   m_modify_attribute_action->setMenu(m_modify_attribute_menu.get());
   m_modify_attribute_action->setToolTip("Modifies currently selected attribute");
+  m_action_map.Add(ActionKey::kModifyAttribute, m_modify_attribute_action);
 
   m_edit_anyvalue_action->setText("Edit AnyValue");
   m_edit_anyvalue_action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
   m_edit_anyvalue_action->setToolTip(kEditAnyValueToolTip);
   connect(m_edit_anyvalue_action, &QAction::triggered, this,
           &AttributeEditorActions::EditAnyvalueRequest);
+  m_action_map.Add(ActionKey::kEditAnyValue, m_edit_anyvalue_action);
 }
 
 AttributeEditorActions::~AttributeEditorActions() = default;
 
-QList<QAction *> AttributeEditorActions::GetToolBarActions() const
+QList<QAction *> AttributeEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
 {
-  return QList<QAction *>({m_modify_attribute_action, m_edit_anyvalue_action});
+  return m_action_map.GetActions(action_keys);
 }
 
 void AttributeEditorActions::SetupMenu(QMenu &menu, sup::gui::AnyValueItem *attribute_item)

@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
 #include <sequencergui/composer/attribute_editor_context.h>
+#include <sequencergui/components/action_map.h>
 
 #include <QObject>
 #include <memory>
@@ -50,13 +51,23 @@ class AttributeEditorActions : public QObject
   Q_OBJECT
 
 public:
+  /**
+   * @brief The ActionKey enum defines keys for all available actions.
+   */
+  enum class ActionKey
+  {
+    kModifyAttribute,
+    kEditAnyValue,
+    kTotalCount
+  };
+
   explicit AttributeEditorActions(AttributeEditorContext context, QObject* parent = nullptr);
   ~AttributeEditorActions() override;
 
   /**
-   * @brief Returns list of actions intended for a toolbar.
+   * @brief Returns list of actions according to provided flags.
    */
-  QList<QAction*> GetToolBarActions() const;
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
 
   /**
    * @brief Setup menu with actions available for given attribute.
@@ -106,6 +117,8 @@ private:
   QAction* m_edit_anyvalue_action{nullptr};
 
   AttributeEditorContext m_editor_context;
+
+  ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

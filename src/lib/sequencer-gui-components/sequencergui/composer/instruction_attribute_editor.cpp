@@ -55,7 +55,11 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
 {
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
-  m_tool_bar->addActions(m_attribute_actions->GetToolBarActions());
+
+  auto attribute_toolbar_actions =
+      m_attribute_actions->GetActions({AttributeEditorActions::ActionKey::kModifyAttribute,
+                                       AttributeEditorActions::ActionKey::kEditAnyValue});
+  m_tool_bar->addActions(attribute_toolbar_actions);
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);

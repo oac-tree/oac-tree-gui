@@ -82,9 +82,13 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
           &WorkspaceEditorWidget::OnTreeContextMenuRequest);
 
   SetupConnections();
-  using ActionKey = WorkspaceEditorActions::ActionKey;
-  addActions(m_editor_actions->GetActions({ActionKey::kAdd, ActionKey::kRemove})
-             + m_attribute_actions->GetToolBarActions());
+
+  auto editor_toolbar_actions = m_editor_actions->GetActions(
+      {WorkspaceEditorActions::ActionKey::kAdd, WorkspaceEditorActions::ActionKey::kRemove});
+  auto attribute_toolbar_actions =
+      m_attribute_actions->GetActions({AttributeEditorActions::ActionKey::kModifyAttribute,
+                                       AttributeEditorActions::ActionKey::kEditAnyValue});
+  addActions(editor_toolbar_actions + attribute_toolbar_actions);
 
   ReadSettings();
 
