@@ -24,6 +24,11 @@
 
 #include <QObject>
 
+namespace sup::gui
+{
+class AnyValueItem;
+}  // namespace sup::gui
+
 namespace sequencergui
 {
 
@@ -39,12 +44,59 @@ class AttributeEditorActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit AttributeEditorActionHandler(AttributeEditorContext context,
-                                        QObject* parent = nullptr);
+  explicit AttributeEditorActionHandler(AttributeEditorContext context, QObject* parent = nullptr);
   ~AttributeEditorActionHandler() override;
 
+  /**
+   * @brief Checks if one can manipulate enable/disable flag for the currently selected attribute.
+   */
+  bool CanToggleEnabledFlag() const;
 
+  /**
+   * @brief Toggle currently selected attribute between enabled/disabled.
+   */
+  void OnToggleEnabledFlag();
 
+  /**
+   * @brief Checks if the currently selected attribute can be set to its default type.
+   *
+   * The default attribute type is what the Sequencer attribute system reports (string, integer,
+   * float, etc). The alternative is the so-called placeholder string-like $par attribute which is
+   * used in certain Include instruction scenario.
+   */
+  bool CanSetDefaultType() const;
+
+  /**
+   * @brief Resets attribute to its default type.
+   * @see AttributeEditorActionHandler::CanSetDefaultType.
+   */
+  void OnSetAsDefaultType();
+
+  /**
+   * @brief Checks if currently selected attribute can be switched to placeholder type.
+   * @see AttributeEditorActionHandler::CanSetDefaultType.
+   */
+  bool CanSetPlaceholderType() const;
+
+  /**
+   * @brief Resets attribute to placeholder type.
+   * @see AttributeEditorActionHandler::CanSetDefaultType.
+   */
+  void OnSetPlaceholderType();
+
+  /**
+   * @brief Checks if it is possible to call external AnyValueEditor for the currently selected
+   * attribute.
+   *
+   * We do not implement OnEditAnyValue since it is handled separately by
+   * InstructionEditorActionHandler and WorkspaceEditorActionHandler.
+   */
+  bool CanEditAnyValue() const;
+
+private:
+  sup::gui::AnyValueItem *GetSelectedAttributeItem() const;
+
+  AttributeEditorContext m_context;
 };
 
 }  // namespace sequencergui

@@ -19,15 +19,70 @@
 
 #include "attribute_editor_action_handler.h"
 
+#include <sup/gui/model/anyvalue_item.h>
+
+/**
+ * @brief Returns currently selected attribute item.
+ */
 namespace sequencergui
 {
 
-AttributeEditorActionHandler::AttributeEditorActionHandler(
-    AttributeEditorContext context, QObject *parent)
-    : QObject(parent)
+AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContext context,
+                                                           QObject *parent)
+    : QObject(parent), m_context(std::move(context))
 {
 }
 
 AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
+
+bool AttributeEditorActionHandler::CanToggleEnabledFlag() const
+{
+  return false;
+}
+
+void AttributeEditorActionHandler::OnToggleEnabledFlag()
+{
+  if (!CanToggleEnabledFlag())
+  {
+    return;
+  }
+}
+
+bool AttributeEditorActionHandler::CanSetDefaultType() const
+{
+  return false;
+}
+
+void AttributeEditorActionHandler::OnSetAsDefaultType()
+{
+  if (!CanSetDefaultType())
+  {
+    return;
+  }
+}
+
+bool AttributeEditorActionHandler::CanSetPlaceholderType() const
+{
+  return false;
+}
+
+void AttributeEditorActionHandler::OnSetPlaceholderType()
+{
+  if (!CanSetPlaceholderType())
+  {
+    return;
+  }
+}
+
+bool AttributeEditorActionHandler::CanEditAnyValue() const
+{
+  return false;
+}
+
+sup::gui::AnyValueItem *AttributeEditorActionHandler::GetSelectedAttributeItem() const
+{
+  return m_context.selected_item_callback ? dynamic_cast<sup::gui::AnyValueItem *>(m_context.selected_item_callback())
+                   : nullptr;
+}
 
 }  // namespace sequencergui
