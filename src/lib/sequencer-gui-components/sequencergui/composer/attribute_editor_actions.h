@@ -20,8 +20,8 @@
 #ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
-#include <sequencergui/composer/attribute_editor_context.h>
 #include <sequencergui/components/action_map.h>
+#include <sequencergui/composer/attribute_editor_context.h>
 
 #include <QObject>
 #include <memory>
@@ -37,6 +37,8 @@ class ActionMenu;
 
 namespace sequencergui
 {
+
+class AttributeEditorActionHandler;
 
 /**
  * @brief The AttributeEditorActions class represents various actions that can be performed with
@@ -61,7 +63,8 @@ public:
     kTotalCount
   };
 
-  explicit AttributeEditorActions(AttributeEditorContext context, QObject* parent = nullptr);
+  explicit AttributeEditorActions(const AttributeEditorActionHandler* handler,
+                                  AttributeEditorContext context, QObject* parent = nullptr);
   ~AttributeEditorActions() override;
 
   /**
@@ -106,6 +109,8 @@ private:
   QAction* AddEditAnyValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
 
   sup::gui::AnyValueItem* GetSelectedAnyValueItem();
+
+  const AttributeEditorActionHandler* m_handler{nullptr};
 
   //!< the menu attached to action, generated on the fly
   std::unique_ptr<QMenu> m_modify_attribute_menu;

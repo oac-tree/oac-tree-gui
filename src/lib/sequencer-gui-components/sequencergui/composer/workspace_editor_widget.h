@@ -45,7 +45,9 @@ class VariableItem;
 class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorActions;
+class AttributeEditorContext;
 class AttributeEditorActions;
+class AttributeEditorActionHandler;
 
 /**
  * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
@@ -81,14 +83,17 @@ private:
 
   void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
+  AttributeEditorContext CreateAttributeEditorContext();
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureItem* m_procedure{nullptr};
 
-  WorkspaceEditorActions* m_editor_actions{nullptr};
   WorkspaceEditorActionHandler* m_action_handler{nullptr};
+  WorkspaceEditorActions* m_editor_actions{nullptr};
+
+  AttributeEditorActionHandler* m_attribute_action_handler{nullptr};
   AttributeEditorActions* m_attribute_actions{nullptr};
 
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};

@@ -40,8 +40,10 @@ const QString kEditAnyValueToolTip =
 namespace sequencergui
 {
 
-AttributeEditorActions::AttributeEditorActions(AttributeEditorContext context, QObject *parent)
+AttributeEditorActions::AttributeEditorActions(const AttributeEditorActionHandler *handler,
+                                               AttributeEditorContext context, QObject *parent)
     : QObject(parent)
+    , m_handler(handler)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new sup::gui::ActionMenu(this))
     , m_edit_anyvalue_action(new QAction(this))

@@ -19,6 +19,7 @@
 
 #include "workspace_editor_widget.h"
 
+#include "attribute_editor_action_handler.h"
 #include "attribute_editor_actions.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
@@ -62,10 +63,12 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<WorkspaceEditorViewModel>(m_tree_view))
-    , m_editor_actions(new WorkspaceEditorActions(this))
     , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
-    , m_attribute_actions(new AttributeEditorActions(
-          {[this]() { return m_component_provider->GetSelectedItem(); }}, this))
+      , m_editor_actions(new WorkspaceEditorActions(this))
+    , m_attribute_action_handler(
+          new AttributeEditorActionHandler(CreateAttributeEditorContext(), this))
+    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler,
+                                                     CreateAttributeEditorContext(), this))
 {
   setWindowTitle("Workspace");
 
@@ -264,6 +267,11 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
   { return QGuiApplication::clipboard()->setMimeData(data.release()); };
 
   return result;
+}
+
+AttributeEditorContext WorkspaceEditorWidget::CreateAttributeEditorContext()
+{
+  return {[this]() { return m_component_provider->GetSelectedItem(); }};
 }
 
 }  // namespace sequencergui

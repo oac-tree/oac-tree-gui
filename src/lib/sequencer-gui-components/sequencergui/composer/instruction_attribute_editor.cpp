@@ -19,6 +19,7 @@
 
 #include "instruction_attribute_editor.h"
 
+#include "attribute_editor_action_handler.h"
 #include "attribute_editor_actions.h"
 #include "attribute_editor_context.h"
 
@@ -51,7 +52,9 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
-    , m_attribute_actions(new AttributeEditorActions(CreateActionContext(), this))
+    , m_attribute_action_handler(new AttributeEditorActionHandler(CreateActionContext(), this))
+    , m_attribute_actions(
+          new AttributeEditorActions(m_attribute_action_handler, CreateActionContext(), this))
 {
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());

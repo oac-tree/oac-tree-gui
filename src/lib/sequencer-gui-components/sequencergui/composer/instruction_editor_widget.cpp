@@ -77,7 +77,7 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
     , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
-      , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
+    , m_action_handler(new InstructionEditorActionHandler(CreateInstructionEditorContext(), this))
     , m_editor_actions(new InstructionEditorActions(m_action_handler, this))
     , m_tree_view_style(new CustomTreeViewStyle(style()))
 {
