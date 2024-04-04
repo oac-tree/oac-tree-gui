@@ -36,8 +36,8 @@ namespace sequencergui
  * @brief The AttributeEditorActionHandler class implements the logic to handle actions related to
  * instruction/variable attribute editing.
  *
- * The handler uses a callback to deduce which attribute is currently selected. Attribute actions
- * are defined on the board of AttributeEditorActions.
+ * Actions itself are defined on the board of AttributeEditorActions. The handler uses a callback to
+ * deduce which attribute is currently selected.
  */
 class AttributeEditorActionHandler : public QObject
 {
@@ -94,7 +94,15 @@ public:
   bool CanEditAnyValue() const;
 
 private:
-  sup::gui::AnyValueItem *GetSelectedAttributeItem() const;
+  /**
+   * @brief Returns currently seleced attribute item.
+   */
+  sup::gui::AnyValueItem* GetSelectedAttributeItem() const;
+
+  /**
+   * @brief Checks if the currently selected attribute represents a full-fledged AnyValue.
+   */
+  bool IsAnyValue() const;
 
   AttributeEditorContext m_context;
 };

@@ -19,11 +19,10 @@
 
 #include "attribute_editor_action_handler.h"
 
+#include <sequencergui/model/item_constants.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-/**
- * @brief Returns currently selected attribute item.
- */
 namespace sequencergui
 {
 
@@ -37,7 +36,7 @@ AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
 
 bool AttributeEditorActionHandler::CanToggleEnabledFlag() const
 {
-  return false;
+  return GetSelectedAttributeItem() != nullptr;
 }
 
 void AttributeEditorActionHandler::OnToggleEnabledFlag()
@@ -50,7 +49,7 @@ void AttributeEditorActionHandler::OnToggleEnabledFlag()
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const
 {
-  return false;
+  return GetSelectedAttributeItem() != nullptr && !IsAnyValue();
 }
 
 void AttributeEditorActionHandler::OnSetAsDefaultType()
@@ -63,7 +62,7 @@ void AttributeEditorActionHandler::OnSetAsDefaultType()
 
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
 {
-  return false;
+  return GetSelectedAttributeItem() != nullptr && !IsAnyValue();
 }
 
 void AttributeEditorActionHandler::OnSetPlaceholderType()
@@ -76,13 +75,20 @@ void AttributeEditorActionHandler::OnSetPlaceholderType()
 
 bool AttributeEditorActionHandler::CanEditAnyValue() const
 {
-  return false;
+  return IsAnyValue();
 }
 
 sup::gui::AnyValueItem *AttributeEditorActionHandler::GetSelectedAttributeItem() const
 {
-  return m_context.selected_item_callback ? dynamic_cast<sup::gui::AnyValueItem *>(m_context.selected_item_callback())
-                   : nullptr;
+  return m_context.selected_item_callback
+             ? dynamic_cast<sup::gui::AnyValueItem *>(m_context.selected_item_callback())
+             : nullptr;
+}
+
+bool AttributeEditorActionHandler::IsAnyValue() const
+{
+  return GetSelectedAttributeItem()
+         && GetSelectedAttributeItem()->GetTagIndex().tag == itemconstants::kAnyValueTag;
 }
 
 }  // namespace sequencergui

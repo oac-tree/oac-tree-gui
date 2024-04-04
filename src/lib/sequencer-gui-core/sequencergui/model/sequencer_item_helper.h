@@ -23,8 +23,6 @@
 //! @file
 //! Various auxiliary functions for sequencer items.
 
-#include <memory>
-
 namespace mvvm
 {
 class SessionItem;
