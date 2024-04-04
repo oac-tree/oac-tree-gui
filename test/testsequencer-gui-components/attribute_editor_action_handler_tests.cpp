@@ -19,9 +19,11 @@
 
 #include "sequencergui/composer/attribute_editor_action_handler.h"
 
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -113,3 +115,40 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
   // it is possible to call external editor
   EXPECT_TRUE(handler->CanEditAnyValue());
 }
+
+//! Name attribute is selected, enabling/disabling attribute.
+
+TEST_F(AttributeEditorActionHandlerTest, ToggleEnabledFlag)
+{
+  WaitItem item;
+  auto name_attribute = dynamic_cast<sup::gui::AnyValueItem*>(GetNameItem(item));
+
+  // no items are selected in the property editor
+  auto handler = CreateActionHandler(name_attribute);
+
+  EXPECT_TRUE(GetAttributePresentFlag(*name_attribute));
+
+  handler->OnToggleEnabledFlag();
+  EXPECT_FALSE(GetAttributePresentFlag(*name_attribute));
+}
+
+//! Scalar attribute is selected, turning it into placeholder.
+
+TEST_F(AttributeEditorActionHandlerTest, OnSetPlaceholderTypeAndBack)
+{
+  sup::gui::AnyValueScalarItem item;
+  item.SetAnyTypeName(sup::dto::kInt8TypeName);
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+  EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+
+  // no items are selected in the property editor
+  auto handler = CreateActionHandler(&item);
+
+  handler->OnSetPlaceholderType();
+  EXPECT_EQ(item.Data<std::string>(), itemconstants::kDefaultPlaceholderAttributeValue);
+
+  handler->OnSetAsDefaultType();
+  EXPECT_EQ(item.Data<mvvm::int8>(), 0);
+
+}
+

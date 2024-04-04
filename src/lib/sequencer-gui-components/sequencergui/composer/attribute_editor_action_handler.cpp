@@ -45,6 +45,9 @@ void AttributeEditorActionHandler::OnToggleEnabledFlag()
   {
     return;
   }
+
+  auto attribute_item = GetSelectedAttributeItem();
+  SetAttributePresentFlag(!GetAttributePresentFlag(*attribute_item), *attribute_item);
 }
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const
@@ -58,6 +61,7 @@ void AttributeEditorActionHandler::OnSetAsDefaultType()
   {
     return;
   }
+  SetAttributeFromTypeName(*GetSelectedAttributeItem());
 }
 
 bool AttributeEditorActionHandler::CanSetPlaceholderType() const
@@ -71,6 +75,9 @@ void AttributeEditorActionHandler::OnSetPlaceholderType()
   {
     return;
   }
+
+  SetAttributeAsString(itemconstants::kDefaultPlaceholderAttributeValue,
+                       *GetSelectedAttributeItem());
 }
 
 bool AttributeEditorActionHandler::CanEditAnyValue() const

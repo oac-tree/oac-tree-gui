@@ -40,6 +40,8 @@ const std::string kBreakpoint = "breakpoint";
 
 const std::string kAnyValueDefaultDisplayName = "value";
 
+const std::string kDefaultPlaceholderAttributeValue = "$par";
+
 }  // namespace sequencergui::itemconstants
 
 #endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H_
