@@ -40,7 +40,7 @@ namespace sequencergui
 {
 
 class AttributeEditorActions;
-class InstructionAttributeEditorContext;
+class AttributeEditorContext;
 
 /**
  * @brief The InstructionAttributeEditor provides a toolbar and two-column tree for editing
@@ -73,7 +73,7 @@ private:
   /**
    * @brief Returns context necessary to setup context menu and toolbar actions.
    */
-  InstructionAttributeEditorContext CreateActionContext();
+  AttributeEditorContext CreateActionContext();
 
   QToolBar* m_tool_bar{nullptr};
   QTreeView* m_tree_view{nullptr};

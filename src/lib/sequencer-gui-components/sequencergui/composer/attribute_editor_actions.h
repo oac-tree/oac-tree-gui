@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
-#include <sequencergui/composer/instruction_attribute_editor_context.h>
+#include <sequencergui/composer/attribute_editor_context.h>
 
 #include <QObject>
 #include <memory>
@@ -32,7 +32,7 @@ namespace sup::gui
 {
 class AnyValueItem;
 class ActionMenu;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -50,8 +50,7 @@ class AttributeEditorActions : public QObject
   Q_OBJECT
 
 public:
-  explicit AttributeEditorActions(InstructionAttributeEditorContext context,
-                                  QObject* parent = nullptr);
+  explicit AttributeEditorActions(AttributeEditorContext context, QObject* parent = nullptr);
   ~AttributeEditorActions() override;
 
   /**
@@ -106,7 +105,7 @@ private:
   //!< a tool button to summon AnyValue editor
   QAction* m_edit_anyvalue_action{nullptr};
 
-  InstructionAttributeEditorContext m_editor_context;
+  AttributeEditorContext m_editor_context;
 };
 
 }  // namespace sequencergui

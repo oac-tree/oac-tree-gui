@@ -19,7 +19,7 @@
 
 #include "attribute_editor_actions.h"
 
-#include "instruction_attribute_editor_context.h"
+#include "attribute_editor_context.h"
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
@@ -40,8 +40,7 @@ const QString kEditAnyValueToolTip =
 namespace sequencergui
 {
 
-AttributeEditorActions::AttributeEditorActions(InstructionAttributeEditorContext context,
-                                               QObject *parent)
+AttributeEditorActions::AttributeEditorActions(AttributeEditorContext context, QObject *parent)
     : QObject(parent)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new sup::gui::ActionMenu(this))

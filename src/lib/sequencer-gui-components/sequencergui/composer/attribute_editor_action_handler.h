@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTION_HANDLER_H_
 
-#include <sequencergui/composer/instruction_attribute_editor_context.h>
+#include <sequencergui/composer/attribute_editor_context.h>
 
 #include <QObject>
 
@@ -39,9 +39,12 @@ class AttributeEditorActionHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit AttributeEditorActionHandler(InstructionAttributeEditorContext context,
+  explicit AttributeEditorActionHandler(AttributeEditorContext context,
                                         QObject* parent = nullptr);
   ~AttributeEditorActionHandler() override;
+
+
+
 };
 
 }  // namespace sequencergui

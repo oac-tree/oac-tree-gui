@@ -23,7 +23,7 @@ namespace sequencergui
 {
 
 AttributeEditorActionHandler::AttributeEditorActionHandler(
-    InstructionAttributeEditorContext context, QObject *parent)
+    AttributeEditorContext context, QObject *parent)
     : QObject(parent)
 {
 }

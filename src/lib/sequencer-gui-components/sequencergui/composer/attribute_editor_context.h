@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_CONTEXT_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_CONTEXT_H_
+#ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_CONTEXT_H_
+#define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_CONTEXT_H_
 
 #include <functional>
 
@@ -31,16 +31,16 @@ namespace sequencergui
 {
 
 /**
- * @brief The InstructionAttributeEditorContext is an aggregate with callbacks to query the current
+ * @brief The AttributeEditorContext is an aggregate with callbacks to query the current
  * state of InstructionAttributeEditor.
  *
  * @details It is necessary to setup InstructionAttributeEditorActions.
  */
-struct InstructionAttributeEditorContext
+struct AttributeEditorContext
 {
   std::function<mvvm::SessionItem*()> selected_item_callback;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_ATTRIBUTE_EDITOR_CONTEXT_H_
+#endif  // SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_CONTEXT_H_

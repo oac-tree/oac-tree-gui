@@ -20,7 +20,7 @@
 #include "instruction_attribute_editor.h"
 
 #include "attribute_editor_actions.h"
-#include "instruction_attribute_editor_context.h"
+#include "attribute_editor_context.h"
 
 #include <sequencergui/viewmodel/attribute_editor_viewmodel.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -130,7 +130,7 @@ void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
-InstructionAttributeEditorContext InstructionAttributeEditor::CreateActionContext()
+AttributeEditorContext InstructionAttributeEditor::CreateActionContext()
 {
   auto selected_item_callback = [this]() { return m_component_provider->GetSelectedItem(); };
 
