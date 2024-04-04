@@ -3,6 +3,8 @@
 target_sources(${library_name} PRIVATE
   aggregate_panel.cpp
   aggregate_panel.h
+  attribute_editor_action_handler.cpp
+  attribute_editor_action_handler.h
   attribute_editor_actions.cpp
   attribute_editor_actions.h
   composer_panel.cpp
