@@ -39,6 +39,11 @@ bool AttributeEditorActionHandler::CanToggleExposedFlag() const
   return GetSelectedAttributeItem() != nullptr;
 }
 
+bool AttributeEditorActionHandler::GetExposedFlag() const
+{
+  return GetSelectedAttributeItem() && GetAttributePresentFlag(*GetSelectedAttributeItem());
+}
+
 void AttributeEditorActionHandler::OnToggleExposedFlag()
 {
   if (!CanToggleExposedFlag())

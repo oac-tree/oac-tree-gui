@@ -100,11 +100,9 @@ void AttributeEditorActions::AddToggleExposedFlagAction(QMenu &menu)
       "Attribute with exposed flag set will be propagated to sequencer domain,\n"
       "if flag is unchecked, the sequencer will not see it.");
   result->setCheckable(true);
-
-  // result->setChecked(attribute_item && GetAttributePresentFlag(*attribute_item));
-
   connect(result, &QAction::triggered, m_handler,
           &AttributeEditorActionHandler::OnToggleExposedFlag);
+  result->setChecked(m_handler->GetExposedFlag());
   result->setEnabled(m_handler->CanToggleExposedFlag());
 }
 

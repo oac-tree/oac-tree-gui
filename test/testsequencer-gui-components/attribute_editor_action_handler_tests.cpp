@@ -71,7 +71,7 @@ TEST_F(AttributeEditorActionHandlerTest, NothingIsSelected)
 {
   // no items are selected in the property editor
   auto handler = CreateActionHandler(nullptr);
-  
+
   EXPECT_FALSE(handler->CanToggleExposedFlag());
   EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_FALSE(handler->CanSetPlaceholderType());
@@ -87,7 +87,7 @@ TEST_F(AttributeEditorActionHandlerTest, NameAttributeSelected)
 
   // no items are selected in the property editor
   auto handler = CreateActionHandler(name_attribute);
-  
+
   EXPECT_TRUE(handler->CanToggleExposedFlag());
   EXPECT_TRUE(handler->CanSetDefaultType());
   EXPECT_TRUE(handler->CanSetPlaceholderType());
@@ -105,7 +105,7 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
 
   // no items are selected in the property editor
   auto handler = CreateActionHandler(item.GetAnyValueItem());
-  
+
   EXPECT_TRUE(handler->CanToggleExposedFlag());
 
   // it is not possible to replace types with placeholders
@@ -118,7 +118,7 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
 
 //! Name attribute is selected, enabling/disabling attribute.
 
-TEST_F(AttributeEditorActionHandlerTest, ToggleEnabledFlag)
+TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlag)
 {
   WaitItem item;
   auto name_attribute = dynamic_cast<sup::gui::AnyValueItem*>(GetNameItem(item));
@@ -126,9 +126,11 @@ TEST_F(AttributeEditorActionHandlerTest, ToggleEnabledFlag)
   // no items are selected in the property editor
   auto handler = CreateActionHandler(name_attribute);
 
+  EXPECT_TRUE(handler->GetExposedFlag());
   EXPECT_TRUE(GetAttributePresentFlag(*name_attribute));
-  
+
   handler->OnToggleExposedFlag();
+  EXPECT_FALSE(handler->GetExposedFlag());
   EXPECT_FALSE(GetAttributePresentFlag(*name_attribute));
 }
 
@@ -149,6 +151,4 @@ TEST_F(AttributeEditorActionHandlerTest, OnSetPlaceholderTypeAndBack)
 
   handler->OnSetAsDefaultType();
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
-
 }
-

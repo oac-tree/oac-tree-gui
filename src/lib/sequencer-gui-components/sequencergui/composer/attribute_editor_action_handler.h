@@ -55,6 +55,11 @@ public:
   bool CanToggleExposedFlag() const;
 
   /**
+   * @brief Returns the value of the exposed flags for the currently selected attribute.
+   */
+  bool GetExposedFlag() const;
+
+  /**
    * @brief Toggle currently selected attribute between expose/not expose.
    */
   void OnToggleExposedFlag();
