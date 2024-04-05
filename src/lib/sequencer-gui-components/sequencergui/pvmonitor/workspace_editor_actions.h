@@ -29,6 +29,7 @@ class QMenu;
 namespace sup::gui
 {
 class ActionMenu;
+class ProxyAction;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -82,6 +83,8 @@ private:
   std::unique_ptr<QMenu> m_add_variable_menu;
   sup::gui::ActionMenu* m_add_variable_action{nullptr};
   QAction* m_remove_variable_action{nullptr};
+  //!< toolbar version without enable/disable features
+  sup::gui::ProxyAction* m_remove_variable_toolbar_action{nullptr};
   QAction* m_cut_action{nullptr};
   QAction* m_copy_action{nullptr};
   QAction* m_paste_action{nullptr};

@@ -69,6 +69,11 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
   InsertVariableAfterCurrentSelection(std::move(variable_item));
 }
 
+bool WorkspaceEditorActionHandler::CanRemoveVariable() const
+{
+  return GetSelectedVariable() != nullptr;
+}
+
 void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
 {
   if (auto selected = GetSelectedVariable(); selected)

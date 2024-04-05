@@ -48,8 +48,19 @@ public:
 
   void OnAddVariableRequest(const QString& variable_type_name);
 
+  /**
+   * @brief Checks if variable can be removed.
+   */
+  bool CanRemoveVariable() const;
+
+  /**
+   * @brief Removes currently selected variable.
+   */
   void OnRemoveVariableRequest();
 
+  /**
+   * @brief Calls external AnyValue editor for currently selected attribute, if possible.
+   */
   void OnEditAnyValueRequest();
 
   /**

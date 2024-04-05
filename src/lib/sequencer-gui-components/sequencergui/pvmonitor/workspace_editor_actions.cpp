@@ -23,6 +23,7 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/widgets/action_menu.h>
+#include <sup/gui/widgets/proxy_action.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -38,6 +39,7 @@ WorkspaceEditorActions::WorkspaceEditorActions(QObject *parent)
     , m_add_variable_menu(CreateInsertAfterMenu())
     , m_add_variable_action(new sup::gui::ActionMenu(this))
     , m_remove_variable_action(new QAction(this))
+    , m_remove_variable_toolbar_action(new sup::gui::ProxyAction(this))
     , m_cut_action(new QAction(this))
     , m_copy_action(new QAction(this))
     , m_paste_action(new QAction(this))
@@ -52,10 +54,14 @@ QList<QAction *> WorkspaceEditorActions::GetActions(const std::vector<ActionKey>
 
 void WorkspaceEditorActions::SetupMenu(QMenu &menu, WorkspaceEditorActionHandler *handler)
 {
+  menu.addAction(m_add_variable_action);
+  menu.addAction(m_remove_variable_action);
+  m_remove_variable_action->setEnabled(handler->CanRemoveVariable());
+
+  menu.addSeparator();
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
   menu.addAction(m_paste_action);
-  menu.addSeparator();
 
   m_cut_action->setEnabled(handler->CanCut());
   m_copy_action->setEnabled(handler->CanCopy());
@@ -80,7 +86,11 @@ void WorkspaceEditorActions::SetupActions()
   m_remove_variable_action->setToolTip("Remove currently selected variable");
   connect(m_remove_variable_action, &QAction::triggered, this,
           &WorkspaceEditorActions::RemoveVariableRequest);
-  m_action_map.Add(ActionKey::kRemove, m_remove_variable_action);
+
+  // remove action (own toolbar version to avoid disabled status)
+  m_remove_variable_toolbar_action = new sup::gui::ProxyAction(this);
+  m_remove_variable_toolbar_action->SetAction(m_remove_variable_action);
+  m_action_map.Add(ActionKey::kRemove, m_remove_variable_toolbar_action);
 
   m_cut_action = new QAction(this);
   m_cut_action->setText("Cut");

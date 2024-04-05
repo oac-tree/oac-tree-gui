@@ -164,6 +164,8 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWHenNothingIsSelected)
   // pretending that var0 is selected
   auto handler = CreateActionHandler(nullptr);
 
+  EXPECT_FALSE(handler->CanRemoveVariable());
+
   // expecting no waning callbacks
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
@@ -214,6 +216,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
   EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
 
   // removing variable
+  EXPECT_TRUE(handler->CanRemoveVariable());
   handler->OnRemoveVariableRequest();
 
   EXPECT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 0);
