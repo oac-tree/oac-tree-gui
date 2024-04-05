@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
 #include <sequencergui/components/action_map.h>
-#include <sequencergui/composer/attribute_editor_context.h>
 
 #include <QObject>
 #include <memory>
@@ -31,7 +30,6 @@ class QAction;
 
 namespace sup::gui
 {
-class AnyValueItem;
 class ActionMenu;
 }  // namespace sup::gui
 
@@ -64,7 +62,7 @@ public:
   };
 
   explicit AttributeEditorActions(const AttributeEditorActionHandler* handler,
-                                  AttributeEditorContext context, QObject* parent = nullptr);
+                                  QObject* parent = nullptr);
   ~AttributeEditorActions() override;
 
   /**
@@ -77,7 +75,7 @@ public:
    *
    * The menu can come from outside (context menu), or it can be the menu of our own tool button.
    */
-  void SetupMenu(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+  void SetupMenu(QMenu& menu);
 
 signals:
   void EditAnyvalueRequest();
@@ -91,24 +89,22 @@ private:
   /**
    * @brief Adds action to the menu which will toggle attribute between enabled/disabled.
    */
-  QAction* AddEnableAttributeAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+  void AddEnableAttributeAction(QMenu& menu);
 
   /**
    * @brief Adds action to set attribute default value.
    */
-  static QAction* AddSetDefaultValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+  void AddSetDefaultValueAction(QMenu& menu);
 
   /**
    * @brief Adds action to set attribute placeholder value.
    */
-  static QAction* AddSetPlaceholderValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
+  void AddSetPlaceholderValueAction(QMenu& menu);
 
   /**
    * @brief Adds action to edit AnyValue.
    */
-  QAction* AddEditAnyValueAction(QMenu& menu, sup::gui::AnyValueItem* attribute_item);
-
-  sup::gui::AnyValueItem* GetSelectedAnyValueItem();
+  void AddEditAnyValueAction(QMenu& menu);
 
   const AttributeEditorActionHandler* m_handler{nullptr};
 
@@ -120,8 +116,6 @@ private:
 
   //!< a tool button to summon AnyValue editor
   QAction* m_edit_anyvalue_action{nullptr};
-
-  AttributeEditorContext m_editor_context;
 
   ActionMap<ActionKey> m_action_map;
 };

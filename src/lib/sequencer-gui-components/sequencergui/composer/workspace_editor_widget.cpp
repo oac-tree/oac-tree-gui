@@ -64,11 +64,10 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<WorkspaceEditorViewModel>(m_tree_view))
     , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
-      , m_editor_actions(new WorkspaceEditorActions(this))
+    , m_editor_actions(new WorkspaceEditorActions(this))
     , m_attribute_action_handler(
           new AttributeEditorActionHandler(CreateAttributeEditorContext(), this))
-    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler,
-                                                     CreateAttributeEditorContext(), this))
+    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
 {
   setWindowTitle("Workspace");
 
@@ -182,14 +181,10 @@ void WorkspaceEditorWidget::AdjustTreeAppearance()
 
 void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
 {
-  auto index = m_tree_view->indexAt(point);
-  auto item = dynamic_cast<sup::gui::AnyValueItem *>(
-      m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
-
   QMenu menu;
 
   // populate attribute menu
-  m_attribute_actions->SetupMenu(menu, item);
+  m_attribute_actions->SetupMenu(menu);
 
   // populate cut/copy/paste menu
   m_editor_actions->SetupMenu(menu, m_action_handler);

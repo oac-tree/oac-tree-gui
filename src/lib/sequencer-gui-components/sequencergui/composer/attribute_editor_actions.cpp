@@ -19,7 +19,7 @@
 
 #include "attribute_editor_actions.h"
 
-#include "attribute_editor_context.h"
+#include "attribute_editor_action_handler.h"
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
@@ -41,13 +41,12 @@ namespace sequencergui
 {
 
 AttributeEditorActions::AttributeEditorActions(const AttributeEditorActionHandler *handler,
-                                               AttributeEditorContext context, QObject *parent)
+                                               QObject *parent)
     : QObject(parent)
     , m_handler(handler)
     , m_modify_attribute_menu(std::make_unique<QMenu>())
     , m_modify_attribute_action(new sup::gui::ActionMenu(this))
     , m_edit_anyvalue_action(new QAction(this))
-    , m_editor_context(std::move(context))
 {
   m_modify_attribute_menu->setToolTipsVisible(true);
   connect(m_modify_attribute_menu.get(), &QMenu::aboutToShow, this,
@@ -74,99 +73,67 @@ QList<QAction *> AttributeEditorActions::GetActions(const std::vector<ActionKey>
   return m_action_map.GetActions(action_keys);
 }
 
-void AttributeEditorActions::SetupMenu(QMenu &menu, sup::gui::AnyValueItem *attribute_item)
+void AttributeEditorActions::SetupMenu(QMenu &menu)
 {
-  // We clear menu and modify it with entries. It is done just a moment before showing the menu, to
-  // take into account current selection and properly mark actions as enabled/disabled.
-
   menu.setToolTipsVisible(true);
 
-  auto enable_action = AddEnableAttributeAction(menu, attribute_item);
+  AddEnableAttributeAction(menu);
 
   menu.addSeparator();
-  auto set_default_value_action = AddSetDefaultValueAction(menu, attribute_item);
-  auto set_placeholder_action = AddSetPlaceholderValueAction(menu, attribute_item);
+  AddSetDefaultValueAction(menu);
+  AddSetPlaceholderValueAction(menu);
 
   menu.addSeparator();
-  auto edit_anyvalue_action = AddEditAnyValueAction(menu, attribute_item);
-
-  if (attribute_item)
-  {
-    // all actions have been created in disable state, should re-enable some
-    const bool is_anyvalue = attribute_item->GetTagIndex().tag == itemconstants::kAnyValueTag;
-
-    enable_action->setEnabled(true);
-    set_default_value_action->setEnabled(!is_anyvalue);
-    set_placeholder_action->setEnabled(!is_anyvalue);
-    edit_anyvalue_action->setEnabled(is_anyvalue);
-  }
+  AddEditAnyValueAction(menu);
 }
 
 void AttributeEditorActions::OnAboutToShowMenu()
 {
   m_modify_attribute_menu->clear();
-  SetupMenu(*m_modify_attribute_menu, GetSelectedAnyValueItem());
+  SetupMenu(*m_modify_attribute_menu);
 }
 
-QAction *AttributeEditorActions::AddEnableAttributeAction(QMenu &menu,
-                                                          sup::gui::AnyValueItem *attribute_item)
+void AttributeEditorActions::AddEnableAttributeAction(QMenu &menu)
 {
   auto result = menu.addAction("Attribute is enabled");
   result->setToolTip("Attribute with enabled flag set will be propagated to domain");
   result->setCheckable(true);
 
-  result->setChecked(attribute_item && GetAttributePresentFlag(*attribute_item));
+  // result->setChecked(attribute_item && GetAttributePresentFlag(*attribute_item));
 
-  auto on_action = [attribute_item]()
-  { SetAttributePresentFlag(!GetAttributePresentFlag(*attribute_item), *attribute_item); };
-  connect(result, &QAction::triggered, on_action);
-  result->setEnabled(false);
-
-  return result;
+  connect(result, &QAction::triggered, m_handler,
+          &AttributeEditorActionHandler::OnToggleEnabledFlag);
+  result->setEnabled(m_handler->CanToggleEnabledFlag());
 }
 
-QAction *AttributeEditorActions::AddSetDefaultValueAction(QMenu &menu,
-                                                          sup::gui::AnyValueItem *attribute_item)
+void AttributeEditorActions::AddSetDefaultValueAction(QMenu &menu)
 {
-  auto result = menu.addAction("Set default value");
-  result->setToolTip("The attribute will be set to its default value");
-  auto on_action = [attribute_item]() { SetAttributeFromTypeName(*attribute_item); };
-  connect(result, &QAction::triggered, on_action);
-  result->setEnabled(false);
-
-  return result;
+  auto action = menu.addAction("Set default value");
+  action->setToolTip("The attribute will be set to its default value");
+  connect(action, &QAction::triggered, m_handler,
+          &AttributeEditorActionHandler::OnSetAsDefaultType);
+  action->setEnabled(m_handler->CanSetDefaultType());
 }
 
-QAction *AttributeEditorActions::AddSetPlaceholderValueAction(
-    QMenu &menu, sup::gui::AnyValueItem *attribute_item)
+void AttributeEditorActions::AddSetPlaceholderValueAction(QMenu &menu)
 {
-  auto result = menu.addAction("Set placeholder attribute");
-  result->setToolTip(
+  auto action = menu.addAction("Set placeholder attribute");
+  action->setToolTip(
       "Attribute will be defined as string, allowing to use placeholders $par and references "
       "@par");
-  auto on_action = [attribute_item]() { SetAttributeAsString("$par", *attribute_item); };
-  connect(result, &QAction::triggered, on_action);
-  result->setEnabled(false);
-
-  return result;
+  connect(action, &QAction::triggered, m_handler,
+          &AttributeEditorActionHandler::OnSetPlaceholderType);
+  action->setEnabled(m_handler->CanSetPlaceholderType());
 }
 
-QAction *AttributeEditorActions::AddEditAnyValueAction(QMenu &menu,
-                                                       sup::gui::AnyValueItem *attribute_item)
+void AttributeEditorActions::AddEditAnyValueAction(QMenu &menu)
 {
-  auto result = menu.addAction("Set placeholder attribute");
-  result->setText("Edit AnyValue");
-  result->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
-  result->setToolTip(kEditAnyValueToolTip);
-  connect(result, &QAction::triggered, this, &AttributeEditorActions::EditAnyvalueRequest);
-  result->setEnabled(false);
-
-  return result;
-}
-
-sup::gui::AnyValueItem *AttributeEditorActions::GetSelectedAnyValueItem()
-{
-  return dynamic_cast<sup::gui::AnyValueItem *>(m_editor_context.selected_item_callback());
+  auto action = menu.addAction("Set placeholder attribute");
+  action->setText("Edit AnyValue");
+  action->setIcon(sup::gui::utils::GetIcon("file-tree-outline.svg"));
+  action->setToolTip(kEditAnyValueToolTip);
+  connect(action, &QAction::triggered, this, &AttributeEditorActions::EditAnyvalueRequest);
+  action->setEnabled(m_handler->CanEditAnyValue());
 }
 
 }  // namespace sequencergui

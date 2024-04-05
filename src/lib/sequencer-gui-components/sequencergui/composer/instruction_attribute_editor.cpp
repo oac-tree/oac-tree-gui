@@ -53,8 +53,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
     , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
     , m_attribute_action_handler(new AttributeEditorActionHandler(CreateActionContext(), this))
-    , m_attribute_actions(
-          new AttributeEditorActions(m_attribute_action_handler, CreateActionContext(), this))
+    , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
 {
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
@@ -128,12 +127,8 @@ void InstructionAttributeEditor::AdjustTreeAppearance()
 
 void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)
 {
-  auto index = m_tree_view->indexAt(point);
-  auto item = dynamic_cast<sup::gui::AnyValueItem *>(
-      m_component_provider->GetViewModel()->GetSessionItemFromIndex(index));
-
   QMenu menu;
-  m_attribute_actions->SetupMenu(menu, item);
+  m_attribute_actions->SetupMenu(menu);
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
