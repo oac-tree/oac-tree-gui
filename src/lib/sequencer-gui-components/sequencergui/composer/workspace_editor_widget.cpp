@@ -183,11 +183,13 @@ void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
 {
   QMenu menu;
 
-  // populate attribute menu
-  m_attribute_actions->SetupMenu(menu);
-
   // populate cut/copy/paste menu
   m_editor_actions->SetupMenu(menu, m_action_handler);
+
+  // populate attribute menu
+  menu.addSeparator();
+  auto attribute_menu = menu.addMenu("Modify attribute");
+  m_attribute_actions->SetupMenu(*attribute_menu);
 
   // populate tree menu
   menu.addSeparator();
