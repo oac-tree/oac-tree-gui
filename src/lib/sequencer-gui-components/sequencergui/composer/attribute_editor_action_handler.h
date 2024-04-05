@@ -48,14 +48,16 @@ public:
   ~AttributeEditorActionHandler() override;
 
   /**
-   * @brief Checks if one can manipulate enable/disable flag for the currently selected attribute.
+   * @brief Checks if one can manipulate exposed flag for the currently selected attribute.
+   *
+   * Exposed attribute will be propagated to the sequencer domain.
    */
-  bool CanToggleEnabledFlag() const;
+  bool CanToggleExposedFlag() const;
 
   /**
-   * @brief Toggle currently selected attribute between enabled/disabled.
+   * @brief Toggle currently selected attribute between expose/not expose.
    */
-  void OnToggleEnabledFlag();
+  void OnToggleExposedFlag();
 
   /**
    * @brief Checks if the currently selected attribute can be set to its default type.

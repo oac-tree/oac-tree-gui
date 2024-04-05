@@ -71,8 +71,8 @@ TEST_F(AttributeEditorActionHandlerTest, NothingIsSelected)
 {
   // no items are selected in the property editor
   auto handler = CreateActionHandler(nullptr);
-
-  EXPECT_FALSE(handler->CanToggleEnabledFlag());
+  
+  EXPECT_FALSE(handler->CanToggleExposedFlag());
   EXPECT_FALSE(handler->CanSetDefaultType());
   EXPECT_FALSE(handler->CanSetPlaceholderType());
   EXPECT_FALSE(handler->CanEditAnyValue());
@@ -87,8 +87,8 @@ TEST_F(AttributeEditorActionHandlerTest, NameAttributeSelected)
 
   // no items are selected in the property editor
   auto handler = CreateActionHandler(name_attribute);
-
-  EXPECT_TRUE(handler->CanToggleEnabledFlag());
+  
+  EXPECT_TRUE(handler->CanToggleExposedFlag());
   EXPECT_TRUE(handler->CanSetDefaultType());
   EXPECT_TRUE(handler->CanSetPlaceholderType());
 
@@ -105,8 +105,8 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
 
   // no items are selected in the property editor
   auto handler = CreateActionHandler(item.GetAnyValueItem());
-
-  EXPECT_TRUE(handler->CanToggleEnabledFlag());
+  
+  EXPECT_TRUE(handler->CanToggleExposedFlag());
 
   // it is not possible to replace types with placeholders
   EXPECT_FALSE(handler->CanSetDefaultType());
@@ -127,8 +127,8 @@ TEST_F(AttributeEditorActionHandlerTest, ToggleEnabledFlag)
   auto handler = CreateActionHandler(name_attribute);
 
   EXPECT_TRUE(GetAttributePresentFlag(*name_attribute));
-
-  handler->OnToggleEnabledFlag();
+  
+  handler->OnToggleExposedFlag();
   EXPECT_FALSE(GetAttributePresentFlag(*name_attribute));
 }
 

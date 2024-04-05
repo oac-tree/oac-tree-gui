@@ -34,14 +34,14 @@ AttributeEditorActionHandler::AttributeEditorActionHandler(AttributeEditorContex
 
 AttributeEditorActionHandler::~AttributeEditorActionHandler() = default;
 
-bool AttributeEditorActionHandler::CanToggleEnabledFlag() const
+bool AttributeEditorActionHandler::CanToggleExposedFlag() const
 {
   return GetSelectedAttributeItem() != nullptr;
 }
 
-void AttributeEditorActionHandler::OnToggleEnabledFlag()
+void AttributeEditorActionHandler::OnToggleExposedFlag()
 {
-  if (!CanToggleEnabledFlag())
+  if (!CanToggleExposedFlag())
   {
     return;
   }

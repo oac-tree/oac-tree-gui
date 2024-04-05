@@ -77,7 +77,7 @@ void AttributeEditorActions::SetupMenu(QMenu &menu)
 {
   menu.setToolTipsVisible(true);
 
-  AddEnableAttributeAction(menu);
+  AddToggleExposedFlagAction(menu);
 
   menu.addSeparator();
   AddSetDefaultValueAction(menu);
@@ -93,17 +93,19 @@ void AttributeEditorActions::OnAboutToShowMenu()
   SetupMenu(*m_modify_attribute_menu);
 }
 
-void AttributeEditorActions::AddEnableAttributeAction(QMenu &menu)
+void AttributeEditorActions::AddToggleExposedFlagAction(QMenu &menu)
 {
-  auto result = menu.addAction("Attribute is enabled");
-  result->setToolTip("Attribute with enabled flag set will be propagated to domain");
+  auto result = menu.addAction("Attribute exposed flag");
+  result->setToolTip(
+      "Attribute with exposed flag set will be propagated to sequencer domain,\n"
+      "if flag is unchecked, the sequencer will not see it.");
   result->setCheckable(true);
 
   // result->setChecked(attribute_item && GetAttributePresentFlag(*attribute_item));
 
   connect(result, &QAction::triggered, m_handler,
-          &AttributeEditorActionHandler::OnToggleEnabledFlag);
-  result->setEnabled(m_handler->CanToggleEnabledFlag());
+          &AttributeEditorActionHandler::OnToggleExposedFlag);
+  result->setEnabled(m_handler->CanToggleExposedFlag());
 }
 
 void AttributeEditorActions::AddSetDefaultValueAction(QMenu &menu)

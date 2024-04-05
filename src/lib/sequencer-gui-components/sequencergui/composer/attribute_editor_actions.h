@@ -87,9 +87,9 @@ private:
   void OnAboutToShowMenu();
 
   /**
-   * @brief Adds action to the menu which will toggle attribute between enabled/disabled.
+   * @brief Adds action to the menu which will toggle exposed flag.
    */
-  void AddEnableAttributeAction(QMenu& menu);
+  void AddToggleExposedFlagAction(QMenu& menu);
 
   /**
    * @brief Adds action to set attribute default value.
