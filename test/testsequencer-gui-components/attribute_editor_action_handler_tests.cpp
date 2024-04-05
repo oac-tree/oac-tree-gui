@@ -85,7 +85,6 @@ TEST_F(AttributeEditorActionHandlerTest, NameAttributeSelected)
   WaitItem item;
   auto name_attribute = GetNameItem(item);
 
-  // no items are selected in the property editor
   auto handler = CreateActionHandler(name_attribute);
 
   EXPECT_TRUE(handler->CanToggleExposedFlag());
@@ -103,7 +102,6 @@ TEST_F(AttributeEditorActionHandlerTest, AnyValueSelected)
   LocalVariableItem item;
   SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, item);
 
-  // no items are selected in the property editor
   auto handler = CreateActionHandler(item.GetAnyValueItem());
 
   EXPECT_TRUE(handler->CanToggleExposedFlag());
@@ -123,7 +121,6 @@ TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlag)
   WaitItem item;
   auto name_attribute = dynamic_cast<sup::gui::AnyValueItem*>(GetNameItem(item));
 
-  // no items are selected in the property editor
   auto handler = CreateActionHandler(name_attribute);
 
   EXPECT_TRUE(handler->GetExposedFlag());
@@ -143,7 +140,6 @@ TEST_F(AttributeEditorActionHandlerTest, OnSetPlaceholderTypeAndBack)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
-  // no items are selected in the property editor
   auto handler = CreateActionHandler(&item);
 
   handler->OnSetPlaceholderType();
