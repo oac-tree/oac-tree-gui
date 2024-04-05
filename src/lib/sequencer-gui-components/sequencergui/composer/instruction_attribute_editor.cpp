@@ -59,8 +59,7 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
   m_tool_bar->setIconSize(sup::gui::utils::NarrowToolBarIconSize());
 
   auto attribute_toolbar_actions =
-      m_attribute_actions->GetActions({AttributeEditorActions::ActionKey::kModifyAttribute,
-                                       AttributeEditorActions::ActionKey::kEditAnyValue});
+      m_attribute_actions->GetActions({AttributeEditorActions::ActionKey::kModifyAttribute});
   m_tool_bar->addActions(attribute_toolbar_actions);
 
   auto layout = new QVBoxLayout(this);
