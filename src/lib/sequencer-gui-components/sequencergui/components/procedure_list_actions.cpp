@@ -76,17 +76,17 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
 {
   menu.setToolTipsVisible(true);
   menu.addAction(m_new_procedure_action);
+  menu.addAction(m_remove_selected_action);
+  m_remove_selected_action->setEnabled(handler->CanRemove());
+
   menu.addSeparator();
   menu.addAction(m_cut_action);
   menu.addAction(m_copy_action);
   menu.addAction(m_paste_action);
-  menu.addSeparator();
-  menu.addAction(m_remove_selected_action);
 
   m_cut_action->setEnabled(handler->CanCut());
   m_copy_action->setEnabled(handler->CanCopy());
   m_paste_action->setEnabled(handler->CanPaste());
-  m_remove_selected_action->setEnabled(handler->CanRemove());
 }
 
 }  // namespace sequencergui
