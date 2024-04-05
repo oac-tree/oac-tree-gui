@@ -21,7 +21,6 @@
 #define SEQUENCERGUI_COMPOSER_SEQUENCER_COMPOSER_VIEW_H_
 
 #include <QWidget>
-#include <memory>
 
 class QSplitter;
 class QShowEvent;

@@ -49,7 +49,7 @@ OperationJobPanel::OperationJobPanel(QWidget *parent)
   layout->addWidget(m_collapsible_list);
 
   m_collapsible_list->AddWidget(m_job_list_widget);
-  //  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
+  m_collapsible_list->AddCollapsibleWidget(m_job_property_widget, {});
 
   SetupConnections();
 

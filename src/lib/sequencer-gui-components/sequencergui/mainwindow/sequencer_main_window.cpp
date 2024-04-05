@@ -31,6 +31,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/application_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -175,6 +176,7 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 {
   if (CanCloseApplication())
   {
+    sup::gui::ShutdownApplication();
     QCoreApplication::exit(exit_code);
   }
 }
