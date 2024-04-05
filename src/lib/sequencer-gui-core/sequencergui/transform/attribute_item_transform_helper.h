@@ -45,26 +45,26 @@ bool IsPlaceholderAttribute(const std::string& attribute_value);
 bool IsReferenceAttribute(const std::string& attribute_value);
 
 /**
- * @brief Returns true if this attribute item is marked as present.
+ * @brief Returns true if this attribute item is marked as exposed.
  *
  * The flag determines whether the attribute should be propagated into the domain. The
- * item with present flag set to false appears disabled (in gray) and non-editable.
+ * item with exposed flag set to false appears disabled (in gray) and non-editable.
  *
  * @param attribute_item The item to set attribute.
- * @return Boolean representing the value of IsPresent attribute.
+ * @return Boolean representing the value of exposed flag.
  */
-bool GetAttributePresentFlag(const sup::gui::AnyValueItem& attribute_item);
+bool GetAttributeExposedFlag(const sup::gui::AnyValueItem& attribute_item);
 
 /**
- * @brief Sets attribute present flag to a given value.
+ * @brief Sets attribute exposed flag to a given value.
  *
  * The flag determines whether the attribute should be propagated into the domain. The
- * item with present flag set to false appears disabled (in gray) and non-editable.
+ * item with exposedt flag set to false appears disabled (in gray) and non-editable.
  *
- * @param value The value of present flag.
- * @param attribute_item The item to set attribute.
+ * @param value The value of exposed flag.
+ * @param attribute_item The item to set the flag.
  */
-void SetAttributePresentFlag(bool value, sup::gui::AnyValueItem& attribute_item);
+void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem& attribute_item);
 
 /**
  * @brief Sets attribute value as string.
@@ -146,7 +146,7 @@ template <typename T>
 void SetAttribute(const mvvm::CompoundItem& item, const std::string& name, const T& value)
 {
   auto attribute = item.GetItem<sup::gui::AnyValueItem>(name);
-  SetAttributePresentFlag(true, *attribute);
+  SetAttributeExposedFlag(true, *attribute);
   attribute->SetData(value);
 }
 

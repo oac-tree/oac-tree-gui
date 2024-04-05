@@ -47,14 +47,14 @@ bool IsSuitableForDomainAttribute(const std::string &attribute_string,
 }
 
 /**
- * @brief Returns is present flag for given attribute definition
+ * @brief Returns is exposed flag for given attribute definition
  */
-bool GetIsPresentFlag(const attribute_definition_t &attr)
+bool GetIsExposedFlag(const attribute_definition_t &attr)
 {
   // list of domain attributes that should be always marked as present
-  static const std::vector<std::string> kAlwaysPresentAttributeList = {
+  static const std::vector<std::string> kAlwaysExposedAttributeList = {
       sequencergui::domainconstants::kNameAttribute};
-  return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysPresentAttributeList, attr.GetName());
+  return attr.IsMandatory() || mvvm::utils::Contains(kAlwaysExposedAttributeList, attr.GetName());
 }
 
 namespace sequencergui
@@ -70,12 +70,12 @@ bool IsReferenceAttribute(const std::string &attribute_value)
   return attribute_value.find_first_of('@') == 0;
 }
 
-bool GetAttributePresentFlag(const sup::gui::AnyValueItem &attribute_item)
+bool GetAttributeExposedFlag(const sup::gui::AnyValueItem &attribute_item)
 {
   return attribute_item.IsEditable() && attribute_item.IsEnabled();
 }
 
-void SetAttributePresentFlag(bool value, sup::gui::AnyValueItem &attribute_item)
+void SetAttributeExposedFlag(bool value, sup::gui::AnyValueItem &attribute_item)
 {
   attribute_item.SetEditable(value);
   attribute_item.SetEnabled(value);
@@ -101,7 +101,7 @@ sup::gui::AnyValueItem *AddPropertyFromDefinition(const attribute_definition_t &
   auto &property = item.AddProperty<sup::gui::AnyValueScalarItem>(attr.GetName());
   property.SetAnyTypeName(attr.GetType().GetTypeName());  // will set default value too
   property.SetDisplayName(attr.GetName());
-  SetAttributePresentFlag(GetIsPresentFlag(attr), property);
+  SetAttributeExposedFlag(GetIsExposedFlag(attr), property);
   return &property;
 }
 
@@ -113,7 +113,7 @@ void SetPropertyFromDomainAttribute(const T &domain, const std::string &attribut
   {
     return;
   }
-  SetAttributePresentFlag(true, item);
+  SetAttributeExposedFlag(true, item);
 
   auto attribute_string = domain.GetAttributeString(attribute_name);
   if (IsPlaceholderAttribute(attribute_string) || IsReferenceAttribute(attribute_string))
@@ -142,7 +142,7 @@ template <typename T>
 void SetDomainAttribute(const sup::gui::AnyValueItem &item, const std::string &attribute_name,
                         T &domain)
 {
-  if (!GetAttributePresentFlag(item))
+  if (!GetAttributeExposedFlag(item))
   {
     return;
   }

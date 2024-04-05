@@ -41,7 +41,7 @@ bool AttributeEditorActionHandler::CanToggleExposedFlag() const
 
 bool AttributeEditorActionHandler::GetExposedFlag() const
 {
-  return GetSelectedAttributeItem() && GetAttributePresentFlag(*GetSelectedAttributeItem());
+  return GetSelectedAttributeItem() && GetAttributeExposedFlag(*GetSelectedAttributeItem());
 }
 
 void AttributeEditorActionHandler::OnToggleExposedFlag()
@@ -52,7 +52,7 @@ void AttributeEditorActionHandler::OnToggleExposedFlag()
   }
 
   auto attribute_item = GetSelectedAttributeItem();
-  SetAttributePresentFlag(!GetAttributePresentFlag(*attribute_item), *attribute_item);
+  SetAttributeExposedFlag(!GetAttributeExposedFlag(*attribute_item), *attribute_item);
 }
 
 bool AttributeEditorActionHandler::CanSetDefaultType() const

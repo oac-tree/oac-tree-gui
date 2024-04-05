@@ -127,11 +127,11 @@ TEST_F(AttributeEditorActionHandlerTest, ToggleExposedFlag)
   auto handler = CreateActionHandler(name_attribute);
 
   EXPECT_TRUE(handler->GetExposedFlag());
-  EXPECT_TRUE(GetAttributePresentFlag(*name_attribute));
+  EXPECT_TRUE(GetAttributeExposedFlag(*name_attribute));
 
   handler->OnToggleExposedFlag();
   EXPECT_FALSE(handler->GetExposedFlag());
-  EXPECT_FALSE(GetAttributePresentFlag(*name_attribute));
+  EXPECT_FALSE(GetAttributeExposedFlag(*name_attribute));
 }
 
 //! Scalar attribute is selected, turning it into placeholder.

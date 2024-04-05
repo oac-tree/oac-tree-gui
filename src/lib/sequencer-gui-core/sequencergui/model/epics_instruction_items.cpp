@@ -32,7 +32,7 @@ void InitDefaultAnyValue(mvvm::CompoundItem &item)
   item.RegisterTag(sup::gui::CreateAnyValueTag(sequencergui::itemconstants::kAnyValueTag), true);
   auto anyvalue_item = item.InsertItem<sup::gui::AnyValueEmptyItem>(mvvm::TagIndex::Append());
   anyvalue_item->SetDisplayName(sequencergui::itemconstants::kAnyValueDefaultDisplayName);
-  sequencergui::SetAttributePresentFlag(false, *anyvalue_item);
+  sequencergui::SetAttributeExposedFlag(false, *anyvalue_item);
 }
 
 }  // namespace

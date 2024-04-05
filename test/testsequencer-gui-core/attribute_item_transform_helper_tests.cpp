@@ -82,7 +82,7 @@ TEST_F(AttributeItemTransformHelperTest, AddPropertyFromDefinition)
   EXPECT_EQ(property_item->GetDisplayName(), attribute_name);
   auto attribute_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(property_item);
   ASSERT_NE(attribute_item, nullptr);
-  EXPECT_FALSE(GetAttributePresentFlag(*attribute_item));
+  EXPECT_FALSE(GetAttributeExposedFlag(*attribute_item));
 
   EXPECT_EQ(property_item->Data<int>(), 0);
 
@@ -110,7 +110,7 @@ TEST_F(AttributeItemTransformHelperTest, AddMandatoryPropertyFromDefinition)
   ASSERT_NE(property, nullptr);
 
   EXPECT_EQ(property->GetDisplayName(), attribute_name);
-  EXPECT_TRUE(GetAttributePresentFlag(*property));
+  EXPECT_TRUE(GetAttributeExposedFlag(*property));
 }
 
 //! Testing SetPropertyFromDomainAttribute method.
@@ -127,7 +127,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
     item.SetAnyTypeName(sup::dto::kStringTypeName);
 
     SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item);
-    EXPECT_TRUE(GetAttributePresentFlag(item));
+    EXPECT_TRUE(GetAttributeExposedFlag(item));
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 
@@ -140,8 +140,8 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
 
     EXPECT_NO_THROW(
         SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
-
-    EXPECT_TRUE(GetAttributePresentFlag(item));
+    
+    EXPECT_TRUE(GetAttributeExposedFlag(item));
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
 }
@@ -170,7 +170,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributePlacehold
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "$par1");
-  EXPECT_TRUE(GetAttributePresentFlag(item));
+  EXPECT_TRUE(GetAttributeExposedFlag(item));
 }
 
 //! Validating SetPropertyFromDomainAttribute helper method for the case when domain attribute
@@ -197,7 +197,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttributeReference
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt32TypeName);
   EXPECT_TRUE(std::holds_alternative<std::string>(item.Data()));
   EXPECT_EQ(item.Data<std::string>(), "@par1");
-  EXPECT_TRUE(GetAttributePresentFlag(item));
+  EXPECT_TRUE(GetAttributeExposedFlag(item));
 }
 
 //! Testing SetDomainAttribute method.
@@ -224,7 +224,7 @@ TEST_F(AttributeItemTransformHelperTest, SetDomainAttributeWhenUnset)
   sup::gui::AnyValueScalarItem item;
   item.SetAnyTypeName(sup::dto::kFloat64TypeName);
   item.SetData(5.0);
-  SetAttributePresentFlag(false, item);
+  SetAttributeExposedFlag(false, item);
 
   SetDomainAttribute(item, domainconstants::kTimeoutAttribute, *instruction);
   EXPECT_FALSE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
@@ -249,18 +249,18 @@ TEST_F(AttributeItemTransformHelperTest, SetAttributeAsString)
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 }
 
-TEST_F(AttributeItemTransformHelperTest, SetPresentFlag)
+TEST_F(AttributeItemTransformHelperTest, SetExposedFlag)
 {
   sup::gui::AnyValueScalarItem item;
 
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
+  
+  EXPECT_TRUE(GetAttributeExposedFlag(item));
 
-  EXPECT_TRUE(GetAttributePresentFlag(item));
-
-  SetAttributePresentFlag(false, item);
-  EXPECT_FALSE(GetAttributePresentFlag(item));
+  SetAttributeExposedFlag(false, item);
+  EXPECT_FALSE(GetAttributeExposedFlag(item));
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
@@ -275,8 +275,8 @@ TEST_F(AttributeItemTransformHelperTest, SetAttributeFromTypeName)
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
 
-  SetAttributePresentFlag(false, item);
-  EXPECT_FALSE(GetAttributePresentFlag(item));
+  SetAttributeExposedFlag(false, item);
+  EXPECT_FALSE(GetAttributeExposedFlag(item));
   EXPECT_FALSE(item.IsEditable());
   EXPECT_FALSE(item.IsEnabled());
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);

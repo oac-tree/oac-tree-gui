@@ -101,7 +101,7 @@ void AddShowCollapsedProperty(InstructionItem &item)
     if (mvvm::utils::Contains(collapsed_by_default, item.GetDomainType()))
     {
       property->SetData(true);
-      SetAttributePresentFlag(true, *property);
+      SetAttributeExposedFlag(true, *property);
     }
   }
 }

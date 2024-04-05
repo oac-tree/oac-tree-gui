@@ -263,7 +263,7 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemPropertyAppearance)
   auto dynamic_type_item = dynamic_cast<sup::gui::AnyValueScalarItem*>(children.at(0));
   ASSERT_NE(dynamic_type_item, nullptr);
   EXPECT_EQ(dynamic_type_item->GetDisplayName(), domainconstants::kDynamicTypeAttribute);
-  EXPECT_FALSE(GetAttributePresentFlag(*dynamic_type_item));
+  EXPECT_FALSE(GetAttributeExposedFlag(*dynamic_type_item));
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)

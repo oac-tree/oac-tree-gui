@@ -212,7 +212,7 @@ TEST_F(EpicsInstructionItemsTest, ChannelAccessWriteInstructionItemToDomain)
     item.SetChannel("def");
     item.SetTimeout(42.0);
     SetAnyValue(expected_anyvalue, item);
-    SetAttributePresentFlag(false, *GetAnyValueItem(item));
+    SetAttributeExposedFlag(false, *GetAnyValueItem(item));
 
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kChannelAccessWriteInstructionType);
@@ -386,7 +386,7 @@ TEST_F(EpicsInstructionItemsTest, PvAccessWriteInstructionItemToDomain)
     // setting variable name but disabling AnyValueItem
     item.SetVariableName("var");
     SetAnyValue(expected_anyvalue, item);
-    SetAttributePresentFlag(false, *GetAnyValueItem(item));
+    SetAttributeExposedFlag(false, *GetAnyValueItem(item));
 
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kPvAccessWriteInstructionType);
@@ -492,7 +492,7 @@ TEST_F(EpicsInstructionItemsTest, RPCClientInstructionToDomain)
     // setting variable name but disabling AnyValueItem
     item.SetRequestVar("abc");
     SetAnyValue(expected_anyvalue, item);
-    SetAttributePresentFlag(false, *GetAnyValueItem(item));
+    SetAttributeExposedFlag(false, *GetAnyValueItem(item));
 
     auto domain_item = item.CreateDomainInstruction();
     EXPECT_EQ(domain_item->GetType(), domainconstants::kRPCClientInstructionType);
