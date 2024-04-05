@@ -38,6 +38,10 @@ TEST_F(JobItemTest, JobItem)
 {
   JobItem item;
 
+  EXPECT_EQ(item.GetTickTimeout(), 0);
+  item.SetTickTimeout(20);
+  EXPECT_EQ(item.GetTickTimeout(), 20);
+
   item.SetStatus("abc");
   EXPECT_EQ(item.GetStatus(), "abc");
 
@@ -56,7 +60,9 @@ TEST_F(JobItemTest, SetProcedure)
   EXPECT_EQ(job_item->GetProcedure(), procedure_item);
 }
 
-TEST_F(JobItemTest, SetProcedureInterMoidelContext)
+//! Checking that JobItem can find linked rocedure when they both belong to different models.
+
+TEST_F(JobItemTest, SetProcedureInterModelContext)
 {
   ApplicationModels models;
 

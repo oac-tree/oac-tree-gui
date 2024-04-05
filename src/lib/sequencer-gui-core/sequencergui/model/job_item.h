@@ -56,6 +56,16 @@ public:
   void SetStatus(const std::string& status);
 
   /**
+   * @brief Returns the current value of sequencer ticks timeout in msec defined for this job.
+   */
+  int GetTickTimeout() const;
+
+  /**
+   * @brief Sets the value of sequencer ticks timeout that shall be used for this job execution.
+   */
+  void SetTickTimeout(int msec);
+
+  /**
    * @brief Sets procedure to handle.
    */
   void SetProcedure(const ProcedureItem* item);
