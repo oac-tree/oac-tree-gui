@@ -25,6 +25,8 @@ target_sources(${library_name} PRIVATE
   procedure_item.h
   procedure_preamble_items.cpp
   procedure_preamble_items.h
+  property_listener.cpp
+  property_listener.h
   sequencer_item_helper.cpp
   sequencer_item_helper.h
   sequencer_item_includes.h
