@@ -23,10 +23,12 @@
 #include "job_log.h"
 #include "domain_runner_service.h"
 
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
+#include <sequencergui/model/property_listener.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
@@ -56,6 +58,17 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int s
   {
     throw RuntimeException("Procedure doesn't exist");
   }
+
+  m_property_listener = std::make_unique<PropertyListener<JobItem>>(job_item);
+  auto on_event = [this](const mvvm::event_variant_t& event)
+  {
+    auto concrete_event = std::get<mvvm::PropertyChangedEvent>(event);
+    if (concrete_event.m_name == itemconstants::kTickTimeout)
+    {
+      SetSleepTime(m_job_item->GetTickTimeout());
+    }
+  };
+  m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);
 
   SetupBreakpointController();
 

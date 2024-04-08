@@ -43,6 +43,9 @@ class BreakpointController;
 class DomainRunnerService;
 class DomainEventDispatcherContext;
 
+template<typename T>
+class PropertyListener;
+
 /**
  * @brief The JobHandler class is the main class to run a job represented by the JobItem.
  *
@@ -194,6 +197,9 @@ private:
 
   //!< main controller to handle breakpoints toggling
   std::unique_ptr<BreakpointController> m_breakpoint_controller;
+
+  //!< listens for JobItem property change
+  std::unique_ptr<PropertyListener<JobItem>> m_property_listener;
 
   //!< the job log
   JobLog* m_job_log{nullptr};
