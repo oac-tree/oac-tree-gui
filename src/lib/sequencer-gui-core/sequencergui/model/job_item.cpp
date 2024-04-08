@@ -29,13 +29,12 @@ namespace sequencergui
 
 static inline const std::string kLink = "kLink";
 static inline const std::string kExpandedProcedure = "kExpandedProcedure";
-static inline const std::string kTickTimeout = "kTickTimeout";
 
 JobItem::JobItem() : CompoundItem(Type)
 {
   AddProperty(itemconstants::kStatus, std::string()).SetDisplayName("Status").SetEditable(false);
   AddProperty<mvvm::LinkedItem>(kLink).SetDisplayName("Link");
-  AddProperty(kTickTimeout, 0).SetDisplayName("Tick timeout");
+  AddProperty(itemconstants::kTickTimeout, 0).SetDisplayName("Tick timeout");
 
   RegisterTag(mvvm::TagInfo(kExpandedProcedure, 0, 1, {ProcedureItem::Type}), /*as_default*/ true);
 }
@@ -57,12 +56,12 @@ void JobItem::SetStatus(const std::string &status)
 
 int JobItem::GetTickTimeout() const
 {
-  return Property<int>(kTickTimeout);
+  return Property<int>(itemconstants::kTickTimeout);
 }
 
 void JobItem::SetTickTimeout(int msec)
 {
-  SetProperty(kTickTimeout, msec);
+  SetProperty(itemconstants::kTickTimeout, msec);
 }
 
 void JobItem::SetProcedure(const ProcedureItem *item)

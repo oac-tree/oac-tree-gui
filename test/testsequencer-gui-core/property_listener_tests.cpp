@@ -21,8 +21,10 @@
 
 #include <mvvm/model/application_model.h>
 #include <sequencergui/model/job_item.h>
+#include <sequencergui/model/item_constants.h>
 
 #include <gtest/gtest.h>
+#include <mvvm/test/mock_callback_listener.h>
 
 using namespace sequencergui;
 
@@ -30,6 +32,8 @@ using namespace sequencergui;
 
 class PropertyListenerTest : public ::testing::Test
 {
+public:
+  mvvm::test::MockCallbackListener<mvvm::event_variant_t> m_event_listener;
 };
 
 TEST_F(PropertyListenerTest, InitialState)
@@ -39,4 +43,11 @@ TEST_F(PropertyListenerTest, InitialState)
 
   PropertyListener<JobItem> listener(item);
 
+  listener.Connect<mvvm::PropertyChangedEvent>(m_event_listener.CreateCallback());
+
+  mvvm::PropertyChangedEvent expected_event{item, itemconstants::kTickTimeout};
+
+  EXPECT_CALL(m_event_listener, OnCallback(mvvm::event_variant_t{expected_event})).Times(1);
+
+  item->SetTickTimeout(42);
 }

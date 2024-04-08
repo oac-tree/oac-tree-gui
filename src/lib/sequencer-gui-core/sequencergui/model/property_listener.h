@@ -26,32 +26,13 @@
 namespace sequencergui
 {
 
+//! FIXME Temporary class for listening item property, remove after ItemListener refactoring.
+
 template <typename ItemT>
 class PropertyListener : public mvvm::ItemListener<ItemT>
 {
 public:
   explicit PropertyListener(ItemT* item) { this->SetItem(item); }
-
-  void Connect(std::function<void(const mvvm::PropertyChangedEvent&)> callback)
-  {
-    m_callback = callback;
-  }
-
-protected:
-  void Subscribe()
-  {
-  }
-
-private:
-  void OnPropertyChangedEvent(const mvvm::event_variant_t& event)
-  {
-    if (m_callback)
-    {
-      m_callback(std::get<mvvm::PropertyChangedEvent>(event));
-    }
-  }
-
-  std::function<void(const mvvm::PropertyChangedEvent&)> m_callback;
 };
 
 }  // namespace sequencergui
