@@ -29,8 +29,8 @@
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
-#include <sequencergui/model/job_item.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -275,7 +275,7 @@ void OperationMonitorView::SetupWidgetActions()
 void OperationMonitorView::OnJobSelected(JobItem *item)
 {
   m_job_manager->SetCurrentJob(item);
-  m_realtime_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+  m_realtime_panel->SetCurrentJob(item);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 

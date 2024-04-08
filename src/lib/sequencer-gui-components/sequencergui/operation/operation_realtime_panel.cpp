@@ -24,6 +24,7 @@
 #include "realtime_instruction_tree_widget.h"
 
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/job_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>
@@ -79,9 +80,17 @@ OperationRealTimePanel::~OperationRealTimePanel()
   WriteSettings();
 }
 
-void OperationRealTimePanel::SetProcedure(ProcedureItem *procedure_item)
+void OperationRealTimePanel::SetCurrentJob(JobItem *job_item)
 {
-  m_realtime_instruction_tree->SetProcedure(procedure_item);
+  if (job_item)
+  {
+    m_realtime_instruction_tree->SetProcedure(job_item->GetExpandedProcedure());
+    m_actions->SetCurrentTickTimeout(job_item->GetTickTimeout());
+  }
+  else
+  {
+    m_realtime_instruction_tree->SetProcedure(nullptr);
+  }
 }
 
 void OperationRealTimePanel::SetSelectedInstructions(std::vector<InstructionItem *> items)
@@ -97,11 +106,6 @@ MessagePanel *OperationRealTimePanel::GetMessagePanel()
 int OperationRealTimePanel::GetCurrentTickTimeout()
 {
   return m_actions->GetCurrentTickTimeout();
-}
-
-void OperationRealTimePanel::SetCurrentTickTimeout(int msec)
-{
-  m_actions->SetCurrentTickTimeout(msec);
 }
 
 void OperationRealTimePanel::ReadSettings()

@@ -34,7 +34,7 @@ namespace sequencergui
 class SequencerModel;
 class MonitorRealTimeActions;
 class InstructionItem;
-class ProcedureItem;
+class JobItem;
 class MessagePanel;
 class RealTimeInstructionTreeWidget;
 
@@ -48,15 +48,13 @@ public:
   explicit OperationRealTimePanel(QWidget* parent = nullptr);
   ~OperationRealTimePanel() override;
 
-  void SetProcedure(ProcedureItem* procedure_item);
+  void SetCurrentJob(JobItem* job_item);
 
   void SetSelectedInstructions(std::vector<InstructionItem*> items);
 
   MessagePanel* GetMessagePanel();
 
   int GetCurrentTickTimeout();
-
-  void SetCurrentTickTimeout(int msec);
 
 signals:
   void runRequest();
