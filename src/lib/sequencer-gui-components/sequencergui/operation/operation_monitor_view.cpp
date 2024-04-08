@@ -190,9 +190,10 @@ void OperationMonitorView::SetupConnections()
   connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_actions,
           &OperationActionHandler::OnMakeStepRequest);
 
-  // change delay request from MonitorRealTimeWidget to JobManager
-  // connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_job_manager,
-  //         &JobManager::OnChangeDelayRequest);
+  // change delay request
+  connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_actions,
+          &OperationActionHandler::OnSetTickTimeoutRequest);
+  m_actions->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
 
   // instruction next leave request from JobManager to MonitorRealTimeWidget
   connect(m_job_manager, &JobManager::NextLeavesChanged, m_realtime_panel,

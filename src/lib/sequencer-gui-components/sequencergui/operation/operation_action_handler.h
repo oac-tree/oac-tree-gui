@@ -73,6 +73,8 @@ public:
 
   void OnRegenerateJobRequest();
 
+  void OnSetTickTimeoutRequest(int msec);
+
 signals:
   void MakeJobSelectedRequest(sequencergui::JobItem* item);
 
@@ -81,10 +83,13 @@ private:
 
   void ResubmitIfNecessary();
 
+  JobItem* GetSelectedJob();
+
   JobModel* m_job_model{nullptr};
   JobManager* m_job_manager{nullptr};
   selection_callback_t m_job_selection_callback;
   std::unique_ptr<sup::gui::MessageHandlerInterface> m_message_handler;
+  int m_default_delay{0};
 };
 
 }  // namespace sequencergui

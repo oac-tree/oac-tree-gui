@@ -97,6 +97,8 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
 
   QSignalSpy spy_selected_request(&m_actions, &OperationActionHandler::MakeJobSelectedRequest);
 
+  m_actions.OnSetTickTimeoutRequest(42);
+
   EXPECT_FALSE(m_actions.OnSubmitJobRequest(nullptr));
 
   // At the beginning there is not JobItems in a modelo
@@ -110,6 +112,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
   auto job_item = GetJobItems().at(0);
 
   EXPECT_EQ(job_item->GetDisplayName(), "procedure_display_name");
+  EXPECT_EQ(job_item->GetTickTimeout(), 42);
 
   EXPECT_EQ(m_job_manager.GetJobHandler(job_item)->GetExpandedProcedure(),
             job_item->GetExpandedProcedure());

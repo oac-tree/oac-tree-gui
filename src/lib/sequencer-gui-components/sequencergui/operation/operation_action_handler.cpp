@@ -23,12 +23,12 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 
 #include <QAbstractTableModel>
-#include <iostream>
 #include <sstream>
 
 namespace
@@ -66,6 +66,7 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
     , m_job_manager(job_manager)
     , m_job_selection_callback(std::move(selection_callback))
     , m_message_handler(CreateThrowingMessageHandler())
+    , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
 
 {
 }
@@ -95,6 +96,7 @@ bool OperationActionHandler::OnSubmitJobRequest(ProcedureItem *procedure_item)
   auto job = m_job_model->InsertItem<JobItem>();
   job->SetProcedure(procedure_item);
   job->SetDisplayName(procedure_item->GetDisplayName());
+  job->SetTickTimeout(m_default_delay);
 
   auto result = InvokeAndCatch([this, job]() { m_job_manager->SubmitJob(job); }, "Job submission",
                                m_message_handler.get());
@@ -110,7 +112,7 @@ void OperationActionHandler::OnStartJobRequest()
 
   ResubmitIfNecessary();
 
-  m_job_manager->SetCurrentJob(m_job_selection_callback());
+  m_job_manager->SetCurrentJob(GetSelectedJob());
 
   m_job_manager->OnStartJobRequest();
 }
@@ -119,7 +121,7 @@ void OperationActionHandler::OnPauseJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->SetCurrentJob(m_job_selection_callback());
+  m_job_manager->SetCurrentJob(GetSelectedJob());
   m_job_manager->OnPauseJobRequest();
 }
 
@@ -127,7 +129,7 @@ void OperationActionHandler::OnStopJobRequest()
 {
   CheckConditions();
 
-  m_job_manager->SetCurrentJob(m_job_selection_callback());
+  m_job_manager->SetCurrentJob(GetSelectedJob());
   m_job_manager->OnStopJobRequest();
 }
 
@@ -135,7 +137,7 @@ void OperationActionHandler::OnMakeStepRequest()
 {
   CheckConditions();
 
-  m_job_manager->SetCurrentJob(m_job_selection_callback());
+  m_job_manager->SetCurrentJob(GetSelectedJob());
 
   ResubmitIfNecessary();
 
@@ -146,7 +148,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
 {
   CheckConditions();
 
-  auto job = m_job_selection_callback();
+  auto job = GetSelectedJob();
 
   if (!job)
   {
@@ -168,7 +170,7 @@ bool OperationActionHandler::OnRemoveJobRequest()
 
 void OperationActionHandler::OnRemoveJobAndCleanupRequest()
 {
-  auto job = m_job_selection_callback();
+  auto job = GetSelectedJob();
   if (!job)
   {
     return;
@@ -186,7 +188,7 @@ void OperationActionHandler::OnRegenerateJobRequest()
 {
   CheckConditions();
 
-  auto job = m_job_selection_callback();
+  auto job = GetSelectedJob();
 
   if (!job)
   {
@@ -206,6 +208,15 @@ void OperationActionHandler::OnRegenerateJobRequest()
       job->SetStatus({});
       emit MakeJobSelectedRequest(job);
     }
+  }
+}
+
+void OperationActionHandler::OnSetTickTimeoutRequest(int msec)
+{
+  m_default_delay = msec;
+  if (auto job_item = GetSelectedJob(); job_item)
+  {
+    job_item->SetTickTimeout(msec);
   }
 }
 
@@ -240,6 +251,11 @@ void OperationActionHandler::ResubmitIfNecessary()
       OnRegenerateJobRequest();
     }
   }
+}
+
+JobItem *OperationActionHandler::GetSelectedJob()
+{
+  return m_job_selection_callback ? m_job_selection_callback() : nullptr;
 }
 
 }  // namespace sequencergui
