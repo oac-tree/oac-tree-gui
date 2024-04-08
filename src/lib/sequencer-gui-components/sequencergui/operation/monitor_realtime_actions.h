@@ -61,6 +61,8 @@ public:
 
   int GetCurrentTickTimeout();
 
+  void SetCurrentTickTimeout(int msec);
+
   /**
    * @brief Returns list of actions according to provided flags.
    */

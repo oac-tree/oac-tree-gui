@@ -99,6 +99,11 @@ int OperationRealTimePanel::GetCurrentTickTimeout()
   return m_actions->GetCurrentTickTimeout();
 }
 
+void OperationRealTimePanel::SetCurrentTickTimeout(int msec)
+{
+  m_actions->SetCurrentTickTimeout(msec);
+}
+
 void OperationRealTimePanel::ReadSettings()
 {
   const QSettings settings;

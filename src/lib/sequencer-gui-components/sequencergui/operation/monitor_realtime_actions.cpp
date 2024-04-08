@@ -115,6 +115,12 @@ int MonitorRealTimeActions::GetCurrentTickTimeout()
   return m_current_tick_timeout;
 }
 
+void MonitorRealTimeActions::SetCurrentTickTimeout(int msec)
+{
+  m_current_tick_timeout = msec;
+  m_delay_button->setText(GetDelayText(msec));
+}
+
 void MonitorRealTimeActions::ReadSettings()
 {
   QSettings settings;

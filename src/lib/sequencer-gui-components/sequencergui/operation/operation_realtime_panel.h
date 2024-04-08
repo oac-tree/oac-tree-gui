@@ -56,6 +56,8 @@ public:
 
   int GetCurrentTickTimeout();
 
+  void SetCurrentTickTimeout(int msec);
+
 signals:
   void runRequest();
   void pauseRequest();
