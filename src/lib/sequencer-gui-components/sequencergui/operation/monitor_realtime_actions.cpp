@@ -19,7 +19,7 @@
 
 #include "monitor_realtime_actions.h"
 
-#include <sequencergui/jobsystem/job_utils.h>
+#include <sequencergui/model/item_constants.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
@@ -125,7 +125,7 @@ void MonitorRealTimeActions::ReadSettings()
 {
   QSettings settings;
   m_current_tick_timeout =
-      settings.value(kTickTimeOutSettingName, GetDefaultTickTimeoutMsc()).toInt();
+      settings.value(kTickTimeOutSettingName, itemconstants::kDefaultTickTimeoutMsec).toInt();
 }
 
 void MonitorRealTimeActions::WriteSettings()

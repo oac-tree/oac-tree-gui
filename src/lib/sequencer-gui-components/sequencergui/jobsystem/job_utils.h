@@ -29,9 +29,6 @@
 namespace sequencergui
 {
 
-//! Returns default tick timeout in msec.
-int GetDefaultTickTimeoutMsc();
-
 //! Returns reg-exp pattern for vector with labels.
 //! example: {"INFO", "DEBUG"} -> "(INFO|DEBUG)"
 std::string GetRegExpPattern(const std::vector<std::string>& data);

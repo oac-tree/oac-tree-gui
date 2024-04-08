@@ -44,7 +44,7 @@
 namespace sequencergui
 {
 
-JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int sleep_time_msec)
+JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
     : m_guiobject_builder(std::make_unique<GUIObjectBuilder>())
     , m_job_log(new JobLog)
     , m_job_item(job_item)
@@ -65,7 +65,7 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int s
     auto concrete_event = std::get<mvvm::PropertyChangedEvent>(event);
     if (concrete_event.m_name == itemconstants::kTickTimeout)
     {
-      SetSleepTime(m_job_item->GetTickTimeout());
+      m_domain_runner_service->SetTickTimeout(m_job_item->GetTickTimeout());
     }
   };
   m_property_listener->Connect<mvvm::PropertyChangedEvent>(on_event);
@@ -76,7 +76,7 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context, int s
 
   SetupExpandedProcedureItem();
 
-  SetupDomainRunner(user_context, sleep_time_msec);
+  SetupDomainRunner(user_context, m_job_item->GetTickTimeout());
 }
 
 JobHandler::~JobHandler() = default;
@@ -104,11 +104,6 @@ void JobHandler::OnStopRequest()
 bool JobHandler::IsRunning() const
 {
   return m_domain_runner_service->IsBusy();
-}
-
-void JobHandler::SetSleepTime(int time_msec)
-{
-  m_domain_runner_service->SetTickTimeout(time_msec);
 }
 
 ProcedureItem *JobHandler::GetExpandedProcedure() const

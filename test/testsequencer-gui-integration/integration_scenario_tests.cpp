@@ -97,7 +97,6 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
 
   manager.SetCurrentJob(m_job_item);
   EXPECT_EQ(manager.GetCurrentJob(), m_job_item);
-  manager.OnChangeDelayRequest(10);
 
   QSignalSpy spy_instruction_status(&manager, &JobManager::InstructionStatusChanged);
 

@@ -24,12 +24,6 @@
 namespace sequencergui
 {
 
-int GetDefaultTickTimeoutMsc()
-{
-  const int kDefaultTimeout{20};
-  return kDefaultTimeout;
-}
-
 std::string GetRegExpPattern(const std::vector<std::string>& data)
 {
   auto fold = [](std::string result, const std::string& label)

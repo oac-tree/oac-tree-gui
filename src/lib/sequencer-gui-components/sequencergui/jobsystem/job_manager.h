@@ -69,7 +69,6 @@ public:
   void OnRemoveJobRequest(JobItem* job);
 
   void SetMessagePanel(MessagePanel* panel);
-  void OnChangeDelayRequest(int msec);
 
   /**
    * @brief Returns true if there are jobs running.
@@ -93,7 +92,6 @@ private:
   JobItem* m_current_job{nullptr};
   std::map<JobItem*, std::unique_ptr<JobHandler>> m_job_map;
   MessagePanel* m_message_panel{nullptr};
-  int m_current_delay{0};
 };
 
 }  // namespace sequencergui

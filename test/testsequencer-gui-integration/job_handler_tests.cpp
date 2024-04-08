@@ -48,8 +48,6 @@
 #include <QSignalSpy>
 #include <QTest>
 #include <chrono>
-#include <thread>
-#include <tuple>
 
 using namespace sequencergui;
 using msec = std::chrono::milliseconds;
@@ -144,7 +142,7 @@ TEST_F(JobHandlerTest, InvalidProcedure)
   auto procedure = testutils::CreateInvalidProcedureItem(m_models.GetSequencerModel());
   m_job_item->SetProcedure(procedure);
 
-  EXPECT_THROW(JobHandler(m_job_item, {}, 0), sup::sequencer::InvalidOperationException);
+  EXPECT_THROW(JobHandler(m_job_item, {}), sup::sequencer::InvalidOperationException);
 }
 
 //! Delete JobHanlder after procedure start.

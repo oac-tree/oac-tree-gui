@@ -62,8 +62,7 @@ class JobHandler : public QObject
   Q_OBJECT
 
 public:
-  explicit JobHandler(JobItem* job_item, const UserContext& user_context = {},
-                      int sleep_time_msec = 0);
+  explicit JobHandler(JobItem* job_item, const UserContext& user_context = {});
   ~JobHandler() override;
 
   /**
@@ -90,11 +89,6 @@ public:
    * @brief Checks if the job is running, which is one of pause/stepping/running states.
    */
   bool IsRunning() const;
-
-  /**
-   * @brief Sets sleeping time at the end of each tick.
-   */
-  void SetSleepTime(int time_msec);
 
   /**
    * @brief Returns expanded ProcedureItem.

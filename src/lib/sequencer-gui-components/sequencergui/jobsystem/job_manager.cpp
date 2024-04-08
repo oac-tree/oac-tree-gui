@@ -20,7 +20,6 @@
 #include "job_manager.h"
 
 #include "job_handler.h"
-#include "job_utils.h"
 #include "user_input_dialogs.h"
 
 #include <sequencergui/core/exceptions.h>
@@ -34,10 +33,7 @@
 namespace sequencergui
 {
 
-JobManager::JobManager(QObject *parent)
-    : QObject(parent), m_current_delay(GetDefaultTickTimeoutMsc())
-{
-}
+JobManager::JobManager(QObject *parent) : QObject(parent) {}
 
 void JobManager::SubmitJob(JobItem *job)
 {
@@ -153,15 +149,6 @@ void JobManager::SetMessagePanel(MessagePanel *panel)
   m_message_panel = panel;
 }
 
-void JobManager::OnChangeDelayRequest(int msec)
-{
-  m_current_delay = msec;
-  if (auto job_handler = GetCurrentJobHandler(); job_handler)
-  {
-    job_handler->SetSleepTime(m_current_delay);
-  }
-}
-
 bool JobManager::HasRunningJobs() const
 {
   return std::any_of(m_job_map.begin(), m_job_map.end(),
@@ -196,7 +183,7 @@ std::unique_ptr<JobHandler> JobManager::CreateJobHandler(JobItem *item)
 
   UserContext user_context{on_user_input, on_user_choice};
 
-  auto job_handler = std::make_unique<JobHandler>(item, user_context, m_current_delay);
+  auto job_handler = std::make_unique<JobHandler>(item, user_context);
   connect(job_handler.get(), &JobHandler::InstructionStatusChanged, this,
           &JobManager::InstructionStatusChanged);
   connect(job_handler.get(), &JobHandler::NextLeavesChanged, this,
