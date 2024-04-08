@@ -20,6 +20,7 @@
 #include "sequencergui/model/job_item.h"
 
 #include <sequencergui/model/application_models.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -38,9 +39,9 @@ TEST_F(JobItemTest, JobItem)
 {
   JobItem item;
 
-  EXPECT_EQ(item.GetTickTimeout(), 0);
-  item.SetTickTimeout(20);
-  EXPECT_EQ(item.GetTickTimeout(), 20);
+  EXPECT_EQ(item.GetTickTimeout(), itemconstants::kDefaultTickTimeoutMsec);
+  item.SetTickTimeout(42);
+  EXPECT_EQ(item.GetTickTimeout(), 42);
 
   item.SetStatus("abc");
   EXPECT_EQ(item.GetStatus(), "abc");

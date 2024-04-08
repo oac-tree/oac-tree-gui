@@ -44,6 +44,8 @@ const std::string kDefaultPlaceholderAttributeValue = "$par";
 
 const std::string kTickTimeout = "kTickTimeout";
 
+const int kDefaultTickTimeoutMsec = 20;
+
 }  // namespace sequencergui::itemconstants
 
 #endif  // SEQUENCERGUI_MODEL_ITEM_CONSTANTS_H_
