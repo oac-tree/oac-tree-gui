@@ -20,21 +20,22 @@
 #include "job_handler.h"
 
 #include "domain_event_dispatcher_context.h"
-#include "job_log.h"
 #include "domain_runner_service.h"
+#include "job_log.h"
 
-#include <sequencergui/model/item_constants.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
-#include <sequencergui/model/property_listener.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
+
+#include <mvvm/signals/item_listener.h>
 
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/workspace.h>
@@ -59,11 +60,10 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
     throw RuntimeException("Procedure doesn't exist");
   }
 
-  m_property_listener = std::make_unique<PropertyListener<JobItem>>(job_item);
-  auto on_event = [this](const mvvm::event_variant_t& event)
+  m_property_listener = std::make_unique<mvvm::ItemListener<JobItem>>(job_item);
+  auto on_event = [this](const mvvm::PropertyChangedEvent &event)
   {
-    auto concrete_event = std::get<mvvm::PropertyChangedEvent>(event);
-    if (concrete_event.m_name == itemconstants::kTickTimeout)
+    if (event.m_name == itemconstants::kTickTimeout)
     {
       m_domain_runner_service->SetTickTimeout(m_job_item->GetTickTimeout());
     }
