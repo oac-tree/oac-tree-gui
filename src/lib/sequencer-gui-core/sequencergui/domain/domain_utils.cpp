@@ -168,9 +168,10 @@ std::pair<bool, std::string> LoadPlugins()
   UpdateGlobalDomainObjectTypeRegistry(domainconstants::kCorePluginName);
 
   static const std::vector<std::string> plugins = {
-      "libsequencer-ca.so",      "libsequencer-pvxs.so",       "libsequencer-misc.so",
-      "libsequencer-control.so", "libsequencer-sup-config.so", "libsequencer-sup-pulse-counter.so",
-      "libsequencer-mathexpr.so"};
+      domainconstants::kEpicsCAPluginName,   domainconstants::kEpicsPVXSPluginName,
+      domainconstants::kEpicsMiscPluginName, domainconstants::kControlPluginName,
+      domainconstants::kSupConfigPluginName, domainconstants::kSupPulseCounterPluginName,
+      domainconstants::kMathExprPluginName};
 
   for (const auto& name : plugins)
   {

@@ -19,15 +19,14 @@
 
 #include "sequencergui/domain/domain_utils.h"
 
+#include <sequencergui/domain/domain_object_type_registry.h>
+
 #include <sup/sequencer/constants.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/user_interface.h>
 #include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
-
-#include <chrono>
-#include <future>
 
 using namespace sequencergui;
 using namespace sequencergui::domainconstants;
@@ -155,4 +154,38 @@ TEST_F(DomainUtilsTest, DialogMetagadata)
     EXPECT_FALSE(IsSelectTextDialog(metadata));
     EXPECT_TRUE(IsMessageBoxDialog(metadata));
   }
+}
+
+TEST_F(DomainUtilsTest, GlobalDomainObjectTypeRegistry)
+{
+  const std::string undefined("undefined");
+
+  // instructions and variables from core
+
+  EXPECT_EQ(GlobalDomainObjectTypeRegistry()
+                .GetPluginName(domainconstants::kWaitInstructionType)
+                .value_or(undefined),
+            domainconstants::kCorePluginName);
+
+  EXPECT_EQ(GlobalDomainObjectTypeRegistry()
+                .GetPluginName(domainconstants::kLocalVariableType)
+                .value_or(undefined),
+            domainconstants::kCorePluginName);
+
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  // instructions and variables from EPICS libs
+
+  EXPECT_EQ(GlobalDomainObjectTypeRegistry()
+                .GetPluginName(domainconstants::kChannelAccessReadInstructionType)
+                .value_or(undefined),
+            domainconstants::kEpicsCAPluginName);
+
+  EXPECT_EQ(GlobalDomainObjectTypeRegistry()
+                .GetPluginName(domainconstants::kPvAccessClientVariableType)
+                .value_or(undefined),
+            domainconstants::kEpicsPVXSPluginName);
 }
