@@ -22,6 +22,8 @@
 
 #include <mvvm/model/compound_item.h>
 
+#include <set>
+
 namespace sequencergui
 {
 class WorkspaceItem;
@@ -56,6 +58,11 @@ public:
 
   ProcedurePreambleItem* GetPreambleItem() const;
 };
+
+/**
+ * @brief Collect domain plugin names that are required to run this procedure.
+ */
+std::set<std::string> CollectPluginNames(const ProcedureItem& item);
 
 }  // namespace sequencergui
 

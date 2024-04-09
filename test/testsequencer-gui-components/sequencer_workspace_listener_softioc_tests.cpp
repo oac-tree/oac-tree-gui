@@ -37,11 +37,6 @@
 
 #include <QSignalSpy>
 #include <QTest>
-#include <chrono>
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <thread>
 
 using namespace sequencergui;
 

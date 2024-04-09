@@ -57,7 +57,7 @@ public:
   /**
    * @brief Returns the name of the plugin where the given object name is registered.
    *
-   * If obect name is not known, will return an empty optional.
+   * If object name is not known, will return an empty optional.
    */
   std::optional<std::string> GetPluginName(const std::string& object_name) const;
 

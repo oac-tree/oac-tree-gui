@@ -19,10 +19,60 @@
 
 #include "procedure_item.h"
 
+#include <sequencergui/domain/domain_object_type_registry.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/procedure_preamble_items.h>
+#include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
+
+namespace
+{
+
+/**
+ * @brief Adds plugin name coresponding to a given domain type into the container.
+ */
+void CollectPluginName(const std::string &domain_type, std::set<std::string> &plugin_names)
+{
+  const auto &registry = sequencergui::GlobalDomainObjectTypeRegistry();
+  if (auto plugin_name = registry.GetPluginName(domain_type).value_or(std::string());
+      !plugin_name.empty())
+  {
+    plugin_names.insert(plugin_name);
+  }
+}
+
+/**
+ * @brief Collects all plugin names necessary to handle variables in the given workspace.
+ */
+void CollectVariablePluginNames(const sequencergui::WorkspaceItem &workspace_item,
+                                std::set<std::string> &plugin_names)
+{
+  for (auto variable : workspace_item.GetVariables())
+  {
+    CollectPluginName(variable->GetDomainType(), plugin_names);
+  }
+}
+
+/**
+ * @brief Collects all plugin names necessary to handle instructions in the given instruction
+ * container.
+ */
+void CollectInstructionPluginNames(const sequencergui::InstructionContainerItem &container,
+                                   std::set<std::string> &plugin_names)
+{
+  for (auto instruction : container.GetInstructions())
+  {
+    auto on_instruction = [&plugin_names](const sequencergui::InstructionItem *item)
+    { CollectPluginName(item->GetDomainType(), plugin_names); };
+    sequencergui::IterateInstruction<const sequencergui::InstructionItem *>(instruction,
+                                                                            on_instruction);
+  }
+}
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -90,6 +140,16 @@ WorkspaceItem *ProcedureItem::GetWorkspace() const
 ProcedurePreambleItem *ProcedureItem::GetPreambleItem() const
 {
   return GetItem<ProcedurePreambleItem>(kPreamble);
+}
+
+std::set<std::string> CollectPluginNames(const ProcedureItem &item)
+{
+  std::set<std::string> result;
+
+  CollectVariablePluginNames(*item.GetWorkspace(), result);
+  CollectInstructionPluginNames(*item.GetInstructionContainer(), result);
+
+  return result;
 }
 
 }  // namespace sequencergui
