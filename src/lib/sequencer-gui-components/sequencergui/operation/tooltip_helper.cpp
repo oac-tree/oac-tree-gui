@@ -28,7 +28,6 @@
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <QDebug>
 #include <QFont>
 #include <QTextEdit>
 
