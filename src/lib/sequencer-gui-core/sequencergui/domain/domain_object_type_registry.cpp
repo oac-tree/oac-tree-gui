@@ -22,7 +22,8 @@
 namespace sequencergui
 {
 
-void DomainObjectTypeRegistry::Update(const std::string &plugin_name, const std::vector<std::string> &object_names)
+void DomainObjectTypeRegistry::Update(const std::string &plugin_name,
+                                      const std::vector<std::string> &object_names)
 {
   for (const auto &name : object_names)
   {
@@ -34,10 +35,17 @@ void DomainObjectTypeRegistry::Update(const std::string &plugin_name, const std:
   }
 }
 
-std::optional<std::string> DomainObjectTypeRegistry::GetPluginName(const std::string &object_name) const
+std::optional<std::string> DomainObjectTypeRegistry::GetPluginName(
+    const std::string &object_name) const
 {
   auto iter = m_object_name_to_plugin_name.find(object_name);
   return iter == m_object_name_to_plugin_name.end() ? std::optional<std::string>() : iter->second;
+}
+
+DomainObjectTypeRegistry &GlobalDomainObjectTypeRegistry()
+{
+  static DomainObjectTypeRegistry registry;
+  return registry;
 }
 
 }  // namespace sequencergui

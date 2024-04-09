@@ -19,6 +19,8 @@
 
 #include "domain_utils.h"
 
+#include "domain_object_type_registry.h"
+
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 
@@ -53,6 +55,19 @@ bool LoadPlugin(const std::string& name)
   }
   return is_success;
 }
+
+/**
+ * @brief Updates global registry with correspondance of plugin name to the type names of
+ * instruction and variables.
+ */
+void UpdateGlobalDomainObjectTypeRegistry(const std::string& plugin_name)
+{
+  auto& registry = sequencergui::GlobalDomainObjectTypeRegistry();
+  registry.Update(plugin_name,
+                  sup::sequencer::GlobalInstructionRegistry().RegisteredInstructionNames());
+  registry.Update(plugin_name, sup::sequencer::GlobalVariableRegistry().RegisteredVariableNames());
+}
+
 }  // namespace
 
 namespace sequencergui
@@ -150,6 +165,8 @@ std::pair<bool, std::string> LoadPlugins()
 {
   std::vector<std::string> failed_plugins;
 
+  UpdateGlobalDomainObjectTypeRegistry(domainconstants::kCorePluginName);
+
   static const std::vector<std::string> plugins = {
       "libsequencer-ca.so",      "libsequencer-pvxs.so",       "libsequencer-misc.so",
       "libsequencer-control.so", "libsequencer-sup-config.so", "libsequencer-sup-pulse-counter.so",
@@ -157,7 +174,11 @@ std::pair<bool, std::string> LoadPlugins()
 
   for (const auto& name : plugins)
   {
-    if (!LoadPlugin(name))
+    if (LoadPlugin(name))
+    {
+      UpdateGlobalDomainObjectTypeRegistry(name);
+    }
+    else
     {
       failed_plugins.push_back(name);
     }

@@ -65,6 +65,8 @@ private:
   std::map<std::string, std::string> m_object_name_to_plugin_name;
 };
 
+DomainObjectTypeRegistry& GlobalDomainObjectTypeRegistry();
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_DOMAIN_OBJECT_TYPE_REGISTRY_H_

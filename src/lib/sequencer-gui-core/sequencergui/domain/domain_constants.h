@@ -30,6 +30,10 @@
 
 namespace sequencergui::domainconstants
 {
+
+// plugins
+const std::string kCorePluginName = ""; //!< fictional name when only sequencer core libs are loaded
+
 // instructions
 const std::string kChoiceInstructionType = "Choice";
 const std::string kConditionInstructionType = "Condition";
