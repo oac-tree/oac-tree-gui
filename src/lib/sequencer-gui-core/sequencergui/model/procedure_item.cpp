@@ -139,14 +139,14 @@ ProcedurePreambleItem *ProcedureItem::GetPreambleItem() const
   return GetItem<ProcedurePreambleItem>(kPreamble);
 }
 
-std::set<std::string> CollectPluginNames(const ProcedureItem &item)
+std::vector<std::string> CollectPluginNames(const ProcedureItem &item)
 {
   std::set<std::string> result;
 
   CollectVariablePluginNames(*item.GetWorkspace(), result);
   CollectInstructionPluginNames(*item.GetInstructionContainer(), result);
 
-  return result;
+  return {result.begin(), result.end()};
 }
 
 }  // namespace sequencergui

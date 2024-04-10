@@ -62,7 +62,7 @@ public:
 /**
  * @brief Collect domain plugin names that are required to run this procedure.
  */
-std::set<std::string> CollectPluginNames(const ProcedureItem& item);
+std::vector<std::string> CollectPluginNames(const ProcedureItem& item);
 
 }  // namespace sequencergui
 

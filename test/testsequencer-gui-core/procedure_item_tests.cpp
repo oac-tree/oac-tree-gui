@@ -104,7 +104,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
     item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
 
     // no plugin names are necessary
-    const std::set<std::string> expected({domainconstants::kEpicsCAPluginName});
+    const std::vector<std::string> expected({domainconstants::kEpicsCAPluginName});
     EXPECT_EQ(CollectPluginNames(item), expected);
   }
 
@@ -115,7 +115,7 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
         mvvm::TagIndex::Append());
 
     // no plugin names are necessary
-    const std::set<std::string> expected(
+    const std::vector<std::string> expected(
         {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
     EXPECT_EQ(CollectPluginNames(item), expected);
   }

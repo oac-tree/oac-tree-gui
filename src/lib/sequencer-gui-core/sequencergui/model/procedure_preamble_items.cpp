@@ -137,8 +137,11 @@ void ProcedurePreambleItem::AddPluginPath(const std::string &value)
 
 void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string> &plugin_paths)
 {
-  // remove previous
-  GetPluginContainer()->Clear();
+  // remove previous if plugin list is not the same
+  if (plugin_paths != GetPluginPaths())
+  {
+    GetPluginContainer()->Clear();
+  }
 
   for (const auto &value : plugin_paths)
   {
