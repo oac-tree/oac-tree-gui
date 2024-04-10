@@ -29,11 +29,10 @@ namespace sequencergui
 /**
  * @brief Iterates in non-recursive manner over instruction tree and calls user callback.
  */
-
-template <typename T>
-void IterateInstruction(T item, std::function<void(T)> func)
+template <typename ItemT>
+void IterateInstruction(ItemT item, std::function<void(ItemT)> func)
 {
-  std::stack<T> stack;
+  std::stack<ItemT> stack;
   stack.push(item);
 
   while (!stack.empty())
@@ -48,6 +47,19 @@ void IterateInstruction(T item, std::function<void(T)> func)
     {
       stack.push(*it);
     }
+  }
+}
+
+/**
+ * @brief Iterates over all instructions and their children in given container and calls user
+ * callback.
+ */
+template <typename ItemT, typename ContainerT>
+void IterateInstructionContainer(const ContainerT& container, std::function<void(ItemT)> func)
+{
+  for (ItemT instruction : container)
+  {
+    IterateInstruction<ItemT>(instruction, func);
   }
 }
 

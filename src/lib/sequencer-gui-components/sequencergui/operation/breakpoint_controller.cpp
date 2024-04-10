@@ -55,10 +55,8 @@ bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &ite
   auto func = [this, &job_controller](const InstructionItem *item)
   { UpdateDomainBreakpoint(*item, job_controller); };
 
-  for (auto instruction : item.GetInstructionContainer()->GetInstructions())
-  {
-    IterateInstruction<const InstructionItem *>(instruction, func);
-  }
+  IterateInstructionContainer<const InstructionItem *>(
+      item.GetInstructionContainer()->GetInstructions(), func);
 
   return true;
 }

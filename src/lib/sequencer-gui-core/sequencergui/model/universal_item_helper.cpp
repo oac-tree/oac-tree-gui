@@ -125,10 +125,7 @@ std::vector<const InstructionItem *> GetCollapsedItems(const InstructionContaine
     }
   };
 
-  for (auto instruction : container.GetInstructions())
-  {
-    IterateInstruction<const InstructionItem *>(instruction, func);
-  }
+  IterateInstructionContainer<const InstructionItem *>(container.GetInstructions(), func);
 
   return result;
 }

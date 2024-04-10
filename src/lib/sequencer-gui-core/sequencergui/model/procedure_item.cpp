@@ -63,13 +63,10 @@ void CollectVariablePluginNames(const sequencergui::WorkspaceItem &workspace_ite
 void CollectInstructionPluginNames(const sequencergui::InstructionContainerItem &container,
                                    std::set<std::string> &plugin_names)
 {
-  for (auto instruction : container.GetInstructions())
-  {
-    auto on_instruction = [&plugin_names](const sequencergui::InstructionItem *item)
-    { CollectPluginName(item->GetDomainType(), plugin_names); };
-    sequencergui::IterateInstruction<const sequencergui::InstructionItem *>(instruction,
-                                                                            on_instruction);
-  }
+  auto on_instruction = [&plugin_names](const sequencergui::InstructionItem *item)
+  { CollectPluginName(item->GetDomainType(), plugin_names); };
+  sequencergui::IterateInstructionContainer<const sequencergui::InstructionItem *>(
+      container.GetInstructions(), on_instruction);
 }
 
 }  // namespace
