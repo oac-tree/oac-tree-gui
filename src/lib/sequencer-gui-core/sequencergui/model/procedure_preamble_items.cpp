@@ -79,8 +79,7 @@ static const std::string kPluginContainerTag = "kPluginContainerTag";
 
 ProcedurePreambleItem::ProcedurePreambleItem() : CompoundItem(Type)
 {
-  AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag)
-      .SetDisplayName("Type registration");
+  AddBranch<mvvm::ContainerItem>(kTypeRegistrationContainerTag).SetDisplayName("Type registration");
   AddBranch<mvvm::ContainerItem>(kPluginContainerTag).SetDisplayName("Plugins");
 }
 
@@ -134,6 +133,17 @@ void ProcedurePreambleItem::AddPluginPath(const std::string &value)
 {
   auto property = GetPluginContainer()->InsertItem<mvvm::PropertyItem>(mvvm::TagIndex::Append());
   property->SetData(value);
+}
+
+void ProcedurePreambleItem::SetPluginPaths(const std::vector<std::string> &plugin_paths)
+{
+  // remove previous
+  GetPluginContainer()->Clear();
+
+  for (const auto &value : plugin_paths)
+  {
+    AddPluginPath(value);
+  }
 }
 
 }  // namespace sequencergui

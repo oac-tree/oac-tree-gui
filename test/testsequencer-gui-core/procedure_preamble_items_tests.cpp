@@ -84,3 +84,16 @@ TEST_F(ProcedurePreambleItemsTest, AddPluginPath)
   std::vector<std::string> expected{"abc", "def"};
   EXPECT_EQ(item.GetPluginPaths(), expected);
 }
+
+TEST_F(ProcedurePreambleItemsTest, SetPluginPath)
+{
+  ProcedurePreambleItem item;
+
+  item.AddPluginPath("a1");
+
+  std::vector<std::string> expected{"a2", "a3"};
+
+  item.SetPluginPaths(expected);
+
+  EXPECT_EQ(item.GetPluginPaths(), expected);
+}

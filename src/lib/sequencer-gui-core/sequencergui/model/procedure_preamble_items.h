@@ -70,6 +70,12 @@ public:
 
   std::vector<std::string> GetPluginPaths() const;
   void AddPluginPath(const std::string& value);
+
+  /**
+   * @brief Sets plugin names, all previous names will be removed.
+   */
+  void SetPluginPaths(const std::vector<std::string>& plugin_paths);
+
 };
 
 }  // namespace sequencergui
