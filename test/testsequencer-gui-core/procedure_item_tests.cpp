@@ -137,7 +137,6 @@ TEST_F(ProcedureItemTest, UpdatePluginNames)
 
   UpdatePluginNames(item);
 
-  // no plugin names are necessary
   const std::vector<std::string> expected(
       {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
 
