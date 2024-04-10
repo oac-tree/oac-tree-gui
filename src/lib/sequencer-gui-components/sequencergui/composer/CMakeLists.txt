@@ -23,6 +23,8 @@ target_sources(${library_name} PRIVATE
   instruction_editor_widget.h
   instruction_item_panel.cpp
   instruction_item_panel.h
+  procedure_plugin_controller.cpp
+  procedure_plugin_controller.h
   sequencer_composer_actions.cpp
   sequencer_composer_actions.h
   sequencer_composer_view.cpp
