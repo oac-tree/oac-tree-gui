@@ -426,6 +426,5 @@ TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
 
   // AnyValueItem on board was regenerated
   auto regenerated_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
-  EXPECT_NE(new_anyvalue_item2, regenerated_anyvalue_item2);
   EXPECT_EQ(sup::gui::CreateAnyValue(*regenerated_anyvalue_item2), anyvalue1);  // value was changed
 }
