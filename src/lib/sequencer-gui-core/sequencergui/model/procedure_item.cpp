@@ -149,4 +149,10 @@ std::vector<std::string> CollectPluginNames(const ProcedureItem &item)
   return {result.begin(), result.end()};
 }
 
+void UpdatePluginNames(const ProcedureItem &item)
+{
+  auto names = CollectPluginNames(item);
+  item.GetPreambleItem()->SetPluginPaths(names);
+}
+
 }  // namespace sequencergui

@@ -23,6 +23,7 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_preamble_items.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
@@ -119,4 +120,26 @@ TEST_F(ProcedureItemTest, CollectPluginNamesForEpicsObjects)
         {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
     EXPECT_EQ(CollectPluginNames(item), expected);
   }
+}
+
+//! Checking UpdatePluginNames when procedure contains EPICS instructions and variables.
+TEST_F(ProcedureItemTest, UpdatePluginNames)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const ProcedureItem item;
+  item.GetWorkspace()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
+  item.GetInstructionContainer()->InsertItem<PvAccessWriteInstructionItem>(
+      mvvm::TagIndex::Append());
+
+  UpdatePluginNames(item);
+
+  // no plugin names are necessary
+  const std::vector<std::string> expected(
+      {domainconstants::kEpicsCAPluginName, domainconstants::kEpicsPVXSPluginName});
+
+  EXPECT_EQ(item.GetPreambleItem()->GetPluginPaths(), expected);
 }

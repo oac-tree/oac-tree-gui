@@ -64,6 +64,11 @@ public:
  */
 std::vector<std::string> CollectPluginNames(const ProcedureItem& item);
 
+/**
+ * @brief Updates preamble with plugin names using current instruction and variable composition.
+ */
+void UpdatePluginNames(const ProcedureItem& item);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_MODEL_PROCEDURE_ITEM_H_
