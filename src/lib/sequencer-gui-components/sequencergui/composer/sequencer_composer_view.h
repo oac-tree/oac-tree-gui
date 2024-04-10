@@ -33,6 +33,7 @@ class ComposerWidgetPanel;
 class ComposerPanel;
 class ProcedureItem;
 class SequencerComposerActions;
+class ProcedurePluginController;
 
 /**
  * @brief The SequencerComposerView class is a main widget for model editing.
@@ -70,6 +71,7 @@ private:
   SequencerModel* m_model{nullptr};
 
   SequencerComposerActions* m_composer_actions{nullptr};
+  std::unique_ptr<ProcedurePluginController> m_plugin_controller;
 };
 
 }  // namespace sequencergui

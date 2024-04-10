@@ -34,9 +34,13 @@ namespace sequencergui
 ProcedurePluginController::ProcedurePluginController(mvvm::SessionModelInterface *model)
     : m_listener(std::make_unique<listener_t>(model))
 {
-  m_listener->Connect<mvvm::ItemInsertedEvent>(this,
-                                               &ProcedurePluginController::OnItemInsertedEvent);
-  m_listener->Connect<mvvm::ItemRemovedEvent>(this, &ProcedurePluginController::OnItemRemovedEvent);
+  if (model)
+  {
+    m_listener->Connect<mvvm::ItemInsertedEvent>(this,
+                                                 &ProcedurePluginController::OnItemInsertedEvent);
+    m_listener->Connect<mvvm::ItemRemovedEvent>(this,
+                                                &ProcedurePluginController::OnItemRemovedEvent);
+  }
 }
 
 ProcedurePluginController::~ProcedurePluginController() = default;

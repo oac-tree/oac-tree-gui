@@ -19,6 +19,8 @@
 
 #include "sequencer_composer_view.h"
 
+#include "procedure_plugin_controller.h"
+
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_widget_panel.h>
 #include <sequencergui/composer/sequencer_composer_actions.h>
@@ -86,6 +88,8 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_composer_panel->SetModel(model);
   m_central_panel->SetModel(model);
   m_right_panel->SetModel(model);
+
+  m_plugin_controller = std::make_unique<ProcedurePluginController>(model);
 }
 
 void SequencerComposerView::showEvent(QShowEvent *event)
