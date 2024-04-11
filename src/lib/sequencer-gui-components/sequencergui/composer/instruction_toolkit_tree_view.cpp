@@ -28,10 +28,13 @@
 #include <QPainter>
 #include <QPixmap>
 
-namespace sequencergui
+namespace
 {
 
-QPixmap createPixmap()
+/**
+ * @brief Creates a pixmap for drag indicator.
+ */
+QPixmap CreatePixmap()
 {
   QRect rect = QRect(0, 0, mvvm::utils::UnitSize(4), mvvm::utils::UnitSize(4));
   QPixmap pixmap(rect.width() + 1, rect.height() + 1);
@@ -44,13 +47,25 @@ QPixmap createPixmap()
   return pixmap;
 }
 
+}  // namespace
+
+namespace sequencergui
+{
+
+InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent) : QTreeView(parent)
+{
+  auto on_double_click = [this](auto index)
+  { emit InstructionDoubleClicked(index.data(Qt::DisplayRole).toString()); };
+  connect(this, &InsructionToolKitTreeView::doubleClicked, this, on_double_click);
+}
+
 void InsructionToolKitTreeView::startDrag(Qt::DropActions supportedActions)
 {
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {
     auto drag = new QDrag(this);
     drag->setMimeData(mime_data);  // ownership is taken
-    auto pixmap = createPixmap();
+    auto pixmap = CreatePixmap();
     drag->setPixmap(pixmap);
     drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
 

@@ -22,17 +22,17 @@
 
 #include <QWidget>
 
-class QTreeView;
-
 namespace sequencergui
 {
 
-class ItemListWidget;
 class InstructionToolKitViewModel;
+class InsructionToolKitTreeView;
 
 /**
  * @brief The InstructionItemPanel class is a tree with instruction type names grouped according to
  * their plugin origin.
+ *
+ * It is located on the left-hand-side of SequencerComposerView.
  */
 class InstructionItemPanel : public QWidget
 {
@@ -46,8 +46,7 @@ signals:
 
 private:
   InstructionToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
-  ItemListWidget* m_list_widget{nullptr};
-  QTreeView* m_tree_view{nullptr};
+  InsructionToolKitTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace sequencergui

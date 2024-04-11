@@ -35,7 +35,10 @@ class InsructionToolKitTreeView : public QTreeView
 {
   Q_OBJECT
 public:
-  explicit InsructionToolKitTreeView(QWidget* parent = nullptr) : QTreeView(parent) {}
+  explicit InsructionToolKitTreeView(QWidget* parent = nullptr);
+
+signals:
+  void InstructionDoubleClicked(const QString& name);
 
 protected:
   void startDrag(Qt::DropActions supportedActions) override;

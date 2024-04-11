@@ -21,6 +21,8 @@ target_sources(${library_name} PRIVATE
   instruction_editor_context.h
   instruction_editor_widget.cpp
   instruction_editor_widget.h
+  instruction_toolkit_tree_view.cpp
+  instruction_toolkit_tree_view.h
   instruction_item_panel.cpp
   instruction_item_panel.h
   procedure_plugin_controller.cpp
