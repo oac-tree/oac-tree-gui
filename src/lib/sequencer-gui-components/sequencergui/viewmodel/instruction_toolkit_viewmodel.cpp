@@ -20,7 +20,9 @@
 #include "instruction_toolkit_viewmodel.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
+#include <QMimeData>
 #include <memory>
 
 namespace
@@ -42,6 +44,18 @@ InstructionToolKitViewModel::InstructionToolKitViewModel(QObject* parent)
     : QStandardItemModel(parent)
 {
   PopulateModel();
+}
+
+QMimeData* InstructionToolKitViewModel::mimeData(const QModelIndexList& index_list) const
+{
+  if (!index_list.empty())
+  {
+    auto item = itemFromIndex(index_list.at(0));
+    auto mime_data = CreateNewInstructionMimeData(item->data(Qt::DisplayRole).toString());
+    return mime_data.release();
+  }
+
+  return nullptr;
 }
 
 void InstructionToolKitViewModel::PopulateModel()

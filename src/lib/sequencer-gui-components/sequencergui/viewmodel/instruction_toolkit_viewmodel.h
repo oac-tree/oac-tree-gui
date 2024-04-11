@@ -36,6 +36,8 @@ class InstructionToolKitViewModel : public QStandardItemModel
 public:
   explicit InstructionToolKitViewModel(QObject* parent = nullptr);
 
+  QMimeData* mimeData(const QModelIndexList& index_list) const override;
+
 private:
   void PopulateModel();
 };
