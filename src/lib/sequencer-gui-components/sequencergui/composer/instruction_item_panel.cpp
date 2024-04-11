@@ -20,17 +20,22 @@
 #include "instruction_item_panel.h"
 
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/viewmodel/instruction_toolkit_viewmodel.h>
 #include <sequencergui/widgets/item_list_widget.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
 InstructionItemPanel::InstructionItemPanel(QWidget *parent)
-    : QWidget(parent), m_list_widget(new ItemListWidget)
+    : QWidget(parent)
+    , m_instruction_toolkit_viewmodel(new InstructionToolKitViewModel(this))
+    , m_list_widget(new ItemListWidget)
+    , m_tree_view(new QTreeView)
 {
   setWindowTitle("INSTRUCTIONS");
 
@@ -38,11 +43,14 @@ InstructionItemPanel::InstructionItemPanel(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_list_widget);
+  layout->addWidget(m_tree_view);
 
   m_list_widget->AddEntries(::mvvm::utils::GetStringList(GetDomainInstructionNames()));
 
   connect(m_list_widget, &ItemListWidget::InstructionDoubleClicked, this,
           &InstructionItemPanel::InstructionDoubleClicked);
+
+  m_tree_view->setModel(m_instruction_toolkit_viewmodel);
 }
 
 }  // namespace sequencergui

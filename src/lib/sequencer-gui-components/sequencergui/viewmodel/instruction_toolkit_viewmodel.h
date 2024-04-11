@@ -17,39 +17,29 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_ITEM_PANEL_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_ITEM_PANEL_H_
+#ifndef SEQUENCERGUI_VIEWMODEL_INSTRUCTION_TOOLKIT_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_INSTRUCTION_TOOLKIT_VIEWMODEL_H_
 
-#include <QWidget>
-
-class QTreeView;
+#include <QStandardItemModel>
 
 namespace sequencergui
 {
 
-class ItemListWidget;
-class InstructionToolKitViewModel;
-
 /**
- * @brief The InstructionItemPanel class is a tree with instruction type names grouped according to
- * their plugin origin.
+ * @brief The InstructionToolKitViewModel class provides a viewmodel with a tree of available
+ * instructions sorted according to their plugin names.
  */
-class InstructionItemPanel : public QWidget
+class InstructionToolKitViewModel : public QStandardItemModel
 {
   Q_OBJECT
 
 public:
-  explicit InstructionItemPanel(QWidget* parent = nullptr);
-
-signals:
-  void InstructionDoubleClicked(const QString& name);
+  explicit InstructionToolKitViewModel(QObject* parent = nullptr);
 
 private:
-  InstructionToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
-  ItemListWidget* m_list_widget{nullptr};
-  QTreeView* m_tree_view{nullptr};
+  void PopulateModel();
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_ITEM_PANEL_H_
+#endif  // SEQUENCERGUI_VIEWMODEL_INSTRUCTION_TOOLKIT_VIEWMODEL_H_

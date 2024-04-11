@@ -17,39 +17,41 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_ITEM_PANEL_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_ITEM_PANEL_H_
+#include "instruction_toolkit_viewmodel.h"
 
-#include <QWidget>
+#include <sequencergui/domain/domain_utils.h>
 
-class QTreeView;
+#include <memory>
+
+namespace
+{
+
+std::unique_ptr<QStandardItem> CreateItem(const std::string& name)
+{
+  auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
+  result->setEditable(false);
+  return result;
+}
+
+}  // namespace
 
 namespace sequencergui
 {
 
-class ItemListWidget;
-class InstructionToolKitViewModel;
-
-/**
- * @brief The InstructionItemPanel class is a tree with instruction type names grouped according to
- * their plugin origin.
- */
-class InstructionItemPanel : public QWidget
+InstructionToolKitViewModel::InstructionToolKitViewModel(QObject* parent)
+    : QStandardItemModel(parent)
 {
-  Q_OBJECT
+  PopulateModel();
+}
 
-public:
-  explicit InstructionItemPanel(QWidget* parent = nullptr);
+void InstructionToolKitViewModel::PopulateModel()
+{
+  auto parent_item = invisibleRootItem();
 
-signals:
-  void InstructionDoubleClicked(const QString& name);
-
-private:
-  InstructionToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
-  ItemListWidget* m_list_widget{nullptr};
-  QTreeView* m_tree_view{nullptr};
-};
+  for (const auto& name : GetDomainInstructionNames())
+  {
+    parent_item->appendRow(CreateItem(name).release());
+  }
+}
 
 }  // namespace sequencergui
-
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_ITEM_PANEL_H_
