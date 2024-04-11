@@ -10,6 +10,8 @@ target_sources(${library_name} PRIVATE
   attribute_editor_context.h
   composer_panel.cpp
   composer_panel.h
+  composer_helper.cpp
+  composer_helper.h
   composer_widget_panel.cpp
   composer_widget_panel.h
   instruction_attribute_editor.cpp
