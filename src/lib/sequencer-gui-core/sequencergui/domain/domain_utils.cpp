@@ -22,22 +22,17 @@
 #include "domain_object_type_registry.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_constants.h>
 
 #include <mvvm/utils/string_utils.h>
 
-#include <sup/sequencer/constants.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/instruction_registry.h>
 #include <sup/sequencer/sequence_parser.h>
-#include <sup/sequencer/user_interface.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_registry.h>
 
-#include <algorithm>
 #include <iostream>
 #include <sstream>
-#include <stdexcept>
 
 namespace
 {
@@ -82,8 +77,8 @@ std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name)
   auto result = ::sup::sequencer::GlobalVariableRegistry().Create(domain_name);
   if (!result)
   {
-    throw std::runtime_error("Error in GlobalVariableRegistry: can create variable '" + domain_name
-                             + "'");
+    throw RuntimeException("Error in GlobalVariableRegistry: can create variable '" + domain_name
+                           + "'");
   }
   return result;
 }
@@ -96,46 +91,6 @@ std::vector<std::string> GetDomainInstructionNames()
 std::vector<std::string> GetDomainVariableNames()
 {
   return ::sup::sequencer::GlobalVariableRegistry().RegisteredVariableNames();
-}
-
-//! Returns map of current instruction attributes.
-
-std::map<std::string, std::string> GetAttributes(const instruction_t* instruction)
-{
-  std::map<std::string, std::string> result;
-  for (const auto& it : instruction->GetStringAttributes())
-  {
-    result.insert(it);
-  }
-  return result;
-}
-
-//! Returns map of current variable attributes.
-
-std::map<std::string, std::string> GetAttributes(const variable_t* variable)
-{
-  std::map<std::string, std::string> result;
-  for (const auto& it : variable->GetStringAttributes())
-  {
-    result.insert(it);
-  }
-  return result;
-}
-
-//! Returns true if given instruction has a root-instruction attribute set.
-
-bool IsRootInstruction(const instruction_t* instruction)
-{
-  static const std::vector<std::string> expected_values{"true", "yes"};
-  if (!instruction->HasAttribute(domainconstants::kIsRootAttribute))
-  {
-    return false;
-  }
-
-  auto value = instruction->GetAttributeString(domainconstants::kIsRootAttribute);
-  std::transform(value.begin(), value.end(), value.begin(), ::tolower);
-
-  return std::find(expected_values.begin(), expected_values.end(), value) != expected_values.end();
 }
 
 bool IsVariableTypeAvailable(const std::string& domain_type)

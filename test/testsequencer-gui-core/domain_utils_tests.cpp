@@ -113,21 +113,6 @@ TEST_F(DomainUtilsTest, SequencerPluginEpicsDomainVariableTypeConstants)
   }
 }
 
-TEST_F(DomainUtilsTest, IsRootInstruction)
-{
-  auto item = CreateDomainInstruction(kWaitInstructionType);
-  EXPECT_FALSE(IsRootInstruction(item.get()));
-
-  item->AddAttribute(kIsRootAttribute, "true");
-  EXPECT_TRUE(IsRootInstruction(item.get()));
-
-  item->SetAttribute(kIsRootAttribute, "yEs");
-  EXPECT_TRUE(IsRootInstruction(item.get()));
-
-  item->SetAttribute(kIsRootAttribute, "false");
-  EXPECT_FALSE(IsRootInstruction(item.get()));
-}
-
 TEST_F(DomainUtilsTest, DialogMetagadata)
 {
   sup::dto::AnyValue anyvalue;

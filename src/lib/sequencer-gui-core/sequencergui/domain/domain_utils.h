@@ -20,15 +20,14 @@
 #ifndef SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
 #define SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
 
-//! Collection of utility functions to access/create various Sequencer related objects.
-//! With this file we want to decrease as much as possible the visibility of sequencer headers
-//! in the code.
+//! @file
+//! Collection of utility functions to access/create various Sequencer-related objects. With this
+//! file, we want to decrease as much as possible the visibility of sequencer headers in the code.
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -36,34 +35,66 @@
 namespace sequencergui
 {
 
+/**
+ * @brief Creates domain instruction from a given domain name.
+ */
 std::unique_ptr<instruction_t> CreateDomainInstruction(const std::string& domain_name);
 
+/**
+ * @brief Creates domain variable from a given domain name.
+ */
 std::unique_ptr<variable_t> CreateDomainVariable(const std::string& domain_name);
 
+/**
+ * @brief Returns a vector of all existing instructions names in all currently loaded sequencer
+ * plugins.
+ */
 std::vector<std::string> GetDomainInstructionNames();
 
+/**
+ * @brief Returns a vector of all existing variable names in all currently loaded sequencer
+ * plugins.
+ */
 std::vector<std::string> GetDomainVariableNames();
 
-std::map<std::string, std::string> GetAttributes(const instruction_t* instruction);
-
-std::map<std::string, std::string> GetAttributes(const variable_t* variable);
-
-bool IsRootInstruction(const instruction_t* instruction);
-
+/**
+ * @brief Checks if the given sequencer variable type is available in currently loaded plugins.
+ */
 bool IsVariableTypeAvailable(const std::string& domain_type);
 
+/**
+ * @brief Checks if the given sequencer instruction type is available in currently loaded plugins.
+ */
 bool IsInstructionTypeAvailable(const std::string& domain_type);
 
+/**
+ * @brief Checks if EPICS plugin was loaded.
+ */
 bool IsSequencerPluginEpicsAvailable();
 
+/**
+ * @brief Checks if sup-conrtol plugin was loaded.
+ */
 bool IsSequencerControlPluginAvailable();
 
+/**
+ * @brief Extracts main text from the metadata presented by the given AnyValue.
+ */
 std::string GetMainTextFromMetadata(const anyvalue_t& metadata);
 
+/**
+ * @brief  Extracts title text from the metadata presented by the given AnyValue.
+ */
 std::string GetTitleTextFromMetadata(const anyvalue_t& metadata);
 
+/**
+ * @brief Checks if given AnyValue contains metadata suitable for user choice dialogs.
+ */
 bool IsSelectTextDialog(const anyvalue_t& metadata);
 
+/**
+ * @brief Checks if given AnyValue contains metadata suitable for message box dialogs.
+ */
 bool IsMessageBoxDialog(const anyvalue_t& metadata);
 
 /**
