@@ -13,6 +13,8 @@ target_sources(${library_name} PRIVATE
   custom_viewitem_factory.h
   drag_and_drop_helper.cpp
   drag_and_drop_helper.h
+  filtered_proxy_viewmodel.cpp
+  filtered_proxy_viewmodel.h
   instruction_editor_viewmodel.cpp
   instruction_editor_viewmodel.h
   instruction_operation_viewmodel.cpp
