@@ -48,6 +48,8 @@ signals:
   void InstructionDoubleClicked(const QString& name);
 
 private:
+  void OnContextMenuRequest(const QPoint &point);
+
   ToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
   FilteredProxyViewModel* m_proxy_model{nullptr};
   InsructionToolKitTreeView* m_tree_view{nullptr};
