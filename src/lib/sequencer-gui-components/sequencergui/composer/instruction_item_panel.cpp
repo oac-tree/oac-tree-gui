@@ -58,7 +58,6 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent)
   m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
 
   m_tree_view->setModel(m_proxy_model);
-  m_tree_view->setDragEnabled(true);
   m_tree_view->expandAll();
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);

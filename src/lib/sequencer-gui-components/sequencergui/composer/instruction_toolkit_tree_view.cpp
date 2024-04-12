@@ -66,6 +66,7 @@ InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent) : QTreeVie
   connect(this, &InsructionToolKitTreeView::doubleClicked, this, on_double_click);
 
   setHeaderHidden(true);
+  setDragEnabled(true);
 }
 
 void InsructionToolKitTreeView::startDrag(Qt::DropActions supported_actions)
