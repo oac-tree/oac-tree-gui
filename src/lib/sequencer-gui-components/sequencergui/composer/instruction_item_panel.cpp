@@ -23,6 +23,7 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/viewmodel/instruction_toolkit_viewmodel.h>
+#include <sequencergui/composer/composer_helper.h>
 
 #include <QVBoxLayout>
 
@@ -47,7 +48,7 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent)
   m_tree_view->setModel(m_instruction_toolkit_viewmodel);
   m_tree_view->setDragEnabled(true);
 
-  m_instruction_toolkit_viewmodel->PopulateModel(GetDomainInstructionNames());
+  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
 }
 
 }  // namespace sequencergui
