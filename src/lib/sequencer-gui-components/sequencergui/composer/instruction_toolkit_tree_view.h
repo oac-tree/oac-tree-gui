@@ -29,7 +29,7 @@ namespace sequencergui
  * @brief The InsructionToolKitTreeView class is a tree view with instruction groups to
  * drag-and-drop on the graphics scene.
  *
- * Its only purpose is to tweak the drang-and-drop indicator.
+ * Its only purpose is to tweak the drag-and-drop indicator.
  */
 class InsructionToolKitTreeView : public QTreeView
 {
@@ -41,7 +41,7 @@ signals:
   void InstructionDoubleClicked(const QString& name);
 
 protected:
-  void startDrag(Qt::DropActions supportedActions) override;
+  void startDrag(Qt::DropActions supported_actions) override;
 };
 
 }  // namespace sequencergui

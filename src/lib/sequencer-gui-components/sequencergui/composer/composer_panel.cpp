@@ -39,7 +39,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
     , m_collapsible_list(new sup::gui::CollapsibleListView)
     , m_procedure_list_view(new ProcedureListWidget)
     , m_instruction_panel(new InstructionItemPanel)
-    , m_workspace_panel(new AggregatePanel)
+    , m_aggregate_panel(new AggregatePanel)
     , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   m_collapsible_list->setWindowTitle("Procedures & Tools");
@@ -51,7 +51,7 @@ ComposerPanel::ComposerPanel(QWidget *parent)
 
   m_collapsible_list->AddCollapsibleWidget(m_procedure_list_view, {});
   m_collapsible_list->AddCollapsibleWidget(m_instruction_panel, {});
-  m_collapsible_list->AddCollapsibleWidget(m_workspace_panel, {});
+  m_collapsible_list->AddCollapsibleWidget(m_aggregate_panel, {});
 
   auto toolbar_actions =
       m_procedure_list_view->GetActions({ProcedureListActions::ActionKey::kCreateNew,

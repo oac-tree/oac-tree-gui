@@ -67,7 +67,7 @@ private:
   sup::gui::CollapsibleListView* m_collapsible_list{nullptr};
   ProcedureListWidget* m_procedure_list_view{nullptr};
   InstructionItemPanel* m_instruction_panel{nullptr};
-  AggregatePanel* m_workspace_panel{nullptr};
+  AggregatePanel* m_aggregate_panel{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 };
 

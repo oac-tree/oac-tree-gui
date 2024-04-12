@@ -68,7 +68,7 @@ InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent) : QTreeVie
   setHeaderHidden(true);
 }
 
-void InsructionToolKitTreeView::startDrag(Qt::DropActions supportedActions)
+void InsructionToolKitTreeView::startDrag(Qt::DropActions supported_actions)
 {
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {
