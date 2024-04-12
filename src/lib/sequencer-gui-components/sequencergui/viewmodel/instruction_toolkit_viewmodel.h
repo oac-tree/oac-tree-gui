@@ -38,8 +38,12 @@ public:
 
   QMimeData* mimeData(const QModelIndexList& index_list) const override;
 
+  /**
+   * @brief Populate model so it contains a draggable list of object type names.
+   */
+  void PopulateModel(const std::vector<std::string>& object_types);
+
 private:
-  void PopulateModel();
 };
 
 }  // namespace sequencergui

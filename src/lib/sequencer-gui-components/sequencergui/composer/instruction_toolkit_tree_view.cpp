@@ -57,6 +57,8 @@ InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent) : QTreeVie
   auto on_double_click = [this](auto index)
   { emit InstructionDoubleClicked(index.data(Qt::DisplayRole).toString()); };
   connect(this, &InsructionToolKitTreeView::doubleClicked, this, on_double_click);
+
+  setHeaderHidden(true);
 }
 
 void InsructionToolKitTreeView::startDrag(Qt::DropActions supportedActions)
