@@ -53,11 +53,12 @@ InstructionItemPanel::InstructionItemPanel(QWidget* parent)
   connect(m_tree_view, &InsructionToolKitTreeView::InstructionDoubleClicked, this,
           &InstructionItemPanel::InstructionDoubleClicked);
 
+  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
+
   m_tree_view->setModel(m_proxy_model);
   m_tree_view->setDragEnabled(true);
-
-
-  m_instruction_toolkit_viewmodel->PopulateModel(CreateInstructionTypeGroups());
+  m_tree_view->expandAll();
+  m_tree_view->setAlternatingRowColors(true);
 
   m_line_edit->setClearButtonEnabled(true);
   m_line_edit->setPlaceholderText("Find instruction");
