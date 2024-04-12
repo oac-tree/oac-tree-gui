@@ -55,7 +55,14 @@ namespace sequencergui
 InsructionToolKitTreeView::InsructionToolKitTreeView(QWidget *parent) : QTreeView(parent)
 {
   auto on_double_click = [this](auto index)
-  { emit InstructionDoubleClicked(index.data(Qt::DisplayRole).toString()); };
+  {
+    // For drag-enabled items, let's signal double click out, so we can provide quick way to insert
+    // items.
+    if (model()->flags(index).testFlag(Qt::ItemIsDragEnabled))
+    {
+      emit InstructionDoubleClicked(index.data(Qt::DisplayRole).toString());
+    }
+  };
   connect(this, &InsructionToolKitTreeView::doubleClicked, this, on_double_click);
 
   setHeaderHidden(true);
@@ -65,7 +72,7 @@ void InsructionToolKitTreeView::startDrag(Qt::DropActions supportedActions)
 {
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {
-    auto drag = new QDrag(this); // drag ownership will be taken
+    auto drag = new QDrag(this);   // drag ownership will be taken
     drag->setMimeData(mime_data);  // mime ownership is taken
     auto pixmap = CreatePixmap();
     drag->setPixmap(pixmap);
