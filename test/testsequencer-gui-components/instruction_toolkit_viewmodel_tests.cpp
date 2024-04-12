@@ -35,7 +35,7 @@ class InstructionOperationViewModelTest : public ::testing::Test
 
 TEST_F(InstructionOperationViewModelTest, InitialState)
 {
-  ToolKitViewModel model;
+  const ToolKitViewModel model;
 
   EXPECT_EQ(model.rowCount(), 0);
   EXPECT_EQ(model.columnCount(), 0);
@@ -81,7 +81,7 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromTree)
 {
   ToolKitViewModel model;
 
-  std::vector<ObjectGroupInfo> group_info{
+  const std::vector<ObjectGroupInfo> group_info{
       {"group1", {"a1", "a2"}},
       {"group2", {"b1"}},
   };
