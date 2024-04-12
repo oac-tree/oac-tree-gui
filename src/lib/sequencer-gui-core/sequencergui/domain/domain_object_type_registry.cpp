@@ -42,6 +42,20 @@ std::optional<std::string> DomainObjectTypeRegistry::GetPluginName(
   return iter == m_object_name_to_plugin_name.end() ? std::optional<std::string>() : iter->second;
 }
 
+std::vector<std::string> DomainObjectTypeRegistry::GetObjectNames(
+    const std::string &plugin_name) const
+{
+  std::vector<std::string> result;
+  for (const auto &element : m_object_name_to_plugin_name)
+  {
+    if (element.second == plugin_name)
+    {
+      result.push_back(element.first);
+    }
+  }
+  return result;
+}
+
 DomainObjectTypeRegistry &GlobalDomainObjectTypeRegistry()
 {
   static DomainObjectTypeRegistry registry;

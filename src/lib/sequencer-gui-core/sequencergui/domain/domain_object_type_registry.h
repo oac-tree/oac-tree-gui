@@ -32,10 +32,9 @@ namespace sequencergui
  * @brief The DomainObjectTypeRegistry class holds a collection of object names associated with
  * plugin name.
  *
- * It can be used in the following scenario. We load sequencer plugins one after
- * another, and call an Update method for all instruction names registered in InstructionRegistry.
- * After the last plugin is loaded, we will get full info from which plugin the given instruction
- * type came from.
+ * It can be used in the following scenario. We load sequencer plugins one after another, and call
+ * an Update method for all instruction names registered in InstructionRegistry. After the last
+ * plugin is loaded, we will get full info from which plugin the given instruction type came from.
  */
 class DomainObjectTypeRegistry
 {
@@ -60,6 +59,11 @@ public:
    * If object name is not known, will return an empty optional.
    */
   std::optional<std::string> GetPluginName(const std::string& object_name) const;
+
+  /**
+   * @brief Returns objects names registered for the given plugin name.
+   */
+  std::vector<std::string> GetObjectNames(const std::string& plugin_name) const;
 
 private:
   std::map<std::string, std::string> m_object_name_to_plugin_name;

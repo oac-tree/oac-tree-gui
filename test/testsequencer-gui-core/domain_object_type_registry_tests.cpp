@@ -53,3 +53,18 @@ TEST_F(DomainObjectTypeRegistryTest, Update)
   registry.Update("", {"a4"});
   EXPECT_EQ(registry.GetPluginName("a4").value_or(undefined), "");
 }
+
+TEST_F(DomainObjectTypeRegistryTest, GetObjectNames)
+{
+  const std::string undefined("undefined");
+  DomainObjectTypeRegistry registry;
+
+  registry.Update("", {"a1", "a2"});
+  registry.Update("plugin1", {"a4", "a1", "a2", "a3"});
+  registry.Update("plugin2", {"a5"});
+
+  EXPECT_EQ(registry.GetObjectNames(""), std::vector<std::string>({"a1", "a2"}));
+  EXPECT_EQ(registry.GetObjectNames("plugin1"), std::vector<std::string>({"a3", "a4"}));
+  EXPECT_EQ(registry.GetObjectNames("plugin2"), std::vector<std::string>({"a5"}));
+  EXPECT_TRUE(registry.GetObjectNames("non-existing").empty());
+}
