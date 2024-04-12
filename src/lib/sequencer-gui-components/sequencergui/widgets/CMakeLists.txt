@@ -8,8 +8,6 @@ target_sources(${library_name} PRIVATE
   dialog_message_handler.h
   file_tree_view.cpp
   file_tree_view.h
-  item_list_widget.cpp
-  item_list_widget.h
   overlay_message.cpp
   overlay_message.h
   overlay_message_frame.cpp

@@ -19,28 +19,32 @@
 
 #include "aggregate_panel.h"
 
+#include "instruction_toolkit_tree_view.h"
+
 #include <sequencergui/model/aggregate_factory.h>
-#include <sequencergui/widgets/item_list_widget.h>
+#include <sequencergui/viewmodel/toolkit_viewmodel.h>
 
-#include <mvvm/widgets/widget_utils.h>
-
-#include <QListWidget>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-AggregatePanel::AggregatePanel(QWidget *parent) : QWidget(parent), m_list_widget(new ItemListWidget)
+AggregatePanel::AggregatePanel(QWidget *parent)
+    : QWidget(parent)
+    , m_toolkit_viewmodel(new ToolKitViewModel(this))
+    , m_tree_view(new InsructionToolKitTreeView)
 {
   setWindowTitle("AGGREGATES");
+
+  m_tree_view->setModel(m_toolkit_viewmodel);
 
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
-  layout->addWidget(m_list_widget);
+  layout->addWidget(m_tree_view);
 
-  AggregateFactory factory;
-  m_list_widget->AddEntries(::mvvm::utils::GetStringList(factory.GetKeys()));
+  const AggregateFactory factory;
+  m_toolkit_viewmodel->PopulateModel(factory.GetKeys());
 }
 
 }  // namespace sequencergui

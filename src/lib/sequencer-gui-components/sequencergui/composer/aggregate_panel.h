@@ -25,7 +25,8 @@
 namespace sequencergui
 {
 
-class ItemListWidget;
+class ToolKitViewModel;
+class InsructionToolKitTreeView;
 
 //! Panel with tree view for instruction aggregates.
 
@@ -37,7 +38,8 @@ public:
   explicit AggregatePanel(QWidget* parent = nullptr);
 
 private:
-  ItemListWidget* m_list_widget{nullptr};
+  ToolKitViewModel* m_toolkit_viewmodel{nullptr};
+  InsructionToolKitTreeView* m_tree_view{nullptr};
 };
 
 }  // namespace sequencergui
