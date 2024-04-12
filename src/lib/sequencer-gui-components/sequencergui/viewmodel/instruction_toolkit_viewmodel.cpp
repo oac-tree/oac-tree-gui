@@ -27,10 +27,11 @@
 namespace
 {
 
-std::unique_ptr<QStandardItem> CreateItem(const std::string& name)
+std::unique_ptr<QStandardItem> CreateItem(const std::string& name, bool drag_enabled)
 {
   auto result = std::make_unique<QStandardItem>(QString::fromStdString(name));
   result->setEditable(false);
+  result->setDragEnabled(drag_enabled);
   return result;
 }
 
@@ -49,6 +50,10 @@ QMimeData* InstructionToolKitViewModel::mimeData(const QModelIndexList& index_li
   if (!index_list.empty())
   {
     auto item = itemFromIndex(index_list.at(0));
+    if (!item->isDragEnabled())
+    {
+      return nullptr;
+    }
     auto mime_data = CreateNewInstructionMimeData(item->data(Qt::DisplayRole).toString());
     return mime_data.release();
   }
@@ -56,15 +61,36 @@ QMimeData* InstructionToolKitViewModel::mimeData(const QModelIndexList& index_li
   return nullptr;
 }
 
-void InstructionToolKitViewModel::PopulateModel(const std::vector<std::string> &object_types)
+void InstructionToolKitViewModel::PopulateModel(const std::vector<std::string>& object_types)
 {
+  clear();
+
   auto parent_item = invisibleRootItem();
 
   for (const auto& name : object_types)
   {
-    parent_item->appendRow(CreateItem(name).release());
+    parent_item->appendRow(CreateItem(name, /*drag_enabled*/ true).release());
   }
 }
 
+void InstructionToolKitViewModel::PopulateModel(
+    const std::vector<ObjectGroupInfo>& objects_group_info)
+{
+  clear();
+
+  auto parent_item = invisibleRootItem();
+
+  for (const auto& group_info : objects_group_info)
+  {
+    auto group_item = CreateItem(group_info.group_name, /*drag_enabled*/ false);
+    auto parent_item = group_item.get();
+
+    invisibleRootItem()->appendRow(group_item.release());
+    for (const auto& name : group_info.object_names)
+    {
+      parent_item->appendRow(CreateItem(name, /*drag_enabled*/ true).release());
+    }
+  }
+}
 
 }  // namespace sequencergui

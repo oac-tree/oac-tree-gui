@@ -22,6 +22,8 @@
 
 #include <QStandardItemModel>
 
+#include <sequencergui/composer/composer_helper.h>
+
 namespace sequencergui
 {
 
@@ -42,6 +44,11 @@ public:
    * @brief Populate model so it contains a draggable list of object type names.
    */
   void PopulateModel(const std::vector<std::string>& object_types);
+
+  /**
+   * @brief Populate model so it contains a draggable tree of object groups with names in it.
+   */
+  void PopulateModel(const std::vector<ObjectGroupInfo>& objects_group_info);
 
 private:
 };
