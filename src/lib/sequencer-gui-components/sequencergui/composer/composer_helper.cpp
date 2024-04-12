@@ -20,34 +20,29 @@
 #include "composer_helper.h"
 
 #include "sequencergui/domain/domain_constants.h"
+#include "sequencergui/domain/domain_object_type_registry.h"
 
 namespace
 {
 
-//! Collection of group names for widget trees.
-const std::string kCoreGroup = "Core";
-const std::string kMathGroup = "Math";
-const std::string kEPICSGroup = "EPICS";
-const std::string kControlGroup = "SUP Control";
-const std::string kConfigGroup = "SUP Configuration";
-const std::string kMiscGroup = "Miscellaneous";
-
 /**
- * @brief Returns correspondance of group name to plugin name.
+ * @brief Returns correspondence of group name to the plugin name.
  *
  * A single group can contain more than one plugin.
  */
 std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
 {
+  // So far only EPICS group contains two plugins (CA and PVXS).
+  // Other groups contains single plugin each.
   return {
-      {kCoreGroup, {sequencergui::domainconstants::kCorePluginName}},
-      {kMathGroup, {sequencergui::domainconstants::kMathExprPluginName}},
-      {kEPICSGroup,
+      {sequencergui::kCoreGroup, {sequencergui::domainconstants::kCorePluginName}},
+      {sequencergui::kMathGroup, {sequencergui::domainconstants::kMathExprPluginName}},
+      {sequencergui::kEPICSGroup,
        {sequencergui::domainconstants::kEpicsCAPluginName,
         sequencergui::domainconstants::kEpicsPVXSPluginName}},
-      {kControlGroup, {sequencergui::domainconstants::kControlPluginName}},
-      {kConfigGroup, {sequencergui::domainconstants::kSupConfigPluginName}},
-      {kMiscGroup, {sequencergui::domainconstants::kSupPulseCounterPluginName}},
+      {sequencergui::kControlGroup, {sequencergui::domainconstants::kControlPluginName}},
+      {sequencergui::kConfigGroup, {sequencergui::domainconstants::kSupConfigPluginName}},
+      {sequencergui::kMiscGroup, {sequencergui::domainconstants::kSupPulseCounterPluginName}},
   };
 }
 
@@ -56,17 +51,38 @@ std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
 namespace sequencergui
 {
 
-std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
+std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
+    const DomainObjectTypeRegistry& type_registry)
 {
+  // groups with plugin names
+  const static auto kPluginGroups = CreatePluginNameGroups();
+
+  // groups with instruction names
   std::vector<sequencergui::ObjectGroupInfo> result;
 
-  const static auto group_name_to_plugin_names = CreatePluginNameGroups();
-
-  for (const auto& group_info : group_name_to_plugin_names)
+  // loop over all groups with plugin names
+  for (const auto& plugin_group_info : kPluginGroups)
   {
+    // collecting instruction names for all plugins in a group
+    std::vector<std::string> instructions_in_group;
+    for (const auto& plugin_name : plugin_group_info.object_names)
+    {
+      auto instructions_in_plugin = type_registry.GetObjectNames(plugin_name);
+      std::copy(instructions_in_plugin.begin(), instructions_in_plugin.end(),
+                std::back_inserter(instructions_in_group));
+    }
+
+    // The name of instruction group coincides with the name of plugin group.
+    // The content of a group is all instruction names found in plugins.
+    result.push_back({plugin_group_info.group_name, instructions_in_group});
   }
 
   return result;
+}
+
+std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
+{
+  return CreateInstructionTypeGroups(GlobalDomainObjectTypeRegistry());
 }
 
 }  // namespace sequencergui

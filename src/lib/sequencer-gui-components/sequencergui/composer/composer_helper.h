@@ -29,6 +29,16 @@
 namespace sequencergui
 {
 
+class DomainObjectTypeRegistry;
+
+//! Collection of group names for available instructions.
+const std::string kCoreGroup = "Core";
+const std::string kMathGroup = "Math";
+const std::string kEPICSGroup = "EPICS";
+const std::string kControlGroup = "SUP Control";
+const std::string kConfigGroup = "SUP Configuration";
+const std::string kMiscGroup = "Miscellaneous";
+
 /**
  * @brief The ObjectGroupInfo class represents a named group of object names.
  */
@@ -39,7 +49,23 @@ struct ObjectGroupInfo
 };
 
 /**
+ * @brief Creates a collection of sequencer instruction types grouped according to a plugin name
+ * using given registry.
+ *
+ * A single group can contain instructions from several plugins.
+ *
+ * @param type_registry The registry with all loaded types.
+ */
+std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
+    const DomainObjectTypeRegistry& type_registry);
+
+/**
  * @brief Creates a collection of sequencer instruction types grouped according to a plugin name.
+ *
+ * This method uses global object type registry. A single group can contain instructions from
+ * several plugins.
+ *
+ * @param type_registry The registry with all loaded types.
  */
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups();
 
