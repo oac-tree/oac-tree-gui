@@ -65,8 +65,8 @@ void InsructionToolKitTreeView::startDrag(Qt::DropActions supportedActions)
 {
   if (auto mime_data = model()->mimeData(selectedIndexes()); mime_data)
   {
-    auto drag = new QDrag(this);
-    drag->setMimeData(mime_data);  // ownership is taken
+    auto drag = new QDrag(this); // drag ownership will be taken
+    drag->setMimeData(mime_data);  // mime ownership is taken
     auto pixmap = CreatePixmap();
     drag->setPixmap(pixmap);
     drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));

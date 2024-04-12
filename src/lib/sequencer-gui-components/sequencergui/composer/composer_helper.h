@@ -60,7 +60,8 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
     const DomainObjectTypeRegistry& type_registry);
 
 /**
- * @brief Creates a collection of sequencer instruction types grouped according to a plugin name.
+ * @brief Creates a collection of global registered sequencer instruction types grouped according to
+ * a plugin name.
  *
  * This method uses global object type registry. A single group can contain instructions from
  * several plugins.

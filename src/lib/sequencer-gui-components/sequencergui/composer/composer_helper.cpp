@@ -21,6 +21,11 @@
 
 #include "sequencergui/domain/domain_constants.h"
 #include "sequencergui/domain/domain_object_type_registry.h"
+#include "sequencergui/domain/domain_utils.h"
+
+#include <mvvm/utils/container_utils.h>
+
+#include <algorithm>
 
 namespace
 {
@@ -44,6 +49,19 @@ std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
       {sequencergui::kConfigGroup, {sequencergui::domainconstants::kSupConfigPluginName}},
       {sequencergui::kMiscGroup, {sequencergui::domainconstants::kSupPulseCounterPluginName}},
   };
+}
+
+/**
+ * @brief Returns vector of instruction names from the list containing a mixture of different names.
+ */
+std::vector<std::string> GetInstructionNames(std::vector<std::string>& names)
+{
+  std::vector<std::string> result;
+  const static auto variable_types = sequencergui::GetDomainVariableNames();
+
+  auto on_element = [](auto element) { return !mvvm::utils::Contains(variable_types, element); };
+  std::copy_if(std::begin(names), std::end(names), std::back_inserter(result), on_element);
+  return result;
 }
 
 }  // namespace
@@ -82,7 +100,16 @@ std::vector<ObjectGroupInfo> CreateInstructionTypeGroups(
 
 std::vector<ObjectGroupInfo> CreateInstructionTypeGroups()
 {
-  return CreateInstructionTypeGroups(GlobalDomainObjectTypeRegistry());
+  // Global type registry contains both instruction and variables. We have to remove variable names
+  // fbefore returning info to the user.
+
+  auto group_infos = CreateInstructionTypeGroups(GlobalDomainObjectTypeRegistry());
+
+  for (auto& info : group_infos)
+  {
+    info.object_names = GetInstructionNames(info.object_names);
+  }
+  return group_infos;
 }
 
 }  // namespace sequencergui
