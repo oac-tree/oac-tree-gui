@@ -54,12 +54,12 @@ std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
 /**
  * @brief Returns vector of instruction names from the list containing a mixture of different names.
  */
-std::vector<std::string> GetInstructionNames(std::vector<std::string>& names)
+std::vector<std::string> GetInstructionNames(const std::vector<std::string>& names)
 {
   std::vector<std::string> result;
-  const static auto variable_types = sequencergui::GetDomainVariableNames();
+  const static auto known_types = sequencergui::GetDomainInstructionNames();
 
-  auto on_element = [](auto element) { return !mvvm::utils::Contains(variable_types, element); };
+  auto on_element = [](auto element) { return mvvm::utils::Contains(known_types, element); };
   std::copy_if(std::begin(names), std::end(names), std::back_inserter(result), on_element);
   return result;
 }
