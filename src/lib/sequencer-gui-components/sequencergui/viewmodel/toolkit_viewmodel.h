@@ -17,36 +17,42 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWMODEL_INSTRUCTION_TOOLKIT_VIEWMODEL_H_
-#define SEQUENCERGUI_VIEWMODEL_INSTRUCTION_TOOLKIT_VIEWMODEL_H_
-
-#include <QStandardItemModel>
+#ifndef SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
+#define SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
 
 #include <sequencergui/composer/composer_helper.h>
+
+#include <QStandardItemModel>
 
 namespace sequencergui
 {
 
 /**
- * @brief The InstructionToolKitViewModel class provides a viewmodel with a tree of available
- * instructions sorted according to their plugin names.
+ * @brief The ToolKitViewModel class provides a viewmodel with a available object types, intended
+ * for dragging.
+ *
+ * The model can be populated either with the list, or with the tree-like structure.
  */
-class InstructionToolKitViewModel : public QStandardItemModel
+class ToolKitViewModel : public QStandardItemModel
 {
   Q_OBJECT
 
 public:
-  explicit InstructionToolKitViewModel(QObject* parent = nullptr);
+  explicit ToolKitViewModel(QObject* parent = nullptr);
 
   QMimeData* mimeData(const QModelIndexList& index_list) const override;
 
   /**
    * @brief Populate model so it contains a draggable list of object type names.
+   *
+   * This will clear the model from the previous content.
    */
   void PopulateModel(const std::vector<std::string>& object_types);
 
   /**
    * @brief Populate model so it contains a draggable tree of object groups with names in it.
+   *
+   * This will clear the model from the previous content.
    */
   void PopulateModel(const std::vector<ObjectGroupInfo>& objects_group_info);
 

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/viewmodel/instruction_toolkit_viewmodel.h"
+#include "sequencergui/viewmodel/toolkit_viewmodel.h"
 
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
@@ -35,7 +35,7 @@ class InstructionOperationViewModelTest : public ::testing::Test
 
 TEST_F(InstructionOperationViewModelTest, InitialState)
 {
-  InstructionToolKitViewModel model;
+  ToolKitViewModel model;
 
   EXPECT_EQ(model.rowCount(), 0);
   EXPECT_EQ(model.columnCount(), 0);
@@ -45,7 +45,7 @@ TEST_F(InstructionOperationViewModelTest, InitialState)
 
 TEST_F(InstructionOperationViewModelTest, PopulateFromList)
 {
-  InstructionToolKitViewModel model;
+  ToolKitViewModel model;
 
   model.PopulateModel(std::vector<std::string>({"a1", "a2"}));
 
@@ -63,7 +63,7 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromList)
 
 TEST_F(InstructionOperationViewModelTest, MimeFromList)
 {
-  InstructionToolKitViewModel model;
+  ToolKitViewModel model;
 
   model.PopulateModel(std::vector<std::string>({"a1", "a2"}));
 
@@ -79,7 +79,7 @@ TEST_F(InstructionOperationViewModelTest, MimeFromList)
 
 TEST_F(InstructionOperationViewModelTest, PopulateFromTree)
 {
-  InstructionToolKitViewModel model;
+  ToolKitViewModel model;
 
   std::vector<ObjectGroupInfo> group_info{
       {"group1", {"a1", "a2"}},
@@ -114,7 +114,7 @@ TEST_F(InstructionOperationViewModelTest, PopulateFromTree)
 
 TEST_F(InstructionOperationViewModelTest, MimeFromTree)
 {
-  InstructionToolKitViewModel model;
+  ToolKitViewModel model;
 
   std::vector<ObjectGroupInfo> group_info{
       {"group1", {"a1", "a2"}},

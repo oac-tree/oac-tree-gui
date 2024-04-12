@@ -25,7 +25,7 @@
 namespace sequencergui
 {
 
-class InstructionToolKitViewModel;
+class ToolKitViewModel;
 class InsructionToolKitTreeView;
 
 /**
@@ -45,7 +45,7 @@ signals:
   void InstructionDoubleClicked(const QString& name);
 
 private:
-  InstructionToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
+  ToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
   InsructionToolKitTreeView* m_tree_view{nullptr};
 };
 

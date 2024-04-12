@@ -17,14 +17,14 @@ target_sources(${library_name} PRIVATE
   instruction_editor_viewmodel.h
   instruction_operation_viewmodel.cpp
   instruction_operation_viewmodel.h
-  instruction_toolkit_viewmodel.cpp
-  instruction_toolkit_viewmodel.h
   job_list_viewmodel.cpp
   job_list_viewmodel.h
   job_log_viewmodel.cpp
   job_log_viewmodel.h
   procedure_viewmodel.cpp
   procedure_viewmodel.h
+  toolkit_viewmodel.cpp
+  toolkit_viewmodel.h
   viewmodel_helper.cpp
   viewmodel_helper.h
   workspace_editor_viewmodel.cpp

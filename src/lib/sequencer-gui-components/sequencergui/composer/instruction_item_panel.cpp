@@ -21,9 +21,9 @@
 
 #include "instruction_toolkit_tree_view.h"
 
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/viewmodel/instruction_toolkit_viewmodel.h>
 #include <sequencergui/composer/composer_helper.h>
+#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/viewmodel/toolkit_viewmodel.h>
 
 #include <QVBoxLayout>
 
@@ -32,7 +32,7 @@ namespace sequencergui
 
 InstructionItemPanel::InstructionItemPanel(QWidget* parent)
     : QWidget(parent)
-    , m_instruction_toolkit_viewmodel(new InstructionToolKitViewModel(this))
+    , m_instruction_toolkit_viewmodel(new ToolKitViewModel(this))
     , m_tree_view(new InsructionToolKitTreeView)
 {
   setWindowTitle("INSTRUCTIONS");

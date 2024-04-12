@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "instruction_toolkit_viewmodel.h"
+#include "toolkit_viewmodel.h"
 
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
@@ -40,12 +40,12 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string& name, bool drag_ena
 namespace sequencergui
 {
 
-InstructionToolKitViewModel::InstructionToolKitViewModel(QObject* parent)
+ToolKitViewModel::ToolKitViewModel(QObject* parent)
     : QStandardItemModel(parent)
 {
 }
 
-QMimeData* InstructionToolKitViewModel::mimeData(const QModelIndexList& index_list) const
+QMimeData* ToolKitViewModel::mimeData(const QModelIndexList& index_list) const
 {
   if (!index_list.empty())
   {
@@ -61,7 +61,7 @@ QMimeData* InstructionToolKitViewModel::mimeData(const QModelIndexList& index_li
   return nullptr;
 }
 
-void InstructionToolKitViewModel::PopulateModel(const std::vector<std::string>& object_types)
+void ToolKitViewModel::PopulateModel(const std::vector<std::string>& object_types)
 {
   clear();
 
@@ -73,7 +73,7 @@ void InstructionToolKitViewModel::PopulateModel(const std::vector<std::string>& 
   }
 }
 
-void InstructionToolKitViewModel::PopulateModel(
+void ToolKitViewModel::PopulateModel(
     const std::vector<ObjectGroupInfo>& objects_group_info)
 {
   clear();
