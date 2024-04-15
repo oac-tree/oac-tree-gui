@@ -59,6 +59,8 @@ public:
                     const QModelIndex& parent) override;
 
   int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+
+  QStringList mimeTypes() const override;
 };
 
 }  // namespace sequencergui
