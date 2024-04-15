@@ -21,6 +21,7 @@
 
 #include "instruction_editor_action_handler.h"
 
+#include <sequencergui/composer/composer_helper.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/proxy_action.h>
@@ -168,13 +169,24 @@ void InstructionEditorActions::OnAboutToShowInsertAfterMenu()
   auto menu = m_insert_after_menu.get();
   menu->clear();
 
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
-  for (const auto &name : names)
+  auto group_info = CreateInstructionTypeGroups();
+  for (const auto &group_info : group_info)
   {
-    auto action = menu->addAction(name);
-    action->setEnabled(m_handler->CanInsertAfter(name));
-    auto on_action = [this, name]() { emit InsertAfterRequest(name); };
-    connect(action, &QAction::triggered, this, on_action);
+    auto group_menu = menu->addMenu(QString::fromStdString(group_info.group_name));
+    int enabled_actions_count{0};
+    for (const auto &name : group_info.object_names)
+    {
+      auto str = QString::fromStdString(name);
+      auto action = group_menu->addAction(str);
+      if (m_handler->CanInsertAfter(str))
+      {
+        action->setEnabled(true);
+        ++enabled_actions_count;
+      }
+      auto on_action = [this, str]() { emit InsertAfterRequest(str); };
+      connect(action, &QAction::triggered, this, on_action);
+    }
+    group_menu->setEnabled(enabled_actions_count > 0);
   }
 }
 
@@ -192,13 +204,24 @@ void InstructionEditorActions::OnAboutToShowInsertIntoMenu()
   auto menu = m_insert_into_menu.get();
   menu->clear();
 
-  auto names = mvvm::utils::GetStringList(sequencergui::GetDomainInstructionNames());
-  for (const auto &name : names)
+  auto group_info = CreateInstructionTypeGroups();
+  for (const auto &group_info : group_info)
   {
-    auto action = menu->addAction(name);
-    action->setEnabled(m_handler->CanInsertInto(name));
-    auto on_action = [this, name]() { emit InsertIntoRequest(name); };
-    connect(action, &QAction::triggered, this, on_action);
+    auto group_menu = menu->addMenu(QString::fromStdString(group_info.group_name));
+    int enabled_actions_count{0};
+    for (const auto &name : group_info.object_names)
+    {
+      auto str = QString::fromStdString(name);
+      auto action = group_menu->addAction(str);
+      if (m_handler->CanInsertInto(str))
+      {
+        action->setEnabled(true);
+        ++enabled_actions_count;
+      }
+      auto on_action = [this, str]() { emit InsertIntoRequest(str); };
+      connect(action, &QAction::triggered, this, on_action);
+    }
+    group_menu->setEnabled(enabled_actions_count > 0);
   }
 }
 
