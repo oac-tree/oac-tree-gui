@@ -20,11 +20,12 @@
 #ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_COMPOSER_INSTRUCTION_EDITOR_ACTIONS_H_
 
+#include <sequencergui/components/action_map.h>
+
 #include <QList>
 #include <QMenu>
 #include <QWidget>
 #include <memory>
-#include <sequencergui/components/action_map.h>
 
 class QMenu;
 
@@ -113,24 +114,19 @@ private:
   /**
    * @brief Creates an instruction to insert an instruction after currently selected instruction.
    */
-  std::unique_ptr<QMenu> CreateInsertAfterMenu() const;
-
-  /**
-   * @brief Populates content of m_insert_after_menu with actions relevant to currently selected
-   * instruction.
-   */
-  void OnAboutToShowInsertAfterMenu();
+  std::unique_ptr<QMenu> CreateInsertAfterMenu();
 
   /**
    * @brief Creates menu to insert an instruction into currently selected instruction.
    */
-  std::unique_ptr<QMenu> CreateInsertIntoMenu() const;
+  std::unique_ptr<QMenu> CreateInsertIntoMenu();
 
   /**
-   * @brief Populates content of m_insert_into_menu with actions relevant to currently selected
-   * instruction.
+   * @brief Setup menu to insert instructions.
+   *
+   * The function can work with one of two menus, m_insert_after_menu and m_insert_into_menu.
    */
-  void OnAboutToShowInsertIntoMenu();
+  void AboutToShowInsertMenu();
 
   const InstructionEditorActionHandler* m_handler{nullptr};
 

@@ -155,19 +155,29 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_action_map.Add(ActionKey::kPasteInto, m_paste_into_action);
 }
 
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu() const
+std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()
 {
   auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
   connect(result.get(), &QMenu::aboutToShow, this,
-          &InstructionEditorActions::OnAboutToShowInsertAfterMenu);
+          &InstructionEditorActions::AboutToShowInsertMenu);
   return result;
 }
 
-void InstructionEditorActions::OnAboutToShowInsertAfterMenu()
+std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu()
 {
-  auto menu = m_insert_after_menu.get();
+  auto result = std::make_unique<QMenu>();
+  connect(result.get(), &QMenu::aboutToShow, this,
+          &InstructionEditorActions::AboutToShowInsertMenu);
+  return result;
+}
+
+void InstructionEditorActions::AboutToShowInsertMenu()
+{
+  auto menu = qobject_cast<QMenu *>(sender());
+  const bool insert_into = (menu == m_insert_into_menu.get());
+
   menu->clear();
+  menu->setToolTipsVisible(true);
 
   auto group_info = CreateInstructionTypeGroups();
   for (const auto &group_info : group_info)
@@ -178,49 +188,20 @@ void InstructionEditorActions::OnAboutToShowInsertAfterMenu()
     {
       auto str = QString::fromStdString(name);
       auto action = group_menu->addAction(str);
-      if (m_handler->CanInsertAfter(str))
+      if (insert_into ? m_handler->CanInsertInto(str) : m_handler->CanInsertAfter(str))
       {
         action->setEnabled(true);
         ++enabled_actions_count;
       }
-      auto on_action = [this, str]() { emit InsertAfterRequest(str); };
-      connect(action, &QAction::triggered, this, on_action);
-    }
-    group_menu->setEnabled(enabled_actions_count > 0);
-  }
-}
-
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu() const
-{
-  auto result = std::make_unique<QMenu>();
-  result->setToolTipsVisible(true);
-  connect(result.get(), &QMenu::aboutToShow, this,
-          &InstructionEditorActions::OnAboutToShowInsertIntoMenu);
-  return result;
-}
-
-void InstructionEditorActions::OnAboutToShowInsertIntoMenu()
-{
-  auto menu = m_insert_into_menu.get();
-  menu->clear();
-
-  auto group_info = CreateInstructionTypeGroups();
-  for (const auto &group_info : group_info)
-  {
-    auto group_menu = menu->addMenu(QString::fromStdString(group_info.group_name));
-    int enabled_actions_count{0};
-    for (const auto &name : group_info.object_names)
-    {
-      auto str = QString::fromStdString(name);
-      auto action = group_menu->addAction(str);
-      if (m_handler->CanInsertInto(str))
+      if (insert_into)
       {
-        action->setEnabled(true);
-        ++enabled_actions_count;
+        connect(action, &QAction::triggered, [this, str]() { emit InsertIntoRequest(str); });
       }
-      auto on_action = [this, str]() { emit InsertIntoRequest(str); };
-      connect(action, &QAction::triggered, this, on_action);
-    }
+      else
+      {
+        connect(action, &QAction::triggered, [this, str]() { emit InsertAfterRequest(str); });
+      }
+    };
     group_menu->setEnabled(enabled_actions_count > 0);
   }
 }
