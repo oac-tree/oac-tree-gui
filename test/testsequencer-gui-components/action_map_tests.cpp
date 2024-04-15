@@ -34,7 +34,7 @@ public:
   };
 };
 
-TEST_F(ActionMapTest, AddActiond)
+TEST_F(ActionMapTest, AddAction)
 {
   ActionMap<Keys> action_map;
   EXPECT_EQ(action_map.GetSize(), 0);
@@ -54,4 +54,20 @@ TEST_F(ActionMapTest, AddActiond)
   action_map.Add(Keys::Key2, &action2);
 
   EXPECT_EQ(action_map.GetActions({Keys::Key2, Keys::Key1}), QList<QAction*>({&action2, &action1}));
+}
+
+TEST_F(ActionMapTest, GetKey)
+{
+  ActionMap<Keys> action_map;
+  EXPECT_EQ(action_map.GetSize(), 0);
+
+  QAction action1;
+  QAction action2;
+
+  action_map.Add(Keys::Key1, &action1);
+  action_map.Add(Keys::Key2, &action2);
+
+  EXPECT_EQ(action_map.GetKey(&action1), Keys::Key1);
+  EXPECT_EQ(action_map.GetKey(&action2), Keys::Key2);
+  EXPECT_THROW(action_map.GetKey(nullptr), RuntimeException);
 }

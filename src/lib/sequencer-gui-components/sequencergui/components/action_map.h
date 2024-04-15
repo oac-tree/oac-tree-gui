@@ -75,12 +75,26 @@ public:
   }
 
   /**
+   * @brief Returns key for given action.
+   *
+   * Throws if the key can't be found.
+   */
+  ActionKeyT GetKey(QAction* action)
+  {
+    auto iter = std::find_if(m_action_map.begin(), m_action_map.end(),
+                             [action](auto element) { return element.second == action; });
+
+    if (iter == m_action_map.end())
+    {
+      throw RuntimeException("Can't convert name to RunnerStatus");
+    }
+    return iter->first;
+  }
+
+  /**
    * @brief Returns the number of registered actions.
    */
-  int GetSize() const
-  {
-    return static_cast<int>(m_action_map.size());
-  }
+  int GetSize() const { return static_cast<int>(m_action_map.size()); }
 
 private:
   std::map<ActionKeyT, QAction*> m_action_map;
