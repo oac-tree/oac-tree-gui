@@ -176,14 +176,31 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
   EXPECT_TRUE(handler->CanRemove());
   handler->OnRemoveProcedureRequest();
 
-  // new item disappeared from the container
-  ASSERT_EQ(m_procedure_container->GetSize(), 2);
-
   // request to select a procedure just after the deleted one
   auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
   EXPECT_EQ(send_item, proc2);
 
+  // middle procedure has disappeared from the container
   EXPECT_EQ(m_procedure_container->GetAllItems(), std::vector<mvvm::SessionItem*>({proc0, proc2}));
+}
+
+//! Remove last procedure. We expect nullptr to be emited as procedure select suggestion.
+TEST_F(ProcedureListActionHandlerTest, RemoveLastProcedure)
+{
+  auto proc0 = m_model.InsertItem<ProcedureItem>(m_procedure_container, mvvm::TagIndex::Append());
+
+  auto handler = CreateActionHandler(proc0);  // second procedure is selected
+  QSignalSpy spy_selection_request(handler.get(),
+                                   &ProcedureListActionHandler::SelectProcedureRequest);
+
+  EXPECT_TRUE(handler->CanRemove());
+  handler->OnRemoveProcedureRequest();
+
+  EXPECT_TRUE(m_procedure_container->IsEmpty());
+
+  // request to select a procedure just after the deleted one
+  auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
+  EXPECT_EQ(send_item, nullptr);
 }
 
 //! Copy operation when nothing is selected.

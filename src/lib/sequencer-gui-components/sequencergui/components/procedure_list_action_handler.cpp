@@ -59,11 +59,8 @@ void ProcedureListActionHandler::OnRemoveProcedureRequest()
   {
     auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_procedure);
     GetModel()->RemoveItem(selected_procedure);
-    if (next_to_select)
-    {
-      // suggest to select something else instead of just deleted procedure
-      emit SelectProcedureRequest(dynamic_cast<ProcedureItem *>(next_to_select));
-    }
+    // suggest to select something else instead of just deleted procedure
+    emit SelectProcedureRequest(dynamic_cast<ProcedureItem *>(next_to_select));
   }
 }
 
