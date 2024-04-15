@@ -126,10 +126,13 @@ indicators on attempt to drop between cells.
 [9]  Message           row_col=(-1, -1)     QModelIndex(2, 0)
 [10] --------------    row_col=( 3,  0)     QModelIndex(-1, -1)
 
-Areas #4 and #8 are located at different places, however, they have the same reported parameters.
-Thus, from a model perspective and without access to QTreeView mouse information, areas are
-indistinguishable. Currently, an attempt to drop at area #4 will lead to an actual drop at #8. It
-can be fixed only by custom QTreeView with modified mouseMoveEvent.
+Area #4 behaves in a somewhat confusing manner. Its drop indicator looks almost similar to
+area #5, but it reports the same drop parameters, as area #8. Thus, there is no way to distinguish
+#4 and #8 on the model level. An attempt to drop an item in the area #4 will lead to the item
+creation at #8.
+
+I think this is OK and can be considered as a feature. If it will become an issue, we will need to
+implement custom QTreeView, which would hide the #4 drop indicator based on mouse move coordinates.
 */
 
 bool InstructionEditorViewModel::canDropMimeData(const QMimeData *data, Qt::DropAction action,
