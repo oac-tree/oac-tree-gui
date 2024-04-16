@@ -19,12 +19,17 @@
 
 #include "sequencergui/viewmodel/instruction_editor_viewmodel.h"
 
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/model_utils.h>
+#include <mvvm/standarditems/container_item.h>
+#include <mvvm/viewmodelbase/viewitem.h>
 
 #include <gtest/gtest.h>
 
@@ -44,7 +49,7 @@ public:
   InstructionEditorViewModel m_view_model;
 };
 
-//! Single instruction in a model. ViewModel should see single row and 3 columns.
+//! Single instruction in a model. ViewModel should see single row and 2 columns.
 
 TEST_F(InstructionEditorViewModelTest, SingleInstruction)
 {
@@ -303,4 +308,32 @@ TEST_F(InstructionEditorViewModelTest, DropNewInstructionBetweenChildren)
   EXPECT_EQ(sequence->GetInstructions().size(), 3);
   EXPECT_EQ(sequence->GetInstructions().at(1)->GetDomainType(),
             domainconstants::kIncludeInstructionType);
+}
+
+//! Single instruction in a model. ViewModel should see single row and 2 columns.
+
+TEST_F(InstructionEditorViewModelTest, ModelReset)
+{
+  SequencerModel model;
+  auto procedure =
+      model.InsertItem<ProcedureItem>(model.GetProcedureContainer(), mvvm::TagIndex::Append());
+  auto sequence = model.InsertItem<SequenceItem>(procedure->GetInstructionContainer());
+
+  InstructionEditorViewModel view_model(nullptr);
+  view_model.SetRootSessionItem(procedure->GetInstructionContainer());
+
+  EXPECT_EQ(view_model.rowCount(), 1);
+  EXPECT_EQ(view_model.columnCount(), 2);
+
+  // Mimicking load of the procedure from disk. The procedure doesn't contain instruction container
+  // and is not suitable for displaying by InstructionEditorViewModel.
+  auto root_item = mvvm::utils::CreateEmptyRootItem();
+  auto procedure_container = root_item->InsertItem<mvvm::ContainerItem>(mvvm::TagIndex::Append());
+  model.Clear(std::move(root_item));
+
+  EXPECT_EQ(view_model.rowCount(), 1);
+  EXPECT_EQ(view_model.columnCount(), 2);
+
+  EXPECT_EQ(view_model.rootItem()->GetRowCount(), 1);
+  EXPECT_EQ(view_model.rootItem()->GetColumnCount(), 2);  // Failing here with, gives 1
 }
