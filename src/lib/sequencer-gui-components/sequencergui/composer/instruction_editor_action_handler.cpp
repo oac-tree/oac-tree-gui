@@ -134,20 +134,25 @@ void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QStrin
 
 bool InstructionEditorActionHandler::CanRemoveInstruction() const
 {
-  return GetSelectedInstruction() != nullptr;
+  const bool has_model = GetModel() != nullptr;
+  const bool has_selection = GetSelectedInstruction() != nullptr;
+  return has_model && has_selection;
 }
 
 void InstructionEditorActionHandler::OnRemoveInstructionRequest()
 {
-  if (auto selected_instruction = GetSelectedInstruction(); selected_instruction)
+  if (!CanRemoveInstruction())
   {
-    auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_instruction);
-    GetModel()->RemoveItem(selected_instruction);
-    if (next_to_select)
-    {
-      // suggest to select something else instead of just deleted instruction
-      emit SelectItemRequest(next_to_select);
-    }
+    return;
+  }
+
+  auto selected_instruction = GetSelectedInstruction();
+  auto next_to_select = mvvm::utils::FindNextSiblingToSelect(selected_instruction);
+  GetModel()->RemoveItem(selected_instruction);
+  if (next_to_select)
+  {
+    // suggest to select something else instead of just deleted instruction
+    emit SelectItemRequest(next_to_select);
   }
 }
 
@@ -210,7 +215,7 @@ void InstructionEditorActionHandler::OnEditAnyvalueRequest()
 
 bool InstructionEditorActionHandler::CanCut() const
 {
-  return GetSelectedInstruction() != nullptr;
+  return CanRemoveInstruction();
 }
 
 void InstructionEditorActionHandler::Cut()
@@ -226,7 +231,10 @@ void InstructionEditorActionHandler::Cut()
 
 bool InstructionEditorActionHandler::CanCopy() const
 {
-  return GetSelectedInstruction() != nullptr && m_context.set_mime_data;
+  const bool has_model = GetModel() != nullptr;
+  const bool has_selection = GetSelectedInstruction() != nullptr;
+  const bool has_clipboard = static_cast<bool>(m_context.set_mime_data);
+  return has_model && has_selection && has_clipboard;
 }
 
 void InstructionEditorActionHandler::Copy()
@@ -241,8 +249,12 @@ void InstructionEditorActionHandler::Copy()
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
 {
-  auto mime_data = GetMimeData();
+  if (!GetModel())
+  {
+    return false;
+  }
 
+  auto mime_data = GetMimeData();
   if (!mime_data || !mime_data->hasFormat(kCopyInstructionMimeType))
   {
     return false;
@@ -264,8 +276,12 @@ void InstructionEditorActionHandler::PasteAfter()
 
 bool InstructionEditorActionHandler::CanPasteInto() const
 {
-  auto mime_data = GetMimeData();
+  if (!GetModel())
+  {
+    return false;
+  }
 
+  auto mime_data = GetMimeData();
   if (!mime_data || !mime_data->hasFormat(kCopyInstructionMimeType))
   {
     return false;
@@ -327,8 +343,7 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
   {
-    return QuerryResult::Failure(
-        {kFailedActionTitle, kFailedActionText, "No procedure selected"});
+    return QuerryResult::Failure({kFailedActionTitle, kFailedActionText, "No procedure selected"});
   }
 
   // Checking if there is a selection inside another parent. To paste after this selection, the
@@ -395,6 +410,11 @@ void InstructionEditorActionHandler::InsertIntoCurrentSelection(
 mvvm::SessionItem *InstructionEditorActionHandler::InsertItem(
     std::unique_ptr<mvvm::SessionItem> item, mvvm::SessionItem *parent, const mvvm::TagIndex &index)
 {
+  if (!GetModel())
+  {
+    throw RuntimeException("Uninitialised model");
+  }
+
   if (parent == nullptr)
   {
     throw RuntimeException("Uninitialised parent");

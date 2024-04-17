@@ -71,7 +71,9 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
 
 bool WorkspaceEditorActionHandler::CanRemoveVariable() const
 {
-  return GetSelectedVariable() != nullptr;
+  const bool has_model = GetModel() != nullptr;
+  const bool has_selection = GetSelectedVariable() != nullptr;
+  return has_model && has_selection;
 }
 
 void WorkspaceEditorActionHandler::OnRemoveVariableRequest()
@@ -129,7 +131,7 @@ void WorkspaceEditorActionHandler::OnEditAnyValueRequest()
 
 bool WorkspaceEditorActionHandler::CanCut() const
 {
-  return GetSelectedVariable() != nullptr;
+  return CanRemoveVariable();
 }
 
 void WorkspaceEditorActionHandler::Cut()
@@ -145,7 +147,10 @@ void WorkspaceEditorActionHandler::Cut()
 
 bool WorkspaceEditorActionHandler::CanCopy() const
 {
-  return GetSelectedVariable() != nullptr && m_context.set_mime_data;
+  const bool has_model = GetModel() != nullptr;
+  const bool has_selection = GetSelectedVariable() != nullptr;
+  const bool has_clipboard = static_cast<bool>(m_context.set_mime_data);
+  return has_model && has_selection && has_clipboard;
 }
 
 void WorkspaceEditorActionHandler::Copy()
@@ -160,8 +165,9 @@ void WorkspaceEditorActionHandler::Copy()
 
 bool WorkspaceEditorActionHandler::CanPaste() const
 {
+  const bool has_model = GetModel() != nullptr;
   auto mime_data = GetMimeData();
-  return mime_data && mime_data->hasFormat(kCopyVariableMimeType);
+  return has_model && mime_data && mime_data->hasFormat(kCopyVariableMimeType);
 }
 
 void WorkspaceEditorActionHandler::Paste()
@@ -176,7 +182,7 @@ void WorkspaceEditorActionHandler::Paste()
 
 mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const
 {
-  return GetWorkspaceItem()->GetModel();
+  return GetWorkspaceItem() ? GetWorkspaceItem()->GetModel() : nullptr;
 }
 
 WorkspaceItem *WorkspaceEditorActionHandler::GetWorkspaceItem() const
@@ -197,6 +203,11 @@ const QMimeData *WorkspaceEditorActionHandler::GetMimeData() const
 void WorkspaceEditorActionHandler::InsertVariableAfterCurrentSelection(
     std::unique_ptr<mvvm::SessionItem> variable_item)
 {
+  if (!GetModel())
+  {
+    throw RuntimeException("Model is not initialised");
+  }
+
   auto selected_item = GetSelectedVariable();
 
   try
