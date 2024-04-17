@@ -23,7 +23,7 @@
 //! @file
 //! Various strategies to construct row of properties representing instructions and variables.
 
-#include <mvvm/interfaces/row_strategy_interface.h>
+#include <mvvm/viewmodel/abstract_row_strategy.h>
 
 namespace sequencergui
 {
@@ -35,12 +35,13 @@ namespace sequencergui
  * typeName label]. For everything beneath it it will generate [property_name, value, typeName
  * label].
  */
-class VariableRowStrategy : public mvvm::RowStrategyInterface
+class VariableRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override;
 
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override;
+private:
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override;
 };
 
 /**
@@ -48,12 +49,13 @@ public:
  *
  * The row contains "| Name | Value | Type | Channel | Connected |".
  */
-class VariableTableRowStrategy : public mvvm::RowStrategyInterface
+class VariableTableRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override;
 
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override;
+private:
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override;
 };
 
 /**
@@ -62,12 +64,13 @@ public:
  *
  * The row contains instruction type, and editable name.
  */
-class InstructionEditorRowStrategy : public mvvm::RowStrategyInterface
+class InstructionEditorRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override;
 
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override;
+private:
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override;
 };
 
 }  // namespace sequencergui

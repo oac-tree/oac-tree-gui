@@ -22,15 +22,15 @@
 #include <sequencergui/model/procedure_item.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
+#include <mvvm/viewmodel/abstract_row_strategy.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
-#include <mvvm/viewmodel/standard_row_strategies.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
 namespace sequencergui
 {
 
-class ProcedureRowStrategy : public mvvm::RowStrategyInterface
+class ProcedureRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override
@@ -39,17 +39,11 @@ public:
     return result;
   }
 
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override
+private:
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override
   {
     std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-
-    if (!item)
-    {
-      return result;
-    }
-
     result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(item));
-
     return result;
   }
 };
@@ -63,7 +57,7 @@ ProcedureViewModel::ProcedureViewModel(mvvm::SessionModelInterface *model, QObje
 
 int ProcedureViewModel::columnCount(const QModelIndex &parent) const
 {
-  return 1; // Type
+  return 1;  // Type
 }
 
 }  // namespace sequencergui

@@ -171,14 +171,9 @@ QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
   return result;
 }
 
-std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
+std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRowImpl(
     mvvm::SessionItem *item)
 {
-  if (!item)
-  {
-    return {};
-  }
-
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
     // If it's Variable itself, generate [editable name, empty label, modelType]
@@ -210,15 +205,10 @@ QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
   return result;
 }
 
-std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::ConstructRow(
+std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::ConstructRowImpl(
     mvvm::SessionItem *item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-
-  if (!item)
-  {
-    return result;
-  }
 
   if (auto variable = dynamic_cast<VariableItem *>(item); variable)
   {
@@ -244,15 +234,10 @@ QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
   return result;
 }
 
-std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::ConstructRow(
+std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::ConstructRowImpl(
     mvvm::SessionItem *item)
 {
   std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-
-  if (!item)
-  {
-    return result;
-  }
 
   result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
 

@@ -26,34 +26,28 @@
 #include <mvvm/factories/viewmodel_controller_factory.h>
 #include <mvvm/interfaces/children_strategy_interface.h>
 #include <mvvm/model/item_utils.h>
-#include <mvvm/viewmodel/standard_row_strategies.h>
+#include <mvvm/viewmodel/abstract_row_strategy.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
 namespace sequencergui
 {
 
-class JobRowStrategy : public mvvm::RowStrategyInterface
+class JobRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override
   {
-    static QStringList result = {"Name", "Status"};
+    static const QStringList result = {"Name", "Status"};
     return result;
   }
 
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override
+private:
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRowImpl(mvvm::SessionItem *item) override
   {
     std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-
-    if (!item)
-    {
-      return result;
-    }
-
     result.emplace_back(mvvm::CreateEditableDisplayNameViewItem(item));
     result.emplace_back(mvvm::CreateDataViewItem(GetStatusItem(*item)));
-
     return result;
   }
 };
@@ -79,7 +73,7 @@ JobListViewModel::JobListViewModel(mvvm::SessionModelInterface *model, QObject *
 
 int JobListViewModel::columnCount(const QModelIndex &parent) const
 {
-  return 2; // Name, Status
+  return 2;  // Name, Status
 }
 
 }  // namespace sequencergui
