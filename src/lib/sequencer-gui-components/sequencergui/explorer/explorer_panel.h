@@ -52,8 +52,6 @@ public:
 
   void SetModel(SequencerModel* model);
 
-  ProcedureItem* GetSelectedProcedure();
-
 signals:
   void ProcedureFileClicked(const QString& filename);
   void ProcedureFileDoubleClicked(const QString& filename);

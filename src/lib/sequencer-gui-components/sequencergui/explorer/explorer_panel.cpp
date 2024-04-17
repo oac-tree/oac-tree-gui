@@ -78,11 +78,6 @@ void ExplorerPanel::SetModel(SequencerModel *model)
   m_procedure_list_view->SetModel(model);
 }
 
-ProcedureItem *ExplorerPanel::GetSelectedProcedure()
-{
-  return m_procedure_list_view->GetSelectedProcedure();
-}
-
 void ExplorerPanel::ReadSettings()
 {
   const QSettings settings;
