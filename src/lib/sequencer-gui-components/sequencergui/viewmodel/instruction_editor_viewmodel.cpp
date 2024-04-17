@@ -62,6 +62,10 @@ public:
     {
       result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
     }
+    else
+    {
+      result.emplace_back(mvvm::CreateLabelViewItem(item));
+    }
     return result;
   }
 };
