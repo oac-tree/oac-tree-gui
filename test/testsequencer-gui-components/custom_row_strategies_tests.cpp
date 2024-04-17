@@ -20,6 +20,7 @@
 #include "sequencergui/viewmodel/custom_row_strategies.h"
 
 #include <sequencergui/model/standard_variable_items.h>
+#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -106,4 +107,21 @@ TEST_F(CustomRowStrategiesTest, VariableTableRowStrategyLocalVariable)
     EXPECT_EQ(scalar_view_items.at(2)->Data(Qt::DisplayRole).toString(), QString(""));
     EXPECT_EQ(scalar_view_items.at(3)->Data(Qt::DisplayRole).toString(), QString(""));
   }
+}
+
+TEST_F(CustomRowStrategiesTest, InstructionEditorRowStrategy)
+{
+  {
+    SequenceItem item;
+    item.SetName("abc");
+    InstructionEditorRowStrategy strategy;
+
+    auto view_items = strategy.ConstructRow(&item);
+
+    ASSERT_EQ(view_items.size(), 2);
+
+    EXPECT_EQ(view_items.at(0)->Data(Qt::DisplayRole).toString(), QString("Sequence"));
+    EXPECT_EQ(view_items.at(1)->Data(Qt::DisplayRole).toString(), QString("abc"));
+  }
+
 }

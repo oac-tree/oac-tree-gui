@@ -21,6 +21,7 @@
 
 #include "custom_viewitem_factory.h"
 
+#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -166,14 +167,13 @@ namespace sequencergui
 
 QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static QStringList result = {"Name", "Value", "TypeName"};
+  static const QStringList result = {"Name", "Value", "TypeName"};
   return result;
 }
 
 std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
     mvvm::SessionItem *item)
 {
-
   if (!item)
   {
     return {};
@@ -184,11 +184,9 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
     // If it's Variable itself, generate [editable name, empty label, modelType]
     return CreateVariableTreeRow(*variable);
   }
-  else
-  {
-    // If it's variabl's property, generate standart [property display name, property value name]
-    return CreateVariableAttributeTreeRow(*item);
-  }
+
+  // If it's variabl's property, generate standart [property display name, property value name]
+  return CreateVariableAttributeTreeRow(*item);
 }
 
 //! ---------------------------------------------------------------------------
@@ -208,7 +206,7 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRow(
 
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 {
-  static QStringList result = {"Name", "Value", "Type", "Channel"};
+  static const QStringList result = {"Name", "Value", "Type", "Channel"};
   return result;
 }
 
@@ -234,6 +232,38 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
   result.emplace_back(mvvm::CreateLabelViewItem(item));
   result.emplace_back(mvvm::CreateLabelViewItem(item));
 
+  return result;
+}
+
+//! ---------------------------------------------------------------------------
+//! InstructionEditorRowStrategy
+//! ---------------------------------------------------------------------------
+QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
+{
+  static const QStringList result = {"Type", "Name"};
+  return result;
+}
+
+std::vector<std::unique_ptr<mvvm::ViewItem>> InstructionEditorRowStrategy::ConstructRow(
+    mvvm::SessionItem *item)
+{
+  std::vector<std::unique_ptr<mvvm::ViewItem>> result;
+
+  if (!item)
+  {
+    return result;
+  }
+
+  result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
+
+  if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
+  {
+    result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
+  }
+  else
+  {
+    result.emplace_back(mvvm::CreateLabelViewItem(item));
+  }
   return result;
 }
 

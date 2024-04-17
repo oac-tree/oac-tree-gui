@@ -21,54 +21,18 @@
 
 #include "drag_and_drop_helper.h"
 
-#include <sequencergui/model/sequencer_item_helper.h>
-#include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/viewmodel/custom_row_strategies.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
-#include <mvvm/interfaces/row_strategy_interface.h>
 #include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/sessionitem.h>
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
-#include <mvvm/viewmodel/viewitem_factory.h>
-#include <mvvm/viewmodel/viewmodel_utils.h>
-#include <mvvm/viewmodelbase/viewitem.h>
 
 #include <QMimeData>
 
 namespace sequencergui
 {
-
-class InstructionEditorRowStrategy : public mvvm::RowStrategyInterface
-{
-public:
-  QStringList GetHorizontalHeaderLabels() const override
-  {
-    static QStringList result = {"Type", "Name"};
-    return result;
-  }
-
-  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override
-  {
-    std::vector<std::unique_ptr<mvvm::ViewItem>> result;
-
-    if (!item)
-    {
-      return result;
-    }
-
-    result.emplace_back(mvvm::CreateDisplayNameViewItem(item));
-
-    if (auto instruction = dynamic_cast<InstructionItem *>(item); instruction)
-    {
-      result.emplace_back(mvvm::CreateDataViewItem(GetNameItem(*instruction)));
-    }
-    else
-    {
-      result.emplace_back(mvvm::CreateLabelViewItem(item));
-    }
-    return result;
-  }
-};
 
 InstructionEditorViewModel::InstructionEditorViewModel(mvvm::SessionModelInterface *model,
                                                        QObject *parent)

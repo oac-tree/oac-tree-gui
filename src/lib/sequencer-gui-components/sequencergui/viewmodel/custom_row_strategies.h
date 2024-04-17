@@ -31,11 +31,10 @@ namespace sequencergui
 /**
  * @brief The VariableRowStrategy generates the row of three elements representing a Variable.
  *
- * @details For VariableItem itself it will generate a row with [editable_display_name, empty space,
+ * For VariableItem itself it will generate a row with [editable_display_name, empty space,
  * typeName label]. For everything beneath it it will generate [property_name, value, typeName
  * label].
  */
-
 class VariableRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
@@ -47,10 +46,23 @@ public:
 /**
  * @brief The VariableTableRowStrategy generates the row of 5 elements representing a variable.
  *
- * @details The row will containe "| Name | Value | Type | Channel | Connected |".
+ * The row contains "| Name | Value | Type | Channel | Connected |".
  */
-
 class VariableTableRowStrategy : public mvvm::RowStrategyInterface
+{
+public:
+  QStringList GetHorizontalHeaderLabels() const override;
+
+  std::vector<std::unique_ptr<mvvm::ViewItem>> ConstructRow(mvvm::SessionItem *item) override;
+};
+
+/**
+ * @brief The InstructionEditorRowStrategy generates the row of 2 elements representing instruction
+ * for instruction editor.
+ *
+ * The row contains instruction type, and editable name.
+ */
+class InstructionEditorRowStrategy : public mvvm::RowStrategyInterface
 {
 public:
   QStringList GetHorizontalHeaderLabels() const override;
