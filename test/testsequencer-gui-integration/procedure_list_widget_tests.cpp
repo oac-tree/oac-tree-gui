@@ -22,13 +22,14 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 
+#include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
+#include <testutils/folder_based_test.h>
 #include <testutils/test_utils.h>
 
-#include <QDebug>
 #include <QListView>
 #include <QSignalSpy>
 
@@ -38,10 +39,10 @@ Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
-class ProcedureListWidgetTest : public ::testing::Test
+class ProcedureListWidgetTest : public testutils::FolderBasedTest
 {
 public:
-  ProcedureListWidgetTest()
+  ProcedureListWidgetTest() : testutils::FolderBasedTest("test_ProcedureListWidgetTest")
   {
     qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
   }
@@ -138,4 +139,31 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndex)
   EXPECT_EQ(selected_procedure, procedure);
 
   spy_selected.clear();
+}
+
+//! Validating procedure selection on project reload.
+TEST_F(ProcedureListWidgetTest, OnProjectReload)
+{
+  SequencerModel model;
+  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
+  procedure->SetName("abc");
+
+  ProcedureListWidget view;
+  view.SetModel(&model);
+
+  const auto file_path = GetFilePath("OnProjectReload.xml");
+  mvvm::XmlDocument document({&model});
+  document.Save(file_path);
+
+  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
+
+  document.Load(file_path);
+
+  EXPECT_EQ(spy_selected.count(), 1);
+  QList<QVariant> arguments = spy_selected.takeFirst();
+  EXPECT_EQ(arguments.size(), 1);
+  auto signaled_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
+
+  EXPECT_EQ(signaled_procedure->GetName(), std::string("abc"));
+  EXPECT_EQ(view.GetSelectedProcedure(), signaled_procedure);
 }

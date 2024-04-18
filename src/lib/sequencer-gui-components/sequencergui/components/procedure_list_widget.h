@@ -28,6 +28,10 @@ namespace mvvm
 {
 class ViewModel;
 class ItemViewComponentProvider;
+class SessionModelInterface;
+template <typename T>
+class ModelListener;
+class ModelResetEvent;
 }  // namespace mvvm
 
 class QListView;
@@ -51,6 +55,8 @@ class ProcedureListWidget : public QWidget
   Q_OBJECT
 
 public:
+  using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
+
   explicit ProcedureListWidget(QWidget* parent = nullptr);
   ~ProcedureListWidget() override;
 
@@ -71,18 +77,21 @@ signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
 
 protected:
-  void keyPressEvent(QKeyEvent *event) override;
+  void keyPressEvent(QKeyEvent* event) override;
 
-private:
+private:  
+  void OnProjectLoad(const mvvm::ModelResetEvent& event);
+
   ProcedureListContext CreateContext();
-  void OnContextMenuRequest(const QPoint &point);
+  void OnContextMenuRequest(const QPoint& point);
 
-      QListView* m_list_view{nullptr};
+  QListView* m_list_view{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
   ProcedureListActions* m_actions{nullptr};
   ProcedureListActionHandler* m_action_handler{nullptr};
 
   SequencerModel* m_model{nullptr};
+  std::unique_ptr<listener_t> m_listener;
 };
 
 }  // namespace sequencergui
