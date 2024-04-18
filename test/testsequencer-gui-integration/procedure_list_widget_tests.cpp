@@ -104,11 +104,7 @@ TEST_F(ProcedureListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(procedure);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(spy_selected.count(), 1);
-  auto arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
-  EXPECT_EQ(selected_procedure, nullptr);
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -132,13 +128,8 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
-  EXPECT_EQ(spy_selected.count(), 1);
-  QList<QVariant> arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto selected_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
-  EXPECT_EQ(selected_procedure, procedure);
 
-  spy_selected.clear();
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
 }
 
 //! Validating procedure selection on project reload.
@@ -159,11 +150,7 @@ TEST_F(ProcedureListWidgetTest, OnProjectReload)
 
   document.Load(file_path);
 
-  EXPECT_EQ(spy_selected.count(), 1);
-  QList<QVariant> arguments = spy_selected.takeFirst();
-  EXPECT_EQ(arguments.size(), 1);
-  auto signaled_procedure = arguments.at(0).value<sequencergui::ProcedureItem*>();
-
-  EXPECT_EQ(signaled_procedure->GetName(), std::string("abc"));
-  EXPECT_EQ(view.GetSelectedProcedure(), signaled_procedure);
+  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected),
+            view.GetSelectedProcedure());
+  EXPECT_EQ(view.GetSelectedProcedure()->GetName(), std::string("abc"));
 }
