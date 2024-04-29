@@ -47,6 +47,8 @@ public:
    */
   explicit DomainJobObserver(post_event_callback_t post_event_callback);
 
+  void InitializeInstructionTree(const sup::sequencer::Instruction* root) override;
+
   void OnStateChange(sup::sequencer::JobState state) noexcept override;
 
   void OnBreakpointChange(const sup::sequencer::Instruction* instruction,

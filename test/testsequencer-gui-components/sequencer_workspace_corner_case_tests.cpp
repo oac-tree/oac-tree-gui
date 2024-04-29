@@ -67,8 +67,8 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
   EXPECT_EQ(variable_ptr, m_workspace.GetVariable(var_name));
   EXPECT_FALSE(variable_ptr->IsAvailable());
 
-  // workspace setup doesn't cause notifications
-  EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
+  // workspace setup causes a single notification for the initial value
+  EXPECT_CALL(listener, OnEvent(_, _, _)).Times(1);
   EXPECT_NO_THROW(m_workspace.Setup());
 
   // variable is available and has correct value
@@ -77,7 +77,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
   EXPECT_TRUE(variable_ptr->GetValue(current_value));
   EXPECT_EQ(current_value, initial_value);
 
-  // expecting notificarion on new value set
+  // expecting notification on new value set
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
   EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
 

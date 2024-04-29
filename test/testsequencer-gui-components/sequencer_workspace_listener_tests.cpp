@@ -97,29 +97,35 @@ TEST_F(SequencerWorkspaceListenerTest, LocalVariableInTheWorkspace)
 
   // setting workspace
   workspace.Setup();
-  // absence of signals means that Workspace doesn't notify initial value
-  EXPECT_EQ(spy_upate.count(), 0);
-  EXPECT_EQ(listener.GetEventCount(), 0);
+  // single signal notifies initial value
+  EXPECT_EQ(spy_upate.count(), 1);
+  EXPECT_EQ(listener.GetEventCount(), 1);
 
   // changing variable via workspace
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   EXPECT_TRUE(workspace.SetValue(var_name, value1));
-  EXPECT_EQ(spy_upate.count(), 1);
-  EXPECT_EQ(listener.GetEventCount(), 1);
+  EXPECT_EQ(spy_upate.count(), 2);
+  EXPECT_EQ(listener.GetEventCount(), 2);
 
   // changing variable via variable pointer
   sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
   local_variable_ptr->SetValue(value2);
-  EXPECT_EQ(spy_upate.count(), 2);
+  EXPECT_EQ(spy_upate.count(), 3);
+  EXPECT_EQ(listener.GetEventCount(), 3);
+
+  // getting back initial value
+  auto workspace_event = listener.PopEvent();
+  EXPECT_EQ(workspace_event.variable_name, var_name);
+  EXPECT_EQ(workspace_event.value, value0);
   EXPECT_EQ(listener.GetEventCount(), 2);
 
-  // getting back first value
-  auto workspace_event = listener.PopEvent();
+  // getting back first update
+  workspace_event = listener.PopEvent();
   EXPECT_EQ(workspace_event.variable_name, var_name);
   EXPECT_EQ(workspace_event.value, value1);
   EXPECT_EQ(listener.GetEventCount(), 1);
 
-  // getting back second value
+  // getting back second update
   workspace_event = listener.PopEvent();
   EXPECT_EQ(workspace_event.variable_name, var_name);
   EXPECT_EQ(workspace_event.value, value2);

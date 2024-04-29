@@ -54,6 +54,9 @@ DomainJobObserver::DomainJobObserver(post_event_callback_t post_event_callback)
   }
 }
 
+void DomainJobObserver::InitializeInstructionTree(const sup::sequencer::Instruction*)
+{}
+
 void DomainJobObserver::OnStateChange(sup::sequencer::JobState state) noexcept
 {
   {
