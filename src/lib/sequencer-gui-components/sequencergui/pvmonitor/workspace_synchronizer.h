@@ -40,10 +40,11 @@ class WorkspaceEvent;
  * @brief The WorkspaceSynchronizer class provides data synchronization between WorkspaceItem and
  * sequencer Workspace.
  *
- * @details All AnyValue updates in domain Workspace will be propagated to WorkspaceItem. Similarly,
- * all DataChangedEvent on GUI model side will be propagated to Sequencer Workspace. The number of
+ * All AnyValue updates in domain Workspace will be propagated to WorkspaceItem. Similarly, all
+ * DataChangedEvent on GUI model side will be propagated to Sequencer Workspace. The number of
  * variables in both workspaces, as well as their names, should coincide. There are two ways to use
- the controller.
+ * the controller.
+ *
  * @code
     // When the domain and the GUI workspaces are known upfront:
     WorkspaceSynchronizer synchronizer(workspace, workspace_item);
@@ -56,7 +57,6 @@ class WorkspaceEvent;
     synchronizer->Start();
  * @endcode
  */
-
 class WorkspaceSynchronizer : public QObject
 {
   Q_OBJECT
@@ -67,7 +67,8 @@ public:
    *
    * @details This c-tor requires that the WorkspaceItem should be set after.
    */
-  WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace, QObject* parent = nullptr);
+  explicit WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace,
+                                 QObject* parent = nullptr);
 
   /**
    * @brief Main c-tor when domain workspace and GUI workspace are known upfront.
@@ -99,7 +100,6 @@ public:
   WorkspaceItem* GetWorkspaceItem() const;
 
 private:
-  void SetInitialValuesFromDomain();
   void OnDomainVariableUpdated();
   void OnWorkspaceEventFromGUI(const WorkspaceEvent& event);
 

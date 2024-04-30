@@ -86,7 +86,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT1");
   const std::string var_name("var");
-  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto variable_item =
@@ -101,7 +101,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
   auto synchronizer = CreateSynchronizer();
 
   // Creating listeners and setting callback expectations.
-  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  const testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   // After domain workspace was set-up, there will be DataChangedEvent for IsAvailable
@@ -182,7 +182,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT3");
   const std::string var_name("var");
-  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto variable_item =
@@ -200,7 +200,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
   //  // Creating domain and setting callback expectations.
   //  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   auto anyvalue_item = variable_item->GetAnyValueItem();
-  sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
+  const sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
   //  EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
 
   // creating model listener and setting expectations
@@ -233,7 +233,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   const std::string kChannelName(kTestPrefix + "STRUCT4");
   const std::string server_var_name("server");
   const std::string client_var_name("client");
-  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto server_item =
@@ -284,8 +284,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
   // Creating domain listener and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   {
-    ::testing::InSequence seq;
-    sup::dto::AnyValue empty_value;
+    const ::testing::InSequence seq;
+    const sup::dto::AnyValue empty_value;
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
   }
@@ -313,7 +313,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   const std::string kChannelName(kTestPrefix + "STRUCT5");
   const std::string server_var_name("server");
   const std::string client_var_name("client");
-  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto server_item =
@@ -367,8 +367,8 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   // Creating domain listener and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   {
-    ::testing::InSequence seq;
-    sup::dto::AnyValue empty_value;
+    const ::testing::InSequence seq;
+    const sup::dto::AnyValue empty_value;
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
   }

@@ -145,9 +145,6 @@ void WorkspaceSynchronizer::Start()
     m_workspace->Setup();
   }
 
-  // Setting initial values will be performed once. All other updates will be done via callbacks.
-  SetInitialValuesFromDomain();
-
   UpdateVariableEditableProperty(true, *GetWorkspaceItem());
 
   m_started = true;
@@ -173,28 +170,6 @@ sup::sequencer::Workspace* WorkspaceSynchronizer::GetWorkspace() const
 WorkspaceItem* WorkspaceSynchronizer::GetWorkspaceItem() const
 {
   return m_workspace_item;
-}
-
-//! Updates all values in WorkspaceItem from the domain's workspace.
-//! The method is expected to be called once during synchronization startup.
-
-void WorkspaceSynchronizer::SetInitialValuesFromDomain()
-{
-  for (const auto& name : m_workspace->VariableNames())
-  {
-    // We wait for variable becoming available, before picking up initial values for the GUI
-    // We do not want to wait too long since the GUI will freeze here. It variable will become
-    // available later, we will be notified anyway.
-    if (m_workspace->WaitForVariable(name, kWaitLittleTime))
-    {
-      auto variable = m_workspace->GetVariable(name);
-
-      sup::dto::AnyValue anyvalue;
-      variable->GetValue(anyvalue);
-      WorkspaceEvent event{name, anyvalue, variable->IsAvailable()};
-      m_workspace_item_controller->ProcessEventFromDomain(event);
-    }
-  }
 }
 
 void WorkspaceSynchronizer::OnDomainVariableUpdated()
