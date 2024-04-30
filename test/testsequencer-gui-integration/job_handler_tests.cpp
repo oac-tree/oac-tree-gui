@@ -408,6 +408,10 @@ TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
   auto new_anyvalue_item1 = vars_inside.at(1)->GetAnyValueItem();
   auto new_anyvalue_item2 = vars_inside.at(2)->GetAnyValueItem();
 
+  ASSERT_NE(new_anyvalue_item0, nullptr);
+  ASSERT_NE(new_anyvalue_item1, nullptr);
+  ASSERT_NE(new_anyvalue_item2, nullptr);
+
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
 

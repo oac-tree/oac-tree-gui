@@ -74,9 +74,9 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
 
   SetupDomainProcedure();
 
-  SetupExpandedProcedureItem();
-
   SetupDomainRunner(user_context, m_job_item->GetTickTimeout());
+
+  SetupExpandedProcedureItem();
 }
 
 JobHandler::~JobHandler() = default;
@@ -201,8 +201,6 @@ void JobHandler::SetupDomainProcedure()
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(&m_domain_procedure->GetWorkspace());
   }
-
-  m_domain_procedure->Setup();
 }
 
 void JobHandler::SetupExpandedProcedureItem()
@@ -220,6 +218,10 @@ void JobHandler::SetupExpandedProcedureItem()
 
   GetJobModel()->InsertItem(std::move(expanded_procedure), m_job_item, mvvm::TagIndex::Append());
   m_breakpoint_controller->RestoreBreakpoints(*expanded_procedure_ptr);
+
+  m_breakpoint_controller->PropagateBreakpointsToDomain(
+      *expanded_procedure_ptr, *m_domain_runner_service->GetJobController());
+
   if (m_workspace_synchronizer)
   {
     m_workspace_synchronizer->SetWorkspaceItem(expanded_procedure_ptr->GetWorkspace());
@@ -231,8 +233,6 @@ void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_ti
 {
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
-  m_breakpoint_controller->PropagateBreakpointsToDomain(
-      *GetExpandedProcedure(), *m_domain_runner_service->GetJobController());
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
 }
 
