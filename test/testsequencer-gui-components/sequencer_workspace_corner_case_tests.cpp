@@ -45,15 +45,13 @@ public:
   sup::sequencer::Workspace m_workspace;
 };
 
-//! Single variable in workspace.
-//! Test prouves that workspace->Setup doesn't lead to the notification about initial value.
-
+//! Single variable in workspace. Test validates initial value notificartions on workspace->Setup.
 TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 {
   const std::string var_name("var0");
 
   // creating local variable
-  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   auto variable = testutils::CreateLocalVariable(var_name, initial_value);
   auto variable_ptr = variable.get();
 
@@ -78,7 +76,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
   EXPECT_EQ(current_value, initial_value);
 
   // expecting notification on new value set
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
   EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
 
   variable_ptr->SetValue(new_value);
@@ -99,7 +97,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   }
 
   // creating local variable
-  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   auto variable = testutils::CreatePVAccessServerVariable(var_name, channel_name, initial_value);
   auto variable_ptr = variable.get();
 
@@ -113,8 +111,8 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   EXPECT_EQ(variable_ptr, m_workspace.GetVariable(var_name));
   EXPECT_FALSE(variable_ptr->IsAvailable());
 
-  // workspace setup doesn't cause notifications
-  EXPECT_CALL(listener, OnEvent(_, _, _)).Times(0);
+  // workspace setup causes a single notification for the initial value
+  EXPECT_CALL(listener, OnEvent(_, _, _)).Times(1);
   EXPECT_NO_THROW(m_workspace.Setup());
 
   // giving variable time to become available
@@ -127,7 +125,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   EXPECT_EQ(current_value, initial_value);
 
   // expecting notification on new value set
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
   EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
 
   EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));
