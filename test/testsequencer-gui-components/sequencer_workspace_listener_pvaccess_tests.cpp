@@ -76,7 +76,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
 {
   // creating server variable
   const std::string var_name("var");
-  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   auto variable = CreateServerVariable(kSscalarChannelName, initial_value);
 
   // initialising workspace
@@ -85,12 +85,12 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
 
   // creating listener and attaching it to the workspace
   SequencerWorkspaceListener listener;
-  QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
+  const QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
   EXPECT_NO_THROW(listener.StartListening(&workspace));
 
   QTest::qWait(10);
 
-  // no signals from the workspace after starting listening
+  // no signals after object initialisation
   EXPECT_EQ(listener.GetEventCount(), 0);
   EXPECT_EQ(spy_upate.count(), 0);
 
@@ -98,9 +98,17 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
 
   QTest::qWait(10);
 
-  // apparently no signals from the workspace after setup
-  EXPECT_EQ(listener.GetEventCount(), 0);
-  EXPECT_EQ(spy_upate.count(), 0);
+  // after workspace setup
+  EXPECT_EQ(listener.GetEventCount(), 1);
+  EXPECT_EQ(spy_upate.count(), 1);
+
+  // The event stored in the listener should contain initial value after workspace Setup.
+  // However, due to the way we store a scalar inside struct, expected initial value will be
+  // wrapped in a struct.
+  const sup::dto::AnyValue expected_initial_value({{"value", {sup::dto::SignedInteger32Type, 43}}});
+  auto event = listener.PopEvent();
+  EXPECT_EQ(event.variable_name, var_name);
+  EXPECT_EQ(event.value, expected_initial_value);
 
   // checking current server variable
   EXPECT_TRUE(workspace.WaitForVariable(var_name, 5.0));
@@ -119,12 +127,12 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
   };
   EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 
-  EXPECT_EQ(spy_upate.count(), 1);
+  EXPECT_EQ(spy_upate.count(), 2);
 
   // checking accumulated event
-  sup::dto::AnyValue expected_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue expected_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
   EXPECT_EQ(listener.GetEventCount(), 1);
-  auto event = listener.PopEvent();
+  event = listener.PopEvent();
   EXPECT_EQ(event.variable_name, var_name);
   EXPECT_EQ(event.value, expected_value);
   EXPECT_TRUE(event.connected);
@@ -136,7 +144,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVa
 {
   // creating server variable
   const std::string var_name("var");
-  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
   auto variable = CreateServerVariable(kStructChannelName, initial_value);
 
   // initialising workspace
@@ -152,7 +160,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVa
 
   // creating listener and attaching it to the workspace
   SequencerWorkspaceListener listener;
-  QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
+  const QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
   EXPECT_NO_THROW(listener.StartListening(&workspace));
 
   EXPECT_EQ(listener.GetEventCount(), 0);
@@ -171,7 +179,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVa
   EXPECT_EQ(spy_upate.count(), 1);
 
   // checking accumulated event
-  sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
+  const sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
   EXPECT_EQ(listener.GetEventCount(), 1);
   auto event = listener.PopEvent();
   EXPECT_EQ(event.variable_name, var_name);
