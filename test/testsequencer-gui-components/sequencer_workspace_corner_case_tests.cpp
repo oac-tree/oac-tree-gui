@@ -45,7 +45,8 @@ public:
   sup::sequencer::Workspace m_workspace;
 };
 
-//! Single variable in workspace. Test validates initial value notifications on workspace->Setup.
+//! Single local variable in workspace. Test validates initial value notifications on
+//! workspace->Setup.
 TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 {
   const std::string var_name("var0");
@@ -86,19 +87,22 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
   EXPECT_EQ(current_value2, new_value);
 }
 
+//! Single PVAccessServer variable in workspace. Test validates initial value notifications on
+//! workspace->Setup.
+
 TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
 {
-  const std::string var_name("var0");
-  const std::string channel_name("var0");
-
   if (!IsSequencerPluginEpicsAvailable())
   {
     GTEST_SKIP();
   }
 
+  const std::string var_name("var0");
+  const std::string kChannelName(kTestPrefix + "PVAccessServerVariable");
+
   // creating local variable
   const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto variable = testutils::CreatePVAccessServerVariable(var_name, initial_value, channel_name);
+  auto variable = testutils::CreatePVAccessServerVariable(var_name, initial_value, kChannelName);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already
@@ -138,3 +142,50 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 }
 
+//! Two variables, PVAccessServer and PVAccessClient in workspace. Test validates initial values
+//! notifications on workspace->Setup.
+
+TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessClientAndServerVariables)
+{
+  if (!IsSequencerPluginEpicsAvailable())
+  {
+    GTEST_SKIP();
+  }
+
+  const sup::dto::AnyValue empty_value;
+
+  const std::string server_var_name("server");
+  const std::string client_var_name("client");
+  const std::string kChannelName(kTestPrefix + "PVAccessClientAndServerVariables");
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+
+  // adding two variables in a workspace
+  auto server_variable =
+      testutils::CreatePVAccessServerVariable(server_var_name, initial_value, kChannelName);
+  auto server_variable_ptr = server_variable.get();
+
+  // adding two variables in a workspace
+  auto client_variable =
+      testutils::CreatePVAccessClientVariable(client_var_name, initial_value, kChannelName);
+  auto client_variable_ptr = client_variable.get();
+
+  m_workspace.AddVariable(server_var_name, std::move(server_variable));
+  m_workspace.AddVariable(client_var_name, std::move(client_variable));
+
+  // setting expectations
+  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  {
+    const ::testing::InSequence seq;
+    // server variable reports its availability once
+    EXPECT_CALL(domain_listener, OnEvent(server_var_name, initial_value, true)).Times(1);
+    // client variable reports twice: availability, and then the value
+    EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
+    EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
+  }
+
+  // triggering expectations
+  m_workspace.Setup();
+
+  // server variable reports immideately, client variable needs special waiting
+  m_workspace.WaitForVariable(client_var_name, 2.0, true);
+}

@@ -29,12 +29,14 @@
 namespace testutils
 {
 
-//! Mock class to listen for domain workspace.
-
+/**
+ * @brief The MockDomainWorkspaceListener class listens for domain workspace notifications.
+ */
 class MockDomainWorkspaceListener
 {
 public:
-  MockDomainWorkspaceListener(sup::sequencer::Workspace& workspace) : m_workspace(workspace)
+  explicit MockDomainWorkspaceListener(sup::sequencer::Workspace& workspace)
+      : m_workspace(workspace)
   {
     m_guard = m_workspace.GetCallbackGuard(this);
 
