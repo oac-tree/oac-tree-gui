@@ -186,6 +186,6 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessClientAndServerVariables)
   // triggering expectations
   m_workspace.Setup();
 
-  // server variable reports immideately, client variable needs special waiting
+  // server variable reports immediately, client variable needs special waiting
   m_workspace.WaitForVariable(client_var_name, 2.0, true);
 }
