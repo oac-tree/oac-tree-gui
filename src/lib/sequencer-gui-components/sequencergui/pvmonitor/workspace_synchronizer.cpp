@@ -27,23 +27,12 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/transform/domain_workspace_builder.h>
-#include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
-#include <sup/gui/model/anyvalue_utils.h>
-
-#include <mvvm/model/model_utils.h>
-#include <mvvm/model/sessionmodel.h>
 
 #include <sup/sequencer/workspace.h>
 
-#include <algorithm>
-
 namespace
 {
-
-//! Waiting time for variable become available in sec.
-const double kWaitLittleTime(0.02);
 
 //! Validates that workspace
 void ValidateWorkspaces(const sequencergui::WorkspaceItem* workspace_item,
