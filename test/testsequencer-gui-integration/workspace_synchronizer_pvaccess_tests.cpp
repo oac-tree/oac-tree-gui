@@ -139,7 +139,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
 {
   const std::string kChannelName(kTestPrefix + "STRUCT2");
   const std::string var_name("var");
-  sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
 
   // creating PVServerVariableItem in the model
   auto variable_item =
@@ -157,7 +157,7 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromGUI)
   // Creating domain and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   auto anyvalue_item = variable_item->GetAnyValueItem();
-  sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
+  const sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
   EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
 
   // creating model listener and setting expectations
@@ -283,9 +283,13 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientAndServerVariableConnection)
 
   // Creating domain listener and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
+  const sup::dto::AnyValue empty_value;
   {
+    // This behavior coincides SequencerWorkspaceCornerCaseTest::PVAccessClientAndServerVariables
+    // We check that WorkspaceSyncronizer doesn't change Workspace behavior.
     const ::testing::InSequence seq;
     const sup::dto::AnyValue empty_value;
+    EXPECT_CALL(domain_listener, OnEvent(server_var_name, initial_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
   }
@@ -367,8 +371,11 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ClientWithoutAnyValueAndServerVariable
   // Creating domain listener and setting callback expectations.
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   {
+    // This behavior coincides SequencerWorkspaceCornerCaseTest::PVAccessClientAndServerVariables
+    // We check that WorkspaceSyncronizer doesn't change Workspace behavior.
     const ::testing::InSequence seq;
     const sup::dto::AnyValue empty_value;
+    EXPECT_CALL(domain_listener, OnEvent(server_var_name, initial_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, empty_value, true)).Times(1);
     EXPECT_CALL(domain_listener, OnEvent(client_var_name, initial_value, true)).Times(1);
   }
