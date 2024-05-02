@@ -158,7 +158,7 @@ private:
   /**
    * @brief Creates domain procedure from ProcedureItem, and performs its setup.
    */
-  void SetupDomainProcedure();
+  void CreateDomainProcedure();
 
   /**
    * @brief Setup expanded procedure item.

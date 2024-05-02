@@ -72,9 +72,9 @@ JobHandler::JobHandler(JobItem *job_item, const UserContext &user_context)
 
   SetupBreakpointController();
 
-  SetupDomainProcedure();
+  CreateDomainProcedure();
 
-  SetupDomainRunner(user_context, m_job_item->GetTickTimeout());
+  SetupDomainRunner(user_context, m_job_item->GetTickTimeout());  // calls also Procedure::Setup
 
   SetupExpandedProcedureItem();
 }
@@ -191,7 +191,7 @@ void JobHandler::SetupBreakpointController()
   }
 }
 
-void JobHandler::SetupDomainProcedure()
+void JobHandler::CreateDomainProcedure()
 {
   // building domain procedure
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
@@ -205,6 +205,8 @@ void JobHandler::SetupDomainProcedure()
 
 void JobHandler::SetupExpandedProcedureItem()
 {
+  // We expect that Procedure::Setup was already called
+
   // remove previous expanded procedure
   if (auto expanded_procedure = GetExpandedProcedure(); expanded_procedure)
   {
@@ -231,6 +233,7 @@ void JobHandler::SetupExpandedProcedureItem()
 
 void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_time_msec)
 {
+  // this creates beneath domain JobController, which calls Procedure::Setup
   m_domain_runner_service =
       std::make_unique<DomainRunnerService>(CreateContext(), user_context, *m_domain_procedure);
   m_domain_runner_service->SetTickTimeout(sleep_time_msec);
