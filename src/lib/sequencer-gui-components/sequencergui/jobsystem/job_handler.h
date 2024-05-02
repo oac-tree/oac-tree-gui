@@ -156,7 +156,7 @@ private:
   void SetupBreakpointController();
 
   /**
-   * @brief Creates domain procedure from ProcedureItem, and performs its setup.
+   * @brief Creates domain procedure from ProcedureItem.
    */
   void CreateDomainProcedure();
 
