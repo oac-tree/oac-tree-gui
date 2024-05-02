@@ -68,6 +68,22 @@ record (waveform,"CA-TESTS:CHARRAY")
 }
 )RAW";
 
+std::unique_ptr<variable_t> CreateVariable(const std::string &type, const std::string &name,
+                                           const sup::dto::AnyValue &initial_value,
+                                           const std::string &channel_name = {})
+{
+  using namespace sequencergui::domainconstants;
+  auto result = sequencergui::CreateDomainVariable(type);
+  result->SetName(name);
+  result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(initial_value));
+  result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(initial_value));
+  if (!channel_name.empty())
+  {
+    result->AddAttribute(sequencergui::domainconstants::kChannelAttribute, channel_name);
+  }
+  return result;
+}
+
 }  // unnamed namespace
 
 namespace testutils
@@ -81,27 +97,23 @@ std::string GetEpicsDBContentString()
 std::unique_ptr<variable_t> CreateLocalVariable(const std::string &name,
                                                 const sup::dto::AnyValue &initial_value)
 {
-  using namespace sequencergui::domainconstants;
+  return CreateVariable(sequencergui::domainconstants::kLocalVariableType, name, initial_value);
+}
 
-  auto result = sequencergui::CreateDomainVariable(kLocalVariableType);
-  result->SetName(name);
-  result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(initial_value));
-  result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(initial_value));
-  return result;
+std::unique_ptr<variable_t> CreatePVAccessClientVariable(const std::string &name,
+                                                         const sup::dto::AnyValue &initial_value,
+                                                         const std::string &channel_name)
+{
+  return CreateVariable(sequencergui::domainconstants::kPvAccessClientVariableType, name,
+                        initial_value, channel_name);
 }
 
 std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string &name,
-                                                         const std::string &channel_name,
-                                                         const sup::dto::AnyValue &anyvalue)
+                                                         const sup::dto::AnyValue &initial_value,
+                                                         const std::string &channel_name)
 {
-  using namespace sequencergui::domainconstants;
-
-  auto result = sequencergui::CreateDomainVariable(kPvAccessServerVariableType);
-  result->SetName(name);
-  result->AddAttribute(kChannelAttribute, channel_name);
-  result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
-  result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
-  return result;
+  return CreateVariable(sequencergui::domainconstants::kPvAccessServerVariableType, name,
+                        initial_value, channel_name);
 }
 
 }  // namespace testutils

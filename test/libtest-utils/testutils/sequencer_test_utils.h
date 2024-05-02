@@ -27,22 +27,38 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace testutils
 {
 
-//! Returns string representing EPICS database file with several testing variables.
+/**
+ * @brief Returns string representing EPICS database file with several testing variables.
+ */
 std::string GetEpicsDBContentString();
 
-//! Creates sequencer local variable with the given name and initial value.
+/**
+ * @brief Creates sequencer local variable.
+ */
+
+/**
+ * @brief Creates sequencer local variable with given parameters.
+ */
 std::unique_ptr<variable_t> CreateLocalVariable(const std::string& name,
                                                 const sup::dto::AnyValue& initial_value);
 
-//! Creates PvAccessServerVariable with given parameters
+/**
+ * @brief Creates PvAccessClientVariable with given parameters.
+ */
+std::unique_ptr<variable_t> CreatePVAccessClientVariable(const std::string& name,
+                                                         const sup::dto::AnyValue& initial_value,
+                                                         const std::string& channel_name);
+
+/**
+ * @brief Creates PvAccessClientVariable with given parameters.
+ */
 std::unique_ptr<variable_t> CreatePVAccessServerVariable(const std::string& name,
-                                                         const std::string& channel_name,
-                                                         const sup::dto::AnyValue& anyvalue);
+                                                         const sup::dto::AnyValue& initial_value,
+                                                         const std::string& channel_name);
 
 }  // namespace testutils
 

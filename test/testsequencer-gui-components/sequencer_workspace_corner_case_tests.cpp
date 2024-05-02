@@ -45,7 +45,7 @@ public:
   sup::sequencer::Workspace m_workspace;
 };
 
-//! Single variable in workspace. Test validates initial value notificartions on workspace->Setup.
+//! Single variable in workspace. Test validates initial value notifications on workspace->Setup.
 TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
 {
   const std::string var_name("var0");
@@ -98,7 +98,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
 
   // creating local variable
   const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  auto variable = testutils::CreatePVAccessServerVariable(var_name, channel_name, initial_value);
+  auto variable = testutils::CreatePVAccessServerVariable(var_name, initial_value, channel_name);
   auto variable_ptr = variable.get();
 
   // listener is subscribed to the workspace on the contstruction already
@@ -137,3 +137,4 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   };
   EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 }
+
