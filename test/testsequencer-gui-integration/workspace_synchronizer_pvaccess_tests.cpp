@@ -102,7 +102,6 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
   auto synchronizer = CreateSynchronizer();
 
   // Creating listeners and setting callback expectations.
-  const testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   // Start method below will cause  DataChangedEvent for IsAvailable status, and appearance

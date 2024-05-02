@@ -222,19 +222,22 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 {
   const std::string var_name("abc");
 
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
   auto variable_item =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
 
-  SetAnyValue(value0, *variable_item);
+  SetAnyValue(initial_value, *variable_item);
 
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   auto synchronizer = CreateSynchronizer();
+
+  // expecting to get IsAvailable notification update after the start
+  EXPECT_CALL(domain_listener, OnEvent(var_name, initial_value, true)).Times(1);
 
   synchronizer->Start();
 
@@ -275,12 +278,11 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdateHandlerCase)
 
   SetAnyValue(value0, *variable_item);
 
+  auto synchronizer = CreateSynchronizerJobHandlerCase();
+  synchronizer->Start();
+
   testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
-
-  auto synchronizer = CreateSynchronizerJobHandlerCase();
-
-  synchronizer->Start();
 
   // changing the value via the model
   const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
