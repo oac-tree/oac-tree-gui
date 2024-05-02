@@ -410,14 +410,13 @@ TEST_F(JobHandlerTest, ProcedureWithResetVariableInstruction)
 
   ASSERT_NE(new_anyvalue_item0, nullptr);
   ASSERT_NE(new_anyvalue_item1, nullptr);
-  ASSERT_NE(new_anyvalue_item2, nullptr);
+  ASSERT_EQ(new_anyvalue_item2, nullptr);
 
   const sup::dto::AnyValue anyvalue0{sup::dto::SignedInteger32Type, 42};
   const sup::dto::AnyValue anyvalue1{sup::dto::StringType, "abc"};
 
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), anyvalue0);
   EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item1), anyvalue1);
-  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item2), sup::dto::AnyValue());
 
   job_handler.OnStartRequest();
   // We are testing here queued signals, need special waiting

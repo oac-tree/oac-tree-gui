@@ -21,6 +21,7 @@
 
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/model/item_constants.h>
+#include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
@@ -104,10 +105,9 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, ServerVariableSimpleStart)
   const testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
-  // After domain workspace was set-up, there will be DataChangedEvent for IsAvailable
-  // status, and two more events for editable attributes change, caused by Start method.
-
-  auto is_available_property = variable_item->GetItem(itemconstants::kIsAvailable);
+  // Start method below will cause  DataChangedEvent for IsAvailable status, and appearance
+  // attribute (green icon) for channel.
+  auto is_available_property = GetIsAvailableItem(*variable_item);
   auto expected_event1 = mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
@@ -195,16 +195,26 @@ TEST_F(WorkspaceSynchronizerPVAccessTest, SetDataFromDomain)
 
   // creating synchronizer (and underlying domain  workspace)
   auto synchronizer = CreateSynchronizer();
-  synchronizer->Start();
-
-  //  // Creating domain and setting callback expectations.
-  //  testutils::MockDomainWorkspaceListener domain_listener(m_workspace);
-  auto anyvalue_item = variable_item->GetAnyValueItem();
-  const sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
-  //  EXPECT_CALL(domain_listener, OnEvent(var_name, expected_value, true)).Times(1);
 
   // creating model listener and setting expectations
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
+
+  // Start method below will cause  DataChangedEvent for IsAvailable status, and appearance
+  // attribute (green icon) for channel.
+  auto is_available_property = GetIsAvailableItem(*variable_item);
+  auto expected_event1 = mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
+
+  auto channel_property = variable_item->GetItem(domainconstants::kChannelAttribute);
+  auto expected_event2 = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
+
+  synchronizer->Start();
+
+  auto anyvalue_item = variable_item->GetAnyValueItem();
+  const sup::dto::AnyValue expected_value({{"value", {sup::dto::SignedInteger32Type, 42}}});
+
+  // preparing expectations
   auto scalar_field = anyvalue_item->GetChildren().at(0);
   auto expected_event = mvvm::DataChangedEvent{scalar_field, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
