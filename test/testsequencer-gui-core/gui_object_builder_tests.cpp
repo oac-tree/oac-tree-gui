@@ -150,6 +150,13 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithLocalVariable)
   auto local_variable_ptr = local_variable.get();
 
   procedure.AddVariable("abc", std::move(local_variable));
+
+  // For this test we do not need an instruction, but we have to add something to let
+  // Proceture::Setup passing.
+  auto message = CreateDomainInstruction(domainconstants::kMessageInstructionType);
+  message->AddAttribute(domainconstants::kTextAttribute, "hello world");
+  procedure.PushInstruction(std::move(message));
+
   procedure.Setup();
 
   sequencergui::ProcedureItem procedure_item;
