@@ -41,6 +41,7 @@ const std::string kEpicsPVXSPluginName = "libsequencer-pvxs.so";
 const std::string kEpicsMiscPluginName = "libsequencer-misc.so";
 const std::string kControlPluginName = "libsequencer-control.so";
 const std::string kSupConfigPluginName = "libsequencer-sup-config.so";
+const std::string kSupTimingPluginName = "libsequencer-sup-timing.so";
 const std::string kSupPulseCounterPluginName = "libsequencer-sup-pulse-counter.so";
 const std::string kMathExprPluginName = "libsequencer-mathexpr.so";
 

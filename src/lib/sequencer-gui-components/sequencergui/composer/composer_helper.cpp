@@ -46,6 +46,7 @@ std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
        {sequencergui::domainconstants::kEpicsCAPluginName,
         sequencergui::domainconstants::kEpicsPVXSPluginName}},
       {sequencergui::kControlGroup, {sequencergui::domainconstants::kControlPluginName}},
+      {sequencergui::kTimingGroup, {sequencergui::domainconstants::kSupTimingPluginName}},
       {sequencergui::kConfigGroup, {sequencergui::domainconstants::kSupConfigPluginName}},
       {sequencergui::kMiscGroup, {sequencergui::domainconstants::kSupPulseCounterPluginName}},
   };

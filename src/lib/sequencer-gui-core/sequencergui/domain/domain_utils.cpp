@@ -20,6 +20,7 @@
 #include "domain_utils.h"
 
 #include "domain_object_type_registry.h"
+#include "sequencergui/domain/domain_constants.h"
 
 #include <sequencergui/core/exceptions.h>
 
@@ -126,7 +127,7 @@ std::pair<bool, std::string> LoadPlugins()
       domainconstants::kEpicsCAPluginName,   domainconstants::kEpicsPVXSPluginName,
       domainconstants::kEpicsMiscPluginName, domainconstants::kControlPluginName,
       domainconstants::kSupConfigPluginName, domainconstants::kSupPulseCounterPluginName,
-      domainconstants::kMathExprPluginName};
+      domainconstants::kMathExprPluginName, domainconstants::kSupTimingPluginName};
 
   for (const auto& name : plugins)
   {
