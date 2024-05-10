@@ -63,7 +63,7 @@ TEST_F(ComposerHelperTest, CreateInstructionTypeGroups)
   // validating name registration according to groups
   auto group_info = CreateInstructionTypeGroups(registry);
 
-  ASSERT_EQ(group_info.size(), 6);
+  ASSERT_EQ(group_info.size(), 7);
   EXPECT_EQ(group_info.at(0).group_name, kCoreGroup);
   EXPECT_EQ(group_info.at(0).object_names, std::vector<std::string>({"core1", "core2"}));
 
