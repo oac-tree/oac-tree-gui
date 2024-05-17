@@ -37,8 +37,7 @@ MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *
                                                    QMainWindow *mainwindow)
     : QObject(mainwindow)
     , m_project_handler(
-          new sup::gui::ProjectHandler(mvvm::ProjectType::kFolderBased, {model}, mainwindow))
-
+          new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased, {model}, mainwindow))
 {
   CreateActions(mainwindow);
   SetupMenus(mainwindow->menuBar());
