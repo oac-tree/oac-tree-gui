@@ -53,8 +53,6 @@ public:
                                    const UserContext& user_context);
   ~DomainProcedureObserver() override;
 
-  void InitializeInstructionTree(const sup::sequencer::Instruction* root) override;
-
   void UpdateInstructionStatus(const ::sup::sequencer::Instruction* instruction) override;
 
   void VariableUpdated(const std::string& name, const sup::dto::AnyValue& value,

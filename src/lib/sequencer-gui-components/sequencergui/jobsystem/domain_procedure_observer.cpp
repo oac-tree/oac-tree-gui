@@ -57,9 +57,6 @@ DomainProcedureObserver::DomainProcedureObserver(post_event_callback_t post_even
 
 DomainProcedureObserver::~DomainProcedureObserver() = default;
 
-void DomainProcedureObserver::InitializeInstructionTree(const sup::sequencer::Instruction*)
-{}
-
 void DomainProcedureObserver::UpdateInstructionStatus(
     const sup::sequencer::Instruction *instruction)
 {
