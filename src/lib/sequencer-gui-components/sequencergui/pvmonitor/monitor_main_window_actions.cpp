@@ -30,14 +30,19 @@
 #include <QMenu>
 #include <QMenuBar>
 
+namespace
+{
+const QString kApplicationType = "SUP PV Monitor";
+}
+
 namespace sequencergui
 {
 
 MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *model,
                                                    QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(
-          new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased, {model}, mainwindow))
+    , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
+                                                     kApplicationType, {model}, mainwindow))
 {
   CreateActions(mainwindow);
   SetupMenus(mainwindow->menuBar());
