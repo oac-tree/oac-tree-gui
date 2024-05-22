@@ -23,13 +23,13 @@
 #include "attribute_editor_actions.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
-#include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
+#include <sup/gui/components/message_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -253,7 +253,7 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
 
   result.selected_item_callback = [this]() { return GetSelectedItem(); };
 
-  auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
+  auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
 
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);

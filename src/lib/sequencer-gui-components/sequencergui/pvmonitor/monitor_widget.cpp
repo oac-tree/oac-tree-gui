@@ -26,10 +26,10 @@
 #include "workspace_synchronizer.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
-#include <sequencergui/components/message_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
+#include <sup/gui/components/message_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
@@ -115,7 +115,7 @@ void MonitorWidget::OnStartMonitoringRequest()
   }
   catch (std::exception &ex)
   {
-    SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
+    sup::gui::SendWarningMessage({"Setup failed", "Can't setup workspace", ex.what()});
     UpdateVariableEditableProperty(false, *m_model->GetWorkspaceItem());
   }
 }
@@ -132,7 +132,8 @@ WorkspaceEditorContext MonitorWidget::CreateContext()
 
   auto selected_item_callback = [this]() { return m_tree_view->GetSelectedItem(); };
 
-  auto send_message_callback = [](const auto &event) { return SendWarningMessage(event); };
+  auto send_message_callback = [](const auto &event)
+  { return sup::gui::SendWarningMessage(event); };
 
   return {selected_workspace_callback, selected_item_callback, send_message_callback,
           CreateAnyValueDialogCallback(this)};

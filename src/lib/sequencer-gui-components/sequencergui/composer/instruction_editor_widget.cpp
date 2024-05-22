@@ -23,7 +23,6 @@
 #include "instruction_editor_context.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
-#include <sequencergui/components/message_helper.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_actions.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -32,6 +31,7 @@
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/custom_tree_view_style.h>
 #include <sequencergui/widgets/tree_helper.h>
+#include <sup/gui/components/message_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
@@ -299,7 +299,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.selected_procedure = [this]() { return m_procedure; };
   result.selected_instruction = [this]() { return GetSelectedInstruction(); };
 
-  auto send_message_callback = [](const auto &event) { SendWarningMessage(event); };
+  auto send_message_callback = [](const auto &event) { sup::gui::SendWarningMessage(event); };
   result.send_message_callback = send_message_callback;
 
   result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);

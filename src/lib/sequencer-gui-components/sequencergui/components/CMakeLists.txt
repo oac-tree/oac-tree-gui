@@ -17,8 +17,6 @@ target_sources(${library_name} PRIVATE
   custom_meta_types.h
   message_handler_factory.cpp
   message_handler_factory.h
-  message_helper.cpp
-  message_helper.h
   procedure_list_action_handler.cpp
   procedure_list_action_handler.h
   procedure_list_actions.cpp
