@@ -60,6 +60,8 @@ SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<Applicati
   m_composer_view->SetModel(m_models->GetSequencerModel());
   m_operation_view->SetApplicationModels(m_models.get());
   m_settings_view->SetApplicationModels(m_models.get());
+
+  OnProjectLoad();
 }
 
 bool SequencerMainWindow::ImportProcedure(const QString& file_name)
@@ -94,8 +96,6 @@ void SequencerMainWindow::InitComponents()
                                     sup::gui::constants::kHelpMenu});
 
   m_action_manager = new SequencerMainWindowActions(m_models->GetSequencerModel(), this);
-  connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
-          &SequencerMainWindow::OnRestartRequest);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");
@@ -120,6 +120,11 @@ void SequencerMainWindow::InitComponents()
   m_tab_widget->SetCurrentIndex(0);
 
   setCentralWidget(m_tab_widget);
+
+  connect(m_action_manager, &SequencerMainWindowActions::RestartApplicationRequest, this,
+          &SequencerMainWindow::OnRestartRequest);
+  connect(m_action_manager, &SequencerMainWindowActions::ProjectLoaded, this,
+          &SequencerMainWindow::OnProjectLoad);
 }
 
 void SequencerMainWindow::ReadSettings()
@@ -179,6 +184,11 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
     sup::gui::ShutdownApplication();
     QCoreApplication::exit(exit_code);
   }
+}
+
+void SequencerMainWindow::OnProjectLoad()
+{
+  m_composer_view->OnProjectLoad();
 }
 
 }  // namespace sequencergui

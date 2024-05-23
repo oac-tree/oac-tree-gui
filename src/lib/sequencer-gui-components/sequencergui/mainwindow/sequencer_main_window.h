@@ -65,6 +65,7 @@ private:
   void PopulateModel();
   bool CanCloseApplication();
   void OnRestartRequest(sup::gui::AppExitCode exit_code);
+  void OnProjectLoad();
 
   std::unique_ptr<ApplicationModels> m_models;
 

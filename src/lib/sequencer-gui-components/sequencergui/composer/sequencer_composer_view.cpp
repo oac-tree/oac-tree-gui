@@ -24,7 +24,6 @@
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_widget_panel.h>
 #include <sequencergui/composer/sequencer_composer_actions.h>
-#include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
@@ -92,13 +91,9 @@ void SequencerComposerView::SetModel(SequencerModel *model)
   m_plugin_controller = std::make_unique<ProcedurePluginController>(model);
 }
 
-void SequencerComposerView::showEvent(QShowEvent *event)
+void SequencerComposerView::OnProjectLoad()
 {
-  Q_UNUSED(event);
-  if (!m_composer_panel->GetSelectedProcedure())
-  {
-    m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
-  }
+  m_composer_panel->SetSelectedProcedure(GetFirstProcedure());
 }
 
 void SequencerComposerView::ReadSettings()
@@ -111,7 +106,8 @@ void SequencerComposerView::ReadSettings()
   }
 
   auto central_index = settings.value(kCentralPanel, ComposerWidgetPanel::kInstructionTree).toInt();
-  m_central_panel->SetCurrentWidgetType(static_cast<ComposerWidgetPanel::WidgetType>(central_index));
+  m_central_panel->SetCurrentWidgetType(
+      static_cast<ComposerWidgetPanel::WidgetType>(central_index));
 
   auto right_index = settings.value(kRightPanel, ComposerWidgetPanel::kWorkspace).toInt();
   m_right_panel->SetCurrentWidgetType(static_cast<ComposerWidgetPanel::WidgetType>(right_index));

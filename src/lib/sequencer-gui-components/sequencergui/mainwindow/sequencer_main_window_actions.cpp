@@ -48,11 +48,14 @@ namespace sequencergui
 SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterface *model,
                                                        QMainWindow *mainwindow)
     : QObject(mainwindow)
-    , m_project_handler(new sup::gui::ProjectHandler(
-          mvvm::ProjectType::kFileBased, kApplicationType, {model}, mainwindow))
+    , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
+                                                     kApplicationType, {model}, mainwindow))
 {
   CreateActions(mainwindow);
   SetupMenus();
+
+  connect(m_project_handler, &sup::gui::ProjectHandler::ProjectLoaded, this,
+          &SequencerMainWindowActions::ProjectLoaded);
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
