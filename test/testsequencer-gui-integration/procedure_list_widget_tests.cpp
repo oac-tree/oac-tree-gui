@@ -131,26 +131,3 @@ TEST_F(ProcedureListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
 }
-
-//! Validating procedure selection on project reload.
-TEST_F(ProcedureListWidgetTest, OnProjectReload)
-{
-  SequencerModel model;
-  auto procedure = model.InsertItem<ProcedureItem>(model.GetProcedureContainer());
-  procedure->SetName("abc");
-
-  ProcedureListWidget view;
-  view.SetModel(&model);
-
-  const auto file_path = GetFilePath("OnProjectReload.xml");
-  mvvm::XmlDocument document({&model});
-  document.Save(file_path);
-
-  QSignalSpy spy_selected(&view, &ProcedureListWidget::ProcedureSelected);
-
-  document.Load(file_path);
-
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected),
-            view.GetSelectedProcedure());
-  EXPECT_EQ(view.GetSelectedProcedure()->GetName(), std::string("abc"));
-}

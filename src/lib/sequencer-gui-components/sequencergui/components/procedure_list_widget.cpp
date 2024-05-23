@@ -28,7 +28,6 @@
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/item_utils.h>
-#include <mvvm/signals/model_listener.h>
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
@@ -88,9 +87,6 @@ void ProcedureListWidget::SetModel(SequencerModel *model)
   if (model)
   {
     m_component_provider->SetItem(model->GetProcedureContainer());
-    m_listener = std::make_unique<listener_t>(model);
-
-    m_listener->Connect<mvvm::ModelResetEvent>(this, &ProcedureListWidget::OnProjectLoad);
   }
 }
 
@@ -143,16 +139,6 @@ void ProcedureListWidget::keyPressEvent(QKeyEvent *event)
   else
   {
     QWidget::keyPressEvent(event);
-  }
-}
-
-void ProcedureListWidget::OnProjectLoad(const mvvm::ModelResetEvent &event)
-{
-  // (void)event;
-  auto procedures = m_model->GetProcedures();
-  if (!procedures.empty())
-  {
-    SetSelectedProcedure(procedures.at(0));
   }
 }
 
