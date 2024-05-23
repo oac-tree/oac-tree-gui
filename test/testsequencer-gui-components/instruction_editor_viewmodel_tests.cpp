@@ -329,7 +329,7 @@ TEST_F(InstructionEditorViewModelTest, ModelReset)
   // and is not suitable for displaying by InstructionEditorViewModel.
   auto root_item = mvvm::utils::CreateEmptyRootItem();
   auto procedure_container = root_item->InsertItem<mvvm::ContainerItem>(mvvm::TagIndex::Append());
-  model.Clear(std::move(root_item));
+  model.ReplaceRootItem(std::move(root_item));
 
   EXPECT_EQ(view_model.rowCount(), 1);
   EXPECT_EQ(view_model.columnCount(), 2);

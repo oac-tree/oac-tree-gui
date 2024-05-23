@@ -33,7 +33,7 @@ SequencerModel::SequencerModel(std::shared_ptr<mvvm::ItemPool> pool)
     : mvvm::ApplicationModel("SequencerModel", std::move(pool))
 
 {
-  InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
+  PopulateModel();
 }
 
 mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
@@ -44,6 +44,16 @@ mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 {
   return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::ContainerItem::kChildren);
+}
+
+void SequencerModel::Clear()
+{
+  GetProcedureContainer()->Clear();
+}
+
+void SequencerModel::PopulateModel()
+{
+  InsertItem<mvvm::ContainerItem>()->SetDisplayName("Procedure container");
 }
 
 }  // namespace sequencergui

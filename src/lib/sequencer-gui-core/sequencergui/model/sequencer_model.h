@@ -42,6 +42,11 @@ public:
   mvvm::ContainerItem* GetProcedureContainer() const;
 
   std::vector<ProcedureItem*> GetProcedures() const;
+
+  void Clear() override;
+
+private:
+  void PopulateModel();
 };
 
 }  // namespace sequencergui
