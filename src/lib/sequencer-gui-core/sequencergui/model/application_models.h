@@ -26,7 +26,7 @@
 namespace mvvm
 {
 class ItemPool;
-class ApplicationModel;
+class SessionModelInterface;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -35,9 +35,11 @@ namespace sequencergui
 class SequencerModel;
 class JobModel;
 
-//! Central place to store all application models.
-//! All models are using the same memory pool to allow cross-model item search.
-
+/**
+ * @brief The ApplicationModels class stores all application models.
+ *
+ * All models are using the same memory pool to allow cross-model item search.
+ */
 class ApplicationModels
 {
 public:
@@ -48,7 +50,7 @@ public:
 
   JobModel* GetJobModel();
 
-  std::vector<mvvm::ApplicationModel*> GetModels() const;
+  std::vector<mvvm::SessionModelInterface*> GetModels() const;
 
 private:
   std::shared_ptr<mvvm::ItemPool> m_item_pool;
