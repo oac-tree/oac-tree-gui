@@ -28,8 +28,6 @@
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/test/mock_callback_listener.h>
-
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/exceptions.h>
 
@@ -60,7 +58,7 @@ public:
 
     auto selected_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
 
-    auto send_message_callback = m_warning_listener.CreateCallback();
+    auto send_message_callback = m_warning_listener.AsStdFunction();
     auto edit_anyvalue_callback = m_mock_dialog.CreateCallback();
 
     return {selected_workspace_callback, selected_item_callback, send_message_callback,
@@ -78,7 +76,7 @@ public:
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
-  mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
   testutils::MockDialog m_mock_dialog;
 };
 
@@ -94,14 +92,14 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
 {
   auto selected_workspace_callback = []() { return nullptr; };
   auto selected_item_callback = []() { return nullptr; };
-  auto send_message_callback = m_warning_listener.CreateCallback();
+  auto send_message_callback = m_warning_listener.AsStdFunction();
   auto edit_anyvalue_callback = m_mock_dialog.CreateCallback();
 
   WorkspaceEditorContext context{selected_workspace_callback, selected_item_callback,
                                  send_message_callback, edit_anyvalue_callback};
   WorkspaceEditorActionHandler actions(context);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // adding variable
   EXPECT_NO_THROW(actions.OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type)));
@@ -117,7 +115,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
   handler->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
@@ -167,7 +165,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWHenNothingIsSelected)
   EXPECT_FALSE(handler->CanRemoveVariable());
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
   handler->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
@@ -190,7 +188,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   auto handler = CreateActionHandler(var0);
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
   handler->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
@@ -213,7 +211,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnRemoveVariableRequest)
   auto handler = CreateActionHandler(var0);
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // removing variable
   EXPECT_TRUE(handler->CanRemoveVariable());
@@ -233,7 +231,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAttemptToRemoveVariable)
   auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // removing variable
   handler->OnRemoveVariableRequest();
@@ -250,7 +248,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // removing variabl
   handler->OnEditAnyValueRequest();
@@ -276,7 +274,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenVariableIsSelected)
   auto handler = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -309,7 +307,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueIsSelected)
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -341,7 +339,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenAnyValueItemIsRemoved)
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no warning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -373,7 +371,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWhenDialogCanceled)
       CreateActionHandler(initial_anyvalue_item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -403,7 +401,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnEditRequestWheNoAnyValueItemIsStilExi
   auto handler = CreateActionHandler(var0, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no warning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -429,7 +427,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   auto handler = CreateActionHandler(nullptr);
 
   // expecting no waning callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
   handler->OnAddVariableRequest(QString::fromStdString(domainconstants::kSystemClockVariableType));

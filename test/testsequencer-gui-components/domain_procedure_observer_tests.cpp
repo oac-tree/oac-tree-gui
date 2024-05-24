@@ -19,17 +19,15 @@
 
 #include "sequencergui/jobsystem/domain_procedure_observer.h"
 
-#include <sequencergui/jobsystem/user_context.h>
-
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_utils.h>
-
-#include <mvvm/test/mock_callback_listener.h>
+#include <sequencergui/jobsystem/user_context.h>
 
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -40,7 +38,7 @@ using ::testing::_;
 class DomainProcedureObserverTest : public ::testing::Test
 {
 public:
-  mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
+  testing::MockFunction<void(const domain_event_t&)> m_event_listener;
 };
 
 TEST_F(DomainProcedureObserverTest, InitialState)
@@ -52,12 +50,12 @@ TEST_F(DomainProcedureObserverTest, OnStateChange)
 {
   auto instruction = CreateDomainInstruction(domainconstants::kWaitInstructionType);
 
-  DomainProcedureObserver observer(m_event_listener.CreateCallback(), {});
+  DomainProcedureObserver observer(m_event_listener.AsStdFunction(), {});
 
   domain_event_t expected_event(InstructionStatusChangedEvent{
       instruction.get(), ::sup::sequencer::ExecutionStatus::NOT_STARTED});
 
-  EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
+  EXPECT_CALL(m_event_listener, Call(expected_event)).Times(1);
 
   observer.UpdateInstructionStatus(instruction.get());
 }

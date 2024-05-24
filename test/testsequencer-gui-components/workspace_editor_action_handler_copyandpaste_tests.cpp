@@ -29,8 +29,6 @@
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/test/mock_callback_listener.h>
-
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
@@ -67,7 +65,7 @@ public:
     // callback returns given item, pretending it is user's selection
     result.selected_item_callback = [selected_item]() { return selected_item; };
     result.selected_workspace_callback = [this]() { return m_model.GetWorkspaceItem(); };
-    result.send_message_callback = m_warning_listener.CreateCallback();
+    result.send_message_callback = m_warning_listener.AsStdFunction();
     result.edit_anyvalue_callback = {};  // editing is not checked in this test
     result.get_mime_data = [current_mime, this]()
     { return current_mime ? current_mime : m_copy_result.get(); };
@@ -91,7 +89,7 @@ public:
   WorkspaceItem* GetWorkspaceItem() { return m_model.GetWorkspaceItem(); }
 
   MonitorModel m_model;
-  mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
   std::unique_ptr<QMimeData> m_copy_result;  //!< Result of copy operation.
 };
 
@@ -169,7 +167,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
 
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
@@ -198,7 +196,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   auto handler = CreateActionHandler(var0, mime_data.get());
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   EXPECT_TRUE(handler->CanPaste());
   handler->Paste();
@@ -224,7 +222,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   auto handler = CreateActionHandler(var0, nullptr);
   QSignalSpy spy_selection_request(handler.get(), &WorkspaceEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   EXPECT_TRUE(handler->CanCut());
 

@@ -28,15 +28,11 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/test/mock_callback_listener.h>
-
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include <stdexcept>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -72,7 +68,7 @@ TEST_F(WorkspaceItemControllerTest, GeVariableItemForName)
 
 TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 {
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -83,10 +79,10 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // expecting no callbacks on processing domain events
-  EXPECT_CALL(listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(listener, Call(_)).Times(0);
 
   // triggering domain workspace event (pretending it is disconnected)
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
@@ -113,7 +109,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 
 TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 {
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
@@ -124,10 +120,10 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
   EXPECT_EQ(variable_item0->GetAnyValueItem(), nullptr);
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // expecting no callbacks on processing domain events
-  EXPECT_CALL(listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(listener, Call(_)).Times(0);
 
   // triggering domain workspace event
   controller.ProcessEventFromDomain({"abc", value, true});
@@ -154,20 +150,20 @@ TEST_F(WorkspaceItemControllerTest, ModifyAnyValueFromModelViaInsert)
 {
   sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
 
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item0->SetName("abc");
   SetAnyValue(value, *variable_item0);
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // preparing callback expectations
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   WorkspaceEvent expected_event{"abc", new_value};
 
-  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+  EXPECT_CALL(listener, Call(expected_event)).Times(1);
 
   // modifying value from the model
   SetAnyValue(expected_event.value, *variable_item0);
@@ -182,7 +178,7 @@ TEST_F(WorkspaceItemControllerTest, ModifyTwoVariablesViaInserts)
   sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
 
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   SetAnyValue(value0, *variable_item0);
@@ -193,7 +189,7 @@ TEST_F(WorkspaceItemControllerTest, ModifyTwoVariablesViaInserts)
   variable_item1->SetName("var1");
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // preparing callback expectations
   WorkspaceEvent expected_event0{"var0", new_value};
@@ -201,8 +197,8 @@ TEST_F(WorkspaceItemControllerTest, ModifyTwoVariablesViaInserts)
 
   {
     ::testing::InSequence seq;
-    EXPECT_CALL(listener, OnCallback(expected_event0)).Times(1);
-    EXPECT_CALL(listener, OnCallback(expected_event1)).Times(1);
+    EXPECT_CALL(listener, Call(expected_event0)).Times(1);
+    EXPECT_CALL(listener, Call(expected_event1)).Times(1);
   }
 
   // modifying value from the model
@@ -232,13 +228,13 @@ TEST_F(WorkspaceItemControllerTest, ChannelAccessVariableInTheWorkspace)
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
   EXPECT_FALSE(variable_item->IsAvailable());
 
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // expecting no callbacks on processing domain events
-  EXPECT_CALL(listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(listener, Call(_)).Times(0);
 
   // triggering domain workspace event, pretending connected status
   controller.ProcessEventFromDomain({"abc", value, true});
@@ -269,16 +265,16 @@ TEST_F(WorkspaceItemControllerTest, SetScalarData)
   ASSERT_NE(scalar_anyvalue_item, nullptr);
   EXPECT_EQ(scalar_anyvalue_item->Data<int>(), 42);
 
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // preparing callback expectations
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   WorkspaceEvent expected_event{var_name, new_value};
 
-  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+  EXPECT_CALL(listener, Call(expected_event)).Times(1);
 
   // modifying value from the model
   scalar_anyvalue_item->SetData(43);
@@ -298,15 +294,15 @@ TEST_F(WorkspaceItemControllerTest, SetScalarDataInStruct)
   auto scalar_item = struct_item->AddScalarField("value", sup::dto::kInt32TypeName, 42);
   EXPECT_EQ(scalar_item->Data<int>(), 42);
 
-  mvvm::test::MockCallbackListener<WorkspaceEvent> listener;
+  testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
   WorkspaceItemController controller(m_workspace_item);
-  controller.SetCallback(listener.CreateCallback());
+  controller.SetCallback(listener.AsStdFunction());
 
   // preparing callback expectations
   sup::dto::AnyValue new_value({{"value", {sup::dto::SignedInteger32Type, 43}}});
   WorkspaceEvent expected_event{var_name, new_value};
-  EXPECT_CALL(listener, OnCallback(expected_event)).Times(1);
+  EXPECT_CALL(listener, Call(expected_event)).Times(1);
 
   // modifying value from the model
   scalar_item->SetData(43);

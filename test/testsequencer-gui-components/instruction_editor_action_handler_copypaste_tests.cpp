@@ -34,8 +34,8 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/test/mock_callback_listener.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
@@ -72,7 +72,7 @@ public:
     InstructionEditorContext result;
     result.selected_procedure = [this]() { return m_procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
-    result.send_message_callback = m_warning_listener.CreateCallback();
+    result.send_message_callback = m_warning_listener.AsStdFunction();
     result.get_mime_data = [current_mime]() { return current_mime; };
     result.set_mime_data = [this](std::unique_ptr<QMimeData> data)
     { m_copy_result = std::move(data); };
@@ -87,7 +87,7 @@ public:
   }
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
-  mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
   std::unique_ptr<QMimeData> m_copy_result;
 };
 
@@ -208,7 +208,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   EXPECT_TRUE(handler->CanPasteAfter());
   handler->PasteAfter();
@@ -241,7 +241,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   // creating action handler mimicking `sequence` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler(sequence, mime_data.get());
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -281,7 +281,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   // wait0 is selected
   auto handler = CreateActionHandler(wait0, mime_data.get());
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
   handler->PasteAfter();
@@ -317,7 +317,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(sequence, mime_data.get());
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // inserting instruction into selected instruction
   handler->PasteInto();
@@ -349,7 +349,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // inserting instruction into selected instruction
   EXPECT_TRUE(handler->CanCut());

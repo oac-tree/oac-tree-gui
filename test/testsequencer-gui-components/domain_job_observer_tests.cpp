@@ -21,8 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 
-#include <mvvm/test/mock_callback_listener.h>
-
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace sequencergui;
@@ -32,7 +31,7 @@ using namespace sequencergui;
 class DomainJobObserverTest : public ::testing::Test
 {
 public:
-  mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
+  testing::MockFunction<void(const domain_event_t&)> m_event_listener;
 };
 
 TEST_F(DomainJobObserverTest, InitialState)
@@ -42,10 +41,10 @@ TEST_F(DomainJobObserverTest, InitialState)
 
 TEST_F(DomainJobObserverTest, OnStateChange)
 {
-  DomainJobObserver observer(m_event_listener.CreateCallback());
+  DomainJobObserver observer(m_event_listener.AsStdFunction());
 
   domain_event_t expected_event(JobStateChangedEvent{::sup::sequencer::JobState::kInitial});
-  EXPECT_CALL(m_event_listener, OnCallback(expected_event)).Times(1);
+  EXPECT_CALL(m_event_listener, Call(expected_event)).Times(1);
 
   observer.OnStateChange(sup::sequencer::JobState::kInitial);
 }

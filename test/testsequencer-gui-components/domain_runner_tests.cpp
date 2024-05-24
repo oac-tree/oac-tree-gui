@@ -23,13 +23,12 @@
 #include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/jobsystem/user_context.h>
 
-#include <mvvm/test/mock_callback_listener.h>
-
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/workspace.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_domain_event_listener.h>
 #include <testutils/standard_procedures.h>
@@ -67,7 +66,7 @@ public:
     return [](const domain_event_t& event) { (void)event; };
   }
 
-  mvvm::test::MockCallbackListener<domain_event_t> m_event_listener;
+  testing::MockFunction<void(const domain_event_t&)> m_event_listener;
 };
 
 TEST_F(DomainRunnerTest, InitialState)
@@ -95,36 +94,36 @@ TEST_F(DomainRunnerTest, ShortProcedureThatExecutesNormally)
 
     // triggered by JobController c-tor
     const domain_event_t event1(JobStateChangedEvent{JobState::kInitial});
-    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
     const domain_event_t event2(JobStateChangedEvent{JobState::kRunning});
-    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
     const domain_event_t event3(
         InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::NOT_FINISHED});
-    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
 
     // message instruction (too difficult to make proper comparison because of time stamp)
-    EXPECT_CALL(m_event_listener, OnCallback(_)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(_)).Times(1);
 
     const domain_event_t event5(
         InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::SUCCESS});
-    EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event5)).Times(1);
 
     const domain_event_t event6(JobStateChangedEvent{JobState::kSucceeded});
-    EXPECT_CALL(m_event_listener, OnCallback(event6)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event6)).Times(1);
 
     const domain_event_t event7(NextLeavesChangedEvent{});
-    EXPECT_CALL(m_event_listener, OnCallback(event7)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event7)).Times(1);
 
     // triggered by JobController d-tor
     const domain_event_t event8(
         InstructionStatusChangedEvent{instruction_ptr, ExecutionStatus::NOT_STARTED});
-    EXPECT_CALL(m_event_listener, OnCallback(event8)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event8)).Times(1);
   }
 
   // DomainRunner runner(CreatePrintCallback(), *procedure);
-  DomainRunner runner(m_event_listener.CreateCallback(), {}, *procedure);
+  DomainRunner runner(m_event_listener.AsStdFunction(), {}, *procedure);
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
 
@@ -262,30 +261,30 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     const ::testing::InSequence seq;
 
     const domain_event_t event0(JobStateChangedEvent{JobState::kInitial});
-    EXPECT_CALL(m_event_listener, OnCallback(event0)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event0)).Times(1);
 
     const domain_event_t event1(JobStateChangedEvent{JobState::kStepping});
-    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
     const domain_event_t event2(
         InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_FINISHED});
-    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
     const domain_event_t event3(
         InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_FINISHED});
-    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
 
     const domain_event_t event4(InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::SUCCESS});
-    EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event4)).Times(1);
 
     const domain_event_t event4a(NextLeavesChangedEvent{{wait1_ptr}});
-    EXPECT_CALL(m_event_listener, OnCallback(event4a)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kPaused});
-    EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event5)).Times(1);
   }
 
-  DomainRunner runner(m_event_listener.CreateCallback(), {}, *procedure);
+  DomainRunner runner(m_event_listener.AsStdFunction(), {}, *procedure);
 
   EXPECT_EQ(runner.GetJobState(), sup::sequencer::JobState::kInitial);
   EXPECT_EQ(procedure->GetStatus(), ::sup::sequencer::ExecutionStatus::NOT_STARTED);
@@ -303,24 +302,24 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
     const ::testing::InSequence seq;
 
     const domain_event_t event1(JobStateChangedEvent{JobState::kStepping});
-    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
     const domain_event_t event2(
         InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_FINISHED});
-    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
     const domain_event_t event3(InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::SUCCESS});
-    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
 
     const domain_event_t event4(
         InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::SUCCESS});
-    EXPECT_CALL(m_event_listener, OnCallback(event4)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event4)).Times(1);
 
     const domain_event_t event4a(NextLeavesChangedEvent{});
-    EXPECT_CALL(m_event_listener, OnCallback(event4a)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event4a)).Times(1);
 
     const domain_event_t event5(JobStateChangedEvent{JobState::kSucceeded});
-    EXPECT_CALL(m_event_listener, OnCallback(event5)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event5)).Times(1);
   }
 
   // Step #2 and waiting till the end
@@ -335,15 +334,15 @@ TEST_F(DomainRunnerTest, SequenceWithTwoWaitsInStepMode)
 
     const domain_event_t event1(
         InstructionStatusChangedEvent{wait0_ptr, ExecutionStatus::NOT_STARTED});
-    EXPECT_CALL(m_event_listener, OnCallback(event1)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event1)).Times(1);
 
     const domain_event_t event2(
         InstructionStatusChangedEvent{wait1_ptr, ExecutionStatus::NOT_STARTED});
-    EXPECT_CALL(m_event_listener, OnCallback(event2)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event2)).Times(1);
 
     const domain_event_t event3(
         InstructionStatusChangedEvent{sequence_ptr, ExecutionStatus::NOT_STARTED});
-    EXPECT_CALL(m_event_listener, OnCallback(event3)).Times(1);
+    EXPECT_CALL(m_event_listener, Call(event3)).Times(1);
   }
 }
 

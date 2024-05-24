@@ -33,8 +33,8 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/test/mock_callback_listener.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
@@ -78,7 +78,7 @@ public:
     InstructionEditorContext result;
     result.selected_procedure = [procedure]() { return procedure; };
     result.selected_instruction = [instruction]() { return instruction; };
-    result.send_message_callback = m_warning_listener.CreateCallback();
+    result.send_message_callback = m_warning_listener.AsStdFunction();
     result.edit_anyvalue_callback = m_mock_dialog.CreateCallback();
     return result;
   }
@@ -93,7 +93,7 @@ public:
 
   SequencerModel m_model;
   ProcedureItem* m_procedure{nullptr};
-  mvvm::test::MockCallbackListener<sup::gui::MessageEvent> m_warning_listener;
+  testing::MockFunction<void(const sup::gui::MessageEvent&)> m_warning_listener;
   testutils::MockDialog m_mock_dialog;
 };
 
@@ -104,7 +104,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
   // creating the context pretending that no procedures/instructions are selected
   auto handler = CreateActionHandler(nullptr, nullptr);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
   EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
@@ -119,7 +119,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   QSignalSpy spy_selection_request(handler.get(),
                                    &InstructionEditorActionHandler::SelectItemRequest);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
@@ -137,7 +137,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
 {
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(
@@ -162,7 +162,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(m_procedure, sequence);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
@@ -188,7 +188,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   // creating action handler mimicking "no instruction selected"
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
   handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
@@ -219,7 +219,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   EXPECT_FALSE(
       handler->CanInsertAfter(QString::fromStdString(domainconstants::kMessageInstructionType)));
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // It is not possible to add second instruction to repeat instruction, expecting warning callback
   EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
@@ -246,7 +246,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   EXPECT_TRUE(
       handler->CanInsertAfter(QString::fromStdString(domainconstants::kMessageInstructionType)));
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // inserting instruction into selected instruction
   handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
@@ -282,7 +282,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   // creating action handler mimicking `wait` instruction selected
   auto handler = CreateActionHandler(m_procedure, wait);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // attempt to insert instruction into selected instruction, expecting callback
   EXPECT_NO_THROW(handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
@@ -296,7 +296,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
   // creating action handler mimicking no instruction selected
   auto handler = CreateActionHandler(m_procedure, nullptr);
 
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
 }
@@ -410,7 +410,7 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenNothingIsSelected)
   auto handler = CreateActionHandler(m_procedure, sequence);
 
   // expecting warning callbacks complaining that sequence can't have AnyValueItem
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   handler->OnEditAnyvalueRequest();
 }
@@ -441,7 +441,7 @@ TEST_F(InstructionEditorActionHandlerTest, OnEditRequestWhenInstructionIsSelecte
       CreateActionHandler(m_procedure, item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting no callbacks
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(0);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
@@ -477,7 +477,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToRemoveItem)
       CreateActionHandler(m_procedure, item, {dialog_was_acccepted, std::move(editing_result)});
 
   // expecting error callback.
-  EXPECT_CALL(m_warning_listener, OnCallback(_)).Times(1);
+  EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
   // expecting call to editing widget
   EXPECT_CALL(m_mock_dialog, OnEditingRequest(_)).Times(1);
 
