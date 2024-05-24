@@ -62,7 +62,6 @@ private:
   void InitComponents();
   void ReadSettings();
   void WriteSettings();
-  void PopulateModel();
   bool CanCloseApplication();
   void OnRestartRequest(sup::gui::AppExitCode exit_code);
   void OnProjectLoad();

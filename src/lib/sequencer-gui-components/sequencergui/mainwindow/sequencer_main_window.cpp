@@ -26,15 +26,12 @@
 #include <sequencergui/composer/sequencer_composer_view.h>
 #include <sequencergui/explorer/sequencer_explorer_view.h>
 #include <sequencergui/model/application_models.h>
-#include <sequencergui/model/procedure_examples.h>
-#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/operation/operation_monitor_view.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 
-#include <mvvm/standarditems/container_item.h>
 #include <mvvm/widgets/main_vertical_bar_widget.h>
 #include <mvvm/widgets/widget_utils.h>
 
@@ -52,8 +49,6 @@ namespace sequencergui
 {
 SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
-  PopulateModel();
-
   InitApplication();
 
   m_explorer_view->SetModel(m_models->GetSequencerModel());
@@ -142,16 +137,6 @@ void SequencerMainWindow::WriteSettings()
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
-}
-
-void SequencerMainWindow::PopulateModel()
-{
-  //
-  auto model = m_models->GetSequencerModel();
-  auto procedure = model->InsertItem<ProcedureItem>(model->GetProcedureContainer());
-  procedure->SetDisplayName("Untitled");
-
-  //  Examples::AddCopyProcedure(m_models->GetSequencerModel());
 }
 
 bool SequencerMainWindow::CanCloseApplication()

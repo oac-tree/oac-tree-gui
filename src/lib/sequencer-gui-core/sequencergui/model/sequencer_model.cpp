@@ -49,6 +49,8 @@ std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 void SequencerModel::Clear()
 {
   GetProcedureContainer()->Clear();
+  auto procedure = InsertItem<ProcedureItem>(GetProcedureContainer());
+  procedure->SetDisplayName("Untitled");
 }
 
 void SequencerModel::PopulateModel()
