@@ -95,7 +95,7 @@ void SequencerMainWindow::InitComponents()
                                     sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
                                     sup::gui::constants::kHelpMenu});
 
-  m_action_manager = new SequencerMainWindowActions(m_models->GetSequencerModel(), this);
+  m_action_manager = new SequencerMainWindowActions(m_models->GetModels(), this);
 
   m_tab_widget = new mvvm::MainVerticalBarWidget;
   m_tab_widget->SetBaseColor("#005291");

@@ -45,11 +45,11 @@ const QString kApplicationType = "Sequencer GUI";
 namespace sequencergui
 {
 
-SequencerMainWindowActions::SequencerMainWindowActions(mvvm::SessionModelInterface *model,
-                                                       QMainWindow *mainwindow)
+SequencerMainWindowActions::SequencerMainWindowActions(
+    const std::vector<mvvm::SessionModelInterface *> &models, QMainWindow *mainwindow)
     : QObject(mainwindow)
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
-                                                     kApplicationType, {model}, mainwindow))
+                                                     kApplicationType, models, mainwindow))
 {
   CreateActions(mainwindow);
   SetupMenus();

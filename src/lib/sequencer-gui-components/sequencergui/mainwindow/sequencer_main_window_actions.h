@@ -50,7 +50,8 @@ class SequencerMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
+  explicit SequencerMainWindowActions(const std::vector<mvvm::SessionModelInterface*>& models,
+                                      QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 
   /**
