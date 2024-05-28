@@ -51,6 +51,11 @@ SequencerMainWindowActions::SequencerMainWindowActions(
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
                                                      kApplicationType, models, mainwindow))
 {
+  sup::gui::AppRegisterMainMenuBar(mainwindow->menuBar(),
+                                   {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
+                                    sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
+                                    sup::gui::constants::kHelpMenu});
+
   CreateActions(mainwindow);
   SetupMenus();
 
@@ -92,6 +97,15 @@ void SequencerMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void SequencerMainWindowActions::SetupMenus()
 {
+  SetupFileMenu();
+  SetupEditMenu();
+  SetupViewMenu();
+  SetupToolsMenu();
+  SetupHelpMenu();
+}
+
+void SequencerMainWindowActions::SetupFileMenu()
+{
   auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
 
   auto about_to_show_menu = [this]()
@@ -116,7 +130,16 @@ void SequencerMainWindowActions::SetupMenus()
 
   file_menu->addSeparator();
   file_menu->addAction(m_exit_action);
+}
 
+void SequencerMainWindowActions::SetupEditMenu() {}
+
+void SequencerMainWindowActions::SetupViewMenu() {}
+
+void SequencerMainWindowActions::SetupToolsMenu() {}
+
+void SequencerMainWindowActions::SetupHelpMenu()
+{
   auto help_menu = sup::gui::AppGetMenu(sup::gui::constants::kHelpMenu);
   help_menu->addAction(m_about_action);
 }

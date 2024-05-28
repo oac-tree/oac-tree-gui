@@ -72,7 +72,7 @@ signals:
 
 private:
   /**
-   * @brief Create main actions.
+   * @brief Create common main actions.
    */
   void CreateActions(QMainWindow* mainwindow);
 
@@ -80,6 +80,11 @@ private:
    * @brief Populates main menu with actions.
    */
   void SetupMenus();
+  void SetupFileMenu();
+  void SetupEditMenu();
+  void SetupViewMenu();
+  void SetupToolsMenu();
+  void SetupHelpMenu();
 
   void OnAbout();
   void OnSummonSettingsDialogSettings();
