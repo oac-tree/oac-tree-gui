@@ -20,15 +20,19 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
+#include "app_constants.h"
 
 #include <sequencergui/mainwindow/main_window_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_action_manager.h>
+#include <sup/gui/app/app_command.h>
+#include <sup/gui/app/app_command_manager.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_helper.h>
 #include <sup/gui/components/project_handler.h>
 #include <sup/gui/components/project_handler_utils.h>
+#include <sup/gui/widgets/proxy_action.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
@@ -132,7 +136,20 @@ void SequencerMainWindowActions::SetupFileMenu()
   file_menu->addAction(m_exit_action);
 }
 
-void SequencerMainWindowActions::SetupEditMenu() {}
+void SequencerMainWindowActions::SetupEditMenu()
+{
+  auto command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
+                              app::constants::kCutProxyActionId);
+  command->SetText("Cut").SetShortcut(QKeySequence::Cut);
+
+  command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
+                                             app::constants::kCopyProxyActionId);
+  command->SetText("Copy").SetShortcut(QKeySequence::Copy);
+
+  command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
+                                        app::constants::kPasteProxyActionId);
+  command->SetText("Paste").SetShortcut(QKeySequence::Paste);
+}
 
 void SequencerMainWindowActions::SetupViewMenu() {}
 
