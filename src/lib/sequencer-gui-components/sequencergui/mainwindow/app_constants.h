@@ -33,6 +33,9 @@ const QString kCutProxyActionId = "Cut";
 const QString kCopyProxyActionId = "Copy";
 const QString kPasteProxyActionId = "Paste";
 
+const QString kValidateProcedureProxyActionId = "Validate procedure";
+const QString kExportXmlProxyActionId = "Export XML";
+
 }  // namespace sequencergui::app::constants
 
 #endif  // SEQUENCERGUI_MAINWINDOW_APP_CONSTANTS_

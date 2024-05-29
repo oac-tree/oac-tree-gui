@@ -70,13 +70,7 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
 
   SetupConnections();
 
-  // Actions for main window's tools menu
-  // sup::gui::AppRegisterActions(sup::gui::constants::kToolsMenu,
-  //                              m_composer_actions->GetMenuActions());
-
   sup::gui::AppRegisterContext(this, app::constants::kComposerContext);
-
-
 
   ReadSettings();
 }

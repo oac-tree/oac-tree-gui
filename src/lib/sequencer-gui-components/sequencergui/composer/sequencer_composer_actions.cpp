@@ -19,7 +19,9 @@
 
 #include "sequencer_composer_actions.h"
 
+#include <sequencergui/mainwindow/app_constants.h>
 #include <sequencergui/operation/procedure_action_handler.h>
+#include <sup/gui/app/app_action_helper.h>
 
 #include <QAction>
 #include <QWidget>
@@ -60,6 +62,13 @@ void SequencerComposerActions::SetupActions()
     handler.OnExportToXmlRequest(m_procedure_item);
   };
   connect(m_export_xml_action, &QAction::triggered, this, on_export);
+
+  sup::gui::AppAddActionToProxy(m_validate_procedure_action,
+                                app::constants::kValidateProcedureProxyActionId,
+                                app::constants::kComposerContext);
+
+  sup::gui::AppAddActionToProxy(m_export_xml_action, app::constants::kExportXmlProxyActionId,
+                                app::constants::kComposerContext);
 }
 
 }  // namespace sequencergui

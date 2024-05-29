@@ -139,11 +139,11 @@ void SequencerMainWindowActions::SetupFileMenu()
 void SequencerMainWindowActions::SetupEditMenu()
 {
   auto command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
-                              app::constants::kCutProxyActionId);
+                                             app::constants::kCutProxyActionId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
   command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
-                                             app::constants::kCopyProxyActionId);
+                                        app::constants::kCopyProxyActionId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
   command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
@@ -153,7 +153,14 @@ void SequencerMainWindowActions::SetupEditMenu()
 
 void SequencerMainWindowActions::SetupViewMenu() {}
 
-void SequencerMainWindowActions::SetupToolsMenu() {}
+void SequencerMainWindowActions::SetupToolsMenu()
+{
+  sup::gui::AppAddProxyAction(sup::gui::constants::kToolsMenu,
+                              app::constants::kValidateProcedureProxyActionId);
+
+  sup::gui::AppAddProxyAction(sup::gui::constants::kToolsMenu,
+                              app::constants::kExportXmlProxyActionId);
+}
 
 void SequencerMainWindowActions::SetupHelpMenu()
 {
