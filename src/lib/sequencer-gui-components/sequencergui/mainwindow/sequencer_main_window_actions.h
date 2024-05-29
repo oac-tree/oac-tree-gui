@@ -23,6 +23,7 @@
 #include <sup/gui/app/main_window_types.h>
 
 #include <QObject>
+#include <memory>
 
 class QMainWindow;
 class QAction;
@@ -37,7 +38,8 @@ class SessionModelInterface;
 namespace sup::gui
 {
 class ProjectHandler;
-}
+class AppContextFocusController;
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -65,6 +67,8 @@ public:
    * @return True in the case of success.
    */
   bool CloseCurrentProject() const;
+
+  void UpdateFocusWidget(QWidget* old, QWidget* now);
 
 signals:
   void RestartApplicationRequest(sup::gui::AppExitCode);
@@ -101,6 +105,8 @@ private:
 
   sup::gui::ProjectHandler* m_project_handler{nullptr};
   bool m_reset_settings_request{false};
+
+  std::unique_ptr<sup::gui::AppContextFocusController> m_focus_controller;
 };
 
 }  // namespace sequencergui

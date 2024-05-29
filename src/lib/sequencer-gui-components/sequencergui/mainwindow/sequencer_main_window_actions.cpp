@@ -28,6 +28,8 @@
 #include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/app_command.h>
 #include <sup/gui/app/app_command_manager.h>
+#include <sup/gui/app/app_context_focus_controller.h>
+#include <sup/gui/app/app_context_manager.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_helper.h>
 #include <sup/gui/components/project_handler.h>
@@ -37,6 +39,7 @@
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
+#include <QDebug>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -44,7 +47,17 @@
 namespace
 {
 const QString kApplicationType = "Sequencer GUI";
+
+/**
+ * @brief Creates focus controller pointing to global managers.
+ */
+std::unique_ptr<sup::gui::AppContextFocusController> CreateFocusController()
+{
+  return std::make_unique<sup::gui::AppContextFocusController>(
+      sup::gui::GetGlobalContextManager(), sup::gui::GetGlobalCommandManager(), nullptr);
 }
+
+}  // namespace
 
 namespace sequencergui
 {
@@ -54,6 +67,7 @@ SequencerMainWindowActions::SequencerMainWindowActions(
     : QObject(mainwindow)
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
                                                      kApplicationType, models, mainwindow))
+    , m_focus_controller(CreateFocusController())
 {
   sup::gui::AppRegisterMainMenuBar(mainwindow->menuBar(),
                                    {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
@@ -65,6 +79,9 @@ SequencerMainWindowActions::SequencerMainWindowActions(
 
   connect(m_project_handler, &sup::gui::ProjectHandler::ProjectLoaded, this,
           &SequencerMainWindowActions::ProjectLoaded);
+
+  connect(qApp, &QApplication::focusChanged, m_focus_controller.get(),
+          &sup::gui::AppContextFocusController::OnFocusWidgetUpdate);
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
