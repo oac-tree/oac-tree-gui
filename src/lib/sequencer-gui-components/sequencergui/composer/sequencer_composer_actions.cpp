@@ -63,12 +63,12 @@ void SequencerComposerActions::SetupActions()
   };
   connect(m_export_xml_action, &QAction::triggered, this, on_export);
 
-  sup::gui::AppAddActionToProxy(m_validate_procedure_action,
-                                app::constants::kValidateProcedureProxyActionId,
-                                app::constants::kComposerContext);
+  sup::gui::AppAddActionToCommand(m_validate_procedure_action,
+                                  app::constants::kValidateProcedureCommandId,
+                                  app::constants::kComposerContext);
 
-  sup::gui::AppAddActionToProxy(m_export_xml_action, app::constants::kExportXmlProxyActionId,
-                                app::constants::kComposerContext);
+  sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
+                                  app::constants::kComposerContext);
 }
 
 }  // namespace sequencergui

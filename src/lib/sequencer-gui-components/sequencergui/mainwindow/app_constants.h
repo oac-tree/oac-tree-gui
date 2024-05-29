@@ -29,12 +29,12 @@ namespace sequencergui::app::constants
 
 const sup::gui::AppContext kComposerContext("Composer");
 
-const QString kCutProxyActionId = "Cut";
-const QString kCopyProxyActionId = "Copy";
-const QString kPasteProxyActionId = "Paste";
+const QString kCutCommandId = "Cut";
+const QString kCopyCommandId = "Copy";
+const QString kPasteCommandId = "Paste";
 
-const QString kValidateProcedureProxyActionId = "Validate procedure";
-const QString kExportXmlProxyActionId = "Export XML";
+const QString kValidateProcedureCommandId = "Validate procedure";
+const QString kExportXmlCommandId = "Export XML";
 
 }  // namespace sequencergui::app::constants
 

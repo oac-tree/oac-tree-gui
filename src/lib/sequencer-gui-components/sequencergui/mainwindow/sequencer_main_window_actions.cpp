@@ -69,10 +69,10 @@ SequencerMainWindowActions::SequencerMainWindowActions(
                                                      kApplicationType, models, mainwindow))
     , m_focus_controller(CreateFocusController())
 {
-  sup::gui::AppRegisterMainMenuBar(mainwindow->menuBar(),
-                                   {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
-                                    sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
-                                    sup::gui::constants::kHelpMenu});
+  sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
+                               {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
+                                sup::gui::constants::kViewMenu, sup::gui::constants::kToolsMenu,
+                                sup::gui::constants::kHelpMenu});
 
   CreateActions(mainwindow);
   SetupMenus();
@@ -155,16 +155,16 @@ void SequencerMainWindowActions::SetupFileMenu()
 
 void SequencerMainWindowActions::SetupEditMenu()
 {
-  auto command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
-                                             app::constants::kCutProxyActionId);
+  auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                             app::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
-  command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
-                                        app::constants::kCopyProxyActionId);
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                        app::constants::kCopyCommandId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
-  command = sup::gui::AppAddProxyAction(sup::gui::constants::kEditMenu,
-                                        app::constants::kPasteProxyActionId);
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                        app::constants::kPasteCommandId);
   command->SetText("Paste").SetShortcut(QKeySequence::Paste);
 }
 
@@ -172,11 +172,11 @@ void SequencerMainWindowActions::SetupViewMenu() {}
 
 void SequencerMainWindowActions::SetupToolsMenu()
 {
-  sup::gui::AppAddProxyAction(sup::gui::constants::kToolsMenu,
-                              app::constants::kValidateProcedureProxyActionId);
+  sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
+                              app::constants::kValidateProcedureCommandId);
 
-  sup::gui::AppAddProxyAction(sup::gui::constants::kToolsMenu,
-                              app::constants::kExportXmlProxyActionId);
+  sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
+                              app::constants::kExportXmlCommandId);
 }
 
 void SequencerMainWindowActions::SetupHelpMenu()
