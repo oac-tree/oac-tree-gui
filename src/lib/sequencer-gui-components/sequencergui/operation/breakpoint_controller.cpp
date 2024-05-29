@@ -27,7 +27,7 @@
 #include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/procedure_item.h>
 
-#include <sup/sequencer/job_controller.h>
+#include <sup/sequencer/async_runner.h>
 
 #include <QDebug>
 
@@ -50,7 +50,7 @@ void BreakpointController::RestoreBreakpoints(ProcedureItem &procedure_item)
 }
 
 bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &item,
-                                                        job_controller_t &job_controller)
+                                                        async_runner_t &job_controller)
 {
   auto func = [this, &job_controller](const InstructionItem *item)
   { UpdateDomainBreakpoint(*item, job_controller); };
@@ -62,7 +62,7 @@ bool BreakpointController::PropagateBreakpointsToDomain(const ProcedureItem &ite
 }
 
 bool BreakpointController::UpdateDomainBreakpoint(const InstructionItem &item,
-                                                  job_controller_t &controller)
+                                                  async_runner_t &controller)
 {
   auto domain_instruction = FindDomainInstruction(item);
   if (!domain_instruction)

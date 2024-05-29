@@ -61,7 +61,7 @@ public:
 
   void SetTickTimeout(int msec);
 
-  sup::sequencer::JobController* GetJobController();
+  sup::sequencer::AsyncRunner* GetJobController();
 
 private:
   std::unique_ptr<DomainEventQueue> m_event_queue;

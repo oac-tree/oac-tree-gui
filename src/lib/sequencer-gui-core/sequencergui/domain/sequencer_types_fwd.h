@@ -26,7 +26,7 @@ namespace sup::sequencer
 {
 class AttributeDefinition;
 class Instruction;
-class JobController;
+class AsyncRunner;
 class Procedure;
 class ProcedurePreamble;
 class Runner;
@@ -37,7 +37,7 @@ class Workspace;
 
 using attribute_definition_t = sup::sequencer::AttributeDefinition;
 using instruction_t = sup::sequencer::Instruction;
-using job_controller_t = sup::sequencer::JobController;
+using async_runner_t = sup::sequencer::AsyncRunner;
 using preamble_t = sup::sequencer::ProcedurePreamble;
 using procedure_t = sup::sequencer::Procedure;
 using runner_t = sup::sequencer::Runner;

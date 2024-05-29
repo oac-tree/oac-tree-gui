@@ -80,7 +80,7 @@ public:
    * @return true if breakpoints have been successfully set.
    *
    */
-  bool PropagateBreakpointsToDomain(const ProcedureItem& item, job_controller_t& job_controller);
+  bool PropagateBreakpointsToDomain(const ProcedureItem& item, async_runner_t& job_controller);
 
   /**
    * @brief Updates domain breakpoint using InstructionItem breakpoint.
@@ -93,7 +93,7 @@ public:
    *
    * @return true if breakpoints have been successfully set.
    */
-  bool UpdateDomainBreakpoint(const InstructionItem& item, job_controller_t& job_controller);
+  bool UpdateDomainBreakpoint(const InstructionItem& item, async_runner_t& job_controller);
 
   /**
    * @brief Find domain instruction corresponding to a given item.

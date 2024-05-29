@@ -25,7 +25,7 @@
 
 #include <sequencergui/core/exceptions.h>
 
-#include <sup/sequencer/job_controller.h>
+#include <sup/sequencer/async_runner.h>
 
 #include <set>
 
@@ -37,7 +37,7 @@ DomainRunner::DomainRunner(const post_event_callback_t& post_event_callback,
     : m_job_observer(std::make_unique<DomainJobObserver>(post_event_callback))
     , m_procedure_observer(
           std::make_unique<DomainProcedureObserver>(post_event_callback, user_context))
-    , m_job_controller(std::make_unique<sup::sequencer::JobController>(
+    , m_job_controller(std::make_unique<sup::sequencer::AsyncRunner>(
           procedure, *m_procedure_observer, *m_job_observer))
 {
 }
@@ -113,7 +113,7 @@ void DomainRunner::SetTickTimeout(int msec)
   m_job_observer->SetTickTimeout(msec);
 }
 
-sup::sequencer::JobController* DomainRunner::GetJobController()
+sup::sequencer::AsyncRunner* DomainRunner::GetJobController()
 {
   return m_job_controller.get();
 }

@@ -33,7 +33,7 @@
 
 #include <sup/sequencer/application_utils.h>
 #include <sup/sequencer/instruction.h>
-#include <sup/sequencer/job_controller.h>
+#include <sup/sequencer/async_runner.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/user_interface.h>
 
@@ -129,7 +129,7 @@ TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
   EXPECT_NO_THROW(procedure->Setup());
   auto procedure_item = builder.CreateProcedureItem(procedure.get(), /*root_only*/ false);
 
-  sup::sequencer::JobController job_controller(*procedure, empty_ui, monitor);
+  sup::sequencer::AsyncRunner async_runner(*procedure, empty_ui, monitor);
 
   // accessing instructions in GUI and domain
   auto sequence = procedure->GetTopInstructions().at(0);
@@ -147,7 +147,7 @@ TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
   // setting breakpoints in GUI
   SetBreakpointStatus(*message_item1, BreakpointStatus::kSet);
 
-  EXPECT_TRUE(breakpoint_controller.PropagateBreakpointsToDomain(*procedure_item, job_controller));
+  EXPECT_TRUE(breakpoint_controller.PropagateBreakpointsToDomain(*procedure_item, async_runner));
 
   // FIXME restore after job_controller fixes GetBreakpoints
   // auto breakpoints = job_controller.GetBreakpoints();
@@ -155,7 +155,7 @@ TEST_F(BreakpointControllerTest, PropagateBreakpointsToDomain)
   // EXPECT_EQ(breakpoints.at(0).GetInstruction(), message1);
 
   // execution
-  job_controller.Start();
+  async_runner.Start();
   EXPECT_TRUE(monitor.WaitForState(::sup::sequencer::JobState::kPaused, 1));
 
   EXPECT_EQ(monitor.GetCurrentState(), ::sup::sequencer::JobState::kPaused);

@@ -30,7 +30,7 @@
 
 namespace sup::sequencer
 {
-class JobController;
+class AsyncRunner;
 }
 
 namespace sequencergui
@@ -115,12 +115,12 @@ public:
   /**
    * @brief Returns underlying job controller.
    */
-  sup::sequencer::JobController* GetJobController();
+  sup::sequencer::AsyncRunner* GetJobController();
 
 private:
   std::unique_ptr<DomainJobObserver> m_job_observer;
   std::unique_ptr<DomainProcedureObserver> m_procedure_observer;
-  std::unique_ptr<sup::sequencer::JobController> m_job_controller;
+  std::unique_ptr<sup::sequencer::AsyncRunner> m_job_controller;
   RunnerState m_runner_state{kReady};
 };
 

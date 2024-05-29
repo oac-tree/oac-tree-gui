@@ -85,7 +85,7 @@ void DomainRunnerService::SetTickTimeout(int msec)
   m_domain_runner->SetTickTimeout(msec);
 }
 
-sup::sequencer::JobController* DomainRunnerService::GetJobController()
+sup::sequencer::AsyncRunner *DomainRunnerService::GetJobController()
 {
   return m_domain_runner->GetJobController();
 }
