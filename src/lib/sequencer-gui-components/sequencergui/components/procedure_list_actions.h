@@ -73,6 +73,11 @@ signals:
   void PasteRequest();
 
 private:
+  /**
+   * @brief Registers actions that has to be available globally via shortcut, or main menubar.
+   */
+  void RegisterGlobalActions();
+
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};
   QAction* m_cut_action{nullptr};
