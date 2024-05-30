@@ -22,24 +22,19 @@
 #include "about_application_dialog.h"
 #include "app_constants.h"
 
-#include <sequencergui/mainwindow/main_window_helper.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
-#include <sup/gui/app/app_action_manager.h>
 #include <sup/gui/app/app_command.h>
-#include <sup/gui/app/app_command_manager.h>
 #include <sup/gui/app/app_context_focus_controller.h>
-#include <sup/gui/app/app_context_manager.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_helper.h>
 #include <sup/gui/components/project_handler.h>
 #include <sup/gui/components/project_handler_utils.h>
-#include <sup/gui/widgets/proxy_action.h>
 
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QAction>
-#include <QDebug>
+#include <QApplication>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -155,16 +150,16 @@ void SequencerMainWindowActions::SetupFileMenu()
 
 void SequencerMainWindowActions::SetupEditMenu()
 {
-  auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                             app::constants::kCutCommandId);
+  auto command =
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, app::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
-  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                        app::constants::kCopyCommandId);
+  command =
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, app::constants::kCopyCommandId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                        app::constants::kPasteCommandId);
+                                          app::constants::kPasteCommandId);
   command->SetText("Paste").SetShortcut(QKeySequence::Paste);
 }
 
@@ -173,10 +168,10 @@ void SequencerMainWindowActions::SetupViewMenu() {}
 void SequencerMainWindowActions::SetupToolsMenu()
 {
   sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
-                              app::constants::kValidateProcedureCommandId);
+                                app::constants::kValidateProcedureCommandId);
 
   sup::gui::AppAddCommandToMenu(sup::gui::constants::kToolsMenu,
-                              app::constants::kExportXmlCommandId);
+                                app::constants::kExportXmlCommandId);
 }
 
 void SequencerMainWindowActions::SetupHelpMenu()
