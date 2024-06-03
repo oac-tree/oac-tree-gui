@@ -161,6 +161,10 @@ void SequencerMainWindowActions::SetupEditMenu()
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
                                           app::constants::kPasteCommandId);
   command->SetText("Paste").SetShortcut(QKeySequence::Paste);
+
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                          app::constants::kPasteSpecialCommandId);
+  command->SetText("Paste Special").SetShortcut(QKeySequence("Ctrl+Shift+V"));
 }
 
 void SequencerMainWindowActions::SetupViewMenu() {}
