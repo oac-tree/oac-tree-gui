@@ -23,6 +23,7 @@
 
 #include <sequencergui/mainwindow/app_constants.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_context.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
@@ -67,8 +68,6 @@ ProcedureListActions::ProcedureListActions(QObject *parent)
   m_paste_action->setToolTip("Paste selected procedure");
   connect(m_paste_action, &QAction::triggered, this, &ProcedureListActions::PasteRequest);
   m_action_map.Add(ActionKey::kPaste, m_paste_action);
-
-  RegisterGlobalActions();
 }
 
 QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys)
@@ -93,12 +92,11 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
   m_paste_action->setEnabled(handler->CanPaste());
 }
 
-void ProcedureListActions::RegisterGlobalActions()
+void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
-  // FIXME work in progress, uncommenting leads to the double registration of two different actions for
-  // the same context
-  // sup::gui::AppAddActionToCommand(m_cut_action, app::constants::kCutCommandId,
-  //                                 app::constants::kComposerContext);
+  sup::gui::AppAddActionToCommand(m_cut_action, app::constants::kCutCommandId, context);
+  sup::gui::AppAddActionToCommand(m_copy_action, app::constants::kCopyCommandId, context);
+  sup::gui::AppAddActionToCommand(m_paste_action, app::constants::kPasteCommandId, context);
 }
 
 }  // namespace sequencergui

@@ -25,6 +25,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/viewmodel/procedure_viewmodel.h>
+#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/item_utils.h>
@@ -77,6 +78,8 @@ ProcedureListWidget::ProcedureListWidget(QWidget *parent)
   m_list_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_list_view, &QListView::customContextMenuRequested, this,
           &ProcedureListWidget::OnContextMenuRequest);
+
+  m_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
 
 ProcedureListWidget::~ProcedureListWidget() = default;

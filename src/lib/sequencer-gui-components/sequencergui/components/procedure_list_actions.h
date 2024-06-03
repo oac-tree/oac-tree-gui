@@ -26,6 +26,10 @@
 
 class QMenu;
 
+namespace sup::gui{
+class AppContext;
+}
+
 namespace sequencergui
 {
 
@@ -65,6 +69,13 @@ public:
    */
   void SetupMenu(QMenu& menu, const ProcedureListActionHandler* handler);
 
+  /**
+   * @brief Registers actions for given context.
+   *
+   * Context pis normally provided by parent widget.
+   */
+  void RegisterActionsForContext(const sup::gui::AppContext& context);
+
 signals:
   void CreateNewProcedureRequest();
   void RemoveProcedureRequest();
@@ -76,7 +87,7 @@ private:
   /**
    * @brief Registers actions that has to be available globally via shortcut, or main menubar.
    */
-  void RegisterGlobalActions();
+  void RegisterGlobalActions(const sup::gui::AppContext &context);
 
   QAction* m_new_procedure_action{nullptr};
   QAction* m_remove_selected_action{nullptr};
