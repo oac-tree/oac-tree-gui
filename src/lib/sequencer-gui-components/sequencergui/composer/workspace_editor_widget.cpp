@@ -29,6 +29,7 @@
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
+#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/message_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -41,7 +42,6 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
-#include <QKeyEvent>
 #include <QMenu>
 #include <QMimeData>
 #include <QSettings>
@@ -100,6 +100,8 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+
+  m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget()
@@ -125,26 +127,6 @@ void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
 mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
 {
   return m_component_provider->GetSelectedItem();
-}
-
-void WorkspaceEditorWidget::keyPressEvent(QKeyEvent *event)
-{
-  if (event == QKeySequence::Cut)
-  {
-    m_action_handler->Cut();
-  }
-  else if (event == QKeySequence::Copy)
-  {
-    m_action_handler->Copy();
-  }
-  else if (event == QKeySequence::Paste)
-  {
-    m_action_handler->Paste();
-  }
-  else
-  {
-    QWidget::keyPressEvent(event);
-  }
 }
 
 void WorkspaceEditorWidget::ReadSettings()

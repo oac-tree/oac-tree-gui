@@ -67,9 +67,6 @@ public:
 
   mvvm::SessionItem* GetSelectedItem() const;
 
-protected:
-  void keyPressEvent(QKeyEvent *event) override;
-
 private:
   void ReadSettings();
   void WriteSettings();

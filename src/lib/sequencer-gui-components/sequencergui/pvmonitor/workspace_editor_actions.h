@@ -30,6 +30,7 @@ namespace sup::gui
 {
 class ActionMenu;
 class ProxyAction;
+class AppContext;
 }  // namespace sup::gui
 
 namespace sequencergui
@@ -67,6 +68,13 @@ public:
    * @brief Setup cut/copy/paste actions in given menu.
    */
   void SetupMenu(QMenu& menu, WorkspaceEditorActionHandler* handler);
+
+  /**
+   * @brief Registers actions for given context.
+   *
+   * Context pis normally provided by parent widget.
+   */
+  void RegisterActionsForContext(const sup::gui::AppContext& context);
 
 signals:
   void AddVariableRequest(const QString& name);
