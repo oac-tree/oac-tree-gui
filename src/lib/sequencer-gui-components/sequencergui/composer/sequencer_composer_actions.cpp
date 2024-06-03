@@ -29,17 +29,9 @@
 namespace sequencergui
 {
 
-SequencerComposerActions::SequencerComposerActions(const sup::gui::AppContext &context,
-                                                   QWidget *parent)
-    : QObject(parent)
+SequencerComposerActions::SequencerComposerActions(QWidget *parent) : QObject(parent)
 {
   SetupActions();
-
-  sup::gui::AppAddActionToCommand(m_validate_procedure_action,
-                                  app::constants::kValidateProcedureCommandId, context);
-
-  sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
-                                  context);
 }
 
 SequencerComposerActions::~SequencerComposerActions() = default;
@@ -52,6 +44,15 @@ QList<QAction *> SequencerComposerActions::GetMenuActions()
 void SequencerComposerActions::SetProcedure(ProcedureItem *procedure_item)
 {
   m_procedure_item = procedure_item;
+}
+
+void SequencerComposerActions::RegisterActionsForContext(const sup::gui::AppContext &context)
+{
+  sup::gui::AppAddActionToCommand(m_validate_procedure_action,
+                                  app::constants::kValidateProcedureCommandId, context);
+
+  sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
+                                  context);
 }
 
 void SequencerComposerActions::SetupActions()

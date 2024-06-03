@@ -41,12 +41,19 @@ class SequencerComposerActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerComposerActions(const sup::gui::AppContext& context, QWidget* parent = nullptr);
+  explicit SequencerComposerActions(QWidget* parent = nullptr);
   ~SequencerComposerActions() override;
 
   QList<QAction*> GetMenuActions();
 
   void SetProcedure(ProcedureItem* procedure_item);
+
+  /**
+   * @brief Registers actions for given context.
+   *
+   * The context is normally provided by the parent widget.
+   */
+  void RegisterActionsForContext(const sup::gui::AppContext& context);
 
 private:
   void SetupActions();

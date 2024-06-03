@@ -72,7 +72,7 @@ public:
   /**
    * @brief Registers actions for given context.
    *
-   * Context pis normally provided by parent widget.
+   * The context is normally provided by the parent widget.
    */
   void RegisterActionsForContext(const sup::gui::AppContext& context);
 
