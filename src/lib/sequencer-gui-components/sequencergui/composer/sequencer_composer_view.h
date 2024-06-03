@@ -22,6 +22,8 @@
 
 #include <QWidget>
 
+#include <sup/gui/app/app_context.h>
+
 class QSplitter;
 
 namespace sequencergui
@@ -61,6 +63,7 @@ private:
 
   ProcedureItem* GetFirstProcedure();
 
+  sup::gui::AppContext m_context;
   ComposerPanel* m_composer_panel{nullptr};
   ComposerWidgetPanel* m_central_panel{nullptr};
   ComposerWidgetPanel* m_right_panel{nullptr};

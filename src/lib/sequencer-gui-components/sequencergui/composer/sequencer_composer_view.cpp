@@ -50,11 +50,12 @@ namespace sequencergui
 {
 SequencerComposerView::SequencerComposerView(QWidget *parent)
     : QWidget(parent)
+    , m_context(sup::gui::AppRegisterWidgetUniqueId(this))
     , m_composer_panel(new ComposerPanel)
     , m_central_panel(new ComposerWidgetPanel)
     , m_right_panel(new ComposerWidgetPanel)
     , m_splitter(new QSplitter)
-    , m_composer_actions(new SequencerComposerActions(this))
+    , m_composer_actions(new SequencerComposerActions(m_context, this))
 {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 1, 4, 4);
@@ -69,8 +70,6 @@ SequencerComposerView::SequencerComposerView(QWidget *parent)
   layout->addWidget(m_splitter);
 
   SetupConnections();
-
-  sup::gui::AppRegisterContext(this, app::constants::kComposerContext);
 
   ReadSettings();
 }

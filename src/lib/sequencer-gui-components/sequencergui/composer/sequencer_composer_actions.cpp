@@ -29,9 +29,17 @@
 namespace sequencergui
 {
 
-SequencerComposerActions::SequencerComposerActions(QWidget *parent) : QObject(parent)
+SequencerComposerActions::SequencerComposerActions(const sup::gui::AppContext &context,
+                                                   QWidget *parent)
+    : QObject(parent)
 {
   SetupActions();
+
+  sup::gui::AppAddActionToCommand(m_validate_procedure_action,
+                                  app::constants::kValidateProcedureCommandId, context);
+
+  sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
+                                  context);
 }
 
 SequencerComposerActions::~SequencerComposerActions() = default;
@@ -62,13 +70,6 @@ void SequencerComposerActions::SetupActions()
     handler.OnExportToXmlRequest(m_procedure_item);
   };
   connect(m_export_xml_action, &QAction::triggered, this, on_export);
-
-  sup::gui::AppAddActionToCommand(m_validate_procedure_action,
-                                  app::constants::kValidateProcedureCommandId,
-                                  app::constants::kComposerContext);
-
-  sup::gui::AppAddActionToCommand(m_export_xml_action, app::constants::kExportXmlCommandId,
-                                  app::constants::kComposerContext);
 }
 
 }  // namespace sequencergui

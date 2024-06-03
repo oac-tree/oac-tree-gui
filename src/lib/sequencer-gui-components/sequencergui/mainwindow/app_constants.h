@@ -27,8 +27,6 @@
 namespace sequencergui::app::constants
 {
 
-const sup::gui::AppContext kComposerContext("Composer");
-
 const QString kCutCommandId = "Cut";
 const QString kCopyCommandId = "Copy";
 const QString kPasteCommandId = "Paste";

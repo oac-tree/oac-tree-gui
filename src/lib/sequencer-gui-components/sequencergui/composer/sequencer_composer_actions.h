@@ -25,6 +25,10 @@
 class QAction;
 class QWidget;
 
+namespace sup::gui{
+class AppContext;
+}
+
 namespace sequencergui
 {
 
@@ -37,7 +41,7 @@ class SequencerComposerActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerComposerActions(QWidget* parent = nullptr);
+  explicit SequencerComposerActions(const sup::gui::AppContext& context, QWidget* parent = nullptr);
   ~SequencerComposerActions() override;
 
   QList<QAction*> GetMenuActions();
