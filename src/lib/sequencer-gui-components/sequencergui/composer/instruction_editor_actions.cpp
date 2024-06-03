@@ -23,6 +23,8 @@
 
 #include <sequencergui/composer/composer_helper.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/mainwindow/app_constants.h>
+#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/proxy_action.h>
 #include <sup/gui/widgets/style_utils.h>
@@ -71,6 +73,15 @@ void InstructionEditorActions::SetupMenu(QMenu &menu)
   m_copy_action->setEnabled(m_handler->CanCopy());
   m_paste_into_action->setEnabled(m_handler->CanPasteInto());
   m_paste_after_action->setEnabled(m_handler->CanPasteAfter());
+}
+
+void InstructionEditorActions::RegisterActionsForContext(const sup::gui::AppContext &context)
+{
+  sup::gui::AppAddActionToCommand(m_cut_action, app::constants::kCutCommandId, context);
+  sup::gui::AppAddActionToCommand(m_copy_action, app::constants::kCopyCommandId, context);
+  sup::gui::AppAddActionToCommand(m_paste_after_action, app::constants::kPasteCommandId, context);
+  sup::gui::AppAddActionToCommand(m_paste_into_action, app::constants::kPasteSpecialCommandId,
+                                  context);
 }
 
 void InstructionEditorActions::SetupInsertRemoveActions()

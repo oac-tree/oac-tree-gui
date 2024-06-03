@@ -31,6 +31,7 @@
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/custom_tree_view_style.h>
 #include <sequencergui/widgets/tree_helper.h>
+#include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/message_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -42,7 +43,6 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
-#include <QKeyEvent>
 #include <QMimeData>
 #include <QSettings>
 #include <QSplitter>
@@ -109,6 +109,8 @@ InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+
+  m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
 }
 
 InstructionEditorWidget::~InstructionEditorWidget()
@@ -150,26 +152,6 @@ InstructionItem *InstructionEditorWidget::GetSelectedInstruction() const
 {
   auto selected = GetSelectedInstructions();
   return selected.empty() ? nullptr : selected.front();
-}
-
-void InstructionEditorWidget::keyPressEvent(QKeyEvent *event)
-{
-  if (event == QKeySequence::Cut)
-  {
-    m_action_handler->Cut();
-  }
-  else if (event == QKeySequence::Copy)
-  {
-    m_action_handler->Copy();
-  }
-  else if (event == QKeySequence::Paste)
-  {
-    m_action_handler->PasteAfter();
-  }
-  else
-  {
-    QWidget::keyPressEvent(event);
-  }
 }
 
 void InstructionEditorWidget::ReadSettings()

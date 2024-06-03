@@ -73,9 +73,6 @@ public:
 signals:
   void InstructionSelected(sequencergui::InstructionItem* instruction);
 
-protected:
-  void keyPressEvent(QKeyEvent *event) override;
-
 private:
   void ReadSettings();
   void WriteSettings();
@@ -86,7 +83,7 @@ private:
   void SetupConnections();
   InstructionEditorContext CreateInstructionEditorContext();
 
-  void OnContextMenuRequest(const QPoint &point);
+  void OnContextMenuRequest(const QPoint& point);
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
