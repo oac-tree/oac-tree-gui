@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_
 #define SEQUENCERGUI_WIDGETS_DIALOG_MESSAGE_HANDLER_H_
 
-#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/core/message_handler_interface.h>
 
 namespace sequencergui
 {

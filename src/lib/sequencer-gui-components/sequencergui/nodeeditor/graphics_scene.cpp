@@ -31,7 +31,7 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
-#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/core/message_handler_interface.h>
 
 #include <mvvm/core/exceptions.h>
 #include <mvvm/widgets/widget_utils.h>

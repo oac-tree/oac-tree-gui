@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_QUERRY_RESULT_H_
 #define SEQUENCERGUI_COMPONENTS_QUERRY_RESULT_H_
 
-#include <sup/gui/components/message_event.h>
+#include <sup/gui/core/message_event.h>
 
 namespace sequencergui
 {

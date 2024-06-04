@@ -32,8 +32,8 @@
 #include <sequencergui/widgets/custom_tree_view_style.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/app/app_action_helper.h>
-#include <sup/gui/components/message_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
+#include <sup/gui/core/message_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>

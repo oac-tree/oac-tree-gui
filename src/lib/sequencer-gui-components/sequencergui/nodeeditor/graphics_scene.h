@@ -20,12 +20,11 @@
 #ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
 #define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_H_
 
-#include "sup/gui/components/message_handler_interface.h"
+#include "sup/gui/core/message_handler_interface.h"
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <QGraphicsScene>
-#include <map>
 
 namespace mvvm
 {

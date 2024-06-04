@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_MESSAGE_HANDLER_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_MESSAGE_HANDLER_H_
 
-#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/core/message_handler_interface.h>
 
 #include <gmock/gmock.h>
 

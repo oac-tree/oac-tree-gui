@@ -22,7 +22,7 @@
 
 //! Factory functions to create various message reporters.
 
-#include <sup/gui/components/message_handler_interface.h>
+#include <sup/gui/core/message_handler_interface.h>
 
 #include <memory>
 

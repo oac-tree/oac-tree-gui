@@ -22,7 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/widgets/dialog_message_handler.h>
 #include <sequencergui/widgets/widget_overlay_message_handler.h>
-#include <sup/gui/components/message_handler_decorator.h>
+#include <sup/gui/core/message_handler_decorator.h>
 #include <sup/gui/components/standard_message_handlers.h>
 
 namespace sequencergui

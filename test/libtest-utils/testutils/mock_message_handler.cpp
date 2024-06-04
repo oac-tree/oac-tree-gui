@@ -19,7 +19,7 @@
 
 #include "mock_message_handler.h"
 
-#include <sup/gui/components/message_handler_decorator.h>
+#include <sup/gui/core/message_handler_decorator.h>
 
 namespace testutils
 {

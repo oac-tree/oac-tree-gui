@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
 #define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
 
-#include <sup/gui/components/message_event.h>
+#include <sup/gui/core/message_event.h>
 
 #include <functional>
 #include <memory>
