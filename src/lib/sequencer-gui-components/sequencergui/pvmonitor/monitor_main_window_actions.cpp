@@ -20,8 +20,8 @@
 #include "monitor_main_window_actions.h"
 
 #include <sequencergui/model/sequencer_model.h>
-#include <sup/gui/components/project_handler.h>
-#include <sup/gui/components/project_handler_utils.h>
+#include <sup/gui/project/project_handler.h>
+#include <sup/gui/project/project_handler_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

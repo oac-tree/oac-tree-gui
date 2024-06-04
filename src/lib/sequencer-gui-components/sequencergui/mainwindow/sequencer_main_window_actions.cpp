@@ -28,8 +28,8 @@
 #include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_helper.h>
-#include <sup/gui/components/project_handler.h>
-#include <sup/gui/components/project_handler_utils.h>
+#include <sup/gui/project/project_handler.h>
+#include <sup/gui/project/project_handler_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

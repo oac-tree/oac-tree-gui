@@ -19,7 +19,7 @@
 
 #include "file_tree_view.h"
 
-#include <sup/gui/components/recent_project_settings.h>
+#include <sup/gui/project/recent_project_settings.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
