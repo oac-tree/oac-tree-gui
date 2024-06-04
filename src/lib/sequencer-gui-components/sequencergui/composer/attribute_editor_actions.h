@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_COMPOSER_ATTRIBUTE_EDITOR_ACTIONS_H_
 
-#include <sequencergui/components/action_map.h>
+#include <sup/gui/components/action_map.h>
 
 #include <QObject>
 #include <memory>
@@ -117,7 +117,7 @@ private:
   //!< a tool button to summon AnyValue editor
   QAction* m_edit_anyvalue_action{nullptr};
 
-  ActionMap<ActionKey> m_action_map;
+  sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

@@ -20,9 +20,10 @@
 #ifndef SEQUENCERGUI_OPERATION_MONITOR_REALTIME_ACTIONS_H_
 #define SEQUENCERGUI_OPERATION_MONITOR_REALTIME_ACTIONS_H_
 
+#include <sup/gui/components/action_map.h>
+
 #include <QObject>
 #include <memory>
-#include <sequencergui/components/action_map.h>
 
 class QMenu;
 class QWidgetAction;
@@ -94,7 +95,7 @@ private:
   std::unique_ptr<QMenu> m_settings_menu;
 
   int m_current_tick_timeout{0};
-  ActionMap<ActionKey> m_action_map;
+  sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

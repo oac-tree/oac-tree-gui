@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <memory>
-#include <sequencergui/components/action_map.h>
+#include <sup/gui/components/action_map.h>
 
 class QToolBar;
 class QButtonGroup;
@@ -84,7 +84,7 @@ private:
 
   std::unique_ptr<QMenu> m_zoom_menu;
 
-  ActionMap<ActionKey> m_action_map;
+  sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui

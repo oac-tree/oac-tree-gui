@@ -2,7 +2,6 @@
 
 target_sources(${library_name} PRIVATE
   abstract_anyvalue_editor.h
-  action_map.h
   anyvalue_compact_scalar_editor.cpp
   anyvalue_compact_scalar_editor.h
   anyvalue_compact_tree_editor.cpp

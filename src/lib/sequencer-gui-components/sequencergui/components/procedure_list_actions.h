@@ -22,7 +22,7 @@
 
 #include <QObject>
 
-#include <sequencergui/components/action_map.h>
+#include <sup/gui/components/action_map.h>
 
 class QMenu;
 
@@ -90,7 +90,7 @@ private:
   QAction* m_copy_action{nullptr};
   QAction* m_paste_action{nullptr};
 
-  ActionMap<ActionKey> m_action_map;
+  sup::gui::ActionMap<ActionKey> m_action_map;
 };
 
 }  // namespace sequencergui
