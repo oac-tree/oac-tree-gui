@@ -25,7 +25,7 @@
 #include <sequencergui/mainwindow/app_constants.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/action_menu.h>
-#include <sup/gui/widgets/proxy_action.h>
+#include <sup/gui/components/proxy_action.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
