@@ -33,60 +33,49 @@
 #include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/workspace.h>
 
-#include <stdexcept>
-
 namespace
 {
-//! Creates catalogue where VariableItem factory functions are registered against "Type"
-//! name strings known by the sequencer.
+
+/**
+ * @brief Creates catalogue where VariableItem factory functions are registered against "Type" name
+ * strings known by the sequencer.
+ * @return
+ */
 std::unique_ptr<mvvm::ItemCatalogue<sequencergui::VariableItem>> CreateVariableItemCatalogue()
 {
-  using mvvm::ItemFactoryFunction;
   auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::VariableItem>>();
 
-  result->RegisterItem(sequencergui::domainconstants::kLocalVariableType,
-                       ItemFactoryFunction<sequencergui::LocalVariableItem>);
-  result->RegisterItem(sequencergui::domainconstants::kFileVariableType,
-                       ItemFactoryFunction<sequencergui::FileVariableItem>);
-  result->RegisterItem(sequencergui::domainconstants::kChannelAccessVariableType,
-                       ItemFactoryFunction<sequencergui::ChannelAccessVariableItem>);
-  result->RegisterItem(sequencergui::domainconstants::kPvAccessClientVariableType,
-                       ItemFactoryFunction<sequencergui::PvAccessClientVariableItem>);
-  result->RegisterItem(sequencergui::domainconstants::kPvAccessServerVariableType,
-                       ItemFactoryFunction<sequencergui::PvAccessServerVariableItem>);
+  result->RegisterItem<sequencergui::LocalVariableItem>();
+  result->RegisterItem<sequencergui::FileVariableItem>();
+  result->RegisterItem<sequencergui::ChannelAccessVariableItem>();
+  result->RegisterItem<sequencergui::PvAccessClientVariableItem>();
+  result->RegisterItem<sequencergui::PvAccessServerVariableItem>();
 
   return result;
 }
 
-//! Creates catalogue where InstructionItem factory functions are registered against "Type"
-//! name strings known by the sequencer.
+/**
+ * @brief Creates catalogue where InstructionItem factory functions are registered against "Type"
+ * name strings known by the sequencer.
+ */
 std::unique_ptr<mvvm::ItemCatalogue<sequencergui::InstructionItem>> CreateInstructionItemCatalogue()
 {
-  using namespace sequencergui::domainconstants;
-  using mvvm::ItemFactoryFunction;
   auto result = std::make_unique<mvvm::ItemCatalogue<sequencergui::InstructionItem>>();
 
-  result->RegisterItem(kIncludeInstructionType, ItemFactoryFunction<sequencergui::IncludeItem>);
-  result->RegisterItem(kParallelInstructionType,
-                       ItemFactoryFunction<sequencergui::ParallelSequenceItem>);
-  result->RegisterItem(kRepeatInstructionType, ItemFactoryFunction<sequencergui::RepeatItem>);
-  result->RegisterItem(kSequenceInstructionType, ItemFactoryFunction<sequencergui::SequenceItem>);
-  result->RegisterItem(kWaitInstructionType, ItemFactoryFunction<sequencergui::WaitItem>);
+  result->RegisterItem<sequencergui::IncludeItem>();
+  result->RegisterItem<sequencergui::ParallelSequenceItem>();
+  result->RegisterItem<sequencergui::RepeatItem>();
+  result->RegisterItem<sequencergui::SequenceItem>();
+  result->RegisterItem<sequencergui::WaitItem>();
 
   // instructions from sequencer-plugin-epics
-  result->RegisterItem(kChannelAccessReadInstructionType,
-                       ItemFactoryFunction<sequencergui::ChannelAccessReadInstructionItem>);
-  result->RegisterItem(kChannelAccessWriteInstructionType,
-                       ItemFactoryFunction<sequencergui::ChannelAccessWriteInstructionItem>);
-  result->RegisterItem(kPvAccessReadInstructionType,
-                       ItemFactoryFunction<sequencergui::PvAccessReadInstructionItem>);
-  result->RegisterItem(kPvAccessWriteInstructionType,
-                       ItemFactoryFunction<sequencergui::PvAccessWriteInstructionItem>);
-  result->RegisterItem(kRPCClientInstructionType,
-                       ItemFactoryFunction<sequencergui::RPCClientInstruction>);
-  result->RegisterItem(kSystemCallInstructionType,
-                       ItemFactoryFunction<sequencergui::SystemCallInstructionItem>);
-  result->RegisterItem(kLogInstructionType, ItemFactoryFunction<sequencergui::LogInstructionItem>);
+  result->RegisterItem<sequencergui::ChannelAccessReadInstructionItem>();
+  result->RegisterItem<sequencergui::ChannelAccessWriteInstructionItem>();
+  result->RegisterItem<sequencergui::PvAccessReadInstructionItem>();
+  result->RegisterItem<sequencergui::PvAccessWriteInstructionItem>();
+  result->RegisterItem<sequencergui::RPCClientInstruction>();
+  result->RegisterItem<sequencergui::SystemCallInstructionItem>();
+  result->RegisterItem<sequencergui::LogInstructionItem>();
 
   return result;
 }
