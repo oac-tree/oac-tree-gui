@@ -20,7 +20,6 @@
 #include "instruction_editor_action_handler.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
-#include <sequencergui/components/querry_result.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
@@ -30,6 +29,7 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/core/query_result.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/model_utils.h>
@@ -335,7 +335,7 @@ const QMimeData *InstructionEditorActionHandler::GetMimeData() const
   return m_context.get_mime_data ? m_context.get_mime_data() : nullptr;
 }
 
-QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
+sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
     const std::string &item_type) const
 {
   static const std::string kFailedActionText("Can't insert type after current selection");
@@ -343,7 +343,8 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
   {
-    return QuerryResult::Failure({kFailedActionTitle, kFailedActionText, "No procedure selected"});
+    return sup::gui::QueryResult::Failure(
+        {kFailedActionTitle, kFailedActionText, "No procedure selected"});
   }
 
   // Checking if there is a selection inside another parent. To paste after this selection, the
@@ -354,14 +355,14 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentSelection(
         item_type, selected_item->GetParent(), selected_item->GetTagIndex().Next());
     if (!success_flag)
     {
-      return QuerryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
+      return sup::gui::QueryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
     }
   }
 
-  return QuerryResult::Success();
+  return sup::gui::QueryResult::Success();
 }
 
-QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
+sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
     const std::string &item_type) const
 {
   static const std::string kFailedActionText("Can't insert type into current selection");
@@ -369,7 +370,7 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
   auto selected_instruction = GetSelectedInstruction();
   if (!selected_instruction)
   {
-    return QuerryResult::Failure(
+    return sup::gui::QueryResult::Failure(
         {kFailedActionTitle, kFailedActionText, "No instruction selected"});
   }
 
@@ -381,11 +382,11 @@ QuerryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSelection(
         mvvm::utils::CanInsertType(item_type, selected_item, mvvm::TagIndex::Append());
     if (!success_flag)
     {
-      return QuerryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
+      return sup::gui::QueryResult::Failure({kFailedActionTitle, kFailedActionText, informative});
     }
   }
 
-  return QuerryResult::Success();
+  return sup::gui::QueryResult::Success();
 }
 
 void InstructionEditorActionHandler::InsertAfterCurrentSelection(

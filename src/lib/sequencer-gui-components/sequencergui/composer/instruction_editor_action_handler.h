@@ -31,12 +31,16 @@ class TagIndex;
 class SessionModelInterface;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class QueryResult;
+}
+
 namespace sequencergui
 {
 
 class SequencerModel;
 class InstructionContainerItem;
-class QuerryResult;
 
 /**
  * @brief The InstructionEditorActionHandler class implements logic to add/remove instructions in
@@ -174,9 +178,9 @@ private:
    * @brief Checks if SessionItem of the given type can be inserted after the current selection.
    *
    * @param item_type Type of the SessionItem to insert.
-   * @return A result of the querry with error flag and message.
+   * @return A result of the query with an error flag and message.
    */
-  QuerryResult CanInsertTypeAfterCurrentSelection(const std::string& item_type) const;
+  sup::gui::QueryResult CanInsertTypeAfterCurrentSelection(const std::string& item_type) const;
 
   /**
    * @brief Checks if SessionItem of the given type can be inserted into the current selection.
@@ -184,7 +188,7 @@ private:
    * @param item_type Type of the SessionItem to insert.
    * @return A result of the querry with error flag and message.
    */
-  QuerryResult CanInsertTypeIntoCurrentSelection(const std::string& item_type) const;
+  sup::gui::QueryResult CanInsertTypeIntoCurrentSelection(const std::string& item_type) const;
 
   /**
    * @brief Inserts given item after current selection.

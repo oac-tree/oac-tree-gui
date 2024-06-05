@@ -23,7 +23,5 @@ target_sources(${library_name} PRIVATE
   procedure_list_context.h
   procedure_list_widget.cpp
   procedure_list_widget.h
-  querry_result.cpp
-  querry_result.h
 )
 
