@@ -70,7 +70,7 @@ ProcedureListActions::ProcedureListActions(QObject *parent)
   m_action_map.Add(ActionKey::kPaste, m_paste_action);
 }
 
-QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys)
+QList<QAction *> ProcedureListActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

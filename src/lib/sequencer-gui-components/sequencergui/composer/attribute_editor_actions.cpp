@@ -68,7 +68,7 @@ AttributeEditorActions::AttributeEditorActions(const AttributeEditorActionHandle
 
 AttributeEditorActions::~AttributeEditorActions() = default;
 
-QList<QAction *> AttributeEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
+QList<QAction *> AttributeEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

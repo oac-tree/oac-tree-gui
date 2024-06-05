@@ -105,7 +105,7 @@ MonitorRealTimeActions::~MonitorRealTimeActions()
   WriteSettings();
 }
 
-QList<QAction *> MonitorRealTimeActions::GetActions(const std::vector<ActionKey> &action_keys)
+QList<QAction *> MonitorRealTimeActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

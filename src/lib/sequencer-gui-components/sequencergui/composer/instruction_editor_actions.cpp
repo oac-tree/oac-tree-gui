@@ -25,8 +25,8 @@
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/app_constants.h>
 #include <sup/gui/app/app_action_helper.h>
-#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/components/proxy_action.h>
+#include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/widget_utils.h>
@@ -49,7 +49,8 @@ InstructionEditorActions::InstructionEditorActions(const InstructionEditorAction
 
 InstructionEditorActions::~InstructionEditorActions() = default;
 
-QList<QAction *> InstructionEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
+QList<QAction *> InstructionEditorActions::GetActions(
+    const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }

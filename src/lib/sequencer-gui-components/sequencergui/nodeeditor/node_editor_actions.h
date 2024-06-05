@@ -62,7 +62,7 @@ public:
   /**
    * @brief Returns list of actions according to provided flags.
    */
-  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
 signals:
   void selectionMode(int);

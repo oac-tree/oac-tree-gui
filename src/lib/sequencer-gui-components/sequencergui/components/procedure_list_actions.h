@@ -59,7 +59,7 @@ public:
   /**
    * @brief Returns list of actions according to provided flags.
    */
-  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys);
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
   /**
    * @brief Setup cut/copy/paste actions in given menu.

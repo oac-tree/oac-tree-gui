@@ -107,7 +107,7 @@ void NodeEditorActions::onViewSelectionMode(int mode)
   }
 }
 
-QList<QAction *> NodeEditorActions::GetActions(const std::vector<ActionKey> &action_keys)
+QList<QAction *> NodeEditorActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
 }
