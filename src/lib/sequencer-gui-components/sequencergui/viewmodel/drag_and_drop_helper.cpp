@@ -25,7 +25,7 @@
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
-#include <mvvm/model/item_utils.h>
+// #include <mvvm/model/item_utils.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/sessionitem_container.h>
 #include <mvvm/model/sessionmodel.h>
@@ -157,39 +157,6 @@ InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::Sess
   }
 
   return result;
-}
-
-// FIXME merge Procedure and Instruction functions
-
-std::unique_ptr<QMimeData> CreateCopyMimeData(const mvvm::SessionItem& item,
-                                              const QString& mime_format)
-{
-  auto result = std::make_unique<QMimeData>();
-  auto xml_str = mvvm::utils::ToXMLString(item);
-  result->setData(mime_format, mvvm::utils::GetByteArray({QString::fromStdString(xml_str)}));
-  QString clipboard_text =
-      QString("Copy of sequencer item '%1'").arg(QString::fromStdString(item.GetDisplayName()));
-  result->setText(clipboard_text);
-  return result;
-}
-
-std::unique_ptr<mvvm::SessionItem> CreateSessionItem(const QMimeData* mime_data,
-                                                     const QString& mime_format)
-{
-  if (!mime_data || !mime_data->hasFormat(mime_format))
-  {
-    return {};
-  }
-
-  auto binary_data = mime_data->data(mime_format);
-  auto list = mvvm::utils::GetStringList(binary_data);
-  if (!list.empty())
-  {
-    auto xml_str = list.front().toStdString();
-    return mvvm::utils::SessionItemFromXMLString(xml_str);
-  }
-
-  return {};
 }
 
 }  // namespace sequencergui

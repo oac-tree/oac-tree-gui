@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
 #include <mvvm/model/item_utils.h>
@@ -92,7 +93,8 @@ void ProcedureListActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateCopyMimeData(*GetSelectedProcedure(), kCopyProcedureMimeType));
+  m_context.set_mime_data(
+      sup::gui::CreateCopyMimeData(*GetSelectedProcedure(), kCopyProcedureMimeType));
 }
 
 bool ProcedureListActionHandler::CanPaste() const
@@ -113,7 +115,7 @@ void ProcedureListActionHandler::Paste()
   }
 
   auto mime_data = GetMimeData();
-  InsertProcedure(CreateSessionItem(mime_data, kCopyProcedureMimeType));
+  InsertProcedure(sup::gui::CreateSessionItem(mime_data, kCopyProcedureMimeType));
 }
 
 mvvm::ContainerItem *ProcedureListActionHandler::GetProcedureContainer() const

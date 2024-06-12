@@ -115,25 +115,6 @@ mvvm::TagIndex GetDropTagIndex(int drop_indicator_row);
  */
 InstructionItem* DropInstruction(const std::string& instruction_type, mvvm::SessionItem* parent,
                                  const mvvm::TagIndex& tag_index);
-
-/**
- * @brief Creates mime data to copy given item.
- *
- * @param item The item to copy.
- * @param mime_format String representing format.
- */
-std::unique_ptr<QMimeData> CreateCopyMimeData(const mvvm::SessionItem& item,
-                                              const QString& mime_format);
-
-/**
- * @brief Creates item from given mime data.
- *
- * @param mime_data Mime data from copy operation.
- * @param mime_format String representing format.
- * @return New item.
- */
-std::unique_ptr<mvvm::SessionItem> CreateSessionItem(const QMimeData* mime_data,
-                                                     const QString& mime_format);
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_VIEWMODEL_DRAG_AND_DROP_HELPER_H_

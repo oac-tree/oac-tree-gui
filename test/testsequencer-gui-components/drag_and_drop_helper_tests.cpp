@@ -29,6 +29,8 @@
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
+#include <sup/gui/components/mime_conversion_helper.h>
+
 #include <gtest/gtest.h>
 
 #include <QMimeData>
@@ -178,30 +180,6 @@ TEST_F(DragAndDropHelperTest, CanInsertType)
                    .first);
 }
 
-TEST_F(DragAndDropHelperTest, CreateProcedureFromMime)
-{
-  const QString mime_type = kCopyProcedureMimeType;
-  {
-    // wrong mime type
-    QMimeData data;
-    auto procedure_item = CreateSessionItem(&data, mime_type);
-    EXPECT_EQ(procedure_item.get(), nullptr);
-  }
-
-  {
-    const std::string expected_name("abc");
-    ProcedureItem item;
-    item.SetDisplayName(expected_name);
-
-    auto data = CreateCopyMimeData(item, mime_type);
-    EXPECT_TRUE(data->hasFormat(mime_type));
-
-    auto reconstructed_item = CreateSessionItem(data.get(), mime_type);
-    EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
-    EXPECT_NE(dynamic_cast<ProcedureItem*>(reconstructed_item.get()), nullptr);
-  }
-}
-
 TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
 {
   const QString mime_type = kCopyInstructionMimeType;
@@ -210,10 +188,10 @@ TEST_F(DragAndDropHelperTest, CreateInstructionFromMime)
   WaitItem item;
   item.SetDisplayName(expected_name);
 
-  auto data = CreateCopyMimeData(item, mime_type);
+  auto data = sup::gui::CreateCopyMimeData(item, mime_type);
   EXPECT_TRUE(data->hasFormat(mime_type));
 
-  auto reconstructed_item = CreateSessionItem(data.get(), mime_type);
+  auto reconstructed_item = sup::gui::CreateSessionItem(data.get(), mime_type);
   EXPECT_EQ(reconstructed_item->GetDisplayName(), expected_name);
   EXPECT_NE(dynamic_cast<WaitItem*>(reconstructed_item.get()), nullptr);
 }

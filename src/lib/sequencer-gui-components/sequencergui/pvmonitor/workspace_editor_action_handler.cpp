@@ -26,6 +26,7 @@
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/interfaces/sessionmodel_interface.h>
@@ -160,7 +161,8 @@ void WorkspaceEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateCopyMimeData(*GetSelectedVariable(), kCopyVariableMimeType));
+  m_context.set_mime_data(
+      sup::gui::CreateCopyMimeData(*GetSelectedVariable(), kCopyVariableMimeType));
 }
 
 bool WorkspaceEditorActionHandler::CanPaste() const
@@ -177,7 +179,8 @@ void WorkspaceEditorActionHandler::Paste()
     return;
   }
 
-  InsertVariableAfterCurrentSelection(CreateSessionItem(GetMimeData(), kCopyVariableMimeType));
+  InsertVariableAfterCurrentSelection(
+      sup::gui::CreateSessionItem(GetMimeData(), kCopyVariableMimeType));
 }
 
 mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const

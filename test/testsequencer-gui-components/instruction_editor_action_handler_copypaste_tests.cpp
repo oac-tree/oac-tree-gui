@@ -26,6 +26,7 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
 
@@ -132,7 +133,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // nothing is selected, correct mime data
     const WaitItem item_to_paste;
-    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
     auto handler = CreateActionHandler(nullptr, mime_data.get());
 
     // paste-after when nothing is selected is allowed
@@ -144,7 +145,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // selected item in the container, correct mime data
     const WaitItem item_to_paste;
-    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
     auto sequence = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
     auto handler = CreateActionHandler(sequence, mime_data.get());
@@ -154,7 +155,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // repeat instruction with Sequence
     const WaitItem item_to_paste;
-    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
     auto repeat = m_model.InsertItem<RepeatItem>(m_procedure->GetInstructionContainer());
     auto sequence = m_model.InsertItem<SequenceItem>(repeat);
@@ -171,7 +172,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CanPaste)
 
   {  // sequence instruction inside Sequence
     const WaitItem item_to_paste;
-    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
     auto sequence0 = m_model.InsertItem<SequenceItem>(m_procedure->GetInstructionContainer());
     auto sequence1 = m_model.InsertItem<SequenceItem>(sequence0);
@@ -193,7 +194,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler(nullptr, mime_data.get());
@@ -229,7 +230,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterSelectedItem)
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   // creating action handler mimicking `sequence` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler(sequence, mime_data.get());
@@ -269,7 +270,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterWhenInsideSequence
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   // wait0 is selected
   auto handler = CreateActionHandler(wait0, mime_data.get());
@@ -305,7 +306,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteInto)
   // creating mime data representing clipboard content
   WaitItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyInstructionMimeType);
 
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(sequence, mime_data.get());

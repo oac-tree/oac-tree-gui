@@ -25,6 +25,7 @@
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/standarditems/container_item.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
@@ -257,7 +258,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
   ProcedureItem item_to_paste;
   item_to_paste.SetName("abc");
 
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
 
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
@@ -290,7 +291,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
   ProcedureItem item_to_paste;
   item_to_paste.SetName("abc");
 
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyProcedureMimeType);
 
   EXPECT_EQ(m_procedure_container->GetSize(), 2);
 

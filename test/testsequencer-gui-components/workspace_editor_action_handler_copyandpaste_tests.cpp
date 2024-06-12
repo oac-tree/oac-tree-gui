@@ -27,6 +27,7 @@
 #include <sequencergui/pvmonitor/monitor_model.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <sup/dto/anyvalue.h>
@@ -137,7 +138,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 
   {  // nothing is selected, correct mime data
     const LocalVariableItem item_to_paste;
-    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
     auto handler = CreateActionHandler(nullptr, mime_data.get());
 
     EXPECT_TRUE(handler->CanPaste());
@@ -145,7 +146,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CanPaste)
 
   {  // selected item in the container, correct mime data
     const LocalVariableItem item_to_paste;
-    auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+    auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
 
     auto var0 = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
     auto handler = CreateActionHandler(var0, mime_data.get());
@@ -160,7 +161,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   // creating mime data representing clipboard content
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
 
   // nothing is selected, copied item in a buffer
   auto handler = CreateActionHandler(nullptr, mime_data.get());
@@ -190,7 +191,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
 
   LocalVariableItem item_to_paste;
   item_to_paste.SetDisplayName("abc");
-  auto mime_data = CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
+  auto mime_data = sup::gui::CreateCopyMimeData(item_to_paste, kCopyVariableMimeType);
 
   // creating action handler mimicking `var0` instruction selected, and mime data in a buffer
   auto handler = CreateActionHandler(var0, mime_data.get());

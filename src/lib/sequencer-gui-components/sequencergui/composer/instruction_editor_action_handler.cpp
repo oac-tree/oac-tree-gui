@@ -29,6 +29,7 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/core/query_result.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -65,7 +66,7 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
  */
 std::string GetSessionItemType(const QMimeData *mime_data)
 {
-  auto item = sequencergui::CreateSessionItem(mime_data, sequencergui::kCopyInstructionMimeType);
+  auto item = sup::gui::CreateSessionItem(mime_data, sequencergui::kCopyInstructionMimeType);
   return item ? item->GetType() : std::string();
 }
 
@@ -244,7 +245,8 @@ void InstructionEditorActionHandler::Copy()
     return;
   }
 
-  m_context.set_mime_data(CreateCopyMimeData(*GetSelectedInstruction(), kCopyInstructionMimeType));
+  m_context.set_mime_data(
+      sup::gui::CreateCopyMimeData(*GetSelectedInstruction(), kCopyInstructionMimeType));
 }
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
@@ -271,7 +273,7 @@ void InstructionEditorActionHandler::PasteAfter()
     return;
   }
 
-  InsertAfterCurrentSelection(CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
+  InsertAfterCurrentSelection(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
 }
 
 bool InstructionEditorActionHandler::CanPasteInto() const
@@ -298,7 +300,7 @@ void InstructionEditorActionHandler::PasteInto()
     return;
   }
 
-  InsertIntoCurrentSelection(CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
+  InsertIntoCurrentSelection(sup::gui::CreateSessionItem(GetMimeData(), kCopyInstructionMimeType));
 }
 
 InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
