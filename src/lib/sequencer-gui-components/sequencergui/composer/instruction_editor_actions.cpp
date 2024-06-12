@@ -40,8 +40,8 @@ InstructionEditorActions::InstructionEditorActions(const InstructionEditorAction
                                                    QObject *parent)
     : QObject(parent)
     , m_handler(handler)
-    , m_insert_after_menu(CreateInsertAfterMenu())
-    , m_insert_into_menu(CreateInsertIntoMenu())
+    , m_insert_after_menu(CreateInsertMenu())
+    , m_insert_into_menu(CreateInsertMenu())
 {
   SetupInsertRemoveActions();
   SetupCutCopyPasteActions();
@@ -167,15 +167,7 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_action_map.Add(ActionKey::kPasteInto, m_paste_into_action);
 }
 
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertAfterMenu()
-{
-  auto result = std::make_unique<QMenu>();
-  connect(result.get(), &QMenu::aboutToShow, this,
-          &InstructionEditorActions::AboutToShowInsertMenu);
-  return result;
-}
-
-std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertIntoMenu()
+std::unique_ptr<QMenu> InstructionEditorActions::CreateInsertMenu()
 {
   auto result = std::make_unique<QMenu>();
   connect(result.get(), &QMenu::aboutToShow, this,

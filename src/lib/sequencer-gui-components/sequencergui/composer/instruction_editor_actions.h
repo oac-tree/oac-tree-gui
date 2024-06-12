@@ -120,14 +120,9 @@ private:
   void SetupCutCopyPasteActions();
 
   /**
-   * @brief Creates an instruction to insert an instruction after currently selected instruction.
+   * @brief Creates an instruction to insert instructions.
    */
-  std::unique_ptr<QMenu> CreateInsertAfterMenu();
-
-  /**
-   * @brief Creates menu to insert an instruction into currently selected instruction.
-   */
-  std::unique_ptr<QMenu> CreateInsertIntoMenu();
+  std::unique_ptr<QMenu> CreateInsertMenu();
 
   /**
    * @brief Setup menu to insert instructions.
