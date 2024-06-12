@@ -27,7 +27,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sup/gui/model/anyvalue_item.h>

@@ -19,16 +19,10 @@
 
 #include "sequencergui/composer/instruction_editor_action_handler.h"
 
-#include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
-#include <sequencergui/model/universal_instruction_item.h>
-#include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
@@ -37,7 +31,6 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <testutils/mock_dialog.h>
 #include <testutils/test_utils.h>
 
 #include <QMimeData>
