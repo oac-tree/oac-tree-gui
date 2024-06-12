@@ -42,17 +42,7 @@
 namespace
 {
 const QString kApplicationType = "Sequencer GUI";
-
-/**
- * @brief Creates focus controller pointing to global managers.
- */
-std::unique_ptr<sup::gui::AppContextFocusController> CreateFocusController()
-{
-  return std::make_unique<sup::gui::AppContextFocusController>(
-      sup::gui::GetGlobalContextManager(), sup::gui::GetGlobalCommandManager(), nullptr);
 }
-
-}  // namespace
 
 namespace sequencergui
 {
@@ -62,7 +52,7 @@ SequencerMainWindowActions::SequencerMainWindowActions(
     : QObject(mainwindow)
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
                                                      kApplicationType, models, mainwindow))
-    , m_focus_controller(CreateFocusController())
+    , m_focus_controller(sup::gui::CreateGlobalFocusController())
 {
   sup::gui::AppRegisterMenuBar(mainwindow->menuBar(),
                                {sup::gui::constants::kFileMenu, sup::gui::constants::kEditMenu,
@@ -74,9 +64,6 @@ SequencerMainWindowActions::SequencerMainWindowActions(
 
   connect(m_project_handler, &sup::gui::ProjectHandler::ProjectLoaded, this,
           &SequencerMainWindowActions::ProjectLoaded);
-
-  connect(qApp, &QApplication::focusChanged, m_focus_controller.get(),
-          &sup::gui::AppContextFocusController::OnFocusWidgetUpdate);
 }
 
 SequencerMainWindowActions::~SequencerMainWindowActions() = default;
