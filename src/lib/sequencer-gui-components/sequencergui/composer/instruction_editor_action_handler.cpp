@@ -61,15 +61,6 @@ void UpdateChildCoordinate(const sequencergui::InstructionItem *reference, mvvm:
   }
 }
 
-/**
- * @brief Returns type of item enclosed inside the given mime data.
- */
-std::string GetSessionItemType(const QMimeData *mime_data)
-{
-  auto item = sup::gui::CreateSessionItem(mime_data, sequencergui::kCopyInstructionMimeType);
-  return item ? item->GetType() : std::string();
-}
-
 const std::string kFailedActionTitle = "Invalid Operation";
 
 }  // namespace
@@ -251,18 +242,8 @@ void InstructionEditorActionHandler::Copy()
 
 bool InstructionEditorActionHandler::CanPasteAfter() const
 {
-  if (!GetModel())
-  {
-    return false;
-  }
-
-  auto mime_data = GetMimeData();
-  if (!mime_data || !mime_data->hasFormat(kCopyInstructionMimeType))
-  {
-    return false;
-  }
-
-  auto querry = CanInsertTypeAfterCurrentSelection(GetSessionItemType(mime_data));
+  auto querry = CanInsertTypeAfterCurrentSelection(
+      sup::gui::GetSessionItemType(GetMimeData(), kCopyInstructionMimeType));
   return querry.IsSuccess();
 }
 
@@ -278,18 +259,8 @@ void InstructionEditorActionHandler::PasteAfter()
 
 bool InstructionEditorActionHandler::CanPasteInto() const
 {
-  if (!GetModel())
-  {
-    return false;
-  }
-
-  auto mime_data = GetMimeData();
-  if (!mime_data || !mime_data->hasFormat(kCopyInstructionMimeType))
-  {
-    return false;
-  }
-
-  auto querry = CanInsertTypeIntoCurrentSelection(GetSessionItemType(mime_data));
+  auto querry = CanInsertTypeIntoCurrentSelection(
+      sup::gui::GetSessionItemType(GetMimeData(), kCopyInstructionMimeType));
   return querry.IsSuccess();
 }
 
@@ -342,6 +313,12 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeAfterCurrentS
 {
   static const std::string kFailedActionText("Can't insert type after current selection");
 
+  if (item_type.empty())
+  {
+    return sup::gui::QueryResult::Failure(
+        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]"});
+  }
+
   auto instruction_container = GetInstructionContainer();
   if (!instruction_container)
   {
@@ -368,6 +345,12 @@ sup::gui::QueryResult InstructionEditorActionHandler::CanInsertTypeIntoCurrentSe
     const std::string &item_type) const
 {
   static const std::string kFailedActionText("Can't insert type into current selection");
+
+  if (item_type.empty())
+  {
+    return sup::gui::QueryResult::Failure(
+        {kFailedActionTitle, kFailedActionText, "Wrong item type [" + item_type + "]"});
+  }
 
   auto selected_instruction = GetSelectedInstruction();
   if (!selected_instruction)
