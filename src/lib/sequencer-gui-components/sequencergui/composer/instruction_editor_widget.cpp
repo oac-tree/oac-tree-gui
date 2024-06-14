@@ -254,6 +254,10 @@ void InstructionEditorWidget::SetupConnections()
   };
   connect(m_action_handler, &InstructionEditorActionHandler::SelectItemRequest, this,
           on_make_instruction_selected_request);
+
+  // selection change from tree view to update actions
+  connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
+          [this](auto) { m_editor_actions->UpdateEnabledStatus(); });
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()

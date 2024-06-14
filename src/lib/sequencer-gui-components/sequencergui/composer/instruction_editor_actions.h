@@ -129,7 +129,7 @@ private:
    */
   void AboutToShowInsertMenu();
 
-  InstructionEditorActionHandler* m_handler{nullptr};
+  InstructionEditorActionHandler* m_action_handler{nullptr};
 
   std::unique_ptr<QMenu> m_insert_after_menu;
   std::unique_ptr<QMenu> m_insert_into_menu;
