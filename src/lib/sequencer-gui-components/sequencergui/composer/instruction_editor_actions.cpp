@@ -70,10 +70,7 @@ void InstructionEditorActions::SetupMenu(QMenu &menu)
   menu.addAction(m_paste_into_action);
   menu.addSeparator();
 
-  m_cut_action->setEnabled(m_handler->CanCut());
-  m_copy_action->setEnabled(m_handler->CanCopy());
-  m_paste_into_action->setEnabled(m_handler->CanPasteInto());
-  m_paste_after_action->setEnabled(m_handler->CanPasteAfter());
+  UpdateEnabledStatus();
 }
 
 void InstructionEditorActions::RegisterActionsForContext(const sup::gui::AppContext &context)
@@ -83,6 +80,17 @@ void InstructionEditorActions::RegisterActionsForContext(const sup::gui::AppCont
   sup::gui::AppAddActionToCommand(m_paste_after_action, app::constants::kPasteCommandId, context);
   sup::gui::AppAddActionToCommand(m_paste_into_action, app::constants::kPasteSpecialCommandId,
                                   context);
+}
+
+void InstructionEditorActions::UpdateEnabledStatus()
+{
+  m_cut_action->setEnabled(m_handler->CanCut());
+  m_copy_action->setEnabled(m_handler->CanCopy());
+  m_paste_into_action->setEnabled(m_handler->CanPasteInto());
+  m_paste_after_action->setEnabled(m_handler->CanPasteAfter());
+
+  // no need to update insert into/after action status since it is checked at the moment of menu
+  // pop-up
 }
 
 void InstructionEditorActions::SetupInsertRemoveActions()

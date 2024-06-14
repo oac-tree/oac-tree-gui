@@ -85,7 +85,7 @@ public:
   std::unique_ptr<QMimeData> m_copy_result;
 };
 
-//! Copy operation when nothing is selected.
+//! Available operations when nothing is selected.
 TEST_F(InstructionEditorActionHandlerCopyPasteTest, CopyPasteWhenNothingIsSelected)
 {
   auto handler = CreateActionHandler(/*selected instruction*/ nullptr, /*mime*/ nullptr);

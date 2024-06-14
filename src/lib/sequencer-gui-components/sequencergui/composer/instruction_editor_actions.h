@@ -97,6 +97,15 @@ public:
    */
   void RegisterActionsForContext(const sup::gui::AppContext& context);
 
+  /**
+   * @brief Update enabled/disabled status of all actions.
+   *
+   * The method should be called every time we feel that the situation in a tree has changed, and
+   * some actions might not be available anymore. The simplest, probably, is to call it every time
+   * the user selects some other item in a tree.
+   */
+  void UpdateEnabledStatus();
+
 signals:
   void InsertIntoRequest(const QString& name);
   void InsertAfterRequest(const QString& name);
