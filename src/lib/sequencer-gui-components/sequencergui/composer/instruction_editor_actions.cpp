@@ -151,7 +151,12 @@ void InstructionEditorActions::SetupCutCopyPasteActions()
   m_cut_action->setToolTip("Cuts selected instruction");
   m_cut_action->setShortcut(QKeySequence("Ctrl+X"));
   m_action_map.Add(ActionKey::kCut, m_cut_action);
-  connect(m_cut_action, &QAction::triggered, this, [this]() { m_action_handler->Cut(); });
+  auto on_cut = [this]()
+  {
+    m_action_handler->Cut();
+    UpdateEnabledStatus();  // to update availability of paste operation
+  };
+  connect(m_cut_action, &QAction::triggered, this, on_cut);
 
   m_copy_action = new QAction(this);
   m_copy_action->setText("Copy");
