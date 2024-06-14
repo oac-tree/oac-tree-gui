@@ -35,6 +35,7 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_constants.h>
 #include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/style_utils.h>
 
