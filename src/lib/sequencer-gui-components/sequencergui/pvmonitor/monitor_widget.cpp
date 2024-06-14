@@ -70,7 +70,8 @@ mvvm::ViewModel *MonitorWidget::GetViewModel()
 void MonitorWidget::SetupConnections()
 {
   connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_workspace_editor_action_handler,
-          &WorkspaceEditorActionHandler::OnAddVariableRequest);
+          [this](auto str)
+          { m_workspace_editor_action_handler->OnAddVariableRequest(str.toStdString()); });
 
   connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_workspace_editor_action_handler,
           &WorkspaceEditorActionHandler::OnEditAnyValueRequest);

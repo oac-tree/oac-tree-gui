@@ -102,7 +102,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, AttemptToAddVariableWhenWorkspaceIsAbse
   EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // adding variable
-  EXPECT_NO_THROW(actions.OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type)));
+  EXPECT_NO_THROW(actions.OnAddVariableRequest(LocalVariableItem::Type));
 }
 
 //! Adding variables to an empty model.
@@ -118,7 +118,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
+  handler->OnAddVariableRequest(LocalVariableItem::Type);
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
@@ -139,7 +139,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(anyvalue_item->Data<int>(), 0);
 
   // adding another variable
-  handler->OnAddVariableRequest(QString::fromStdString(LocalVariableItem::Type));
+  handler->OnAddVariableRequest(LocalVariableItem::Type);
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 2);
   auto inserted_variable1 =
@@ -168,7 +168,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableWHenNothingIsSelected)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
+  handler->OnAddVariableRequest(FileVariableItem::Type);
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -191,7 +191,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestBetween)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(QString::fromStdString(FileVariableItem::Type));
+  handler->OnAddVariableRequest(FileVariableItem::Type);
 
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 3);
   auto inserted_variable0 =
@@ -430,7 +430,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddSystemClockVariable)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // adding variable
-  handler->OnAddVariableRequest(QString::fromStdString(domainconstants::kSystemClockVariableType));
+  handler->OnAddVariableRequest(domainconstants::kSystemClockVariableType);
 
   // validating default values of just inserted variable
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);

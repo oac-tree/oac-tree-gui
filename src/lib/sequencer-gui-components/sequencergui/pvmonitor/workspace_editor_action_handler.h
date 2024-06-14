@@ -46,7 +46,7 @@ class WorkspaceEditorActionHandler : public QObject
 public:
   explicit WorkspaceEditorActionHandler(WorkspaceEditorContext context, QObject* parent = nullptr);
 
-  void OnAddVariableRequest(const QString& variable_type_name);
+  void OnAddVariableRequest(const std::string& variable_type_name);
 
   /**
    * @brief Checks if variable can be removed.

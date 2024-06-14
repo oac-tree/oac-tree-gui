@@ -197,7 +197,7 @@ void WorkspaceEditorWidget::SetupConnections()
 {
   // propagate variable related requests from WorkspaceEditorActions to WorkspaceEditorActionHandler
   connect(m_editor_actions, &WorkspaceEditorActions::AddVariableRequest, m_action_handler,
-          &WorkspaceEditorActionHandler::OnAddVariableRequest);
+          [this](auto str) { m_action_handler->OnAddVariableRequest(str.toStdString()); });
   connect(m_editor_actions, &WorkspaceEditorActions::RemoveVariableRequest, m_action_handler,
           &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
   connect(m_editor_actions, &WorkspaceEditorActions::CutRequest, m_action_handler,

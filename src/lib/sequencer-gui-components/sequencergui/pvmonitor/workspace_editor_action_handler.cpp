@@ -57,7 +57,7 @@ WorkspaceEditorActionHandler::WorkspaceEditorActionHandler(WorkspaceEditorContex
   }
 }
 
-void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_type_name)
+void WorkspaceEditorActionHandler::OnAddVariableRequest(const std::string &variable_type_name)
 {
   if (!GetWorkspaceItem())
   {
@@ -65,7 +65,7 @@ void WorkspaceEditorActionHandler::OnAddVariableRequest(const QString &variable_
     return;
   }
 
-  auto variable_item = CreateVariableItem(variable_type_name.toStdString());
+  auto variable_item = CreateVariableItem(variable_type_name);
   SetupNewVariable(variable_item.get(), GetWorkspaceItem()->GetVariableCount());
   InsertVariableAfterCurrentSelection(std::move(variable_item));
 }
