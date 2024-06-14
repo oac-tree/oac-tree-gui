@@ -25,6 +25,7 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
+#include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context_focus_controller.h>
 #include <sup/gui/app/application_helper.h>
 #include <sup/gui/app/main_window_helper.h>
@@ -138,19 +139,19 @@ void SequencerMainWindowActions::SetupFileMenu()
 void SequencerMainWindowActions::SetupEditMenu()
 {
   auto command =
-      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, app::constants::kCutCommandId);
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, sup::gui::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
   command =
-      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, app::constants::kCopyCommandId);
+      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, sup::gui::constants::kCopyCommandId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          app::constants::kPasteCommandId);
+                                          sup::gui::constants::kPasteCommandId);
   command->SetText("Paste").SetShortcut(QKeySequence::Paste);
 
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
-                                          app::constants::kPasteSpecialCommandId);
+                                          sup::gui::constants::kPasteSpecialCommandId);
   command->SetText("Paste Special").SetShortcut(QKeySequence("Ctrl+Shift+V"));
 }
 

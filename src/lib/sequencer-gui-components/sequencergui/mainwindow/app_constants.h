@@ -27,11 +27,6 @@
 namespace sequencergui::app::constants
 {
 
-const QString kCutCommandId = "Cut";
-const QString kCopyCommandId = "Copy";
-const QString kPasteCommandId = "Paste";
-const QString kPasteSpecialCommandId = "Paste Special";
-
 const QString kValidateProcedureCommandId = "Validate procedure";
 const QString kExportXmlCommandId = "Export XML";
 

@@ -21,8 +21,8 @@
 
 #include "procedure_list_action_handler.h"
 
-#include <sequencergui/mainwindow/app_constants.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context.h>
 #include <sup/gui/widgets/style_utils.h>
 
@@ -94,9 +94,9 @@ void ProcedureListActions::SetupMenu(QMenu &menu, const ProcedureListActionHandl
 
 void ProcedureListActions::RegisterActionsForContext(const sup::gui::AppContext &context)
 {
-  sup::gui::AppAddActionToCommand(m_cut_action, app::constants::kCutCommandId, context);
-  sup::gui::AppAddActionToCommand(m_copy_action, app::constants::kCopyCommandId, context);
-  sup::gui::AppAddActionToCommand(m_paste_action, app::constants::kPasteCommandId, context);
+  sup::gui::AppAddActionToCommand(m_cut_action, sup::gui::constants::kCutCommandId, context);
+  sup::gui::AppAddActionToCommand(m_copy_action, sup::gui::constants::kCopyCommandId, context);
+  sup::gui::AppAddActionToCommand(m_paste_action, sup::gui::constants::kPasteCommandId, context);
 }
 
 }  // namespace sequencergui
