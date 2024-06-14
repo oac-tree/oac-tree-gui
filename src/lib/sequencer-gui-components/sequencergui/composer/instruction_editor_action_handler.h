@@ -62,27 +62,27 @@ public:
    * @brief Checks if SessionItem of the given type can be inserted after currently selected
    * instruction.
    */
-  bool CanInsertAfter(const QString& item_type) const;
+  bool CanInsertAfter(const std::string& item_type) const;
 
   /**
    * @brief Inserts new instruction of given type after the current selection.
    *
    * @param item_type The item type name.
    */
-  void OnInsertInstructionAfterRequest(const QString& item_type);
+  void OnInsertInstructionAfterRequest(const std::string& item_type);
 
   /**
    * @brief Checks if SessionItem of the given type can be inserted into currently selected
    * instruction.
    */
-  bool CanInsertInto(const QString& item_type) const;
+  bool CanInsertInto(const std::string& item_type) const;
 
   /**
    * @brief Inserts new instruction of given type after the current selection.
    *
    * @param item_type The item type name.
    */
-  void OnInsertInstructionIntoRequest(const QString& item_type);
+  void OnInsertInstructionIntoRequest(const std::string& item_type);
 
   /**
    * @brief Checks if currently selected instruction can be removed.

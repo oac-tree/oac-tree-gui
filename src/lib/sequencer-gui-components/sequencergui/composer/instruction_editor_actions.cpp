@@ -210,23 +210,22 @@ void InstructionEditorActions::AboutToShowInsertMenu()
     int enabled_actions_count{0};
     for (const auto &name : group_info.object_names)
     {
-      auto str = QString::fromStdString(name);
-      auto action = group_menu->addAction(str);
-      if (insert_into ? m_action_handler->CanInsertInto(str)
-                      : m_action_handler->CanInsertAfter(str))
+      auto action = group_menu->addAction( QString::fromStdString(name));
+      if (insert_into ? m_action_handler->CanInsertInto(name)
+                      : m_action_handler->CanInsertAfter(name))
       {
         action->setEnabled(true);
         ++enabled_actions_count;
       }
       if (insert_into)
       {
-        connect(action, &QAction::triggered,
-                [this, str]() { m_action_handler->OnInsertInstructionIntoRequest(str); });
+        connect(action, &QAction::triggered, m_action_handler,
+                [this, name]() { m_action_handler->OnInsertInstructionIntoRequest(name); });
       }
       else
       {
-        connect(action, &QAction::triggered,
-                [this, str]() { m_action_handler->OnInsertInstructionAfterRequest(str); });
+        connect(action, &QAction::triggered, m_action_handler,
+                [this, name]() { m_action_handler->OnInsertInstructionAfterRequest(name); });
       }
     };
     group_menu->setEnabled(enabled_actions_count > 0);

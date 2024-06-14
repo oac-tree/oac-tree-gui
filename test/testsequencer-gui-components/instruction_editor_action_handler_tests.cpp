@@ -106,7 +106,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionWhenNoProce
   EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // it is not possible to add instruction when no procedure is selected, expecting callback
-  EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(WaitItem::Type));
 }
 
 //! Adding wait instruction.
@@ -121,7 +121,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  handler->OnInsertInstructionAfterRequest(WaitItem::Type);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -139,8 +139,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddChoice)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(
-      QString::fromStdString(domainconstants::kChoiceInstructionType));
+  handler->OnInsertInstructionAfterRequest(domainconstants::kChoiceInstructionType);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -164,7 +163,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfter)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  handler->OnInsertInstructionAfterRequest(WaitItem::Type);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -190,11 +189,11 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionAfterWhenInAppendMod
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type));
+  handler->OnInsertInstructionAfterRequest(WaitItem::Type);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 1);
 
   // appending instruction to the container
-  handler->OnInsertInstructionAfterRequest(QString::fromStdString(SequenceItem::Type));
+  handler->OnInsertInstructionAfterRequest(SequenceItem::Type);
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetTotalItemCount(), 2);
 
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
@@ -213,15 +212,13 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionAfter)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(m_procedure, sequence);
 
-  EXPECT_TRUE(
-      handler->CanInsertInto(QString::fromStdString(domainconstants::kMessageInstructionType)));
-  EXPECT_FALSE(
-      handler->CanInsertAfter(QString::fromStdString(domainconstants::kMessageInstructionType)));
+  EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
+  EXPECT_FALSE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
 
   EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // It is not possible to add second instruction to repeat instruction, expecting warning callback
-  EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(handler->OnInsertInstructionAfterRequest(WaitItem::Type));
 
   ASSERT_EQ(repeat->GetInstructions().size(), 1);
 }
@@ -240,20 +237,17 @@ TEST_F(InstructionEditorActionHandlerTest, InsertInstructionInto)
   // creating action handler mimicking `sequence` instruction selected
   auto handler = CreateActionHandler(m_procedure, sequence);
 
-  EXPECT_TRUE(
-      handler->CanInsertInto(QString::fromStdString(domainconstants::kMessageInstructionType)));
-  EXPECT_TRUE(
-      handler->CanInsertAfter(QString::fromStdString(domainconstants::kMessageInstructionType)));
+  EXPECT_TRUE(handler->CanInsertInto(domainconstants::kMessageInstructionType));
+  EXPECT_TRUE(handler->CanInsertAfter(domainconstants::kMessageInstructionType));
 
   EXPECT_CALL(m_warning_listener, Call(_)).Times(0);
 
   // inserting instruction into selected instruction
-  handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
+  handler->OnInsertInstructionIntoRequest(WaitItem::Type);
   ASSERT_EQ(sequence->GetInstructions().size(), 1);
 
   // inserting second instruction
-  handler->OnInsertInstructionIntoRequest(
-      QString::fromStdString(domainconstants::kMessageInstructionType));
+  handler->OnInsertInstructionIntoRequest(domainconstants::kMessageInstructionType);
   ASSERT_EQ(sequence->GetInstructions().size(), 2);
 
   // Wait instruction should be after Sequence instruction
@@ -284,7 +278,7 @@ TEST_F(InstructionEditorActionHandlerTest, AttemptToInsertInstructionInto)
   EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
   // attempt to insert instruction into selected instruction, expecting callback
-  EXPECT_NO_THROW(handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type)));
+  EXPECT_NO_THROW(handler->OnInsertInstructionIntoRequest(WaitItem::Type));
   ASSERT_EQ(wait->GetInstructions().size(), 0);
 }
 
@@ -297,7 +291,7 @@ TEST_F(InstructionEditorActionHandlerTest, InsertIntoWhenNothingIsSelected)
 
   EXPECT_CALL(m_warning_listener, Call(_)).Times(1);
 
-  handler->OnInsertInstructionIntoRequest(QString::fromStdString(WaitItem::Type));
+  handler->OnInsertInstructionIntoRequest(WaitItem::Type);
 }
 
 //! Remove operation when nothing is selected.

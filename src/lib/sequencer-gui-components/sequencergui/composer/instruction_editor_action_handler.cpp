@@ -88,40 +88,40 @@ InstructionEditorActionHandler::InstructionEditorActionHandler(InstructionEditor
   }
 }
 
-bool InstructionEditorActionHandler::CanInsertAfter(const QString &item_type) const
+bool InstructionEditorActionHandler::CanInsertAfter(const std::string &item_type) const
 {
-  return CanInsertTypeAfterCurrentSelection(item_type.toStdString()).IsSuccess();
+  return CanInsertTypeAfterCurrentSelection(item_type).IsSuccess();
 }
 
 InstructionEditorActionHandler::~InstructionEditorActionHandler() = default;
 
-void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const QString &item_type)
+void InstructionEditorActionHandler::OnInsertInstructionAfterRequest(const std::string &item_type)
 {
-  auto querry = CanInsertTypeAfterCurrentSelection(item_type.toStdString());
+  auto querry = CanInsertTypeAfterCurrentSelection(item_type);
   if (!querry.IsSuccess())
   {
     SendMessage(querry.GetMessage());
     return;
   }
 
-  InsertAfterCurrentSelection(CreateInstructionItem(item_type.toStdString()));
+  InsertAfterCurrentSelection(CreateInstructionItem(item_type));
 }
 
-bool InstructionEditorActionHandler::CanInsertInto(const QString &item_type) const
+bool InstructionEditorActionHandler::CanInsertInto(const std::string &item_type) const
 {
-  return CanInsertTypeIntoCurrentSelection(item_type.toStdString()).IsSuccess();
+  return CanInsertTypeIntoCurrentSelection(item_type).IsSuccess();
 }
 
-void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const QString &item_type)
+void InstructionEditorActionHandler::OnInsertInstructionIntoRequest(const std::string &item_type)
 {
-  auto querry = CanInsertTypeIntoCurrentSelection(item_type.toStdString());
+  auto querry = CanInsertTypeIntoCurrentSelection(item_type);
   if (!querry.IsSuccess())
   {
     SendMessage(querry.GetMessage());
     return;
   }
 
-  InsertIntoCurrentSelection(CreateInstructionItem(item_type.toStdString()));
+  InsertIntoCurrentSelection(CreateInstructionItem(item_type));
 }
 
 bool InstructionEditorActionHandler::CanRemoveInstruction() const
