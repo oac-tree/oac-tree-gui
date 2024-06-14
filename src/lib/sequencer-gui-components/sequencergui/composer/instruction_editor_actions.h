@@ -76,7 +76,7 @@ public:
    * @param An action handler to retrieve status of enabled/disabled actions.
    * @param parent Parent Qobject.
    */
-  explicit InstructionEditorActions(const InstructionEditorActionHandler* handler,
+  explicit InstructionEditorActions(InstructionEditorActionHandler* handler,
                                     QObject* parent = nullptr);
   ~InstructionEditorActions() override;
 
@@ -106,17 +106,6 @@ public:
    */
   void UpdateEnabledStatus();
 
-signals:
-  void InsertIntoRequest(const QString& name);
-  void InsertAfterRequest(const QString& name);
-  void RemoveSelectedRequest();
-  void MoveUpRequest();
-  void MoveDownRequest();
-  void CutRequest();
-  void CopyRequest();
-  void PasteAfterRequest();
-  void PasteIntoRequest();
-
 private:
   /**
    * @brief Setups all actions related to insert/remove operations.
@@ -140,7 +129,7 @@ private:
    */
   void AboutToShowInsertMenu();
 
-  const InstructionEditorActionHandler* m_handler{nullptr};
+  InstructionEditorActionHandler* m_handler{nullptr};
 
   std::unique_ptr<QMenu> m_insert_after_menu;
   std::unique_ptr<QMenu> m_insert_into_menu;

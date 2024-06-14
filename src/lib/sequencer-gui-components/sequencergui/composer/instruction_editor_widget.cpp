@@ -239,16 +239,6 @@ void InstructionEditorWidget::SetupConnections()
           on_selected_instruction_changed);
 
   // propagate instruction related requests from InstructionTreeWidget to InstructionEditorActions
-  connect(m_editor_actions, &InstructionEditorActions::InsertAfterRequest, m_action_handler,
-          &InstructionEditorActionHandler::OnInsertInstructionAfterRequest);
-  connect(m_editor_actions, &InstructionEditorActions::InsertIntoRequest, m_action_handler,
-          &InstructionEditorActionHandler::OnInsertInstructionIntoRequest);
-  connect(m_editor_actions, &InstructionEditorActions::RemoveSelectedRequest, m_action_handler,
-          &InstructionEditorActionHandler::OnRemoveInstructionRequest);
-  connect(m_editor_actions, &InstructionEditorActions::MoveUpRequest, m_action_handler,
-          &InstructionEditorActionHandler::OnMoveUpRequest);
-  connect(m_editor_actions, &InstructionEditorActions::MoveDownRequest, m_action_handler,
-          &InstructionEditorActionHandler::OnMoveDownRequest);
   connect(m_attribute_editor, &InstructionAttributeEditor::EditAnyvalueRequest, m_action_handler,
           &InstructionEditorActionHandler::OnEditAnyvalueRequest);
 
@@ -264,15 +254,6 @@ void InstructionEditorWidget::SetupConnections()
   };
   connect(m_action_handler, &InstructionEditorActionHandler::SelectItemRequest, this,
           on_make_instruction_selected_request);
-
-  connect(m_editor_actions, &InstructionEditorActions::CutRequest, m_action_handler,
-          &InstructionEditorActionHandler::Cut);
-  connect(m_editor_actions, &InstructionEditorActions::CopyRequest, m_action_handler,
-          &InstructionEditorActionHandler::Copy);
-  connect(m_editor_actions, &InstructionEditorActions::PasteAfterRequest, m_action_handler,
-          &InstructionEditorActionHandler::PasteAfter);
-  connect(m_editor_actions, &InstructionEditorActions::PasteIntoRequest, m_action_handler,
-          &InstructionEditorActionHandler::PasteInto);
 }
 
 InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext()
