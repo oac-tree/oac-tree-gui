@@ -27,7 +27,9 @@ namespace sequencergui
 {
 
 MonitorWidgetActions::MonitorWidgetActions(QObject *parent)
-    : QObject(parent), m_start_action(new QAction), m_stop_action(new QAction)
+    : QObject(parent)
+    , m_start_action(new QAction(this))
+    , m_stop_action(new QAction(this))
 {
   m_start_action->setText("Start");
   m_start_action->setIcon(sup::gui::utils::GetIcon("chevron-right-circle-outline.svg"));
@@ -46,6 +48,12 @@ MonitorWidgetActions::MonitorWidgetActions(QObject *parent)
 QList<QAction *> MonitorWidgetActions::GetActions(const std::vector<ActionKey> &action_keys) const
 {
   return m_action_map.GetActions(action_keys);
+}
+
+void MonitorWidgetActions::SetIsRunning(bool is_running)
+{
+  m_start_action->setEnabled(!is_running);
+  m_stop_action->setEnabled(is_running);
 }
 
 }  // namespace sequencergui

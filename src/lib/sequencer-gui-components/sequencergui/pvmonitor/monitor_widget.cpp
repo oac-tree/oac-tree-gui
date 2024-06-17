@@ -37,6 +37,21 @@
 
 #include <QVBoxLayout>
 
+namespace
+{
+
+/**
+ * @brief Sets all action in the container to a given is_enabled sttaus
+ */
+void SetEnabled(const QList<QAction *> &actions, bool is_enabled)
+{
+  for (auto action : actions)
+  {
+    action->setEnabled(is_enabled);
+  }
+}
+}  // namespace
+
 namespace sequencergui
 {
 
@@ -45,13 +60,13 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     , m_model(model)
     , m_actions(new MonitorWidgetActions(this))
     , m_stack_widget(new sup::gui::ItemStackWidget)
+    , m_workspace_editor(new WorkspaceEditorWidget)
+
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_stack_widget);
 
-  auto control_actions = m_actions->GetActions({MonitorWidgetActions::ActionKey::kStartWorkspace,
-                                                MonitorWidgetActions::ActionKey::kStopWorkspace});
-  m_stack_widget->AddWidget(m_workspace_editor, m_workspace_editor->actions() + control_actions);
+  m_stack_widget->AddWidget(m_workspace_editor, GetEditorActions() + GetControlActions());
 
   SetupConnections();  // should be after tree view got its model
 }
@@ -83,6 +98,7 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
+    SetIsRunning(true);
   }
   catch (std::exception &ex)
   {
@@ -94,19 +110,36 @@ void MonitorWidget::OnStartMonitoringRequest()
 void MonitorWidget::OnStopMonitoringRequest()
 {
   m_workspace_synchronizer->Shutdown();
+  SetIsRunning(false);
+}
+
+QList<QAction *> MonitorWidget::GetEditorActions()
+{
+  return m_workspace_editor->actions();
+}
+
+QList<QAction *> MonitorWidget::GetControlActions()
+{
+  return m_actions->GetActions({MonitorWidgetActions::ActionKey::kStartWorkspace,
+                                MonitorWidgetActions::ActionKey::kStopWorkspace});
+}
+
+void MonitorWidget::SetIsRunning(bool is_running)
+{
+  // when running, disable editor actions, and enable control actions
+  SetEnabled(GetEditorActions(), !is_running);
+  m_actions->SetIsRunning(is_running);
 }
 
 WorkspaceEditorContext MonitorWidget::CreateContext()
 {
-  auto selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
-
-  auto selected_item_callback = [this]() { return m_workspace_editor->GetSelectedItem(); };
-
-  auto send_message_callback = [](const auto &event)
+  WorkspaceEditorContext result;
+  result.selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
+  result.selected_item_callback = [this]() { return m_workspace_editor->GetSelectedItem(); };
+  result.send_message_callback = [](const auto &event)
   { return sup::gui::SendWarningMessage(event); };
-
-  return {selected_workspace_callback, selected_item_callback, send_message_callback,
-          CreateAnyValueDialogCallback(this)};
+  result.edit_anyvalue_callback = CreateAnyValueDialogCallback(this);
+  return result;
 }
 
 }  // namespace sequencergui

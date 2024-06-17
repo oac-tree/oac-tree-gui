@@ -51,7 +51,9 @@ public:
 
   explicit MonitorWidgetActions(QObject* parent = nullptr);
 
-  QList<QAction*> GetActions(const std::vector<ActionKey> &action_keys) const;
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
+
+  void SetIsRunning(bool is_running);
 
 signals:
   void StartMonitoringRequest();
