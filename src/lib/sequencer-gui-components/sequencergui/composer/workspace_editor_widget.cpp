@@ -23,7 +23,6 @@
 #include "attribute_editor_actions.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
-#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
@@ -94,9 +93,9 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
 
   ReadSettings();
 
-  auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
+  auto on_subscribe = [this]() { SetWorkspaceItemIntern(m_workspace_item); };
 
-  auto on_unsubscribe = [this]() { SetProcedureIntern(nullptr); };
+  auto on_unsubscribe = [this]() { SetWorkspaceItemIntern(nullptr); };
 
   // will be deleted as a child of QObject
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
@@ -109,18 +108,18 @@ WorkspaceEditorWidget::~WorkspaceEditorWidget()
   WriteSettings();
 }
 
-void WorkspaceEditorWidget::SetProcedure(ProcedureItem *procedure)
+void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
 {
-  if (procedure == m_procedure)
+  if (workspace == m_workspace_item)
   {
     return;
   }
 
-  m_procedure = procedure;
+  m_workspace_item = workspace;
 
-  if (m_procedure && isVisible())
+  if (m_workspace_item && isVisible())
   {
-    SetProcedureIntern(m_procedure);
+    SetWorkspaceItemIntern(m_workspace_item);
   }
 }
 
@@ -180,16 +179,13 @@ void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
   menu.exec(m_tree_view->mapToGlobal(point));
 }
 
-void WorkspaceEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
+void WorkspaceEditorWidget::SetWorkspaceItemIntern(WorkspaceItem *workspace_item)
 {
-  if (procedure)
+  m_component_provider->SetItem(workspace_item);
+
+  if (workspace_item)
   {
-    m_component_provider->SetItem(procedure->GetWorkspace());
     AdjustTreeAppearance();
-  }
-  else
-  {
-    m_component_provider->SetItem(nullptr);
   }
 }
 
@@ -229,8 +225,7 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
 {
   WorkspaceEditorContext result;
 
-  auto selected_workspace_callback = [this]()
-  { return m_procedure ? m_procedure->GetWorkspace() : nullptr; };
+  auto selected_workspace_callback = [this]() { return m_workspace_item; };
   result.selected_workspace_callback = selected_workspace_callback;
 
   result.selected_item_callback = [this]() { return GetSelectedItem(); };

@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 #define SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
+#include "sequencergui/model/procedure_item.h"
 #include <QWidget>
 #include <memory>
 
@@ -40,7 +41,7 @@ class VisibilityAgentBase;
 namespace sequencergui
 {
 
-class ProcedureItem;
+class WorkspaceItem;
 class VariableItem;
 class WorkspaceEditorContext;
 class WorkspaceEditorActionHandler;
@@ -63,7 +64,7 @@ public:
   explicit WorkspaceEditorWidget(QWidget* parent = nullptr);
   ~WorkspaceEditorWidget() override;
 
-  void SetProcedure(ProcedureItem* procedure);
+  void SetWorkspaceItem(WorkspaceItem* workspace_item);
 
   mvvm::SessionItem* GetSelectedItem() const;
 
@@ -76,7 +77,7 @@ private:
    */
   void OnTreeContextMenuRequest(const QPoint& point);
 
-  void SetProcedureIntern(ProcedureItem* procedure);
+  void SetWorkspaceItemIntern(WorkspaceItem* workspace_item);
 
   void SetupConnections();
   WorkspaceEditorContext CreateWorkspaceEditorContext();
@@ -85,7 +86,7 @@ private:
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
   std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
-  ProcedureItem* m_procedure{nullptr};
+  WorkspaceItem* m_workspace_item{nullptr};
 
   WorkspaceEditorActionHandler* m_action_handler{nullptr};
   WorkspaceEditorActions* m_editor_actions{nullptr};

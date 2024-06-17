@@ -69,7 +69,7 @@ void ComposerWidgetPanel::SetProcedure(ProcedureItem* procedure)
 {
   m_procedure = procedure;
   m_instruction_editor_widget->SetProcedure(m_procedure);
-  m_workspace_editor_widget->SetProcedure(m_procedure);
+  m_workspace_editor_widget->SetWorkspaceItem(m_procedure ? m_procedure->GetWorkspace() : nullptr);
   m_node_editor->SetProcedure(m_procedure);
   m_xml_panel->SetProcedure(m_procedure);
 }
