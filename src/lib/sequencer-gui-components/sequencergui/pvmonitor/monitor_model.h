@@ -36,6 +36,11 @@ public:
   MonitorModel();
 
   sequencergui::WorkspaceItem* GetWorkspaceItem() const;
+
+  void Clear() override;
+
+private:
+  void PopulateModel();
 };
 
 }  // namespace sequencergui

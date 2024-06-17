@@ -26,11 +26,25 @@
 namespace sequencergui
 {
 
-MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel") {}
+MonitorModel::MonitorModel() : mvvm::ApplicationModel("MonitorModel")
+{
+  PopulateModel();
+}
 
 WorkspaceItem *MonitorModel::GetWorkspaceItem() const
 {
   return mvvm::utils::GetTopItem<WorkspaceItem>(this);
+}
+
+void MonitorModel::Clear()
+{
+  mvvm::ApplicationModel::Clear();
+  PopulateModel();
+}
+
+void MonitorModel::PopulateModel()
+{
+  InsertItem<WorkspaceItem>();
 }
 
 }  // namespace sequencergui

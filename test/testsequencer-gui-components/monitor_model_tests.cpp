@@ -32,5 +32,5 @@ class MonitorModelTest : public ::testing::Test
 TEST_F(MonitorModelTest, InitialState)
 {
   MonitorModel model;
-  EXPECT_TRUE(model.GetWorkspaceItem() == nullptr);
+  EXPECT_NE(model.GetWorkspaceItem(), nullptr);
 }
