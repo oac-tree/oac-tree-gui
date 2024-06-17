@@ -21,8 +21,7 @@
 
 #include "monitor_model.h"
 #include "monitor_widget_actions.h"
-#include "monitor_widget_toolbar.h"
-#include "workspace_editor_action_handler.h"
+#include "workspace_editor_context.h"
 #include "workspace_monitor_helper.h"
 #include "workspace_synchronizer.h"
 
@@ -32,15 +31,10 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/core/message_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/item_stack_widget.h>
-
-#include <mvvm/viewmodel/viewmodel.h>
-#include <mvvm/widgets/all_items_tree_view.h>
 
 #include <sup/sequencer/workspace.h>
 
-#include <QTreeView>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -48,77 +42,34 @@ namespace sequencergui
 
 MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
-    , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(model)
     , m_actions(new MonitorWidgetActions(this))
-    , m_workspace_editor_action_handler(new WorkspaceEditorActionHandler(CreateContext(), this))
-    , m_tree_view(new mvvm::AllItemsTreeView)
-    , m_workspace_editor_widget(new WorkspaceEditorWidget)
     , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_tool_bar);
-  layout->addWidget(m_tree_view);
   layout->addWidget(m_stack_widget);
 
-  m_stack_widget->AddWidget(m_workspace_editor_widget, m_workspace_editor_widget->actions());
+  auto control_actions = m_actions->GetActions({MonitorWidgetActions::ActionKey::kStartWorkspace,
+                                                MonitorWidgetActions::ActionKey::kStopWorkspace});
+  m_stack_widget->AddWidget(m_workspace_editor, m_workspace_editor->actions() + control_actions);
 
   SetupConnections();  // should be after tree view got its model
 }
 
-void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
-{
-  m_tree_view->SetItem(m_model->GetWorkspaceItem());
-  m_workspace_editor_widget->SetWorkspaceItem(m_model->GetWorkspaceItem());
-}
-
 MonitorWidget::~MonitorWidget() = default;
 
-//! Returns underlying view model to which QTreeView is pointing.
-
-mvvm::ViewModel *MonitorWidget::GetViewModel()
+void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
 {
-  return dynamic_cast<mvvm::ViewModel *>(m_tree_view->GetTreeView()->model());
+  m_workspace_editor->SetWorkspaceItem(item);
 }
 
 void MonitorWidget::SetupConnections()
 {
-  connect(m_tool_bar, &MonitorWidgetToolBar::AddVariableRequest, m_workspace_editor_action_handler,
-          [this](auto str)
-          { m_workspace_editor_action_handler->OnAddVariableRequest(str.toStdString()); });
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::EditAnyvalueRequest, m_workspace_editor_action_handler,
-          &WorkspaceEditorActionHandler::OnEditAnyValueRequest);
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::RemoveVariableRequest,
-          m_workspace_editor_action_handler,
-          &WorkspaceEditorActionHandler::OnRemoveVariableRequest);
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::StartMonitoringRequest, this,
-          &MonitorWidget::OnStartMonitoringRequest);
-
-  connect(m_tool_bar, &MonitorWidgetToolBar::StopMonitoringRequest, this,
-          &MonitorWidget::OnStopMonitoringRequest);
-
   connect(m_actions, &MonitorWidgetActions::StartMonitoringRequest, this,
           &MonitorWidget::OnStartMonitoringRequest);
 
   connect(m_actions, &MonitorWidgetActions::StopMonitoringRequest, this,
           &MonitorWidget::OnStopMonitoringRequest);
-
-  // make inserted item selected, and tree branch expanded
-  auto on_select_variable_request = [this](auto item)
-  {
-    m_tree_view->SetSelectedItem(item);
-
-    auto index_of_inserted = GetViewModel()->GetIndexOfSessionItem(item);
-    if (!index_of_inserted.empty())
-    {
-      m_tree_view->GetTreeView()->setExpanded(index_of_inserted.front(), true);
-    }
-  };
-  connect(m_workspace_editor_action_handler, &WorkspaceEditorActionHandler::SelectItemRequest, this,
-          on_select_variable_request);
 }
 
 void MonitorWidget::OnStartMonitoringRequest()
@@ -132,7 +83,6 @@ void MonitorWidget::OnStartMonitoringRequest()
     m_workspace_synchronizer =
         std::make_unique<WorkspaceSynchronizer>(m_model->GetWorkspaceItem(), m_workspace.get());
     m_workspace_synchronizer->Start();
-    m_tool_bar->UpdateActionsState(true);
   }
   catch (std::exception &ex)
   {
@@ -144,14 +94,13 @@ void MonitorWidget::OnStartMonitoringRequest()
 void MonitorWidget::OnStopMonitoringRequest()
 {
   m_workspace_synchronizer->Shutdown();
-  m_tool_bar->UpdateActionsState(false);
 }
 
 WorkspaceEditorContext MonitorWidget::CreateContext()
 {
   auto selected_workspace_callback = [this]() { return m_model->GetWorkspaceItem(); };
 
-  auto selected_item_callback = [this]() { return m_tree_view->GetSelectedItem(); };
+  auto selected_item_callback = [this]() { return m_workspace_editor->GetSelectedItem(); };
 
   auto send_message_callback = [](const auto &event)
   { return sup::gui::SendWarningMessage(event); };

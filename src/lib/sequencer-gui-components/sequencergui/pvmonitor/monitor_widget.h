@@ -25,12 +25,6 @@
 #include <QWidget>
 #include <memory>
 
-namespace mvvm
-{
-class AllItemsTreeView;
-class ViewModel;
-}  // namespace mvvm
-
 namespace sup::gui
 {
 class ItemStackWidget;
@@ -41,7 +35,6 @@ namespace sequencergui
 
 class MonitorModel;
 class WorkspaceSynchronizer;
-class MonitorWidgetToolBar;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorContext;
 class WorkspaceItem;
@@ -59,15 +52,11 @@ public:
   void SetWorkspaceItem(WorkspaceItem* item);
 
 private:
-  mvvm::ViewModel* GetViewModel();
-
   void SetupConnections();
   void OnStartMonitoringRequest();
   void OnStopMonitoringRequest();
 
   WorkspaceEditorContext CreateContext();
-
-  MonitorWidgetToolBar* m_tool_bar{nullptr};
 
   MonitorModel* m_model{nullptr};
   std::unique_ptr<workspace_t> m_workspace;
@@ -75,12 +64,8 @@ private:
 
   MonitorWidgetActions* m_actions{nullptr};
 
-  WorkspaceEditorActionHandler* m_workspace_editor_action_handler{nullptr};
-  mvvm::AllItemsTreeView* m_tree_view{nullptr};
-
-  WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
+  WorkspaceEditorWidget* m_workspace_editor{nullptr};
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
-
 };
 
 }  // namespace sequencergui
