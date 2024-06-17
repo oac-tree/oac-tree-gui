@@ -17,13 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "pvmonitor_main_window.h"
-
 #include <sequencergui/components/custom_meta_types.h>
 #include <sequencergui/core/version.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/command_line_options.h>
-
+#include <sequencergui/pvmonitor/pvmonitor_main_window.h>
 #include <sup/gui/app/application_helper.h>
 
 #include <QApplication>

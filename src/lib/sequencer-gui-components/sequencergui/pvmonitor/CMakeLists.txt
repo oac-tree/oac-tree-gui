@@ -8,6 +8,8 @@ target_sources(${library_name} PRIVATE
   monitor_widget.h
   monitor_widget_toolbar.cpp
   monitor_widget_toolbar.h
+  pvmonitor_main_window.cpp
+  pvmonitor_main_window.h
   sequencer_workspace_listener.cpp
   sequencer_workspace_listener.h
   workspace_editor_action_handler.cpp
