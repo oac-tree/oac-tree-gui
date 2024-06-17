@@ -20,6 +20,8 @@
 #include "monitor_main_window_actions.h"
 
 #include <sequencergui/model/sequencer_model.h>
+#include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/app/app_constants.h>
 #include <sup/gui/project/project_handler.h>
 #include <sup/gui/project/project_handler_utils.h>
 
@@ -44,8 +46,13 @@ MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
                                                      kApplicationType, {model}, mainwindow))
 {
+  sup::gui::AppRegisterMenuBar(mainwindow->menuBar(), {sup::gui::constants::kFileMenu});
+
   CreateActions(mainwindow);
   SetupMenus(mainwindow->menuBar());
+
+  connect(m_project_handler, &sup::gui::ProjectHandler::ProjectLoaded, this,
+          &MonitorMainWindowActions::ProjectLoaded);
 }
 
 //! Closes current project. Internally performs check for unsaved data, and proceeds via
@@ -74,7 +81,8 @@ void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
 
 void MonitorMainWindowActions::SetupMenus(QMenuBar *menubar)
 {
-  auto file_menu = menubar->addMenu("&File");
+  auto file_menu = sup::gui::AppGetMenu(sup::gui::constants::kFileMenu);
+
   auto about_to_show_menu = [this]()
   { sup::gui::AddRecentProjectActions(m_recent_project_menu, *m_project_handler); };
   connect(file_menu, &QMenu::aboutToShow, this, about_to_show_menu);
