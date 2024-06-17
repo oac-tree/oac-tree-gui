@@ -31,6 +31,11 @@ class AllItemsTreeView;
 class ViewModel;
 }  // namespace mvvm
 
+namespace sup::gui
+{
+class ItemStackWidget;
+}
+
 namespace sequencergui
 {
 
@@ -41,6 +46,7 @@ class WorkspaceEditorActionHandler;
 class WorkspaceEditorContext;
 class WorkspaceItem;
 class MonitorWidgetActions;
+class WorkspaceEditorWidget;
 
 class MonitorWidget : public QWidget
 {
@@ -71,6 +77,10 @@ private:
 
   WorkspaceEditorActionHandler* m_workspace_editor_action_handler{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
+
+  WorkspaceEditorWidget* m_workspace_editor_widget{nullptr};
+  sup::gui::ItemStackWidget* m_stack_widget{nullptr};
+
 };
 
 }  // namespace sequencergui

@@ -27,11 +27,13 @@
 #include "workspace_synchronizer.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
+#include <sequencergui/composer/workspace_editor_widget.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/core/message_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/widgets/all_items_tree_view.h>
@@ -51,10 +53,15 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     , m_actions(new MonitorWidgetActions(this))
     , m_workspace_editor_action_handler(new WorkspaceEditorActionHandler(CreateContext(), this))
     , m_tree_view(new mvvm::AllItemsTreeView)
+    , m_workspace_editor_widget(new WorkspaceEditorWidget)
+    , m_stack_widget(new sup::gui::ItemStackWidget)
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
+  layout->addWidget(m_stack_widget);
+
+  m_stack_widget->AddWidget(m_workspace_editor_widget, m_workspace_editor_widget->actions());
 
   SetupConnections();  // should be after tree view got its model
 }
@@ -62,6 +69,7 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
 void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
 {
   m_tree_view->SetItem(m_model->GetWorkspaceItem());
+  m_workspace_editor_widget->SetWorkspaceItem(m_model->GetWorkspaceItem());
 }
 
 MonitorWidget::~MonitorWidget() = default;
