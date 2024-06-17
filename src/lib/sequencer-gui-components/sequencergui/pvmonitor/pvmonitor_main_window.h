@@ -42,11 +42,12 @@ public:
   PvMonitorMainWindow();
   ~PvMonitorMainWindow() override;
 
+  void OnProjectLoad();
+
 protected:
   void closeEvent(QCloseEvent* event) override;
 
 private:
-  void PopulateModel();
   void InitApplication();
   void ReadSettings();
   void WriteSettings();

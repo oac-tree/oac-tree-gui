@@ -55,11 +55,6 @@ MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *
           &MonitorMainWindowActions::ProjectLoaded);
 }
 
-//! Closes current project. Internally performs check for unsaved data, and proceeds via
-//! save/discard/cancel dialog. Returns true if project was successfully saved, and false otherwise.
-//! The later normally means that the user has changed his mind in the course of this operation and
-//! rthe project has remained in unsaved state.
-
 bool MonitorMainWindowActions::CloseCurrentProject() const
 {
   return m_project_handler->CloseCurrentProject();
@@ -76,8 +71,6 @@ void MonitorMainWindowActions::CreateActions(QMainWindow *mainwindow)
   m_exit_action->setStatusTip("Exit the application");
   connect(m_exit_action, &QAction::triggered, mainwindow, &QMainWindow::close);
 }
-
-//! Equips menu with actions.
 
 void MonitorMainWindowActions::SetupMenus(QMenuBar *menubar)
 {

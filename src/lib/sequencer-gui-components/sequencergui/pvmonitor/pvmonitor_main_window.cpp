@@ -39,8 +39,13 @@ namespace sequencergui
 
 PvMonitorMainWindow::PvMonitorMainWindow() : m_model(std::make_unique<MonitorModel>())
 {
-  PopulateModel();
   InitApplication();
+  OnProjectLoad();
+}
+
+void PvMonitorMainWindow::OnProjectLoad()
+{
+  m_monitor_widget->SetWorkspaceItem(m_model->GetWorkspaceItem());
 }
 
 PvMonitorMainWindow::~PvMonitorMainWindow() = default;
@@ -51,19 +56,16 @@ void PvMonitorMainWindow::closeEvent(QCloseEvent* event)
   QMainWindow::closeEvent(event);
 }
 
-void PvMonitorMainWindow::PopulateModel()
-{
-  m_model->InsertItem<WorkspaceItem>();
-}
-
 void PvMonitorMainWindow::InitApplication()
 {
   ReadSettings();
+  m_actions = new MonitorMainWindowActions(m_model.get(), this);
 
   m_monitor_widget = new MonitorWidget(m_model.get());
   setCentralWidget(m_monitor_widget);
 
-  m_actions = new MonitorMainWindowActions(m_model.get(), this);
+  connect(m_actions, &MonitorMainWindowActions::ProjectLoaded, this,
+          &PvMonitorMainWindow::OnProjectLoad);
 }
 
 void PvMonitorMainWindow::ReadSettings()

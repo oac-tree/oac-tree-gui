@@ -39,6 +39,7 @@ class WorkspaceSynchronizer;
 class MonitorWidgetToolBar;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorContext;
+class WorkspaceItem;
 
 class MonitorWidget : public QWidget
 {
@@ -48,10 +49,11 @@ public:
   explicit MonitorWidget(MonitorModel* model, QWidget* parent = nullptr);
   ~MonitorWidget() override;
 
+  void SetWorkspaceItem(WorkspaceItem* item);
+
 private:
   mvvm::ViewModel* GetViewModel();
 
-  void PopulateModel();
   void SetupConnections();
   void OnStartMonitoringRequest();
   void OnStopMonitoringRequest();

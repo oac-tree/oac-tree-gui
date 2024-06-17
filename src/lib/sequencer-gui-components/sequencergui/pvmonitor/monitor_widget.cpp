@@ -54,8 +54,12 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
 
-  m_tree_view->SetItem(m_model->GetWorkspaceItem());
   SetupConnections();  // should be after tree view got its model
+}
+
+void MonitorWidget::SetWorkspaceItem(WorkspaceItem *item)
+{
+  m_tree_view->SetItem(m_model->GetWorkspaceItem());
 }
 
 MonitorWidget::~MonitorWidget() = default;
