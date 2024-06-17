@@ -40,6 +40,7 @@ class MonitorWidgetToolBar;
 class WorkspaceEditorActionHandler;
 class WorkspaceEditorContext;
 class WorkspaceItem;
+class MonitorWidgetActions;
 
 class MonitorWidget : public QWidget
 {
@@ -65,6 +66,9 @@ private:
   MonitorModel* m_model{nullptr};
   std::unique_ptr<workspace_t> m_workspace;
   std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
+
+  MonitorWidgetActions* m_actions{nullptr};
+
   WorkspaceEditorActionHandler* m_workspace_editor_action_handler{nullptr};
   mvvm::AllItemsTreeView* m_tree_view{nullptr};
 };

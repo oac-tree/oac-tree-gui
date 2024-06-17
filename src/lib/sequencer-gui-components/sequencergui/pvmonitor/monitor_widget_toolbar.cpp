@@ -25,7 +25,6 @@
 #include <sup/gui/widgets/style_utils.h>
 
 #include <QAction>
-#include <QActionGroup>
 
 namespace sequencergui
 {

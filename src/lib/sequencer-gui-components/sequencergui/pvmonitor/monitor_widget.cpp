@@ -20,6 +20,7 @@
 #include "monitor_widget.h"
 
 #include "monitor_model.h"
+#include "monitor_widget_actions.h"
 #include "monitor_widget_toolbar.h"
 #include "workspace_editor_action_handler.h"
 #include "workspace_monitor_helper.h"
@@ -47,6 +48,7 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new MonitorWidgetToolBar)
     , m_model(model)
+    , m_actions(new MonitorWidgetActions(this))
     , m_workspace_editor_action_handler(new WorkspaceEditorActionHandler(CreateContext(), this))
     , m_tree_view(new mvvm::AllItemsTreeView)
 {
@@ -88,6 +90,12 @@ void MonitorWidget::SetupConnections()
           &MonitorWidget::OnStartMonitoringRequest);
 
   connect(m_tool_bar, &MonitorWidgetToolBar::StopMonitoringRequest, this,
+          &MonitorWidget::OnStopMonitoringRequest);
+
+  connect(m_actions, &MonitorWidgetActions::StartMonitoringRequest, this,
+          &MonitorWidget::OnStartMonitoringRequest);
+
+  connect(m_actions, &MonitorWidgetActions::StopMonitoringRequest, this,
           &MonitorWidget::OnStopMonitoringRequest);
 
   // make inserted item selected, and tree branch expanded
