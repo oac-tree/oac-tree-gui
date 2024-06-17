@@ -34,7 +34,11 @@
 namespace
 {
 
-//! Validates that workspace
+/**
+ * @brief Checks that domain and GUI workspaces are related.
+ *
+ * Number of variables and their names should coincide.
+ */
 void ValidateWorkspaces(const sequencergui::WorkspaceItem* workspace_item,
                         const sup::sequencer::Workspace* domain_workspace)
 {

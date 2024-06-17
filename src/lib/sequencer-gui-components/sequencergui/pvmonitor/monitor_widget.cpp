@@ -66,6 +66,8 @@ MonitorWidget::MonitorWidget(MonitorModel *model, QWidget *parent)
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_stack_widget);
 
+  m_workspace_editor->setWindowTitle("Variable Tree");
+
   m_stack_widget->AddWidget(m_workspace_editor, GetEditorActions() + GetControlActions());
 
   SetupConnections();  // should be after tree view got its model
