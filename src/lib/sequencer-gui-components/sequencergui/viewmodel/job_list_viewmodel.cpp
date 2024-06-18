@@ -24,9 +24,9 @@
 #include <sequencergui/model/sequencer_item_helper.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
-#include <mvvm/interfaces/children_strategy_interface.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/abstract_row_strategy.h>
+#include <mvvm/viewmodel/i_children_strategy.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 
@@ -52,7 +52,7 @@ private:
   }
 };
 
-class TopJobStrategy : public mvvm::ChildrenStrategyInterface
+class TopJobStrategy : public mvvm::IChildrenStrategy
 {
 public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override
@@ -65,8 +65,7 @@ public:
   }
 };
 
-JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent)
-    : ViewModel(parent)
+JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent) : ViewModel(parent)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
 }

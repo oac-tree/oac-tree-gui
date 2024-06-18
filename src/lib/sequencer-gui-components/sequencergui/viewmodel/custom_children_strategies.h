@@ -23,7 +23,7 @@
 //! @file
 //! Various strategies for instruction and workspace viewmodels.
 
-#include <mvvm/interfaces/children_strategy_interface.h>
+#include <mvvm/viewmodel/i_children_strategy.h>
 
 namespace sequencergui
 {
@@ -32,10 +32,10 @@ namespace sequencergui
  * @brief The VariableChildrenStrategy class reports which items should be in the tree representing
  * WorkspaceItem.
  *
- * @details It allows all children items to appear in the tree, except PropertyItem representing the
- * name and IsAvailable status.
+ * It allows all children items to appear in the tree, except PropertyItem representing the name and
+ * IsAvailable status.
  */
-class VariableChildrenStrategy : public mvvm::ChildrenStrategyInterface
+class VariableChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
@@ -45,9 +45,9 @@ public:
  * @brief The VariableTableChildrenStrategy class reports which items should be in the tree
  * representing WorkspaceItem.
  *
- * @details All variable's properties are hidden, except AnyValueStructItem.
+ * All variable's properties are hidden, except AnyValueStructItem.
  */
-class VariableTableChildrenStrategy : public mvvm::ChildrenStrategyInterface
+class VariableTableChildrenStrategy : public mvvm::IChildrenStrategy
 {
 public:
   std::vector<mvvm::SessionItem *> GetChildren(const mvvm::SessionItem *item) const override;
