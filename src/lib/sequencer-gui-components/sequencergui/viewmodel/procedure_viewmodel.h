@@ -24,7 +24,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 }
 
 namespace sequencergui
@@ -37,7 +37,7 @@ class MVVM_VIEWMODEL_EXPORT ProcedureViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit ProcedureViewModel(mvvm::SessionModelInterface* model, QObject* parent = nullptr);
+  explicit ProcedureViewModel(mvvm::ISessionModel* model, QObject* parent = nullptr);
 
   int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };

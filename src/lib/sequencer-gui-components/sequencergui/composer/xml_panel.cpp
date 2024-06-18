@@ -62,7 +62,7 @@ XmlPanel::XmlPanel(QWidget *parent)
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
-void XmlPanel::SetModel(mvvm::SessionModelInterface *model)
+void XmlPanel::SetModel(mvvm::ISessionModel *model)
 {
   m_model = model;
 }

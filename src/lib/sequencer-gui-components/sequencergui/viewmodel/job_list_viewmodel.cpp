@@ -65,7 +65,7 @@ public:
   }
 };
 
-JobListViewModel::JobListViewModel(mvvm::SessionModelInterface *model, QObject *parent)
+JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));

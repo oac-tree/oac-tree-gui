@@ -25,7 +25,7 @@
 #include <sequencergui/model/iterate_helper.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/i_sessionmodel.h>
 #include <mvvm/model/model_utils.h>
 
 #include <map>

@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 
-AttributeEditorViewModel::AttributeEditorViewModel(mvvm::SessionModelInterface *model,
+AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model,
                                                    QObject *parent)
     : ViewModel(parent)
 {

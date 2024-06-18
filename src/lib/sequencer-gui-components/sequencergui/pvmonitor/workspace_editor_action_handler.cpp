@@ -29,7 +29,7 @@
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/i_sessionmodel.h>
 #include <mvvm/model/item_utils.h>
 
 #include <QMimeData>
@@ -183,7 +183,7 @@ void WorkspaceEditorActionHandler::Paste()
       sup::gui::CreateSessionItem(GetMimeData(), kCopyVariableMimeType));
 }
 
-mvvm::SessionModelInterface *WorkspaceEditorActionHandler::GetModel() const
+mvvm::ISessionModel *WorkspaceEditorActionHandler::GetModel() const
 {
   return GetWorkspaceItem() ? GetWorkspaceItem()->GetModel() : nullptr;
 }

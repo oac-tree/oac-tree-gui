@@ -28,7 +28,7 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/view_factory_interface.h>
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/i_sessionmodel.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/signals/model_listener.h>
 
@@ -36,18 +36,18 @@ namespace sequencergui
 {
 struct GraphicsSceneController::GraphicsSceneControllerImpl
 {
-  mvvm::SessionModelInterface* m_model{nullptr};
+  mvvm::ISessionModel* m_model{nullptr};
   GraphicsScene* m_graphics_scene{nullptr};
   InstructionContainerItem* m_root_item{nullptr};
   ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
-  std::unique_ptr<mvvm::ModelListener<mvvm::SessionModelInterface>> m_listener;
+  std::unique_ptr<mvvm::ModelListener<mvvm::ISessionModel>> m_listener;
 
-  GraphicsSceneControllerImpl(mvvm::SessionModelInterface* model, GraphicsScene* graphics_scene)
+  GraphicsSceneControllerImpl(mvvm::ISessionModel* model, GraphicsScene* graphics_scene)
       : m_model(model)
       , m_graphics_scene(graphics_scene)
-      , m_listener(std::make_unique<mvvm::ModelListener<mvvm::SessionModelInterface>>(model))
+      , m_listener(std::make_unique<mvvm::ModelListener<mvvm::ISessionModel>>(model))
   {
     if (!m_model || !m_graphics_scene)
     {
@@ -168,7 +168,7 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   }
 };
 
-GraphicsSceneController::GraphicsSceneController(mvvm::SessionModelInterface* model,
+GraphicsSceneController::GraphicsSceneController(mvvm::ISessionModel* model,
                                                  GraphicsScene* graphics_scene)
     : p_impl(std::make_unique<GraphicsSceneControllerImpl>(model, graphics_scene))
 {

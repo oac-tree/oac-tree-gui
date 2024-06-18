@@ -29,7 +29,7 @@ class QMenu;
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 }
 
 namespace sup::gui
@@ -49,7 +49,7 @@ class MonitorMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit MonitorMainWindowActions(mvvm::SessionModelInterface* model, QMainWindow* mainwindow);
+  explicit MonitorMainWindowActions(mvvm::ISessionModel* model, QMainWindow* mainwindow);
   ~MonitorMainWindowActions() override;
 
   /**

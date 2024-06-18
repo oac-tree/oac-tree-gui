@@ -29,7 +29,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 class SessionItem;
 }  // namespace mvvm
 

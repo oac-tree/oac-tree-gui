@@ -29,7 +29,7 @@ class QMimeData;
 namespace mvvm
 {
 class ContainerItem;
-class SessionModelInterface;
+class ISessionModel;
 class SessionItem;
 }  // namespace mvvm
 
@@ -94,7 +94,7 @@ signals:
 private:
   mvvm::ContainerItem* GetProcedureContainer() const;
   ProcedureItem* GetSelectedProcedure() const;
-  mvvm::SessionModelInterface* GetModel();
+  mvvm::ISessionModel* GetModel();
   const QMimeData* GetMimeData() const;
 
   mvvm::SessionItem* InsertProcedure(std::unique_ptr<mvvm::SessionItem> item);

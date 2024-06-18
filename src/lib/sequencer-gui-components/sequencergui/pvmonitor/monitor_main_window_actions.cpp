@@ -40,7 +40,7 @@ const QString kApplicationType = "SUP PV Monitor";
 namespace sequencergui
 {
 
-MonitorMainWindowActions::MonitorMainWindowActions(mvvm::SessionModelInterface *model,
+MonitorMainWindowActions::MonitorMainWindowActions(mvvm::ISessionModel *model,
                                                    QMainWindow *mainwindow)
     : QObject(mainwindow)
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,

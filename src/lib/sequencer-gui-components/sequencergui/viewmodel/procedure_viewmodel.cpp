@@ -48,7 +48,7 @@ private:
   }
 };
 
-ProcedureViewModel::ProcedureViewModel(mvvm::SessionModelInterface *model, QObject *parent)
+ProcedureViewModel::ProcedureViewModel(mvvm::ISessionModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(

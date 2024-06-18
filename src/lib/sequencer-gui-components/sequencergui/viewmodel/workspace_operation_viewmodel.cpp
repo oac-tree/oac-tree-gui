@@ -124,7 +124,7 @@ public:
   }
 };
 
-WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::SessionModelInterface *model,
+WorkspaceOperationViewModel::WorkspaceOperationViewModel(mvvm::ISessionModel *model,
                                                          QObject *parent)
     : ViewModel(parent)
 {

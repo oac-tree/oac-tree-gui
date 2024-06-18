@@ -28,7 +28,7 @@ namespace mvvm
 {
 class ViewModel;
 class ItemViewComponentProvider;
-class SessionModelInterface;
+class ISessionModel;
 }  // namespace mvvm
 
 class QListView;

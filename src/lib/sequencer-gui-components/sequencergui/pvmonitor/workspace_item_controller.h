@@ -48,7 +48,7 @@ class WorkspaceEvent;
 class WorkspaceItemController
 {
 public:
-  using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
+  using listener_t = mvvm::ModelListener<mvvm::ISessionModel>;
 
   explicit WorkspaceItemController(WorkspaceItem* item);
   ~WorkspaceItemController();

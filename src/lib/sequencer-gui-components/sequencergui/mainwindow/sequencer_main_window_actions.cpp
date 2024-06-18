@@ -49,7 +49,7 @@ namespace sequencergui
 {
 
 SequencerMainWindowActions::SequencerMainWindowActions(
-    const std::vector<mvvm::SessionModelInterface *> &models, QMainWindow *mainwindow)
+    const std::vector<mvvm::ISessionModel *> &models, QMainWindow *mainwindow)
     : QObject(mainwindow)
     , m_project_handler(new sup::gui::ProjectHandler(mvvm::ProjectType::kFileBased,
                                                      kApplicationType, models, mainwindow))

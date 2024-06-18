@@ -26,7 +26,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 }
 
 namespace sequencergui
@@ -40,7 +40,7 @@ class InstructionContainerItem;
 class GraphicsSceneController
 {
 public:
-  GraphicsSceneController(mvvm::SessionModelInterface *model, GraphicsScene *graphics_scene);
+  GraphicsSceneController(mvvm::ISessionModel *model, GraphicsScene *graphics_scene);
   ~GraphicsSceneController();
 
   void OnModelEvent(const mvvm::ItemInsertedEvent &event);

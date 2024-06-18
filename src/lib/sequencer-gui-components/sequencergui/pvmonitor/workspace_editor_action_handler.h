@@ -26,7 +26,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 }
 
 namespace sequencergui
@@ -97,7 +97,7 @@ signals:
   void SelectItemRequest(mvvm::SessionItem* item);
 
 private:
-  mvvm::SessionModelInterface* GetModel() const;
+  mvvm::ISessionModel* GetModel() const;
   WorkspaceItem* GetWorkspaceItem() const;
   VariableItem* GetSelectedVariable() const;
 

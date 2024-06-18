@@ -74,7 +74,7 @@ private:
   }
 };
 
-InstructionOperationViewModel::InstructionOperationViewModel(mvvm::SessionModelInterface *model,
+InstructionOperationViewModel::InstructionOperationViewModel(mvvm::ISessionModel *model,
                                                              QObject *parent)
     : ViewModel(parent)
 {

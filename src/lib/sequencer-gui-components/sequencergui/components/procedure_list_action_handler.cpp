@@ -24,7 +24,7 @@
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
 #include <sup/gui/components/mime_conversion_helper.h>
 
-#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/i_sessionmodel.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/standarditems/container_item.h>
 
@@ -128,7 +128,7 @@ ProcedureItem *ProcedureListActionHandler::GetSelectedProcedure() const
   return m_context.selected_procedure();
 }
 
-mvvm::SessionModelInterface *ProcedureListActionHandler::GetModel()
+mvvm::ISessionModel *ProcedureListActionHandler::GetModel()
 {
   return GetProcedureContainer()->GetModel();
 }

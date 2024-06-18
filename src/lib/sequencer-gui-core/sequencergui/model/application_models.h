@@ -26,7 +26,7 @@
 namespace mvvm
 {
 class ItemPool;
-class SessionModelInterface;
+class ISessionModel;
 }  // namespace mvvm
 
 namespace sequencergui
@@ -50,7 +50,7 @@ public:
 
   JobModel* GetJobModel();
 
-  std::vector<mvvm::SessionModelInterface*> GetModels() const;
+  std::vector<mvvm::ISessionModel*> GetModels() const;
 
 private:
   std::shared_ptr<mvvm::ItemPool> m_item_pool;

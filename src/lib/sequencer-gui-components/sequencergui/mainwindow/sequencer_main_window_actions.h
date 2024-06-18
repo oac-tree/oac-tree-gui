@@ -32,7 +32,7 @@ class QMenu;
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 }
 
 namespace sup::gui
@@ -52,7 +52,7 @@ class SequencerMainWindowActions : public QObject
   Q_OBJECT
 
 public:
-  explicit SequencerMainWindowActions(const std::vector<mvvm::SessionModelInterface*>& models,
+  explicit SequencerMainWindowActions(const std::vector<mvvm::ISessionModel*>& models,
                                       QMainWindow* mainwindow);
   ~SequencerMainWindowActions() override;
 

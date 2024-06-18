@@ -24,7 +24,7 @@
 #include <sequencergui/viewmodel/custom_row_strategies.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
-#include <mvvm/interfaces/sessionmodel_interface.h>
+#include <mvvm/model/i_sessionmodel.h>
 #include <mvvm/model/sessionitem.h>
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
@@ -34,7 +34,7 @@
 namespace sequencergui
 {
 
-InstructionEditorViewModel::InstructionEditorViewModel(mvvm::SessionModelInterface *model,
+InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model,
                                                        QObject *parent)
     : ViewModel(parent)
 {

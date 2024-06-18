@@ -24,7 +24,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 }
 
 namespace sequencergui
@@ -37,7 +37,7 @@ class MVVM_VIEWMODEL_EXPORT InstructionOperationViewModel : public mvvm::ViewMod
   Q_OBJECT
 
 public:
-  explicit InstructionOperationViewModel(mvvm::SessionModelInterface* model,
+  explicit InstructionOperationViewModel(mvvm::ISessionModel* model,
                                          QObject* parent = nullptr);
 
   /**

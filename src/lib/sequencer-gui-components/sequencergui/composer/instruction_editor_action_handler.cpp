@@ -279,7 +279,7 @@ InstructionItem *InstructionEditorActionHandler::GetSelectedInstruction() const
   return m_context.selected_instruction();
 }
 
-mvvm::SessionModelInterface *InstructionEditorActionHandler::GetModel() const
+mvvm::ISessionModel *InstructionEditorActionHandler::GetModel() const
 {
   return GetInstructionContainer() ? GetInstructionContainer()->GetModel() : nullptr;
 }

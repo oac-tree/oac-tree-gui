@@ -26,7 +26,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 
 template <typename T>
 class ModelListener;
@@ -42,9 +42,9 @@ namespace sequencergui
 class ProcedurePluginController
 {
 public:
-  using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
+  using listener_t = mvvm::ModelListener<mvvm::ISessionModel>;
 
-  explicit ProcedurePluginController(mvvm::SessionModelInterface *model);
+  explicit ProcedurePluginController(mvvm::ISessionModel *model);
   ~ProcedurePluginController();
 
 private:

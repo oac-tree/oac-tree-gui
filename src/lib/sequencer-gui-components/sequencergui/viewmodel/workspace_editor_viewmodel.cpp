@@ -27,7 +27,7 @@
 namespace sequencergui
 {
 
-WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::SessionModelInterface *model,
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model,
                                                    QObject *parent)
     : ViewModel(parent)
 {

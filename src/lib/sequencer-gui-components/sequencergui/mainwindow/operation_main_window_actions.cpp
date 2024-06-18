@@ -36,7 +36,7 @@
 namespace sequencergui
 {
 
-OperationMainWindowActions::OperationMainWindowActions(mvvm::SessionModelInterface *model,
+OperationMainWindowActions::OperationMainWindowActions(mvvm::ISessionModel *model,
                                                        QMainWindow *mainwindow)
     : QObject(mainwindow)
 {

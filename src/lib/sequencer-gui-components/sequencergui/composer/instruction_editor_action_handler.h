@@ -28,7 +28,7 @@ namespace mvvm
 {
 class SessionItem;
 class TagIndex;
-class SessionModelInterface;
+class ISessionModel;
 }  // namespace mvvm
 
 namespace sup::gui
@@ -166,7 +166,7 @@ signals:
 private:
   InstructionItem* GetSelectedInstruction() const;
 
-  mvvm::SessionModelInterface* GetModel() const;
+  mvvm::ISessionModel* GetModel() const;
   InstructionContainerItem* GetInstructionContainer() const;
   void SendMessage(const std::string& text, const std::string& informative = {},
                    const std::string& details = {});

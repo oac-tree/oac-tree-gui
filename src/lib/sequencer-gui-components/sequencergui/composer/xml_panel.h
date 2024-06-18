@@ -26,7 +26,7 @@
 
 namespace mvvm
 {
-class SessionModelInterface;
+class ISessionModel;
 template <typename T>
 class ModelListener;
 }  // namespace mvvm
@@ -50,12 +50,12 @@ class XmlPanel : public QWidget
   Q_OBJECT
 
 public:
-  using listener_t = mvvm::ModelListener<mvvm::SessionModelInterface>;
+  using listener_t = mvvm::ModelListener<mvvm::ISessionModel>;
 
   explicit XmlPanel(QWidget* parent = nullptr);
   ~XmlPanel() override;
 
-  void SetModel(mvvm::SessionModelInterface* model);
+  void SetModel(mvvm::ISessionModel* model);
 
   void SetProcedure(ProcedureItem* procedure);
 
@@ -65,7 +65,7 @@ private:
   void UpdateXml();
 
   sup::gui::CodeView* m_xml_view{nullptr};
-  mvvm::SessionModelInterface* m_model{nullptr};
+  mvvm::ISessionModel* m_model{nullptr};
   std::unique_ptr<listener_t> m_listener;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
