@@ -28,7 +28,7 @@
 #include <sequencergui/nodeeditor/graphics_scene.h>
 #include <sequencergui/nodeeditor/view_factory_interface.h>
 
-#include <mvvm/model/i_sessionmodel.h>
+#include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/signals/model_listener.h>
 

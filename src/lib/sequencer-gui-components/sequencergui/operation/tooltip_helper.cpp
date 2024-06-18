@@ -25,7 +25,7 @@
 
 #include <mvvm/core/variant.h>
 #include <mvvm/model/item_utils.h>
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <QFont>

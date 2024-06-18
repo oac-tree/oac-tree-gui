@@ -24,7 +24,7 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <algorithm>

@@ -33,7 +33,7 @@
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>

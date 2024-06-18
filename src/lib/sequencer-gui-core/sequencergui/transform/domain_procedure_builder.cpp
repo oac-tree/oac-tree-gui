@@ -28,7 +28,7 @@
 #include <sequencergui/transform/domain_workspace_builder.h>
 #include <sequencergui/transform/transform_helpers.h>
 
-#include <mvvm/model/sessionmodel.h>
+#include <mvvm/model/session_model.h>
 
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>

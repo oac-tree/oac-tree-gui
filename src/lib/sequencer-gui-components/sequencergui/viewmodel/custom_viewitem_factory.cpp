@@ -23,7 +23,7 @@
 
 #include <sequencergui/model/sequencer_item_helper.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
 

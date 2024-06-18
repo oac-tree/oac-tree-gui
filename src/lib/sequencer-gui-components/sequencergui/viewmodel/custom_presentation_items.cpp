@@ -21,7 +21,7 @@
 
 #include <sequencergui/mainwindow/app_settings.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 
 namespace sequencergui
 {

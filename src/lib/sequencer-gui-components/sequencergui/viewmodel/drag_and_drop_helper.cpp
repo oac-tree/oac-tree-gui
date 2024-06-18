@@ -26,9 +26,9 @@
 #include <sequencergui/transform/transform_from_domain.h>
 
 // #include <mvvm/model/item_utils.h>
-#include <mvvm/model/sessionitem.h>
-#include <mvvm/model/sessionitem_container.h>
-#include <mvvm/model/sessionmodel.h>
+#include <mvvm/model/session_item.h>
+#include <mvvm/model/session_item_container.h>
+#include <mvvm/model/session_model.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
 #include <mvvm/widgets/widget_utils.h>

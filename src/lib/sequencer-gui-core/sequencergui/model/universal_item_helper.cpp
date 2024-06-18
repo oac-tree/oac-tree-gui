@@ -30,7 +30,7 @@
 #include <sequencergui/transform/transform_from_domain.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/model/i_sessionmodel.h>
+#include <mvvm/model/i_session_model.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/utils/container_utils.h>
 

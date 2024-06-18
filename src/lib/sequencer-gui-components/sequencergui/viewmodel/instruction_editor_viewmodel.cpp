@@ -24,8 +24,8 @@
 #include <sequencergui/viewmodel/custom_row_strategies.h>
 
 #include <mvvm/factories/viewmodel_controller_factory.h>
-#include <mvvm/model/i_sessionmodel.h>
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/i_session_model.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
 

@@ -33,7 +33,7 @@
 #include <sup/gui/model/anyvalue_item_utils.h>
 
 #include <mvvm/model/item_utils.h>
-#include <mvvm/model/sessionitem_container.h>
+#include <mvvm/model/session_item_container.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/test/mock_model_listener.h>
 

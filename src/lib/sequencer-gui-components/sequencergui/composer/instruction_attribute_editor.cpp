@@ -28,7 +28,7 @@
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QMenu>

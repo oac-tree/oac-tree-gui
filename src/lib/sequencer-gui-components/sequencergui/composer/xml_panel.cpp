@@ -24,7 +24,7 @@
 #include <sup/gui/codeeditor/code_view.h>
 #include <sup/gui/components/visibility_agent_base.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/model/application_model.h>
 #include <mvvm/signals/model_listener.h>
 

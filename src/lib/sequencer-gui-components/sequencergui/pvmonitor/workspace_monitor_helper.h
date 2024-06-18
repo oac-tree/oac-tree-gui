@@ -22,7 +22,7 @@
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
-#include <mvvm/model/sessionitem.h>
+#include <mvvm/model/session_item.h>
 
 namespace mvvm
 {

@@ -25,7 +25,7 @@
 #include <sequencergui/nodeeditor/align_utils.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 
-#include <mvvm/model/sessionmodel.h>
+#include <mvvm/model/session_model.h>
 
 #include <QPointF>
 #include <stack>
