@@ -37,7 +37,7 @@ namespace sequencergui
 {
 
 WorkspaceItemController::WorkspaceItemController(WorkspaceItem* item)
-    : m_workspace_item(item), m_listener(std::make_unique<listener_t>(item->GetModel()))
+    : m_workspace_item(item), m_listener(std::make_unique<mvvm::ModelListener<>>(item->GetModel()))
 {
   m_listener->Connect<mvvm::ItemInsertedEvent>(this, &WorkspaceItemController::OnItemInsertedEvent);
   m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemController::OnDataChangedEvent);

@@ -21,16 +21,9 @@
 #define SEQUENCERGUI_COMPOSER_PROCEDURE_PLUGIN_CONTROLLER_H_
 
 #include <mvvm/signals/event_types.h>
+#include <mvvm/signals/model_listener_fwd.h>
 
 #include <memory>
-
-namespace mvvm
-{
-class ISessionModel;
-
-template <typename T>
-class ModelListener;
-}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -42,8 +35,6 @@ namespace sequencergui
 class ProcedurePluginController
 {
 public:
-  using listener_t = mvvm::ModelListener<mvvm::ISessionModel>;
-
   explicit ProcedurePluginController(mvvm::ISessionModel *model);
   ~ProcedurePluginController();
 
@@ -74,7 +65,7 @@ private:
    */
   void OnItemRemovedEvent(const mvvm::ItemRemovedEvent &event);
 
-  std::unique_ptr<listener_t> m_listener;
+  std::unique_ptr<mvvm::ModelListener<>> m_listener;
 };
 
 }  // namespace sequencergui

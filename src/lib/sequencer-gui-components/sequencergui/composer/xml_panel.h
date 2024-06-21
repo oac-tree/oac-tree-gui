@@ -21,15 +21,10 @@
 #define SEQUENCERGUI_COMPOSER_XML_PANEL_H_
 
 #include <mvvm/signals/event_types.h>
+#include <mvvm/signals/model_listener_fwd.h>
 
 #include <QWidget>
 
-namespace mvvm
-{
-class ISessionModel;
-template <typename T>
-class ModelListener;
-}  // namespace mvvm
 
 namespace sup::gui
 {
@@ -50,8 +45,6 @@ class XmlPanel : public QWidget
   Q_OBJECT
 
 public:
-  using listener_t = mvvm::ModelListener<mvvm::ISessionModel>;
-
   explicit XmlPanel(QWidget* parent = nullptr);
   ~XmlPanel() override;
 
@@ -66,7 +59,7 @@ private:
 
   sup::gui::CodeView* m_xml_view{nullptr};
   mvvm::ISessionModel* m_model{nullptr};
-  std::unique_ptr<listener_t> m_listener;
+  std::unique_ptr<mvvm::ModelListener<>> m_listener;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };

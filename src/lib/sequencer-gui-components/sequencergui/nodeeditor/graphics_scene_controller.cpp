@@ -42,12 +42,12 @@ struct GraphicsSceneController::GraphicsSceneControllerImpl
   ConnectableViewMap m_instruction_to_view;
   bool m_block_update{false};
   std::unique_ptr<ViewFactoryInterface> m_view_factory;
-  std::unique_ptr<mvvm::ModelListener<mvvm::ISessionModel>> m_listener;
+  std::unique_ptr<mvvm::ModelListener<>> m_listener;
 
   GraphicsSceneControllerImpl(mvvm::ISessionModel* model, GraphicsScene* graphics_scene)
       : m_model(model)
       , m_graphics_scene(graphics_scene)
-      , m_listener(std::make_unique<mvvm::ModelListener<mvvm::ISessionModel>>(model))
+      , m_listener(std::make_unique<mvvm::ModelListener<>>(model))
   {
     if (!m_model || !m_graphics_scene)
     {

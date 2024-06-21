@@ -32,7 +32,7 @@ namespace sequencergui
 {
 
 ProcedurePluginController::ProcedurePluginController(mvvm::ISessionModel *model)
-    : m_listener(std::make_unique<listener_t>(model))
+    : m_listener(std::make_unique<mvvm::ModelListener<>>(model))
 {
   if (model)
   {

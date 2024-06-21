@@ -21,18 +21,12 @@
 #define SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_CONTROLLER_H_
 
 #include <mvvm/signals/event_types.h>
+#include <mvvm/signals/model_listener_fwd.h>
 
 #include <functional>
 #include <map>
 #include <memory>
 #include <string>
-
-namespace mvvm
-{
-class SessionItem;
-template <typename T>
-class ModelListener;
-}  // namespace mvvm
 
 namespace sequencergui
 {
@@ -48,8 +42,6 @@ class WorkspaceEvent;
 class WorkspaceItemController
 {
 public:
-  using listener_t = mvvm::ModelListener<mvvm::ISessionModel>;
-
   explicit WorkspaceItemController(WorkspaceItem* item);
   ~WorkspaceItemController();
 
@@ -69,7 +61,7 @@ private:
 
   WorkspaceItem* m_workspace_item{nullptr};
   std::function<void(const WorkspaceEvent& event)> m_report_callback;
-  std::unique_ptr<listener_t> m_listener;
+  std::unique_ptr<mvvm::ModelListener<>> m_listener;
   std::map<std::string, bool> m_block_update_to_domain;
 };
 

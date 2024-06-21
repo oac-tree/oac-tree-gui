@@ -24,8 +24,8 @@
 #include <sup/gui/codeeditor/code_view.h>
 #include <sup/gui/components/visibility_agent_base.h>
 
-#include <mvvm/model/session_item.h>
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/session_item.h>
 #include <mvvm/signals/model_listener.h>
 
 #include <sup/dto/anyvalue.h>
@@ -48,7 +48,7 @@ XmlPanel::XmlPanel(QWidget *parent)
 
   auto on_subscribe = [this]()
   {
-    m_listener = std::make_unique<listener_t>(m_model);
+    m_listener = std::make_unique<mvvm::ModelListener<>>(m_model);
     m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
     m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
     m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
