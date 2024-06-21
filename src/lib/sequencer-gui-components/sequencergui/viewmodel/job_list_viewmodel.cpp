@@ -23,7 +23,7 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 
-#include <mvvm/factories/viewmodel_controller_factory.h>
+#include <mvvm/viewmodel/viewmodel_controller_factory.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/viewmodel/abstract_row_strategy.h>
 #include <mvvm/viewmodel/i_children_strategy.h>
