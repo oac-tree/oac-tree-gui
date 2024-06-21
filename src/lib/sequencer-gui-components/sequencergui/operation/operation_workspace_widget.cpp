@@ -29,7 +29,7 @@
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
-#include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QSettings>

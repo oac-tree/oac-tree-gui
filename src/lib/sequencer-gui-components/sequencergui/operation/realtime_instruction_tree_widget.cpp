@@ -34,7 +34,7 @@
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>
 
-#include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QEvent>

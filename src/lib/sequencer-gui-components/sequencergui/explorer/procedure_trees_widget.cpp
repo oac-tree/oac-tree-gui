@@ -22,13 +22,13 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/panel_toolbar.h>
 #include <sup/gui/widgets/style_utils.h>
 
+#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/viewmodel/top_items_viewmodel.h>
-#include <mvvm/widgets/item_view_component_provider.h>
-#include <mvvm/widgets/property_tree_view.h>
-#include <sup/gui/widgets/item_stack_widget.h>
+#include <mvvm/views/property_tree_view.h>
 
 #include <QSettings>
 #include <QSplitter>

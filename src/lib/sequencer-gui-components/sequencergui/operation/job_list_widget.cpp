@@ -24,7 +24,7 @@
 #include <sequencergui/viewmodel/job_list_viewmodel.h>
 #include <sup/gui/widgets/custom_header_view.h>
 
-#include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/providers/item_view_component_provider.h>
 
 #include <QSettings>
 #include <QTreeView>

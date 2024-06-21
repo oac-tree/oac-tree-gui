@@ -25,7 +25,7 @@
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/application_model.h>
-#include <mvvm/widgets/all_items_tree_view.h>
+#include <mvvm/views/all_items_tree_view.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QHBoxLayout>
@@ -96,7 +96,8 @@ void SettingsView::SetupListSelector()
 void SettingsView::SetupGeneralSettingWidgets()
 {
   m_stacked_widget->addWidget(new QWidget);
-  auto item = new QListWidgetItem(sup::gui::utils::GetIcon("card-bulleted-outline.svg"), "UI settings");
+  auto item =
+      new QListWidgetItem(sup::gui::utils::GetIcon("card-bulleted-outline.svg"), "UI settings");
   m_list_widget->addItem(item);
 }
 

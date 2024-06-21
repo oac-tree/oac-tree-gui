@@ -29,8 +29,8 @@
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/item_utils.h>
+#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/widgets/item_view_component_provider.h>
 
 #include <QClipboard>
 #include <QGuiApplication>

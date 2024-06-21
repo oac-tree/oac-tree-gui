@@ -26,7 +26,7 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/viewmodel/property_viewmodel.h>
-#include <mvvm/widgets/item_view_component_provider.h>
+#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/widgets/widget_utils.h>
 
 #include <QHBoxLayout>

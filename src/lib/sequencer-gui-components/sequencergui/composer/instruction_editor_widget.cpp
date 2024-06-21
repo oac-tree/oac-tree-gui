@@ -38,8 +38,8 @@
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>
 
-#include <mvvm/widgets/item_view_component_provider.h>
-#include <mvvm/widgets/property_tree_view.h>
+#include <mvvm/providers/item_view_component_provider.h>
+#include <mvvm/views/property_tree_view.h>
 
 #include <QClipboard>
 #include <QGuiApplication>
