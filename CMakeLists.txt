@@ -28,6 +28,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(COA_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make clangformat'" OFF)
 option(COA_USE_QT6 "Compile with Qt6" OFF)
+option(COA_BUILD_TESTS "Build unit tests" ON)
 option(COA_BUILD_DOCUMENTATION "Build documentation" OFF)
 option(COA_NO_CODAC "Don't look for the presence of CODAC environment" OFF)
 option(COA_COVERAGE "Generate unit test coverage information" OFF)

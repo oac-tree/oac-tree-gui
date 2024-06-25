@@ -1,3 +1,7 @@
+if(NOT COA_BUILD_TESTS)
+  return()
+endif()
+
 enable_testing()
 
 find_package(GTest 1.10 QUIET CONFIG)
