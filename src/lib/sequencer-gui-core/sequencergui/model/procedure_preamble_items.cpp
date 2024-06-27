@@ -109,8 +109,8 @@ void ProcedurePreambleItem::AddTypeRegistration(int mode, const std::string &str
 std::vector<std::pair<int, std::string> > ProcedurePreambleItem::GetTypeRegistrations() const
 {
   std::vector<std::pair<int, std::string> > result;
-  for (auto item : GetTypeRegistrationContainer()->GetItems<TypeRegistrationItem>(
-           mvvm::ContainerItem::kChildren))
+  for (auto item :
+       GetTypeRegistrationContainer()->GetItems<TypeRegistrationItem>(mvvm::TagIndex::kDefaultTag))
   {
     result.push_back({item->GetRegistrationMode(), item->GetRegistrationString()});
   }
@@ -121,7 +121,7 @@ std::vector<std::pair<int, std::string> > ProcedurePreambleItem::GetTypeRegistra
 std::vector<std::string> ProcedurePreambleItem::GetPluginPaths() const
 {
   std::vector<std::string> result;
-  for (auto item : GetPluginContainer()->GetItems(mvvm::ContainerItem::kChildren))
+  for (auto item : GetPluginContainer()->GetItems(mvvm::TagIndex::kDefaultTag))
   {
     result.push_back(item->Data<std::string>());
   }

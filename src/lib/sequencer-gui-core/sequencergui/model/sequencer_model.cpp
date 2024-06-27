@@ -43,7 +43,7 @@ mvvm::ContainerItem *SequencerModel::GetProcedureContainer() const
 
 std::vector<ProcedureItem *> SequencerModel::GetProcedures() const
 {
-  return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::ContainerItem::kChildren);
+  return GetProcedureContainer()->GetItems<ProcedureItem>(mvvm::TagIndex::kDefaultTag);
 }
 
 void SequencerModel::Clear()
