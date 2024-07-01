@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_EXTENDED_EDITOR_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_EXTENDED_EDITOR_H_
 
-#include <sequencergui/components/abstract_anyvalue_editor.h>
+#include <sup/gui/anyvalueeditor/abstract_anyvalue_editor.h>
 
 class QLabel;
 class QString;
@@ -37,8 +37,7 @@ namespace sequencergui
 /**
  * @brief The AnyValueExtendedEditor class it's an envelop around full-fledged AnyValueEditor.
  */
-
-class AnyValueExtendedEditor : public AbstractAnyValueEditor
+class AnyValueExtendedEditor : public sup::gui::AbstractAnyValueEditor
 {
   Q_OBJECT
 

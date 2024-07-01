@@ -25,13 +25,12 @@
 
 namespace sup::gui
 {
+class AbstractAnyValueEditor;
 class AnyValueItem;
 }  // namespace sup::gui
 
 namespace sequencergui
 {
-
-class AbstractAnyValueEditor;
 
 /**
  * @brief The AnyValueEditorDialog class is a modal dialog containing one of AnyValue editors.
@@ -41,7 +40,7 @@ class AnyValueEditorDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit AnyValueEditorDialog(std::unique_ptr<AbstractAnyValueEditor> editor,
+  explicit AnyValueEditorDialog(std::unique_ptr<sup::gui::AbstractAnyValueEditor> editor,
                                 QWidget* parent = nullptr);
   ~AnyValueEditorDialog() override;
 
@@ -58,7 +57,7 @@ private:
   void ReadSettings();
   void WriteSettings();
 
-  AbstractAnyValueEditor* m_anyvalue_editor{nullptr};
+  sup::gui::AbstractAnyValueEditor* m_anyvalue_editor{nullptr};
 };
 
 }  // namespace sequencergui

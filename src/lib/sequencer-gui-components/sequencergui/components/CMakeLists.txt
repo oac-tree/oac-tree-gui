@@ -1,7 +1,6 @@
 # Collection of sequencer-related components that are used in more than one window.
 
 target_sources(${library_name} PRIVATE
-  abstract_anyvalue_editor.h
   anyvalue_compact_scalar_editor.cpp
   anyvalue_compact_scalar_editor.h
   anyvalue_compact_tree_editor.cpp

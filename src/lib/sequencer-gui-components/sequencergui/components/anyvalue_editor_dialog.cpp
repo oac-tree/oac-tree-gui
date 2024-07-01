@@ -19,8 +19,7 @@
 
 #include "anyvalue_editor_dialog.h"
 
-#include "abstract_anyvalue_editor.h"
-
+#include <sup/gui/anyvalueeditor/abstract_anyvalue_editor.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/item_utils.h>
@@ -67,7 +66,7 @@ std::unique_ptr<QBoxLayout> CreateButtonLayout(QDialog* dialog)
 namespace sequencergui
 {
 
-AnyValueEditorDialog::AnyValueEditorDialog(std::unique_ptr<AbstractAnyValueEditor> editor,
+AnyValueEditorDialog::AnyValueEditorDialog(std::unique_ptr<sup::gui::AbstractAnyValueEditor> editor,
                                            QWidget* parent)
     : QDialog(parent), m_anyvalue_editor(editor.release())
 {

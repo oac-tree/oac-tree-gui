@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
 
-#include <sequencergui/components/abstract_anyvalue_editor.h>
+#include <sup/gui/anyvalueeditor/abstract_anyvalue_editor.h>
 
 class QLabel;
 class QString;
@@ -46,7 +46,7 @@ namespace sequencergui
  * @brief The AnyValueCompactScalarEditor class provides a simplified AnyValueEditor for scalar
  * types.
  *
- * @details It has only a single cell editor occupying horizontal space.
+ * It has only a single cell editor occupying horizontal space.
  *
  * The implementation looks bulky for what it does. The are following reasons:
  * a) We want to re-use cell-editor machinery since it has all proper limits for all scalar types.
@@ -54,8 +54,7 @@ namespace sequencergui
  * b) We might consider to extend this editor to show more than one cell-editor in a grid view, i.e.
  * for all leaves of a simple struct.
  */
-
-class AnyValueCompactScalarEditor : public AbstractAnyValueEditor
+class AnyValueCompactScalarEditor : public sup::gui::AbstractAnyValueEditor
 {
   Q_OBJECT
 
