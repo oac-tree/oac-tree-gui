@@ -18,11 +18,12 @@
  *****************************************************************************/
 
 #include "anyvalue_editor_dialog_factory.h"
+
 #include "anyvalue_compact_scalar_editor.h"
 #include "anyvalue_compact_tree_editor.h"
 #include "anyvalue_editor_dialog.h"
-#include "anyvalue_extended_editor.h"
 
+#include <sup/gui/anyvalueeditor/anyvalue_editor.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
@@ -31,8 +32,9 @@ namespace sequencergui
 std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent)
 {
-  auto editor = std::make_unique<AnyValueExtendedEditor>();
+  auto editor = std::make_unique<sup::gui::AnyValueEditor>();
   editor->SetInitialValue(item);
+  editor->setWindowTitle("AnyValueExtendedEditor");
   return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
 }
 

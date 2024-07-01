@@ -9,8 +9,6 @@ target_sources(${library_name} PRIVATE
   anyvalue_editor_dialog.h
   anyvalue_editor_dialog_factory.cpp
   anyvalue_editor_dialog_factory.h
-  anyvalue_extended_editor.cpp
-  anyvalue_extended_editor.h
   custom_meta_types.cpp
   custom_meta_types.h
   message_handler_factory.cpp
