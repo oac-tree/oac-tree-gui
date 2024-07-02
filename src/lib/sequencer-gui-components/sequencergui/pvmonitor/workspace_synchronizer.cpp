@@ -147,7 +147,7 @@ void WorkspaceSynchronizer::Shutdown()
 {
   UpdateVariableEditableProperty(false, *GetWorkspaceItem());
 
-  m_workspace->Reset();
+  m_workspace->Teardown();
 
   for (auto item : GetWorkspaceItem()->GetVariables())
   {
