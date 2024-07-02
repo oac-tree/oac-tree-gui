@@ -1,0 +1,40 @@
+id: org.iter.sequencer.plugin.sup
+
+# This is an extension point for the sequencer
+runtime: org.iter.sequencer
+sdk: org.kde.Sdk//5.15-23.08
+
+# This is an extension point for the sequencer
+build-extension: true
+separate-locales: false
+build-options:
+  prefix: /app/lib/sequencer/plugins/sup
+  prepend-ld-library-path: /app/lib/sequencer/plugins/sup/lib
+  env:
+    # Hardcoded for now for the epics plugin, should be fixed in the future to use variables
+    EPICS_BASE: /app/lib/sequencer/plugins/sup
+    EPICS_HOST_ARCH: linux-x86_64
+
+# Remove unneeded files from the final flatpak
+cleanup:
+  - /lib/sequencer/plugins/sup/share/doc
+
+modules:
+  - name: sequencer-gui
+    buildsystem: cmake
+    config-opts:
+      # Disable tests
+      - -DCOA_BUILD_TESTS=OFF
+      # Install the plugin directly into the prefix
+      - -DPLUGIN_PATH=lib
+    sources:
+      - type: git
+        url: ssh://git@git.iter.org/coa/sequencer-plugin-sup.git
+        tag: v3.1
+    modules:
+      # Redundant with plugin.epics, but without moving this to sequencer, or
+      # creating a custom runtime with an extension point for epics, we need
+      # the duplication
+      - shared-modules/sup-config/org.iter.sup-config.yml
+      - shared-modules/sup-pulse-counter/org.iter.sup-pulse-counter.yml
+      - shared-modules/sup-timing/org.iter.sup-timing.yml

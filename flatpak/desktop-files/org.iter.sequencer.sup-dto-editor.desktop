@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=SUP DTO Editor
+Comment=Integrated development environment for Sequencer procedures
+Categories=Development
+Type=Application
+Terminal=false
+Icon=org.iter.sequencer.sup-dto-editor
+Exec=sup-dto-editor

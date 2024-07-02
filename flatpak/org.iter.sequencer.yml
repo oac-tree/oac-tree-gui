@@ -1,0 +1,73 @@
+id: org.iter.sequencer
+
+# KDE runtime provides the needed Qt dependencies
+runtime: org.kde.Platform
+runtime-version: 5.15-23.08
+sdk: org.kde.Sdk
+
+# Running the flatpak calls the sequencer-cli
+# GUIs are launched from the desktop files
+command: sequencer-cli
+
+finish-args:
+  # X11 + XShm access
+  - --share=ipc
+  - --socket=fallback-x11
+  # Wayland access
+  - --socket=wayland
+  # GPU acceleration if needed
+  - --device=dri
+  # Needs to talk to the network:
+  - --share=network
+  # Needs to save files locally
+  - --filesystem=xdg-documents
+
+# Create extension point for the sequencer plugins
+add-extensions:
+  org.iter.sequencer.plugin:
+    directory: lib/sequencer/plugins
+    # extremely ugly hack to add the epics library path, this should be resolved in the future
+    # by probably creating a custom runtime for COA applications with an extension point for epics
+    add-ld-path: "lib\ninclude /app/lib/sequencer/plugins/*/lib/*.conf"
+    subdirectories: true
+    no-autodownload: true
+    autodelete: true
+
+cleanup-commands:
+  # Create the extension point directory
+  - mkdir -p ${FLATPAK_DEST}/lib/sequencer/plugins
+
+# Remove unneeded files from the final flatpak
+cleanup:
+  - /share/sup/icons
+  - /share/doc
+  # Needed to build the plugins
+  # - /include
+  # - /lib/cmake
+
+modules:
+  # Main module, provides the sequencer GUI
+  - name: sequencer-gui
+    buildsystem: cmake
+    config-opts:
+      # Disable tests
+      - -DCOA_BUILD_TESTS=OFF
+    sources:
+      - type: git
+        url: ssh://git@git.iter.org/coa/sequencer-gui.git
+        tag: v1.4
+      # COA_BUILD_TESTS flag is not handled properly, gate tests behind it
+      - type: patch
+        paths:
+          - patches/0001-gated-tests-build.patch
+
+    modules:
+      # Dependencies
+      - shared-modules/sequencer/org.iter.sequencer.yml
+      - shared-modules/sup-gui-core/org.iter.sup-gui-core.yml
+
+      # Shared dependencies for some plugins
+      - shared-modules/sup-protocol/org.iter.sup-protocol.yml
+
+      # Desktop files for the GUIs
+      - desktop-files/org.iter.sequencer.desktop.yml

@@ -1,0 +1,11 @@
+name: sequencer
+buildsystem: cmake
+config-opts:
+  - -DCOA_BUILD_TESTS=OFF
+sources:
+  - type: git
+    url: ssh://git@git.iter.org/coa/sequencer.git
+    tag: v3.1
+modules:
+  - ../sup-dto/org.iter.sup-dto.yml
+  - ../sup-utils/org.iter.sup-utils.yml

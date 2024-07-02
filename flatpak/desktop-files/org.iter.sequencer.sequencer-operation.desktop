@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Sequencer Operation
+Comment=Integrated development environment for Sequencer procedures
+Categories=Development
+Type=Application
+Terminal=false
+Icon=org.iter.sequencer.sequencer-operation
+Exec=sequencer-operation

@@ -1,0 +1,55 @@
+From 2daa2b3dad1ba58bd905b052058b5055466bf9e9 Mon Sep 17 00:00:00 2001
+From: Rafael Silva <rg-silva@criticalsoftware.com>
+Date: Tue, 25 Jun 2024 10:31:17 +0100
+Subject: [PATCH] sup-mvvm-test: gate the test lib behind the COA_BUILD_TESTS
+ flag
+
+---
+ cmake/modules/installation.cmake | 10 ++++++----
+ src/lib/CMakeLists.txt           |  5 +++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/cmake/modules/installation.cmake b/cmake/modules/installation.cmake
+index 71bc9fe7..d5063707 100644
+--- a/cmake/modules/installation.cmake
++++ b/cmake/modules/installation.cmake
+@@ -20,7 +20,10 @@ set(PACKAGE_TARGETS_FILE ${BUILD_CONFIGDIR}/${PACKAGE_TARGETS_FILENAME})
+ install(EXPORT sup-mvvm-targets FILE ${PACKAGE_TARGETS_FILENAME} NAMESPACE sup-mvvm:: DESTINATION ${INSTALL_CONFIGDIR})
+ 
+ # Generate the export targets for the build tree usage
+-export(TARGETS sup-mvvm-model sup-mvvm-viewmodel sup-mvvm-view sup-mvvm-test NAMESPACE sup-mvvm:: FILE ${PACKAGE_TARGETS_FILE})
++export(TARGETS sup-mvvm-model sup-mvvm-viewmodel sup-mvvm-view NAMESPACE sup-mvvm:: FILE ${PACKAGE_TARGETS_FILE})
++if(COA_BUILD_TESTS)
++  export(TARGETS sup-mvvm-test NAMESPACE sup-mvvm:: APPEND FILE ${PACKAGE_TARGETS_FILE})
++endif()
+ 
+ # Export the package to CMake registry for build tree usage (goes to $HOME/.cmake)
+ if(COA_EXPORT_BUILD_TREE)
+@@ -54,9 +57,8 @@ write_package_config_file(
+   sup-mvvm
+   OUTPUT ${PACKAGE_CONFIG_FILE}
+   INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+-  DEPENDENCIES Qt${QT_VERSION_MAJOR} GTest LibXml2
+-  Qt${QT_VERSION_MAJOR}_FIND_OPTIONS ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS}
+-  GTest_FIND_OPTIONS 1.10)
++  DEPENDENCIES Qt${QT_VERSION_MAJOR} LibXml2
++  Qt${QT_VERSION_MAJOR}_FIND_OPTIONS ${QT_FIND_OPTIONS} COMPONENTS ${QT_FIND_COMPONENTS})
+ 
+ install(FILES ${PACKAGE_CONFIG_FILE} DESTINATION ${INSTALL_CONFIGDIR})
+ 
+diff --git a/src/lib/CMakeLists.txt b/src/lib/CMakeLists.txt
+index e0a6c158..2e87c6af 100644
+--- a/src/lib/CMakeLists.txt
++++ b/src/lib/CMakeLists.txt
+@@ -1,5 +1,6 @@
+ add_subdirectory(sup-mvvm-model)
+ add_subdirectory(sup-mvvm-viewmodel)
+ add_subdirectory(sup-mvvm-view)
+-add_subdirectory(sup-mvvm-test)
+-
++if(COA_BUILD_TESTS)
++  add_subdirectory(sup-mvvm-test)
++endif()
+-- 
+2.45.2
+

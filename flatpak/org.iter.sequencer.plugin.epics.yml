@@ -1,0 +1,35 @@
+id: org.iter.sequencer.plugin.epics
+
+# This is an extension point for the sequencer
+runtime: org.iter.sequencer
+sdk: org.kde.Sdk//5.15-23.08
+
+# This is an extension point for the sequencer
+build-extension: true
+separate-locales: false
+build-options:
+  prefix: /app/lib/sequencer/plugins/epics
+  prepend-ld-library-path: /app/lib/sequencer/plugins/epics/lib
+  env:
+    # Hardcoded for now for the epics plugin, should be fixed in the future to use variables
+    EPICS_BASE: /app/lib/sequencer/plugins/epics
+    EPICS_HOST_ARCH: linux-x86_64
+
+# Remove unneeded files from the final flatpak
+cleanup:
+  - /lib/sequencer/plugins/epics/share/doc
+
+modules:
+  - name: sequencer-plugin-epics
+    buildsystem: cmake
+    config-opts:
+      # Disable tests
+      - -DCOA_BUILD_TESTS=OFF
+      # Install the plugin directly into the prefix lib
+      - -DPLUGIN_PATH=lib
+    sources:
+      - type: git
+        url: ssh://git@git.iter.org/coa/sequencer-plugin-epics.git
+        tag: v3.1
+    modules:
+      - shared-modules/sup-epics/org.iter.sup-epics.yml

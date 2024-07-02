@@ -1,0 +1,8 @@
+name: sup-utils
+buildsystem: cmake
+config-opts:
+  - -DCOA_BUILD_TESTS=OFF
+sources:
+  - type: git
+    url: ssh://git@git.iter.org/coa/sup-utils.git
+    tag: v1.3

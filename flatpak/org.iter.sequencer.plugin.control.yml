@@ -1,0 +1,29 @@
+id: org.iter.sequencer.plugin.control
+
+# This is an extension point for the sequencer
+runtime: org.iter.sequencer
+sdk: org.kde.Sdk//5.15-23.08
+
+# This is an extension point for the sequencer
+build-extension: true
+separate-locales: false
+build-options:
+  prefix: /app/lib/sequencer/plugins/control
+  prepend-ld-library-path: /app/lib/sequencer/plugins/control/lib
+
+# Remove unneeded files from the final flatpak
+cleanup:
+  - /lib/sequencer/plugins/control/share/doc
+
+modules:
+  - name: sequencer-plugin-control
+    buildsystem: cmake
+    config-opts:
+      # Disable tests
+      - -DCOA_BUILD_TESTS=OFF
+      # Install the plugin directly into the prefix lib
+      - -DPLUGIN_PATH=lib
+    sources:
+      - type: git
+        url: ssh://git@git.iter.org/coa/sequencer-plugin-control.git
+        tag: v1.1

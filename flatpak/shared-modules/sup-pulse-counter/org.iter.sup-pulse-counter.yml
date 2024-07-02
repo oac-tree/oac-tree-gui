@@ -1,0 +1,18 @@
+name: sup-pulse-counter
+buildsystem: cmake
+config-opts:
+  - -DCOA_BUILD_TESTS=OFF
+sources:
+  - type: git
+    url: ssh://git@git.iter.org/coa/sup-pulse-counter.git
+    tag: v2.3
+  - type: patch
+    paths:
+      # uda is a CODAC library, remove the hardcoded dependency 
+      - patches/0001-misc-remove-uda-dependency.patch
+      # The service produces a build error, since it is not needed and hard to debug, remove it
+      - patches/0002-misc-no-build-service.patch
+modules:
+  - ../sup-protocol/org.iter.sup-protocol.yml
+  - ../sup-utils/org.iter.sup-utils.yml
+  - ../sup-epics/org.iter.sup-epics.yml

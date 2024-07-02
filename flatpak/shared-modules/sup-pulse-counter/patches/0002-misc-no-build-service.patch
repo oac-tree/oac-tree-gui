@@ -1,0 +1,21 @@
+From 09eaf48631693fa42ac84e56750097459eafea11 Mon Sep 17 00:00:00 2001
+From: Rafael Silva <rg-silva@criticalsoftware.com>
+Date: Mon, 1 Jul 2024 17:15:49 +0100
+Subject: [PATCH] misc: no build service
+
+---
+ src/CMakeLists.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 1e7e924..8062e3e 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -4,4 +4,3 @@ if (COVERAGE)
+ endif()
+ 
+ add_subdirectory(lib)
+-add_subdirectory(app)
+-- 
+2.45.2
+

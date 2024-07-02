@@ -1,0 +1,8 @@
+name: sup-mathexpr
+buildsystem: cmake
+config-opts:
+  - -DCOA_BUILD_TESTS=OFF
+sources:
+  - type: git
+    url: ssh://git@git.iter.org/coa/sup-mathexpr.git
+    tag: v1.1
