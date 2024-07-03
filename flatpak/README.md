@@ -6,21 +6,21 @@ This contains the manifest for the sequencer-gui, the sequencer *plugins*, and a
 
 The runtime used is org.kde.Platform, because it's provided out of the box and includes the required Qt dependencies.
 
-All manifest refer to the latest tagged version/release, *not* the latest commit.
+All manifests refer to the latest tagged version/release, *not* the latest commit.
 
 ## Usage
 
-The FlaPak include desktop files for all relevant GUI applications, meaning new entries for them should appear on your start menu upon installation.
+The FlaPak includes desktop files for all relevant GUI applications, meaning new entries for them should appear on your start menu upon installation.
 
 Running the FlatPak directly with `flatpak run` invokes the sequencer *CLI*, not the graphical interface.
 
 ## Future improvements
 
-All required dependencies are included/built directly or indirectly by the top level manifests, this proves troublesome in some cases, for instance a dependency that is used by 2 distinct plugins, but ot the main application, which means that unless we choose to include a dependency that is not required and may not be used in the main application, it will be built and distributed twice (see sup-epics).
+All required dependencies are included/built directly or indirectly by the top level manifests, this proves troublesome in some cases, for instance a dependency that is used by 2 distinct plugins, but not the main application, which means that unless we choose to include a dependency that is not required and may not be used in the main application, it will be built and distributed twice (see sup-epics).
 
 A better approach may be to also build a custom *CODAC*/*COA* runtime, with an extension point for these dependencies.
 
-Some aspects of the current manifests are hardcoded for *Linux x86_64*, and need to be updated to adjust dynamically to correct architecture.
+Some aspects of the current manifests are hardcoded for *Linux x86_64* and need to be updated to adjust dynamically to correct architecture.
 
 Distribution through a public repository or the hosting of a dedicated one needs to be investigated.
 
@@ -40,17 +40,17 @@ Distribution through a public repository or the hosting of a dedicated one needs
  - org.iter.sequencer.yml:
 
     Top level manifest to build the sequencer and sequencer-gui, with an extension point for the plugins.
-    
+
  - org.iter.sequencer.plugin.control.yml:
 
     Top level manifest to build sequencer-plugin-control extension.
 
  - org.iter.sequencer.plugin.epics.yml:
- 
+
     Top level manifest to build sequencer-plugin-control extension.
 
  - org.iter.sequencer.plugin.mathexpr.yml:
-  
+
     Top level manifest to build sequencer-plugin-control extension.
 
  - org.iter.sequencer.plugin.sup.yml:
@@ -63,13 +63,13 @@ Distribution through a public repository or the hosting of a dedicated one needs
 
  - desktop-files:
 
-    Prebuilt desktop files for the applications provided. Arbitrarily separated as a stand alone module included by the top manifest, could be added verbatim inline in the manifest modules instead.
+    Prebuilt desktop files for the applications provided. Arbitrarily separated as a stand-alone module included by the top manifest, could be added verbatim inline in the manifest modules instead.
 
     The projects include some desktop files, but they are not installed in the correct location for FlatPak nor are they strictly correct for its needs.
 
  - shared-modules
 
-    modules/dependencies possibly used by multiple *COA* projects or as indirect dependencies. Separated to standalone subdirectories to keep the main manifests simpler easier to read, this was an arbitrary decision and the content could easily be nested in the main manifests instead. The name is shared with the FlatPak "shared-modules" concept, but is unrelated besides using the same mechanisms.
+    modules/dependencies used by multiple *COA* projects or as indirect dependencies. Separated to standalone subdirectories to keep the main manifests simpler easier to read, this was an arbitrary decision, and the content could easily be nested in the main manifests instead. The name is shared with the FlatPak "shared-modules" concept but is unrelated besides using the same mechanisms.
 
 ## Building the FlatPak
 
@@ -139,14 +139,14 @@ These can later be directly installed with:
 
 The manifests currently contain some hardcoded values for *Linux x86_64* machines and will very likely fail when building on different architectures.
 
-The FlatPak builder makes many git requesting while preparing the sources, the may cause issues with the Iter network blocking external requests, if the sources have already been downloaded you can use the `--disable-download` flag to prevent this. If pulling the sources the first time proves difficult, comment out some of the sources in the manifest, this will cause the build to fail but the sources to be cached.
+The FlatPak builder makes many git requesting while preparing the sources, they may cause issues with the ITER network blocking external requests, if the sources have already been downloaded you can use the `--disable-download` flag to prevent this. If pulling the sources the first time proves difficult, comment out some of the sources in the manifest, this will cause the build to fail but the sources to be cached.
 
 ## Updating
 
 Upon a release the manifests need to be updated, the extent of which should be:
 
  - The updating of the tag or commit on the `sources` entry on modules.
- - The addition new patches needed or removal of defunct ones.
+ - The addition of new patches needed or removal of defunct ones.
 
 ## Distributing
 
