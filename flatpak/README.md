@@ -84,7 +84,8 @@ To build the FlatPak you need access to the [COA repositories](https://git.iter.
 Add the FlatHub remote if not already:
 `flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
 
-Install the runtime:
+Install the runtime and sdk:
+`flatpak install org.kde.Platform//5.15-23.08`
 `flatpak install org.kde.Sdk//5.15-23.08`
 
 ### Building
