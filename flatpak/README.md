@@ -100,6 +100,18 @@ Additionally, you can build a local repository, later needed to create a distrib
 
 This will create a local repository under the `<repo>` subdirectory.
 
+Build the sequencer and all plugins (run these if you want to build the distributable files, if you just want to install locally run the ones under **Installing locally** instead):
+
+`flatpak-builder --repo=local_repo --force-clean build/sequencer org.iter.sequencer.yml`
+
+`flatpak-builder --repo=local_repo --force-clean build/sequencer-plugin-control org.iter.sequencer.plugin.control.yml`
+
+`flatpak-builder --repo=local_repo --force-clean build/sequencer-plugin-mathexpr org.iter.sequencer.plugin.mathexpr.yml`
+
+`flatpak-builder --repo=local_repo --force-clean build/sequencer-plugin-epics org.iter.sequencer.plugin.epics.yml`
+
+`flatpak-builder --repo=local_repo --force-clean build/sequencer-plugin-sup org.iter.sequencer.plugin.sup.yml`
+
 #### Installing locally
 
 You can build and install the FlatPak locally directly, this is the most convenient option to test both the build and the resulting application:
@@ -122,15 +134,15 @@ You can create a single file bundle to share the application, see [flatpak/singl
 
 Create a distributable bundle for sequencer and all plugins:
 
-`flatpak build-bundle <repo> sequencer.flatpak org.iter.sequencer --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo`
+`flatpak build-bundle local_repo sequencer.flatpak org.iter.sequencer --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo`
 
-`flatpak build-bundle <repo> sequencer-plugin-control.flatpak org.iter.sequencer.plugin.control --runtime`
+`flatpak build-bundle local_repo sequencer-plugin-control.flatpak org.iter.sequencer.plugin.control --runtime`
 
-`flatpak build-bundle <repo> sequencer-plugin-mathexpr.flatpak org.iter.sequencer.plugin.mathexpr --runtime`
+`flatpak build-bundle local_repo sequencer-plugin-mathexpr.flatpak org.iter.sequencer.plugin.mathexpr --runtime`
 
-`flatpak build-bundle <repo> sequencer-plugin-epics.flatpak org.iter.sequencer.plugin.epics --runtime`
+`flatpak build-bundle local_repo sequencer-plugin-epics.flatpak org.iter.sequencer.plugin.epics --runtime`
 
-`flatpak build-bundle <repo> sequencer-plugin-sup.flatpak org.iter.sequencer.plugin.sup --runtime`
+`flatpak build-bundle local_repo sequencer-plugin-sup.flatpak org.iter.sequencer.plugin.sup --runtime`
 
 These can later be directly installed with:
 
