@@ -350,7 +350,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   }
 
   const std::string expected_name("expected_name");
-  const std::string expected_channel("expected_channel");
+  const std::string expected_channel("TEST-CHANNEL-PvAccessClientVariableItemFromDomain");
   const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
 
   auto pv_variable = CreateDomainVariable(domainconstants::kPvAccessClientVariableType);
@@ -381,7 +381,7 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
   }
 
   const std::string expected_name("expected_name");
-  const std::string expected_channel("expected_channel");
+  const std::string expected_channel("TEST-CHANNEL-PvAccessClientVariableItemToDomain");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
 
   {  // case when AnyValueItem is set
@@ -432,7 +432,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   }
 
   const std::string expected_name("expected_name");
-  const std::string expected_channel("expected_channel");
+  const std::string expected_channel("TEST-CHANNEL-PvAccessServerVariableItemFromDomain");
   const std::string expected_datatype(R"RAW({"type":"int32"})RAW");
   const std::string expected_value("42");
 
@@ -466,7 +466,7 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)
   }
 
   const std::string expected_name("expected_name");
-  const std::string expected_channel("expected_channel");
+  const std::string expected_channel("TEST-CHANNEL-PvAccessServerVariableItemToDomain");
   const std::string expected_datatype(R"RAW({"type":"uint32"})RAW");
   const std::string expected_value("42");
 
