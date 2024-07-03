@@ -5,8 +5,6 @@ target_sources(${library_name} PRIVATE
   anyvalue_compact_scalar_editor.h
   anyvalue_compact_tree_editor.cpp
   anyvalue_compact_tree_editor.h
-  anyvalue_editor_dialog.cpp
-  anyvalue_editor_dialog.h
   anyvalue_editor_dialog_factory.cpp
   anyvalue_editor_dialog_factory.h
   custom_meta_types.cpp

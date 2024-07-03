@@ -19,10 +19,10 @@
 
 #include "user_input_dialogs.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog.h>
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor_dialog.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 
@@ -113,7 +113,7 @@ UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget
   auto parent_widget = parent ? parent : mvvm::utils::FindMainWindow();
 
   auto anyvalue_item = sup::gui::CreateItem(args.value);
-  std::unique_ptr<AnyValueEditorDialog> dialog;
+  std::unique_ptr<sup::gui::AnyValueEditorDialog> dialog;
   if (anyvalue_item->IsScalar())
   {
     dialog = CreateAnyValueCompactScalarEditorDialog(anyvalue_item.get(), parent_widget);

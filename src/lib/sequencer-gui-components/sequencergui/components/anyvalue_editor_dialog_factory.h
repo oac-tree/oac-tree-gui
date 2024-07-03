@@ -20,20 +20,19 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 class QWidget;
 
 namespace sup::gui
 {
 class AnyValueItem;
+class AnyValueEditorDialog;
 }  // namespace sup::gui
 
 namespace sequencergui
 {
-
-class AnyValueEditorDialog;
 
 /**
  * @brief The AnyValueDialogResult struct is intended to return AnyValueItem from the dialog.
@@ -55,7 +54,7 @@ struct AnyValueDialogResult
  *
  * @return Created dialog.
  */
-std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
+std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
 
 /**
@@ -66,7 +65,7 @@ std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
  *
  * @return Created dialog.
  */
-std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
+std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
 
 /**
@@ -77,7 +76,7 @@ std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
  *
  * @return Created dialog.
  */
-std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
+std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent = nullptr);
 
 /**

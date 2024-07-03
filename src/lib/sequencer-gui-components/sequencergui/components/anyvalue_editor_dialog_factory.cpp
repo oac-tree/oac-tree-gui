@@ -21,37 +21,37 @@
 
 #include "anyvalue_compact_scalar_editor.h"
 #include "anyvalue_compact_tree_editor.h"
-#include "anyvalue_editor_dialog.h"
 
 #include <sup/gui/anyvalueeditor/anyvalue_editor.h>
+#include <sup/gui/anyvalueeditor/anyvalue_editor_dialog.h>
 #include <sup/gui/model/anyvalue_item.h>
 
 namespace sequencergui
 {
 
-std::unique_ptr<AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
+std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueExtendedEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent)
 {
   auto editor = std::make_unique<sup::gui::AnyValueEditor>();
   editor->SetInitialValue(item);
   editor->setWindowTitle("AnyValueExtendedEditor");
-  return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
+  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), parent);
 }
 
-std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
+std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactTreeEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent)
 {
   auto editor = std::make_unique<AnyValueCompactTreeEditor>();
   editor->SetInitialValue(item);
-  return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
+  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), parent);
 }
 
-std::unique_ptr<AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
+std::unique_ptr<sup::gui::AnyValueEditorDialog> CreateAnyValueCompactScalarEditorDialog(
     const sup::gui::AnyValueItem* item, QWidget* parent)
 {
   auto editor = std::make_unique<AnyValueCompactScalarEditor>();
   editor->SetInitialValue(item);
-  return std::make_unique<AnyValueEditorDialog>(std::move(editor), parent);
+  return std::make_unique<sup::gui::AnyValueEditorDialog>(std::move(editor), parent);
 }
 
 std::function<AnyValueDialogResult(const sup::gui::AnyValueItem*)> CreateAnyValueDialogCallback(
