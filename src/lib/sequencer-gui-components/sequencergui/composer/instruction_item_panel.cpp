@@ -23,7 +23,7 @@
 
 #include <sequencergui/composer/composer_helper.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/viewmodel/filtered_proxy_viewmodel.h>
+#include <mvvm/viewmodel/filter_name_viewmodel.h>
 #include <sequencergui/viewmodel/toolkit_viewmodel.h>
 
 #include <QAction>
@@ -37,7 +37,7 @@ namespace sequencergui
 InstructionItemPanel::InstructionItemPanel(QWidget* parent)
     : QWidget(parent)
     , m_instruction_toolkit_viewmodel(new ToolKitViewModel(this))
-    , m_proxy_model(new FilteredProxyViewModel(this))
+    , m_proxy_model(new mvvm::FilterNameViewModel(this))
     , m_tree_view(new InsructionToolKitTreeView)
     , m_line_edit(new QLineEdit)
 {

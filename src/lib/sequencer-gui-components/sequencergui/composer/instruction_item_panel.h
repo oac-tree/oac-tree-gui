@@ -24,12 +24,16 @@
 
 class QLineEdit;
 
+namespace mvvm
+{
+class FilterNameViewModel;
+}
+
 namespace sequencergui
 {
 
 class ToolKitViewModel;
 class InsructionToolKitTreeView;
-class FilteredProxyViewModel;
 
 /**
  * @brief The InstructionItemPanel class is a tree with instruction type names grouped according to
@@ -48,10 +52,10 @@ signals:
   void InstructionDoubleClicked(const QString& name);
 
 private:
-  void OnContextMenuRequest(const QPoint &point);
+  void OnContextMenuRequest(const QPoint& point);
 
   ToolKitViewModel* m_instruction_toolkit_viewmodel{nullptr};
-  FilteredProxyViewModel* m_proxy_model{nullptr};
+  mvvm::FilterNameViewModel* m_proxy_model{nullptr};
   InsructionToolKitTreeView* m_tree_view{nullptr};
   QLineEdit* m_line_edit{nullptr};
 };
