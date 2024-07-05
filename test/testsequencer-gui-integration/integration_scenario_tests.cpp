@@ -40,7 +40,7 @@
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
-#include <testutils/folder_based_test.h>
+#include <testutils/folder_test.h>
 #include <testutils/standard_procedure_items.h>
 
 #include <QTest>
@@ -51,10 +51,10 @@ using namespace sequencergui;
 
 //! Tests for complex integration scenario.
 
-class IntegrationScenarioTest : public testutils::FolderBasedTest
+class IntegrationScenarioTest : public testutils::FolderTest
 {
 public:
-  IntegrationScenarioTest() : FolderBasedTest("test_IntegrationScenario")
+  IntegrationScenarioTest() : FolderTest("test_IntegrationScenario")
   {
     m_job_item = m_models.GetJobModel()->InsertItem<JobItem>();
   }

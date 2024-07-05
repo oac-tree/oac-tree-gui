@@ -28,7 +28,7 @@
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
-#include <testutils/folder_based_test.h>
+#include <testutils/folder_test.h>
 
 #include <QListView>
 #include <QSignalSpy>
@@ -39,10 +39,10 @@ Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
 
 //! Tests for utility functions related to the domain to presentation transformations.
 
-class ProcedureListWidgetTest : public testutils::FolderBasedTest
+class ProcedureListWidgetTest : public testutils::FolderTest
 {
 public:
-  ProcedureListWidgetTest() : testutils::FolderBasedTest("test_ProcedureListWidgetTest")
+  ProcedureListWidgetTest() : testutils::FolderTest("test_ProcedureListWidgetTest")
   {
     qRegisterMetaType<sequencergui::ProcedureItem*>("sequencergui::ProcedureItem*");
   }

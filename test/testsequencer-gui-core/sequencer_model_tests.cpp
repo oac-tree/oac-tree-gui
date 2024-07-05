@@ -30,16 +30,16 @@
 #include <mvvm/model/item_factory.h>
 
 #include <gtest/gtest.h>
-#include <testutils/folder_based_test.h>
+#include <testutils/folder_test.h>
 
 using namespace sequencergui;
 
 //! Tests for SequencerModel class.
 
-class SequencerModelTest : public testutils::FolderBasedTest
+class SequencerModelTest : public testutils::FolderTest
 {
 public:
-  SequencerModelTest() : FolderBasedTest("test_SequencerModel") {}
+  SequencerModelTest() : FolderTest("test_SequencerModel") {}
 };
 
 TEST_F(SequencerModelTest, InitialState)

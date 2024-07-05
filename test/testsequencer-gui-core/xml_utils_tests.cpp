@@ -28,15 +28,15 @@
 
 #include <sup/dto/anyvalue.h>
 #include <mvvm/test/test_helper.h>
-#include <testutils/folder_based_test.h>
+#include <testutils/folder_test.h>
 #include <testutils/test_utils.h>
 
 //! Testing methods from importutils.h
 
-class XmlUtilsTest : public testutils::FolderBasedTest
+class XmlUtilsTest : public testutils::FolderTest
 {
 public:
-  XmlUtilsTest() : FolderBasedTest("test_ImportUtilsTest") {}
+  XmlUtilsTest() : FolderTest("test_ImportUtilsTest") {}
 };
 
 //! Importing xml Procedure containing a single instruction.

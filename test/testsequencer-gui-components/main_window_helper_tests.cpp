@@ -23,16 +23,16 @@
 #include <mvvm/test/test_helper.h>
 #include <mvvm/utils/container_utils.h>
 
-#include <testutils/folder_based_test.h>
+#include <testutils/folder_test.h>
 
 //! Testing methods from main_window_helper.h
 
 using namespace sequencergui;
 
-class MainWindowHelperTest : public testutils::FolderBasedTest
+class MainWindowHelperTest : public testutils::FolderTest
 {
 public:
-  MainWindowHelperTest() : FolderBasedTest("test_MainWindowHelperTest") {}
+  MainWindowHelperTest() : FolderTest("test_MainWindowHelperTest") {}
 };
 
 TEST_F(MainWindowHelperTest, GetProcedureFiles)
