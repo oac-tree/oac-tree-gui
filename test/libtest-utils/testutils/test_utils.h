@@ -30,31 +30,6 @@
 
 namespace testutils
 {
-//! Returns full path to the main test folder, as defined by CMake at compile time.
-//! Shoud point to CMAKE_BINARY_DIR/test_output
-std::string GetTestSuiteOutputDir();
-
-//! Returns full path to repository source directory.
-std::string GetProjectSourceDir();
-
-//! Returns true if given item can be casted to desired type.
-template <typename DesiredT, typename ItemT>
-bool CanCast(const ItemT* item)
-{
-  return dynamic_cast<const DesiredT*>(item) != nullptr;
-}
-
-//! Returns true if clone method is implemented.
-template <typename T>
-bool IsCloneImplemented()
-{
-  // We expect that the specified object can be created, cloned, and the result of clone can
-  // be casted to the object type itself.
-  T item;
-  auto clone = item.Clone(/*make_unique_id*/ false);
-  return testutils::CanCast<T>(clone.get());
-}
-
 //! hard-coded value in Wait instruction
 const std::chrono::milliseconds kDefaultWaitPrecision(50);
 

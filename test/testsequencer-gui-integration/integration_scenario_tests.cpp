@@ -42,6 +42,7 @@
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>
 #include <testutils/standard_procedure_items.h>
+#include <testutils/test_utils.h>
 
 #include <QTest>
 

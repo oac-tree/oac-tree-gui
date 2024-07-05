@@ -25,8 +25,9 @@
 #include <sequencergui/model/universal_instruction_item.h>
 #include <sequencergui/model/universal_variable_item.h>
 
+#include <mvvm/test/test_helper.h>
+
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 using namespace sequencergui;
 
@@ -73,7 +74,7 @@ TEST_F(SequencerItemHelperTest, IsDecoratorInstruction)
 
 TEST_F(SequencerItemHelperTest, Clone)
 {
-  using testutils::IsCloneImplemented;
+  using mvvm::test::IsCloneImplemented;
 
   // instructions
   EXPECT_TRUE(IsCloneImplemented<IncludeItem>());
@@ -98,7 +99,7 @@ TEST_F(SequencerItemHelperTest, Clone)
 
 TEST_F(SequencerItemHelperTest, ClonePlugin)
 {
-  using testutils::IsCloneImplemented;
+  using mvvm::test::IsCloneImplemented;
 
   if (!IsSequencerPluginEpicsAvailable())
   {

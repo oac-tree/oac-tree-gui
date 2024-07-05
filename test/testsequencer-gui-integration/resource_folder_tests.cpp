@@ -34,10 +34,10 @@
 
 #include <gtest/gtest.h>
 #include <testutils/test_utils.h>
+#include <testutils/folder_test.h>
 
 #include <QSignalSpy>
 #include <QTest>
-#include <iostream>
 
 namespace
 {
