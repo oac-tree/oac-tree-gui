@@ -38,4 +38,6 @@ target_sources(${library_name} PRIVATE
   realtime_instruction_tree_widget.h
   tooltip_helper.cpp
   tooltip_helper.h
+  workspace_view_component_provider.cpp
+  workspace_view_component_provider.h
 )
