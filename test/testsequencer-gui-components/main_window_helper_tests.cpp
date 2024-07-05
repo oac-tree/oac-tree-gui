@@ -20,10 +20,10 @@
 #include "mvvm/utils/file_utils.h"
 #include "sequencergui/mainwindow/main_window_helper.h"
 
+#include <mvvm/test/test_helper.h>
 #include <mvvm/utils/container_utils.h>
 
 #include <testutils/folder_based_test.h>
-#include <testutils/test_utils.h>
 
 //! Testing methods from main_window_helper.h
 
@@ -41,9 +41,9 @@ TEST_F(MainWindowHelperTest, GetProcedureFiles)
   auto file_name1 = mvvm::utils::Join(GetTestHomeDir(), "name1.xml");
   auto file_name2 = mvvm::utils::Join(GetTestHomeDir(), "a.txt");
 
-  testutils::CreateTextFile(file_name0, "");
-  testutils::CreateTextFile(file_name1, "");
-  testutils::CreateTextFile(file_name2, "");
+  mvvm::test::CreateTextFile(file_name0, "");
+  mvvm::test::CreateTextFile(file_name1, "");
+  mvvm::test::CreateTextFile(file_name2, "");
 
   auto found_files = GetProcedureFiles(GetTestHomeDir());
 

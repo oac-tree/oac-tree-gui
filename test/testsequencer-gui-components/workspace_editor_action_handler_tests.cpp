@@ -28,12 +28,13 @@
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/test/test_helper.h>
+
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/exceptions.h>
 
 #include <gtest/gtest.h>
 #include <testutils/mock_dialog.h>
-#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 
@@ -128,7 +129,7 @@ TEST_F(WorkspaceEditorActionHandlerTest, OnAddVariableRequestToEmptyModel)
   EXPECT_EQ(inserted_variable0->GetName(), std::string("var0"));
 
   // just inserted variable was selected
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
 
   // it has scalar AnyValueItem on board by default
   auto anyvalue_item =

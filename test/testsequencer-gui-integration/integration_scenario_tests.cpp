@@ -35,13 +35,13 @@
 #include <mvvm/model/model_utils.h>
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_based_test.h>
 #include <testutils/standard_procedure_items.h>
-#include <testutils/test_utils.h>
 
 #include <QTest>
 
@@ -155,11 +155,11 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
 )"};
 
   const auto main_file_name = GetFilePath("main.xml");
-  testutils::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
+  mvvm::test::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external.xml");
-  testutils::CreateTextFile(external_file_name,
-                            testutils::CreateProcedureString(external_procedure));
+  mvvm::test::CreateTextFile(external_file_name,
+                             testutils::CreateProcedureString(external_procedure));
 
   auto procedure_item = sequencergui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();
@@ -192,11 +192,11 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
 )"};
 
   const auto main_file_name = GetFilePath("main2.xml");
-  testutils::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
+  mvvm::test::CreateTextFile(main_file_name, testutils::CreateProcedureString(main_procedure));
 
   const auto external_file_name = GetFilePath("external2.xml");
-  testutils::CreateTextFile(external_file_name,
-                            testutils::CreateProcedureString(external_procedure));
+  mvvm::test::CreateTextFile(external_file_name,
+                             testutils::CreateProcedureString(external_procedure));
 
   auto procedure_item = sequencergui::ImportFromFile(main_file_name);
   auto procedure_item_ptr = procedure_item.get();

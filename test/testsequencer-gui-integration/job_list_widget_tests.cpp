@@ -23,10 +23,10 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 
+#include <mvvm/test/test_helper.h>
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTreeView>
@@ -62,7 +62,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   view.SetSelectedJob(job);
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
 
   // removing selection
 
@@ -70,7 +70,7 @@ TEST_F(JobListWidgetTest, SelectJob)
   EXPECT_EQ(view.GetSelectedJob(), nullptr);
   EXPECT_EQ(spy_selected.count(), 1);
 
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -93,7 +93,7 @@ TEST_F(JobListWidgetTest, SelectionAfterRemoval)
   model.RemoveItem(job);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
@@ -119,5 +119,5 @@ TEST_F(JobListWidgetTest, SetCurrentIndex)
 
   EXPECT_EQ(view.GetSelectedJob(), job);
 
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::JobItem*>(spy_selected), job);
 }

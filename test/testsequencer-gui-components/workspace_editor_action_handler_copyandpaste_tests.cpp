@@ -30,6 +30,8 @@
 #include <sup/gui/components/mime_conversion_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 
+#include <mvvm/test/test_helper.h>
+
 #include <sup/dto/anyvalue.h>
 
 #include <gtest/gtest.h>
@@ -179,7 +181,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterIntoEmptyContaine
   EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
 
   // validating request to select just inserted item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
 }
 
 //! Testing Paste for the following scenario: two variables in a model, the first one is selected,
@@ -209,7 +211,7 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, PasteAfterSelectedItem)
   EXPECT_EQ(inserted_variable0->GetName(), std::string("abc"));
 
   // validating request to select just inserted item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), inserted_variable0);
 }
 
 //! Cut selected variable.
@@ -235,5 +237,5 @@ TEST_F(WorkspaceEditorActionHandlerCopyAndPasteTest, CutOperation)
   ASSERT_EQ(m_model.GetWorkspaceItem()->GetVariableCount(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), var1);
 }

@@ -31,14 +31,13 @@
 
 #include <mvvm/model/model_utils.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
 #include <testutils/standard_procedure_items.h>
-#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
-#include <iostream>
 
 using namespace sequencergui;
 using msec = std::chrono::milliseconds;
@@ -118,7 +117,7 @@ TEST_F(OperationActionHandlerTest, OnSubmitJobRequest)
             job_item->GetExpandedProcedure());
   EXPECT_EQ(job_item->GetProcedure(), procedure);
 
-  EXPECT_EQ(testutils::GetSendItem<JobItem*>(spy_selected_request), job_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
   // we can submit same procedure twice, it will be two different jobs
   m_actions.OnSubmitJobRequest(procedure);
@@ -278,7 +277,7 @@ TEST_F(OperationActionHandlerTest, OnRegenerateJobRequest)
   // on regeneration status should be reset
   EXPECT_TRUE(job_item->GetStatus().empty());
 
-  EXPECT_EQ(testutils::GetSendItem<JobItem*>(spy_selected_request), job_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<JobItem*>(spy_selected_request), job_item);
 
   ASSERT_EQ(GetJobItems().size(), 1);
 

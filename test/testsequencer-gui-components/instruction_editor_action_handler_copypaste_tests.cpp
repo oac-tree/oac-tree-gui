@@ -29,6 +29,7 @@
 #include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -213,7 +214,7 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, PasteAfterIntoEmptyContainer
   EXPECT_EQ(instructions.at(0)->GetDisplayName(), std::string("abc"));
 
   // validating request to select just inserted item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
 }
 
 //! Testing PasteAfter for the following scenario: sequence in a model, selected, pasting new
@@ -354,5 +355,5 @@ TEST_F(InstructionEditorActionHandlerCopyPasteTest, CutOperation)
   ASSERT_EQ(instructions.size(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait1);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait1);
 }

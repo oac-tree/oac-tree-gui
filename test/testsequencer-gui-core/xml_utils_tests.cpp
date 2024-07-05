@@ -27,7 +27,7 @@
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <sup/dto/anyvalue.h>
-
+#include <mvvm/test/test_helper.h>
 #include <testutils/folder_based_test.h>
 #include <testutils/test_utils.h>
 
@@ -49,7 +49,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleWait)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleWait.xml");
-  testutils::CreateTextFile(file_name, testutils::CreateProcedureString(body));
+  mvvm::test::CreateTextFile(file_name, testutils::CreateProcedureString(body));
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 
@@ -72,7 +72,7 @@ TEST_F(XmlUtilsTest, ImportFromFileProcedureWithSingleVariable)
 
   // writing procedure in file
   const auto file_name = GetFilePath("ProcedureWithSingleVariable.xml");
-  testutils::CreateTextFile(file_name, testutils::CreateProcedureString(body));
+  mvvm::test::CreateTextFile(file_name, testutils::CreateProcedureString(body));
 
   auto procedure_item = sequencergui::ImportFromFile(file_name);
 

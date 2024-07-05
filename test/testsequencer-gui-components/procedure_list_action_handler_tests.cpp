@@ -22,13 +22,13 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/standarditems/container_item.h>
-#include <sup/gui/components/mime_conversion_helper.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 
 #include <QMimeData>
 #include <QSignalSpy>
@@ -109,7 +109,7 @@ TEST_F(ProcedureListActionHandlerTest, InsertInEmptyContainer)
   auto inserted = m_procedure_container->GetAllItems().at(0);
 
   // request to select just inserted procedure
-  EXPECT_EQ(testutils::GetSendItem<ProcedureItem*>(spy_selection_request), inserted);
+  EXPECT_EQ(mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request), inserted);
 }
 
 //! Insert procedure after inserted procedure.
@@ -129,7 +129,7 @@ TEST_F(ProcedureListActionHandlerTest, AppendInContainerWhenNothingIsSelected)
   ASSERT_EQ(m_procedure_container->GetSize(), 2);
 
   // request to select just inserted procedure
-  auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
+  auto send_item = mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request);
 
   // in the absence of selection item was appended to the container
   EXPECT_EQ(m_procedure_container->GetAllItems(),
@@ -154,7 +154,7 @@ TEST_F(ProcedureListActionHandlerTest, InsertBetweenTwoProceduresContainer)
   ASSERT_EQ(m_procedure_container->GetSize(), 3);
 
   // request to select just inserted procedure
-  auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
+  auto send_item = mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request);
 
   // sent item should be located between two procedures
   EXPECT_EQ(m_procedure_container->GetAllItems(),
@@ -178,7 +178,7 @@ TEST_F(ProcedureListActionHandlerTest, RemoveMiddleProcedure)
   handler->OnRemoveProcedureRequest();
 
   // request to select a procedure just after the deleted one
-  auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
+  auto send_item = mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request);
   EXPECT_EQ(send_item, proc2);
 
   // middle procedure has disappeared from the container
@@ -200,7 +200,7 @@ TEST_F(ProcedureListActionHandlerTest, RemoveLastProcedure)
   EXPECT_TRUE(m_procedure_container->IsEmpty());
 
   // request to select a procedure just after the deleted one
-  auto send_item = testutils::GetSendItem<ProcedureItem*>(spy_selection_request);
+  auto send_item = mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request);
   EXPECT_EQ(send_item, nullptr);
 }
 
@@ -279,7 +279,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteOperationIntoEmptyModel)
 
   EXPECT_EQ(pasted_item->GetName(), std::string("abc"));
   // request to select just inserted procedure
-  EXPECT_EQ(testutils::GetSendItem<ProcedureItem*>(spy_selection_request), pasted_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request), pasted_item);
 }
 
 //! Paste operation between two existing items.
@@ -312,7 +312,7 @@ TEST_F(ProcedureListActionHandlerTest, PasteBetweenTwoItems)
 
   EXPECT_EQ(pasted_item->GetName(), std::string("abc"));
   // request to select just inserted procedure
-  EXPECT_EQ(testutils::GetSendItem<ProcedureItem*>(spy_selection_request), pasted_item);
+  EXPECT_EQ(mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request), pasted_item);
 }
 
 //! Cut operation when item is selected.
@@ -334,5 +334,5 @@ TEST_F(ProcedureListActionHandlerTest, CutOperation)
   ASSERT_EQ(m_procedure_container->GetSize(), 1);
 
   // request to select remaining item
-  EXPECT_EQ(testutils::GetSendItem<ProcedureItem*>(spy_selection_request), proc1);
+  EXPECT_EQ(mvvm::test::GetSendItem<ProcedureItem*>(spy_selection_request), proc1);
 }

@@ -24,11 +24,11 @@
 
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_based_test.h>
-#include <testutils/test_utils.h>
 
 #include <QListView>
 #include <QSignalSpy>
@@ -71,7 +71,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
 
   spy_selected.clear();
 
@@ -79,7 +79,7 @@ TEST_F(ProcedureListWidgetTest, SelectProcedure)
   view.SetSelectedProcedure(nullptr);
   EXPECT_EQ(view.GetSelectedProcedure(), nullptr);
 
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Removing selected and checking notifications
@@ -108,14 +108,14 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SelectionAfterRemoval)
   model.RemoveItem(procedure);
 
   // signal should emit once and report nullptr as selected item
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), nullptr);
 }
 
 //! Checking selection when acting through the view.
 
 // FIXME find a way to enable test, or remove test
 // Tests generates same pointers to the ProcedureListWidget objects, that leads to duplication of
-// action context registreation
+// action context registration
 
 TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
 {
@@ -137,5 +137,5 @@ TEST_F(ProcedureListWidgetTest, DISABLED_SetCurrentIndex)
   EXPECT_EQ(view.GetSelectedProcedure(), procedure);
   EXPECT_EQ(view.GetSelectedProcedures(), std::vector<ProcedureItem*>({procedure}));
 
-  EXPECT_EQ(testutils::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
+  EXPECT_EQ(mvvm::test::GetSendItem<sequencergui::ProcedureItem*>(spy_selected), procedure);
 }

@@ -32,11 +32,11 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
+#include <mvvm/test/test_helper.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <testutils/mock_dialog.h>
-#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 
@@ -127,7 +127,7 @@ TEST_F(InstructionEditorActionHandlerTest, AddWait)
   auto instructions = m_procedure->GetInstructionContainer()->GetInstructions();
   EXPECT_EQ(instructions.at(0)->GetType(), WaitItem::Type);
 
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), instructions.at(0));
 }
 
 //! Adding choice instruction. Checking that universal instruction is correctly handled.
@@ -336,7 +336,7 @@ TEST_F(InstructionEditorActionHandlerTest, RemoveInstruction)
   ASSERT_EQ(m_procedure->GetInstructionContainer()->GetInstructions().size(), 1);
 
   // checking the request to select remaining item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), sequence1);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), sequence1);
 }
 
 //! Move selected instruction up.
@@ -363,7 +363,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveUp)
   EXPECT_EQ(sequence->GetInstructions(), expected);
 
   // checking the request to select just moved item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait2);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait2);
 }
 
 //! Move selected instruction up.
@@ -390,7 +390,7 @@ TEST_F(InstructionEditorActionHandlerTest, MoveDown)
   EXPECT_EQ(sequence->GetInstructions(), expected);
 
   // checking the request to select just moved item
-  EXPECT_EQ(testutils::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait0);
+  EXPECT_EQ(mvvm::test::GetSendItem<mvvm::SessionItem*>(spy_selection_request), wait0);
 }
 
 //! Attempt to edit AnyValueItem when nothing appropriate is selected.
