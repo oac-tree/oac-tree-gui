@@ -36,6 +36,8 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
+#include <QDebug>
+
 namespace
 {
 const QString kGroupName("OperationWorkspacePanel");
@@ -109,6 +111,11 @@ void OperationWorkspaceWidget::SetProcedure(ProcedureItem *procedure)
   {
     SetProcedureIntern(m_procedure);
   }
+}
+
+void OperationWorkspaceWidget::SetFilterPattern(const QString &pattern)
+{
+  qDebug() << "pattern";
 }
 
 void OperationWorkspaceWidget::ReadSettings()

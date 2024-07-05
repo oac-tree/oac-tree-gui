@@ -22,6 +22,8 @@
 
 #include <QWidget>
 
+class QLineEdit;
+
 namespace sup::gui
 {
 class ItemStackWidget;
@@ -58,6 +60,7 @@ private:
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
   OperationWorkspaceWidget* m_workspace_tree_widget{nullptr};
   OperationWorkspaceWidget* m_workspace_table_widget{nullptr};
+  QLineEdit* m_line_edit{nullptr};
 };
 
 }  // namespace sequencergui

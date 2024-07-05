@@ -68,6 +68,8 @@ public:
 
   void SetProcedure(ProcedureItem* procedure_item);
 
+  void SetFilterPattern(const QString& pattern);
+
 private:
   void ReadSettings();
   void WriteSettings();
