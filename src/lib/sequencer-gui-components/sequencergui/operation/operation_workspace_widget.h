@@ -41,6 +41,7 @@ namespace sequencergui
 class SequencerModel;
 class ProcedureItem;
 class InstructionItem;
+class WorkspaceViewComponentProvider;
 
 /**
  * @brief The OperationWorkspaceWidget class is a right panel on OperationMonitorView representing
@@ -48,7 +49,6 @@ class InstructionItem;
  *
  * @details Contains a panel with possibility to switch between full tree, and table-like view.
  */
-
 class OperationWorkspaceWidget : public QWidget
 {
   Q_OBJECT
@@ -79,7 +79,7 @@ private:
   Mode m_mode;
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
-  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+  std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
   ProcedureItem* m_procedure{nullptr};
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
 };

@@ -35,7 +35,7 @@ namespace sequencergui
 
 /**
  * @brief The WorkspaceViewComponentProvider class provides filtering capabilities on top of the
- * give model.
+ * given model.
  */
 class WorkspaceViewComponentProvider : public mvvm::ItemViewComponentProvider
 {

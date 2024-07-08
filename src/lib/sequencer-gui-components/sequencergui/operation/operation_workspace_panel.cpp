@@ -32,6 +32,7 @@ namespace
 {
 const QString kGroupName("OperationWorkspacePanel");
 const QString kWorkspaceIndexSettingName = kGroupName + "/" + "workspace_index";
+
 }  // namespace
 
 namespace sequencergui

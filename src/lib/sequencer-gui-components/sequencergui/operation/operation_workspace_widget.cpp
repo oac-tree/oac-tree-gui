@@ -19,24 +19,25 @@
 
 #include "operation_workspace_widget.h"
 
+#include "workspace_view_component_provider.h"
+
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/widgets/custom_header_view.h>
-#include <sup/gui/widgets/tree_helper.h>
 #include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/widgets/tree_helper.h>
 
-#include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/providers/item_view_component_provider.h>
+#include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/widget_utils.h>
 
+#include <QDebug>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
-
-#include <QDebug>
 
 namespace
 {
@@ -62,12 +63,14 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
   if (mode == Mode::kWorkspaceTree)
   {
     setWindowTitle("Variable Tree");
-    m_component_provider = mvvm::CreateProvider<mvvm::AllItemsViewModel>(m_tree_view);
+    m_component_provider = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<mvvm::AllItemsViewModel>(nullptr), m_tree_view);
   }
   else
   {
     setWindowTitle("Variable Table");
-    m_component_provider = mvvm::CreateProvider<WorkspaceOperationViewModel>(m_tree_view);
+    m_component_provider = std::make_unique<WorkspaceViewComponentProvider>(
+        std::make_unique<WorkspaceOperationViewModel>(nullptr), m_tree_view);
   }
 
   auto layout = new QVBoxLayout(this);
@@ -116,6 +119,7 @@ void OperationWorkspaceWidget::SetProcedure(ProcedureItem *procedure)
 void OperationWorkspaceWidget::SetFilterPattern(const QString &pattern)
 {
   qDebug() << "pattern";
+  m_component_provider->SetFilterPattern(pattern);
 }
 
 void OperationWorkspaceWidget::ReadSettings()

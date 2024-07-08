@@ -39,10 +39,9 @@ class ProcedureItem;
  * @brief The OperationWorkspacePanel class represents vertical panel on the right part of
  * OperationMonitorView with Workspace variables.
  *
- * @details It is a stack of two widgets with possibility to choose either a workspace tree or
- * workspace table.
+ * It is a stack of two widgets with possibility to choose either a workspace tree or workspace
+ * table.
  */
-
 class OperationWorkspacePanel : public QWidget
 {
   Q_OBJECT
