@@ -38,7 +38,7 @@ class WorkspaceViewComponentProviderTest : public ::testing::Test
 {
 };
 
-//! Viewmodel is looking at the workspace with two variables. Provider setups the view and filters
+//! Viewmodel is looking at the workspace with two variables. Provider sets up the view and filters
 //! one item out.
 TEST_F(WorkspaceViewComponentProviderTest, FilterViewmodel)
 {
