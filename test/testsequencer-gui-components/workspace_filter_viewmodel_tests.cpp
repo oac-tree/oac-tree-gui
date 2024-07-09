@@ -87,6 +87,10 @@ TEST_F(WorkspaceFilterViewModelTest, IsItemAcceptedForChannelName)
   EXPECT_FALSE(viewmodel.IsItemAccepted(nullptr));
   EXPECT_FALSE(viewmodel.IsItemAccepted(local_item));
   EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item));  // channel name matches
+
+  pv_access_item->SetChannel("AB");
+  pv_access_item->SetDisplayName("ABC");
+  EXPECT_TRUE(viewmodel.IsItemAccepted(pv_access_item));  // name matches
 }
 
 //! Full test of the proxy model looking to the viewmodel with the workspace.
@@ -122,6 +126,6 @@ TEST_F(WorkspaceFilterViewModelTest, FilterViewmodel)
   EXPECT_EQ(viewmodel_proxy.index(0, 0, QModelIndex()).data().toString(), QString("ABC"));
 
   // properties of first item should remain
-  EXPECT_TRUE(viewmodel_proxy.filterAcceptsRow(0, index_local_item0)); // dynamicType property
+  EXPECT_TRUE(viewmodel_proxy.filterAcceptsRow(0, index_local_item0));  // dynamicType property
   EXPECT_FALSE(viewmodel_proxy.filterAcceptsRow(0, index_local_item1));
 }

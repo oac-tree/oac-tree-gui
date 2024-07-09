@@ -67,7 +67,7 @@ bool WorkspaceFilterViewModel::IsItemAccepted(const mvvm::SessionItem *item) con
   // check if parent is connectable variable, and check its channel name
   if (auto variable_item = mvvm::utils::FindItemUp<ConnectableVariableItem>(item); variable_item)
   {
-    return IsValidName(variable_item->GetChannel());
+    return IsValidName(variable_item->GetChannel()) ? true : IsValidName(variable_item->GetName());
   }
 
   // if not a channel, check variable name
