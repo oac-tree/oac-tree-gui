@@ -26,12 +26,13 @@ class QTreeView;
 
 namespace mvvm
 {
-class FilterNameViewModel;
 class ViewModel;
 }  // namespace mvvm
 
 namespace sequencergui
 {
+
+class WorkspaceFilterViewModel;
 
 /**
  * @brief The WorkspaceViewComponentProvider class provides filtering capabilities on top of the
@@ -54,7 +55,7 @@ public:
   void SetFilterPattern(const QString& pattern);
 
 private:
-  mvvm::FilterNameViewModel* m_filter_proxy_model{nullptr};
+  WorkspaceFilterViewModel* m_filter_proxy_model{nullptr};
 };
 
 }  // namespace sequencergui

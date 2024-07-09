@@ -19,7 +19,8 @@
 
 #include "workspace_view_component_provider.h"
 
-#include <mvvm/viewmodel/filter_name_viewmodel.h>
+#include <sequencergui/viewmodel/workspace_filter_viewmodel.h>
+
 #include <mvvm/viewmodel/viewmodel.h>
 
 #include <QTreeView>
@@ -31,7 +32,7 @@ WorkspaceViewComponentProvider::WorkspaceViewComponentProvider(
     std::unique_ptr<mvvm::ViewModel> view_model, QTreeView *view)
     : mvvm::ItemViewComponentProvider(std::move(view_model), view)
 {
-  auto proxy_model = std::make_unique<mvvm::FilterNameViewModel>();
+  auto proxy_model = std::make_unique<WorkspaceFilterViewModel>();
   m_filter_proxy_model = proxy_model.get();
   AddProxyModel(std::move(proxy_model));
 }
