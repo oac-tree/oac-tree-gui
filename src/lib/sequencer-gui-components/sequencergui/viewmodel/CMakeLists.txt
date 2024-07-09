@@ -29,6 +29,8 @@ target_sources(${library_name} PRIVATE
   viewmodel_helper.h
   workspace_editor_viewmodel.cpp
   workspace_editor_viewmodel.h
+  workspace_filter_viewmodel.cpp
+  workspace_filter_viewmodel.h
   workspace_operation_viewmodel.cpp
   workspace_operation_viewmodel.h
   )
