@@ -24,6 +24,7 @@
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/operation/workspace_view_component_provider.h>
 #include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
 #include <sequencergui/pvmonitor/workspace_editor_actions.h>
 #include <sequencergui/pvmonitor/workspace_editor_context.h>
@@ -37,10 +38,10 @@
 #include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
-#include <mvvm/providers/item_view_component_provider.h>
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMimeData>
 #include <QSettings>
@@ -61,12 +62,14 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(new sup::gui::CustomHeaderView(this))
-    , m_component_provider(mvvm::CreateProvider<WorkspaceEditorViewModel>(m_tree_view))
+    , m_component_provider(std::make_unique<WorkspaceViewComponentProvider>(
+          std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view))
     , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
     , m_editor_actions(new WorkspaceEditorActions(this))
     , m_attribute_action_handler(
           new AttributeEditorActionHandler(CreateAttributeEditorContext(), this))
     , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
+    , m_line_edit(new QLineEdit)
 {
   setWindowTitle("Workspace");
 
@@ -74,6 +77,10 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   layout->addWidget(m_tree_view);
+  layout->addWidget(m_line_edit);
+
+  m_line_edit->setClearButtonEnabled(true);
+  m_line_edit->setPlaceholderText("Filter pattern");
 
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
   m_tree_view->setAlternatingRowColors(true);
@@ -101,6 +108,9 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 
   m_editor_actions->RegisterActionsForContext(sup::gui::AppRegisterWidgetUniqueId(this));
+
+  auto on_text = [this]() { m_component_provider->SetFilterPattern(m_line_edit->text()); };
+  connect(m_line_edit, &QLineEdit::textChanged, this, on_text);
 }
 
 WorkspaceEditorWidget::~WorkspaceEditorWidget()

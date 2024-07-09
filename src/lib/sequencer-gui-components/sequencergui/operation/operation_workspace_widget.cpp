@@ -30,7 +30,6 @@
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>
 
-#include <mvvm/providers/item_view_component_provider.h>
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/widget_utils.h>
 

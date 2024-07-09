@@ -25,10 +25,10 @@
 #include <memory>
 
 class QTreeView;
+class QLineEdit;
 
 namespace mvvm
 {
-class ItemViewComponentProvider;
 class SessionItem;
 }  // namespace mvvm
 
@@ -49,6 +49,7 @@ class WorkspaceEditorActions;
 class AttributeEditorContext;
 class AttributeEditorActions;
 class AttributeEditorActionHandler;
+class WorkspaceViewComponentProvider;
 
 /**
  * @brief The WorkspaceEditorWidget class is intended for editing of workspace variables.
@@ -85,7 +86,7 @@ private:
 
   QTreeView* m_tree_view{nullptr};
   sup::gui::CustomHeaderView* m_custom_header{nullptr};
-  std::unique_ptr<mvvm::ItemViewComponentProvider> m_component_provider;
+  std::unique_ptr<WorkspaceViewComponentProvider> m_component_provider;
   WorkspaceItem* m_workspace_item{nullptr};
 
   WorkspaceEditorActionHandler* m_action_handler{nullptr};
@@ -95,6 +96,7 @@ private:
   AttributeEditorActions* m_attribute_actions{nullptr};
 
   sup::gui::VisibilityAgentBase* m_visibility_agent{nullptr};
+  QLineEdit* m_line_edit{nullptr};
 };
 
 }  // namespace sequencergui
