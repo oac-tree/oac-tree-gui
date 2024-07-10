@@ -35,7 +35,7 @@ namespace sup::gui
 {
 class CustomHeaderView;
 class ItemStackWidget;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {
@@ -59,7 +59,6 @@ public:
 private:
   void ReadSettings();
   void WriteSettings();
-  void AdjustColumnWidth();
 
   sup::gui::ItemStackWidget* m_stack_widget{nullptr};
 

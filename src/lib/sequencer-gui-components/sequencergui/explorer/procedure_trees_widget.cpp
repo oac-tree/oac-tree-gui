@@ -51,7 +51,8 @@ ProcedureTreesWidget::ProcedureTreesWidget(QWidget *parent)
     , m_stack_widget(new sup::gui::ItemStackWidget)
     , m_procedure_tree(new QTreeView)
     , m_procedure_tree_provider(mvvm::CreateProvider<mvvm::TopItemsViewModel>(m_procedure_tree))
-    , m_procedure_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_procedure_custom_header(
+          new sup::gui::CustomHeaderView(kProcedureHeaderStateSettingName, this))
     , m_property_tree(new mvvm::PropertyTreeView)
 {
   setWindowTitle("Procedure View");
@@ -90,7 +91,7 @@ void ProcedureTreesWidget::SetProcedure(ProcedureItem *procedure_item)
 {
   m_procedure_tree_provider->SetItem(procedure_item);
   m_procedure_tree->expandAll();
-  AdjustColumnWidth();
+  m_procedure_custom_header->AdjustColumnsWidth();
 }
 
 void ProcedureTreesWidget::ReadSettings()
@@ -105,34 +106,12 @@ void ProcedureTreesWidget::ReadSettings()
   {
     m_splitter->setSizes(QList<int>() << 400 << 200);
   }
-  if (settings.contains(kProcedureHeaderStateSettingName))
-  {
-    m_procedure_custom_header->SetAsFavoriteState(
-        settings.value(kProcedureHeaderStateSettingName).toByteArray());
-  }
 }
 
 void ProcedureTreesWidget::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
-  if (m_procedure_custom_header->HasFavoriteState())
-  {
-    settings.setValue(kProcedureHeaderStateSettingName,
-                      m_procedure_custom_header->GetFavoriteState());
-  }
-}
-
-void ProcedureTreesWidget::AdjustColumnWidth()
-{
-  if (m_procedure_custom_header->HasFavoriteState())
-  {
-    m_procedure_custom_header->RestoreFavoriteState();
-  }
-  else
-  {
-    m_procedure_tree->resizeColumnToContents(0);
-  }
 }
 
 }  // namespace sequencergui
