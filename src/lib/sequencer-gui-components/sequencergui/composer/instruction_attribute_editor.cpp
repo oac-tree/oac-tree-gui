@@ -39,8 +39,8 @@
 
 namespace
 {
-const QString kGroupName("UniversalPropertyEditor");
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+const QString kHeaderStateSettingName = "InstructionAttributeEditor/header_state";
+const std::vector<int> kDefaultColumnStretch({2, 1, 1});
 }  // namespace
 
 namespace sequencergui
@@ -50,7 +50,8 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new QToolBar)
     , m_tree_view(new QTreeView)
-    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_custom_header(
+          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_component_provider(mvvm::CreateProvider<AttributeEditorViewModel>(m_tree_view))
     , m_attribute_action_handler(new AttributeEditorActionHandler(CreateActionContext(), this))
     , m_attribute_actions(new AttributeEditorActions(m_attribute_action_handler, this))
@@ -68,60 +69,22 @@ InstructionAttributeEditor::InstructionAttributeEditor(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_tree_view);
 
-  m_custom_header->setStretchLastSection(true);
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &InstructionAttributeEditor::OnTreeContextMenuRequest);
 
-  ReadSettings();
-  AdjustTreeAppearance();
-
   connect(m_attribute_actions, &AttributeEditorActions::EditAnyvalueRequest, this,
           &InstructionAttributeEditor::EditAnyvalueRequest);
 }
 
-InstructionAttributeEditor::~InstructionAttributeEditor()
-{
-  WriteSettings();
-}
+InstructionAttributeEditor::~InstructionAttributeEditor() = default;
 
 void InstructionAttributeEditor::SetItem(mvvm::SessionItem *item)
 {
   m_component_provider->SetItem(item);
-  AdjustTreeAppearance();
-}
-
-void InstructionAttributeEditor::ReadSettings()
-{
-  const QSettings settings;
-
-  if (settings.contains(kHeaderStateSettingName))
-  {
-    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
-  }
-}
-
-void InstructionAttributeEditor::WriteSettings()
-{
-  QSettings settings;
-  if (m_custom_header->HasFavoriteState())
-  {
-    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
-  }
-}
-
-void InstructionAttributeEditor::AdjustTreeAppearance()
-{
-  if (m_custom_header->HasFavoriteState())
-  {
-    m_custom_header->RestoreFavoriteState();
-  }
-  else
-  {
-    m_tree_view->resizeColumnToContents(0);
-  }
+  m_custom_header->AdjustColumnsWidth();
 }
 
 void InstructionAttributeEditor::OnTreeContextMenuRequest(const QPoint &point)

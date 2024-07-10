@@ -63,9 +63,6 @@ signals:
   void EditAnyvalueRequest();
 
 private:
-  void ReadSettings();
-  void WriteSettings();
-  void AdjustTreeAppearance();
   /**
    * @brief Summons custom tree context menu to modify attributes.
    */

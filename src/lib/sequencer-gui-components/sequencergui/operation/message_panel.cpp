@@ -25,7 +25,6 @@
 #include <sequencergui/widgets/steady_menu.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
-#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/editors/selectable_combobox_editor.h>
 
@@ -52,6 +51,7 @@ std::vector<sequencergui::Severity> kSeveritiesToSelect = {
     sequencergui::Severity::kInfo,      sequencergui::Severity::kDebug,
     sequencergui::Severity::kTrace};
 
+const std::vector<int> kDefaultColumnStretch({2, 2, 2, 1, 6});
 }  // namespace
 
 namespace sequencergui
@@ -61,7 +61,7 @@ MessagePanel::MessagePanel(QWidget* parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_custom_header(
-          new sup::gui::CustomHeaderView(kHeaderStateSettingName, {2, 2, 2, 1, 6}, this))
+          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_view_model(new JobLogViewModel(nullptr))
     , m_proxy_model(new QSortFilterProxyModel(this))
     , m_severity_selector_action(new QWidgetAction(this))
