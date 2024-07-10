@@ -23,11 +23,11 @@
 #include "instruction_tree_expand_controller.h"
 #include "tooltip_helper.h"
 
+#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/universal_item_helper.h>
-#include <sequencergui/mainwindow/app_settings.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
@@ -47,10 +47,8 @@
 
 namespace
 {
-const QString kGroupName("RealTimeInstructionTreeWidget");
-const QString kSplitterSettingName = kGroupName + "/" + "splitter";
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
-
+const QString kHeaderStateSettingName("RealTimeInstructionTreeWidget/header_state");
+const std::vector<int> kDefaultColumnStretch({15, 5, 1});
 }  // namespace
 
 namespace sequencergui
@@ -60,7 +58,8 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
-    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_custom_header(
+          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_delegate(std::make_unique<BreakpointModelDelegate>())
     , m_expand_controller(std::make_unique<InstructionTreeExpandController>(m_tree_view))
 {
@@ -91,15 +90,10 @@ RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
 
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
 
-  ReadSettings();
-
   setStyleSheet(GetCustomToolTipStyle());
 }
 
-RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget()
-{
-  WriteSettings();
-}
+RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget() = default;
 
 void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
 {
@@ -113,7 +107,7 @@ void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
   if (procedure_item)
   {
     m_expand_controller->SetDefaultExpandState();
-    AdjustTreeAppearance();
+    m_custom_header->AdjustColumnsWidth();
   }
 }
 
@@ -128,11 +122,6 @@ void RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag(bool value)
 {
   m_viewport_follows_selection = value;
   ScrollViewportToSelection();
-}
-
-void RealTimeInstructionTreeWidget::showEvent(QShowEvent *event)
-{
-  AdjustTreeAppearance();
 }
 
 bool RealTimeInstructionTreeWidget::event(QEvent *event)
@@ -155,36 +144,6 @@ bool RealTimeInstructionTreeWidget::event(QEvent *event)
     }
   }
   return QWidget::event(event);
-}
-
-void RealTimeInstructionTreeWidget::ReadSettings()
-{
-  const QSettings settings;
-  if (settings.contains(kHeaderStateSettingName))
-  {
-    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
-  }
-}
-
-void RealTimeInstructionTreeWidget::WriteSettings()
-{
-  QSettings settings;
-  if (m_custom_header->HasFavoriteState())
-  {
-    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
-  }
-}
-
-void RealTimeInstructionTreeWidget::AdjustTreeAppearance()
-{
-  if (m_custom_header->HasFavoriteState())
-  {
-    m_custom_header->RestoreFavoriteState();
-  }
-  else
-  {
-    sup::gui::AdjustWidthOfColumns(*m_tree_view, {15, 5, 1});
-  }
 }
 
 void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)

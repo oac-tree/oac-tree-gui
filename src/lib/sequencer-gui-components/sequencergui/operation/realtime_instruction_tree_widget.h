@@ -68,13 +68,9 @@ signals:
   void ToggleBreakpointRequest(sequencergui::InstructionItem* instruction);
 
 protected:
-  void showEvent(QShowEvent* event) override;
-  bool event(QEvent *event) override;
+  bool event(QEvent* event) override;
 
 private:
-  void ReadSettings();
-  void WriteSettings();
-  void AdjustTreeAppearance();
   void OnTreeDoubleClick(const QModelIndex& index);
   void OnCustomContextMenuRequested(const QPoint& pos);
 

@@ -21,8 +21,6 @@
 
 #include <QTreeView>
 
-#include <numeric>
-
 namespace sequencergui
 {
 
