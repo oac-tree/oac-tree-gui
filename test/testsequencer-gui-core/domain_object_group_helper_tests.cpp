@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/composer/composer_helper.h"
+#include "sequencergui/domain/domain_object_group_helper.h"
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_object_type_registry.h>
@@ -27,11 +27,11 @@
 using namespace sequencergui;
 
 //! Testing methods from composer_helper_tests.cpp
-class ComposerHelperTest : public ::testing::Test
+class DomainObjectGroupHelperTests : public ::testing::Test
 {
 };
 
-TEST_F(ComposerHelperTest, CreateInstructionTypeGroups)
+TEST_F(DomainObjectGroupHelperTests, CreateInstructionTypeGroups)
 {
   DomainObjectTypeRegistry registry;
 

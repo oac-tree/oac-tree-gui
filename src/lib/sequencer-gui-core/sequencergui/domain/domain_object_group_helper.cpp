@@ -17,11 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "composer_helper.h"
+#include "domain_object_group_helper.h"
 
-#include "sequencergui/domain/domain_constants.h"
-#include "sequencergui/domain/domain_object_type_registry.h"
-#include "sequencergui/domain/domain_utils.h"
+#include "domain_constants.h"
+#include "domain_object_type_registry.h"
+#include "domain_utils.h"
 
 #include <mvvm/utils/container_utils.h>
 

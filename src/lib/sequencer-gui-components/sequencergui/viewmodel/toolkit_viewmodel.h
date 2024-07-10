@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
 #define SEQUENCERGUI_VIEWMODEL_TOOLKIT_VIEWMODEL_H_
 
-#include <sequencergui/composer/composer_helper.h>
+#include <sequencergui/domain/domain_object_group_helper.h>
 
 #include <QStandardItemModel>
 

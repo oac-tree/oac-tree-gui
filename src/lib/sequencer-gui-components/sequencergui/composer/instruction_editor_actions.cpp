@@ -21,7 +21,7 @@
 
 #include "instruction_editor_action_handler.h"
 
-#include <sequencergui/composer/composer_helper.h>
+#include <sequencergui/domain/domain_object_group_helper.h>
 #include <sequencergui/domain/domain_utils.h>
 #include <sequencergui/mainwindow/app_constants.h>
 #include <sup/gui/app/app_action_helper.h>
@@ -210,7 +210,7 @@ void InstructionEditorActions::AboutToShowInsertMenu()
     int enabled_actions_count{0};
     for (const auto &name : group_info.object_names)
     {
-      auto action = group_menu->addAction( QString::fromStdString(name));
+      auto action = group_menu->addAction(QString::fromStdString(name));
       if (insert_into ? m_action_handler->CanInsertInto(name)
                       : m_action_handler->CanInsertAfter(name))
       {
