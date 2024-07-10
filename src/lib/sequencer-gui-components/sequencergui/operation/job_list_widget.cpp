@@ -32,8 +32,7 @@
 
 namespace
 {
-const QString kGroupName("JobListWidget");
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+const QString kHeaderStateSettingName = "JobListWidget/header_state";
 }  // namespace
 
 namespace sequencergui
@@ -43,7 +42,7 @@ JobListWidget::JobListWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
     , m_component_provider(mvvm::CreateProvider<JobListViewModel>(m_tree_view))
-    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
 {
   setWindowTitle("JOBS");
   setToolTip("List of current sequencer running/idle procedures");
@@ -56,18 +55,12 @@ JobListWidget::JobListWidget(QWidget *parent)
   m_tree_view->setRootIsDecorated(false);
   m_tree_view->setHeader(m_custom_header);
   m_tree_view->setAlternatingRowColors(true);
-  m_tree_view->header()->setStretchLastSection(true);
 
   connect(m_component_provider.get(), &mvvm::ItemViewComponentProvider::SelectedItemChanged, this,
           [this](auto) { emit JobSelected(GetSelectedJob()); });
-
-  ReadSettings();
 }
 
-JobListWidget::~JobListWidget()
-{
-  WriteSettings();
-}
+JobListWidget::~JobListWidget() = default;
 
 void JobListWidget::SetJobModel(JobModel *model)
 {
@@ -83,7 +76,7 @@ JobItem *JobListWidget::GetSelectedJob()
 void JobListWidget::SetSelectedJob(JobItem *job)
 {
   m_component_provider->SetSelectedItem(job);
-  AdjustColumnWidth();
+  m_custom_header->AdjustColumnsWidth();
 }
 
 QTreeView *JobListWidget::GetTreeView()
@@ -94,36 +87,6 @@ QTreeView *JobListWidget::GetTreeView()
 mvvm::ViewModel *JobListWidget::GetViewModel()
 {
   return m_component_provider->GetViewModel();
-}
-
-void JobListWidget::ReadSettings()
-{
-  const QSettings settings;
-  if (settings.contains(kHeaderStateSettingName))
-  {
-    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
-  }
-}
-
-void JobListWidget::WriteSettings()
-{
-  QSettings settings;
-  if (m_custom_header->HasFavoriteState())
-  {
-    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
-  }
-}
-
-void JobListWidget::AdjustColumnWidth()
-{
-  if (m_custom_header->HasFavoriteState())
-  {
-    m_custom_header->RestoreFavoriteState();
-  }
-  else
-  {
-    m_tree_view->resizeColumnToContents(0);
-  }
 }
 
 }  // namespace sequencergui
