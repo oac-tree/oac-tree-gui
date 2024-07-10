@@ -62,9 +62,6 @@ public:
 
   void SetLog(JobLog* job_log);
 
-protected:
-  void showEvent(QShowEvent* event) override;
-
 private:
   void ReadSettings();
   void WriteSettings();
