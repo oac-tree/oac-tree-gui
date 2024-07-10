@@ -33,7 +33,6 @@
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 #include <mvvm/widgets/widget_utils.h>
 
-#include <QDebug>
 #include <QSettings>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -42,10 +41,10 @@ namespace
 {
 const QString kGroupName("OperationWorkspacePanel");
 
-QString GetHeaderStateSettingName(int mode)
+QString GetHeaderStateSettingName(sequencergui::OperationWorkspaceWidget::Mode mode)
 {
   static const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
-  return QString("%1%2").arg(kHeaderStateSettingName, mode);
+  return QString("%1%2").arg(kHeaderStateSettingName, static_cast<int>(mode));
 }
 
 }  // namespace
@@ -57,7 +56,7 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
     : QWidget(parent)
     , m_mode(mode)
     , m_tree_view(new QTreeView)
-    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_custom_header(new sup::gui::CustomHeaderView(GetHeaderStateSettingName(mode), this))
 {
   if (mode == Mode::kWorkspaceTree)
   {
@@ -81,11 +80,8 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
   sup::gui::utils::BeautifyTreeStyle(m_tree_view);
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
-  m_tree_view->header()->setStretchLastSection(true);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           sup::gui::CreateOnCustomMenuCallback(*m_tree_view));
-
-  ReadSettings();
 
   auto on_subscribe = [this]() { SetProcedureIntern(m_procedure); };
 
@@ -95,10 +91,7 @@ OperationWorkspaceWidget::OperationWorkspaceWidget(Mode mode, QWidget *parent)
   m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
 }
 
-OperationWorkspaceWidget::~OperationWorkspaceWidget()
-{
-  WriteSettings();
-}
+OperationWorkspaceWidget::~OperationWorkspaceWidget() = default;
 
 void OperationWorkspaceWidget::SetProcedure(ProcedureItem *procedure)
 {
@@ -117,38 +110,13 @@ void OperationWorkspaceWidget::SetProcedure(ProcedureItem *procedure)
 
 void OperationWorkspaceWidget::SetFilterPattern(const QString &pattern)
 {
-  qDebug() << "pattern";
   m_component_provider->SetFilterPattern(pattern);
-}
-
-void OperationWorkspaceWidget::ReadSettings()
-{
-  const QSettings settings;
-
-  if (settings.contains(GetHeaderStateSettingName(static_cast<int>(m_mode))))
-  {
-    m_custom_header->SetAsFavoriteState(
-        settings.value(GetHeaderStateSettingName(static_cast<int>(m_mode))).toByteArray());
-  }
-}
-
-void OperationWorkspaceWidget::WriteSettings()
-{
-  QSettings settings;
-  if (m_custom_header->HasFavoriteState())
-  {
-    settings.setValue(GetHeaderStateSettingName(static_cast<int>(m_mode)),
-                      m_custom_header->GetFavoriteState());
-  }
 }
 
 void OperationWorkspaceWidget::AdjustTreeAppearance()
 {
-  if (m_custom_header->HasFavoriteState())
-  {
-    m_custom_header->RestoreFavoriteState();
-  }
   m_tree_view->expandAll();
+  m_custom_header->AdjustColumnsWidth();
 }
 
 void OperationWorkspaceWidget::SetProcedureIntern(ProcedureItem *procedure)

@@ -71,8 +71,6 @@ public:
   void SetFilterPattern(const QString& pattern);
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void AdjustTreeAppearance();
   void SetProcedureIntern(ProcedureItem* procedure);
 
