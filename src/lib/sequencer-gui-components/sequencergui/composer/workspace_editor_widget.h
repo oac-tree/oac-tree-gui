@@ -70,9 +70,8 @@ public:
   mvvm::SessionItem* GetSelectedItem() const;
 
 private:
-  void ReadSettings();
-  void WriteSettings();
   void AdjustTreeAppearance();
+
   /**
    * @brief Summons custom tree context menu to modify attributes.
    */

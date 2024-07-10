@@ -50,8 +50,8 @@
 
 namespace
 {
-const QString kGroupName("WorkspaceEditorWidget");
-const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
+const QString kHeaderStateSettingName("WorkspaceEditorWidget/header_state");
+const std::vector<int> kDefaultColumnStretch({3, 2, 2});
 
 }  // namespace
 
@@ -61,7 +61,8 @@ namespace sequencergui
 WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
-    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_custom_header(
+          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
     , m_component_provider(std::make_unique<WorkspaceViewComponentProvider>(
           std::make_unique<WorkspaceEditorViewModel>(nullptr), m_tree_view))
     , m_action_handler(new WorkspaceEditorActionHandler(CreateWorkspaceEditorContext(), this))
@@ -98,8 +99,6 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
                                        AttributeEditorActions::ActionKey::kEditAnyValue});
   addActions(editor_toolbar_actions + attribute_toolbar_actions);
 
-  ReadSettings();
-
   auto on_subscribe = [this]() { SetWorkspaceItemIntern(m_workspace_item); };
 
   auto on_unsubscribe = [this]() { SetWorkspaceItemIntern(nullptr); };
@@ -113,10 +112,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   connect(m_line_edit, &QLineEdit::textChanged, this, on_text);
 }
 
-WorkspaceEditorWidget::~WorkspaceEditorWidget()
-{
-  WriteSettings();
-}
+WorkspaceEditorWidget::~WorkspaceEditorWidget() = default;
 
 void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
 {
@@ -138,36 +134,10 @@ mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
   return m_component_provider->GetSelectedItem();
 }
 
-void WorkspaceEditorWidget::ReadSettings()
-{
-  QSettings settings;
-  if (settings.contains(kHeaderStateSettingName))
-  {
-    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
-  }
-}
-
-void WorkspaceEditorWidget::WriteSettings()
-{
-  QSettings settings;
-  if (m_custom_header->HasFavoriteState())
-  {
-    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
-  }
-}
-
 void WorkspaceEditorWidget::AdjustTreeAppearance()
 {
   m_tree_view->expandAll();
-
-  if (m_custom_header->HasFavoriteState())
-  {
-    m_custom_header->RestoreFavoriteState();
-  }
-  else
-  {
-    sup::gui::AdjustWidthOfColumns(*m_tree_view, {3, 2, 2});
-  }
+  m_custom_header->AdjustColumnsWidth();
 }
 
 void WorkspaceEditorWidget::OnTreeContextMenuRequest(const QPoint &point)
@@ -248,7 +218,7 @@ WorkspaceEditorContext WorkspaceEditorWidget::CreateWorkspaceEditorContext()
   result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
 
   result.set_mime_data = [](std::unique_ptr<QMimeData> data)
-  { return QGuiApplication::clipboard()->setMimeData(data.release()); };
+  { QGuiApplication::clipboard()->setMimeData(data.release()); };
 
   return result;
 }
