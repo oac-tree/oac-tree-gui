@@ -29,7 +29,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
-#include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>
@@ -181,7 +180,7 @@ void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
     return;
   }
 
-  ScrollTreeViewportToSelection(*m_tree_view);
+  sup::gui::ScrollTreeViewportToSelection(*m_tree_view);
 }
 
 }  // namespace sequencergui

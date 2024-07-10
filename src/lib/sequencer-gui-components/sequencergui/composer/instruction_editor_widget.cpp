@@ -30,7 +30,6 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/custom_tree_view_style.h>
-#include <sequencergui/widgets/tree_helper.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/core/message_helper.h>

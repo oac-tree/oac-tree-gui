@@ -16,8 +16,6 @@ target_sources(${library_name} PRIVATE
   overlay_widget_position_strategy.h
   steady_menu.cpp
   steady_menu.h
-  tree_helper.cpp
-  tree_helper.h
   warning_sign_widget.cpp
   warning_sign_widget.h
   widget_overlay_message_handler.cpp

@@ -24,7 +24,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/viewmodel/viewmodel_helper.h>
-#include <sequencergui/widgets/tree_helper.h>
+#include <sup/gui/widgets/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>
@@ -57,6 +57,7 @@ void InstructionTreeExpandController::SaveSelectionRequest(
 std::vector<mvvm::SessionItem *> InstructionTreeExpandController::GetInstructionsToSelect() const
 {
   std::vector<mvvm::SessionItem *> result;
+  result.reserve(m_selection_preferences.size());
   for (auto item : m_selection_preferences)
   {
     result.push_back(FindVisibleInstruction(item));
@@ -71,7 +72,7 @@ mvvm::SessionItem *InstructionTreeExpandController::FindVisibleInstruction(
   auto indexes = GetViewModel()->GetIndexOfSessionItem(item);
   if (!indexes.empty())
   {
-    auto visible_index = FindVisibleCandidate(*m_tree_view, indexes.at(0));
+    auto visible_index = sup::gui::FindVisibleCandidate(*m_tree_view, indexes.at(0));
     return GetViewModel()->GetSessionItemFromIndex(visible_index);
   }
 
