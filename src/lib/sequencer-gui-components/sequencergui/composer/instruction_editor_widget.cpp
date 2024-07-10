@@ -73,7 +73,7 @@ namespace sequencergui
 InstructionEditorWidget::InstructionEditorWidget(QWidget *parent)
     : QWidget(parent)
     , m_tree_view(new QTreeView)
-    , m_custom_header(new sup::gui::CustomHeaderView(this))
+    , m_custom_header(new sup::gui::CustomHeaderView(kHeaderStateSettingName, this))
     , m_component_provider(mvvm::CreateProvider<InstructionEditorViewModel>(m_tree_view))
     , m_attribute_editor(new InstructionAttributeEditor)
     , m_splitter(new QSplitter)
@@ -162,20 +162,12 @@ void InstructionEditorWidget::ReadSettings()
   {
     m_splitter->restoreState(settings.value(kSplitterSettingName).toByteArray());
   }
-  if (settings.contains(kHeaderStateSettingName))
-  {
-    m_custom_header->SetAsFavoriteState(settings.value(kHeaderStateSettingName).toByteArray());
-  }
 }
 
 void InstructionEditorWidget::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kSplitterSettingName, m_splitter->saveState());
-  if (m_custom_header->HasFavoriteState())
-  {
-    settings.setValue(kHeaderStateSettingName, m_custom_header->GetFavoriteState());
-  }
 }
 
 void InstructionEditorWidget::SetupTree()
@@ -184,14 +176,11 @@ void InstructionEditorWidget::SetupTree()
 
   m_tree_view->setAlternatingRowColors(true);
   m_tree_view->setHeader(m_custom_header);
-  m_custom_header->setStretchLastSection(true);
   m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
           &InstructionEditorWidget::OnContextMenuRequest);
 
   m_tree_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-  AdjustTreeAppearance();
 
   m_tree_view->setDragEnabled(true);
   m_tree_view->viewport()->setAcceptDrops(true);
@@ -203,15 +192,7 @@ void InstructionEditorWidget::SetupTree()
 void InstructionEditorWidget::AdjustTreeAppearance()
 {
   m_tree_view->expandAll();
-
-  if (m_custom_header->HasFavoriteState())
-  {
-    m_custom_header->RestoreFavoriteState();
-  }
-  else
-  {
-    m_tree_view->resizeColumnToContents(0);
-  }
+  m_custom_header->AdjustColumnsWidth();
 }
 
 void InstructionEditorWidget::SetProcedureIntern(ProcedureItem *procedure)
@@ -274,7 +255,7 @@ InstructionEditorContext InstructionEditorWidget::CreateInstructionEditorContext
   result.get_mime_data = []() { return QGuiApplication::clipboard()->mimeData(); };
 
   result.set_mime_data = [](std::unique_ptr<QMimeData> data)
-  { return QGuiApplication::clipboard()->setMimeData(data.release()); };
+  { QGuiApplication::clipboard()->setMimeData(data.release()); };
 
   return result;
 }
