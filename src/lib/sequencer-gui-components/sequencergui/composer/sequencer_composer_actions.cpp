@@ -19,7 +19,7 @@
 
 #include "sequencer_composer_actions.h"
 
-#include <sequencergui/mainwindow/app_constants.h>
+#include <sequencergui/components/app_constants.h>
 #include <sequencergui/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
 

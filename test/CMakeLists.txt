@@ -20,6 +20,7 @@ add_subdirectory(libtest-utils)
 add_subdirectory(testsequencer-gui-core)
 add_subdirectory(testsequencer-gui-integration)
 add_subdirectory(testsequencer-gui-components)
+add_subdirectory(testsequencer-gui-views)
 
 # Add custom target `make testall` which will run test executables one after another.
 # This can be used instead of usual `make test` or `ctest` while running tests via an ssh
@@ -30,6 +31,7 @@ add_custom_target(testall
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views
 )
 
 file(WRITE ${TEST_OUTPUT_DIRECTORY}/test.sh
@@ -39,6 +41,7 @@ fail=0
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views " || fail=1
 exit $fail
 ")
 

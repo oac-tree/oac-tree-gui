@@ -1,9 +1,6 @@
 target_sources(${library_name} PRIVATE
   about_application_dialog.cpp
   about_application_dialog.h
-  app_constants.h
-  app_settings.cpp
-  app_settings.h
   command_line_options.cpp
   command_line_options.h
   main_window_helper.cpp

@@ -20,7 +20,7 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
-#include "app_constants.h"
+#include <sequencergui/components/app_constants.h>
 
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>

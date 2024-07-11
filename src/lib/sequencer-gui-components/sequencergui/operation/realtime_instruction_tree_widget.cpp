@@ -23,7 +23,7 @@
 #include "instruction_tree_expand_controller.h"
 #include "tooltip_helper.h"
 
-#include <sequencergui/mainwindow/app_settings.h>
+#include <sequencergui/components/app_settings.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>

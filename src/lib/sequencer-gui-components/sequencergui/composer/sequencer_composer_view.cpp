@@ -24,7 +24,6 @@
 #include <sequencergui/composer/composer_panel.h>
 #include <sequencergui/composer/composer_widget_panel.h>
 #include <sequencergui/composer/sequencer_composer_actions.h>
-#include <sequencergui/mainwindow/app_constants.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>

@@ -23,7 +23,6 @@
 
 #include <sequencergui/domain/domain_object_group_helper.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sequencergui/mainwindow/app_constants.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/components/proxy_action.h>
