@@ -39,7 +39,7 @@
         <cppcheck.args>--enable=all --suppress=missingInclude --inline-suppr</cppcheck.args>
         <sonar.sources.cpp>src</sonar.sources.cpp>
         <sonar.tests.cpp>test</sonar.tests.cpp>
-        <sonar.exclusions>test/**, src/app/**, src/lib/sequencer-gui-components/**</sonar.exclusions>
+        <sonar.exclusions>test/**, src/app/**, src/lib/sequencer-gui-views/**</sonar.exclusions>
         <valgrind.enable>false</valgrind.enable>
         <coverage>false</coverage>
     </properties>
