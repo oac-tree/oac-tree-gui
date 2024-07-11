@@ -23,11 +23,11 @@
 #include "sequencer_main_window_actions.h"
 #include "settings_view.h"
 
-#include <sequencergui/composer/sequencer_composer_view.h>
-#include <sequencergui/explorer/sequencer_explorer_view.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/operation/operation_monitor_view.h>
+#include <sequencergui/views/composer/sequencer_composer_view.h>
+#include <sequencergui/views/explorer/sequencer_explorer_view.h>
+#include <sequencergui/views/operation/operation_monitor_view.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/widgets/main_vertical_bar_widget.h>

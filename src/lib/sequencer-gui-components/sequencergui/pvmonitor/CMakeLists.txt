@@ -3,13 +3,6 @@ target_sources(${library_name} PRIVATE
   monitor_main_window_actions.h
   monitor_model.cpp
   monitor_model.h
-  monitor_widget.cpp
-  monitor_widget.h
-  monitor_widget.h
-  monitor_widget_actions.cpp
-  monitor_widget_actions.h
-  pvmonitor_main_window.cpp
-  pvmonitor_main_window.h
   sequencer_workspace_listener.cpp
   sequencer_workspace_listener.h
   workspace_editor_action_handler.cpp

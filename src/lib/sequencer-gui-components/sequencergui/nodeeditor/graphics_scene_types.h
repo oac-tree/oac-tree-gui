@@ -17,27 +17,19 @@
  * of the distribution package.
  *****************************************************************************/
 
+#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
+#define SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_
 
-#include <sequencergui/components/custom_meta_types.h>
-#include <sequencergui/domain/domain_utils.h>
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
-#include <QApplication>
-
-int main(int argc, char** argv)
+namespace sequencergui
 {
-  ::testing::InitGoogleTest(&argc, argv);
-  ::testing::InitGoogleMock(&argc, argv);
+enum ESelectionModes
+{
+  kSimpleSelection,
+  kRubberSelection,
+  kHandDrag,
+  kUnknownSelection
+};
 
-  sequencergui::RegisterCustomMetaTypes();
+}  // namespace sequencergui
 
-  sequencergui::LoadPlugins();
-
-  QApplication app(argc, argv);
-  Q_UNUSED(app)
-
-  // run all google tests
-  return RUN_ALL_TESTS();
-}
+#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_SCENE_TYPES_H_

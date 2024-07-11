@@ -15,14 +15,14 @@ target_sources(${library_name} PRIVATE
   domain_runner.h
   domain_runner_service.cpp
   domain_runner_service.h
+  job_manager.cpp
+  job_manager.h
   job_handler.cpp
   job_handler.h
   job_log.cpp
   job_log.h
   job_log_severity.cpp
   job_log_severity.h
-  job_manager.cpp
-  job_manager.h
   job_utils.cpp
   job_utils.h
   log_event.cpp

@@ -19,7 +19,8 @@
 
 #include "node_controller.h"
 
-#include <sequencergui/nodeeditor/graphics_view.h>
+#include "graphics_scene_types.h"
+
 #include <sequencergui/nodeeditor/node_connection.h>
 #include <sequencergui/nodeeditor/node_port.h>
 
@@ -87,7 +88,7 @@ bool NodeController::processMousePress(QGraphicsSceneMouseEvent* event)
   {
     if (auto port = findPort(event->scenePos()); port)
     {
-      emit selectionModeChangeRequest(GraphicsView::kSimpleSelection);
+      emit selectionModeChangeRequest(kSimpleSelection);
       m_conn = new NodeConnection(m_scene);
       m_conn->setPort1(port);
       m_conn->setPos1(port->scenePos());
@@ -114,7 +115,7 @@ bool NodeController::processMouseRelease(QGraphicsSceneMouseEvent* event)
 {
   if (m_conn && event->button() == Qt::LeftButton)
   {
-    emit selectionModeChangeRequest(GraphicsView::kRubberSelection);
+    emit selectionModeChangeRequest(kRubberSelection);
     if (auto port2 = findPort(event->scenePos()); port2)
     {
       auto port1 = m_conn->port1();

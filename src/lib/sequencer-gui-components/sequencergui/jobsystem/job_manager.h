@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <memory>
+#include <functional>
 
 namespace sequencergui
 {
@@ -32,8 +33,8 @@ struct UserInputArgs;
 class JobModel;
 class InstructionItem;
 class JobItem;
-class MessagePanel;
 class JobHandler;
+class JobLog;
 
 //! Manages JobItem execution. Maps JobItem to the JobHandler, containing all machinery to execute
 //! domain procedures in a thread.
@@ -43,6 +44,8 @@ class JobManager : public QObject
   Q_OBJECT
 
 public:
+  using set_joblog_cb = std::function<void(JobLog*)>;
+
   explicit JobManager(QObject* parent = nullptr);
   ~JobManager() override;
 
@@ -68,7 +71,7 @@ public:
    */
   void OnRemoveJobRequest(JobItem* job);
 
-  void SetMessagePanel(MessagePanel* panel);
+  void SetMessagePanel(set_joblog_cb cb);
 
   /**
    * @brief Returns true if there are jobs running.
@@ -91,7 +94,7 @@ private:
 
   JobItem* m_current_job{nullptr};
   std::map<JobItem*, std::unique_ptr<JobHandler>> m_job_map;
-  MessagePanel* m_message_panel{nullptr};
+  set_joblog_cb m_set_joblog_cb;
 };
 
 }  // namespace sequencergui

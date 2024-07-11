@@ -24,11 +24,12 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/operation/message_panel.h>
 
 #include <sup/dto/anyvalue.h>
 
 #include <algorithm>
+
+#include <QWidget>
 
 namespace sequencergui
 {
@@ -66,9 +67,9 @@ void JobManager::SetCurrentJob(JobItem *job)
 
   if (auto job_handler = GetCurrentJobHandler(); job_handler)
   {
-    if (m_message_panel)
+    if (m_set_joblog_cb)
     {
-      m_message_panel->SetLog(job_handler->GetJobLog());
+      m_set_joblog_cb(job_handler->GetJobLog());
     }
   }
 }
@@ -144,9 +145,9 @@ void JobManager::OnRemoveJobRequest(JobItem *job)
   }
 }
 
-void JobManager::SetMessagePanel(MessagePanel *panel)
+void JobManager::SetMessagePanel(set_joblog_cb cb)
 {
-  m_message_panel = panel;
+  m_set_joblog_cb = cb;
 }
 
 bool JobManager::HasRunningJobs() const

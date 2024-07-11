@@ -24,7 +24,7 @@
 
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/operation/operation_monitor_view.h>
+#include <sequencergui/views/operation/operation_monitor_view.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/application_helper.h>

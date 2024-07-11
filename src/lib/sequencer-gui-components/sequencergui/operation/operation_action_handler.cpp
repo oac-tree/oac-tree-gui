@@ -19,7 +19,6 @@
 
 #include "operation_action_handler.h"
 
-#include <sequencergui/components/message_handler_factory.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_manager.h>
@@ -27,6 +26,7 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sup/gui/core/standard_message_handlers.h>
 
 #include <QAbstractTableModel>
 #include <sstream>
@@ -65,7 +65,8 @@ OperationActionHandler::OperationActionHandler(JobManager *job_manager,
     : QObject(parent)
     , m_job_manager(job_manager)
     , m_job_selection_callback(std::move(selection_callback))
-    , m_message_handler(CreateThrowingMessageHandler())
+    , m_message_handler(
+          std::make_unique<sup::gui::ThrowingMessageHandler<::sequencergui::RuntimeException>>())
     , m_default_delay(itemconstants::kDefaultTickTimeoutMsec)
 
 {

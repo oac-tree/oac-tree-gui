@@ -1,0 +1,5 @@
+add_subdirectory(explorer)
+add_subdirectory(composer)
+add_subdirectory(pvmonitor)
+add_subdirectory(operation)
+add_subdirectory(nodeeditor)

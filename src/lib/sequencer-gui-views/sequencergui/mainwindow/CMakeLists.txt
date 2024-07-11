@@ -9,6 +9,8 @@ target_sources(${library_name} PRIVATE
   operation_main_window.h
   operation_main_window_actions.cpp
   operation_main_window_actions.h
+  pvmonitor_main_window.cpp
+  pvmonitor_main_window.h
   sequencer_main_window.cpp
   sequencer_main_window.h
   sequencer_main_window_actions.cpp

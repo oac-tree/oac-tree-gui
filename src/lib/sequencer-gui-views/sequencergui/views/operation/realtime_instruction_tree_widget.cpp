@@ -1,0 +1,186 @@
+/******************************************************************************
+ *
+ * Project       : Graphical User Interface for SUP Sequencer
+ *
+ * Description   : Integrated development environment for Sequencer procedures
+ *
+ * Author        : Gennady Pospelov (IO)
+ *
+ * Copyright (c) : 2010-2024 ITER Organization,
+ *                 CS 90 046
+ *                 13067 St. Paul-lez-Durance Cedex
+ *                 France
+ *
+ * This file is part of ITER CODAC software.
+ * For the terms and conditions of redistribution or use of this software
+ * refer to the file ITER-LICENSE.TXT located in the top level directory
+ * of the distribution package.
+ *****************************************************************************/
+
+#include "realtime_instruction_tree_widget.h"
+
+#include <sequencergui/operation/breakpoint_model_delegate.h>
+#include <sequencergui/operation/instruction_tree_expand_controller.h>
+#include <sequencergui/operation/tooltip_helper.h>
+
+#include <sequencergui/components/app_settings.h>
+#include <sequencergui/model/instruction_container_item.h>
+#include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
+#include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/widgets/tree_helper.h>
+
+#include <mvvm/providers/item_view_component_provider.h>
+#include <mvvm/widgets/widget_utils.h>
+
+#include <QEvent>
+#include <QHelpEvent>
+#include <QMenu>
+#include <QSettings>
+#include <QToolTip>
+#include <QTreeView>
+#include <QVBoxLayout>
+
+namespace
+{
+const QString kHeaderStateSettingName("RealTimeInstructionTreeWidget/header_state");
+const std::vector<int> kDefaultColumnStretch({15, 5, 1});
+}  // namespace
+
+namespace sequencergui
+{
+
+RealTimeInstructionTreeWidget::RealTimeInstructionTreeWidget(QWidget *parent)
+    : QWidget(parent)
+    , m_tree_view(new QTreeView)
+    , m_component_provider(mvvm::CreateProvider<InstructionOperationViewModel>(m_tree_view))
+    , m_custom_header(
+          new sup::gui::CustomHeaderView(kHeaderStateSettingName, kDefaultColumnStretch, this))
+    , m_delegate(std::make_unique<BreakpointModelDelegate>())
+    , m_expand_controller(std::make_unique<InstructionTreeExpandController>(m_tree_view))
+{
+  setWindowTitle("InstructionTree");
+
+  auto layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->addWidget(m_tree_view);
+
+  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  m_tree_view->setItemDelegate(m_delegate.get());
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          &RealTimeInstructionTreeWidget::OnCustomContextMenuRequested);
+
+  connect(m_tree_view, &QTreeView::doubleClicked, this,
+          &RealTimeInstructionTreeWidget::OnTreeDoubleClick);
+
+  auto on_branch_change = [this]()
+  {
+    m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
+    ScrollViewportToSelection();
+  };
+  connect(m_expand_controller.get(), &InstructionTreeExpandController::VisibilityHasChanged, this,
+          on_branch_change);
+
+  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
+
+  setStyleSheet(GetCustomToolTipStyle());
+}
+
+RealTimeInstructionTreeWidget::~RealTimeInstructionTreeWidget() = default;
+
+void RealTimeInstructionTreeWidget::SetProcedure(ProcedureItem *procedure_item)
+{
+  m_procedure = procedure_item;
+
+  auto container = procedure_item ? procedure_item->GetInstructionContainer() : nullptr;
+
+  m_component_provider->SetItem(container);
+  m_expand_controller->SetInstructionContainer(container);
+
+  if (procedure_item)
+  {
+    m_expand_controller->SetDefaultExpandState();
+    m_custom_header->AdjustColumnsWidth();
+  }
+}
+
+void RealTimeInstructionTreeWidget::SetSelectedInstructions(std::vector<InstructionItem *> items)
+{
+  m_expand_controller->SaveSelectionRequest(items);
+  m_component_provider->SetSelectedItems(m_expand_controller->GetInstructionsToSelect());
+  ScrollViewportToSelection();
+}
+
+void RealTimeInstructionTreeWidget::SetViewportFollowsSelectionFlag(bool value)
+{
+  m_viewport_follows_selection = value;
+  ScrollViewportToSelection();
+}
+
+bool RealTimeInstructionTreeWidget::event(QEvent *event)
+{
+  if (event->type() == QEvent::ToolTip)
+  {
+    auto global_pos = static_cast<QHelpEvent *>(event)->globalPos();
+    auto pos = m_tree_view->viewport()->mapFromGlobal(global_pos);
+    auto index = m_tree_view->indexAt(pos);
+    auto item = m_component_provider->GetViewModel()->GetSessionItemFromIndex(index);
+    auto text = GetInstructionToolTipText(item);
+    if (text.isEmpty())
+    {
+      QToolTip::hideText();
+      event->ignore();
+    }
+    else
+    {
+      QToolTip::showText(global_pos, text, this);
+    }
+  }
+  return QWidget::event(event);
+}
+
+void RealTimeInstructionTreeWidget::OnTreeDoubleClick(const QModelIndex &index)
+{
+  if (index.column() == InstructionOperationViewModel::GetBreakpointColumn())
+  {
+    auto instruction = m_component_provider->GetSelected<InstructionItem>();
+    emit ToggleBreakpointRequest(instruction);
+  }
+}
+
+void RealTimeInstructionTreeWidget::OnCustomContextMenuRequested(const QPoint &pos)
+{
+  QMenu menu;
+
+  // setting up menu section with standard collapse/expand block
+  sup::gui::SetupCollapseExpandMenu(pos, menu, *m_tree_view);
+  menu.addSeparator();
+
+  // setting menu with "selective" expand option
+  auto selective_expand_action = menu.addAction("Selective expand");
+  selective_expand_action->setToolTip(
+      "Expand all except instructions with property 'show as collapsed' set.");
+
+  auto on_action = [this]() { m_expand_controller->SetDefaultExpandState(); };
+  QObject::connect(selective_expand_action, &QAction::triggered, this, on_action);
+
+  menu.exec(m_tree_view->mapToGlobal(pos));
+}
+
+void RealTimeInstructionTreeWidget::ScrollViewportToSelection()
+{
+  if (!m_viewport_follows_selection)
+  {
+    return;
+  }
+
+  sup::gui::ScrollTreeViewportToSelection(*m_tree_view);
+}
+
+}  // namespace sequencergui

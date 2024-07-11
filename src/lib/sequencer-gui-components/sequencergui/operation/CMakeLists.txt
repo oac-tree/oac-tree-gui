@@ -10,32 +10,10 @@ target_sources(${library_name} PRIVATE
   breakpoint_types.h
   instruction_tree_expand_controller.cpp
   instruction_tree_expand_controller.h
-  job_list_widget.cpp
-  job_list_widget.h
-  job_property_widget.cpp
-  job_property_widget.h
-  message_panel.cpp
-  message_panel.h
-  monitor_realtime_actions.cpp
-  monitor_realtime_actions.h
   operation_action_handler.cpp
   operation_action_handler.h
-  operation_job_panel.cpp
-  operation_job_panel.h
-  operation_job_panel_actions.cpp
-  operation_job_panel_actions.h
-  operation_monitor_view.cpp
-  operation_monitor_view.h
-  operation_realtime_panel.cpp
-  operation_realtime_panel.h
-  operation_workspace_panel.cpp
-  operation_workspace_panel.h
-  operation_workspace_widget.cpp
-  operation_workspace_widget.h
   procedure_action_handler.cpp
   procedure_action_handler.h
-  realtime_instruction_tree_widget.cpp
-  realtime_instruction_tree_widget.h
   tooltip_helper.cpp
   tooltip_helper.h
   workspace_view_component_provider.cpp

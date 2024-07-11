@@ -15,16 +15,11 @@ target_sources(${library_name} PRIVATE
   graphics_scene.h
   graphics_scene_controller.cpp
   graphics_scene_controller.h
-  graphics_view.cpp
-  graphics_view.h
+  graphics_scene_types.h
   node_connection.cpp
   node_connection.h
   node_controller.cpp
   node_controller.h
-  node_editor.cpp
-  node_editor.h
-  node_editor_actions.cpp
-  node_editor_actions.h
   node_port.cpp
   node_port.h
   port_info.h
