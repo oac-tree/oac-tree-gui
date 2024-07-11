@@ -20,9 +20,10 @@
 #ifndef SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_ACTIONS_H_
 
+#include <sup/gui/components/action_map.h>
+
 #include <QObject>
 #include <memory>
-#include <sup/gui/components/action_map.h>
 
 class QMenu;
 
@@ -62,7 +63,7 @@ public:
   explicit WorkspaceEditorActions(QObject* parent = nullptr);
   ~WorkspaceEditorActions() override;
 
-  QList<QAction*> GetActions(const std::vector<ActionKey> &action_keys) const;
+  QList<QAction*> GetActions(const std::vector<ActionKey>& action_keys) const;
 
   /**
    * @brief Setup cut/copy/paste actions in given menu.

@@ -23,8 +23,8 @@
 #include <sequencergui/model/sequencer_item_includes.h>
 #include <sup/gui/model/anyvalue_item.h>
 
-#include <mvvm/model/item_factory.h>
 #include <mvvm/model/item_catalogue.h>
+#include <mvvm/model/item_factory.h>
 #include <mvvm/model/item_utils.h>
 #include <mvvm/model/tagged_items.h>
 #include <mvvm/utils/container_utils.h>

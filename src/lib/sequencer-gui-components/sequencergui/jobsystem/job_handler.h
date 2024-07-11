@@ -30,7 +30,7 @@
 
 namespace mvvm
 {
-template<typename T>
+template <typename T>
 class ItemListener;
 }
 

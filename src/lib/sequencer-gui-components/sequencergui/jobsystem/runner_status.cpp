@@ -21,8 +21,8 @@
 
 #include <sequencergui/core/exceptions.h>
 
-#include <map>
 #include <algorithm>
+#include <map>
 
 namespace
 {

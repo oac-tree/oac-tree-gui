@@ -20,7 +20,6 @@
 #include "workspace_editor_actions.h"
 
 #include <sequencergui/composer/workspace_editor_action_handler.h>
-
 #include <sequencergui/domain/domain_utils.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>

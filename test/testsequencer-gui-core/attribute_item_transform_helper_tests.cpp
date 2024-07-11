@@ -140,7 +140,7 @@ TEST_F(AttributeItemTransformHelperTest, SetPropertyFromDomainAttribute)
 
     EXPECT_NO_THROW(
         SetPropertyFromDomainAttribute(*domain_variable, domainconstants::kNameAttribute, item));
-    
+
     EXPECT_TRUE(GetAttributeExposedFlag(item));
     EXPECT_EQ(item.Data<std::string>(), std::string("abc"));
   }
@@ -256,7 +256,7 @@ TEST_F(AttributeItemTransformHelperTest, SetExposedFlag)
   item.SetAnyTypeName(sup::dto::kInt8TypeName);
   EXPECT_EQ(item.Data<mvvm::int8>(), 0);
   EXPECT_EQ(item.GetAnyTypeName(), sup::dto::kInt8TypeName);
-  
+
   EXPECT_TRUE(GetAttributeExposedFlag(item));
 
   SetAttributeExposedFlag(false, item);

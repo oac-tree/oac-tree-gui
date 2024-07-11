@@ -75,7 +75,7 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
     m_workspace = nullptr;
   }
 
-  explicit SequencerWorkspaceListenerImpl(SequencerWorkspaceListener *self) : m_self(self){};
+  explicit SequencerWorkspaceListenerImpl(SequencerWorkspaceListener *self) : m_self(self) {};
 };
 
 SequencerWorkspaceListener::SequencerWorkspaceListener(QObject *parent)

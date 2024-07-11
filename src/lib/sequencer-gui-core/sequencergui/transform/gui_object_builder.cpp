@@ -45,8 +45,7 @@ std::unique_ptr<sup::dto::AnyTypeRegistry> CreateRegistry(const procedure_t &pro
 
   for (const auto &type_registration : procedure.GetPreamble().GetTypeRegistrations())
   {
-    auto anytype =
-        ParseTypeRegistrationInfo(type_registration, procedure.GetFilename(), *result);
+    auto anytype = ParseTypeRegistrationInfo(type_registration, procedure.GetFilename(), *result);
     result->RegisterType(anytype);
   }
 

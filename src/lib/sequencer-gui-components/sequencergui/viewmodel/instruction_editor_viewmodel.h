@@ -41,8 +41,7 @@ class MVVM_VIEWMODEL_EXPORT InstructionEditorViewModel : public mvvm::ViewModel
   Q_OBJECT
 
 public:
-  explicit InstructionEditorViewModel(mvvm::ISessionModel* model,
-                                      QObject* parent = nullptr);
+  explicit InstructionEditorViewModel(mvvm::ISessionModel* model, QObject* parent = nullptr);
 
   Qt::ItemFlags flags(const QModelIndex& index) const override;
 

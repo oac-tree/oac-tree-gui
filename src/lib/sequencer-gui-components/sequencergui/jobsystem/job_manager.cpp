@@ -27,9 +27,8 @@
 
 #include <sup/dto/anyvalue.h>
 
-#include <algorithm>
-
 #include <QWidget>
+#include <algorithm>
 
 namespace sequencergui
 {

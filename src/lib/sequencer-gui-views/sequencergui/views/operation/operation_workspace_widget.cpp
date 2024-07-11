@@ -19,11 +19,10 @@
 
 #include "operation_workspace_widget.h"
 
-#include <sequencergui/operation/workspace_view_component_provider.h>
-
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/operation/workspace_view_component_provider.h>
 #include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/widgets/custom_header_view.h>

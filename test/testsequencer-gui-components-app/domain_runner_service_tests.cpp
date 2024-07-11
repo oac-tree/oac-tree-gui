@@ -47,7 +47,7 @@ TEST_F(DomainRunnerServiceTest, ShortProcedureThatExecutesNormally)
 {
   auto procedure = testutils::CreateMessageProcedure("text");
 
-  DomainRunnerService runner(m_listener.CreateDispatcherContext(), {},  *procedure);
+  DomainRunnerService runner(m_listener.CreateDispatcherContext(), {}, *procedure);
 
   // JobState: initial, stepping, paused
   EXPECT_CALL(m_listener, OnJobStateChanged(_)).Times(3);

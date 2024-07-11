@@ -22,18 +22,17 @@
 #include "graphics_view.h"
 #include "node_editor_actions.h"
 
-#include <sequencergui/nodeeditor/sequencer_align_utils.h>
-#include <sequencergui/nodeeditor/scene_utils.h>
-#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
-#include <sequencergui/nodeeditor/connectable_view.h>
-#include <sequencergui/nodeeditor/graphics_scene.h>
-#include <sequencergui/nodeeditor/graphics_scene_controller.h>
-
-#include <sequencergui/widgets/message_handler_factory.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/nodeeditor/connectable_instruction_adapter.h>
+#include <sequencergui/nodeeditor/connectable_view.h>
+#include <sequencergui/nodeeditor/graphics_scene.h>
+#include <sequencergui/nodeeditor/graphics_scene_controller.h>
+#include <sequencergui/nodeeditor/scene_utils.h>
+#include <sequencergui/nodeeditor/sequencer_align_utils.h>
+#include <sequencergui/widgets/message_handler_factory.h>
 #include <sup/gui/components/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>

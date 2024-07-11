@@ -26,8 +26,10 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
-#include <sup/dto/anyvalue.h>
 #include <mvvm/test/test_helper.h>
+
+#include <sup/dto/anyvalue.h>
+
 #include <testutils/folder_test.h>
 #include <testutils/test_utils.h>
 

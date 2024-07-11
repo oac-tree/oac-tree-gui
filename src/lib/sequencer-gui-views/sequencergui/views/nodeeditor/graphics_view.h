@@ -20,9 +20,9 @@
 #ifndef SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
 #define SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
 
-#include <QGraphicsView>
-
 #include <sequencergui/nodeeditor/graphics_scene_types.h>
+
+#include <QGraphicsView>
 
 class QKeyEvent;
 
@@ -37,7 +37,6 @@ class GraphicsView : public QGraphicsView
   Q_OBJECT
 
 public:
-
   GraphicsView(GraphicsScene* scene, QWidget* parent);
 
   void onCenterView();

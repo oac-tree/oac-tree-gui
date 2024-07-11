@@ -64,8 +64,8 @@ TEST_F(UniversalVariableItemTest, InitFromDomain)
 
   // registered tags should coincide with name and dynamicType attributes, and AnyValueTag
   // (json type and value are filtered out)
-  const std::vector<std::string> expected_tags({domainconstants::kDynamicTypeAttribute,
-                                                itemconstants::kAnyValueTag});
+  const std::vector<std::string> expected_tags(
+      {domainconstants::kDynamicTypeAttribute, itemconstants::kAnyValueTag});
   EXPECT_EQ(mvvm::utils::RegisteredTags(item), expected_tags);
 
   // property items should give an access

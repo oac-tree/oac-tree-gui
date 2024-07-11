@@ -33,8 +33,8 @@
 #include <mvvm/utils/file_utils.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
 #include <testutils/folder_test.h>
+#include <testutils/test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>

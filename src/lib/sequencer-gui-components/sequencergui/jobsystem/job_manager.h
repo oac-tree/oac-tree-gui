@@ -21,8 +21,8 @@
 #define SEQUENCERGUI_JOBSYSTEM_JOB_MANAGER_H_
 
 #include <QObject>
-#include <memory>
 #include <functional>
+#include <memory>
 
 namespace sequencergui
 {

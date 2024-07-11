@@ -20,9 +20,9 @@
 #include "sequencergui/viewmodel/custom_children_strategies.h"
 
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/model/anyvalue_item_constants.h>

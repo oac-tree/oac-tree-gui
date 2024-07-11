@@ -55,8 +55,8 @@ private:
   void SetupConnections();
   void OnStartMonitoringRequest();
   void OnStopMonitoringRequest();
-  QList<QAction*>  GetEditorActions();
-  QList<QAction*>  GetControlActions();
+  QList<QAction*> GetEditorActions();
+  QList<QAction*> GetControlActions();
 
   /**
    * @brief Sets widget's actions in a state corresponding to the given running status.

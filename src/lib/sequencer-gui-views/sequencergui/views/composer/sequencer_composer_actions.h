@@ -25,7 +25,8 @@
 class QAction;
 class QWidget;
 
-namespace sup::gui{
+namespace sup::gui
+{
 class AppContext;
 }
 

@@ -39,8 +39,7 @@ TEST_F(ApplicationModelsTest, InitialState)
 
   EXPECT_NE(models.GetSequencerModel(), nullptr);
   EXPECT_NE(models.GetJobModel(), nullptr);
-  std::vector<mvvm::ISessionModel*> expected(
-      {models.GetSequencerModel(), models.GetJobModel()});
+  std::vector<mvvm::ISessionModel*> expected({models.GetSequencerModel(), models.GetJobModel()});
   EXPECT_EQ(models.GetModels(), expected);
 }
 

@@ -43,7 +43,7 @@ TEST_F(DomainEventTest, Monostate)
 TEST_F(DomainEventTest, InstructionStatusChangedEvent)
 {
   using ::sup::sequencer::ExecutionStatus;
-  
+
   EXPECT_TRUE(IsValid(domain_event_t{InstructionStatusChangedEvent{}}));
 
   {  // default constructed
@@ -126,5 +126,3 @@ TEST_F(DomainEventTest, NextLeavesChangedEvent)
     EXPECT_TRUE(event1 != event3);
   }
 }
-
-

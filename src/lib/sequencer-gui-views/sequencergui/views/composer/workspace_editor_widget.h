@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
 #include "sequencergui/model/procedure_item.h"
+
 #include <QWidget>
 #include <memory>
 

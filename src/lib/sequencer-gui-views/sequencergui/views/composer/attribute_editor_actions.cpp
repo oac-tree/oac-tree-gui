@@ -20,7 +20,6 @@
 #include "attribute_editor_actions.h"
 
 #include <sequencergui/composer/attribute_editor_action_handler.h>
-
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>
 #include <sup/gui/model/anyvalue_item.h>

@@ -45,7 +45,7 @@ TEST_F(DomainEventQueueTest, PushAndPop)
   DomainEventQueue queue;
 
   QSignalSpy spy_queue(&queue, &DomainEventQueue::NewEvent);
-  
+
   domain_event_t event1(JobStateChangedEvent{::sup::sequencer::JobState::kInitial});
   domain_event_t event2(JobStateChangedEvent{::sup::sequencer::JobState::kSucceeded});
 

@@ -40,10 +40,7 @@ std::unique_ptr<QStandardItem> CreateItem(const std::string& name, bool drag_ena
 namespace sequencergui
 {
 
-ToolKitViewModel::ToolKitViewModel(QObject* parent)
-    : QStandardItemModel(parent)
-{
-}
+ToolKitViewModel::ToolKitViewModel(QObject* parent) : QStandardItemModel(parent) {}
 
 QMimeData* ToolKitViewModel::mimeData(const QModelIndexList& index_list) const
 {
@@ -73,8 +70,7 @@ void ToolKitViewModel::PopulateModel(const std::vector<std::string>& object_type
   }
 }
 
-void ToolKitViewModel::PopulateModel(
-    const std::vector<ObjectGroupInfo>& objects_group_info)
+void ToolKitViewModel::PopulateModel(const std::vector<ObjectGroupInfo>& objects_group_info)
 {
   clear();
 

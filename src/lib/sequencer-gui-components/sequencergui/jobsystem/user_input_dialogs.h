@@ -38,7 +38,7 @@ namespace sequencergui
  *
  * @return Structure representing results of user choice.
  */
-UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget* parent);
+UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs& args, QWidget* parent);
 
 /**
  * @brief Summons dialog for text selection and reports results to the caller.
@@ -48,7 +48,7 @@ UserChoiceResult GetUserChoiceDialogResult(const UserChoiceArgs &args, QWidget* 
  *
  * @return Structure representing results of user choice.
  */
-UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidget* parent);
+UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs& args, QWidget* parent);
 
 /**
  * @brief Summons confirmation dialog and reports results to the caller.
@@ -58,7 +58,7 @@ UserChoiceResult GetTextSelectionDialogResult(const UserChoiceArgs &args, QWidge
  *
  * @return Structure representing results of user choice.
  */
-UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget* parent);
+UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs& args, QWidget* parent);
 
 /**
  * @brief Summons AnyValueEditorDialog and reports result to the caller.
@@ -68,7 +68,7 @@ UserChoiceResult GetConfirmationDialogResult(const UserChoiceArgs &args, QWidget
  *
  * @return Structure representing results of user input.
  */
-UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs &args, QWidget* parent);
+UserInputResult GetAnyValueEditorDialogResult(const UserInputArgs& args, QWidget* parent);
 
 }  // namespace sequencergui
 

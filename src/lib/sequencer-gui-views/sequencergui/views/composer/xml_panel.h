@@ -25,12 +25,11 @@
 
 #include <QWidget>
 
-
 namespace sup::gui
 {
 class CodeView;
 class VisibilityAgentBase;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {

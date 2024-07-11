@@ -32,9 +32,9 @@
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_registry.h>
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 
 namespace
 {
@@ -128,7 +128,7 @@ std::pair<bool, std::string> LoadPlugins()
       domainconstants::kEpicsCAPluginName,   domainconstants::kEpicsPVXSPluginName,
       domainconstants::kEpicsMiscPluginName, domainconstants::kControlPluginName,
       domainconstants::kSupConfigPluginName, domainconstants::kSupPulseCounterPluginName,
-      domainconstants::kMathExprPluginName, domainconstants::kSupTimingPluginName};
+      domainconstants::kMathExprPluginName,  domainconstants::kSupTimingPluginName};
 
   for (const auto& name : plugins)
   {

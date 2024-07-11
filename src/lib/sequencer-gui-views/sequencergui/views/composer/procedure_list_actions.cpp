@@ -20,7 +20,6 @@
 #include "procedure_list_actions.h"
 
 #include <sequencergui/composer/procedure_list_action_handler.h>
-
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/app_context.h>

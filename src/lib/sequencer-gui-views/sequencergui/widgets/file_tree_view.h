@@ -32,7 +32,7 @@ namespace sup::gui
 {
 class RecentProjectSettings;
 class ActionMenu;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {

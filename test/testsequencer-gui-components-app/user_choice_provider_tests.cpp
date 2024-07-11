@@ -82,9 +82,8 @@ TEST_F(UserChoiceProviderTest, TwoThreadsAskForUserChoice)
 
   // User choice callback. Will prvide `0` for the first call, and `1` for the second.
   int user_selection{0};
-  auto on_user_choice = [&user_selection](auto) {
-    return UserChoiceResult{user_selection++, true};
-  };
+  auto on_user_choice = [&user_selection](auto)
+  { return UserChoiceResult{user_selection++, true}; };
 
   UserChoiceProvider provider(on_user_choice);
 

@@ -28,7 +28,7 @@ namespace sup::gui
 {
 class CollapsibleListView;
 class ItemStackWidget;
-}
+}  // namespace sup::gui
 
 namespace sequencergui
 {

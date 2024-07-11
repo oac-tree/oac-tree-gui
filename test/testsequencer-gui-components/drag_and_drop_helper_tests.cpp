@@ -24,12 +24,11 @@
 #include <sequencergui/model/sequencer_model.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
+#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/standarditems/container_item.h>
-
-#include <sup/gui/components/mime_conversion_helper.h>
 
 #include <gtest/gtest.h>
 

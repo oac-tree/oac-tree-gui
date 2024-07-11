@@ -20,9 +20,10 @@
 #ifndef SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
 #define SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
 
+#include <sup/gui/components/action_map.h>
+
 #include <QObject>
 #include <memory>
-#include <sup/gui/components/action_map.h>
 
 class QToolBar;
 class QButtonGroup;

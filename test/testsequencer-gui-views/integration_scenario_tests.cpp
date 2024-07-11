@@ -91,8 +91,7 @@ TEST_F(IntegrationScenarioTest, SaveToDiskLoadAndRun)
   MessagePanel panel;
   m_job_item->SetProcedure(loaded_procedure);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   JobManager manager;
   manager.SetMessagePanel(callback);
@@ -175,8 +174,7 @@ TEST_F(IntegrationScenarioTest, ExternalInclude)
   MessagePanel panel;
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   JobManager manager;
   manager.SetMessagePanel(callback);
@@ -215,8 +213,7 @@ TEST_F(IntegrationScenarioTest, ExternalIncludeWithVaryingParameter)
   MessagePanel panel;
   m_job_item->SetProcedure(procedure_item_ptr);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   JobManager manager;
   manager.SetMessagePanel(callback);

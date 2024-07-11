@@ -19,15 +19,14 @@
 
 #include "realtime_instruction_tree_widget.h"
 
-#include <sequencergui/operation/breakpoint_model_delegate.h>
-#include <sequencergui/operation/instruction_tree_expand_controller.h>
-#include <sequencergui/operation/tooltip_helper.h>
-
 #include <sequencergui/components/app_settings.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/universal_item_helper.h>
+#include <sequencergui/operation/breakpoint_model_delegate.h>
+#include <sequencergui/operation/instruction_tree_expand_controller.h>
+#include <sequencergui/operation/tooltip_helper.h>
 #include <sequencergui/viewmodel/instruction_operation_viewmodel.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>

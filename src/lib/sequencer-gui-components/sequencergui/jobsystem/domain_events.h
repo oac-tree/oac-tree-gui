@@ -74,8 +74,8 @@ struct NextLeavesChangedEvent
   bool operator!=(const NextLeavesChangedEvent& other) const;
 };
 
-using domain_event_t = std::variant<std::monostate, InstructionStatusChangedEvent, JobStateChangedEvent,
-                                    LogEvent, NextLeavesChangedEvent>;
+using domain_event_t = std::variant<std::monostate, InstructionStatusChangedEvent,
+                                    JobStateChangedEvent, LogEvent, NextLeavesChangedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

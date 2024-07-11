@@ -20,8 +20,8 @@
 #include "sequencer_main_window_actions.h"
 
 #include "about_application_dialog.h"
-#include <sequencergui/components/app_constants.h>
 
+#include <sequencergui/components/app_constants.h>
 #include <sequencergui/model/sequencer_model.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_command.h>
@@ -138,12 +138,12 @@ void SequencerMainWindowActions::SetupFileMenu()
 
 void SequencerMainWindowActions::SetupEditMenu()
 {
-  auto command =
-      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, sup::gui::constants::kCutCommandId);
+  auto command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                               sup::gui::constants::kCutCommandId);
   command->SetText("Cut").SetShortcut(QKeySequence::Cut);
 
-  command =
-      sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu, sup::gui::constants::kCopyCommandId);
+  command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,
+                                          sup::gui::constants::kCopyCommandId);
   command->SetText("Copy").SetShortcut(QKeySequence::Copy);
 
   command = sup::gui::AppAddCommandToMenu(sup::gui::constants::kEditMenu,

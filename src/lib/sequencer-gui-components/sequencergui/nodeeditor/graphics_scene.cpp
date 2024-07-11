@@ -52,7 +52,7 @@ QRectF GetDefaultSceneRect()
 sequencergui::InstructionItem *GetInstruction(sequencergui::ConnectableView *view)
 {
   return view ? const_cast<sequencergui::InstructionItem *>(
-             view->GetConnectableItem()->GetInstruction())
+                    view->GetConnectableItem()->GetInstruction())
               : nullptr;
 }
 

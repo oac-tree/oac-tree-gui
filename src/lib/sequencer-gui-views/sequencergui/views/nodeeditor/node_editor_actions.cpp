@@ -19,9 +19,8 @@
 
 #include "node_editor_actions.h"
 
-#include <sequencergui/nodeeditor/graphics_scene_types.h>
-
 #include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/nodeeditor/graphics_scene_types.h>
 #include <sup/gui/widgets/action_menu.h>
 #include <sup/gui/widgets/style_utils.h>
 

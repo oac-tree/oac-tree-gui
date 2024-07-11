@@ -20,8 +20,8 @@
 #include "pvmonitor_main_window.h"
 
 #include <sequencergui/model/workspace_item.h>
-#include <sequencergui/views/pvmonitor/monitor_main_window_actions.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
+#include <sequencergui/views/pvmonitor/monitor_main_window_actions.h>
 #include <sequencergui/views/pvmonitor/monitor_widget.h>
 
 #include <QMenuBar>

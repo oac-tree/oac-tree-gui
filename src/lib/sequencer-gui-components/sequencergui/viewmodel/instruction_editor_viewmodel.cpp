@@ -23,19 +23,18 @@
 
 #include <sequencergui/viewmodel/custom_row_strategies.h>
 
-#include <mvvm/viewmodel/viewmodel_controller_factory.h>
 #include <mvvm/model/i_session_model.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/model/validate_utils.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
+#include <mvvm/viewmodel/viewmodel_controller_factory.h>
 
 #include <QMimeData>
 
 namespace sequencergui
 {
 
-InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model,
-                                                       QObject *parent)
+InstructionEditorViewModel::InstructionEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(

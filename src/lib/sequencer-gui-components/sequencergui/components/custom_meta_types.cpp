@@ -22,8 +22,8 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/runner_status.h>
 #include <sequencergui/model/instruction_item.h>
-#include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/job_item.h>
+#include <sequencergui/model/procedure_item.h>
 
 #include <sup/sequencer/instruction.h>
 

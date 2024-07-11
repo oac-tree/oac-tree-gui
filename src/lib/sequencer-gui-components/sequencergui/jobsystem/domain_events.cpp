@@ -29,7 +29,7 @@ namespace
 struct DomainEventToStringVisitor
 {
   std::string operator()(const std::monostate &event) const { return std::string("monostate"); }
-  
+
   std::string operator()(const ::sequencergui::InstructionStatusChangedEvent &event) const
   {
     std::ostringstream ostr;
@@ -39,7 +39,7 @@ struct DomainEventToStringVisitor
          << ::sup::sequencer::StatusToString(event.status);
     return ostr.str();
   }
-  
+
   std::string operator()(const ::sequencergui::JobStateChangedEvent &event) const
   {
     return std::string("JobStatusChanged") + " " + ::sup::sequencer::ToString(event.status);
@@ -52,7 +52,7 @@ struct DomainEventToStringVisitor
     ostr << " " << event.message;
     return ostr.str();
   }
-  
+
   std::string operator()(const ::sequencergui::NextLeavesChangedEvent &event) const
   {
     std::ostringstream ostr;

@@ -27,8 +27,7 @@
 namespace sequencergui
 {
 
-WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model,
-                                                   QObject *parent)
+WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
     : ViewModel(parent)
 {
   SetController(
@@ -37,7 +36,7 @@ WorkspaceEditorViewModel::WorkspaceEditorViewModel(mvvm::ISessionModel *model,
 
 int WorkspaceEditorViewModel::columnCount(const QModelIndex &parent) const
 {
-  return 3; // Name, Value, TypeName
+  return 3;  // Name, Value, TypeName
 }
 
 }  // namespace sequencergui

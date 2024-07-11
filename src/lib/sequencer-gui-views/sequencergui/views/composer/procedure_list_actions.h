@@ -20,13 +20,14 @@
 #ifndef SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_ACTIONS_H_
 #define SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_ACTIONS_H_
 
-#include <QObject>
-
 #include <sup/gui/components/action_map.h>
+
+#include <QObject>
 
 class QMenu;
 
-namespace sup::gui{
+namespace sup::gui
+{
 class AppContext;
 }
 

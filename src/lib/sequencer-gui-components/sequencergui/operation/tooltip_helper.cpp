@@ -76,7 +76,7 @@ void AppendNameValuePair(const std::string& s_name, const std::string& s_value,
   name.resize(18, ' ');
   QString value = QString::fromStdString(s_value);
 
-  text_edit.append("<div style=\"width=500px\"><pre>"+name + " : " + value+"</pre></div>");
+  text_edit.append("<div style=\"width=500px\"><pre>" + name + " : " + value + "</pre></div>");
 }
 
 }  // namespace

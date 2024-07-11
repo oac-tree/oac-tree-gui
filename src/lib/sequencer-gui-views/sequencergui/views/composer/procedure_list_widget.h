@@ -71,7 +71,7 @@ public:
 signals:
   void ProcedureSelected(sequencergui::ProcedureItem* procedure_item);
 
-private:  
+private:
   ProcedureListContext CreateContext();
   void OnContextMenuRequest(const QPoint& point);
 

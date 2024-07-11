@@ -128,8 +128,7 @@ TEST_F(JobManagerTest, SetCurrentJobAndExecute)
 
   JobManager manager;
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   manager.SetMessagePanel(callback);
   manager.SubmitJob(m_job_item);
@@ -184,8 +183,7 @@ TEST_F(JobManagerTest, OnRemoveJobRequest)
   MessagePanel panel;
   m_job_item->SetProcedure(copy_procedure);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   JobManager manager;
   manager.SetMessagePanel(callback);
@@ -213,8 +211,7 @@ TEST_F(JobManagerTest, AttemptToRemoveLongRunningJob)
   MessagePanel panel;
   m_job_item->SetProcedure(procedure);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   JobManager manager;
   manager.SetMessagePanel(callback);
@@ -254,8 +251,7 @@ TEST_F(JobManagerTest, StopAllJobs)
   auto job_item2 = m_models.GetJobModel()->InsertItem<JobItem>();
   job_item2->SetProcedure(procedure1);
 
-  JobManager::set_joblog_cb callback = [this, &panel](auto log)
-  { panel.SetLog(log); };
+  JobManager::set_joblog_cb callback = [this, &panel](auto log) { panel.SetLog(log); };
 
   JobManager manager;
   manager.SetMessagePanel(callback);

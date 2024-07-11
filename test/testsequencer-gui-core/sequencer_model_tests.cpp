@@ -25,9 +25,9 @@
 #include <sequencergui/model/universal_variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 
+#include <mvvm/model/item_factory.h>
 #include <mvvm/serialization/xml_document.h>
 #include <mvvm/standarditems/container_item.h>
-#include <mvvm/model/item_factory.h>
 
 #include <gtest/gtest.h>
 #include <testutils/folder_test.h>

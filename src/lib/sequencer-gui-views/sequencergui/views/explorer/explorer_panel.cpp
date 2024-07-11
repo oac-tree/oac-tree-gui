@@ -19,8 +19,8 @@
 
 #include "explorer_panel.h"
 
-#include <sequencergui/views/composer/procedure_list_widget.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/views/composer/procedure_list_widget.h>
 #include <sequencergui/widgets/file_tree_view.h>
 #include <sup/gui/widgets/collapsible_list_view.h>
 #include <sup/gui/widgets/item_stack_widget.h>

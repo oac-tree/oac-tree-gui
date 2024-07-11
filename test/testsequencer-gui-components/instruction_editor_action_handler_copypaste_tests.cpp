@@ -25,8 +25,8 @@
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/viewmodel/drag_and_drop_helper.h>
-#include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/components/mime_conversion_helper.h>
+#include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/standarditems/container_item.h>
 #include <mvvm/test/test_helper.h>

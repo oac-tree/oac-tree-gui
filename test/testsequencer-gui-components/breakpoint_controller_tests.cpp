@@ -32,8 +32,8 @@
 #include <mvvm/standarditems/container_item.h>
 
 #include <sup/sequencer/application_utils.h>
-#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/async_runner.h>
+#include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure.h>
 #include <sup/sequencer/user_interface.h>
 

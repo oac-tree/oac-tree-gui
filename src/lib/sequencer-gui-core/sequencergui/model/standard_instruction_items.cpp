@@ -61,9 +61,7 @@ void IncludeItem::SetPath(const std::string &value)
 // ParallelSequenceItem
 // ----------------------------------------------------------------------------
 
-ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(Type)
-{
-}
+ParallelSequenceItem::ParallelSequenceItem() : UniversalInstructionItem(Type) {}
 
 std::unique_ptr<mvvm::SessionItem> ParallelSequenceItem::Clone(bool make_unique_id) const
 {

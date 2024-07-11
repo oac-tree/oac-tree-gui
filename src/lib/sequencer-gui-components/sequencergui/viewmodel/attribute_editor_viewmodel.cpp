@@ -21,14 +21,13 @@
 
 #include "custom_row_strategies.h"
 
-#include <mvvm/viewmodel/viewmodel_controller_factory.h>
 #include <mvvm/viewmodel/standard_children_strategies.h>
+#include <mvvm/viewmodel/viewmodel_controller_factory.h>
 
 namespace sequencergui
 {
 
-AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model,
-                                                   QObject *parent)
+AttributeEditorViewModel::AttributeEditorViewModel(mvvm::ISessionModel *model, QObject *parent)
     : ViewModel(parent)
 {
   // we reuse VariableRowStrategy which covers AnyValueItems too
