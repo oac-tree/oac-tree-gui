@@ -22,10 +22,10 @@
 #include "monitor_widget_actions.h"
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
+#include <sequencergui/composer/workspace_editor_context.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
-#include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/transform_helpers.h>

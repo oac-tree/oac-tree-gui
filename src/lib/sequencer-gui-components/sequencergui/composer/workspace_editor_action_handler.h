@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
 #define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
 
-#include <sequencergui/pvmonitor/workspace_editor_context.h>
+#include <sequencergui/composer/workspace_editor_context.h>
 
 #include <QObject>
 

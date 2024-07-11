@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/pvmonitor/workspace_editor_action_handler.h"
+#include "sequencergui/composer/workspace_editor_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>

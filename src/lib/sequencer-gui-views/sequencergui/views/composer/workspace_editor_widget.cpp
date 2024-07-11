@@ -23,12 +23,12 @@
 
 #include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/composer/attribute_editor_action_handler.h>
+#include <sequencergui/composer/workspace_editor_action_handler.h>
+#include <sequencergui/composer/workspace_editor_context.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/workspace_view_component_provider.h>
-#include <sequencergui/pvmonitor/workspace_editor_action_handler.h>
-#include <sequencergui/views/pvmonitor/workspace_editor_actions.h>
-#include <sequencergui/pvmonitor/workspace_editor_context.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
+#include <sequencergui/views/composer/workspace_editor_actions.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/components/visibility_agent_base.h>
 #include <sup/gui/core/message_helper.h>
