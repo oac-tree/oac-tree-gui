@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
 
-#include <sequencergui/components/procedure_list_context.h>
+#include <sequencergui/composer/procedure_list_context.h>
 
 #include <QObject>
 

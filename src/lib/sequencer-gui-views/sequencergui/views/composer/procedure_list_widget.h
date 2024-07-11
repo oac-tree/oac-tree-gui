@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
 #define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
 
-#include <sequencergui/components/procedure_list_actions.h>
+#include <sequencergui/views/composer/procedure_list_actions.h>
 
 #include <QWidget>
 

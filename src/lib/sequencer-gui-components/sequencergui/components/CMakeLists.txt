@@ -12,12 +12,5 @@ target_sources(${library_name} PRIVATE
   anyvalue_editor_dialog_factory.h
   custom_meta_types.cpp
   custom_meta_types.h
-  procedure_list_action_handler.cpp
-  procedure_list_action_handler.h
-  procedure_list_actions.cpp
-  procedure_list_actions.h
-  procedure_list_context.h
-  procedure_list_widget.cpp
-  procedure_list_widget.h
 )
 

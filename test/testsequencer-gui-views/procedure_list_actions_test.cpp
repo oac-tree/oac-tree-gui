@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/components/procedure_list_actions.h"
+#include "sequencergui/views/composer/procedure_list_actions.h"
 
 #include <gtest/gtest.h>
 

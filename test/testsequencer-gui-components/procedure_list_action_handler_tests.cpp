@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/components/procedure_list_action_handler.h"
+#include "sequencergui/composer/procedure_list_action_handler.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/procedure_item.h>

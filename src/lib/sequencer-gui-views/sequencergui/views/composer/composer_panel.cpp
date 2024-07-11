@@ -21,8 +21,8 @@
 
 #include "aggregate_panel.h"
 #include "instruction_item_panel.h"
+#include "procedure_list_widget.h"
 
-#include <sequencergui/components/procedure_list_widget.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>

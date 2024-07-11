@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/components/procedure_list_widget.h"
+#include "sequencergui/views/composer/procedure_list_widget.h"
 
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>

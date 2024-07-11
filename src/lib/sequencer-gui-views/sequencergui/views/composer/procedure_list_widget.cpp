@@ -19,8 +19,7 @@
 
 #include "procedure_list_widget.h"
 
-#include "procedure_list_action_handler.h"
-
+#include <sequencergui/composer/procedure_list_action_handler.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
