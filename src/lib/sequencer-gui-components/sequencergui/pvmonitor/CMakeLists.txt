@@ -1,14 +1,10 @@
 target_sources(${library_name} PRIVATE
-  monitor_main_window_actions.cpp
-  monitor_main_window_actions.h
   monitor_model.cpp
   monitor_model.h
   sequencer_workspace_listener.cpp
   sequencer_workspace_listener.h
   workspace_editor_action_handler.cpp
   workspace_editor_action_handler.h
-  workspace_editor_actions.cpp
-  workspace_editor_actions.h
   workspace_editor_context.h
   workspace_event.cpp
   workspace_event.h
