@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
-#define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
+#ifndef SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
+#define SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_
 
 #include <sequencergui/views/composer/procedure_list_actions.h>
 
@@ -85,4 +85,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_WIDGET_H_
+#endif  // SEQUENCERGUI_VIEWS_COMPOSER_PROCEDURE_LIST_WIDGET_H_

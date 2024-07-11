@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTONS_H_
-#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTONS_H_
+#ifndef SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_
 
 #include <sup/gui/components/action_map.h>
 
@@ -67,4 +67,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_ACTONS_H_
+#endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_ACTIONS_H_

@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_SEQUENCER_COMPOSER_ACTIONS_H_
-#define SEQUENCERGUI_COMPOSER_SEQUENCER_COMPOSER_ACTIONS_H_
+#ifndef SEQUENCERGUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_ACTIONS_H_
 
 #include <QObject>
 
@@ -66,4 +66,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_SEQUENCER_COMPOSER_ACTIONS_H_
+#endif  // SEQUENCERGUI_VIEWS_COMPOSER_SEQUENCER_COMPOSER_ACTIONS_H_

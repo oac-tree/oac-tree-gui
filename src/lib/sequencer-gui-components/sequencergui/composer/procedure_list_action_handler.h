@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
-#define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
+#ifndef SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_
+#define SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_
 
 #include <sequencergui/composer/procedure_list_context.h>
 
@@ -104,4 +104,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_ACTION_HANDLER_H_
+#endif  // SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_ACTION_HANDLER_H_

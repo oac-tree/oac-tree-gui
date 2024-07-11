@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
-#define SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
+#ifndef SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
 
 #include <QObject>
 #include <memory>
@@ -89,4 +89,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_NODE_EDITOR_ACTIONS_H_
+#endif  // SEQUENCERGUI_VIEWS_NODEEDITOR_NODE_EDITOR_ACTIONS_H_

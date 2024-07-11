@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_APP_CONSTANTS_
-#define SEQUENCERGUI_MAINWINDOW_APP_CONSTANTS_
+#ifndef SEQUENCERGUI_COMPONENTS_APP_CONSTANTS_H_
+#define SEQUENCERGUI_COMPONENTS_APP_CONSTANTS_H_
 
 #include <sup/gui/app/app_context.h>
 
@@ -32,4 +32,4 @@ const QString kExportXmlCommandId = "Export XML";
 
 }  // namespace sequencergui::app::constants
 
-#endif  // SEQUENCERGUI_MAINWINDOW_APP_CONSTANTS_
+#endif  // SEQUENCERGUI_COMPONENTS_APP_CONSTANTS_H_

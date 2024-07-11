@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
-#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
+#ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_CONTEXT_H_
+#define SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_CONTEXT_H_
 
 #include <sup/gui/core/message_event.h>
 
@@ -70,4 +70,4 @@ struct WorkspaceEditorContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_CONTEXT_H_
+#endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_CONTEXT_H_

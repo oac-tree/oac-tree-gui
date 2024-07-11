@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_CONTEXT_H_
-#define SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_CONTEXT_H_
+#ifndef SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
+#define SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_
 
 #include <functional>
 #include <memory>
@@ -58,4 +58,4 @@ struct ProcedureListContext
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPONENTS_PROCEDURE_LIST_CONTEXT_H_
+#endif  // SEQUENCERGUI_COMPOSER_PROCEDURE_LIST_CONTEXT_H_

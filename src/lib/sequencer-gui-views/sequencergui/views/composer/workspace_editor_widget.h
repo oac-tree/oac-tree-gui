@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
-#define SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
+#ifndef SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
+#define SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
 
 #include "sequencergui/model/procedure_item.h"
 #include <QWidget>
@@ -100,4 +100,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_
+#endif  // SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_WIDGET_H_

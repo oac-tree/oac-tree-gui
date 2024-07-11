@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_H_
-#define SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_H_
+#ifndef SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
+#define SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
@@ -77,4 +77,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_WIDGET_H_
+#endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_WIDGET_H_

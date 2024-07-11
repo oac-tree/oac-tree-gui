@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
-#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
+#ifndef SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_ACTIONS_H_
 
 #include <QObject>
 #include <memory>
@@ -102,4 +102,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTIONS_H_
+#endif  // SEQUENCERGUI_VIEWS_COMPOSER_WORKSPACE_EDITOR_ACTIONS_H_

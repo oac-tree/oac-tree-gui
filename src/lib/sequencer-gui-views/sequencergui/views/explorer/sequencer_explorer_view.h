@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_EXPLORER_SEQUENCER_EXPLORER_VIEW_H_
-#define SEQUENCERGUI_EXPLORER_SEQUENCER_EXPLORER_VIEW_H_
+#ifndef SEQUENCERGUI_VIEWS_EXPLORER_SEQUENCER_EXPLORER_VIEW_H_
+#define SEQUENCERGUI_VIEWS_EXPLORER_SEQUENCER_EXPLORER_VIEW_H_
 
 #include <QWidget>
 
@@ -77,4 +77,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_EXPLORER_SEQUENCER_EXPLORER_VIEW_H_
+#endif  // SEQUENCERGUI_VIEWS_EXPLORER_SEQUENCER_EXPLORER_VIEW_H_

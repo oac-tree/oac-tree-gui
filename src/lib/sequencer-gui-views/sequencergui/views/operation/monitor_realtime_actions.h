@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_OPERATION_MONITOR_REALTIME_ACTIONS_H_
-#define SEQUENCERGUI_OPERATION_MONITOR_REALTIME_ACTIONS_H_
+#ifndef SEQUENCERGUI_VIEWS_OPERATION_MONITOR_REALTIME_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_OPERATION_MONITOR_REALTIME_ACTIONS_H_
 
 #include <sup/gui/components/action_map.h>
 
@@ -100,4 +100,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_OPERATION_MONITOR_REALTIME_ACTIONS_H_
+#endif  // SEQUENCERGUI_VIEWS_OPERATION_MONITOR_REALTIME_ACTIONS_H_

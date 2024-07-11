@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
-#define SEQUENCERGUI_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
+#ifndef SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
+#define SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
 
 #include <QWidget>
 
@@ -79,4 +79,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_
+#endif  // SEQUENCERGUI_VIEWS_PVMONITOR_MONITOR_MAIN_WINDOW_ACTIONS_H_

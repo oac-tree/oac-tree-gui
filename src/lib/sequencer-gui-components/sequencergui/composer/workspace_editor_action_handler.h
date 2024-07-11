@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
-#define SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
+#ifndef SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_ACTION_HANDLER_H_
+#define SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_ACTION_HANDLER_H_
 
 #include <sequencergui/composer/workspace_editor_context.h>
 
@@ -117,4 +117,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_EDITOR_ACTION_HANDLER_H_
+#endif  // SEQUENCERGUI_COMPOSER_WORKSPACE_EDITOR_ACTION_HANDLER_H_

@@ -53,4 +53,4 @@ RunnerStatus GetRunnerStatus(const std::string& status_name);
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_JOB_TYPES_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_RUNNER_STATUS_H_

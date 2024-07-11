@@ -71,4 +71,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_ADAPTER_H_
+#endif  // SEQUENCERGUI_JOBSYSTEM_DOMAIN_RUNNER_SERVICE_H_

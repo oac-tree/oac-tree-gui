@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_NODEEDITOR_GRAPHICS_VIEW_H_
-#define SEQUENCERGUI_NODEEDITOR_GRAPHICS_VIEW_H_
+#ifndef SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
+#define SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_
 
 #include <QGraphicsView>
 
@@ -58,4 +58,4 @@ protected:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_NODEEDITOR_GRAPHICS_VIEW_H_
+#endif  // SEQUENCERGUI_VIEWS_NODEEDITOR_GRAPHICS_VIEW_H_

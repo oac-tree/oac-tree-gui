@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
-#define SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
+#ifndef SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
+#define SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_
 
 #include <QColor>
 #include <QFont>
@@ -62,4 +62,4 @@ QString GetCustomToolTipStyle();
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MAINWINDOW_APP_SETTINGS_H_
+#endif  // SEQUENCERGUI_COMPONENTS_APP_SETTINGS_H_

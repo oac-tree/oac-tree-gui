@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
-#define SEQUENCERGUI_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
+#ifndef SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
+#define SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
 
 #include <QTreeView>
 
@@ -46,4 +46,4 @@ protected:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
+#endif  // SEQUENCERGUI_VIEWS_COMPOSER_INSTRUCTION_TOOLKIT_TREE_VIEW_H_
