@@ -1,3 +1,5 @@
+# Tests for sequencer-gui-core library.
+
 set(test testsequencer-gui-core)
 
 file(GLOB source_files "*.cpp")

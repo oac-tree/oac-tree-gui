@@ -1,4 +1,6 @@
-set(test testsequencer-gui-integration)
+# Tests for sequencer-gui-components library, which require QApplication.
+
+set(test testsequencer-gui-components-app)
 
 file(GLOB source_files "*.cpp")
 file(GLOB include_files "*.h")

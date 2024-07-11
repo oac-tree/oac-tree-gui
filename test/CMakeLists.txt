@@ -18,8 +18,8 @@ include(GoogleTest)
 
 add_subdirectory(libtest-utils)
 add_subdirectory(testsequencer-gui-core)
-add_subdirectory(testsequencer-gui-integration)
 add_subdirectory(testsequencer-gui-components)
+add_subdirectory(testsequencer-gui-components-app)
 add_subdirectory(testsequencer-gui-views)
 
 # Add custom target `make testall` which will run test executables one after another.
@@ -30,7 +30,7 @@ add_subdirectory(testsequencer-gui-views)
 add_custom_target(testall
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components
-  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration
+  COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components-app
   COMMAND ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views
 )
 
@@ -40,7 +40,7 @@ export QT_QPA_PLATFORM=offscreen
 fail=0
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-core " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components " || fail=1
-" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-integration " || fail=1
+" ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-components-app " || fail=1
 " ${TEST_OUTPUT_DIRECTORY}/testsequencer-gui-views " || fail=1
 exit $fail
 ")

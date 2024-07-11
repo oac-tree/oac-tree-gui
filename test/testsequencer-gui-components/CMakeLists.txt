@@ -1,3 +1,4 @@
+# Tests for sequencer-gui-components library.
 set(test testsequencer-gui-components)
 
 find_package(sup-epics REQUIRED)
