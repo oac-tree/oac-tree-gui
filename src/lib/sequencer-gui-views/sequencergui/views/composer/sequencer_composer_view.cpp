@@ -27,6 +27,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/operation/procedure_action_handler.h>
 #include <sup/gui/app/app_action_helper.h>
 
 #include <mvvm/standarditems/container_item.h>
@@ -138,6 +139,15 @@ void SequencerComposerView::SetupConnections()
   auto on_right_selection = [this](auto)
   { m_central_panel->SetSelectedInstructions(m_right_panel->GetSelectedInstructions()); };
   connect(m_right_panel, &ComposerWidgetPanel::InstructionSelected, this, on_right_selection);
+
+  // on left export
+  auto on_export = [this]()
+  {
+    ProcedureActionHandler handler;
+    handler.OnExportToXmlRequest(m_composer_panel->GetSelectedProcedure());
+  };
+  connect(m_central_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
+  connect(m_right_panel, &ComposerWidgetPanel::ExportToFileRequest, this, on_export);
 }
 
 //! Returns first procedure from the procedure container, if exist.

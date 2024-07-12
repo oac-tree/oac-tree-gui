@@ -79,6 +79,7 @@ public:
 
 signals:
   void InstructionSelected(sequencergui::InstructionItem* selected);
+  void ExportToFileRequest();
 
 private:
   void SetupConnections();
