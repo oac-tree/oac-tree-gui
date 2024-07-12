@@ -83,12 +83,7 @@ WorkspaceEditorWidget::WorkspaceEditorWidget(QWidget *parent)
   m_line_edit->setClearButtonEnabled(true);
   m_line_edit->setPlaceholderText("Filter pattern");
 
-  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
-  m_tree_view->setAlternatingRowColors(true);
-  m_tree_view->setHeader(m_custom_header);
-  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
-  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
-          &WorkspaceEditorWidget::OnTreeContextMenuRequest);
+  SetupTree();
 
   SetupConnections();
 
@@ -132,6 +127,17 @@ void WorkspaceEditorWidget::SetWorkspaceItem(WorkspaceItem *workspace)
 mvvm::SessionItem *WorkspaceEditorWidget::GetSelectedItem() const
 {
   return m_component_provider->GetSelectedItem();
+}
+
+void WorkspaceEditorWidget::SetupTree()
+{
+  sup::gui::utils::BeautifyTreeStyle(m_tree_view);
+
+  m_tree_view->setAlternatingRowColors(true);
+  m_tree_view->setHeader(m_custom_header);
+  m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(m_tree_view, &QTreeView::customContextMenuRequested, this,
+          &WorkspaceEditorWidget::OnTreeContextMenuRequest);
 }
 
 void WorkspaceEditorWidget::AdjustTreeAppearance()

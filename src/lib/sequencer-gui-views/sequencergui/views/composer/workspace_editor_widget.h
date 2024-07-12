@@ -71,6 +71,7 @@ public:
   mvvm::SessionItem* GetSelectedItem() const;
 
 private:
+  void SetupTree();
   void AdjustTreeAppearance();
 
   /**

@@ -38,12 +38,12 @@
 
 namespace
 {
-const QString kGroupName("OperationWorkspacePanel");
+const QString kGroupName("OperationWorkspaceWidget");
 
 QString GetHeaderStateSettingName(sequencergui::OperationWorkspaceWidget::Mode mode)
 {
-  static const QString kHeaderStateSettingName = kGroupName + "/" + "header_state";
-  return QString("%1%2").arg(kHeaderStateSettingName, static_cast<int>(mode));
+  QString mode_str = QString::number(static_cast<int>(mode));
+  return QString("%1_%2/%3").arg(kGroupName, mode_str, "header_state");
 }
 
 }  // namespace
