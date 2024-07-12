@@ -24,6 +24,7 @@
 #include <mvvm/signals/model_listener_fwd.h>
 
 #include <QWidget>
+class QAction;
 
 namespace sup::gui
 {
@@ -35,10 +36,11 @@ namespace sequencergui
 {
 
 class ProcedureItem;
-class VisibilityAgentBase;
 
-//! A simple read only text view to show XML content of the procedure.
-
+/**
+ * @brief The XmlPanel class represent a simple read-only text view to show XML content of the
+ * procedure.
+ */
 class XmlPanel : public QWidget
 {
   Q_OBJECT
@@ -51,10 +53,27 @@ public:
 
   void SetProcedure(ProcedureItem* procedure);
 
-private:
-  void OnModelEvent(const mvvm::DataChangedEvent& event);
+signals:
+  void ExportToFileRequest();
 
+private:
+  void SetupActions();
+
+  /**
+   * @brief Sets up listener to regenerate XML on model change.
+   *
+   * It also takes care, that XML is not regenerated, when widget is hidden.
+   */
+  void SetupListener();
+
+  void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
+
+  /**
+   * @brief Regenerates XML in text viewer.
+   */
   void UpdateXml();
+
+  QAction* m_export_action{nullptr};
 
   sup::gui::CodeView* m_xml_view{nullptr};
   mvvm::ISessionModel* m_model{nullptr};

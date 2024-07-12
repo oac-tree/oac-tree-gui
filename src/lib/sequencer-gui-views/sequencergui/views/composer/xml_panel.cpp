@@ -23,13 +23,13 @@
 #include <sequencergui/model/xml_utils.h>
 #include <sup/gui/codeeditor/code_view.h>
 #include <sup/gui/components/visibility_agent_base.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/session_item.h>
 #include <mvvm/signals/model_listener.h>
 
-#include <sup/dto/anyvalue.h>
-
+#include <QAction>
 #include <QVBoxLayout>
 
 namespace sequencergui
@@ -46,21 +46,12 @@ XmlPanel::XmlPanel(QWidget *parent)
 
   layout->addWidget(m_xml_view);
 
-  auto on_subscribe = [this]()
-  {
-    m_listener = std::make_unique<mvvm::ModelListener<>>(m_model);
-    m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
-    m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
-    m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnModelEvent);
+  SetupActions();
 
-    UpdateXml();
-  };
-
-  auto on_unsubscribe = [this]() { m_listener.reset(); };
-
-  // will be deleted as a child of QObject
-  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+  SetupListener();
 }
+
+XmlPanel::~XmlPanel() = default;
 
 void XmlPanel::SetModel(mvvm::ISessionModel *model)
 {
@@ -73,7 +64,35 @@ void XmlPanel::SetProcedure(ProcedureItem *procedure)
   UpdateXml();
 }
 
-void XmlPanel::OnModelEvent(const mvvm::DataChangedEvent &event)
+void XmlPanel::SetupActions()
+{
+  m_export_action = new QAction(this);
+  m_export_action->setText("Export");
+  m_export_action->setIcon(sup::gui::utils::GetIcon("export.svg"));
+  m_export_action->setToolTip("Export currently selected Procedure to XML file");
+  connect(m_export_action, &QAction::triggered, this, &XmlPanel::ExportToFileRequest);
+  addAction(m_export_action);
+}
+
+void XmlPanel::SetupListener()
+{
+  auto on_subscribe = [this]()
+  {
+    m_listener = std::make_unique<mvvm::ModelListener<>>(m_model);
+    m_listener->Connect<mvvm::ItemRemovedEvent>([this](const auto &) { UpdateXml(); });
+    m_listener->Connect<mvvm::ItemInsertedEvent>([this](const auto &) { UpdateXml(); });
+    m_listener->Connect<mvvm::DataChangedEvent>(this, &XmlPanel::OnDataChangedEvent);
+
+    UpdateXml();
+  };
+
+  auto on_unsubscribe = [this]() { m_listener.reset(); };
+
+  // will be deleted as a child of QObject
+  m_visibility_agent = new sup::gui::VisibilityAgentBase(this, on_subscribe, on_unsubscribe);
+}
+
+void XmlPanel::OnDataChangedEvent(const mvvm::DataChangedEvent &event)
 {
   auto [item, role] = event;
 
@@ -85,8 +104,6 @@ void XmlPanel::OnModelEvent(const mvvm::DataChangedEvent &event)
     UpdateXml();
   }
 }
-
-XmlPanel::~XmlPanel() = default;
 
 void XmlPanel::UpdateXml()
 {
