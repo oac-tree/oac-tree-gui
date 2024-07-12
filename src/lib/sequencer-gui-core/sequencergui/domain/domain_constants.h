@@ -44,6 +44,8 @@ const std::string kSupConfigPluginName = "libsequencer-sup-config.so";
 const std::string kSupTimingPluginName = "libsequencer-sup-timing.so";
 const std::string kSupPulseCounterPluginName = "libsequencer-sup-pulse-counter.so";
 const std::string kMathExprPluginName = "libsequencer-mathexpr.so";
+const std::string kSystemPluginName = "libsequencer-system.so";
+const std::string kStringPluginName = "libsequencer-strings.so";
 
 // instructions
 const std::string kChoiceInstructionType = "Choice";

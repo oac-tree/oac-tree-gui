@@ -37,9 +37,7 @@ namespace
  */
 std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
 {
-  // So far only EPICS group contains two plugins (CA and PVXS).
-  // Other groups contains single plugin each.
-  return {
+  const std::vector<sequencergui::ObjectGroupInfo> result = {
       {sequencergui::kCoreGroup, {sequencergui::domainconstants::kCorePluginName}},
       {sequencergui::kMathGroup, {sequencergui::domainconstants::kMathExprPluginName}},
       {sequencergui::kEPICSGroup,
@@ -48,8 +46,13 @@ std::vector<sequencergui::ObjectGroupInfo> CreatePluginNameGroups()
       {sequencergui::kControlGroup, {sequencergui::domainconstants::kControlPluginName}},
       {sequencergui::kTimingGroup, {sequencergui::domainconstants::kSupTimingPluginName}},
       {sequencergui::kConfigGroup, {sequencergui::domainconstants::kSupConfigPluginName}},
-      {sequencergui::kMiscGroup, {sequencergui::domainconstants::kSupPulseCounterPluginName}},
+      {sequencergui::kMiscGroup,
+       {sequencergui::domainconstants::kSystemPluginName,
+        sequencergui::domainconstants::kStringPluginName,
+        sequencergui::domainconstants::kSupPulseCounterPluginName}},
+
   };
+  return result;
 }
 
 /**
