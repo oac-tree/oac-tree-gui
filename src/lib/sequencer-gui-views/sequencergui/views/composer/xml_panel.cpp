@@ -21,9 +21,9 @@
 
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/xml_utils.h>
-#include <sup/gui/codeeditor/code_view.h>
-#include <sup/gui/components/visibility_agent_base.h>
+#include <sup/gui/views/codeeditor/code_view.h>
 #include <sup/gui/widgets/style_utils.h>
+#include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
 #include <mvvm/model/session_item.h>

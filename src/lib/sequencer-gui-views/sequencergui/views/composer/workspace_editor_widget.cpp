@@ -30,12 +30,12 @@
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/views/composer/workspace_editor_actions.h>
 #include <sup/gui/app/app_action_helper.h>
-#include <sup/gui/components/visibility_agent_base.h>
-#include <sup/gui/core/message_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
+#include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/style_utils.h>
 #include <sup/gui/widgets/tree_helper.h>
+#include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>
 

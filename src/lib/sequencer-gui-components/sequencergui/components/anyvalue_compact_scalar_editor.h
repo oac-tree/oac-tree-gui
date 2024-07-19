@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_COMPACT_SCALAR_EDITOR_H_
 
-#include <sup/gui/anyvalueeditor/abstract_anyvalue_editor.h>
+#include <sup/gui/views/anyvalueeditor/abstract_anyvalue_editor.h>
 
 class QLabel;
 class QString;

@@ -30,8 +30,8 @@
 #include <sequencergui/pvmonitor/workspace_synchronizer.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/views/composer/workspace_editor_widget.h>
-#include <sup/gui/core/message_helper.h>
 #include <sup/gui/widgets/item_stack_widget.h>
+#include <sup/gui/widgets/message_helper.h>
 
 #include <sup/sequencer/workspace.h>
 

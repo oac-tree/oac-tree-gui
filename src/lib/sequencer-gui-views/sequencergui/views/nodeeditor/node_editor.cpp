@@ -33,7 +33,7 @@
 #include <sequencergui/nodeeditor/scene_utils.h>
 #include <sequencergui/nodeeditor/sequencer_align_utils.h>
 #include <sequencergui/widgets/message_handler_factory.h>
-#include <sup/gui/components/visibility_agent_base.h>
+#include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/model/application_model.h>
 
