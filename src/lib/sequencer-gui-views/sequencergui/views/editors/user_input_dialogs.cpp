@@ -19,12 +19,14 @@
 
 #include "user_input_dialogs.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
+#include "anyvalue_editor_dialog_factory.h"
+
+#include <sequencergui/components/anyvalue_dialog_result.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_utils.h>
-#include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
+#include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>
 
 #include <mvvm/widgets/widget_utils.h>
 

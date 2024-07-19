@@ -4,7 +4,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_library(${library_name} SHARED)
 
-target_link_libraries(${library_name} PUBLIC pthread sequencer-gui-core sup-gui-core::views)
+target_link_libraries(${library_name} PUBLIC pthread sequencer-gui-core sup-gui-core::components)
 
 add_subdirectory(sequencergui)
 

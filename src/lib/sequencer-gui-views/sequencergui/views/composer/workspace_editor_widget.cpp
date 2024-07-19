@@ -21,7 +21,6 @@
 
 #include "attribute_editor_actions.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/composer/attribute_editor_action_handler.h>
 #include <sequencergui/composer/workspace_editor_action_handler.h>
 #include <sequencergui/composer/workspace_editor_context.h>
@@ -29,12 +28,13 @@
 #include <sequencergui/operation/workspace_view_component_provider.h>
 #include <sequencergui/viewmodel/workspace_editor_viewmodel.h>
 #include <sequencergui/views/composer/workspace_editor_actions.h>
+#include <sequencergui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <sup/gui/app/app_action_helper.h>
+#include <sup/gui/components/tree_helper.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/style_utils.h>
-#include <sup/gui/widgets/tree_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>

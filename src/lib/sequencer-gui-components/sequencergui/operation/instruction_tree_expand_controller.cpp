@@ -24,7 +24,7 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/viewmodel/viewmodel_helper.h>
-#include <sup/gui/widgets/tree_helper.h>
+#include <sup/gui/components/tree_helper.h>
 
 #include <mvvm/viewmodel/viewmodel.h>
 #include <mvvm/viewmodel/viewmodel_utils.h>

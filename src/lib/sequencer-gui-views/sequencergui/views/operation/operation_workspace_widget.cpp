@@ -24,9 +24,9 @@
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/operation/workspace_view_component_provider.h>
 #include <sequencergui/viewmodel/workspace_operation_viewmodel.h>
+#include <sup/gui/components/tree_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/style_utils.h>
-#include <sup/gui/widgets/tree_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/viewmodel/all_items_viewmodel.h>

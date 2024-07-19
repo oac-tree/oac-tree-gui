@@ -19,7 +19,7 @@
 
 #include "instruction_editor_action_handler.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
+#include <sequencergui/components/anyvalue_dialog_result.h>
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>

@@ -24,16 +24,16 @@
 #include "operation_workspace_panel.h"
 
 #include <sequencergui/jobsystem/job_handler.h>
-#include <sequencergui/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/sequencer_model.h>
-#include <sequencergui/operation/operation_action_handler.h>
-#include <sequencergui/operation/procedure_action_handler.h>
+#include <sequencergui/views/jobsystem/job_manager.h>
 #include <sequencergui/views/operation/message_panel.h>
+#include <sequencergui/views/operation/operation_action_handler.h>
+#include <sequencergui/views/operation/procedure_action_handler.h>
 #include <sequencergui/widgets/message_handler_factory.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>

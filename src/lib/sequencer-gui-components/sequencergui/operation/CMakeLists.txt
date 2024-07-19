@@ -10,10 +10,6 @@ target_sources(${library_name} PRIVATE
   breakpoint_types.h
   instruction_tree_expand_controller.cpp
   instruction_tree_expand_controller.h
-  operation_action_handler.cpp
-  operation_action_handler.h
-  procedure_action_handler.cpp
-  procedure_action_handler.h
   tooltip_helper.cpp
   tooltip_helper.h
   workspace_view_component_provider.cpp

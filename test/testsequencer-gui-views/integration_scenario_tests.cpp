@@ -18,7 +18,7 @@
  *****************************************************************************/
 
 #include <sequencergui/jobsystem/job_handler.h>
-#include <sequencergui/jobsystem/job_manager.h>
+#include <sequencergui/views/jobsystem/job_manager.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/job_item.h>

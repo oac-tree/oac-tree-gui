@@ -20,8 +20,10 @@
 #ifndef SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 #define SEQUENCERGUI_COMPONENTS_ANYVALUE_EDITOR_DIALOG_FACTORY_H_
 
-#include <functional>
 #include <memory>
+#include <functional>
+
+#include <sequencergui/components/anyvalue_dialog_result.h>
 
 class QWidget;
 
@@ -33,18 +35,6 @@ class AnyValueEditorDialog;
 
 namespace sequencergui
 {
-
-/**
- * @brief The AnyValueDialogResult struct is intended to return AnyValueItem from the dialog.
- */
-struct AnyValueDialogResult
-{
-  //!< Flag showing if operation was finished (OK button), or dialog was canceled. Canceled dialog
-  //!< means that the user whants to leave previous AnyValueItem intact.
-  bool is_accepted;
-  //!< result of editing; empty object means that the user wants to remove previous item
-  std::unique_ptr<sup::gui::AnyValueItem> result;
-};
 
 /**
  * @brief Helper function to create a dialog containing full-fleged AnyValueEditor.

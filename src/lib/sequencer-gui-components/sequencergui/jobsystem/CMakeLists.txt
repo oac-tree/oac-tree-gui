@@ -15,8 +15,6 @@ target_sources(${library_name} PRIVATE
   domain_runner.h
   domain_runner_service.cpp
   domain_runner_service.h
-  job_manager.cpp
-  job_manager.h
   job_handler.cpp
   job_handler.h
   job_log.cpp
@@ -35,8 +33,6 @@ target_sources(${library_name} PRIVATE
   user_choice_provider.cpp
   user_choice_provider.h
   user_context.h
-  user_input_dialogs.cpp
-  user_input_dialogs.h
   user_input_provider.cpp
   user_input_provider.h
 )

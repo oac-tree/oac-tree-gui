@@ -19,11 +19,10 @@
 
 #include "job_manager.h"
 
-#include "job_handler.h"
-#include "user_input_dialogs.h"
-
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/views/editors/user_input_dialogs.h>
 
 #include <sup/dto/anyvalue.h>
 

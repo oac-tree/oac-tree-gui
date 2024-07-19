@@ -22,7 +22,6 @@
 #include "instruction_attribute_editor.h"
 #include "instruction_editor_actions.h"
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
 #include <sequencergui/composer/instruction_editor_action_handler.h>
 #include <sequencergui/composer/instruction_editor_context.h>
 #include <sequencergui/model/instruction_container_item.h>
@@ -30,11 +29,12 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/viewmodel/instruction_editor_viewmodel.h>
 #include <sequencergui/widgets/custom_tree_view_style.h>
+#include <sequencergui/views/editors/anyvalue_editor_dialog_factory.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/widgets/custom_header_view.h>
 #include <sup/gui/widgets/message_helper.h>
 #include <sup/gui/widgets/style_utils.h>
-#include <sup/gui/widgets/tree_helper.h>
+#include <sup/gui/components/tree_helper.h>
 #include <sup/gui/widgets/visibility_agent_base.h>
 
 #include <mvvm/providers/item_view_component_provider.h>

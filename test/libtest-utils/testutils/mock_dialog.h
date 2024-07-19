@@ -20,7 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_MOCK_DIALOG_H_
 #define LIBTEST_UTILS_TESTUTILS_MOCK_DIALOG_H_
 
-#include <sequencergui/components/anyvalue_editor_dialog_factory.h>
+#include <sequencergui/components/anyvalue_dialog_result.h>
 
 #include <gmock/gmock.h>
 

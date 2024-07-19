@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/jobsystem/job_manager.h"
+#include "sequencergui/views/jobsystem/job_manager.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/job_handler.h>

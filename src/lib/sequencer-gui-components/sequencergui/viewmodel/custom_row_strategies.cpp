@@ -27,7 +27,6 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sup/gui/model/anyvalue_item.h>
-#include <sup/gui/widgets/style_utils.h>
 
 #include <mvvm/viewmodel/viewitem_factory.h>
 #include <mvvm/viewmodelbase/viewitem.h>
@@ -39,8 +38,7 @@
 namespace
 {
 
-const QVariant kEditorIcon =
-    QVariant::fromValue(QIcon(sup::gui::utils::GetIcon("file-tree-outline.svg")));
+const QVariant kEditorIcon = QVariant::fromValue(QIcon(":/icons/file-tree-outline.svg"));
 
 /**
  * @brief Creates view item representing AnyValue in a column.
