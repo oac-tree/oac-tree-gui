@@ -68,7 +68,7 @@ int RunApplication(int argc, char** argv)
   // splash screen will be shown only if there are procedures to load
   if (!options.file_name.isEmpty())
   {
-    splash.reset(new sequencergui::SplashScreen);
+    splash = std::make_unique<sequencergui::SplashScreen>();
     splash->Start(/*show_during*/ 1000);
   }
 
