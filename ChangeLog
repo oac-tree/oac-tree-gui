@@ -1,3 +1,28 @@
+Changes for 1.5.0:
+
+- COA Release v2.2, August 2024
+- Prototype of flatpack machinery
+- Implement a button for easy XML export
+- Restructure folders for better separation of testable and non-testable code
+- Enable timing, string, and system plugins from the sequencer
+- Make use of the new CustomHeaderView with the possibility to reset column width
+- Implement filtering for Workspace variables
+- Provide automatic reset of old setting files on GUI major/minor version change
+- Switch the GUI to the file-based projects
+- Refactor all context menus for instructions, procedures, and variables
+- Sort available instruction names according to the plugin name
+- Refactor WorkspaceSynchronizer to support new Sequencer setup logic
+- Switch toolbars and menus to a new ActionMenu and ProxyAction
+- Make use of new ActionManager and FocusWidget machinery to register global actions
+- Implement cut-copy-paste support for variables
+- Implement cut-copy-paste support for instructions
+- Implement cut-copy-paste support for procedures
+- Refactor action handlers to query if insert/remove actions are possible to support disabled status in menus
+- Refactor AttributeEditor for instructions and variables for uniform handling of attribute "exposed" flag
+- Switch viewmodels to a new AbstractRowStrategy
+- Fix drag-and-move for the instruction tree
+- Fix the timeout bug in the real-time menu
+
 Changes for 1.4.0:
 
 - COA Release v2.1, March 2024

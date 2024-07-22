@@ -22,7 +22,7 @@
 #   - CMake 3.13 - CMP0076: relative source file paths are interpreted as being relative to the current source directory
 cmake_minimum_required(VERSION 3.13)
 
-project(sequencer-gui VERSION 1.4.0 LANGUAGES CXX)
+project(sequencer-gui VERSION 1.5.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
