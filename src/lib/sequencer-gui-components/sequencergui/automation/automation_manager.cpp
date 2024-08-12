@@ -17,26 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "remote_monitor_view.h"
-
-#include <sequencergui/automation/automation_manager.h>
-
-#include <QDebug>
-#include <QLineEdit>
-#include <QVBoxLayout>
+#include "automation_manager.h"
 
 namespace sequencergui
 {
 
-RemoteMonitorView::RemoteMonitorView(QWidget *parent) : QWidget(parent), m_line_edit(new QLineEdit)
-{
-  auto layout = new QVBoxLayout(this);
-  layout->addWidget(m_line_edit);
-
-  connect(m_line_edit, &QLineEdit::editingFinished, this,
-          [this]() { qDebug() << m_line_edit->text(); });
-}
-
-RemoteMonitorView::~RemoteMonitorView() = default;
+AutomationManager::AutomationManager() {}
 
 }  // namespace sequencergui

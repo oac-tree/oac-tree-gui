@@ -126,6 +126,7 @@ find_package(Threads)
 
 find_package(sup-gui-core REQUIRED)
 find_package(sequencer REQUIRED)
+find_package(sup-auto-server REQUIRED)
 
 # -----------------------------------------------------------------------------
 # Generating config files

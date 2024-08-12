@@ -2,7 +2,8 @@ set(library_name sequencer-gui-core)
 
 add_library(${library_name} SHARED)
 
-target_link_libraries(${library_name} PUBLIC pthread sequencer::sequencer sup-gui-core::core)
+target_link_libraries(${library_name}
+  PUBLIC pthread sequencer::sequencer sup-auto-server::sup-auto-server sup-gui-core::core)
 
 add_subdirectory(sequencergui)
 

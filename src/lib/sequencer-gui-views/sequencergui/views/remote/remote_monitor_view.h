@@ -21,21 +21,29 @@
 #define SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
 
 #include <QWidget>
+#include <memory>
 
 class QLineEdit;
 
 namespace sequencergui
 {
 
+class AutomationManager;
+
+/**
+ * @brief The RemoteMonitorView class is a central view of RemoteMainWindow.
+ */
 class RemoteMonitorView : public QWidget
 {
   Q_OBJECT
 
 public:
-  RemoteMonitorView(QWidget *parent = nullptr);
+  explicit RemoteMonitorView(QWidget *parent = nullptr);
+  ~RemoteMonitorView() override;
 
 private:
   QLineEdit* m_line_edit{nullptr};
+  std::unique_ptr<AutomationManager> m_automation_manager;
 };
 
 }  // namespace sequencergui
