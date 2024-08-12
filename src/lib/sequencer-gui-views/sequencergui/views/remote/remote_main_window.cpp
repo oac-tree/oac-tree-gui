@@ -19,6 +19,8 @@
 
 #include "remote_main_window.h"
 
+#include "remote_monitor_view.h"
+
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/application_helper.h>
@@ -65,7 +67,9 @@ void RemoteMainWindow::InitApplication()
                                {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
                                 sup::gui::constants::kHelpMenu});
 
-  setCentralWidget(new QWidget);
+  m_monitor_view = new RemoteMonitorView;
+
+  setCentralWidget(m_monitor_view);
 }
 
 void RemoteMainWindow::ReadSettings()

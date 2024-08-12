@@ -29,8 +29,12 @@ class QCloseEvent;
 namespace sequencergui
 {
 
+class RemoteMonitorView;
+
 /**
- * @brief The RemoteMainWindow class
+ * @brief The RemoteMainWindow class represents the main window of sequencer-remote application.
+ *
+ * It is a standalone program to talk with the sequencer remote automation server.
  */
 class RemoteMainWindow : public QMainWindow
 {
@@ -51,6 +55,8 @@ private:
   void WriteSettings();
   bool CanCloseApplication();
   void OnRestartRequest(sup::gui::AppExitCode exit_code);
+
+  RemoteMonitorView* m_monitor_view{nullptr};
 };
 
 }  // namespace sequencergui
