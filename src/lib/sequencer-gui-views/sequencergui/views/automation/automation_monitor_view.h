@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
-#define SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
+#ifndef SEQUENCERGUI_VIEWS_AUTOMATION_AUTOMATION_MONITOR_VIEW_H_
+#define SEQUENCERGUI_VIEWS_AUTOMATION_AUTOMATION_MONITOR_VIEW_H_
 
 #include <QWidget>
 #include <memory>
@@ -32,17 +32,20 @@ class AutomationManager;
 class AutomationMonitorToolBar;
 class JobListWidget;
 class OperationRealTimePanel;
+class ApplicationModels;
 
 /**
- * @brief The RemoteMonitorView class is a central view of RemoteMainWindow.
+ * @brief The AutomationMonitorView class is a central view of RemoteMainWindow.
  */
-class RemoteMonitorView : public QWidget
+class AutomationMonitorView : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit RemoteMonitorView(QWidget* parent = nullptr);
-  ~RemoteMonitorView() override;
+  explicit AutomationMonitorView(QWidget* parent = nullptr);
+  ~AutomationMonitorView() override;
+
+  void SetApplicationModels(ApplicationModels* models);
 
 private:
   AutomationMonitorToolBar* m_tool_bar{nullptr};
@@ -57,4 +60,4 @@ private:
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
+#endif  // SEQUENCERGUI_VIEWS_AUTOMATION_AUTOMATION_MONITOR_VIEW_H_

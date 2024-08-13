@@ -17,11 +17,12 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "remote_monitor_view.h"
+#include "automation_monitor_view.h"
 
 #include "automation_monitor_tool_bar.h"
 
 #include <sequencergui/automation/automation_manager.h>
+#include <sequencergui/model/application_models.h>
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
 
@@ -32,7 +33,7 @@
 namespace sequencergui
 {
 
-RemoteMonitorView::RemoteMonitorView(QWidget *parent)
+AutomationMonitorView::AutomationMonitorView(QWidget *parent)
     : QWidget(parent)
     , m_tool_bar(new AutomationMonitorToolBar)
     , m_splitter(new QSplitter)
@@ -52,9 +53,14 @@ RemoteMonitorView::RemoteMonitorView(QWidget *parent)
   // connect(m_connect_button, &QPushButton::clicked, this, [this](auto) { OnConnect(); });
 }
 
-RemoteMonitorView::~RemoteMonitorView() = default;
+void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
+{
+  m_job_list->SetJobModel(models->GetJobModel());
+}
 
-void RemoteMonitorView::OnConnect()
+AutomationMonitorView::~AutomationMonitorView() = default;
+
+void AutomationMonitorView::OnConnect()
 {
   qDebug() << "RemoteMonitorView::OnConnect()";
 

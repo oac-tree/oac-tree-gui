@@ -17,32 +17,34 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MAIN_WINDOW_H_
-#define SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MAIN_WINDOW_H_
+#ifndef SEQUENCERGUI_VIEWS_AUTOMATION_AUTOMATION_MAIN_WINDOW_H_
+#define SEQUENCERGUI_VIEWS_AUTOMATION_AUTOMATION_MAIN_WINDOW_H_
 
 #include <sup/gui/app/main_window_types.h>
 
 #include <QMainWindow>
+#include <memory>
 
 class QCloseEvent;
 
 namespace sequencergui
 {
 
-class RemoteMonitorView;
+class AutomationMonitorView;
+class ApplicationModels;
 
 /**
- * @brief The RemoteMainWindow class represents the main window of sequencer-remote application.
+ * @brief The AutomationMainWindow class represents the main window of sequencer-remote application.
  *
  * It is a standalone program to talk with the sequencer remote automation server.
  */
-class RemoteMainWindow : public QMainWindow
+class AutomationMainWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  RemoteMainWindow();
-  ~RemoteMainWindow() override;
+  AutomationMainWindow();
+  ~AutomationMainWindow() override;
 
   bool ImportProcedure(const QString& file_name) { return false; }
 
@@ -56,9 +58,11 @@ private:
   bool CanCloseApplication();
   void OnRestartRequest(sup::gui::AppExitCode exit_code);
 
-  RemoteMonitorView* m_monitor_view{nullptr};
+  std::unique_ptr<ApplicationModels> m_models;
+
+  AutomationMonitorView* m_monitor_view{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MAIN_WINDOW_H_
+#endif  // SEQUENCERGUI_VIEWS_AUTOMATION_AUTOMATION_MAIN_WINDOW_H_

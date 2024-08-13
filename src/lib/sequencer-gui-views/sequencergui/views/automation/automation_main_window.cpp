@@ -17,10 +17,11 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "remote_main_window.h"
+#include "automation_main_window.h"
 
-#include "remote_monitor_view.h"
+#include "automation_monitor_view.h"
 
+#include <sequencergui/model/application_models.h>
 #include <sup/gui/app/app_action_helper.h>
 #include <sup/gui/app/app_constants.h>
 #include <sup/gui/app/application_helper.h>
@@ -41,14 +42,14 @@ const QString kWindowPosSettingName = kGroupName + "/" + "pos";
 namespace sequencergui
 {
 
-RemoteMainWindow::RemoteMainWindow()
+AutomationMainWindow::AutomationMainWindow() : m_models(std::make_unique<ApplicationModels>())
 {
   InitApplication();
 }
 
-RemoteMainWindow::~RemoteMainWindow() = default;
+AutomationMainWindow::~AutomationMainWindow() = default;
 
-void RemoteMainWindow::closeEvent(QCloseEvent* event)
+void AutomationMainWindow::closeEvent(QCloseEvent* event)
 {
   if (CanCloseApplication())
   {
@@ -59,7 +60,7 @@ void RemoteMainWindow::closeEvent(QCloseEvent* event)
   event->ignore();
 }
 
-void RemoteMainWindow::InitApplication()
+void AutomationMainWindow::InitApplication()
 {
   ReadSettings();
 
@@ -67,32 +68,33 @@ void RemoteMainWindow::InitApplication()
                                {sup::gui::constants::kFileMenu, sup::gui::constants::kViewMenu,
                                 sup::gui::constants::kHelpMenu});
 
-  m_monitor_view = new RemoteMonitorView;
+  m_monitor_view = new AutomationMonitorView;
+  m_monitor_view->SetApplicationModels(m_models.get());
 
   setCentralWidget(m_monitor_view);
 }
 
-void RemoteMainWindow::ReadSettings()
+void AutomationMainWindow::ReadSettings()
 {
   const QSettings settings;
   resize(settings.value(kWindowSizeSettingName, QSize(800, 600)).toSize());
   move(settings.value(kWindowPosSettingName, QPoint(200, 200)).toPoint());
 }
 
-void RemoteMainWindow::WriteSettings()
+void AutomationMainWindow::WriteSettings()
 {
   QSettings settings;
   settings.setValue(kWindowSizeSettingName, size());
   settings.setValue(kWindowPosSettingName, pos());
 }
 
-bool RemoteMainWindow::CanCloseApplication()
+bool AutomationMainWindow::CanCloseApplication()
 {
   WriteSettings();
   return true;
 }
 
-void RemoteMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
+void AutomationMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 {
   if (CanCloseApplication())
   {

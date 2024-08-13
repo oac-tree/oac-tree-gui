@@ -20,7 +20,7 @@
 #include <sequencergui/components/custom_meta_types.h>
 #include <sequencergui/core/version.h>
 #include <sequencergui/mainwindow/main_window_helper.h>
-#include <sequencergui/views/remote/remote_main_window.h>
+#include <sequencergui/views/automation/automation_main_window.h>
 
 int main(int argc, char** argv)
 {
@@ -30,5 +30,5 @@ int main(int argc, char** argv)
   sequencergui::RegisterCustomMetaTypes();
   Q_INIT_RESOURCE(sequencericons);
 
-  return sequencergui::RunApplication<sequencergui::RemoteMainWindow>(argc, argv);
+  return sequencergui::RunApplication<sequencergui::AutomationMainWindow>(argc, argv);
 }
