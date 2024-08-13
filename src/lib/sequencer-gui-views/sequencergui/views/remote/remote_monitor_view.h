@@ -24,6 +24,7 @@
 #include <memory>
 
 class QLineEdit;
+class QPushButton;
 
 namespace sequencergui
 {
@@ -43,6 +44,10 @@ public:
 
 private:
   QLineEdit* m_line_edit{nullptr};
+  QPushButton* m_push_button{nullptr};
+
+  void OnConnect();
+
   std::unique_ptr<AutomationManager> m_automation_manager;
 };
 

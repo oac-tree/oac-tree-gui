@@ -20,14 +20,22 @@
 #ifndef SEQUENCERGUI_AUTOMATION_AUTOMATION_MANAGER_H_
 #define SEQUENCERGUI_AUTOMATION_AUTOMATION_MANAGER_H_
 
+#include <string>
+#include <memory>
+
 namespace sequencergui
 {
+
+class RemoteJobObserver;
 
 class AutomationManager
 {
 public:
-  AutomationManager();
+  explicit AutomationManager(const std::string& server_name);
+  ~AutomationManager();
 
+private:
+  std::unique_ptr<RemoteJobObserver> m_job_observer;
 };
 
 }  // namespace sequencergui

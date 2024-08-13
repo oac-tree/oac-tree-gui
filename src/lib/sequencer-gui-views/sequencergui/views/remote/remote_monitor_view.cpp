@@ -23,20 +23,32 @@
 
 #include <QDebug>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
-RemoteMonitorView::RemoteMonitorView(QWidget *parent) : QWidget(parent), m_line_edit(new QLineEdit)
+RemoteMonitorView::RemoteMonitorView(QWidget *parent)
+    : QWidget(parent), m_line_edit(new QLineEdit), m_push_button(new QPushButton("Connect"))
 {
-  auto layout = new QVBoxLayout(this);
+  auto layout = new QHBoxLayout(this);
   layout->addWidget(m_line_edit);
+  layout->addWidget(m_push_button);
 
   connect(m_line_edit, &QLineEdit::editingFinished, this,
           [this]() { qDebug() << m_line_edit->text(); });
+
+  connect(m_push_button, &QPushButton::clicked, this, [this](auto) { OnConnect(); });
 }
 
 RemoteMonitorView::~RemoteMonitorView() = default;
+
+void RemoteMonitorView::OnConnect()
+{
+  qDebug() << "RemoteMonitorView::OnConnect()";
+
+  m_automation_manager = std::make_unique<AutomationManager>(m_line_edit->text().toStdString());
+}
 
 }  // namespace sequencergui
