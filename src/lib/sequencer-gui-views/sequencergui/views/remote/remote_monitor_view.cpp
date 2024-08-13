@@ -19,27 +19,37 @@
 
 #include "remote_monitor_view.h"
 
+#include "automation_monitor_tool_bar.h"
+
 #include <sequencergui/automation/automation_manager.h>
+#include <sequencergui/views/operation/job_list_widget.h>
+#include <sequencergui/views/operation/operation_realtime_panel.h>
 
 #include <QDebug>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QSplitter>
 #include <QVBoxLayout>
 
 namespace sequencergui
 {
 
 RemoteMonitorView::RemoteMonitorView(QWidget *parent)
-    : QWidget(parent), m_line_edit(new QLineEdit), m_push_button(new QPushButton("Connect"))
+    : QWidget(parent)
+    , m_tool_bar(new AutomationMonitorToolBar)
+    , m_splitter(new QSplitter)
+    , m_job_list(new JobListWidget)
+    , m_realtime_panel(new OperationRealTimePanel)
 {
-  auto layout = new QHBoxLayout(this);
-  layout->addWidget(m_line_edit);
-  layout->addWidget(m_push_button);
+  auto layout = new QVBoxLayout(this);
+  layout->addWidget(m_tool_bar);
+  layout->addWidget(m_splitter);
 
-  connect(m_line_edit, &QLineEdit::editingFinished, this,
-          [this]() { qDebug() << m_line_edit->text(); });
+  m_splitter->addWidget(m_job_list);
+  m_splitter->addWidget(m_realtime_panel);
 
-  connect(m_push_button, &QPushButton::clicked, this, [this](auto) { OnConnect(); });
+  // connect(m_line_edit, &QLineEdit::editingFinished, this,
+  //         [this]() { qDebug() << m_line_edit->text(); });
+
+  // connect(m_connect_button, &QPushButton::clicked, this, [this](auto) { OnConnect(); });
 }
 
 RemoteMonitorView::~RemoteMonitorView() = default;
@@ -48,7 +58,7 @@ void RemoteMonitorView::OnConnect()
 {
   qDebug() << "RemoteMonitorView::OnConnect()";
 
-  m_automation_manager = std::make_unique<AutomationManager>(m_line_edit->text().toStdString());
+  // m_automation_manager = std::make_unique<AutomationManager>(m_line_edit->text().toStdString());
 }
 
 }  // namespace sequencergui

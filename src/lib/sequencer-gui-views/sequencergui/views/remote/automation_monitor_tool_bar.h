@@ -17,44 +17,38 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
-#define SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
+#ifndef SEQUENCERGUI_VIEWS_REMOTE_AUTOMATION_MONITOR_TOOL_BAR_H_
+#define SEQUENCERGUI_VIEWS_REMOTE_AUTOMATION_MONITOR_TOOL_BAR_H_
 
-#include <QWidget>
-#include <memory>
+#include <QToolBar>
 
-class QSplitter;
+class QLineEdit;
+class QPushButton;
+class QLabel;
 
 namespace sequencergui
 {
 
-class AutomationManager;
-class AutomationMonitorToolBar;
-class JobListWidget;
-class OperationRealTimePanel;
-
 /**
- * @brief The RemoteMonitorView class is a central view of RemoteMainWindow.
+ * @brief The AutomationMonitorToolBar class is a tool bar with server name and connect/disconnect
+ * buttons.
+ *
+ * Located on top of RemoteMonitorView.
  */
-class RemoteMonitorView : public QWidget
+class AutomationMonitorToolBar : public QToolBar
 {
   Q_OBJECT
 
 public:
-  explicit RemoteMonitorView(QWidget* parent = nullptr);
-  ~RemoteMonitorView() override;
+  explicit AutomationMonitorToolBar(QWidget* parent = nullptr);
 
 private:
-  AutomationMonitorToolBar* m_tool_bar{nullptr};
-  QSplitter* m_splitter{nullptr};
-  JobListWidget* m_job_list{nullptr};
-  OperationRealTimePanel* m_realtime_panel{nullptr};
-
-  void OnConnect();
-
-  std::unique_ptr<AutomationManager> m_automation_manager;
+  QLabel* m_status_label{nullptr};
+  QLineEdit* m_line_edit{nullptr};
+  QPushButton* m_connect_button{nullptr};
+  QPushButton* m_disconnect_button{nullptr};
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_VIEWS_REMOTE_REMOTE_MONITOR_VIEW_H_
+#endif  // SEQUENCERGUI_VIEWS_REMOTE_AUTOMATION_MONITOR_TOOL_BAR_H_

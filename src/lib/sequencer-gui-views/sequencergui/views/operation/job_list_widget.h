@@ -38,12 +38,14 @@ class CustomHeaderView;
 
 namespace sequencergui
 {
+
 class JobModel;
 class JobItem;
 
-//! A list-like view of currently running/idle jobs. Occupies a top left corner of
-//! SequencerMonitorView.
-
+/**
+ * @brief The JobListWidget class A list-like view of currently running/idle jobs. Occupies a top
+ * left corner of OperationJobPanel.
+ */
 class JobListWidget : public QWidget
 {
   Q_OBJECT
