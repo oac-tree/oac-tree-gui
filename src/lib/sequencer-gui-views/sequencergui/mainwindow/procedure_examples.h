@@ -17,12 +17,10 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_MODEL_PROCEDURE_EXAMPLES_H_
-#define SEQUENCERGUI_MODEL_PROCEDURE_EXAMPLES_H_
+#ifndef SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
+#define SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_
 
 //! Collection of example procedures to populate the model for debugging purposes.
-
-#include <memory>
 
 namespace sequencergui
 {
@@ -53,4 +51,4 @@ ProcedureItem* AddComplexAlignmentProcedureV2(SequencerModel* model);
 }  // namespace Examples
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_MODEL_PROCEDURE_EXAMPLES_H_
+#endif  // SEQUENCERGUI_MAINWINDOW_PROCEDURE_EXAMPLES_H_

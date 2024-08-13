@@ -19,8 +19,6 @@ target_sources(${library_name} PRIVATE
   job_item.h
   job_model.cpp
   job_model.h
-  procedure_examples.cpp
-  procedure_examples.h
   procedure_item.cpp
   procedure_item.h
   procedure_preamble_items.cpp
