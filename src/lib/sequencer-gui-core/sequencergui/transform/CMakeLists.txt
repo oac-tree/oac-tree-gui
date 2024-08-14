@@ -3,6 +3,8 @@
 target_sources(${library_name} PRIVATE
   attribute_item_transform_helper.cpp
   attribute_item_transform_helper.h
+  automation_transform_helper.cpp
+  automation_transform_helper.h
   domain_procedure_builder.cpp
   domain_procedure_builder.h
   domain_workspace_builder.cpp

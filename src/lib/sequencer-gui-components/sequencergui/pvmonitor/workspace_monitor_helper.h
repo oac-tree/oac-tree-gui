@@ -32,7 +32,6 @@ class SessionItem;
 namespace sequencergui
 {
 class WorkspaceItem;
-class DomainWorkspaceBuilder;
 class VariableItem;
 }  // namespace sequencergui
 
