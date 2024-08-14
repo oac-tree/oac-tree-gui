@@ -1,6 +1,8 @@
 # Code related to domain/GUI transformations
 
 target_sources(${library_name} PRIVATE
+  domain_automation_helper.cpp
+  domain_automation_helper.h
   domain_constants.h
   domain_helper.cpp
   domain_helper.h

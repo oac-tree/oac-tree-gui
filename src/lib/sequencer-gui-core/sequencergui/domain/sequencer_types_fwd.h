@@ -45,4 +45,9 @@ using userinterface_t = sup::sequencer::UserInterface;
 using variable_t = sup::sequencer::Variable;
 using workspace_t = sup::sequencer::Workspace;
 
+namespace sup::auto_server
+{
+class InstructionInfo;
+}
+
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_
