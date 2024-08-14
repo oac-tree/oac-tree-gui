@@ -39,8 +39,6 @@
 #include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
 
-#include <algorithm>
-
 namespace sequencergui
 {
 
@@ -171,43 +169,5 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &pr
         TypeRegistrationInfo(static_cast<TypeRegistrationInfo::RegistrationMode>(mode), str));
   }
 }
-
-template <typename DomainT>
-bool HasAttributeDefinition(const DomainT &domain, const std::string &definition_name)
-{
-  auto definitions = domain.GetAttributeDefinitions();
-  auto on_element = [&definition_name](const auto &elem)
-  { return elem.GetName() == definition_name; };
-  return std::any_of(std::begin(definitions), std::end(definitions), on_element);
-}
-
-template bool HasAttributeDefinition<variable_t>(const variable_t &domain,
-                                                 const std::string &definition_name);
-template bool HasAttributeDefinition<instruction_t>(const instruction_t &domain,
-                                                    const std::string &definition_name);
-
-template <typename DomainT>
-void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)
-{
-  auto anyvalue = sup::gui::CreateAnyValue(item);
-  if (sup::dto::IsEmptyValue(anyvalue))
-  {
-    return;
-  }
-
-  if (HasAttributeDefinition(domain, domainconstants::kTypeAttribute))
-  {
-    domain.AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
-  }
-  if (HasAttributeDefinition(domain, domainconstants::kValueAttribute))
-  {
-    domain.AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
-  }
-}
-
-template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem &item,
-                                                    variable_t &domain);
-template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem &item,
-                                                       instruction_t &domain);
 
 }  // namespace sequencergui

@@ -150,6 +150,42 @@ void SetAttribute(const mvvm::CompoundItem& item, const std::string& name, const
   attribute->SetData(value);
 }
 
+/**
+ * @brief Checks if given instruction or variable contains attribute definition with the given name.
+ *
+ * @tparam DomainT Sequencer domain type (instruction or variable).
+ *
+ * @param domain Domain object to check.
+ */
+template <typename DomainT>
+bool HasAttributeDefinition(const DomainT& domain, const std::string& definition_name);
+
+extern template bool HasAttributeDefinition<variable_t>(const variable_t& domain,
+                                                        const std::string& definition_name);
+extern template bool HasAttributeDefinition<instruction_t>(const instruction_t& domain,
+                                                           const std::string& definition_name);
+
+/**
+ * @brief Sets domain JSON type and value attributes, if necessary, for given domain instruction or
+ * variable.
+ *
+ * @tparam DomainT Sequencer domain type (instruction or variable).
+ *
+ * @param item AnyValueItem to use to construct JSON attributes
+ * @param domain Domain object to set pair of attributes.
+ *
+ * @details This will first check if attributes are required, then convert given AnyValueItem
+ * into AnyValue, and then set a pair of attributes with names "type" and "value" using AnyValue
+ * JSON representation.
+ */
+template <typename DomainT>
+void SetJsonAttributesFromItem(const sup::gui::AnyValueItem& item, DomainT& domain);
+
+extern template void SetJsonAttributesFromItem<variable_t>(const sup::gui::AnyValueItem& item,
+                                                           variable_t& domain);
+extern template void SetJsonAttributesFromItem<instruction_t>(const sup::gui::AnyValueItem& item,
+                                                              instruction_t& domain);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_TRANSFORM_ATTRIBUTE_ITEM_TRANSFORM_HELPER_H_
