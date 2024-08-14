@@ -19,7 +19,7 @@
 
 #include "sequencergui/transform/attribute_item_transform_helper.h"
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sup/gui/model/scalar_conversion_utils.h>

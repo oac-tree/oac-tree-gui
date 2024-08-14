@@ -22,7 +22,7 @@
 #include "instruction_toolkit_tree_view.h"
 
 #include <sequencergui/domain/domain_object_group_helper.h>
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/viewmodel/toolkit_viewmodel.h>
 
 #include <mvvm/viewmodel/filter_name_viewmodel.h>

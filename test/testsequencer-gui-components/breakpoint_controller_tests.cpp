@@ -20,7 +20,7 @@
 #include "sequencergui/operation/breakpoint_controller.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>

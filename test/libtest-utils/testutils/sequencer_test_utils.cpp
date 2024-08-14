@@ -20,7 +20,7 @@
 #include "sequencer_test_utils.h"
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <sup/dto/anyvalue.h>

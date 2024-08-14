@@ -20,7 +20,7 @@
 #include "sequencergui/composer/procedure_plugin_controller.h"
 
 #include <sequencergui/domain/domain_constants.h>
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/epics_instruction_items.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/procedure_item.h>

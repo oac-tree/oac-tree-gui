@@ -23,7 +23,7 @@
 
 #include <sequencergui/components/anyvalue_dialog_result.h>
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>
 #include <sup/gui/views/anyvalueeditor/anyvalue_editor_dialog.h>

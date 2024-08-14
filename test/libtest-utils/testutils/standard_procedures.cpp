@@ -21,7 +21,7 @@
 
 #include "test_utils.h"
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/instruction.h>

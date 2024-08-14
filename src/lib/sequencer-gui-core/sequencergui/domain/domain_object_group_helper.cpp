@@ -21,7 +21,7 @@
 
 #include "domain_constants.h"
 #include "domain_object_type_registry.h"
-#include "domain_utils.h"
+#include "domain_helper.h"
 
 #include <mvvm/utils/container_utils.h>
 

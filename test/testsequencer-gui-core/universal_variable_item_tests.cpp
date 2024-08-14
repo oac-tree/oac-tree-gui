@@ -20,7 +20,7 @@
 #include "sequencergui/model/universal_variable_item.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/item_constants.h>
 
 #include <mvvm/model/item_utils.h>

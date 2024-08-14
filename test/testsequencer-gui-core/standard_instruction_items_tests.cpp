@@ -19,7 +19,7 @@
 
 #include "sequencergui/model/standard_instruction_items.h"
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/universal_item_helper.h>
 #include <sequencergui/transform/attribute_item_transform_helper.h>

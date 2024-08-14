@@ -19,7 +19,7 @@
 
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
 #include <sup/gui/model/anyvalue_utils.h>
 

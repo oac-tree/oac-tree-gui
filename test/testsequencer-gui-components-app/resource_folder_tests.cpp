@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/jobsystem/job_handler.h>
 #include <sequencergui/jobsystem/job_utils.h>
 #include <sequencergui/model/application_models.h>

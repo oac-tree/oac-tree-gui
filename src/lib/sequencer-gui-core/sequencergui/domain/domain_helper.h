@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
-#define SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_
+#ifndef SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_
+#define SEQUENCERGUI_DOMAIN_DOMAIN_HELPER_H_
 
 //! @file
 //! Collection of utility functions to access/create various Sequencer-related objects. With this

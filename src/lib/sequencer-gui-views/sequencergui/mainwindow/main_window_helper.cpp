@@ -19,7 +19,7 @@
 
 #include "main_window_helper.h"
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 
 #include <mvvm/utils/file_utils.h>
 

@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/domain/domain_utils.h"
+#include "sequencergui/domain/domain_helper.h"
 
 #include <sequencergui/domain/domain_object_type_registry.h>
 

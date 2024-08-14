@@ -19,7 +19,7 @@
 
 #include "sequencergui/operation/workspace_view_component_provider.h"
 
-#include <sequencergui/domain/domain_utils.h>
+#include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 
