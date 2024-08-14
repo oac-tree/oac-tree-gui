@@ -29,23 +29,31 @@
 
 namespace sequencergui
 {
+
 class InstructionItem;
 class InstructionContainerItem;
 class VariableItem;
 class ProcedureItem;
 class ProcedurePreambleItem;
 
-//! Translates domain's type name to the model type of corresponding GUI item.
+/**
+ * @brief Translates domain's type name to the model type of corresponding GUI item.
+ */
 std::string GetItemType(const std::string& domain_type);
 
-//! Creates VariableItem from string representing Type of sup::sequencer::Variable.
+/**
+ * @brief Creates VariableItem from string representing the type of sup::sequencer::Variable.
+ */
 std::unique_ptr<VariableItem> CreateVariableItem(const std::string& domain_type);
 
-//! Creates InstructionItem from string representing Type of sup::sequencer::Instruction.
+/**
+ * @brief Creates InstructionItem from string representing Type of sup::sequencer::Instruction.
+ */
 std::unique_ptr<InstructionItem> CreateInstructionItem(const std::string& domain_type);
 
-//! Creates ProcedureItem from given domain procedure. If flag `root_only` is true, will use process
-//! one top-level root instruction.
+/**
+ * @brief Creates ProcedureItem from given domain procedure.
+ */
 std::unique_ptr<ProcedureItem> CreateProcedureItem(const procedure_t* procedure, bool root_only);
 
 /**
