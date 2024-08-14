@@ -20,6 +20,7 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_UNIVERSAL_ITEMS_H_
 #define LIBTEST_UTILS_TESTUTILS_UNIVERSAL_ITEMS_H_
 
+//! @file
 //! Collection of utils to test sequencer.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
@@ -30,9 +31,7 @@
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/variable_registry.h>
 
-#include <memory>
 #include <string>
-#include <vector>
 
 namespace testutils
 {

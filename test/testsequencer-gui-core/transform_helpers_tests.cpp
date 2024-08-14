@@ -185,33 +185,6 @@ TEST_F(TransformHelpersTest, SetInstructionAnyValueFromScalar)
   EXPECT_NE(GetAnyValueItem(item), prev_anyvalue_item);
 }
 
-TEST_F(TransformHelpersTest, AddNonEmptyAttributeToVariable)
-{
-  auto variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-
-  AddNonEmptyAttribute("custom_attribute_name", "", *variable);
-  EXPECT_FALSE(variable->HasAttribute("custom_attribute_name"));
-
-  AddNonEmptyAttribute("custom_attribute_name", "abc", *variable);
-  EXPECT_TRUE(variable->HasAttribute("custom_attribute_name"));
-}
-
-TEST_F(TransformHelpersTest, AddNonEmptyAttributeToInstruction)
-{
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  auto instruction = CreateDomainInstruction(domainconstants::kChannelAccessReadInstructionType);
-
-  AddNonEmptyAttribute("custom_attribute_name", "", *instruction);
-  EXPECT_FALSE(instruction->HasAttribute("custom_attribute_name"));
-
-  AddNonEmptyAttribute("custom_attribute_name", "abc", *instruction);
-  EXPECT_TRUE(instruction->HasAttribute("custom_attribute_name"));
-}
-
 //! Validate SetAnyValueFromDomainVariable helper method.
 //! Domain sequencer variable with json type and value attributes is used to set AnyValueItem on
 //! board of VariableItem.
@@ -382,41 +355,6 @@ TEST_F(TransformHelpersTest, HasAttributeDefinition)
   auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
   EXPECT_TRUE(HasAttributeDefinition(*local_variable, domainconstants::kTypeAttribute));
   EXPECT_FALSE(HasAttributeDefinition(*local_variable, std::string("non-existing-attribute")));
-}
-
-TEST_F(TransformHelpersTest, HasJsonTypeAndNameAttributes)
-{
-  auto local_variable = CreateDomainVariable(domainconstants::kLocalVariableType);
-  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*local_variable));
-
-  auto file_variable = CreateDomainVariable(domainconstants::kFileVariableType);
-  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*file_variable));
-
-  auto instr = CreateDomainInstruction(domainconstants::kSequenceInstructionType);
-  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*instr));
-}
-
-TEST_F(TransformHelpersTest, HasJsonTypeAndNameAttributesForEpicsInstruction)
-{
-  if (!IsSequencerPluginEpicsAvailable())
-  {
-    GTEST_SKIP();
-  }
-
-  auto instr = CreateDomainInstruction(domainconstants::kPvAccessWriteInstructionType);
-  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
-
-  instr = CreateDomainInstruction(domainconstants::kPvAccessReadInstructionType);
-  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*instr));
-
-  instr = CreateDomainInstruction(domainconstants::kChannelAccessWriteInstructionType);
-  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
-
-  instr = CreateDomainInstruction(domainconstants::kChannelAccessReadInstructionType);
-  EXPECT_FALSE(HasJsonTypeAndNameAttributes(*instr));
-
-  instr = CreateDomainInstruction(domainconstants::kRPCClientInstructionType);
-  EXPECT_TRUE(HasJsonTypeAndNameAttributes(*instr));
 }
 
 TEST_F(TransformHelpersTest, SetLocalVariableJsonAttributesFromItem)

@@ -118,7 +118,7 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
     try
     {
       auto temp_anyvalue_item = sup::gui::CreateItem(anyvalue);
-      sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item.get(), *existing_anyvalue_item);
+      sup::gui::UpdateAnyValueItemData(*temp_anyvalue_item, *existing_anyvalue_item);
       return;
     }
     catch (const std::exception &ex)
@@ -136,23 +136,6 @@ void UpdateAnyValue(const anyvalue_t &anyvalue, VariableItem &variable_item)
   // Create brand new AnyValueItem using AnyValue provided
   SetAnyValue(anyvalue, variable_item);
 }
-
-template <typename DomainT>
-void AddNonEmptyAttribute(const std::string &attribute_name, const std::string &attribute_value,
-                          DomainT &domain)
-{
-  if (!attribute_value.empty())
-  {
-    domain.AddAttribute(attribute_name, attribute_value);
-  }
-}
-
-template void AddNonEmptyAttribute<variable_t>(const std::string &attribute_name,
-                                               const std::string &attribute_value,
-                                               variable_t &domain);
-template void AddNonEmptyAttribute<instruction_t>(const std::string &attribute_name,
-                                                  const std::string &attribute_value,
-                                                  instruction_t &domain);
 
 void RegisterChildrenTag(const instruction_t &instruction, mvvm::CompoundItem &item)
 {
@@ -202,16 +185,6 @@ template bool HasAttributeDefinition<variable_t>(const variable_t &domain,
                                                  const std::string &definition_name);
 template bool HasAttributeDefinition<instruction_t>(const instruction_t &domain,
                                                     const std::string &definition_name);
-
-template <typename DomainT>
-bool HasJsonTypeAndNameAttributes(const DomainT &domain)
-{
-  return HasAttributeDefinition(domain, domainconstants::kTypeAttribute)
-         && HasAttributeDefinition(domain, domainconstants::kValueAttribute);
-}
-
-template bool HasJsonTypeAndNameAttributes<variable_t>(const variable_t &domain);
-template bool HasJsonTypeAndNameAttributes<instruction_t>(const instruction_t &domain);
 
 template <typename DomainT>
 void SetJsonAttributesFromItem(const sup::gui::AnyValueItem &item, DomainT &domain)

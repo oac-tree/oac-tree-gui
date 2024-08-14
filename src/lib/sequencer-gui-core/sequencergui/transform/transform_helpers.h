@@ -84,27 +84,6 @@ void SetAnyValueFromDomainInstruction(const instruction_t& instruction, Instruct
 void UpdateAnyValue(const anyvalue_t& anyvalue, VariableItem& variable_item);
 
 /**
- * @brief Adds non-empty attribute to given domain instruction or variable.
- *
- * @tparam DomainT Sequencer domain type (instruction or variable).
- * @param attribute_name The name of the attribute.
- * @param attribute_value Non empty attribute value.
- * @param domain The domain object (instruction or variable).
- *
- * @details If attribute value is empty, will do nothing.
- */
-template <typename DomainT>
-void AddNonEmptyAttribute(const std::string& attribute_name, const std::string& attribute_value,
-                          DomainT& domain);
-
-extern template void AddNonEmptyAttribute<variable_t>(const std::string& attribute_name,
-                                                      const std::string& attribute_value,
-                                                      variable_t& domain);
-extern template void AddNonEmptyAttribute<instruction_t>(const std::string& attribute_name,
-                                                         const std::string& attribute_value,
-                                                         instruction_t& domain);
-
-/**
  * @brief Register tag in instruction item to be able to add other instructions as children.
  *
  * @param instruction The domain instruction is used to deduce category (compound, decorator).
@@ -131,19 +110,6 @@ extern template bool HasAttributeDefinition<variable_t>(const variable_t& domain
                                                         const std::string& definition_name);
 extern template bool HasAttributeDefinition<instruction_t>(const instruction_t& domain,
                                                            const std::string& definition_name);
-
-/**
- * @brief Checks if given instruction or variable contains Anyvalue JSON type and name attributes.
- *
- * @tparam DomainT Sequencer domain type (instruction or variable).
- *
- * @param domain Domain object to check.
- */
-template <typename DomainT>
-bool HasJsonTypeAndNameAttributes(const DomainT& domain);
-
-extern template bool HasJsonTypeAndNameAttributes<variable_t>(const variable_t& domain);
-extern template bool HasJsonTypeAndNameAttributes<instruction_t>(const instruction_t& domain);
 
 /**
  * @brief Sets domain JSON type and value attributes, if necessary, for given domain instruction or

@@ -22,7 +22,7 @@
 
 //! @file
 //! Collection of utility functions to access/create various Sequencer-related objects. With this
-//! file, we want to decrease as much as possible the visibility of sequencer headers in the code.
+//! file, we want to decrease the visibility of sequencer headers in the code as much as possible.
 
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/sequencer_types_fwd.h>
