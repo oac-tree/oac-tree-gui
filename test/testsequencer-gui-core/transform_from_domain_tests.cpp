@@ -75,34 +75,6 @@ public:
   }
 };
 
-TEST_F(TransformFromDomainTest, GetItemType)
-{
-  using namespace sequencergui::domainconstants;
-
-  // for instructions
-  EXPECT_EQ(IncludeItem::Type, GetItemType(kIncludeInstructionType));
-  EXPECT_EQ(ParallelSequenceItem::Type, GetItemType(kParallelInstructionType));
-  EXPECT_EQ(RepeatItem::Type, GetItemType(kRepeatInstructionType));
-  EXPECT_EQ(SequenceItem::Type, GetItemType(kSequenceInstructionType));
-  EXPECT_EQ(WaitItem::Type, GetItemType(kWaitInstructionType));
-
-  // instructions from sequencer-plugin-epics
-  EXPECT_EQ(ChannelAccessReadInstructionItem::Type, GetItemType(kChannelAccessReadInstructionType));
-  EXPECT_EQ(ChannelAccessWriteInstructionItem::Type,
-            GetItemType(kChannelAccessWriteInstructionType));
-  EXPECT_EQ(PvAccessReadInstructionItem::Type, GetItemType(kPvAccessReadInstructionType));
-  EXPECT_EQ(PvAccessWriteInstructionItem::Type, GetItemType(kPvAccessWriteInstructionType));
-  EXPECT_EQ(RPCClientInstruction::Type, GetItemType(kRPCClientInstructionType));
-  EXPECT_EQ(SystemCallInstructionItem::Type, GetItemType(kSystemCallInstructionType));
-  EXPECT_EQ(LogInstructionItem::Type, GetItemType(kLogInstructionType));
-
-  // for variables
-  EXPECT_EQ(ChannelAccessVariableItem::Type, GetItemType(kChannelAccessVariableType));
-  EXPECT_EQ(FileVariableItem::Type, GetItemType(kFileVariableType));
-  EXPECT_EQ(LocalVariableItem::Type, GetItemType(kLocalVariableType));
-  EXPECT_EQ(PvAccessClientVariableItem::Type, GetItemType(kPvAccessClientVariableType));
-}
-
 //! Validate CreateInstructionItem factory function.
 
 TEST_F(TransformFromDomainTest, CreateVariableItem)

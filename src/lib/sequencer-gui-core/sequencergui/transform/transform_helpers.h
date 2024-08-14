@@ -71,6 +71,7 @@ void SetAnyValueFromDomainVariable(const variable_t& variable, VariableItem& var
 
 /**
  * @brief Sets AnyValueItem on board of instruction item using domain instruction.
+ *
  * @param instruction Domain instruction with JSON type and value attribute defined.
  * @param item Instruction item with tag intended for AnyValueItem.
  */

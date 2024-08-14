@@ -20,6 +20,7 @@
 #ifndef SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
 #define SEQUENCERGUI_TRANSFORM_TRANSFORM_FROM_DOMAIN_H_
 
+//! @file
 //! Collection of utility functions to convert sup::sequencer::Procedure into SessionModel.
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
@@ -31,15 +32,9 @@ namespace sequencergui
 {
 
 class InstructionItem;
-class InstructionContainerItem;
 class VariableItem;
 class ProcedureItem;
 class ProcedurePreambleItem;
-
-/**
- * @brief Translates domain's type name to the model type of corresponding GUI item.
- */
-std::string GetItemType(const std::string& domain_type);
 
 /**
  * @brief Creates VariableItem from string representing the type of sup::sequencer::Variable.
