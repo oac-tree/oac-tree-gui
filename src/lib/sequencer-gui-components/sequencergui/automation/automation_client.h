@@ -40,15 +40,28 @@ public:
   explicit AutomationClient(const std::string& server_name);
   ~AutomationClient();
 
+  void Run(size_t job_index);
+
+  void Pause(size_t job_index);
+
+  void Stop(size_t job_index);
+
+  void Step(size_t job_index);
+
   /**
    * @brief Returns number of server jobs.
    */
   size_t GetJobCount() const;
 
   /**
-   * @brief Returns
+   * @brief Returns full job information for given job index.
    */
   sup::auto_server::JobInfo GetJobInfo(size_t job_index) const;
+
+  /**
+   * @brief Connect job observer with remote job with the given index.
+   */
+  void Connect(size_t job_index, RemoteJobObserver* observer);
 
 private:
   struct AutomationManagerImpl;

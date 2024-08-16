@@ -28,53 +28,53 @@ RemoteJobObserver::RemoteJobObserver() = default;
 
 void RemoteJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 {
-  std::cout << "RemoteJobObserver::InitNumberOfInstructions";
+  std::cout << "RemoteJobObserver::InitNumberOfInstructions" << "\n";
 }
 
 void RemoteJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::auto_server::InstructionState state)
 {
-  std::cout << "RemoteJobObserver::InstructionStateUpdated";
+  std::cout << "RemoteJobObserver::InstructionStateUpdated" << "\n";
 }
 
 void RemoteJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,
                                         bool connected)
 {
-  std::cout << "RemoteJobObserver::VariableUpdated";
+  std::cout << "RemoteJobObserver::VariableUpdated" << "\n";
 }
 
 void RemoteJobObserver::JobStateUpdated(sup::sequencer::JobState state)
 {
-  std::cout << "RemoteJobObserver::JobStateUpdated";
+  std::cout << "RemoteJobObserver::JobStateUpdated" << "\n";
 }
 
 bool RemoteJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
 {
-  std::cout << "RemoteJobObserver::PutValue";
+  std::cout << "RemoteJobObserver::PutValue" << "\n";
   return false;
 }
 
 bool RemoteJobObserver::GetUserValue(sup::dto::AnyValue &value, const std::string &description)
 {
-  std::cout << "RemoteJobObserver::GetUserValue";
+  std::cout << "RemoteJobObserver::GetUserValue" << "\n";
   return false;
 }
 
 int RemoteJobObserver::GetUserChoice(const std::vector<std::string> &options,
                                      const sup::dto::AnyValue &metadata)
 {
-  std::cout << "RemoteJobObserver::GetUserChoice";
+  std::cout << "RemoteJobObserver::GetUserChoice" << "\n";
   return 0;
 }
 
 void RemoteJobObserver::Message(const std::string &message)
 {
-  std::cout << "RemoteJobObserver::Message";
+  std::cout << "RemoteJobObserver::Message" << "\n";
 }
 
 void RemoteJobObserver::Log(int severity, const std::string &message)
 {
-  std::cout << "RemoteJobObserver::Log";
+  std::cout << "RemoteJobObserver::Log" << "\n";
 }
 
 }  // namespace sequencergui

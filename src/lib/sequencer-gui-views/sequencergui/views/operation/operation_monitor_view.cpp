@@ -68,7 +68,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
     , m_workspace_panel{new OperationWorkspacePanel}
     , m_splitter(new QSplitter)
     , m_job_manager(new JobManager(this))
-    , m_actions(new OperationActionHandler(
+    , m_action_handler(new OperationActionHandler(
           m_job_manager, [this] { return m_job_panel->GetSelectedJob(); }, this))
 {
   auto layout = new QVBoxLayout(this);
@@ -85,7 +85,7 @@ OperationMonitorView::OperationMonitorView(Mode mode, QWidget *parent)
   SetupConnections();
   SetupWidgetActions();
 
-  m_actions->SetMessageHandler(CreateMessageBoxHandler());
+  m_action_handler->SetMessageHandler(CreateMessageBoxHandler());
   JobManager::set_joblog_cb callback = [this](auto log)
   { m_realtime_panel->GetMessagePanel()->SetLog(log); };
   m_job_manager->SetMessagePanel(callback);
@@ -101,7 +101,7 @@ void OperationMonitorView::SetApplicationModels(ApplicationModels *models)
 {
   m_models = models;
   m_job_panel->SetApplicationModels(models);
-  m_actions->SetJobModel(models->GetJobModel());
+  m_action_handler->SetJobModel(models->GetJobModel());
 }
 
 bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
@@ -116,7 +116,7 @@ bool OperationMonitorView::OnImportJobRequest(const QString &file_name)
     auto procedure_ptr = procedure.get();
     model->InsertItem(std::move(procedure), model->GetProcedureContainer(),
                       mvvm::TagIndex::Append());
-    return m_actions->OnSubmitJobRequest(procedure_ptr);
+    return m_action_handler->OnSubmitJobRequest(procedure_ptr);
   }
 
   return false;
@@ -179,25 +179,25 @@ void OperationMonitorView::SetupConnections()
   // Process request from MonitorRealTimeWidget to SequencerMonitorActions
 
   // start request
-  connect(m_realtime_panel, &OperationRealTimePanel::runRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::runRequest, m_action_handler,
           &OperationActionHandler::OnStartJobRequest);
 
   // pause request
-  connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, m_action_handler,
           &OperationActionHandler::OnPauseJobRequest);
 
   // stop request
-  connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, m_action_handler,
           &OperationActionHandler::OnStopJobRequest);
 
   // step request
-  connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, m_action_handler,
           &OperationActionHandler::OnMakeStepRequest);
 
   // change delay request
-  connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_actions,
+  connect(m_realtime_panel, &OperationRealTimePanel::changeDelayRequest, m_action_handler,
           &OperationActionHandler::OnSetTickTimeoutRequest);
-  m_actions->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
+  m_action_handler->OnSetTickTimeoutRequest(m_realtime_panel->GetCurrentTickTimeout());
 
   // instruction next leave request from JobManager to MonitorRealTimeWidget
   connect(m_job_manager, &JobManager::NextLeavesChanged, m_realtime_panel,
@@ -207,7 +207,7 @@ void OperationMonitorView::SetupConnections()
   connect(m_job_panel, &OperationJobPanel::JobSelected, this, &OperationMonitorView::OnJobSelected);
 
   // job submission request
-  connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::SubmitProcedureRequest, m_action_handler,
           &OperationActionHandler::OnSubmitJobRequest);
 
   // import request
@@ -215,19 +215,19 @@ void OperationMonitorView::SetupConnections()
           [this]() { OnImportJobRequest(); });
 
   // job removal request
-  connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::RemoveJobRequest, m_action_handler,
           &OperationActionHandler::OnRemoveJobRequest);
 
   // job removal request with cleanup after
-  connect(m_job_panel, &OperationJobPanel::RemoveAndCleanupJobRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::RemoveAndCleanupJobRequest, m_action_handler,
           &OperationActionHandler::OnRemoveJobAndCleanupRequest);
 
   // job regenerate request
-  connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_actions,
+  connect(m_job_panel, &OperationJobPanel::RegenerateJobRequest, m_action_handler,
           &OperationActionHandler::OnRegenerateJobRequest);
 
   // job selection request from SequencerMonitorActions
-  connect(m_actions, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
+  connect(m_action_handler, &OperationActionHandler::MakeJobSelectedRequest, m_job_panel,
           &OperationJobPanel::SetSelectedJob);
 
   auto on_toggle_breakpoint_request = [this](auto *instruction)

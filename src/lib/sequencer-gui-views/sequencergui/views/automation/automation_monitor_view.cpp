@@ -22,6 +22,7 @@
 #include "automation_monitor_tool_bar.h"
 
 #include <sequencergui/automation/automation_client.h>
+#include <sequencergui/automation/remote_job_observer.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
@@ -30,6 +31,7 @@
 #include <sequencergui/transform/procedure_item_automation_builder.h>
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
+#include <sup/gui/widgets/style_utils.h>
 
 #include <sup/auto-server/job_info.h>
 
@@ -47,6 +49,7 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_job_list(new JobListWidget)
     , m_realtime_panel(new OperationRealTimePanel)
+    , m_job_observer(std::make_unique<RemoteJobObserver>())
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -55,11 +58,24 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
   m_splitter->addWidget(m_job_list);
   m_splitter->addWidget(m_realtime_panel);
 
+  m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
+  m_tool_bar->addActions(m_realtime_panel->actions());
+
   connect(m_tool_bar, &AutomationMonitorToolBar::ConnectRequest, this,
           &AutomationMonitorView::OnConnect);
 
   connect(m_job_list, &JobListWidget::JobSelected, m_realtime_panel,
           &OperationRealTimePanel::SetCurrentJob);
+
+  connect(m_realtime_panel, &OperationRealTimePanel::runRequest, this,
+          &AutomationMonitorView::OnRunRequest);
+  connect(m_realtime_panel, &OperationRealTimePanel::pauseRequest, this,
+          &AutomationMonitorView::OnPauseRequest);
+  connect(m_realtime_panel, &OperationRealTimePanel::stepRequest, this,
+          &AutomationMonitorView::OnStepRequest);
+  connect(m_realtime_panel, &OperationRealTimePanel::stopRequest, this,
+          &AutomationMonitorView::OnStopRequest);
 }
 
 AutomationMonitorView::~AutomationMonitorView() = default;
@@ -69,6 +85,26 @@ void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
   m_sequencer_model = models->GetSequencerModel();
   m_job_model = models->GetJobModel();
   m_job_list->SetJobModel(models->GetJobModel());
+}
+
+void AutomationMonitorView::OnRunRequest()
+{
+  m_automation_client->Run(0);
+}
+
+void AutomationMonitorView::OnPauseRequest()
+{
+  m_automation_client->Pause(0);
+}
+
+void AutomationMonitorView::OnStepRequest()
+{
+  m_automation_client->Step(0);
+}
+
+void AutomationMonitorView::OnStopRequest()
+{
+  m_automation_client->Stop(0);
 }
 
 void AutomationMonitorView::OnConnect(const QString &server_name)
@@ -85,12 +121,12 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
     auto procedure_item = builder.CreateProcedureItem(m_automation_client->GetJobInfo(job_index));
     auto procedure_item_ptr = procedure_item.get();
 
+    // The difference with JobHandler is that our Procedure and ExpandedProcedure is the same.
     m_job_model->InsertItem(std::move(procedure_item), job_item, mvvm::TagIndex::Append());
     job_item->SetProcedure(procedure_item_ptr);
-    // job_item->SetDisplayName("AAA");
-
-    // job_item->SetDisplayName()
   }
+
+  m_automation_client->Connect(0, m_job_observer.get());
 }
 
 }  // namespace sequencergui
