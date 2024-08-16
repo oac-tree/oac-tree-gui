@@ -27,11 +27,24 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 
 #include <memory>
+#include <vector>
 
 namespace sequencergui
 {
 
 class InstructionItem;
+
+/**
+ * @brief The InstructionTree class contains a root instruction with all its children, and the
+ * correspondence of automation index to instruction pointer.
+ *
+ * It is obtained from sup::auto_server::InstructionInfo.
+ */
+struct InstructionTree
+{
+  std::unique_ptr<InstructionItem> instruction; //!< root instruction
+  std::vector<const InstructionItem*> indexes; //!<
+};
 
 /**
  * @brief Creates InstructionItem from the automation server information.
@@ -44,7 +57,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(
 /**
  * @brief Creates InstructionItem with all its children from the automation server information.
  */
-std::unique_ptr<InstructionItem> CreateInstructionItemTree(
+InstructionTree CreateInstructionItemTree(
     const sup::auto_server::InstructionInfo& info);
 
 }  // namespace sequencergui

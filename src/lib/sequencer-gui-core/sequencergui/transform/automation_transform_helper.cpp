@@ -47,21 +47,23 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(
 {
   auto result = sequencergui::CreateInstructionItem(info.GetType());
 
-  // We create domain instruction only to be able to use InitFromDomain mechanism for attribute propagation.
+  // We create domain instruction only to be able to use InitFromDomain mechanism for attribute
+  // propagation.
   auto domain = CreateDomainInstruction(info);
   result->InitFromDomain(domain.get());
 
   return result;
 }
 
-std::unique_ptr<InstructionItem> CreateInstructionItemTree(
-    const sup::auto_server::InstructionInfo& info)
+InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInfo& info)
 {
   std::stack<InstructionInfoStackNode> stack;
 
   std::unique_ptr<InstructionItem> result = CreateInstructionItem(info);
+  std::map<const InstructionItem*, size_t> item_to_index;
 
   stack.push({info, *result});
+  item_to_index[result.get()] = info.GetIndex();
 
   while (!stack.empty())
   {
@@ -72,6 +74,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItemTree(
     {
       auto child_item = CreateInstructionItem(*child_info);
       auto child_item_ptr = child_item.get();
+      item_to_index[child_item_ptr] = child_info->GetIndex();
 
       node.item.InsertItem(std::move(child_item), mvvm::TagIndex::Append());
 
@@ -79,7 +82,11 @@ std::unique_ptr<InstructionItem> CreateInstructionItemTree(
     }
   }
 
-  return result;
+  std::vector<const InstructionItem*> index_list(item_to_index.size());
+  std::for_each(item_to_index.begin(), item_to_index.end(),
+                [&index_list](auto it) { index_list[it.second] = it.first; });
+
+  return {std::move(result), std::move(index_list)};
 }
 
 }  // namespace sequencergui
