@@ -33,6 +33,8 @@ class AutomationMonitorToolBar;
 class JobListWidget;
 class OperationRealTimePanel;
 class ApplicationModels;
+class SequencerModel;
+class JobModel;
 
 /**
  * @brief The AutomationMonitorView class is a central view of RemoteMainWindow.
@@ -55,6 +57,8 @@ private:
 
   void OnConnect(const QString& server_name);
 
+  SequencerModel* m_sequencer_model{nullptr};
+  JobModel* m_job_model{nullptr};
   std::unique_ptr<AutomationClient> m_automation_client;
 };
 

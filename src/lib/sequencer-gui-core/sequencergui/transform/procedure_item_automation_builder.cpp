@@ -40,6 +40,8 @@ std::unique_ptr<ProcedureItem> ProcedureItemAutomationBuilder::CreateProcedureIt
 {
   auto result = std::make_unique<ProcedureItem>();
 
+  result->SetDisplayName(job_info.GetPrefix());
+
   auto instruction_tree = CreateInstructionItemTree(*job_info.GetRootInstructionInfo());
   m_instruction_indexes = std::move(instruction_tree.indexes);
   result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),

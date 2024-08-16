@@ -23,8 +23,15 @@
 
 #include <sequencergui/automation/automation_client.h>
 #include <sequencergui/model/application_models.h>
+#include <sequencergui/model/job_item.h>
+#include <sequencergui/model/job_model.h>
+#include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/sequencer_model.h>
+#include <sequencergui/transform/procedure_item_automation_builder.h>
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
+
+#include <sup/auto-server/job_info.h>
 
 #include <QDebug>
 #include <QPushButton>
@@ -50,20 +57,40 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
 
   connect(m_tool_bar, &AutomationMonitorToolBar::ConnectRequest, this,
           &AutomationMonitorView::OnConnect);
-}
 
-void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
-{
-  m_job_list->SetJobModel(models->GetJobModel());
+  connect(m_job_list, &JobListWidget::JobSelected, m_realtime_panel,
+          &OperationRealTimePanel::SetCurrentJob);
 }
 
 AutomationMonitorView::~AutomationMonitorView() = default;
+
+void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
+{
+  m_sequencer_model = models->GetSequencerModel();
+  m_job_model = models->GetJobModel();
+  m_job_list->SetJobModel(models->GetJobModel());
+}
 
 void AutomationMonitorView::OnConnect(const QString &server_name)
 {
   qDebug() << "RemoteMonitorView::OnConnect()" << server_name;
 
   m_automation_client = std::make_unique<AutomationClient>(server_name.toStdString());
+
+  for (size_t job_index = 0; job_index < m_automation_client->GetJobCount(); ++job_index)
+  {
+    auto job_item = m_job_model->InsertItem<JobItem>();
+
+    ProcedureItemAutomationBuilder builder;
+    auto procedure_item = builder.CreateProcedureItem(m_automation_client->GetJobInfo(job_index));
+    auto procedure_item_ptr = procedure_item.get();
+
+    m_job_model->InsertItem(std::move(procedure_item), job_item, mvvm::TagIndex::Append());
+    job_item->SetProcedure(procedure_item_ptr);
+    // job_item->SetDisplayName("AAA");
+
+    // job_item->SetDisplayName()
+  }
 }
 
 }  // namespace sequencergui

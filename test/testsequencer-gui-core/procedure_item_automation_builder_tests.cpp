@@ -19,6 +19,7 @@
 
 #include "sequencergui/transform/procedure_item_automation_builder.h"
 
+#include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_container_item.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
@@ -27,6 +28,7 @@
 #include <sup/auto-server/instruction_map.h>
 #include <sup/auto-server/job_info.h>
 #include <sup/auto-server/job_utils.h>
+#include <sup/sequencer/procedure.h>
 #include <sup/sequencer/sequence_parser.h>
 
 #include <gtest/gtest.h>
@@ -50,7 +52,7 @@ public:
   /**
    * @brief Helper method to create JobInfo from procedure text body
    */
-  static sup::auto_server::JobInfo CreateJobInfo(const std::string procedure_text)
+  static sup::auto_server::JobInfo CreateJobInfo(const std::string& procedure_text)
   {
     const std::string prefix = "JobInfoTest:FromProcedure:";
     auto procedure =
@@ -69,6 +71,8 @@ TEST_F(ProcedureItemAutomationBuilderTest, SequenceWithTwoWaits)
 
   ProcedureItemAutomationBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
+
+  // EXPECT_EQ(procedure_item->GetDisplayName(), std::string());
 
   ASSERT_EQ(procedure_item->GetInstructionContainer()->GetInstructionCount(), 1);
 
