@@ -62,7 +62,7 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForWait)
   auto item_tree = CreateInstructionItemTree(info);
   ASSERT_EQ(item_tree.indexes.size(), 1);
 
-  auto wait_item = dynamic_cast<WaitItem*>(item_tree.instruction.get());
+  auto wait_item = dynamic_cast<WaitItem*>(item_tree.root.get());
 
   ASSERT_NE(wait_item, nullptr);
   EXPECT_EQ(wait_item->GetTimeout(), 42.0);
@@ -93,7 +93,7 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForSequence)
 
   ASSERT_EQ(item_tree.indexes.size(), 3);
 
-  auto sequence_item = dynamic_cast<SequenceItem*>(item_tree.instruction.get());
+  auto sequence_item = dynamic_cast<SequenceItem*>(item_tree.root.get());
   ASSERT_NE(sequence_item, nullptr);
   ASSERT_EQ(sequence_item->GetInstructions().size(), 2);
   auto wait_items = sequence_item->GetItems<WaitItem>(mvvm::TagIndex::kDefaultTag);

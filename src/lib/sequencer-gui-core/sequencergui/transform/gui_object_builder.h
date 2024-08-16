@@ -20,7 +20,7 @@
 #ifndef SEQUENCERGUI_TRANSFORM_GUI_OBJECT_BUILDER_H_
 #define SEQUENCERGUI_TRANSFORM_GUI_OBJECT_BUILDER_H_
 
-#include "sup/gui/core/dto_types_fwd.h"
+#include <sup/gui/core/dto_types_fwd.h>
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
 

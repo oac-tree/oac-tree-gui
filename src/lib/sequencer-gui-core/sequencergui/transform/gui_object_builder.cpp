@@ -176,8 +176,7 @@ mvvm::SessionItem *GUIObjectBuilder::ProcessInstruction(const instruction_t *ins
   Save(instruction, item.get());
 
   item->InitFromDomain(instruction);
-  // method InsertItem returns just raw pointer to item
-  auto next_parent = parent->InsertItem(std::move(item), {"", -1});
+  auto next_parent = parent->InsertItem(std::move(item), mvvm::TagIndex::Append());
   return next_parent;
 }
 

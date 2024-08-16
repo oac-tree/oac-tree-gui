@@ -42,8 +42,10 @@ class InstructionItem;
  */
 struct InstructionTree
 {
-  std::unique_ptr<InstructionItem> instruction; //!< root instruction
-  std::vector<const InstructionItem*> indexes; //!<
+  std::unique_ptr<InstructionItem> root;  //!< root instruction
+
+  //!< all instructions stored according their automation indexes
+  std::vector<const InstructionItem*> indexes;
 };
 
 /**
@@ -57,8 +59,7 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(
 /**
  * @brief Creates InstructionItem with all its children from the automation server information.
  */
-InstructionTree CreateInstructionItemTree(
-    const sup::auto_server::InstructionInfo& info);
+InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInfo& info);
 
 }  // namespace sequencergui
 
