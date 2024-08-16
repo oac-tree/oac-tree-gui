@@ -42,6 +42,9 @@ class AutomationMonitorToolBar : public QToolBar
 public:
   explicit AutomationMonitorToolBar(QWidget* parent = nullptr);
 
+signals:
+  void ConnectRequest(const QString& server_name);
+
 private:
   QLabel* m_status_label{nullptr};
   QLineEdit* m_line_edit{nullptr};

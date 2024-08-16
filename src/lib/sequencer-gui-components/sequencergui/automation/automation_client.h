@@ -17,27 +17,44 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_AUTOMATION_AUTOMATION_MANAGER_H_
-#define SEQUENCERGUI_AUTOMATION_AUTOMATION_MANAGER_H_
+#ifndef SEQUENCERGUI_AUTOMATION_AUTOMATION_CLIENT_H_
+#define SEQUENCERGUI_AUTOMATION_AUTOMATION_CLIENT_H_
 
-#include <string>
+#include <sequencergui/domain/sequencer_types_fwd.h>
+
 #include <memory>
+#include <string>
 
 namespace sequencergui
 {
 
 class RemoteJobObserver;
 
-class AutomationManager
+/**
+ * @brief The AutomationClient class is a simple wrapper around automation server machinery to hide
+ * its API.
+ */
+class AutomationClient
 {
 public:
-  explicit AutomationManager(const std::string& server_name);
-  ~AutomationManager();
+  explicit AutomationClient(const std::string& server_name);
+  ~AutomationClient();
+
+  /**
+   * @brief Returns number of server jobs.
+   */
+  size_t GetJobCount() const;
+
+  /**
+   * @brief Returns
+   */
+  sup::auto_server::JobInfo GetJobInfo(size_t job_index) const;
 
 private:
-  std::unique_ptr<RemoteJobObserver> m_job_observer;
+  struct AutomationManagerImpl;
+  std::unique_ptr<AutomationManagerImpl> p_impl;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_AUTOMATION_AUTOMATION_MANAGER_H_
+#endif  // SEQUENCERGUI_AUTOMATION_AUTOMATION_CLIENT_H_

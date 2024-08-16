@@ -37,6 +37,9 @@ AutomationMonitorToolBar::AutomationMonitorToolBar(QWidget *parent)
   addWidget(m_line_edit);
   addWidget(m_connect_button);
   addWidget(m_disconnect_button);
+
+  connect(m_connect_button, &QPushButton::clicked, this,
+          [this](auto) { emit ConnectRequest(m_line_edit->text()); });
 }
 
 }  // namespace sequencergui

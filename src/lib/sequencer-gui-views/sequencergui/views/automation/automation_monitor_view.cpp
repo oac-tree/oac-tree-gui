@@ -21,12 +21,13 @@
 
 #include "automation_monitor_tool_bar.h"
 
-#include <sequencergui/automation/automation_manager.h>
+#include <sequencergui/automation/automation_client.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
 
 #include <QDebug>
+#include <QPushButton>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -47,10 +48,8 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
   m_splitter->addWidget(m_job_list);
   m_splitter->addWidget(m_realtime_panel);
 
-  // connect(m_line_edit, &QLineEdit::editingFinished, this,
-  //         [this]() { qDebug() << m_line_edit->text(); });
-
-  // connect(m_connect_button, &QPushButton::clicked, this, [this](auto) { OnConnect(); });
+  connect(m_tool_bar, &AutomationMonitorToolBar::ConnectRequest, this,
+          &AutomationMonitorView::OnConnect);
 }
 
 void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
@@ -60,11 +59,11 @@ void AutomationMonitorView::SetApplicationModels(ApplicationModels *models)
 
 AutomationMonitorView::~AutomationMonitorView() = default;
 
-void AutomationMonitorView::OnConnect()
+void AutomationMonitorView::OnConnect(const QString &server_name)
 {
-  qDebug() << "RemoteMonitorView::OnConnect()";
+  qDebug() << "RemoteMonitorView::OnConnect()" << server_name;
 
-  // m_automation_manager = std::make_unique<AutomationManager>(m_line_edit->text().toStdString());
+  m_automation_client = std::make_unique<AutomationClient>(server_name.toStdString());
 }
 
 }  // namespace sequencergui

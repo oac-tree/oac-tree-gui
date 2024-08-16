@@ -28,7 +28,7 @@ class QSplitter;
 namespace sequencergui
 {
 
-class AutomationManager;
+class AutomationClient;
 class AutomationMonitorToolBar;
 class JobListWidget;
 class OperationRealTimePanel;
@@ -53,9 +53,9 @@ private:
   JobListWidget* m_job_list{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
 
-  void OnConnect();
+  void OnConnect(const QString& server_name);
 
-  std::unique_ptr<AutomationManager> m_automation_manager;
+  std::unique_ptr<AutomationClient> m_automation_client;
 };
 
 }  // namespace sequencergui

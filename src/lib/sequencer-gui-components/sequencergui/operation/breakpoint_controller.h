@@ -36,7 +36,6 @@ class InstructionItem;
  * @brief The BreakpointController class stores information about breakpoints, and controls its
  * propagation to the domain runner.
  */
-
 class BreakpointController : public QObject
 {
   Q_OBJECT

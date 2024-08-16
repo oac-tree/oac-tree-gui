@@ -24,6 +24,8 @@
 namespace sequencergui
 {
 
+RemoteJobObserver::RemoteJobObserver() = default;
+
 void RemoteJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 {
   std::cout << "RemoteJobObserver::InitNumberOfInstructions";
