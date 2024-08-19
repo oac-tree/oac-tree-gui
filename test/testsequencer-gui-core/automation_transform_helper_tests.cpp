@@ -19,14 +19,18 @@
 
 #include "sequencergui/transform/automation_transform_helper.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/workspace_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <sup/auto-server/instruction_info.h>
 #include <sup/auto-server/variable_info.h>
+#include <sup/auto-server/workspace_info.h>
 
 #include <gtest/gtest.h>
 
@@ -126,7 +130,58 @@ TEST_F(AutomationTransformHelperTest, CreateVariableItem)
   auto variable_item = CreateVariableItem(info);
 
   EXPECT_EQ(variable_item->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
   auto stored_anyvalue = CreateAnyValue(*variable_item->GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+}
+
+TEST_F(AutomationTransformHelperTest, PopulateWorkspaceItem)
+{
+  {  // attempt to populate non-empty workspace
+    WorkspaceItem workspace_item;
+    workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+
+    sup::auto_server::WorkspaceInfo info;
+    EXPECT_THROW(PopulateWorkspaceItem(info, &workspace_item), RuntimeException);
+  }
+
+  const size_t variable_id{0};
+  const std::string expected_name("abc");
+  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
+
+  std::vector<sup::auto_server::AttributeInfo> attributes(
+      {{domainconstants::kNameAttribute, expected_name},
+       {domainconstants::kTypeAttribute, expected_type},
+       {domainconstants::kValueAttribute, expected_value}});
+
+  sup::auto_server::VariableInfo info0(
+      domainconstants::kLocalVariableType, 0,
+      {{domainconstants::kTypeAttribute, expected_type}, {domainconstants::kValueAttribute, "42"}});
+
+  sup::auto_server::VariableInfo info1(
+      domainconstants::kLocalVariableType, 1,
+      {{domainconstants::kTypeAttribute, expected_type}, {domainconstants::kValueAttribute, "43"}});
+
+  sup::auto_server::WorkspaceInfo workspace_info;
+  workspace_info.AddVariableInfo("var0", info0);
+  workspace_info.AddVariableInfo("var1", info1);
+
+  WorkspaceItem workspace_item;
+  auto index_to_variable_item = PopulateWorkspaceItem(workspace_info, &workspace_item);
+
+  auto variable_items = workspace_item.GetVariables();
+  ASSERT_EQ(index_to_variable_item.size(), 2);
+  ASSERT_EQ(variable_items.size(), 2);
+  EXPECT_EQ(variable_items[0], index_to_variable_item[0]);
+  EXPECT_EQ(variable_items[1], index_to_variable_item[1]);
+
+  auto stored_anyvalue0 = CreateAnyValue(*variable_items[0]->GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
+  EXPECT_EQ(stored_anyvalue0, expected_anyvalue0);
+
+  auto stored_anyvalue1 = CreateAnyValue(*variable_items[1]->GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);
+  EXPECT_EQ(stored_anyvalue1, expected_anyvalue1);
 }

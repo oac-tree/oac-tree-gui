@@ -19,13 +19,16 @@
 
 #include "automation_transform_helper.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_automation_helper.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <sup/auto-server/instruction_info.h>
 #include <sup/auto-server/variable_info.h>
+#include <sup/auto-server/workspace_info.h>
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/variable.h>
 
@@ -102,6 +105,29 @@ std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::Variabl
   result->InitFromDomain(domain.get());
 
   return result;
+}
+
+std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::auto_server::WorkspaceInfo& info,
+                                                       WorkspaceItem* workspace_item)
+{
+  std::vector<const VariableItem*> index_to_variable_item;
+
+  if (workspace_item->GetVariableCount() != 0)
+  {
+    throw RuntimeException("WorkspaceItem already contains some variables");
+  }
+
+  index_to_variable_item.resize(info.GetNumberOfVariables());
+
+  for (const auto& [name, variable_info] : info.GetVariableInfos())
+  {
+    auto variable_item = CreateVariableItem(variable_info);
+    auto variable_item_ptr = variable_item.get();
+    index_to_variable_item[variable_info.GetIndex()] = variable_item_ptr;
+    workspace_item->InsertItem(std::move(variable_item), mvvm::TagIndex::Append());
+  }
+
+  return index_to_variable_item;
 }
 
 }  // namespace sequencergui

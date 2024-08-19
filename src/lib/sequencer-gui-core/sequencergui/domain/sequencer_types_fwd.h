@@ -50,6 +50,7 @@ namespace sup::auto_server
 class InstructionInfo;
 class VariableInfo;
 class JobInfo;
+class WorkspaceInfo;
 }
 
 #endif  // SEQUENCERGUI_DOMAIN_SEQUENCER_TYPES_FWD_H_

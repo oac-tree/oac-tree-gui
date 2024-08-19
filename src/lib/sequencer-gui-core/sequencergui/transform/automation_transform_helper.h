@@ -34,6 +34,7 @@ namespace sequencergui
 
 class InstructionItem;
 class VariableItem;
+class WorkspaceItem;
 
 /**
  * @brief The InstructionTree class contains a root instruction with all its children, and the
@@ -66,6 +67,17 @@ InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInf
  * @brief Creates VariableItem from the automation server information.
  */
 std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::VariableInfo& info);
+
+/**
+ * @brief Populates empty workspace workspace item with variables from the automation server
+ * information.
+ *
+ * @param info Automation server representation of the domain workspace.
+ * @param workspace_item An empty workspace item to populate with the content.
+ * @return List of all created variables stored according to their automation indexes
+ */
+std::vector<const VariableItem*> PopulateWorkspaceItem(const sup::auto_server::WorkspaceInfo& info,
+                                                       WorkspaceItem* workspace_item);
 
 }  // namespace sequencergui
 
