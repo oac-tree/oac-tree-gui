@@ -33,6 +33,7 @@ namespace sequencergui
 {
 
 class InstructionItem;
+class VariableItem;
 
 /**
  * @brief The InstructionTree class contains a root instruction with all its children, and the
@@ -60,6 +61,11 @@ std::unique_ptr<InstructionItem> CreateInstructionItem(
  * @brief Creates InstructionItem with all its children from the automation server information.
  */
 InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInfo& info);
+
+/**
+ * @brief Creates VariableItem from the automation server information.
+ */
+std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::VariableInfo& info);
 
 }  // namespace sequencergui
 

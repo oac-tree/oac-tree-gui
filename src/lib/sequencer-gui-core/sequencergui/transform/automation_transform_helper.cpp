@@ -21,10 +21,13 @@
 
 #include <sequencergui/domain/domain_automation_helper.h>
 #include <sequencergui/model/instruction_item.h>
+#include <sequencergui/model/variable_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
 
 #include <sup/auto-server/instruction_info.h>
+#include <sup/auto-server/variable_info.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/variable.h>
 
 #include <stack>
 
@@ -87,6 +90,18 @@ InstructionTree CreateInstructionItemTree(const sup::auto_server::InstructionInf
                 [&index_list](auto it) { index_list[it.second] = it.first; });
 
   return {std::move(result), std::move(index_list)};
+}
+
+std::unique_ptr<VariableItem> CreateVariableItem(const sup::auto_server::VariableInfo& info)
+{
+  auto result = sequencergui::CreateVariableItem(info.GetType());
+
+  // We create domain variable only to be able to use InitFromDomain mechanism for attribute
+  // propagation.
+  auto domain = CreateDomainVariable(info);
+  result->InitFromDomain(domain.get());
+
+  return result;
 }
 
 }  // namespace sequencergui

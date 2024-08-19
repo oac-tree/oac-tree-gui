@@ -38,6 +38,12 @@ namespace sequencergui
 std::unique_ptr<sup::sequencer::Instruction> CreateDomainInstruction(
     const sup::auto_server::InstructionInfo& info);
 
+/**
+ * @brief Creates domain variable from automation VariableInfo presentation.
+ */
+std::unique_ptr<sup::sequencer::Variable> CreateDomainVariable(
+    const sup::auto_server::VariableInfo& info);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_DOMAIN_DOMAIN_UTILS_H_

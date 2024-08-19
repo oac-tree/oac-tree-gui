@@ -22,7 +22,9 @@
 #include "domain_helper.h"
 
 #include <sup/auto-server/instruction_info.h>
+#include <sup/auto-server/variable_info.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/variable.h>
 
 namespace sequencergui
 {
@@ -31,6 +33,14 @@ std::unique_ptr<sup::sequencer::Instruction> CreateDomainInstruction(
     const sup::auto_server::InstructionInfo &info)
 {
   auto result = CreateDomainInstruction(info.GetType());
+  result->AddAttributes(info.GetAttributes());
+  return result;
+}
+
+std::unique_ptr<sup::sequencer::Variable> CreateDomainVariable(
+    const sup::auto_server::VariableInfo &info)
+{
+  auto result = CreateDomainVariable(info.GetType());
   result->AddAttributes(info.GetAttributes());
   return result;
 }

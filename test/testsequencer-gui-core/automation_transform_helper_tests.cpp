@@ -22,8 +22,11 @@
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/variable_item.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <sup/auto-server/instruction_info.h>
+#include <sup/auto-server/variable_info.h>
 
 #include <gtest/gtest.h>
 
@@ -104,4 +107,26 @@ TEST_F(AutomationTransformHelperTest, CreateInstructionItemTreeForSequence)
   EXPECT_EQ(item_tree.indexes[0], sequence_item);
   EXPECT_EQ(item_tree.indexes[1], wait_items[0]);
   EXPECT_EQ(item_tree.indexes[2], wait_items[1]);
+}
+
+//! Testing CreateVariableItem helper method.
+TEST_F(AutomationTransformHelperTest, CreateVariableItem)
+{
+  const size_t variable_id{0};
+  const std::string expected_name("abc");
+  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
+
+  std::vector<sup::auto_server::AttributeInfo> attributes(
+      {{domainconstants::kNameAttribute, expected_name},
+       {domainconstants::kTypeAttribute, expected_type},
+       {domainconstants::kValueAttribute, expected_value}});
+  sup::auto_server::VariableInfo info(domainconstants::kLocalVariableType, variable_id, attributes);
+
+  auto variable_item = CreateVariableItem(info);
+
+  EXPECT_EQ(variable_item->GetType(), domainconstants::kLocalVariableType);
+  auto stored_anyvalue = CreateAnyValue(*variable_item->GetAnyValueItem());
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
+  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
 }

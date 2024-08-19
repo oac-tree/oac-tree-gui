@@ -22,7 +22,9 @@
 #include <sequencergui/domain/domain_constants.h>
 
 #include <sup/auto-server/instruction_info.h>
+#include <sup/auto-server/variable_info.h>
 #include <sup/sequencer/instruction.h>
+#include <sup/sequencer/variable.h>
 
 #include <gtest/gtest.h>
 
@@ -46,4 +48,26 @@ TEST_F(DomainAutomationHelperTest, CreateDomainInstruction)
   EXPECT_EQ(instruction->GetType(), domainconstants::kWaitInstructionType);
   EXPECT_TRUE(instruction->HasAttribute(domainconstants::kTimeoutAttribute));
   EXPECT_EQ(instruction->GetAttributeString(domainconstants::kTimeoutAttribute), "42");
+}
+
+TEST_F(DomainAutomationHelperTest, CreateDomainVariable)
+{
+  const size_t variable_id{0};
+  const std::string expected_name("abc");
+  const std::string expected_type(R"RAW({"type":"uint32"})RAW");
+  const std::string expected_value("42");
+
+  std::vector<sup::auto_server::AttributeInfo> attributes(
+      {{domainconstants::kNameAttribute, expected_name},
+       {domainconstants::kTypeAttribute, expected_type},
+       {domainconstants::kValueAttribute, expected_value}});
+  sup::auto_server::VariableInfo info(sequencergui::domainconstants::kLocalVariableType,
+                                      variable_id, attributes);
+
+  auto variable = CreateDomainVariable(info);
+
+  EXPECT_EQ(variable->GetType(), domainconstants::kLocalVariableType);
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kNameAttribute), expected_name);
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kValueAttribute), expected_value);
+  EXPECT_EQ(variable->GetAttributeString(domainconstants::kTypeAttribute), expected_type);
 }
