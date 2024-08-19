@@ -49,7 +49,7 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_job_list(new JobListWidget)
     , m_realtime_panel(new OperationRealTimePanel)
-    , m_job_observer(std::make_unique<RemoteJobObserver>())
+    , m_job_observer(std::make_unique<RemoteJobObserver>([](auto){}))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);

@@ -21,6 +21,7 @@
 #define SEQUENCERGUI_AUTOMATION_REMOTE_JOB_OBSERVER_H_
 
 #include <sup/auto-server/i_job_info_io.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 namespace sequencergui
 {
@@ -28,7 +29,9 @@ namespace sequencergui
 class RemoteJobObserver : public sup::auto_server::IJobInfoIO
 {
 public:
-  RemoteJobObserver();
+  using post_event_callback_t = std::function<void(const domain_event_t& event)>;
+
+  explicit RemoteJobObserver(post_event_callback_t post_event_callback);
 
   void InitNumberOfInstructions(sup::dto::uint32 n_instr) override;
 
@@ -50,6 +53,9 @@ public:
   void Message(const std::string& message) override;
 
   void Log(int severity, const std::string& message) override;
+
+private:
+  post_event_callback_t m_post_event_callback;
 };
 
 }  // namespace sequencergui

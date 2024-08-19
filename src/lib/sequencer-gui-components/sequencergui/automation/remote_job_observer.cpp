@@ -19,12 +19,21 @@
 
 #include "remote_job_observer.h"
 
+#include <sequencergui/core/exceptions.h>
+
 #include <iostream>
 
 namespace sequencergui
 {
 
-RemoteJobObserver::RemoteJobObserver() = default;
+RemoteJobObserver::RemoteJobObserver(post_event_callback_t post_event_callback)
+    : m_post_event_callback(std::move(post_event_callback))
+{
+  if (!m_post_event_callback)
+  {
+    throw RuntimeException("Callback is not initialised");
+  }
+}
 
 void RemoteJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 {
@@ -34,18 +43,18 @@ void RemoteJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 void RemoteJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::auto_server::InstructionState state)
 {
-  std::cout << "RemoteJobObserver::InstructionStateUpdated" << "\n";
+  m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 }
 
 void RemoteJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto::AnyValue &value,
                                         bool connected)
 {
-  std::cout << "RemoteJobObserver::VariableUpdated" << "\n";
+  m_post_event_callback(VariableUpdatedEvent{var_idx, value, connected});
 }
 
 void RemoteJobObserver::JobStateUpdated(sup::sequencer::JobState state)
 {
-  std::cout << "RemoteJobObserver::JobStateUpdated" << "\n";
+  m_post_event_callback(JobStateChangedEvent{state});
 }
 
 bool RemoteJobObserver::PutValue(const sup::dto::AnyValue &value, const std::string &description)
