@@ -47,12 +47,19 @@ std::unique_ptr<ProcedureItem> ProcedureItemAutomationBuilder::CreateProcedureIt
   result->GetInstructionContainer()->InsertItem(std::move(instruction_tree.root),
                                                 mvvm::TagIndex::Append());
 
+  m_variable_indexes = PopulateWorkspaceItem(job_info.GetWorkspaceInfo(), result->GetWorkspace());
+
   return result;
 }
 
 const InstructionItem *ProcedureItemAutomationBuilder::GetInstruction(size_t index) const
 {
   return index < m_instruction_indexes.size() ? m_instruction_indexes[index] : nullptr;
+}
+
+const VariableItem *ProcedureItemAutomationBuilder::GetVariable(size_t index) const
+{
+  return index < m_variable_indexes.size() ? m_variable_indexes[index] : nullptr;
 }
 
 }  // namespace sequencergui

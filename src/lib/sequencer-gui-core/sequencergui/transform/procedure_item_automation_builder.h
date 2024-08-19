@@ -31,6 +31,7 @@ namespace sequencergui
 class ProcedureItem;
 class InstructionTree;
 class InstructionItem;
+class VariableItem;
 
 /**
  * @brief The ProcedureItemAutomationBuilder class creates ProcedureItem from automation server
@@ -48,10 +49,19 @@ public:
    */
   std::unique_ptr<ProcedureItem> CreateProcedureItem(const sup::auto_server::JobInfo& job_info);
 
+  /**
+   * @brief Returns instruction item for given automation index.
+   */
   const InstructionItem* GetInstruction(size_t index) const;
+
+  /**
+   * @brief Returns variable item for given automation index.
+   */
+  const VariableItem* GetVariable(size_t index) const;
 
 private:
   std::vector<const InstructionItem*> m_instruction_indexes;
+  std::vector<const VariableItem*> m_variable_indexes;
 };
 
 }  // namespace sequencergui

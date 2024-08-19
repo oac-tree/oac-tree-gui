@@ -24,6 +24,8 @@
 #include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/workspace_item.h>
 
 #include <sup/auto-server/instruction_map.h>
 #include <sup/auto-server/job_info.h>
@@ -42,6 +44,10 @@ const std::string kSequenceTwoWaitsBody{
     <Wait timeout="42"/>
     <Wait timeout="43"/>
   </Sequence>
+  <Workspace>
+    <Local name="var0" type='{"type":"uint32"}' value='0'/>
+    <Local name="var1" type='{"type":"uint32"}' value='1'/>
+  </Workspace>
 )RAW"};
 
 //! Tests for ProcedureItemAutomationBuilder class.
@@ -92,4 +98,12 @@ TEST_F(ProcedureItemAutomationBuilderTest, SequenceWithTwoWaits)
   EXPECT_EQ(builder.GetInstruction(1), wait0);
   EXPECT_EQ(builder.GetInstruction(2), wait1);
   EXPECT_EQ(builder.GetInstruction(3), nullptr);
+
+  auto variable_items = procedure_item->GetWorkspace()->GetVariables();
+  ASSERT_EQ(variable_items.size(), 2);
+
+  EXPECT_EQ(variable_items[0]->GetDisplayName(), "var0");
+  EXPECT_EQ(variable_items[1]->GetDisplayName(), "var1");
+  EXPECT_EQ(builder.GetVariable(0), variable_items[0]);
+  EXPECT_EQ(builder.GetVariable(1), variable_items[1]);
 }
