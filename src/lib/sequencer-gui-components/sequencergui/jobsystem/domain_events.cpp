@@ -40,6 +40,15 @@ struct DomainEventToStringVisitor
     return ostr.str();
   }
 
+  std::string operator()(const ::sequencergui::InstructionStateUpdatedEvent &event) const
+  {
+    std::ostringstream ostr;
+    ostr << "InstructionStateUpdated"
+         << " " << (event.index) << " "
+         << ::sup::sequencer::StatusToString(event.state.m_execution_status);
+    return ostr.str();
+  }
+
   std::string operator()(const ::sequencergui::JobStateChangedEvent &event) const
   {
     return std::string("JobStatusChanged") + " " + ::sup::sequencer::ToString(event.status);
@@ -114,6 +123,19 @@ bool IsValid(const domain_event_t &value)
 std::string ToString(const domain_event_t &value)
 {
   return std::visit(DomainEventToStringVisitor{}, value);
+}
+
+// InstructionStateUpdatedEvent
+
+bool InstructionStateUpdatedEvent::operator==(const InstructionStateUpdatedEvent &other) const
+{
+  return index == other.index && state.m_breakpoint_set == other.state.m_breakpoint_set
+         && state.m_execution_status == other.state.m_execution_status;
+}
+
+bool InstructionStateUpdatedEvent::operator!=(const InstructionStateUpdatedEvent &other) const
+{
+  return !(*this == other);
 }
 
 }  // namespace sequencergui

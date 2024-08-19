@@ -27,6 +27,7 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/log_event.h>
 
+#include <sup/auto-server/instruction_state.h>
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/job_states.h>
 
@@ -74,8 +75,22 @@ struct NextLeavesChangedEvent
   bool operator!=(const NextLeavesChangedEvent& other) const;
 };
 
-using domain_event_t = std::variant<std::monostate, InstructionStatusChangedEvent,
-                                    JobStateChangedEvent, LogEvent, NextLeavesChangedEvent>;
+/**
+ * @brief The InstructionStateUpdatedEvent class represents automation server event when
+ * instruction state has changed.
+ */
+struct InstructionStateUpdatedEvent
+{
+  size_t index;
+  sup::auto_server::InstructionState state;
+
+  bool operator==(const InstructionStateUpdatedEvent& other) const;
+  bool operator!=(const InstructionStateUpdatedEvent& other) const;
+};
+
+using domain_event_t =
+    std::variant<std::monostate, InstructionStatusChangedEvent, InstructionStateUpdatedEvent,
+                 JobStateChangedEvent, LogEvent, NextLeavesChangedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

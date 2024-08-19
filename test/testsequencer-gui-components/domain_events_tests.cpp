@@ -126,3 +126,37 @@ TEST_F(DomainEventTest, NextLeavesChangedEvent)
     EXPECT_TRUE(event1 != event3);
   }
 }
+
+TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
+{
+  using ::sup::sequencer::ExecutionStatus;
+
+  EXPECT_TRUE(IsValid(domain_event_t{InstructionStateUpdatedEvent{}}));
+
+  {  // default constructed
+    const InstructionStateUpdatedEvent event1{};
+    const InstructionStateUpdatedEvent event2{};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // state is different
+    const sup::auto_server::InstructionState state1{false, ExecutionStatus::RUNNING};
+    const sup::auto_server::InstructionState state2{false, ExecutionStatus::SUCCESS};
+    const InstructionStateUpdatedEvent event1{0, state1};
+    const InstructionStateUpdatedEvent event2{0, state1};
+    const InstructionStateUpdatedEvent event3{0, state2};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+    EXPECT_FALSE(event1 == event3);
+    EXPECT_TRUE(event1 != event3);
+  }
+
+  {  // index is different
+    const sup::auto_server::InstructionState state{false, ExecutionStatus::RUNNING};
+    const InstructionStateUpdatedEvent event1{0, state};
+    const InstructionStateUpdatedEvent event2{1, state};
+    EXPECT_FALSE(event1 == event2);
+    EXPECT_TRUE(event1 != event2);
+  }
+}

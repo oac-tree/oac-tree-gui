@@ -50,6 +50,14 @@ void DomainEventDispatcher::operator()(const InstructionStatusChangedEvent &even
   }
 }
 
+void DomainEventDispatcher::operator()(const InstructionStateUpdatedEvent &event) const
+{
+  if (m_context.process_instruction_state_updated)
+  {
+    m_context.process_instruction_state_updated(event);
+  }
+}
+
 void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
 {
   if (m_context.process_job_state_changed)

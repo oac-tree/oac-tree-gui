@@ -90,12 +90,22 @@ public:
   {
     OnNextLeavesChanged(leaves_event);
   }
-  
-  MOCK_METHOD(void, OnInstructionStatusChanged, (const sequencergui::InstructionStatusChangedEvent&),
-              (const));
+
+  /**
+   * @brief Operator to visit InstructionStateUpdated and trigger mock method.
+   */
+  void operator()(const sequencergui::InstructionStateUpdatedEvent& instruction_event) const
+  {
+    OnInstructionStateUpdated(instruction_event);
+  }
+
+  MOCK_METHOD(void, OnInstructionStatusChanged,
+              (const sequencergui::InstructionStatusChangedEvent&), (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
   MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChangedEvent&), (const));
+  MOCK_METHOD(void, OnInstructionStateUpdated, (const sequencergui::InstructionStateUpdatedEvent&),
+              (const));
 
   /**
    * @brief Creates a structure with callbacks to trigger mock methods.
@@ -103,19 +113,24 @@ public:
   sequencergui::DomainEventDispatcherContext CreateDispatcherContext()
   {
     sequencergui::DomainEventDispatcherContext result;
-    
-    auto instruction_status_changed = [this](const sequencergui::InstructionStatusChangedEvent& event)
+
+    auto instruction_status_changed =
+        [this](const sequencergui::InstructionStatusChangedEvent& event)
     { OnInstructionStatusChanged(event); };
-    
+
     auto job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
     { OnJobStateChanged(event); };
 
     auto log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
-    
+
     auto next_leaves_event = [this](const sequencergui::NextLeavesChangedEvent& event)
     { OnNextLeavesChanged(event); };
 
-    return {instruction_status_changed, job_state_changed, log_event, next_leaves_event};
+    auto instruction_state_updated = [this](const sequencergui::InstructionStateUpdatedEvent& event)
+    { OnInstructionStateUpdated(event); };
+
+    return {instruction_status_changed, job_state_changed, log_event, next_leaves_event,
+            instruction_state_updated};
 
     return result;
   }

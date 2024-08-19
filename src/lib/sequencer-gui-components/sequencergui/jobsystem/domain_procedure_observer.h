@@ -29,7 +29,6 @@
 namespace sequencergui
 {
 
-class DomainEventQueue;
 class UserContext;
 class UserChoiceProvider;
 class UserInputProvider;
