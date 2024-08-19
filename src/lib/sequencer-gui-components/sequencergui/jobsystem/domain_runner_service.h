@@ -64,6 +64,16 @@ public:
   sup::sequencer::AsyncRunner* GetJobController();
 
 private:
+  /**
+   * @brief Creates a callback to publish domain events.
+   */
+  std::function<void(const domain_event_t& event)> CreatePostEventCallback() const;
+
+  /**
+   * @brief Creates a callback to get events from event queue.
+   */
+  std::function<domain_event_t()> CreateGetEventCallback() const;
+
   std::unique_ptr<DomainEventQueue> m_event_queue;
   std::unique_ptr<DomainEventDispatcher> m_event_dispatcher;
   std::unique_ptr<DomainRunner> m_domain_runner;

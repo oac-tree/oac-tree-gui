@@ -28,19 +28,15 @@ namespace sequencergui
 
 DomainRunnerService::DomainRunnerService(DomainEventDispatcherContext dispatcher_context,
                                          const UserContext& user_context, procedure_t& procedure)
+    : m_event_queue(std::make_unique<DomainEventQueue>())
+    , m_event_dispatcher(std::make_unique<DomainEventDispatcher>(CreateGetEventCallback(),
+                                                                 std::move(dispatcher_context)))
 {
-  m_event_queue = std::make_unique<DomainEventQueue>();
-  auto get_event_callback = [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
-
-  m_event_dispatcher =
-      std::make_unique<DomainEventDispatcher>(get_event_callback, dispatcher_context);
-
   // connecting event queue with event dispatcher using queued connection
   QObject::connect(m_event_queue.get(), &DomainEventQueue::NewEvent, m_event_dispatcher.get(),
                    &DomainEventDispatcher::OnNewEvent, Qt::QueuedConnection);
-
-  auto post_event = [this](const domain_event_t& event) { m_event_queue->PushEvent(event); };
-  m_domain_runner = std::make_unique<DomainRunner>(post_event, user_context, procedure);
+  m_domain_runner =
+      std::make_unique<DomainRunner>(CreatePostEventCallback(), user_context, procedure);
 }
 
 DomainRunnerService::~DomainRunnerService() = default;
@@ -88,6 +84,16 @@ void DomainRunnerService::SetTickTimeout(int msec)
 sup::sequencer::AsyncRunner* DomainRunnerService::GetJobController()
 {
   return m_domain_runner->GetJobController();
+}
+
+std::function<void(const domain_event_t&)> DomainRunnerService::CreatePostEventCallback() const
+{
+  return [this](const domain_event_t& event) { m_event_queue->PushEvent(event); };
+}
+
+std::function<domain_event_t()> DomainRunnerService::CreateGetEventCallback() const
+{
+  return [this]() -> domain_event_t { return m_event_queue->PopEvent(); };
 }
 
 }  // namespace sequencergui
