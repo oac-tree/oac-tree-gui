@@ -46,6 +46,9 @@ struct DomainEventDispatcherContext
 
   //! a callback to process a change in automation instruction state
   std::function<void(const InstructionStateUpdatedEvent&)> process_instruction_state_updated;
+
+  //! a callback to process a change in a variable
+  std::function<void(const VariableUpdatedEvent&)> process_variable_updated;
 };
 
 }  // namespace sequencergui

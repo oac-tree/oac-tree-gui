@@ -160,3 +160,48 @@ TEST_F(DomainEventTest, InstructionStateUpdatedEvent)
     EXPECT_TRUE(event1 != event2);
   }
 }
+
+TEST_F(DomainEventTest, VariableUpdatedEvent)
+{
+  {  // default constructed
+    VariableUpdatedEvent event1;
+    VariableUpdatedEvent event2;
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // same id's
+    VariableUpdatedEvent event1{42};
+    VariableUpdatedEvent event2{42};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // same id's and values
+    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    EXPECT_TRUE(event1 == event2);
+    EXPECT_FALSE(event1 != event2);
+  }
+
+  {  // different id's and same values
+    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    VariableUpdatedEvent event2{43, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    EXPECT_FALSE(event1 == event2);
+    EXPECT_TRUE(event1 != event2);
+  }
+
+  {  // same id's and different values
+    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}};
+    VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43}};
+    EXPECT_FALSE(event1 == event2);
+    EXPECT_TRUE(event1 != event2);
+  }
+
+  {  // same id's and values, different is_available
+    VariableUpdatedEvent event1{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, false};
+    VariableUpdatedEvent event2{42, sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, true};
+    EXPECT_FALSE(event1 == event2);
+    EXPECT_TRUE(event1 != event2);
+  }
+}

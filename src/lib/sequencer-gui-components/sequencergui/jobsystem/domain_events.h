@@ -28,6 +28,7 @@
 #include <sequencergui/jobsystem/log_event.h>
 
 #include <sup/auto-server/instruction_state.h>
+#include <sup/dto/anyvalue.h>
 #include <sup/sequencer/execution_status.h>
 #include <sup/sequencer/job_states.h>
 
@@ -78,19 +79,37 @@ struct NextLeavesChangedEvent
 /**
  * @brief The InstructionStateUpdatedEvent class represents automation server event when
  * instruction state has changed.
+ *
+ * FIXME consider merging with InstructionStatusChangedEvent
  */
 struct InstructionStateUpdatedEvent
 {
-  size_t index;
+  size_t index{0};
   sup::auto_server::InstructionState state;
 
   bool operator==(const InstructionStateUpdatedEvent& other) const;
   bool operator!=(const InstructionStateUpdatedEvent& other) const;
 };
 
+/**
+ * @brief The VariableUpdatedEvent class represents automation server event when variable value has
+ * changed.
+ *
+ * FIXME consider merging with WorkspaceEvent
+ */
+struct VariableUpdatedEvent
+{
+  size_t index{0};
+  sup::dto::AnyValue value;
+  bool connected{false};
+
+  bool operator==(const VariableUpdatedEvent& other) const;
+  bool operator!=(const VariableUpdatedEvent& other) const;
+};
+
 using domain_event_t =
-    std::variant<std::monostate, InstructionStatusChangedEvent, InstructionStateUpdatedEvent,
-                 JobStateChangedEvent, LogEvent, NextLeavesChangedEvent>;
+    std::variant<std::monostate, InstructionStateUpdatedEvent, JobStateChangedEvent, LogEvent,
+                 NextLeavesChangedEvent, InstructionStatusChangedEvent, VariableUpdatedEvent>;
 
 bool IsValid(const domain_event_t& value);
 

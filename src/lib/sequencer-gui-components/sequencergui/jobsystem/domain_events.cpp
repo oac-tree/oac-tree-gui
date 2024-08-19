@@ -19,6 +19,8 @@
 
 #include "domain_events.h"
 
+#include <sup/gui/model/anyvalue_utils.h>
+
 #include <sup/sequencer/instruction.h>
 
 #include <sstream>
@@ -70,6 +72,15 @@ struct DomainEventToStringVisitor
     {
       ostr << instr->GetType() << " ";
     }
+    return ostr.str();
+  }
+
+  std::string operator()(const ::sequencergui::VariableUpdatedEvent &event) const
+  {
+    std::ostringstream ostr;
+    ostr << std::string("VariableUpdatedEvent") << " "
+         << ::sup::gui::AnyValueToJSONString(event.value);
+    ostr << " connected:" << event.connected;
     return ostr.str();
   }
 };
@@ -134,6 +145,18 @@ bool InstructionStateUpdatedEvent::operator==(const InstructionStateUpdatedEvent
 }
 
 bool InstructionStateUpdatedEvent::operator!=(const InstructionStateUpdatedEvent &other) const
+{
+  return !(*this == other);
+}
+
+// InstructionStateUpdatedEvent
+
+bool VariableUpdatedEvent::operator==(const VariableUpdatedEvent &other) const
+{
+  return index == other.index && value == other.value && connected == other.connected;
+}
+
+bool VariableUpdatedEvent::operator!=(const VariableUpdatedEvent &other) const
 {
   return !(*this == other);
 }
