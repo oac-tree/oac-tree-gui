@@ -36,6 +36,8 @@ class ApplicationModels;
 class SequencerModel;
 class JobModel;
 class AutomationJobHandler;
+class OperationWorkspacePanel;
+class JobItem;
 
 /**
  * @brief The AutomationMonitorView class is a central view of RemoteMainWindow.
@@ -55,11 +57,13 @@ private:
   void OnPauseRequest();
   void OnStepRequest();
   void OnStopRequest();
+  void OnJobSelected(sequencergui::JobItem* item);
 
   AutomationMonitorToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
   JobListWidget* m_job_list{nullptr};
   OperationRealTimePanel* m_realtime_panel{nullptr};
+  OperationWorkspacePanel* m_workspace_panel{nullptr};
 
   void OnConnect(const QString& server_name);
 

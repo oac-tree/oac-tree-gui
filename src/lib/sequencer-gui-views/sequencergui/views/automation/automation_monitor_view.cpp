@@ -32,6 +32,7 @@
 #include <sequencergui/transform/procedure_item_automation_builder.h>
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
+#include <sequencergui/views/operation/operation_workspace_panel.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <sup/auto-server/job_info.h>
@@ -50,6 +51,7 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_job_list(new JobListWidget)
     , m_realtime_panel(new OperationRealTimePanel)
+    , m_workspace_panel{new OperationWorkspacePanel}
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -57,6 +59,7 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
 
   m_splitter->addWidget(m_job_list);
   m_splitter->addWidget(m_realtime_panel);
+  m_splitter->addWidget(m_workspace_panel);
 
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
@@ -65,8 +68,7 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
   connect(m_tool_bar, &AutomationMonitorToolBar::ConnectRequest, this,
           &AutomationMonitorView::OnConnect);
 
-  connect(m_job_list, &JobListWidget::JobSelected, m_realtime_panel,
-          &OperationRealTimePanel::SetCurrentJob);
+  connect(m_job_list, &JobListWidget::JobSelected, this, &AutomationMonitorView::OnJobSelected);
 
   connect(m_realtime_panel, &OperationRealTimePanel::runRequest, this,
           &AutomationMonitorView::OnRunRequest);
@@ -105,6 +107,12 @@ void AutomationMonitorView::OnStepRequest()
 void AutomationMonitorView::OnStopRequest()
 {
   m_automation_client->Stop(0);
+}
+
+void AutomationMonitorView::OnJobSelected(JobItem *item)
+{
+  m_realtime_panel->SetCurrentJob(item);
+  m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
 }
 
 void AutomationMonitorView::OnConnect(const QString &server_name)
