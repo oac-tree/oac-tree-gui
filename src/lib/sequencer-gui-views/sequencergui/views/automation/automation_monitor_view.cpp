@@ -33,6 +33,7 @@
 #include <sequencergui/views/operation/job_list_widget.h>
 #include <sequencergui/views/operation/operation_realtime_panel.h>
 #include <sequencergui/views/operation/operation_workspace_panel.h>
+#include <sup/gui/widgets/item_stack_widget.h>
 #include <sup/gui/widgets/style_utils.h>
 
 #include <sup/auto-server/exceptions.h>
@@ -58,13 +59,12 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
   layout->addWidget(m_tool_bar);
   layout->addWidget(m_splitter);
 
-  m_splitter->addWidget(m_job_list);
-  m_splitter->addWidget(m_realtime_panel);
+  m_splitter->addWidget(CreateLeftPanel());
+  m_splitter->addWidget(CreateCentralPanel());
   m_splitter->addWidget(m_workspace_panel);
 
   m_tool_bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_tool_bar->setIconSize(sup::gui::utils::ToolBarIconSize());
-  m_tool_bar->addActions(m_realtime_panel->actions());
 
   connect(m_tool_bar, &AutomationMonitorToolBar::ConnectRequest, this,
           &AutomationMonitorView::OnConnect);
@@ -114,6 +114,20 @@ void AutomationMonitorView::OnJobSelected(JobItem *item)
 {
   m_realtime_panel->SetCurrentJob(item);
   m_workspace_panel->SetProcedure(item ? item->GetExpandedProcedure() : nullptr);
+}
+
+QWidget *AutomationMonitorView::CreateLeftPanel()
+{
+  auto result = new sup::gui::ItemStackWidget;
+  result->AddWidget(m_job_list);
+  return result;
+}
+
+QWidget *AutomationMonitorView::CreateCentralPanel()
+{
+  auto result = new sup::gui::ItemStackWidget;
+  result->AddWidget(m_realtime_panel, m_realtime_panel->actions());
+  return result;
 }
 
 void AutomationMonitorView::OnConnect(const QString &server_name)

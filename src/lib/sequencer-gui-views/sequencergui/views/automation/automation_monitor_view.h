@@ -59,6 +59,9 @@ private:
   void OnStopRequest();
   void OnJobSelected(sequencergui::JobItem* item);
 
+  QWidget* CreateLeftPanel();
+  QWidget* CreateCentralPanel();
+
   AutomationMonitorToolBar* m_tool_bar{nullptr};
   QSplitter* m_splitter{nullptr};
   JobListWidget* m_job_list{nullptr};
