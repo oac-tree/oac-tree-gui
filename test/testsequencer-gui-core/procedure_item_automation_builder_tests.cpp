@@ -27,14 +27,11 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 
-#include <sup/auto-server/instruction_map.h>
 #include <sup/auto-server/job_info.h>
-#include <sup/auto-server/job_utils.h>
 #include <sup/sequencer/procedure.h>
-#include <sup/sequencer/sequence_parser.h>
 
 #include <gtest/gtest.h>
-#include <testutils/test_utils.h>
+#include <testutils/sequencer_test_utils.h>
 
 using namespace sequencergui;
 
@@ -54,26 +51,11 @@ const std::string kSequenceTwoWaitsBody{
 
 class ProcedureItemAutomationBuilderTest : public ::testing::Test
 {
-public:
-  /**
-   * @brief Helper method to create JobInfo from procedure text body
-   */
-  static sup::auto_server::JobInfo CreateJobInfo(const std::string& procedure_text)
-  {
-    const std::string prefix = "JobInfoTest:FromProcedure:";
-    auto procedure =
-        sup::sequencer::ParseProcedureString(testutils::CreateProcedureString(procedure_text));
-    auto root = procedure->RootInstruction();
-    const sup::auto_server::InstructionMap instr_map{root};
-    auto job_info = sup::auto_server::utils::CreateJobInfo(prefix, *procedure, instr_map);
-
-    return job_info;
-  };
 };
 
 TEST_F(ProcedureItemAutomationBuilderTest, SequenceWithTwoWaits)
 {
-  auto job_info = CreateJobInfo(kSequenceTwoWaitsBody);
+  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
 
   ProcedureItemAutomationBuilder builder;
   auto procedure_item = builder.CreateProcedureItem(job_info);
