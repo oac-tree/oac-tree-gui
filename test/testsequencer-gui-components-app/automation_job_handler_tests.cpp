@@ -25,8 +25,10 @@
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/model/standard_instruction_items.h>
+#include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -95,6 +97,7 @@ TEST_F(AutomationJobHandlerTest, OnJobStateChanged)
   EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kRunning);
 }
 
+//! Validating propagation of IJobInfoIO::InstructionStateUpdated calls to InstructionItem.
 TEST_F(AutomationJobHandlerTest, InstructionStateUpdated)
 {
   auto job_item = m_model.InsertItem<JobItem>();
@@ -102,7 +105,7 @@ TEST_F(AutomationJobHandlerTest, InstructionStateUpdated)
   AutomationJobHandler handler(job_item, job_info);
 
   // updating instruction state of second Wait instruction
-  const size_t index_of_second_wait{2}; // from JobInfo
+  const size_t index_of_second_wait{2};  // from JobInfo
   handler.GetJobObserver()->InstructionStateUpdated(
       index_of_second_wait,
       sup::auto_server::InstructionState{false, sup::sequencer::ExecutionStatus::RUNNING});
@@ -116,4 +119,39 @@ TEST_F(AutomationJobHandlerTest, InstructionStateUpdated)
   EXPECT_TRUE(QTest::qWaitFor(predicate, 50));  // letting event loop to work
 
   EXPECT_EQ(GetRunnerStatus(wait_item1->GetStatus()), RunnerStatus::kRunning);
+}
+
+//! Validating propagation of IJobInfoIO::InstructionStateUpdated calls to InstructionItem.
+TEST_F(AutomationJobHandlerTest, OnVariableUpdated)
+{
+  auto job_item = m_model.InsertItem<JobItem>();
+  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+  AutomationJobHandler handler(job_item, job_info);
+
+  auto variable_items = mvvm::utils::FindItemDown<LocalVariableItem>(job_item);
+  ASSERT_EQ(variable_items.size(), 2);
+
+  auto anyvalue0 = sup::gui::CreateAnyValue(*variable_items.at(0)->GetAnyValueItem());
+  auto anyvalue1 = sup::gui::CreateAnyValue(*variable_items.at(1)->GetAnyValueItem());
+
+  // LocalVariableItem is always available
+  EXPECT_TRUE(variable_items.at(0)->IsAvailable());
+  EXPECT_TRUE(variable_items.at(1)->IsAvailable());
+
+  EXPECT_EQ(anyvalue0, sup::dto::AnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}));
+  EXPECT_EQ(anyvalue1, sup::dto::AnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 1}));
+
+  sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+
+  // updating the value of second variable
+  const size_t index_of_second_variable{1};  // from JobInfo
+  handler.GetJobObserver()->VariableUpdated(index_of_second_variable, new_anyvalue, false);
+
+  // We are testing here queued signals, need special waiting
+  QTest::qWait(50);
+
+  auto new_anyvalue_item0 = variable_items.at(1)->GetAnyValueItem();
+  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), new_anyvalue);
+  // LocalVariableItem is always available
+  EXPECT_TRUE(variable_items.at(1)->IsAvailable());
 }

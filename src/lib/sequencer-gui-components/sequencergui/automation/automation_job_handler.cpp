@@ -28,7 +28,9 @@
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/variable_item.h>
 #include <sequencergui/transform/procedure_item_automation_builder.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <QDebug>
 #include <iostream>
@@ -74,9 +76,10 @@ DomainEventDispatcherContext AutomationJobHandler::CreateDispatcherContext()
 {
   DomainEventDispatcherContext result;
 
-  result.process_job_state_changed = [this](const auto& event) { OnJobStateChanged(event); };
-  result.process_instruction_state_updated = [this](const auto& event)
+  result.process_job_state_changed = [this](const auto &event) { OnJobStateChanged(event); };
+  result.process_instruction_state_updated = [this](const auto &event)
   { OnInstructionStateUpdated(event); };
+  result.process_variable_updated = [this](const auto &event) { OnVariableUpdated(event); };
 
   return result;
 }
@@ -110,7 +113,21 @@ void AutomationJobHandler::OnJobStateChanged(const JobStateChangedEvent &event)
 
 void AutomationJobHandler::OnVariableUpdated(const VariableUpdatedEvent &event)
 {
-  std::cout << "AutomationJobHandler::OnVariableUpdated" << "\n";
+  if (auto item = const_cast<VariableItem *>(m_builder->GetVariable(event.index)); item)
+  {
+    if (event.connected && sup::dto::IsEmptyValue(event.value) && !item->IsAvailable())
+    {
+      item->SetIsAvailable(event.connected);
+      return;
+    }
+
+    item->SetIsAvailable(event.connected);
+    UpdateAnyValue(event.value, *item);
+  }
+  else
+  {
+    std::cout << "Can't find variable \n";
+  }
 }
 
 }  // namespace sequencergui
