@@ -35,6 +35,7 @@
 #include <sequencergui/views/operation/operation_workspace_panel.h>
 #include <sup/gui/widgets/style_utils.h>
 
+#include <sup/auto-server/exceptions.h>
 #include <sup/auto-server/job_info.h>
 
 #include <QDebug>
@@ -119,7 +120,19 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
 {
   qDebug() << "RemoteMonitorView::OnConnect()" << server_name;
 
-  m_automation_client = std::make_unique<AutomationClient>(server_name.toStdString());
+  m_automation_client.reset();
+  m_job_model->Clear();
+  m_job_handlers.clear();
+
+  try
+  {
+    m_automation_client = std::make_unique<AutomationClient>(server_name.toStdString());
+  }
+  catch (const sup::auto_server::InvalidOperationException &ex)
+  {
+    qDebug() << "Can't connect" << ex.what();
+    return;
+  }
 
   for (size_t job_index = 0; job_index < m_automation_client->GetJobCount(); ++job_index)
   {
