@@ -23,8 +23,8 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sequencergui/jobsystem/domain_events.h>
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 namespace sup::auto_server
 {
@@ -45,10 +45,15 @@ class DomainEventDispatcherContext;
  * @brief The AutomationJobHandler class provides all machinery to propagate changes from remote
  * automation job to JobModel.
  *
- * It contains a machinery to generate ProcedureItem from automation job information.
+ * It contains a machinery to generate ProcedureItem from automation job information, and then
+ * update item on remote job observer (IJobInfoIO) calls.
+ *
+ * It doesn't contain any machinery to start/stop remote jobs.
  */
 class AutomationJobHandler : public QObject
 {
+  Q_OBJECT
+
 public:
   /**
    * @brief Main c-tor.
@@ -73,7 +78,7 @@ private:
   /**
    * @brief Creates context necessary for DomainEventDispatcher.
    */
-  DomainEventDispatcherContext CreateDispatcherContext() const;
+  DomainEventDispatcherContext CreateDispatcherContext();
 
   /**
    * @brief Creates a callback to publish domain events.

@@ -21,18 +21,24 @@
 
 #include <sequencergui/jobsystem/runner_status.h>
 #include <sequencergui/model/instruction_container_item.h>
-#include <sequencergui/model/instruction_item.h>
 #include <sequencergui/model/job_item.h>
 #include <sequencergui/model/job_model.h>
 #include <sequencergui/model/procedure_item.h>
+#include <sequencergui/model/standard_instruction_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 
+#include <mvvm/model/item_utils.h>
+
+#include <sup/auto-server/i_job_info_io.h>
 #include <sup/auto-server/job_info.h>
 #include <sup/sequencer/procedure.h>
 
 #include <gtest/gtest.h>
 #include <testutils/sequencer_test_utils.h>
+#include <testutils/test_utils.h>
+
+#include <QTest>
 
 using namespace sequencergui;
 
@@ -53,19 +59,61 @@ const std::string kSequenceTwoWaitsBody{
 class AutomationJobHandlerTest : public ::testing::Test
 {
 public:
+  using msec = std::chrono::milliseconds;
   JobModel m_model;
 };
 
 TEST_F(AutomationJobHandlerTest, InitialState)
 {
   auto job_item = m_model.InsertItem<JobItem>();
-
   auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
-
   AutomationJobHandler handler(job_item, job_info);
 
   EXPECT_NE(handler.GetJobObserver(), nullptr);
   ASSERT_NE(job_item->GetProcedure(), nullptr);
   EXPECT_EQ(job_item->GetExpandedProcedure(), job_item->GetProcedure());
   EXPECT_EQ(job_item->GetStatus(), std::string());
+
+  auto instruction_items = mvvm::utils::FindItemDown<SequenceItem>(job_item);
+  ASSERT_EQ(instruction_items.size(), 1);
+  EXPECT_TRUE(instruction_items.at(0)->GetStatus().empty());
+}
+
+//! Validating propagation of IJobInfoIO::JobStateUpdated calls to JobItem.
+TEST_F(AutomationJobHandlerTest, OnJobStateChanged)
+{
+  auto job_item = m_model.InsertItem<JobItem>();
+  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+  AutomationJobHandler handler(job_item, job_info);
+
+  handler.GetJobObserver()->JobStateUpdated(sup::sequencer::JobState::kRunning);
+
+  // queued connection needs event loop
+  auto predicate = [job_item]() { return !job_item->GetStatus().empty(); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));  // letting event loop to work
+
+  EXPECT_EQ(GetRunnerStatus(job_item->GetStatus()), RunnerStatus::kRunning);
+}
+
+TEST_F(AutomationJobHandlerTest, InstructionStateUpdated)
+{
+  auto job_item = m_model.InsertItem<JobItem>();
+  auto job_info = testutils::CreateJobInfo(kSequenceTwoWaitsBody);
+  AutomationJobHandler handler(job_item, job_info);
+
+  // updating instruction state of second Wait instruction
+  const size_t index_of_second_wait{2}; // from JobInfo
+  handler.GetJobObserver()->InstructionStateUpdated(
+      index_of_second_wait,
+      sup::auto_server::InstructionState{false, sup::sequencer::ExecutionStatus::RUNNING});
+
+  auto wait_items = mvvm::utils::FindItemDown<WaitItem>(job_item);
+  ASSERT_EQ(wait_items.size(), 2);
+  auto wait_item1 = wait_items.at(1);
+
+  // queued connection needs event loop
+  auto predicate = [wait_item1]() { return !wait_item1->GetStatus().empty(); };
+  EXPECT_TRUE(QTest::qWaitFor(predicate, 50));  // letting event loop to work
+
+  EXPECT_EQ(GetRunnerStatus(wait_item1->GetStatus()), RunnerStatus::kRunning);
 }

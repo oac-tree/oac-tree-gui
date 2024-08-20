@@ -70,9 +70,15 @@ void AutomationJobHandler::SetupProcedureItem(const sup::auto_server::JobInfo &j
   m_job_item->SetProcedure(procedure_item_ptr);
 }
 
-DomainEventDispatcherContext AutomationJobHandler::CreateDispatcherContext() const
+DomainEventDispatcherContext AutomationJobHandler::CreateDispatcherContext()
 {
-  return {};
+  DomainEventDispatcherContext result;
+
+  result.process_job_state_changed = [this](const auto& event) { OnJobStateChanged(event); };
+  result.process_instruction_state_updated = [this](const auto& event)
+  { OnInstructionStateUpdated(event); };
+
+  return result;
 }
 
 std::function<void(const domain_event_t &)> AutomationJobHandler::CreatePostEventCallback() const
