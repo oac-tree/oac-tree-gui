@@ -22,6 +22,7 @@
 #include "automation_monitor_tool_bar.h"
 
 #include <sequencergui/automation/automation_client.h>
+#include <sequencergui/automation/automation_job_handler.h>
 #include <sequencergui/automation/remote_job_observer.h>
 #include <sequencergui/model/application_models.h>
 #include <sequencergui/model/job_item.h>
@@ -49,7 +50,6 @@ AutomationMonitorView::AutomationMonitorView(QWidget *parent)
     , m_splitter(new QSplitter)
     , m_job_list(new JobListWidget)
     , m_realtime_panel(new OperationRealTimePanel)
-    , m_job_observer(std::make_unique<RemoteJobObserver>([](auto){}))
 {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(m_tool_bar);
@@ -115,18 +115,15 @@ void AutomationMonitorView::OnConnect(const QString &server_name)
 
   for (size_t job_index = 0; job_index < m_automation_client->GetJobCount(); ++job_index)
   {
+    qDebug() << "RemoteMonitorView::OnConnect() Processing job_index" << job_index;
+
     auto job_item = m_job_model->InsertItem<JobItem>();
+    auto job_handler = std::make_unique<AutomationJobHandler>(
+        job_item, m_automation_client->GetJobInfo(job_index));
+    m_automation_client->Connect(0, job_handler->GetJobObserver());
 
-    ProcedureItemAutomationBuilder builder;
-    auto procedure_item = builder.CreateProcedureItem(m_automation_client->GetJobInfo(job_index));
-    auto procedure_item_ptr = procedure_item.get();
-
-    // The difference with JobHandler is that our Procedure and ExpandedProcedure is the same.
-    m_job_model->InsertItem(std::move(procedure_item), job_item, mvvm::TagIndex::Append());
-    job_item->SetProcedure(procedure_item_ptr);
+    m_job_handlers.push_back(std::move(job_handler));
   }
-
-  m_automation_client->Connect(0, m_job_observer.get());
 }
 
 }  // namespace sequencergui

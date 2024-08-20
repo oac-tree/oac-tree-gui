@@ -43,6 +43,8 @@ void RemoteJobObserver::InitNumberOfInstructions(sup::dto::uint32 n_instr)
 void RemoteJobObserver::InstructionStateUpdated(sup::dto::uint32 instr_idx,
                                                 sup::auto_server::InstructionState state)
 {
+  std::cout << "RemoteJobObserver::InstructionStateUpdated " << instr_idx << " "
+            << ::sup::sequencer::StatusToString(state.m_execution_status) << "\n";
   m_post_event_callback(InstructionStateUpdatedEvent{instr_idx, state});
 }
 
@@ -54,6 +56,7 @@ void RemoteJobObserver::VariableUpdated(sup::dto::uint32 var_idx, const sup::dto
 
 void RemoteJobObserver::JobStateUpdated(sup::sequencer::JobState state)
 {
+  std::cout << "RemoteJobObserver::JobStateUpdated " << ::sup::sequencer::ToString(state) << "\n";
   m_post_event_callback(JobStateChangedEvent{state});
 }
 
@@ -65,6 +68,8 @@ bool RemoteJobObserver::PutValue(const sup::dto::AnyValue &value, const std::str
 
 bool RemoteJobObserver::GetUserValue(sup::dto::AnyValue &value, const std::string &description)
 {
+  (void)value;
+  (void)description;
   std::cout << "RemoteJobObserver::GetUserValue" << "\n";
   return false;
 }
@@ -72,6 +77,8 @@ bool RemoteJobObserver::GetUserValue(sup::dto::AnyValue &value, const std::strin
 int RemoteJobObserver::GetUserChoice(const std::vector<std::string> &options,
                                      const sup::dto::AnyValue &metadata)
 {
+  (void)options;
+  (void)metadata;
   std::cout << "RemoteJobObserver::GetUserChoice" << "\n";
   return 0;
 }
@@ -83,6 +90,8 @@ void RemoteJobObserver::Message(const std::string &message)
 
 void RemoteJobObserver::Log(int severity, const std::string &message)
 {
+  (void)severity;
+  (void)message;
   std::cout << "RemoteJobObserver::Log" << "\n";
 }
 

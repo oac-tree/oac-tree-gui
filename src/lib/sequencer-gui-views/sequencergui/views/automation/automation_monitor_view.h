@@ -35,7 +35,7 @@ class OperationRealTimePanel;
 class ApplicationModels;
 class SequencerModel;
 class JobModel;
-class RemoteJobObserver;
+class AutomationJobHandler;
 
 /**
  * @brief The AutomationMonitorView class is a central view of RemoteMainWindow.
@@ -66,7 +66,7 @@ private:
   SequencerModel* m_sequencer_model{nullptr};
   JobModel* m_job_model{nullptr};
   std::unique_ptr<AutomationClient> m_automation_client;
-  std::unique_ptr<RemoteJobObserver> m_job_observer;
+  std::vector<std::unique_ptr<AutomationJobHandler>> m_job_handlers;
 };
 
 }  // namespace sequencergui

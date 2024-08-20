@@ -89,7 +89,7 @@ sup::auto_server::JobInfo AutomationClient::GetJobInfo(size_t job_index) const
   return p_impl->auto_protocol_client.GetJobInfo(job_index);
 }
 
-void AutomationClient::Connect(size_t job_index, RemoteJobObserver* observer)
+void AutomationClient::Connect(size_t job_index, sup::auto_server::IJobInfoIO* observer)
 {
   p_impl->auto_client.Connect(job_index, *observer);
 }

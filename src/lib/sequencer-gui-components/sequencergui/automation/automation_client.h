@@ -25,10 +25,13 @@
 #include <memory>
 #include <string>
 
+namespace sup::auto_server
+{
+class IJobInfoIO;
+}
+
 namespace sequencergui
 {
-
-class RemoteJobObserver;
 
 /**
  * @brief The AutomationClient class is a simple wrapper around automation server machinery to hide
@@ -61,7 +64,7 @@ public:
   /**
    * @brief Connect job observer with remote job with the given index.
    */
-  void Connect(size_t job_index, RemoteJobObserver* observer);
+  void Connect(size_t job_index, sup::auto_server::IJobInfoIO *observer);
 
 private:
   struct AutomationManagerImpl;
