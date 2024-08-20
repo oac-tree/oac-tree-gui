@@ -19,8 +19,6 @@
 
 #include "test_utils.h"
 
-
-#include <QTest>
 #include <string>
 #include <thread>
 

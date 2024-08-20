@@ -216,6 +216,13 @@ std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
 
 std::unique_ptr<procedure_t> CreateLocalIncludeProcedure()
 {
+  // <Sequence name="CountTwice">
+  //     <Wait/>
+  // </Sequence>
+  // <Repeat isRoot="true" maxCount="10">
+  //     <Include name="Counts" path="CountTwice"/>
+  // </Repeat>
+
   auto result = std::make_unique<procedure_t>();
 
   // Sequence with wait instruction

@@ -30,55 +30,81 @@
 namespace testutils
 {
 
-//! Returns domain procedure that contains only a single wait instruction.
+//! hard-coded value in Wait instruction
+const std::chrono::milliseconds kDefaultWaitPrecision(50);
+
+/**
+ * @brief Returns domain procedure that contains only a single wait instruction.
+ */
 std::unique_ptr<procedure_t> CreateSingleWaitProcedure(std::chrono::milliseconds timeout);
 
-//! Returns procedure that makes a single copy.
+/**
+ * @brief Returns procedure that makes a single copy.
+ */
 std::unique_ptr<procedure_t> CreateCopyProcedure();
 
-//! Returns procedure with single message instruction.
+/**
+ * @brief Returns procedure with single message instruction.
+ */
 std::unique_ptr<procedure_t> CreateMessageProcedure(const std::string& text);
 
-//! Returns procedure with sequence and wait instruction in it.
+/**
+ * @brief Returns procedure with sequence and wait instruction in it.
+ */
 std::unique_ptr<procedure_t> CreateSequenceWithWaitProcedure(std::chrono::milliseconds timeout);
 
-//! Creates sequence with two waits.
+/**
+ * @brief Creates sequence with two waits.
+ */
 std::unique_ptr<procedure_t> CreateSequenceWithTwoWaitsProcedure(
     std::chrono::milliseconds timeout1, std::chrono::milliseconds timeout2);
 
-//! Creates sequence with single message.
+/**
+ * @brief Creates sequence with single message.
+ */
 std::unique_ptr<procedure_t> CreateSequenceWithSingleMessageProcedure();
 
-//! Creates sequence with two messages.
+/**
+ * @brief Creates sequence with two messages.
+ */
 std::unique_ptr<procedure_t> CreateSequenceWithTwoMessagesProcedure();
 
-//! Creates procedure with one variable and input instruction.
+/**
+ * @brief Creates procedure with one variable and input instruction.
+ */
 std::unique_ptr<procedure_t> CreateInputProcedure();
 
-//! Creates procedure with wait and copy instructions and possibility to select what to execute.
+/**
+ * @brief Creates procedure with wait and copy instructions and possibility to select what to
+ * execute.
+ */
 std::unique_ptr<procedure_t> CreateUserChoiceProcedure();
 
-//! Returns domain procedure with a sequence inside a repeater.
+/**
+ * @brief Returns domain procedure with a sequence inside a repeater.
+ */
 std::unique_ptr<procedure_t> CreateRepeatSequenceProcedure(int count,
                                                            std::chrono::milliseconds timeout);
-
-//! Returns a procedure with sequence included in repeater
-//! <Sequence name="CountTwice">
-//!     <Wait/>
-//! </Sequence>
-//! <Repeat isRoot="true" maxCount="10">
-//!     <Include name="Counts" path="CountTwice"/>
-//! </Repeat>
+/**
+ * @brief Returns a procedure with sequence included in repeater
+ */
 std::unique_ptr<procedure_t> CreateLocalIncludeProcedure();
 
-//! Creates domain procedure with increment instruction repeated several times
+/**
+ * @brief Creates domain procedure with increment instruction repeated several times
+ */
 std::unique_ptr<procedure_t> CreateCounterProcedure(int n_repetitions);
 
-//! Creates domain procedure with repeat, sequence and possibility to terminate
+/**
+ * @brief Creates domain procedure with repeat, sequence and possibility to terminate
+ */
 std::unique_ptr<procedure_t> CreateRepeatSequencerProcedure(int n_repetitions, int max_counter);
 
-//! Creates domain procedure with increment inside a repeat. It is intended to test DomainRunner
-//! in run-pause-run scenario.
+/**
+ * @brief Creates domain procedure with increment inside a repeat.
+ *
+ * It is intended to test DomainRunner in run-pause-run scenario.
+ */
 std::unique_ptr<procedure_t> CreateRepeatIncrementAndCompare();
 
 }  // namespace testutils

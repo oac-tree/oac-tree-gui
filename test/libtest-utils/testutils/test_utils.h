@@ -20,34 +20,29 @@
 #ifndef LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_
 #define LIBTEST_UTILS_TESTUTILS_TEST_UTILS_H_
 
+//! @file
 //! Collection of utility functions for various unit tests.
 
 #include <chrono>
 #include <functional>
 #include <string>
 
-//! Various common utils for unit tests.
-
 namespace testutils
 {
-//! hard-coded value in Wait instruction
-const std::chrono::milliseconds kDefaultWaitPrecision(50);
 
-const auto duration = [](auto time_interval)
-{ return std::chrono::duration_cast<std::chrono::milliseconds>(time_interval).count(); };
-
-//! Wait for timeout in milisseconds or until predicate returns true.
+/**
+ * @brief Wait for timeout in milisseconds or until predicate returns true.
+ */
 bool WaitFor(std::function<bool()> predicate, std::chrono::milliseconds timeout);
 
-template <typename T>
-bool WaitForCompletion(const T& runner, std::chrono::milliseconds timeout_msec)
-{
-  return WaitFor([&runner]() { return !runner.IsBusy(); }, timeout_msec);
-}
-
+/**
+ * @brief Converts milliseconds in timeout as expected by Wait instruction.
+ */
 double GetTimeoutInSec(std::chrono::milliseconds timeout);
 
-//! Creates Sequencer XML procedure by wrapping the body into necessary Procedure directive.
+/**
+ * @brief Creates Sequencer XML procedure by wrapping the body into necessary Procedure directive.
+ */
 std::string CreateProcedureString(const std::string& body, bool schema = true);
 
 }  // namespace testutils
