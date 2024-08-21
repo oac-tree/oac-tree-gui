@@ -35,7 +35,7 @@
 
 using namespace sequencergui;
 
-Q_DECLARE_METATYPE(ProcedureItem*)
+Q_DECLARE_METATYPE(sequencergui::ProcedureItem*)
 
 //! Tests for ProcedureListActionHandler class.
 

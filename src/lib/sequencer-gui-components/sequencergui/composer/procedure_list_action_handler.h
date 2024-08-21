@@ -89,7 +89,7 @@ public:
   void Paste();
 
 signals:
-  void SelectProcedureRequest(ProcedureItem* item);
+  void SelectProcedureRequest(sequencergui::ProcedureItem* item);
 
 private:
   mvvm::ContainerItem* GetProcedureContainer() const;
