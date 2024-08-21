@@ -49,11 +49,6 @@ SequencerMainWindow::SequencerMainWindow() : m_models(std::make_unique<Applicati
 {
   InitApplication();
 
-  m_explorer_view->SetModel(m_models->GetSequencerModel());
-  m_composer_view->SetModel(m_models->GetSequencerModel());
-  m_operation_view->SetApplicationModels(m_models.get());
-  m_settings_view->SetApplicationModels(m_models.get());
-
   OnProjectLoad();
 }
 
@@ -166,6 +161,11 @@ void SequencerMainWindow::OnRestartRequest(sup::gui::AppExitCode exit_code)
 
 void SequencerMainWindow::OnProjectLoad()
 {
+  m_explorer_view->SetModel(m_models->GetSequencerModel());
+  m_composer_view->SetModel(m_models->GetSequencerModel());
+  m_operation_view->SetApplicationModels(m_models.get());
+  m_settings_view->SetApplicationModels(m_models.get());
+
   m_composer_view->OnProjectLoad();
 }
 
