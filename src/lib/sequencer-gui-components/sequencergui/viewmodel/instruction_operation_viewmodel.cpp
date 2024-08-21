@@ -47,6 +47,8 @@ namespace sequencergui
 class InstructionOperationRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
+  int GetSize() const override { return 3; }
+
   QStringList GetHorizontalHeaderLabels() const override
   {
     static const QStringList result = {"Instruction", "Status", "BP"};
@@ -86,11 +88,6 @@ InstructionOperationViewModel::InstructionOperationViewModel(mvvm::ISessionModel
 int InstructionOperationViewModel::GetBreakpointColumn()
 {
   return 2;
-}
-
-int InstructionOperationViewModel::columnCount(const QModelIndex &parent) const
-{
-  return 3;  // Instruction, Status, BP
 }
 
 }  // namespace sequencergui

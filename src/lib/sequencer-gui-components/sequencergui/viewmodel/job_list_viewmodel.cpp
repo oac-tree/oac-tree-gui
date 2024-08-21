@@ -36,6 +36,8 @@ namespace sequencergui
 class JobRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
+  int GetSize() const override { return 2;}
+
   QStringList GetHorizontalHeaderLabels() const override
   {
     static const QStringList result = {"Name", "Status"};
@@ -68,11 +70,6 @@ public:
 JobListViewModel::JobListViewModel(mvvm::ISessionModel *model, QObject *parent) : ViewModel(parent)
 {
   SetController(mvvm::factory::CreateController<TopJobStrategy, JobRowStrategy>(model, this));
-}
-
-int JobListViewModel::columnCount(const QModelIndex &parent) const
-{
-  return 2;  // Name, Status
 }
 
 }  // namespace sequencergui

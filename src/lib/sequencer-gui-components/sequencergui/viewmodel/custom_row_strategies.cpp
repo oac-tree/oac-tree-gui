@@ -163,6 +163,11 @@ namespace sequencergui
 //! VariableRowStrategy
 //! ---------------------------------------------------------------------------
 
+int VariableRowStrategy::GetSize() const
+{
+  return 3;
+}
+
 QStringList VariableRowStrategy::GetHorizontalHeaderLabels() const
 {
   static const QStringList result = {"Name", "Value", "TypeName"};
@@ -197,6 +202,11 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableRowStrategy::ConstructRowIm
 // For channel access variable with scalar on board
 // | var0       | 42      | CA      | [x] PV_CHANNEL0 |
 
+int VariableTableRowStrategy::GetSize() const
+{
+  return 4;
+}
+
 QStringList VariableTableRowStrategy::GetHorizontalHeaderLabels() const
 {
   static const QStringList result = {"Name", "Value", "Type", "Channel"};
@@ -226,6 +236,11 @@ std::vector<std::unique_ptr<mvvm::ViewItem>> VariableTableRowStrategy::Construct
 //! ---------------------------------------------------------------------------
 //! InstructionEditorRowStrategy
 //! ---------------------------------------------------------------------------
+int InstructionEditorRowStrategy::GetSize() const
+{
+  return 2;
+}
+
 QStringList InstructionEditorRowStrategy::GetHorizontalHeaderLabels() const
 {
   static const QStringList result = {"Type", "Name"};

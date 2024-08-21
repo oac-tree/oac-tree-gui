@@ -43,8 +43,6 @@ public:
    * @brief Returns index of a column used to render breakpoints.
    */
   static int GetBreakpointColumn();
-
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 }  // namespace sequencergui

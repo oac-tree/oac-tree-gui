@@ -30,16 +30,16 @@ class ISessionModel;
 namespace sequencergui
 {
 
-//! View model to show JobItem with two columns: displayName and status.
-
+/**
+ * @brief The JobListViewModel class is a view model to show JobItem with two columns: displayName
+ * and status.
+ */
 class MVVM_VIEWMODEL_EXPORT JobListViewModel : public mvvm::ViewModel
 {
   Q_OBJECT
 
 public:
   explicit JobListViewModel(mvvm::ISessionModel* model, QObject* parent = nullptr);
-
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 }  // namespace sequencergui

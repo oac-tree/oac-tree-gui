@@ -177,11 +177,6 @@ bool InstructionEditorViewModel::dropMimeData(const QMimeData *data, Qt::DropAct
   return false;
 }
 
-int InstructionEditorViewModel::columnCount(const QModelIndex &parent) const
-{
-  return 2;  // Name, Type
-}
-
 QStringList InstructionEditorViewModel::mimeTypes() const
 {
   return {kInstructionMoveMimeType, kNewInstructionMimeType};

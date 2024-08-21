@@ -33,6 +33,8 @@ namespace sequencergui
 class ProcedureRowStrategy : public mvvm::AbstractRowStrategy
 {
 public:
+  int GetSize() const override { return 1; }
+
   QStringList GetHorizontalHeaderLabels() const override
   {
     static QStringList result = {"Type"};
@@ -53,11 +55,6 @@ ProcedureViewModel::ProcedureViewModel(mvvm::ISessionModel *model, QObject *pare
 {
   SetController(
       mvvm::factory::CreateController<mvvm::TopItemsStrategy, ProcedureRowStrategy>(model, this));
-}
-
-int ProcedureViewModel::columnCount(const QModelIndex &parent) const
-{
-  return 1;  // Type
 }
 
 }  // namespace sequencergui
