@@ -84,8 +84,6 @@ public:
   sup::sequencer::Workspace m_workspace;
 };
 
-// sup::epics::test::SoftIocRunner WorkspaceSynchronizerSoftiocTest::m_softioc_service{};
-
 TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
 {
   // initial values
@@ -157,11 +155,17 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   // expecting an event about IsAvailable status change back to false
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
+  auto expected_event1b = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event1b)).Times(1); //<- FAILING HERE, no signal
+
   // disconnecting SoftIoc
   m_softioc_service.Stop();
 
   auto predicate = [variable_item]() { return !variable_item->IsAvailable(); };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 1000));  // letting event loop to work
+
+  EXPECT_FALSE(variable_item->IsAvailable());
+  EXPECT_EQ( variable_item->GetAnyValueItem()->GetChildren().at(1)->Data<bool>(), false);  //<- FAILING HERE, still connected field
 }
 
 }  // namespace sequencergui
