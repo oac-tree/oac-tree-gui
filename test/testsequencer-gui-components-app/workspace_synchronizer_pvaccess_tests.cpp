@@ -41,10 +41,10 @@
 #include <testutils/mock_domain_workspace_listener.h>
 #include <testutils/test_utils.h>
 
+#include <QTest>
+
 using namespace sequencergui;
 using ::testing::_;
-
-#include <QTest>
 
 namespace
 {
