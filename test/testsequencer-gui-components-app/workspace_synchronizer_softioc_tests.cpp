@@ -56,8 +56,7 @@ record (longout,"WORKSPACE-SYNCHRONIZER-SOFTIOC-TESTS:INT")
 namespace sequencergui
 {
 
-//! Testing WorkspaceSynchronizer for a single SoftIoc variable in a full cicrle: connect, change
-//! value, disconnect.
+//! Testing WorkspaceSynchronizer for a single SoftIoc variable in during connect/disconnect.
 class WorkspaceSynchronizerSoftiocTest : public ::testing::Test
 {
 public:
@@ -119,20 +118,20 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   auto expected_event1 = mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
-  // expecting an event about " connected" field change in a struct
+  // expecting an event about "connected" field change in a struct
   auto connected_field_item = variable_item->GetAnyValueItem()->GetChildren().at(1);
-  auto expected_event1a = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event1a)).Times(1);
+  auto expected_event2 = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
 
   // expecting event with appearance change (gray rectangle is getting green)
   auto channel_property = variable_item->GetItem(domainconstants::kChannelAttribute);
-  auto expected_event2 = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
+  auto expected_event3 = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event3)).Times(1);
 
   // expecting event with value of scalar change
   auto value_field_item = variable_item->GetAnyValueItem()->GetChildren().at(0);
-  auto expected_event3 = mvvm::DataChangedEvent{value_field_item, mvvm::DataRole::kData};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event3)).Times(1);
+  auto expected_event4 = mvvm::DataChangedEvent{value_field_item, mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event4)).Times(1);
 
   synchronizer->Start();
 
@@ -155,8 +154,9 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   // expecting an event about IsAvailable status change back to false
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
-  auto expected_event1b = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
-  EXPECT_CALL(model_listener, OnDataChanged(expected_event1b)).Times(1);
+  // expecting event for "connected" field
+  auto expected_event5 = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event5)).Times(1);
 
   // disconnecting SoftIoc
   m_softioc_service.Stop();
