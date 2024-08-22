@@ -60,14 +60,7 @@ void WorkspaceItemController::ProcessEventFromDomain(const WorkspaceEvent& event
     }
 
     item->SetIsAvailable(event.connected);
-    if (event.connected)
-    {
-      UpdateAnyValue(event.value, *item);
-    }
-    else
-    {
-      // Not sure what to do if variable is disconnected
-    }
+    UpdateAnyValue(event.value, *item);
   }
   else
   {

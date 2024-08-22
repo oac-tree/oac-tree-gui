@@ -86,20 +86,25 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 
   // triggering domain workspace event (pretending it is disconnected)
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  controller.ProcessEventFromDomain({"abc", new_value, false});
-
-  EXPECT_TRUE(variable_item0->IsAvailable());
-  // current implementation: for disconnected status do not update the value
-  ASSERT_EQ(variable_item0->GetAnyValueItem(), nullptr);
-
-  // triggering domain workspace event (pretending it is connected)
   controller.ProcessEventFromDomain({"abc", new_value, true});
 
   EXPECT_TRUE(variable_item0->IsAvailable());
-  // checking updated value
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
   auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
   EXPECT_EQ(new_value, stored_anyvalue);
+
+  // triggering domain event, new value with simultaneous disconnect
+  sup::dto::AnyValue new_value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  controller.ProcessEventFromDomain({"abc", new_value2, false});
+
+  // new value should be propagated
+  ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
+  auto stored_anyvalue2 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
+  EXPECT_EQ(new_value2, stored_anyvalue2);
+
+  // current feature of LocalVariable is that it is always available, so disconnect status is not
+  // propagated
+  EXPECT_TRUE(variable_item0->IsAvailable());
 }
 
 //! Setting up the WorkspaceItem with single variable.
