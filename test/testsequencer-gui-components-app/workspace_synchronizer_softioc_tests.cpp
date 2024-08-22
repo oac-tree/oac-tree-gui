@@ -91,8 +91,8 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   // initial values
   const std::string kChannelName("WORKSPACE-SYNCHRONIZER-SOFTIOC-TESTS:INT");
   const std::string var_name("var");
-  const sup::dto::AnyValue softioc_initial_value(
-      {{"value", {sup::dto::UnsignedInteger32Type, 42}}});
+  const sup::dto::AnyValue softioc_initial_value({{"value", {sup::dto::UnsignedInteger32Type, 42}},
+                                                  {"connected", {sup::dto::BooleanType, true}}});
 
   // start SoftIoc
   sup::epics::test::SoftIocRunner m_softioc_service;
@@ -103,7 +103,8 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
       m_model.GetWorkspaceItem()->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetChannel(kChannelName);
   variable_item->SetName(var_name);
-  const sup::dto::AnyValue initial_value({{"value", {sup::dto::UnsignedInteger32Type, 0}}});
+  const sup::dto::AnyValue initial_value({{"value", {sup::dto::UnsignedInteger32Type, 0}},
+                                          {"connected", {sup::dto::BooleanType, false}}});
   SetAnyValue(initial_value, *variable_item);
   EXPECT_FALSE(variable_item->IsAvailable());
 
@@ -120,14 +121,19 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   auto expected_event1 = mvvm::DataChangedEvent{is_available_property, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event1)).Times(1);
 
+  // expecting an event about " connected" field change in a struct
+  auto connected_field_item = variable_item->GetAnyValueItem()->GetChildren().at(1);
+  auto expected_event1a = mvvm::DataChangedEvent{connected_field_item, mvvm::DataRole::kData};
+  EXPECT_CALL(model_listener, OnDataChanged(expected_event1a)).Times(1);
+
   // expecting event with appearance change (gray rectangle is getting green)
   auto channel_property = variable_item->GetItem(domainconstants::kChannelAttribute);
   auto expected_event2 = mvvm::DataChangedEvent{channel_property, mvvm::DataRole::kAppearance};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event2)).Times(1);
 
   // expecting event with value of scalar change
-  auto value_item = variable_item->GetAnyValueItem()->GetChildren().at(0);
-  auto expected_event3 = mvvm::DataChangedEvent{value_item, mvvm::DataRole::kData};
+  auto value_field_item = variable_item->GetAnyValueItem()->GetChildren().at(0);
+  auto expected_event3 = mvvm::DataChangedEvent{value_field_item, mvvm::DataRole::kData};
   EXPECT_CALL(model_listener, OnDataChanged(expected_event3)).Times(1);
 
   synchronizer->Start();
@@ -154,10 +160,8 @@ TEST_F(WorkspaceSynchronizerSoftiocTest, ConnectAndDisconnect)
   // disconnecting SoftIoc
   m_softioc_service.Stop();
 
-  auto predicate = [variable_item]()
-  { return !variable_item->IsAvailable();  };
+  auto predicate = [variable_item]() { return !variable_item->IsAvailable(); };
   EXPECT_TRUE(QTest::qWaitFor(predicate, 1000));  // letting event loop to work
-
 }
 
 }  // namespace sequencergui
