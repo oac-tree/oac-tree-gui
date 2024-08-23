@@ -51,10 +51,11 @@ public:
 
   void SetWorkspaceItem(WorkspaceItem* item);
 
-private:
-  void SetupConnections();
   void OnStartMonitoringRequest();
   void OnStopMonitoringRequest();
+
+private:
+  void SetupConnections();
   QList<QAction*> GetEditorActions();
   QList<QAction*> GetControlActions();
 
