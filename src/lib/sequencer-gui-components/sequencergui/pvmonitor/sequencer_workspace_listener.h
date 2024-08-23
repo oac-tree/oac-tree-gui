@@ -34,30 +34,31 @@ namespace sequencergui
 class WorkspaceEvent;
 
 /**
- * @brief The SequencerWorkspaceListener class listens to sequencer's Workspace for variable
+ * @brief The SequencerWorkspaceListener class listens to the sequencer's Workspace for variable
  * updates.
  *
- * Collects updated values in a queue and notifies consumers from the GUI thread via the queued
- * connection. The idea is to prevent a callback from the Workspace from going inside our GUI
- * thread.
+ * Collects variable updates in an event queue and notifies consumers from the GUI thread via the
+ * queued connection. Consumers then can take events one by one using the thread-safe PopEvent
+ * method.
  */
 class SequencerWorkspaceListener : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit SequencerWorkspaceListener(QObject* parent = nullptr);
+  explicit SequencerWorkspaceListener(sup::sequencer::Workspace* workspace,
+                                      QObject* parent = nullptr);
   ~SequencerWorkspaceListener() override;
 
   /**
    * @brief Starts listening for workspace notifications.
+   *
+   * This call should be done after connection to VariableUpdated signal, otherwise, the queue might
+   * start receiving events before anyone is ready to read it.
+   *
+   * It will stop listening on own destruction.
    */
-  void StartListening(sup::sequencer::Workspace* workspace);
-
-  /**
-   * @brief Stops listening for workspace notifications.
-   */
-  void StopListening();
+  void StartListening();
 
   /**
    * @brief Returns number of events in a queue.

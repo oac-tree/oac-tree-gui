@@ -96,9 +96,9 @@ TEST_F(SequencerWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVari
   ASSERT_TRUE(workspace.GetValue("var", value));
   EXPECT_EQ(value.GetType(), sup::dto::UnsignedInteger32Type);
 
-  SequencerWorkspaceListener listener;
+  SequencerWorkspaceListener listener(&workspace);
   QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
-  EXPECT_NO_THROW(listener.StartListening(&workspace));
+  listener.StartListening();
 
   // attaching listener to the workspace
   EXPECT_EQ(spy_upate.count(), 0);

@@ -35,64 +35,52 @@ struct SequencerWorkspaceListener::SequencerWorkspaceListenerImpl
   using workspace_t = sup::sequencer::Workspace;
   using callback_guard_t = sup::sequencer::ScopeGuard;
 
+  SequencerWorkspaceListener *m_impl_owner{nullptr};
   workspace_t *m_workspace{nullptr};
   callback_guard_t m_guard;
-  SequencerWorkspaceListener *m_self{nullptr};
   mvvm::threadsafe_queue<WorkspaceEvent> m_workspace_events;
 
-  void AttachToWorkspace(workspace_t *workspace)
+  SequencerWorkspaceListenerImpl(SequencerWorkspaceListener *impl_owner,
+                                 sup::sequencer::Workspace *workspace)
+      : m_impl_owner(impl_owner), m_workspace(workspace)
   {
-    if (m_workspace)
-    {
-      throw RuntimeException("Already existing workspace");
-    }
-
-    if (!workspace)
+    if (!m_workspace)
     {
       throw RuntimeException("Not initialised workspace");
     }
+  };
 
-    m_workspace = workspace;
+  void StartListening()
+  {
     m_guard = m_workspace->GetCallbackGuard(this);
 
     auto on_variable_updated =
         [this](const std::string &name, const sup::dto::AnyValue &value, bool connected)
     {
       m_workspace_events.push({name, value, connected});
-      emit m_self->VariabledUpdated();
+      emit m_impl_owner->VariabledUpdated();
     };
     m_workspace->RegisterGenericCallback(on_variable_updated, this);
   }
 
-  void StopListening()
+  ~SequencerWorkspaceListenerImpl()
   {
-    if (!m_workspace)
-    {
-      throw RuntimeException("Nothing to listen");
-    }
-
     m_guard = callback_guard_t{};
     m_workspace = nullptr;
   }
-
-  explicit SequencerWorkspaceListenerImpl(SequencerWorkspaceListener *self) : m_self(self) {};
 };
 
-SequencerWorkspaceListener::SequencerWorkspaceListener(QObject *parent)
-    : QObject(parent), p_impl(std::make_unique<SequencerWorkspaceListenerImpl>(this))
+SequencerWorkspaceListener::SequencerWorkspaceListener(sup::sequencer::Workspace *workspace,
+                                                       QObject *parent)
+    : QObject(parent), p_impl(std::make_unique<SequencerWorkspaceListenerImpl>(this, workspace))
 {
 }
 
 SequencerWorkspaceListener::~SequencerWorkspaceListener() = default;
 
-void SequencerWorkspaceListener::StartListening(sup::sequencer::Workspace *workspace)
+void SequencerWorkspaceListener::StartListening()
 {
-  p_impl->AttachToWorkspace(workspace);
-}
-
-void SequencerWorkspaceListener::StopListening()
-{
-  p_impl->StopListening();
+  p_impl->StartListening();
 }
 
 int SequencerWorkspaceListener::GetEventCount() const

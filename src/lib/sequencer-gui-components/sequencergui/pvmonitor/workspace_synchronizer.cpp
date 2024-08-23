@@ -83,7 +83,7 @@ namespace sequencergui
 WorkspaceSynchronizer::WorkspaceSynchronizer(sup::sequencer::Workspace* domain_workspace,
                                              QObject* parent)
     : QObject(parent)
-    , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>())
+    , m_workspace_listener(std::make_unique<SequencerWorkspaceListener>(domain_workspace))
     , m_workspace(domain_workspace)
 {
   if (domain_workspace->IsSuccessfullySetup())
@@ -94,8 +94,7 @@ WorkspaceSynchronizer::WorkspaceSynchronizer(sup::sequencer::Workspace* domain_w
   connect(m_workspace_listener.get(), &SequencerWorkspaceListener::VariabledUpdated, this,
           &WorkspaceSynchronizer::OnDomainVariableUpdated, Qt::QueuedConnection);
 
-  // Starting to receive callbacks from the domain.
-  m_workspace_listener->StartListening(GetWorkspace());
+  m_workspace_listener->StartListening();
 }
 
 WorkspaceSynchronizer::WorkspaceSynchronizer(WorkspaceItem* workspace_item,

@@ -84,9 +84,9 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
   EXPECT_TRUE(workspace.AddVariable(var_name, std::move(variable)));
 
   // creating listener and attaching it to the workspace
-  SequencerWorkspaceListener listener;
+  SequencerWorkspaceListener listener(&workspace);
   const QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
-  EXPECT_NO_THROW(listener.StartListening(&workspace));
+  listener.StartListening();
 
   QTest::qWait(10);
 
@@ -159,9 +159,9 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVa
   EXPECT_EQ(value, initial_value);
 
   // creating listener and attaching it to the workspace
-  SequencerWorkspaceListener listener;
+  SequencerWorkspaceListener listener(&workspace);
   const QSignalSpy spy_upate(&listener, &SequencerWorkspaceListener::VariabledUpdated);
-  EXPECT_NO_THROW(listener.StartListening(&workspace));
+  listener.StartListening();
 
   EXPECT_EQ(listener.GetEventCount(), 0);
   EXPECT_EQ(spy_upate.count(), 0);
