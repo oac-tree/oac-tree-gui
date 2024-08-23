@@ -3,6 +3,8 @@ monitor_model.cpp
 monitor_model.h
 sequencer_workspace_listener.cpp
 sequencer_workspace_listener.h
+sequencer_workspace_listener_v2.cpp
+sequencer_workspace_listener_v2.h
 workspace_event.cpp
 workspace_event.h
 workspace_item_controller.cpp
