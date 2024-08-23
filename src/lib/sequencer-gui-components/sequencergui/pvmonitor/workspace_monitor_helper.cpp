@@ -19,6 +19,7 @@
 
 #include "workspace_monitor_helper.h"
 
+#include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/variable_item.h>
@@ -91,6 +92,18 @@ void SetupNewVariable(VariableItem *item, int total_variable_count)
     SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0}, *item);
   }
   item->GetAnyValueItem()->SetDisplayName(itemconstants::kAnyValueDefaultDisplayName);
+}
+
+bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,
+                           const sup::sequencer::Workspace &workspace)
+{
+  std::vector<std::string> variable_item_names;
+  for (const auto variable_item : workspace_item.GetVariables())
+  {
+    variable_item_names.push_back(variable_item->GetName());
+  }
+
+  return variable_item_names == workspace.VariableNames();
 }
 
 }  // namespace sequencergui

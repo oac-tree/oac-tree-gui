@@ -157,3 +157,22 @@ TEST_F(WorkspaceMonitorHelperTest, SetupNewVariable)
   EXPECT_EQ(var_item2->GetAnyValueItem()->GetDisplayName(),
             itemconstants::kAnyValueDefaultDisplayName);
 }
+
+TEST_F(WorkspaceMonitorHelperTest, AreMatchingWorkspaces)
+{
+  sup::sequencer::Workspace workspace;
+  WorkspaceItem workspace_item;
+
+  EXPECT_TRUE(AreMatchingWorkspaces(workspace_item, workspace));
+
+  auto item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  item0->SetDisplayName("abc");
+  auto item1 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
+  item1->SetDisplayName("def");
+
+  PopulateDomainWorkspace(workspace_item, workspace);
+  EXPECT_TRUE(AreMatchingWorkspaces(workspace_item, workspace));
+
+  item0->SetDisplayName("qwe");
+  EXPECT_FALSE(AreMatchingWorkspaces(workspace_item, workspace));
+}

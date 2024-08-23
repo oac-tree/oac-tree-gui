@@ -70,6 +70,14 @@ void UpdateVariableEditableProperty(bool is_running, WorkspaceItem& item);
  */
 void SetupNewVariable(VariableItem* item, int total_variable_count = 0);
 
+/**
+ * @brief Checks if  GUI and domain workspaces match.
+ *
+ * Will return true, if a number of variables and their names coincide.
+ */
+bool AreMatchingWorkspaces(const WorkspaceItem& workspace_item,
+                           const sup::sequencer::Workspace& workspace);
+
 }  // namespace sequencergui
 
 #endif  // SEQUENCERGUI_PVMONITOR_WORKSPACE_MONITOR_HELPER_H_
