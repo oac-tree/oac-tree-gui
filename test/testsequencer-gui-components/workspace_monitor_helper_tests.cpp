@@ -22,6 +22,7 @@
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
 #include <sequencergui/domain/domain_helper.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
@@ -175,4 +176,22 @@ TEST_F(WorkspaceMonitorHelperTest, AreMatchingWorkspaces)
 
   item0->SetDisplayName("qwe");
   EXPECT_FALSE(AreMatchingWorkspaces(workspace_item, workspace));
+}
+
+TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
+{
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  LocalVariableItem variable_item;
+
+  // initially VariableItem doesn't have AnyValueItem
+  EXPECT_EQ(variable_item.GetAnyValueItem(), nullptr);
+
+  size_t unused_variable_index{0};
+  UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, variable_item);
+
+  EXPECT_TRUE(variable_item.IsAvailable());
+  ASSERT_NE(variable_item.GetAnyValueItem(), nullptr);
+  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item.GetAnyValueItem());
+  EXPECT_EQ(value, stored_anyvalue);
 }

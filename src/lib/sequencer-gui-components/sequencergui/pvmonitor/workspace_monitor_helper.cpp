@@ -21,6 +21,7 @@
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_constants.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/item_constants.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
@@ -104,6 +105,18 @@ bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,
   }
 
   return variable_item_names == workspace.VariableNames();
+}
+
+void UpdateVariableFromEvent(const VariableUpdatedEvent &event, VariableItem &item)
+{
+  if (event.connected && sup::dto::IsEmptyValue(event.value) && !item.IsAvailable())
+  {
+    item.SetIsAvailable(event.connected);
+    return;
+  }
+
+  item.SetIsAvailable(event.connected);
+  UpdateAnyValue(event.value, item);
 }
 
 }  // namespace sequencergui

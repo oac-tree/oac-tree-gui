@@ -33,6 +33,7 @@ namespace sequencergui
 {
 class WorkspaceItem;
 class VariableItem;
+class VariableUpdatedEvent;
 }  // namespace sequencergui
 
 namespace sequencergui
@@ -77,6 +78,11 @@ void SetupNewVariable(VariableItem* item, int total_variable_count = 0);
  */
 bool AreMatchingWorkspaces(const WorkspaceItem& workspace_item,
                            const sup::sequencer::Workspace& workspace);
+
+/**
+ * @brief Updates variable from domain event.
+ */
+void UpdateVariableFromEvent(const VariableUpdatedEvent& event, VariableItem &item);
 
 }  // namespace sequencergui
 
