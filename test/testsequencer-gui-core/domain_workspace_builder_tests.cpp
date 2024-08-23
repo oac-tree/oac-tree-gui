@@ -73,9 +73,13 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
 
   auto var_item0 = workspace_item.InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   var_item0->SetName("var0");
-  SetAnyValue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42}, *var_item0);
+
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+
+  SetAnyValue(value, *var_item0);
   auto var_item1 = workspace_item.InsertItem<FileVariableItem>(mvvm::TagIndex::Append());
   var_item1->SetName("var1");
+  var_item1->SetFileName("aaa.txt");
 
   DomainWorkspaceBuilder builder;
   builder.PopulateDomainWorkspace(&workspace_item, &workspace);
@@ -88,4 +92,10 @@ TEST_F(DomainWorkspaceBuilderTest, WorkspaceWithVariable)
   auto domain_var1 = workspace.GetVariable("var1");
   EXPECT_EQ(domain_var0->GetName(), var_item0->GetName());
   EXPECT_EQ(domain_var1->GetName(), var_item1->GetName());
+
+  // checking values
+  workspace.Setup();
+  sup::dto::AnyValue domain_value;
+  domain_var0->GetValue(domain_value);
+  EXPECT_EQ(domain_value, value);
 }

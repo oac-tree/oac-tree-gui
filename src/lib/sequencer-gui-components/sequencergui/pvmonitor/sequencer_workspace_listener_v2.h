@@ -31,8 +31,9 @@ class Workspace;
 namespace sequencergui
 {
 
-class WorkspaceEvent;
+class VariableUpdatedEvent;
 class WorkspaceItem;
+class VariableItem;
 
 /**
  * @brief The SequencerWorkspaceListener class propagates sequencer domain Workspace events to
@@ -45,15 +46,20 @@ class SequencerWorkspaceListenerV2 : public QObject
   Q_OBJECT
 
 public:
+  /**
+   * @brief Main c-tor.
+   *
+   * Should be used before domain workspace setup.
+   */
   explicit SequencerWorkspaceListenerV2(WorkspaceItem* workspace_item,
-                                        sup::sequencer::Workspace* workspace,
+                                        sup::sequencer::Workspace* domain_workspace,
                                         QObject* parent = nullptr);
   ~SequencerWorkspaceListenerV2() override;
 
   /**
    * @brief Starts listening for workspace notifications.
    *
-   * It will stop listening on own destruction.
+   * Should be called before domain workspace setup. Will stop listening on own destruction.
    */
   void StartListening();
 
@@ -61,6 +67,11 @@ public:
    * @brief Returns number of events in a queue.
    */
   int GetEventCount() const;
+
+  /**
+   * @brief Returns item for given index.
+   */
+  VariableItem* GetVariableItem(size_t index) const;
 
 signals:
   /**
@@ -74,7 +85,7 @@ private:
    * @brief Takes a workspace event from the queue and returns it to the user. Intended for call
    * from the GUI thread.
    */
-  WorkspaceEvent PopEvent() const;
+  VariableUpdatedEvent PopEvent() const;
 
   /**
    * @brief Propagate domain variable updates to WorkspaceItem.

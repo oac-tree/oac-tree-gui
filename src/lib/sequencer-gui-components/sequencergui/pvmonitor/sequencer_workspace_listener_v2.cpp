@@ -19,16 +19,16 @@
 
 #include "sequencer_workspace_listener_v2.h"
 
-#include "workspace_event.h"
-
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/model/workspace_item.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/variable_item.h>
+#include <sequencergui/model/workspace_item.h>
+#include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 
-#include <sup/sequencer/workspace.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 namespace sequencergui
 {
@@ -39,23 +39,39 @@ struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
   using callback_guard_t = sup::sequencer::ScopeGuard;
 
   SequencerWorkspaceListenerV2 *m_impl_owner{nullptr};
-  workspace_t *m_workspace{nullptr};
+  workspace_t *m_domain_workspace{nullptr};
   WorkspaceItem *m_workspace_item{nullptr};
 
+  std::vector<VariableItem *> m_index_to_variable_item;
+  std::map<std::string, size_t> m_name_to_index;
+
   callback_guard_t m_guard;
-  mvvm::threadsafe_queue<WorkspaceEvent> m_workspace_events;
+  mvvm::threadsafe_queue<VariableUpdatedEvent> m_workspace_events;
 
   SequencerWorkspaceListenerImpl(SequencerWorkspaceListenerV2 *impl_owner,
                                  WorkspaceItem *workspace_item,
-                                 sup::sequencer::Workspace *workspace)
-      : m_impl_owner(impl_owner), m_workspace_item(workspace_item), m_workspace(workspace)
+                                 sup::sequencer::Workspace *domain_workspace)
+      : m_impl_owner(impl_owner)
+      , m_workspace_item(workspace_item)
+      , m_domain_workspace(domain_workspace)
   {
     ValidateWorkspaces();
+
+    auto variables = m_domain_workspace->GetVariables();
+    for (size_t index = 0; index < variables.size(); ++index)
+    {
+      m_name_to_index[variables[index]->GetName()] = index;
+    }
+
+    m_index_to_variable_item = m_workspace_item->GetVariables();
   };
 
-  void ValidateWorkspaces()
+  /**
+   * @brief Validates if two workspace match.
+   */
+  void ValidateWorkspaces() const
   {
-    if (!m_workspace)
+    if (!m_domain_workspace)
     {
       throw RuntimeException("Not initialised workspace");
     }
@@ -65,50 +81,60 @@ struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
       throw RuntimeException("Not initialised workspace item");
     }
 
-    std::vector<std::string> variable_item_names;
-    for (const auto variable_item : m_workspace_item->GetVariables())
+    if (!AreMatchingWorkspaces(*m_workspace_item, *m_domain_workspace))
     {
-      variable_item_names.push_back(variable_item->GetName());
+      throw RuntimeException("Domain and GUI workspace do not match");
+    }
+
+    if (m_domain_workspace->IsSuccessfullySetup())
+    {
+      throw RuntimeException(
+          "Workspace setup has been already done. StartListening() method shall be called before.");
     }
   }
 
-  void StartListening()
+  void SubscribeToDomainWorkspace()
   {
-    m_guard = m_workspace->GetCallbackGuard(this);
+    m_guard = m_domain_workspace->GetCallbackGuard(this);
 
     auto on_variable_updated =
         [this](const std::string &name, const sup::dto::AnyValue &value, bool connected)
     {
-      m_workspace_events.push({name, value, connected});
+      m_workspace_events.push({m_name_to_index[name], value, connected});
       emit m_impl_owner->VariabledUpdated();
     };
-    m_workspace->RegisterGenericCallback(on_variable_updated, this);
+    m_domain_workspace->RegisterGenericCallback(on_variable_updated, this);
   }
 
   ~SequencerWorkspaceListenerImpl()
   {
     m_guard = callback_guard_t{};
-    m_workspace = nullptr;
+    m_domain_workspace = nullptr;
   }
 };
 
-SequencerWorkspaceListenerV2::SequencerWorkspaceListenerV2(WorkspaceItem *workspace_item,
-                                                           sup::sequencer::Workspace *workspace,
-                                                           QObject *parent)
+SequencerWorkspaceListenerV2::SequencerWorkspaceListenerV2(
+    WorkspaceItem *workspace_item, sup::sequencer::Workspace *domain_workspace, QObject *parent)
     : QObject(parent)
-    , p_impl(std::make_unique<SequencerWorkspaceListenerImpl>(this, workspace_item, workspace))
+    , p_impl(
+          std::make_unique<SequencerWorkspaceListenerImpl>(this, workspace_item, domain_workspace))
 {
-
 }
 
 SequencerWorkspaceListenerV2::~SequencerWorkspaceListenerV2() = default;
 
 void SequencerWorkspaceListenerV2::StartListening()
 {
+  if (p_impl->m_domain_workspace->IsSuccessfullySetup())
+  {
+    throw RuntimeException(
+        "Workspace setup has been already done. StartListening() method shall be called before.");
+  }
+
   connect(this, &SequencerWorkspaceListenerV2::VariabledUpdated, this,
           &SequencerWorkspaceListenerV2::OnDomainVariableUpdated, Qt::QueuedConnection);
 
-  p_impl->StartListening();
+  p_impl->SubscribeToDomainWorkspace();
 }
 
 int SequencerWorkspaceListenerV2::GetEventCount() const
@@ -116,13 +142,26 @@ int SequencerWorkspaceListenerV2::GetEventCount() const
   return static_cast<int>(p_impl->m_workspace_events.size());
 }
 
-WorkspaceEvent SequencerWorkspaceListenerV2::PopEvent() const
+VariableItem *SequencerWorkspaceListenerV2::GetVariableItem(size_t index) const
 {
-  WorkspaceEvent result;
+  return index < p_impl->m_index_to_variable_item.size() ? p_impl->m_index_to_variable_item[index]
+                                                         : nullptr;
+}
+
+VariableUpdatedEvent SequencerWorkspaceListenerV2::PopEvent() const
+{
+  VariableUpdatedEvent result;
   p_impl->m_workspace_events.try_pop(result);
   return result;
 }
 
-void SequencerWorkspaceListenerV2::OnDomainVariableUpdated() {}
+void SequencerWorkspaceListenerV2::OnDomainVariableUpdated()
+{
+  auto event = PopEvent();
+  auto item = GetVariableItem(event.index);
+  assert(item);
+
+  UpdateVariableFromEvent(event, *item);
+}
 
 }  // namespace sequencergui
