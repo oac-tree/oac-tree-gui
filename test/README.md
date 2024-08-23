@@ -18,7 +18,7 @@ Testing `libsequencer-gui-components.so` (event loop is necessary)
 
 Testing `libsequencer-gui-views.so`  (event loop is necessary)
 
-## testsequencer-gui-components-integration
+## testsequencer-gui-integration
 
 Testing everything (event loop is necessary, time consuming). These tests are not added 
 to CTest discovery, so they are not executed by the IDE. However, they are executed via test.sh
