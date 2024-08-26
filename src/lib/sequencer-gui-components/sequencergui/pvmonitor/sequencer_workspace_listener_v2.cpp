@@ -24,11 +24,14 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
+#include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/workspace.h>
+
+#include <iostream>
 
 namespace sequencergui
 {
@@ -100,6 +103,8 @@ struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
     auto on_variable_updated =
         [this](const std::string &name, const sup::dto::AnyValue &value, bool connected)
     {
+      std::cout << "Vaiable updated " << name << " " << sup::gui::AnyValueToJSONString(value)
+                << " connected:" << connected << std::endl;
       m_workspace_events.push({m_name_to_index[name], value, connected});
       emit m_impl_owner->VariabledUpdated();
     };
