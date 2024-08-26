@@ -168,8 +168,10 @@ void SequencerWorkspaceListenerV2::OnDomainVariableUpdated()
   auto item = GetVariableItem(event.index);
   assert(item);
 
-  std::cout << "XXX 1.1 " << sup::dto::PrintAnyValue(GetAnyValue(*item)) << std::endl;
-  std::cout << "XXX 1.2 " << sup::dto::PrintAnyValue(event.value) << std::endl;
+  std::cout << "XXX item  1.1 " << " connected:" << event.connected << " "
+            << sup::dto::PrintAnyValue(GetAnyValue(*item)) << std::endl;
+  std::cout << "XXX event 1.2 " << " connected:" << event.connected << " "
+              << sup::dto::PrintAnyValue(event.value) << std::endl;
 
   UpdateVariableFromEvent(event, *item);
 }

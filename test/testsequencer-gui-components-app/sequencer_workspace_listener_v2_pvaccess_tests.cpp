@@ -162,7 +162,7 @@ TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerStruct
   // creating VariableItem and populating domain workspace
   auto variable_item = m_model.InsertItem<PvAccessServerVariableItem>(m_workspace_item);
   variable_item->SetName(var_name);
-  variable_item->SetChannel(kScalarChannelName);
+  variable_item->SetChannel(kStructChannelName);
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
   SetAnyValue(initial_value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
