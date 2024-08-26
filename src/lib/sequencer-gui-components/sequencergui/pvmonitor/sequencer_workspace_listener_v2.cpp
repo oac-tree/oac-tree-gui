@@ -24,10 +24,12 @@
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
+#include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 
+#include <sup/dto/anyvalue_helper.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/workspace.h>
 
@@ -165,6 +167,9 @@ void SequencerWorkspaceListenerV2::OnDomainVariableUpdated()
   auto event = PopEvent();
   auto item = GetVariableItem(event.index);
   assert(item);
+
+  std::cout << "XXX 1.1 " << sup::dto::PrintAnyValue(GetAnyValue(*item)) << std::endl;
+  std::cout << "XXX 1.2 " << sup::dto::PrintAnyValue(event.value) << std::endl;
 
   UpdateVariableFromEvent(event, *item);
 }

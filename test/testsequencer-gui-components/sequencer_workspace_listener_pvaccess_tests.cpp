@@ -20,6 +20,7 @@
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
 #include <sequencergui/domain/domain_helper.h>
+#include <sequencergui/transform/transform_helpers.h>
 #include <sequencergui/pvmonitor/workspace_event.h>
 #include <sup/gui/model/anyvalue_utils.h>
 
@@ -87,6 +88,8 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
 
   EXPECT_NO_THROW(workspace.Setup());
 
+  EXPECT_EQ(GetAnyValue(var_name, workspace), initial_value);
+
   QTest::qWait(10);
 
   // after workspace setup
@@ -114,7 +117,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
   auto worker = [&workspace]()
   {
     sup::dto::AnyValue tmp;
-    return workspace.GetValue("var", tmp) && tmp.As<sup::dto::uint32>() == 42;
+    return workspace.GetValue("var", tmp) && tmp.As<sup::dto::int32>() == 42;
   };
   EXPECT_TRUE(sup::epics::test::BusyWaitFor(2.0, worker));
 
