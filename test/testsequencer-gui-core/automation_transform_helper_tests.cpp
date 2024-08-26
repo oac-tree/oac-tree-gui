@@ -26,6 +26,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
+#include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <sup/auto-server/instruction_info.h>
@@ -131,9 +132,8 @@ TEST_F(AutomationTransformHelperTest, CreateVariableItem)
 
   EXPECT_EQ(variable_item->GetType(), domainconstants::kLocalVariableType);
   EXPECT_EQ(variable_item->GetDisplayName(), expected_name);
-  auto stored_anyvalue = CreateAnyValue(*variable_item->GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+  EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 }
 
 TEST_F(AutomationTransformHelperTest, PopulateWorkspaceItem)
@@ -177,11 +177,9 @@ TEST_F(AutomationTransformHelperTest, PopulateWorkspaceItem)
   EXPECT_EQ(variable_items[0], index_to_variable_item[0]);
   EXPECT_EQ(variable_items[1], index_to_variable_item[1]);
 
-  auto stored_anyvalue0 = CreateAnyValue(*variable_items[0]->GetAnyValueItem());
-  const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(stored_anyvalue0, expected_anyvalue0);
+   const sup::dto::AnyValue expected_anyvalue0(sup::dto::SignedInteger32Type, 42);
+  EXPECT_EQ(GetAnyValue(*variable_items[0]), expected_anyvalue0);
 
-  auto stored_anyvalue1 = CreateAnyValue(*variable_items[1]->GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue1(sup::dto::SignedInteger32Type, 43);
-  EXPECT_EQ(stored_anyvalue1, expected_anyvalue1);
+  EXPECT_EQ(GetAnyValue(*variable_items[1]), expected_anyvalue1);
 }

@@ -170,4 +170,14 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem &item, preamble_t &pr
   }
 }
 
+sup::dto::AnyValue GetAnyValue(const VariableItem &item)
+{
+  if (auto anyvalue_item = item.GetAnyValueItem(); anyvalue_item)
+  {
+    return CreateAnyValue(*item.GetAnyValueItem());
+  }
+
+  throw RuntimeException("Given VariableItem doesn't contain AnyValueItem on board");
+}
+
 }  // namespace sequencergui

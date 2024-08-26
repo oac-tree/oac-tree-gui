@@ -120,10 +120,8 @@ TEST_F(StandardVariableItemsTest, ChannelAccessVariableFromDomain)
   EXPECT_EQ(item.GetChannel(), expected_channel);
   EXPECT_FALSE(item.IsAvailable());
 
-  ASSERT_NE(item.GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
-  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+  EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, ChannelAccessVariableToDomain)
@@ -285,10 +283,8 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemFromDomain)
 
   EXPECT_EQ(item.GetName(), expected_name);
 
-  ASSERT_NE(item.GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+  EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
@@ -367,10 +363,8 @@ TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemFromDomain)
   EXPECT_EQ(item.GetName(), expected_name);
   EXPECT_EQ(item.GetChannel(), expected_channel);
 
-  ASSERT_NE(item.GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 0);
-  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+  EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, PvAccessClientVariableItemToDomain)
@@ -452,10 +446,8 @@ TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemFromDomain)
   EXPECT_EQ(item.GetChannel(), expected_channel);
   EXPECT_FALSE(item.IsAvailable());
 
-  ASSERT_NE(item.GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+  EXPECT_EQ(GetAnyValue(item), expected_anyvalue);
 }
 
 TEST_F(StandardVariableItemsTest, PvAccessServerVariableItemToDomain)

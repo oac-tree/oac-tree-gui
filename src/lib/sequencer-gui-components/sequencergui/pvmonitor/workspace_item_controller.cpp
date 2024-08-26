@@ -151,8 +151,7 @@ void WorkspaceItemController::ProcessEventToDomain(VariableItem* variable_item)
 
   if (variable_item->GetAnyValueItem())
   {
-    auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
-    m_report_callback({variable_item->GetName(), stored_anyvalue});
+    m_report_callback({variable_item->GetName(), GetAnyValue(*variable_item)});
   }
 }
 

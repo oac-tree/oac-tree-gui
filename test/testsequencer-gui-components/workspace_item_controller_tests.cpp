@@ -90,8 +90,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 
   EXPECT_TRUE(variable_item0->IsAvailable());
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(new_value, stored_anyvalue);
+  EXPECT_EQ(new_value, GetAnyValue(*variable_item0));
 
   // triggering domain event, new value with simultaneous disconnect
   sup::dto::AnyValue new_value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
@@ -99,8 +98,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 
   // new value should be propagated
   ASSERT_NE(variable_item0->GetAnyValueItem(), nullptr);
-  auto stored_anyvalue2 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(new_value2, stored_anyvalue2);
+  EXPECT_EQ(new_value2, GetAnyValue(*variable_item0));
 
   // current feature of LocalVariable is that it is always available, so disconnect status is not
   // propagated
@@ -135,8 +133,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 
   auto anyvalue_item = variable_item0->GetAnyValueItem();
   ASSERT_NE(anyvalue_item, nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value, stored_anyvalue);
+  EXPECT_EQ(value, GetAnyValue(*variable_item0));
 
   // triggering the second domain workspace event
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
@@ -144,8 +141,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 
   auto new_anyvalue_item = variable_item0->GetAnyValueItem();
   ASSERT_EQ(anyvalue_item, new_anyvalue_item);
-  auto new_stored_anyvalue = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(new_value, new_stored_anyvalue);
+  EXPECT_EQ(new_value, GetAnyValue(*variable_item0));
 }
 
 //! Setting up the WorkspaceItem with single variable.
@@ -247,8 +243,7 @@ TEST_F(WorkspaceItemControllerTest, ChannelAccessVariableInTheWorkspace)
   // status become connected, value updated
   EXPECT_TRUE(variable_item->IsAvailable());
   ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
-  EXPECT_EQ(value, stored_anyvalue);
+  EXPECT_EQ(value, GetAnyValue(*variable_item));
 }
 
 //! Setting up the WorkspaceItem with single scalar variable. Setting the value through the model

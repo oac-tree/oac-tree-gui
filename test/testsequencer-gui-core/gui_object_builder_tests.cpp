@@ -27,6 +27,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_from_domain.h>
+#include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 
 #include <sup/sequencer/instruction.h>
@@ -166,10 +167,8 @@ TEST_F(GUIObjectBuilderTest, PopulateItemFromProcedureWithLocalVariable)
   EXPECT_EQ(procedure_item.GetWorkspace()->GetTotalItemCount(), 1);
 
   auto variable_item = procedure_item.GetWorkspace()->GetItem<sequencergui::LocalVariableItem>("");
-  ASSERT_NE(variable_item->GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item->GetAnyValueItem());
   const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
-  EXPECT_EQ(stored_anyvalue, expected_anyvalue);
+  EXPECT_EQ(GetAnyValue(*variable_item), expected_anyvalue);
 
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr), variable_item);
   EXPECT_EQ(builder.FindVariableItem(local_variable_ptr->GetName()), variable_item);

@@ -26,8 +26,6 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
 
-#include <string>
-
 namespace mvvm
 {
 class CompoundItem;
@@ -96,6 +94,11 @@ void RegisterChildrenTag(const instruction_t& instruction, mvvm::CompoundItem& i
  * @brief Populates domain preamble from ProcedurePreambleItem.
  */
 void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& preamble);
+
+/**
+ * @brief Returns domain AnyValue stored in given variable item.
+ */
+sup::dto::AnyValue GetAnyValue(const VariableItem& item);
 
 }  // namespace sequencergui
 

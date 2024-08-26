@@ -163,8 +163,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 
   // AnyValueItem on board should represent proper AnyValue
   ASSERT_TRUE(variable_item0->GetAnyValueItem() != nullptr);
-  auto stored_anyvalue0 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value0, stored_anyvalue0);
+  EXPECT_EQ(value0, GetAnyValue(*variable_item0));
 
   auto prev_anyvalue_item = variable_item0->GetAnyValueItem();
 
@@ -176,8 +175,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   QTest::qWait(100);
 
   EXPECT_EQ(variable_item0->GetAnyValueItem(), prev_anyvalue_item);
-  auto stored_anyvalue1 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value1, stored_anyvalue1);
+  EXPECT_EQ(value1, GetAnyValue(*variable_item0));
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.
@@ -198,8 +196,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdatedHandlerCase)
 
   // AnyValueItem on board should represent proper AnyValue
   ASSERT_TRUE(variable_item0->GetAnyValueItem() != nullptr);
-  auto stored_anyvalue0 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value0, stored_anyvalue0);
+  EXPECT_EQ(value0, GetAnyValue(*variable_item0));
 
   auto prev_anyvalue_item = variable_item0->GetAnyValueItem();
 
@@ -211,8 +208,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdatedHandlerCase)
   QTest::qWait(100);
 
   EXPECT_EQ(variable_item0->GetAnyValueItem(), prev_anyvalue_item);
-  auto stored_anyvalue1 = sup::gui::CreateAnyValue(*variable_item0->GetAnyValueItem());
-  EXPECT_EQ(value1, stored_anyvalue1);
+  EXPECT_EQ(value1, GetAnyValue(*variable_item0));
 }
 
 //! Creating WorkspaceItem with one LocalVariableItem.

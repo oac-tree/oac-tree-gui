@@ -75,8 +75,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromScalar)
   EXPECT_EQ(anyvalue_item->GetDisplayName(), sup::gui::constants::kScalarTypeName);
   EXPECT_EQ(anyvalue_item->GetToolTip(), sup::dto::kInt32TypeName);
 
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(anyvalue, stored_anyvalue);
+  EXPECT_EQ(anyvalue, GetAnyValue(item));
 
   // Updating again. In current implementation underlying AnyValueItem gets simply regenerated.
   auto prev_anyvalue_item = item.GetAnyValueItem();
@@ -120,14 +119,12 @@ TEST_F(TransformHelpersTest, UpdateAnyValueFromScalar)
 
   // Create and set AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(anyvalue, stored_anyvalue);
+  EXPECT_EQ(anyvalue, GetAnyValue(item));
 
   const sup::dto::AnyValue new_anyvalue(sup::dto::SignedInteger32Type, 42);
   UpdateAnyValue(new_anyvalue, item);
 
-  auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(new_anyvalue, stored_anyvalue2);
+  EXPECT_EQ(new_anyvalue, GetAnyValue(item));
 }
 
 //! Checking UpdateAnyValue function on changing type of AnyValue.
@@ -143,15 +140,13 @@ TEST_F(TransformHelpersTest, UpdateAnyValueFromScalarWithTypeChange)
 
   // Create and set AnyValueItem representing anyvalue
   SetAnyValue(anyvalue, item);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(anyvalue, stored_anyvalue);
+  EXPECT_EQ(anyvalue, GetAnyValue(item));
 
   const sup::dto::AnyValue new_anyvalue(sup::dto::StringType, "abc");
 
   EXPECT_NO_THROW(UpdateAnyValue(new_anyvalue, item));
 
-  auto stored_anyvalue2 = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(new_anyvalue, stored_anyvalue2);
+  EXPECT_EQ(new_anyvalue, GetAnyValue(item));
 }
 
 //! Setting AnyValue to instruction.
@@ -199,10 +194,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariable)
 
     LocalVariableItem item;
     SetAnyValueFromDomainVariable(*variable, item);
-
-    ASSERT_NE(item.GetAnyValueItem(), nullptr);
-    auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-    EXPECT_EQ(expected_anyvalue, stored_anyvalue);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
   }
 
   {  // when domain variable has type and value attribute
@@ -215,10 +207,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariable)
 
     LocalVariableItem item;
     SetAnyValueFromDomainVariable(*variable, item);
-
-    ASSERT_NE(item.GetAnyValueItem(), nullptr);
-    auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-    EXPECT_EQ(expected_anyvalue, stored_anyvalue);
+    EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
   }
 
   {  // when domain variable has only value attribute
@@ -251,9 +240,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainVariableWithRegistry)
   sup::dto::AnyValue expected_anyvalue = {{{"value", {sup::dto::SignedInteger32Type, 42}}},
                                           one_scalar_name};
 
-  ASSERT_NE(item.GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = CreateAnyValue(*item.GetAnyValueItem());
-  EXPECT_EQ(expected_anyvalue, stored_anyvalue);
+  EXPECT_EQ(expected_anyvalue, GetAnyValue(item));
 }
 
 TEST_F(TransformHelpersTest, SetAnyValueFromDomainInstruction)
@@ -348,4 +335,18 @@ TEST_F(TransformHelpersTest, PopulateProcedurePreambleFromItem)
 
     EXPECT_THROW(PopulateProcedurePreamble(item, preamble), LogicErrorException);
   }
+}
+
+//! Validating GetAnyValue helper method.
+TEST_F(TransformHelpersTest, GetStoredAnyValue)
+{
+  // LocalVariableItem doesn't have AnyValuteItem at the beginning
+  LocalVariableItem item;
+
+  EXPECT_THROW(GetAnyValue(item), RuntimeException);
+
+  const sup::dto::AnyValue anyvalue(sup::dto::SignedInteger32Type, 42);
+  SetAnyValue(anyvalue, item);
+
+  EXPECT_EQ(GetAnyValue(item), anyvalue);
 }

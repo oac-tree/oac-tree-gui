@@ -28,7 +28,7 @@
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
-#include <sup/gui/model/anyvalue_conversion_utils.h>
+#include <sequencergui/transform/transform_helpers.h>
 
 #include <mvvm/model/item_utils.h>
 
@@ -131,8 +131,8 @@ TEST_F(AutomationJobHandlerTest, OnVariableUpdated)
   auto variable_items = mvvm::utils::FindItemDown<LocalVariableItem>(job_item);
   ASSERT_EQ(variable_items.size(), 2);
 
-  auto anyvalue0 = sup::gui::CreateAnyValue(*variable_items.at(0)->GetAnyValueItem());
-  auto anyvalue1 = sup::gui::CreateAnyValue(*variable_items.at(1)->GetAnyValueItem());
+  auto anyvalue0 = GetAnyValue(*variable_items.at(0));
+  auto anyvalue1 = GetAnyValue(*variable_items.at(1));
 
   // LocalVariableItem is always available
   EXPECT_TRUE(variable_items.at(0)->IsAvailable());
@@ -150,8 +150,7 @@ TEST_F(AutomationJobHandlerTest, OnVariableUpdated)
   // We are testing here queued signals, need special waiting
   QTest::qWait(50);
 
-  auto new_anyvalue_item0 = variable_items.at(1)->GetAnyValueItem();
-  EXPECT_EQ(sup::gui::CreateAnyValue(*new_anyvalue_item0), new_anyvalue);
-  // LocalVariableItem is always available
+          // LocalVariableItem is always available
+  EXPECT_EQ(GetAnyValue(*variable_items.at(1)), new_anyvalue);
   EXPECT_TRUE(variable_items.at(1)->IsAvailable());
 }

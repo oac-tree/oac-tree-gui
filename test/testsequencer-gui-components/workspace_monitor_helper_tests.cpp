@@ -191,7 +191,5 @@ TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
   UpdateVariableFromEvent(VariableUpdatedEvent{unused_variable_index, value, true}, variable_item);
 
   EXPECT_TRUE(variable_item.IsAvailable());
-  ASSERT_NE(variable_item.GetAnyValueItem(), nullptr);
-  auto stored_anyvalue = sup::gui::CreateAnyValue(*variable_item.GetAnyValueItem());
-  EXPECT_EQ(value, stored_anyvalue);
+  EXPECT_EQ(value, GetAnyValue(variable_item));
 }
