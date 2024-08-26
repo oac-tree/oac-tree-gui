@@ -74,12 +74,13 @@ record (waveform,"CA-TESTS:CHARRAY")
 }
 )RAW";
 
-std::unique_ptr<variable_t> CreateVariable(const std::string &type, const std::string &name,
+std::unique_ptr<variable_t> CreateVariable(const std::string &variable_type,
+                                           const std::string &name,
                                            const sup::dto::AnyValue &initial_value,
                                            const std::string &channel_name = {})
 {
   using namespace sequencergui::domainconstants;
-  auto result = sequencergui::CreateDomainVariable(type);
+  auto result = sequencergui::CreateDomainVariable(variable_type);
   result->SetName(name);
   result->AddAttribute(kTypeAttribute, sup::gui::AnyTypeToJSONString(initial_value));
   result->AddAttribute(kValueAttribute, sup::gui::ValuesToJSONString(initial_value));

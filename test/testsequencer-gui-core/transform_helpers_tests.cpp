@@ -43,8 +43,10 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 using namespace sequencergui;
 using ::testing::_;
@@ -349,4 +351,18 @@ TEST_F(TransformHelpersTest, GetStoredAnyValue)
   SetAnyValue(anyvalue, item);
 
   EXPECT_EQ(GetAnyValue(item), anyvalue);
+}
+
+//! Validating GetAnyValue method for domain worskpaces.
+TEST_F(TransformHelpersTest, GetAnyValueFromDomainWorkspace)
+{
+  const std::string var_name("var");
+
+  sup::sequencer::Workspace workspace;
+  EXPECT_THROW(GetAnyValue(var_name, workspace), RuntimeException);
+
+  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  workspace.AddVariable(var_name, testutils::CreateLocalVariable(var_name, initial_value));
+  workspace.Setup();
+  EXPECT_EQ(GetAnyValue(var_name, workspace), initial_value);
 }

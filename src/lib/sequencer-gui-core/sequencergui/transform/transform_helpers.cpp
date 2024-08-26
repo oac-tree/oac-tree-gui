@@ -38,6 +38,7 @@
 #include <sup/sequencer/instruction.h>
 #include <sup/sequencer/procedure_preamble.h>
 #include <sup/sequencer/variable.h>
+#include <sup/sequencer/workspace.h>
 
 namespace sequencergui
 {
@@ -178,6 +179,18 @@ sup::dto::AnyValue GetAnyValue(const VariableItem &item)
   }
 
   throw RuntimeException("Given VariableItem doesn't contain AnyValueItem on board");
+}
+
+sup::dto::AnyValue GetAnyValue(const std::string &var_name,
+                               const sup::sequencer::Workspace &workspace)
+{
+  sup::dto::AnyValue result;
+  if (!workspace.GetValue(var_name, result))
+  {
+    throw RuntimeException("Can't get the value of the variable +[" + var_name
+                           + "] from domain workspace");
+  }
+  return result;
 }
 
 }  // namespace sequencergui

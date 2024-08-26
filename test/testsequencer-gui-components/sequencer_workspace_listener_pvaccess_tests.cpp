@@ -28,20 +28,21 @@
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
+#include <testutils/sequencer_test_utils.h>
 
 #include <QSignalSpy>
 #include <QTest>
 
 namespace
 {
-const std::string kTestPrefix("SUP-GUI-CORE-PVTESTS:");
-const std::string kSscalarChannelName(kTestPrefix + "scalar");
+const std::string kTestPrefix("SequencerWorkspaceListenerPVAccessTest:");
+const std::string kScalarChannelName(kTestPrefix + "scalar");
 const std::string kStructChannelName(kTestPrefix + "STRUCT");
 }  // namespace
 
 using namespace sequencergui;
 
-//! Tests for WorkspaceController class.
+//! Tests for SequencerWorkspaceListener class.
 //! Sequencer workspace is populated with PVAccessServer and PVAccessChannel variables.
 
 class SequencerWorkspaceListenerPVAccessTest : public ::testing::Test
@@ -55,17 +56,6 @@ public:
       GTEST_SKIP();
     }
   }
-
-  //! Creates PvAccessServerVariable for given channel_name and
-  std::unique_ptr<sup::sequencer::Variable> CreateServerVariable(const std::string& channel_name,
-                                                                 const sup::dto::AnyValue& anyvalue)
-  {
-    auto result = CreateDomainVariable(domainconstants::kPvAccessServerVariableType);
-    result->AddAttribute(domainconstants::kChannelAttribute, channel_name);
-    result->AddAttribute(domainconstants::kTypeAttribute, sup::gui::AnyTypeToJSONString(anyvalue));
-    result->AddAttribute(domainconstants::kValueAttribute, sup::gui::ValuesToJSONString(anyvalue));
-    return result;
-  }
 };
 
 //! Single scalar variable in a workspace.
@@ -77,7 +67,8 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
   // creating server variable
   const std::string var_name("var");
   const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  auto variable = CreateServerVariable(kSscalarChannelName, initial_value);
+  auto variable =
+      testutils::CreatePVAccessServerVariable(var_name, initial_value, kScalarChannelName);
 
   // initialising workspace
   sup::sequencer::Workspace workspace;
@@ -145,7 +136,8 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVa
   // creating server variable
   const std::string var_name("var");
   const sup::dto::AnyValue initial_value({{"value", {sup::dto::SignedInteger32Type, 0}}});
-  auto variable = CreateServerVariable(kStructChannelName, initial_value);
+  auto variable =
+      testutils::CreatePVAccessServerVariable(var_name, initial_value, kStructChannelName);
 
   // initialising workspace
   sup::sequencer::Workspace workspace;

@@ -26,6 +26,8 @@
 #include <sequencergui/domain/sequencer_types_fwd.h>
 #include <sup/gui/core/dto_types_fwd.h>
 
+#include <string>
+
 namespace mvvm
 {
 class CompoundItem;
@@ -99,6 +101,15 @@ void PopulateProcedurePreamble(const ProcedurePreambleItem& item, preamble_t& pr
  * @brief Returns domain AnyValue stored in given variable item.
  */
 sup::dto::AnyValue GetAnyValue(const VariableItem& item);
+
+/**
+ * @brief Returns AnyValue from workspace variable.
+ *
+ * Requires the setup of the workspace. Will throw if variables doesn't exist, of workspace wasn't
+ * setup properly.
+ */
+sup::dto::AnyValue GetAnyValue(const std::string& var_name,
+                               const sup::sequencer::Workspace& workspace);
 
 }  // namespace sequencergui
 
