@@ -20,10 +20,10 @@
 #include "sequencergui/pvmonitor/workspace_item_controller.h"
 
 #include <sequencergui/domain/domain_helper.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
-#include <sequencergui/pvmonitor/workspace_event.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>
 #include <sup/gui/model/anyvalue_item.h>

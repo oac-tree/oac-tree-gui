@@ -21,11 +21,11 @@
 #include "sequencergui/pvmonitor/sequencer_workspace_listener_v2.h"
 
 #include <sequencergui/domain/domain_helper.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/sequencer_item_helper.h>
 #include <sequencergui/model/standard_variable_items.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/pvmonitor/monitor_model.h>
-#include <sequencergui/pvmonitor/workspace_event.h>
 #include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/transform_helpers.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>

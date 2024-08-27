@@ -5,8 +5,6 @@ target_sources(${library_name} PRIVATE
   sequencer_workspace_listener.h
   sequencer_workspace_listener_v2.cpp
   sequencer_workspace_listener_v2.h
-  workspace_event.cpp
-  workspace_event.h
   workspace_item_controller.cpp
   workspace_item_controller.h
   workspace_item_listener.cpp

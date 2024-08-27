@@ -53,6 +53,20 @@ struct InstructionStatusChangedEvent
 };
 
 /**
+ * @brief The WorkspaceEvent class represents a change of the value or connection status of the
+ * domain variable.
+ */
+struct WorkspaceEvent
+{
+  std::string variable_name;
+  sup::dto::AnyValue value;
+  bool connected{false};
+
+  bool operator==(const WorkspaceEvent& other) const;
+  bool operator!=(const WorkspaceEvent& other) const;
+};
+
+/**
  * @brief The JobStateChangedEvent struct represents an event when instruction status has
  * changed.
  */

@@ -20,7 +20,7 @@
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
 
 #include <sequencergui/core/exceptions.h>
-#include <sequencergui/pvmonitor/workspace_event.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <sup/dto/anyvalue.h>
 #include <sup/sequencer/workspace.h>

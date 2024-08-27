@@ -20,11 +20,11 @@
 #include "workspace_synchronizer.h"
 
 #include "sequencer_workspace_listener.h"
-#include "workspace_event.h"
 #include "workspace_item_controller.h"
 #include "workspace_monitor_helper.h"
 
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sup/gui/model/anyvalue_conversion_utils.h>

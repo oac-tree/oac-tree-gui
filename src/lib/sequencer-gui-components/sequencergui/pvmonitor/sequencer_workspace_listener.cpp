@@ -19,9 +19,8 @@
 
 #include "sequencer_workspace_listener.h"
 
-#include "workspace_event.h"
-
 #include <sequencergui/core/exceptions.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <mvvm/utils/threadsafe_queue.h>
 

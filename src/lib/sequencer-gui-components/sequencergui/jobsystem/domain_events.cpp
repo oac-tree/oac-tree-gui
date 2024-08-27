@@ -102,6 +102,19 @@ bool InstructionStatusChangedEvent::operator!=(const InstructionStatusChangedEve
   return !(*this == other);
 }
 
+// WorkspaceEvent
+
+bool WorkspaceEvent::operator==(const WorkspaceEvent& other) const
+{
+  return variable_name == other.variable_name && value == other.value
+         && connected == other.connected;
+}
+
+bool WorkspaceEvent::operator!=(const WorkspaceEvent& other) const
+{
+  return !(*this == other);
+}
+
 // JobStatusChanged
 
 bool JobStateChangedEvent::operator==(const JobStateChangedEvent &other) const

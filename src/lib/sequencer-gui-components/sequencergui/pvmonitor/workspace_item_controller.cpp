@@ -19,8 +19,7 @@
 
 #include "workspace_item_controller.h"
 
-#include "workspace_event.h"
-
+#include <sequencergui/jobsystem/domain_events.h>
 #include <sequencergui/model/variable_item.h>
 #include <sequencergui/model/workspace_item.h>
 #include <sequencergui/transform/transform_helpers.h>
