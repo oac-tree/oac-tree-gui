@@ -50,6 +50,14 @@ void DomainEventDispatcher::operator()(const InstructionStatusChangedEvent &even
   }
 }
 
+void DomainEventDispatcher::operator()(const WorkspaceEvent &event) const
+{
+  if (m_context.process_workspace_event)
+  {
+    m_context.process_workspace_event(event);
+  }
+}
+
 void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
 {
   if (m_context.process_job_state_changed)
@@ -60,7 +68,7 @@ void DomainEventDispatcher::operator()(const JobStateChangedEvent &event) const
 
 void DomainEventDispatcher::operator()(const LogEvent &event) const
 {
-  if (m_context.process_job_state_changed)
+  if (m_context.process_log_event)
   {
     m_context.process_log_event(event);
   }
@@ -68,7 +76,7 @@ void DomainEventDispatcher::operator()(const LogEvent &event) const
 
 void DomainEventDispatcher::operator()(const NextLeavesChangedEvent &event) const
 {
-  if (m_context.process_job_state_changed)
+  if (m_context.next_leaves_changed_event)
   {
     m_context.next_leaves_changed_event(event);
   }

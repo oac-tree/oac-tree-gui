@@ -65,50 +65,56 @@ public:
   /**
    * @brief Operator to visit InstructionStatusChanged and trigger mock method.
    */
-  void operator()(const sequencergui::InstructionStatusChangedEvent& instruction_event) const
+  void operator()(const sequencergui::InstructionStatusChangedEvent& event) const
   {
-    OnInstructionStatusChanged(instruction_event);
+    OnInstructionStatusChanged(event);
   }
+
+  /**
+   * @brief Operator to visit WorkspaceEvent and trigger mock method.
+   */
+  void operator()(const sequencergui::WorkspaceEvent& event) const { OnWorkspaceEvent(event); }
 
   /**
    * @brief Operator to visit JobStateChanged and trigger mock method.
    */
-  void operator()(const sequencergui::JobStateChangedEvent& job_event) const
+  void operator()(const sequencergui::JobStateChangedEvent& event) const
   {
-    OnJobStateChanged(job_event);
+    OnJobStateChanged(event);
   }
 
   /**
    * @brief Operator to visit LogEvent and trigger mock method.
    */
-  void operator()(const sequencergui::LogEvent& log_event) const { OnLogEvent(log_event); }
+  void operator()(const sequencergui::LogEvent& event) const { OnLogEvent(event); }
 
   /**
    * @brief Operator to visit NextLeavesChanged and trigger mock method.
    */
-  void operator()(const sequencergui::NextLeavesChangedEvent& leaves_event) const
+  void operator()(const sequencergui::NextLeavesChangedEvent& event) const
   {
-    OnNextLeavesChanged(leaves_event);
+    OnNextLeavesChanged(event);
   }
 
   /**
    * @brief Operator to visit VariableStateUpdated and trigger mock method.
    */
-  void operator()(const sequencergui::VariableUpdatedEvent& variable_event) const
+  void operator()(const sequencergui::VariableUpdatedEvent& event) const
   {
-    OnVariableUpdated(variable_event);
+    OnVariableUpdated(event);
   }
 
   /**
    * @brief Operator to visit InstructionStateUpdated and trigger mock method.
    */
-  void operator()(const sequencergui::InstructionStateUpdatedEvent& instruction_event) const
+  void operator()(const sequencergui::InstructionStateUpdatedEvent& event) const
   {
-    OnInstructionStateUpdated(instruction_event);
+    OnInstructionStateUpdated(event);
   }
 
   MOCK_METHOD(void, OnInstructionStatusChanged,
               (const sequencergui::InstructionStatusChangedEvent&), (const));
+  MOCK_METHOD(void, OnWorkspaceEvent, (const sequencergui::WorkspaceEvent&), (const));
   MOCK_METHOD(void, OnJobStateChanged, (const sequencergui::JobStateChangedEvent&), (const));
   MOCK_METHOD(void, OnLogEvent, (const sequencergui::LogEvent&), (const));
   MOCK_METHOD(void, OnNextLeavesChanged, (const sequencergui::NextLeavesChangedEvent&), (const));
@@ -123,26 +129,27 @@ public:
   {
     sequencergui::DomainEventDispatcherContext result;
 
-    auto instruction_status_changed =
+    result.process_instruction_status_changed =
         [this](const sequencergui::InstructionStatusChangedEvent& event)
     { OnInstructionStatusChanged(event); };
 
-    auto job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
+    result.process_workspace_event = [this](const sequencergui::WorkspaceEvent& event)
+    { OnWorkspaceEvent(event); };
+
+    result.process_job_state_changed = [this](const sequencergui::JobStateChangedEvent& event)
     { OnJobStateChanged(event); };
 
-    auto log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
+    result.process_log_event = [this](const sequencergui::LogEvent& event) { OnLogEvent(event); };
 
-    auto next_leaves_event = [this](const sequencergui::NextLeavesChangedEvent& event)
+    result.next_leaves_changed_event = [this](const sequencergui::NextLeavesChangedEvent& event)
     { OnNextLeavesChanged(event); };
 
-    auto instruction_state_updated = [this](const sequencergui::InstructionStateUpdatedEvent& event)
+    result.process_instruction_state_updated =
+        [this](const sequencergui::InstructionStateUpdatedEvent& event)
     { OnInstructionStateUpdated(event); };
 
-    auto variable_updated = [this](const sequencergui::VariableUpdatedEvent& event)
+    result.process_variable_updated = [this](const sequencergui::VariableUpdatedEvent& event)
     { OnVariableUpdated(event); };
-
-    return {instruction_status_changed, job_state_changed,         log_event,
-            next_leaves_event,          instruction_state_updated, variable_updated};
 
     return result;
   }

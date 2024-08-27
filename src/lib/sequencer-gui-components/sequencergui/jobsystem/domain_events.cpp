@@ -23,6 +23,8 @@
 
 #include <sup/sequencer/instruction.h>
 
+#include <sup/dto/anyvalue_helper.h>
+
 #include <sstream>
 
 namespace
@@ -39,6 +41,15 @@ struct DomainEventToStringVisitor
     ostr << "InstructionStatusChanged"
          << " " << (event.instruction) << " " << name << " "
          << ::sup::sequencer::StatusToString(event.status);
+    return ostr.str();
+  }
+
+  std::string operator()(const ::sequencergui::WorkspaceEvent &event) const
+  {
+    std::ostringstream ostr;
+    ostr << "WorkspaceEvent"
+         << " " << (event.variable_name) << " connected:" <<event.connected << " "
+         << ::sup::dto::PrintAnyValue(event.value);
     return ostr.str();
   }
 
@@ -79,7 +90,7 @@ struct DomainEventToStringVisitor
   {
     std::ostringstream ostr;
     ostr << std::string("VariableUpdatedEvent") << " "
-         << ::sup::gui::AnyValueToJSONString(event.value);
+         << ::sup::dto::PrintAnyValue(event.value);
     ostr << " connected:" << event.connected;
     return ostr.str();
   }
