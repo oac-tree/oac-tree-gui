@@ -134,6 +134,8 @@ TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerScalar
   EXPECT_TRUE(m_workspace.GetVariable(var_name)->IsAvailable());
   EXPECT_EQ(value, initial_value);
 
+  // FIXME revise commented code after resolution of COA-1065
+
   // // checking current value of AnyValueItem (a struct instead of scalar
   // const sup::dto::AnyValue expected_initial_value({{"value", {sup::dto::SignedInteger32Type,
   // 42}}}); EXPECT_EQ(GetAnyValue(*variable_item), expected_initial_value);

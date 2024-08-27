@@ -174,13 +174,13 @@ TEST_F(SequencerWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVari
   // setting up expectations for the model
   mock_listener_t model_listener(&m_model);
 
-  // Looks like connection to SoftIoc generates two callbacks. The first callback contains the
-  // value=0, and connection=1 and it is triggered by connection status change. The second callback
-  // contains value=1 and connection=1 and it is triggered by initial value in epics.db.
-  // This creates two events in SequencerWorkspaceListenerV2 queue.
+  // Connection to SoftIoc generates two callbacks. The first callback contains the value=0, and
+  // connection=1 and it is triggered by the connection status change. The second callback contains
+  // value=1 and connection=1 and it is triggered by initial value in epics.db. This creates two
+  // events in SequencerWorkspaceListenerV2 queue.
 
-  // Propagating these two events to the model will generate 3 model events: one related to
-  // connection status change, and to related to values change.
+  // Propagation of these two events to the model will generate 3 model events: one related to
+  // connection status change, and two related to values change.
 
   // expecting DataChangedEvent for item representing connected attribute
   auto expected_event1 =
