@@ -109,14 +109,19 @@ bool AreMatchingWorkspaces(const WorkspaceItem &workspace_item,
 
 void UpdateVariableFromEvent(const VariableUpdatedEvent &event, VariableItem &item)
 {
-  if (event.connected && sup::dto::IsEmptyValue(event.value) && !item.IsAvailable())
+  UpdateVariableFromEvent(event.value, event.connected, item);
+}
+
+void UpdateVariableFromEvent(const sup::dto::AnyValue &value, bool connected, VariableItem &item)
+{
+  if (connected && sup::dto::IsEmptyValue(value) && !item.IsAvailable())
   {
-    item.SetIsAvailable(event.connected);
+    item.SetIsAvailable(connected);
     return;
   }
 
-  item.SetIsAvailable(event.connected);
-  UpdateAnyValue(event.value, item);
+  item.SetIsAvailable(connected);
+  UpdateAnyValue(value, item);
 }
 
 }  // namespace sequencergui

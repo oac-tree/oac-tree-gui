@@ -24,6 +24,11 @@
 
 #include <mvvm/model/session_item.h>
 
+namespace sup::dto
+{
+class AnyValue;
+}
+
 namespace mvvm
 {
 class SessionItem;
@@ -82,7 +87,12 @@ bool AreMatchingWorkspaces(const WorkspaceItem& workspace_item,
 /**
  * @brief Updates variable from domain event.
  */
-void UpdateVariableFromEvent(const VariableUpdatedEvent& event, VariableItem &item);
+void UpdateVariableFromEvent(const VariableUpdatedEvent& event, VariableItem& item);
+
+/**
+ * @brief Updates variable from domain event.
+ */
+void UpdateVariableFromEvent(const sup::dto::AnyValue& value, bool connected, VariableItem& item);
 
 }  // namespace sequencergui
 

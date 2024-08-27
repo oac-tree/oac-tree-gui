@@ -31,7 +31,8 @@
 #include <sequencergui/model/procedure_item.h>
 #include <sequencergui/operation/breakpoint_controller.h>
 #include <sequencergui/operation/breakpoint_helper.h>
-#include <sequencergui/pvmonitor/workspace_synchronizer.h>
+#include <sequencergui/pvmonitor/workspace_item_listener.h>
+#include <sequencergui/pvmonitor/workspace_monitor_helper.h>
 #include <sequencergui/transform/domain_procedure_builder.h>
 #include <sequencergui/transform/gui_object_builder.h>
 
@@ -174,6 +175,18 @@ void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
   emit NextLeavesChanged(items);
 }
 
+void JobHandler::OnWorkspaceEvent(const WorkspaceEvent &event)
+{
+  if (auto *item = m_guiobject_builder->FindVariableItem(event.variable_name); item)
+  {
+    UpdateVariableFromEvent(event.value, event.connected, *item);
+  }
+  else
+  {
+    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
+  }
+}
+
 JobModel *JobHandler::GetJobModel()
 {
   return dynamic_cast<JobModel *>(m_job_item->GetModel());
@@ -193,14 +206,7 @@ void JobHandler::SetupBreakpointController()
 
 void JobHandler::CreateDomainProcedure()
 {
-  // building domain procedure
   m_domain_procedure = DomainProcedureBuilder::CreateProcedure(*m_job_item->GetProcedure());
-
-  if (!m_domain_procedure->GetWorkspace().GetVariables().empty())
-  {
-    m_workspace_synchronizer =
-        std::make_unique<WorkspaceSynchronizer>(&m_domain_procedure->GetWorkspace());
-  }
 }
 
 void JobHandler::SetupExpandedProcedureItem()
@@ -224,10 +230,10 @@ void JobHandler::SetupExpandedProcedureItem()
   m_breakpoint_controller->PropagateBreakpointsToDomain(
       *expanded_procedure_ptr, *m_domain_runner_service->GetJobController());
 
-  if (m_workspace_synchronizer)
+  if (!m_domain_procedure->GetWorkspace().GetVariables().empty())
   {
-    m_workspace_synchronizer->SetWorkspaceItem(expanded_procedure_ptr->GetWorkspace());
-    m_workspace_synchronizer->Start();
+    m_workspace_item_listener = std::make_unique<WorkspaceItemListener>(
+        expanded_procedure_ptr->GetWorkspace(), &m_domain_procedure->GetWorkspace());
   }
 }
 
@@ -241,17 +247,22 @@ void JobHandler::SetupDomainRunner(const UserContext &user_context, int sleep_ti
 
 DomainEventDispatcherContext JobHandler::CreateContext()
 {
-  auto on_instruction_status = [this](const InstructionStatusChangedEvent &event)
+  DomainEventDispatcherContext result;
+
+  result.process_instruction_status_changed = [this](const InstructionStatusChangedEvent &event)
   { OnInstructionStatusChanged(event); };
 
-  auto on_job_state = [this](const JobStateChangedEvent &event) { OnJobStateChanged(event); };
+  result.process_workspace_event = [this](const WorkspaceEvent &event) { OnWorkspaceEvent(event); };
 
-  auto on_log_event = [this](const LogEvent &event) { onLogEvent(event); };
+  result.process_job_state_changed = [this](const JobStateChangedEvent &event)
+  { OnJobStateChanged(event); };
 
-  auto on_next_leaves = [this](const NextLeavesChangedEvent &event)
+  result.process_log_event = [this](const LogEvent &event) { onLogEvent(event); };
+
+  result.next_leaves_changed_event = [this](const NextLeavesChangedEvent &event)
   { OnNextLeavesChangedEvent(event); };
 
-  return {on_instruction_status, on_job_state, on_log_event, on_next_leaves};
+  return result;
 }
 
 }  // namespace sequencergui

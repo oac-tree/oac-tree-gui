@@ -43,7 +43,7 @@ class JobItem;
 class InstructionItem;
 class GUIObjectBuilder;
 class LogEvent;
-class WorkspaceSynchronizer;
+class WorkspaceItemListener;
 class JobModel;
 class BreakpointController;
 class DomainRunnerService;
@@ -146,6 +146,11 @@ private:
   void OnNextLeavesChangedEvent(const NextLeavesChangedEvent& event);
 
   /**
+   * @brief Handles events reporting update in the domain variable.
+   */
+  void OnWorkspaceEvent(const WorkspaceEvent& event);
+
+  /**
    * @brief Returns job model to which our JobItem
    */
   JobModel* GetJobModel();
@@ -190,7 +195,7 @@ private:
   std::unique_ptr<DomainRunnerService> m_domain_runner_service;
 
   //!< dedicated listener to provide communication bween domain/GUI workspace variables
-  std::unique_ptr<WorkspaceSynchronizer> m_workspace_synchronizer;
+  std::unique_ptr<WorkspaceItemListener> m_workspace_item_listener;
 
   //!< main controller to handle breakpoints toggling
   std::unique_ptr<BreakpointController> m_breakpoint_controller;
