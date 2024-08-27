@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/pvmonitor/sequencer_workspace_listener_v2.h"
+#include "sequencergui/pvmonitor/domain_workspace_listener.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/model/standard_variable_items.h>
@@ -42,13 +42,13 @@
 using testing::_;
 using namespace sequencergui;
 
-//! Tests for SequencerWorkspaceListenerV2 class.
-class SequencerWorkspaceListenerV2Test : public ::testing::Test
+//! Tests for DomainWorkspaceListener class.
+class DomainWorkspaceListenerTest : public ::testing::Test
 {
 public:
   using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListenerV2>;
 
-  SequencerWorkspaceListenerV2Test() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
+  DomainWorkspaceListenerTest() { m_workspace_item = m_model.InsertItem<WorkspaceItem>(); }
 
   sup::sequencer::Workspace m_workspace;
   WorkspaceItem *m_workspace_item{nullptr};
@@ -56,22 +56,22 @@ public:
 };
 
 //! Initial state.
-TEST_F(SequencerWorkspaceListenerV2Test, InitialState)
+TEST_F(DomainWorkspaceListenerTest, InitialState)
 {
-  EXPECT_THROW(SequencerWorkspaceListenerV2(nullptr, nullptr), RuntimeException);
-  EXPECT_THROW(SequencerWorkspaceListenerV2(m_workspace_item, nullptr), RuntimeException);
-  EXPECT_THROW(SequencerWorkspaceListenerV2(nullptr, &m_workspace), RuntimeException);
+  EXPECT_THROW(DomainWorkspaceListener(nullptr, nullptr), RuntimeException);
+  EXPECT_THROW(DomainWorkspaceListener(m_workspace_item, nullptr), RuntimeException);
+  EXPECT_THROW(DomainWorkspaceListener(nullptr, &m_workspace), RuntimeException);
 
-  const SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  const DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // listener shall be constructed before workspace setup
   m_workspace.Setup();
-  EXPECT_THROW(SequencerWorkspaceListenerV2(m_workspace_item, &m_workspace), RuntimeException);
+  EXPECT_THROW(DomainWorkspaceListener(m_workspace_item, &m_workspace), RuntimeException);
 }
 
 //! Single local variable is created in both workspaces. Initial values coincides.
-TEST_F(SequencerWorkspaceListenerV2Test, LocalVariableInTheWorkspace)
+TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
 {
   const std::string var_name("abc");
 
@@ -82,7 +82,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, LocalVariableInTheWorkspace)
   SetAnyValue(value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
-  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   mock_listener_t model_listener(&m_model);
@@ -106,7 +106,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, LocalVariableInTheWorkspace)
 
 //! Single local variable is created in both workspaces. Initial values coincides. Changing the
 //! value on domain side and checking event propagation.
-TEST_F(SequencerWorkspaceListenerV2Test, ChangeLocalVariable)
+TEST_F(DomainWorkspaceListenerTest, ChangeLocalVariable)
 {
   const std::string var_name("abc");
 
@@ -117,7 +117,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, ChangeLocalVariable)
   SetAnyValue(value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
-  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   mock_listener_t model_listener(&m_model);
@@ -150,7 +150,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, ChangeLocalVariable)
   EXPECT_EQ(GetAnyValue(*variable_item), new_value);
 }
 
-TEST_F(SequencerWorkspaceListenerV2Test, StopListeningWorkspace)
+TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
 {
   const std::string var_name("abc");
 
@@ -161,7 +161,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, StopListeningWorkspace)
   SetAnyValue(value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
-  auto listener = std::make_unique<SequencerWorkspaceListenerV2>(m_workspace_item, &m_workspace);
+  auto listener = std::make_unique<DomainWorkspaceListener>(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener->GetEventCount(), 0);
 
   mock_listener_t model_listener(&m_model);
@@ -188,7 +188,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, StopListeningWorkspace)
 }
 
 //! Single local variable is created in both workspaces. GUI variable doesn't have initial value.
-TEST_F(SequencerWorkspaceListenerV2Test, EmptyLocalVariableInWorkspace)
+TEST_F(DomainWorkspaceListenerTest, EmptyLocalVariableInWorkspace)
 {
   const std::string var_name("abc");
 
@@ -203,7 +203,7 @@ TEST_F(SequencerWorkspaceListenerV2Test, EmptyLocalVariableInWorkspace)
   mvvm::utils::RemoveItem(*variable_item->GetAnyValueItem());
   EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
 
-  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   mock_listener_t model_listener(&m_model);

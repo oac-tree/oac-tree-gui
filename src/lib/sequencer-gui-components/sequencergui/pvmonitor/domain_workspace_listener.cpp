@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencer_workspace_listener_v2.h"
+#include "domain_workspace_listener.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/jobsystem/domain_events.h>
@@ -29,21 +29,18 @@
 
 #include <mvvm/utils/threadsafe_queue.h>
 
-#include <sup/dto/anyvalue_helper.h>
 #include <sup/sequencer/variable.h>
 #include <sup/sequencer/workspace.h>
-
-#include <iostream>
 
 namespace sequencergui
 {
 
-struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
+struct DomainWorkspaceListener::DomainWorkspaceListenerImpl
 {
   using workspace_t = sup::sequencer::Workspace;
   using callback_guard_t = sup::sequencer::ScopeGuard;
 
-  SequencerWorkspaceListenerV2 *m_impl_owner{nullptr};
+  DomainWorkspaceListener *m_impl_owner{nullptr};
   WorkspaceItem *m_workspace_item{nullptr};
   workspace_t *m_domain_workspace{nullptr};
 
@@ -53,9 +50,8 @@ struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
   callback_guard_t m_guard;
   mvvm::threadsafe_queue<VariableUpdatedEvent> m_workspace_events;
 
-  SequencerWorkspaceListenerImpl(SequencerWorkspaceListenerV2 *impl_owner,
-                                 WorkspaceItem *workspace_item,
-                                 sup::sequencer::Workspace *domain_workspace)
+  DomainWorkspaceListenerImpl(DomainWorkspaceListener *impl_owner, WorkspaceItem *workspace_item,
+                              sup::sequencer::Workspace *domain_workspace)
       : m_impl_owner(impl_owner)
       , m_workspace_item(workspace_item)
       , m_domain_workspace(domain_workspace)
@@ -105,32 +101,30 @@ struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
     auto on_variable_updated =
         [this](const std::string &name, const sup::dto::AnyValue &value, bool connected)
     {
-      std::cout << "Vaiable updated " << name << " " << sup::gui::AnyValueToJSONString(value)
-                << " connected:" << connected << std::endl;
       m_workspace_events.push({m_name_to_index[name], value, connected});
       emit m_impl_owner->VariabledUpdated();
     };
     m_domain_workspace->RegisterGenericCallback(on_variable_updated, this);
   }
 
-  ~SequencerWorkspaceListenerImpl()
+  ~DomainWorkspaceListenerImpl()
   {
     m_guard = callback_guard_t{};
     m_domain_workspace = nullptr;
   }
 };
 
-SequencerWorkspaceListenerV2::SequencerWorkspaceListenerV2(
-    WorkspaceItem *workspace_item, sup::sequencer::Workspace *domain_workspace, QObject *parent)
+DomainWorkspaceListener::DomainWorkspaceListener(WorkspaceItem *workspace_item,
+                                                 sup::sequencer::Workspace *domain_workspace,
+                                                 QObject *parent)
     : QObject(parent)
-    , p_impl(
-          std::make_unique<SequencerWorkspaceListenerImpl>(this, workspace_item, domain_workspace))
+    , p_impl(std::make_unique<DomainWorkspaceListenerImpl>(this, workspace_item, domain_workspace))
 {
 }
 
-SequencerWorkspaceListenerV2::~SequencerWorkspaceListenerV2() = default;
+DomainWorkspaceListener::~DomainWorkspaceListener() = default;
 
-void SequencerWorkspaceListenerV2::StartListening()
+void DomainWorkspaceListener::StartListening()
 {
   if (p_impl->m_domain_workspace->IsSuccessfullySetup())
   {
@@ -138,51 +132,35 @@ void SequencerWorkspaceListenerV2::StartListening()
         "Workspace setup has been already done. StartListening() method shall be called before.");
   }
 
-  connect(this, &SequencerWorkspaceListenerV2::VariabledUpdated, this,
-          &SequencerWorkspaceListenerV2::OnDomainVariableUpdated, Qt::QueuedConnection);
+  connect(this, &DomainWorkspaceListener::VariabledUpdated, this,
+          &DomainWorkspaceListener::OnDomainVariableUpdated, Qt::QueuedConnection);
 
   p_impl->SubscribeToDomainWorkspace();
 }
 
-int SequencerWorkspaceListenerV2::GetEventCount() const
+int DomainWorkspaceListener::GetEventCount() const
 {
   return static_cast<int>(p_impl->m_workspace_events.size());
 }
 
-VariableItem *SequencerWorkspaceListenerV2::GetVariableItem(size_t index) const
+VariableItem *DomainWorkspaceListener::GetVariableItem(size_t index) const
 {
   return index < p_impl->m_index_to_variable_item.size() ? p_impl->m_index_to_variable_item[index]
                                                          : nullptr;
 }
 
-VariableUpdatedEvent SequencerWorkspaceListenerV2::PopEvent() const
+VariableUpdatedEvent DomainWorkspaceListener::PopEvent() const
 {
   VariableUpdatedEvent result;
   p_impl->m_workspace_events.try_pop(result);
   return result;
 }
 
-void SequencerWorkspaceListenerV2::OnDomainVariableUpdated()
+void DomainWorkspaceListener::OnDomainVariableUpdated()
 {
   auto event = PopEvent();
   auto item = GetVariableItem(event.index);
   assert(item);
-
-  std::cout << "XXX event 1.1 " << " connected:" << event.connected << " "
-              << sup::dto::PrintAnyValue(event.value) << std::endl;
-  if (item->GetAnyValueItem())
-  {
-    std::cout << "XXX item  1.1 " << " connected:" << event.connected << " "
-              << sup::dto::PrintAnyValue(GetAnyValue(*item)) << std::endl;
-  }
-  else
-  {
-    std::cout << "XXX item  1.1 " << " connected:" << event.connected << " "
-              << "no item" << std::endl;
-
-  }
-
-
   UpdateVariableFromEvent(event, *item);
 }
 

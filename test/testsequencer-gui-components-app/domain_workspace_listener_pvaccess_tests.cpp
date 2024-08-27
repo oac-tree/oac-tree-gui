@@ -17,7 +17,7 @@
  * of the distribution package.
  *****************************************************************************/
 
-#include "sequencergui/pvmonitor/sequencer_workspace_listener_v2.h"
+#include "sequencergui/pvmonitor/domain_workspace_listener.h"
 
 #include <sequencergui/core/exceptions.h>
 #include <sequencergui/domain/domain_helper.h>
@@ -51,13 +51,13 @@ const std::string kStructChannelName(kTestPrefix + "STRUCT");
 using namespace sequencergui;
 using testing::_;
 
-//! Tests for SequencerWorkspaceListenerV2 class.
-class SequencerWorkspaceListenerV2PVAccessTest : public ::testing::Test
+//! Tests for DomainWorkspaceListener class.
+class DomainWorkspaceListenerPVAccessTest : public ::testing::Test
 {
 public:
   using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListenerV2>;
 
-  SequencerWorkspaceListenerV2PVAccessTest()
+  DomainWorkspaceListenerPVAccessTest()
   {
     m_workspace_item = m_model.InsertItem<WorkspaceItem>();
   }
@@ -77,7 +77,7 @@ public:
 };
 
 //! Single scalar variable in a workspace.
-TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerScalarVariable)
+TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVariable)
 {
   const std::string var_name("abc");
 
@@ -91,7 +91,7 @@ TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerScalar
 
   // sup::dto::PrintAnyValue(event.value);
 
-  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   listener.StartListening();
@@ -157,7 +157,7 @@ TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerScalar
 }
 
 //! Single struct variable in a workspace.
-TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerStructVariable)
+TEST_F(DomainWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerStructVariable)
 {
   const std::string var_name("abc");
 
@@ -171,7 +171,7 @@ TEST_F(SequencerWorkspaceListenerV2PVAccessTest, WorkspaceWithSingleServerStruct
 
   // sup::dto::PrintAnyValue(event.value);
 
-  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   listener.StartListening();

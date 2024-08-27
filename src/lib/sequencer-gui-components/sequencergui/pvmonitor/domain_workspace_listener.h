@@ -17,8 +17,8 @@
  * of the distribution package.
  *****************************************************************************/
 
-#ifndef SEQUENCERGUI_PVMONITOR_SEQUENCER_WORKSPACE_LISTENER_V2_H_
-#define SEQUENCERGUI_PVMONITOR_SEQUENCER_WORKSPACE_LISTENER_V2_H_
+#ifndef SEQUENCERGUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_
+#define SEQUENCERGUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_
 
 #include <QObject>
 #include <memory>
@@ -36,12 +36,12 @@ class WorkspaceItem;
 class VariableItem;
 
 /**
- * @brief The SequencerWorkspaceListener class propagates sequencer domain Workspace events to
+ * @brief The DomainWorkspaceListener class propagates sequencer domain Workspace events to
  * WorkspaceItem.
  *
  * It collects variable updates in an event queue and updates WorkspaceItem via queued connection.
  */
-class SequencerWorkspaceListenerV2 : public QObject
+class DomainWorkspaceListener : public QObject
 {
   Q_OBJECT
 
@@ -51,10 +51,10 @@ public:
    *
    * Should be used before domain workspace setup.
    */
-  SequencerWorkspaceListenerV2(WorkspaceItem* workspace_item,
+  DomainWorkspaceListener(WorkspaceItem* workspace_item,
                                sup::sequencer::Workspace* domain_workspace,
                                QObject* parent = nullptr);
-  ~SequencerWorkspaceListenerV2() override;
+  ~DomainWorkspaceListener() override;
 
   /**
    * @brief Starts listening for workspace notifications.
@@ -95,10 +95,10 @@ private:
    */
   void OnDomainVariableUpdated();
 
-  struct SequencerWorkspaceListenerImpl;
-  std::unique_ptr<SequencerWorkspaceListenerImpl> p_impl;
+  struct DomainWorkspaceListenerImpl;
+  std::unique_ptr<DomainWorkspaceListenerImpl> p_impl;
 };
 
 }  // namespace sequencergui
 
-#endif  // SEQUENCERGUI_PVMONITOR_SEQUENCER_WORKSPACE_LISTENER_V2_H_
+#endif  // SEQUENCERGUI_PVMONITOR_DOMAIN_WORKSPACE_LISTENER_H_

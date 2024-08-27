@@ -18,7 +18,7 @@
  *****************************************************************************/
 
 #include "sequencergui/pvmonitor/sequencer_workspace_listener.h"
-#include "sequencergui/pvmonitor/sequencer_workspace_listener_v2.h"
+#include "sequencergui/pvmonitor/domain_workspace_listener.h"
 
 #include <sequencergui/domain/domain_helper.h>
 #include <sequencergui/jobsystem/domain_events.h>
@@ -57,12 +57,12 @@ const std::string kChannelName("CA-TESTS:INT");
 //! Tests for WorkspaceController class.
 //! Sequencer workspace is populated with ChannelAccessVariable.
 
-class SequencerWorkspaceListenerSoftIocTest : public ::testing::Test
+class DomainWorkspaceListenerSoftIocTest : public ::testing::Test
 {
 public:
   using mock_listener_t = ::testing::StrictMock<mvvm::test::MockModelListenerV2>;
 
-  SequencerWorkspaceListenerSoftIocTest()
+  DomainWorkspaceListenerSoftIocTest()
   {
     m_workspace_item = m_model.InsertItem<WorkspaceItem>();
   }
@@ -99,7 +99,7 @@ public:
   mvvm::ApplicationModel m_model;
 };
 
-sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTest::m_softioc_service{};
+sup::epics::test::SoftIocRunner DomainWorkspaceListenerSoftIocTest::m_softioc_service{};
 
 //! The sequencer Workspace contains a single channel access variable.
 //! Validating that SequencerWorkspaceListener gets notifications.
@@ -149,7 +149,7 @@ sup::epics::test::SoftIocRunner SequencerWorkspaceListenerSoftIocTest::m_softioc
 //   EXPECT_TRUE(event.connected);
 // }
 
-TEST_F(SequencerWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariableV2)
+TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariableV2)
 {
   const std::string var_name("abc");
 
@@ -164,7 +164,7 @@ TEST_F(SequencerWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVari
 
   const sup::dto::AnyValue softioc_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1});
 
-  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  DomainWorkspaceListener listener(m_workspace_item, &m_workspace);
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   listener.StartListening();
