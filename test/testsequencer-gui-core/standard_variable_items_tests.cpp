@@ -313,6 +313,27 @@ TEST_F(StandardVariableItemsTest, LocalVariableItemToDomain)
     workspace_t ws;
     EXPECT_NO_THROW(domain_item->Setup(ws));
   }
+
+  {  // case when AnyValueItem is not set
+    sequencergui::LocalVariableItem item;
+    item.SetName(expected_name);
+    EXPECT_EQ(item.GetAnyValueItem(), nullptr);
+
+    auto domain_item = item.CreateDomainVariable();
+    EXPECT_EQ(domain_item->GetType(), domainconstants::kLocalVariableType);
+
+    EXPECT_EQ(domain_item->GetStringAttributes().size(), 1);
+    EXPECT_EQ(domain_item->GetAttributeString(domainconstants::kNameAttribute), expected_name);
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kTypeAttribute));
+    EXPECT_FALSE(domain_item->HasAttribute(domainconstants::kValueAttribute));
+
+    workspace_t ws;
+    ws.AddVariable(expected_name, std::move(domain_item));
+    ws.Setup();
+
+    sup::dto::AnyValue anyvalue;
+    EXPECT_FALSE(ws.GetValue(expected_name, anyvalue));
+  }
 }
 
 //! ---------------------------------------------------------------------------

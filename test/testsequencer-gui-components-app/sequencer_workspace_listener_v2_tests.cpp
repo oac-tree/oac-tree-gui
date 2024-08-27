@@ -27,9 +27,11 @@
 #include <sup/gui/model/anyvalue_item.h>
 
 #include <mvvm/model/application_model.h>
+#include <mvvm/model/item_utils.h>
 #include <mvvm/test/mock_model_listener.h>
 
 #include <sup/dto/anyvalue.h>
+#include <sup/dto/anyvalue_helper.h>
 #include <sup/sequencer/workspace.h>
 
 #include <gtest/gtest.h>
@@ -37,6 +39,7 @@
 
 #include <QTest>
 
+using testing::_;
 using namespace sequencergui;
 
 //! Tests for SequencerWorkspaceListenerV2 class.
@@ -182,4 +185,47 @@ TEST_F(SequencerWorkspaceListenerV2Test, StopListeningWorkspace)
 
   // We expect no signals from the model, since the listener was destroyed.
   // If it weren't the case, strict mock model_listener would fail here.
+}
+
+//! Single local variable is created in both workspaces. GUI variable doesn't have initial value.
+TEST_F(SequencerWorkspaceListenerV2Test, EmptyLocalVariableInWorkspace)
+{
+  const std::string var_name("abc");
+
+  // creating VariableItem and populating domain workspace
+  auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
+  variable_item->SetName(var_name);
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  SetAnyValue(value, *variable_item);
+  PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+
+  // removing AnyValueItem to simulate the case when empy LocalVariableItem receives first update
+  mvvm::utils::RemoveItem(*variable_item->GetAnyValueItem());
+  EXPECT_EQ(variable_item->GetAnyValueItem(), nullptr);
+
+  SequencerWorkspaceListenerV2 listener(m_workspace_item, &m_workspace);
+  EXPECT_EQ(listener.GetEventCount(), 0);
+
+  mock_listener_t model_listener(&m_model);
+
+  listener.StartListening();
+
+  // expecting two signals for creating of the new AnyValueItem
+  EXPECT_CALL(model_listener, OnAboutToInsertItem(_)).Times(1);
+  EXPECT_CALL(model_listener, OnItemInserted(_)).Times(1);
+
+  m_workspace.Setup();
+
+  // This is an event from domain that variable has changed.
+  EXPECT_EQ(listener.GetEventCount(), 1);
+
+  // let event loop do its job
+  auto empty_queue_predicate = [&listener]() { return listener.GetEventCount() == 0; };
+  EXPECT_TRUE(QTest::qWaitFor(empty_queue_predicate, 50));
+
+  EXPECT_EQ(listener.GetEventCount(), 0);
+
+  EXPECT_NE(variable_item->GetAnyValueItem(), nullptr);
+
+  EXPECT_EQ(GetAnyValue(*variable_item), value);
 }

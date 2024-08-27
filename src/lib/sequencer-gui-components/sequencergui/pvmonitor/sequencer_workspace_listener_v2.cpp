@@ -44,8 +44,8 @@ struct SequencerWorkspaceListenerV2::SequencerWorkspaceListenerImpl
   using callback_guard_t = sup::sequencer::ScopeGuard;
 
   SequencerWorkspaceListenerV2 *m_impl_owner{nullptr};
-  workspace_t *m_domain_workspace{nullptr};
   WorkspaceItem *m_workspace_item{nullptr};
+  workspace_t *m_domain_workspace{nullptr};
 
   std::vector<VariableItem *> m_index_to_variable_item;
   std::map<std::string, size_t> m_name_to_index;
@@ -168,10 +168,20 @@ void SequencerWorkspaceListenerV2::OnDomainVariableUpdated()
   auto item = GetVariableItem(event.index);
   assert(item);
 
-  std::cout << "XXX item  1.1 " << " connected:" << event.connected << " "
-            << sup::dto::PrintAnyValue(GetAnyValue(*item)) << std::endl;
-  std::cout << "XXX event 1.2 " << " connected:" << event.connected << " "
+  std::cout << "XXX event 1.1 " << " connected:" << event.connected << " "
               << sup::dto::PrintAnyValue(event.value) << std::endl;
+  if (item->GetAnyValueItem())
+  {
+    std::cout << "XXX item  1.1 " << " connected:" << event.connected << " "
+              << sup::dto::PrintAnyValue(GetAnyValue(*item)) << std::endl;
+  }
+  else
+  {
+    std::cout << "XXX item  1.1 " << " connected:" << event.connected << " "
+              << "no item" << std::endl;
+
+  }
+
 
   UpdateVariableFromEvent(event, *item);
 }

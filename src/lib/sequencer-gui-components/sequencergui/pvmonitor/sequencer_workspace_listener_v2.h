@@ -51,9 +51,9 @@ public:
    *
    * Should be used before domain workspace setup.
    */
-  explicit SequencerWorkspaceListenerV2(WorkspaceItem* workspace_item,
-                                        sup::sequencer::Workspace* domain_workspace,
-                                        QObject* parent = nullptr);
+  SequencerWorkspaceListenerV2(WorkspaceItem* workspace_item,
+                               sup::sequencer::Workspace* domain_workspace,
+                               QObject* parent = nullptr);
   ~SequencerWorkspaceListenerV2() override;
 
   /**
