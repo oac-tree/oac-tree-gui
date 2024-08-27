@@ -177,14 +177,7 @@ void JobHandler::OnNextLeavesChangedEvent(const NextLeavesChangedEvent &event)
 
 void JobHandler::OnWorkspaceEvent(const WorkspaceEvent &event)
 {
-  if (auto *item = m_guiobject_builder->FindVariableItem(event.variable_name); item)
-  {
-    UpdateVariableFromEvent(event.value, event.connected, *item);
-  }
-  else
-  {
-    qWarning() << "Error in ProcedureReporter: can't find domain instruction counterpart";
-  }
+  m_workspace_item_listener->ProcessEventFromDomain(event);
 }
 
 JobModel *JobHandler::GetJobModel()

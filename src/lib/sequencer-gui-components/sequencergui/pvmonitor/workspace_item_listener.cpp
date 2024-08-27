@@ -43,9 +43,13 @@ WorkspaceItemListener::WorkspaceItemListener(WorkspaceItem* workspace_item,
   m_block_update_to_domain.resize(m_workspace_item->GetVariableCount(), false);
 
   m_index_to_item = m_workspace_item->GetVariables();
-  for (size_t index = 0; index < m_index_to_item.size(); ++index)
+
+  size_t index{0};
+  for (auto item : m_workspace_item->GetVariables())
   {
-    m_item_to_index[m_index_to_item[index]] = index;
+    m_item_to_index[item] = index;
+    m_name_to_index[item->GetName()] = index;
+    ++index;
   }
 
   m_listener = std::make_unique<mvvm::ModelListener<>>(workspace_item->GetModel());
@@ -66,6 +70,12 @@ void WorkspaceItemListener::ProcessEventFromDomain(const VariableUpdatedEvent& e
   UpdateVariableFromEvent(event.value, event.connected, *item);
 
   m_block_update_to_domain[event.index] = false;
+}
+
+void WorkspaceItemListener::ProcessEventFromDomain(const WorkspaceEvent& event)
+{
+  auto index = m_name_to_index[event.variable_name];
+  ProcessEventFromDomain(VariableUpdatedEvent{index, event.value, event.connected});
 }
 
 void WorkspaceItemListener::ValidateWorkspaces()
