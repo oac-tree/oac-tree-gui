@@ -70,3 +70,31 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
   sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), new_value);
 }
+
+TEST_F(WorkspaceItemListenerTest, ProcessEventFromDomain)
+{
+  const std::string var_name("abc");
+
+  // creating VariableItem and populating domain workspace
+  auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
+  variable_item->SetName(var_name);
+  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  SetAnyValue(value, *variable_item);
+  PopulateDomainWorkspace(*m_workspace_item, m_workspace);
+
+  WorkspaceItemListener listener(m_workspace_item, &m_workspace);
+
+  m_workspace.Setup();
+
+  EXPECT_EQ(GetAnyValue(var_name, m_workspace), value);
+
+  // pretending we processing an event from the domain
+  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  listener.ProcessEventFromDomain(VariableUpdatedEvent{0, new_value, true});
+
+  // domain workspace still has old value thanks to the blocking flag
+  EXPECT_EQ(GetAnyValue(var_name, m_workspace), value);
+
+  // GUI model was updated
+  EXPECT_EQ(variable_item->GetAnyValueItem()->Data<int>(), 43);
+}

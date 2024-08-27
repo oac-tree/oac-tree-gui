@@ -21,10 +21,12 @@
 #define SEQUENCERGUI_PVMONITOR_WORKSPACE_ITEM_LISTENER_H_
 
 #include <sequencergui/domain/sequencer_types_fwd.h>
+#include <sequencergui/jobsystem/domain_events.h>
 
 #include <mvvm/signals/event_types.h>
 #include <mvvm/signals/model_listener_fwd.h>
 
+#include <map>
 #include <memory>
 
 namespace sequencergui
@@ -53,7 +55,18 @@ public:
 
   ~WorkspaceItemListener();
 
+  /**
+   * @brief Processes events from the domain.
+   *
+   * This method shall be called when we want to propagate the domain variable change to the GUI
+   * models, without notifying the domain back again. This method shall be called from the GUI
+   * thread.
+   */
+  void ProcessEventFromDomain(const VariableUpdatedEvent& event);
+
 private:
+  void ValidateWorkspaces();
+
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
 
   void ProcessEventToDomain(VariableItem* variable_item);
@@ -61,6 +74,9 @@ private:
   WorkspaceItem* m_workspace_item{nullptr};
   workspace_t* m_domain_workspace{nullptr};
   std::unique_ptr<mvvm::ModelListener<>> m_listener;
+  std::vector<bool> m_block_update_to_domain;
+  std::map<VariableItem*, size_t> m_item_to_index;
+  std::vector<VariableItem*> m_index_to_item;
 };
 
 }  // namespace sequencergui

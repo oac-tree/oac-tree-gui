@@ -38,6 +38,38 @@ WorkspaceItemListener::WorkspaceItemListener(WorkspaceItem* workspace_item,
                                              sup::sequencer::Workspace* domain_workspace)
     : m_workspace_item(workspace_item), m_domain_workspace(domain_workspace)
 {
+  ValidateWorkspaces();
+
+  m_block_update_to_domain.resize(m_workspace_item->GetVariableCount(), false);
+
+  m_index_to_item = m_workspace_item->GetVariables();
+  for (size_t index = 0; index < m_index_to_item.size(); ++index)
+  {
+    m_item_to_index[m_index_to_item[index]] = index;
+  }
+
+  m_listener = std::make_unique<mvvm::ModelListener<>>(workspace_item->GetModel());
+  m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemListener::OnDataChangedEvent);
+}
+
+WorkspaceItemListener::~WorkspaceItemListener() = default;
+
+void WorkspaceItemListener::ProcessEventFromDomain(const VariableUpdatedEvent& event)
+{
+  // This method is called from the GUI thread. So we can expect, that we will eventually reach the
+  // end of this method and unblock update to the domain. Thanks to the blocking flag, the
+  // ProcessEventToDomain method will not trigger circular updates back to the domain.
+
+  m_block_update_to_domain[event.index] = true;
+
+  auto item = m_index_to_item[event.index];
+  UpdateVariableFromEvent(event.value, event.connected, *item);
+
+  m_block_update_to_domain[event.index] = false;
+}
+
+void WorkspaceItemListener::ValidateWorkspaces()
+{
   if (!m_domain_workspace)
   {
     throw RuntimeException("Not initialised workspace");
@@ -52,12 +84,7 @@ WorkspaceItemListener::WorkspaceItemListener(WorkspaceItem* workspace_item,
   {
     throw RuntimeException("Domain and GUI workspace do not match");
   }
-
-  m_listener = std::make_unique<mvvm::ModelListener<>>(workspace_item->GetModel());
-  m_listener->Connect<mvvm::DataChangedEvent>(this, &WorkspaceItemListener::OnDataChangedEvent);
 }
-
-WorkspaceItemListener::~WorkspaceItemListener() = default;
 
 void WorkspaceItemListener::OnDataChangedEvent(const mvvm::DataChangedEvent& event)
 {
@@ -74,10 +101,17 @@ void WorkspaceItemListener::OnDataChangedEvent(const mvvm::DataChangedEvent& eve
 
 void WorkspaceItemListener::ProcessEventToDomain(VariableItem* variable_item)
 {
+  // do not send an event if it was initially triggered from the domain
+  if (m_block_update_to_domain[m_item_to_index[variable_item]])
+  {
+    return;
+  }
+
   if (!m_domain_workspace->IsSuccessfullySetup())
   {
     throw RuntimeException("Attempt to propagate changes to the domain workspace without setup");
   }
+
   m_domain_workspace->SetValue(variable_item->GetName(), GetAnyValue(*variable_item));
 }
 
