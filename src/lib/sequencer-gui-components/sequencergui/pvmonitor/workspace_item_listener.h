@@ -71,6 +71,7 @@ private:
   void ValidateWorkspaces();
 
   void OnDataChangedEvent(const mvvm::DataChangedEvent& event);
+  void OnItemInsertedEvent(const mvvm::ItemInsertedEvent& event);
 
   void ProcessEventToDomain(VariableItem* variable_item);
 
