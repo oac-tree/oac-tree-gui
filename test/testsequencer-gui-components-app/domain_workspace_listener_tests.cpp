@@ -69,7 +69,7 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
   const std::string var_name("abc");
 
   // creating LocalVariable in domain workspace
-  const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   auto local_variable = testutils::CreateLocalVariable(var_name, value);
   auto local_variable_ptr = local_variable.get();
   m_workspace.AddVariable(var_name, std::move(local_variable));
@@ -92,8 +92,8 @@ TEST_F(DomainWorkspaceListenerTest, LocalVariableInTheWorkspace)
   EXPECT_EQ(listener.GetEventCount(), 0);
 
   // preparing new expectations
-  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  const sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
+  const sup::dto::AnyValue value2(sup::dto::SignedInteger32Type, 44);
 
   {
     const ::testing::InSequence seq;
@@ -122,7 +122,7 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
   const std::string var_name("abc");
 
   // creating LocalVariable in domain workspace
-  const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   auto local_variable = testutils::CreateLocalVariable(var_name, value);
   auto local_variable_ptr = local_variable.get();
   m_workspace.AddVariable(var_name, std::move(local_variable));
@@ -145,7 +145,7 @@ TEST_F(DomainWorkspaceListenerTest, StopListeningWorkspace)
   EXPECT_CALL(mock_client, Call(_)).Times(0);
 
   // changing domain variable
-  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));
 
   // expecting no calls

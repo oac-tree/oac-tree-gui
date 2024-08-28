@@ -67,7 +67,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
 {
   // creating server variable
   const std::string var_name("var");
-  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 43);
   auto variable =
       testutils::CreatePVAccessServerVariable(var_name, initial_value, kScalarChannelName);
 
@@ -124,7 +124,7 @@ TEST_F(SequencerWorkspaceListenerPVAccessTest, WorkspaceWithSingleServerScalarVa
   EXPECT_EQ(spy_upate.count(), 2);
 
   // checking accumulated event
-  const sup::dto::AnyValue expected_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue expected_value(sup::dto::SignedInteger32Type, 42);
   EXPECT_EQ(listener.GetEventCount(), 1);
   event = listener.PopEvent();
   EXPECT_EQ(event.variable_name, var_name);

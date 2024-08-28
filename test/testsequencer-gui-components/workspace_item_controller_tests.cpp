@@ -70,7 +70,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
 {
   testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item0->SetName("abc");
@@ -85,7 +85,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
   EXPECT_CALL(listener, Call(_)).Times(0);
 
   // triggering domain workspace event (pretending it is disconnected)
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   controller.ProcessEventFromDomain({"abc", new_value, true});
 
   EXPECT_TRUE(variable_item0->IsAvailable());
@@ -93,7 +93,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainWhenConnected)
   EXPECT_EQ(new_value, GetAnyValue(*variable_item0));
 
   // triggering domain event, new value with simultaneous disconnect
-  sup::dto::AnyValue new_value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  sup::dto::AnyValue new_value2(sup::dto::SignedInteger32Type, 44);
   controller.ProcessEventFromDomain({"abc", new_value2, false});
 
   // new value should be propagated
@@ -114,7 +114,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 {
   testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item0 = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item0->SetName("abc");
@@ -136,7 +136,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
   EXPECT_EQ(value, GetAnyValue(*variable_item0));
 
   // triggering the second domain workspace event
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   controller.ProcessEventFromDomain({"abc", new_value, true});
 
   auto new_anyvalue_item = variable_item0->GetAnyValueItem();
@@ -149,7 +149,7 @@ TEST_F(WorkspaceItemControllerTest, ProcessEventFromDomainTwice)
 
 TEST_F(WorkspaceItemControllerTest, ModifyAnyValueFromModelViaInsert)
 {
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
@@ -161,7 +161,7 @@ TEST_F(WorkspaceItemControllerTest, ModifyAnyValueFromModelViaInsert)
   controller.SetCallback(listener.AsStdFunction());
 
   // preparing callback expectations
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   WorkspaceEvent expected_event{"abc", new_value};
 
   EXPECT_CALL(listener, Call(expected_event)).Times(1);
@@ -175,9 +175,9 @@ TEST_F(WorkspaceItemControllerTest, ModifyAnyValueFromModelViaInsert)
 
 TEST_F(WorkspaceItemControllerTest, ModifyTwoVariablesViaInserts)
 {
-  sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
-  sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
+  sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 44);
 
   testing::MockFunction<void(const WorkspaceEvent&)> listener;
 
@@ -219,7 +219,7 @@ TEST_F(WorkspaceItemControllerTest, ChannelAccessVariableInTheWorkspace)
     GTEST_SKIP();
   }
 
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item =
       m_workspace_item->InsertItem<ChannelAccessVariableItem>(mvvm::TagIndex::Append());
@@ -254,7 +254,7 @@ TEST_F(WorkspaceItemControllerTest, SetScalarData)
 {
   const std::string var_name("abc");
 
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item = m_workspace_item->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
   variable_item->SetName(var_name);
@@ -271,7 +271,7 @@ TEST_F(WorkspaceItemControllerTest, SetScalarData)
   controller.SetCallback(listener.AsStdFunction());
 
   // preparing callback expectations
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   WorkspaceEvent expected_event{var_name, new_value};
 
   EXPECT_CALL(listener, Call(expected_event)).Times(1);

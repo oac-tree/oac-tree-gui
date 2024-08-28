@@ -68,7 +68,7 @@ TEST_F(SequencerWorkspaceListenerTest, LocalVariableInTheWorkspace)
   EXPECT_EQ(spy_upate.count(), 0);
 
   // creating local variable
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
   auto local_variable = testutils::CreateLocalVariable(var_name, value0);
   auto local_variable_ptr = local_variable.get();
 
@@ -84,13 +84,13 @@ TEST_F(SequencerWorkspaceListenerTest, LocalVariableInTheWorkspace)
   EXPECT_EQ(listener.GetEventCount(), 1);
 
   // changing variable via workspace
-  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
   EXPECT_TRUE(workspace.SetValue(var_name, value1));
   EXPECT_EQ(spy_upate.count(), 2);
   EXPECT_EQ(listener.GetEventCount(), 2);
 
   // changing variable via variable pointer
-  const sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue value2(sup::dto::SignedInteger32Type, 44);
   local_variable_ptr->SetValue(value2);
   EXPECT_EQ(spy_upate.count(), 3);
   EXPECT_EQ(listener.GetEventCount(), 3);
@@ -131,7 +131,7 @@ TEST_F(SequencerWorkspaceListenerTest, StopListeningWorkspace)
   QSignalSpy spy_upate(listener.get(), &SequencerWorkspaceListener::VariabledUpdated);
 
   // creating workspace with single variable
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
   auto local_variable = testutils::CreateLocalVariable(var_name, value0);
   workspace.AddVariable(var_name, std::move(local_variable));
 
@@ -140,7 +140,7 @@ TEST_F(SequencerWorkspaceListenerTest, StopListeningWorkspace)
 
   EXPECT_NO_THROW(listener->StartListening());
 
-  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
   EXPECT_TRUE(workspace.SetValue(var_name, value1));
 
   EXPECT_EQ(spy_upate.count(), 1);
@@ -149,7 +149,7 @@ TEST_F(SequencerWorkspaceListenerTest, StopListeningWorkspace)
   // stop listening
   listener.reset();
 
-  const sup::dto::AnyValue value2(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue value2(sup::dto::SignedInteger32Type, 44);
   EXPECT_TRUE(workspace.SetValue(var_name, value2));
 
   // no other signals

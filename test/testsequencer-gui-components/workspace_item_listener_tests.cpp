@@ -55,7 +55,7 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
   // creating VariableItem and populating domain workspace
   auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
   variable_item->SetName(var_name);
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
@@ -67,7 +67,7 @@ TEST_F(WorkspaceItemListenerTest, SetScalarData)
 
   variable_item->GetAnyValueItem()->SetData(43);
 
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), new_value);
 }
 
@@ -78,7 +78,7 @@ TEST_F(WorkspaceItemListenerTest, ProcessEventFromDomain)
   // creating VariableItem and populating domain workspace
   auto variable_item = m_model.InsertItem<LocalVariableItem>(m_workspace_item);
   variable_item->SetName(var_name);
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
   SetAnyValue(value, *variable_item);
   PopulateDomainWorkspace(*m_workspace_item, m_workspace);
 
@@ -89,7 +89,7 @@ TEST_F(WorkspaceItemListenerTest, ProcessEventFromDomain)
   EXPECT_EQ(GetAnyValue(var_name, m_workspace), value);
 
   // pretending we processing an event from the domain
-  sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
   listener.ProcessEventFromDomain(VariableUpdatedEvent{0, new_value, true});
 
   // domain workspace still has old value thanks to the blocking flag

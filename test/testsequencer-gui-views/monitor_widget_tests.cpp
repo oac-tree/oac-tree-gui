@@ -42,7 +42,7 @@ TEST_F(MonitorWidgetTest, DISABLED_StartStopStart)
 {
   MonitorModel model;
 
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item0 =
       model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());

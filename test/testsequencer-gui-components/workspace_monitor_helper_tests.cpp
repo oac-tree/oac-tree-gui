@@ -180,7 +180,7 @@ TEST_F(WorkspaceMonitorHelperTest, AreMatchingWorkspaces)
 
 TEST_F(WorkspaceMonitorHelperTest, UpdateVariableFromEvent)
 {
-  sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   LocalVariableItem variable_item;
 

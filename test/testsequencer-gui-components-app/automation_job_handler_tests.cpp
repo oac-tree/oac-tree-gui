@@ -138,10 +138,10 @@ TEST_F(AutomationJobHandlerTest, OnVariableUpdated)
   EXPECT_TRUE(variable_items.at(0)->IsAvailable());
   EXPECT_TRUE(variable_items.at(1)->IsAvailable());
 
-  EXPECT_EQ(anyvalue0, sup::dto::AnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 0}));
-  EXPECT_EQ(anyvalue1, sup::dto::AnyValue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 1}));
+  EXPECT_EQ(anyvalue0, sup::dto::AnyValue(sup::dto::UnsignedInteger32Type, 0));
+  EXPECT_EQ(anyvalue1, sup::dto::AnyValue(sup::dto::UnsignedInteger32Type, 1));
 
-  sup::dto::AnyValue new_anyvalue(sup::dto::AnyValue{sup::dto::UnsignedInteger32Type, 42});
+  sup::dto::AnyValue new_anyvalue(sup::dto::UnsignedInteger32Type, 42);
 
   // updating the value of second variable
   const size_t index_of_second_variable{1};  // from JobInfo

@@ -94,7 +94,7 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
   DomainWorkspaceListener listener(&m_workspace, mock_client.AsStdFunction());
   EXPECT_EQ(listener.GetEventCount(), 0);
 
-  const sup::dto::AnyValue softioc_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1});
+  const sup::dto::AnyValue softioc_value(sup::dto::SignedInteger32Type, 1);
 
   m_workspace.Setup();
   // checking current server variable
@@ -109,12 +109,10 @@ TEST_F(DomainWorkspaceListenerSoftIocTest, ListeningWorkspaceWithSingleCAVariabl
   // value=1 and connection=1 and it is triggered by initial value in epics.db file.
 
   // expecting DataChangedEvent for item representing connected attribute
-  const sup::dto::AnyValue softioc_value_on_connection(
-      sup::dto::AnyValue{sup::dto::SignedInteger32Type, 0});
+  const sup::dto::AnyValue softioc_value_on_connection(sup::dto::SignedInteger32Type, 0);
   const VariableUpdatedEvent expected_event1{0, softioc_value_on_connection, true};
 
-  const sup::dto::AnyValue softioc_value_in_db_file(
-      sup::dto::AnyValue{sup::dto::SignedInteger32Type, 1});
+  const sup::dto::AnyValue softioc_value_in_db_file(sup::dto::SignedInteger32Type, 1);
   const VariableUpdatedEvent expected_event2{0, softioc_value_in_db_file, true};
 
   {

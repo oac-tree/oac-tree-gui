@@ -52,7 +52,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
   const std::string var_name("var0");
 
   // creating local variable
-  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
   auto variable = testutils::CreateLocalVariable(var_name, initial_value);
   auto variable_ptr = variable.get();
 
@@ -77,7 +77,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, LocalVariable)
   EXPECT_EQ(current_value, initial_value);
 
   // expecting notification on new value set
-  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 44);
   EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
 
   variable_ptr->SetValue(new_value);
@@ -101,7 +101,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   const std::string kChannelName(kTestPrefix + "PVAccessServerVariable");
 
   // creating local variable
-  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
   auto variable = testutils::CreatePVAccessServerVariable(var_name, initial_value, kChannelName);
   auto variable_ptr = variable.get();
 
@@ -129,7 +129,7 @@ TEST_F(SequencerWorkspaceCornerCaseTest, PVAccessServerVariable)
   EXPECT_EQ(current_value, initial_value);
 
   // expecting notification on new value set
-  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 44});
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 44);
   EXPECT_CALL(listener, OnEvent(var_name, new_value, true)).Times(1);
 
   EXPECT_TRUE(m_workspace.SetValue(var_name, new_value));

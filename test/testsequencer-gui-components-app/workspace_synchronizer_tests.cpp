@@ -102,7 +102,7 @@ TEST_F(WorkspaceSynchronizerTest, AttemptToSynchronizeNonMatchingWorkspaces)
   }
 
   {  // variables do not match
-    const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+    const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
     auto variable_item = m_model.InsertItem<LocalVariableItem>(m_model.GetWorkspaceItem());
     variable_item->SetName("var0");
     SetAnyValue(value, *variable_item);
@@ -121,7 +121,7 @@ TEST_F(WorkspaceSynchronizerTest, AttemptToSynchronizeNonMatchingWorkspaces)
 
 TEST_F(WorkspaceSynchronizerTest, Start)
 {
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   m_model.GetWorkspaceItem()->InsertItem(CreateLocalVariableItem("abc", value0),
                                          mvvm::TagIndex::Append());
@@ -151,7 +151,7 @@ TEST_F(WorkspaceSynchronizerTest, Start)
 
 TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 {
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item0 =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -168,7 +168,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
   auto prev_anyvalue_item = variable_item0->GetAnyValueItem();
 
   // changing the value via domain workspace
-  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
   EXPECT_TRUE(synchronizer->GetWorkspace()->SetValue("abc", value1));
 
   // We are testing here queued signals, need special waiting
@@ -184,7 +184,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdated)
 
 TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdatedHandlerCase)
 {
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item0 =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -201,7 +201,7 @@ TEST_F(WorkspaceSynchronizerTest, OnDomainVariableUpdatedHandlerCase)
   auto prev_anyvalue_item = variable_item0->GetAnyValueItem();
 
   // changing the value via domain workspace
-  const sup::dto::AnyValue value1(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue value1(sup::dto::SignedInteger32Type, 43);
   EXPECT_TRUE(synchronizer->GetWorkspace()->SetValue("abc", value1));
 
   // We are testing here queued signals, need special waiting
@@ -218,7 +218,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
 {
   const std::string var_name("abc");
 
-  const sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -238,7 +238,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdate)
   synchronizer->Start();
 
   // changing the value via the model
-  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
 
   // callback expectations
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
@@ -265,7 +265,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdateHandlerCase)
 {
   const std::string var_name("abc");
 
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -281,7 +281,7 @@ TEST_F(WorkspaceSynchronizerTest, OnModelVariableUpdateHandlerCase)
   mvvm::test::MockModelListenerV2 model_listener(&m_model);
 
   // changing the value via the model
-  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
 
   // callback expectations
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
@@ -307,7 +307,7 @@ TEST_F(WorkspaceSynchronizerTest, UpdateDomainAndCheckSignals)
 {
   const std::string var_name("abc");
 
-  const sup::dto::AnyValue value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value(sup::dto::SignedInteger32Type, 42);
 
   auto variable_item =
       m_model.GetWorkspaceItem()->InsertItem<LocalVariableItem>(mvvm::TagIndex::Append());
@@ -323,7 +323,7 @@ TEST_F(WorkspaceSynchronizerTest, UpdateDomainAndCheckSignals)
   auto expected_event =
       mvvm::DataChangedEvent{variable_item->GetAnyValueItem(), mvvm::DataRole::kData};
 
-  const sup::dto::AnyValue new_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 43});
+  const sup::dto::AnyValue new_value(sup::dto::SignedInteger32Type, 43);
 
   EXPECT_CALL(model_listener, OnDataChanged(expected_event)).Times(1);
   EXPECT_CALL(domain_listener, OnEvent(var_name, new_value, true)).Times(1);
@@ -344,7 +344,7 @@ TEST_F(WorkspaceSynchronizerTest, UpdateDomainAndCheckSignals)
 
 TEST_F(WorkspaceSynchronizerTest, DISABLED_StartAndShutdown)
 {
-  const sup::dto::AnyValue value0(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue value0(sup::dto::SignedInteger32Type, 42);
 
   auto var_item = m_model.GetWorkspaceItem()->InsertItem(CreateLocalVariableItem("abc", value0),
                                                          mvvm::TagIndex::Append());

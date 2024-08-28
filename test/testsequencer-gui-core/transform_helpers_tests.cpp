@@ -253,7 +253,7 @@ TEST_F(TransformHelpersTest, SetAnyValueFromDomainInstruction)
   instruction->AddAttribute(domainconstants::kTypeAttribute, R"RAW({"type":"int32"})RAW");
   instruction->AddAttribute(domainconstants::kValueAttribute, "42");
 
-  const sup::dto::AnyValue expected_anyvalue(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  const sup::dto::AnyValue expected_anyvalue(sup::dto::SignedInteger32Type, 42);
 
   WaitItem item;
   // registering tag to make possible adding AnyValueItem
@@ -361,7 +361,7 @@ TEST_F(TransformHelpersTest, GetAnyValueFromDomainWorkspace)
   sup::sequencer::Workspace workspace;
   EXPECT_THROW(GetAnyValue(var_name, workspace), RuntimeException);
 
-  sup::dto::AnyValue initial_value(sup::dto::AnyValue{sup::dto::SignedInteger32Type, 42});
+  sup::dto::AnyValue initial_value(sup::dto::SignedInteger32Type, 42);
   workspace.AddVariable(var_name, testutils::CreateLocalVariable(var_name, initial_value));
   workspace.Setup();
   EXPECT_EQ(GetAnyValue(var_name, workspace), initial_value);
